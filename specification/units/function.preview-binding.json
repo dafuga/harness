@@ -21,23 +21,89 @@
 				"name": "previewBinding.unit",
 				"type": "PreviewUnit",
 				"required": true,
-				"description": "Visual unit and its optional declared scenario, state and viewport selection."
+				"description": "The visual unit to check: its `id`, the scenario ids it belongs to in `scenarios`, and an optional `preview` selecting the `scenario`, `state` and `viewport` to validate. When `preview` is absent the result is an empty list, so the unit is checked only when a preview is declared.",
+				"examples": [
+					{
+						"id": "reports.component.evidence-grid",
+						"scenarios": ["reports.review"],
+						"preview": {
+							"scenario": "reports.review",
+							"state": "populated",
+							"viewport": "desktop"
+						}
+					},
+					{
+						"id": "reports.component.legend",
+						"scenarios": ["reports.review"]
+					}
+				]
 			},
 			{
 				"name": "previewBinding.scenarios",
 				"type": "ScenarioManifest[]",
 				"required": true,
-				"description": "Selected-revision scenarios against which the preview slot and unit attribution are validated."
+				"description": "The scenario manifests searched for the id named by `unit.preview.scenario`; the first manifest with that id is used, and only its `id`, `units`, `states`, `evidence` and `viewports` are read. The array is not searched when `unit.preview` is absent, and an id that no manifest has produces an `unknown preview scenario` message.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "reports.review",
+							"title": "Report review",
+							"kind": "ui",
+							"units": ["reports.component.evidence-grid"],
+							"states": [
+								{
+									"id": "populated",
+									"title": "Grid with evidence rows",
+									"coverage": "required",
+									"units": ["reports.component.evidence-grid"]
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1440,
+									"height": 900
+								}
+							],
+							"tests": [
+								{
+									"id": "reports.review.capture",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "e2e/reports/review.spec.ts"
+								}
+							],
+							"evidence": [
+								{
+									"id": "reports.review.shot",
+									"kind": "screenshot",
+									"states": ["populated"],
+									"viewports": ["desktop"],
+									"required": true
+								}
+							]
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "issues",
 				"type": "string[]",
-				"description": "Empty when no preview is declared or its own required screenshot state and viewport exist; otherwise readable validation problems."
+				"description": "Validation messages for the unit's `preview`: an empty list when `preview` is absent, or when its scenario exists, its state shows the unit with `coverage` set to `required`, and a required screenshot covers that state at the selected viewport, which the scenario declares; otherwise a single message that begins with the unit id. Only the first failed check is reported, so the list never holds more than one message.",
+				"examples": [
+					[],
+					["reports.component.evidence-grid: unknown preview scenario reports.review"],
+					[
+						"reports.component.evidence-grid: preview state populated has no required screenshot at mobile"
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "previewBinding",
@@ -46,23 +112,89 @@
 						"name": "previewBinding.unit",
 						"type": "PreviewUnit",
 						"required": true,
-						"description": "Visual unit and its optional declared scenario, state and viewport selection."
+						"description": "The visual unit to check: its `id`, the scenario ids it belongs to in `scenarios`, and an optional `preview` selecting the `scenario`, `state` and `viewport` to validate. When `preview` is absent the result is an empty list, so the unit is checked only when a preview is declared.",
+						"examples": [
+							{
+								"id": "reports.component.evidence-grid",
+								"scenarios": ["reports.review"],
+								"preview": {
+									"scenario": "reports.review",
+									"state": "populated",
+									"viewport": "desktop"
+								}
+							},
+							{
+								"id": "reports.component.legend",
+								"scenarios": ["reports.review"]
+							}
+						]
 					},
 					{
 						"name": "previewBinding.scenarios",
 						"type": "ScenarioManifest[]",
 						"required": true,
-						"description": "Selected-revision scenarios against which the preview slot and unit attribution are validated."
+						"description": "The scenario manifests searched for the id named by `unit.preview.scenario`; the first manifest with that id is used, and only its `id`, `units`, `states`, `evidence` and `viewports` are read. The array is not searched when `unit.preview` is absent, and an id that no manifest has produces an `unknown preview scenario` message.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "reports.review",
+									"title": "Report review",
+									"kind": "ui",
+									"units": ["reports.component.evidence-grid"],
+									"states": [
+										{
+											"id": "populated",
+											"title": "Grid with evidence rows",
+											"coverage": "required",
+											"units": ["reports.component.evidence-grid"]
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1440,
+											"height": 900
+										}
+									],
+									"tests": [
+										{
+											"id": "reports.review.capture",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "e2e/reports/review.spec.ts"
+										}
+									],
+									"evidence": [
+										{
+											"id": "reports.review.shot",
+											"kind": "screenshot",
+											"states": ["populated"],
+											"viewports": ["desktop"],
+											"required": true
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "previewBinding",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The array returned by `previewBinding`, the same value as the `issues` output: empty when `preview` is absent or every check passes, otherwise a single message that begins with the unit id and describes the first failed check.",
+						"examples": [
+							[],
+							["reports.component.evidence-grid: unknown preview scenario reports.review"],
+							[
+								"reports.component.evidence-grid: preview state populated has no required screenshot at mobile"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
