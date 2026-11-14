@@ -25,22 +25,45 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubAgentController.constructor.context",
 				"type": "Context",
-				"required": true
+				"required": true,
+				"description": "Supplies the collaboration API, projection service, actor, request, project ID, and optional executor retained by this controller. The controller uses these values to authorize and handle requests; when the executor is absent, handle returns executor-offline after authorization succeeds."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubAgentController.handle",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "The resolved value is the HTTP response for the request, including executor output or an offline, method-denied, or origin-denied response. Authorization, input parsing, snapshot validation, or an awaited dependency rejection can prevent resolution."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "forbidden",
+				"type": "thrown",
+				"description": "Authorization fails with forbidden when the current project role is neither owner nor writer. If an executor is present, revocation is awaited first and its rejection can propagate instead."
+			},
+			{
+				"name": "invalid-input",
+				"type": "thrown",
+				"description": "The controller rejects with invalid-input for an unsupported method; an input that is not an object or names a different project; an event cursor without a string run ID and non-negative safe-integer after value; a startRun request ID that is not an 8-4-4-4-12 hexadecimal string; or missing or non-string revision branch or commit."
+			},
+			{
+				"name": "revision-mismatch",
+				"type": "thrown",
+				"description": "Projection validation rejects with revision-mismatch when the snapshot is not at the tip, its commit differs from the requested commit, or the requested branch is harness-evidence. This check runs for parsed methods other than providers and cancelRun, and does not run for the events cursor path."
+			},
+			{
+				"name": "propagated rejection",
+				"type": "thrown",
+				"description": "An awaited dependency rejection can reject handle, including from project lookup, revocation, executor availability or execution, body parsing, IPC validation, and projection snapshot lookup. A project lookup rejection is rethrown after optional revocation completes; if revocation rejects, that rejection propagates instead."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HubAgentController.handle",
@@ -48,11 +71,33 @@
 				"outputs": [
 					{
 						"name": "HubAgentController.handle",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "The resolved value is the HTTP response for the request, including executor output or an offline, method-denied, or origin-denied response. Authorization, input parsing, snapshot validation, or an awaited dependency rejection can prevent resolution."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "forbidden",
+						"type": "thrown",
+						"description": "Authorization fails with forbidden when the current project role is neither owner nor writer. If an executor is present, revocation is awaited first and its rejection can propagate instead."
+					},
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "The controller rejects with invalid-input for an unsupported method; an input that is not an object or names a different project; an event cursor without a string run ID and non-negative safe-integer after value; a startRun request ID that is not an 8-4-4-4-12 hexadecimal string; or missing or non-string revision branch or commit."
+					},
+					{
+						"name": "revision-mismatch",
+						"type": "thrown",
+						"description": "Projection validation rejects with revision-mismatch when the snapshot is not at the tip, its commit differs from the requested commit, or the requested branch is harness-evidence. This check runs for parsed methods other than providers and cancelRun, and does not run for the events cursor path."
+					},
+					{
+						"name": "propagated rejection",
+						"type": "thrown",
+						"description": "An awaited dependency rejection can reject handle, including from project lookup, revocation, executor availability or execution, body parsing, IPC validation, and projection snapshot lookup. A project lookup rejection is rethrown after optional revocation completes; if revocation rejects, that rejection propagates instead."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -62,17 +107,19 @@
 					{
 						"name": "HubAgentController.constructor.context",
 						"type": "Context",
-						"required": true
+						"required": true,
+						"description": "Supplies the collaboration API, projection service, actor, request, project ID, and optional executor retained by this controller. The controller uses these values to authorize and handle requests; when the executor is absent, handle returns executor-offline after authorization succeeds."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubAgentController.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The resolved value is the new HubAgentController instance, which retains the supplied Context for later handle calls. Construction only stores that context and does not authorize a request or call the executor."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
