@@ -10,27 +10,33 @@
 		},
 		{
 			"command": "bun run build",
-			"timeoutMs": 1200000
+			"timeoutMs": 1200000,
+			"builds": ["reports"]
 		},
 		{
 			"command": "bun run --cwd packages/reports build:shell",
-			"timeoutMs": 300000
+			"timeoutMs": 300000,
+			"builds": ["shell-fixture"]
 		},
 		{
 			"command": "cd packages/reports && ENTITY_PREVIEW_HOME=output/entity-preview bun -e \"import setup from './test/entityPreviewSetup'; await setup()\"",
-			"timeoutMs": 300000
+			"timeoutMs": 300000,
+			"builds": ["entity-preview"]
 		},
 		{
 			"command": "bun run build:desktop",
-			"timeoutMs": 600000
+			"timeoutMs": 600000,
+			"builds": ["planning", "desktop-renderer", "desktop-main"]
 		},
 		{
 			"command": "bun src/index.ts verify stamp packages/desktop/build",
-			"timeoutMs": 60000
+			"timeoutMs": 60000,
+			"builds": ["planning", "desktop-renderer", "desktop-main"]
 		},
 		{
 			"command": "bun run --cwd packages/desktop cap copy ios",
-			"timeoutMs": 120000
+			"timeoutMs": 120000,
+			"builds": ["planning", "desktop-renderer", "desktop-main"]
 		}
 	],
 	"outputs": [

@@ -10,6 +10,10 @@ import { scenarioManifestSchema } from '../src/core/unitTypes';
 import { verificationTarget } from './verification-targets';
 import { ScenarioRepository } from '../src/repositories/verification-evidence/ScenarioRepository';
 import { WorkingTreeAdapter } from '../src/adapters/git-source-history/WorkingTreeAdapter';
+import {
+	neededBuilds,
+	scopedSetup
+} from '../src/workflows/verification-evidence/run-verify/verification-service/buildScope';
 
 /** Every file under a directory of this repository, as repository paths. */
 function under(directory: string): string[] {
@@ -64,6 +68,25 @@ test('named check profiles preserve all existing check IDs, commands and effecti
 	}));
 	expect(actual).toHaveLength(40);
 	expect(actual).toEqual(checksBaseline);
+});
+
+test('every declared build has a tagged setup step; the catalog scope keeps only install and build:shell', () => {
+	const config = verifyConfigSchema.parse(JSON.parse(readFileSync('harness.verify.json', 'utf8')));
+	const produced = config.setup.flatMap((step) => step.builds ?? []);
+	const declared = config.builds.map((build) => build.id);
+	expect(
+		declared.filter((id) => !produced.includes(id)),
+		'Every declared build is produced by a tagged setup step'
+	).toEqual([]);
+	const catalog = scenarioManifestSchema.parse(
+		JSON.parse(readFileSync('specification/scenarios/component-catalog-previews.json', 'utf8'))
+	);
+	const needed = neededBuilds([catalog]);
+	expect(needed).toEqual(new Set(['shell-fixture']));
+	expect(scopedSetup(config.setup, needed).map((step) => step.command)).toEqual([
+		'bun install --frozen-lockfile --backend=copyfile',
+		'bun run --cwd packages/reports build:shell'
+	]);
 });
 
 test('standalone evidence fixtures load outside the test runner', () => {
