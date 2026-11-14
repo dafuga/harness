@@ -18,39 +18,64 @@
 				"name": "stateRegistries.tree",
 				"type": "SourceTree",
 				"required": true,
-				"description": "Readable committed or working source tree supplying only the selected revision declarations."
+				"description": "A SourceTree whose list() supplies candidate paths and whose read(path) supplies their text. Only required-states JSON files and matching test/e2e support catalog, preview, scenario, or variant TS/JS files are read from the tree."
 			},
 			{
 				"name": "stateRegistries.root",
 				"type": "string",
 				"required": true,
-				"description": "Project directory used for external inventory paths or read-only Git evidence access."
+				"description": "Filesystem root passed to resolve(root, path) for extra paths absent from tree.list(); it matters only when such paths are requested. resolve keeps an absolute extra path absolute.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+				]
 			},
 			{
 				"name": "stateRegistries.extra",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Additional JSON inventory paths, absolute or relative to root; defaults to an empty list."
+				"description": "Additional file paths are read from disk only when their path is not already listed by the tree; relative paths resolve from root. A .json suffix selects JSON parsing and every other suffix selects TypeScript parsing; rows need a valid entity ID and TypeScript states need literal string arrays.",
+				"examples": [
+					["packages/reports/required-states.json"],
+					["packages/reports/tests/e2e/support/previewCatalog.ts"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "stateRegistries",
 				"type": "Promise<StateRegistry[]>",
-				"description": "Entity-scoped state inventories with their source paths and catalog or required-state classification."
+				"description": "Resolves to rows shaped as {entity, where, kind, states} extracted from matching JSON and TS/JS declarations, with where recording the path and kind set to required-states for matching paths or catalog otherwise. Entities outside the dotted/hyphenated ID pattern are ignored; state strings are deduplicated and empty strings become default.",
+				"examples": [
+					[
+						{
+							"entity": "reports.component.evidence-grid",
+							"where": "packages/reports/tests/e2e/support/previewCatalog.ts",
+							"kind": "catalog",
+							"states": ["default"]
+						}
+					],
+					[
+						{
+							"entity": "reports.component.evidence-grid",
+							"where": "packages/reports/required-states.json",
+							"kind": "required-states",
+							"states": ["default"]
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid selection, unknown identities, malformed inventories or invalid registry data with the specific CLI diagnostic."
+				"description": "The implementation calls fail() with \"Cannot read required-state file <path>.\" when an extra file is unreadable, or \"Cannot read required-state JSON <where>.\" when a selected .json file is invalid."
 			},
 			{
 				"name": "Dependency failure",
 				"type": "thrown",
-				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+				"description": "tree.list() and tree.read() rejections propagate to the caller. Read failures for extra paths are caught and routed through the required-state-file fail() diagnostic."
 			}
 		],
 		"errorStatus": "declared",
@@ -62,39 +87,64 @@
 						"name": "stateRegistries.tree",
 						"type": "SourceTree",
 						"required": true,
-						"description": "Readable committed or working source tree supplying only the selected revision declarations."
+						"description": "A SourceTree whose list() supplies candidate paths and whose read(path) supplies their text. Only required-states JSON files and matching test/e2e support catalog, preview, scenario, or variant TS/JS files are read from the tree."
 					},
 					{
 						"name": "stateRegistries.root",
 						"type": "string",
 						"required": true,
-						"description": "Project directory used for external inventory paths or read-only Git evidence access."
+						"description": "Filesystem root passed to resolve(root, path) for extra paths absent from tree.list(); it matters only when such paths are requested. resolve keeps an absolute extra path absolute.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+						]
 					},
 					{
 						"name": "stateRegistries.extra",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Additional JSON inventory paths, absolute or relative to root; defaults to an empty list."
+						"description": "Additional file paths are read from disk only when their path is not already listed by the tree; relative paths resolve from root. A .json suffix selects JSON parsing and every other suffix selects TypeScript parsing; rows need a valid entity ID and TypeScript states need literal string arrays.",
+						"examples": [
+							["packages/reports/required-states.json"],
+							["packages/reports/tests/e2e/support/previewCatalog.ts"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "stateRegistries",
 						"type": "Promise<StateRegistry[]>",
-						"description": "Entity-scoped state inventories with their source paths and catalog or required-state classification."
+						"description": "Resolves to rows shaped as {entity, where, kind, states} extracted from matching JSON and TS/JS declarations, with where recording the path and kind set to required-states for matching paths or catalog otherwise. Entities outside the dotted/hyphenated ID pattern are ignored; state strings are deduplicated and empty strings become default.",
+						"examples": [
+							[
+								{
+									"entity": "reports.component.evidence-grid",
+									"where": "packages/reports/tests/e2e/support/previewCatalog.ts",
+									"kind": "catalog",
+									"states": ["default"]
+								}
+							],
+							[
+								{
+									"entity": "reports.component.evidence-grid",
+									"where": "packages/reports/required-states.json",
+									"kind": "required-states",
+									"states": ["default"]
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid selection, missing source or malformed inventory produces the corresponding CLI diagnostic."
+						"description": "The implementation calls fail() with \"Cannot read required-state file <path>.\" when an extra file is unreadable, or \"Cannot read required-state JSON <where>.\" when a selected .json file is invalid."
 					},
 					{
 						"name": "Dependency failure",
 						"type": "thrown",
-						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+						"description": "tree.list() and tree.read() rejections propagate to the caller. Read failures for extra paths are caught and routed through the required-state-file fail() diagnostic."
 					}
 				],
 				"errorStatus": "declared"
