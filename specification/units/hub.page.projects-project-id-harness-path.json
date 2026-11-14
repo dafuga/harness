@@ -21,12 +21,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The page renders HostedWorkspace when session.actor is truthy; otherwise it renders HubFrame with a Shared project heading and LoginPanel reason Sign in to open this project. It does not read project data before the server has identified who is signed in."
 			}
 		],
 		"errors": [],
