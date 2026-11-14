@@ -2,6 +2,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import ts from 'typescript';
+import { selectRatchetBase } from './debt-ratchet-base';
 import type {
 	LayerEdge,
 	ReuseBaseline,
@@ -106,11 +107,13 @@ export function temporaryCallRatchet(
 	};
 }
 
-function baseRef(): string {
-	if (process.env.GITHUB_BASE_REF) return `origin/${process.env.GITHUB_BASE_REF}`;
-	const branch = execFileSync('git', ['branch', '--show-current'], gitReadOptions).trim();
-	const ref = branch && branch !== 'main' ? 'main' : 'HEAD^';
-	return execFileSync('git', ['rev-parse', '--verify', ref], gitReadOptions).trim();
+function baseRef(): string | null {
+	const base = selectRatchetBase(
+		(args) => execFileSync('git', [...args], gitReadOptions),
+		process.env
+	);
+	console.log(base.message);
+	return base.commit;
 }
 
 function readBaseJson<T>(ref: string, path: string): T {
@@ -164,6 +167,13 @@ function temporaryCallBase(ref: string): TemporaryCallBaseline {
 
 function main(): void {
 	const ref = baseRef();
+	if (!ref) {
+		console.error(
+			'Debt comparison is unavailable: fetch the protected branch or set HARNESS_DEBT_RATCHET_BASE.'
+		);
+		process.exitCode = 1;
+		return;
+	}
 	const previousLayers = readBaseJson<{ edges: LayerEdge[] }>(ref, 'eslint.layer-allowlist.json');
 	const currentLayers = JSON.parse(readFileSync('eslint.layer-allowlist.json', 'utf8')) as {
 		edges: LayerEdge[];
