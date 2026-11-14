@@ -18,17 +18,69 @@
 				"name": "registerResourcesCommand.program",
 				"type": "Command",
 				"required": true,
-				"description": "Commander program on which the resources status, configure and run subcommands are installed."
+				"description": "The Commander program that receives the resources command group; registerResourcesCommand calls program.command('resources') on it once and performs no check on it, so it must already be a Commander Command. The value matters only during that call, since the function does not store it and none of the status, configure or run handlers use it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerResourcesCommand",
 				"type": "void",
-				"description": "Installs CLI handlers; execution and output occur when their subcommands are invoked."
+				"description": "registerResourcesCommand returns nothing (undefined) and its effect is to attach the resources group, with its status, configure and run subcommands, to the program it receives. None of those subcommand actions run during this call, so status output, configuration saves and queued runs happen only later, when a user invokes the matching subcommand."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "resourceConfigSchema.parse",
+				"type": "thrown",
+				"description": "Thrown by configure when resourceConfigSchema.parse fails on the current configuration after any given flag values have been applied with Number(). Because it throws before saveResourceConfig is called, nothing is saved and nothing is printed."
+			},
+			{
+				"name": "resourceConfig",
+				"type": "thrown",
+				"description": "Propagates whatever resourceConfig throws: configure calls it first, before any flag is applied, so the error ends configure with nothing saved; status calls resourceConfig(service.home) inside its try block, so the error rejects status after service.close() runs in the finally block."
+			},
+			{
+				"name": "saveResourceConfig",
+				"type": "thrown",
+				"description": "Propagates whatever saveResourceConfig throws after the configuration has passed resourceConfigSchema.parse; configure then does not print the configuration."
+			},
+			{
+				"name": "new ResourceQueueService()",
+				"type": "thrown",
+				"description": "Constructed before the try block in both status and run, so a constructor error rejects that action directly and there is no service to close."
+			},
+			{
+				"name": "service.snapshot",
+				"type": "thrown",
+				"description": "status awaits service.snapshot() inside its try block, so a rejection from it rejects the status action after service.close() runs in the finally block."
+			},
+			{
+				"name": "service.queue.all",
+				"type": "thrown",
+				"description": "status calls service.queue.all() inside its try block while building the result, so a throw from it rejects the status action after service.close() runs."
+			},
+			{
+				"name": "service.close",
+				"type": "thrown",
+				"description": "The finally blocks of status and run call service.close(); if it throws, that error replaces any error from the try block and the action rejects with it."
+			},
+			{
+				"name": "resourceRequest",
+				"type": "thrown",
+				"description": "run awaits resourceRequest(flags, service) inside its try block, so a rejection from it rejects the run action after the signal listeners are removed and service.close() runs in the finally block."
+			},
+			{
+				"name": "service.run",
+				"type": "thrown",
+				"description": "run awaits service.run(...) inside its try block and assigns the result to process.exitCode, so a rejection from it rejects the run action without assigning process.exitCode; run has no catch of its own, so failures from the resourceCommand callback reach the action only through service.run."
+			},
+			{
+				"name": "Error('Managed work cancelled')",
+				"type": "thrown",
+				"description": "Created by the SIGINT and SIGTERM handler of run and set as the reason of the abort signal that run shares with service.run and resourceCommand; run never throws it itself, so it surfaces only if service.run or resourceCommand throws or rejects with signal.reason."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerResourcesCommand",
@@ -37,18 +89,18 @@
 						"name": "registerResourcesCommand.program",
 						"type": "Command",
 						"required": true,
-						"description": "Commander program on which the resources status, configure and run subcommands are installed."
+						"description": "The Commander program that receives the resources command group; registerResourcesCommand calls program.command('resources') on it once and performs no check on it, so it must already be a Commander Command. The value matters only during that call, since the function does not store it and none of the status, configure or run handlers use it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerResourcesCommand",
 						"type": "void",
-						"description": "Installs CLI handlers; execution and output occur when their subcommands are invoked."
+						"description": "registerResourcesCommand returns nothing (undefined) and its effect is to attach the resources group, with its status, configure and run subcommands, to the program it receives. None of those subcommand actions run during this call, so status output, configuration saves and queued runs happen only later, when a user invokes the matching subcommand."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
