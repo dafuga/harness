@@ -26,41 +26,59 @@
 				"name": "ExplorerLayout.base",
 				"type": "string",
 				"required": true,
-				"description": "URL prefix used by the shared explorer header for links and navigation."
+				"description": "The console's mount path, such as '/harness', that the header hands to its bar as the brand's link while no branch is resolved and as the address of search entries that resolve to no location. The header also joins it directly to the missing-history link's home path, which begins with a slash.",
+				"examples": ["/harness"]
 			},
 			{
 				"name": "ExplorerLayout.problem",
 				"type": "string",
 				"required": true,
-				"description": "Load failure to display above the page, or an empty string when there is no failure."
+				"description": "The failure message the host sets when the history or the open revision cannot be loaded, drawn as an alert notice in the header above the page. An empty string, which the host starts with, draws no notice.",
+				"examples": [
+					"",
+					"The history could not be loaded. Refresh the page to try again.",
+					"This revision could not be loaded. Refresh the page to try again."
+				]
 			},
 			{
 				"name": "ExplorerLayout.missing",
 				"type": "{ message: string; home: string | null } | null",
 				"required": true,
-				"description": "Missing-history notice and optional return link; null keeps the notice hidden."
+				"description": "The notice for an address that names nothing in this history; null draws no notice. Its message is drawn as an alert in the header, and a non-empty home adds an 'Open the newest commit' link to base joined with home.",
+				"examples": [
+					null,
+					{
+						"message": "This history holds no commit.",
+						"home": null
+					},
+					{
+						"message": "Commit 9f3c2a7 is not in this history.",
+						"home": "/branch/main/pages"
+					}
+				]
 			},
 			{
 				"name": "ExplorerLayout.navbar",
 				"type": "Omit<HarnessNavbarInput, 'base'>",
 				"required": true,
-				"description": "Revision-scoped navigation, branch and commit choices, repository name and search entries."
+				"description": "The explorer bar's inputs as the host resolves them: repository name, revision scope, index, branch commits, link and routing callbacks, and optional modules and search entries. The layout passes them on without reading them, and the header then draws the bar in place of its title row and its links to other views."
 			},
 			{
 				"name": "ExplorerLayout.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "Required page content rendered in the main area below the shared navigation."
+				"description": "The page content, a Svelte snippet that the layout renders with no arguments inside the main element below the shared header. The prop is required, and the main element holds nothing else."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerLayout",
 				"type": "markup",
-				"description": "Shared navigation around the supplied child content, retaining header notices and responsive spacing."
+				"description": "The rendered frame: an hx-div with class hx-shell holding the shared header, then an hx-main with class hx-main holding the supplied children. It has no component marker, because the file is a layout rather than a component."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
