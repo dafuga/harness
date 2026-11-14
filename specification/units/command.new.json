@@ -12,22 +12,30 @@
 		"symbols": ["registerNewCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerNewCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The commander Command that the new command is attached to: registerNewCommand calls program.command('new') on it and attaches the app, game and lib subcommands to that new command. The value is read once, when the function runs, and the function does not validate it, so it must already be a commander Command."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerNewCommand",
-				"type": "void"
+				"type": "void",
+				"description": "The function returns nothing; its effect is to register the 'new' command, with app, game and lib subcommands that each have an action handler, on the program. The handlers are attached here and are not called by this function."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "runCreateProject",
+				"type": "thrown",
+				"description": "Each app, game and lib action returns the promise from runCreateProject, which has no try/catch, so it rejects with whatever createProject(...) or renderCreateProject(result) throws. new.ts does not define or narrow those errors."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerNewCommand",
@@ -35,17 +43,19 @@
 					{
 						"name": "registerNewCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The commander Command that the new command is attached to: registerNewCommand calls program.command('new') on it and attaches the app, game and lib subcommands to that new command. The value is read once, when the function runs, and the function does not validate it, so it must already be a commander Command."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerNewCommand",
-						"type": "void"
+						"type": "void",
+						"description": "The function returns nothing; its effect is to register the 'new' command, with app, game and lib subcommands that each have an action handler, on the program. The handlers are attached here and are not called by this function."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
