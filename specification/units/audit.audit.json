@@ -23,43 +23,170 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "auditPath.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project root directory to audit; the audit reads harness.audit.json, specification/modules and the collected source files beneath it, and finding and coverage paths are relative to it. A root that cannot be listed rejects the promise with a filesystem error.",
+				"examples": ["/home/dev/projects/shop-app", "/home/dev/projects/tools-lib"]
 			},
 			{
 				"name": "auditPath.options",
 				"type": "AuditOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional audit settings: an omitted or 'auto' profile is detected from the root, and any other value is used unchecked (an unknown one matches no adapter). cleanCode options combine with harness.audit.json cleanCode settings to set the clean-code mode, and the review runs only when that mode is not 'off'.",
+				"examples": [
+					{},
+					{
+						"profile": "lib"
+					},
+					{
+						"profile": "app",
+						"cleanCode": {
+							"enabled": true
+						}
+					}
+				]
 			},
 			{
 				"name": "auditProject.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project root directory to audit; the audit reads harness.audit.json, specification/modules and the collected source files beneath it, and finding and coverage paths are relative to it. A root that cannot be listed rejects the promise with a filesystem error.",
+				"examples": ["/home/dev/projects/shop-app", "/home/dev/projects/tools-lib"]
 			},
 			{
 				"name": "auditProject.options",
 				"type": "AuditOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional audit settings: an omitted or 'auto' profile is detected from the root, and any other value is used unchecked (an unknown one matches no adapter). cleanCode options combine with harness.audit.json cleanCode settings to set the clean-code mode, and the review runs only when that mode is not 'off'.",
+				"examples": [
+					{},
+					{
+						"profile": "lib"
+					},
+					{
+						"profile": "app",
+						"cleanCode": {
+							"enabled": true
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "auditPath",
-				"type": "Promise<AuditFinding[]>"
+				"type": "Promise<AuditFinding[]>",
+				"description": "Resolves to the findings array of auditProject: static findings only, without the clean-code review, and with findings matched by harness.audit.json ignore entries removed.",
+				"examples": [
+					[],
+					[
+						{
+							"path": "src/services/billing/invoiceRenderer.ts",
+							"rule": "small-file",
+							"message": "File has 348 lines. Limit is 220. Split it by responsibility."
+						}
+					],
+					[
+						{
+							"path": "src/app/checkout/checkout-form.tsx",
+							"rule": "react-component-name",
+							"message": "TSX/JSX component files should use PascalCase names."
+						}
+					]
+				]
 			},
 			{
 				"name": "auditProject",
-				"type": "Promise<AuditResult>"
+				"type": "Promise<AuditResult>",
+				"description": "Resolves to the static findings and a coverage record (profile, adapters, covered, ignored and unknown files, and ignored findings). The cleanCode report is present only when the clean-code mode is not 'off'.",
+				"examples": [
+					{
+						"findings": [],
+						"coverage": {
+							"profile": "lib",
+							"adapters": [
+								{
+									"id": "typescript",
+									"label": "TypeScript and JavaScript",
+									"files": ["src/index.ts", "src/format/date.ts"],
+									"extensions": [".ts", ".tsx", ".js", ".jsx"],
+									"optionalTools": ["eslint"]
+								}
+							],
+							"coveredFiles": ["src/index.ts", "src/format/date.ts"],
+							"ignoredPaths": ["node_modules/", "dist/"],
+							"ignoredFindings": [],
+							"unknownFiles": []
+						}
+					},
+					{
+						"findings": [
+							{
+								"path": "src/services/billing/invoiceRenderer.ts",
+								"rule": "small-file",
+								"message": "File has 348 lines. Limit is 220. Split it by responsibility."
+							}
+						],
+						"coverage": {
+							"profile": "app",
+							"adapters": [
+								{
+									"id": "typescript",
+									"label": "TypeScript and JavaScript",
+									"files": ["src/services/billing/invoiceRenderer.ts", "src/lib/money.ts"],
+									"extensions": [".ts", ".tsx", ".js", ".jsx"],
+									"optionalTools": ["eslint"]
+								}
+							],
+							"coveredFiles": ["src/services/billing/invoiceRenderer.ts", "src/lib/money.ts"],
+							"ignoredPaths": [".svelte-kit/", "build/"],
+							"ignoredFindings": [
+								{
+									"path": "src/lib/money.ts",
+									"rule": "max-classes-per-file",
+									"message": "File defines 2 classes. Limit is 1."
+								}
+							],
+							"unknownFiles": ["tools/gen/main.go"]
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A Node.js filesystem error (its code, such as ENOENT, ENOTDIR, EACCES or EISDIR, is set on the error) from listing the project root or its subfolders, reading harness.audit.json or an audited source file, or listing specification/modules or reading its module.json files; a missing specification/modules is not an error."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "harness.audit.json exists but is not valid JSON, so JSON.parse rejects while the configuration is read, before any source file is read."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "harness.audit.json parses but has a shape the normalizer cannot read: a null document, an ignore value that is neither null nor an array, or an ignore entry that is null or whose path is not a string."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Raised through fail() for invalid settings: a limits value that is present but is not a positive integer, an invalid harness.audit.json cleanCode value (not an object, or an invalid mode, minConfidence, apiKeyEnv, model or exclude), or the cleanCode dryRun or refresh option while the resolved clean-code mode is 'off'."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Cannot safely determine ignored files for clean code review.' only when the clean-code review runs and the git check-ignore call exceeds its 3000 ms timeout (the error has code ETIMEDOUT); the original error is attached as cause."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "auditPath",
@@ -67,23 +194,82 @@
 					{
 						"name": "auditPath.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project root directory to audit; the audit reads harness.audit.json, specification/modules and the collected source files beneath it, and finding and coverage paths are relative to it. A root that cannot be listed rejects the promise with a filesystem error.",
+						"examples": ["/home/dev/projects/shop-app", "/home/dev/projects/tools-lib"]
 					},
 					{
 						"name": "auditPath.options",
 						"type": "AuditOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional audit settings: an omitted or 'auto' profile is detected from the root, and any other value is used unchecked (an unknown one matches no adapter). cleanCode options combine with harness.audit.json cleanCode settings to set the clean-code mode, and the review runs only when that mode is not 'off'.",
+						"examples": [
+							{},
+							{
+								"profile": "lib"
+							},
+							{
+								"profile": "app",
+								"cleanCode": {
+									"enabled": true
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditPath",
-						"type": "Promise<AuditFinding[]>"
+						"type": "Promise<AuditFinding[]>",
+						"description": "Resolves to the findings array of auditProject: static findings only, without the clean-code review, and with findings matched by harness.audit.json ignore entries removed.",
+						"examples": [
+							[],
+							[
+								{
+									"path": "src/services/billing/invoiceRenderer.ts",
+									"rule": "small-file",
+									"message": "File has 348 lines. Limit is 220. Split it by responsibility."
+								}
+							],
+							[
+								{
+									"path": "src/app/checkout/checkout-form.tsx",
+									"rule": "react-component-name",
+									"message": "TSX/JSX component files should use PascalCase names."
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A Node.js filesystem error (its code, such as ENOENT, ENOTDIR, EACCES or EISDIR, is set on the error) from listing the project root or its subfolders, reading harness.audit.json or an audited source file, or listing specification/modules or reading its module.json files; a missing specification/modules is not an error."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "harness.audit.json exists but is not valid JSON, so JSON.parse rejects while the configuration is read, before any source file is read."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "harness.audit.json parses but has a shape the normalizer cannot read: a null document, an ignore value that is neither null nor an array, or an ignore entry that is null or whose path is not a string."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised through fail() for invalid settings: a limits value that is present but is not a positive integer, an invalid harness.audit.json cleanCode value (not an object, or an invalid mode, minConfidence, apiKeyEnv, model or exclude), or the cleanCode dryRun or refresh option while the resolved clean-code mode is 'off'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Cannot safely determine ignored files for clean code review.' only when the clean-code review runs and the git check-ignore call exceeds its 3000 ms timeout (the error has code ETIMEDOUT); the original error is attached as cause."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "auditProject",
@@ -91,23 +277,117 @@
 					{
 						"name": "auditProject.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project root directory to audit; the audit reads harness.audit.json, specification/modules and the collected source files beneath it, and finding and coverage paths are relative to it. A root that cannot be listed rejects the promise with a filesystem error.",
+						"examples": ["/home/dev/projects/shop-app", "/home/dev/projects/tools-lib"]
 					},
 					{
 						"name": "auditProject.options",
 						"type": "AuditOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional audit settings: an omitted or 'auto' profile is detected from the root, and any other value is used unchecked (an unknown one matches no adapter). cleanCode options combine with harness.audit.json cleanCode settings to set the clean-code mode, and the review runs only when that mode is not 'off'.",
+						"examples": [
+							{},
+							{
+								"profile": "lib"
+							},
+							{
+								"profile": "app",
+								"cleanCode": {
+									"enabled": true
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditProject",
-						"type": "Promise<AuditResult>"
+						"type": "Promise<AuditResult>",
+						"description": "Resolves to the static findings and a coverage record (profile, adapters, covered, ignored and unknown files, and ignored findings). The cleanCode report is present only when the clean-code mode is not 'off'.",
+						"examples": [
+							{
+								"findings": [],
+								"coverage": {
+									"profile": "lib",
+									"adapters": [
+										{
+											"id": "typescript",
+											"label": "TypeScript and JavaScript",
+											"files": ["src/index.ts", "src/format/date.ts"],
+											"extensions": [".ts", ".tsx", ".js", ".jsx"],
+											"optionalTools": ["eslint"]
+										}
+									],
+									"coveredFiles": ["src/index.ts", "src/format/date.ts"],
+									"ignoredPaths": ["node_modules/", "dist/"],
+									"ignoredFindings": [],
+									"unknownFiles": []
+								}
+							},
+							{
+								"findings": [
+									{
+										"path": "src/services/billing/invoiceRenderer.ts",
+										"rule": "small-file",
+										"message": "File has 348 lines. Limit is 220. Split it by responsibility."
+									}
+								],
+								"coverage": {
+									"profile": "app",
+									"adapters": [
+										{
+											"id": "typescript",
+											"label": "TypeScript and JavaScript",
+											"files": ["src/services/billing/invoiceRenderer.ts", "src/lib/money.ts"],
+											"extensions": [".ts", ".tsx", ".js", ".jsx"],
+											"optionalTools": ["eslint"]
+										}
+									],
+									"coveredFiles": ["src/services/billing/invoiceRenderer.ts", "src/lib/money.ts"],
+									"ignoredPaths": [".svelte-kit/", "build/"],
+									"ignoredFindings": [
+										{
+											"path": "src/lib/money.ts",
+											"rule": "max-classes-per-file",
+											"message": "File defines 2 classes. Limit is 1."
+										}
+									],
+									"unknownFiles": ["tools/gen/main.go"]
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A Node.js filesystem error (its code, such as ENOENT, ENOTDIR, EACCES or EISDIR, is set on the error) from listing the project root or its subfolders, reading harness.audit.json or an audited source file, or listing specification/modules or reading its module.json files; a missing specification/modules is not an error."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "harness.audit.json exists but is not valid JSON, so JSON.parse rejects while the configuration is read, before any source file is read."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "harness.audit.json parses but has a shape the normalizer cannot read: a null document, an ignore value that is neither null nor an array, or an ignore entry that is null or whose path is not a string."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised through fail() for invalid settings: a limits value that is present but is not a positive integer, an invalid harness.audit.json cleanCode value (not an object, or an invalid mode, minConfidence, apiKeyEnv, model or exclude), or the cleanCode dryRun or refresh option while the resolved clean-code mode is 'off'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Cannot safely determine ignored files for clean code review.' only when the clean-code review runs and the git check-ignore call exceeds its 3000 ms timeout (the error has code ETIMEDOUT); the original error is attached as cause."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
