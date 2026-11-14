@@ -25,55 +25,86 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reviewHash.value",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Text whose UTF-8 bytes are hashed with SHA-256. An empty string is valid input and produces the digest of empty input.",
+				"examples": ["export const answer = 42;\n"]
 			},
 			{
 				"name": "readReviewInput.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem path used as the project root when locating and checking a review file. It is resolved with realpath before the file is checked for containment.",
+				"examples": ["/workspace/harness"]
 			},
 			{
 				"name": "readReviewInput.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path joined to the project root to locate a review file and returned unchanged in its record. The resolved target must be inside the root, a regular non-symlink file, and no larger than 1 MiB.",
+				"examples": ["src/audit/development-tooling/cleanCodeFiles.ts"]
 			},
 			{
 				"name": "reviewInputsCurrent.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem path used as the project root when resolving and checking each review input. A path or file read failure makes the result false.",
+				"examples": ["/workspace/harness"]
 			},
 			{
 				"name": "reviewInputsCurrent.inputs",
 				"type": "ReviewInputFile[]",
-				"required": true
+				"required": true,
+				"description": "Review input records whose paths are re-read under root and whose hashes are compared with the supplied hashes. Any mismatch or read failure returns false, while an empty list returns true.",
+				"examples": [
+					[
+						{
+							"path": "src/audit/development-tooling/cleanCodeFiles.ts",
+							"contents": "export const answer = 42;\n",
+							"hash": "a2098bd92b10bf8b816d24b7556b1ce8c49a879d130489065ef1051c17e042f6"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reviewHash",
-				"type": "string"
+				"type": "string",
+				"description": "Lowercase hexadecimal SHA-256 digest of the input string. The digest contains 64 hexadecimal characters.",
+				"examples": ["a2098bd92b10bf8b816d24b7556b1ce8c49a879d130489065ef1051c17e042f6"]
 			},
 			{
 				"name": "readReviewInput",
-				"type": "Promise<ReviewInputFile>"
+				"type": "Promise<ReviewInputFile>",
+				"description": "A record containing the requested path, file contents decoded as UTF-8, and the lowercase SHA-256 hash of those contents. It is returned only for a resolved regular file inside the project root that is not a symlink and is at most 1 MiB.",
+				"examples": [
+					{
+						"path": "src/audit/development-tooling/cleanCodeFiles.ts",
+						"contents": "export const answer = 42;\n",
+						"hash": "a2098bd92b10bf8b816d24b7556b1ce8c49a879d130489065ef1051c17e042f6"
+					}
+				]
 			},
 			{
 				"name": "reviewInputsCurrent",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Indicates whether every supplied input can be re-read and has the same hash as before. Returns false on a mismatch or read failure and true for an empty input list.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised when readReviewInput finds a path outside the project root, a symlink or non-file, or a file larger than 1 MiB; filesystem resolution, inspection, and read failures also reject with an error. reviewInputsCurrent catches these read failures and returns false."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reviewHash",
@@ -81,17 +112,21 @@
 					{
 						"name": "reviewHash.value",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Text whose UTF-8 bytes are hashed with SHA-256. An empty string is valid input and produces the digest of empty input.",
+						"examples": ["export const answer = 42;\n"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reviewHash",
-						"type": "string"
+						"type": "string",
+						"description": "Lowercase hexadecimal SHA-256 digest of the input string. The digest contains 64 hexadecimal characters.",
+						"examples": ["a2098bd92b10bf8b816d24b7556b1ce8c49a879d130489065ef1051c17e042f6"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readReviewInput",
@@ -99,27 +134,40 @@
 					{
 						"name": "readReviewInput.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem path used as the project root when locating and checking a review file. It is resolved with realpath before the file is checked for containment.",
+						"examples": ["/workspace/harness"]
 					},
 					{
 						"name": "readReviewInput.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path joined to the project root to locate a review file and returned unchanged in its record. The resolved target must be inside the root, a regular non-symlink file, and no larger than 1 MiB.",
+						"examples": ["src/audit/development-tooling/cleanCodeFiles.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readReviewInput",
-						"type": "Promise<ReviewInputFile>"
+						"type": "Promise<ReviewInputFile>",
+						"description": "A record containing the requested path, file contents decoded as UTF-8, and the lowercase SHA-256 hash of those contents. It is returned only for a resolved regular file inside the project root that is not a symlink and is at most 1 MiB.",
+						"examples": [
+							{
+								"path": "src/audit/development-tooling/cleanCodeFiles.ts",
+								"contents": "export const answer = 42;\n",
+								"hash": "a2098bd92b10bf8b816d24b7556b1ce8c49a879d130489065ef1051c17e042f6"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when readReviewInput finds a path outside the project root, a symlink or non-file, or a file larger than 1 MiB; filesystem resolution, inspection, and read failures also reject with an error. reviewInputsCurrent catches these read failures and returns false."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "reviewInputsCurrent",
@@ -127,22 +175,36 @@
 					{
 						"name": "reviewInputsCurrent.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem path used as the project root when resolving and checking each review input. A path or file read failure makes the result false.",
+						"examples": ["/workspace/harness"]
 					},
 					{
 						"name": "reviewInputsCurrent.inputs",
 						"type": "ReviewInputFile[]",
-						"required": true
+						"required": true,
+						"description": "Review input records whose paths are re-read under root and whose hashes are compared with the supplied hashes. Any mismatch or read failure returns false, while an empty list returns true.",
+						"examples": [
+							[
+								{
+									"path": "src/audit/development-tooling/cleanCodeFiles.ts",
+									"contents": "export const answer = 42;\n",
+									"hash": "a2098bd92b10bf8b816d24b7556b1ce8c49a879d130489065ef1051c17e042f6"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reviewInputsCurrent",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Indicates whether every supplied input can be re-read and has the same hash as before. Returns false on a mismatch or read failure and true for an empty input list.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
