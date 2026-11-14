@@ -25,31 +25,48 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The configs of the shown revision in a table, each with its verdict and what the commit changed, to search, order and open."
+				"description": "The configs of the shown revision, in one table per source file with a row per variable: its name, linked to its config page, and its value (or 'Not recorded at this revision' when none is recorded), in name order. A search box narrows the rows, the tables have no verdict or changed column, and a loading label, a notice or an empty-state message stands in for them while the history or the revision loads, when the revision cannot be shown, or when no config is listed."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Configs · Harness"
+				"description": "The document title, 'Configs · Harness', which the shared screen sets in the page head from the page's title 'Configs'. It is the same for every branch, commit and notice.",
+				"examples": ["Configs · Harness"]
 			}
 		],
 		"errors": [
 			{
 				"name": "not-in-history",
 				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
+				"description": "A branch the history does not hold, a branch whose tip it does not hold, a commit it does not hold, or a commit the named branch does not contain is said in a notice that names it, with commits shortened, and an 'Open the newest commit' link when the history offers one. No other revision is shown."
 			},
 			{
 				"name": "no-registry",
 				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
+				"description": "A revision whose registry is not available is said by a notice titled 'No registry at this revision', giving the registry's gap or, when it has none, 'No unit registry is stored at' its short commit. No configs are drawn, and nothing of another revision is shown in its place."
 			},
 			{
 				"name": "not-admitted",
 				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
+				"description": "A request the owner policy does not admit gets a 403 response with the body 'Forbidden' from the server hook, and the policy admits only explicit loopback owner mode, bound to loopback with no address header set, from a loopback client. It is refused before the page or any history data is read."
+			},
+			{
+				"name": "history-not-loaded",
+				"type": "thrown",
+				"description": "The request for the history index rejects when the server answers with an error status or the request fails, and the page catches it and shows 'The history could not be loaded. Refresh the page to try again.' in a notice; no revision is shown."
+			},
+			{
+				"name": "revision-not-loaded",
+				"type": "thrown",
+				"description": "The request for the shown revision rejects when the server answers with an error status or the request fails, and the page catches it and shows 'This revision could not be loaded. Refresh the page to try again.' in a notice; no configs are drawn for that revision."
+			},
+			{
+				"name": "address-names-no-page",
+				"type": "notice",
+				"description": "An address that does not read as an explorer page, such as an unknown segment before the category or a commit segment that is not a full 40-character lowercase hash, is said in a notice: 'This address names no page of the explorer.' No other revision is shown."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
