@@ -8,8 +8,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/workflows/development-tooling/guide-units/stateTests.ts"],
-		"symbols": ["stateTests"]
+		"source": [
+			"src/workflows/development-tooling/guide-units/stateTests.ts"
+		],
+		"symbols": [
+			"stateTests"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -18,39 +22,108 @@
 				"name": "stateTests.context",
 				"type": "GuidanceContext",
 				"required": true,
-				"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+				"description": "Guidance context whose loaded file index and scenarios select the candidate tests, with its graph, attribution and test-syntax caches filled during the call. The graph is built only when context.graph is absent, and attribution and syntax results are cached per unit and per file within that context."
 			},
 			{
 				"name": "stateTests.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "Stored unit identity, source ownership and authored contract selected for this review."
+				"description": "Unit manifest whose id selects the scenarios that list it and prefixes its scenario state names, and which is passed whole to dependency attribution. A unit that no scenario lists in its units gets no scenario-declared files, but its dependency-attributed test files are still considered.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "reports.component.evidence-grid",
+						"uid": "u_k3mq7xw2dz",
+						"kind": "component",
+						"title": "Evidence grid",
+						"responsibility": "Shows a report's captured evidence as a responsive grid of image tiles.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": [
+								"packages/reports/src/components/evidence-grid.tsx"
+							],
+							"symbols": [
+								"EvidenceGrid"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "evidenceGrid.items",
+									"type": "EvidenceItem[]",
+									"required": true
+								}
+							],
+							"outputs": [],
+							"errors": []
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/reports/src/components/evidence-grid.tsx",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/components/evidence-grid.tsx"
+								}
+							]
+						},
+						"scenarios": [
+							"desktop-recorded-evidence"
+						],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "stateTests.state",
 				"type": "string",
 				"required": true,
-				"description": "Exact state or catalog slot to attribute; comparisons remain scoped to the selected entity."
-			},
-			{
-				"name": "stateTests.options",
-				"type": "{ headless?: boolean }",
-				"required": false,
-				"default": {}
+				"description": "The state name to attribute, compared by exact string equality with the unit-level name of each required scenario state and with the string literals in candidate test files. A scenario state id loses the unit's id prefix, with dots turned into dashes, and the bare prefix means 'default'; an id without that prefix is compared unchanged.",
+				"examples": [
+					"default",
+					"loading",
+					"without-subtitle"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "stateTests",
 				"type": "Promise<StateTest[]>",
-				"description": "Existing authored test files attributable to this unit and state, with declared viewport IDs when a scenario supplies them."
+				"description": "Authored test files that exist in the loaded index and contain a test or it call that is not skipped or todo, plus either the state as a string literal or, when a matching scenario whose tests resolve to the file declares viewports, one of the identifiers catalogCases, previewVariants, variants, previewState or state. Each viewports list holds the viewport IDs of the matching scenarios whose tests resolve to that file, and is empty when only dependency attribution found it.",
+				"examples": [
+					[
+						{
+							"file": "packages/reports/tests/e2e/explorer-shell.spec.ts",
+							"viewports": [
+								"desktop",
+								"tablet",
+								"mobile"
+							]
+						}
+					],
+					[
+						{
+							"file": "packages/desktop/test/services/recorded-evidence.test.ts",
+							"viewports": []
+						}
+					],
+					[]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Dependency failure",
 				"type": "thrown",
-				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+				"description": "Propagates any error thrown or rejected by guidanceText, graphOf or testAttribution unchanged; stateTests has no try/catch, so a failure never becomes an empty or passing result."
 			}
 		],
 		"errorStatus": "declared",
@@ -62,39 +135,108 @@
 						"name": "stateTests.context",
 						"type": "GuidanceContext",
 						"required": true,
-						"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+						"description": "Guidance context whose loaded file index and scenarios select the candidate tests, with its graph, attribution and test-syntax caches filled during the call. The graph is built only when context.graph is absent, and attribution and syntax results are cached per unit and per file within that context."
 					},
 					{
 						"name": "stateTests.unit",
 						"type": "ComponentManifest",
 						"required": true,
-						"description": "Stored unit identity, source ownership and authored contract selected for this review."
+						"description": "Unit manifest whose id selects the scenarios that list it and prefixes its scenario state names, and which is passed whole to dependency attribution. A unit that no scenario lists in its units gets no scenario-declared files, but its dependency-attributed test files are still considered.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "reports.component.evidence-grid",
+								"uid": "u_k3mq7xw2dz",
+								"kind": "component",
+								"title": "Evidence grid",
+								"responsibility": "Shows a report's captured evidence as a responsive grid of image tiles.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/reports/src/components/evidence-grid.tsx"
+									],
+									"symbols": [
+										"EvidenceGrid"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "evidenceGrid.items",
+											"type": "EvidenceItem[]",
+											"required": true
+										}
+									],
+									"outputs": [],
+									"errors": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/reports/src/components/evidence-grid.tsx",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/components/evidence-grid.tsx"
+										}
+									]
+								},
+								"scenarios": [
+									"desktop-recorded-evidence"
+								],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "stateTests.state",
 						"type": "string",
 						"required": true,
-						"description": "Exact state or catalog slot to attribute; comparisons remain scoped to the selected entity."
-					},
-					{
-						"name": "stateTests.options",
-						"type": "{ headless?: boolean }",
-						"required": false,
-						"default": {}
+						"description": "The state name to attribute, compared by exact string equality with the unit-level name of each required scenario state and with the string literals in candidate test files. A scenario state id loses the unit's id prefix, with dots turned into dashes, and the bare prefix means 'default'; an id without that prefix is compared unchanged.",
+						"examples": [
+							"default",
+							"loading",
+							"without-subtitle"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "stateTests",
 						"type": "Promise<StateTest[]>",
-						"description": "Existing authored test files attributable to this unit and state, with declared viewport IDs when a scenario supplies them."
+						"description": "Authored test files that exist in the loaded index and contain a test or it call that is not skipped or todo, plus either the state as a string literal or, when a matching scenario whose tests resolve to the file declares viewports, one of the identifiers catalogCases, previewVariants, variants, previewState or state. Each viewports list holds the viewport IDs of the matching scenarios whose tests resolve to that file, and is empty when only dependency attribution found it.",
+						"examples": [
+							[
+								{
+									"file": "packages/reports/tests/e2e/explorer-shell.spec.ts",
+									"viewports": [
+										"desktop",
+										"tablet",
+										"mobile"
+									]
+								}
+							],
+							[
+								{
+									"file": "packages/desktop/test/services/recorded-evidence.test.ts",
+									"viewports": []
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Dependency failure",
 						"type": "thrown",
-						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+						"description": "Rejects with the same error that guidanceText, graphOf or testAttribution throws or rejects with, because stateTests neither catches nor throws anything itself."
 					}
 				],
 				"errorStatus": "declared"
