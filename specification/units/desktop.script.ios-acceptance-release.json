@@ -12,22 +12,30 @@
 		"symbols": ["releaseRefusal"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "releaseRefusal.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The required `Acceptance` value passed to `releaseRefusal`; the function reads its `record` and `page` properties and passes the same run to its helpers. It must meet the imported `Acceptance` type; this implementation does not create a run or fill in omitted fields."
 			}
 		],
 		"outputs": [
 			{
 				"name": "releaseRefusal",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The Promise resolves after the Release flow has restarted, located the connection panel, recorded the two checks, and completed `cameraOnly(run, 'Release')`. It resolves to `undefined` and returns no result payload."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Unspecified propagated rejection",
+				"type": "thrown",
+				"description": "Exceptions from calls made by this function are not caught; if a call throws or rejects, the async result propagates that failure. The implementation does not specify a concrete error class or name."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "releaseRefusal",
@@ -35,17 +43,25 @@
 					{
 						"name": "releaseRefusal.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The required `Acceptance` value passed to `releaseRefusal`; the function reads its `record` and `page` properties and passes the same run to its helpers. It must meet the imported `Acceptance` type; this implementation does not create a run or fill in omitted fields."
 					}
 				],
 				"outputs": [
 					{
 						"name": "releaseRefusal",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The Promise resolves after the Release flow has restarted, located the connection panel, recorded the two checks, and completed `cameraOnly(run, 'Release')`. It resolves to `undefined` and returns no result payload."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Unspecified propagated rejection",
+						"type": "thrown",
+						"description": "Exceptions from calls made by this function are not caught; if a call throws or rejects, the async result propagates that failure. The implementation does not specify a concrete error class or name."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
