@@ -21,22 +21,45 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NativeHandoffController.constructor.options",
 				"type": "NativeHandoffControllerOptions",
-				"required": true
+				"required": true,
+				"description": "The two services the controller delegates to: `handoff`, a NativeHandoffService that all four routes use, and `sessions`, a RequestSessionService whose browser() supplies the cookie session that only approve uses. The constructor stores both references without checking them."
 			}
 		],
 		"outputs": [
 			{
 				"name": "NativeHandoffController.routes",
-				"type": "AuthRoutes"
+				"type": "AuthRoutes",
+				"description": "The route table from routes(), keyed by `POST /api/auth/native/start`, `POST /api/auth/native/approve`, `POST /api/auth/native/poll` and `POST /api/auth/native/exchange`; each handler takes a Request and resolves to a JSON Response. Input values come only from an application/json body of at most 16384 bytes, never from the URL, and known failures reject with the AuthFailure codes listed under errors."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Thrown as an AuthFailure with code `invalid-request` (HTTP 400) on any route when readJson refuses the body: a media type other than application/json, more than 16384 bytes, text that is not UTF-8, or JSON that is not an object. It is also thrown when a required field is missing or does not match its expected format."
+			},
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Thrown as an AuthFailure with code `session-required` (HTTP 401) by RequestSessionService.browser(), which approve calls first, when the request carries an Authorization header (only a browser session may approve) or no live browser session cookie resolves."
+			},
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Thrown as an AuthFailure with code `origin-denied` (HTTP 403) by RequestSessionService.browser() when a request without an Authorization header fails the sameOrigin check against the configured origin. POST is not a safe method, so approve always gets this check."
+			},
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Thrown as an AuthFailure with code `handoff-invalid` (HTTP 400) by NativeHandoffService.approve() when the store does not approve the handoff or cannot read it back, and by NativeHandoffService.exchange() when its claim returns no record, a binding check fails (verifier, nonce, resource, audience, action, environment or origin), or the approving session is not a live browser session of the same actor. The claim consumes the handoff before the bindings are compared, so a failed exchange is a single attempt."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "NativeHandoffController.routes",
@@ -44,11 +67,12 @@
 				"outputs": [
 					{
 						"name": "NativeHandoffController.routes",
-						"type": "AuthRoutes"
+						"type": "AuthRoutes",
+						"description": "A new route table built on each routes() call with the four POST /api/auth/native/* keys; each handler calls the matching private method on this controller instance."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -58,17 +82,19 @@
 					{
 						"name": "NativeHandoffController.constructor.options",
 						"type": "NativeHandoffControllerOptions",
-						"required": true
+						"required": true,
+						"description": "The two services the controller delegates to: `handoff`, a NativeHandoffService that all four routes use, and `sessions`, a RequestSessionService whose browser() supplies the cookie session that only approve uses. The constructor stores both references without checking them."
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeHandoffController.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The NativeHandoffController instance that new produces; it keeps the options it was given and creates its own AuthRequestValidator as its input field."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
