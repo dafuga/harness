@@ -66,11 +66,17 @@ for (const [screen, width, height] of screens) {
 			const shown = await box(tooltip);
 			expect([name, shown.x >= 0, shown.x + shown.width <= width]).toEqual([name, true, true]);
 			expect([name, shown.y >= 0, shown.y + shown.height <= height]).toEqual([name, true, true]);
+			// The page's own scrollbar is no wrapper: shown by the scroll to a low mark, it answers
+			// for the points under it while it is shown, so it is left out of the probe.
 			const uncut = await tooltip.evaluate((tip) => {
+				const root = document.documentElement.style;
+				const kept = root.getPropertyValue('scrollbar-width');
+				root.setProperty('scrollbar-width', 'none');
 				const place = tip.getBoundingClientRect();
 				const corners = [place.left + 2, place.right - 2].map((x) =>
 					document.elementFromPoint(x, place.top + place.height / 2)
 				);
+				root.setProperty('scrollbar-width', kept || null);
 				return corners.every((found) => found !== null && tip.contains(found));
 			});
 			expect([name, uncut]).toEqual([name, true]);
