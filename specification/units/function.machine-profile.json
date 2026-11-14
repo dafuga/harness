@@ -18,10 +18,22 @@
 			{
 				"name": "machineProfile",
 				"type": "VerificationProfile",
-				"description": "Profile with platform, architecture, CPU model, logical core count, total memory and Bun/Node version, plus a 16-character SHA-256-derived id. A nonblank HARNESS_PROFILE_LABEL is included in the runtime label and therefore the identity."
+				"description": "Returns the current host platform, architecture, first CPU model, processor entry count, total memory in bytes, runtime version, and a derived id for grouping measurements by machine profile. The id is the first 16 lowercase hexadecimal characters of SHA-256 over JSON.stringify of those facts; CPU falls back to \"unknown\" and processor count to 1 for an empty CPU list, while a trimmed nonblank HARNESS_PROFILE_LABEL is appended to runtime to separate otherwise indistinguishable runner classes and cannot make differing machine facts match.",
+				"examples": [
+					{
+						"id": "ca0198557abaa935",
+						"platform": "linux",
+						"arch": "x64",
+						"cpu": "Intel(R) Xeon(R) Platinum 8488C",
+						"cores": 8,
+						"memoryBytes": 34359738368,
+						"runtime": "node 22.14.0"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "machineProfile",
@@ -30,11 +42,22 @@
 					{
 						"name": "machineProfile",
 						"type": "VerificationProfile",
-						"description": "Profile with platform, architecture, CPU model, logical core count, total memory and Bun/Node version, plus a 16-character SHA-256-derived id. A nonblank HARNESS_PROFILE_LABEL is included in the runtime label and therefore the identity."
+						"description": "Returns the current host platform, architecture, first CPU model, processor entry count, total memory in bytes, runtime version, and a derived id for grouping measurements by machine profile. The id is the first 16 lowercase hexadecimal characters of SHA-256 over JSON.stringify of those facts; CPU falls back to \"unknown\" and processor count to 1 for an empty CPU list, while a trimmed nonblank HARNESS_PROFILE_LABEL is appended to runtime to separate otherwise indistinguishable runner classes and cannot make differing machine facts match.",
+						"examples": [
+							{
+								"id": "ca0198557abaa935",
+								"platform": "linux",
+								"arch": "x64",
+								"cpu": "Intel(R) Xeon(R) Platinum 8488C",
+								"cores": 8,
+								"memoryBytes": 34359738368,
+								"runtime": "node 22.14.0"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
