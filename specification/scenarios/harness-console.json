@@ -18,7 +18,6 @@
 		"function.unit-measurements",
 		"reports.component.contract-example",
 		"reports.component.contract-table",
-		"reports.component.entity-contract",
 		"reports.component.entity-search",
 		"reports.component.entity-search-results",
 		"reports.component.explorer-ui-explorer-module-card",
@@ -26,12 +25,9 @@
 		"reports.component.harness-entity-config-screen",
 		"reports.component.harness-entity-frame",
 		"reports.component.harness-entity-header",
-		"reports.component.harness-entity-history",
-		"reports.component.harness-entity-history-row",
 		"reports.component.harness-entity-history-screen",
 		"reports.component.harness-entity-link",
 		"reports.component.harness-entity-missing",
-		"reports.component.harness-entity-reasons",
 		"reports.component.harness-entity-relations",
 		"reports.component.harness-entity-sections",
 		"reports.component.harness-entity-source",
@@ -121,7 +117,11 @@
 		"reports.style.entity-summary",
 		"reports.style.explorer",
 		"reports.style.explorer-controls",
-		"reports.style.explorer-navbar"
+		"reports.style.explorer-navbar",
+		"reports.component.explorer-ui-harness-group",
+		"reports.component.regression-proof",
+		"reports.component.shared-primitives-data-table",
+		"reports.component.shared-primitives-detail-list"
 	],
 	"states": [
 		{
@@ -131,6 +131,7 @@
 			"units": [
 				"reports.component.entity-search",
 				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-controls",
 				"reports.component.harness-explorer-frame",
@@ -236,6 +237,7 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
@@ -249,6 +251,7 @@
 			"units": [
 				"reports.component.entity-search",
 				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-link",
@@ -286,6 +289,7 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
@@ -314,6 +318,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-detail-list",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -339,6 +344,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-detail-list",
 				"reports.page.harness-branch-branch-at-services-entity"
 			]
 		},
@@ -364,6 +370,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-detail-list",
 				"reports.page.harness-branch-branch-at-configs-entity"
 			]
 		},
@@ -373,13 +380,11 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.contract-table",
-				"reports.component.entity-contract",
 				"reports.component.entity-search",
 				"reports.component.harness-entity-behavior-screen",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-link",
-				"reports.component.harness-entity-sections",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
@@ -391,6 +396,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-data-table",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -428,7 +434,6 @@
 				"reports.component.entity-search",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
-				"reports.component.harness-entity-history",
 				"reports.component.harness-entity-history-screen",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-frame",
@@ -441,6 +446,7 @@
 				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
+				"reports.component.regression-proof",
 				"reports.component.select",
 				"reports.page.harness-branch-branch-at-functions-entity-history"
 			]
@@ -467,6 +473,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-detail-list",
 				"reports.page.harness-branch-branch-at-services-entity"
 			]
 		},
@@ -492,6 +499,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-detail-list",
 				"reports.page.harness-branch-branch-at-services-entity"
 			]
 		},
@@ -517,6 +525,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-detail-list",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -541,6 +550,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-detail-list",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -560,7 +570,7 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
-				"reports.component.harness-harness-verdict",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
 				"reports.page.harness-branch-branch-at-functions-entity"
@@ -575,7 +585,6 @@
 				"reports.component.harness-entity-behavior-screen",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
-				"reports.component.harness-entity-summary",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
@@ -611,6 +620,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-detail-list",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
 		},
@@ -655,6 +665,7 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
 				"reports.page.harness-branch-branch-at-functions"
@@ -694,10 +705,8 @@
 				"reports.component.entity-search",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
-				"reports.component.harness-entity-history",
 				"reports.component.harness-entity-history-screen",
 				"reports.component.harness-entity-link",
-				"reports.component.harness-entity-reasons",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
@@ -708,6 +717,7 @@
 				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
+				"reports.component.regression-proof",
 				"reports.component.select",
 				"reports.page.harness-branch-branch-at-pages-entity-history"
 			]
@@ -718,8 +728,6 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.entity-search",
-				"reports.component.explorer-ui-explorer-module-card",
-				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
 				"reports.component.harness-explorer-frame",
@@ -730,6 +738,7 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
 				"reports.page.harness-branch-branch-at-components"
@@ -752,6 +761,7 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
@@ -775,6 +785,7 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
@@ -787,6 +798,7 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.entity-search",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
@@ -799,9 +811,10 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
-				"reports.component.harness-harness-verdict",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-data-table",
 				"reports.page.harness-branch-branch-at-configs"
 			]
 		},
@@ -811,13 +824,11 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.contract-table",
-				"reports.component.entity-contract",
 				"reports.component.entity-search",
 				"reports.component.harness-entity-config-screen",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-link",
-				"reports.component.harness-entity-sections",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
@@ -840,8 +851,6 @@
 				"reports.component.entity-search",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
-				"reports.component.harness-entity-history",
-				"reports.component.harness-entity-history-row",
 				"reports.component.harness-entity-history-screen",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-frame",
@@ -854,6 +863,7 @@
 				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
+				"reports.component.regression-proof",
 				"reports.component.select",
 				"reports.page.harness-branch-branch-at-configs-entity-history"
 			]
@@ -874,7 +884,7 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
-				"reports.component.harness-harness-verdict",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
 				"reports.page.harness-branch-branch-at-services"
@@ -901,6 +911,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-detail-list",
 				"reports.page.harness-branch-branch-at-services-entity"
 			]
 		},
@@ -912,7 +923,6 @@
 				"reports.component.entity-search",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
-				"reports.component.harness-entity-history",
 				"reports.component.harness-entity-history-screen",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-frame",
@@ -925,6 +935,7 @@
 				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
+				"reports.component.regression-proof",
 				"reports.component.select",
 				"reports.page.harness-branch-branch-at-services-entity-history"
 			]
@@ -936,6 +947,7 @@
 			"units": [
 				"reports.component.entity-search",
 				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-content",
 				"reports.component.harness-explorer-controls",
@@ -959,18 +971,19 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.entity-search",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-explorer-index",
-				"reports.component.harness-explorer-table",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
 				"reports.component.harness-harness-header",
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
 				"reports.page.harness-branch-branch-at-layouts"
@@ -982,18 +995,19 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.entity-search",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-explorer-index",
-				"reports.component.harness-explorer-table",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
 				"reports.component.harness-harness-header",
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.select",
 				"reports.page.harness-branch-branch-at-layouts"
@@ -1028,13 +1042,10 @@
 			"title": "Details of a shell on its contract",
 			"coverage": "required",
 			"units": [
-				"reports.component.contract-table",
-				"reports.component.entity-contract",
 				"reports.component.entity-search",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-link",
-				"reports.component.harness-entity-sections",
 				"reports.component.harness-entity-visual-screen",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-harness-action",
@@ -1058,8 +1069,6 @@
 				"reports.component.entity-search",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
-				"reports.component.harness-entity-history",
-				"reports.component.harness-entity-history-row",
 				"reports.component.harness-entity-history-screen",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-frame",
@@ -1072,6 +1081,7 @@
 				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
+				"reports.component.regression-proof",
 				"reports.component.select",
 				"reports.page.harness-branch-branch-at-layouts-entity-history"
 			]
@@ -1120,6 +1130,7 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
@@ -1135,8 +1146,6 @@
 				"reports.component.entity-search",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
-				"reports.component.harness-entity-history",
-				"reports.component.harness-entity-history-row",
 				"reports.component.harness-entity-history-screen",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-content",
@@ -1150,6 +1159,7 @@
 				"reports.component.harness-harness-tabs",
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
+				"reports.component.regression-proof",
 				"reports.component.select",
 				"reports.page.harness-view"
 			]
@@ -1161,18 +1171,19 @@
 			"units": [
 				"reports.component.entity-search",
 				"reports.component.entity-search-results",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-explorer-index",
-				"reports.component.harness-explorer-table",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
 				"reports.component.harness-harness-header",
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.modal",
 				"reports.component.select",
@@ -1190,6 +1201,7 @@
 				"reports.component.entity-search",
 				"reports.component.entity-search-results",
 				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.explorer-ui-harness-group",
 				"reports.component.harness-entity-link",
 				"reports.component.harness-explorer-catalog-screen",
 				"reports.component.harness-explorer-controls",
@@ -1201,6 +1213,7 @@
 				"reports.component.harness-harness-icon",
 				"reports.component.harness-harness-navbar",
 				"reports.component.harness-harness-selectors",
+				"reports.component.harness-harness-tabs",
 				"reports.component.harness-screen",
 				"reports.component.modal",
 				"reports.component.select",
@@ -1216,13 +1229,11 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.contract-table",
-				"reports.component.entity-contract",
 				"reports.component.entity-search",
 				"reports.component.harness-entity-behavior-screen",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-link",
-				"reports.component.harness-entity-sections",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
@@ -1234,6 +1245,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-data-table",
 				"reports.function.contract-fields",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
@@ -1244,13 +1256,11 @@
 			"coverage": "required",
 			"units": [
 				"reports.component.contract-table",
-				"reports.component.entity-contract",
 				"reports.component.entity-search",
 				"reports.component.harness-entity-behavior-screen",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-link",
-				"reports.component.harness-entity-sections",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
@@ -1262,6 +1272,7 @@
 				"reports.component.harness-harness-verdict",
 				"reports.component.harness-screen",
 				"reports.component.select",
+				"reports.component.shared-primitives-data-table",
 				"reports.function.contract-fields",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
@@ -1273,13 +1284,11 @@
 			"units": [
 				"reports.component.contract-example",
 				"reports.component.contract-table",
-				"reports.component.entity-contract",
 				"reports.component.entity-search",
 				"reports.component.harness-entity-behavior-screen",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-link",
-				"reports.component.harness-entity-sections",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
@@ -1292,6 +1301,8 @@
 				"reports.component.harness-screen",
 				"reports.component.modal",
 				"reports.component.select",
+				"reports.component.shared-primitives-data-table",
+				"reports.component.shared-primitives-detail-list",
 				"reports.function.contract-fields",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
@@ -1303,13 +1314,11 @@
 			"units": [
 				"reports.component.contract-example",
 				"reports.component.contract-table",
-				"reports.component.entity-contract",
 				"reports.component.entity-search",
 				"reports.component.harness-entity-behavior-screen",
 				"reports.component.harness-entity-frame",
 				"reports.component.harness-entity-header",
 				"reports.component.harness-entity-link",
-				"reports.component.harness-entity-sections",
 				"reports.component.harness-explorer-frame",
 				"reports.component.harness-harness-action",
 				"reports.component.harness-harness-console",
@@ -1322,6 +1331,8 @@
 				"reports.component.harness-screen",
 				"reports.component.modal",
 				"reports.component.select",
+				"reports.component.shared-primitives-data-table",
+				"reports.component.shared-primitives-detail-list",
 				"reports.function.contract-fields",
 				"reports.page.harness-branch-branch-at-functions-entity"
 			]
