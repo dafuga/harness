@@ -190,6 +190,8 @@ export const verificationRecordSchema = z.strictObject({
 			})
 		)
 		.optional(),
+	/** Declared builds that an entity-scoped run deliberately did not build, by id. */
+	skippedBuilds: z.array(identifier).optional(),
 	budgets: z.strictObject({ status: outcome, findings: z.array(budgetFindingSchema) }),
 	reasons: z.strictObject({
 		status: outcome,

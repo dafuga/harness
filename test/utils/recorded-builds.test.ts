@@ -30,7 +30,9 @@ async function worker(name: string): Promise<string> {
 /** What a run observes of one declared build, as the service reports it. */
 const observe = (name: string) => service.declared(root, [{ id: 'worker', directory: name }]);
 /** The sample run, sealed with these builds in it. */
-function recordWith(builds: Pick<VerificationRecord, 'builds'>): VerificationRecord {
+function recordWith(
+	builds: Pick<VerificationRecord, 'builds' | 'skippedBuilds'>
+): VerificationRecord {
 	const draft: Partial<VerificationRecord> = { ...verificationSample(), ...builds };
 	delete draft.id;
 	return sealRecord(draft as Omit<VerificationRecord, 'id'>);
@@ -97,4 +99,44 @@ test('a stale stamp never reaches a record: the build is refused before it is ob
 		expect.stringMatching(/^build worker carries the stamp of other files/)
 	]);
 	expect(recordedBuilds(found)).toEqual({ builds: [] });
+});
+
+test('a build an entity-scoped run skipped is named beside the built ones, and the record loads', async () => {
+	const stamped = await service.stamp(await worker('scoped'));
+	const { found, failures } = await observe('scoped');
+	expect(failures).toEqual([]);
+	const builds = recordedBuilds(found, ['docs']);
+	expect(builds).toEqual({
+		builds: [{ id: 'worker', directory: 'scoped', buildId: stamped.buildId, files: 2 }],
+		skippedBuilds: ['docs']
+	});
+	const record = recordWith(builds);
+	expect(validator.validate(record).errors).toEqual([]);
+	expect(recordIntact(record)).toBe(true);
+	expect(await kept(record, 'scoped-run')).toEqual([record, record]);
+});
+
+test('a record without skippedBuilds still loads, and a full run leaves the key out', async () => {
+	await service.stamp(await worker('full'));
+	const { found, failures } = await observe('full');
+	expect(failures).toEqual([]);
+	const builds = recordedBuilds(found);
+	expect(builds).not.toHaveProperty('skippedBuilds');
+	const record = recordWith(builds);
+	expect(record).not.toHaveProperty('skippedBuilds');
+	expect(validator.validate(record).errors).toEqual([]);
+	expect(await kept(record, 'full-run')).toEqual([record, record]);
+});
+
+test('a build entry with an unknown field is still refused beside skippedBuilds, and the store does not load it', async () => {
+	const stamped = await service.stamp(await worker('unknown'));
+	const build = { id: 'worker', directory: 'unknown', buildId: stamped.buildId, files: 2 };
+	const extra = { note: 'anything' };
+	const record = recordWith({ builds: [{ ...build, ...extra }], skippedBuilds: ['docs'] });
+	const judged = validator.validate(record);
+	expect(judged.value).toBeUndefined();
+	expect(judged.errors).toHaveLength(1);
+	expect(judged.errors[0]).toContain('builds.0');
+	expect(judged.errors[0]).toContain('note');
+	expect(await kept(record, 'unknown-run')).toEqual([]);
 });
