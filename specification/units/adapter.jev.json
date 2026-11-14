@@ -23,37 +23,73 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "JevAdapter.constructor.config",
 				"type": "JevAdapterConfig",
-				"required": true
+				"required": true,
+				"description": "The required TypeSafe client configuration supplies the API key and model; fetch, timeout, and maxRetries are optional. The adapter uses https://api.typesafe.ai, defaults timeout to 10000 ms and retries to 2, and caps retry-after at 5000 ms.",
+				"examples": [
+					{
+						"apiKey": "typesafe-example-key",
+						"model": "jev-latest",
+						"timeout": 10000,
+						"maxRetries": 2
+					},
+					{
+						"apiKey": "typesafe-example-key",
+						"model": "jev-preview",
+						"timeout": 5000,
+						"maxRetries": 1
+					}
+				]
 			},
 			{
 				"name": "JevAdapter.evaluate.request",
 				"type": "JevRequest",
-				"required": true
+				"required": true,
+				"description": "A JevRequest contains the required state string and a record of choice questions keyed by ID. It is sent to systemOne with the configured model, and its question keys determine which response answers are validated.",
+				"examples": [
+					{
+						"state": "Compare the supplied options",
+						"questions": {}
+					}
+				]
 			},
 			{
 				"name": "JevAdapter.evaluate.signal",
 				"type": "AbortSignal",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "An optional AbortSignal lets the caller cancel evaluation and is combined with an adapter-created 30-second deadline. If it is already aborted, evaluate throws immediately; if either signal aborts during the request, the adapter reports cancellation or timeout."
 			}
 		],
 		"outputs": [
 			{
 				"name": "JevAdapter.evaluate",
-				"type": "Promise<JevEvaluation>"
+				"type": "Promise<JevEvaluation>",
+				"description": "The Promise resolves to the validator's JevEvaluation: a model name, an answers record containing choice, confidence, and per-option probabilities, and input/output token counts. Validation requires a Jev-formatted model, one answer for each supplied question, valid option keys and probabilities, and a matching model unless the configured model is jev-latest or jev-preview.",
+				"examples": [
+					{
+						"model": "jev-latest",
+						"answers": {},
+						"usage": {
+							"input_tokens": 31,
+							"output_tokens": 7
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The adapter throws or rejects with Error for an already-aborted signal, request or validation failures, API errors, cancellation, or deadline expiry. APIError becomes “Jev request failed (HTTP <status>).”, cancellation becomes “Jev review was cancelled or timed out.”, and all other caught failures, including model mismatch, become “Jev request or response validation failed.”"
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "JevAdapter.evaluate",
@@ -61,27 +97,48 @@
 					{
 						"name": "JevAdapter.evaluate.request",
 						"type": "JevRequest",
-						"required": true
+						"required": true,
+						"description": "A JevRequest contains the required state string and a record of choice questions keyed by ID. It is sent to systemOne with the configured model, and its question keys determine which response answers are validated.",
+						"examples": [
+							{
+								"state": "Compare the supplied options",
+								"questions": {}
+							}
+						]
 					},
 					{
 						"name": "JevAdapter.evaluate.signal",
 						"type": "AbortSignal",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "An optional AbortSignal lets the caller cancel evaluation and is combined with an adapter-created 30-second deadline. If it is already aborted, evaluate throws immediately; if either signal aborts during the request, the adapter reports cancellation or timeout."
 					}
 				],
 				"outputs": [
 					{
 						"name": "JevAdapter.evaluate",
-						"type": "Promise<JevEvaluation>"
+						"type": "Promise<JevEvaluation>",
+						"description": "The Promise resolves to the validator's JevEvaluation: a model name, an answers record containing choice, confidence, and per-option probabilities, and input/output token counts. Validation requires a Jev-formatted model, one answer for each supplied question, valid option keys and probabilities, and a matching model unless the configured model is jev-latest or jev-preview.",
+						"examples": [
+							{
+								"model": "jev-latest",
+								"answers": {},
+								"usage": {
+									"input_tokens": 31,
+									"output_tokens": 7
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The adapter throws or rejects with Error for an already-aborted signal, request or validation failures, API errors, cancellation, or deadline expiry. APIError becomes “Jev request failed (HTTP <status>).”, cancellation becomes “Jev review was cancelled or timed out.”, and all other caught failures, including model mismatch, become “Jev request or response validation failed.”"
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -91,17 +148,33 @@
 					{
 						"name": "JevAdapter.constructor.config",
 						"type": "JevAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "The required TypeSafe client configuration supplies the API key and model; fetch, timeout, and maxRetries are optional. The adapter uses https://api.typesafe.ai, defaults timeout to 10000 ms and retries to 2, and caps retry-after at 5000 ms.",
+						"examples": [
+							{
+								"apiKey": "typesafe-example-key",
+								"model": "jev-latest",
+								"timeout": 10000,
+								"maxRetries": 2
+							},
+							{
+								"apiKey": "typesafe-example-key",
+								"model": "jev-preview",
+								"timeout": 5000,
+								"maxRetries": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "JevAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed JevAdapter instance holds the configured TypeSafeClient and a response validator. Construction configures the client timeout and retry defaults from the supplied config."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
