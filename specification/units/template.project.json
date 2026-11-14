@@ -21,22 +21,47 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "projectFiles.input",
 				"type": "ProjectTemplateInput",
-				"required": true
+				"required": true,
+				"description": "`ProjectTemplateInput` supplies the project name and kind used to plan scaffold files. `kind` is `app`, `lib`, or `game`; optional `dimension` is `2d` or `3d` and is passed to game scaffolding only when `kind` is `game`.",
+				"examples": [
+					{
+						"name": "inventory-app",
+						"kind": "app"
+					},
+					{
+						"name": "shared-utils",
+						"kind": "lib"
+					},
+					{
+						"name": "terrain-demo",
+						"kind": "game",
+						"dimension": "3d"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The result is the planned file list for the selected project scaffold; source-created entries have a repository-relative `path` and `contents`. The file set depends on `kind`: libraries follow a separate branch, while apps and games start from the app scaffold.",
+				"examples": [
+					[
+						{
+							"path": "README.md",
+							"contents": "# inventory-app\n\nA Harness SvelteKit app with small files, specs, tests, and adapters.\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "projectFiles",
@@ -44,17 +69,42 @@
 					{
 						"name": "projectFiles.input",
 						"type": "ProjectTemplateInput",
-						"required": true
+						"required": true,
+						"description": "`ProjectTemplateInput` supplies the project name and kind used to plan scaffold files. `kind` is `app`, `lib`, or `game`; optional `dimension` is `2d` or `3d` and is passed to game scaffolding only when `kind` is `game`.",
+						"examples": [
+							{
+								"name": "inventory-app",
+								"kind": "app"
+							},
+							{
+								"name": "shared-utils",
+								"kind": "lib"
+							},
+							{
+								"name": "terrain-demo",
+								"kind": "game",
+								"dimension": "3d"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The result is the planned file list for the selected project scaffold; source-created entries have a repository-relative `path` and `contents`. The file set depends on `kind`: libraries follow a separate branch, while apps and games start from the app scaffold.",
+						"examples": [
+							[
+								{
+									"path": "README.md",
+									"contents": "# inventory-app\n\nA Harness SvelteKit app with small files, specs, tests, and adapters.\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
