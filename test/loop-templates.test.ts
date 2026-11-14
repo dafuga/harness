@@ -7,6 +7,7 @@ import { nextLoopStep } from '../src/workflows/loopNext';
 import { searchLoops } from '../src/workflows/loopSearch';
 import { resolveLoopTemplate } from '../src/workflows/loopTemplates';
 import { completeLoopStep, createLoop } from '../src/workflows/manageLoop';
+import { measureWorkload } from './support/measureWorkload';
 
 test('loop templates inherit parent steps and override by id', async () => {
 	const root = await tempRoot('harness-loop-template-');
@@ -136,7 +137,9 @@ test('loop evaluators report passing and failing commands', async () => {
 		await createLoop({ root, name: 'pass-loop', goal: 'Passes', from: 'pass' });
 		await createLoop({ root, name: 'fail-loop', goal: 'Fails', from: 'fail' });
 
-		const passed = await evaluateLoop({ root, loop: 'pass-loop' });
+		const passed = await measureWorkload('workflow.loop-evaluate', 'passing-evaluator', () =>
+			evaluateLoop({ root, loop: 'pass-loop' })
+		);
 		const failed = await evaluateLoop({ root, loop: 'fail-loop' });
 
 		expect(passed.passed).toBe(true);

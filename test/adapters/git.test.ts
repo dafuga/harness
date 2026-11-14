@@ -5,6 +5,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { BoundedCommandAdapter } from '../../src/adapters/execution-runtimes/BoundedCommandAdapter';
 import { GitAdapter } from '../../src/adapters/git-source-history/GitAdapter';
 import { gitDeadline } from '../../src/adapters/git-source-history/git-adapter/gitDeadline';
+import { measureWorkload } from '../support/measureWorkload';
 
 // Initial method matrix: run/bytes/attempt/exec/isRepository and bounded errors.
 const roots: string[] = [];
@@ -23,7 +24,11 @@ test('run returns trimmed text and bytes preserves binary data', async () => {
 	vi.stubEnv('SSH_AUTH_SOCK', '/fixture/ssh-agent.sock');
 	vi.stubEnv('HARNESS_UNRELATED_SECRET', 'synthetic');
 	const run = vi.spyOn(BoundedCommandAdapter.prototype, 'run');
-	expect(await git.run(['--version'])).toMatch(/^git version /);
+	expect(
+		await measureWorkload('adapter.git-source-history.GitAdapter', 'local-git-version', () =>
+			git.run(['--version'])
+		)
+	).toMatch(/^git version /);
 	expect(
 		run.mock.calls.some((call) => call[2]?.env?.SSH_AUTH_SOCK === '/fixture/ssh-agent.sock')
 	).toBe(true);
@@ -41,6 +46,7 @@ test('git children receive scoped authentication and transport configuration', a
 	vi.stubEnv('SSH_ASKPASS', '/fixture/ssh-askpass');
 	vi.stubEnv('SSL_CERT_FILE', '/fixture/ca.pem');
 	vi.stubEnv('HTTP_PROXY', 'http://fixture.invalid:8000');
+	vi.stubEnv('GH_TOKEN', 'synthetic-github-token');
 	vi.stubEnv('HARNESS_GIT_UNRELATED_SECRET', 'synthetic');
 	const result = await git.exec(['-c', 'alias.showenv=!env', 'showenv']);
 	const output = result.stdout.toString();
@@ -50,7 +56,8 @@ test('git children receive scoped authentication and transport configuration', a
 		'GIT_ASKPASS=/fixture/askpass',
 		'SSH_ASKPASS=/fixture/ssh-askpass',
 		'SSL_CERT_FILE=/fixture/ca.pem',
-		'HTTP_PROXY=http://fixture.invalid:8000'
+		'HTTP_PROXY=http://fixture.invalid:8000',
+		'GH_TOKEN=synthetic-github-token'
 	])
 		expect(output).toContain(value);
 	expect(output).not.toContain('HARNESS_GIT_UNRELATED_SECRET');

@@ -66,16 +66,18 @@ test.each(['SIGINT', 'SIGTERM'] as const)(
 	async (signal) => {
 		await withTempDir('bounded-signal-', async (dir) => {
 			const pidPath = join(dir, 'child.pid');
+			const wrapperPidPath = join(dir, 'wrapper.pid');
 			const modulePath = new URL(
 				'../../../src/adapters/execution-runtimes/BoundedCommandAdapter.ts',
 				import.meta.url
 			).pathname;
 			const nested = `import {spawn} from 'node:child_process'; import {writeFileSync} from 'node:fs'; const c=spawn(process.execPath,['-e','setInterval(()=>{},100)'],{stdio:'ignore'}); writeFileSync(${JSON.stringify(pidPath)},String(c.pid)); setInterval(()=>{},100);`;
+			const onSpawn = `child=>writeFileSync(${JSON.stringify(wrapperPidPath)},String(child.pid))`;
 			const parent = spawn(
 				'bun',
 				[
 					'-e',
-					`import {BoundedCommandAdapter} from ${JSON.stringify(modulePath)}; new BoundedCommandAdapter().run('bun',['-e',${JSON.stringify(nested)}]).catch(()=>{});`
+					`import {writeFileSync} from 'node:fs'; import {BoundedCommandAdapter} from ${JSON.stringify(modulePath)}; new BoundedCommandAdapter().run('bun',['-e',${JSON.stringify(nested)}],{onSpawn:${onSpawn}}).catch(()=>{});`
 				],
 				{ stdio: 'ignore' }
 			);
@@ -86,6 +88,30 @@ test.each(['SIGINT', 'SIGTERM'] as const)(
 				await expect.poll(() => isAlive(childPid), { timeout: 800 }).toBe(false);
 			} finally {
 				if (parent.exitCode === null && parent.signalCode === null) parent.kill('SIGKILL');
+				const [wrapperPid, childPid] = await Promise.all(
+					[wrapperPidPath, pidPath].map(async (path) => {
+						try {
+							return Number(await readFile(path, 'utf8'));
+						} catch {
+							return 0;
+						}
+					})
+				);
+				for (const pid of [childPid, wrapperPid])
+					if (pid && isAlive(pid)) {
+						try {
+							process.kill(pid, 'SIGKILL');
+						} catch {
+							/* Process already exited. */
+						}
+					}
+				if (wrapperPid && process.platform !== 'win32') {
+					try {
+						process.kill(-wrapperPid, 'SIGKILL');
+					} catch {
+						/* Group already exited. */
+					}
+				}
 			}
 		});
 	}
@@ -95,6 +121,8 @@ test('real children receive required synthetic config but not unrelated credenti
 	vi.stubEnv('SSH_AUTH_SOCK', '/fixture/ssh-agent.sock');
 	vi.stubEnv('HTTPS_PROXY', 'http://fixture.invalid:8000');
 	vi.stubEnv('NODE_OPTIONS', '--no-warnings');
+	vi.stubEnv('BUN_INSTALL', '/fixture/bun-install');
+	vi.stubEnv('BUN_OPTIONS', '--smol');
 	vi.stubEnv('GH_TOKEN', 'synthetic-github-token');
 	try {
 		expect(Object.hasOwn(commandEnvironment(), 'HARNESS_BOUNDED_SECRET_FIXTURE')).toBe(false);
@@ -103,14 +131,15 @@ test('real children receive required synthetic config but not unrelated credenti
 			'bun',
 			[
 				'-e',
-				'process.stdout.write(JSON.stringify({proxy:process.env.HTTPS_PROXY,node:process.env.NODE_OPTIONS,token:process.env.GH_TOKEN,secret:process.env.HARNESS_BOUNDED_SECRET_FIXTURE}))'
+				'process.stdout.write(JSON.stringify({proxy:process.env.HTTPS_PROXY,node:process.env.NODE_OPTIONS,bunInstall:process.env.BUN_INSTALL,bunOptions:process.env.BUN_OPTIONS,token:process.env.GH_TOKEN,secret:process.env.HARNESS_BOUNDED_SECRET_FIXTURE}))'
 			],
 			{ env: commandEnvironment() }
 		);
 		expect(JSON.parse(result.stdout.toString())).toEqual({
 			proxy: 'http://fixture.invalid:8000',
 			node: '--no-warnings',
-			token: 'synthetic-github-token'
+			bunInstall: '/fixture/bun-install',
+			bunOptions: '--smol'
 		});
 	} finally {
 		vi.unstubAllEnvs();

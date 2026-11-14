@@ -107,7 +107,10 @@ export class PreviewWorkerService {
 
 /** Deliberate preview configuration only; provider credentials stay in scoped stores. */
 function previewWorkerEnvironment(token: string): Record<string, string | undefined> {
-	const env = commandEnvironment({ HARNESS_PREVIEW_WORKER_TOKEN: token });
+	const env = commandEnvironment({
+		HARNESS_PREVIEW_WORKER_TOKEN: token,
+		GH_TOKEN: process.env.GH_TOKEN
+	});
 	for (const key of [
 		'BODY_SIZE_LIMIT',
 		'HOST',
@@ -142,5 +145,7 @@ function previewWorkerEnvironment(token: string): Record<string, string | undefi
 		'PROJECT_REPORTS_PAGES_PROJECT'
 	])
 		if (process.env[key] !== undefined) env[key] = process.env[key];
+	for (const [key, value] of Object.entries(process.env))
+		if (key.startsWith('PROJECT_REPORTS_R2_') && value !== undefined) env[key] = value;
 	return env;
 }

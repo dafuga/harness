@@ -87,6 +87,7 @@ function runEvaluator(
 				timeoutMs: evaluator.timeoutMs ?? commandDeadlines.evaluatorMs,
 				env: {
 					...resourceEnvironment(lease.env),
+					GH_TOKEN: process.env.GH_TOKEN,
 					HARNESS_ANALYTICS_LOOP: context.loop,
 					HARNESS_ANALYTICS_STEP: evaluator.step,
 					HARNESS_ANALYTICS_DISABLED: process.env.HARNESS_ANALYTICS_DISABLED,

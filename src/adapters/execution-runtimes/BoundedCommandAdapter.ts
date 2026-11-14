@@ -51,7 +51,8 @@ export function commandEnvironment(
 		'CI',
 		'NODE_OPTIONS',
 		'NODE_PATH',
-		'GH_TOKEN',
+		'BUN_INSTALL',
+		'BUN_OPTIONS',
 		'SSL_CERT_FILE',
 		'SSL_CERT_DIR',
 		'HTTP_PROXY',
@@ -65,8 +66,6 @@ export function commandEnvironment(
 		'XDG_CONFIG_HOME'
 	])
 		if (process.env[key] !== undefined) result[key] = process.env[key];
-	for (const [key, value] of Object.entries(process.env))
-		if (key.startsWith('PROJECT_REPORTS_R2_') && value !== undefined) result[key] = value;
 	return { ...result, ...extra };
 }
 function killGroup(child: ChildProcessWithoutNullStreams): void {
