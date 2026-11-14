@@ -63,67 +63,101 @@
 				"name": "sourceContractSchema.item",
 				"type": "typeof contractItemSchema",
 				"required": true,
-				"description": "Contract-item schema used for inputs, returns, errors, callable members and storage field declarations."
+				"description": "A Zod contract-item schema supplied to parameterize the builder; contract input, output, error, and storage-field entries are validated against it, with storage fields additionally allowing nullable, primaryKey, validation, and relations. Base items require trimmed nonempty name and type, permit required, default, description, and examples, and reject undeclared keys."
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitIdPattern",
 				"type": "unknown",
-				"description": "Pattern for lowercase alphanumeric identifiers separated by single dots or dashes."
+				"description": "Regular expression for lowercase identifiers made of alphanumeric segments separated by single dots or dashes; it is used to validate unit and related identifiers. It rejects uppercase characters, empty segments, and leading, trailing, or repeated separators."
 			},
 			{
 				"name": "dependencyVias",
 				"type": "unknown",
-				"description": "Allowed dependency relations, including imports, reexports, dynamic imports, require, URL/style references, process, HTTP, Wasm and contract."
+				"description": "The complete set of dependency relation strings accepted by unitDependencySchema. Each dependency must use one of these ten values.",
+				"examples": [
+					[
+						"import",
+						"reexport",
+						"dynamic-import",
+						"require",
+						"url",
+						"style-import",
+						"process",
+						"http",
+						"wasm",
+						"contract"
+					]
+				]
 			},
 			{
 				"name": "runtimeKinds",
 				"type": "unknown",
-				"description": "Execution kinds module, wasm, process and http."
+				"description": "The complete set of execution kinds accepted by executionTargetSchema and performance-budget targets. A target kind must be module, wasm, process, or http.",
+				"examples": [
+					["module", "wasm", "process", "http"]
+				]
 			},
 			{
 				"name": "performanceMetrics",
 				"type": "unknown",
-				"description": "Budgeted latency, throughput and memory metric names."
+				"description": "The complete set of performance-budget metric names accepted by performanceBudgetSchema. Metrics cover cold, warm, and floor latency, throughput, and memory.",
+				"examples": [
+					[
+						"latency-cold-ms",
+						"latency-warm-ms",
+						"latency-floor-ms",
+						"throughput-ops",
+						"memory-bytes"
+					]
+				]
 			},
 			{
 				"name": "performanceTolerance",
 				"type": "unknown",
-				"description": "Maximum unreviewed performance tolerance, 0.05."
+				"description": "Maximum allowed tolerance for a performance budget without a recorded reviewer approval. The schema accepts values from zero through 0.05 inclusive.",
+				"examples": [0.05]
 			},
 			{
 				"name": "contractItemSchema",
 				"type": "unknown",
-				"description": "Strict name/type contract-item schema with optional description. Name/type are trimmed and nonempty."
+				"description": "A strict Zod schema for contract items with trimmed nonempty name and type, plus optional required, JSON default, description, and JSON examples fields. Extra fields are rejected."
 			},
 			{
 				"name": "unitDependencySchema",
 				"type": "unknown",
-				"description": "Strict dependency schema naming a unit, allowed relation and declared/derived origin, with optional contract."
+				"description": "A strict dependency schema requiring a lowercase dotted or dashed unit identifier, one allowed dependency via, and declared or derived origin. The contract string is optional."
 			},
 			{
 				"name": "performanceBudgetSchema",
 				"type": "unknown",
-				"description": "Strict performance budget schema with workload, supported metric, optional target and tolerance from zero through 0.05."
+				"description": "A strict schema for a budget with a valid workload identifier, supported metric, and tolerance from zero through 0.05 inclusive. Runtime target is optional and must be one of module, wasm, process, or http."
 			},
 			{
 				"name": "executionTargetSchema",
 				"type": "unknown",
-				"description": "Strict execution-target schema with supported kind, nonempty entry and optional environment/handler."
+				"description": "A strict execution-target schema requiring a supported runtime kind and trimmed nonempty entry, with optional environment and handler strings. The documented handler default is invoke, but this schema does not insert a default when handler is omitted."
 			},
 			{
 				"name": "componentManifestSchema",
 				"type": "unknown",
-				"description": "Strict version 1 unit schema covering identity, declared/derived responsibility, active/retired state, ownership, contract, dependencies, runtime targets, scenarios, optional public/internal catalog visibility, preview/lineage and frozen budgets."
+				"description": "A strict version-1 unit-manifest schema used to validate unit identity, responsibility and status, ownership, contract, dependencies, runtime, scenarios, and frozen size and complexity budgets. It also permits constrained optional composition, documentation, catalog visibility, config controls, retirement, lineage, preview, and performance-budget fields."
 			},
 			{
 				"name": "scenarioManifestSchema",
 				"type": "unknown",
-				"description": "Strict version 1 scenario schema for UI/headless/audio cases, units, state coverage, viewports, tests and evidence requirements."
+				"description": "A strict version-1 scenario schema for UI, headless, or audio scenarios, requiring at least one unit, state, and test. It validates state coverage, positive integer viewport dimensions, test runner and kind, and evidence declarations; viewports and evidence may be empty."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by Zod parse operations when unit, scenario, contract-item, dependency, budget, execution-target, or source-contract data fails its schema. The strict object schemas reject undeclared keys; safeParse reports the same validation failure as a result."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sourceContractSchema",
@@ -132,17 +166,18 @@
 						"name": "sourceContractSchema.item",
 						"type": "typeof contractItemSchema",
 						"required": true,
-						"description": "Contract-item schema used for inputs, returns, errors, callable members and storage field declarations."
+						"description": "A Zod contract-item schema supplied to parameterize the builder; contract input, output, error, and storage-field entries are validated against it, with storage fields additionally allowing nullable, primaryKey, validation, and relations. Base items require trimmed nonempty name and type, permit required, default, description, and examples, and reject undeclared keys."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceContractSchema",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The strict Zod object schema built for source-declared contract metadata. It requires origin, inputs, outputs, and errors, and optionally accepts primitives, errorStatus, operations, initialization, snippets, and storage; each operation requires name, input/output/error arrays, and errorStatus."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
