@@ -12,22 +12,24 @@
 		"symbols": ["ApiCommand", "ApiCommand.register"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ApiCommand.register.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The root Commander Command that register() attaches the api command to. register() calls program.command('api') on it without validating it, so it must already be a Commander Command when register() runs."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ApiCommand.register",
-				"type": "void"
+				"type": "void",
+				"description": "register() returns nothing, so callers get no value; its effect is the api command tree attached to the program. The actions that call runApi are only attached here and run later, when the CLI parses one of those subcommands, not during this call."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ApiCommand.register",
@@ -35,17 +37,19 @@
 					{
 						"name": "ApiCommand.register.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The root Commander Command that register() attaches the api command to. register() calls program.command('api') on it without validating it, so it must already be a Commander Command when register() runs."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ApiCommand.register",
-						"type": "void"
+						"type": "void",
+						"description": "register() returns nothing, so callers get no value; its effect is the api command tree attached to the program. The actions that call runApi are only attached here and run later, when the CLI parses one of those subcommands, not during this call."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
