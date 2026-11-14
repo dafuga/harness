@@ -1,13 +1,21 @@
 import { expect, test } from 'vitest';
 import type { ScenarioManifest } from '../src/core/development-tooling/unitTypes';
 import type { ExplorerCapture } from '../packages/reports/src/models/explorer-ui/ExplorerEvidence.types';
-import type { StateRegistry } from '../src/workflows/development-tooling/guide-units/guideUnits.types';
+import type {
+	GuidanceContext,
+	GuideReport,
+	StateRegistry
+} from '../src/workflows/development-tooling/guide-units/guideUnits.types';
 import {
 	headlessOnly,
 	headlessStateNames,
+	namedUnitStates,
 	scenarioStatesFor
 } from '../src/workflows/development-tooling/guide-units/guidanceContext';
-import { recordedDone } from '../src/workflows/development-tooling/guide-units/guideUnits';
+import {
+	recordedDone,
+	renderUnitsGuide
+} from '../src/workflows/development-tooling/guide-units/guideUnits';
 
 const unitId = 'component.alpha';
 
@@ -91,6 +99,31 @@ test('headlessStateNames keeps required viewport-free states without UI or regis
 	]);
 	expect(headlessOnly([headless, ui], unitId)).toBe(false);
 	expect(headlessOnly([headless, audio], unitId)).toBe(true);
+});
+
+test('a unit without scenarios is not headless-only and keeps its implicit default', () => {
+	const context = { registries: [], loaded: { scenarios: [] } } as unknown as GuidanceContext;
+	const unit = { id: unitId } as Parameters<typeof namedUnitStates>[1];
+
+	expect(headlessOnly([], unitId)).toBe(false);
+	expect(namedUnitStates(context, unit)).toEqual([
+		{ name: 'default', origin: 'REQUIRED', reasons: ['Default presentation.'] }
+	]);
+});
+
+test('an empty guide does not report completion', () => {
+	const report = {
+		entity: unitId,
+		commit: 'fixture',
+		states: [],
+		guesses: [],
+		summary: { done: 0, missing: 0 },
+		next: null,
+		proof: { store: 'git', gap: null }
+	} satisfies GuideReport;
+
+	expect(renderUnitsGuide(report)).toContain('No required states');
+	expect(renderUnitsGuide(report)).not.toContain('DONE');
 });
 
 function capture(

@@ -88,12 +88,17 @@ export function headlessStateNames(
 	return [...names];
 }
 
-/** @pure A unit is headless-only when no attributed UI scenario declares one of its states. */
-export function headlessOnly(scenarios: ScenarioManifest[], unitId: string): boolean {
-	return !scenarios.some(
-		(scenario) =>
-			scenario.kind === 'ui' && scenarioStatesFor(scenario, unitId).length > 0
-	);
+/** @pure Headless-only units have required headless states and no attributed UI states. */
+export function headlessOnly(
+	scenarios: ScenarioManifest[],
+	unitId: string,
+	registryStates: StateRegistry[] = []
+): boolean {
+	return headlessStateNames(scenarios, unitId, registryStates).length > 0 &&
+		!scenarios.some(
+			(scenario) =>
+				scenario.kind === 'ui' && scenarioStatesFor(scenario, unitId).length > 0
+		);
 }
 
 export function namedUnitStates(context: GuidanceContext, unit: ComponentManifest): UnitState[] {

@@ -37,7 +37,7 @@ export async function guideUnits(id: string, options: GuidanceOptions = {}): Pro
 	const shots = await unitShots(context.loaded.root, id, context.tree.revision);
 	const states: GuideState[] = [];
 	const derived = await allUnitStates(context, unit);
-	const headless = headlessOnly(context.loaded.scenarios, id);
+	const headless = headlessOnly(context.loaded.scenarios, id, context.registries);
 	const namedDefault = namedUnitStates(context, unit).find((state) => state.name === 'default');
 	const explicitDefault = namedDefault?.reasons.some((reason) => reason !== 'Default presentation.') ?? false;
 	for (const state of derived.filter(
@@ -98,6 +98,12 @@ export async function guideUnits(id: string, options: GuidanceOptions = {}): Pro
 }
 
 export function renderUnitsGuide(report: GuideReport): string {
+	if (report.states.length === 0)
+		return [
+			`${report.entity} @ ${report.commit}`,
+			'No required states; completion is not established.',
+			...(report.proof.gap ? [`Proof: ${report.proof.gap}`] : [])
+		].join('\n');
 	const rows = report.states.map(
 		(state) =>
 			`${state.status} ${state.name} [${state.origin}] test:${state.tests.length ? state.tests.map((test) => test.file).join(', ') : 'MISSING'} ${state.evidence ? `evidence:${state.evidence}` : devices.map((device) => `${device}:${state.viewports[device]}`).join(' ')}\n  ${state.reasons.join('; ')}`

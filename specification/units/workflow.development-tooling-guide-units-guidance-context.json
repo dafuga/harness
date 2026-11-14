@@ -96,6 +96,12 @@
 				"required": true
 			},
 			{
+				"name": "headlessOnly.registryStates",
+				"type": "StateRegistry[]",
+				"required": false,
+				"default": []
+			},
+			{
 				"name": "namedUnitStates.context",
 				"type": "GuidanceContext",
 				"required": true,
@@ -347,6 +353,12 @@
 						"name": "headlessOnly.unitId",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "headlessOnly.registryStates",
+						"type": "StateRegistry[]",
+						"required": false,
+						"default": []
 					}
 				],
 				"outputs": [
