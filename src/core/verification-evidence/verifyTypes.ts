@@ -96,6 +96,17 @@ function matchesCheckPath(literal: string, checkPath: string): boolean {
 
 export const verifyConfigSchema = verifyConfigInputSchema
 	.superRefine((config, context) => {
+		for (const [name, profile] of Object.entries(config.profiles)) {
+			const inherited = config.checks.filter((check) => check.profile === name && !check.command);
+			if (profile.command && !profile.command.includes('{target}') && inherited.length > 1)
+				context.addIssue({
+					code: 'custom',
+					path: ['profiles', name, 'command'],
+					message:
+						`Profile "${name}" has no {target} in its command and ${inherited.length} checks inherit it, ` +
+						'so each would run the same command. Add {target} or give each check its own command.'
+				});
+		}
 		for (const [index, check] of config.checks.entries()) {
 			const profile = check.profile ? config.profiles[check.profile] : undefined;
 			if (check.profile && !profile) {
