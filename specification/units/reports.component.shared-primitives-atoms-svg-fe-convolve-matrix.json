@@ -29,17 +29,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feConvolveMatrix element; native HTML content rules still apply."
+				"description": "The Snippet passed as the children prop, rendered with {@render children()} inside the feConvolveMatrix element only when the value is truthy. The component performs no validation and calls the snippet with no arguments, so when the prop is omitted the element has no child content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeConvolveMatrix",
 				"type": "markup",
-				"description": "The actual native feConvolveMatrix element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native feConvolveMatrix element, rendered in the svg namespace set by svelte:options, with every prop other than children spread onto it and the children snippet rendered inside it. The component adds no wrapper element and does no filtering, renaming, or validation of the forwarded props."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
