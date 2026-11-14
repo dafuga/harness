@@ -12,28 +12,41 @@
 		"symbols": ["openSqlite"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "openSqlite.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path string passed to the selected runtime SQLite database constructor. This function opens only the supplied path and does not choose or rewrite the location.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/adapter.open-sqlite/state.sqlite"
+				]
 			},
 			{
 				"name": "openSqlite.readOnly",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Controls the read-only option when the database handle is constructed. It defaults to false; Bun receives readonly: readOnly and create: !readOnly, while Node receives readOnly.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "openSqlite",
-				"type": "SqliteDatabase"
+				"type": "SqliteDatabase",
+				"description": "The SqliteDatabase handle returned by the selected runtime SQLite constructor. The function uses bun:sqlite when process.versions.bun is present and node:sqlite otherwise, and returns the constructor result directly."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "SQLite runtime error",
+				"type": "thrown",
+				"description": "An error raised while loading the selected built-in SQLite module or constructing its database handle propagates to the caller. Its concrete name and message depend on the host runtime and constructor because this function does not catch or translate it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "openSqlite",
@@ -41,23 +54,36 @@
 					{
 						"name": "openSqlite.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path string passed to the selected runtime SQLite database constructor. This function opens only the supplied path and does not choose or rewrite the location.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/adapter.open-sqlite/state.sqlite"
+						]
 					},
 					{
 						"name": "openSqlite.readOnly",
 						"type": "boolean",
 						"required": false,
-						"default": false
+						"default": false,
+						"description": "Controls the read-only option when the database handle is constructed. It defaults to false; Bun receives readonly: readOnly and create: !readOnly, while Node receives readOnly.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "openSqlite",
-						"type": "SqliteDatabase"
+						"type": "SqliteDatabase",
+						"description": "The SqliteDatabase handle returned by the selected runtime SQLite constructor. The function uses bun:sqlite when process.versions.bun is present and node:sqlite otherwise, and returns the constructor result directly."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SQLite runtime error",
+						"type": "thrown",
+						"description": "An error raised while loading the selected built-in SQLite module or constructing its database handle propagates to the caller. Its concrete name and message depend on the host runtime and constructor because this function does not catch or translate it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
