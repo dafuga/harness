@@ -30,40 +30,72 @@
 				"name": "installableHost.options",
 				"type": "HostRequest",
 				"required": true,
-				"description": "SvelteKit host directory, console base segment, existing $lib policy module/export, update/keep choice and optional bucket binding/prefix."
+				"description": "Options passed to the console host prerequisite check. The host must contain svelte.config.js or svelte.config.ts and src/routes; base must be one lowercase alphanumeric/hyphen path segment, update and keep cannot both be true, bucket must be a binding name, prefix must be a plain bucket path and requires bucket, and policy must start with $lib/ and resolve to a supported module under src/lib that exports policyExport.",
+				"examples": [
+					{
+						"host": "/workspace/my-sveltekit-app",
+						"policy": "$lib/server/harnessPolicy",
+						"policyExport": "canInstallConsole",
+						"base": "/harness",
+						"update": true,
+						"keep": false,
+						"bucket": "HARNESS_HISTORY",
+						"prefix": "history"
+					}
+				]
 			},
 			{
 				"name": "hostWarnings.host",
 				"type": "string",
 				"required": true,
-				"description": "Host directory whose package.json should be checked."
+				"description": "Host directory used to read package.json while checking whether @dafuga01/harness is a dependency. A missing or unreadable package.json is treated as an empty object.",
+				"examples": ["/workspace/my-sveltekit-app"]
 			},
 			{
 				"name": "hostWarnings.compressedBytes",
 				"type": "number",
 				"required": true,
-				"description": "Compressed bundled-history size in bytes to compare with the helper’s configured Worker threshold."
+				"description": "Compressed bundled-history size in bytes. A size warning is added only when the value is greater than 3 MiB.",
+				"examples": [4718592]
 			}
 		],
 		"outputs": [
 			{
 				"name": "installableHost",
 				"type": "Promise<void>",
-				"description": "Resolves with no value when host structure, base, option combinations, storage names and policy export text pass; reads files but performs no installation."
+				"description": "Resolves with undefined after validating the SvelteKit host, base, option combination, storage names, and policy module/export; it reads files but writes no installation files. It rejects with ExpectedCliError when a prerequisite check fails."
 			},
 			{
 				"name": "hostWarnings",
 				"type": "Promise<string[]>",
-				"description": "Warnings for a missing @dafuga01/harness dependency and for compressed history above the configured 3 MiB free threshold, mentioning the configured 10 MiB paid limit."
+				"description": "Resolves to zero or more warning strings: one when neither dependencies nor devDependencies contains @dafuga01/harness, and one when compressedBytes exceeds 3 MiB; the size warning states the 3 MiB free-plan and 10 MiB paid-plan limits. Invalid JSON or invalid dependency-map values in package.json can reject the promise.",
+				"examples": [
+					[],
+					["@dafuga01/harness is not a dependency of the host yet; add it before building."],
+					[
+						"The bundled history is 4.5 MiB compressed; a Worker script may be 3 MiB on the free plan and 10 MiB on a paid one. Keep it in a private bucket with --bucket <binding>."
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown for missing SvelteKit structure, invalid base/storage options, conflicting update/keep or absent policy module/export."
+				"description": "Thrown when the host lacks the required SvelteKit files, base or storage options are invalid, update and keep are both selected, or the policy path/module/export check fails."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Rejected by JSON.parse when a readable package.json contains invalid JSON."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Rejected when parsed package.json is null or dependencies/devDependencies is a null or primitive value used by destructuring or the in operator without validation."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "installableHost",
@@ -72,23 +104,36 @@
 						"name": "installableHost.options",
 						"type": "HostRequest",
 						"required": true,
-						"description": "SvelteKit host directory, console base segment, existing $lib policy module/export, update/keep choice and optional bucket binding/prefix."
+						"description": "Options passed to the console host prerequisite check. The host must contain svelte.config.js or svelte.config.ts and src/routes; base must be one lowercase alphanumeric/hyphen path segment, update and keep cannot both be true, bucket must be a binding name, prefix must be a plain bucket path and requires bucket, and policy must start with $lib/ and resolve to a supported module under src/lib that exports policyExport.",
+						"examples": [
+							{
+								"host": "/workspace/my-sveltekit-app",
+								"policy": "$lib/server/harnessPolicy",
+								"policyExport": "canInstallConsole",
+								"base": "/harness",
+								"update": true,
+								"keep": false,
+								"bucket": "HARNESS_HISTORY",
+								"prefix": "history"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "installableHost",
 						"type": "Promise<void>",
-						"description": "Resolves with no value when host structure, base, option combinations, storage names and policy export text pass; reads files but performs no installation."
+						"description": "Resolves with undefined after validating the SvelteKit host, base, option combination, storage names, and policy module/export; it reads files but writes no installation files. It rejects with ExpectedCliError when a prerequisite check fails."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the host lacks the required SvelteKit files, base or storage options are invalid, update and keep are both selected, or the policy path/module/export check fails."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hostWarnings",
@@ -97,24 +142,44 @@
 						"name": "hostWarnings.host",
 						"type": "string",
 						"required": true,
-						"description": "Host directory whose package.json should be checked."
+						"description": "Host directory used to read package.json while checking whether @dafuga01/harness is a dependency. A missing or unreadable package.json is treated as an empty object.",
+						"examples": ["/workspace/my-sveltekit-app"]
 					},
 					{
 						"name": "hostWarnings.compressedBytes",
 						"type": "number",
 						"required": true,
-						"description": "Compressed bundled-history size in bytes to compare with the helper’s configured Worker threshold."
+						"description": "Compressed bundled-history size in bytes. A size warning is added only when the value is greater than 3 MiB.",
+						"examples": [4718592]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostWarnings",
 						"type": "Promise<string[]>",
-						"description": "Warnings for a missing @dafuga01/harness dependency and for compressed history above the configured 3 MiB free threshold, mentioning the configured 10 MiB paid limit."
+						"description": "Resolves to zero or more warning strings: one when neither dependencies nor devDependencies contains @dafuga01/harness, and one when compressedBytes exceeds 3 MiB; the size warning states the 3 MiB free-plan and 10 MiB paid-plan limits. Invalid JSON or invalid dependency-map values in package.json can reject the promise.",
+						"examples": [
+							[],
+							["@dafuga01/harness is not a dependency of the host yet; add it before building."],
+							[
+								"The bundled history is 4.5 MiB compressed; a Worker script may be 3 MiB on the free plan and 10 MiB on a paid one. Keep it in a private bucket with --bucket <binding>."
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejected by JSON.parse when a readable package.json contains invalid JSON."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejected when parsed package.json is null or dependencies/devDependencies is a null or primitive value used by destructuring or the in operator without validation."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
