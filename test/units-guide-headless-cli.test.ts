@@ -1,34 +1,84 @@
 import { rm } from 'node:fs/promises';
-import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
-import { runHarness } from './support/cli';
 import {
 	commitGuidance,
 	entity,
+	guidanceJson,
 	guidanceProject,
-	widgetManifest,
 	writeGuidanceFile
 } from './support/unitsGuidanceProject';
 
 const roots: string[] = [];
-
 afterEach(async () => {
 	for (const root of roots.splice(0)) await rm(root, { recursive: true, force: true });
 });
 
-test('a unit without scenarios still lists its implicit default as MISSING', async () => {
-	const root = await guidanceProject();
+test('guide CLI gives a headless state no devices and keeps devices on UI states', async () => {
+	const root = await guidanceProject(['default', 'loading']);
 	roots.push(root);
-	await rm(join(root, 'specification/scenarios/widget-catalog.json'));
-	const unit = widgetManifest();
-	unit.scenarios = [];
-	await writeGuidanceFile(root, 'specification/units/component.widget.json', JSON.stringify(unit));
+	await writeGuidanceFile(
+		root,
+		'specification/scenarios/widget-recorded.json',
+		JSON.stringify({
+			schemaVersion: 1,
+			id: 'widget-recorded',
+			title: 'Widget recorded assertions',
+			kind: 'headless',
+			units: [entity],
+			states: [
+				{
+					id: 'component-widget-recorded',
+					title: 'Recorded',
+					coverage: 'required',
+					units: [entity]
+				}
+			],
+			viewports: [],
+			tests: [
+				{
+					id: 'recorded',
+					kind: 'unit',
+					runner: 'command',
+					target: 'bun test/verification-output.ts vitest test/recorded.test.ts'
+				}
+			],
+			evidence: [
+				{
+					id: 'assertions',
+					kind: 'assertions',
+					states: ['component-widget-recorded'],
+					viewports: [],
+					required: true
+				}
+			]
+		})
+	);
+	await writeGuidanceFile(
+		root,
+		'test/recorded.test.ts',
+		"test('recorded', () => expect(true).toBe(true));"
+	);
 	await commitGuidance(root);
 
-	const result = await runHarness(['units', 'guide', entity], root, false);
+	const { exitCode, report } = await guidanceJson(root, ['guide', entity]);
+	const state = (name: string) =>
+		report.states.find((item: { name: string }) => item.name === name);
+	const names = report.states.map((item: { name: string }) => item.name);
 
-	expect(result.exitCode).toBe(1);
-	expect(result.stdout).toContain('MISSING default [REQUIRED]');
-	expect(result.stdout).toContain('NEXT: default');
-	expect(result.stdout).not.toContain('ALL DONE');
+	expect(exitCode).toBe(1);
+	expect(names).toEqual(['default', 'loading', 'recorded']);
+	// The headless state has an evidence column (nothing recorded yet) and no devices.
+	expect(state('recorded')).toMatchObject({
+		status: 'MISSING',
+		evidence: 'MISSING',
+		tests: [{ file: 'test/recorded.test.ts', viewports: [] }]
+	});
+	expect(state('recorded').viewports).toEqual({});
+	// UI states keep their desktop, tablet and mobile keys.
+	for (const name of ['default', 'loading'])
+		expect(state(name).viewports).toEqual({
+			desktop: 'MISSING',
+			tablet: 'MISSING',
+			mobile: 'MISSING'
+		});
 });
