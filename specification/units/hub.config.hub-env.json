@@ -18,22 +18,47 @@
 		"symbols": ["hubEnvConfig", "HubEnv", "HubEnv"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubEnvConfig.input",
 				"type": "Record<string, unknown>",
-				"required": true
+				"required": true,
+				"description": "Candidate hub environment settings supplied when constructing the runtime configuration. The builder copies only allowlisted HARNESS_* values that are strings and truthy DB, CACHE, or REMOTE_HOSTS bindings; other keys and non-string settings are ignored.",
+				"examples": [
+					{
+						"HARNESS_PUBLIC_ORIGIN": "https://hub.example.test",
+						"HARNESS_ENVIRONMENT": "staging",
+						"HOST_DATABASE_URL": "postgres://localhost/hub"
+					},
+					{
+						"HARNESS_GOOGLE_CLIENT_ID": "hub-web.apps.exampleusercontent.com",
+						"HARNESS_EMAIL_FROM": "noreply@example.test"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEnvConfig",
-				"type": "HubEnv"
+				"type": "HubEnv",
+				"description": "The returned configuration object is a HubEnv with allowlisted string-valued HARNESS_* properties and any truthy DB, CACHE, or REMOTE_HOSTS bindings copied from the input. Non-string settings and unrelated keys are omitted, and the implementation does not enforce the declared HARNESS_ENVIRONMENT union at runtime.",
+				"examples": [
+					{
+						"HARNESS_ENVIRONMENT": "local",
+						"HARNESS_PUBLIC_ORIGIN": "http://localhost:5173"
+					},
+					{
+						"HARNESS_GOOGLE_CLIENT_ID": "hub-web.apps.exampleusercontent.com",
+						"HARNESS_COLLABORATION_OWNER": "example-org",
+						"HARNESS_COLLABORATION_REPO": "example-hub",
+						"HARNESS_RELAY_ORIGIN": "https://relay.example.test"
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "hubEnvConfig",
@@ -41,17 +66,42 @@
 					{
 						"name": "hubEnvConfig.input",
 						"type": "Record<string, unknown>",
-						"required": true
+						"required": true,
+						"description": "Candidate hub environment settings supplied when constructing the runtime configuration. The builder copies only allowlisted HARNESS_* values that are strings and truthy DB, CACHE, or REMOTE_HOSTS bindings; other keys and non-string settings are ignored.",
+						"examples": [
+							{
+								"HARNESS_PUBLIC_ORIGIN": "https://hub.example.test",
+								"HARNESS_ENVIRONMENT": "staging",
+								"HOST_DATABASE_URL": "postgres://localhost/hub"
+							},
+							{
+								"HARNESS_GOOGLE_CLIENT_ID": "hub-web.apps.exampleusercontent.com",
+								"HARNESS_EMAIL_FROM": "noreply@example.test"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEnvConfig",
-						"type": "HubEnv"
+						"type": "HubEnv",
+						"description": "The returned configuration object is a HubEnv with allowlisted string-valued HARNESS_* properties and any truthy DB, CACHE, or REMOTE_HOSTS bindings copied from the input. Non-string settings and unrelated keys are omitted, and the implementation does not enforce the declared HARNESS_ENVIRONMENT union at runtime.",
+						"examples": [
+							{
+								"HARNESS_ENVIRONMENT": "local",
+								"HARNESS_PUBLIC_ORIGIN": "http://localhost:5173"
+							},
+							{
+								"HARNESS_GOOGLE_CLIENT_ID": "hub-web.apps.exampleusercontent.com",
+								"HARNESS_COLLABORATION_OWNER": "example-org",
+								"HARNESS_COLLABORATION_REPO": "example-hub",
+								"HARNESS_RELAY_ORIGIN": "https://relay.example.test"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
