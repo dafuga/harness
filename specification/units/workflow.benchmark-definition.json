@@ -18,34 +18,179 @@
 				"name": "prepareBenchmark.path",
 				"type": "string",
 				"required": true,
-				"description": "Path to the trusted benchmark definition JSON file."
+				"description": "Path to a benchmark definition JSON file; a relative path resolves against the current working directory, and the definition's project path is resolved from this file's directory. The file is read as UTF-8 and parsed as JSON before schema validation, so a missing file or invalid JSON makes the promise reject.",
+				"examples": [
+					"benchmarks/evidence-grid-empty-state.json",
+					"benchmarks/report-export-csv.json",
+					"/workspace/evidence-app/benchmarks/evidence-grid-empty-state.json"
+				]
 			},
 			{
 				"name": "prepareBenchmark.runners",
 				"type": "BenchmarkRunners",
 				"required": true,
-				"description": "Codex and Claude runner implementations used to preflight the named candidates."
+				"description": "Object with codex and claude entries that implement BenchmarkRunner; for every candidate, prepareBenchmark calls preflight on the entry named by that candidate's runner value. The run method is never called by prepareBenchmark."
 			}
 		],
 		"outputs": [
 			{
 				"name": "benchmarkRunners",
 				"type": "BenchmarkRunners",
-				"description": "Native Codex and Claude adapters keyed by their configured runner names."
+				"description": "Object with codex and claude keys, each holding a new native adapter (CodexBenchmarkAdapter or ClaudeBenchmarkAdapter) that runs the codex or claude executable by name; it has the same BenchmarkRunners type as the runners argument of prepareBenchmark. Each call creates new adapter instances, and the benchmarkRunners function takes no arguments and throws nothing."
 			},
 			{
 				"name": "prepareBenchmark",
 				"type": "Promise<PreparedBenchmark>",
-				"description": "Normalized definition, pinned source revision, fingerprint, runner versions and trial count."
+				"description": "Resolves to the validated definition, the realpath of the Git repository root, the full commit SHA that the definition's revision resolves to, a SHA-256 fingerprint of that SHA and the name, task, contract, allowedFiles, checks, setup and budget fields, the trimmed stdout of each candidate's runner --version preflight keyed by candidate id, and a trial count equal to budget.repetitions times the number of candidates. The promise rejects when the definition is invalid, the project is not the Git repository root, the revision cannot be resolved, the revision's file tree contains symlinks or submodules, or a runner preflight fails; the fingerprint does not cover candidates or the project path.",
+				"examples": [
+					{
+						"definition": {
+							"version": 1,
+							"name": "evidence-grid-empty-state",
+							"project": "..",
+							"revision": "HEAD",
+							"task": "Show an empty-state message in the evidence grid when no rows match the filter.",
+							"contract": "The grid renders the empty-state text and keeps the filter controls visible.",
+							"allowedFiles": [
+								"src/components/EvidenceGrid.tsx",
+								"src/components/EvidenceGrid.test.tsx"
+							],
+							"checks": [
+								{
+									"id": "unit-tests",
+									"command": "npm test -- EvidenceGrid"
+								}
+							],
+							"setup": ["npm ci"],
+							"candidates": [
+								{
+									"id": "claude-sonnet",
+									"runner": "claude",
+									"model": "claude-sonnet-5-5",
+									"effort": "medium",
+									"instructions": "",
+									"tools": "files"
+								},
+								{
+									"id": "codex-high",
+									"runner": "codex",
+									"model": "gpt-5-codex",
+									"effort": "high",
+									"instructions": "Keep edits inside the allowed files.",
+									"tools": "default"
+								}
+							],
+							"budget": {
+								"repetitions": 3,
+								"timeoutMs": 900000,
+								"repairs": 2
+							}
+						},
+						"project": "/workspace/evidence-app",
+						"revision": "a3f1c9e07b52d84f6e1a0c3b9d75e2f48a6b1c0d",
+						"fingerprint": "c1e0b7d94a2f35e86b19d0a4c7f2e3b58d61a9f0c2e7b4d3a8f5c6e9b1d2a7f0",
+						"runnerVersions": {
+							"claude-sonnet": "2.0.0 (Claude Code)",
+							"codex-high": "codex-cli 0.50.0"
+						},
+						"trials": 6
+					},
+					{
+						"definition": {
+							"version": 1,
+							"name": "report-export-csv",
+							"project": "..",
+							"revision": "main",
+							"task": "Export report rows as CSV with a header line.",
+							"contract": "The export writes one header row followed by one row per report.",
+							"allowedFiles": ["src/reports/exportCsv.ts"],
+							"checks": [
+								{
+									"id": "csv-tests",
+									"command": "npm test -- exportCsv"
+								}
+							],
+							"setup": [],
+							"candidates": [
+								{
+									"id": "claude-opus",
+									"runner": "claude",
+									"model": "claude-opus-5-5",
+									"effort": "high",
+									"instructions": "",
+									"tools": "default"
+								}
+							],
+							"budget": {
+								"repetitions": 5,
+								"timeoutMs": 600000,
+								"repairs": 0
+							}
+						},
+						"project": "/workspace/evidence-app",
+						"revision": "5c0d2e9a1f7b3c64d8e20a5f9b1c7d3e6a4f8b20",
+						"fingerprint": "7d2b9e4f1a6c03b58e7d2f94c1a0b6e3d5f8c2a97e1b4d60c3f9a2e8b5d1c478",
+						"runnerVersions": {
+							"claude-opus": "2.0.0 (Claude Code)"
+						},
+						"trials": 5
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects invalid definitions, non-root projects, unresolved revisions or unavailable runners."
+				"description": "Node file-system error from reading the definition file or resolving the project or repository root path, such as ENOENT for a path that does not exist."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when the definition file does not contain valid JSON."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown when the parsed JSON fails the definition schema, including unknown keys, a version other than 1, a Codex candidate with files tools or max effort, and budget values outside their ranges."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Duplicate benchmark identifiers or paths.' when allowedFiles, check ids or candidate ids repeat a value."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Benchmark Git operation failed. Verify the project and revision.' when a Git command exits nonzero, such as when the project is not inside a Git repository, the revision does not name a commit, or the revision's file tree cannot be listed."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Benchmark project must be the Git repository root.' when the resolved project path is not the realpath of the repository's top-level directory."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Benchmark snapshots do not support symlinks or submodules.' when the revision's file tree has an entry that is not a 100644 or 100755 blob."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Codex runner is unavailable.' or 'Claude runner is unavailable.' when that runner's --version preflight exits nonzero."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Unsupported Codex tool or effort setting.' by the Codex preflight for a candidate with files tools or max effort; the definition schema rejects such candidates before preflight runs."
+			},
+			{
+				"name": "BoundedCommandFailure",
+				"type": "thrown",
+				"description": "Rejected as BoundedCommandFailure when a Git or runner --version process cannot start, runs past its deadline (24 hours for Git, 10 seconds for runner --version checks), or exceeds the 8,000,000-byte output bound."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "benchmarkRunners",
@@ -54,11 +199,11 @@
 					{
 						"name": "benchmarkRunners",
 						"type": "BenchmarkRunners",
-						"description": "Native Codex and Claude adapters keyed by their configured runner names."
+						"description": "Object with codex and claude keys, each holding a new native adapter (CodexBenchmarkAdapter or ClaudeBenchmarkAdapter) that runs the codex or claude executable by name; it has the same BenchmarkRunners type as the runners argument of prepareBenchmark. Each call creates new adapter instances, and the benchmarkRunners function takes no arguments and throws nothing."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "prepareBenchmark",
@@ -67,29 +212,174 @@
 						"name": "prepareBenchmark.path",
 						"type": "string",
 						"required": true,
-						"description": "Path to the trusted benchmark definition JSON file."
+						"description": "Path to a benchmark definition JSON file; a relative path resolves against the current working directory, and the definition's project path is resolved from this file's directory. The file is read as UTF-8 and parsed as JSON before schema validation, so a missing file or invalid JSON makes the promise reject.",
+						"examples": [
+							"benchmarks/evidence-grid-empty-state.json",
+							"benchmarks/report-export-csv.json",
+							"/workspace/evidence-app/benchmarks/evidence-grid-empty-state.json"
+						]
 					},
 					{
 						"name": "prepareBenchmark.runners",
 						"type": "BenchmarkRunners",
 						"required": true,
-						"description": "Codex and Claude runner implementations used to preflight the named candidates."
+						"description": "Object with codex and claude entries that implement BenchmarkRunner; for every candidate, prepareBenchmark calls preflight on the entry named by that candidate's runner value. The run method is never called by prepareBenchmark."
 					}
 				],
 				"outputs": [
 					{
 						"name": "prepareBenchmark",
 						"type": "Promise<PreparedBenchmark>",
-						"description": "Normalized definition, pinned source revision, fingerprint, runner versions and trial count."
+						"description": "Resolves to the validated definition, the realpath of the Git repository root, the full commit SHA that the definition's revision resolves to, a SHA-256 fingerprint of that SHA and the name, task, contract, allowedFiles, checks, setup and budget fields, the trimmed stdout of each candidate's runner --version preflight keyed by candidate id, and a trial count equal to budget.repetitions times the number of candidates. The promise rejects when the definition is invalid, the project is not the Git repository root, the revision cannot be resolved, the revision's file tree contains symlinks or submodules, or a runner preflight fails; the fingerprint does not cover candidates or the project path.",
+						"examples": [
+							{
+								"definition": {
+									"version": 1,
+									"name": "evidence-grid-empty-state",
+									"project": "..",
+									"revision": "HEAD",
+									"task": "Show an empty-state message in the evidence grid when no rows match the filter.",
+									"contract": "The grid renders the empty-state text and keeps the filter controls visible.",
+									"allowedFiles": [
+										"src/components/EvidenceGrid.tsx",
+										"src/components/EvidenceGrid.test.tsx"
+									],
+									"checks": [
+										{
+											"id": "unit-tests",
+											"command": "npm test -- EvidenceGrid"
+										}
+									],
+									"setup": ["npm ci"],
+									"candidates": [
+										{
+											"id": "claude-sonnet",
+											"runner": "claude",
+											"model": "claude-sonnet-5-5",
+											"effort": "medium",
+											"instructions": "",
+											"tools": "files"
+										},
+										{
+											"id": "codex-high",
+											"runner": "codex",
+											"model": "gpt-5-codex",
+											"effort": "high",
+											"instructions": "Keep edits inside the allowed files.",
+											"tools": "default"
+										}
+									],
+									"budget": {
+										"repetitions": 3,
+										"timeoutMs": 900000,
+										"repairs": 2
+									}
+								},
+								"project": "/workspace/evidence-app",
+								"revision": "a3f1c9e07b52d84f6e1a0c3b9d75e2f48a6b1c0d",
+								"fingerprint": "c1e0b7d94a2f35e86b19d0a4c7f2e3b58d61a9f0c2e7b4d3a8f5c6e9b1d2a7f0",
+								"runnerVersions": {
+									"claude-sonnet": "2.0.0 (Claude Code)",
+									"codex-high": "codex-cli 0.50.0"
+								},
+								"trials": 6
+							},
+							{
+								"definition": {
+									"version": 1,
+									"name": "report-export-csv",
+									"project": "..",
+									"revision": "main",
+									"task": "Export report rows as CSV with a header line.",
+									"contract": "The export writes one header row followed by one row per report.",
+									"allowedFiles": ["src/reports/exportCsv.ts"],
+									"checks": [
+										{
+											"id": "csv-tests",
+											"command": "npm test -- exportCsv"
+										}
+									],
+									"setup": [],
+									"candidates": [
+										{
+											"id": "claude-opus",
+											"runner": "claude",
+											"model": "claude-opus-5-5",
+											"effort": "high",
+											"instructions": "",
+											"tools": "default"
+										}
+									],
+									"budget": {
+										"repetitions": 5,
+										"timeoutMs": 600000,
+										"repairs": 0
+									}
+								},
+								"project": "/workspace/evidence-app",
+								"revision": "5c0d2e9a1f7b3c64d8e20a5f9b1c7d3e6a4f8b20",
+								"fingerprint": "7d2b9e4f1a6c03b58e7d2f94c1a0b6e3d5f8c2a97e1b4d60c3f9a2e8b5d1c478",
+								"runnerVersions": {
+									"claude-opus": "2.0.0 (Claude Code)"
+								},
+								"trials": 5
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Node file-system error from reading the definition file or resolving the project or repository root path, such as ENOENT for a path that does not exist."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when the definition file does not contain valid JSON."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown when the parsed JSON fails the definition schema, including unknown keys, a version other than 1, a Codex candidate with files tools or max effort, and budget values outside their ranges."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Duplicate benchmark identifiers or paths.' when allowedFiles, check ids or candidate ids repeat a value."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Benchmark Git operation failed. Verify the project and revision.' when a Git command exits nonzero, such as when the project is not inside a Git repository, the revision does not name a commit, or the revision's file tree cannot be listed."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Benchmark project must be the Git repository root.' when the resolved project path is not the realpath of the repository's top-level directory."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Benchmark snapshots do not support symlinks or submodules.' when the revision's file tree has an entry that is not a 100644 or 100755 blob."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Codex runner is unavailable.' or 'Claude runner is unavailable.' when that runner's --version preflight exits nonzero."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Unsupported Codex tool or effort setting.' by the Codex preflight for a candidate with files tools or max effort; the definition schema rejects such candidates before preflight runs."
+					},
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejected as BoundedCommandFailure when a Git or runner --version process cannot start, runs past its deadline (24 hours for Git, 10 seconds for runner --version checks), or exceeds the 8,000,000-byte output bound."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
