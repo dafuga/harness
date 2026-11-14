@@ -41,73 +41,272 @@
 				"name": "noteLine.entry",
 				"type": "HistoryNote",
 				"required": true,
-				"description": "Validated history entry to serialize canonically."
+				"description": "The history entry to serialize as one note line; noteLine does not validate it, so it must already be a HistoryNote of kind verification, reason, legacy-report or regression. Object keys are sorted at every depth, so equal entries always produce identical lines.",
+				"examples": [
+					{
+						"evidence": {
+							"commit": "e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95",
+							"manifest": "8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5",
+							"path": "records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48"
+						},
+						"finishedAt": "2026-11-10T14:03:22.418Z",
+						"kind": "verification",
+						"profile": "5b1d7c93e0a2f416",
+						"record": "5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48",
+						"schemaVersion": 1,
+						"source": {
+							"base": "c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1",
+							"commit": "3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+							"tree": "a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912"
+						},
+						"status": "passed"
+					},
+					{
+						"commit": "9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c",
+						"evidence": {
+							"commit": "1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2",
+							"manifest": "2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e",
+							"path": "regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630"
+						},
+						"kind": "regression",
+						"loop": "project-activity",
+						"phase": "red",
+						"record": "d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630",
+						"schemaVersion": 1
+					}
+				]
 			},
 			{
 				"name": "noteLines.entries",
 				"type": "HistoryNote[]",
 				"required": true,
-				"description": "History entries to write in their existing order."
+				"description": "The history entries to write, in the order given, each serialized exactly as noteLine serializes it; none is validated. An empty array is allowed and produces an empty string.",
+				"examples": [
+					[
+						{
+							"evidence": {
+								"commit": "e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95",
+								"manifest": "8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5",
+								"path": "records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48"
+							},
+							"finishedAt": "2026-11-10T14:03:22.418Z",
+							"kind": "verification",
+							"profile": "5b1d7c93e0a2f416",
+							"record": "5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48",
+							"schemaVersion": 1,
+							"source": {
+								"base": "c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1",
+								"commit": "3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+								"tree": "a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912"
+							},
+							"status": "passed"
+						},
+						{
+							"commit": "9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c",
+							"evidence": {
+								"commit": "1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2",
+								"manifest": "2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e",
+								"path": "regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630"
+							},
+							"kind": "regression",
+							"loop": "project-activity",
+							"phase": "red",
+							"record": "d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630",
+							"schemaVersion": 1
+						}
+					],
+					[
+						{
+							"evidence": {
+								"commit": "4a9d1f6c0e83b25d7f1a9c46e0b2d8351c7f9e3a",
+								"manifest": "6d0c8a2f5e91b374c0a8d6e2f19b5c37a4e0d8b26f1c9a53e7d4b0a2c86f1e90",
+								"path": "records/7e2a5d91c0b48f36a2d7e19c5b0f8a4d6c3e1729/a4f17c3e90b2d6851c7e0a39f5d2b4618e3c9f04a7b1d26e5f0b8d1c3a6e9472"
+							},
+							"finishedAt": "2026-11-12T09:47:05.126Z",
+							"kind": "verification",
+							"profile": "c02e9a57d1b48f3a",
+							"record": "a4f17c3e90b2d6851c7e0a39f5d2b4618e3c9f04a7b1d26e5f0b8d1c3a6e9472",
+							"schemaVersion": 1,
+							"source": {
+								"base": null,
+								"commit": "7e2a5d91c0b48f36a2d7e19c5b0f8a4d6c3e1729",
+								"tree": "0f6c3b8e2d91a57c4e0b6d3a8f1c9e25b7d40a6e"
+							},
+							"status": "failed"
+						}
+					]
+				]
 			},
 			{
 				"name": "mergeNoteLines.left",
 				"type": "string",
 				"required": true,
-				"description": "First note text to union with the second."
+				"description": "The first note text, split at each line feed; a line that is empty or only whitespace is dropped, and every other line is kept exactly as written. Lines are not validated or canonicalized, so a line that is not a history entry is still kept.",
+				"examples": [
+					"{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}\n",
+					""
+				]
 			},
 			{
 				"name": "mergeNoteLines.right",
 				"type": "string",
 				"required": true,
-				"description": "Second note text to union with the first."
+				"description": "The second note text, read with the same line rules as left; the result is the union of both, so a line present in both appears once. Lines are not validated or canonicalized, so a line that is not a history entry is still kept.",
+				"examples": [
+					"{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}\n{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n",
+					"{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n"
+				]
 			},
 			{
 				"name": "noteCommit.entry",
 				"type": "HistoryNote",
 				"required": true,
-				"description": "History entry whose owning source commit should be read."
+				"description": "The history entry whose owning commit is read: a verification entry gives its source.commit, and a reason, legacy-report or regression entry gives its commit field. noteCommit does not validate the entry, so it must already be a HistoryNote.",
+				"examples": [
+					{
+						"evidence": {
+							"commit": "e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95",
+							"manifest": "8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5",
+							"path": "records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48"
+						},
+						"finishedAt": "2026-11-10T14:03:22.418Z",
+						"kind": "verification",
+						"profile": "5b1d7c93e0a2f416",
+						"record": "5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48",
+						"schemaVersion": 1,
+						"source": {
+							"base": "c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1",
+							"commit": "3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+							"tree": "a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912"
+						},
+						"status": "passed"
+					},
+					{
+						"commit": "9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c",
+						"evidence": {
+							"commit": "1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2",
+							"manifest": "2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e",
+							"path": "regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630"
+						},
+						"kind": "regression",
+						"loop": "project-activity",
+						"phase": "red",
+						"record": "d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630",
+						"schemaVersion": 1
+					}
+				]
 			},
 			{
 				"name": "readNoteLines.text",
 				"type": "string",
 				"required": true,
-				"description": "Newline-delimited note text to validate line by line."
+				"description": "The note text to read, with one JSON entry per line; a blank line is skipped and every other line is parsed and checked against historyNoteSchema. A line that is not a valid entry, or that was written for another commit, is reported in problems and never returned as an entry.",
+				"examples": [
+					"{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}\n{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n",
+					"{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n"
+				]
 			},
 			{
 				"name": "readNoteLines.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit the note belongs to; entries naming a different commit are rejected."
+				"description": "The commit the note is read for, compared with each entry's owning commit as an exact string. An entry written for any other commit is left out and reported in problems rather than thrown.",
+				"examples": [
+					"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+					"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "noteLine",
 				"type": "string",
-				"description": "Canonical JSON for one entry, without an added newline."
+				"description": "Compact canonical JSON for one entry, with object keys sorted at every depth and no newline appended. Equal entries always give the same text, which is what lets mergeNoteLines remove duplicate lines.",
+				"examples": [
+					"{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}",
+					"{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}"
+				]
 			},
 			{
 				"name": "noteLines",
 				"type": "string",
-				"description": "Canonical JSON entries each followed by a newline; an empty list produces empty text."
+				"description": "Each entry's noteLine text followed by one newline, in the order of the entries; an empty array gives an empty string. Unlike mergeNoteLines, this output is not sorted.",
+				"examples": [
+					"{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}\n{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n",
+					"{\"evidence\":{\"commit\":\"4a9d1f6c0e83b25d7f1a9c46e0b2d8351c7f9e3a\",\"manifest\":\"6d0c8a2f5e91b374c0a8d6e2f19b5c37a4e0d8b26f1c9a53e7d4b0a2c86f1e90\",\"path\":\"records/7e2a5d91c0b48f36a2d7e19c5b0f8a4d6c3e1729/a4f17c3e90b2d6851c7e0a39f5d2b4618e3c9f04a7b1d26e5f0b8d1c3a6e9472\"},\"finishedAt\":\"2026-11-12T09:47:05.126Z\",\"kind\":\"verification\",\"profile\":\"c02e9a57d1b48f3a\",\"record\":\"a4f17c3e90b2d6851c7e0a39f5d2b4618e3c9f04a7b1d26e5f0b8d1c3a6e9472\",\"schemaVersion\":1,\"source\":{\"base\":null,\"commit\":\"7e2a5d91c0b48f36a2d7e19c5b0f8a4d6c3e1729\",\"tree\":\"0f6c3b8e2d91a57c4e0b6d3a8f1c9e25b7d40a6e\"},\"status\":\"failed\"}\n"
+				]
 			},
 			{
 				"name": "noteCommit",
 				"type": "string",
-				"description": "Verification source.commit or the commit field of a reason/legacy entry."
+				"description": "The commit the entry was written for: source.commit of a verification entry, or the commit field of a reason, legacy-report or regression entry.",
+				"examples": [
+					"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+					"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c"
+				]
 			},
 			{
 				"name": "mergeNoteLines",
 				"type": "string",
-				"description": "Sorted unique nonblank lines, each with a trailing newline. The union does not validate or canonicalize the supplied lines."
+				"description": "The sorted, de-duplicated union of the nonblank lines of left and right, each followed by one newline; the sort uses default string comparison. The union does not validate or canonicalize the supplied lines.",
+				"examples": [
+					"{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}\n",
+					"{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n"
+				]
 			},
 			{
 				"name": "readNoteLines",
 				"type": "ReadNote",
-				"description": "Valid entries for the requested commit in line order and problems identifying malformed or foreign-commit lines; blank lines are ignored."
+				"description": "The entries whose owning commit matches the requested commit, in line order, plus one problem for each malformed or foreign-commit line that gives its 1-based line number. Blank lines produce neither an entry nor a problem.",
+				"examples": [
+					{
+						"entries": [
+							{
+								"evidence": {
+									"commit": "e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95",
+									"manifest": "8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5",
+									"path": "records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48"
+								},
+								"finishedAt": "2026-11-10T14:03:22.418Z",
+								"kind": "verification",
+								"profile": "5b1d7c93e0a2f416",
+								"record": "5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48",
+								"schemaVersion": 1,
+								"source": {
+									"base": "c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1",
+									"commit": "3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+									"tree": "a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912"
+								},
+								"status": "passed"
+							}
+						],
+						"problems": [
+							"note line 2 was written for commit 9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c, not this commit"
+						]
+					},
+					{
+						"entries": [
+							{
+								"commit": "9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c",
+								"evidence": {
+									"commit": "1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2",
+									"manifest": "2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e",
+									"path": "regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630"
+								},
+								"kind": "regression",
+								"loop": "project-activity",
+								"phase": "red",
+								"record": "d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630",
+								"schemaVersion": 1
+							}
+						],
+						"problems": []
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "noteLine",
@@ -116,18 +315,55 @@
 						"name": "noteLine.entry",
 						"type": "HistoryNote",
 						"required": true,
-						"description": "Validated history entry to serialize canonically."
+						"description": "The history entry to serialize as one note line; noteLine does not validate it, so it must already be a HistoryNote of kind verification, reason, legacy-report or regression. Object keys are sorted at every depth, so equal entries always produce identical lines.",
+						"examples": [
+							{
+								"evidence": {
+									"commit": "e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95",
+									"manifest": "8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5",
+									"path": "records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48"
+								},
+								"finishedAt": "2026-11-10T14:03:22.418Z",
+								"kind": "verification",
+								"profile": "5b1d7c93e0a2f416",
+								"record": "5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48",
+								"schemaVersion": 1,
+								"source": {
+									"base": "c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1",
+									"commit": "3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+									"tree": "a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912"
+								},
+								"status": "passed"
+							},
+							{
+								"commit": "9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c",
+								"evidence": {
+									"commit": "1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2",
+									"manifest": "2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e",
+									"path": "regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630"
+								},
+								"kind": "regression",
+								"loop": "project-activity",
+								"phase": "red",
+								"record": "d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630",
+								"schemaVersion": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "noteLine",
 						"type": "string",
-						"description": "Canonical JSON for one entry, without an added newline."
+						"description": "Compact canonical JSON for one entry, with object keys sorted at every depth and no newline appended. Equal entries always give the same text, which is what lets mergeNoteLines remove duplicate lines.",
+						"examples": [
+							"{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}",
+							"{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "noteLines",
@@ -136,18 +372,77 @@
 						"name": "noteLines.entries",
 						"type": "HistoryNote[]",
 						"required": true,
-						"description": "History entries to write in their existing order."
+						"description": "The history entries to write, in the order given, each serialized exactly as noteLine serializes it; none is validated. An empty array is allowed and produces an empty string.",
+						"examples": [
+							[
+								{
+									"evidence": {
+										"commit": "e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95",
+										"manifest": "8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5",
+										"path": "records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48"
+									},
+									"finishedAt": "2026-11-10T14:03:22.418Z",
+									"kind": "verification",
+									"profile": "5b1d7c93e0a2f416",
+									"record": "5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48",
+									"schemaVersion": 1,
+									"source": {
+										"base": "c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1",
+										"commit": "3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+										"tree": "a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912"
+									},
+									"status": "passed"
+								},
+								{
+									"commit": "9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c",
+									"evidence": {
+										"commit": "1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2",
+										"manifest": "2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e",
+										"path": "regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630"
+									},
+									"kind": "regression",
+									"loop": "project-activity",
+									"phase": "red",
+									"record": "d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630",
+									"schemaVersion": 1
+								}
+							],
+							[
+								{
+									"evidence": {
+										"commit": "4a9d1f6c0e83b25d7f1a9c46e0b2d8351c7f9e3a",
+										"manifest": "6d0c8a2f5e91b374c0a8d6e2f19b5c37a4e0d8b26f1c9a53e7d4b0a2c86f1e90",
+										"path": "records/7e2a5d91c0b48f36a2d7e19c5b0f8a4d6c3e1729/a4f17c3e90b2d6851c7e0a39f5d2b4618e3c9f04a7b1d26e5f0b8d1c3a6e9472"
+									},
+									"finishedAt": "2026-11-12T09:47:05.126Z",
+									"kind": "verification",
+									"profile": "c02e9a57d1b48f3a",
+									"record": "a4f17c3e90b2d6851c7e0a39f5d2b4618e3c9f04a7b1d26e5f0b8d1c3a6e9472",
+									"schemaVersion": 1,
+									"source": {
+										"base": null,
+										"commit": "7e2a5d91c0b48f36a2d7e19c5b0f8a4d6c3e1729",
+										"tree": "0f6c3b8e2d91a57c4e0b6d3a8f1c9e25b7d40a6e"
+									},
+									"status": "failed"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "noteLines",
 						"type": "string",
-						"description": "Canonical JSON entries each followed by a newline; an empty list produces empty text."
+						"description": "Each entry's noteLine text followed by one newline, in the order of the entries; an empty array gives an empty string. Unlike mergeNoteLines, this output is not sorted.",
+						"examples": [
+							"{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}\n{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n",
+							"{\"evidence\":{\"commit\":\"4a9d1f6c0e83b25d7f1a9c46e0b2d8351c7f9e3a\",\"manifest\":\"6d0c8a2f5e91b374c0a8d6e2f19b5c37a4e0d8b26f1c9a53e7d4b0a2c86f1e90\",\"path\":\"records/7e2a5d91c0b48f36a2d7e19c5b0f8a4d6c3e1729/a4f17c3e90b2d6851c7e0a39f5d2b4618e3c9f04a7b1d26e5f0b8d1c3a6e9472\"},\"finishedAt\":\"2026-11-12T09:47:05.126Z\",\"kind\":\"verification\",\"profile\":\"c02e9a57d1b48f3a\",\"record\":\"a4f17c3e90b2d6851c7e0a39f5d2b4618e3c9f04a7b1d26e5f0b8d1c3a6e9472\",\"schemaVersion\":1,\"source\":{\"base\":null,\"commit\":\"7e2a5d91c0b48f36a2d7e19c5b0f8a4d6c3e1729\",\"tree\":\"0f6c3b8e2d91a57c4e0b6d3a8f1c9e25b7d40a6e\"},\"status\":\"failed\"}\n"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "mergeNoteLines",
@@ -156,24 +451,36 @@
 						"name": "mergeNoteLines.left",
 						"type": "string",
 						"required": true,
-						"description": "First note text to union with the second."
+						"description": "The first note text, split at each line feed; a line that is empty or only whitespace is dropped, and every other line is kept exactly as written. Lines are not validated or canonicalized, so a line that is not a history entry is still kept.",
+						"examples": [
+							"{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}\n",
+							""
+						]
 					},
 					{
 						"name": "mergeNoteLines.right",
 						"type": "string",
 						"required": true,
-						"description": "Second note text to union with the first."
+						"description": "The second note text, read with the same line rules as left; the result is the union of both, so a line present in both appears once. Lines are not validated or canonicalized, so a line that is not a history entry is still kept.",
+						"examples": [
+							"{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}\n{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n",
+							"{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "mergeNoteLines",
 						"type": "string",
-						"description": "Sorted unique nonblank lines, each with a trailing newline. The union does not validate or canonicalize the supplied lines."
+						"description": "The sorted, de-duplicated union of the nonblank lines of left and right, each followed by one newline; the sort uses default string comparison. The union does not validate or canonicalize the supplied lines.",
+						"examples": [
+							"{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}\n",
+							"{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "noteCommit",
@@ -182,18 +489,55 @@
 						"name": "noteCommit.entry",
 						"type": "HistoryNote",
 						"required": true,
-						"description": "History entry whose owning source commit should be read."
+						"description": "The history entry whose owning commit is read: a verification entry gives its source.commit, and a reason, legacy-report or regression entry gives its commit field. noteCommit does not validate the entry, so it must already be a HistoryNote.",
+						"examples": [
+							{
+								"evidence": {
+									"commit": "e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95",
+									"manifest": "8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5",
+									"path": "records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48"
+								},
+								"finishedAt": "2026-11-10T14:03:22.418Z",
+								"kind": "verification",
+								"profile": "5b1d7c93e0a2f416",
+								"record": "5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48",
+								"schemaVersion": 1,
+								"source": {
+									"base": "c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1",
+									"commit": "3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+									"tree": "a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912"
+								},
+								"status": "passed"
+							},
+							{
+								"commit": "9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c",
+								"evidence": {
+									"commit": "1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2",
+									"manifest": "2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e",
+									"path": "regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630"
+								},
+								"kind": "regression",
+								"loop": "project-activity",
+								"phase": "red",
+								"record": "d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630",
+								"schemaVersion": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "noteCommit",
 						"type": "string",
-						"description": "Verification source.commit or the commit field of a reason/legacy entry."
+						"description": "The commit the entry was written for: source.commit of a verification entry, or the commit field of a reason, legacy-report or regression entry.",
+						"examples": [
+							"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+							"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readNoteLines",
@@ -202,24 +546,77 @@
 						"name": "readNoteLines.text",
 						"type": "string",
 						"required": true,
-						"description": "Newline-delimited note text to validate line by line."
+						"description": "The note text to read, with one JSON entry per line; a blank line is skipped and every other line is parsed and checked against historyNoteSchema. A line that is not a valid entry, or that was written for another commit, is reported in problems and never returned as an entry.",
+						"examples": [
+							"{\"evidence\":{\"commit\":\"e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95\",\"manifest\":\"8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5\",\"path\":\"records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\"},\"finishedAt\":\"2026-11-10T14:03:22.418Z\",\"kind\":\"verification\",\"profile\":\"5b1d7c93e0a2f416\",\"record\":\"5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48\",\"schemaVersion\":1,\"source\":{\"base\":\"c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1\",\"commit\":\"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2\",\"tree\":\"a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912\"},\"status\":\"passed\"}\n{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n",
+							"{\"commit\":\"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c\",\"evidence\":{\"commit\":\"1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2\",\"manifest\":\"2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e\",\"path\":\"regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\"},\"kind\":\"regression\",\"loop\":\"project-activity\",\"phase\":\"red\",\"record\":\"d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630\",\"schemaVersion\":1}\n"
+						]
 					},
 					{
 						"name": "readNoteLines.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit the note belongs to; entries naming a different commit are rejected."
+						"description": "The commit the note is read for, compared with each entry's owning commit as an exact string. An entry written for any other commit is left out and reported in problems rather than thrown.",
+						"examples": [
+							"3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+							"9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readNoteLines",
 						"type": "ReadNote",
-						"description": "Valid entries for the requested commit in line order and problems identifying malformed or foreign-commit lines; blank lines are ignored."
+						"description": "The entries whose owning commit matches the requested commit, in line order, plus one problem for each malformed or foreign-commit line that gives its 1-based line number. Blank lines produce neither an entry nor a problem.",
+						"examples": [
+							{
+								"entries": [
+									{
+										"evidence": {
+											"commit": "e59b0d4a72c1f38e6b09a5d2c7f4e13b8a6d0c95",
+											"manifest": "8b3f0a6d1e52c9470d8e2b6a4f91c370e5a7c1d3b08f69241c6e4d0a9b27f3e5",
+											"path": "records/3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2/5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48"
+										},
+										"finishedAt": "2026-11-10T14:03:22.418Z",
+										"kind": "verification",
+										"profile": "5b1d7c93e0a2f416",
+										"record": "5c0e91a7b3d46f28e1b5c07d9a2f43680b7d1e5c94a8f2603d6b2e91c7f05a48",
+										"schemaVersion": 1,
+										"source": {
+											"base": "c1e8b5f3927a04d6e2c9b1a8f0d37e5c49b2a6d1",
+											"commit": "3f9c1e7a52b0d64e8a19c3f7d2b5e06a91c4d8f2",
+											"tree": "a7d24c09e1f35b8c6d0e2a91f4b7c3d58e6a0912"
+										},
+										"status": "passed"
+									}
+								],
+								"problems": [
+									"note line 2 was written for commit 9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c, not this commit"
+								]
+							},
+							{
+								"entries": [
+									{
+										"commit": "9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c",
+										"evidence": {
+											"commit": "1b8e6f20d4a93c57e0f2b81d6c47a9305ed1f8b2",
+											"manifest": "2f6b0d9e83a1c574e90b3d2a6f1c8e0547d2a9b13e6f0c8ad5e1902b7c4a6f3e",
+											"path": "regressions/9d41b7e20c5a86f3d19e4b72a0c6f58d3e27b19c/d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630"
+										},
+										"kind": "regression",
+										"loop": "project-activity",
+										"phase": "red",
+										"record": "d0a3e8c51f7b29466e1c9b04a2f85d37b5e90c2a8d6f1e437a2c4f0e9b1d8630",
+										"schemaVersion": 1
+									}
+								],
+								"problems": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
