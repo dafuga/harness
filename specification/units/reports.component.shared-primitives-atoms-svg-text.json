@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native text element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet rendered inside the text element only when the value is truthy, so omitting it renders no snippet content. The component invokes it with `{@render children()}`, so it must be a Snippet, and the component does not inspect or wrap it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgText",
 				"type": "markup",
-				"description": "The actual native text element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native SVG `text` element the component renders, with every prop other than `children` spread onto it and the children snippet rendered inside it when provided. It matters when callers need attributes and content applied directly to the text element, since no wrapper is added and the tag is always `text`."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
