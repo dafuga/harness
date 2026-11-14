@@ -23,18 +23,20 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GithubConnectionController.constructor.options",
 				"type": "GithubConnectionControllerOptions",
-				"required": true
+				"required": true,
+				"description": "The required constructor configuration contains an origin string, a sessions service, and a GitHub connection or null. The origin is used for callback redirects, and a null connection makes status report GitHub as unconfigured while GitHub-dependent actions call authFail with github-disabled."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GithubConnectionController.routes",
-				"type": "AuthRoutes"
+				"type": "AuthRoutes",
+				"description": "The value is an AuthRoutes map for GET /api/github/status, GET /api/github/connect, GET /api/github/callback, GET /api/github/repositories, and POST /api/github/disconnect; each entry accepts a Request and returns a Promise<Response>. No route returns a token or accepts an installation id."
 			}
 		],
 		"errors": [],
@@ -46,11 +48,12 @@
 				"outputs": [
 					{
 						"name": "GithubConnectionController.routes",
-						"type": "AuthRoutes"
+						"type": "AuthRoutes",
+						"description": "The value is an AuthRoutes map for GET /api/github/status, GET /api/github/connect, GET /api/github/callback, GET /api/github/repositories, and POST /api/github/disconnect; each entry accepts a Request and returns a Promise<Response>. No route returns a token or accepts an installation id."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -60,17 +63,19 @@
 					{
 						"name": "GithubConnectionController.constructor.options",
 						"type": "GithubConnectionControllerOptions",
-						"required": true
+						"required": true,
+						"description": "The required constructor configuration contains an origin string, a sessions service, and a GitHub connection or null. The origin is used for callback redirects, and a null connection makes status report GitHub as unconfigured while GitHub-dependent actions call authFail with github-disabled."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubConnectionController.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The value is a newly initialized GithubConnectionController instance that retains the supplied options and creates an AuthRequestValidator for GitHub callback parsing. Calling routes() on the instance creates its GitHub route map."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
