@@ -15,22 +15,30 @@
 		"symbols": ["createSessionStore", "Session", "SessionState", "Session"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createSessionStore.auth",
 				"type": "BrowserAuth",
-				"required": true
+				"required": true,
+				"description": "The browser auth client the store's methods call: status() in refresh and check, challenge() in challenge, google() in signIn, logout() in signOut, emailStart() in sendEmailCode and emailVerify() in verifyEmail. The factory stores it as given and never checks it, so a missing method fails only when a store method calls it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createSessionStore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The SessionState instance the factory creates, which is the type exported as Session: it holds status (starts as null), error (starts as an empty string) and busy (starts as false), plus its methods to read, challenge and change the session. Each call creates a new instance."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "BrowserAuth.challenge",
+				"type": "thrown",
+				"description": "The rejection of BrowserAuth.challenge(), which SessionState.challenge() returns unchanged, so the store never wraps or renames it. The other store methods catch the failures of their auth calls and do not pass them on, so challenge() is the only store method that can reject."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createSessionStore",
@@ -38,17 +46,19 @@
 					{
 						"name": "createSessionStore.auth",
 						"type": "BrowserAuth",
-						"required": true
+						"required": true,
+						"description": "The browser auth client the store's methods call: status() in refresh and check, challenge() in challenge, google() in signIn, logout() in signOut, emailStart() in sendEmailCode and emailVerify() in verifyEmail. The factory stores it as given and never checks it, so a missing method fails only when a store method calls it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createSessionStore",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The SessionState instance the factory creates, which is the type exported as Session: it holds status (starts as null), error (starts as an empty string) and busy (starts as false), plus its methods to read, challenge and change the session. Each call creates a new instance."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
