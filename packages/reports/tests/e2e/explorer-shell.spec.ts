@@ -108,6 +108,8 @@ for (const [screen, width, height] of screens) {
 		await links.filter({ hasText: 'Platforms' }).click();
 		await expect(page).toHaveURL(at(`${scoped}/platforms`));
 		await moduleNavigation(page, home, screen, `${scoped}`);
+		// Code's destinations end on Types, with Code current and the branch revision kept.
+		await captureShell(page, home, { state: 'types', viewport: screen });
 	});
 	test(`the branch with its tip and the viewed commit are told apart at ${screen} width`, async ({
 		page
