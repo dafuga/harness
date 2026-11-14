@@ -28,17 +28,19 @@
 			{
 				"name": "ProjectSyncService.constructor.options",
 				"type": "ProjectSyncOptions",
-				"required": true
+				"required": true,
+				"description": "Provides the refresh callback that reads the signed-in account and its projects, plus an optional polling interval in milliseconds. If omitted, the interval is 30000 ms; the service does not validate its range, and refresh failures are handled by the owner."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sync",
 				"type": "Promise<void>",
-				"description": "Coalesces repeated requests into at most one follow-up read. Stopping releases listeners and timers."
+				"description": "Resolves after the active read finishes, including a queued follow-up when sync is called during a read; calls while inactive or hidden resolve immediately. Refresh failures are swallowed, and active visible reads schedule another read after the interval."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ProjectSyncService.start",
@@ -46,11 +48,12 @@
 				"outputs": [
 					{
 						"name": "ProjectSyncService.start",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Activates syncing once, installs focus, online and visibility listeners when the browser objects support them, and waits one interval before the first read while shown. It returns undefined."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectSyncService.stop",
@@ -58,11 +61,12 @@
 				"outputs": [
 					{
 						"name": "ProjectSyncService.stop",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Deactivates syncing, clears its timer and queued follow-up, and removes installed listeners; an in-flight refresh is not cancelled. It returns undefined."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectSyncService.sync",
@@ -70,11 +74,12 @@
 				"outputs": [
 					{
 						"name": "ProjectSyncService.sync",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Returns the current read promise when active and shown, or an already-resolved promise otherwise; calls during a read queue one subsequent read, and refresh failures are swallowed. Reads do not overlap, and another interval read is scheduled while active and shown."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -84,17 +89,19 @@
 					{
 						"name": "ProjectSyncService.constructor.options",
 						"type": "ProjectSyncOptions",
-						"required": true
+						"required": true,
+						"description": "Provides the refresh callback that reads the signed-in account and its projects, plus an optional polling interval in milliseconds. If omitted, the interval is 30000 ms; the service does not validate its range, and refresh failures are handled by the owner."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectSyncService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns a ProjectSyncService instance configured with the supplied options. Construction does not start reads or install listeners; call start to activate syncing."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
