@@ -18,44 +18,86 @@
 				"name": "checkUnitContracts.id",
 				"type": "string | undefined",
 				"required": true,
-				"description": "Registered active identity; undefined selects all only when the options explicitly request all."
+				"description": "An optional stored unit id passed to guidanceUnit when a single unit is selected. Exactly one of id and options.all must be truthy, or the selection check throws.",
+				"examples": ["workflow.development-tooling-check-unit-contracts"]
 			},
 			{
 				"name": "checkUnitContracts.options",
 				"type": "GuidanceOptions & { all?: boolean }",
 				"required": false,
 				"default": {},
-				"description": "Project root and optional additional required-state JSON paths. Guide reads HEAD; contract checks read the working tree. all selects every active stored contract."
+				"description": "The guidance options passed to guidanceContext, with all selecting every active stored unit when no id is supplied. This workflow reads all directly and forwards the remaining options to the context builder.",
+				"examples": [
+					{},
+					{
+						"all": true
+					}
+				]
 			},
 			{
 				"name": "renderContractCheck.report",
 				"type": "ContractCheckReport",
 				"required": true,
-				"description": "Completed structured report to render without recomputing source or upgrading proof."
+				"description": "A completed check report containing entity ids, findings, per-entity counts, and totals. The renderer consumes these fields directly and does not rerun the checks.",
+				"examples": [
+					{
+						"entities": ["workflow.development-tooling-check-unit-contracts"],
+						"findings": [],
+						"counts": [
+							{
+								"entity": "workflow.development-tooling-check-unit-contracts",
+								"findings": 0
+							}
+						],
+						"summary": {
+							"entities": 1,
+							"findings": 0
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "checkUnitContracts",
 				"type": "Promise<ContractCheckReport>",
-				"description": "Selected active entities, located finding records, per-entity counts and total findings. Findings are heuristic, not exhaustive proof. Native element atoms skip advisory contract guesses; explicit literal-union states, source/registry documentation and other contract findings remain checked."
+				"description": "A promise resolving to selected entity ids, located findings, per-entity counts, and overall totals. all considers active stored units, while an id selects one unit; findings remain heuristic.",
+				"examples": [
+					{
+						"entities": ["workflow.development-tooling-check-unit-contracts"],
+						"findings": [],
+						"counts": [
+							{
+								"entity": "workflow.development-tooling-check-unit-contracts",
+								"findings": 0
+							}
+						],
+						"summary": {
+							"entities": 1,
+							"findings": 0
+						}
+					}
+				]
 			},
 			{
 				"name": "renderContractCheck",
 				"type": "string",
-				"description": "Human per-entity counts followed by each finding kind, detail, location and total."
+				"description": "A newline-joined string with one count line per entity, one line per finding with its entity, kind, detail, and location, and a final total line. The final line labels the result as heuristic rather than a completeness proof.",
+				"examples": [
+					"workflow.development-tooling-check-unit-contracts: 0 findings\n0 findings across 1 entities. Heuristic review; not a completeness proof."
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid selection, unknown identities, malformed inventories or invalid registry data with the specific CLI diagnostic."
+				"description": "The selection check invokes fail('Select one unit identity or --all.') when Boolean(id) and Boolean(options.all) are equal. This occurs before guidance context is loaded."
 			},
 			{
 				"name": "Dependency failure",
 				"type": "thrown",
-				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+				"description": "Errors from context loading, unit resolution, state/test collection, contract derivation, or uid finding propagate because the workflow does not catch them. The originating failure is passed through by this workflow."
 			}
 		],
 		"errorStatus": "declared",
@@ -67,33 +109,56 @@
 						"name": "checkUnitContracts.id",
 						"type": "string | undefined",
 						"required": true,
-						"description": "Registered active identity; undefined selects all only when the options explicitly request all."
+						"description": "An optional stored unit id passed to guidanceUnit when a single unit is selected. Exactly one of id and options.all must be truthy, or the selection check throws.",
+						"examples": ["workflow.development-tooling-check-unit-contracts"]
 					},
 					{
 						"name": "checkUnitContracts.options",
 						"type": "GuidanceOptions & { all?: boolean }",
 						"required": false,
 						"default": {},
-						"description": "Project root and optional additional required-state JSON paths. Guide reads HEAD; contract checks read the working tree. all selects every active stored contract."
+						"description": "The guidance options passed to guidanceContext, with all selecting every active stored unit when no id is supplied. This workflow reads all directly and forwards the remaining options to the context builder.",
+						"examples": [
+							{},
+							{
+								"all": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkUnitContracts",
 						"type": "Promise<ContractCheckReport>",
-						"description": "Selected active entities, located finding records, per-entity counts and total findings. Findings are heuristic, not exhaustive proof."
+						"description": "A promise resolving to selected entity ids, located findings, per-entity counts, and overall totals. all considers active stored units, while an id selects one unit; findings remain heuristic.",
+						"examples": [
+							{
+								"entities": ["workflow.development-tooling-check-unit-contracts"],
+								"findings": [],
+								"counts": [
+									{
+										"entity": "workflow.development-tooling-check-unit-contracts",
+										"findings": 0
+									}
+								],
+								"summary": {
+									"entities": 1,
+									"findings": 0
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid selection, missing source or malformed inventory produces the corresponding CLI diagnostic."
+						"description": "The selection check invokes fail('Select one unit identity or --all.') when Boolean(id) and Boolean(options.all) are equal. This occurs before guidance context is loaded."
 					},
 					{
 						"name": "Dependency failure",
 						"type": "thrown",
-						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+						"description": "Errors from context loading, unit resolution, state/test collection, contract derivation, or uid finding propagate because the workflow does not catch them. The originating failure is passed through by this workflow."
 					}
 				],
 				"errorStatus": "declared"
@@ -105,14 +170,33 @@
 						"name": "renderContractCheck.report",
 						"type": "ContractCheckReport",
 						"required": true,
-						"description": "Completed structured report to render without recomputing source or upgrading proof."
+						"description": "A completed check report containing entity ids, findings, per-entity counts, and totals. The renderer consumes these fields directly and does not rerun the checks.",
+						"examples": [
+							{
+								"entities": ["workflow.development-tooling-check-unit-contracts"],
+								"findings": [],
+								"counts": [
+									{
+										"entity": "workflow.development-tooling-check-unit-contracts",
+										"findings": 0
+									}
+								],
+								"summary": {
+									"entities": 1,
+									"findings": 0
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderContractCheck",
 						"type": "string",
-						"description": "Human per-entity counts followed by each finding kind, detail, location and total."
+						"description": "A newline-joined string with one count line per entity, one line per finding with its entity, kind, detail, and location, and a final total line. The final line labels the result as heuristic rather than a completeness proof.",
+						"examples": [
+							"workflow.development-tooling-check-unit-contracts: 0 findings\n0 findings across 1 entities. Heuristic review; not a completeness proof."
+						]
 					}
 				],
 				"errors": [],
