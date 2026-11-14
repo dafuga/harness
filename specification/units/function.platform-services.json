@@ -48,81 +48,146 @@
 				"name": "sameTime.one",
 				"type": "string",
 				"required": true,
-				"description": "First process start-time string to compare after whitespace normalization."
+				"description": "A process start-time string recorded by the tracker. Whitespace runs are collapsed before comparison; the value is not parsed or otherwise normalized.",
+				"examples": ["Sat Nov 14 12:34:56 2026"]
 			},
 			{
 				"name": "sameTime.other",
 				"type": "string",
 				"required": true,
-				"description": "Second process start-time string to compare after whitespace normalization."
+				"description": "The other process start-time string to compare with the first. Whitespace runs are collapsed before comparison; the value is not parsed or otherwise normalized.",
+				"examples": ["Sat  Nov 14 12:34:56 2026"]
 			},
 			{
 				"name": "named.names",
 				"type": "string[]",
 				"required": false,
-				"description": "Executable paths or names checked by basename against the guarded service/launcher names."
+				"description": "Executable paths or names whose basenames are checked against the exact guarded names ibtoold, ibtool and actool. With no arguments the rest parameter is an empty array.",
+				"examples": [
+					["/Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold"],
+					["/usr/bin/python3"]
+				]
 			},
 			{
 				"name": "probing.context",
 				"type": "ServiceContext",
 				"required": true,
-				"description": "Context whose optional ProcessProbes implementation is used, or whose cancellation signal configures the default system probes."
+				"description": "The context supplying optional process probes and an optional abort signal. The supplied probes are returned unchanged; if absent, processProbes is called with the signal."
 			},
 			{
 				"name": "classifyProcess.known",
 				"type": "TrackedProcess",
 				"required": true,
-				"description": "PID and recorded start time of the process to classify."
+				"description": "The tracked PID and recorded start time used to identify the process being classified. The start time is compared with current facts to detect a changed process with the same PID.",
+				"examples": [
+					{
+						"pid": 4812,
+						"started": "Sat Nov 14 12:34:56 2026"
+					}
+				]
 			},
 			{
 				"name": "classifyProcess.context",
 				"type": "ServiceContext",
 				"required": true,
-				"description": "Authority callback, command process-group ID, optional process probes and cancellation signal."
+				"description": "The context supplying the authority callback, command process group, optional probes and optional abort signal. Authority and group are used for guarded candidates; absent probes, processProbes uses the signal."
 			},
 			{
 				"name": "stillPrivate.known",
 				"type": "TrackedProcess",
 				"required": true,
-				"description": "PID and recorded start time to verify immediately before signalling."
+				"description": "The tracked PID and recorded start time to check immediately before a signal. The start time is compared with current facts after whitespace normalization.",
+				"examples": [
+					{
+						"pid": 4812,
+						"started": "Sat Nov 14 12:34:56 2026"
+					}
+				]
 			},
 			{
 				"name": "stillPrivate.judgedAs",
 				"type": "string | null",
 				"required": true,
-				"description": "Executable path previously judged private; null means no executable was established."
+				"description": "The executable path previously judged private, or null if no executable was established. The live executable must equal this value exactly and must not have a guarded basename.",
+				"examples": ["/usr/bin/python3", null]
 			},
 			{
 				"name": "stillPrivate.context",
 				"type": "ServiceContext",
 				"required": true,
-				"description": "Authority callback, group ID, optional probes and cancellation signal used for the final identity check."
+				"description": "The context supplying optional probes and an optional abort signal for the final facts and executable lookups. This function does not read the context's authority or group fields."
 			}
 		],
 		"outputs": [
 			{
 				"name": "macAuthority",
 				"type": "ServiceAuthority | null",
-				"description": "Canonical selected Xcode developer directory and signature requirements, or null when selection cannot be established."
+				"description": "The authority for a canonical selected Xcode developer directory, including its Xcode signature requirement and vetted ibtoold service. It returns null when xcode-select fails or the selected path cannot be resolved to an Xcode Contents/Developer directory.",
+				"examples": [
+					{
+						"root": "/Applications/Xcode.app/Contents/Developer",
+						"rootCode": "/Applications/Xcode.app",
+						"rootRequirement": "identifier \"com.apple.dt.Xcode\" and anchor apple generic and (certificate leaf[field.1.2.840.113635.100.6.1.9] exists or certificate 1[field.1.2.840.113635.100.6.2.6] exists and certificate leaf[field.1.2.840.113635.100.6.1.13] exists and certificate leaf[subject.OU] = \"59GAB85EFG\")",
+						"services": [
+							{
+								"path": "usr/bin/ibtoold",
+								"requirement": "identifier \"com.apple.ibtool\" and anchor apple"
+							}
+						]
+					},
+					null
+				]
 			},
 			{
 				"name": "platformServices",
 				"type": "Promise<ServiceAuthority | null>",
-				"description": "Selected Xcode service authority from bounded asynchronous probes, or null if unavailable or invalid."
+				"description": "The asynchronously probed authority for a canonical selected Xcode developer directory, including its Xcode signature requirement and vetted ibtoold service. It resolves to null when xcode-select does not succeed or the selected path is not a valid Xcode Contents/Developer directory.",
+				"examples": [
+					{
+						"root": "/Applications/Xcode.app/Contents/Developer",
+						"rootCode": "/Applications/Xcode.app",
+						"rootRequirement": "identifier \"com.apple.dt.Xcode\" and anchor apple generic and (certificate leaf[field.1.2.840.113635.100.6.1.9] exists or certificate 1[field.1.2.840.113635.100.6.2.6] exists and certificate leaf[field.1.2.840.113635.100.6.1.13] exists and certificate leaf[subject.OU] = \"59GAB85EFG\")",
+						"services": [
+							{
+								"path": "usr/bin/ibtoold",
+								"requirement": "identifier \"com.apple.ibtool\" and anchor apple"
+							}
+						]
+					},
+					null
+				]
 			},
 			{
 				"name": "classifyProcess",
 				"type": "Promise<Verdict>",
-				"description": "Verdict describing gone, private, delegated or protected standing, reason and executable path."
+				"description": "A verdict containing the process standing, reason and live executable path. Ordinary processes are private; a guarded candidate is delegated only after authority, signature, release, adoption and identity checks, while uncertain candidates are protected and missing or replaced processes are gone.",
+				"examples": [
+					{
+						"standing": "private",
+						"reason": "the command's own",
+						"executable": "/usr/bin/python3"
+					},
+					{
+						"standing": "delegated",
+						"reason": "vetted service, vouched for, left the command, adopted by the system",
+						"executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold"
+					},
+					{
+						"standing": "protected",
+						"reason": "no developer tools vouch for it",
+						"executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold"
+					}
+				]
 			},
 			{
 				"name": "stillPrivate",
 				"type": "Promise<boolean>",
-				"description": "True only when PID/start time and executable still match and the executable is not a guarded service or launcher; does not signal."
+				"description": "True only when the process facts and executable are readable, the start time still matches, the live executable exactly equals judgedAs, and neither its basename nor the observed process name is guarded. It returns false when those checks fail and does not signal the process.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "sameTime",
@@ -131,20 +196,23 @@
 						"name": "sameTime.one",
 						"type": "string",
 						"required": true,
-						"description": "First process start-time string to compare after whitespace normalization."
+						"description": "A process start-time string recorded by the tracker. Whitespace runs are collapsed before comparison; the value is not parsed or otherwise normalized.",
+						"examples": ["Sat Nov 14 12:34:56 2026"]
 					},
 					{
 						"name": "sameTime.other",
 						"type": "string",
 						"required": true,
-						"description": "Second process start-time string to compare after whitespace normalization."
+						"description": "The other process start-time string to compare with the first. Whitespace runs are collapsed before comparison; the value is not parsed or otherwise normalized.",
+						"examples": ["Sat  Nov 14 12:34:56 2026"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sameTime",
 						"type": "boolean",
-						"description": "True when the timestamps match after whitespace normalization."
+						"description": "True when replacing each whitespace run with one ordinary space makes the two strings identical. The function does not trim or parse either value.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
@@ -157,14 +225,19 @@
 						"name": "named.names",
 						"type": "string[]",
 						"required": false,
-						"description": "Executable paths or names checked by basename against the guarded service/launcher names."
+						"description": "Executable paths or names whose basenames are checked against the exact guarded names ibtoold, ibtool and actool. With no arguments the rest parameter is an empty array.",
+						"examples": [
+							["/Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold"],
+							["/usr/bin/python3"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "named",
 						"type": "boolean",
-						"description": "True when any supplied executable basename is a guarded Xcode service or launcher."
+						"description": "True when any supplied basename exactly matches ibtoold, ibtool or actool. The comparison is case-sensitive.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
@@ -177,14 +250,14 @@
 						"name": "probing.context",
 						"type": "ServiceContext",
 						"required": true,
-						"description": "Context whose optional ProcessProbes implementation is used, or whose cancellation signal configures the default system probes."
+						"description": "The context supplying optional process probes and an optional abort signal. The supplied probes are returned unchanged; if absent, processProbes is called with the signal."
 					}
 				],
 				"outputs": [
 					{
 						"name": "probing",
 						"type": "ProcessProbes",
-						"description": "Supplied process probes, or system probes configured with the context cancellation signal."
+						"description": "The context's process probes when supplied; otherwise the result of processProbes({ signal: context.signal }). A supplied probe instance is returned unchanged."
 					}
 				],
 				"errors": [],
@@ -197,7 +270,21 @@
 					{
 						"name": "macAuthority",
 						"type": "ServiceAuthority | null",
-						"description": "Canonical selected Xcode developer directory and signature requirements, or null when selection cannot be established."
+						"description": "The authority for a canonical selected Xcode developer directory, including its Xcode signature requirement and vetted ibtoold service. It returns null when xcode-select fails or the selected path cannot be resolved to an Xcode Contents/Developer directory.",
+						"examples": [
+							{
+								"root": "/Applications/Xcode.app/Contents/Developer",
+								"rootCode": "/Applications/Xcode.app",
+								"rootRequirement": "identifier \"com.apple.dt.Xcode\" and anchor apple generic and (certificate leaf[field.1.2.840.113635.100.6.1.9] exists or certificate 1[field.1.2.840.113635.100.6.2.6] exists and certificate leaf[field.1.2.840.113635.100.6.1.13] exists and certificate leaf[subject.OU] = \"59GAB85EFG\")",
+								"services": [
+									{
+										"path": "usr/bin/ibtoold",
+										"requirement": "identifier \"com.apple.ibtool\" and anchor apple"
+									}
+								]
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
@@ -210,7 +297,21 @@
 					{
 						"name": "platformServices",
 						"type": "Promise<ServiceAuthority | null>",
-						"description": "Selected Xcode service authority from bounded asynchronous probes, or null if unavailable or invalid."
+						"description": "The asynchronously probed authority for a canonical selected Xcode developer directory, including its Xcode signature requirement and vetted ibtoold service. It resolves to null when xcode-select does not succeed or the selected path is not a valid Xcode Contents/Developer directory.",
+						"examples": [
+							{
+								"root": "/Applications/Xcode.app/Contents/Developer",
+								"rootCode": "/Applications/Xcode.app",
+								"rootRequirement": "identifier \"com.apple.dt.Xcode\" and anchor apple generic and (certificate leaf[field.1.2.840.113635.100.6.1.9] exists or certificate 1[field.1.2.840.113635.100.6.2.6] exists and certificate leaf[field.1.2.840.113635.100.6.1.13] exists and certificate leaf[subject.OU] = \"59GAB85EFG\")",
+								"services": [
+									{
+										"path": "usr/bin/ibtoold",
+										"requirement": "identifier \"com.apple.ibtool\" and anchor apple"
+									}
+								]
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
@@ -223,20 +324,43 @@
 						"name": "classifyProcess.known",
 						"type": "TrackedProcess",
 						"required": true,
-						"description": "PID and recorded start time of the process to classify."
+						"description": "The tracked PID and recorded start time used to identify the process being classified. The start time is compared with current facts to detect a changed process with the same PID.",
+						"examples": [
+							{
+								"pid": 4812,
+								"started": "Sat Nov 14 12:34:56 2026"
+							}
+						]
 					},
 					{
 						"name": "classifyProcess.context",
 						"type": "ServiceContext",
 						"required": true,
-						"description": "Authority callback, command process-group ID, optional process probes and cancellation signal."
+						"description": "The context supplying the authority callback, command process group, optional probes and optional abort signal. Authority and group are used for guarded candidates; absent probes, processProbes uses the signal."
 					}
 				],
 				"outputs": [
 					{
 						"name": "classifyProcess",
 						"type": "Promise<Verdict>",
-						"description": "Verdict describing gone, private, delegated or protected standing, reason and executable path."
+						"description": "A verdict containing the process standing, reason and live executable path. Ordinary processes are private; a guarded candidate is delegated only after authority, signature, release, adoption and identity checks, while uncertain candidates are protected and missing or replaced processes are gone.",
+						"examples": [
+							{
+								"standing": "private",
+								"reason": "the command's own",
+								"executable": "/usr/bin/python3"
+							},
+							{
+								"standing": "delegated",
+								"reason": "vetted service, vouched for, left the command, adopted by the system",
+								"executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold"
+							},
+							{
+								"standing": "protected",
+								"reason": "no developer tools vouch for it",
+								"executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/ibtoold"
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -249,26 +373,34 @@
 						"name": "stillPrivate.known",
 						"type": "TrackedProcess",
 						"required": true,
-						"description": "PID and recorded start time to verify immediately before signalling."
+						"description": "The tracked PID and recorded start time to check immediately before a signal. The start time is compared with current facts after whitespace normalization.",
+						"examples": [
+							{
+								"pid": 4812,
+								"started": "Sat Nov 14 12:34:56 2026"
+							}
+						]
 					},
 					{
 						"name": "stillPrivate.judgedAs",
 						"type": "string | null",
 						"required": true,
-						"description": "Executable path previously judged private; null means no executable was established."
+						"description": "The executable path previously judged private, or null if no executable was established. The live executable must equal this value exactly and must not have a guarded basename.",
+						"examples": ["/usr/bin/python3", null]
 					},
 					{
 						"name": "stillPrivate.context",
 						"type": "ServiceContext",
 						"required": true,
-						"description": "Authority callback, group ID, optional probes and cancellation signal used for the final identity check."
+						"description": "The context supplying optional probes and an optional abort signal for the final facts and executable lookups. This function does not read the context's authority or group fields."
 					}
 				],
 				"outputs": [
 					{
 						"name": "stillPrivate",
 						"type": "Promise<boolean>",
-						"description": "True only when PID/start time and executable still match and the executable is not a guarded service or launcher; does not signal."
+						"description": "True only when the process facts and executable are readable, the start time still matches, the live executable exactly equals judgedAs, and neither its basename nor the observed process name is guarded. It returns false when those checks fail and does not signal the process.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
