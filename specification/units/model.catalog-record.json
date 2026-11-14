@@ -34,65 +34,153 @@
 				"name": "CatalogRecord.id",
 				"type": "string",
 				"required": true,
-				"description": "Stored row identity; the model passes it to the adapter without generating a key."
+				"description": "Primary key used for catalog_records lookups and writes; this model forwards the supplied string and does not generate or parse an ID.",
+				"examples": ["record-20261114-001"]
 			},
 			{
 				"name": "CatalogRecord.commit",
 				"type": "string",
 				"required": true,
-				"description": "Git commit to which this stored record belongs."
+				"description": "Commit identifier associated with the stored record; this model treats it as an opaque string and does not validate its SHA format.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "CatalogRecord.status",
 				"type": "string",
 				"required": true,
-				"description": "Recorded verification outcome."
+				"description": "Status string stored alongside the record; the model does not restrict its vocabulary or derive it from other fields.",
+				"examples": ["passed"]
 			},
 			{
 				"name": "CatalogRecord.valid",
 				"type": "boolean",
 				"required": true,
-				"description": "Recorded verification validity flag."
+				"description": "Boolean validity value stored with the record; the model does not compute or check it.",
+				"examples": [true]
 			},
 			{
 				"name": "CatalogRecord.data",
 				"type": "json",
 				"required": true,
-				"description": "Structured payload retained by the adapter; no model code is executed to describe it."
+				"description": "JSON payload with the IndexedRecord fields; the model forwards it without parsing or validating its contents.",
+				"examples": [
+					{
+						"id": "record-20261114-001",
+						"status": "passed",
+						"profile": "ci-linux-x64-node22",
+						"finishedAt": "2026-11-14T13:42:00.000Z",
+						"base": "89abcdef0123456789abcdef0123456789abcdef",
+						"valid": true,
+						"problems": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogRecord.find",
 				"type": "Promise<CatalogRecordAttributes | null>",
-				"description": "Promise of the matching catalog_records row, or null according to the adapter lookup result."
+				"description": "Promise resolving to the adapter's matching catalog_records row or null when it reports no match; this model does not validate the returned row.",
+				"examples": [
+					{
+						"id": "record-20261114-001",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"status": "passed",
+						"valid": true,
+						"data": {
+							"id": "record-20261114-001",
+							"status": "passed",
+							"profile": "ci-linux-x64-node22",
+							"finishedAt": "2026-11-14T13:42:00.000Z",
+							"base": "89abcdef0123456789abcdef0123456789abcdef",
+							"valid": true,
+							"problems": []
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "CatalogRecord.findBy",
 				"type": "Promise<CatalogRecordAttributes[]>",
-				"description": "Promise of catalog_records rows matching the supplied attribute filters."
+				"description": "Promise resolving to the rows the adapter returns for the supplied attribute filter; matching semantics and ordering are adapter-defined.",
+				"examples": [
+					[
+						{
+							"id": "record-20261114-001",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"status": "passed",
+							"valid": true,
+							"data": {
+								"id": "record-20261114-001",
+								"status": "passed",
+								"profile": "ci-linux-x64-node22",
+								"finishedAt": "2026-11-14T13:42:00.000Z",
+								"base": "89abcdef0123456789abcdef0123456789abcdef",
+								"valid": true,
+								"problems": []
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "CatalogRecord.create",
 				"type": "Promise<CatalogRecordAttributes>",
-				"description": "Promise of the catalog_records row returned by the adapter after creation."
+				"description": "Promise resolving to the row returned by the adapter after creation; this model adds no generated fields or defaults.",
+				"examples": [
+					{
+						"id": "record-20261114-001",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"status": "passed",
+						"valid": true,
+						"data": {
+							"id": "record-20261114-001",
+							"status": "passed",
+							"profile": "ci-linux-x64-node22",
+							"finishedAt": "2026-11-14T13:42:00.000Z",
+							"base": "89abcdef0123456789abcdef0123456789abcdef",
+							"valid": true,
+							"problems": []
+						}
+					}
+				]
 			},
 			{
 				"name": "CatalogRecord.update",
 				"type": "Promise<CatalogRecordAttributes | null>",
-				"description": "Promise of the updated catalog_records row, or null according to the adapter update result."
+				"description": "Promise resolving to the adapter's updated row or null when it reports no match; patch application is adapter-defined.",
+				"examples": [
+					{
+						"id": "record-20261114-001",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"status": "passed",
+						"valid": true,
+						"data": {
+							"id": "record-20261114-001",
+							"status": "passed",
+							"profile": "ci-linux-x64-node22",
+							"finishedAt": "2026-11-14T13:42:00.000Z",
+							"base": "89abcdef0123456789abcdef0123456789abcdef",
+							"valid": true,
+							"problems": []
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "CatalogRecord.delete",
 				"type": "Promise<boolean>",
-				"description": "Promise of the adapter deletion result for the requested catalog_records row."
+				"description": "Promise resolving to the adapter's boolean deletion result; the model does not reinterpret what true or false means.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Persistence operation failure",
-				"type": "propagated",
-				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+				"type": "thrown",
+				"description": "Synchronous adapter throws and rejected adapter promises propagate without being caught or converted. Copying filter or create/update input objects can also throw while reading enumerable getters."
 			}
 		],
 		"errorStatus": "declared",
@@ -104,27 +192,46 @@
 						"name": "CatalogRecord.find.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_records table; the model owns no connection lifecycle."
+						"description": "Persistence adapter receiving the find call for catalog_records; this model delegates storage to it and owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRecord.find.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Row ID looked up in catalog_records and passed unchanged to the adapter; this model does not generate or parse it.",
+						"examples": ["record-20261114-001"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRecord.find",
 						"type": "Promise<CatalogRecordAttributes | null>",
-						"description": "Promise of the matching catalog_records row, or null according to the adapter lookup result."
+						"description": "Promise resolving to the adapter's matching catalog_records row or null when it reports no match; this model does not validate the returned row.",
+						"examples": [
+							{
+								"id": "record-20261114-001",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"status": "passed",
+								"valid": true,
+								"data": {
+									"id": "record-20261114-001",
+									"status": "passed",
+									"profile": "ci-linux-x64-node22",
+									"finishedAt": "2026-11-14T13:42:00.000Z",
+									"base": "89abcdef0123456789abcdef0123456789abcdef",
+									"valid": true,
+									"problems": []
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Synchronous throws from adapter.find and rejected adapter promises propagate unchanged; this model performs no argument copying for this call."
 					}
 				],
 				"errorStatus": "declared"
@@ -136,27 +243,52 @@
 						"name": "CatalogRecord.findBy.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_records table; the model owns no connection lifecycle."
+						"description": "Persistence adapter receiving the findBy call for catalog_records; this model delegates storage to it and owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRecord.findBy.fields",
 						"type": "Partial<CatalogRecordAttributes>",
 						"required": true,
-						"description": "Partial stored attributes used as equality filters for catalog_records."
+						"description": "Partial stored attributes copied at the top level and passed to adapter.findBy as filters; matching behavior is adapter-defined.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"status": "passed"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRecord.findBy",
 						"type": "Promise<CatalogRecordAttributes[]>",
-						"description": "Promise of catalog_records rows matching the supplied attribute filters."
+						"description": "Promise resolving to the rows the adapter returns for the supplied attribute filter; matching semantics and ordering are adapter-defined.",
+						"examples": [
+							[
+								{
+									"id": "record-20261114-001",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"status": "passed",
+									"valid": true,
+									"data": {
+										"id": "record-20261114-001",
+										"status": "passed",
+										"profile": "ci-linux-x64-node22",
+										"finishedAt": "2026-11-14T13:42:00.000Z",
+										"base": "89abcdef0123456789abcdef0123456789abcdef",
+										"valid": true,
+										"problems": []
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Synchronous throws from adapter.findBy and rejected adapter promises propagate unchanged. Spreading fields can also throw while reading an enumerable getter."
 					}
 				],
 				"errorStatus": "declared"
@@ -168,27 +300,61 @@
 						"name": "CatalogRecord.create.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_records table; the model owns no connection lifecycle."
+						"description": "Persistence adapter receiving the create call for catalog_records; this model delegates storage to it and owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRecord.create.input",
 						"type": "CatalogRecordCreateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_records; omitted update fields remain the adapter's responsibility."
+						"description": "Complete CatalogRecordAttributes object copied at the top level and passed to adapter.create; this model does not generate fields, validate the payload, or set defaults.",
+						"examples": [
+							{
+								"id": "record-20261114-001",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"status": "passed",
+								"valid": true,
+								"data": {
+									"id": "record-20261114-001",
+									"status": "passed",
+									"profile": "ci-linux-x64-node22",
+									"finishedAt": "2026-11-14T13:42:00.000Z",
+									"base": "89abcdef0123456789abcdef0123456789abcdef",
+									"valid": true,
+									"problems": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRecord.create",
 						"type": "Promise<CatalogRecordAttributes>",
-						"description": "Promise of the catalog_records row returned by the adapter after creation."
+						"description": "Promise resolving to the row returned by the adapter after creation; this model adds no generated fields or defaults.",
+						"examples": [
+							{
+								"id": "record-20261114-001",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"status": "passed",
+								"valid": true,
+								"data": {
+									"id": "record-20261114-001",
+									"status": "passed",
+									"profile": "ci-linux-x64-node22",
+									"finishedAt": "2026-11-14T13:42:00.000Z",
+									"base": "89abcdef0123456789abcdef0123456789abcdef",
+									"valid": true,
+									"problems": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Synchronous throws from adapter.create and rejected adapter promises propagate unchanged. Spreading input can also throw while reading an enumerable getter."
 					}
 				],
 				"errorStatus": "declared"
@@ -200,33 +366,58 @@
 						"name": "CatalogRecord.update.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_records table; the model owns no connection lifecycle."
+						"description": "Persistence adapter receiving the update call for catalog_records; this model delegates storage to it and owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRecord.update.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Row ID selected for update and passed unchanged to the adapter; this model does not generate or parse it.",
+						"examples": ["record-20261114-001"]
 					},
 					{
 						"name": "CatalogRecord.update.input",
 						"type": "CatalogRecordUpdateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_records; omitted update fields remain the adapter's responsibility."
+						"description": "Partial CatalogRecordAttributes without id, copied at the top level and passed to adapter.update; field merging is the adapter's responsibility.",
+						"examples": [
+							{
+								"status": "failed",
+								"valid": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRecord.update",
 						"type": "Promise<CatalogRecordAttributes | null>",
-						"description": "Promise of the updated catalog_records row, or null according to the adapter update result."
+						"description": "Promise resolving to the adapter's updated row or null when it reports no match; patch application is adapter-defined.",
+						"examples": [
+							{
+								"id": "record-20261114-001",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"status": "passed",
+								"valid": true,
+								"data": {
+									"id": "record-20261114-001",
+									"status": "passed",
+									"profile": "ci-linux-x64-node22",
+									"finishedAt": "2026-11-14T13:42:00.000Z",
+									"base": "89abcdef0123456789abcdef0123456789abcdef",
+									"valid": true,
+									"problems": []
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Synchronous throws from adapter.update and rejected adapter promises propagate unchanged. Spreading input can also throw while reading an enumerable getter."
 					}
 				],
 				"errorStatus": "declared"
@@ -238,27 +429,29 @@
 						"name": "CatalogRecord.delete.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_records table; the model owns no connection lifecycle."
+						"description": "Persistence adapter receiving the delete call for catalog_records; this model delegates storage to it and owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogRecord.delete.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Row ID selected for deletion and passed unchanged to the adapter; this model does not generate or parse it.",
+						"examples": ["record-20261114-001"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRecord.delete",
 						"type": "Promise<boolean>",
-						"description": "Promise of the adapter deletion result for the requested catalog_records row."
+						"description": "Promise resolving to the adapter's boolean deletion result; the model does not reinterpret what true or false means.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Synchronous throws from adapter.delete and rejected adapter promises propagate unchanged; this model performs no argument copying for this call."
 					}
 				],
 				"errorStatus": "declared"
