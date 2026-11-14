@@ -12,37 +12,110 @@
 		"symbols": ["jevMetrics"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "jevMetrics.events",
 				"type": "AnalyticsEvent[]",
-				"required": true
+				"required": true,
+				"description": "An array of analytics event records from which JEV checks are selected. Checks and outcome counts include records with kind === \"jev\" and checkType === type; task summaries additionally require an identity (task or both loop and step), an uncached record, and an assessed status, and skip duplicate fingerprints or IDs.",
+				"examples": [
+					[
+						{
+							"id": "073d8792-18ab-4701-b3bb-9a8f14c3dabe",
+							"timestamp": "2026-11-14T10:00:00.000Z",
+							"project": "harness-shots",
+							"kind": "jev",
+							"action": "check",
+							"loop": "analytics",
+							"step": "jevMetrics",
+							"task": "lint-generated-route",
+							"agentModel": "gpt-6-luna",
+							"evaluatorModel": "gpt-6-luna",
+							"report": "src/cli/program/analyticsJevMetrics.ts",
+							"status": "violations",
+							"checkType": "clean-code",
+							"cached": false
+						},
+						{
+							"id": "bc3768d7-bb95-48bb-8eaf-810b75bf061e",
+							"timestamp": "2026-11-14T10:01:00.000Z",
+							"project": "harness-shots",
+							"kind": "jev",
+							"action": "check",
+							"loop": "analytics",
+							"step": "jevMetrics",
+							"task": "lint-generated-route",
+							"agentModel": "gpt-6-luna",
+							"evaluatorModel": "gpt-6-luna",
+							"status": "clean",
+							"checkType": "clean-code",
+							"cached": false
+						}
+					]
+				]
 			},
 			{
 				"name": "jevMetrics.type",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The string used for an exact match against event.checkType. Only jev events with this value are included in the check set.",
+				"examples": ["clean-code"]
 			},
 			{
 				"name": "jevMetrics.author",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "When present, this filters by exact event.agentModel equality, treating a missing agent model as \"unknown\". It applies to check counts, outcome counts, exclusions, and task summaries.",
+				"examples": ["gpt-6-luna"]
 			},
 			{
 				"name": "jevMetrics.model",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "When present and truthy, this keeps checks whose agentModel or evaluatorModel equals the model string. An omitted or empty string disables this filter.",
+				"examples": ["gpt-6-luna"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "jevMetrics",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The result contains matching check and status counts, the excluded-record count, first-try pass totals and rate, and summaries of eligible task groups. The first-try rate is null when there are no task groups; groups use project, loopRun, task identity, and check type, and each summary carries the first attempt’s report value.",
+				"examples": [
+					{
+						"checks": 2,
+						"outcomes": {
+							"violations": 1,
+							"clean": 1
+						},
+						"excluded": 0,
+						"firstTry": {
+							"numerator": 0,
+							"denominator": 1,
+							"rate": 0
+						},
+						"tasks": [
+							{
+								"project": "harness-shots",
+								"loop": "analytics",
+								"step": "jevMetrics",
+								"task": "lint-generated-route",
+								"agentModel": "gpt-6-luna",
+								"attempts": 2,
+								"attemptsToPass": 2,
+								"firstPassed": false,
+								"report": "src/cli/program/analyticsJevMetrics.ts"
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "jevMetrics",
@@ -50,32 +123,105 @@
 					{
 						"name": "jevMetrics.events",
 						"type": "AnalyticsEvent[]",
-						"required": true
+						"required": true,
+						"description": "An array of analytics event records from which JEV checks are selected. Checks and outcome counts include records with kind === \"jev\" and checkType === type; task summaries additionally require an identity (task or both loop and step), an uncached record, and an assessed status, and skip duplicate fingerprints or IDs.",
+						"examples": [
+							[
+								{
+									"id": "073d8792-18ab-4701-b3bb-9a8f14c3dabe",
+									"timestamp": "2026-11-14T10:00:00.000Z",
+									"project": "harness-shots",
+									"kind": "jev",
+									"action": "check",
+									"loop": "analytics",
+									"step": "jevMetrics",
+									"task": "lint-generated-route",
+									"agentModel": "gpt-6-luna",
+									"evaluatorModel": "gpt-6-luna",
+									"report": "src/cli/program/analyticsJevMetrics.ts",
+									"status": "violations",
+									"checkType": "clean-code",
+									"cached": false
+								},
+								{
+									"id": "bc3768d7-bb95-48bb-8eaf-810b75bf061e",
+									"timestamp": "2026-11-14T10:01:00.000Z",
+									"project": "harness-shots",
+									"kind": "jev",
+									"action": "check",
+									"loop": "analytics",
+									"step": "jevMetrics",
+									"task": "lint-generated-route",
+									"agentModel": "gpt-6-luna",
+									"evaluatorModel": "gpt-6-luna",
+									"status": "clean",
+									"checkType": "clean-code",
+									"cached": false
+								}
+							]
+						]
 					},
 					{
 						"name": "jevMetrics.type",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The string used for an exact match against event.checkType. Only jev events with this value are included in the check set.",
+						"examples": ["clean-code"]
 					},
 					{
 						"name": "jevMetrics.author",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "When present, this filters by exact event.agentModel equality, treating a missing agent model as \"unknown\". It applies to check counts, outcome counts, exclusions, and task summaries.",
+						"examples": ["gpt-6-luna"]
 					},
 					{
 						"name": "jevMetrics.model",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "When present and truthy, this keeps checks whose agentModel or evaluatorModel equals the model string. An omitted or empty string disables this filter.",
+						"examples": ["gpt-6-luna"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "jevMetrics",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The result contains matching check and status counts, the excluded-record count, first-try pass totals and rate, and summaries of eligible task groups. The first-try rate is null when there are no task groups; groups use project, loopRun, task identity, and check type, and each summary carries the first attempt’s report value.",
+						"examples": [
+							{
+								"checks": 2,
+								"outcomes": {
+									"violations": 1,
+									"clean": 1
+								},
+								"excluded": 0,
+								"firstTry": {
+									"numerator": 0,
+									"denominator": 1,
+									"rate": 0
+								},
+								"tasks": [
+									{
+										"project": "harness-shots",
+										"loop": "analytics",
+										"step": "jevMetrics",
+										"task": "lint-generated-route",
+										"agentModel": "gpt-6-luna",
+										"attempts": 2,
+										"attemptsToPass": 2,
+										"firstPassed": false,
+										"report": "src/cli/program/analyticsJevMetrics.ts"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
