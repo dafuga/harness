@@ -18,27 +18,47 @@
 				"name": "createSqliteAdapter.db",
 				"type": "SqliteDatabase",
 				"required": true,
-				"description": "Caller-owned SQLite database handle passed to the canonical adapter factory."
+				"description": "Caller-supplied synchronous SQLite handle with prepare(sql), exec(sql), and close(), used for the adapter’s database access. The factory injects this handle and does not open or close it."
 			},
 			{
 				"name": "createSqliteAdapter.models",
 				"type": "readonly SqliteModel[]",
 				"required": true,
-				"description": "Source-declared model definitions supplied to the canonical factory."
+				"description": "Each entry declares one table, an optional primary-key field name, and a map of application fields with SQLite field types; construction compiles each declaration and registers it by table name. The primary key defaults to id and must exist; table and column names must be unique valid identifiers, field types are limited to string, number, boolean, json, and blob, and the only field default is timestamp.",
+				"examples": [
+					[
+						{
+							"table": "users",
+							"primaryKey": "id",
+							"fields": {
+								"id": {
+									"type": "number"
+								},
+								"email": {
+									"type": "string"
+								},
+								"createdAt": {
+									"type": "string",
+									"default": "timestamp"
+								}
+							}
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "createSqliteAdapter",
 				"type": "SqliteAdapter",
-				"description": "Canonical SQLite persistence adapter wrapping the supplied database and model definitions."
+				"description": "Returns a SqliteAdapter instance bound to the supplied synchronous database handle and model declarations. Construction validates and registers the declared models but does not open a database."
 			}
 		],
 		"errors": [
 			{
 				"name": "Adapter construction failure",
-				"type": "propagated",
-				"description": "Exceptions from canonical adapter construction propagate unchanged; this compatibility factory adds no validation or storage methods."
+				"type": "thrown",
+				"description": "The constructor throws a standard Error for invalid model declarations, including a missing primary-key field, duplicate table or column names, unsupported field types, and invalid SQL identifiers; this wrapper lets that error escape unchanged. The factory performs no asynchronous work and does not reject a promise."
 			}
 		],
 		"errorStatus": "declared",
@@ -50,27 +70,47 @@
 						"name": "createSqliteAdapter.db",
 						"type": "SqliteDatabase",
 						"required": true,
-						"description": "Caller-owned SQLite database handle passed to the canonical adapter factory."
+						"description": "Caller-supplied synchronous SQLite handle with prepare(sql), exec(sql), and close(), used for the adapter’s database access. The factory injects this handle and does not open or close it."
 					},
 					{
 						"name": "createSqliteAdapter.models",
 						"type": "readonly SqliteModel[]",
 						"required": true,
-						"description": "Source-declared model definitions supplied to the canonical factory."
+						"description": "Each entry declares one table, an optional primary-key field name, and a map of application fields with SQLite field types; construction compiles each declaration and registers it by table name. The primary key defaults to id and must exist; table and column names must be unique valid identifiers, field types are limited to string, number, boolean, json, and blob, and the only field default is timestamp.",
+						"examples": [
+							[
+								{
+									"table": "users",
+									"primaryKey": "id",
+									"fields": {
+										"id": {
+											"type": "number"
+										},
+										"email": {
+											"type": "string"
+										},
+										"createdAt": {
+											"type": "string",
+											"default": "timestamp"
+										}
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "createSqliteAdapter",
 						"type": "SqliteAdapter",
-						"description": "Canonical SQLite persistence adapter wrapping the supplied database and model definitions."
+						"description": "Returns a SqliteAdapter instance bound to the supplied synchronous database handle and model declarations. Construction validates and registers the declared models but does not open a database."
 					}
 				],
 				"errors": [
 					{
 						"name": "Adapter construction failure",
-						"type": "propagated",
-						"description": "Exceptions from canonical adapter construction propagate unchanged; this compatibility factory adds no validation or storage methods."
+						"type": "thrown",
+						"description": "The constructor throws a standard Error for invalid model declarations, including a missing primary-key field, duplicate table or column names, unsupported field types, and invalid SQL identifiers; this wrapper lets that error escape unchanged. The factory performs no asynchronous work and does not reject a promise."
 					}
 				],
 				"errorStatus": "declared"
