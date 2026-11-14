@@ -1,10 +1,16 @@
 // @harness-uid u_dzjufezgca
+/** One stored proof: the text `loop complete` writes, or a record kept as it was authored. */
+export type LoopEvidenceEntry = string | Record<string, unknown>;
+
+/** Stored loops hold one proof or a list of them; reads keep the stored shape. */
+export type LoopStepEvidence = LoopEvidenceEntry | LoopEvidenceEntry[];
+
 export interface LoopStep {
 	id: string;
 	title: string;
 	status: 'pending' | 'complete';
 	completedAt?: string;
-	evidence?: string;
+	evidence?: LoopStepEvidence;
 }
 
 export interface LoopEvaluator {

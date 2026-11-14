@@ -157,6 +157,14 @@ function createTraceEvent(state: LoopState, timestampValue: string): Record<stri
 
 function renderStep(step: LoopStep): string[] {
 	const lines = [`  [${step.status}] ${step.id} - ${step.title}`];
-	if (step.evidence) lines.push(`    evidence: ${step.evidence}`);
+	const evidence = step.evidence === undefined ? '' : evidenceText(step.evidence);
+	if (evidence) lines.push(`    evidence: ${evidence}`);
 	return lines;
+}
+
+/** Text evidence prints as stored; records print as compact JSON, lists joined by "; ". */
+function evidenceText(evidence: NonNullable<LoopStep['evidence']>): string {
+	if (typeof evidence === 'string') return evidence;
+	if (Array.isArray(evidence)) return evidence.map(evidenceText).join('; ');
+	return JSON.stringify(evidence);
 }

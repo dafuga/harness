@@ -14,6 +14,14 @@ import { z } from 'zod';
 import { fail } from '../../../core/development-tooling/errors';
 import { validateKebabName } from './validation';
 
+const maxReportedIssues = 5;
+const evidenceEntrySchema = z.union([z.string(), z.record(z.string(), z.unknown())]);
+/** Stored evidence is text, a record, or a list of either; a read keeps the stored shape. */
+const stepEvidenceSchema = z.union([evidenceEntrySchema, z.array(evidenceEntrySchema)], {
+	error: 'Expected text, an object, or a list of text and objects'
+});
+
+/** Stored loops are read loosely: unknown keys survive a read and the next write. */
 const loopStateSchema = z
 	.object({
 		name: z.string().min(1),
@@ -31,6 +39,7 @@ const loopStateSchema = z
 				kind: z.enum(['coding', 'planning']),
 				plan: z.string().optional()
 			})
+			.passthrough()
 			.optional(),
 		closed: z
 			.object({
@@ -38,6 +47,7 @@ const loopStateSchema = z
 				reason: z.string().min(1),
 				closedAt: z.string().min(1)
 			})
+			.passthrough()
 			.optional(),
 		steps: z.array(
 			z
@@ -46,7 +56,7 @@ const loopStateSchema = z
 					title: z.string(),
 					status: z.enum(['pending', 'complete']),
 					completedAt: z.string().optional(),
-					evidence: z.string().optional()
+					evidence: stepEvidenceSchema.optional()
 				})
 				.passthrough()
 		),
@@ -88,12 +98,31 @@ export async function writeNewLoop(paths: LoopPaths, state: LoopState): Promise<
 export async function readLoop(path: string): Promise<LoopState> {
 	try {
 		const parsed = loopStateSchema.safeParse(JSON.parse(await readFile(path, 'utf8')));
-		if (!parsed.success) return fail('Invalid loop state: persisted schema mismatch.');
+		if (!parsed.success) return fail(schemaMismatch(path, parsed.error.issues));
 		return parsed.data;
 	} catch (error) {
 		if (isMissingFile(error)) fail('Loop does not exist.');
 		throw error;
 	}
+}
+
+/** Names the file and each failing field; callers match the "Invalid loop state:" prefix. */
+function schemaMismatch(path: string, issues: z.core.$ZodIssue[]): string {
+	const shown = issues
+		.slice(0, maxReportedIssues)
+		.map((issue) => `${fieldPath(issue.path)}: ${issue.message}`);
+	const hidden = issues.length - shown.length;
+	const rest = hidden > 0 ? `; and ${hidden} more` : '';
+	return `Invalid loop state: ${path}: ${shown.join('; ')}${rest}.`;
+}
+
+function fieldPath(path: PropertyKey[]): string {
+	if (path.length === 0) return '(root)';
+	return path
+		.map((key, index) =>
+			typeof key === 'number' ? `[${key}]` : `${index === 0 ? '' : '.'}${String(key)}`
+		)
+		.join('');
 }
 
 export async function writeLoop(path: string, state: LoopState): Promise<void> {
