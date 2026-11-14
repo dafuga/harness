@@ -18,21 +18,21 @@
 				"name": "registerUnitsGuidance.units",
 				"type": "Command",
 				"required": true,
-				"description": "Commander parent units command receiving the guide and check-contract subcommands."
+				"description": "Commander parent command that receives the guide <id> and check-contract [id] subcommands. It matters during CLI registration and must expose the Commander command, description, and option methods used here."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerUnitsGuidance",
 				"type": "void",
-				"description": "Returns no value. Registers commands whose actions print reports and set exit code 1 for missing states or contract findings."
+				"description": "Returns no value after registering the guide and check-contract subcommands. Later, those actions print a human-readable or JSON report and set process.exitCode to 1 when the report has missing states or contract findings."
 			}
 		],
 		"errors": [
 			{
 				"name": "Dependency failure",
 				"type": "thrown",
-				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+				"description": "The asynchronous guide or check-contract action can reject with a failure from its awaited guideUnits or checkUnitContracts dependency, and this wrapper does not catch or translate it. The concrete error name, message, and cause are determined by those dependencies."
 			}
 		],
 		"errorStatus": "declared",
@@ -44,21 +44,21 @@
 						"name": "registerUnitsGuidance.units",
 						"type": "Command",
 						"required": true,
-						"description": "Commander parent units command receiving the guide and check-contract subcommands."
+						"description": "Commander parent command that receives the guide <id> and check-contract [id] subcommands. It matters during CLI registration and must expose the Commander command, description, and option methods used here."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerUnitsGuidance",
 						"type": "void",
-						"description": "Returns no value. Registers commands whose actions print reports and set exit code 1 for missing states or contract findings."
+						"description": "Returns no value after registering the guide and check-contract subcommands. Later, those actions print a human-readable or JSON report and set process.exitCode to 1 when the report has missing states or contract findings."
 					}
 				],
 				"errors": [
 					{
 						"name": "Dependency failure",
 						"type": "thrown",
-						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+						"description": "The asynchronous guide or check-contract action can reject with a failure from its awaited guideUnits or checkUnitContracts dependency, and this wrapper does not catch or translate it. The concrete error name, message, and cause are determined by those dependencies."
 					}
 				],
 				"errorStatus": "declared"
