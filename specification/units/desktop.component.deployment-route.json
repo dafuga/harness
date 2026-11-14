@@ -22,17 +22,30 @@
 				"name": "DeploymentRoute.deployment",
 				"type": "Pick<DeploymentActivity, 'sourceEnvironment' | 'environment' | 'branch'>",
 				"required": true,
-				"description": "Deployment job or route whose source, destination and recorded progress are displayed."
+				"description": "A DeploymentActivity projection containing sourceEnvironment, environment, and branch; sourceEnvironment may be null. The component displays sourceEnvironment when present and falls back to branch when it is null, while environment must be one of dev, stage, preprod, or prod.",
+				"examples": [
+					{
+						"sourceEnvironment": "dev",
+						"environment": "stage",
+						"branch": "main"
+					},
+					{
+						"sourceEnvironment": null,
+						"environment": "prod",
+						"branch": "release/2026.11"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeploymentRoute",
 				"type": "markup",
-				"description": "Displays accessible source-to-destination labels and a directional arrow for a deployment."
+				"description": "Accessible markup with a labeled group, source and destination labels, and a right-arrow separator; it displays sourceEnvironment or falls back to branch when null. The source uses branch styling on fallback, and long labels wrap within the inline route."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
