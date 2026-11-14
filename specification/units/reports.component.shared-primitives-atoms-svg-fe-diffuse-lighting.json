@@ -29,17 +29,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feDiffuseLighting element; native HTML content rules still apply."
+				"description": "An optional Svelte Snippet rendered inside the native feDiffuseLighting element when its value is truthy. The component calls it with no arguments and skips rendering it when its value is falsy."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeDiffuseLighting",
 				"type": "markup",
-				"description": "The actual native feDiffuseLighting element, with forwarded attributes and content and no additional wrapper."
+				"description": "One native feDiffuseLighting SVG element receives every prop other than children through attribute spreading. A truthy children snippet renders inside it, with no wrapper element added."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
