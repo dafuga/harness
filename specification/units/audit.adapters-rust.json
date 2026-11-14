@@ -12,12 +12,13 @@
 		"symbols": ["rustAdapter"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "rustAdapter",
-				"type": "AuditAdapter"
+				"type": "AuditAdapter",
+				"description": "The Rust AuditAdapter object (id 'rust', label 'Rust', profiles 'dapp' and 'lib', extension '.rs', optional tools 'cargo fmt' and 'cargo clippy') whose audit(file) method returns the file-length, curly-function and unsafe findings for one file. It is declared for .rs files in the 'dapp' and 'lib' profiles, but audit(file) does not check the extension, looks for '// SAFETY:' within the 3 lines above an unsafe block and '# Safety' within the 8 lines above an unsafe fn, and ignores text inside string and character literals and line comments when counting braces and detecting functions and unsafe code."
 			}
 		],
 		"errors": [],
