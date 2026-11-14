@@ -21,29 +21,108 @@
 				"name": "browserArtifact.media",
 				"type": "{ bytes: Uint8Array; mediaType: string }",
 				"required": true,
-				"description": "Bytes and exact declared media type; only the supported evidence media-type list is accepted."
+				"description": "The evidence bytes and their exact media type, passed together to the hosted artifact reader. The media type must appear in artifactMediaTypes.",
+				"examples": [
+					{
+						"bytes": [
+							137,
+							80,
+							78,
+							71,
+							13,
+							10,
+							26,
+							10,
+							0,
+							0,
+							0,
+							13,
+							73,
+							72,
+							68,
+							82,
+							0,
+							0,
+							0,
+							1,
+							0,
+							0,
+							0,
+							1,
+							8,
+							6,
+							0,
+							0,
+							0,
+							31,
+							21,
+							196,
+							137,
+							0,
+							0,
+							0,
+							13,
+							73,
+							68,
+							65,
+							84,
+							120,
+							156,
+							99,
+							248,
+							207,
+							192,
+							240,
+							31,
+							0,
+							5,
+							0,
+							1,
+							255,
+							137,
+							153,
+							61,
+							29,
+							0,
+							0,
+							0,
+							0,
+							73,
+							69,
+							78,
+							68,
+							174,
+							66,
+							96,
+							130
+						],
+						"mediaType": "image/png"
+					}
+				]
 			},
 			{
 				"name": "browserArtifact.sha256",
 				"type": "string",
 				"required": true,
-				"description": "Expected SHA-256 of the requested artifact."
+				"description": "The expected SHA-256 digest supplied with the captured bytes to the hosted artifact reader. The adapter passes it through and rethrows failures whose message contains SHA-256.",
+				"examples": ["4ff6ab670a58c14270e034e2090d9a432caa263a14e0a25785386b0c12f880b5"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserArtifact",
 				"type": "unknown",
-				"description": "Validated artifact from the hosted-artifact reader."
+				"description": "The value resolved by hostedArtifact after it accepts the supplied media and digest. This adapter does not declare the returned value's concrete shape."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unsupported kinds, mismatched SHA-256, oversized files or failed media validation; size and unsupported-type messages are rewritten for the browser."
+				"description": "Throws Error for an unsupported media type or a hosted-artifact failure. SHA-256 failures are rethrown unchanged, errors containing 11 MiB are replaced with the page's size message, and other hosted-artifact failures use the unsupported-content message."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "browserArtifact",
@@ -52,29 +131,108 @@
 						"name": "browserArtifact.media",
 						"type": "{ bytes: Uint8Array; mediaType: string }",
 						"required": true,
-						"description": "Bytes and exact declared media type; only the supported evidence media-type list is accepted."
+						"description": "The evidence bytes and their exact media type, passed together to the hosted artifact reader. The media type must appear in artifactMediaTypes.",
+						"examples": [
+							{
+								"bytes": [
+									137,
+									80,
+									78,
+									71,
+									13,
+									10,
+									26,
+									10,
+									0,
+									0,
+									0,
+									13,
+									73,
+									72,
+									68,
+									82,
+									0,
+									0,
+									0,
+									1,
+									0,
+									0,
+									0,
+									1,
+									8,
+									6,
+									0,
+									0,
+									0,
+									31,
+									21,
+									196,
+									137,
+									0,
+									0,
+									0,
+									13,
+									73,
+									68,
+									65,
+									84,
+									120,
+									156,
+									99,
+									248,
+									207,
+									192,
+									240,
+									31,
+									0,
+									5,
+									0,
+									1,
+									255,
+									137,
+									153,
+									61,
+									29,
+									0,
+									0,
+									0,
+									0,
+									73,
+									69,
+									78,
+									68,
+									174,
+									66,
+									96,
+									130
+								],
+								"mediaType": "image/png"
+							}
+						]
 					},
 					{
 						"name": "browserArtifact.sha256",
 						"type": "string",
 						"required": true,
-						"description": "Expected SHA-256 of the requested artifact."
+						"description": "The expected SHA-256 digest supplied with the captured bytes to the hosted artifact reader. The adapter passes it through and rethrows failures whose message contains SHA-256.",
+						"examples": ["4ff6ab670a58c14270e034e2090d9a432caa263a14e0a25785386b0c12f880b5"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "browserArtifact",
 						"type": "unknown",
-						"description": "Validated artifact from the hosted-artifact reader."
+						"description": "The value resolved by hostedArtifact after it accepts the supplied media and digest. This adapter does not declare the returned value's concrete shape."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error for an unsupported media type or a hosted-artifact failure. SHA-256 failures are rethrown unchanged, errors containing 11 MiB are replaced with the page's size message, and other hosted-artifact failures use the unsupported-content message."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
