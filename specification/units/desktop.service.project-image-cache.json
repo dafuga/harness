@@ -18,32 +18,115 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectImageCacheService.constructor.session",
 				"type": "ProjectSessionService",
-				"required": true
+				"required": true,
+				"description": "The ProjectSessionService that read uses for the selected project (assertProject, requireProject and projectId) and for its optional projection cache. The constructor stores it as given and checks nothing about it."
 			},
 			{
 				"name": "ProjectImageCacheService.read.input",
 				"type": "ImageQuery",
-				"required": true
+				"required": true,
+				"description": "The design image to read: entityId and version name the entity and its design version, commit is the revision where that entity must exist, and sha256 must equal the sha256 of one image recorded in that version. projectId is optional; when it is given it must equal the selected project's id, and any other value is rejected.",
+				"examples": [
+					{
+						"projectId": "local-7d2c95e0a1b38f46c20e9d7a5b1f83c6e4a09d2b71f5c8e3a6d94b0f1e27c5a8",
+						"entityId": "desktop.component.workspace-shell",
+						"commit": "9c4e1a7b52d08f63e1a94c27b0d5f8e3a61c2b7d",
+						"version": "v002",
+						"sha256": "3f9a1c7e04b2d85a6e10c9f2b7d4a8e13c5f60b92d7e4a1c08f3b5d6e9a2c741"
+					},
+					{
+						"entityId": "reports.component.select",
+						"commit": "4a0f7e2d91bc3865e0d72a1f4c9b58e6d3a0712f",
+						"version": "v001",
+						"sha256": "a71d0e6c25f9b3481e7d0c59a6f2b8e43d10c7a95e2f6b8d0c31a4e97f5b2d68"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectImageCacheService.read",
-				"type": "Promise<Uint8Array>"
+				"type": "Promise<Uint8Array>",
+				"description": "The PNG bytes of the design image that input names: the projection cache's copy when its entry still matches, otherwise the planning package's copy, which is then written to the cache when one is configured. Both paths return bytes whose length is the image's recorded byte count and whose SHA-256 is input.sha256, because a fetched copy that fails either check is rejected before it is cached.",
+				"examples": [
+					[
+						137,
+						80,
+						78,
+						71,
+						13,
+						10,
+						26,
+						10,
+						0,
+						0,
+						0,
+						13,
+						73,
+						72,
+						68,
+						82,
+						0,
+						0,
+						5,
+						0,
+						0,
+						0,
+						3,
+						32,
+						8,
+						6,
+						0,
+						0,
+						0
+					],
+					[
+						137,
+						80,
+						78,
+						71,
+						13,
+						10,
+						26,
+						10,
+						0,
+						0,
+						0,
+						13,
+						73,
+						72,
+						68,
+						82,
+						0,
+						0,
+						1,
+						64,
+						0,
+						0,
+						0,
+						240,
+						8,
+						2,
+						0,
+						0,
+						0
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "read rejects with an Error whose message is 'The requested project is not selected.' when projectId is given and is not the selected project's id, 'Open a project first.' when no project is open, 'Unknown project image.' when that version has no image with that sha256, or 'Image hash mismatch.' when the fetched bytes differ from the recorded length or SHA-256. Failures from the catalog, git, planning and cache writes pass through unchanged, such as 'Entity not found at this revision.', 'Image is not part of this entity/version.' and 'Cached authority changed during the read.'"
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProjectImageCacheService.read",
@@ -51,22 +134,104 @@
 					{
 						"name": "ProjectImageCacheService.read.input",
 						"type": "ImageQuery",
-						"required": true
+						"required": true,
+						"description": "The design image to read: entityId and version name the entity and its design version, commit is the revision where that entity must exist, and sha256 must equal the sha256 of one image recorded in that version. projectId is optional; when it is given it must equal the selected project's id, and any other value is rejected.",
+						"examples": [
+							{
+								"projectId": "local-7d2c95e0a1b38f46c20e9d7a5b1f83c6e4a09d2b71f5c8e3a6d94b0f1e27c5a8",
+								"entityId": "desktop.component.workspace-shell",
+								"commit": "9c4e1a7b52d08f63e1a94c27b0d5f8e3a61c2b7d",
+								"version": "v002",
+								"sha256": "3f9a1c7e04b2d85a6e10c9f2b7d4a8e13c5f60b92d7e4a1c08f3b5d6e9a2c741"
+							},
+							{
+								"entityId": "reports.component.select",
+								"commit": "4a0f7e2d91bc3865e0d72a1f4c9b58e6d3a0712f",
+								"version": "v001",
+								"sha256": "a71d0e6c25f9b3481e7d0c59a6f2b8e43d10c7a95e2f6b8d0c31a4e97f5b2d68"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectImageCacheService.read",
-						"type": "Promise<Uint8Array>"
+						"type": "Promise<Uint8Array>",
+						"description": "The PNG bytes of the design image that input names: the projection cache's copy when its entry still matches, otherwise the planning package's copy, which is then written to the cache when one is configured. Both paths return bytes whose length is the image's recorded byte count and whose SHA-256 is input.sha256, because a fetched copy that fails either check is rejected before it is cached.",
+						"examples": [
+							[
+								137,
+								80,
+								78,
+								71,
+								13,
+								10,
+								26,
+								10,
+								0,
+								0,
+								0,
+								13,
+								73,
+								72,
+								68,
+								82,
+								0,
+								0,
+								5,
+								0,
+								0,
+								0,
+								3,
+								32,
+								8,
+								6,
+								0,
+								0,
+								0
+							],
+							[
+								137,
+								80,
+								78,
+								71,
+								13,
+								10,
+								26,
+								10,
+								0,
+								0,
+								0,
+								13,
+								73,
+								72,
+								68,
+								82,
+								0,
+								0,
+								1,
+								64,
+								0,
+								0,
+								0,
+								240,
+								8,
+								2,
+								0,
+								0,
+								0
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "read rejects with an Error whose message is 'The requested project is not selected.' when projectId is given and is not the selected project's id, 'Open a project first.' when no project is open, 'Unknown project image.' when that version has no image with that sha256, or 'Image hash mismatch.' when the fetched bytes differ from the recorded length or SHA-256. Failures from the catalog, git, planning and cache writes pass through unchanged, such as 'Entity not found at this revision.', 'Image is not part of this entity/version.' and 'Cached authority changed during the read.'"
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -76,17 +241,19 @@
 					{
 						"name": "ProjectImageCacheService.constructor.session",
 						"type": "ProjectSessionService",
-						"required": true
+						"required": true,
+						"description": "The ProjectSessionService that read uses for the selected project (assertProject, requireProject and projectId) and for its optional projection cache. The constructor stores it as given and checks nothing about it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectImageCacheService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ProjectImageCacheService instance that `new` returns; its only state is the private session it was given, and the constructor has no other result."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
