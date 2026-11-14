@@ -18,17 +18,24 @@
 				"name": "runtimeFetch.runtime",
 				"type": "UnitRuntime",
 				"required": true,
-				"description": "Unit runtime to invoke for accepted POST requests."
+				"description": "Runtime supplied to runtimeReply for each Request handled by the returned function. runtimeFetch does not start a server or close this runtime."
 			}
 		],
 		"outputs": [
 			{
 				"name": "runtimeFetch",
 				"type": "(request: Request)",
-				"description": "Async Request handler returning JSON with no-store headers and the status supplied by runtimeReply. Creating the handler does not start a server or close the runtime."
+				"description": "Returns an async Request handler that passes the request method and a callback reading request.text() to runtimeReply, then creates a Response from JSON.stringify(reply.value) using reply.status and the content-type application/json and cache-control no-store headers. Creating the handler does not start a server or close the runtime."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Propagated error",
+				"type": "thrown",
+				"description": "The returned handler rejects if awaiting runtimeReply, reading request.text(), serializing reply.value, or constructing Response fails; runtimeFetch does not catch or translate these failures."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runtimeFetch",
@@ -37,18 +44,18 @@
 						"name": "runtimeFetch.runtime",
 						"type": "UnitRuntime",
 						"required": true,
-						"description": "Unit runtime to invoke for accepted POST requests."
+						"description": "Runtime supplied to runtimeReply for each Request handled by the returned function. runtimeFetch does not start a server or close this runtime."
 					}
 				],
 				"outputs": [
 					{
 						"name": "runtimeFetch",
 						"type": "(request: Request)",
-						"description": "Async Request handler returning JSON with no-store headers and the status supplied by runtimeReply. Creating the handler does not start a server or close the runtime."
+						"description": "Returns an async Request handler that passes the request method and a callback reading request.text() to runtimeReply, then creates a Response from JSON.stringify(reply.value) using reply.status and the content-type application/json and cache-control no-store headers. Creating the handler does not start a server or close the runtime."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
