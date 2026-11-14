@@ -12,16 +12,25 @@
 		"symbols": ["appTestFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "appTestFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The array contains planned files for project tests, combining browserTestFiles() with a Vitest smoke test at test/smoke.test.ts. It always appends that smoke file, whose test only asserts true; any other files come from browserTestFiles().",
+				"examples": [
+					[
+						{
+							"path": "test/smoke.test.ts",
+							"contents": "import { expect, test } from 'vitest';\n\ntest('Harness app scaffold is ready', () => {\n\texpect(true).toBe(true);\n});\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "appTestFiles",
@@ -29,11 +38,20 @@
 				"outputs": [
 					{
 						"name": "appTestFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The array contains planned files for project tests, combining browserTestFiles() with a Vitest smoke test at test/smoke.test.ts. It always appends that smoke file, whose test only asserts true; any other files come from browserTestFiles().",
+						"examples": [
+							[
+								{
+									"path": "test/smoke.test.ts",
+									"contents": "import { expect, test } from 'vitest';\n\ntest('Harness app scaffold is ready', () => {\n\texpect(true).toBe(true);\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
