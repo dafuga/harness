@@ -21,12 +21,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "`+page` renders the invitation route inside `HubFrame` with a “Join a shared project” heading. It shows `InviteAccept` when `session.actor` is truthy, otherwise it shows `LoginPanel` with a fixed Google sign-in reason; missing route params are passed as empty strings."
 			}
 		],
 		"errors": [],
