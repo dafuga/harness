@@ -34,53 +34,98 @@
 				"name": "CatalogRevisionEntity.id",
 				"type": "string",
 				"required": true,
-				"description": "Stored row identity; the model passes it to the adapter without generating a key."
+				"description": "The caller-supplied row identifier stored as the table primary key and used by find, update, and delete. The model forwards it unchanged and does not generate or validate its format.",
+				"examples": ["catalog-revision-entity-001", "catalog-revision-entity-002"]
 			},
 			{
 				"name": "CatalogRevisionEntity.commit",
 				"type": "string",
 				"required": true,
-				"description": "Git commit to which this stored record belongs."
+				"description": "Git commit identifier associated with this revision-to-entity row. The model treats it as an opaque required string and does not parse or validate a hash format.",
+				"examples": [
+					"a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+					"1029384756abcdef1029384756abcdef10293847"
+				]
 			},
 			{
 				"name": "CatalogRevisionEntity.entityId",
 				"type": "string",
 				"required": true,
-				"description": "Stored entity identity referenced by this membership or relationship."
+				"description": "Identifier of the catalog entity associated with the revision. The model treats it as an opaque required string and does not resolve the entity or validate the identifier format.",
+				"examples": ["catalog-entity-042", "catalog-entity-077"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogRevisionEntity.find",
 				"type": "Promise<CatalogRevisionEntityAttributes | null>",
-				"description": "Promise of the matching catalog_revision_entities row, or null according to the adapter lookup result."
+				"description": "Resolved result of looking up the supplied row identifier in catalog_revision_entities, or null when the adapter reports no row. The model forwards the adapter result without checking row contents.",
+				"examples": [
+					{
+						"id": "catalog-revision-entity-001",
+						"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+						"entityId": "catalog-entity-042"
+					},
+					null
+				]
 			},
 			{
 				"name": "CatalogRevisionEntity.findBy",
 				"type": "Promise<CatalogRevisionEntityAttributes[]>",
-				"description": "Promise of catalog_revision_entities rows matching the supplied attribute filters."
+				"description": "Resolved list returned by the adapter for the supplied partial attribute filters. The model shallow-copies the filters but leaves matching, ordering, and pagination semantics to the adapter.",
+				"examples": [
+					[
+						{
+							"id": "catalog-revision-entity-001",
+							"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+							"entityId": "catalog-entity-042"
+						},
+						{
+							"id": "catalog-revision-entity-002",
+							"commit": "1029384756abcdef1029384756abcdef10293847",
+							"entityId": "catalog-entity-077"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "CatalogRevisionEntity.create",
 				"type": "Promise<CatalogRevisionEntityAttributes>",
-				"description": "Promise of the catalog_revision_entities row returned by the adapter after creation."
+				"description": "Resolved row returned by the adapter after creation from complete id, commit, and entityId attributes. The model shallow-copies and forwards the input, leaving validation and persistence behavior to the adapter.",
+				"examples": [
+					{
+						"id": "catalog-revision-entity-001",
+						"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+						"entityId": "catalog-entity-042"
+					}
+				]
 			},
 			{
 				"name": "CatalogRevisionEntity.update",
 				"type": "Promise<CatalogRevisionEntityAttributes | null>",
-				"description": "Promise of the updated catalog_revision_entities row, or null according to the adapter update result."
+				"description": "Resolved updated row, or null according to the adapter result, for the supplied row identifier and patch. The patch may include commit and entityId only; the model does not define merge or missing-row behavior.",
+				"examples": [
+					{
+						"id": "catalog-revision-entity-002",
+						"commit": "1029384756abcdef1029384756abcdef10293847",
+						"entityId": "catalog-entity-077"
+					},
+					null
+				]
 			},
 			{
 				"name": "CatalogRevisionEntity.delete",
 				"type": "Promise<boolean>",
-				"description": "Promise of the adapter deletion result for the requested catalog_revision_entities row."
+				"description": "Boolean result returned by the adapter after deletion of the row identified by id. The model does not define whether false means the row was absent or another adapter-specific outcome.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
-				"name": "Persistence operation failure",
-				"type": "propagated",
-				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+				"name": "Adapter or copied-field error",
+				"type": "thrown",
+				"description": "A synchronous adapter exception or rejected adapter promise propagates without a wrapper. Shallow copies in findBy, create, and update can also trigger a caller-supplied getter exception before the adapter call."
 			}
 		],
 		"errorStatus": "declared",
@@ -92,27 +137,36 @@
 						"name": "CatalogRevisionEntity.find.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_revision_entities table; the model owns no connection lifecycle."
+						"description": "Persistence adapter used to look up a row in catalog_revision_entities. The model does not create or manage the adapter."
 					},
 					{
 						"name": "CatalogRevisionEntity.find.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "The caller-supplied row identifier stored as the table primary key and used by find, update, and delete. The model forwards it unchanged and does not generate or validate its format.",
+						"examples": ["catalog-revision-entity-001", "catalog-revision-entity-002"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRevisionEntity.find",
 						"type": "Promise<CatalogRevisionEntityAttributes | null>",
-						"description": "Promise of the matching catalog_revision_entities row, or null according to the adapter lookup result."
+						"description": "Resolved result of looking up the supplied row identifier in catalog_revision_entities, or null when the adapter reports no row. The model forwards the adapter result without checking row contents.",
+						"examples": [
+							{
+								"id": "catalog-revision-entity-001",
+								"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+								"entityId": "catalog-entity-042"
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
-						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"name": "Adapter failure",
+						"type": "thrown",
+						"description": "A synchronous exception from adapter.find or a rejection from its returned promise propagates unchanged. The method does not catch or wrap adapter failures."
 					}
 				],
 				"errorStatus": "declared"
@@ -124,27 +178,50 @@
 						"name": "CatalogRevisionEntity.findBy.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_revision_entities table; the model owns no connection lifecycle."
+						"description": "Persistence adapter used to query catalog_revision_entities. The model does not create or manage the adapter."
 					},
 					{
 						"name": "CatalogRevisionEntity.findBy.fields",
 						"type": "Partial<CatalogRevisionEntityAttributes>",
 						"required": true,
-						"description": "Partial stored attributes used as equality filters for catalog_revision_entities."
+						"description": "Partial row attributes forwarded as filters to findBy. The model shallow-copies this object; exact matching and result ordering are adapter-defined.",
+						"examples": [
+							{
+								"entityId": "catalog-entity-042"
+							},
+							{
+								"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRevisionEntity.findBy",
 						"type": "Promise<CatalogRevisionEntityAttributes[]>",
-						"description": "Promise of catalog_revision_entities rows matching the supplied attribute filters."
+						"description": "Resolved list returned by the adapter for the supplied partial attribute filters. The model shallow-copies the filters but leaves matching, ordering, and pagination semantics to the adapter.",
+						"examples": [
+							[
+								{
+									"id": "catalog-revision-entity-001",
+									"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+									"entityId": "catalog-entity-042"
+								},
+								{
+									"id": "catalog-revision-entity-002",
+									"commit": "1029384756abcdef1029384756abcdef10293847",
+									"entityId": "catalog-entity-077"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
-						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"name": "Adapter or filter-copy error",
+						"type": "thrown",
+						"description": "A synchronous exception from adapter.findBy or a rejection from its returned promise propagates unchanged. Spreading fields can also surface an exception from a caller-supplied getter before the adapter call."
 					}
 				],
 				"errorStatus": "declared"
@@ -156,27 +233,46 @@
 						"name": "CatalogRevisionEntity.create.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_revision_entities table; the model owns no connection lifecycle."
+						"description": "Persistence adapter used to create a row in catalog_revision_entities. The model does not create or manage the adapter."
 					},
 					{
 						"name": "CatalogRevisionEntity.create.input",
 						"type": "CatalogRevisionEntityCreateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_revision_entities; omitted update fields remain the adapter's responsibility."
+						"description": "Complete row data for creation, with required id, commit, and entityId fields. The model shallow-copies these fields and leaves validation and persistence behavior to the adapter.",
+						"examples": [
+							{
+								"id": "catalog-revision-entity-001",
+								"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+								"entityId": "catalog-entity-042"
+							},
+							{
+								"id": "catalog-revision-entity-002",
+								"commit": "1029384756abcdef1029384756abcdef10293847",
+								"entityId": "catalog-entity-077"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRevisionEntity.create",
 						"type": "Promise<CatalogRevisionEntityAttributes>",
-						"description": "Promise of the catalog_revision_entities row returned by the adapter after creation."
+						"description": "Resolved row returned by the adapter after creation from complete id, commit, and entityId attributes. The model shallow-copies and forwards the input, leaving validation and persistence behavior to the adapter.",
+						"examples": [
+							{
+								"id": "catalog-revision-entity-001",
+								"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+								"entityId": "catalog-entity-042"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
-						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"name": "Adapter or input-copy error",
+						"type": "thrown",
+						"description": "A synchronous exception from adapter.create or a rejection from its returned promise propagates unchanged. Spreading input can also surface an exception from a caller-supplied getter before the adapter call."
 					}
 				],
 				"errorStatus": "declared"
@@ -188,33 +284,51 @@
 						"name": "CatalogRevisionEntity.update.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_revision_entities table; the model owns no connection lifecycle."
+						"description": "Persistence adapter used to update a row in catalog_revision_entities. The model does not create or manage the adapter."
 					},
 					{
 						"name": "CatalogRevisionEntity.update.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "The caller-supplied row identifier stored as the table primary key and used by find, update, and delete. The model forwards it unchanged and does not generate or validate its format.",
+						"examples": ["catalog-revision-entity-001", "catalog-revision-entity-002"]
 					},
 					{
 						"name": "CatalogRevisionEntity.update.input",
 						"type": "CatalogRevisionEntityUpdateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_revision_entities; omitted update fields remain the adapter's responsibility."
+						"description": "Partial update containing only optional commit and entityId fields; id is supplied separately. The model shallow-copies and forwards the patch without defining merge behavior or validating its contents.",
+						"examples": [
+							{
+								"commit": "1029384756abcdef1029384756abcdef10293847"
+							},
+							{
+								"entityId": "catalog-entity-077"
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRevisionEntity.update",
 						"type": "Promise<CatalogRevisionEntityAttributes | null>",
-						"description": "Promise of the updated catalog_revision_entities row, or null according to the adapter update result."
+						"description": "Resolved updated row, or null according to the adapter result, for the supplied row identifier and patch. The patch may include commit and entityId only; the model does not define merge or missing-row behavior.",
+						"examples": [
+							{
+								"id": "catalog-revision-entity-002",
+								"commit": "1029384756abcdef1029384756abcdef10293847",
+								"entityId": "catalog-entity-077"
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
-						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"name": "Adapter or input-copy error",
+						"type": "thrown",
+						"description": "A synchronous exception from adapter.update or a rejection from its returned promise propagates unchanged. Spreading input can also surface an exception from a caller-supplied getter before the adapter call."
 					}
 				],
 				"errorStatus": "declared"
@@ -226,27 +340,29 @@
 						"name": "CatalogRevisionEntity.delete.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_revision_entities table; the model owns no connection lifecycle."
+						"description": "Persistence adapter used to delete a row from catalog_revision_entities. The model does not create or manage the adapter."
 					},
 					{
 						"name": "CatalogRevisionEntity.delete.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "The caller-supplied row identifier stored as the table primary key and used by find, update, and delete. The model forwards it unchanged and does not generate or validate its format.",
+						"examples": ["catalog-revision-entity-001", "catalog-revision-entity-002"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogRevisionEntity.delete",
 						"type": "Promise<boolean>",
-						"description": "Promise of the adapter deletion result for the requested catalog_revision_entities row."
+						"description": "Boolean result returned by the adapter after deletion of the row identified by id. The model does not define whether false means the row was absent or another adapter-specific outcome.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [
 					{
-						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"name": "Adapter failure",
+						"type": "thrown",
+						"description": "A synchronous exception from adapter.delete or a rejection from its returned promise propagates unchanged. The method does not catch or wrap adapter failures."
 					}
 				],
 				"errorStatus": "declared"
