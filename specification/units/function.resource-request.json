@@ -18,29 +18,65 @@
 				"name": "resourceRequest.flags",
 				"type": "Record<string, string>",
 				"required": true,
-				"description": "Resources CLI priority, CPU, RAM and label fields, including supported auto sizing."
+				"description": "String-valued CLI fields consumed for priority, CPU, memory and label. `cpus` and `memoryMib` are converted with `Number` unless exactly `\"auto\"`; auto uses live headroom and top-level running-job reservations, or parent lease values, while undefined priority and label values receive schema defaults.",
+				"examples": [
+					{
+						"priority": "coding",
+						"cpus": "auto",
+						"memoryMib": "auto",
+						"label": "Managed work"
+					},
+					{
+						"priority": "agent-test",
+						"cpus": "2",
+						"memoryMib": "1280",
+						"label": "Scoped verification"
+					}
+				]
 			},
 			{
 				"name": "resourceRequest.service",
 				"type": "Pick<ResourceQueueService, 'home' | 'snapshot'> & { queue: Pick<ResourceQueueService['queue'], 'all'>; }",
 				"required": true,
-				"description": "Queue access, current telemetry and configuration directory used to resolve automatic requests."
+				"description": "Resource service view with a `home` path, asynchronous `snapshot()`, and `queue.all()`; it supplies the configuration path, live telemetry and jobs to inspect. Only running jobs without a `parentId` are subtracted from available CPU and memory."
 			},
 			{
 				"name": "resourceRequest.env",
 				"type": "Record<string, string | undefined>",
 				"required": false,
-				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+				"description": "Environment values used to detect `HARNESS_RESOURCE_LEASE` and read `HARNESS_RESOURCE_CPUS` or `HARNESS_RESOURCE_MEMORY_MIB` for automatic sizing under a parent lease; inherited values are passed through `Number` without a local-sizing fallback. Defaults to `process.env`.",
+				"examples": [
+					{
+						"HARNESS_RESOURCE_LEASE": "7a8e1a1b-91e6-427a-b4f0-41f321908271",
+						"HARNESS_RESOURCE_CPUS": "2",
+						"HARNESS_RESOURCE_MEMORY_MIB": "1280"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "resourceRequest",
 				"type": "Promise<ResourceRequest>",
-				"description": "Validated concrete request preserving parent limits for nested automatic sizing."
+				"description": "The strict-schema request containing priority, resolved CPU count, memory in MiB and label. Automatic values use current resource availability and reservations, or inherited parent environment values; explicit CPU and memory strings are converted to numbers first.",
+				"examples": [
+					{
+						"priority": "coding",
+						"cpus": 2,
+						"memoryMiB": 1280,
+						"label": "Managed work"
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "The final strict request parse throws when priority is not agent-test, coding or environment, CPU or memory is non-finite or non-positive, or label is not 1–100 characters."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "resourceRequest",
@@ -49,30 +85,65 @@
 						"name": "resourceRequest.flags",
 						"type": "Record<string, string>",
 						"required": true,
-						"description": "Resources CLI priority, CPU, RAM and label fields, including supported auto sizing."
+						"description": "String-valued CLI fields consumed for priority, CPU, memory and label. `cpus` and `memoryMib` are converted with `Number` unless exactly `\"auto\"`; auto uses live headroom and top-level running-job reservations, or parent lease values, while undefined priority and label values receive schema defaults.",
+						"examples": [
+							{
+								"priority": "coding",
+								"cpus": "auto",
+								"memoryMib": "auto",
+								"label": "Managed work"
+							},
+							{
+								"priority": "agent-test",
+								"cpus": "2",
+								"memoryMib": "1280",
+								"label": "Scoped verification"
+							}
+						]
 					},
 					{
 						"name": "resourceRequest.service",
 						"type": "Pick<ResourceQueueService, 'home' | 'snapshot'> & { queue: Pick<ResourceQueueService['queue'], 'all'>; }",
 						"required": true,
-						"description": "Queue access, current telemetry and configuration directory used to resolve automatic requests."
+						"description": "Resource service view with a `home` path, asynchronous `snapshot()`, and `queue.all()`; it supplies the configuration path, live telemetry and jobs to inspect. Only running jobs without a `parentId` are subtracted from available CPU and memory."
 					},
 					{
 						"name": "resourceRequest.env",
 						"type": "Record<string, string | undefined>",
 						"required": false,
-						"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+						"description": "Environment values used to detect `HARNESS_RESOURCE_LEASE` and read `HARNESS_RESOURCE_CPUS` or `HARNESS_RESOURCE_MEMORY_MIB` for automatic sizing under a parent lease; inherited values are passed through `Number` without a local-sizing fallback. Defaults to `process.env`.",
+						"examples": [
+							{
+								"HARNESS_RESOURCE_LEASE": "7a8e1a1b-91e6-427a-b4f0-41f321908271",
+								"HARNESS_RESOURCE_CPUS": "2",
+								"HARNESS_RESOURCE_MEMORY_MIB": "1280"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceRequest",
 						"type": "Promise<ResourceRequest>",
-						"description": "Validated concrete request preserving parent limits for nested automatic sizing."
+						"description": "The strict-schema request containing priority, resolved CPU count, memory in MiB and label. Automatic values use current resource availability and reservations, or inherited parent environment values; explicit CPU and memory strings are converted to numbers first.",
+						"examples": [
+							{
+								"priority": "coding",
+								"cpus": 2,
+								"memoryMiB": 1280,
+								"label": "Managed work"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "The final strict request parse throws when priority is not agent-test, coding or environment, CPU or memory is non-finite or non-positive, or label is not 1–100 characters."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
