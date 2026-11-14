@@ -28,86 +28,111 @@
 				"name": "DetailList.rows",
 				"type": "Row[]",
 				"required": true,
-				"description": "Required rows in display order. Falsy values and repeated labels remain unmodified and are rendered by the caller snippets."
+				"description": "Caller-defined rows in display order, each passed unchanged to rowKey, label, children and the optional termTitle, valueTitle and valueClass callbacks. An empty array renders the empty content instead, and falsy entries and repeated labels are neither filtered nor deduplicated.",
+				"examples": [
+					[
+						{
+							"label": "Status",
+							"value": "Passed"
+						},
+						{
+							"label": "Duration",
+							"value": "4m 12s"
+						}
+					],
+					[],
+					[
+						{
+							"label": "Owner",
+							"value": "Platform team"
+						},
+						{
+							"label": "Owner",
+							"value": "Reporting team"
+						}
+					]
+				]
 			},
 			{
 				"name": "DetailList.rowKey",
 				"type": "(row: Row, position: number) => string | number",
 				"required": true,
-				"description": "Required callback returning a stable unique string or numeric key for each row. Repeated labels must still have distinct keys."
+				"description": "Called as rowKey(row, position) for each row, where position is the row's index in rows, and its return value becomes the keyed each block key. It must return a stable, unique string or number for each row, so rows that share a label still need distinct keys."
 			},
 			{
 				"name": "DetailList.label",
 				"type": "Snippet<[Row]>",
 				"required": true,
-				"description": "Required snippet receiving each row and rendering its definition term."
+				"description": "Required snippet rendered for each row with that row as its argument, placed inside the hx-dt term element. It is not rendered when rows is empty."
 			},
 			{
 				"name": "DetailList.children",
 				"type": "Snippet<[Row]>",
 				"required": true,
-				"description": "Required snippet receiving each row and rendering its definition description."
+				"description": "Required snippet rendered for each row with that row as its argument, placed inside the hx-dd description element. It is not rendered when rows is empty."
 			},
 			{
 				"name": "DetailList.empty",
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content shown instead of a definition list when rows is empty. Defaults to JavaScript undefined, showing No details to display. for empty rows."
+				"description": "Optional snippet rendered in place of the list when rows is empty; it defaults to undefined, which renders an hx-p paragraph reading No details to display. A supplied snippet replaces that paragraph entirely, so className is not applied to the empty state."
 			},
 			{
 				"name": "DetailList.className",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional feature classes, default an empty string."
+				"description": "Optional feature-owned classes appended after the detail-list class on the hx-dl list, or on the hx-p empty-state paragraph when rows is empty and no empty snippet is supplied. Defaults to an empty string, which adds no extra classes.",
+				"examples": ["", "compact", "run-summary"]
 			},
 			{
 				"name": "DetailList.grouped",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "True by default to wrap each term/value pair in a row container. False emits flat dt/dd siblings for an existing definition-list layout."
+				"description": "When true (the default), each term and value pair is wrapped in an hx-div element with class detail-row. When false, the hx-dt and hx-dd elements are direct children of the hx-dl list with no wrapper.",
+				"examples": [true, false]
 			},
 			{
 				"name": "DetailList.termTitle",
 				"type": "(row: Row) => string | undefined",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional callback returning a term tooltip string or undefined. Defaults to JavaScript undefined, omitting title. Callback errors propagate."
+				"description": "Optional callback called as termTitle(row) for each rendered row; its return value becomes the title attribute of the hx-dt term element, and an undefined return omits the attribute. It defaults to undefined, which omits the attribute, and errors thrown by the callback propagate."
 			},
 			{
 				"name": "DetailList.valueTitle",
 				"type": "(row: Row) => string | undefined",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional callback returning a value tooltip string or undefined. Defaults to JavaScript undefined, omitting title. Callback errors propagate."
+				"description": "Optional callback called as valueTitle(row) for each rendered row; its return value becomes the title attribute of the hx-dd description element, and an undefined return omits the attribute. It defaults to undefined, which omits the attribute, and errors thrown by the callback propagate."
 			},
 			{
 				"name": "DetailList.valueClass",
 				"type": "(row: Row) => string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional callback returning the value element class string. Defaults to JavaScript undefined, omitting additional classes. Callback errors propagate."
+				"description": "Optional callback called as valueClass(row) for each rendered row; its return value becomes the class attribute of the hx-dd description element, and an undefined return omits the attribute. It defaults to undefined, which omits the attribute, and errors thrown by the callback propagate."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DetailList",
 				"type": "markup",
-				"description": "A definition list with one keyed term/description group per row, or caller-owned empty content. Empty rows without an empty snippet show No details to display."
+				"description": "Renders an hx-dl definition list with one keyed group per row when rows is non-empty, where each group is an hx-div with class detail-row when grouped is true or a bare hx-dt and hx-dd pair when it is false. When rows is empty it renders the empty snippet output if supplied, otherwise an hx-p paragraph reading No details to display."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller content error",
 				"type": "thrown",
-				"description": "Errors from supplied snippets, rowKey, termTitle, valueTitle or valueClass propagate; this component does not catch them."
+				"description": "Errors thrown by the label, children and empty snippets and by the rowKey, termTitle, valueTitle and valueClass callbacks are raised during rendering and propagate, because this component does not catch them."
 			},
 			{
 				"name": "Duplicate row key",
-				"type": "Svelte keyed-each error",
-				"description": "Duplicate rowKey results are rejected during client updates; callers must provide distinct stable keys."
+				"type": "thrown",
+				"description": "Duplicate rowKey values are reported by Svelte's keyed each block as a keyed-each error, which this component does not catch, so callers must provide distinct stable keys."
 			}
 		],
 		"errorStatus": "declared",
