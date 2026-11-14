@@ -32,90 +32,99 @@
 				"name": "ComparePanes.panes",
 				"type": "ComparisonPane<T>[]",
 				"required": true,
-				"description": "Required side contexts produced by comparisonPanes; each retains its own commit, content and evidence gap."
+				"description": "An array of side contexts to render. Entries are filtered by visible and keyed by key; shown panes provide heading and role, while value and optional gap select the content path.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ComparePanes.visible",
 				"type": "'both' | 'before' | 'after'",
 				"required": false,
 				"default": "both",
-				"description": "Optional visible side: both by default, before or after. Labels keep their original side in a single-side view."
+				"description": "Selects both sides or only entries whose side matches before or after; the default is both. Filtering does not rewrite a pane's heading or role.",
+				"examples": ["both", "before", "after"]
 			},
 			{
 				"name": "ComparePanes.className",
 				"type": "string",
 				"required": false,
 				"default": "ex-panes",
-				"description": "Optional owner layout classes. Defaults to ex-panes; the app stylesheet controls the responsive column layout."
+				"description": "Sets the class on the outer wrapper. Defaults to ex-panes.",
+				"examples": ["ex-panes", "reports-comparison"]
 			},
 			{
 				"name": "ComparePanes.paneClass",
 				"type": "string",
 				"required": false,
 				"default": "ex-pane",
-				"description": "Optional classes on each side frame. Defaults to ex-pane."
+				"description": "Sets the class on each pane frame when framed is true; it has no effect when frames are disabled. Defaults to ex-pane.",
+				"examples": ["ex-pane", "reports-comparison__pane"]
 			},
 			{
 				"name": "ComparePanes.framed",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "True by default to draw each side frame. False lets specialized image/audio/detail children own their semantic frame."
+				"description": "When true (the default), wraps each shown pane in a group and enables its heading, gap, children and details branches. When false, renders only the children slot for each shown pane.",
+				"examples": [true, false]
 			},
 			{
 				"name": "ComparePanes.headings",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "True by default to show the side heading and revision role; false preserves a specialized child heading."
+				"description": "When true (the default) inside framed panes, renders the provided heading slot or the pane heading and role. When false, omits that heading.",
+				"examples": [true, false]
 			},
 			{
 				"name": "ComparePanes.contents",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "False by default. True uses display: contents so an existing parent arranges the side boxes."
+				"description": "When true, sets inline display: contents on the outer wrapper so an existing parent can arrange the pane boxes. When false, omits that inline style.",
+				"examples": [false, true]
 			},
 			{
 				"name": "ComparePanes.gap",
 				"type": "Snippet<[ComparisonPane<T>]>",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional gap-rendering slot for that side. Defaults to JavaScript undefined, using EmptyState with the recorded gap."
+				"description": "Optional slot receiving a pane when the framed rendering branch has value === undefined and a truthy gap; it is not used otherwise. Without this slot, that branch renders EmptyState with the pane's gap."
 			},
 			{
 				"name": "ComparePanes.children",
 				"type": "Snippet<[ComparisonPane<T>]>",
 				"required": true,
-				"description": "Required content slot receiving exactly one ComparisonPane, including its own value and identity. Rendering errors propagate."
+				"description": "Required slot receiving each shown pane. In framed mode it is skipped only when value === undefined and gap is truthy; without frames it renders for every shown pane."
 			},
 			{
 				"name": "ComparePanes.heading",
 				"type": "Snippet<[ComparisonPane<T>]>",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional heading slot receiving that same side. Defaults to JavaScript undefined, using its shared heading and role."
+				"description": "Optional slot receiving the pane when headings and framed are true. It replaces the default pane heading and role, and is not rendered when headings are disabled or frames are off."
 			},
 			{
 				"name": "ComparePanes.details",
 				"type": "Snippet<[ComparisonPane<T>]>",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional provenance/details slot receiving that same side. Defaults to JavaScript undefined, omitting extra details."
+				"description": "Optional slot receiving the same pane after its content. It renders only in framed mode, and defaults to omitted."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ComparePanes",
 				"type": "markup",
-				"description": "Rendered comparison content composed from the selected side contexts and the supplied snippets."
+				"description": "Produces an outer hx-div containing the shown panes. A pane frame is present only when framed is true, and the outer element gets paired only when more than one pane remains after filtering."
 			}
 		],
 		"errors": [
 			{
 				"name": "Content slot error",
-				"type": "propagated",
-				"description": "Errors from children, heading, details or gap snippets propagate; the comparison does not swap or suppress side data."
+				"type": "thrown",
+				"description": "The component does not catch render errors from an invoked children, heading, details, or gap slot; those errors propagate. Slots skipped by the visibility, framing, heading, or gap branches are not invoked."
 			}
 		],
 		"errorStatus": "declared",
