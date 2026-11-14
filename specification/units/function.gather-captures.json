@@ -22,38 +22,147 @@
 				"name": "gatherCaptures.directory",
 				"type": "string",
 				"required": true,
-				"description": "Evidence directory containing the capture index and the flat files named by valid index lines."
+				"description": "The check's evidence directory, holding the captures.ndjson index and the plain file names its valid lines declare. A missing directory or index yields no captures and no failure; a symlink or non-directory on the path to it, a non-regular index, or an index over 2,000,000 bytes is refused with one failure and none of its captures are read.",
+				"examples": [
+					".cache/harness/verifications/9b1f0c6e4a2d7835f1c0e9b6a4d2f7c81e3a5b90/20261114093012345/evidence/9b1f0c6e4a2d7835f1c0e9b6a4d2f7c81e3a5b90/checks/tests-e2e-evidence-grid.spec.ts",
+					".cache/harness/verifications/3f9a1c2e7b4d8056a1e2f3c4d5b6a7980c1d2e3f/20261113181507902/evidence/3f9a1c2e7b4d8056a1e2f3c4d5b6a7980c1d2e3f/checks/tests-unit-format-bytes.test.ts"
+				]
 			},
 			{
 				"name": "gatherCaptures.recordPath",
 				"type": "string",
 				"required": true,
-				"description": "Record-relative prefix prepended to each admitted filename."
+				"description": "Record-relative prefix prepended, with a slash, to each admitted capture's file name to form its recorded path. The check runner passes evidence/<commit>/<scenario or checks>/<leaf>, and a refusal for the record's total budget quotes that same path.",
+				"examples": [
+					"evidence/9b1f0c6e4a2d7835f1c0e9b6a4d2f7c81e3a5b90/checks/tests-e2e-evidence-grid.spec.ts",
+					"focused",
+					"evidence/3f9a1c2e7b4d8056a1e2f3c4d5b6a7980c1d2e3f/checks/tests-unit-format-bytes.test.ts"
+				]
 			},
 			{
 				"name": "gatherCaptures.limits",
 				"type": "CaptureLimits",
 				"required": false,
 				"default": {},
-				"description": "Optional maximum bytes per capture and across this verification record; absent limits do not cap bytes."
+				"description": "Optional byte caps from harness.verify.json: maxCaptureBytes refuses any single capture file larger than it, and maxRecordBytes refuses a capture that would take the record's retained total past it. An absent cap means no limit, so the default {} caps nothing.",
+				"examples": [
+					{},
+					{
+						"maxCaptureBytes": 5242880,
+						"maxRecordBytes": 52428800
+					},
+					{
+						"maxCaptureBytes": 1048576
+					}
+				]
 			},
 			{
 				"name": "gatherCaptures.scope",
 				"type": "{ budget?: RecordBudget; root?: string }",
 				"required": false,
 				"default": {},
-				"description": "Optional shared RecordBudget and trusted run root; the root is used to reject redirected evidence ancestry."
+				"description": "Optional shared RecordBudget that accounts for retained bytes across one verification record, and the trusted run root, beneath which every existing component down to the directory must be a real directory and not a symlink. An absent budget is made from limits.maxRecordBytes, and an absent root is the directory itself.",
+				"examples": [
+					{},
+					{
+						"root": ".cache/harness/verifications/9b1f0c6e4a2d7835f1c0e9b6a4d2f7c81e3a5b90/20261114093012345"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatherCaptures",
 				"type": "GatherResult",
-				"description": "Gathered record-ready captures plus explicit failure strings; malformed lines, missing files, symlinks and over-budget files are not admitted."
+				"description": "Each admitted capture becomes a Gathered entry with its CaptureLine, its record-ready Capture (status 'passed' here, decided later) and any media facts (an {error} entry for unsupported or invalid media) or parsed benchmark (undefined when the file is not JSON). failures carries one string for each malformed line, missing file, symlink, over-budget or unreadable capture, and for a refused directory or index.",
+				"examples": [
+					{
+						"gathered": [
+							{
+								"line": {
+									"evidence": "reports.component.evidence-grid",
+									"kind": "screenshot",
+									"state": "loaded",
+									"viewport": "desktop",
+									"file": "evidence-grid-loaded.png",
+									"mediaType": "image/png"
+								},
+								"capture": {
+									"evidence": "reports.component.evidence-grid",
+									"kind": "screenshot",
+									"state": "loaded",
+									"viewport": "desktop",
+									"status": "passed",
+									"path": "evidence/9b1f0c6e4a2d7835f1c0e9b6a4d2f7c81e3a5b90/checks/tests-e2e-evidence-grid.spec.ts/evidence-grid-loaded.png",
+									"sha256": "c3a51f9e0b7d26448e1f5a9c3d0b7e2f94a6d18c5b3e0f7a2d9c4b8e1f6a3d70",
+									"bytes": 48213,
+									"mediaType": "image/png",
+									"capturedAt": "2026-11-14T09:30:19.802Z"
+								},
+								"facts": {
+									"kind": "image",
+									"width": 1280,
+									"height": 720
+								}
+							}
+						],
+						"failures": []
+					},
+					{
+						"gathered": [
+							{
+								"line": {
+									"evidence": "benchmark",
+									"kind": "benchmark",
+									"state": "default",
+									"file": "benchmark-reports.component.evidence-grid.json",
+									"mediaType": "application/json"
+								},
+								"capture": {
+									"evidence": "benchmark",
+									"kind": "benchmark",
+									"state": "default",
+									"status": "passed",
+									"path": "evidence/3f9a1c2e7b4d8056a1e2f3c4d5b6a7980c1d2e3f/checks/tests-unit-format-bytes.test.ts/benchmark-reports.component.evidence-grid.json",
+									"sha256": "7e0d4c9a2f1b8635d7a0e4c2b9f15d83a6c7e1094f2b5d8a3e6c1f7b0d92a4e5",
+									"bytes": 412,
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-13T18:15:09.116Z"
+								},
+								"benchmark": {
+									"measurements": [
+										{
+											"unit": "reports.component.evidence-grid",
+											"metric": "render-time",
+											"unitOfMeasure": "ms",
+											"value": 12.4,
+											"method": "median of 30 renders",
+											"workload": null
+										}
+									]
+								}
+							}
+						],
+						"failures": []
+					},
+					{
+						"gathered": [],
+						"failures": [
+							"declared capture evidence-grid-empty.png but wrote no file",
+							"left capture evidence-grid-loaded.png of 9437184 bytes, over maxCaptureBytes 5242880 in harness.verify.json; it was not recorded"
+						]
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown inside this unit when lstat does not report a capture as a regular file, when a media or benchmark capture's read returns no contents, and when the capture directory or index is not a regular directory or regular file. gatherLine and indexLines catch every such throw and report it as a failure string, so gatherCaptures never throws it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "gatherCaptures",
@@ -62,37 +171,146 @@
 						"name": "gatherCaptures.directory",
 						"type": "string",
 						"required": true,
-						"description": "Evidence directory containing the capture index and the flat files named by valid index lines."
+						"description": "The check's evidence directory, holding the captures.ndjson index and the plain file names its valid lines declare. A missing directory or index yields no captures and no failure; a symlink or non-directory on the path to it, a non-regular index, or an index over 2,000,000 bytes is refused with one failure and none of its captures are read.",
+						"examples": [
+							".cache/harness/verifications/9b1f0c6e4a2d7835f1c0e9b6a4d2f7c81e3a5b90/20261114093012345/evidence/9b1f0c6e4a2d7835f1c0e9b6a4d2f7c81e3a5b90/checks/tests-e2e-evidence-grid.spec.ts",
+							".cache/harness/verifications/3f9a1c2e7b4d8056a1e2f3c4d5b6a7980c1d2e3f/20261113181507902/evidence/3f9a1c2e7b4d8056a1e2f3c4d5b6a7980c1d2e3f/checks/tests-unit-format-bytes.test.ts"
+						]
 					},
 					{
 						"name": "gatherCaptures.recordPath",
 						"type": "string",
 						"required": true,
-						"description": "Record-relative prefix prepended to each admitted filename."
+						"description": "Record-relative prefix prepended, with a slash, to each admitted capture's file name to form its recorded path. The check runner passes evidence/<commit>/<scenario or checks>/<leaf>, and a refusal for the record's total budget quotes that same path.",
+						"examples": [
+							"evidence/9b1f0c6e4a2d7835f1c0e9b6a4d2f7c81e3a5b90/checks/tests-e2e-evidence-grid.spec.ts",
+							"focused",
+							"evidence/3f9a1c2e7b4d8056a1e2f3c4d5b6a7980c1d2e3f/checks/tests-unit-format-bytes.test.ts"
+						]
 					},
 					{
 						"name": "gatherCaptures.limits",
 						"type": "CaptureLimits",
 						"required": false,
 						"default": {},
-						"description": "Optional maximum bytes per capture and across this verification record; absent limits do not cap bytes."
+						"description": "Optional byte caps from harness.verify.json: maxCaptureBytes refuses any single capture file larger than it, and maxRecordBytes refuses a capture that would take the record's retained total past it. An absent cap means no limit, so the default {} caps nothing.",
+						"examples": [
+							{},
+							{
+								"maxCaptureBytes": 5242880,
+								"maxRecordBytes": 52428800
+							},
+							{
+								"maxCaptureBytes": 1048576
+							}
+						]
 					},
 					{
 						"name": "gatherCaptures.scope",
 						"type": "{ budget?: RecordBudget; root?: string }",
 						"required": false,
 						"default": {},
-						"description": "Optional shared RecordBudget and trusted run root; the root is used to reject redirected evidence ancestry."
+						"description": "Optional shared RecordBudget that accounts for retained bytes across one verification record, and the trusted run root, beneath which every existing component down to the directory must be a real directory and not a symlink. An absent budget is made from limits.maxRecordBytes, and an absent root is the directory itself.",
+						"examples": [
+							{},
+							{
+								"root": ".cache/harness/verifications/9b1f0c6e4a2d7835f1c0e9b6a4d2f7c81e3a5b90/20261114093012345"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gatherCaptures",
 						"type": "GatherResult",
-						"description": "Gathered record-ready captures plus explicit failure strings; malformed lines, missing files, symlinks and over-budget files are not admitted."
+						"description": "Each admitted capture becomes a Gathered entry with its CaptureLine, its record-ready Capture (status 'passed' here, decided later) and any media facts (an {error} entry for unsupported or invalid media) or parsed benchmark (undefined when the file is not JSON). failures carries one string for each malformed line, missing file, symlink, over-budget or unreadable capture, and for a refused directory or index.",
+						"examples": [
+							{
+								"gathered": [
+									{
+										"line": {
+											"evidence": "reports.component.evidence-grid",
+											"kind": "screenshot",
+											"state": "loaded",
+											"viewport": "desktop",
+											"file": "evidence-grid-loaded.png",
+											"mediaType": "image/png"
+										},
+										"capture": {
+											"evidence": "reports.component.evidence-grid",
+											"kind": "screenshot",
+											"state": "loaded",
+											"viewport": "desktop",
+											"status": "passed",
+											"path": "evidence/9b1f0c6e4a2d7835f1c0e9b6a4d2f7c81e3a5b90/checks/tests-e2e-evidence-grid.spec.ts/evidence-grid-loaded.png",
+											"sha256": "c3a51f9e0b7d26448e1f5a9c3d0b7e2f94a6d18c5b3e0f7a2d9c4b8e1f6a3d70",
+											"bytes": 48213,
+											"mediaType": "image/png",
+											"capturedAt": "2026-11-14T09:30:19.802Z"
+										},
+										"facts": {
+											"kind": "image",
+											"width": 1280,
+											"height": 720
+										}
+									}
+								],
+								"failures": []
+							},
+							{
+								"gathered": [
+									{
+										"line": {
+											"evidence": "benchmark",
+											"kind": "benchmark",
+											"state": "default",
+											"file": "benchmark-reports.component.evidence-grid.json",
+											"mediaType": "application/json"
+										},
+										"capture": {
+											"evidence": "benchmark",
+											"kind": "benchmark",
+											"state": "default",
+											"status": "passed",
+											"path": "evidence/3f9a1c2e7b4d8056a1e2f3c4d5b6a7980c1d2e3f/checks/tests-unit-format-bytes.test.ts/benchmark-reports.component.evidence-grid.json",
+											"sha256": "7e0d4c9a2f1b8635d7a0e4c2b9f15d83a6c7e1094f2b5d8a3e6c1f7b0d92a4e5",
+											"bytes": 412,
+											"mediaType": "application/json",
+											"capturedAt": "2026-11-13T18:15:09.116Z"
+										},
+										"benchmark": {
+											"measurements": [
+												{
+													"unit": "reports.component.evidence-grid",
+													"metric": "render-time",
+													"unitOfMeasure": "ms",
+													"value": 12.4,
+													"method": "median of 30 renders",
+													"workload": null
+												}
+											]
+										}
+									}
+								],
+								"failures": []
+							},
+							{
+								"gathered": [],
+								"failures": [
+									"declared capture evidence-grid-empty.png but wrote no file",
+									"left capture evidence-grid-loaded.png of 9437184 bytes, over maxCaptureBytes 5242880 in harness.verify.json; it was not recorded"
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown inside this unit when lstat does not report a capture as a regular file, when a media or benchmark capture's read returns no contents, and when the capture directory or index is not a regular directory or regular file. gatherLine and indexLines catch every such throw and report it as a failure string, so gatherCaptures never throws it."
+					}
+				],
 				"errorStatus": "declared"
 			}
 		],
