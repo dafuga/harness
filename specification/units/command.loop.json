@@ -18,14 +18,14 @@
 				"name": "registerLoopCommand.program",
 				"type": "Command",
 				"required": true,
-				"description": "Commander program that receives the loop command tree."
+				"description": "The Commander program that receives the `loop` command, which the function adds with `program.command('loop')`. The function keeps no reference to it, so it matters only while registration runs, and it must be a Commander `Command` because `.command()` is the only method the function calls on it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerLoopCommand",
 				"type": "void",
-				"description": "Registers loop lifecycle and work commands including create, add, complete, status, search, next, evaluate, and regression record."
+				"description": "The function returns nothing and is synchronous, so its result is the side effect of adding the `loop` command to the program with its subcommands registered under it; no subcommand action runs during registration. The subcommands are whatever registerLoopLifecycleCommands adds plus `record <loop>`, `create <name>`, `add <loop> <step>`, `complete <loop> <step>`, `status <loop>`, `search [query]`, `next <loop>`, and `evaluate <loop>`, and they matter when the CLI parses a command line."
 			}
 		],
 		"errors": [],
@@ -38,14 +38,14 @@
 						"name": "registerLoopCommand.program",
 						"type": "Command",
 						"required": true,
-						"description": "Commander program that receives the loop command tree."
+						"description": "The Commander program that receives the `loop` command, which the function adds with `program.command('loop')`. The function keeps no reference to it, so it matters only while registration runs, and it must be a Commander `Command` because `.command()` is the only method the function calls on it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerLoopCommand",
 						"type": "void",
-						"description": "Registers loop lifecycle and work commands including create, add, complete, status, search, next, evaluate, and regression record."
+						"description": "The function returns nothing and is synchronous, so its result is the side effect of adding the `loop` command to the program with its subcommands registered under it; no subcommand action runs during registration. The subcommands are whatever registerLoopLifecycleCommands adds plus `record <loop>`, `create <name>`, `add <loop> <step>`, `complete <loop> <step>`, `status <loop>`, `search [query]`, `next <loop>`, and `evaluate <loop>`, and they matter when the CLI parses a command line."
 					}
 				],
 				"errors": [],
