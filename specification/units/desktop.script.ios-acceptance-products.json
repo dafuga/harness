@@ -12,36 +12,119 @@
 		"symbols": ["acceptanceProducts", "normalProduct"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "acceptanceProducts.record",
 				"type": "AcceptanceRecord",
-				"required": true
+				"required": true,
+				"description": "The run's AcceptanceRecord, on which acceptanceProducts calls begin('Products') and to which it adds every check of the phase. A failed check is only recorded and does not stop the phase; an error thrown by a build, a copy or a product read ends the call."
 			},
 			{
 				"name": "acceptanceProducts.read",
 				"type": "SourceReading",
-				"required": true
+				"required": true,
+				"description": "The SourceReading the run was made from, with its renderer, native and fixtureComputer sets, each a Map from the repository-relative path of a file that Git does not ignore to that file's SHA-256 digest. acceptanceProducts compares the renderer set with a fresh reading after cap:sync and the native set with one after the three builds, records a failed check for any set that moved, and does not use fixtureComputer."
 			},
 			{
 				"name": "normalProduct.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The Acceptance of the normal-product phase: normalProduct begins 'Normal product' on its record, installs and launches the Debug product on its udid, and writes normal-start.png to its output folder. Its page, controlOrigin and project are not used by this function."
 			}
 		],
 		"outputs": [
 			{
 				"name": "acceptanceProducts",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The object acceptanceProducts returns when it throws nothing: facts for the five products (debug, release, fixtureCopy, releaseCopy and scanFixtureCopy), the renderer proof with its built and copied digests and file count, and the absolute path of the Release copy. The checks it makes stay on the record and are not part of this value.",
+				"examples": [
+					{
+						"facts": {
+							"debug": {
+								"path": ".cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app",
+								"executable": "5b1d9c3e7a2f4086d19e5c2b8f6a03d4e7c91b26a58f0d3e9c7b41a6f2e8d05c",
+								"signature": "ad hoc, no team, no account",
+								"localNetworking": false,
+								"inspectable": false
+							},
+							"release": {
+								"path": ".cache/ios/DerivedData/Build/Products/Release-iphonesimulator/App.app",
+								"executable": "0e7a3f91c2d4b8065a1e9f7c3d2b8a40e6f5c1d9b7a3e28f4c0d6b1a9e5f73d2",
+								"signature": "ad hoc, no team, no account",
+								"localNetworking": false,
+								"inspectable": false
+							},
+							"fixtureCopy": {
+								"path": ".cache/ios/fixture/App.app",
+								"executable": "a9d03e6b18f7c4a2e5b9d0137c6a8f2e4d1b9c05e8a3f76d2b0c5e91f6d4a8b3",
+								"signature": "ad hoc, no team, no account",
+								"localNetworking": true,
+								"inspectable": true
+							},
+							"releaseCopy": {
+								"path": ".cache/ios/acceptance/Release/App.app",
+								"executable": "3f6c1a8ed50b9e27c4a71f369e2d8b04a7c51e920d3f6b8ae19c42756b8d0a3f",
+								"signature": "ad hoc, no team, no account",
+								"localNetworking": true,
+								"inspectable": true
+							},
+							"scanFixtureCopy": {
+								"path": ".cache/ios/scan-fixture/App.app",
+								"executable": "c18e5d074ba2f96e0d7c3b19e4a8f25c6f1d90ab3e7c4a58b2d9e16f58a0c3d7",
+								"signature": "ad hoc, no team, no account",
+								"localNetworking": true,
+								"inspectable": true
+							}
+						},
+						"renderer": {
+							"built": "8d4f0b2ae9c17d365a8b0f4ec2d61a937e0b5c28f4a9d1e63b72c08da1e5f9b4",
+							"copied": "2c9e6a1fb07d4c85e3f29a0d6b1c7e549a0d8f32d5e6b1c74f2a93e0c8b7d16a",
+							"files": 386
+						},
+						"releaseCopy": "/work/harness/packages/desktop/.cache/ios/acceptance/Release/App.app"
+					}
+				]
 			},
 			{
 				"name": "normalProduct",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The Promise normalProduct returns: it resolves with no value after the Debug product is installed and launched, a running check is recorded, a 5 second pause passes, a second running check is recorded, and normal-start.png is written. It rejects with the xcrun error of a failed simctl step, and a check that finds the product not running is only a failed check on the record."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error: <command> failed (<exit code>)",
+				"type": "thrown",
+				"description": "Thrown by the tool helper when bun, git, otool, codesign or PlistBuddy in acceptanceProducts, or xcrun simctl in normalProduct, exits non-zero or cannot start, and normalProduct rejects with it instead. The message is the command's name and exit code, then the last 25 lines of its output."
+			},
+			{
+				"name": "Error: The product is not signed ad hoc without a team.",
+				"type": "thrown",
+				"description": "Thrown by verifiedSignature, which productFacts and changedCopy call, when codesign's details for the product lack an ad hoc flag or 'TeamIdentifier=not set'."
+			},
+			{
+				"name": "Error: <accountProblem message>",
+				"type": "thrown",
+				"description": "Thrown by verifiedSignature with the first problem accountProblem finds: no simulated entitlements, a provisioning profile file or a team of an account named in a file of the product, or entitlements that name more than the app's own identifier."
+			},
+			{
+				"name": "Error: Signing again changed the simulator entitlements of the product.",
+				"type": "thrown",
+				"description": "Thrown by changedCopy when the ad hoc re-signing of its copy changes the digest of the executable's __TEXT entitlements section, which is compared before and after signing."
+			},
+			{
+				"name": "Error: file-system error (ENOENT, EACCES and others)",
+				"type": "thrown",
+				"description": "Thrown by Node's file calls (statSync, readFileSync, readdirSync, rmSync, cpSync and writeFileSync) when a path they need is missing or cannot be read, removed, copied or written; for example, assembled throws ENOENT when a Debug or Release product has no App binary."
+			},
+			{
+				"name": "SyntaxError (JSON.parse of capacitor.config.json)",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse in inspectable, which productFacts calls, and in changedCopy when a product's capacitor.config.json is not valid JSON."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "acceptanceProducts",
@@ -49,22 +132,103 @@
 					{
 						"name": "acceptanceProducts.record",
 						"type": "AcceptanceRecord",
-						"required": true
+						"required": true,
+						"description": "The run's AcceptanceRecord, on which acceptanceProducts calls begin('Products') and to which it adds every check of the phase. A failed check is only recorded and does not stop the phase; an error thrown by a build, a copy or a product read ends the call."
 					},
 					{
 						"name": "acceptanceProducts.read",
 						"type": "SourceReading",
-						"required": true
+						"required": true,
+						"description": "The SourceReading the run was made from, with its renderer, native and fixtureComputer sets, each a Map from the repository-relative path of a file that Git does not ignore to that file's SHA-256 digest. acceptanceProducts compares the renderer set with a fresh reading after cap:sync and the native set with one after the three builds, records a failed check for any set that moved, and does not use fixtureComputer."
 					}
 				],
 				"outputs": [
 					{
 						"name": "acceptanceProducts",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The object acceptanceProducts returns when it throws nothing: facts for the five products (debug, release, fixtureCopy, releaseCopy and scanFixtureCopy), the renderer proof with its built and copied digests and file count, and the absolute path of the Release copy. The checks it makes stay on the record and are not part of this value.",
+						"examples": [
+							{
+								"facts": {
+									"debug": {
+										"path": ".cache/ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app",
+										"executable": "5b1d9c3e7a2f4086d19e5c2b8f6a03d4e7c91b26a58f0d3e9c7b41a6f2e8d05c",
+										"signature": "ad hoc, no team, no account",
+										"localNetworking": false,
+										"inspectable": false
+									},
+									"release": {
+										"path": ".cache/ios/DerivedData/Build/Products/Release-iphonesimulator/App.app",
+										"executable": "0e7a3f91c2d4b8065a1e9f7c3d2b8a40e6f5c1d9b7a3e28f4c0d6b1a9e5f73d2",
+										"signature": "ad hoc, no team, no account",
+										"localNetworking": false,
+										"inspectable": false
+									},
+									"fixtureCopy": {
+										"path": ".cache/ios/fixture/App.app",
+										"executable": "a9d03e6b18f7c4a2e5b9d0137c6a8f2e4d1b9c05e8a3f76d2b0c5e91f6d4a8b3",
+										"signature": "ad hoc, no team, no account",
+										"localNetworking": true,
+										"inspectable": true
+									},
+									"releaseCopy": {
+										"path": ".cache/ios/acceptance/Release/App.app",
+										"executable": "3f6c1a8ed50b9e27c4a71f369e2d8b04a7c51e920d3f6b8ae19c42756b8d0a3f",
+										"signature": "ad hoc, no team, no account",
+										"localNetworking": true,
+										"inspectable": true
+									},
+									"scanFixtureCopy": {
+										"path": ".cache/ios/scan-fixture/App.app",
+										"executable": "c18e5d074ba2f96e0d7c3b19e4a8f25c6f1d90ab3e7c4a58b2d9e16f58a0c3d7",
+										"signature": "ad hoc, no team, no account",
+										"localNetworking": true,
+										"inspectable": true
+									}
+								},
+								"renderer": {
+									"built": "8d4f0b2ae9c17d365a8b0f4ec2d61a937e0b5c28f4a9d1e63b72c08da1e5f9b4",
+									"copied": "2c9e6a1fb07d4c85e3f29a0d6b1c7e549a0d8f32d5e6b1c74f2a93e0c8b7d16a",
+									"files": 386
+								},
+								"releaseCopy": "/work/harness/packages/desktop/.cache/ios/acceptance/Release/App.app"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error: <command> failed (<exit code>)",
+						"type": "thrown",
+						"description": "Thrown by the tool helper when bun (cap:sync and the three builds), git (source readings), otool, codesign or PlistBuddy (copy and signature checks) exits non-zero or cannot start. The message is the command's name and exit code, then the last 25 lines of its output."
+					},
+					{
+						"name": "Error: The product is not signed ad hoc without a team.",
+						"type": "thrown",
+						"description": "Thrown by verifiedSignature, which productFacts and changedCopy call, when codesign's details for the product lack an ad hoc flag or 'TeamIdentifier=not set'."
+					},
+					{
+						"name": "Error: <accountProblem message>",
+						"type": "thrown",
+						"description": "Thrown by verifiedSignature with the first problem accountProblem finds: no simulated entitlements, a provisioning profile file or a team of an account named in a file of the product, or entitlements that name more than the app's own identifier."
+					},
+					{
+						"name": "Error: Signing again changed the simulator entitlements of the product.",
+						"type": "thrown",
+						"description": "Thrown by changedCopy when the ad hoc re-signing of its copy changes the digest of the executable's __TEXT entitlements section, which is compared before and after signing."
+					},
+					{
+						"name": "Error: file-system error (ENOENT, EACCES and others)",
+						"type": "thrown",
+						"description": "Thrown by Node's file calls (statSync, readFileSync, readdirSync, rmSync, cpSync and writeFileSync) when a path they need is missing or cannot be read, removed, copied or written; for example, assembled throws ENOENT when a Debug or Release product has no App binary."
+					},
+					{
+						"name": "SyntaxError (JSON.parse of capacitor.config.json)",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse in inspectable, which productFacts calls, and in changedCopy when a product's capacitor.config.json is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "normalProduct",
@@ -72,17 +236,25 @@
 					{
 						"name": "normalProduct.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The Acceptance of the normal-product phase: normalProduct begins 'Normal product' on its record, installs and launches the Debug product on its udid, and writes normal-start.png to its output folder. Its page, controlOrigin and project are not used by this function."
 					}
 				],
 				"outputs": [
 					{
 						"name": "normalProduct",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The Promise normalProduct returns: it resolves with no value after the Debug product is installed and launched, a running check is recorded, a 5 second pause passes, a second running check is recorded, and normal-start.png is written. It rejects with the xcrun error of a failed simctl step, and a check that finds the product not running is only a failed check on the record."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error: <command> failed (<exit code>)",
+						"type": "thrown",
+						"description": "Thrown by the tool helper when xcrun simctl exits non-zero or cannot start during install, launch, the launchctl list read by running, or the screenshot taken by shot, and normalProduct rejects with it. The message is 'xcrun failed (<exit code>):' followed by the last 25 lines of its output."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
