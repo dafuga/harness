@@ -1,7 +1,9 @@
 import { expect, test } from 'vitest';
+import { readFileSync } from 'node:fs';
 import { scenarioManifestSchema } from '../../src/core/unitTypes';
 import type { Gathered } from '../../src/utils/gatherCaptures';
 import { scenarioCoverage } from '../../src/services/verification-service/scenarioCoverage';
+import { problem } from '../../src/utils/verification-evidence/scenarioCoverage';
 import { captureLineSchema } from '../../src/core/verification-evidence/verifyTypes';
 import { captureSchema } from '../../src/core/verification-evidence/verificationTypes';
 import { assertColdEntries } from '../support/coldEntries';
@@ -155,4 +157,42 @@ test('viewport and full-page evidence retain their original dimensions', () => {
 	expect(imageFailures(image({}, 920, 900), 'full-page')).toEqual([]);
 	expect(imageFailures(image(), 'viewport')[0]).toContain('requires 920x700');
 	expect(imageFailures(image(), 'full-page')[0]).toContain('920 wide and at least 700 tall');
+});
+
+test('explorer-shell accepts the whole page its capture helper keeps, never a wider one', () => {
+	// captureShell keeps the full page; the bar fixture's earlier frame ends 88 px below the screen.
+	const file = new URL('../../specification/scenarios/explorer-shell.json', import.meta.url);
+	const shell = scenarioManifestSchema.parse(JSON.parse(readFileSync(file, 'utf8')));
+	const compiled = new Map([['shell-fixture', 'build-1']]);
+	const input = { scenario: shell, commit, gathered: [], checkFailed: false };
+	const size = (viewport: string, width: number, height: number) =>
+		problem(
+			{ ...input, builds: { declared: ['shell-fixture'], compiled } },
+			{
+				...gathered({
+					...served('build-1'),
+					evidence: 'screens',
+					kind: 'screenshot',
+					state: 'pieces',
+					viewport,
+					file: `pieces-${viewport}.png`,
+					mediaType: 'image/png'
+				}),
+				facts: { kind: 'image', width, height }
+			}
+		);
+	const measured = [
+		['desktop', 1440, 1088],
+		['tablet', 920, 888],
+		['mobile', 390, 932],
+		['desktop', 1440, 1773],
+		['tablet', 920, 1920]
+	] as const;
+	for (const [viewport, width, height] of measured)
+		expect([viewport, height, size(viewport, width, height)]).toEqual([
+			viewport,
+			height,
+			undefined
+		]);
+	expect(size('mobile', 501, 2895)).toContain('390 wide and at least 844 tall');
 });
