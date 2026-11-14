@@ -12,41 +12,109 @@
 		"symbols": ["relatedReviewPaths", "reviewConventionPaths"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "relatedReviewPaths.target",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative path of the file under review. Its directory resolves relative imports and its name without extension (non-alphanumerics removed, lowercased) is matched against the names of test files; the target is removed from the result by exact string comparison, so it must spell the path exactly as the entries in files do.",
+				"examples": ["src/reports/run.ts", "app/services/billing.py", "src/lib/cart/Cart.svelte"]
 			},
 			{
 				"name": "relatedReviewPaths.code",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Full source text of the file under review, scanned with regular expressions (never parsed or executed) for quoted specifiers in from, import, require() and #include statements and for Python relative 'from .x import' lines. Quoted specifiers resolve only when they start with '.', '$lib/' or '@/', so bare package names are ignored.",
+				"examples": [
+					"import { parseReport } from './parser';\nimport { formatRow } from '../format/row';\n\nexport function run(input: string) {\n    return formatRow(parseReport(input));\n}\n",
+					"from .models import Invoice\nfrom ..core.money import round_cents\n\n\ndef total(items):\n    return sum(items)\n",
+					"<script lang=\"ts\">\n    import { totals } from '$lib/cart/totals';\n    import { formatPrice } from '$lib/format';\n</script>\n"
+				]
 			},
 			{
 				"name": "relatedReviewPaths.files",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Candidate repository file paths; only entries in this list can be returned, and test files are searched only among them. Import matches are exact string comparisons against normalized forward-slash paths, so an entry written with a leading './' never matches.",
+				"examples": [
+					[
+						"src/reports/run.ts",
+						"src/reports/parser.ts",
+						"src/format/row.ts",
+						"src/reports/run.test.ts",
+						"src/reports/format.ts"
+					],
+					[
+						"app/services/billing.py",
+						"app/services/models.py",
+						"app/core/money.py",
+						"app/services/test_billing.py"
+					],
+					[
+						"src/lib/cart/Cart.svelte",
+						"src/lib/cart/totals.ts",
+						"src/lib/format.ts",
+						"src/lib/cart/Cart.test.ts"
+					]
+				]
 			},
 			{
 				"name": "reviewConventionPaths.target",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative path of the file under review; only its directory is used, walked from the nearest directory up to the repository root ('.'). An absolute path is not rejected and makes the walk emit malformed entries such as '//AGENTS.md'.",
+				"examples": [
+					"src/reports/run.ts",
+					"app/services/billing.py",
+					"packages/api/src/routes/users.ts"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "relatedReviewPaths",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Up to six paths taken from files: the first four import matches, then the first two test matches, with duplicates removed. The target itself is never included.",
+				"examples": [
+					["src/reports/parser.ts", "src/format/row.ts", "src/reports/run.test.ts"],
+					["app/services/models.py", "app/core/money.py", "app/services/test_billing.py"],
+					["src/lib/cart/totals.ts", "src/lib/format.ts", "src/lib/cart/Cart.test.ts"]
+				]
 			},
 			{
 				"name": "reviewConventionPaths",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The fixed convention paths 'AGENTS.md', '.codex/skills/harness/SKILL.md' and 'harness.audit.json', followed by an 'AGENTS.md' path for the target's directory and each ancestor directory below the root, nearest first, capped at seven entries in total. The paths are built from the target string and are not checked against the filesystem.",
+				"examples": [
+					[
+						"AGENTS.md",
+						".codex/skills/harness/SKILL.md",
+						"harness.audit.json",
+						"src/reports/AGENTS.md",
+						"src/AGENTS.md"
+					],
+					[
+						"AGENTS.md",
+						".codex/skills/harness/SKILL.md",
+						"harness.audit.json",
+						"app/services/AGENTS.md",
+						"app/AGENTS.md"
+					],
+					[
+						"AGENTS.md",
+						".codex/skills/harness/SKILL.md",
+						"harness.audit.json",
+						"packages/api/src/routes/AGENTS.md",
+						"packages/api/src/AGENTS.md",
+						"packages/api/AGENTS.md",
+						"packages/AGENTS.md"
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "relatedReviewPaths",
@@ -54,27 +122,67 @@
 					{
 						"name": "relatedReviewPaths.target",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative path of the file under review. Its directory resolves relative imports and its name without extension (non-alphanumerics removed, lowercased) is matched against the names of test files; the target is removed from the result by exact string comparison, so it must spell the path exactly as the entries in files do.",
+						"examples": [
+							"src/reports/run.ts",
+							"app/services/billing.py",
+							"src/lib/cart/Cart.svelte"
+						]
 					},
 					{
 						"name": "relatedReviewPaths.code",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Full source text of the file under review, scanned with regular expressions (never parsed or executed) for quoted specifiers in from, import, require() and #include statements and for Python relative 'from .x import' lines. Quoted specifiers resolve only when they start with '.', '$lib/' or '@/', so bare package names are ignored.",
+						"examples": [
+							"import { parseReport } from './parser';\nimport { formatRow } from '../format/row';\n\nexport function run(input: string) {\n    return formatRow(parseReport(input));\n}\n",
+							"from .models import Invoice\nfrom ..core.money import round_cents\n\n\ndef total(items):\n    return sum(items)\n",
+							"<script lang=\"ts\">\n    import { totals } from '$lib/cart/totals';\n    import { formatPrice } from '$lib/format';\n</script>\n"
+						]
 					},
 					{
 						"name": "relatedReviewPaths.files",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Candidate repository file paths; only entries in this list can be returned, and test files are searched only among them. Import matches are exact string comparisons against normalized forward-slash paths, so an entry written with a leading './' never matches.",
+						"examples": [
+							[
+								"src/reports/run.ts",
+								"src/reports/parser.ts",
+								"src/format/row.ts",
+								"src/reports/run.test.ts",
+								"src/reports/format.ts"
+							],
+							[
+								"app/services/billing.py",
+								"app/services/models.py",
+								"app/core/money.py",
+								"app/services/test_billing.py"
+							],
+							[
+								"src/lib/cart/Cart.svelte",
+								"src/lib/cart/totals.ts",
+								"src/lib/format.ts",
+								"src/lib/cart/Cart.test.ts"
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "relatedReviewPaths",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Up to six paths taken from files: the first four import matches, then the first two test matches, with duplicates removed. The target itself is never included.",
+						"examples": [
+							["src/reports/parser.ts", "src/format/row.ts", "src/reports/run.test.ts"],
+							["app/services/models.py", "app/core/money.py", "app/services/test_billing.py"],
+							["src/lib/cart/totals.ts", "src/lib/format.ts", "src/lib/cart/Cart.test.ts"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "reviewConventionPaths",
@@ -82,17 +190,49 @@
 					{
 						"name": "reviewConventionPaths.target",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative path of the file under review; only its directory is used, walked from the nearest directory up to the repository root ('.'). An absolute path is not rejected and makes the walk emit malformed entries such as '//AGENTS.md'.",
+						"examples": [
+							"src/reports/run.ts",
+							"app/services/billing.py",
+							"packages/api/src/routes/users.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reviewConventionPaths",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The fixed convention paths 'AGENTS.md', '.codex/skills/harness/SKILL.md' and 'harness.audit.json', followed by an 'AGENTS.md' path for the target's directory and each ancestor directory below the root, nearest first, capped at seven entries in total. The paths are built from the target string and are not checked against the filesystem.",
+						"examples": [
+							[
+								"AGENTS.md",
+								".codex/skills/harness/SKILL.md",
+								"harness.audit.json",
+								"src/reports/AGENTS.md",
+								"src/AGENTS.md"
+							],
+							[
+								"AGENTS.md",
+								".codex/skills/harness/SKILL.md",
+								"harness.audit.json",
+								"app/services/AGENTS.md",
+								"app/AGENTS.md"
+							],
+							[
+								"AGENTS.md",
+								".codex/skills/harness/SKILL.md",
+								"harness.audit.json",
+								"packages/api/src/routes/AGENTS.md",
+								"packages/api/src/AGENTS.md",
+								"packages/api/AGENTS.md",
+								"packages/AGENTS.md"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
