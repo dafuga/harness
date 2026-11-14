@@ -26,85 +26,236 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AuthRequestValidator.google.body",
 				"type": "Body",
-				"required": true
+				"required": true,
+				"description": "The parsed JSON body of POST /api/auth/google. Only `credential`, a compact JWT of at most 4096 characters, and `csrf`, 32 to 128 base64url characters, are read; other keys are dropped, and a missing or malformed one throws `invalid-request` before the challenge is consumed.",
+				"examples": [
+					{
+						"credential": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJzdWIiOiIxMDQ1ODMyMzQ1NjI5MDEyMzQ1NiJ9.Yq3Vx8Lr0TmWc2Ng5Hd7Ke1Pb9Zu4Js6Fo-RtEi_wAqM2sXhT8dLnGv0KbE",
+						"csrf": "Ht8Wz2KqR5vN0bYcLm3Jd7TxPe9Ag1SuZi4Qo6FkEw-"
+					},
+					{
+						"credential": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJub25jZSI6IjNmOWMxYTdlNWIyZDRjOGYwYTZlIn0.Wk5Hj2Qm8Rf0Ta4Lx7Sd1Vb6Ng3Yc9Pe-Ui5Ko0Ja_Zw8Eh2Mr6Bt1Xq",
+						"csrf": "Rk2Tn8Yw0Qe6Lz3Ub9Xc1Dm7Vh4Jp5Sa-Gf0NiOtWy_"
+					}
+				]
 			},
 			{
 				"name": "AuthRequestValidator.nativeStart.body",
 				"type": "Body",
-				"required": true
+				"required": true,
+				"description": "The parsed JSON body of POST /api/auth/native/start. It reads `challenge` (exactly 43 base64url characters, the S256 hash of the desktop's PKCE verifier), `nonce` (22 to 128 URL-safe characters) and `resource` (`projects` or `project:<projectId>`); other keys are dropped, and a malformed field throws `invalid-request`.",
+				"examples": [
+					{
+						"challenge": "hR4pK8sLw1Xc7Nq0Vd3Tg6Ym9Jb2Fa5ZeUoCi8WnEua",
+						"nonce": "k3Vq9Lz0Rw8XbTn2Ys6Jm1Ge7Hp4UdQ5",
+						"resource": "projects"
+					},
+					{
+						"challenge": "Yd7Kx1Pm4Wq9Ze2Tn6Ua0Lr8Bv3Gj5Sc-Fh1Eo9Ni4Q",
+						"nonce": "Lw5Tb8Qz1Vx0Nk3Rm7Yc2Hj9Fa4Ge6Ps",
+						"resource": "project:6f1d2c3b-4a59-4e7f-8b21-0c9d8e7f6a5b"
+					}
+				]
 			},
 			{
 				"name": "AuthRequestValidator.nativeApprove.body",
 				"type": "Body",
-				"required": true
+				"required": true,
+				"description": "The parsed JSON body of POST /api/auth/native/approve, sent by the signed-in browser, with `handoffId` (32 to 128 base64url characters) and `userCode`. Only the first 32 characters of `userCode` are read, then upper-cased with every character outside A-Z and 0-9 removed, so dashes and spaces drop out; the result must be 8 characters from the code alphabet, which excludes I, O, 0 and 1.",
+				"examples": [
+					{
+						"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe",
+						"userCode": "KQ7M-2TPW"
+					},
+					{
+						"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y",
+						"userCode": "kq7m 2tpw"
+					}
+				]
 			},
 			{
 				"name": "AuthRequestValidator.nativePoll.body",
 				"type": "Body",
-				"required": true
+				"required": true,
+				"description": "The parsed JSON body of POST /api/auth/native/poll. Only `handoffId`, 32 to 128 base64url characters, is read and other keys are dropped; a missing or malformed `handoffId` throws `invalid-request` before the handoff is looked up.",
+				"examples": [
+					{
+						"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe"
+					},
+					{
+						"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y"
+					}
+				]
 			},
 			{
 				"name": "AuthRequestValidator.nativeExchange.body",
 				"type": "Body",
-				"required": true
+				"required": true,
+				"description": "The parsed JSON body of POST /api/auth/native/exchange. It reads `handoffId` (32 to 128 base64url characters), `verifier` (43 to 128 characters from A-Z, a-z, 0-9, `.`, `_`, `~` and `-`, the PKCE verifier the desktop kept), `nonce` (22 to 128 URL-safe characters) and `resource` (`projects` or `project:<projectId>`); other keys are dropped, and a malformed field throws `invalid-request` before the handoff is claimed.",
+				"examples": [
+					{
+						"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe",
+						"verifier": "Tq7Zr2Wv9Kx4Lm0Ne8Ua3Pb6Cj1Fh5Ys-Gd_Ri0OtQz",
+						"nonce": "k3Vq9Lz0Rw8XbTn2Ys6Jm1Ge7Hp4UdQ5",
+						"resource": "projects"
+					},
+					{
+						"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y",
+						"verifier": "Hb4Xc9Ql2Wz7Nr0Tm5Ye8Ka1Vd6Pj3Ug-Sf_Ol0Ci4E",
+						"nonce": "Lw5Tb8Qz1Vx0Nk3Rm7Yc2Hj9Fa4Ge6Ps",
+						"resource": "project:0b7e4c19-35a2-4d8f-9e61-a2c4f7d83b05"
+					}
+				]
 			},
 			{
 				"name": "AuthRequestValidator.githubCallback.url",
 				"type": "URL",
-				"required": true
+				"required": true,
+				"description": "The request URL of GET /api/github/callback, passed in as `new URL(request.url)`; only its `code` and `state` search parameters are read. A missing or malformed parameter makes the validator return null instead of throwing."
 			},
 			{
 				"name": "AuthRequestValidator.emailCode.body",
 				"type": "Body",
-				"required": true
+				"required": true,
+				"description": "The parsed JSON body of POST /api/auth/email/verify, read only for `code`. Only the first 32 characters of `code` are read, spaces and dashes are removed, and what remains must be exactly 8 decimal digits; other keys are dropped, and a non-string or wrong `code` throws `invalid-request`.",
+				"examples": [
+					{
+						"code": "04829137"
+					},
+					{
+						"code": "0482 9137"
+					},
+					{
+						"code": "0482-9137"
+					}
+				]
 			},
 			{
 				"name": "AuthRequestValidator.repositoryId.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The raw value to check as a GitHub repository id, of any JSON type. It is accepted only when it is a JavaScript number that is a safe integer and greater than zero; anything else throws `invalid-request`.",
+				"examples": [712438905, 38213746]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AuthRequestValidator.google",
-				"type": "GoogleSignInInput"
+				"type": "GoogleSignInInput",
+				"description": "The typed Google sign-in input: `credential` is the compact Google ID token exactly as sent, and `csrf` is the challenge token that POST /api/auth/challenge issued. Both have passed their checks, but the token has not yet been verified with Google.",
+				"examples": [
+					{
+						"credential": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJzdWIiOiIxMDQ1ODMyMzQ1NjI5MDEyMzQ1NiJ9.Yq3Vx8Lr0TmWc2Ng5Hd7Ke1Pb9Zu4Js6Fo-RtEi_wAqM2sXhT8dLnGv0KbE",
+						"csrf": "Ht8Wz2KqR5vN0bYcLm3Jd7TxPe9Ag1SuZi4Qo6FkEw-"
+					},
+					{
+						"credential": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJub25jZSI6IjNmOWMxYTdlNWIyZDRjOGYwYTZlIn0.Wk5Hj2Qm8Rf0Ta4Lx7Sd1Vb6Ng3Yc9Pe-Ui5Ko0Ja_Zw8Eh2Mr6Bt1Xq",
+						"csrf": "Rk2Tn8Yw0Qe6Lz3Ub9Xc1Dm7Vh4Jp5Sa-Gf0NiOtWy_"
+					}
+				]
 			},
 			{
 				"name": "AuthRequestValidator.nativeStart",
-				"type": "NativeStartInput"
+				"type": "NativeStartInput",
+				"description": "The typed native start input: `challenge` and `nonce` exactly as sent, and `resource` as `projects` or `project:<projectId>`. The handoff service stores `challenge` and `resource` as given and keeps only a hash of `nonce`.",
+				"examples": [
+					{
+						"challenge": "hR4pK8sLw1Xc7Nq0Vd3Tg6Ym9Jb2Fa5ZeUoCi8WnEua",
+						"nonce": "k3Vq9Lz0Rw8XbTn2Ys6Jm1Ge7Hp4UdQ5",
+						"resource": "projects"
+					},
+					{
+						"challenge": "Yd7Kx1Pm4Wq9Ze2Tn6Ua0Lr8Bv3Gj5Sc-Fh1Eo9Ni4Q",
+						"nonce": "Lw5Tb8Qz1Vx0Nk3Rm7Yc2Hj9Fa4Ge6Ps",
+						"resource": "project:6f1d2c3b-4a59-4e7f-8b21-0c9d8e7f6a5b"
+					}
+				]
 			},
 			{
 				"name": "AuthRequestValidator.nativeApprove",
-				"type": "NativeApproveInput"
+				"type": "NativeApproveInput",
+				"description": "The typed approval input: `handoffId` exactly as sent, and `userCode` normalized to 8 characters from the code alphabet with no dash. Dashes, spaces and lower case in the typed code are accepted because normalization runs before the check.",
+				"examples": [
+					{
+						"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe",
+						"userCode": "KQ7M2TPW"
+					},
+					{
+						"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y",
+						"userCode": "7HX9AB2C"
+					}
+				]
 			},
 			{
 				"name": "AuthRequestValidator.nativePoll",
-				"type": "{ handoffId: string }"
+				"type": "{ handoffId: string }",
+				"description": "The `handoffId` read from the poll body, returned unchanged. The validator does not look the handoff up; the poll call does that next.",
+				"examples": [
+					{
+						"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe"
+					},
+					{
+						"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y"
+					}
+				]
 			},
 			{
 				"name": "AuthRequestValidator.nativeExchange",
-				"type": "NativeExchangeInput"
+				"type": "NativeExchangeInput",
+				"description": "The typed exchange input: `handoffId`, `verifier`, `nonce` and `resource`, each exactly as sent. The validator does not compare them with the stored handoff; the exchange does that after it claims the handoff.",
+				"examples": [
+					{
+						"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe",
+						"verifier": "Tq7Zr2Wv9Kx4Lm0Ne8Ua3Pb6Cj1Fh5Ys-Gd_Ri0OtQz",
+						"nonce": "k3Vq9Lz0Rw8XbTn2Ys6Jm1Ge7Hp4UdQ5",
+						"resource": "projects"
+					},
+					{
+						"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y",
+						"verifier": "Hb4Xc9Ql2Wz7Nr0Tm5Ye8Ka1Vd6Pj3Ug-Sf_Ol0Ci4E",
+						"nonce": "Lw5Tb8Qz1Vx0Nk3Rm7Yc2Hj9Fa4Ge6Ps",
+						"resource": "project:0b7e4c19-35a2-4d8f-9e61-a2c4f7d83b05"
+					}
+				]
 			},
 			{
 				"name": "AuthRequestValidator.githubCallback",
-				"type": "{ code: string; state: string } | null"
+				"type": "{ code: string; state: string } | null",
+				"description": "The `code` and `state` query values, both returned unchanged, or `null` when either is missing or malformed, such as when GitHub reports a refusal instead of a code. A `code` is 1 to 200 letters, digits, `_` or `-`, and a `state` is 32 to 128 base64url characters.",
+				"examples": [
+					{
+						"code": "3f9c1a7e5b2d4c8f0a6e",
+						"state": "Qm3Lz9TcV0pRk8sXwY2hN6dJfA1gE4uB7iO5tS-xHcM"
+					},
+					null
+				]
 			},
 			{
 				"name": "AuthRequestValidator.emailCode",
-				"type": "string"
+				"type": "string",
+				"description": "The eight decimal digits the person typed, with spaces and dashes removed and leading zeros kept. The value has not yet been checked against the code that was sent.",
+				"examples": ["04829137", "93106452"]
 			},
 			{
 				"name": "AuthRequestValidator.repositoryId",
-				"type": "number"
+				"type": "number",
+				"description": "The GitHub repository id, returned unchanged once it is a JavaScript number that is a safe integer greater than zero. It is the same kind of value as the `repositoryId` that `HubAuth.authorizeRepository` takes.",
+				"examples": [712438905, 38213746]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Thrown through `authFail('invalid-request')`, which gives HTTP status 400 and the message `Hub auth invalid-request`, when a required field is missing or fails its pattern or length limit, or when a repository id is not a positive safe integer. This validator throws no other AuthFailure code."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "AuthRequestValidator.google",
@@ -112,17 +263,45 @@
 					{
 						"name": "AuthRequestValidator.google.body",
 						"type": "Body",
-						"required": true
+						"required": true,
+						"description": "The parsed JSON body of POST /api/auth/google. Only `credential`, a compact JWT of at most 4096 characters, and `csrf`, 32 to 128 base64url characters, are read; other keys are dropped, and a missing or malformed one throws `invalid-request` before the challenge is consumed.",
+						"examples": [
+							{
+								"credential": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJzdWIiOiIxMDQ1ODMyMzQ1NjI5MDEyMzQ1NiJ9.Yq3Vx8Lr0TmWc2Ng5Hd7Ke1Pb9Zu4Js6Fo-RtEi_wAqM2sXhT8dLnGv0KbE",
+								"csrf": "Ht8Wz2KqR5vN0bYcLm3Jd7TxPe9Ag1SuZi4Qo6FkEw-"
+							},
+							{
+								"credential": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJub25jZSI6IjNmOWMxYTdlNWIyZDRjOGYwYTZlIn0.Wk5Hj2Qm8Rf0Ta4Lx7Sd1Vb6Ng3Yc9Pe-Ui5Ko0Ja_Zw8Eh2Mr6Bt1Xq",
+								"csrf": "Rk2Tn8Yw0Qe6Lz3Ub9Xc1Dm7Vh4Jp5Sa-Gf0NiOtWy_"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRequestValidator.google",
-						"type": "GoogleSignInInput"
+						"type": "GoogleSignInInput",
+						"description": "The typed Google sign-in input: `credential` is the compact Google ID token exactly as sent, and `csrf` is the challenge token that POST /api/auth/challenge issued. Both have passed their checks, but the token has not yet been verified with Google.",
+						"examples": [
+							{
+								"credential": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJzdWIiOiIxMDQ1ODMyMzQ1NjI5MDEyMzQ1NiJ9.Yq3Vx8Lr0TmWc2Ng5Hd7Ke1Pb9Zu4Js6Fo-RtEi_wAqM2sXhT8dLnGv0KbE",
+								"csrf": "Ht8Wz2KqR5vN0bYcLm3Jd7TxPe9Ag1SuZi4Qo6FkEw-"
+							},
+							{
+								"credential": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJub25jZSI6IjNmOWMxYTdlNWIyZDRjOGYwYTZlIn0.Wk5Hj2Qm8Rf0Ta4Lx7Sd1Vb6Ng3Yc9Pe-Ui5Ko0Ja_Zw8Eh2Mr6Bt1Xq",
+								"csrf": "Rk2Tn8Yw0Qe6Lz3Ub9Xc1Dm7Vh4Jp5Sa-Gf0NiOtWy_"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown as AuthFailure with code `invalid-request` (HTTP 400) when `credential` or `csrf` is missing or fails its pattern or length limit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRequestValidator.nativeStart",
@@ -130,17 +309,49 @@
 					{
 						"name": "AuthRequestValidator.nativeStart.body",
 						"type": "Body",
-						"required": true
+						"required": true,
+						"description": "The parsed JSON body of POST /api/auth/native/start. It reads `challenge` (exactly 43 base64url characters, the S256 hash of the desktop's PKCE verifier), `nonce` (22 to 128 URL-safe characters) and `resource` (`projects` or `project:<projectId>`); other keys are dropped, and a malformed field throws `invalid-request`.",
+						"examples": [
+							{
+								"challenge": "hR4pK8sLw1Xc7Nq0Vd3Tg6Ym9Jb2Fa5ZeUoCi8WnEua",
+								"nonce": "k3Vq9Lz0Rw8XbTn2Ys6Jm1Ge7Hp4UdQ5",
+								"resource": "projects"
+							},
+							{
+								"challenge": "Yd7Kx1Pm4Wq9Ze2Tn6Ua0Lr8Bv3Gj5Sc-Fh1Eo9Ni4Q",
+								"nonce": "Lw5Tb8Qz1Vx0Nk3Rm7Yc2Hj9Fa4Ge6Ps",
+								"resource": "project:6f1d2c3b-4a59-4e7f-8b21-0c9d8e7f6a5b"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRequestValidator.nativeStart",
-						"type": "NativeStartInput"
+						"type": "NativeStartInput",
+						"description": "The typed native start input: `challenge` and `nonce` exactly as sent, and `resource` as `projects` or `project:<projectId>`. The handoff service stores `challenge` and `resource` as given and keeps only a hash of `nonce`.",
+						"examples": [
+							{
+								"challenge": "hR4pK8sLw1Xc7Nq0Vd3Tg6Ym9Jb2Fa5ZeUoCi8WnEua",
+								"nonce": "k3Vq9Lz0Rw8XbTn2Ys6Jm1Ge7Hp4UdQ5",
+								"resource": "projects"
+							},
+							{
+								"challenge": "Yd7Kx1Pm4Wq9Ze2Tn6Ua0Lr8Bv3Gj5Sc-Fh1Eo9Ni4Q",
+								"nonce": "Lw5Tb8Qz1Vx0Nk3Rm7Yc2Hj9Fa4Ge6Ps",
+								"resource": "project:6f1d2c3b-4a59-4e7f-8b21-0c9d8e7f6a5b"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown as AuthFailure with code `invalid-request` (HTTP 400) when `challenge`, `nonce` or `resource` is missing or fails its pattern or length limit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRequestValidator.nativeApprove",
@@ -148,17 +359,45 @@
 					{
 						"name": "AuthRequestValidator.nativeApprove.body",
 						"type": "Body",
-						"required": true
+						"required": true,
+						"description": "The parsed JSON body of POST /api/auth/native/approve, sent by the signed-in browser, with `handoffId` (32 to 128 base64url characters) and `userCode`. Only the first 32 characters of `userCode` are read, then upper-cased with every character outside A-Z and 0-9 removed, so dashes and spaces drop out; the result must be 8 characters from the code alphabet, which excludes I, O, 0 and 1.",
+						"examples": [
+							{
+								"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe",
+								"userCode": "KQ7M-2TPW"
+							},
+							{
+								"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y",
+								"userCode": "kq7m 2tpw"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRequestValidator.nativeApprove",
-						"type": "NativeApproveInput"
+						"type": "NativeApproveInput",
+						"description": "The typed approval input: `handoffId` exactly as sent, and `userCode` normalized to 8 characters from the code alphabet with no dash. Dashes, spaces and lower case in the typed code are accepted because normalization runs before the check.",
+						"examples": [
+							{
+								"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe",
+								"userCode": "KQ7M2TPW"
+							},
+							{
+								"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y",
+								"userCode": "7HX9AB2C"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown as AuthFailure with code `invalid-request` (HTTP 400) when `handoffId` is missing or fails its pattern or length limit, or when the normalized `userCode` is not 8 characters from the code alphabet."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRequestValidator.nativePoll",
@@ -166,17 +405,41 @@
 					{
 						"name": "AuthRequestValidator.nativePoll.body",
 						"type": "Body",
-						"required": true
+						"required": true,
+						"description": "The parsed JSON body of POST /api/auth/native/poll. Only `handoffId`, 32 to 128 base64url characters, is read and other keys are dropped; a missing or malformed `handoffId` throws `invalid-request` before the handoff is looked up.",
+						"examples": [
+							{
+								"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe"
+							},
+							{
+								"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRequestValidator.nativePoll",
-						"type": "{ handoffId: string }"
+						"type": "{ handoffId: string }",
+						"description": "The `handoffId` read from the poll body, returned unchanged. The validator does not look the handoff up; the poll call does that next.",
+						"examples": [
+							{
+								"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe"
+							},
+							{
+								"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown as AuthFailure with code `invalid-request` (HTTP 400) when `handoffId` is missing or fails its pattern or length limit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRequestValidator.nativeExchange",
@@ -184,17 +447,53 @@
 					{
 						"name": "AuthRequestValidator.nativeExchange.body",
 						"type": "Body",
-						"required": true
+						"required": true,
+						"description": "The parsed JSON body of POST /api/auth/native/exchange. It reads `handoffId` (32 to 128 base64url characters), `verifier` (43 to 128 characters from A-Z, a-z, 0-9, `.`, `_`, `~` and `-`, the PKCE verifier the desktop kept), `nonce` (22 to 128 URL-safe characters) and `resource` (`projects` or `project:<projectId>`); other keys are dropped, and a malformed field throws `invalid-request` before the handoff is claimed.",
+						"examples": [
+							{
+								"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe",
+								"verifier": "Tq7Zr2Wv9Kx4Lm0Ne8Ua3Pb6Cj1Fh5Ys-Gd_Ri0OtQz",
+								"nonce": "k3Vq9Lz0Rw8XbTn2Ys6Jm1Ge7Hp4UdQ5",
+								"resource": "projects"
+							},
+							{
+								"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y",
+								"verifier": "Hb4Xc9Ql2Wz7Nr0Tm5Ye8Ka1Vd6Pj3Ug-Sf_Ol0Ci4E",
+								"nonce": "Lw5Tb8Qz1Vx0Nk3Rm7Yc2Hj9Fa4Ge6Ps",
+								"resource": "project:0b7e4c19-35a2-4d8f-9e61-a2c4f7d83b05"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRequestValidator.nativeExchange",
-						"type": "NativeExchangeInput"
+						"type": "NativeExchangeInput",
+						"description": "The typed exchange input: `handoffId`, `verifier`, `nonce` and `resource`, each exactly as sent. The validator does not compare them with the stored handoff; the exchange does that after it claims the handoff.",
+						"examples": [
+							{
+								"handoffId": "V8kq2TzR7mWnXa4Lc9HjEbYd1Pg6Ufs0QoZ3iNtBxAe",
+								"verifier": "Tq7Zr2Wv9Kx4Lm0Ne8Ua3Pb6Cj1Fh5Ys-Gd_Ri0OtQz",
+								"nonce": "k3Vq9Lz0Rw8XbTn2Ys6Jm1Ge7Hp4UdQ5",
+								"resource": "projects"
+							},
+							{
+								"handoffId": "pL4sHc0Rw8yQ2vTKd6Nj1GeXb9Zm3FuoAi5CtWqEh7Y",
+								"verifier": "Hb4Xc9Ql2Wz7Nr0Tm5Ye8Ka1Vd6Pj3Ug-Sf_Ol0Ci4E",
+								"nonce": "Lw5Tb8Qz1Vx0Nk3Rm7Yc2Hj9Fa4Ge6Ps",
+								"resource": "project:0b7e4c19-35a2-4d8f-9e61-a2c4f7d83b05"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown as AuthFailure with code `invalid-request` (HTTP 400) when `handoffId`, `verifier`, `nonce` or `resource` is missing or fails its pattern or length limit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRequestValidator.githubCallback",
@@ -202,17 +501,26 @@
 					{
 						"name": "AuthRequestValidator.githubCallback.url",
 						"type": "URL",
-						"required": true
+						"required": true,
+						"description": "The request URL of GET /api/github/callback, passed in as `new URL(request.url)`; only its `code` and `state` search parameters are read. A missing or malformed parameter makes the validator return null instead of throwing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRequestValidator.githubCallback",
-						"type": "{ code: string; state: string } | null"
+						"type": "{ code: string; state: string } | null",
+						"description": "The `code` and `state` query values, both returned unchanged, or `null` when either is missing or malformed, such as when GitHub reports a refusal instead of a code. A `code` is 1 to 200 letters, digits, `_` or `-`, and a `state` is 32 to 128 base64url characters.",
+						"examples": [
+							{
+								"code": "3f9c1a7e5b2d4c8f0a6e",
+								"state": "Qm3Lz9TcV0pRk8sXwY2hN6dJfA1gE4uB7iO5tS-xHcM"
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRequestValidator.emailCode",
@@ -220,17 +528,37 @@
 					{
 						"name": "AuthRequestValidator.emailCode.body",
 						"type": "Body",
-						"required": true
+						"required": true,
+						"description": "The parsed JSON body of POST /api/auth/email/verify, read only for `code`. Only the first 32 characters of `code` are read, spaces and dashes are removed, and what remains must be exactly 8 decimal digits; other keys are dropped, and a non-string or wrong `code` throws `invalid-request`.",
+						"examples": [
+							{
+								"code": "04829137"
+							},
+							{
+								"code": "0482 9137"
+							},
+							{
+								"code": "0482-9137"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRequestValidator.emailCode",
-						"type": "string"
+						"type": "string",
+						"description": "The eight decimal digits the person typed, with spaces and dashes removed and leading zeros kept. The value has not yet been checked against the code that was sent.",
+						"examples": ["04829137", "93106452"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown as AuthFailure with code `invalid-request` (HTTP 400) when the cleaned `code` is not exactly 8 decimal digits."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AuthRequestValidator.repositoryId",
@@ -238,17 +566,27 @@
 					{
 						"name": "AuthRequestValidator.repositoryId.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The raw value to check as a GitHub repository id, of any JSON type. It is accepted only when it is a JavaScript number that is a safe integer and greater than zero; anything else throws `invalid-request`.",
+						"examples": [712438905, 38213746]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthRequestValidator.repositoryId",
-						"type": "number"
+						"type": "number",
+						"description": "The GitHub repository id, returned unchanged once it is a JavaScript number that is a safe integer greater than zero. It is the same kind of value as the `repositoryId` that `HubAuth.authorizeRepository` takes.",
+						"examples": [712438905, 38213746]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown as AuthFailure with code `invalid-request` (HTTP 400) when the value is not a number, not a safe integer, or not greater than zero."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
