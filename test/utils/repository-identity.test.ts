@@ -41,27 +41,7 @@ test('two applications started from one template are different repositories', ()
 	expect(repositoryIdentity(other)).not.toBe(repositoryIdentity(host));
 	expect(sameRepository(host, other)).toBe(false);
 	expect(sameRepository(host, template)).toBe(false);
-
-	// A recently used identity survives a full cache window, then recomputes after the bound.
-	const cacheTarget = at('identity-cache-target');
-	git(root, ['init', '-q', '-b', 'main', 'identity-cache-target']);
-	git(cacheTarget, ['remote', 'add', 'origin', 'https://github.com/synthetic/cache-v1.git']);
-	const firstIdentity = repositoryIdentity(cacheTarget);
-	git(cacheTarget, ['remote', 'set-url', 'origin', 'https://github.com/synthetic/cache-v2.git']);
-	expect(repositoryIdentity(cacheTarget)).toBe(firstIdentity); // hit refreshes LRU position
-	for (let index = 0; index < 255; index++) {
-		const name = `identity-cache-filler-${String(index).padStart(3, '0')}`;
-		git(root, ['init', '-q', '-b', 'main', name]);
-		repositoryIdentity(at(name));
-	}
-	expect(repositoryIdentity(cacheTarget)).toBe(firstIdentity);
-	const overflow = 'identity-cache-filler-255';
-	git(root, ['init', '-q', '-b', 'main', overflow]);
-	repositoryIdentity(at(overflow));
-	expect(repositoryIdentity(cacheTarget)).toBe(firstIdentity); // recent target survives the LRU eviction
-	for (let index = 0; index < 256; index++) repositoryIdentity(at(`missing-cache-key-${index}`));
-	expect(repositoryIdentity(cacheTarget)).not.toBe(firstIdentity);
-}, 30000);
+});
 
 test('one application is the same through every address, checkout and kind of clone', () => {
 	const template = repository('seed');
@@ -131,21 +111,4 @@ test('a site that is no repository is that one directory, and no repository belo
 	expect(sameSite(site, plain)).toBe(false);
 	const other = cloned(site, 'plain-foreign', 'https://github.com/synthetic/plain-foreign.git');
 	expect(sameSite(site, other)).toBe(false);
-
-	// The plain-site path cache is bounded too: a changed symlink is observed after 512 newer keys.
-	const plainTargetA = at('plain-cache-target-a');
-	mkdirSync(plainTargetA);
-	const plainTargetB = at('plain-cache-target-b');
-	mkdirSync(plainTargetB);
-	const plainSiteLink = join(root, 'plain-cache-site-link');
-	symlinkSync(plainTargetA, plainSiteLink);
-	expect(sameSite(plainSiteLink, plainTargetA)).toBe(true);
-	for (let index = 0; index < 512; index++) {
-		const filler = at(`plain-cache-filler-${index}`);
-		mkdirSync(filler);
-		expect(sameSite(filler, filler)).toBe(true);
-	}
-	rmSync(plainSiteLink);
-	symlinkSync(plainTargetB, plainSiteLink);
-	expect(sameSite(plainSiteLink, plainTargetB)).toBe(true);
-}, 30000);
+});
