@@ -15,6 +15,30 @@ import { stopReportServer } from './reportServerRecord';
 
 const appRoot = reportRuntimeRoot();
 
+/**
+ * Environment of a loopback report server. `ORIGIN` names the exact address the server is
+ * reached at: without it the Node adapter assumes `https`, so the owner check of `/api/agent`
+ * refused every `harness api --url http://127.0.0.1:<port>` request as `origin-denied`.
+ */
+export function reportServerEnvironment(
+	port: number,
+	base: NodeJS.ProcessEnv,
+	cwd: string
+): NodeJS.ProcessEnv {
+	return {
+		...base,
+		HOST: '127.0.0.1',
+		PORT: String(port),
+		ORIGIN: `http://127.0.0.1:${port}`,
+		BODY_SIZE_LIMIT: '110M',
+		// This server is started for the local owner and listens on loopback only.
+		// The server shows the application it was started for, and no other.
+		HARNESS_SITE_ROOT: base.HARNESS_SITE_ROOT ?? cwd,
+		HARNESS_OWNER_MODE: 'loopback',
+		HARNESS_BIND: '127.0.0.1'
+	};
+}
+
 export class ReportServerService {
 	constructor(private readonly repository = new ReportRepository()) {}
 	async serve(preferred = 5588) {
@@ -61,17 +85,7 @@ export class ReportServerService {
 	private start(port: number): number {
 		const child = spawn(process.execPath, [resolve(appRoot, 'build', 'index.js')], {
 			cwd: appRoot,
-			env: {
-				...process.env,
-				HOST: '127.0.0.1',
-				PORT: String(port),
-				BODY_SIZE_LIMIT: '110M',
-				// This server is started for the local owner and listens on loopback only.
-				// The server shows the application it was started for, and no other.
-				HARNESS_SITE_ROOT: process.env.HARNESS_SITE_ROOT ?? process.cwd(),
-				HARNESS_OWNER_MODE: 'loopback',
-				HARNESS_BIND: '127.0.0.1'
-			},
+			env: reportServerEnvironment(port, process.env, process.cwd()),
 			detached: true,
 			stdio: 'ignore'
 		});
