@@ -24,41 +24,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The component with its verdict and its screenshots: one at a branch tip, before and after at a commit. Relationships and tests by tab."
+				"description": "The markup this route renders for every URL it matches: a HarnessScreen titled Component whose content is EntityVisualScreen, which draws the entity's frame and sections and, outside the components category, its screens and audio. The page reads no route parameters or data itself, so HarnessConsole places the view from the URL path and query that HarnessScreen passes to it."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Component · Harness"
+				"description": "The document title that HarnessScreen sets to the title this page passes, Component, followed by · Harness. Nothing in this file varies it, so it does not change with the branch, commit or entity.",
+				"examples": ["Component · Harness"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-at-revision",
-				"type": "notice",
-				"description": "A component the shown revision does not hold is said, with the way back to the collection."
-			},
-			{
-				"name": "other-category",
-				"type": "redirect",
-				"description": "A unit that is not a component at this revision is led to the address of its own category."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
