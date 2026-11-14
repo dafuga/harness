@@ -12,36 +12,41 @@
 		"symbols": ["GET"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GET.url",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The request URL from SvelteKit's RequestEvent; the handler reads only its 'run' query parameter through url.searchParams.get('run'). That value must match /^[a-f0-9-]{36}$/ (36 characters, each a lowercase hex digit or a hyphen), or the request fails with a 400 before any report lookup."
 			},
 			{
 				"name": "GET.request",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The incoming Request from SvelteKit's RequestEvent; the handler reads only its 'range' header through request.headers.get('range'). That value is null when the request has no Range header, and the endpoint passes it unchanged as the third argument to mediaResponse."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The value returned by mediaResponse for the report named by the run parameter. The endpoint passes it the bytes from service.create(id), the content type 'video/mp4', the request's Range header value, and an attachment Content-Disposition whose filename is gameplay-replay-<id>.mp4."
 			}
 		],
 		"errors": [
 			{
 				"name": "HttpError 400",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown via error() with status 400 when the run parameter is missing, empty, or does not match /^[a-f0-9-]{36}$/, with the message 'A valid report ID is required'. It is also thrown when service.create(id) or mediaResponse throws: the thrown Error's message is used only if it starts with 'Replay requires', and otherwise the message is 'Video unavailable. The screenshot replay remains available.'"
 			},
 			{
 				"name": "HttpError 404",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown via error() with status 404 and the message 'Report not found' whenever repository.get(id) rejects, for any reason, because the endpoint maps every rejection to 404. The lookup runs after run validation and before service.create, so no video is built for a report whose lookup rejects."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GET",
@@ -49,27 +54,36 @@
 					{
 						"name": "GET.url",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The request URL from SvelteKit's RequestEvent; the handler reads only its 'run' query parameter through url.searchParams.get('run'). That value must match /^[a-f0-9-]{36}$/ (36 characters, each a lowercase hex digit or a hyphen), or the request fails with a 400 before any report lookup."
 					},
 					{
 						"name": "GET.request",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The incoming Request from SvelteKit's RequestEvent; the handler reads only its 'range' header through request.headers.get('range'). That value is null when the request has no Range header, and the endpoint passes it unchanged as the third argument to mediaResponse."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The value returned by mediaResponse for the report named by the run parameter. The endpoint passes it the bytes from service.create(id), the content type 'video/mp4', the request's Range header value, and an attachment Content-Disposition whose filename is gameplay-replay-<id>.mp4."
 					}
 				],
 				"errors": [
 					{
 						"name": "HttpError 400",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown via error() with status 400 when the run parameter is missing, empty, or does not match /^[a-f0-9-]{36}$/, with the message 'A valid report ID is required'. It is also thrown when service.create(id) or mediaResponse throws: the thrown Error's message is used only if it starts with 'Replay requires', and otherwise the message is 'Video unavailable. The screenshot replay remains available.'"
+					},
+					{
+						"name": "HttpError 404",
+						"type": "thrown",
+						"description": "Thrown via error() with status 404 and the message 'Report not found' whenever repository.get(id) rejects, for any reason, because the endpoint maps every rejection to 404. The lookup runs after run validation and before service.create, so no video is built for a report whose lookup rejects."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
