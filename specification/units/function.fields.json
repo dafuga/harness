@@ -21,23 +21,76 @@
 				"name": "parseFields.rawFields",
 				"type": "string[]",
 				"required": true,
-				"description": "Field strings in name:type form; omitted type defaults to string. Supported types are string, text, number, boolean, date and json."
+				"description": "Each string is a field name, optionally followed by a colon and a type; a string without a colon defaults to string, and an empty type after a colon is rejected. The type is trimmed before it is checked against string, text, number, boolean, date and json, and any string with more than one colon is rejected.",
+				"examples": [
+					["title", "body:text", "views:number"],
+					["published:boolean", "settings:json", "due:date"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "parseFields",
 				"type": "Field[]",
-				"description": "Fields in input order with camelCase name, snake_case column, normalized type and TypeScript/SQL types. String/text/date use TEXT, number/boolean use INTEGER, and json uses Record<string, unknown> stored as TEXT."
+				"description": "Each input string yields one Field, in input order, with a camelCase name, a snake_case column and the trimmed type; names are unique because duplicate camelCase names throw. tsType is string for string, text and date, number for number, boolean for boolean and Record<string, unknown> for json; sqlType is TEXT for string, text, date and json and INTEGER for number and boolean.",
+				"examples": [
+					[
+						{
+							"name": "title",
+							"column": "title",
+							"type": "string",
+							"tsType": "string",
+							"sqlType": "TEXT"
+						},
+						{
+							"name": "body",
+							"column": "body",
+							"type": "text",
+							"tsType": "string",
+							"sqlType": "TEXT"
+						},
+						{
+							"name": "views",
+							"column": "views",
+							"type": "number",
+							"tsType": "number",
+							"sqlType": "INTEGER"
+						}
+					],
+					[
+						{
+							"name": "published",
+							"column": "published",
+							"type": "boolean",
+							"tsType": "boolean",
+							"sqlType": "INTEGER"
+						},
+						{
+							"name": "settings",
+							"column": "settings",
+							"type": "json",
+							"tsType": "Record<string, unknown>",
+							"sqlType": "TEXT"
+						},
+						{
+							"name": "due",
+							"column": "due",
+							"type": "date",
+							"tsType": "string",
+							"sqlType": "TEXT"
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown for malformed field syntax, invalid field names, unsupported types or duplicate normalized names."
+				"description": "Thrown by fail() when a field string has more than one colon, when validateFieldName rejects the name, when its trimmed type is not string, text, number, boolean, date or json, or when two fields share a camelCase name. Every field is parsed before duplicates are checked, and no fields are returned when it is thrown."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "parseFields",
@@ -46,23 +99,76 @@
 						"name": "parseFields.rawFields",
 						"type": "string[]",
 						"required": true,
-						"description": "Field strings in name:type form; omitted type defaults to string. Supported types are string, text, number, boolean, date and json."
+						"description": "Each string is a field name, optionally followed by a colon and a type; a string without a colon defaults to string, and an empty type after a colon is rejected. The type is trimmed before it is checked against string, text, number, boolean, date and json, and any string with more than one colon is rejected.",
+						"examples": [
+							["title", "body:text", "views:number"],
+							["published:boolean", "settings:json", "due:date"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "parseFields",
 						"type": "Field[]",
-						"description": "Fields in input order with camelCase name, snake_case column, normalized type and TypeScript/SQL types. String/text/date use TEXT, number/boolean use INTEGER, and json uses Record<string, unknown> stored as TEXT."
+						"description": "Each input string yields one Field, in input order, with a camelCase name, a snake_case column and the trimmed type; names are unique because duplicate camelCase names throw. tsType is string for string, text and date, number for number, boolean for boolean and Record<string, unknown> for json; sqlType is TEXT for string, text, date and json and INTEGER for number and boolean.",
+						"examples": [
+							[
+								{
+									"name": "title",
+									"column": "title",
+									"type": "string",
+									"tsType": "string",
+									"sqlType": "TEXT"
+								},
+								{
+									"name": "body",
+									"column": "body",
+									"type": "text",
+									"tsType": "string",
+									"sqlType": "TEXT"
+								},
+								{
+									"name": "views",
+									"column": "views",
+									"type": "number",
+									"tsType": "number",
+									"sqlType": "INTEGER"
+								}
+							],
+							[
+								{
+									"name": "published",
+									"column": "published",
+									"type": "boolean",
+									"tsType": "boolean",
+									"sqlType": "INTEGER"
+								},
+								{
+									"name": "settings",
+									"column": "settings",
+									"type": "json",
+									"tsType": "Record<string, unknown>",
+									"sqlType": "TEXT"
+								},
+								{
+									"name": "due",
+									"column": "due",
+									"type": "date",
+									"tsType": "string",
+									"sqlType": "TEXT"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by fail() when a field string has more than one colon, when validateFieldName rejects the name, when its trimmed type is not string, text, number, boolean, date or json, or when two fields share a camelCase name. Every field is parsed before duplicates are checked, and no fields are returned when it is thrown."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
