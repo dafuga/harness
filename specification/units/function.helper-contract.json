@@ -21,10 +21,31 @@
 				"name": "helperContract.helper",
 				"type": "CallableContract",
 				"required": true,
-				"description": "The purity declaration and the component, service or named-function consumers recorded at this revision.",
+				"description": "The reviewed helper's declared contract, the sole input to each eligibility check: only pure and consumers are read, pure must be exactly true, and each consumers entry names a unit with an optional symbol. A missing pure value is never read as true, and a missing consumers list counts as zero consumers, so either one makes the result false.",
 				"examples": [
 					{
 						"pure": true,
+						"consumers": [
+							{
+								"unit": "component.summary",
+								"symbol": "SummaryCard"
+							},
+							{
+								"unit": "service.export",
+								"symbol": "exportSummary"
+							}
+						]
+					},
+					{
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "component.summary"
+							}
+						]
+					},
+					{
+						"pure": false,
 						"consumers": [
 							{
 								"unit": "component.summary"
@@ -41,11 +62,18 @@
 			{
 				"name": "helperContract",
 				"type": "boolean",
-				"description": "True only when the helper is explicitly pure and has two or more different consumers.",
+				"description": "This is the eligibility result shared by all renderers: true only when helper.pure is exactly true and the consumers list has at least two distinct unit and symbol pairs. A missing symbol is keyed as an empty string, so repeated entries with the same unit and symbol count once, and the result is always a boolean.",
 				"examples": [true, false]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "The function throws a TypeError when helper is null or undefined (helper.pure is read without a guard), when consumers is a value other than null or undefined that has no map method, or when a consumers entry is null or undefined (consumer.unit is read without a guard). These values fall outside the declared CallableContract type."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "helperContract",
@@ -54,10 +82,31 @@
 						"name": "helperContract.helper",
 						"type": "CallableContract",
 						"required": true,
-						"description": "The purity declaration and the component, service or named-function consumers recorded at this revision.",
+						"description": "The reviewed helper's declared contract, the sole input to each eligibility check: only pure and consumers are read, pure must be exactly true, and each consumers entry names a unit with an optional symbol. A missing pure value is never read as true, and a missing consumers list counts as zero consumers, so either one makes the result false.",
 						"examples": [
 							{
 								"pure": true,
+								"consumers": [
+									{
+										"unit": "component.summary",
+										"symbol": "SummaryCard"
+									},
+									{
+										"unit": "service.export",
+										"symbol": "exportSummary"
+									}
+								]
+							},
+							{
+								"pure": true,
+								"consumers": [
+									{
+										"unit": "component.summary"
+									}
+								]
+							},
+							{
+								"pure": false,
 								"consumers": [
 									{
 										"unit": "component.summary"
@@ -74,12 +123,18 @@
 					{
 						"name": "helperContract",
 						"type": "boolean",
-						"description": "True only when the helper is explicitly pure and has two or more different consumers.",
+						"description": "This is the eligibility result shared by all renderers: true only when helper.pure is exactly true and the consumers list has at least two distinct unit and symbol pairs. A missing symbol is keyed as an empty string, so repeated entries with the same unit and symbol count once, and the result is always a boolean.",
 						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "The function throws a TypeError when helper is null or undefined (helper.pure is read without a guard), when consumers is a value other than null or undefined that has no map method, or when a consumers entry is null or undefined (consumer.unit is read without a guard). These values fall outside the declared CallableContract type."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
