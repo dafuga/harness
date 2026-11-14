@@ -18,17 +18,28 @@
 				"name": "pushedRefs.input",
 				"type": "string",
 				"required": true,
-				"description": "Git pre-push input containing four whitespace-separated fields per reference line."
+				"description": "The text Git gives a pre-push hook: one newline-separated line per pushed ref, each with four whitespace-separated fields. Only the second field (local object name) and third field (remote ref name) decide the result, lines without exactly four fields are skipped, and no other format is checked, so an empty string gives an empty array.",
+				"examples": [
+					"refs/heads/main 7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0 refs/heads/main 9a0b1c2d3e4f5061728394a5b6c7d8e9f0a1b2c3\n",
+					"refs/heads/feature/login-form 3f1c9a7b2d4e8f0a61c5b9d2e7f4a8c01b6d3e52 refs/heads/feature/login-form 0000000000000000000000000000000000000000\n",
+					"refs/heads/main 7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0 refs/heads/main 9a0b1c2d3e4f5061728394a5b6c7d8e9f0a1b2c3\nrefs/heads/harness-evidence 5a9e02c7d413b8f6e1907c2a4d58fb36e0c1a792 refs/heads/harness-evidence 0000000000000000000000000000000000000000\nrefs/tags/v1.4.0 e41d7a09c3b2f6518d0ea7c4b93f2716d8a05c3e refs/tags/v1.4.0 0000000000000000000000000000000000000000\n"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "pushedRefs",
 				"type": "string[]",
-				"description": "Unique local commit strings in encounter order for nondeleted updates to source branches. Malformed lines, deletions, evidence/notes/archive refs, tags and other refs are omitted."
+				"description": "Unique local object names, in first-seen order, for the new tips of source branches: lines whose remote ref is a source branch (any refs/heads/ ref except exactly refs/heads/harness-evidence) and whose local object name is not made only of zeros are kept, while malformed lines, deletions, evidence, notes, archived source, tags and other refs are omitted. The values are returned exactly as written, so they are not checked to be 40-character commit hashes, and an empty array means no source branch update needs verification.",
+				"examples": [
+					["7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0"],
+					["7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0", "3f1c9a7b2d4e8f0a61c5b9d2e7f4a8c01b6d3e52"],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "pushedRefs",
@@ -37,18 +48,31 @@
 						"name": "pushedRefs.input",
 						"type": "string",
 						"required": true,
-						"description": "Git pre-push input containing four whitespace-separated fields per reference line."
+						"description": "The text Git gives a pre-push hook: one newline-separated line per pushed ref, each with four whitespace-separated fields. Only the second field (local object name) and third field (remote ref name) decide the result, lines without exactly four fields are skipped, and no other format is checked, so an empty string gives an empty array.",
+						"examples": [
+							"refs/heads/main 7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0 refs/heads/main 9a0b1c2d3e4f5061728394a5b6c7d8e9f0a1b2c3\n",
+							"refs/heads/feature/login-form 3f1c9a7b2d4e8f0a61c5b9d2e7f4a8c01b6d3e52 refs/heads/feature/login-form 0000000000000000000000000000000000000000\n",
+							"refs/heads/main 7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0 refs/heads/main 9a0b1c2d3e4f5061728394a5b6c7d8e9f0a1b2c3\nrefs/heads/harness-evidence 5a9e02c7d413b8f6e1907c2a4d58fb36e0c1a792 refs/heads/harness-evidence 0000000000000000000000000000000000000000\nrefs/tags/v1.4.0 e41d7a09c3b2f6518d0ea7c4b93f2716d8a05c3e refs/tags/v1.4.0 0000000000000000000000000000000000000000\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pushedRefs",
 						"type": "string[]",
-						"description": "Unique local commit strings in encounter order for nondeleted updates to source branches. Malformed lines, deletions, evidence/notes/archive refs, tags and other refs are omitted."
+						"description": "Unique local object names, in first-seen order, for the new tips of source branches: lines whose remote ref is a source branch (any refs/heads/ ref except exactly refs/heads/harness-evidence) and whose local object name is not made only of zeros are kept, while malformed lines, deletions, evidence, notes, archived source, tags and other refs are omitted. The values are returned exactly as written, so they are not checked to be 40-character commit hashes, and an empty array means no source branch update needs verification.",
+						"examples": [
+							["7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0"],
+							[
+								"7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0",
+								"3f1c9a7b2d4e8f0a61c5b9d2e7f4a8c01b6d3e52"
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
