@@ -31,43 +31,72 @@
 				"name": "recordRegression.input",
 				"type": "RecordRegressionInput",
 				"required": true,
-				"description": "Loop, evidence phase, committed revision, tests and optional command, assertion, units and timeout to record."
+				"description": "Records red, green, or capture evidence for a loop; root defaults to process.cwd(), commit to HEAD, new-request test and unit arrays to [], and timeout to 600000 milliseconds. Capture defaults an omitted assertion to \"Focused evidence capture completed.\"; new requests need a nonblank command and, outside capture, a nonblank assertion, selected units must be active at the tested commit, timeout must be an integer from 1 through 3600000, and a green fix reuses its red record and rejects supplied command, assertion, test, or unit values.",
+				"examples": [
+					{
+						"loop": "regression-issue-428",
+						"phase": "capture",
+						"command": "pnpm test --filter regression"
+					}
+				]
 			},
 			{
 				"name": "requireRegressionProof.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository whose retained Git evidence contains the required regression checkpoint."
+				"description": "Repository root used to locate loop state, Git history notes, and recorded regression proof.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
+				]
 			},
 			{
 				"name": "requireRegressionProof.loop",
 				"type": "string",
 				"required": true,
-				"description": "Loop identifier whose red or paired green proof is required."
+				"description": "Loop identifier whose red or paired green proof is checked against the current commit when the step requires proof.",
+				"examples": ["regression-issue-428"]
 			},
 			{
 				"name": "requireRegressionProof.step",
 				"type": "string",
 				"required": true,
-				"description": "Loop step being completed; determines the required proof phase and tested revision."
+				"description": "Step name that selects the required proof phase; only red, implement, green, guard, and verify trigger checks, while other strings return immediately.",
+				"examples": ["red", "green"]
 			},
 			{
 				"name": "enforceRegressionStep.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository containing the loop state and retained regression evidence."
+				"description": "Repository root used to locate the loop's retained regression evidence.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
+				]
 			},
 			{
 				"name": "enforceRegressionStep.state",
 				"type": "LoopState",
 				"required": true,
-				"description": "Loop state to validate and opt into committed regression enforcement when red begins."
+				"description": "Current loop state; enforcement runs when regressionCommits is 1 or ordered steps have a pending red step, and a successfully checked starting red step sets regressionCommits to 1.",
+				"examples": [
+					{
+						"name": "regression-issue-428",
+						"enforceOrder": true,
+						"steps": [
+							{
+								"id": "red",
+								"status": "pending"
+							}
+						],
+						"regressionCommits": 0
+					}
+				]
 			},
 			{
 				"name": "enforceRegressionStep.step",
 				"type": "string",
 				"required": true,
-				"description": "Step being advanced, used to require the appropriate recorded checkpoint."
+				"description": "Step being advanced and passed to the proof check when enforcement is active.",
+				"examples": ["red", "green"]
 			}
 		],
 		"outputs": [
@@ -79,11 +108,12 @@
 		],
 		"errors": [
 			{
-				"name": "Invalid proof",
-				"type": "Explicit rejection or gap",
-				"description": "Refuses mixed product/test commits, changed tests, invalid phases or unsuccessful proof."
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "The implementation rejects when its fail checks detect an invalid phase, missing or changed paired proof, missing required command or assertion, invalid timeout, or invalid unit evidence. Errors from awaited Git, loop, repository, file, and proof-service calls can also propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "recordRegression",
@@ -92,22 +122,31 @@
 						"name": "recordRegression.input",
 						"type": "RecordRegressionInput",
 						"required": true,
-						"description": "Loop, evidence phase, committed revision, tests and optional command, assertion, units and timeout to record."
+						"description": "Records red, green, or capture evidence for a loop; root defaults to process.cwd(), commit to HEAD, new-request test and unit arrays to [], and timeout to 600000 milliseconds. Capture defaults an omitted assertion to \"Focused evidence capture completed.\"; new requests need a nonblank command and, outside capture, a nonblank assertion, selected units must be active at the tested commit, timeout must be an integer from 1 through 3600000, and a green fix reuses its red record and rejects supplied command, assertion, test, or unit values.",
+						"examples": [
+							{
+								"loop": "regression-issue-428",
+								"phase": "capture",
+								"command": "pnpm test --filter regression"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordRegression",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the value returned by RegressionProofService.run for the request, resolved commit, loop, phase, timeout, and any paired red proof; this file does not define that value's JSON shape."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The explicit fail paths reject with ExpectedCliError for an invalid phase, missing or mismatched proof/request fields, a missing command or assertion, an out-of-range timeout, or inactive unit evidence. Errors from awaited Git, loop, registry, file, and proof-service calls can also propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "requireRegressionProof",
@@ -116,34 +155,41 @@
 						"name": "requireRegressionProof.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository whose retained Git evidence contains the required regression checkpoint."
+						"description": "Repository root used to locate loop state, Git history notes, and recorded regression proof.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
+						]
 					},
 					{
 						"name": "requireRegressionProof.loop",
 						"type": "string",
 						"required": true,
-						"description": "Loop identifier whose red or paired green proof is required."
+						"description": "Loop identifier whose red or paired green proof is checked against the current commit when the step requires proof.",
+						"examples": ["regression-issue-428"]
 					},
 					{
 						"name": "requireRegressionProof.step",
 						"type": "string",
 						"required": true,
-						"description": "Loop step being completed; determines the required proof phase and tested revision."
+						"description": "Step name that selects the required proof phase; only red, implement, green, guard, and verify trigger checks, while other strings return immediately.",
+						"examples": ["red", "green"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "requireRegressionProof",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves with undefined after required proof checks pass; steps outside red, implement, green, guard, and verify are ignored."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with ExpectedCliError when required red or green proof is missing, belongs to a different current commit, lacks its paired red record, or no longer matches the original regression. Errors from awaited proof and repository operations can also propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "enforceRegressionStep",
@@ -152,29 +198,53 @@
 						"name": "enforceRegressionStep.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository containing the loop state and retained regression evidence."
+						"description": "Repository root used to locate the loop's retained regression evidence.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
+						]
 					},
 					{
 						"name": "enforceRegressionStep.state",
 						"type": "LoopState",
 						"required": true,
-						"description": "Loop state to validate and opt into committed regression enforcement when red begins."
+						"description": "Current loop state; enforcement runs when regressionCommits is 1 or ordered steps have a pending red step, and a successfully checked starting red step sets regressionCommits to 1.",
+						"examples": [
+							{
+								"name": "regression-issue-428",
+								"enforceOrder": true,
+								"steps": [
+									{
+										"id": "red",
+										"status": "pending"
+									}
+								],
+								"regressionCommits": 0
+							}
+						]
 					},
 					{
 						"name": "enforceRegressionStep.step",
 						"type": "string",
 						"required": true,
-						"description": "Step being advanced, used to require the appropriate recorded checkpoint."
+						"description": "Step being advanced and passed to the proof check when enforcement is active.",
+						"examples": ["red", "green"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "enforceRegressionStep",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves with undefined when enforcement is not due or the required proof passes; after a successful starting red check it sets state.regressionCommits to 1."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Can reject with ExpectedCliError propagated from requireRegressionProof when enforcement is active and its proof check fails; errors from awaited proof operations also propagate."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
