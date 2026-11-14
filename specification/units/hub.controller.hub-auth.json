@@ -21,27 +21,31 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubAuthController.constructor.options",
 				"type": "HubAuthControllerOptions",
-				"required": true
+				"required": true,
+				"description": "The required dependencies and additional route handlers used to create the controller. The client ID is returned in auth status, the service and repository fields back the built-in auth routes, and routes are added after the built-in entries so matching keys replace them."
 			},
 			{
 				"name": "HubAuthController.handle.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The incoming Fetch API Request whose method and URL path select an auth route. Paths outside /api/auth/* and /api/github/* yield null; paths in either namespace are handled as a route or coded error response."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubAuthController.handle",
-				"type": "Promise<Response | null>"
+				"type": "Promise<Response | null>",
+				"description": "The resolved result of handling a request: null for paths outside the auth and GitHub namespaces, otherwise an HTTP Response. Route failures are converted to coded JSON error responses before returning.",
+				"examples": [null]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "HubAuthController.handle",
@@ -49,17 +53,20 @@
 					{
 						"name": "HubAuthController.handle.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The incoming Fetch API Request whose method and URL path select an auth route. Paths outside /api/auth/* and /api/github/* yield null; paths in either namespace are handled as a route or coded error response."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubAuthController.handle",
-						"type": "Promise<Response | null>"
+						"type": "Promise<Response | null>",
+						"description": "The resolved result of handling a request: null for paths outside the auth and GitHub namespaces, otherwise an HTTP Response. Route failures are converted to coded JSON error responses before returning.",
+						"examples": [null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -69,17 +76,19 @@
 					{
 						"name": "HubAuthController.constructor.options",
 						"type": "HubAuthControllerOptions",
-						"required": true
+						"required": true,
+						"description": "The required dependencies and additional route handlers used to create the controller. The client ID is returned in auth status, the service and repository fields back the built-in auth routes, and routes are added after the built-in entries so matching keys replace them."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubAuthController.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The initialized HubAuthController instance, with an AuthRequestValidator and a route map containing the built-in routes plus options.routes. The constructor does not produce a JSON response."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
