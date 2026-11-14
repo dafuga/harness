@@ -21,22 +21,60 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EmailProofController.constructor.options",
 				"type": "EmailProofControllerOptions",
-				"required": true
+				"required": true,
+				"description": "The collaborators the controller uses: `proofs` is the EmailProofService whose start and verify methods back the two routes, and `sessions` is the RequestSessionService whose crossOrigin check gates the proof cookie. The constructor keeps this object as given and validates nothing."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EmailProofController.routes",
-				"type": "AuthRoutes"
+				"type": "AuthRoutes",
+				"description": "The route table returned by routes(), keyed `POST /api/auth/email/start` and `POST /api/auth/email/verify`. Each handler takes a Request and resolves to a Response, and rejects instead when a check or collaborator fails."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Code `email-proof-required` (HTTP 401): thrown by the proof() guard when the request carries an Authorization header, and by start or verify when no live pending proof is behind the cookie (none, unknown, expired or already claimed) or the store's issue or finish step returns false."
+			},
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Code `origin-denied` (HTTP 403): thrown by the proof() guard before the proof cookie is read, for a request with an unsafe method (anything but GET, HEAD or OPTIONS) whose Origin header does not match the configured origin."
+			},
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Code `email-delivery-disabled` (HTTP 503): thrown by start before any pending proof is looked up, when no email delivery is configured for the EmailProofService."
+			},
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Code `email-rate-limited` (HTTP 429): thrown by start when the one-send-a-minute limit or the daily cap of 5 sends is reached for the Google subject or for the address."
+			},
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Code `email-delivery-failed` (HTTP 502): thrown by start when the delivery send rejects, whatever it threw, and that error's message is never passed on."
+			},
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Code `invalid-request` (HTTP 400): thrown by verify when readJson rejects the body (the content type is not application/json, the Content-Length or the body exceeds 16384 bytes, the bytes are not UTF-8, or the text is not a JSON object) or when `code` is not a string of exactly eight digits once spaces and dashes are removed."
+			},
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Code `email-code-invalid` (HTTP 400): thrown by verify when the code is wrong or spent while the pending proof is still unclaimed and unexpired."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "EmailProofController.routes",
@@ -44,11 +82,12 @@
 				"outputs": [
 					{
 						"name": "EmailProofController.routes",
-						"type": "AuthRoutes"
+						"type": "AuthRoutes",
+						"description": "The route table that each routes() call builds fresh, keyed `POST /api/auth/email/start` and `POST /api/auth/email/verify`. Each handler takes a Request and resolves to a Response, and rejects instead when a check or collaborator fails."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -58,17 +97,19 @@
 					{
 						"name": "EmailProofController.constructor.options",
 						"type": "EmailProofControllerOptions",
-						"required": true
+						"required": true,
+						"description": "The collaborators the controller uses: `proofs` is the EmailProofService whose start and verify methods back the two routes, and `sessions` is the RequestSessionService whose crossOrigin check gates the proof cookie. The constructor keeps this object as given and validates nothing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "EmailProofController.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new EmailProofController, which keeps the options object and a fresh AuthRequestValidator. The constructor calls no collaborator and performs no I/O."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
