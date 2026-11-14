@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native tspan element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered inside the SVG tspan when provided. Its content is rendered as supplied by the caller."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgTspan",
 				"type": "markup",
-				"description": "The actual native tspan element, with forwarded attributes and content and no additional wrapper."
+				"description": "Renders as a native SVG tspan element, forwarding all remaining props as attributes and rendering children when present. The component adds no wrapper element."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
