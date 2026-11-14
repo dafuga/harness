@@ -127,6 +127,8 @@ export function main(): void {
 		docs.flatMap(({ path, metadata }) => [...metadata.unitIds, ...(linked.get(path) ?? [])])
 	);
 	const report = featureStatusReport(root, verifiedUnitsInHistory(root, declaredUnits));
+	if (process.argv.includes('--check') && report.classificationMismatches.length > 0)
+		process.exitCode = 1;
 	console.log(
 		JSON.stringify(
 			{

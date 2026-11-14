@@ -5,6 +5,7 @@ export const checkSteps = [
 	'check:debt-ratchets',
 	'check:e2e-list',
 	'check:doc-links',
+	'check:feature-status',
 	'format:check',
 	'typecheck',
 	'lint',

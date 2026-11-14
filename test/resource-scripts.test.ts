@@ -76,6 +76,7 @@ test('check steps report time, stop at failure and preserve the complete broad g
 		'check:debt-ratchets',
 		'check:e2e-list',
 		'check:doc-links',
+		'check:feature-status',
 		'format:check',
 		'typecheck',
 		'lint',

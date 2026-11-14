@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
+import { main } from '../scripts/report-feature-status/featureStatusReport';
 import {
 	featureStatusReport,
 	linkedUnits,
@@ -42,6 +43,23 @@ test('reports stale planned docs from complete matching loops and verified linke
 			}
 		]);
 		expect(report.missingOwnershipOrDateEvidence).toHaveLength(2);
+		// Folder/frontmatter disagreement is deterministic drift; unknown owner dates remain reports.
+		await writeFile(implemented, metadata('planned'));
+		const oldArgs = process.argv;
+		const oldExit = process.exitCode;
+		const cwd = vi.spyOn(process, 'cwd').mockReturnValue(root);
+		const output = vi.spyOn(console, 'log').mockImplementation(() => {});
+		try {
+			process.argv = ['bun', 'feature-status', '--check'];
+			main();
+			expect(process.exitCode).toBe(1);
+			expect(featureStatusReport(root, new Set()).classificationMismatches).toHaveLength(1);
+		} finally {
+			process.argv = oldArgs;
+			process.exitCode = oldExit;
+			cwd.mockRestore();
+			output.mockRestore();
+		}
 	});
 });
 
