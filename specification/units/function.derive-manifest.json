@@ -31,47 +31,172 @@
 				"name": "deriveContract.files",
 				"type": "SourceFile[]",
 				"required": true,
-				"description": "Source facts for every file owned by the unit, including exports, errors and storage declarations."
+				"description": "Source records whose paths, exports, optional storage declarations, and scanned errors are folded into the contract. An empty array produces an empty derived contract.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "deriveContract.entry",
 				"type": "string",
 				"required": false,
-				"description": "Optional runtime entry used to select the primary component props when several components share an owner."
+				"default": "undefined",
+				"description": "Repository-relative source path used to select a primary component export when that file is present. If no matching component is found, inputs fall back to all deduplicated component exports; defaults to undefined.",
+				"examples": ["src/utils/development-tooling/deriveManifest.ts"]
 			},
 			{
 				"name": "declaredContract.declared",
 				"type": "ComponentManifest['contract']",
 				"required": true,
-				"description": "Previously authored contract explanations, error declarations and metadata to preserve."
+				"description": "Previously authored contract whose item explanations and explicitly declared operation errors are applied by matching names. Source-derived signatures and arrays refresh the corresponding authored entries.",
+				"examples": [
+					{
+						"origin": "declared",
+						"errorStatus": "none-found",
+						"inputs": [],
+						"outputs": [],
+						"errors": [],
+						"operations": [],
+						"initialization": []
+					}
+				]
 			},
 			{
 				"name": "declaredContract.source",
 				"type": "ComponentManifest['contract']",
 				"required": true,
-				"description": "Fresh source-derived signatures, literal defaults, operations and storage facts."
+				"description": "Freshly derived contract providing current input and operation signatures, optional literal defaults, snippets, and storage facts. Its inputs, snippets, storage, initialization, and operation entries replace the corresponding authored arrays, while contract-level outputs remain from the declared contract.",
+				"examples": [
+					{
+						"origin": "derived",
+						"errorStatus": "none-found",
+						"inputs": [],
+						"outputs": [],
+						"errors": [],
+						"operations": [],
+						"initialization": []
+					}
+				]
 			},
 			{
 				"name": "operationContract.symbol",
 				"type": "ExportedSymbol",
 				"required": true,
-				"description": "Scanned callable or method whose inputs, return and observed errors form one operation contract."
+				"description": "One scanned exported symbol used to form a contract operation entry. Its name, inputs, optional output, observed errors, and error status determine the returned fields.",
+				"examples": [
+					{
+						"name": "buildManifest",
+						"kind": "function",
+						"inputs": [],
+						"output": "ComponentManifest",
+						"errors": [],
+						"errorStatus": "none-found"
+					}
+				]
 			},
 			{
 				"name": "deriveManifest.input",
 				"type": "DeriveInput",
 				"required": true,
-				"description": "Unit id and kind, nonempty owned source-file facts, source-path owner map, optional predecessor ids and previous manifest. The previous manifest supplies declarations to preserve."
+				"description": "Unit identity and kind, owned source records, a repository-path-to-unit owner map, and optional predecessor ids or previous manifest. When there is no previous manifest, at least one source path is needed because defaults derive the title from the first file."
 			}
 		],
 		"outputs": [
 			{
 				"name": "deriveManifest",
 				"type": "ComponentManifest",
-				"description": "Derived unit manifest that refreshes source ownership and dependency facts while preserving declared catalog visibility, contract, scenarios, preview, documentation, budgets and lineage."
+				"description": "A schema-validated active manifest with source and symbol ownership, dependency facts, runtime, contract, scenarios, and budgets. It preserves declared metadata and lineage while refreshing source-derived facts.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "function.derive-manifest",
+						"kind": "function",
+						"title": "Manifest derivation",
+						"responsibility": "Builds an active unit manifest from source facts while retaining declared contracts, responsibilities, dependencies and runtime choices.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": [
+								"src/utils/deriveManifest.ts",
+								"src/utils/development-tooling/deriveManifest.ts",
+								"src/workflows/development-tooling/load-units/unit-index-service/deriveContract.ts",
+								"src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+								"src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.types.ts",
+								"src/workflows/load-units/unit-index-service/deriveManifest.ts"
+							],
+							"symbols": [
+								"deriveManifest",
+								"DeriveInput",
+								"deriveContract",
+								"declaredContract",
+								"operationContract",
+								"Declared"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"errorStatus": "none-found",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"operations": [],
+							"initialization": []
+						},
+						"dependencies": [
+							{
+								"unit": "function.derived-responsibility",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.development-tooling-composition",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.source-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-types",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/utils/development-tooling/deriveManifest.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/utils/development-tooling/deriveManifest.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when there is no previous manifest and input.files is empty, because default title generation reads the first file path."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by componentManifestSchema.shape.contract.parse when the assembled contract fails contract-schema validation."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "deriveContract",
@@ -80,23 +205,40 @@
 						"name": "deriveContract.files",
 						"type": "SourceFile[]",
 						"required": true,
-						"description": "Source facts for every file owned by the unit, including exports, errors and storage declarations."
+						"description": "Source records whose paths, exports, optional storage declarations, and scanned errors are folded into the contract. An empty array produces an empty derived contract.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "deriveContract.entry",
 						"type": "string",
 						"required": false,
-						"description": "Optional runtime entry used to select the primary component props when several components share an owner."
+						"default": "undefined",
+						"description": "Repository-relative source path used to select a primary component export when that file is present. If no matching component is found, inputs fall back to all deduplicated component exports; defaults to undefined.",
+						"examples": ["src/utils/development-tooling/deriveManifest.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "deriveContract",
-						"type": "ComponentManifest['contract']"
+						"type": "ComponentManifest['contract']",
+						"description": "A source-derived contract combining selected component props or storage fields with exported return types, scanned errors, snippets, and callable operations. Optional storage and snippets appear only when source facts provide them.",
+						"examples": [
+							{
+								"origin": "derived",
+								"errorStatus": "none-found",
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"operations": [],
+								"initialization": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "declaredContract",
@@ -105,23 +247,57 @@
 						"name": "declaredContract.declared",
 						"type": "ComponentManifest['contract']",
 						"required": true,
-						"description": "Previously authored contract explanations, error declarations and metadata to preserve."
+						"description": "Previously authored contract whose item explanations and explicitly declared operation errors are applied by matching names. Source-derived signatures and arrays refresh the corresponding authored entries.",
+						"examples": [
+							{
+								"origin": "declared",
+								"errorStatus": "none-found",
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"operations": [],
+								"initialization": []
+							}
+						]
 					},
 					{
 						"name": "declaredContract.source",
 						"type": "ComponentManifest['contract']",
 						"required": true,
-						"description": "Fresh source-derived signatures, literal defaults, operations and storage facts."
+						"description": "Freshly derived contract providing current input and operation signatures, optional literal defaults, snippets, and storage facts. Its inputs, snippets, storage, initialization, and operation entries replace the corresponding authored arrays, while contract-level outputs remain from the declared contract.",
+						"examples": [
+							{
+								"origin": "derived",
+								"errorStatus": "none-found",
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"operations": [],
+								"initialization": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "declaredContract",
-						"type": "ComponentManifest['contract']"
+						"type": "ComponentManifest['contract']",
+						"description": "The declared contract with source-derived inputs, snippets, storage, initialization, and operations refreshed. Matching authored explanations survive, and authored operation errors survive only when their error status is declared.",
+						"examples": [
+							{
+								"origin": "declared",
+								"errorStatus": "none-found",
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"operations": [],
+								"initialization": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "operationContract",
@@ -130,17 +306,42 @@
 						"name": "operationContract.symbol",
 						"type": "ExportedSymbol",
 						"required": true,
-						"description": "Scanned callable or method whose inputs, return and observed errors form one operation contract."
+						"description": "One scanned exported symbol used to form a contract operation entry. Its name, inputs, optional output, observed errors, and error status determine the returned fields.",
+						"examples": [
+							{
+								"name": "buildManifest",
+								"kind": "function",
+								"inputs": [],
+								"output": "ComponentManifest",
+								"errors": [],
+								"errorStatus": "none-found"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "operationContract",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A contract representation of one scanned export, with input items, zero or one return item, thrown-error names, and the export's scanned error status.",
+						"examples": [
+							{
+								"name": "buildManifest",
+								"inputs": [],
+								"outputs": [
+									{
+										"name": "buildManifest",
+										"type": "ComponentManifest"
+									}
+								],
+								"errors": [],
+								"errorStatus": "none-found"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "deriveManifest",
@@ -149,18 +350,105 @@
 						"name": "deriveManifest.input",
 						"type": "DeriveInput",
 						"required": true,
-						"description": "Unit id and kind, nonempty owned source-file facts, source-path owner map, optional predecessor ids and previous manifest. The previous manifest supplies declarations to preserve."
+						"description": "Unit identity and kind, owned source records, a repository-path-to-unit owner map, and optional predecessor ids or previous manifest. When there is no previous manifest, at least one source path is needed because defaults derive the title from the first file."
 					}
 				],
 				"outputs": [
 					{
 						"name": "deriveManifest",
 						"type": "ComponentManifest",
-						"description": "Derived unit manifest that refreshes source ownership and dependency facts while preserving declared catalog visibility, contract, scenarios, preview, documentation, budgets and lineage."
+						"description": "A schema-validated active manifest with source and symbol ownership, dependency facts, runtime, contract, scenarios, and budgets. It preserves declared metadata and lineage while refreshing source-derived facts.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "function.derive-manifest",
+								"kind": "function",
+								"title": "Manifest derivation",
+								"responsibility": "Builds an active unit manifest from source facts while retaining declared contracts, responsibilities, dependencies and runtime choices.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"src/utils/deriveManifest.ts",
+										"src/utils/development-tooling/deriveManifest.ts",
+										"src/workflows/development-tooling/load-units/unit-index-service/deriveContract.ts",
+										"src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+										"src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.types.ts",
+										"src/workflows/load-units/unit-index-service/deriveManifest.ts"
+									],
+									"symbols": [
+										"deriveManifest",
+										"DeriveInput",
+										"deriveContract",
+										"declaredContract",
+										"operationContract",
+										"Declared"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"errorStatus": "none-found",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"operations": [],
+									"initialization": []
+								},
+								"dependencies": [
+									{
+										"unit": "function.derived-responsibility",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.development-tooling-composition",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.source-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-types",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/utils/development-tooling/deriveManifest.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/utils/development-tooling/deriveManifest.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when there is no previous manifest and input.files is empty, because default title generation reads the first file path."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by componentManifestSchema.shape.contract.parse when the assembled contract fails contract-schema validation."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
