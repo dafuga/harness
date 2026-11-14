@@ -15,18 +15,20 @@
 		"symbols": ["createRemoteHostStore", "RemoteHost", "RemoteHostState", "Approval", "RemoteHost"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createRemoteHostStore.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "The workspace store; its remote.host is the desktop control port that this store drives, and the store keeps the reference and reads workspace.remote.host on every access, treating a falsy port as absent. While the port is absent, start() returns before subscribing and enable, disable, createPairing, closePairing, approve, deny and revoke each resolve to false without calling the port."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createRemoteHostStore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The RemoteHostState instance that createRemoteHostStore returns for the given workspace, holding the reactive status (null until one is accepted), error (empty string), busy flag and the remote host actions. It has no port listener until start() attaches one, and dispose() detaches it."
 			}
 		],
 		"errors": [],
@@ -38,17 +40,19 @@
 					{
 						"name": "createRemoteHostStore.workspace",
 						"type": "Workspace",
-						"required": true
+						"required": true,
+						"description": "The workspace store; its remote.host is the desktop control port that this store drives, and the store keeps the reference and reads workspace.remote.host on every access, treating a falsy port as absent. While the port is absent, start() returns before subscribing and enable, disable, createPairing, closePairing, approve, deny and revoke each resolve to false without calling the port."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createRemoteHostStore",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The RemoteHostState instance that createRemoteHostStore returns for the given workspace, holding the reactive status (null until one is accepted), error (empty string), busy flag and the remote host actions. It has no port listener until start() attaches one, and dispose() detaches it."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
