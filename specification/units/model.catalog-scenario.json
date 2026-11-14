@@ -34,65 +34,254 @@
 				"name": "CatalogScenario.id",
 				"type": "string",
 				"required": true,
-				"description": "Stored row identity; the model passes it to the adapter without generating a key."
+				"description": "Required persisted row key. The model accepts it as an opaque string and does not generate or validate an ID format.",
+				"examples": ["catalog-scenario-checkout-001"]
 			},
 			{
 				"name": "CatalogScenario.scenarioId",
 				"type": "string",
 				"required": true,
-				"description": "Stable authored scenario ID at the recorded commit."
+				"description": "Authored scenario identifier associated with this row. The model stores and forwards it as a string without resolving it against a registry.",
+				"examples": ["checkout.happy-path"]
 			},
 			{
 				"name": "CatalogScenario.commit",
 				"type": "string",
 				"required": true,
-				"description": "Git commit to which this stored record belongs."
+				"description": "Git commit identifier associated with this scenario record. The model treats it as an opaque string and does not validate its SHA format.",
+				"examples": ["a94b5c6d7e8f90123456789abcdef01234567890"]
 			},
 			{
 				"name": "CatalogScenario.title",
 				"type": "string",
 				"required": true,
-				"description": "Source-revision display title."
+				"description": "Display title captured for the scenario at the recorded revision. The model forwards it without deriving a title.",
+				"examples": ["Checkout happy path"]
 			},
 			{
 				"name": "CatalogScenario.data",
 				"type": "json",
 				"required": true,
-				"description": "Structured payload retained by the adapter; no model code is executed to describe it."
+				"description": "RevisionRegistry scenario entry retained with this catalog row as JSON. The model passes it through without parsing or executing the payload.",
+				"examples": [
+					{
+						"id": "checkout.happy-path",
+						"title": "Checkout happy path",
+						"kind": "headless",
+						"units": ["model.catalog-scenario"],
+						"states": [
+							{
+								"id": "baseline",
+								"title": "Baseline",
+								"coverage": "required"
+							}
+						],
+						"viewports": [],
+						"tests": [
+							{
+								"id": "catalog-scenario.find.unit",
+								"kind": "unit",
+								"runner": "vitest"
+							}
+						],
+						"evidence": [
+							{
+								"id": "catalog-scenario.find.assertions",
+								"kind": "assertions",
+								"states": ["baseline"],
+								"viewports": []
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogScenario.find",
 				"type": "Promise<CatalogScenarioAttributes | null>",
-				"description": "Promise of the matching catalog_scenarios row, or null according to the adapter lookup result."
+				"description": "The adapter result for the row key, or null when the adapter reports no matching row. The model does not validate or transform a returned row.",
+				"examples": [
+					{
+						"id": "catalog-scenario-checkout-001",
+						"scenarioId": "checkout.happy-path",
+						"commit": "a94b5c6d7e8f90123456789abcdef01234567890",
+						"title": "Checkout happy path",
+						"data": {
+							"id": "checkout.happy-path",
+							"title": "Checkout happy path",
+							"kind": "headless",
+							"units": ["model.catalog-scenario"],
+							"states": [
+								{
+									"id": "baseline",
+									"title": "Baseline",
+									"coverage": "required"
+								}
+							],
+							"viewports": [],
+							"tests": [
+								{
+									"id": "catalog-scenario.find.unit",
+									"kind": "unit",
+									"runner": "vitest"
+								}
+							],
+							"evidence": [
+								{
+									"id": "catalog-scenario.find.assertions",
+									"kind": "assertions",
+									"states": ["baseline"],
+									"viewports": []
+								}
+							]
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "CatalogScenario.findBy",
 				"type": "Promise<CatalogScenarioAttributes[]>",
-				"description": "Promise of catalog_scenarios rows matching the supplied attribute filters."
+				"description": "The array returned by the adapter for the supplied partial attribute filter. The model adds no sorting, pagination, or result validation.",
+				"examples": [
+					[
+						{
+							"id": "catalog-scenario-checkout-001",
+							"scenarioId": "checkout.happy-path",
+							"commit": "a94b5c6d7e8f90123456789abcdef01234567890",
+							"title": "Checkout happy path",
+							"data": {
+								"id": "checkout.happy-path",
+								"title": "Checkout happy path",
+								"kind": "headless",
+								"units": ["model.catalog-scenario"],
+								"states": [
+									{
+										"id": "baseline",
+										"title": "Baseline",
+										"coverage": "required"
+									}
+								],
+								"viewports": [],
+								"tests": [
+									{
+										"id": "catalog-scenario.find.unit",
+										"kind": "unit",
+										"runner": "vitest"
+									}
+								],
+								"evidence": [
+									{
+										"id": "catalog-scenario.find.assertions",
+										"kind": "assertions",
+										"states": ["baseline"],
+										"viewports": []
+									}
+								]
+							}
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "CatalogScenario.create",
 				"type": "Promise<CatalogScenarioAttributes>",
-				"description": "Promise of the catalog_scenarios row returned by the adapter after creation."
+				"description": "The row returned by the adapter after receiving a shallow copy of the complete input. The model does not generate the id or validate the returned row.",
+				"examples": [
+					{
+						"id": "catalog-scenario-checkout-001",
+						"scenarioId": "checkout.happy-path",
+						"commit": "a94b5c6d7e8f90123456789abcdef01234567890",
+						"title": "Checkout happy path",
+						"data": {
+							"id": "checkout.happy-path",
+							"title": "Checkout happy path",
+							"kind": "headless",
+							"units": ["model.catalog-scenario"],
+							"states": [
+								{
+									"id": "baseline",
+									"title": "Baseline",
+									"coverage": "required"
+								}
+							],
+							"viewports": [],
+							"tests": [
+								{
+									"id": "catalog-scenario.find.unit",
+									"kind": "unit",
+									"runner": "vitest"
+								}
+							],
+							"evidence": [
+								{
+									"id": "catalog-scenario.find.assertions",
+									"kind": "assertions",
+									"states": ["baseline"],
+									"viewports": []
+								}
+							]
+						}
+					}
+				]
 			},
 			{
 				"name": "CatalogScenario.update",
 				"type": "Promise<CatalogScenarioAttributes | null>",
-				"description": "Promise of the updated catalog_scenarios row, or null according to the adapter update result."
+				"description": "The updated row returned by the adapter, or null when the adapter reports no row. The model forwards a shallow copy of the patch and does not validate the result.",
+				"examples": [
+					{
+						"id": "catalog-scenario-checkout-001",
+						"scenarioId": "checkout.happy-path",
+						"commit": "a94b5c6d7e8f90123456789abcdef01234567890",
+						"title": "Checkout happy path",
+						"data": {
+							"id": "checkout.happy-path",
+							"title": "Checkout happy path",
+							"kind": "headless",
+							"units": ["model.catalog-scenario"],
+							"states": [
+								{
+									"id": "baseline",
+									"title": "Baseline",
+									"coverage": "required"
+								}
+							],
+							"viewports": [],
+							"tests": [
+								{
+									"id": "catalog-scenario.find.unit",
+									"kind": "unit",
+									"runner": "vitest"
+								}
+							],
+							"evidence": [
+								{
+									"id": "catalog-scenario.find.assertions",
+									"kind": "assertions",
+									"states": ["baseline"],
+									"viewports": []
+								}
+							]
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "CatalogScenario.delete",
 				"type": "Promise<boolean>",
-				"description": "Promise of the adapter deletion result for the requested catalog_scenarios row."
+				"description": "The boolean returned by the adapter for the requested deletion. The model does not reinterpret what true or false means.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Persistence operation failure",
-				"type": "propagated",
-				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+				"type": "thrown",
+				"description": "Synchronous adapter exceptions are thrown unchanged, and adapter promise rejections propagate with their original error. For findBy, create, and update, an enumerable own-property getter can also throw while the model shallow-copies its input."
 			}
 		],
 		"errorStatus": "declared",
@@ -104,27 +293,66 @@
 						"name": "CatalogScenario.find.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_scenarios table; the model owns no connection lifecycle."
+						"description": "Persistence adapter used for the catalog_scenarios table. The model neither constructs it nor owns its connection lifecycle."
 					},
 					{
 						"name": "CatalogScenario.find.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Required persisted row key. The model accepts it as an opaque string and does not generate or validate an ID format.",
+						"examples": ["catalog-scenario-checkout-001"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogScenario.find",
 						"type": "Promise<CatalogScenarioAttributes | null>",
-						"description": "Promise of the matching catalog_scenarios row, or null according to the adapter lookup result."
+						"description": "The adapter result for the row key, or null when the adapter reports no matching row. The model does not validate or transform a returned row.",
+						"examples": [
+							{
+								"id": "catalog-scenario-checkout-001",
+								"scenarioId": "checkout.happy-path",
+								"commit": "a94b5c6d7e8f90123456789abcdef01234567890",
+								"title": "Checkout happy path",
+								"data": {
+									"id": "checkout.happy-path",
+									"title": "Checkout happy path",
+									"kind": "headless",
+									"units": ["model.catalog-scenario"],
+									"states": [
+										{
+											"id": "baseline",
+											"title": "Baseline",
+											"coverage": "required"
+										}
+									],
+									"viewports": [],
+									"tests": [
+										{
+											"id": "catalog-scenario.find.unit",
+											"kind": "unit",
+											"runner": "vitest"
+										}
+									],
+									"evidence": [
+										{
+											"id": "catalog-scenario.find.assertions",
+											"kind": "assertions",
+											"states": ["baseline"],
+											"viewports": []
+										}
+									]
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Synchronous exceptions from adapter.find are thrown unchanged, and rejected return promises reject with their original error. The model does not catch or translate either failure."
 					}
 				],
 				"errorStatus": "declared"
@@ -136,27 +364,72 @@
 						"name": "CatalogScenario.findBy.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_scenarios table; the model owns no connection lifecycle."
+						"description": "Persistence adapter used for the catalog_scenarios table. The model neither constructs it nor owns its connection lifecycle."
 					},
 					{
 						"name": "CatalogScenario.findBy.fields",
 						"type": "Partial<CatalogScenarioAttributes>",
 						"required": true,
-						"description": "Partial stored attributes used as equality filters for catalog_scenarios."
+						"description": "Partial CatalogScenario attributes copied and passed to adapter.findBy as lookup criteria. The model does not interpret the filter.",
+						"examples": [
+							{
+								"scenarioId": "checkout.happy-path"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogScenario.findBy",
 						"type": "Promise<CatalogScenarioAttributes[]>",
-						"description": "Promise of catalog_scenarios rows matching the supplied attribute filters."
+						"description": "The array returned by the adapter for the supplied partial attribute filter. The model adds no sorting, pagination, or result validation.",
+						"examples": [
+							[
+								{
+									"id": "catalog-scenario-checkout-001",
+									"scenarioId": "checkout.happy-path",
+									"commit": "a94b5c6d7e8f90123456789abcdef01234567890",
+									"title": "Checkout happy path",
+									"data": {
+										"id": "checkout.happy-path",
+										"title": "Checkout happy path",
+										"kind": "headless",
+										"units": ["model.catalog-scenario"],
+										"states": [
+											{
+												"id": "baseline",
+												"title": "Baseline",
+												"coverage": "required"
+											}
+										],
+										"viewports": [],
+										"tests": [
+											{
+												"id": "catalog-scenario.find.unit",
+												"kind": "unit",
+												"runner": "vitest"
+											}
+										],
+										"evidence": [
+											{
+												"id": "catalog-scenario.find.assertions",
+												"kind": "assertions",
+												"states": ["baseline"],
+												"viewports": []
+											}
+										]
+									}
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "An enumerable own-property getter on fields can throw while the model copies the filter. Synchronous adapter.findBy exceptions and rejected return promises propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -168,27 +441,101 @@
 						"name": "CatalogScenario.create.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_scenarios table; the model owns no connection lifecycle."
+						"description": "Persistence adapter used for the catalog_scenarios table. The model neither constructs it nor owns its connection lifecycle."
 					},
 					{
 						"name": "CatalogScenario.create.input",
 						"type": "CatalogScenarioCreateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_scenarios; omitted update fields remain the adapter's responsibility."
+						"description": "Complete CatalogScenario attributes to persist. The model forwards a shallow copy and does not generate an id or validate the fields.",
+						"examples": [
+							{
+								"id": "catalog-scenario-checkout-001",
+								"scenarioId": "checkout.happy-path",
+								"commit": "a94b5c6d7e8f90123456789abcdef01234567890",
+								"title": "Checkout happy path",
+								"data": {
+									"id": "checkout.happy-path",
+									"title": "Checkout happy path",
+									"kind": "headless",
+									"units": ["model.catalog-scenario"],
+									"states": [
+										{
+											"id": "baseline",
+											"title": "Baseline",
+											"coverage": "required"
+										}
+									],
+									"viewports": [],
+									"tests": [
+										{
+											"id": "catalog-scenario.find.unit",
+											"kind": "unit",
+											"runner": "vitest"
+										}
+									],
+									"evidence": [
+										{
+											"id": "catalog-scenario.find.assertions",
+											"kind": "assertions",
+											"states": ["baseline"],
+											"viewports": []
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogScenario.create",
 						"type": "Promise<CatalogScenarioAttributes>",
-						"description": "Promise of the catalog_scenarios row returned by the adapter after creation."
+						"description": "The row returned by the adapter after receiving a shallow copy of the complete input. The model does not generate the id or validate the returned row.",
+						"examples": [
+							{
+								"id": "catalog-scenario-checkout-001",
+								"scenarioId": "checkout.happy-path",
+								"commit": "a94b5c6d7e8f90123456789abcdef01234567890",
+								"title": "Checkout happy path",
+								"data": {
+									"id": "checkout.happy-path",
+									"title": "Checkout happy path",
+									"kind": "headless",
+									"units": ["model.catalog-scenario"],
+									"states": [
+										{
+											"id": "baseline",
+											"title": "Baseline",
+											"coverage": "required"
+										}
+									],
+									"viewports": [],
+									"tests": [
+										{
+											"id": "catalog-scenario.find.unit",
+											"kind": "unit",
+											"runner": "vitest"
+										}
+									],
+									"evidence": [
+										{
+											"id": "catalog-scenario.find.assertions",
+											"kind": "assertions",
+											"states": ["baseline"],
+											"viewports": []
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "An enumerable own-property getter on input can throw while the model copies the attributes. Synchronous adapter.create exceptions and rejected return promises propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -200,33 +547,77 @@
 						"name": "CatalogScenario.update.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_scenarios table; the model owns no connection lifecycle."
+						"description": "Persistence adapter used for the catalog_scenarios table. The model neither constructs it nor owns its connection lifecycle."
 					},
 					{
 						"name": "CatalogScenario.update.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Required persisted row key. The model accepts it as an opaque string and does not generate or validate an ID format.",
+						"examples": ["catalog-scenario-checkout-001"]
 					},
 					{
 						"name": "CatalogScenario.update.input",
 						"type": "CatalogScenarioUpdateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_scenarios; omitted update fields remain the adapter's responsibility."
+						"description": "Partial updates to scenarioId, commit, title, or data; id is excluded from this type. The model forwards a shallow copy, leaving patch semantics to the adapter.",
+						"examples": [
+							{
+								"title": "Checkout retry path"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogScenario.update",
 						"type": "Promise<CatalogScenarioAttributes | null>",
-						"description": "Promise of the updated catalog_scenarios row, or null according to the adapter update result."
+						"description": "The updated row returned by the adapter, or null when the adapter reports no row. The model forwards a shallow copy of the patch and does not validate the result.",
+						"examples": [
+							{
+								"id": "catalog-scenario-checkout-001",
+								"scenarioId": "checkout.happy-path",
+								"commit": "a94b5c6d7e8f90123456789abcdef01234567890",
+								"title": "Checkout happy path",
+								"data": {
+									"id": "checkout.happy-path",
+									"title": "Checkout happy path",
+									"kind": "headless",
+									"units": ["model.catalog-scenario"],
+									"states": [
+										{
+											"id": "baseline",
+											"title": "Baseline",
+											"coverage": "required"
+										}
+									],
+									"viewports": [],
+									"tests": [
+										{
+											"id": "catalog-scenario.find.unit",
+											"kind": "unit",
+											"runner": "vitest"
+										}
+									],
+									"evidence": [
+										{
+											"id": "catalog-scenario.find.assertions",
+											"kind": "assertions",
+											"states": ["baseline"],
+											"viewports": []
+										}
+									]
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "An enumerable own-property getter on input can throw while the model copies the patch. Synchronous adapter.update exceptions and rejected return promises propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -238,27 +629,29 @@
 						"name": "CatalogScenario.delete.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_scenarios table; the model owns no connection lifecycle."
+						"description": "Persistence adapter used for the catalog_scenarios table. The model neither constructs it nor owns its connection lifecycle."
 					},
 					{
 						"name": "CatalogScenario.delete.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Required persisted row key. The model accepts it as an opaque string and does not generate or validate an ID format.",
+						"examples": ["catalog-scenario-checkout-001"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogScenario.delete",
 						"type": "Promise<boolean>",
-						"description": "Promise of the adapter deletion result for the requested catalog_scenarios row."
+						"description": "The boolean returned by the adapter for the requested deletion. The model does not reinterpret what true or false means.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Synchronous exceptions from adapter.delete are thrown unchanged, and rejected return promises reject with their original error. The model does not catch or translate either failure."
 					}
 				],
 				"errorStatus": "declared"
