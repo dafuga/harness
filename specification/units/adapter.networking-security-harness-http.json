@@ -22,43 +22,89 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessHttpAdapter.constructor.config",
 				"type": "HarnessHttpAdapterConfig",
-				"required": true
+				"required": true,
+				"description": "The adapter settings: url is the Harness API origin, which may end in a single trailing slash but has no other path, query, fragment or credentials; token is the default bearer token for requests; and timeout is the per-request deadline in milliseconds, defaulting to 30000. The constructor throws unless url uses HTTPS, or HTTP to localhost, 127.0.0.1 or [::1].",
+				"examples": [
+					{
+						"url": "https://harness.example.com"
+					},
+					{
+						"url": "https://harness.example.com",
+						"token": "example-harness-token",
+						"timeout": 30000
+					},
+					{
+						"url": "http://localhost:3000",
+						"timeout": 5000
+					}
+				]
 			},
 			{
 				"name": "HarnessHttpAdapter.request.method",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The HTTP method sent to the server, which must be exactly GET, HEAD, POST, PUT, PATCH, DELETE or OPTIONS in uppercase; any other value is rejected before a request is sent. It also decides whether request.input is accepted, because GET and HEAD calls must not carry a body.",
+				"examples": ["GET", "POST", "PATCH"]
 			},
 			{
 				"name": "HarnessHttpAdapter.request.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The API path to call on the configured server, such as /api/status, which must start with a single / and must not start with //. It is joined to the configured origin before anything is sent, and a path that resolves to another origin or carries credentials or a fragment is rejected.",
+				"examples": ["/api/status", "/api/reports", "/api/health"]
 			},
 			{
 				"name": "HarnessHttpAdapter.request.request",
 				"type": "ApiRequest",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional per-call settings: query appends [key, value] string pairs to the path, input is a JSON body that GET and HEAD must not carry (undefined sends no body), and token replaces the configured bearer token for this call (an empty string sends no Authorization header). Omitted, it defaults to {}, which sends no query fields, body or token override.",
+				"examples": [
+					{},
+					{
+						"query": [
+							["limit", "20"]
+						]
+					},
+					{
+						"input": {
+							"name": "example"
+						},
+						"token": "example-harness-token"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessHttpAdapter.request",
-				"type": "Promise<ApiResponse>"
+				"type": "Promise<ApiResponse>",
+				"description": "Resolves with the ApiResponse only for a 2xx reply: data is the parsed JSON (null for an empty JSON body) when mediaType is application/json or ends in +json, and otherwise the body decoded as UTF-8 text. bytes is the exact undecoded response body as a Uint8Array, which JSON cannot represent, and mediaType is the Content-Type value before its first semicolon, untrimmed, or application/octet-stream when the header is absent."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown through fail() for each failure the adapter detects itself, including an invalid server URL or a non-HTTPS URL outside loopback, a bad method, path or token, a body on GET or HEAD, a refused redirect, a failed or timed-out fetch before headers, invalid JSON, and a non-2xx status. Non-2xx messages carry the status and up to 400 characters of the server's string error field or status text, with any occurrence of the bearer token replaced by [redacted]."
+			},
+			{
+				"name": "TimeoutError",
+				"type": "thrown",
+				"description": "A DOMException named TimeoutError that request() rejects with when the config.timeout deadline (default 30000 ms) expires after the response headers arrive, while the body is read. A deadline that expires before the headers arrive is reported as ExpectedCliError instead."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A native TypeError that request() rejects with when input cannot be serialized as JSON (for example BigInt or circular values), when path cannot be parsed as a URL, when token holds characters that Headers refuses (for example NUL or code points above U+00FF), or when the response body stream fails mid-read. These bypass fail(), so they are not ExpectedCliError."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HarnessHttpAdapter.request",
@@ -66,33 +112,64 @@
 					{
 						"name": "HarnessHttpAdapter.request.method",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The HTTP method sent to the server, which must be exactly GET, HEAD, POST, PUT, PATCH, DELETE or OPTIONS in uppercase; any other value is rejected before a request is sent. It also decides whether request.input is accepted, because GET and HEAD calls must not carry a body.",
+						"examples": ["GET", "POST", "PATCH"]
 					},
 					{
 						"name": "HarnessHttpAdapter.request.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The API path to call on the configured server, such as /api/status, which must start with a single / and must not start with //. It is joined to the configured origin before anything is sent, and a path that resolves to another origin or carries credentials or a fragment is rejected.",
+						"examples": ["/api/status", "/api/reports", "/api/health"]
 					},
 					{
 						"name": "HarnessHttpAdapter.request.request",
 						"type": "ApiRequest",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional per-call settings: query appends [key, value] string pairs to the path, input is a JSON body that GET and HEAD must not carry (undefined sends no body), and token replaces the configured bearer token for this call (an empty string sends no Authorization header). Omitted, it defaults to {}, which sends no query fields, body or token override.",
+						"examples": [
+							{},
+							{
+								"query": [
+									["limit", "20"]
+								]
+							},
+							{
+								"input": {
+									"name": "example"
+								},
+								"token": "example-harness-token"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HarnessHttpAdapter.request",
-						"type": "Promise<ApiResponse>"
+						"type": "Promise<ApiResponse>",
+						"description": "Resolves with the ApiResponse only for a 2xx reply: data is the parsed JSON (null for an empty JSON body) when mediaType is application/json or ends in +json, and otherwise the body decoded as UTF-8 text. bytes is the exact undecoded response body as a Uint8Array, which JSON cannot represent, and mediaType is the Content-Type value before its first semicolon, untrimmed, or application/octet-stream when the header is absent."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through fail() by request() when the method is outside the standard list, a GET or HEAD call has a body, the bearer token contains CR or LF, the path is not a same-server absolute path or resolves with credentials, a fragment or another origin, a fetch fails or times out before headers arrive, a redirect is refused, the body is invalid JSON under a JSON media type, or the status is non-2xx. Non-2xx messages carry the status and up to 400 characters of the server's string error field or status text, with any occurrence of the bearer token replaced by [redacted]."
+					},
+					{
+						"name": "TimeoutError",
+						"type": "thrown",
+						"description": "A DOMException named TimeoutError that request() rejects with when the config.timeout deadline (default 30000 ms) expires after the response headers arrive, while the body is read. A deadline that expires before the headers arrive is reported as ExpectedCliError instead."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A native TypeError that request() rejects with when input cannot be serialized as JSON (for example BigInt or circular values), when path cannot be parsed as a URL, when token holds characters that Headers refuses (for example NUL or code points above U+00FF), or when the response body stream fails mid-read. These bypass fail(), so they are not ExpectedCliError."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -102,22 +179,39 @@
 					{
 						"name": "HarnessHttpAdapter.constructor.config",
 						"type": "HarnessHttpAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "The adapter settings: url is the Harness API origin, which may end in a single trailing slash but has no other path, query, fragment or credentials; token is the default bearer token for requests; and timeout is the per-request deadline in milliseconds, defaulting to 30000. The constructor throws unless url uses HTTPS, or HTTP to localhost, 127.0.0.1 or [::1].",
+						"examples": [
+							{
+								"url": "https://harness.example.com"
+							},
+							{
+								"url": "https://harness.example.com",
+								"token": "example-harness-token",
+								"timeout": 30000
+							},
+							{
+								"url": "http://localhost:3000",
+								"timeout": 5000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HarnessHttpAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The newly constructed HarnessHttpAdapter instance, whose origin field holds the normalized server origin and whose local field is true for localhost, 127.0.0.1 or [::1]; the configuration stays private to the instance."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through fail() by the constructor when the server URL cannot be parsed, carries credentials, a query, a fragment or a path other than /, or uses a scheme other than HTTPS, except plain HTTP to localhost, 127.0.0.1 or [::1]."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
