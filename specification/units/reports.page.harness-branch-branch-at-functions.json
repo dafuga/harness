@@ -27,31 +27,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The functions of the shown revision in a table, each with its verdict and what the commit changed, to search, order and open."
+				"description": "This is the route markup when the page renders. It renders HarnessScreen with ExplorerCatalogScreen as content and the fixed title Functions; this file defines no other route-level UI."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Functions · Harness"
+				"description": "This is the fixed value passed in the title prop of HarnessScreen. It is Functions for this route.",
+				"examples": ["Functions"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
