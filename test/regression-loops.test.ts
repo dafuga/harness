@@ -70,9 +70,19 @@ test.each(Object.entries(orders))(
 			const results = await searchLoops({ root });
 			expect(results.map((item) => item.id)).toContain(id);
 			expect(results).toContainEqual(
+				// N-5 (3befd7c6ad): loops written with the older list-of-text evidence shape are read,
+				// not rejected, so they are listed like any other persisted loop.
 				expect.objectContaining({
 					kind: 'loop',
 					id: 'legacy-evidence-shape',
+					title: 'A persisted loop from an older schema.',
+					summary: '0 of 1 steps complete.'
+				})
+			);
+			expect(results).toContainEqual(
+				expect.objectContaining({
+					kind: 'loop',
+					id: 'broken-steps-shape',
 					title: expect.stringMatching(/invalid|unreadable/i),
 					summary: expect.stringMatching(/persisted|schema|invalid/i)
 				})
@@ -100,6 +110,17 @@ async function writeSearchFixture(root: string): Promise<void> {
 			createdAt: '2026-10-01T00:00:00.000Z',
 			updatedAt: '2026-10-01T00:00:00.000Z',
 			steps: [{ id: 'old-step', title: 'Older step', status: 'pending', evidence: ['one'] }]
+		})
+	);
+	await mkdir(join(loops, 'broken-steps-shape'), { recursive: true });
+	await writeFile(
+		join(loops, 'broken-steps-shape/loop.json'),
+		JSON.stringify({
+			name: 'broken-steps-shape',
+			goal: 'A persisted loop whose steps are not a list.',
+			createdAt: '2026-10-01T00:00:00.000Z',
+			updatedAt: '2026-10-01T00:00:00.000Z',
+			steps: { id: 'old-step', status: 42 }
 		})
 	);
 	await mkdir(join(loops, 'valid-project-loop'), { recursive: true });
