@@ -18,12 +18,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "This is the route page markup, which renders HarnessScreen with the title API history and EntityHistoryScreen as its content. It applies when this page renders and contains no additional logic or route-derived values in this implementation."
 			}
 		],
 		"errors": [],
