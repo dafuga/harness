@@ -12,12 +12,13 @@
 		"symbols": ["cppAdapter"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "cppAdapter",
-				"type": "AuditAdapter"
+				"type": "AuditAdapter",
+				"description": "The cppAdapter is the AuditAdapter for C and C++ files, with id 'cpp', label 'C and C++', profiles 'dapp' and 'lib', extensions .c, .cc, .cpp, .cxx, .h, .hh, .hpp and .hxx, and optionalTools 'clang-tidy' and 'clang-format'. Its audit(file) method returns only the file-length and curly-function findings, plus 'cpp-header-namespace' for .h, .hh, .hpp and .hxx files that contain 'using namespace std;' and 'cpp-include-direction' for '#include' lines whose quoted path starts with '../', and it does not run the optionalTools."
 			}
 		],
 		"errors": [],
