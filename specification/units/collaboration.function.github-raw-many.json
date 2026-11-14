@@ -21,23 +21,24 @@
 				"name": "githubRawMany.context",
 				"type": "Context",
 				"required": true,
-				"description": "Source adapter, token and fetch options, shared raw-byte promise cache and repository/ref cache-key function."
+				"description": "Argument to the githubRawMany factory and captured by the returned reader: the tree adapter, the token callback and optional fetch function from options, the caller's Map of pending raw-byte promises, and the key(repository, ref) function that names each commit:path entry. The reader lists trees only through adapter.tree, reuses cached promises that already exist, stores a pending promise for each uncached path, deletes any promise that rejects, and asks options.token for a contents-read token once per batch request."
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubRawMany",
 				"type": "NonNullable<SourceHistoryAdapter['rawMany']>",
-				"description": "Reader that validates an exact commit and safe regular-file paths, deduplicates paths, loads batches of at most 64 and returns copied raw bytes without LFS expansion."
+				"description": "Async reader called as (repository, { commit, paths }) that requires a lowercase 40-character hexadecimal commit and safe repository-relative paths, deduplicates the paths and rejects any path that is not a regular blob (modes 100644 or 100755) in that commit's tree before any batch request, then resolves a Map from each path to a copied Uint8Array of its stored bytes with no Git LFS expansion. It requests at most 64 paths per GitHub GraphQL request, rejects the whole call when any batch fails (including binary or truncated blobs and GraphQL responses of 16 MiB or more), and resolves an empty Map for an empty paths list."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid commits or paths, missing regular blobs and failed batch integrity checks; failed cached promises are removed."
+				"description": "Thrown as an Error with a code property of invalid-input (commit is not a lowercase 40-character hex string), invalid-path (path is empty, absolute, contains a backslash, has an empty segment or a dot or dot-dot segment, or contains a control character), not-found (path is absent from the tree or is not a 100644 or 100755 blob), or blob-integrity (a batch result has no entry for a requested path). Failures inside the GitHub request, including token, fetch, HTTP status, response body, repository identity and blob oid, size or digest checks, surface as github-unavailable, while errors from adapter.tree pass through unchanged, and every rejected batch promise is removed from the shared cache."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "githubRawMany",
@@ -46,18 +47,18 @@
 						"name": "githubRawMany.context",
 						"type": "Context",
 						"required": true,
-						"description": "Source adapter, token and fetch options, shared raw-byte promise cache and repository/ref cache-key function."
+						"description": "Argument to the githubRawMany factory and captured by the returned reader: the tree adapter, the token callback and optional fetch function from options, the caller's Map of pending raw-byte promises, and the key(repository, ref) function that names each commit:path entry. The reader lists trees only through adapter.tree, reuses cached promises that already exist, stores a pending promise for each uncached path, deletes any promise that rejects, and asks options.token for a contents-read token once per batch request."
 					}
 				],
 				"outputs": [
 					{
 						"name": "githubRawMany",
 						"type": "NonNullable<SourceHistoryAdapter['rawMany']>",
-						"description": "Reader that validates an exact commit and safe regular-file paths, deduplicates paths, loads batches of at most 64 and returns copied raw bytes without LFS expansion."
+						"description": "Async reader called as (repository, { commit, paths }) that requires a lowercase 40-character hexadecimal commit and safe repository-relative paths, deduplicates the paths and rejects any path that is not a regular blob (modes 100644 or 100755) in that commit's tree before any batch request, then resolves a Map from each path to a copied Uint8Array of its stored bytes with no Git LFS expansion. It requests at most 64 paths per GitHub GraphQL request, rejects the whole call when any batch fails (including binary or truncated blobs and GraphQL responses of 16 MiB or more), and resolves an empty Map for an empty paths list."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
