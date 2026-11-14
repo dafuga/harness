@@ -20,42 +20,59 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostObjectController.constructor.scope",
 				"type": "HostScope",
-				"required": true
+				"required": true,
+				"description": "The HostScope that decides whether this object owns the host named in a public route. handle() uses only its owns method, called as owns(route.hostId), and only for matched non-health public routes outside /manage/; a false result returns a 404 not-found response."
 			},
 			{
 				"name": "HostObjectController.constructor.manage",
 				"type": "ManageController",
-				"required": true
+				"required": true,
+				"description": "The ManageController that serves every request whose pathname starts with /manage/; handle() passes it the request and the pathname with that prefix removed, and returns its result unchanged. Requests under /manage/ never reach the publicRoute lookup or the scope.owns check."
 			},
 			{
 				"name": "HostObjectController.constructor.pairing",
 				"type": "PairingController",
-				"required": true
+				"required": true,
+				"description": "The PairingController that serves matched public routes of kind 'pairing' for a host the scope owns; handle() calls pairing.handle(request, route) with the matched route and returns its result unchanged. Routes of every other kind are not passed to it."
 			},
 			{
 				"name": "HostObjectController.constructor.sockets",
 				"type": "SocketAcceptService",
-				"required": true
+				"required": true,
+				"description": "The SocketAcceptService that accepts the remaining matched public routes: those that are not health, not pairing, and owned by the scope. handle() returns the result of sockets.accept(request) for them, passing the same request object."
 			},
 			{
 				"name": "HostObjectController.handle.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The Request that handle() routes: its url gives the pathname, and its method is passed to publicRoute. The same object is passed unchanged to manage.handle, pairing.handle or sockets.accept, and no other property of it is read in this file."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostObjectController.handle",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "The promise handle() returns; it resolves to a Response from manage.handle, pairing.handle or sockets.accept, or to relayError(404, 'not-found') when publicRoute returns no route, the route is a health route, or the scope does not own the route's host. It rejects when any call inside handle() throws or rejects, because nothing in the method catches those errors."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by the URL constructor in handle() when request.url cannot be parsed as an absolute URL. handle() has no try/catch, so its promise rejects with this TypeError."
+			},
+			{
+				"name": "propagated error",
+				"type": "thrown",
+				"description": "An error thrown by, or a promise rejection from, publicRoute, relayError, scope.owns, manage.handle, pairing.handle or sockets.accept; handle() does not catch it, so its promise rejects with the same value. The name of this error is set by the function that throws it and is not defined in this file."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostObjectController.handle",
@@ -63,17 +80,30 @@
 					{
 						"name": "HostObjectController.handle.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The Request that handle() routes: its url gives the pathname, and its method is passed to publicRoute. The same object is passed unchanged to manage.handle, pairing.handle or sockets.accept, and no other property of it is read in this file."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostObjectController.handle",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "The promise handle() returns; it resolves to a Response from manage.handle, pairing.handle or sockets.accept, or to relayError(404, 'not-found') when publicRoute returns no route, the route is a health route, or the scope does not own the route's host. It rejects when any call inside handle() throws or rejects, because nothing in the method catches those errors."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by the URL constructor in handle() when request.url cannot be parsed as an absolute URL. handle() has no try/catch, so its promise rejects with this TypeError."
+					},
+					{
+						"name": "propagated error",
+						"type": "thrown",
+						"description": "An error thrown by, or a promise rejection from, publicRoute, relayError, scope.owns, manage.handle, pairing.handle or sockets.accept; handle() does not catch it, so its promise rejects with the same value. The name of this error is set by the function that throws it and is not defined in this file."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -83,32 +113,37 @@
 					{
 						"name": "HostObjectController.constructor.scope",
 						"type": "HostScope",
-						"required": true
+						"required": true,
+						"description": "The HostScope that decides whether this object owns the host named in a public route. handle() uses only its owns method, called as owns(route.hostId), and only for matched non-health public routes outside /manage/; a false result returns a 404 not-found response."
 					},
 					{
 						"name": "HostObjectController.constructor.manage",
 						"type": "ManageController",
-						"required": true
+						"required": true,
+						"description": "The ManageController that serves every request whose pathname starts with /manage/; handle() passes it the request and the pathname with that prefix removed, and returns its result unchanged. Requests under /manage/ never reach the publicRoute lookup or the scope.owns check."
 					},
 					{
 						"name": "HostObjectController.constructor.pairing",
 						"type": "PairingController",
-						"required": true
+						"required": true,
+						"description": "The PairingController that serves matched public routes of kind 'pairing' for a host the scope owns; handle() calls pairing.handle(request, route) with the matched route and returns its result unchanged. Routes of every other kind are not passed to it."
 					},
 					{
 						"name": "HostObjectController.constructor.sockets",
 						"type": "SocketAcceptService",
-						"required": true
+						"required": true,
+						"description": "The SocketAcceptService that accepts the remaining matched public routes: those that are not health, not pairing, and owned by the scope. handle() returns the result of sockets.accept(request) for them, passing the same request object."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostObjectController.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The HostObjectController instance that the constructor creates, with scope, manage, pairing and sockets stored as private readonly fields. The constructor body is empty, so it performs no other work and returns no value of its own."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
