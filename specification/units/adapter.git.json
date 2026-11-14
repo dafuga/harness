@@ -36,112 +36,197 @@
 				"name": "GitAdapter.constructor.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository working directory used as the cwd for every Git invocation."
+				"description": "Directory used as cwd for every Git child process; the constructor stores it without checking that it is a repository.",
+				"examples": ["/workspace/repos/adapter"]
 			},
 			{
 				"name": "GitAdapter.run.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Git argument vector, passed without shell interpolation."
+				"description": "Git arguments supplied as separate argv entries, without shell parsing or interpolation.",
+				"examples": [
+					["rev-parse", "HEAD"],
+					["status", "--short"]
+				]
 			},
 			{
 				"name": "GitAdapter.run.options",
 				"type": "GitRunOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional stdin, child environment overrides, deadline and output limit."
+				"description": "Optional stdin, Git child-environment overrides, timeoutMs, and maxBuffer; cwd remains the adapter root and GIT_TERMINAL_PROMPT is forced to 0. The default timeout follows gitDeadline, maxBuffer defaults to 128 MiB, and supplied numeric bounds must be positive safe integers no greater than 2147483647.",
+				"examples": [
+					{
+						"input": "feat: add bounded Git support\n",
+						"timeoutMs": 10000
+					},
+					{
+						"env": {
+							"GIT_OPTIONAL_LOCKS": "0"
+						},
+						"timeoutMs": 30000,
+						"maxBuffer": 1048576
+					}
+				]
 			},
 			{
 				"name": "GitAdapter.bytes.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Git argument vector, passed without shell interpolation."
+				"description": "Git arguments supplied as separate argv entries, without shell parsing or interpolation.",
+				"examples": [
+					["show", "HEAD:README.md"],
+					["cat-file", "blob", "HEAD:package.json"]
+				]
 			},
 			{
 				"name": "GitAdapter.bytes.options",
 				"type": "GitRunOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional stdin, child environment overrides, deadline and output limit."
+				"description": "Optional stdin, Git child-environment overrides, timeoutMs, and maxBuffer; cwd remains the adapter root and GIT_TERMINAL_PROMPT is forced to 0. The default timeout follows gitDeadline, maxBuffer defaults to 128 MiB, and supplied numeric bounds must be positive safe integers no greater than 2147483647.",
+				"examples": [
+					{
+						"input": "feat: add bounded Git support\n",
+						"timeoutMs": 10000
+					},
+					{
+						"env": {
+							"GIT_OPTIONAL_LOCKS": "0"
+						},
+						"timeoutMs": 30000,
+						"maxBuffer": 1048576
+					}
+				]
 			},
 			{
 				"name": "GitAdapter.attempt.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Git argument vector for a non-throwing nonzero-exit probe."
+				"description": "Git arguments supplied as separate argv entries for a probe where a nonzero exit should become undefined rather than a Git command error.",
+				"examples": [
+					["rev-parse", "--show-toplevel"],
+					["remote", "get-url", "origin"]
+				]
 			},
 			{
 				"name": "GitAdapter.attempt.options",
 				"type": "GitRunOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional stdin, child environment overrides, deadline and output limit."
+				"description": "Optional stdin, Git child-environment overrides, timeoutMs, and maxBuffer; cwd remains the adapter root and GIT_TERMINAL_PROMPT is forced to 0. The default timeout follows gitDeadline, maxBuffer defaults to 128 MiB, and supplied numeric bounds must be positive safe integers no greater than 2147483647.",
+				"examples": [
+					{
+						"input": "feat: add bounded Git support\n",
+						"timeoutMs": 10000
+					},
+					{
+						"env": {
+							"GIT_OPTIONAL_LOCKS": "0"
+						},
+						"timeoutMs": 30000,
+						"maxBuffer": 1048576
+					}
+				]
 			},
 			{
 				"name": "GitAdapter.exec.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Git argument vector, passed directly to the Git executable."
+				"description": "Git arguments passed as separate argv entries directly to the git executable, without shell parsing or interpolation.",
+				"examples": [
+					["status", "--porcelain=v1"],
+					["rev-parse", "HEAD"]
+				]
 			},
 			{
 				"name": "GitAdapter.exec.options",
 				"type": "GitRunOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional stdin, environment overrides, deadline and output limit; cwd remains the configured repository root."
+				"description": "Optional stdin, Git child-environment overrides, timeoutMs, and maxBuffer; cwd is always the configured repository root and GIT_TERMINAL_PROMPT is forced to 0. The default timeout follows gitDeadline, maxBuffer defaults to 128 MiB, and supplied numeric bounds must be positive safe integers no greater than 2147483647.",
+				"examples": [
+					{
+						"input": "feat: add bounded Git support\n",
+						"timeoutMs": 10000
+					},
+					{
+						"env": {
+							"GIT_OPTIONAL_LOCKS": "0"
+						},
+						"timeoutMs": 30000,
+						"maxBuffer": 1048576
+					}
+				]
 			},
 			{
 				"name": "gitVerb.args",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Git argv scanned for a subcommand. The parser skips one following argument for recognized value-taking global options, then returns the first non-option argument or undefined if none exists.",
+				"examples": [
+					["-C", "/workspace/repos/adapter", "status", "--short"],
+					["--config-env", "core.editor=GIT_EDITOR", "log", "-1"]
+				]
 			},
 			{
 				"name": "gitDeadline.args",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Git argv scanned for a subcommand after recognized value-taking global options. No detected verb and the configured long-verb set use the long deadline; every other detected verb uses the local deadline.",
+				"examples": [
+					["status", "--short"],
+					["push", "origin", "main"],
+					["--version"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GitAdapter.run",
 				"type": "Promise<string>",
-				"description": "Standard output decoded as UTF-8 and trimmed; nonzero exits reject with Git stderr in the error."
+				"description": "Successful stdout decoded as UTF-8 with surrounding whitespace removed; a nonzero Git exit rejects with a Git command error.",
+				"examples": [
+					"0123456789abcdef0123456789abcdef01234567",
+					"On branch main\nnothing to commit, working tree clean"
+				]
 			},
 			{
 				"name": "GitAdapter.bytes",
 				"type": "Promise<Buffer>",
-				"description": "Unmodified stdout bytes; nonzero exits reject with Git stderr in the error."
+				"description": "The stdout Buffer from a successful Git exit, returned without decoding or trimming. A nonzero Git exit throws the Git command error."
 			},
 			{
 				"name": "GitAdapter.attempt",
 				"type": "Promise<string | undefined>",
-				"description": "Trimmed stdout on exit code zero, or undefined on a nonzero exit."
+				"description": "Successful stdout decoded as UTF-8 with surrounding whitespace removed, or undefined for any nonzero Git exit. It still rejects if bounded process execution fails.",
+				"examples": ["true", "0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "GitAdapter.exec",
 				"type": "Promise<GitResult>",
-				"description": "Exit code, stdout bytes and stderr text from the bounded Git process."
+				"description": "The bounded process result containing the exit code, stdout Buffer, and stderr text. A nonzero Git exit remains in the result rather than becoming a Git command error."
 			},
 			{
 				"name": "GitAdapter.isRepository",
 				"type": "Promise<boolean>",
-				"description": "True only when Git reports that the configured root is inside a work tree."
+				"description": "True only when git rev-parse --is-inside-work-tree succeeds and its trimmed stdout equals true; otherwise false.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
-				"name": "Git command failure",
+				"name": "Error",
 				"type": "thrown",
-				"description": "run and bytes reject when Git exits nonzero, including its stderr in the message"
+				"description": "On a nonzero Git exit, bytes throws an Error and run propagates it; the message is git <args joined by spaces> failed: <trimmed stderr>. attempt returns undefined and exec returns a GitResult with its nonzero code instead of throwing this Git command error."
 			},
 			{
 				"name": "Bounded command failure",
-				"type": "propagated",
-				"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
-				"examples": ["Command timed out.", "Command output limit exceeded."]
+				"type": "thrown",
+				"description": "The bounded child can reject on launch errors, timeout, abort, or output-limit failure; timeoutMs and maxBuffer must each be positive safe integers no greater than 2147483647. exec propagates bounded execution failures, and the higher-level methods propagate them when they do not handle a nonzero exit."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GitAdapter.run",
@@ -150,34 +235,54 @@
 						"name": "GitAdapter.run.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Git argument vector, passed without shell interpolation."
+						"description": "Git arguments supplied as separate argv entries, without shell parsing or interpolation.",
+						"examples": [
+							["rev-parse", "HEAD"],
+							["status", "--short"]
+						]
 					},
 					{
 						"name": "GitAdapter.run.options",
 						"type": "GitRunOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional stdin, child environment overrides, deadline and output limit."
+						"description": "Optional stdin, Git child-environment overrides, timeoutMs, and maxBuffer; cwd remains the adapter root and GIT_TERMINAL_PROMPT is forced to 0. The default timeout follows gitDeadline, maxBuffer defaults to 128 MiB, and supplied numeric bounds must be positive safe integers no greater than 2147483647.",
+						"examples": [
+							{
+								"input": "feat: add bounded Git support\n",
+								"timeoutMs": 10000
+							},
+							{
+								"env": {
+									"GIT_OPTIONAL_LOCKS": "0"
+								},
+								"timeoutMs": 30000,
+								"maxBuffer": 1048576
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitAdapter.run",
 						"type": "Promise<string>",
-						"description": "Standard output decoded as UTF-8 and trimmed; nonzero exits reject with Git stderr in the error."
+						"description": "Successful stdout decoded as UTF-8 with surrounding whitespace removed; a nonzero Git exit rejects with a Git command error.",
+						"examples": [
+							"0123456789abcdef0123456789abcdef01234567",
+							"On branch main\nnothing to commit, working tree clean"
+						]
 					}
 				],
 				"errors": [
 					{
-						"name": "Git command failure",
+						"name": "Error",
 						"type": "thrown",
-						"description": "run and bytes reject when Git exits nonzero, including its stderr in the message"
+						"description": "On a nonzero Git exit, bytes throws an Error and run propagates it; the message is git <args joined by spaces> failed: <trimmed stderr>. attempt returns undefined and exec returns a GitResult with its nonzero code instead of throwing this Git command error."
 					},
 					{
 						"name": "Bounded command failure",
-						"type": "propagated",
-						"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
-						"examples": ["Command timed out.", "Command output limit exceeded."]
+						"type": "thrown",
+						"description": "The bounded child can reject on launch errors, timeout, abort, or output-limit failure; timeoutMs and maxBuffer must each be positive safe integers no greater than 2147483647. exec propagates bounded execution failures, and the higher-level methods propagate them when they do not handle a nonzero exit."
 					}
 				],
 				"errorStatus": "declared"
@@ -189,34 +294,50 @@
 						"name": "GitAdapter.bytes.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Git argument vector, passed without shell interpolation."
+						"description": "Git arguments supplied as separate argv entries, without shell parsing or interpolation.",
+						"examples": [
+							["show", "HEAD:README.md"],
+							["cat-file", "blob", "HEAD:package.json"]
+						]
 					},
 					{
 						"name": "GitAdapter.bytes.options",
 						"type": "GitRunOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional stdin, child environment overrides, deadline and output limit."
+						"description": "Optional stdin, Git child-environment overrides, timeoutMs, and maxBuffer; cwd remains the adapter root and GIT_TERMINAL_PROMPT is forced to 0. The default timeout follows gitDeadline, maxBuffer defaults to 128 MiB, and supplied numeric bounds must be positive safe integers no greater than 2147483647.",
+						"examples": [
+							{
+								"input": "feat: add bounded Git support\n",
+								"timeoutMs": 10000
+							},
+							{
+								"env": {
+									"GIT_OPTIONAL_LOCKS": "0"
+								},
+								"timeoutMs": 30000,
+								"maxBuffer": 1048576
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitAdapter.bytes",
 						"type": "Promise<Buffer>",
-						"description": "Unmodified stdout bytes; nonzero exits reject with Git stderr in the error."
+						"description": "The stdout Buffer from a successful Git exit, returned without decoding or trimming. A nonzero Git exit throws the Git command error."
 					}
 				],
 				"errors": [
 					{
-						"name": "Git command failure",
+						"name": "Error",
 						"type": "thrown",
-						"description": "run and bytes reject when Git exits nonzero, including its stderr in the message"
+						"description": "On a nonzero Git exit, bytes throws an Error and run propagates it; the message is git <args joined by spaces> failed: <trimmed stderr>. attempt returns undefined and exec returns a GitResult with its nonzero code instead of throwing this Git command error."
 					},
 					{
 						"name": "Bounded command failure",
-						"type": "propagated",
-						"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
-						"examples": ["Command timed out.", "Command output limit exceeded."]
+						"type": "thrown",
+						"description": "The bounded child can reject on launch errors, timeout, abort, or output-limit failure; timeoutMs and maxBuffer must each be positive safe integers no greater than 2147483647. exec propagates bounded execution failures, and the higher-level methods propagate them when they do not handle a nonzero exit."
 					}
 				],
 				"errorStatus": "declared"
@@ -228,29 +349,46 @@
 						"name": "GitAdapter.attempt.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Git argument vector for a non-throwing nonzero-exit probe."
+						"description": "Git arguments supplied as separate argv entries for a probe where a nonzero exit should become undefined rather than a Git command error.",
+						"examples": [
+							["rev-parse", "--show-toplevel"],
+							["remote", "get-url", "origin"]
+						]
 					},
 					{
 						"name": "GitAdapter.attempt.options",
 						"type": "GitRunOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional stdin, child environment overrides, deadline and output limit."
+						"description": "Optional stdin, Git child-environment overrides, timeoutMs, and maxBuffer; cwd remains the adapter root and GIT_TERMINAL_PROMPT is forced to 0. The default timeout follows gitDeadline, maxBuffer defaults to 128 MiB, and supplied numeric bounds must be positive safe integers no greater than 2147483647.",
+						"examples": [
+							{
+								"input": "feat: add bounded Git support\n",
+								"timeoutMs": 10000
+							},
+							{
+								"env": {
+									"GIT_OPTIONAL_LOCKS": "0"
+								},
+								"timeoutMs": 30000,
+								"maxBuffer": 1048576
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitAdapter.attempt",
 						"type": "Promise<string | undefined>",
-						"description": "Trimmed stdout on exit code zero, or undefined on a nonzero exit."
+						"description": "Successful stdout decoded as UTF-8 with surrounding whitespace removed, or undefined for any nonzero Git exit. It still rejects if bounded process execution fails.",
+						"examples": ["true", "0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Bounded command failure",
-						"type": "propagated",
-						"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
-						"examples": ["Command timed out.", "Command output limit exceeded."]
+						"type": "thrown",
+						"description": "The bounded child can reject on launch errors, timeout, abort, or output-limit failure; timeoutMs and maxBuffer must each be positive safe integers no greater than 2147483647. exec propagates bounded execution failures, and the higher-level methods propagate them when they do not handle a nonzero exit."
 					}
 				],
 				"errorStatus": "declared"
@@ -262,29 +400,45 @@
 						"name": "GitAdapter.exec.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Git argument vector, passed directly to the Git executable."
+						"description": "Git arguments passed as separate argv entries directly to the git executable, without shell parsing or interpolation.",
+						"examples": [
+							["status", "--porcelain=v1"],
+							["rev-parse", "HEAD"]
+						]
 					},
 					{
 						"name": "GitAdapter.exec.options",
 						"type": "GitRunOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional stdin, environment overrides, deadline and output limit; cwd remains the configured repository root."
+						"description": "Optional stdin, Git child-environment overrides, timeoutMs, and maxBuffer; cwd is always the configured repository root and GIT_TERMINAL_PROMPT is forced to 0. The default timeout follows gitDeadline, maxBuffer defaults to 128 MiB, and supplied numeric bounds must be positive safe integers no greater than 2147483647.",
+						"examples": [
+							{
+								"input": "feat: add bounded Git support\n",
+								"timeoutMs": 10000
+							},
+							{
+								"env": {
+									"GIT_OPTIONAL_LOCKS": "0"
+								},
+								"timeoutMs": 30000,
+								"maxBuffer": 1048576
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitAdapter.exec",
 						"type": "Promise<GitResult>",
-						"description": "Exit code, stdout bytes and stderr text from the bounded Git process."
+						"description": "The bounded process result containing the exit code, stdout Buffer, and stderr text. A nonzero Git exit remains in the result rather than becoming a Git command error."
 					}
 				],
 				"errors": [
 					{
 						"name": "Bounded command failure",
-						"type": "propagated",
-						"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
-						"examples": ["Command timed out.", "Command output limit exceeded."]
+						"type": "thrown",
+						"description": "The bounded child can reject on launch errors, timeout, abort, or output-limit failure; timeoutMs and maxBuffer must each be positive safe integers no greater than 2147483647. exec propagates bounded execution failures, and the higher-level methods propagate them when they do not handle a nonzero exit."
 					}
 				],
 				"errorStatus": "declared"
@@ -296,15 +450,15 @@
 					{
 						"name": "GitAdapter.isRepository",
 						"type": "Promise<boolean>",
-						"description": "True only when Git reports that the configured root is inside a work tree."
+						"description": "True only when git rev-parse --is-inside-work-tree succeeds and its trimmed stdout equals true; otherwise false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [
 					{
 						"name": "Bounded command failure",
-						"type": "propagated",
-						"description": "Git execution can fail to launch, time out, be aborted, or exceed the configured output limit",
-						"examples": ["Command timed out.", "Command output limit exceeded."]
+						"type": "thrown",
+						"description": "The bounded child can reject on launch errors, timeout, abort, or output-limit failure; timeoutMs and maxBuffer must each be positive safe integers no greater than 2147483647. exec propagates bounded execution failures, and the higher-level methods propagate them when they do not handle a nonzero exit."
 					}
 				],
 				"errorStatus": "declared"
@@ -315,17 +469,24 @@
 					{
 						"name": "gitVerb.args",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Git argv scanned for a subcommand. The parser skips one following argument for recognized value-taking global options, then returns the first non-option argument or undefined if none exists.",
+						"examples": [
+							["-C", "/workspace/repos/adapter", "status", "--short"],
+							["--config-env", "core.editor=GIT_EDITOR", "log", "-1"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gitVerb",
-						"type": "string | undefined"
+						"type": "string | undefined",
+						"description": "The first non-option argv entry after values for recognized value-taking global options have been skipped, or undefined when no such entry exists.",
+						"examples": ["status", "rev-parse"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "gitDeadline",
@@ -333,17 +494,25 @@
 					{
 						"name": "gitDeadline.args",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Git argv scanned for a subcommand after recognized value-taking global options. No detected verb and the configured long-verb set use the long deadline; every other detected verb uses the local deadline.",
+						"examples": [
+							["status", "--short"],
+							["push", "origin", "main"],
+							["--version"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gitDeadline",
-						"type": "number"
+						"type": "number",
+						"description": "The selected Git deadline in milliseconds: 21600000 when no verb is detected or a configured long verb is detected, and 1800000 for every other detected verb.",
+						"examples": [1800000, 21600000]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -354,14 +523,15 @@
 						"name": "GitAdapter.constructor.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository working directory used as the cwd for every Git invocation."
+						"description": "Directory used as cwd for every Git child process; the constructor stores it without checking that it is a repository.",
+						"examples": ["/workspace/repos/adapter"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitAdapter.constructor",
 						"type": "GitAdapter",
-						"description": "Initialized adapter retaining the repository root."
+						"description": "New adapter instance retaining the supplied root for Git process working directories; the constructor does not check repository status."
 					}
 				],
 				"errors": [],
