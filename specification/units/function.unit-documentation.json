@@ -39,24 +39,28 @@
 				"name": "hydrateUnitDocumentation.tree",
 				"type": "Pick<SourceTree, 'read'>",
 				"required": true,
-				"description": "Revision-pinned reader used to load each declared document.",
-				"examples": [
-					{
-						"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-					}
-				]
+				"description": "An object exposing the read method used to retrieve a documentation file’s text. It is needed when a unit has a documentation path."
 			},
 			{
 				"name": "hydrateUnitDocumentation.units",
 				"type": "Array<{ id: string; documentation?: UnitDocumentation }>",
 				"required": true,
-				"description": "Entity views whose declared documentation paths should be replaced with parsed documents.",
+				"description": "Mutable unit views whose declared documentation paths are to be read. Entries without a path are left unchanged; entries with a path are read concurrently and their documentation is replaced with the parsed result.",
 				"examples": [
 					[
 						{
 							"id": "app.component.toolbar",
 							"documentation": {
-								"path": "src/components/toolbar/usage.md"
+								"path": "src/components/toolbar/usage.md",
+								"examples": [
+									{
+										"name": "Empty toolbar",
+										"input": {
+											"items": []
+										},
+										"output": "No actions"
+									}
+								]
 							}
 						}
 					]
@@ -66,16 +70,16 @@
 				"name": "unitDocumentation.text",
 				"type": "string",
 				"required": true,
-				"description": "Committed Markdown containing the unit identity and its expected usage examples.",
+				"description": "Markdown from which the parser extracts exactly one harness-examples JSON block for the requested unit. The text is limited to 262,144 characters; the block requires schemaVersion 1 and 1–64 examples, and optional setup is trimmed and limited to 1–32,000 characters.",
 				"examples": [
-					"# Toolbar\n\n```harness-examples\n{\"schemaVersion\": 1, \"unitId\": \"app.component.toolbar\", \"examples\": [{\"name\": \"Empty toolbar\", \"input\": {\"items\": []}, \"output\": \"No actions\"}]}\n```\n"
+					"# Toolbar\n\n```harness-examples\n{\"schemaVersion\":1,\"unitId\":\"app.component.toolbar\",\"examples\":[{\"name\":\"Empty toolbar\",\"input\":{\"items\":[]},\"output\":\"No actions\"}]}\n```\n"
 				]
 			},
 			{
 				"name": "unitDocumentation.unitId",
 				"type": "string",
 				"required": true,
-				"description": "Registered entity that the document must describe.",
+				"description": "The unit identifier compared with the JSON block’s unitId. A mismatch produces a gap result.",
 				"examples": ["app.component.toolbar"]
 			},
 			{
@@ -83,25 +87,20 @@
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Repository-relative path of that entity’s committed document.",
+				"description": "The path copied verbatim into the returned documentation. It defaults to the empty string when omitted.",
 				"examples": ["src/components/toolbar/usage.md"]
 			},
 			{
 				"name": "readUnitDocumentation.tree",
 				"type": "Pick<SourceTree, 'read'>",
 				"required": true,
-				"description": "Reader pinned to the selected Git revision; working-tree files are never substituted.",
-				"examples": [
-					{
-						"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-					}
-				]
+				"description": "An object exposing the read method used to retrieve a documentation file’s text. It is needed when a unit has a documentation path."
 			},
 			{
 				"name": "readUnitDocumentation.unit",
 				"type": "{ id: string; documentation?: string }",
 				"required": true,
-				"description": "Registered unit and its optional committed documentation path.",
+				"description": "The unit identifier and its optional documentation path. Without a path the operation returns undefined; with a path it reads that file from the supplied tree.",
 				"examples": [
 					{
 						"id": "app.component.toolbar",
@@ -114,11 +113,11 @@
 			{
 				"name": "unitDocumentation",
 				"type": "UnitDocumentation",
-				"description": "Parsed unit usage document with expected examples and any format problems.",
+				"description": "Parsed examples and optional setup with the supplied path and text, or an empty examples list with a gap reason when the document cannot be used. A valid document has exactly one matching harness-examples block and is at most 262,144 characters.",
 				"examples": [
 					{
 						"path": "src/components/toolbar/usage.md",
-						"text": "# Toolbar\n\n```harness-examples\n{\"schemaVersion\": 1, \"unitId\": \"app.component.toolbar\", \"examples\": [{\"name\": \"Empty toolbar\", \"input\": {\"items\": []}, \"output\": \"No actions\"}]}\n```\n",
+						"text": "# Toolbar\n\n```harness-examples\n{\"schemaVersion\":1,\"unitId\":\"app.component.toolbar\",\"examples\":[{\"name\":\"Empty toolbar\",\"input\":{\"items\":[]},\"output\":\"No actions\"}]}\n```\n",
 						"examples": [
 							{
 								"name": "Empty toolbar",
@@ -134,11 +133,11 @@
 			{
 				"name": "readUnitDocumentation",
 				"type": "Promise<UnitDocumentation | undefined>",
-				"description": "The parsed committed document, or undefined when no document was declared or readable.",
+				"description": "Resolves to the parsed document, including a gap result if reading or parsing fails, or to undefined when no documentation path was supplied. Read failures are caught and represented as a gap result.",
 				"examples": [
 					{
 						"path": "src/components/toolbar/usage.md",
-						"text": "# Toolbar\n\n```harness-examples\n{\"schemaVersion\": 1, \"unitId\": \"app.component.toolbar\", \"examples\": [{\"name\": \"Empty toolbar\", \"input\": {\"items\": []}, \"output\": \"No actions\"}]}\n```\n",
+						"text": "# Toolbar\n\n```harness-examples\n{\"schemaVersion\":1,\"unitId\":\"app.component.toolbar\",\"examples\":[{\"name\":\"Empty toolbar\",\"input\":{\"items\":[]},\"output\":\"No actions\"}]}\n```\n",
 						"examples": [
 							{
 								"name": "Empty toolbar",
@@ -154,11 +153,11 @@
 			{
 				"name": "hydrateUnitDocumentation",
 				"type": "Promise<void>",
-				"description": "Attaches parsed documentation to the supplied entity views; resolves without a return value.",
-				"examples": [null]
+				"description": "Resolves after all units with documentation paths have been read and their documentation fields replaced; units without a path are unchanged. It returns no value."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "hydrateUnitDocumentation",
@@ -167,24 +166,28 @@
 						"name": "hydrateUnitDocumentation.tree",
 						"type": "Pick<SourceTree, 'read'>",
 						"required": true,
-						"description": "Revision-pinned reader used to load each declared document.",
-						"examples": [
-							{
-								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-							}
-						]
+						"description": "An object exposing the read method used to retrieve a documentation file’s text. It is needed when a unit has a documentation path."
 					},
 					{
 						"name": "hydrateUnitDocumentation.units",
 						"type": "Array<{ id: string; documentation?: UnitDocumentation }>",
 						"required": true,
-						"description": "Entity views whose declared documentation paths should be replaced with parsed documents.",
+						"description": "Mutable unit views whose declared documentation paths are to be read. Entries without a path are left unchanged; entries with a path are read concurrently and their documentation is replaced with the parsed result.",
 						"examples": [
 							[
 								{
 									"id": "app.component.toolbar",
 									"documentation": {
-										"path": "src/components/toolbar/usage.md"
+										"path": "src/components/toolbar/usage.md",
+										"examples": [
+											{
+												"name": "Empty toolbar",
+												"input": {
+													"items": []
+												},
+												"output": "No actions"
+											}
+										]
 									}
 								}
 							]
@@ -195,12 +198,11 @@
 					{
 						"name": "hydrateUnitDocumentation",
 						"type": "Promise<void>",
-						"description": "Attaches parsed documentation to the supplied entity views; resolves without a return value.",
-						"examples": [null]
+						"description": "Resolves after all units with documentation paths have been read and their documentation fields replaced; units without a path are unchanged. It returns no value."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "unitDocumentation",
@@ -209,16 +211,16 @@
 						"name": "unitDocumentation.text",
 						"type": "string",
 						"required": true,
-						"description": "Committed Markdown containing the unit identity and its expected usage examples.",
+						"description": "Markdown from which the parser extracts exactly one harness-examples JSON block for the requested unit. The text is limited to 262,144 characters; the block requires schemaVersion 1 and 1–64 examples, and optional setup is trimmed and limited to 1–32,000 characters.",
 						"examples": [
-							"# Toolbar\n\n```harness-examples\n{\"schemaVersion\": 1, \"unitId\": \"app.component.toolbar\", \"examples\": [{\"name\": \"Empty toolbar\", \"input\": {\"items\": []}, \"output\": \"No actions\"}]}\n```\n"
+							"# Toolbar\n\n```harness-examples\n{\"schemaVersion\":1,\"unitId\":\"app.component.toolbar\",\"examples\":[{\"name\":\"Empty toolbar\",\"input\":{\"items\":[]},\"output\":\"No actions\"}]}\n```\n"
 						]
 					},
 					{
 						"name": "unitDocumentation.unitId",
 						"type": "string",
 						"required": true,
-						"description": "Registered entity that the document must describe.",
+						"description": "The unit identifier compared with the JSON block’s unitId. A mismatch produces a gap result.",
 						"examples": ["app.component.toolbar"]
 					},
 					{
@@ -226,7 +228,7 @@
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Repository-relative path of that entity’s committed document.",
+						"description": "The path copied verbatim into the returned documentation. It defaults to the empty string when omitted.",
 						"examples": ["src/components/toolbar/usage.md"]
 					}
 				],
@@ -234,11 +236,11 @@
 					{
 						"name": "unitDocumentation",
 						"type": "UnitDocumentation",
-						"description": "Parsed unit usage document with expected examples and any format problems.",
+						"description": "Parsed examples and optional setup with the supplied path and text, or an empty examples list with a gap reason when the document cannot be used. A valid document has exactly one matching harness-examples block and is at most 262,144 characters.",
 						"examples": [
 							{
 								"path": "src/components/toolbar/usage.md",
-								"text": "# Toolbar\n\n```harness-examples\n{\"schemaVersion\": 1, \"unitId\": \"app.component.toolbar\", \"examples\": [{\"name\": \"Empty toolbar\", \"input\": {\"items\": []}, \"output\": \"No actions\"}]}\n```\n",
+								"text": "# Toolbar\n\n```harness-examples\n{\"schemaVersion\":1,\"unitId\":\"app.component.toolbar\",\"examples\":[{\"name\":\"Empty toolbar\",\"input\":{\"items\":[]},\"output\":\"No actions\"}]}\n```\n",
 								"examples": [
 									{
 										"name": "Empty toolbar",
@@ -253,7 +255,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readUnitDocumentation",
@@ -262,18 +264,13 @@
 						"name": "readUnitDocumentation.tree",
 						"type": "Pick<SourceTree, 'read'>",
 						"required": true,
-						"description": "Reader pinned to the selected Git revision; working-tree files are never substituted.",
-						"examples": [
-							{
-								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-							}
-						]
+						"description": "An object exposing the read method used to retrieve a documentation file’s text. It is needed when a unit has a documentation path."
 					},
 					{
 						"name": "readUnitDocumentation.unit",
 						"type": "{ id: string; documentation?: string }",
 						"required": true,
-						"description": "Registered unit and its optional committed documentation path.",
+						"description": "The unit identifier and its optional documentation path. Without a path the operation returns undefined; with a path it reads that file from the supplied tree.",
 						"examples": [
 							{
 								"id": "app.component.toolbar",
@@ -286,11 +283,11 @@
 					{
 						"name": "readUnitDocumentation",
 						"type": "Promise<UnitDocumentation | undefined>",
-						"description": "The parsed committed document, or undefined when no document was declared or readable.",
+						"description": "Resolves to the parsed document, including a gap result if reading or parsing fails, or to undefined when no documentation path was supplied. Read failures are caught and represented as a gap result.",
 						"examples": [
 							{
 								"path": "src/components/toolbar/usage.md",
-								"text": "# Toolbar\n\n```harness-examples\n{\"schemaVersion\": 1, \"unitId\": \"app.component.toolbar\", \"examples\": [{\"name\": \"Empty toolbar\", \"input\": {\"items\": []}, \"output\": \"No actions\"}]}\n```\n",
+								"text": "# Toolbar\n\n```harness-examples\n{\"schemaVersion\":1,\"unitId\":\"app.component.toolbar\",\"examples\":[{\"name\":\"Empty toolbar\",\"input\":{\"items\":[]},\"output\":\"No actions\"}]}\n```\n",
 								"examples": [
 									{
 										"name": "Empty toolbar",
@@ -305,7 +302,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
