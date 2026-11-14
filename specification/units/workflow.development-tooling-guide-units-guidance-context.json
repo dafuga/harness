@@ -28,37 +28,58 @@
 				"name": "guidanceContext.options",
 				"type": "GuidanceOptions",
 				"required": true,
-				"description": "Project root and optional additional required-state JSON paths. Guide reads HEAD; contract checks read the working tree. all selects every active stored contract."
+				"description": "The options object: an optional project root, which defaults to process.cwd(), and optional requiredStates paths resolved against that root. The root selects the repository for the tree adapter, for loadUnits and for required-state reads; a requiredStates path that the tree's own registry scan already returned is skipped.",
+				"examples": [
+					{},
+					{
+						"root": "/workspace/harness"
+					},
+					{
+						"root": "/workspace/harness",
+						"requiredStates": ["specification/required-states.json"]
+					}
+				]
 			},
 			{
 				"name": "guidanceContext.committed",
 				"type": "boolean",
 				"required": true,
-				"description": "True reads HEAD through the commit adapter; false reads tracked and untracked working source for contract review."
+				"description": "True reads the HEAD commit through CommitTreeAdapter.open(root, 'HEAD') and false reads the working tree through WorkingTreeAdapter. The choice fixes the tree for the whole context, so every later text read comes from that same tree.",
+				"examples": [true, false]
 			},
 			{
 				"name": "guidanceUnit.context",
 				"type": "GuidanceContext",
 				"required": true,
-				"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+				"description": "The context returned by guidanceContext; guidanceUnit reads only its loaded.stored units and never touches the tree."
 			},
 			{
 				"name": "guidanceUnit.id",
 				"type": "string",
 				"required": true,
-				"description": "Registered active identity; undefined selects all only when the options explicitly request all."
+				"description": "The exact unit id to match against stored units whose status is 'active'. Matching is strict equality, so retired units and ids that differ in case or spelling are not found and the call throws.",
+				"examples": [
+					"workflow.development-tooling-guide-units-guidance-context",
+					"adapter.commit-tree",
+					"function.errors"
+				]
 			},
 			{
 				"name": "guidanceText.context",
 				"type": "GuidanceContext",
 				"required": true,
-				"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+				"description": "The context whose tree is read and whose texts map keeps each path's text. That cache lives as long as this context object, so the first stored text for a path is returned on later calls with the same context."
 			},
 			{
 				"name": "guidanceText.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative source or test file to read from the selected tree, cached within this invocation."
+				"description": "Repository-relative path passed to context.tree.read, such as a source file a unit owns. A successful read is stored under this path in context.texts, and a rejected read is not stored.",
+				"examples": [
+					"src/workflows/development-tooling/guide-units/guidanceContext.ts",
+					"src/core/development-tooling/errors.ts",
+					"src/workflows/development-tooling/guide-units/contractStates.ts"
+				]
 			},
 			{
 				"name": "scenarioStatesFor.scenario",
@@ -105,81 +126,441 @@
 				"name": "namedUnitStates.context",
 				"type": "GuidanceContext",
 				"required": true,
-				"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+				"description": "The context whose registries and loaded.scenarios supply this unit's named states. This function is synchronous and reads nothing but registries and loaded.scenarios from the context."
 			},
 			{
 				"name": "namedUnitStates.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "Stored unit identity, source ownership and authored contract selected for this review."
+				"description": "The stored unit whose id selects registry rows and scenario states and supplies the dashed id that unitStateName strips from state ids. Only its id is read here; its owns and contract are not used.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "workflow.development-tooling-guide-units-guidance-context",
+						"uid": "u_bfad3bg4oz",
+						"kind": "workflow",
+						"title": "guidanceContext",
+						"responsibility": "Loads committed or working registry context, caches source text, resolves active identities and combines catalog declarations with contract and source hints.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/workflows/development-tooling/guide-units/guidanceContext.ts"],
+							"symbols": [
+								"guidanceContext",
+								"guidanceUnit",
+								"guidanceText",
+								"namedUnitStates",
+								"sourceUnitStates",
+								"allUnitStates"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "guidanceUnit.id",
+									"type": "string",
+									"required": true,
+									"description": "The exact unit id to match against stored units whose status is 'active'."
+								}
+							],
+							"outputs": [
+								{
+									"name": "guidanceUnit",
+									"type": "ComponentManifest",
+									"description": "The stored manifest whose id equals the requested id and whose status is 'active'."
+								}
+							],
+							"errors": [
+								{
+									"name": "ExpectedCliError",
+									"type": "thrown",
+									"description": "Thrown by fail() with a CLI diagnostic."
+								}
+							],
+							"errorStatus": "declared"
+						},
+						"dependencies": [
+							{
+								"unit": "adapter.commit-tree",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "sourceUnitStates.context",
 				"type": "GuidanceContext",
 				"required": true,
-				"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+				"description": "The context that supplies the tree for guidanceText reads and the index references used to find related Notice, Progress and types files. Source text is read through the context's texts cache."
 			},
 			{
 				"name": "sourceUnitStates.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "Stored unit identity, source ownership and authored contract selected for this review."
+				"description": "The unit whose owns.source files are scanned for branch literals on status, state, phase, mode or variant, together with the Notice or Progress files they reference and the .types.ts files referenced by those. Its contract is not read here.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "workflow.development-tooling-guide-units-guidance-context",
+						"uid": "u_bfad3bg4oz",
+						"kind": "workflow",
+						"title": "guidanceContext",
+						"responsibility": "Loads committed or working registry context, caches source text, resolves active identities and combines catalog declarations with contract and source hints.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/workflows/development-tooling/guide-units/guidanceContext.ts"],
+							"symbols": [
+								"guidanceContext",
+								"guidanceUnit",
+								"guidanceText",
+								"namedUnitStates",
+								"sourceUnitStates",
+								"allUnitStates"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "guidanceUnit.id",
+									"type": "string",
+									"required": true,
+									"description": "The exact unit id to match against stored units whose status is 'active'."
+								}
+							],
+							"outputs": [
+								{
+									"name": "guidanceUnit",
+									"type": "ComponentManifest",
+									"description": "The stored manifest whose id equals the requested id and whose status is 'active'."
+								}
+							],
+							"errors": [
+								{
+									"name": "ExpectedCliError",
+									"type": "thrown",
+									"description": "Thrown by fail() with a CLI diagnostic."
+								}
+							],
+							"errorStatus": "declared"
+						},
+						"dependencies": [
+							{
+								"unit": "adapter.commit-tree",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "allUnitStates.context",
 				"type": "GuidanceContext",
 				"required": true,
-				"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+				"description": "The context that supplies registries and scenarios for named states, index references for related files, and the tree that guidanceText reads through the texts cache."
 			},
 			{
 				"name": "allUnitStates.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "Stored unit identity, source ownership and authored contract selected for this review."
+				"description": "The unit whose id, contract and owns.source feed all three state sources: named registry and scenario states, contract-derived guesses, and source-branch guesses.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "workflow.development-tooling-guide-units-guidance-context",
+						"uid": "u_bfad3bg4oz",
+						"kind": "workflow",
+						"title": "guidanceContext",
+						"responsibility": "Loads committed or working registry context, caches source text, resolves active identities and combines catalog declarations with contract and source hints.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/workflows/development-tooling/guide-units/guidanceContext.ts"],
+							"symbols": [
+								"guidanceContext",
+								"guidanceUnit",
+								"guidanceText",
+								"namedUnitStates",
+								"sourceUnitStates",
+								"allUnitStates"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "guidanceUnit.id",
+									"type": "string",
+									"required": true,
+									"description": "The exact unit id to match against stored units whose status is 'active'."
+								}
+							],
+							"outputs": [
+								{
+									"name": "guidanceUnit",
+									"type": "ComponentManifest",
+									"description": "The stored manifest whose id equals the requested id and whose status is 'active'."
+								}
+							],
+							"errors": [
+								{
+									"name": "ExpectedCliError",
+									"type": "thrown",
+									"description": "Thrown by fail() with a CLI diagnostic."
+								}
+							],
+							"errorStatus": "declared"
+						},
+						"dependencies": [
+							{
+								"unit": "adapter.commit-tree",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "guidanceContext",
 				"type": "Promise<GuidanceContext>",
-				"description": "Registry and indexed source for the chosen tree, parsed state declarations and empty per-run source/test caches."
+				"description": "Resolved context holding the loaded units, the selected tree, registries from stateRegistries, and new Maps for texts, testAttributions and testSyntax. It resolves only when the loader reports no errors, and every other operation in this module reads its data from this object."
 			},
 			{
 				"name": "guidanceUnit",
 				"type": "ComponentManifest",
-				"description": "The stored active manifest matching the exact identity; retired or unknown identities are rejected."
+				"description": "The stored manifest whose id equals the requested id and whose status is 'active', returned as the same object from loaded.stored. A retired or unknown id throws instead of returning undefined.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "workflow.development-tooling-guide-units-guidance-context",
+						"uid": "u_bfad3bg4oz",
+						"kind": "workflow",
+						"title": "guidanceContext",
+						"responsibility": "Loads committed or working registry context, caches source text, resolves active identities and combines catalog declarations with contract and source hints.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/workflows/development-tooling/guide-units/guidanceContext.ts"],
+							"symbols": [
+								"guidanceContext",
+								"guidanceUnit",
+								"guidanceText",
+								"namedUnitStates",
+								"sourceUnitStates",
+								"allUnitStates"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "guidanceUnit.id",
+									"type": "string",
+									"required": true,
+									"description": "The exact unit id to match against stored units whose status is 'active'."
+								}
+							],
+							"outputs": [
+								{
+									"name": "guidanceUnit",
+									"type": "ComponentManifest",
+									"description": "The stored manifest whose id equals the requested id and whose status is 'active'."
+								}
+							],
+							"errors": [
+								{
+									"name": "ExpectedCliError",
+									"type": "thrown",
+									"description": "Thrown by fail() with a CLI diagnostic."
+								}
+							],
+							"errorStatus": "declared"
+						},
+						"dependencies": [
+							{
+								"unit": "adapter.commit-tree",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "guidanceText",
 				"type": "Promise<string>",
-				"description": "Text read from the selected source tree, never borrowed from a different revision."
+				"description": "The text of the requested path read from the selected tree, served from context.texts when this path was already read in the same context. A rejected read propagates unchanged, and the text always comes from the context's own tree, never from the other tree.",
+				"examples": [
+					"// @harness-uid u_vywguk6j2s\nexport class ExpectedCliError extends Error {\n\toverride name = 'ExpectedCliError';\n}\n",
+					"// @harness-uid u_7b5ruejirf\nimport type { ComponentManifest, ContractItem } from '../../../core/development-tooling/unitTypes';\n"
+				]
 			},
 			{
 				"name": "namedUnitStates",
 				"type": "UnitState[]",
-				"description": "Default and named catalog or dedicated/unit-qualified scenario states; broader application coverage labels and inapplicable states are excluded."
+				"description": "The 'default' state followed by states from registry rows (catalog or required-states) whose entity equals this unit's id and from scenario states of scenarios that include this unit, each with origin REQUIRED and merged by name. Scenario states marked inapplicable are excluded; when any scenario state names this unit explicitly only those are kept, and in a multi-unit scenario only states whose id is the dashed unit id or starts with it followed by a dash are kept.",
+				"examples": [
+					[
+						{
+							"name": "default",
+							"origin": "REQUIRED",
+							"reasons": ["Default presentation."]
+						}
+					],
+					[
+						{
+							"name": "default",
+							"origin": "REQUIRED",
+							"reasons": ["Default presentation."]
+						},
+						{
+							"name": "loading",
+							"origin": "REQUIRED",
+							"reasons": ["specification/required-states.json"]
+						},
+						{
+							"name": "empty",
+							"origin": "REQUIRED",
+							"reasons": ["specification/required-states.json"]
+						}
+					]
+				]
 			},
 			{
 				"name": "sourceUnitStates",
 				"type": "Promise<UnitState[]>",
-				"description": "Guessed branch/type states from owned source and directly relevant status/type/progress dependencies; these do not establish visual proof."
+				"description": "Guessed states with origin GUESS, read from status, state, phase, mode or variant comparisons, from property annotations listing string literals, and from assignments to names ending in Status, State, Phase or Mode, all in the scanned source. A match that includes complete also adds succeeded, and these hints never establish rendered proof.",
+				"examples": [
+					[
+						{
+							"name": "active",
+							"origin": "GUESS",
+							"reasons": [
+								"Source branch/type in src/workflows/development-tooling/guide-units/guidanceContext.ts."
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "allUnitStates",
 				"type": "Promise<UnitState[]>",
-				"description": "Named required unit states plus advisory contract/source boundaries, preserving provenance and upgrading a guess only when a unit declaration names it."
+				"description": "States from named registries and scenarios, contract-derived guesses and source-branch guesses, merged by name with their reasons combined. A name keeps origin REQUIRED only when a registry or scenario declares it, so a guess is upgraded only by a named declaration.",
+				"examples": [
+					[
+						{
+							"name": "default",
+							"origin": "REQUIRED",
+							"reasons": ["Default presentation."]
+						},
+						{
+							"name": "empty-id",
+							"origin": "GUESS",
+							"reasons": ["Prop guidanceUnit.id (string)."]
+						},
+						{
+							"name": "empty-path",
+							"origin": "GUESS",
+							"reasons": ["Prop guidanceText.path (string)."]
+						},
+						{
+							"name": "failed",
+							"origin": "GUESS",
+							"reasons": ["Contract mentions failed."]
+						},
+						{
+							"name": "active",
+							"origin": "GUESS",
+							"reasons": [
+								"Source branch/type in src/workflows/development-tooling/guide-units/guidanceContext.ts."
+							]
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid selection, unknown identities, malformed inventories or invalid registry data with the specific CLI diagnostic."
+				"description": "Thrown by fail() with a CLI diagnostic: guidanceContext throws the joined loader errors, an unreadable required-state file or a malformed required-state JSON file, and guidanceUnit throws Unknown unit naming the requested id when no active stored unit has it."
 			},
 			{
 				"name": "Dependency failure",
 				"type": "thrown",
-				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+				"description": "Rejections from CommitTreeAdapter.open, loadUnits and the selected tree's entry enumeration and file reads propagate unchanged, and guidanceText, sourceUnitStates and allUnitStates inherit them through tree reads."
 			}
 		],
 		"errorStatus": "declared",
@@ -191,32 +572,43 @@
 						"name": "guidanceContext.options",
 						"type": "GuidanceOptions",
 						"required": true,
-						"description": "Project root and optional additional required-state JSON paths. Guide reads HEAD; contract checks read the working tree. all selects every active stored contract."
+						"description": "The options object: an optional project root, which defaults to process.cwd(), and optional requiredStates paths resolved against that root. The root selects the repository for the tree adapter, for loadUnits and for required-state reads; a requiredStates path that the tree's own registry scan already returned is skipped.",
+						"examples": [
+							{},
+							{
+								"root": "/workspace/harness"
+							},
+							{
+								"root": "/workspace/harness",
+								"requiredStates": ["specification/required-states.json"]
+							}
+						]
 					},
 					{
 						"name": "guidanceContext.committed",
 						"type": "boolean",
 						"required": true,
-						"description": "True reads HEAD through the commit adapter; false reads tracked and untracked working source for contract review."
+						"description": "True reads the HEAD commit through CommitTreeAdapter.open(root, 'HEAD') and false reads the working tree through WorkingTreeAdapter. The choice fixes the tree for the whole context, so every later text read comes from that same tree.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "guidanceContext",
 						"type": "Promise<GuidanceContext>",
-						"description": "Registry and indexed source for the chosen tree, parsed state declarations and empty per-run source/test caches."
+						"description": "Resolved context holding the loaded units, the selected tree, registries from stateRegistries, and new Maps for texts, testAttributions and testSyntax. It resolves only when the loader reports no errors, and every other operation in this module reads its data from this object."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid selection, missing source or malformed inventory produces the corresponding CLI diagnostic."
+						"description": "Thrown by fail() with the joined loader errors when loadUnits reports any, or with a CLI message when a requiredStates file cannot be read or a required-state JSON file cannot be parsed."
 					},
 					{
 						"name": "Dependency failure",
 						"type": "thrown",
-						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+						"description": "Rejections from CommitTreeAdapter.open when committed is true, from loadUnits, and from the tree's entry enumeration and file reads used for registries propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -228,32 +620,104 @@
 						"name": "guidanceUnit.context",
 						"type": "GuidanceContext",
 						"required": true,
-						"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+						"description": "The context returned by guidanceContext; guidanceUnit reads only its loaded.stored units and never touches the tree."
 					},
 					{
 						"name": "guidanceUnit.id",
 						"type": "string",
 						"required": true,
-						"description": "Registered active identity; undefined selects all only when the options explicitly request all."
+						"description": "The exact unit id to match against stored units whose status is 'active'. Matching is strict equality, so retired units and ids that differ in case or spelling are not found and the call throws.",
+						"examples": [
+							"workflow.development-tooling-guide-units-guidance-context",
+							"adapter.commit-tree",
+							"function.errors"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "guidanceUnit",
 						"type": "ComponentManifest",
-						"description": "The stored active manifest matching the exact identity; retired or unknown identities are rejected."
+						"description": "The stored manifest whose id equals the requested id and whose status is 'active', returned as the same object from loaded.stored. A retired or unknown id throws instead of returning undefined.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "workflow.development-tooling-guide-units-guidance-context",
+								"uid": "u_bfad3bg4oz",
+								"kind": "workflow",
+								"title": "guidanceContext",
+								"responsibility": "Loads committed or working registry context, caches source text, resolves active identities and combines catalog declarations with contract and source hints.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/workflows/development-tooling/guide-units/guidanceContext.ts"],
+									"symbols": [
+										"guidanceContext",
+										"guidanceUnit",
+										"guidanceText",
+										"namedUnitStates",
+										"sourceUnitStates",
+										"allUnitStates"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "guidanceUnit.id",
+											"type": "string",
+											"required": true,
+											"description": "The exact unit id to match against stored units whose status is 'active'."
+										}
+									],
+									"outputs": [
+										{
+											"name": "guidanceUnit",
+											"type": "ComponentManifest",
+											"description": "The stored manifest whose id equals the requested id and whose status is 'active'."
+										}
+									],
+									"errors": [
+										{
+											"name": "ExpectedCliError",
+											"type": "thrown",
+											"description": "Thrown by fail() with a CLI diagnostic."
+										}
+									],
+									"errorStatus": "declared"
+								},
+								"dependencies": [
+									{
+										"unit": "adapter.commit-tree",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid selection, missing source or malformed inventory produces the corresponding CLI diagnostic."
-					},
-					{
-						"name": "Dependency failure",
-						"type": "thrown",
-						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+						"description": "Thrown by fail() with Unknown unit naming the requested id when no stored unit with that exact id has status 'active', so retired units are rejected the same way."
 					}
 				],
 				"errorStatus": "declared"
@@ -265,27 +729,36 @@
 						"name": "guidanceText.context",
 						"type": "GuidanceContext",
 						"required": true,
-						"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+						"description": "The context whose tree is read and whose texts map keeps each path's text. That cache lives as long as this context object, so the first stored text for a path is returned on later calls with the same context."
 					},
 					{
 						"name": "guidanceText.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative source or test file to read from the selected tree, cached within this invocation."
+						"description": "Repository-relative path passed to context.tree.read, such as a source file a unit owns. A successful read is stored under this path in context.texts, and a rejected read is not stored.",
+						"examples": [
+							"src/workflows/development-tooling/guide-units/guidanceContext.ts",
+							"src/core/development-tooling/errors.ts",
+							"src/workflows/development-tooling/guide-units/contractStates.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "guidanceText",
 						"type": "Promise<string>",
-						"description": "Text read from the selected source tree, never borrowed from a different revision."
+						"description": "The text of the requested path read from the selected tree, served from context.texts when this path was already read in the same context. A rejected read propagates unchanged, and the text always comes from the context's own tree, never from the other tree.",
+						"examples": [
+							"// @harness-uid u_vywguk6j2s\nexport class ExpectedCliError extends Error {\n\toverride name = 'ExpectedCliError';\n}\n",
+							"// @harness-uid u_7b5ruejirf\nimport type { ComponentManifest, ContractItem } from '../../../core/development-tooling/unitTypes';\n"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Dependency failure",
 						"type": "thrown",
-						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+						"description": "Rejections from context.tree.read propagate unchanged, and a path whose read rejects is not stored in context.texts."
 					}
 				],
 				"errorStatus": "declared"
@@ -377,20 +850,118 @@
 						"name": "namedUnitStates.context",
 						"type": "GuidanceContext",
 						"required": true,
-						"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+						"description": "The context whose registries and loaded.scenarios supply this unit's named states. This function is synchronous and reads nothing but registries and loaded.scenarios from the context."
 					},
 					{
 						"name": "namedUnitStates.unit",
 						"type": "ComponentManifest",
 						"required": true,
-						"description": "Stored unit identity, source ownership and authored contract selected for this review."
+						"description": "The stored unit whose id selects registry rows and scenario states and supplies the dashed id that unitStateName strips from state ids. Only its id is read here; its owns and contract are not used.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "workflow.development-tooling-guide-units-guidance-context",
+								"uid": "u_bfad3bg4oz",
+								"kind": "workflow",
+								"title": "guidanceContext",
+								"responsibility": "Loads committed or working registry context, caches source text, resolves active identities and combines catalog declarations with contract and source hints.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/workflows/development-tooling/guide-units/guidanceContext.ts"],
+									"symbols": [
+										"guidanceContext",
+										"guidanceUnit",
+										"guidanceText",
+										"namedUnitStates",
+										"sourceUnitStates",
+										"allUnitStates"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "guidanceUnit.id",
+											"type": "string",
+											"required": true,
+											"description": "The exact unit id to match against stored units whose status is 'active'."
+										}
+									],
+									"outputs": [
+										{
+											"name": "guidanceUnit",
+											"type": "ComponentManifest",
+											"description": "The stored manifest whose id equals the requested id and whose status is 'active'."
+										}
+									],
+									"errors": [
+										{
+											"name": "ExpectedCliError",
+											"type": "thrown",
+											"description": "Thrown by fail() with a CLI diagnostic."
+										}
+									],
+									"errorStatus": "declared"
+								},
+								"dependencies": [
+									{
+										"unit": "adapter.commit-tree",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "namedUnitStates",
 						"type": "UnitState[]",
-						"description": "Default and named catalog or dedicated/unit-qualified scenario states; broader application coverage labels and inapplicable states are excluded."
+						"description": "The 'default' state followed by states from registry rows (catalog or required-states) whose entity equals this unit's id and from scenario states of scenarios that include this unit, each with origin REQUIRED and merged by name. Scenario states marked inapplicable are excluded; when any scenario state names this unit explicitly only those are kept, and in a multi-unit scenario only states whose id is the dashed unit id or starts with it followed by a dash are kept.",
+						"examples": [
+							[
+								{
+									"name": "default",
+									"origin": "REQUIRED",
+									"reasons": ["Default presentation."]
+								}
+							],
+							[
+								{
+									"name": "default",
+									"origin": "REQUIRED",
+									"reasons": ["Default presentation."]
+								},
+								{
+									"name": "loading",
+									"origin": "REQUIRED",
+									"reasons": ["specification/required-states.json"]
+								},
+								{
+									"name": "empty",
+									"origin": "REQUIRED",
+									"reasons": ["specification/required-states.json"]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
@@ -403,27 +974,110 @@
 						"name": "sourceUnitStates.context",
 						"type": "GuidanceContext",
 						"required": true,
-						"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+						"description": "The context that supplies the tree for guidanceText reads and the index references used to find related Notice, Progress and types files. Source text is read through the context's texts cache."
 					},
 					{
 						"name": "sourceUnitStates.unit",
 						"type": "ComponentManifest",
 						"required": true,
-						"description": "Stored unit identity, source ownership and authored contract selected for this review."
+						"description": "The unit whose owns.source files are scanned for branch literals on status, state, phase, mode or variant, together with the Notice or Progress files they reference and the .types.ts files referenced by those. Its contract is not read here.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "workflow.development-tooling-guide-units-guidance-context",
+								"uid": "u_bfad3bg4oz",
+								"kind": "workflow",
+								"title": "guidanceContext",
+								"responsibility": "Loads committed or working registry context, caches source text, resolves active identities and combines catalog declarations with contract and source hints.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/workflows/development-tooling/guide-units/guidanceContext.ts"],
+									"symbols": [
+										"guidanceContext",
+										"guidanceUnit",
+										"guidanceText",
+										"namedUnitStates",
+										"sourceUnitStates",
+										"allUnitStates"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "guidanceUnit.id",
+											"type": "string",
+											"required": true,
+											"description": "The exact unit id to match against stored units whose status is 'active'."
+										}
+									],
+									"outputs": [
+										{
+											"name": "guidanceUnit",
+											"type": "ComponentManifest",
+											"description": "The stored manifest whose id equals the requested id and whose status is 'active'."
+										}
+									],
+									"errors": [
+										{
+											"name": "ExpectedCliError",
+											"type": "thrown",
+											"description": "Thrown by fail() with a CLI diagnostic."
+										}
+									],
+									"errorStatus": "declared"
+								},
+								"dependencies": [
+									{
+										"unit": "adapter.commit-tree",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceUnitStates",
 						"type": "Promise<UnitState[]>",
-						"description": "Guessed branch/type states from owned source and directly relevant status/type/progress dependencies; these do not establish visual proof."
+						"description": "Guessed states with origin GUESS, read from status, state, phase, mode or variant comparisons, from property annotations listing string literals, and from assignments to names ending in Status, State, Phase or Mode, all in the scanned source. A match that includes complete also adds succeeded, and these hints never establish rendered proof.",
+						"examples": [
+							[
+								{
+									"name": "active",
+									"origin": "GUESS",
+									"reasons": [
+										"Source branch/type in src/workflows/development-tooling/guide-units/guidanceContext.ts."
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Dependency failure",
 						"type": "thrown",
-						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+						"description": "Rejections from guidanceText, which reads each scanned path through context.tree.read, propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -435,27 +1089,130 @@
 						"name": "allUnitStates.context",
 						"type": "GuidanceContext",
 						"required": true,
-						"description": "Loaded registry, indexed source, readable tree, declarations and per-invocation attribution caches."
+						"description": "The context that supplies registries and scenarios for named states, index references for related files, and the tree that guidanceText reads through the texts cache."
 					},
 					{
 						"name": "allUnitStates.unit",
 						"type": "ComponentManifest",
 						"required": true,
-						"description": "Stored unit identity, source ownership and authored contract selected for this review."
+						"description": "The unit whose id, contract and owns.source feed all three state sources: named registry and scenario states, contract-derived guesses, and source-branch guesses.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "workflow.development-tooling-guide-units-guidance-context",
+								"uid": "u_bfad3bg4oz",
+								"kind": "workflow",
+								"title": "guidanceContext",
+								"responsibility": "Loads committed or working registry context, caches source text, resolves active identities and combines catalog declarations with contract and source hints.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/workflows/development-tooling/guide-units/guidanceContext.ts"],
+									"symbols": [
+										"guidanceContext",
+										"guidanceUnit",
+										"guidanceText",
+										"namedUnitStates",
+										"sourceUnitStates",
+										"allUnitStates"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "guidanceUnit.id",
+											"type": "string",
+											"required": true,
+											"description": "The exact unit id to match against stored units whose status is 'active'."
+										}
+									],
+									"outputs": [
+										{
+											"name": "guidanceUnit",
+											"type": "ComponentManifest",
+											"description": "The stored manifest whose id equals the requested id and whose status is 'active'."
+										}
+									],
+									"errors": [
+										{
+											"name": "ExpectedCliError",
+											"type": "thrown",
+											"description": "Thrown by fail() with a CLI diagnostic."
+										}
+									],
+									"errorStatus": "declared"
+								},
+								"dependencies": [
+									{
+										"unit": "adapter.commit-tree",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/workflows/development-tooling/guide-units/guidanceContext.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "allUnitStates",
 						"type": "Promise<UnitState[]>",
-						"description": "Named required unit states plus advisory contract/source boundaries, preserving provenance and upgrading a guess only when a unit declaration names it."
+						"description": "States from named registries and scenarios, contract-derived guesses and source-branch guesses, merged by name with their reasons combined. A name keeps origin REQUIRED only when a registry or scenario declares it, so a guess is upgraded only by a named declaration.",
+						"examples": [
+							[
+								{
+									"name": "default",
+									"origin": "REQUIRED",
+									"reasons": ["Default presentation."]
+								},
+								{
+									"name": "empty-id",
+									"origin": "GUESS",
+									"reasons": ["Prop guidanceUnit.id (string)."]
+								},
+								{
+									"name": "empty-path",
+									"origin": "GUESS",
+									"reasons": ["Prop guidanceText.path (string)."]
+								},
+								{
+									"name": "failed",
+									"origin": "GUESS",
+									"reasons": ["Contract mentions failed."]
+								},
+								{
+									"name": "active",
+									"origin": "GUESS",
+									"reasons": [
+										"Source branch/type in src/workflows/development-tooling/guide-units/guidanceContext.ts."
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Dependency failure",
 						"type": "thrown",
-						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+						"description": "Rejections from sourceUnitStates, which reads source through context.tree.read, propagate unchanged; the named and contract-derived parts contribute no rejection of their own."
 					}
 				],
 				"errorStatus": "declared"
