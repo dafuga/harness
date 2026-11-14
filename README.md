@@ -1192,3 +1192,24 @@ before the action; use `type: 'pageerror'` for an exception. Missing expected di
 fail. Direct consumers can call `browserErrorCollector()`, then `watch(context)` and
 `await finish(testInfo)` in teardown. The collector retains diagnostics as the
 `browser-errors` test attachment and, during evidence runs, `browser-errors.ndjson`.
+
+### Child command budgets and configuration
+
+Loop evaluator entries may declare a positive `timeoutMs`; absent that field, evaluators
+have a six-hour backstop so a full project check is not killed after one minute.
+`loop evaluate --no-run-evaluators` skips repository commands. Bounded async commands
+also have a six-hour backstop; synchronous direct probes default to one minute, with
+shorter explicit bounds at probe call sites. Git selects a local or long-running deadline;
+callers can override it explicitly. A failure retains stdout/stderr within the combined
+output cap, including a prefix when the cap is exceeded.
+
+Children retain non-secret runtime configuration such as proxies, certificate paths, CI,
+Node/Bun options and XDG paths. Git authentication variables belong to GitAdapter,
+`PROJECT_REPORTS_R2_*` belongs to preview workers, and loop evaluators receive explicit
+GitHub access. Other provider secrets are intentionally omitted; configure a project-owned
+command/environment boundary when an evaluator needs them instead of forwarding every
+parent credential. The child boundary tests use synthetic values only.
+
+Named profiles and capture-cap keys require a Harness CLI that supports them. Older strict
+config schemas reject those keys; use this checkout's source CLI or its matching build when
+working with this repository's configuration.
