@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native filter element; native HTML content rules still apply."
+				"description": "Optional Svelte snippet rendered as child markup when truthy; it is invoked with no arguments, and absent or falsy children render nothing."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFilter",
 				"type": "markup",
-				"description": "The actual native filter element, with forwarded attributes and content and no additional wrapper."
+				"description": "Produces one native SVG <filter> element, forwards every remaining prop as an attribute, and renders truthy children inside it; it adds no wrapper."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
