@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "An optional Svelte snippet accepted as children; when omitted, its value is undefined. The implementation discards it, and the native input element cannot render child content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputUrl",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "A native input element that spreads the remaining supplied attributes and sets type to url, overriding any supplied type attribute. It adds no wrapper or child content."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
