@@ -21,30 +21,98 @@
 				"name": "recordLineage.record",
 				"type": "VerificationRecord",
 				"required": true,
-				"description": "Verification record whose base and referenced scenario ancestry should be checked."
+				"description": "The verification record whose ancestry is examined. Base ancestry is checked only when source.base and source.baseRecord are both present; referenced-scenario checks run only for scenarios with status referenced and a referencedRecord.",
+				"examples": [
+					{
+						"id": "f4f5051ae09bab886120426e4dfb1d2b7f0fdbac38fc7d30cb42e3fddb89fffc",
+						"schemaVersion": 1,
+						"componentSchemaVersion": 2,
+						"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18",
+						"source": {
+							"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"tree": "dddddddddddddddddddddddddddddddddddddddd",
+							"base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"baseRecord": "fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"
+						},
+						"profile": {
+							"id": "linux-node-22",
+							"platform": "linux",
+							"arch": "arm64",
+							"cpu": "Apple M5 Max",
+							"cores": 16,
+							"memoryBytes": 34359738368,
+							"runtime": "Node.js 22"
+						},
+						"startedAt": "2026-11-14T09:02:00.000Z",
+						"finishedAt": "2026-11-14T09:03:00.000Z",
+						"status": "passed",
+						"components": [],
+						"measurements": [],
+						"impact": {
+							"runtime": "node",
+							"expanded": false,
+							"changed": [],
+							"units": {
+								"direct": [],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"uncertain": []
+						},
+						"tests": [],
+						"scenarios": [],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"missing": []
+						},
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"ledger": "passed",
+							"tests": "passed",
+							"scenarios": "passed",
+							"reasons": "passed",
+							"budgets": "passed"
+						},
+						"failures": []
+					}
+				]
 			},
 			{
 				"name": "recordLineage.source",
 				"type": "LineageSource",
 				"required": true,
-				"description": "Lookup for stored records and callback reporting record identity, seal and evidence problems."
+				"description": "Looks up inherited records with find(id) and reports their identity, seal, or evidence problems with problems(record). These callbacks are used for inherited records; exceptions they throw are not caught."
 			},
 			{
 				"name": "recordLineage.path",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Optional ancestor id trail, default empty, used to detect cyclic inheritance."
+				"description": "An initial trail of ancestor record IDs used to detect a cycle when it contains the current or a recursively visited record ID. Defaults to [].",
+				"examples": [
+					["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordLineage",
 				"type": "string[]",
-				"description": "Problem strings for missing, mismatched, failed, damaged or cyclic ancestry and changed inherited states. An empty list means no examined lineage violation; checks are cached per object only within this call."
+				"description": "Returns strings for detected base or referenced-scenario ancestry problems, including missing, mismatched, failed, unsound or cyclic records and differing scenario states. Returns [] when no checked lineage has a problem; referenced scenarios without referencedRecord are skipped.",
+				"examples": [
+					[],
+					["base record fe161936b67b is not available"]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "recordLineage",
@@ -53,31 +121,98 @@
 						"name": "recordLineage.record",
 						"type": "VerificationRecord",
 						"required": true,
-						"description": "Verification record whose base and referenced scenario ancestry should be checked."
+						"description": "The verification record whose ancestry is examined. Base ancestry is checked only when source.base and source.baseRecord are both present; referenced-scenario checks run only for scenarios with status referenced and a referencedRecord.",
+						"examples": [
+							{
+								"id": "f4f5051ae09bab886120426e4dfb1d2b7f0fdbac38fc7d30cb42e3fddb89fffc",
+								"schemaVersion": 1,
+								"componentSchemaVersion": 2,
+								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18",
+								"source": {
+									"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"tree": "dddddddddddddddddddddddddddddddddddddddd",
+									"base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"baseRecord": "fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"
+								},
+								"profile": {
+									"id": "linux-node-22",
+									"platform": "linux",
+									"arch": "arm64",
+									"cpu": "Apple M5 Max",
+									"cores": 16,
+									"memoryBytes": 34359738368,
+									"runtime": "Node.js 22"
+								},
+								"startedAt": "2026-11-14T09:02:00.000Z",
+								"finishedAt": "2026-11-14T09:03:00.000Z",
+								"status": "passed",
+								"components": [],
+								"measurements": [],
+								"impact": {
+									"runtime": "node",
+									"expanded": false,
+									"changed": [],
+									"units": {
+										"direct": [],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [],
+								"scenarios": [],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								},
+								"gates": {
+									"snapshot": "passed",
+									"registry": "passed",
+									"ledger": "passed",
+									"tests": "passed",
+									"scenarios": "passed",
+									"reasons": "passed",
+									"budgets": "passed"
+								},
+								"failures": []
+							}
+						]
 					},
 					{
 						"name": "recordLineage.source",
 						"type": "LineageSource",
 						"required": true,
-						"description": "Lookup for stored records and callback reporting record identity, seal and evidence problems."
+						"description": "Looks up inherited records with find(id) and reports their identity, seal, or evidence problems with problems(record). These callbacks are used for inherited records; exceptions they throw are not caught."
 					},
 					{
 						"name": "recordLineage.path",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Optional ancestor id trail, default empty, used to detect cyclic inheritance."
+						"description": "An initial trail of ancestor record IDs used to detect a cycle when it contains the current or a recursively visited record ID. Defaults to [].",
+						"examples": [
+							["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordLineage",
 						"type": "string[]",
-						"description": "Problem strings for missing, mismatched, failed, damaged or cyclic ancestry and changed inherited states. An empty list means no examined lineage violation; checks are cached per object only within this call."
+						"description": "Returns strings for detected base or referenced-scenario ancestry problems, including missing, mismatched, failed, unsound or cyclic records and differing scenario states. Returns [] when no checked lineage has a problem; referenced scenarios without referencedRecord are skipped.",
+						"examples": [
+							[],
+							["base record fe161936b67b is not available"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
