@@ -38,45 +38,110 @@
 				"name": "writePlannedFiles.root",
 				"type": "string",
 				"required": true,
-				"description": "Filesystem root for the caller-admitted planned paths; this operation does not independently validate traversal."
+				"description": "Base directory passed to `join(root, path)` for each planned target. The implementation does not independently validate traversal segments.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18"
+				]
 			},
 			{
 				"name": "writePlannedFiles.files",
 				"type": "PlannedFile[]",
 				"required": true,
-				"description": "Ordered planned paths and contents; existing identical contents are skipped and earlier writes remain if a later item fails."
+				"description": "Planned paths and text contents processed sequentially in array order. Identical existing text is skipped, and earlier writes remain if a later read or write rejects.",
+				"examples": [
+					[
+						{
+							"path": "src/generated/summary.ts",
+							"contents": "export const summary = true;\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "writePlannedFiles.options",
 				"type": "WriteFilesOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional write policy, default {}; force must be truthy to replace differing existing contents."
+				"description": "Optional write policy with a default of `{}`. A truthy `force` allows replacing differing existing contents.",
+				"examples": [
+					{},
+					{
+						"force": true
+					}
+				]
 			},
 			{
 				"name": "ensureParents.root",
 				"type": "string",
 				"required": true,
-				"description": "Filesystem root used to resolve planned destination directories."
+				"description": "Base directory passed to `join(root, path)` when deriving each parent directory. The implementation does not independently validate traversal segments.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18"
+				]
 			},
 			{
 				"name": "ensureParents.files",
 				"type": "PlannedFile[]",
 				"required": true,
-				"description": "Planned destinations whose parent directories are created recursively, once per distinct directory."
+				"description": "Planned paths used to derive destination parent directories. Distinct directory names are created recursively; the files themselves are not written.",
+				"examples": [
+					[
+						{
+							"path": "src/generated/summary.ts",
+							"contents": "export const summary = true;\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "renderFileList.files",
 				"type": "FileWriteResult[]",
 				"required": true,
-				"description": "Ordered write results whose status and path are rendered without filesystem access."
+				"description": "Write results rendered in array order. The function reads each result's `status` and `path` and performs no filesystem access.",
+				"examples": [
+					[
+						{
+							"path": "src/generated/summary.ts",
+							"contents": "export const summary = true;\n",
+							"status": "created"
+						},
+						{
+							"path": "src/generated/manifest.json",
+							"contents": "{}\n",
+							"status": "skipped"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "writePlannedFiles",
 				"type": "Promise<FileWriteResult[]>",
-				"description": "Promise of one result per processed planned file, retaining path/contents and created, skipped or overwritten status."
+				"description": "On success, resolves to one result per input file in order, preserving `path` and `contents` with status `created`, `skipped`, or `overwritten`.",
+				"examples": [
+					[
+						{
+							"path": "src/generated/summary.ts",
+							"contents": "export const summary = true;\n",
+							"status": "created"
+						}
+					],
+					[
+						{
+							"path": "src/generated/summary.ts",
+							"contents": "export const summary = true;\n",
+							"status": "skipped"
+						}
+					],
+					[
+						{
+							"path": "src/generated/summary.ts",
+							"contents": "export const summary = true;\n",
+							"status": "overwritten"
+						}
+					]
+				]
 			},
 			{
 				"name": "ensureParents",
@@ -86,19 +151,20 @@
 			{
 				"name": "renderFileList",
 				"type": "string",
-				"description": "Two-space-indented create/skip/overwrite lines in caller order, joined by newlines."
+				"description": "Returns one line per result in input order, with two spaces followed by the status label and path; lines are joined with newline characters.",
+				"examples": ["  create src/generated/summary.ts\n  skip src/generated/manifest.json"]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Refuses differing existing contents unless force is enabled; preserves the exact overwrite-refusal message."
+				"description": "Rejects with the overwrite-refusal message when an existing target has different contents and `options.force` is falsy."
 			},
 			{
 				"name": "Filesystem failure",
-				"type": "propagated",
-				"description": "Read, write and mkdir exceptions propagate; directory creation and writes are not transactional."
+				"type": "thrown",
+				"description": "A non-`ENOENT` read failure, write failure, or recursive `mkdir` failure is rethrown unchanged."
 			}
 		],
 		"errorStatus": "declared",
@@ -110,39 +176,79 @@
 						"name": "writePlannedFiles.root",
 						"type": "string",
 						"required": true,
-						"description": "Filesystem root for the caller-admitted planned paths; this operation does not independently validate traversal."
+						"description": "Base directory passed to `join(root, path)` for each planned target. The implementation does not independently validate traversal segments.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18"
+						]
 					},
 					{
 						"name": "writePlannedFiles.files",
 						"type": "PlannedFile[]",
 						"required": true,
-						"description": "Ordered planned paths and contents; existing identical contents are skipped and earlier writes remain if a later item fails."
+						"description": "Planned paths and text contents processed sequentially in array order. Identical existing text is skipped, and earlier writes remain if a later read or write rejects.",
+						"examples": [
+							[
+								{
+									"path": "src/generated/summary.ts",
+									"contents": "export const summary = true;\n"
+								}
+							]
+						]
 					},
 					{
 						"name": "writePlannedFiles.options",
 						"type": "WriteFilesOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional write policy, default {}; force must be truthy to replace differing existing contents."
+						"description": "Optional write policy with a default of `{}`. A truthy `force` allows replacing differing existing contents.",
+						"examples": [
+							{},
+							{
+								"force": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writePlannedFiles",
 						"type": "Promise<FileWriteResult[]>",
-						"description": "Promise of one result per processed planned file, retaining path/contents and created, skipped or overwritten status."
+						"description": "On success, resolves to one result per input file in order, preserving `path` and `contents` with status `created`, `skipped`, or `overwritten`.",
+						"examples": [
+							[
+								{
+									"path": "src/generated/summary.ts",
+									"contents": "export const summary = true;\n",
+									"status": "created"
+								}
+							],
+							[
+								{
+									"path": "src/generated/summary.ts",
+									"contents": "export const summary = true;\n",
+									"status": "skipped"
+								}
+							],
+							[
+								{
+									"path": "src/generated/summary.ts",
+									"contents": "export const summary = true;\n",
+									"status": "overwritten"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Refuses differing existing contents unless force is enabled; preserves the exact overwrite-refusal message."
+						"description": "Rejects with `Refusing to overwrite ${path}. Re-run with --force to replace it.` when the target exists with different contents and `options.force` is falsy."
 					},
 					{
 						"name": "Filesystem failure",
-						"type": "propagated",
-						"description": "Read, write and mkdir exceptions propagate; directory creation and writes are not transactional."
+						"type": "thrown",
+						"description": "Rejects with the underlying filesystem error when reading a target fails for a reason other than `ENOENT`, or when writing a non-skipped file fails."
 					}
 				],
 				"errorStatus": "declared"
@@ -154,13 +260,24 @@
 						"name": "ensureParents.root",
 						"type": "string",
 						"required": true,
-						"description": "Filesystem root used to resolve planned destination directories."
+						"description": "Base directory passed to `join(root, path)` when deriving each parent directory. The implementation does not independently validate traversal segments.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18"
+						]
 					},
 					{
 						"name": "ensureParents.files",
 						"type": "PlannedFile[]",
 						"required": true,
-						"description": "Planned destinations whose parent directories are created recursively, once per distinct directory."
+						"description": "Planned paths used to derive destination parent directories. Distinct directory names are created recursively; the files themselves are not written.",
+						"examples": [
+							[
+								{
+									"path": "src/generated/summary.ts",
+									"contents": "export const summary = true;\n"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
@@ -173,8 +290,8 @@
 				"errors": [
 					{
 						"name": "Filesystem failure",
-						"type": "propagated",
-						"description": "Read, write and mkdir exceptions propagate; directory creation and writes are not transactional."
+						"type": "thrown",
+						"description": "Rejects with the underlying filesystem error if recursive `mkdir` fails for a derived parent directory."
 					}
 				],
 				"errorStatus": "declared"
@@ -186,14 +303,29 @@
 						"name": "renderFileList.files",
 						"type": "FileWriteResult[]",
 						"required": true,
-						"description": "Ordered write results whose status and path are rendered without filesystem access."
+						"description": "Write results rendered in array order. The function reads each result's `status` and `path` and performs no filesystem access.",
+						"examples": [
+							[
+								{
+									"path": "src/generated/summary.ts",
+									"contents": "export const summary = true;\n",
+									"status": "created"
+								},
+								{
+									"path": "src/generated/manifest.json",
+									"contents": "{}\n",
+									"status": "skipped"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderFileList",
 						"type": "string",
-						"description": "Two-space-indented create/skip/overwrite lines in caller order, joined by newlines."
+						"description": "Returns one line per result in input order, with two spaces followed by the status label and path; lines are joined with newline characters.",
+						"examples": ["  create src/generated/summary.ts\n  skip src/generated/manifest.json"]
 					}
 				],
 				"errors": [],
