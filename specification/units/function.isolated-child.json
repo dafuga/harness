@@ -18,40 +18,99 @@
 				"name": "isolatedChild.run",
 				"type": "IsolatedRun",
 				"required": true,
-				"description": "Owned command definition, environment, stream mode, log destination and process lifetime limits."
+				"description": "The command definition that isolatedChild reads: command is run by sh through exec with args as its arguments and no shell parsing, cwd and env set the child's working directory and environment, and only stdio 'inherit' selects inherited streams, while any other value or none selects captured stdout with stderr merged into it. The timeoutMs, log, maxLogBytes, signal, onSpawn and platform fields are not read by isolatedChild.",
+				"examples": [
+					{
+						"command": "node",
+						"args": ["--test", "test/isolated-child.test.js"],
+						"cwd": "/workspace/app",
+						"env": {
+							"CI": "1",
+							"NODE_ENV": "test"
+						},
+						"timeoutMs": 120000,
+						"log": "reports/logs/run-isolated.log",
+						"maxLogBytes": 1048576
+					},
+					{
+						"command": "pnpm",
+						"args": ["run", "build"],
+						"cwd": "/workspace/app",
+						"env": {
+							"PATH": "/usr/local/bin:/usr/bin:/bin"
+						},
+						"stdio": "inherit",
+						"timeoutMs": 900000,
+						"log": "reports/logs/build.log",
+						"maxLogBytes": 10485760
+					}
+				]
 			},
 			{
 				"name": "captureIsolatedOutput.child",
 				"type": "ChildProcess",
 				"required": true,
-				"description": "Spawned owned process whose output stream is captured."
+				"description": "The spawned ChildProcess whose stdout gets a 'data' listener: when child.stdout is null, as with inherited stdio, nothing is registered, while a null or undefined child throws a TypeError."
 			},
 			{
 				"name": "captureIsolatedOutput.output",
 				"type": "Buffer[]",
 				"required": true,
-				"description": "Caller-owned byte chunks receiving captured output and a truncation marker when needed."
+				"description": "The caller's array that receives the retained stdout chunks and the newline-wrapped '[output truncated]' marker chunk; the function only pushes to it, never reads or clears it, and gives no completion signal, so it fills only as data events arrive. A value without a push method throws a TypeError from the data listener."
 			},
 			{
 				"name": "captureIsolatedOutput.limit",
 				"type": "number",
 				"required": true,
-				"description": "Maximum retained output bytes before the truncation marker."
+				"description": "The maximum number of stdout bytes kept in output; it matters only when stdout is longer than limit, because then the first limit bytes are pushed, the marker is pushed once after them, and later bytes are dropped. It is not validated, so NaN or undefined never truncates and a negative value makes the slice count from the end of a chunk.",
+				"examples": [65536, 1048576, 10485760]
 			}
 		],
 		"outputs": [
 			{
 				"name": "isolatedChild",
 				"type": "ChildProcess",
-				"description": "Detached owned child with inherited streams or captured stdout and merged stderr."
+				"description": "The detached child process, made the leader of a new process group and session on POSIX: with inherited stdio, stdin, stdout and stderr are null, and in captured mode only stdout is a readable pipe, carrying stderr merged by the shell. The shell execs the command, so child.pid is the command's own process id."
 			},
 			{
 				"name": "captureIsolatedOutput",
 				"type": "void",
-				"description": "Registers stream collection into the supplied chunks without exceeding the retained-byte limit."
+				"description": "Adds a 'data' listener to child.stdout, which also starts the stream flowing, and returns at once; chunks reach output only as data events arrive, keeping the first limit bytes and dropping the rest with a marker when truncated, and nothing reports when the stream has ended."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown synchronously by isolatedChild when run is null or undefined, because run.stdio is read first."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown synchronously by isolatedChild when run.args is not iterable, such as undefined, because it is spread into the sh argument list."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown synchronously by spawn, with code ERR_INVALID_ARG_TYPE or ERR_INVALID_ARG_VALUE, when run.cwd, run.env, or the command or an argument fails validation, such as a non-string cwd or a null byte."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown synchronously by spawn for some system failures, while the rest are emitted on the child's 'error' event."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown synchronously by captureIsolatedOutput when child is null or undefined, because child.stdout is read before the listener is attached."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown later from the 'data' listener, not by the call, when output has no push method, such as undefined, and stdout data arrives."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "isolatedChild",
@@ -60,18 +119,65 @@
 						"name": "isolatedChild.run",
 						"type": "IsolatedRun",
 						"required": true,
-						"description": "Owned command definition, environment, stream mode, log destination and process lifetime limits."
+						"description": "The command definition that isolatedChild reads: command is run by sh through exec with args as its arguments and no shell parsing, cwd and env set the child's working directory and environment, and only stdio 'inherit' selects inherited streams, while any other value or none selects captured stdout with stderr merged into it. The timeoutMs, log, maxLogBytes, signal, onSpawn and platform fields are not read by isolatedChild.",
+						"examples": [
+							{
+								"command": "node",
+								"args": ["--test", "test/isolated-child.test.js"],
+								"cwd": "/workspace/app",
+								"env": {
+									"CI": "1",
+									"NODE_ENV": "test"
+								},
+								"timeoutMs": 120000,
+								"log": "reports/logs/run-isolated.log",
+								"maxLogBytes": 1048576
+							},
+							{
+								"command": "pnpm",
+								"args": ["run", "build"],
+								"cwd": "/workspace/app",
+								"env": {
+									"PATH": "/usr/local/bin:/usr/bin:/bin"
+								},
+								"stdio": "inherit",
+								"timeoutMs": 900000,
+								"log": "reports/logs/build.log",
+								"maxLogBytes": 10485760
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isolatedChild",
 						"type": "ChildProcess",
-						"description": "Detached owned child with inherited streams or captured stdout and merged stderr."
+						"description": "The detached child process, made the leader of a new process group and session on POSIX: with inherited stdio, stdin, stdout and stderr are null, and in captured mode only stdout is a readable pipe, carrying stderr merged by the shell. The shell execs the command, so child.pid is the command's own process id."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously by isolatedChild when run is null or undefined, because run.stdio is read first."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously by isolatedChild when run.args is not iterable, such as undefined, because it is spread into the sh argument list."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously by spawn, with code ERR_INVALID_ARG_TYPE or ERR_INVALID_ARG_VALUE, when run.cwd, run.env, or the command or an argument fails validation, such as a non-string cwd or a null byte."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown synchronously by spawn for some system failures, while the rest are emitted on the child's 'error' event."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "captureIsolatedOutput",
@@ -80,30 +186,42 @@
 						"name": "captureIsolatedOutput.child",
 						"type": "ChildProcess",
 						"required": true,
-						"description": "Spawned owned process whose output stream is captured."
+						"description": "The spawned ChildProcess whose stdout gets a 'data' listener: when child.stdout is null, as with inherited stdio, nothing is registered, while a null or undefined child throws a TypeError."
 					},
 					{
 						"name": "captureIsolatedOutput.output",
 						"type": "Buffer[]",
 						"required": true,
-						"description": "Caller-owned byte chunks receiving captured output and a truncation marker when needed."
+						"description": "The caller's array that receives the retained stdout chunks and the newline-wrapped '[output truncated]' marker chunk; the function only pushes to it, never reads or clears it, and gives no completion signal, so it fills only as data events arrive. A value without a push method throws a TypeError from the data listener."
 					},
 					{
 						"name": "captureIsolatedOutput.limit",
 						"type": "number",
 						"required": true,
-						"description": "Maximum retained output bytes before the truncation marker."
+						"description": "The maximum number of stdout bytes kept in output; it matters only when stdout is longer than limit, because then the first limit bytes are pushed, the marker is pushed once after them, and later bytes are dropped. It is not validated, so NaN or undefined never truncates and a negative value makes the slice count from the end of a chunk.",
+						"examples": [65536, 1048576, 10485760]
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureIsolatedOutput",
 						"type": "void",
-						"description": "Registers stream collection into the supplied chunks without exceeding the retained-byte limit."
+						"description": "Adds a 'data' listener to child.stdout, which also starts the stream flowing, and returns at once; chunks reach output only as data events arrive, keeping the first limit bytes and dropping the rest with a marker when truncated, and nothing reports when the stream has ended."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously by captureIsolatedOutput when child is null or undefined, because child.stdout is read before the listener is attached."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown later from the 'data' listener, not by the call, when output has no push method, such as undefined, and stdout data arrives."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
