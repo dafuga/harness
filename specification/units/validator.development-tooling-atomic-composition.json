@@ -12,31 +12,222 @@
 		"symbols": ["compositionFindings", "sharedPrimitiveFindings"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "compositionFindings.units",
 				"type": "ComponentManifest[]",
-				"required": true
+				"required": true,
+				"description": "A list of component manifests whose dependencies and composition levels are examined for illegal composition edges. A finding needs a composed dependency with known levels and a non-self target; composition.uses takes precedence, otherwise only derived import, dynamic-import, or reexport edges are considered.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "ui.component.icon-button",
+							"kind": "component",
+							"title": "Icon button",
+							"responsibility": "Provides an icon button control.",
+							"responsibilityOrigin": "declared",
+							"status": "active",
+							"composition": {
+								"level": "atom",
+								"uses": ["forms.component.field-row"]
+							},
+							"owns": {
+								"source": ["src/components/IconButton.svelte"],
+								"symbols": ["IconButton"]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"dependencies": [
+								{
+									"unit": "forms.component.field-row",
+									"via": "import",
+									"origin": "derived"
+								}
+							],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/components/IconButton.svelte",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/components/IconButton.svelte"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						},
+						{
+							"schemaVersion": 1,
+							"id": "forms.component.field-row",
+							"kind": "component",
+							"title": "Field row",
+							"responsibility": "Groups a form field label and control.",
+							"responsibilityOrigin": "declared",
+							"status": "active",
+							"composition": {
+								"level": "molecule"
+							},
+							"owns": {
+								"source": ["src/components/forms/FieldRow.svelte"],
+								"symbols": ["FieldRow"]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"dependencies": [],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/components/forms/FieldRow.svelte",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/components/forms/FieldRow.svelte"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "sharedPrimitiveFindings.units",
 				"type": "ComponentManifest[]",
-				"required": true
+				"required": true,
+				"description": "A list of manifests used to identify owners of shared primitive source paths and compare component declarations against their used primitives. Source owners may be any manifest, but only kind component manifests are checked, and expected IDs come only from composition.uses.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "reports.component.evidence-grid",
+							"kind": "component",
+							"title": "Evidence grid",
+							"responsibility": "Displays evidence records in a grid.",
+							"responsibilityOrigin": "declared",
+							"status": "active",
+							"composition": {
+								"level": "organism",
+								"uses": ["shared-primitives.component.card"]
+							},
+							"owns": {
+								"source": ["src/components/reports/EvidenceGrid.svelte"],
+								"symbols": ["EvidenceGrid"]
+							},
+							"contract": {
+								"origin": "declared",
+								"primitives": [],
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"dependencies": [
+								{
+									"unit": "shared-primitives.component.card",
+									"via": "import",
+									"origin": "derived"
+								}
+							],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/components/reports/EvidenceGrid.svelte",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/components/reports/EvidenceGrid.svelte"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						},
+						{
+							"schemaVersion": 1,
+							"id": "shared-primitives.component.card",
+							"kind": "component",
+							"title": "Card",
+							"responsibility": "Provides a shared card surface.",
+							"responsibilityOrigin": "declared",
+							"status": "active",
+							"composition": {
+								"level": "atom"
+							},
+							"owns": {
+								"source": ["src/components/shared-primitives/Card.svelte"],
+								"symbols": ["Card"]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"dependencies": [],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/components/shared-primitives/Card.svelte",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/components/shared-primitives/Card.svelte"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "compositionFindings",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "An array of diagnostics for composed dependencies that violate the level rules: atoms cannot compose any child, molecules may compose only atoms, organisms cannot compose layouts or pages, and layouts cannot compose pages. It skips self-dependencies and edges with unknown levels, returning an empty array when no invalid edge remains.",
+				"examples": [
+					["ui.component.icon-button: atom cannot compose molecule forms.component.field-row"]
+				]
 			},
 			{
 				"name": "sharedPrimitiveFindings",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "An array of missing or unused shared-primitive declaration diagnostics for component manifests. It compares contract.primitives with used IDs owned by paths matching sharedPrimitivePath; unexpected or duplicate declarations count as unused, and non-component manifests are not checked.",
+				"examples": [
+					[
+						"reports.component.evidence-grid: contract omits shared primitive shared-primitives.component.card"
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "compositionFindings",
@@ -44,17 +235,111 @@
 					{
 						"name": "compositionFindings.units",
 						"type": "ComponentManifest[]",
-						"required": true
+						"required": true,
+						"description": "A list of component manifests whose dependencies and composition levels are examined for illegal composition edges. A finding needs a composed dependency with known levels and a non-self target; composition.uses takes precedence, otherwise only derived import, dynamic-import, or reexport edges are considered.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "ui.component.icon-button",
+									"kind": "component",
+									"title": "Icon button",
+									"responsibility": "Provides an icon button control.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"composition": {
+										"level": "atom",
+										"uses": ["forms.component.field-row"]
+									},
+									"owns": {
+										"source": ["src/components/IconButton.svelte"],
+										"symbols": ["IconButton"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"dependencies": [
+										{
+											"unit": "forms.component.field-row",
+											"via": "import",
+											"origin": "derived"
+										}
+									],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/components/IconButton.svelte",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/components/IconButton.svelte"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								},
+								{
+									"schemaVersion": 1,
+									"id": "forms.component.field-row",
+									"kind": "component",
+									"title": "Field row",
+									"responsibility": "Groups a form field label and control.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"composition": {
+										"level": "molecule"
+									},
+									"owns": {
+										"source": ["src/components/forms/FieldRow.svelte"],
+										"symbols": ["FieldRow"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"dependencies": [],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/components/forms/FieldRow.svelte",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/components/forms/FieldRow.svelte"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "compositionFindings",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "An array of diagnostics for composed dependencies that violate the level rules: atoms cannot compose any child, molecules may compose only atoms, organisms cannot compose layouts or pages, and layouts cannot compose pages. It skips self-dependencies and edges with unknown levels, returning an empty array when no invalid edge remains.",
+						"examples": [
+							["ui.component.icon-button: atom cannot compose molecule forms.component.field-row"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sharedPrimitiveFindings",
@@ -62,17 +347,114 @@
 					{
 						"name": "sharedPrimitiveFindings.units",
 						"type": "ComponentManifest[]",
-						"required": true
+						"required": true,
+						"description": "A list of manifests used to identify owners of shared primitive source paths and compare component declarations against their used primitives. Source owners may be any manifest, but only kind component manifests are checked, and expected IDs come only from composition.uses.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "reports.component.evidence-grid",
+									"kind": "component",
+									"title": "Evidence grid",
+									"responsibility": "Displays evidence records in a grid.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"composition": {
+										"level": "organism",
+										"uses": ["shared-primitives.component.card"]
+									},
+									"owns": {
+										"source": ["src/components/reports/EvidenceGrid.svelte"],
+										"symbols": ["EvidenceGrid"]
+									},
+									"contract": {
+										"origin": "declared",
+										"primitives": [],
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"dependencies": [
+										{
+											"unit": "shared-primitives.component.card",
+											"via": "import",
+											"origin": "derived"
+										}
+									],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/components/reports/EvidenceGrid.svelte",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/components/reports/EvidenceGrid.svelte"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								},
+								{
+									"schemaVersion": 1,
+									"id": "shared-primitives.component.card",
+									"kind": "component",
+									"title": "Card",
+									"responsibility": "Provides a shared card surface.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"composition": {
+										"level": "atom"
+									},
+									"owns": {
+										"source": ["src/components/shared-primitives/Card.svelte"],
+										"symbols": ["Card"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"dependencies": [],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/components/shared-primitives/Card.svelte",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/components/shared-primitives/Card.svelte"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sharedPrimitiveFindings",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "An array of missing or unused shared-primitive declaration diagnostics for component manifests. It compares contract.primitives with used IDs owned by paths matching sharedPrimitivePath; unexpected or duplicate declarations count as unused, and non-component manifests are not checked.",
+						"examples": [
+							[
+								"reports.component.evidence-grid: contract omits shared primitive shared-primitives.component.card"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
