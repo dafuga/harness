@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "An optional Svelte child snippet accepted by the component. It is destructured but not rendered because this component emits the void <wbr> element with an empty body."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlWbr",
 				"type": "markup",
-				"description": "The actual native wbr element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native <wbr> element rendered by this component, with all props except children spread onto it as attributes. Its body is empty, so the component adds no wrapper and renders no child content."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
