@@ -18,23 +18,29 @@
 				"name": "POST.request",
 				"type": "Request",
 				"required": true,
-				"description": "Required incoming HTTP request, admitted before reading multipart data."
+				"description": "The incoming HTTP Request handled by `POST`. The handler passes it to `admitUploadRequest` with `url.origin` and `101_000_000` before reading multipart data, then requires `before` and `after` to be `File` values."
 			},
 			{
 				"name": "POST.url",
 				"type": "URL",
 				"required": true,
-				"description": "Required server-resolved URL; its origin defines the accepted upload origin."
+				"description": "The resolved URL supplied to `POST`. The handler passes its `origin` to `admitUploadRequest` before parsing multipart data and reads no other URL property."
 			}
 		],
 		"outputs": [
 			{
 				"name": "POST",
 				"type": "Promise<Response>",
-				"description": "A 201 JSON report on success, or an explicit JSON admission, media, report-state or storage error response. Parsing/storage exceptions are translated into responses."
+				"description": "On success, resolves to a 201 JSON `Response` containing the uploaded report and `Cache-Control: no-store`; if admission returns a response, `POST` returns it directly. Caught parse/upload errors become JSON responses with status 409 for messages containing `finaliz`, 404 for `ENOENT`, 400 for `/audio|format|WAV|title|size/i`, and 500 otherwise."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "`POST` throws this when either `before` or `after` is not a `File`; its catch handler converts the message (which includes `audio`) into a 400 JSON response."
+			}
+		],
 		"errorStatus": "declared",
 		"operations": [
 			{
@@ -44,23 +50,29 @@
 						"name": "POST.request",
 						"type": "Request",
 						"required": true,
-						"description": "Required incoming HTTP request, admitted before reading multipart data."
+						"description": "The incoming HTTP Request handled by `POST`. The handler passes it to `admitUploadRequest` with `url.origin` and `101_000_000` before reading multipart data, then requires `before` and `after` to be `File` values."
 					},
 					{
 						"name": "POST.url",
 						"type": "URL",
 						"required": true,
-						"description": "Required server-resolved URL; its origin defines the accepted upload origin."
+						"description": "The resolved URL supplied to `POST`. The handler passes its `origin` to `admitUploadRequest` before parsing multipart data and reads no other URL property."
 					}
 				],
 				"outputs": [
 					{
 						"name": "POST",
 						"type": "Promise<Response>",
-						"description": "A 201 JSON report on success, or an explicit JSON admission, media, report-state or storage error response. Parsing/storage exceptions are translated into responses."
+						"description": "On success, resolves to a 201 JSON `Response` containing the uploaded report and `Cache-Control: no-store`; if admission returns a response, `POST` returns it directly. Caught parse/upload errors become JSON responses with status 409 for messages containing `finaliz`, 404 for `ENOENT`, 400 for `/audio|format|WAV|title|size/i`, and 500 otherwise."
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "`POST` throws this when either `before` or `after` is not a `File`; its catch handler converts the message (which includes `audio`) into a 400 JSON response."
+					}
+				],
 				"errorStatus": "declared"
 			}
 		],
