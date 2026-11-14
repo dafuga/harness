@@ -18,10 +18,34 @@
 			{
 				"name": "pickerPaths",
 				"type": "unknown",
-				"description": "Picker home from HARNESS_PICKER_HOME or CODEX_HOME/harness/picker, plus OpenAI models_cache.json and Harness Claude catalog paths under CODEX_HOME. Without CODEX_HOME, the root is the user home .codex directory. No directories are created or files read."
+				"description": "An object whose `home` is HARNESS_PICKER_HOME when that variable is set (even if empty), otherwise `join(root, 'harness', 'picker')`, and whose `catalogs.openai` and `catalogs.claude` are `join(root, 'models_cache.json')` and `join(root, 'harness-gateway', 'claude-models.json')`. The root is CODEX_HOME when that variable is set (even if empty, which makes the paths relative to the working directory), otherwise `join(homedir(), '.codex')`; the function only builds these strings, so it creates no directories, does not check that the paths exist, and reads none of these files.",
+				"examples": [
+					{
+						"home": "/Users/example/.codex/harness/picker",
+						"catalogs": {
+							"openai": "/Users/example/.codex/models_cache.json",
+							"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+						}
+					},
+					{
+						"home": "/srv/codex-state/harness/picker",
+						"catalogs": {
+							"openai": "/srv/codex-state/models_cache.json",
+							"claude": "/srv/codex-state/harness-gateway/claude-models.json"
+						}
+					},
+					{
+						"home": "/var/lib/harness/picker",
+						"catalogs": {
+							"openai": "/Users/example/.codex/models_cache.json",
+							"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "pickerPaths",
@@ -30,11 +54,34 @@
 					{
 						"name": "pickerPaths",
 						"type": "unknown",
-						"description": "Picker home from HARNESS_PICKER_HOME or CODEX_HOME/harness/picker, plus OpenAI models_cache.json and Harness Claude catalog paths under CODEX_HOME. Without CODEX_HOME, the root is the user home .codex directory. No directories are created or files read."
+						"description": "An object whose `home` is HARNESS_PICKER_HOME when that variable is set (even if empty), otherwise `join(root, 'harness', 'picker')`, and whose `catalogs.openai` and `catalogs.claude` are `join(root, 'models_cache.json')` and `join(root, 'harness-gateway', 'claude-models.json')`. The root is CODEX_HOME when that variable is set (even if empty, which makes the paths relative to the working directory), otherwise `join(homedir(), '.codex')`; the function only builds these strings, so it creates no directories, does not check that the paths exist, and reads none of these files.",
+						"examples": [
+							{
+								"home": "/Users/example/.codex/harness/picker",
+								"catalogs": {
+									"openai": "/Users/example/.codex/models_cache.json",
+									"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+								}
+							},
+							{
+								"home": "/srv/codex-state/harness/picker",
+								"catalogs": {
+									"openai": "/srv/codex-state/models_cache.json",
+									"claude": "/srv/codex-state/harness-gateway/claude-models.json"
+								}
+							},
+							{
+								"home": "/var/lib/harness/picker",
+								"catalogs": {
+									"openai": "/Users/example/.codex/models_cache.json",
+									"claude": "/Users/example/.codex/harness-gateway/claude-models.json"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
