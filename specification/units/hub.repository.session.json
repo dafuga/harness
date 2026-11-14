@@ -31,71 +31,175 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SessionRepository.constructor.options",
 				"type": "SessionRepositoryOptions",
-				"required": true
+				"required": true,
+				"description": "Provides the backing SessionStore, AuthSecrets service, and clock. The clock supplies timestamps used when issuing, checking expiry, and revoking sessions."
 			},
 			{
 				"name": "SessionRepository.issue.grant",
 				"type": "SessionGrant",
-				"required": true
+				"required": true,
+				"description": "Provides kind, actor, resource, and parentHash, which are copied into the new SessionRecord. Only kind === \"native\" selects the native TTL; all other values use the browser TTL.",
+				"examples": [
+					{
+						"kind": "browser",
+						"actor": {
+							"id": "google-11739284015673928104",
+							"email": "alex.morgan@example.com",
+							"name": "Alex Morgan",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"parentHash": null
+					}
+				]
 			},
 			{
 				"name": "SessionRepository.find.credential",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Credential presented for lookup; find hashes it with purpose session before querying the store. The repository code accepts the supplied string without validating its format.",
+				"examples": ["AQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyA"]
 			},
 			{
 				"name": "SessionRepository.live.idHash",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Hash key passed directly to SessionStore.find by live. A record is returned only when it exists, has revokedAt === null, and expires strictly after the current clock value.",
+				"examples": ["d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72"]
 			},
 			{
 				"name": "SessionRepository.revoke.record",
 				"type": "SessionRecord",
-				"required": true
+				"required": true,
+				"description": "Stored SessionRecord supplied to revoke; the repository reads its idHash and passes that with the current clock value to the store. It does not inspect the record's other fields here.",
+				"examples": [
+					{
+						"idHash": "d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72",
+						"kind": "browser",
+						"parentHash": null,
+						"actor": {
+							"id": "google-11739284015673928104",
+							"email": "alex.morgan@example.com",
+							"name": "Alex Morgan",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"createdAt": 1700000000000,
+						"expiresAt": 1700604800000,
+						"revokedAt": null
+					}
+				]
 			},
 			{
 				"name": "SessionRepository.revokeIssuedFrom.parentHash",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Hash identifying the origin whose issued sessions should be revoked. revokeIssuedFrom passes it with the current clock value to SessionStore.revoke.",
+				"examples": ["d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "BROWSER_TTL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Browser-session lifetime in milliseconds, selected for every issued grant whose kind is not native. Its value is seven days.",
+				"examples": [604800000]
 			},
 			{
 				"name": "NATIVE_TTL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Native-session lifetime in milliseconds, selected when an issued grant has kind native. Its value is thirty days.",
+				"examples": [2592000000]
 			},
 			{
 				"name": "SessionRepository.issue",
-				"type": "Promise<IssuedSession>"
+				"type": "Promise<IssuedSession>",
+				"description": "Resolves to the generated credential and created session record after SessionStore.create completes. The record stores a purpose-session hash of the credential, uses the TTL selected by kind, and begins with revokedAt set to null.",
+				"examples": [
+					{
+						"credential": "AQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyA",
+						"record": {
+							"idHash": "d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72",
+							"kind": "browser",
+							"parentHash": null,
+							"actor": {
+								"id": "google-11739284015673928104",
+								"email": "alex.morgan@example.com",
+								"name": "Alex Morgan",
+								"emailVerified": true
+							},
+							"resource": "projects",
+							"createdAt": 1700000000000,
+							"expiresAt": 1700604800000,
+							"revokedAt": null
+						}
+					}
+				]
 			},
 			{
 				"name": "SessionRepository.find",
-				"type": "Promise<SessionRecord | null>"
+				"type": "Promise<SessionRecord | null>",
+				"description": "Resolves to the live record for the credential or null when its hash is unknown, expired, or revoked. The credential is hashed with purpose session before the live-record check.",
+				"examples": [
+					{
+						"idHash": "d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72",
+						"kind": "browser",
+						"parentHash": null,
+						"actor": {
+							"id": "google-11739284015673928104",
+							"email": "alex.morgan@example.com",
+							"name": "Alex Morgan",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"createdAt": 1700000000000,
+						"expiresAt": 1700604800000,
+						"revokedAt": null
+					},
+					null
+				]
 			},
 			{
 				"name": "SessionRepository.live",
-				"type": "Promise<SessionRecord | null>"
+				"type": "Promise<SessionRecord | null>",
+				"description": "Resolves to the live record for idHash, or null if no record exists, it has been revoked, or expiresAt is not greater than the current clock value. Expiry uses a strict greater-than comparison.",
+				"examples": [
+					{
+						"idHash": "d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72",
+						"kind": "browser",
+						"parentHash": null,
+						"actor": {
+							"id": "google-11739284015673928104",
+							"email": "alex.morgan@example.com",
+							"name": "Alex Morgan",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"createdAt": 1700000000000,
+						"expiresAt": 1700604800000,
+						"revokedAt": null
+					},
+					null
+				]
 			},
 			{
 				"name": "SessionRepository.revoke",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after asking the store to revoke record.idHash at the current clock value. The repository passes no other record fields to the store."
 			},
 			{
 				"name": "SessionRepository.revokeIssuedFrom",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after asking the store to revoke parentHash at the current clock value. The method ends sessions issued from that origin, such as a pending email proof."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "SessionRepository.issue",
@@ -103,17 +207,52 @@
 					{
 						"name": "SessionRepository.issue.grant",
 						"type": "SessionGrant",
-						"required": true
+						"required": true,
+						"description": "Provides kind, actor, resource, and parentHash, which are copied into the new SessionRecord. Only kind === \"native\" selects the native TTL; all other values use the browser TTL.",
+						"examples": [
+							{
+								"kind": "browser",
+								"actor": {
+									"id": "google-11739284015673928104",
+									"email": "alex.morgan@example.com",
+									"name": "Alex Morgan",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"parentHash": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SessionRepository.issue",
-						"type": "Promise<IssuedSession>"
+						"type": "Promise<IssuedSession>",
+						"description": "Resolves to the generated credential and created session record after SessionStore.create completes. The record stores a purpose-session hash of the credential, uses the TTL selected by kind, and begins with revokedAt set to null.",
+						"examples": [
+							{
+								"credential": "AQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyA",
+								"record": {
+									"idHash": "d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72",
+									"kind": "browser",
+									"parentHash": null,
+									"actor": {
+										"id": "google-11739284015673928104",
+										"email": "alex.morgan@example.com",
+										"name": "Alex Morgan",
+										"emailVerified": true
+									},
+									"resource": "projects",
+									"createdAt": 1700000000000,
+									"expiresAt": 1700604800000,
+									"revokedAt": null
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SessionRepository.find",
@@ -121,17 +260,38 @@
 					{
 						"name": "SessionRepository.find.credential",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Credential presented for lookup; find hashes it with purpose session before querying the store. The repository code accepts the supplied string without validating its format.",
+						"examples": ["AQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyA"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SessionRepository.find",
-						"type": "Promise<SessionRecord | null>"
+						"type": "Promise<SessionRecord | null>",
+						"description": "Resolves to the live record for the credential or null when its hash is unknown, expired, or revoked. The credential is hashed with purpose session before the live-record check.",
+						"examples": [
+							{
+								"idHash": "d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72",
+								"kind": "browser",
+								"parentHash": null,
+								"actor": {
+									"id": "google-11739284015673928104",
+									"email": "alex.morgan@example.com",
+									"name": "Alex Morgan",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"createdAt": 1700000000000,
+								"expiresAt": 1700604800000,
+								"revokedAt": null
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SessionRepository.live",
@@ -139,17 +299,38 @@
 					{
 						"name": "SessionRepository.live.idHash",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Hash key passed directly to SessionStore.find by live. A record is returned only when it exists, has revokedAt === null, and expires strictly after the current clock value.",
+						"examples": ["d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SessionRepository.live",
-						"type": "Promise<SessionRecord | null>"
+						"type": "Promise<SessionRecord | null>",
+						"description": "Resolves to the live record for idHash, or null if no record exists, it has been revoked, or expiresAt is not greater than the current clock value. Expiry uses a strict greater-than comparison.",
+						"examples": [
+							{
+								"idHash": "d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72",
+								"kind": "browser",
+								"parentHash": null,
+								"actor": {
+									"id": "google-11739284015673928104",
+									"email": "alex.morgan@example.com",
+									"name": "Alex Morgan",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"createdAt": 1700000000000,
+								"expiresAt": 1700604800000,
+								"revokedAt": null
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SessionRepository.revoke",
@@ -157,17 +338,36 @@
 					{
 						"name": "SessionRepository.revoke.record",
 						"type": "SessionRecord",
-						"required": true
+						"required": true,
+						"description": "Stored SessionRecord supplied to revoke; the repository reads its idHash and passes that with the current clock value to the store. It does not inspect the record's other fields here.",
+						"examples": [
+							{
+								"idHash": "d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72",
+								"kind": "browser",
+								"parentHash": null,
+								"actor": {
+									"id": "google-11739284015673928104",
+									"email": "alex.morgan@example.com",
+									"name": "Alex Morgan",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"createdAt": 1700000000000,
+								"expiresAt": 1700604800000,
+								"revokedAt": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SessionRepository.revoke",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after asking the store to revoke record.idHash at the current clock value. The repository passes no other record fields to the store."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SessionRepository.revokeIssuedFrom",
@@ -175,17 +375,20 @@
 					{
 						"name": "SessionRepository.revokeIssuedFrom.parentHash",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Hash identifying the origin whose issued sessions should be revoked. revokeIssuedFrom passes it with the current clock value to SessionStore.revoke.",
+						"examples": ["d4d8393b52e2d1186c50d8af9c290b6a5f3471c8e2d9a6403b7c1f85a6e40d72"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SessionRepository.revokeIssuedFrom",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after asking the store to revoke parentHash at the current clock value. The method ends sessions issued from that origin, such as a pending email proof."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -195,17 +398,19 @@
 					{
 						"name": "SessionRepository.constructor.options",
 						"type": "SessionRepositoryOptions",
-						"required": true
+						"required": true,
+						"description": "Provides the backing SessionStore, AuthSecrets service, and clock. The clock supplies timestamps used when issuing, checking expiry, and revoking sessions."
 					}
 				],
 				"outputs": [
 					{
 						"name": "SessionRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The SessionRepository instance created with the supplied options. It stores those options for use by the repository methods."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
