@@ -21,12 +21,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The /game page markup: one hx-main element (class \"game-page\", data-harness-view \"game\") that shows an hx-h1 \"Game Views\" and an hx-p role=\"alert\" with the error text when connect() catches a failure, and a GameWorkspace given projectId, commit, readonly and bridge once mounted is true. Before mount it holds only that error block, if any, and the document title is set to \"Game Views\" through svelte:head; the workspace's own content is rendered by GameWorkspace, not by this page."
 			}
 		],
 		"errors": [],
