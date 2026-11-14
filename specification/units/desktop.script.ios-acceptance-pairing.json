@@ -12,22 +12,24 @@
 		"symbols": ["pairing"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "pairing.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "TEST ONLY: everything one phase of the native acceptance run works with, here its record, its simulator page, the simulator udid, the fixture control origin, the project and the output folder. The pairing reads the record, the page and the udid directly, and each control call throws unless the control origin is on this machine."
 			}
 		],
 		"outputs": [
 			{
 				"name": "pairing",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise that one run of the pairing returns: it resolves with no value after the last screenshot, 'paired', is taken. Nothing in the pairing catches a rejection, so a step it awaits that throws makes this promise reject with that same error."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "pairing",
@@ -35,17 +37,19 @@
 					{
 						"name": "pairing.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "TEST ONLY: everything one phase of the native acceptance run works with, here its record, its simulator page, the simulator udid, the fixture control origin, the project and the output folder. The pairing reads the record, the page and the udid directly, and each control call throws unless the control origin is on this machine."
 					}
 				],
 				"outputs": [
 					{
 						"name": "pairing",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise that one run of the pairing returns: it resolves with no value after the last screenshot, 'paired', is taken. Nothing in the pairing catches a rejection, so a step it awaits that throws makes this promise reject with that same error."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
