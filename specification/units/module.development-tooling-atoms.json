@@ -12,22 +12,31 @@
 		"symbols": ["atomicComponents"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "atomicComponents.options",
 				"type": "{ aliases?: Record<string, string>; }",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Supply it when calling the wrapper with preprocessor options; the wrapper forwards it unchanged to the imported atomic preprocessor. The only declared field is optional aliases, a record of string keys and values.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "atomicComponents",
-				"type": "PreprocessorGroup"
+				"type": "PreprocessorGroup",
+				"description": "The PreprocessorGroup returned directly from the imported atomic preprocessor. It is the Svelte build integration value produced by this wrapper; this file defines no further shape or behavior.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "atomicComponents",
@@ -35,17 +44,26 @@
 					{
 						"name": "atomicComponents.options",
 						"type": "{ aliases?: Record<string, string>; }",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Supply it when calling the wrapper with preprocessor options; the wrapper forwards it unchanged to the imported atomic preprocessor. The only declared field is optional aliases, a record of string keys and values.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "atomicComponents",
-						"type": "PreprocessorGroup"
+						"type": "PreprocessorGroup",
+						"description": "The PreprocessorGroup returned directly from the imported atomic preprocessor. It is the Svelte build integration value produced by this wrapper; this file defines no further shape or behavior.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
