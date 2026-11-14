@@ -20,23 +20,46 @@
 				"name": "githubReaches.client",
 				"type": "GitHubTransport",
 				"required": true,
-				"description": "Repository transport for access validation and GitHub comparison."
+				"description": "Transport used to validate access and compare `commit` with `tip` on GitHub. It is used only when the parsed SHAs differ."
 			},
 			{
 				"name": "githubReaches.input",
 				"type": "{ tip: string; commit: string }",
 				"required": true,
-				"description": "Exact lowercase 40-character hex tip and candidate commit SHAs."
+				"description": "The repository tip SHA and candidate commit SHA to compare. Both are parsed as SHAs, and equal values return true without a transport call.",
+				"examples": [
+					{
+						"tip": "0123456789abcdef0123456789abcdef01234567",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					},
+					{
+						"tip": "89abcdef0123456789abcdef0123456789abcdef",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubReaches",
 				"type": "Promise<boolean>",
-				"description": "True for identical SHAs or a confirmed ancestor; false for a missing comparison or a nonancestor."
+				"description": "Resolves to true when the candidate is the tip or the merge base of an `ahead` or `identical` comparison; otherwise it resolves to false. A comparison 404 returns false, while parsing or transport failures reject the promise.",
+				"examples": [true, false]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Parsing either SHA or the comparison response rejects when the value does not match its schema."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A rejection from `client.check()` or `client.request()` propagates; the function does not convert transport failures into a reachability result."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "githubReaches",
@@ -45,24 +68,46 @@
 						"name": "githubReaches.client",
 						"type": "GitHubTransport",
 						"required": true,
-						"description": "Repository transport for access validation and GitHub comparison."
+						"description": "Transport used to validate access and compare `commit` with `tip` on GitHub. It is used only when the parsed SHAs differ."
 					},
 					{
 						"name": "githubReaches.input",
 						"type": "{ tip: string; commit: string }",
 						"required": true,
-						"description": "Exact lowercase 40-character hex tip and candidate commit SHAs."
+						"description": "The repository tip SHA and candidate commit SHA to compare. Both are parsed as SHAs, and equal values return true without a transport call.",
+						"examples": [
+							{
+								"tip": "0123456789abcdef0123456789abcdef01234567",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"tip": "89abcdef0123456789abcdef0123456789abcdef",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "githubReaches",
 						"type": "Promise<boolean>",
-						"description": "True for identical SHAs or a confirmed ancestor; false for a missing comparison or a nonancestor."
+						"description": "Resolves to true when the candidate is the tip or the merge base of an `ahead` or `identical` comparison; otherwise it resolves to false. A comparison 404 returns false, while parsing or transport failures reject the promise.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Parsing either SHA or the comparison response rejects when the value does not match its schema."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A rejection from `client.check()` or `client.request()` propagates; the function does not convert transport failures into a reachability result."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
