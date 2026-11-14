@@ -12,32 +12,37 @@
 		"symbols": ["HostedArtifactValidator", "HostedArtifactValidator.artifact"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostedArtifactValidator.artifact.media",
 				"type": "{ bytes: Uint8Array; mediaType: string }",
-				"required": true
+				"required": true,
+				"description": "The artifact bytes and the MIME type stated by their source, which are checked before the artifact is returned for hosted serving. Supported content is PNG or JPEG screenshots, supported audio, and JSON or plain-text results; bytes over 11 MiB or bytes that do not match the attested kind are rejected."
 			},
 			{
 				"name": "HostedArtifactValidator.artifact.sha256",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The expected SHA-256 digest of the artifact bytes, checked before MIME attestation. It must be exactly 64 lowercase hexadecimal characters and equal the digest recomputed from all input bytes.",
+				"examples": ["30dbd32cbcc911c0d851b5d4071072be180ddcc0214dd9a87ecdfef460684fd1"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostedArtifactValidator.artifact",
-				"type": "EvidenceArtifactResult"
+				"type": "EvidenceArtifactResult",
+				"description": "The validated artifact result contains the original bytes, the MIME type selected for serving, and the verified SHA-256 digest. The bytes are unchanged, and a result is returned only when the attested content can be served."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Throws Error(\"The capture exceeds 11 MiB.\") when the bytes exceed the limit, and Error(\"This is not the recorded file that was asked for (SHA-256).\") when the digest is malformed or does not match the bytes. It throws Error(\"The hosted service sent a kind this app does not show.\") when the MIME attestation is refused or the bytes cannot be served as the attested kind."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostedArtifactValidator.artifact",
@@ -45,27 +50,32 @@
 					{
 						"name": "HostedArtifactValidator.artifact.media",
 						"type": "{ bytes: Uint8Array; mediaType: string }",
-						"required": true
+						"required": true,
+						"description": "The artifact bytes and the MIME type stated by their source, which are checked before the artifact is returned for hosted serving. Supported content is PNG or JPEG screenshots, supported audio, and JSON or plain-text results; bytes over 11 MiB or bytes that do not match the attested kind are rejected."
 					},
 					{
 						"name": "HostedArtifactValidator.artifact.sha256",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The expected SHA-256 digest of the artifact bytes, checked before MIME attestation. It must be exactly 64 lowercase hexadecimal characters and equal the digest recomputed from all input bytes.",
+						"examples": ["30dbd32cbcc911c0d851b5d4071072be180ddcc0214dd9a87ecdfef460684fd1"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedArtifactValidator.artifact",
-						"type": "EvidenceArtifactResult"
+						"type": "EvidenceArtifactResult",
+						"description": "The validated artifact result contains the original bytes, the MIME type selected for serving, and the verified SHA-256 digest. The bytes are unchanged, and a result is returned only when the attested content can be served."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error(\"The capture exceeds 11 MiB.\") when the bytes exceed the limit, and Error(\"This is not the recorded file that was asked for (SHA-256).\") when the digest is malformed or does not match the bytes. It throws Error(\"The hosted service sent a kind this app does not show.\") when the MIME attestation is refused or the bytes cannot be served as the attested kind."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
