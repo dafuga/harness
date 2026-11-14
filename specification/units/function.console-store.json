@@ -21,24 +21,32 @@
 				"name": "consoleStore.bucket",
 				"type": "ConsoleBucket",
 				"required": true,
-				"description": "Object-store binding providing asynchronous get calls that return text/byte readers or null for absent objects."
+				"description": "The required private object-store binding used by the JSON and media readers. Its get(key) method returns a promise for a ConsoleObject or null; found objects provide asynchronous text and byte readers."
 			},
 			{
 				"name": "consoleStore.prefix",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional object-key prefix, defaulting to empty; trailing slashes are removed when constructing a prefixed key."
+				"description": "An optional key prefix prepended to the requested JSON path or media key. Defaults to the empty string; trailing slashes are removed, and an empty prefix leaves keys unprefixed.",
+				"examples": ["", "console/history", "project-a/history"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleStore",
 				"type": "ConsoleData",
-				"description": "Async JSON and media readers. JSON reads the requested relative key; media reads media/name and derives its MIME type from the extension, defaulting to application/octet-stream. Missing objects yield undefined."
+				"description": "Returns an object with async json(path) and media(name) readers that use the configured prefix after removing its trailing slashes. JSON yields stored text or undefined when missing; media yields bytes and a MIME type selected from the case-sensitive png, jpg, jpeg, webp, gif, wav, mp3, m4a, ogg, mp4, and webm extensions, using application/octet-stream for other extensions, or undefined when missing."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Underlying storage rejection",
+				"type": "thrown",
+				"description": "A rejection from ConsoleBucket.get, ConsoleObject.text, or ConsoleObject.arrayBuffer propagates from the async reader; this unit does not assign it a stable error name or translate it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "consoleStore",
@@ -47,25 +55,26 @@
 						"name": "consoleStore.bucket",
 						"type": "ConsoleBucket",
 						"required": true,
-						"description": "Object-store binding providing asynchronous get calls that return text/byte readers or null for absent objects."
+						"description": "The required private object-store binding used by the JSON and media readers. Its get(key) method returns a promise for a ConsoleObject or null; found objects provide asynchronous text and byte readers."
 					},
 					{
 						"name": "consoleStore.prefix",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Optional object-key prefix, defaulting to empty; trailing slashes are removed when constructing a prefixed key."
+						"description": "An optional key prefix prepended to the requested JSON path or media key. Defaults to the empty string; trailing slashes are removed, and an empty prefix leaves keys unprefixed.",
+						"examples": ["", "console/history", "project-a/history"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleStore",
 						"type": "ConsoleData",
-						"description": "Async JSON and media readers. JSON reads the requested relative key; media reads media/name and derives its MIME type from the extension, defaulting to application/octet-stream. Missing objects yield undefined."
+						"description": "Returns an object with async json(path) and media(name) readers that use the configured prefix after removing its trailing slashes. JSON yields stored text or undefined when missing; media yields bytes and a MIME type selected from the case-sensitive png, jpg, jpeg, webp, gif, wav, mp3, m4a, ogg, mp4, and webm extensions, using application/octet-stream for other extensions, or undefined when missing."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
