@@ -12,27 +12,45 @@
 		"symbols": ["registerCodexCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerCodexCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The commander root Command that registerCodexCommand adds the 'codex' command to. It matters when the CLI program is assembled, because the 'codex' command, its 'serve' subcommand and whatever registerCodexPickerCommand adds are all attached beneath it; the function calls only command('codex') on it and performs no validation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerCodexCommand",
-				"type": "void"
+				"type": "void",
+				"description": "The return value of registerCodexCommand, which returns nothing (void). It matters only for its side effect: the call adds the 'codex' command to the program, gives it a 'serve' subcommand, and passes the 'codex' command to registerCodexPickerCommand."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown with the message 'Token file must have owner-only permissions' by the async action of the 'codex serve' subcommand when the token file's mode has any group or other permission bit set (info.mode & 0o077 is non-zero). It is raised only when the 'codex serve' command runs, not while registerCodexCommand executes."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Gateway token must contain at least 32 characters' by the async action of the 'codex serve' subcommand when the token file's contents, after trim(), are shorter than 32 characters. It is raised only when the 'codex serve' command runs, not while registerCodexCommand executes."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The async action of the 'codex serve' subcommand awaits stat(options.tokenFile) and readFile(options.tokenFile, 'utf8') without a try/catch, so a rejection from either (for example when the token file does not exist) propagates unchanged out of the action. It is raised only when the 'codex serve' command runs, not while registerCodexCommand executes."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The async action of the 'codex serve' subcommand calls Bun.serve without a try/catch, so an error Bun.serve throws while listening on 127.0.0.1 at the --port value (for example when that port is already in use) propagates unchanged out of the action. It is raised only when the 'codex serve' command runs, not while registerCodexCommand executes."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerCodexCommand",
@@ -40,17 +58,19 @@
 					{
 						"name": "registerCodexCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The commander root Command that registerCodexCommand adds the 'codex' command to. It matters when the CLI program is assembled, because the 'codex' command, its 'serve' subcommand and whatever registerCodexPickerCommand adds are all attached beneath it; the function calls only command('codex') on it and performs no validation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerCodexCommand",
-						"type": "void"
+						"type": "void",
+						"description": "The return value of registerCodexCommand, which returns nothing (void). It matters only for its side effect: the call adds the 'codex' command to the program, gives it a 'serve' subcommand, and passes the 'codex' command to registerCodexPickerCommand."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
