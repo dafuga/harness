@@ -58,7 +58,9 @@ test('a timed out plain-site probe is retried rather than cached as unknown', as
 		expect(sameSite(directory, directory)).toBe(false);
 		expect(sameSite(directory, directory)).toBe(true);
 		expect(plainProbe).toBe(2);
-		expect(run).toHaveBeenCalledTimes(4);
+		// The definitive "not a repository" identity answer is cached (one probe); only the timed-out
+		// plain-site probe is asked again (test/utils/same-site-cost.test.ts keeps per-event filters cheap).
+		expect(run).toHaveBeenCalledTimes(3);
 	}));
 
 function result(value: string) {

@@ -115,7 +115,9 @@ export function repositoryIdentity(directory: string): string | null {
 		throw error;
 	}
 	const result = identity && createHash('sha256').update(identity).digest('hex');
-	if (result !== null) writeLru(known, [directory, result], MAX_KNOWN_CACHE_ENTRIES);
+	// A timeout returned above and is never cached; a definitive answer, "no repository" included,
+	// is cached, so a filter asking per recorded event does not start Git every time.
+	writeLru(known, [directory, result], MAX_KNOWN_CACHE_ENTRIES);
 	return result;
 }
 
@@ -163,6 +165,6 @@ function plainSite(site: string): string | null {
 		throw error;
 	}
 	const result = outside ? (own ?? null) : null;
-	if (result !== null) writeLru(plain, [site, result], MAX_PLAIN_CACHE_ENTRIES);
+	writeLru(plain, [site, result], MAX_PLAIN_CACHE_ENTRIES);
 	return result;
 }
