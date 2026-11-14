@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native select element; native HTML content rules still apply."
+				"description": "Optional content rendered inside the native select element only when it is provided; omitting it leaves the select with no content. The component does not validate the content, so native HTML content rules still apply."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlSelect",
 				"type": "markup",
-				"description": "The actual native select element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native select element itself, with the fixed tag select, every prop other than children spread onto it, and the children content inside it, with no wrapper element around it."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
