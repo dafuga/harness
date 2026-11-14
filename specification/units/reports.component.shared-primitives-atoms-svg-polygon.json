@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native polygon element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet rendered inside the polygon element with {@render children()} when the value is truthy; when it is undefined or otherwise falsy, the polygon has no child content. The component calls the value directly, so it must be a Snippet rather than a string or other plain value."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgPolygon",
 				"type": "markup",
-				"description": "The actual native polygon element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native SVG polygon element in the svg namespace, with its tag fixed to polygon, every prop other than children spread onto it as an attribute, and the children snippet rendered inside it when provided. No wrapper element is added, so the polygon is the outermost element the component renders."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
