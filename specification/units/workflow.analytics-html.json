@@ -12,22 +12,108 @@
 		"symbols": ["analyticsHtml"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "analyticsHtml.snapshot",
 				"type": "ReturnType<typeof analyticsSnapshot>",
-				"required": true
+				"required": true,
+				"description": "The analytics snapshot, serialized in full into the page's data block: its generatedAt is printed in the 'Generated' line, and the page shows its summary, loops, jev and models fields as indented JSON. The function does no validation, so a circular reference or BigInt value makes JSON.stringify throw, and a null or undefined snapshot throws a TypeError.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"generatedAt": "2026-11-14T09:30:00.000Z",
+						"filters": {},
+						"summary": {
+							"events": 0,
+							"projects": 0,
+							"commands": {},
+							"loops": 0,
+							"completedLoops": 0,
+							"evaluatorOutcomes": {},
+							"templates": {},
+							"daily": {}
+						},
+						"loops": [],
+						"jev": {
+							"response": {
+								"checks": 0,
+								"outcomes": {},
+								"excluded": 0,
+								"firstTry": {
+									"numerator": 0,
+									"denominator": 0,
+									"rate": null
+								},
+								"tasks": []
+							},
+							"cleanCode": {
+								"checks": 0,
+								"outcomes": {},
+								"excluded": 0,
+								"firstTry": {
+									"numerator": 0,
+									"denominator": 0,
+									"rate": null
+								},
+								"tasks": []
+							}
+						},
+						"models": {
+							"authors": {},
+							"loopAuthors": {},
+							"evaluators": {},
+							"inputTokens": 0,
+							"outputTokens": 0,
+							"firstTryByAuthor": {},
+							"taskWorkers": []
+						},
+						"tasks": {
+							"tasks": 0,
+							"executions": 0,
+							"submissions": 0,
+							"accepted": 0,
+							"bounces": 0,
+							"reviewed": 0,
+							"bounceRate": null,
+							"executionFailures": 0,
+							"inputTokens": null,
+							"outputTokens": null,
+							"cacheReadTokens": null,
+							"cacheWriteTokens": null,
+							"apiCostUsd": null,
+							"apiCostRangeUsd": {
+								"minimum": null,
+								"maximum": null
+							},
+							"unpricedExecutions": 0,
+							"unreportedUsage": 0,
+							"byModel": []
+						},
+						"benchmarks": [],
+						"events": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "analyticsHtml",
-				"type": "string"
+				"type": "string",
+				"description": "The complete HTML document as one self-contained string: a 'Harness Analytics' page that prints the snapshot's generatedAt value and, through an inline script, shows the summary, loops, jev and models sections as indented JSON in preformatted blocks. Every less-than sign in the serialized snapshot is written as a Unicode escape, so the embedded data cannot close its script element early.",
+				"examples": [
+					"<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width\"><title>Harness Analytics</title><style>body{background:#101114;color:#eee;font:16px system-ui;margin:32px}pre{white-space:pre-wrap;overflow-wrap:anywhere}h1{color:#d9bc72}</style><h1>Harness Analytics</h1><p>Selected local history snapshot. Generated 2026-11-14T09:30:00.000Z.</p><div id=\"analytics\"></div><script type=\"application/json\" id=\"data\">{\"schemaVersion\":1,\"generatedAt\":\"2026-11-14T09:30:00.000Z\",\"filters\":{},\"summary\":{\"events\":0,\"projects\":0,\"commands\":{},\"loops\":0,\"completedLoops\":0,\"evaluatorOutcomes\":{},\"templates\":{},\"daily\":{}},\"loops\":[],\"jev\":{\"response\":{\"checks\":0,\"outcomes\":{},\"excluded\":0,\"firstTry\":{\"numerator\":0,\"denominator\":0,\"rate\":null},\"tasks\":[]},\"cleanCode\":{\"checks\":0,\"outcomes\":{},\"excluded\":0,\"firstTry\":{\"numerator\":0,\"denominator\":0,\"rate\":null},\"tasks\":[]}},\"models\":{\"authors\":{},\"loopAuthors\":{},\"evaluators\":{},\"inputTokens\":0,\"outputTokens\":0,\"firstTryByAuthor\":{},\"taskWorkers\":[]},\"tasks\":{\"tasks\":0,\"executions\":0,\"submissions\":0,\"accepted\":0,\"bounces\":0,\"reviewed\":0,\"bounceRate\":null,\"executionFailures\":0,\"inputTokens\":null,\"outputTokens\":null,\"cacheReadTokens\":null,\"cacheWriteTokens\":null,\"apiCostUsd\":null,\"apiCostRangeUsd\":{\"minimum\":null,\"maximum\":null},\"unpricedExecutions\":0,\"unreportedUsage\":0,\"byModel\":[]},\"benchmarks\":[],\"events\":[]}</script><script>const data=JSON.parse(document.getElementById('data').textContent);for(const section of ['summary','loops','jev','models']){const h=document.createElement('h2');h.textContent=section;const p=document.createElement('pre');p.textContent=JSON.stringify(data[section],null,2);document.getElementById('analytics').append(h,p)}</script></html>"
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when the snapshot is null or undefined, or when JSON.stringify throws on it because of a circular reference or a BigInt value."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "analyticsHtml",
@@ -35,17 +121,103 @@
 					{
 						"name": "analyticsHtml.snapshot",
 						"type": "ReturnType<typeof analyticsSnapshot>",
-						"required": true
+						"required": true,
+						"description": "The analytics snapshot, serialized in full into the page's data block: its generatedAt is printed in the 'Generated' line, and the page shows its summary, loops, jev and models fields as indented JSON. The function does no validation, so a circular reference or BigInt value makes JSON.stringify throw, and a null or undefined snapshot throws a TypeError.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"generatedAt": "2026-11-14T09:30:00.000Z",
+								"filters": {},
+								"summary": {
+									"events": 0,
+									"projects": 0,
+									"commands": {},
+									"loops": 0,
+									"completedLoops": 0,
+									"evaluatorOutcomes": {},
+									"templates": {},
+									"daily": {}
+								},
+								"loops": [],
+								"jev": {
+									"response": {
+										"checks": 0,
+										"outcomes": {},
+										"excluded": 0,
+										"firstTry": {
+											"numerator": 0,
+											"denominator": 0,
+											"rate": null
+										},
+										"tasks": []
+									},
+									"cleanCode": {
+										"checks": 0,
+										"outcomes": {},
+										"excluded": 0,
+										"firstTry": {
+											"numerator": 0,
+											"denominator": 0,
+											"rate": null
+										},
+										"tasks": []
+									}
+								},
+								"models": {
+									"authors": {},
+									"loopAuthors": {},
+									"evaluators": {},
+									"inputTokens": 0,
+									"outputTokens": 0,
+									"firstTryByAuthor": {},
+									"taskWorkers": []
+								},
+								"tasks": {
+									"tasks": 0,
+									"executions": 0,
+									"submissions": 0,
+									"accepted": 0,
+									"bounces": 0,
+									"reviewed": 0,
+									"bounceRate": null,
+									"executionFailures": 0,
+									"inputTokens": null,
+									"outputTokens": null,
+									"cacheReadTokens": null,
+									"cacheWriteTokens": null,
+									"apiCostUsd": null,
+									"apiCostRangeUsd": {
+										"minimum": null,
+										"maximum": null
+									},
+									"unpricedExecutions": 0,
+									"unreportedUsage": 0,
+									"byModel": []
+								},
+								"benchmarks": [],
+								"events": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "analyticsHtml",
-						"type": "string"
+						"type": "string",
+						"description": "The complete HTML document as one self-contained string: a 'Harness Analytics' page that prints the snapshot's generatedAt value and, through an inline script, shows the summary, loops, jev and models sections as indented JSON in preformatted blocks. Every less-than sign in the serialized snapshot is written as a Unicode escape, so the embedded data cannot close its script element early.",
+						"examples": [
+							"<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width\"><title>Harness Analytics</title><style>body{background:#101114;color:#eee;font:16px system-ui;margin:32px}pre{white-space:pre-wrap;overflow-wrap:anywhere}h1{color:#d9bc72}</style><h1>Harness Analytics</h1><p>Selected local history snapshot. Generated 2026-11-14T09:30:00.000Z.</p><div id=\"analytics\"></div><script type=\"application/json\" id=\"data\">{\"schemaVersion\":1,\"generatedAt\":\"2026-11-14T09:30:00.000Z\",\"filters\":{},\"summary\":{\"events\":0,\"projects\":0,\"commands\":{},\"loops\":0,\"completedLoops\":0,\"evaluatorOutcomes\":{},\"templates\":{},\"daily\":{}},\"loops\":[],\"jev\":{\"response\":{\"checks\":0,\"outcomes\":{},\"excluded\":0,\"firstTry\":{\"numerator\":0,\"denominator\":0,\"rate\":null},\"tasks\":[]},\"cleanCode\":{\"checks\":0,\"outcomes\":{},\"excluded\":0,\"firstTry\":{\"numerator\":0,\"denominator\":0,\"rate\":null},\"tasks\":[]}},\"models\":{\"authors\":{},\"loopAuthors\":{},\"evaluators\":{},\"inputTokens\":0,\"outputTokens\":0,\"firstTryByAuthor\":{},\"taskWorkers\":[]},\"tasks\":{\"tasks\":0,\"executions\":0,\"submissions\":0,\"accepted\":0,\"bounces\":0,\"reviewed\":0,\"bounceRate\":null,\"executionFailures\":0,\"inputTokens\":null,\"outputTokens\":null,\"cacheReadTokens\":null,\"cacheWriteTokens\":null,\"apiCostUsd\":null,\"apiCostRangeUsd\":{\"minimum\":null,\"maximum\":null},\"unpricedExecutions\":0,\"unreportedUsage\":0,\"byModel\":[]},\"benchmarks\":[],\"events\":[]}</script><script>const data=JSON.parse(document.getElementById('data').textContent);for(const section of ['summary','loops','jev','models']){const h=document.createElement('h2');h.textContent=section;const p=document.createElement('pre');p.textContent=JSON.stringify(data[section],null,2);document.getElementById('analytics').append(h,p)}</script></html>"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when the snapshot is null or undefined, or when JSON.stringify throws on it because of a circular reference or a BigInt value."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
