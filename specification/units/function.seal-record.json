@@ -45,85 +45,516 @@
 				"name": "sealRecord.draft",
 				"type": "Omit<VerificationRecord, 'id'>",
 				"required": true,
-				"description": "Verification record fields except id, to hash canonically."
+				"description": "Verification record fields other than id; their canonical JSON determines the sealed identity. Object key order does not affect the hash.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"repository": "harness",
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tree": "89abcdef0123456789abcdef0123456789abcdef",
+							"base": null
+						},
+						"profile": {
+							"id": "ci-linux-x64",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "x86_64",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "node"
+						},
+						"startedAt": "2026-11-14T12:00:00.000Z",
+						"finishedAt": "2026-11-14T12:00:01.000Z",
+						"status": "passed",
+						"components": [
+							{
+								"unit": "function.seal-record",
+								"change": "modified",
+								"target": "module",
+								"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+								"files": [
+									{
+										"path": "src/utils/verification-evidence/sealRecord.ts",
+										"hash": "abcdef0123456789abcdef0123456789abcdef01"
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"impact": {
+							"runtime": "module",
+							"expanded": false,
+							"changed": [
+								{
+									"path": "src/utils/verification-evidence/sealRecord.ts",
+									"status": "modified",
+									"classification": "source"
+								}
+							],
+							"units": {
+								"direct": ["function.seal-record"],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"uncertain": []
+						},
+						"tests": [],
+						"scenarios": [
+							{
+								"id": "desktop-recorded-evidence",
+								"status": "passed",
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"states": [
+									{
+										"id": "desktop.home",
+										"coverage": "required",
+										"captures": []
+									}
+								]
+							}
+						],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"missing": []
+						},
+						"failures": []
+					}
+				]
 			},
 			{
 				"name": "recordIntact.record",
 				"type": "VerificationRecord",
 				"required": true,
-				"description": "Record whose stored id should be compared with its current contents."
+				"description": "A sealed verification record whose stored id is compared with a fresh hash of all remaining fields. The function reports whether those values still match.",
+				"examples": [
+					{
+						"id": "660545d9235bf8aaef57c03d9d44f17683a5c1ac1bdf53d5758ac99acedd6a05",
+						"schemaVersion": 1,
+						"repository": "harness",
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tree": "89abcdef0123456789abcdef0123456789abcdef",
+							"base": null
+						},
+						"profile": {
+							"id": "ci-linux-x64",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "x86_64",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "node"
+						},
+						"startedAt": "2026-11-14T12:00:00.000Z",
+						"finishedAt": "2026-11-14T12:00:01.000Z",
+						"status": "passed",
+						"components": [
+							{
+								"unit": "function.seal-record",
+								"change": "modified",
+								"target": "module",
+								"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+								"files": [
+									{
+										"path": "src/utils/verification-evidence/sealRecord.ts",
+										"hash": "abcdef0123456789abcdef0123456789abcdef01"
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"impact": {
+							"runtime": "module",
+							"expanded": false,
+							"changed": [
+								{
+									"path": "src/utils/verification-evidence/sealRecord.ts",
+									"status": "modified",
+									"classification": "source"
+								}
+							],
+							"units": {
+								"direct": ["function.seal-record"],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"uncertain": []
+						},
+						"tests": [],
+						"scenarios": [
+							{
+								"id": "desktop-recorded-evidence",
+								"status": "passed",
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"states": [
+									{
+										"id": "desktop.home",
+										"coverage": "required",
+										"captures": []
+									}
+								]
+							}
+						],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"missing": []
+						},
+						"failures": []
+					}
+				]
 			},
 			{
 				"name": "recordComponents.impact",
 				"type": "ImpactReport",
 				"required": true,
-				"description": "Impact report identifying direct, indirect, added and removed units."
+				"description": "Impact report supplying the direct, indirect, added and removed unit sets. The implementation considers direct, indirect and measured ids, then uses added and removed membership to classify each included unit.",
+				"examples": [
+					{
+						"base": "0123456789abcdef0123456789abcdef01234567",
+						"head": "89abcdef0123456789abcdef0123456789abcdef",
+						"runtime": "module",
+						"expanded": false,
+						"changed": [
+							{
+								"path": "src/utils/verification-evidence/sealRecord.ts",
+								"status": "modified",
+								"classification": "source",
+								"unit": "function.seal-record"
+							}
+						],
+						"units": {
+							"direct": ["function.seal-record"],
+							"indirect": [],
+							"added": [],
+							"removed": []
+						},
+						"tests": {
+							"selected": [],
+							"excluded": [],
+							"removed": []
+						},
+						"scenarios": {
+							"affected": [],
+							"unaffected": []
+						},
+						"uncertain": []
+					}
+				]
 			},
 			{
 				"name": "recordComponents.sides",
 				"type": "{ base: Side; head: Side }",
 				"required": true,
-				"description": "Base and head manifests and owned source hashes used to identify the tested version, using base for removed units."
+				"description": "Base and head manifests and source indexes used to resolve component versions. Removed units are resolved from base; other included ids are resolved from head."
 			},
 			{
 				"name": "recordComponents.measured",
 				"type": "string[]",
 				"required": true,
-				"description": "Additional measured unit ids to include even when not reached by impact."
+				"description": "Additional unit ids included in the candidate set before de-duplication and sorting. A measured id still produces no component when its selected side has no matching manifest.",
+				"examples": [
+					["function.seal-record"]
+				]
 			},
 			{
 				"name": "benchmarkMeasurements.gathered",
 				"type": "Gathered[]",
 				"required": true,
-				"description": "Gathered captures whose parsed benchmark payloads may supply measurements."
+				"description": "Gathered captures whose benchmark payloads are parsed as benchmark captures. A payload that fails the schema contributes no measurements.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "benchmarkMeasurements.context",
 				"type": "{ profile: string; commit: string }",
 				"required": true,
-				"description": "Current machine profile id and verified commit to attach to benchmark measurements."
+				"description": "Profile string and full commit hash copied onto each parsed measurement. These values replace any profile and tested revision in the reported measurement.",
+				"examples": [
+					{
+						"profile": "ci-linux-x64",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "referencedScenario.prior",
 				"type": "VerificationRecord",
 				"required": true,
-				"description": "Earlier verification record from which unaffected scenario evidence may be referenced."
+				"description": "Earlier verification record searched for scenario evidence. Missing or failed scenarios return undefined; an existing referencedRecord is retained, otherwise the prior record id is used.",
+				"examples": [
+					{
+						"id": "660545d9235bf8aaef57c03d9d44f17683a5c1ac1bdf53d5758ac99acedd6a05",
+						"schemaVersion": 1,
+						"repository": "harness",
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tree": "89abcdef0123456789abcdef0123456789abcdef",
+							"base": null
+						},
+						"profile": {
+							"id": "ci-linux-x64",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "x86_64",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "node"
+						},
+						"startedAt": "2026-11-14T12:00:00.000Z",
+						"finishedAt": "2026-11-14T12:00:01.000Z",
+						"status": "passed",
+						"components": [
+							{
+								"unit": "function.seal-record",
+								"change": "modified",
+								"target": "module",
+								"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+								"files": [
+									{
+										"path": "src/utils/verification-evidence/sealRecord.ts",
+										"hash": "abcdef0123456789abcdef0123456789abcdef01"
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"impact": {
+							"runtime": "module",
+							"expanded": false,
+							"changed": [
+								{
+									"path": "src/utils/verification-evidence/sealRecord.ts",
+									"status": "modified",
+									"classification": "source"
+								}
+							],
+							"units": {
+								"direct": ["function.seal-record"],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"uncertain": []
+						},
+						"tests": [],
+						"scenarios": [
+							{
+								"id": "desktop-recorded-evidence",
+								"status": "passed",
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"states": [
+									{
+										"id": "desktop.home",
+										"coverage": "required",
+										"captures": []
+									}
+								]
+							}
+						],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"missing": []
+						},
+						"failures": []
+					}
+				]
 			},
 			{
 				"name": "referencedScenario.id",
 				"type": "string",
 				"required": true,
-				"description": "Scenario id to find in the prior record."
+				"description": "Scenario id matched by exact equality in the prior record. Missing ids and ids whose scenario status is failed produce no result.",
+				"examples": ["desktop-recorded-evidence"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordComponents",
 				"type": "RecordedComponent[]",
-				"description": "Sorted unique tested/measured components with source, manifest, contract and runtime hashes, files, target and change classification. Missing manifests are omitted."
+				"description": "Unique ids from direct, indirect and measured sets are sorted lexically; removed ids use base and other ids use head. Missing manifests are omitted, and returned components include version hashes, owned files, runtime target and change classification.",
+				"examples": [
+					[
+						{
+							"unit": "function.seal-record",
+							"change": "modified",
+							"target": "module",
+							"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+							"files": [
+								{
+									"path": "src/utils/verification-evidence/sealRecord.ts",
+									"hash": "abcdef0123456789abcdef0123456789abcdef01"
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "benchmarkMeasurements",
 				"type": "Measurement[]",
-				"description": "Measurements from valid benchmark payloads, attributed to the supplied profile/commit with empty artifacts; invalid payloads contribute nothing."
+				"description": "Measurements from benchmark payloads accepted by the capture schema, with the supplied profile and commit and an empty artifacts array. Invalid payloads contribute nothing.",
+				"examples": [
+					[
+						{
+							"unit": "function.seal-record",
+							"metric": "latency-warm-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.2,
+							"method": "benchmark",
+							"workload": null,
+							"profile": "ci-linux-x64",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": []
+						}
+					]
+				]
 			},
 			{
 				"name": "referencedScenario",
 				"type": "ScenarioResult | undefined",
-				"description": "Earlier nonfailed scenario marked referenced with its original referencedRecord retained, or the prior record id; undefined for missing/failed scenarios."
+				"description": "A matching nonfailed scenario is copied with status referenced and its existing referencedRecord retained, or set to the prior record id. Missing or failed scenarios return undefined.",
+				"examples": [
+					{
+						"id": "desktop-recorded-evidence",
+						"status": "referenced",
+						"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+						"states": [
+							{
+								"id": "desktop.home",
+								"coverage": "required",
+								"captures": []
+							}
+						],
+						"referencedRecord": "660545d9235bf8aaef57c03d9d44f17683a5c1ac1bdf53d5758ac99acedd6a05"
+					}
+				]
 			},
 			{
 				"name": "sealRecord",
 				"type": "VerificationRecord",
-				"description": "Record with id set to the SHA-256 of canonical draft JSON; no storage write occurs."
+				"description": "Verification record formed by adding the lowercase hexadecimal SHA-256 of canonicalJson(draft) as id. Canonical JSON sorts object keys, and this function does not persist the record.",
+				"examples": [
+					{
+						"id": "660545d9235bf8aaef57c03d9d44f17683a5c1ac1bdf53d5758ac99acedd6a05",
+						"schemaVersion": 1,
+						"repository": "harness",
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tree": "89abcdef0123456789abcdef0123456789abcdef",
+							"base": null
+						},
+						"profile": {
+							"id": "ci-linux-x64",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "x86_64",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "node"
+						},
+						"startedAt": "2026-11-14T12:00:00.000Z",
+						"finishedAt": "2026-11-14T12:00:01.000Z",
+						"status": "passed",
+						"components": [
+							{
+								"unit": "function.seal-record",
+								"change": "modified",
+								"target": "module",
+								"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+								"files": [
+									{
+										"path": "src/utils/verification-evidence/sealRecord.ts",
+										"hash": "abcdef0123456789abcdef0123456789abcdef01"
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"impact": {
+							"runtime": "module",
+							"expanded": false,
+							"changed": [
+								{
+									"path": "src/utils/verification-evidence/sealRecord.ts",
+									"status": "modified",
+									"classification": "source"
+								}
+							],
+							"units": {
+								"direct": ["function.seal-record"],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"uncertain": []
+						},
+						"tests": [],
+						"scenarios": [
+							{
+								"id": "desktop-recorded-evidence",
+								"status": "passed",
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"states": [
+									{
+										"id": "desktop.home",
+										"coverage": "required",
+										"captures": []
+									}
+								]
+							}
+						],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"missing": []
+						},
+						"failures": []
+					}
+				]
 			},
 			{
 				"name": "recordIntact",
 				"type": "boolean",
-				"description": "True when recomputing the canonical record hash matches its id."
+				"description": "Boolean indicating whether the hash of the record fields other than id equals the stored id. It does not validate or repair the record fields.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "sealRecord",
@@ -132,18 +563,185 @@
 						"name": "sealRecord.draft",
 						"type": "Omit<VerificationRecord, 'id'>",
 						"required": true,
-						"description": "Verification record fields except id, to hash canonically."
+						"description": "Verification record fields other than id; their canonical JSON determines the sealed identity. Object key order does not affect the hash.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"repository": "harness",
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tree": "89abcdef0123456789abcdef0123456789abcdef",
+									"base": null
+								},
+								"profile": {
+									"id": "ci-linux-x64",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "x86_64",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "node"
+								},
+								"startedAt": "2026-11-14T12:00:00.000Z",
+								"finishedAt": "2026-11-14T12:00:01.000Z",
+								"status": "passed",
+								"components": [
+									{
+										"unit": "function.seal-record",
+										"change": "modified",
+										"target": "module",
+										"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+										"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+										"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+										"files": [
+											{
+												"path": "src/utils/verification-evidence/sealRecord.ts",
+												"hash": "abcdef0123456789abcdef0123456789abcdef01"
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"impact": {
+									"runtime": "module",
+									"expanded": false,
+									"changed": [
+										{
+											"path": "src/utils/verification-evidence/sealRecord.ts",
+											"status": "modified",
+											"classification": "source"
+										}
+									],
+									"units": {
+										"direct": ["function.seal-record"],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [],
+								"scenarios": [
+									{
+										"id": "desktop-recorded-evidence",
+										"status": "passed",
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"states": [
+											{
+												"id": "desktop.home",
+												"coverage": "required",
+												"captures": []
+											}
+										]
+									}
+								],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								},
+								"failures": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealRecord",
 						"type": "VerificationRecord",
-						"description": "Record with id set to the SHA-256 of canonical draft JSON; no storage write occurs."
+						"description": "Verification record formed by adding the lowercase hexadecimal SHA-256 of canonicalJson(draft) as id. Canonical JSON sorts object keys, and this function does not persist the record.",
+						"examples": [
+							{
+								"id": "660545d9235bf8aaef57c03d9d44f17683a5c1ac1bdf53d5758ac99acedd6a05",
+								"schemaVersion": 1,
+								"repository": "harness",
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tree": "89abcdef0123456789abcdef0123456789abcdef",
+									"base": null
+								},
+								"profile": {
+									"id": "ci-linux-x64",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "x86_64",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "node"
+								},
+								"startedAt": "2026-11-14T12:00:00.000Z",
+								"finishedAt": "2026-11-14T12:00:01.000Z",
+								"status": "passed",
+								"components": [
+									{
+										"unit": "function.seal-record",
+										"change": "modified",
+										"target": "module",
+										"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+										"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+										"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+										"files": [
+											{
+												"path": "src/utils/verification-evidence/sealRecord.ts",
+												"hash": "abcdef0123456789abcdef0123456789abcdef01"
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"impact": {
+									"runtime": "module",
+									"expanded": false,
+									"changed": [
+										{
+											"path": "src/utils/verification-evidence/sealRecord.ts",
+											"status": "modified",
+											"classification": "source"
+										}
+									],
+									"units": {
+										"direct": ["function.seal-record"],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [],
+								"scenarios": [
+									{
+										"id": "desktop-recorded-evidence",
+										"status": "passed",
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"states": [
+											{
+												"id": "desktop.home",
+												"coverage": "required",
+												"captures": []
+											}
+										]
+									}
+								],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								},
+								"failures": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordIntact",
@@ -152,18 +750,103 @@
 						"name": "recordIntact.record",
 						"type": "VerificationRecord",
 						"required": true,
-						"description": "Record whose stored id should be compared with its current contents."
+						"description": "A sealed verification record whose stored id is compared with a fresh hash of all remaining fields. The function reports whether those values still match.",
+						"examples": [
+							{
+								"id": "660545d9235bf8aaef57c03d9d44f17683a5c1ac1bdf53d5758ac99acedd6a05",
+								"schemaVersion": 1,
+								"repository": "harness",
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tree": "89abcdef0123456789abcdef0123456789abcdef",
+									"base": null
+								},
+								"profile": {
+									"id": "ci-linux-x64",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "x86_64",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "node"
+								},
+								"startedAt": "2026-11-14T12:00:00.000Z",
+								"finishedAt": "2026-11-14T12:00:01.000Z",
+								"status": "passed",
+								"components": [
+									{
+										"unit": "function.seal-record",
+										"change": "modified",
+										"target": "module",
+										"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+										"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+										"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+										"files": [
+											{
+												"path": "src/utils/verification-evidence/sealRecord.ts",
+												"hash": "abcdef0123456789abcdef0123456789abcdef01"
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"impact": {
+									"runtime": "module",
+									"expanded": false,
+									"changed": [
+										{
+											"path": "src/utils/verification-evidence/sealRecord.ts",
+											"status": "modified",
+											"classification": "source"
+										}
+									],
+									"units": {
+										"direct": ["function.seal-record"],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [],
+								"scenarios": [
+									{
+										"id": "desktop-recorded-evidence",
+										"status": "passed",
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"states": [
+											{
+												"id": "desktop.home",
+												"coverage": "required",
+												"captures": []
+											}
+										]
+									}
+								],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								},
+								"failures": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordIntact",
 						"type": "boolean",
-						"description": "True when recomputing the canonical record hash matches its id."
+						"description": "Boolean indicating whether the hash of the record fields other than id equals the stored id. It does not validate or repair the record fields.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordComponents",
@@ -172,30 +855,84 @@
 						"name": "recordComponents.impact",
 						"type": "ImpactReport",
 						"required": true,
-						"description": "Impact report identifying direct, indirect, added and removed units."
+						"description": "Impact report supplying the direct, indirect, added and removed unit sets. The implementation considers direct, indirect and measured ids, then uses added and removed membership to classify each included unit.",
+						"examples": [
+							{
+								"base": "0123456789abcdef0123456789abcdef01234567",
+								"head": "89abcdef0123456789abcdef0123456789abcdef",
+								"runtime": "module",
+								"expanded": false,
+								"changed": [
+									{
+										"path": "src/utils/verification-evidence/sealRecord.ts",
+										"status": "modified",
+										"classification": "source",
+										"unit": "function.seal-record"
+									}
+								],
+								"units": {
+									"direct": ["function.seal-record"],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"tests": {
+									"selected": [],
+									"excluded": [],
+									"removed": []
+								},
+								"scenarios": {
+									"affected": [],
+									"unaffected": []
+								},
+								"uncertain": []
+							}
+						]
 					},
 					{
 						"name": "recordComponents.sides",
 						"type": "{ base: Side; head: Side }",
 						"required": true,
-						"description": "Base and head manifests and owned source hashes used to identify the tested version, using base for removed units."
+						"description": "Base and head manifests and source indexes used to resolve component versions. Removed units are resolved from base; other included ids are resolved from head."
 					},
 					{
 						"name": "recordComponents.measured",
 						"type": "string[]",
 						"required": true,
-						"description": "Additional measured unit ids to include even when not reached by impact."
+						"description": "Additional unit ids included in the candidate set before de-duplication and sorting. A measured id still produces no component when its selected side has no matching manifest.",
+						"examples": [
+							["function.seal-record"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordComponents",
 						"type": "RecordedComponent[]",
-						"description": "Sorted unique tested/measured components with source, manifest, contract and runtime hashes, files, target and change classification. Missing manifests are omitted."
+						"description": "Unique ids from direct, indirect and measured sets are sorted lexically; removed ids use base and other ids use head. Missing manifests are omitted, and returned components include version hashes, owned files, runtime target and change classification.",
+						"examples": [
+							[
+								{
+									"unit": "function.seal-record",
+									"change": "modified",
+									"target": "module",
+									"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+									"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+									"files": [
+										{
+											"path": "src/utils/verification-evidence/sealRecord.ts",
+											"hash": "abcdef0123456789abcdef0123456789abcdef01"
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "benchmarkMeasurements",
@@ -204,24 +941,48 @@
 						"name": "benchmarkMeasurements.gathered",
 						"type": "Gathered[]",
 						"required": true,
-						"description": "Gathered captures whose parsed benchmark payloads may supply measurements."
+						"description": "Gathered captures whose benchmark payloads are parsed as benchmark captures. A payload that fails the schema contributes no measurements.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "benchmarkMeasurements.context",
 						"type": "{ profile: string; commit: string }",
 						"required": true,
-						"description": "Current machine profile id and verified commit to attach to benchmark measurements."
+						"description": "Profile string and full commit hash copied onto each parsed measurement. These values replace any profile and tested revision in the reported measurement.",
+						"examples": [
+							{
+								"profile": "ci-linux-x64",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchmarkMeasurements",
 						"type": "Measurement[]",
-						"description": "Measurements from valid benchmark payloads, attributed to the supplied profile/commit with empty artifacts; invalid payloads contribute nothing."
+						"description": "Measurements from benchmark payloads accepted by the capture schema, with the supplied profile and commit and an empty artifacts array. Invalid payloads contribute nothing.",
+						"examples": [
+							[
+								{
+									"unit": "function.seal-record",
+									"metric": "latency-warm-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.2,
+									"method": "benchmark",
+									"workload": null,
+									"profile": "ci-linux-x64",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": []
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "referencedScenario",
@@ -230,24 +991,124 @@
 						"name": "referencedScenario.prior",
 						"type": "VerificationRecord",
 						"required": true,
-						"description": "Earlier verification record from which unaffected scenario evidence may be referenced."
+						"description": "Earlier verification record searched for scenario evidence. Missing or failed scenarios return undefined; an existing referencedRecord is retained, otherwise the prior record id is used.",
+						"examples": [
+							{
+								"id": "660545d9235bf8aaef57c03d9d44f17683a5c1ac1bdf53d5758ac99acedd6a05",
+								"schemaVersion": 1,
+								"repository": "harness",
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tree": "89abcdef0123456789abcdef0123456789abcdef",
+									"base": null
+								},
+								"profile": {
+									"id": "ci-linux-x64",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "x86_64",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "node"
+								},
+								"startedAt": "2026-11-14T12:00:00.000Z",
+								"finishedAt": "2026-11-14T12:00:01.000Z",
+								"status": "passed",
+								"components": [
+									{
+										"unit": "function.seal-record",
+										"change": "modified",
+										"target": "module",
+										"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+										"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+										"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+										"files": [
+											{
+												"path": "src/utils/verification-evidence/sealRecord.ts",
+												"hash": "abcdef0123456789abcdef0123456789abcdef01"
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"impact": {
+									"runtime": "module",
+									"expanded": false,
+									"changed": [
+										{
+											"path": "src/utils/verification-evidence/sealRecord.ts",
+											"status": "modified",
+											"classification": "source"
+										}
+									],
+									"units": {
+										"direct": ["function.seal-record"],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [],
+								"scenarios": [
+									{
+										"id": "desktop-recorded-evidence",
+										"status": "passed",
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"states": [
+											{
+												"id": "desktop.home",
+												"coverage": "required",
+												"captures": []
+											}
+										]
+									}
+								],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								},
+								"failures": []
+							}
+						]
 					},
 					{
 						"name": "referencedScenario.id",
 						"type": "string",
 						"required": true,
-						"description": "Scenario id to find in the prior record."
+						"description": "Scenario id matched by exact equality in the prior record. Missing ids and ids whose scenario status is failed produce no result.",
+						"examples": ["desktop-recorded-evidence"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "referencedScenario",
 						"type": "ScenarioResult | undefined",
-						"description": "Earlier nonfailed scenario marked referenced with its original referencedRecord retained, or the prior record id; undefined for missing/failed scenarios."
+						"description": "A matching nonfailed scenario is copied with status referenced and its existing referencedRecord retained, or set to the prior record id. Missing or failed scenarios return undefined.",
+						"examples": [
+							{
+								"id": "desktop-recorded-evidence",
+								"status": "referenced",
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"states": [
+									{
+										"id": "desktop.home",
+										"coverage": "required",
+										"captures": []
+									}
+								],
+								"referencedRecord": "660545d9235bf8aaef57c03d9d44f17683a5c1ac1bdf53d5758ac99acedd6a05"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
