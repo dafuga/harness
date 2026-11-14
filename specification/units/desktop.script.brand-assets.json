@@ -12,11 +12,27 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A Node.js file-system error (an Error whose code property names the failure) that mkdir or writeFile from node:fs/promises rejects with, for example when a static folder cannot be created or a folder on the iOS icon path does not already exist, because only the static folders are created. Nothing catches it, so the script stops and files written earlier stay on disk."
+			},
+			{
+				"name": "brandMark or brandIcon error",
+				"type": "thrown",
+				"description": "Any error thrown by brandMark() or by brandIcon(1024, 'ios') during its call, passed through unchanged because the script has no try/catch around those calls. The script stops before the affected file is written, and files written earlier stay on disk."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by the line that sets packages, resolve(import.meta.dirname, '../..'), only when the runtime does not provide import.meta.dirname, because path.resolve rejects a non-string argument. No file is written in that case."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
