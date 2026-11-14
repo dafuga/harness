@@ -21,17 +21,18 @@
 				"name": "createAgentRosterStore.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Selected project identity and optional read-only agent activity bridge. Responses from earlier project selections are discarded."
+				"description": "The workspace state whose `projectId` scopes the roster and whose optional `bridge.agentActivity` reader supplies samples during refresh. Refresh records an unavailable message when either is missing and ignores a result if the workspace project changes before it resolves."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createAgentRosterStore",
 				"type": "AgentRosterState",
-				"description": "Reactive reading, errors, current working count, sessions, module owners and visible-page polling with cleanup."
+				"description": "The created reactive state exposes the current-project sample, loading and error state, working count, labeled sessions, active module assignments, `refresh`, and `listen`. It hides a stored sample when the workspace project changes, prevents overlapping refreshes, and `listen` refreshes every 15 seconds and when the document becomes visible, returning cleanup to stop the timer and remove the visibility listener."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "createAgentRosterStore",
@@ -40,18 +41,18 @@
 						"name": "createAgentRosterStore.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "Selected project identity and optional read-only agent activity bridge. Responses from earlier project selections are discarded."
+						"description": "The workspace state whose `projectId` scopes the roster and whose optional `bridge.agentActivity` reader supplies samples during refresh. Refresh records an unavailable message when either is missing and ignores a result if the workspace project changes before it resolves."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createAgentRosterStore",
 						"type": "AgentRosterState",
-						"description": "Reactive reading, errors, current working count, sessions, module owners and visible-page polling with cleanup."
+						"description": "The created reactive state exposes the current-project sample, loading and error state, working count, labeled sessions, active module assignments, `refresh`, and `listen`. It hides a stored sample when the workspace project changes, prevents overlapping refreshes, and `listen` refreshes every 15 seconds and when the document becomes visible, returning cleanup to stop the timer and remove the visibility listener."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
