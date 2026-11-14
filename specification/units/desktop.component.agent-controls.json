@@ -31,46 +31,62 @@
 				"name": "AgentControls.providers",
 				"type": "ProviderState[]",
 				"required": true,
-				"description": "Provider availability, display names, reasons, models and supported reasoning efforts. Starts with Codex selected. Compact mode switches away from an unavailable provider to the first available provider when one exists; the expanded layout does not make that switch. An empty list produces a no-provider notice. Provider IDs, model IDs within a provider, and effort names within a model must be distinct."
+				"description": "Each record carries the provider id, label, availability, reason, version, image-generation flag and model choices; each model includes its id, label, effort names, nullable default effort and default flag. Provider ids (codex or claude), model ids and effort names act as list keys and must be unique within their rendered lists; compact mode switches an unavailable current provider to the first available provider, and an empty list shows a no-provider notice.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "codex",
+							"label": "Codex",
+							"available": true,
+							"reason": null,
+							"version": null,
+							"imageGeneration": false,
+							"models": []
+						}
+					]
+				]
 			},
 			{
 				"name": "AgentControls.choice",
 				"type": "AgentChoice | null",
 				"required": false,
 				"default": null,
-				"description": "Bindable selection, initially null. The component replaces it with the selected provider, model and reasoning effort when the provider is available and the model is nonempty; otherwise it sets null. An empty effort is returned as null. A supplied value does not initialize the internal pickers."
+				"description": "Bindable value written by this component: the current provider id, model id and nullable effort, or null. It is set to null unless the selected provider is available and the model string is nonempty; the supplied value does not initialize the internal pickers, and an empty effort becomes null.",
+				"examples": [null]
 			},
 			{
 				"name": "AgentControls.compact",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional layout switch, false by default. True uses model and effort icon pickers; false shows provider buttons and model and effort dropdowns."
+				"description": "Selects the rendered layout and defaults to false. True renders icon pickers; false renders provider buttons and model and reasoning-effort selects.",
+				"examples": [false, true]
 			},
 			{
 				"name": "AgentControls.action",
 				"type": "Snippet",
 				"required": true,
-				"description": "Required content supplied by the parent, rendered after the model and effort controls in either layout, such as a send button."
+				"description": "Required Svelte snippet rendered after the pickers in compact mode and after the selects in expanded mode."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AgentControls",
 				"type": "markup",
-				"description": "Provider, model and effort controls followed by the supplied action. Unavailable provider buttons and unusable dropdowns are disabled. Invalid model selections fall back to the provider default, then its first model, then empty; effort falls back to the model default, then its first supported effort, then empty. Shows the selected provider reason when present."
+				"description": "Renders either the compact picker row or the expanded provider-button and model/effort-select layouts, followed by the required action snippet. It adds the current provider's reason when truthy and the no-provider notice when the provider list is empty."
 			}
 		],
 		"errors": [
 			{
 				"name": "Duplicate row key",
-				"type": "Svelte keyed-each error",
-				"description": "Duplicate provider/model/effort keys are rejected by Svelte keyed-list updates."
+				"type": "thrown",
+				"description": "Rendering a keyed list can throw when duplicate IDs or effort strings occur among its entries: provider IDs and model IDs are keyed by id, and efforts are keyed by their string value."
 			},
 			{
 				"name": "Caller content error",
 				"type": "thrown",
-				"description": "Errors from the required action snippet propagate during rendering; the component does not catch caller content failures."
+				"description": "An error thrown by the supplied action snippet propagates when it is rendered because this component does not catch snippet errors."
 			}
 		],
 		"errorStatus": "declared",
