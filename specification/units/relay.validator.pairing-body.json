@@ -16,31 +16,71 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PairingBodyValidator.request.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The body of a public pairing request, which anyone can send, as read from the request's JSON before any check. It is accepted only when it is an object with exactly the three fields ephemeralKey (87 base64url characters, the encoding of a 65-byte uncompressed P-256 point), sealed (22 to 8192 base64url characters) and challenge (43 base64url characters), each checked for length and alphabet only; any other body is refused.",
+				"examples": [
+					{
+						"ephemeralKey": "BMq3vT9xLeRkZ0wNcYh4J2sUoP7aXdfG5iKyBnW1tV8hEqRzC3mLxS6dNgYpA0bUjHfQv9Ip2Cw5TaKsMz7eXoU",
+						"sealed": "Yq2Rk8Lz0WfV4mNb7tPxHc9sJdE3uAkOw5zBgT1rNi6yXpQ8DlvM0aSfGh4eUt7jRcYo2KbWz9IqN5hTxEe3Pd8mLaQ1gVy6kJrOsZ4wHu0FnCBt7iDx9MlRejA2Vq5YkG_oTh8NcS3wP6uKzLdQm-7rFbE0XgWvjI4ySa1tCoLn9QeMhZ2pdUk3RwOx8biV5fT7qJgN6aHsBzYc0LmKe2Dr4uSwXo8pAgVt9izN1lQkEf3HJy7cUdMb6RsG0rWvIo5aTpXh2NeZ4qlB9kOy8fCdEwS6mJn1guRz3iAtHqP7cM5vYdLx0ok8",
+						"challenge": "Qm7fLz2Hw9KpXr4TnVbE8yUaJc3sD1GoMi5NhZtWxR0"
+					},
+					{
+						"ephemeralKey": "BEw8dKr2TnyQ0lVhXm5GaBz3Uk7oSf9RiNcWpL1vDq6HgJx4AeTbYmO8ZsFn2uCpIkWd7rhG3oSxNe0jKwY4cQ8",
+						"sealed": "Ac4Gt9Pq2LvR7hXn0sYeMj3wKz8dBoUfI5yTq6rNsE1cLh9gWaPk0bDx4vSmnH8uZo2eJrQy6aMt3iVflX9dNs5wCkEz2pGj7hRbtO4kUq1mYxiL0fVc6nAdW8sBr3hKePDg5zQy9jTohN2mXa7uSlF1eRi4pOcWbK6tJd0vGqYs9nHz3wLarC7oMe5fUIx0BkPg8sTdVq4lEy2hNjaW3zDc6rOpGm9iSf1tXbeT5yKu8nLvRo7hQa0jMd3cZ-wPg4EikU6sBn9xVyJf2dLr5mCt9oAhWq8zGeNb1vIs7cTuyP4lRk6oXg",
+						"challenge": "d4Yo9vLqRz2kBWsHn7EcMxZ0pJfA5uIgK8aNDb3hYe8"
+					}
+				]
 			},
 			{
 				"name": "PairingBodyValidator.verifier.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The body of a pairing exchange call, which anyone can send, as read from the request's JSON before any check. It is accepted only when it is an object with exactly one field, verifier, holding 43 base64url characters (the encoding of 32 random bytes), checked for length and alphabet only; any other body yields undefined.",
+				"examples": [
+					{
+						"verifier": "Vq3r_8KZtW0nLx2TyHbM6cF4JdE9sUa1PqRgYo7NiXk"
+					},
+					{
+						"verifier": "x5-QmBt0RwLd8KcV3fGh7JyZ1uNp4EaSo2iTqXbMk6U"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "PairingBodyValidator.request",
-				"type": "RelayPairingRequest | undefined"
+				"type": "RelayPairingRequest | undefined",
+				"description": "The pairing request taken from the body: the same ephemeralKey, sealed and challenge strings, or undefined when the body is refused. The relay saves the three strings with the pairing and forwards them to the host as a pairing request, unless the pairing is missing or no longer accepts requests.",
+				"examples": [
+					{
+						"ephemeralKey": "BMq3vT9xLeRkZ0wNcYh4J2sUoP7aXdfG5iKyBnW1tV8hEqRzC3mLxS6dNgYpA0bUjHfQv9Ip2Cw5TaKsMz7eXoU",
+						"sealed": "Yq2Rk8Lz0WfV4mNb7tPxHc9sJdE3uAkOw5zBgT1rNi6yXpQ8DlvM0aSfGh4eUt7jRcYo2KbWz9IqN5hTxEe3Pd8mLaQ1gVy6kJrOsZ4wHu0FnCBt7iDx9MlRejA2Vq5YkG_oTh8NcS3wP6uKzLdQm-7rFbE0XgWvjI4ySa1tCoLn9QeMhZ2pdUk3RwOx8biV5fT7qJgN6aHsBzYc0LmKe2Dr4uSwXo8pAgVt9izN1lQkEf3HJy7cUdMb6RsG0rWvIo5aTpXh2NeZ4qlB9kOy8fCdEwS6mJn1guRz3iAtHqP7cM5vYdLx0ok8",
+						"challenge": "Qm7fLz2Hw9KpXr4TnVbE8yUaJc3sD1GoMi5NhZtWxR0"
+					},
+					{
+						"ephemeralKey": "BEw8dKr2TnyQ0lVhXm5GaBz3Uk7oSf9RiNcWpL1vDq6HgJx4AeTbYmO8ZsFn2uCpIkWd7rhG3oSxNe0jKwY4cQ8",
+						"sealed": "Ac4Gt9Pq2LvR7hXn0sYeMj3wKz8dBoUfI5yTq6rNsE1cLh9gWaPk0bDx4vSmnH8uZo2eJrQy6aMt3iVflX9dNs5wCkEz2pGj7hRbtO4kUq1mYxiL0fVc6nAdW8sBr3hKePDg5zQy9jTohN2mXa7uSlF1eRi4pOcWbK6tJd0vGqYs9nHz3wLarC7oMe5fUIx0BkPg8sTdVq4lEy2hNjaW3zDc6rOpGm9iSf1tXbeT5yKu8nLvRo7hQa0jMd3cZ-wPg4EikU6sBn9xVyJf2dLr5mCt9oAhWq8zGeNb1vIs7cTuyP4lRk6oXg",
+						"challenge": "d4Yo9vLqRz2kBWsHn7EcMxZ0pJfA5uIgK8aNDb3hYe8"
+					}
+				]
 			},
 			{
 				"name": "PairingBodyValidator.verifier",
-				"type": "string | undefined"
+				"type": "string | undefined",
+				"description": "The verifier of a pairing exchange: the verifier text of the body, 43 base64url characters, or undefined when the body is refused. The relay compares the base64url SHA-256 of this verifier with the challenge stored for the pairing.",
+				"examples": [
+					"Vq3r_8KZtW0nLx2TyHbM6cF4JdE9sUa1PqRgYo7NiXk",
+					"x5-QmBt0RwLd8KcV3fGh7JyZ1uNp4EaSo2iTqXbMk6U"
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "PairingBodyValidator.request",
@@ -48,17 +88,43 @@
 					{
 						"name": "PairingBodyValidator.request.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The body of a public pairing request, which anyone can send, as read from the request's JSON before any check. It is accepted only when it is an object with exactly the three fields ephemeralKey (87 base64url characters, the encoding of a 65-byte uncompressed P-256 point), sealed (22 to 8192 base64url characters) and challenge (43 base64url characters), each checked for length and alphabet only; any other body is refused.",
+						"examples": [
+							{
+								"ephemeralKey": "BMq3vT9xLeRkZ0wNcYh4J2sUoP7aXdfG5iKyBnW1tV8hEqRzC3mLxS6dNgYpA0bUjHfQv9Ip2Cw5TaKsMz7eXoU",
+								"sealed": "Yq2Rk8Lz0WfV4mNb7tPxHc9sJdE3uAkOw5zBgT1rNi6yXpQ8DlvM0aSfGh4eUt7jRcYo2KbWz9IqN5hTxEe3Pd8mLaQ1gVy6kJrOsZ4wHu0FnCBt7iDx9MlRejA2Vq5YkG_oTh8NcS3wP6uKzLdQm-7rFbE0XgWvjI4ySa1tCoLn9QeMhZ2pdUk3RwOx8biV5fT7qJgN6aHsBzYc0LmKe2Dr4uSwXo8pAgVt9izN1lQkEf3HJy7cUdMb6RsG0rWvIo5aTpXh2NeZ4qlB9kOy8fCdEwS6mJn1guRz3iAtHqP7cM5vYdLx0ok8",
+								"challenge": "Qm7fLz2Hw9KpXr4TnVbE8yUaJc3sD1GoMi5NhZtWxR0"
+							},
+							{
+								"ephemeralKey": "BEw8dKr2TnyQ0lVhXm5GaBz3Uk7oSf9RiNcWpL1vDq6HgJx4AeTbYmO8ZsFn2uCpIkWd7rhG3oSxNe0jKwY4cQ8",
+								"sealed": "Ac4Gt9Pq2LvR7hXn0sYeMj3wKz8dBoUfI5yTq6rNsE1cLh9gWaPk0bDx4vSmnH8uZo2eJrQy6aMt3iVflX9dNs5wCkEz2pGj7hRbtO4kUq1mYxiL0fVc6nAdW8sBr3hKePDg5zQy9jTohN2mXa7uSlF1eRi4pOcWbK6tJd0vGqYs9nHz3wLarC7oMe5fUIx0BkPg8sTdVq4lEy2hNjaW3zDc6rOpGm9iSf1tXbeT5yKu8nLvRo7hQa0jMd3cZ-wPg4EikU6sBn9xVyJf2dLr5mCt9oAhWq8zGeNb1vIs7cTuyP4lRk6oXg",
+								"challenge": "d4Yo9vLqRz2kBWsHn7EcMxZ0pJfA5uIgK8aNDb3hYe8"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingBodyValidator.request",
-						"type": "RelayPairingRequest | undefined"
+						"type": "RelayPairingRequest | undefined",
+						"description": "The pairing request taken from the body: the same ephemeralKey, sealed and challenge strings, or undefined when the body is refused. The relay saves the three strings with the pairing and forwards them to the host as a pairing request, unless the pairing is missing or no longer accepts requests.",
+						"examples": [
+							{
+								"ephemeralKey": "BMq3vT9xLeRkZ0wNcYh4J2sUoP7aXdfG5iKyBnW1tV8hEqRzC3mLxS6dNgYpA0bUjHfQv9Ip2Cw5TaKsMz7eXoU",
+								"sealed": "Yq2Rk8Lz0WfV4mNb7tPxHc9sJdE3uAkOw5zBgT1rNi6yXpQ8DlvM0aSfGh4eUt7jRcYo2KbWz9IqN5hTxEe3Pd8mLaQ1gVy6kJrOsZ4wHu0FnCBt7iDx9MlRejA2Vq5YkG_oTh8NcS3wP6uKzLdQm-7rFbE0XgWvjI4ySa1tCoLn9QeMhZ2pdUk3RwOx8biV5fT7qJgN6aHsBzYc0LmKe2Dr4uSwXo8pAgVt9izN1lQkEf3HJy7cUdMb6RsG0rWvIo5aTpXh2NeZ4qlB9kOy8fCdEwS6mJn1guRz3iAtHqP7cM5vYdLx0ok8",
+								"challenge": "Qm7fLz2Hw9KpXr4TnVbE8yUaJc3sD1GoMi5NhZtWxR0"
+							},
+							{
+								"ephemeralKey": "BEw8dKr2TnyQ0lVhXm5GaBz3Uk7oSf9RiNcWpL1vDq6HgJx4AeTbYmO8ZsFn2uCpIkWd7rhG3oSxNe0jKwY4cQ8",
+								"sealed": "Ac4Gt9Pq2LvR7hXn0sYeMj3wKz8dBoUfI5yTq6rNsE1cLh9gWaPk0bDx4vSmnH8uZo2eJrQy6aMt3iVflX9dNs5wCkEz2pGj7hRbtO4kUq1mYxiL0fVc6nAdW8sBr3hKePDg5zQy9jTohN2mXa7uSlF1eRi4pOcWbK6tJd0vGqYs9nHz3wLarC7oMe5fUIx0BkPg8sTdVq4lEy2hNjaW3zDc6rOpGm9iSf1tXbeT5yKu8nLvRo7hQa0jMd3cZ-wPg4EikU6sBn9xVyJf2dLr5mCt9oAhWq8zGeNb1vIs7cTuyP4lRk6oXg",
+								"challenge": "d4Yo9vLqRz2kBWsHn7EcMxZ0pJfA5uIgK8aNDb3hYe8"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PairingBodyValidator.verifier",
@@ -66,17 +132,31 @@
 					{
 						"name": "PairingBodyValidator.verifier.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The body of a pairing exchange call, which anyone can send, as read from the request's JSON before any check. It is accepted only when it is an object with exactly one field, verifier, holding 43 base64url characters (the encoding of 32 random bytes), checked for length and alphabet only; any other body yields undefined.",
+						"examples": [
+							{
+								"verifier": "Vq3r_8KZtW0nLx2TyHbM6cF4JdE9sUa1PqRgYo7NiXk"
+							},
+							{
+								"verifier": "x5-QmBt0RwLd8KcV3fGh7JyZ1uNp4EaSo2iTqXbMk6U"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingBodyValidator.verifier",
-						"type": "string | undefined"
+						"type": "string | undefined",
+						"description": "The verifier of a pairing exchange: the verifier text of the body, 43 base64url characters, or undefined when the body is refused. The relay compares the base64url SHA-256 of this verifier with the challenge stored for the pairing.",
+						"examples": [
+							"Vq3r_8KZtW0nLx2TyHbM6cF4JdE9sUa1PqRgYo7NiXk",
+							"x5-QmBt0RwLd8KcV3fGh7JyZ1uNp4EaSo2iTqXbMk6U"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
