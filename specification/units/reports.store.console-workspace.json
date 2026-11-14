@@ -14,22 +14,24 @@
 		"symbols": ["createConsoleWorkspaceStore"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createConsoleWorkspaceStore.navigate",
 				"type": "(path: string, replace: boolean) => void",
-				"required": true
+				"required": true,
+				"description": "A navigation callback supplied to the factory; the workspace calls it from onNavigate with a leading /harness prefix removed and replace set to the inverse of push."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createConsoleWorkspaceStore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The factory returns { workspace, close }, where workspace is the store from createWorkspaceStore() and close invokes the bridge adapter's close(). It disables routeProject, connects with local: false, rewrites only modules, module-resources, and permissions routes to the pages category while retaining branch and commit, and strips a leading /harness and inverts push in onNavigate."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "createConsoleWorkspaceStore",
@@ -37,17 +39,19 @@
 					{
 						"name": "createConsoleWorkspaceStore.navigate",
 						"type": "(path: string, replace: boolean) => void",
-						"required": true
+						"required": true,
+						"description": "A navigation callback supplied to the factory; the workspace calls it from onNavigate with a leading /harness prefix removed and replace set to the inverse of push."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createConsoleWorkspaceStore",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The factory returns { workspace, close }, where workspace is the store from createWorkspaceStore() and close invokes the bridge adapter's close(). It disables routeProject, connects with local: false, rewrites only modules, module-resources, and permissions routes to the pages category while retaining branch and commit, and strips a leading /harness and inverts push in onNavigate."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
