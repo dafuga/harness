@@ -34,22 +34,42 @@
 				"name": "switchRevision.record",
 				"type": "SwitchRequest | null",
 				"required": true,
-				"description": "Switch request whose id and status identify the revision, or null when no request exists."
+				"description": "A switch request in any declared status, or null when none exists. Only its id and status affect the revision marker.",
+				"examples": [
+					{
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"sessionId": "codex-session-01",
+						"target": {
+							"provider": "harness-claude",
+							"model": "claude-opus-5-5",
+							"effort": "xhigh"
+						},
+						"status": "pending",
+						"createdAt": "2026-11-14T10:00:00.000Z",
+						"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+					},
+					null
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "desktopControlUnavailable",
 				"type": "unknown",
-				"description": "User-facing notice that desktop control is unavailable, requests remain pending and provider settings have not changed."
+				"description": "Fixed notice used when the desktop control connection is unavailable; it states that requests remain pending and provider settings do not change. Its text is constant.",
+				"examples": [
+					"Desktop control connection unavailable. Requests stay pending; no provider settings change."
+				]
 			},
 			{
 				"name": "switchRevision",
 				"type": "string | null",
-				"description": "Request id followed by a colon and its current status, or null for no request."
+				"description": "Returns the request id, a colon, and its status, or null when no request exists. It performs no validation or normalization.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000:pending", null]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "switchRevision",
@@ -58,18 +78,34 @@
 						"name": "switchRevision.record",
 						"type": "SwitchRequest | null",
 						"required": true,
-						"description": "Switch request whose id and status identify the revision, or null when no request exists."
+						"description": "A switch request in any declared status, or null when none exists. Only its id and status affect the revision marker.",
+						"examples": [
+							{
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"sessionId": "codex-session-01",
+								"target": {
+									"provider": "harness-claude",
+									"model": "claude-opus-5-5",
+									"effort": "xhigh"
+								},
+								"status": "pending",
+								"createdAt": "2026-11-14T10:00:00.000Z",
+								"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+							},
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "switchRevision",
 						"type": "string | null",
-						"description": "Request id followed by a colon and its current status, or null for no request."
+						"description": "Returns the request id, a colon, and its status, or null when no request exists. It performs no validation or normalization.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440000:pending", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
