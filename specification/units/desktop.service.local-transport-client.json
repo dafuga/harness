@@ -29,51 +29,90 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "LocalTransportClientService.constructor.options",
 				"type": "LocalTransportClientOptions",
-				"required": true
+				"required": true,
+				"description": "The client's settings: bootstrap, which the client calls on every connection attempt to get { port, ticket } from the main process, and open, which creates the socket for a URL and two subprotocols. Optional retryMs gives the delays before each reconnect after a lost socket (the last delay repeats; default 250, 1000, 2000 and 5000 ms), and optional deadlineMs (default six hours) is how long each request, including the attach that opens a connection, waits for its answer."
 			},
 			{
 				"name": "LocalTransportClientService.request.method",
 				"type": "RemoteMethod",
-				"required": true
+				"required": true,
+				"description": "The desktop method to call, a RemoteMethod name from the remote package's remoteMethods list. The client does not check the name: it is sent unchanged, and the desktop's reply or failure comes back as the result.",
+				"examples": ["listProjects", "snapshot", "remote.status"]
 			},
 			{
 				"name": "LocalTransportClientService.request.input",
 				"type": "object",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "The arguments for the method (default {}), sent as a copy so the caller's object is neither kept nor changed; a mutation method also gets the current epoch added to that copy. The request's JSON text must stay within 1114112 bytes, or it fails with 'too-large'.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "LocalTransportClientService.on.channel",
 				"type": "WireChannel",
-				"required": true
+				"required": true,
+				"description": "The wire channel to listen on: 'run', 'cache' or 'connection'. Listening does not open a connection, so events arrive only after a request has connected, and 'connection' also gets { kind: 'resync' } after a reattach that lost events (a replay gap or a new epoch).",
+				"examples": ["run", "cache", "connection"]
 			},
 			{
 				"name": "LocalTransportClientService.on.listener",
 				"type": "(value: unknown) => void",
-				"required": true
+				"required": true,
+				"description": "Called with the value of each event on the channel, in order and once, until the function returned by on is called. If it throws, nothing reports the error to the caller: the client closes the socket and reconnects."
 			}
 		],
 		"outputs": [
 			{
 				"name": "LocalTransportClientService.request",
-				"type": "Promise<T>"
+				"type": "Promise<T>",
+				"description": "The reply value the desktop sent for the request, typed by the caller's T (unknown when T is not given); the client does not check its shape. The request is sent only once the connection is open and bound, and the promise rejects with any of the errors listed for this operation.",
+				"examples": [
+					null,
+					{},
+					[]
+				]
 			},
 			{
 				"name": "LocalTransportClientService.on",
-				"type": "()"
+				"type": "()",
+				"description": "The unsubscribe function from the wire client's on, passed through unchanged: calling it removes this listener from its channel."
 			},
 			{
 				"name": "LocalTransportClientService.close",
-				"type": "void"
+				"type": "void",
+				"description": "There is no return value: the call stops the client, closes the current socket and closes the wire client, which rejects requests already waiting with RemoteFailure 'offline'."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error: The desktop backend cannot be reached.",
+				"type": "thrown",
+				"description": "Rejects any request made after close has been called. It also rejects a connection attempt whose socket closes before it opens, and the next request then tries again."
+			},
+			{
+				"name": "RemoteFailure",
+				"type": "thrown",
+				"description": "A rejection of the wire request, or of the attach that a connection performs, passed through unchanged; its code is a RemoteErrorCode: 'deadline' (no answer within deadlineMs), 'offline' (the client closed while the request waited, or the connection dropped during attach), 'request-expired' (a change was waiting when the computer's epoch moved on reconnect), 'too-large' (the request's JSON text is over 1114112 bytes), or any other code the desktop sent back."
+			},
+			{
+				"name": "LocalTransportClientOptions.bootstrap rejection",
+				"type": "thrown",
+				"description": "Whatever the bootstrap callback rejects with, passed through unchanged; the failed attempt is forgotten, so the next request calls bootstrap again."
+			},
+			{
+				"name": "LocalTransportClientOptions.open exception",
+				"type": "thrown",
+				"description": "Whatever the open callback throws, passed through unchanged; the failed attempt is forgotten, so the next request tries again."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "LocalTransportClientService.request",
@@ -81,23 +120,56 @@
 					{
 						"name": "LocalTransportClientService.request.method",
 						"type": "RemoteMethod",
-						"required": true
+						"required": true,
+						"description": "The desktop method to call, a RemoteMethod name from the remote package's remoteMethods list. The client does not check the name: it is sent unchanged, and the desktop's reply or failure comes back as the result.",
+						"examples": ["listProjects", "snapshot", "remote.status"]
 					},
 					{
 						"name": "LocalTransportClientService.request.input",
 						"type": "object",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "The arguments for the method (default {}), sent as a copy so the caller's object is neither kept nor changed; a mutation method also gets the current epoch added to that copy. The request's JSON text must stay within 1114112 bytes, or it fails with 'too-large'.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalTransportClientService.request",
-						"type": "Promise<T>"
+						"type": "Promise<T>",
+						"description": "The reply value the desktop sent for the request, typed by the caller's T (unknown when T is not given); the client does not check its shape. The request is sent only once the connection is open and bound, and the promise rejects with any of the errors listed for this operation.",
+						"examples": [
+							null,
+							{},
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error: The desktop backend cannot be reached.",
+						"type": "thrown",
+						"description": "Rejects any request made after close has been called. It also rejects a connection attempt whose socket closes before it opens, and the next request then tries again."
+					},
+					{
+						"name": "RemoteFailure",
+						"type": "thrown",
+						"description": "A rejection of the wire request, or of the attach that a connection performs, passed through unchanged; its code is a RemoteErrorCode: 'deadline' (no answer within deadlineMs), 'offline' (the client closed while the request waited, or the connection dropped during attach), 'request-expired' (a change was waiting when the computer's epoch moved on reconnect), 'too-large' (the request's JSON text is over 1114112 bytes), or any other code the desktop sent back."
+					},
+					{
+						"name": "LocalTransportClientOptions.bootstrap rejection",
+						"type": "thrown",
+						"description": "Whatever the bootstrap callback rejects with, passed through unchanged; the failed attempt is forgotten, so the next request calls bootstrap again."
+					},
+					{
+						"name": "LocalTransportClientOptions.open exception",
+						"type": "thrown",
+						"description": "Whatever the open callback throws, passed through unchanged; the failed attempt is forgotten, so the next request tries again."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalTransportClientService.on",
@@ -105,22 +177,26 @@
 					{
 						"name": "LocalTransportClientService.on.channel",
 						"type": "WireChannel",
-						"required": true
+						"required": true,
+						"description": "The wire channel to listen on: 'run', 'cache' or 'connection'. Listening does not open a connection, so events arrive only after a request has connected, and 'connection' also gets { kind: 'resync' } after a reattach that lost events (a replay gap or a new epoch).",
+						"examples": ["run", "cache", "connection"]
 					},
 					{
 						"name": "LocalTransportClientService.on.listener",
 						"type": "(value: unknown) => void",
-						"required": true
+						"required": true,
+						"description": "Called with the value of each event on the channel, in order and once, until the function returned by on is called. If it throws, nothing reports the error to the caller: the client closes the socket and reconnects."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalTransportClientService.on",
-						"type": "()"
+						"type": "()",
+						"description": "The unsubscribe function from the wire client's on, passed through unchanged: calling it removes this listener from its channel."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalTransportClientService.close",
@@ -128,11 +204,12 @@
 				"outputs": [
 					{
 						"name": "LocalTransportClientService.close",
-						"type": "void"
+						"type": "void",
+						"description": "There is no return value: the call stops the client, closes the current socket and closes the wire client, which rejects requests already waiting with RemoteFailure 'offline'."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -142,17 +219,19 @@
 					{
 						"name": "LocalTransportClientService.constructor.options",
 						"type": "LocalTransportClientOptions",
-						"required": true
+						"required": true,
+						"description": "The client's settings: bootstrap, which the client calls on every connection attempt to get { port, ticket } from the main process, and open, which creates the socket for a URL and two subprotocols. Optional retryMs gives the delays before each reconnect after a lost socket (the last delay repeats; default 250, 1000, 2000 and 5000 ms), and optional deadlineMs (default six hours) is how long each request, including the attach that opens a connection, waits for its answer."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalTransportClientService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new LocalTransportClientService, which creates its wire client and opens no connection until a request is made."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
