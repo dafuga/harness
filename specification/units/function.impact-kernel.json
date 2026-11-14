@@ -32,39 +32,147 @@
 				"name": "impactKernelText.text",
 				"type": "string",
 				"required": true,
-				"description": "Raw JSON request text to parse and pass through the normal kernel entry."
+				"description": "Raw JSON request text that this entry parses before calling impactKernel. Malformed text returns the serialized invalid-json response; parseable JSON is passed through normal portable-JSON admission and dispatch.",
+				"examples": [
+					"{\"operation\":\"version\"}",
+					"{\"operation\":\"impact\",\"input\":{\"base\":{\"nodes\":[\"compile\"],\"edges\":[]},\"head\":{\"nodes\":[\"compile\"],\"edges\":[]},\"changed\":[\"compile\"],\"uncertain\":[],\"sinks\":[\"compile\"]}}",
+					"{"
+				]
 			},
 			{
 				"name": "impactKernel.request",
 				"type": "unknown",
 				"required": true,
-				"description": "Unknown request to check for portable JSON before operation dispatch."
+				"description": "Any JavaScript value to check with portableJson before dispatch. After admission, only a non-array object with a string operation proceeds; version and impact are the supported operation names.",
+				"examples": [
+					{
+						"operation": "version"
+					},
+					{
+						"operation": "impact",
+						"input": {
+							"base": {
+								"nodes": ["compile"],
+								"edges": []
+							},
+							"head": {
+								"nodes": ["compile"],
+								"edges": []
+							},
+							"changed": ["compile"],
+							"uncertain": [],
+							"sinks": ["compile"]
+						}
+					}
+				]
 			},
 			{
 				"name": "impactKernelPortable.request",
 				"type": "unknown",
 				"required": true,
-				"description": "Request whose portable JSON admission has already been established by the caller."
+				"description": "A request already admitted as portable JSON by the caller and supplied for dispatch. The entry accepts only a non-array object with a string operation; it handles version and impact, returning structured failures for unsupported operations or invalid impact inputs.",
+				"examples": [
+					{
+						"operation": "version"
+					},
+					{
+						"operation": "impact",
+						"input": {
+							"base": {
+								"nodes": ["compile"],
+								"edges": []
+							},
+							"head": {
+								"nodes": ["compile"],
+								"edges": []
+							},
+							"changed": ["compile"],
+							"uncertain": [],
+							"sinks": ["compile"]
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "impactKernel",
 				"type": "RuntimeResponse",
-				"description": "Success containing the contract version or affected-node calculation, or a structured invalid-json, invalid-request, unknown-operation or invalid-graph failure."
+				"description": "RuntimeResponse returned after portable-JSON admission and operation dispatch. Success contains the version contract or impact closure; invalid requests and unsupported operations are represented as structured failures.",
+				"examples": [
+					{
+						"ok": true,
+						"output": {
+							"contract": "impact-kernel/1"
+						}
+					},
+					{
+						"ok": true,
+						"output": {
+							"affected": [
+								{
+									"id": "compile",
+									"distance": 0,
+									"via": "both",
+									"presence": "both",
+									"seed": "changed"
+								}
+							],
+							"uncovered": [],
+							"unknown": []
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "invalid-request",
+							"message": "request must be an object with an operation"
+						}
+					}
+				]
 			},
 			{
 				"name": "impactKernelPortable",
 				"type": "RuntimeResponse",
-				"description": "Same operation result without repeating portable JSON admission; supports version and impact only."
+				"description": "RuntimeResponse returned by operation dispatch after the caller has established portable JSON. version returns the contract string and impact returns the merged closure, while request or graph validation failures remain structured responses.",
+				"examples": [
+					{
+						"ok": true,
+						"output": {
+							"contract": "impact-kernel/1"
+						}
+					},
+					{
+						"ok": true,
+						"output": {
+							"affected": [
+								{
+									"id": "compile",
+									"distance": 0,
+									"via": "both",
+									"presence": "both",
+									"seed": "changed"
+								}
+							],
+							"uncovered": [],
+							"unknown": []
+						}
+					}
+				]
 			},
 			{
 				"name": "impactKernelText",
 				"type": "string",
-				"description": "JSON-serialized runtime response; malformed JSON text is serialized as invalid-json failure."
+				"description": "Serialized RuntimeResponse for the parsed request, preserving the normal kernel success and failure shapes. Malformed JSON text is serialized as the invalid-json response.",
+				"examples": [
+					"{\"ok\":true,\"output\":{\"contract\":\"impact-kernel/1\"}}",
+					"{\"ok\":true,\"output\":{\"affected\":[{\"id\":\"compile\",\"distance\":0,\"via\":\"both\",\"presence\":\"both\",\"seed\":\"changed\"}],\"uncovered\":[],\"unknown\":[]}}",
+					"{\"ok\":false,\"error\":{\"code\":\"invalid-json\",\"message\":\"request is not valid JSON\"}}"
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "impactKernelText",
@@ -73,18 +181,28 @@
 						"name": "impactKernelText.text",
 						"type": "string",
 						"required": true,
-						"description": "Raw JSON request text to parse and pass through the normal kernel entry."
+						"description": "Raw JSON request text that this entry parses before calling impactKernel. Malformed text returns the serialized invalid-json response; parseable JSON is passed through normal portable-JSON admission and dispatch.",
+						"examples": [
+							"{\"operation\":\"version\"}",
+							"{\"operation\":\"impact\",\"input\":{\"base\":{\"nodes\":[\"compile\"],\"edges\":[]},\"head\":{\"nodes\":[\"compile\"],\"edges\":[]},\"changed\":[\"compile\"],\"uncertain\":[],\"sinks\":[\"compile\"]}}",
+							"{"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "impactKernelText",
 						"type": "string",
-						"description": "JSON-serialized runtime response; malformed JSON text is serialized as invalid-json failure."
+						"description": "Serialized RuntimeResponse for the parsed request, preserving the normal kernel success and failure shapes. Malformed JSON text is serialized as the invalid-json response.",
+						"examples": [
+							"{\"ok\":true,\"output\":{\"contract\":\"impact-kernel/1\"}}",
+							"{\"ok\":true,\"output\":{\"affected\":[{\"id\":\"compile\",\"distance\":0,\"via\":\"both\",\"presence\":\"both\",\"seed\":\"changed\"}],\"uncovered\":[],\"unknown\":[]}}",
+							"{\"ok\":false,\"error\":{\"code\":\"invalid-json\",\"message\":\"request is not valid JSON\"}}"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "impactKernel",
@@ -93,18 +211,70 @@
 						"name": "impactKernel.request",
 						"type": "unknown",
 						"required": true,
-						"description": "Unknown request to check for portable JSON before operation dispatch."
+						"description": "Any JavaScript value to check with portableJson before dispatch. After admission, only a non-array object with a string operation proceeds; version and impact are the supported operation names.",
+						"examples": [
+							{
+								"operation": "version"
+							},
+							{
+								"operation": "impact",
+								"input": {
+									"base": {
+										"nodes": ["compile"],
+										"edges": []
+									},
+									"head": {
+										"nodes": ["compile"],
+										"edges": []
+									},
+									"changed": ["compile"],
+									"uncertain": [],
+									"sinks": ["compile"]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "impactKernel",
 						"type": "RuntimeResponse",
-						"description": "Success containing the contract version or affected-node calculation, or a structured invalid-json, invalid-request, unknown-operation or invalid-graph failure."
+						"description": "RuntimeResponse returned after portable-JSON admission and operation dispatch. Success contains the version contract or impact closure; invalid requests and unsupported operations are represented as structured failures.",
+						"examples": [
+							{
+								"ok": true,
+								"output": {
+									"contract": "impact-kernel/1"
+								}
+							},
+							{
+								"ok": true,
+								"output": {
+									"affected": [
+										{
+											"id": "compile",
+											"distance": 0,
+											"via": "both",
+											"presence": "both",
+											"seed": "changed"
+										}
+									],
+									"uncovered": [],
+									"unknown": []
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "invalid-request",
+									"message": "request must be an object with an operation"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "impactKernelPortable",
@@ -113,18 +283,63 @@
 						"name": "impactKernelPortable.request",
 						"type": "unknown",
 						"required": true,
-						"description": "Request whose portable JSON admission has already been established by the caller."
+						"description": "A request already admitted as portable JSON by the caller and supplied for dispatch. The entry accepts only a non-array object with a string operation; it handles version and impact, returning structured failures for unsupported operations or invalid impact inputs.",
+						"examples": [
+							{
+								"operation": "version"
+							},
+							{
+								"operation": "impact",
+								"input": {
+									"base": {
+										"nodes": ["compile"],
+										"edges": []
+									},
+									"head": {
+										"nodes": ["compile"],
+										"edges": []
+									},
+									"changed": ["compile"],
+									"uncertain": [],
+									"sinks": ["compile"]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "impactKernelPortable",
 						"type": "RuntimeResponse",
-						"description": "Same operation result without repeating portable JSON admission; supports version and impact only."
+						"description": "RuntimeResponse returned by operation dispatch after the caller has established portable JSON. version returns the contract string and impact returns the merged closure, while request or graph validation failures remain structured responses.",
+						"examples": [
+							{
+								"ok": true,
+								"output": {
+									"contract": "impact-kernel/1"
+								}
+							},
+							{
+								"ok": true,
+								"output": {
+									"affected": [
+										{
+											"id": "compile",
+											"distance": 0,
+											"via": "both",
+											"presence": "both",
+											"seed": "changed"
+										}
+									],
+									"uncovered": [],
+									"unknown": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
