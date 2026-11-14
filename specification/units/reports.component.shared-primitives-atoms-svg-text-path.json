@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native textPath element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered as children of the native SVG <textPath> element when supplied; omitted children produce no child content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgTextPath",
 				"type": "markup",
-				"description": "The actual native textPath element, with forwarded attributes and content and no additional wrapper."
+				"description": "Renders a native SVG <textPath> element with all non-children props spread onto it; no wrapper element or additional behavior is added."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
