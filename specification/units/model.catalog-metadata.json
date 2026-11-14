@@ -34,53 +34,90 @@
 				"name": "CatalogMetadata.id",
 				"type": "string",
 				"required": true,
-				"description": "Stored row identity; the model passes it to the adapter without generating a key."
+				"description": "Primary key of a catalog_metadata row, supplied by the caller when creating or addressing it. This model passes it through as a string and does not generate or validate it.",
+				"examples": ["catalog-metadata"]
 			},
 			{
 				"name": "CatalogMetadata.schemaVersion",
 				"type": "number",
 				"required": true,
-				"description": "Catalog storage schema version."
+				"description": "Numeric schema version stored on a catalog_metadata row. The model forwards it unchanged and imposes no range check.",
+				"examples": [1]
 			},
 			{
 				"name": "CatalogMetadata.digest",
 				"type": "string",
 				"required": true,
-				"description": "Source digest used to recognize catalog freshness."
+				"description": "String digest stored on a catalog_metadata row. The model forwards it unchanged and does not compute or validate its format.",
+				"examples": ["catalog-source-digest-v1"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogMetadata.find",
 				"type": "Promise<CatalogMetadataAttributes | null>",
-				"description": "Promise of the matching catalog_metadata row, or null according to the adapter lookup result."
+				"description": "Resolves to the adapter lookup result for the supplied id in catalog_metadata. Its declared shape is one complete attribute record or null.",
+				"examples": [
+					{
+						"id": "catalog-metadata",
+						"schemaVersion": 1,
+						"digest": "catalog-source-digest-v1"
+					},
+					null
+				]
 			},
 			{
 				"name": "CatalogMetadata.findBy",
 				"type": "Promise<CatalogMetadataAttributes[]>",
-				"description": "Promise of catalog_metadata rows matching the supplied attribute filters."
+				"description": "Resolves to the array returned by adapter.findBy after the filter fields are shallow-copied. This model does not sort or post-process returned rows.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "catalog-metadata",
+							"schemaVersion": 1,
+							"digest": "catalog-source-digest-v1"
+						}
+					]
+				]
 			},
 			{
 				"name": "CatalogMetadata.create",
 				"type": "Promise<CatalogMetadataAttributes>",
-				"description": "Promise of the catalog_metadata row returned by the adapter after creation."
+				"description": "Resolves to the complete attribute record returned by adapter.create after the input is shallow-copied. This model does not generate or validate stored values.",
+				"examples": [
+					{
+						"id": "catalog-metadata",
+						"schemaVersion": 1,
+						"digest": "catalog-source-digest-v1"
+					}
+				]
 			},
 			{
 				"name": "CatalogMetadata.update",
 				"type": "Promise<CatalogMetadataAttributes | null>",
-				"description": "Promise of the updated catalog_metadata row, or null according to the adapter update result."
+				"description": "Resolves to the adapter update result for the supplied id and shallow-copied patch. Its declared shape is one complete attribute record or null.",
+				"examples": [
+					{
+						"id": "catalog-metadata",
+						"schemaVersion": 1,
+						"digest": "catalog-source-digest-v1"
+					},
+					null
+				]
 			},
 			{
 				"name": "CatalogMetadata.delete",
 				"type": "Promise<boolean>",
-				"description": "Promise of the adapter deletion result for the requested catalog_metadata row."
+				"description": "Resolves to the boolean returned by adapter.delete for the supplied id. The model returns this value without interpreting it.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Persistence operation failure",
-				"type": "propagated",
-				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+				"type": "thrown",
+				"description": "Exceptions thrown by a persistence adapter and rejections from its methods reach the caller because this model does not catch them. Spreading fields in findBy, create and update can also invoke a caller-supplied getter that throws."
 			}
 		],
 		"errorStatus": "declared",
@@ -92,27 +129,36 @@
 						"name": "CatalogMetadata.find.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_metadata table; the model owns no connection lifecycle."
+						"description": "Caller-supplied persistence adapter passed the catalog_metadata table and operation arguments. This model neither constructs nor configures the adapter."
 					},
 					{
 						"name": "CatalogMetadata.find.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Primary key of the catalog_metadata row to look up. The model passes the string to the adapter without generating or validating it.",
+						"examples": ["catalog-metadata"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogMetadata.find",
 						"type": "Promise<CatalogMetadataAttributes | null>",
-						"description": "Promise of the matching catalog_metadata row, or null according to the adapter lookup result."
+						"description": "Resolves to the adapter lookup result for the supplied id in catalog_metadata. Its declared shape is one complete attribute record or null.",
+						"examples": [
+							{
+								"id": "catalog-metadata",
+								"schemaVersion": 1,
+								"digest": "catalog-source-digest-v1"
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Exceptions thrown by adapter.find and its Promise rejections reach the caller unchanged because this method does not catch them."
 					}
 				],
 				"errorStatus": "declared"
@@ -124,27 +170,46 @@
 						"name": "CatalogMetadata.findBy.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_metadata table; the model owns no connection lifecycle."
+						"description": "Caller-supplied persistence adapter passed the catalog_metadata table and operation arguments. This model neither constructs nor configures the adapter."
 					},
 					{
 						"name": "CatalogMetadata.findBy.fields",
 						"type": "Partial<CatalogMetadataAttributes>",
 						"required": true,
-						"description": "Partial stored attributes used as equality filters for catalog_metadata."
+						"description": "Optional subset of id, schemaVersion and digest attributes passed as the findBy selector. The model shallow-copies these fields and does not validate them.",
+						"examples": [
+							{
+								"schemaVersion": 1
+							},
+							{
+								"id": "catalog-metadata",
+								"digest": "catalog-source-digest-v1"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogMetadata.findBy",
 						"type": "Promise<CatalogMetadataAttributes[]>",
-						"description": "Promise of catalog_metadata rows matching the supplied attribute filters."
+						"description": "Resolves to the array returned by adapter.findBy after the filter fields are shallow-copied. This model does not sort or post-process returned rows.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "catalog-metadata",
+									"schemaVersion": 1,
+									"digest": "catalog-source-digest-v1"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Copying fields can invoke a getter that throws; exceptions and rejections from adapter.findBy also reach the caller unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -156,27 +221,41 @@
 						"name": "CatalogMetadata.create.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_metadata table; the model owns no connection lifecycle."
+						"description": "Caller-supplied persistence adapter passed the catalog_metadata table and operation arguments. This model neither constructs nor configures the adapter."
 					},
 					{
 						"name": "CatalogMetadata.create.input",
 						"type": "CatalogMetadataCreateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_metadata; omitted update fields remain the adapter's responsibility."
+						"description": "Complete CatalogMetadataAttributes record forwarded to adapter.create as a shallow copy. The model does not generate the id or validate field values.",
+						"examples": [
+							{
+								"id": "catalog-metadata",
+								"schemaVersion": 1,
+								"digest": "catalog-source-digest-v1"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogMetadata.create",
 						"type": "Promise<CatalogMetadataAttributes>",
-						"description": "Promise of the catalog_metadata row returned by the adapter after creation."
+						"description": "Resolves to the complete attribute record returned by adapter.create after the input is shallow-copied. This model does not generate or validate stored values.",
+						"examples": [
+							{
+								"id": "catalog-metadata",
+								"schemaVersion": 1,
+								"digest": "catalog-source-digest-v1"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Copying input can invoke a getter that throws; exceptions and rejections from adapter.create also reach the caller unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -188,33 +267,54 @@
 						"name": "CatalogMetadata.update.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_metadata table; the model owns no connection lifecycle."
+						"description": "Caller-supplied persistence adapter passed the catalog_metadata table and operation arguments. This model neither constructs nor configures the adapter."
 					},
 					{
 						"name": "CatalogMetadata.update.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Primary key of the catalog_metadata row to update. The model passes the string to the adapter without generating or validating it.",
+						"examples": ["catalog-metadata"]
 					},
 					{
 						"name": "CatalogMetadata.update.input",
 						"type": "CatalogMetadataUpdateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_metadata; omitted update fields remain the adapter's responsibility."
+						"description": "Patch containing schemaVersion, digest, or both; this type excludes id. The model shallow-copies the patch and leaves update behavior to the adapter.",
+						"examples": [
+							{
+								"schemaVersion": 2
+							},
+							{
+								"digest": "catalog-source-digest-v2"
+							},
+							{
+								"schemaVersion": 2,
+								"digest": "catalog-source-digest-v2"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogMetadata.update",
 						"type": "Promise<CatalogMetadataAttributes | null>",
-						"description": "Promise of the updated catalog_metadata row, or null according to the adapter update result."
+						"description": "Resolves to the adapter update result for the supplied id and shallow-copied patch. Its declared shape is one complete attribute record or null.",
+						"examples": [
+							{
+								"id": "catalog-metadata",
+								"schemaVersion": 1,
+								"digest": "catalog-source-digest-v1"
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Copying input can invoke a getter that throws; exceptions and rejections from adapter.update also reach the caller unchanged."
 					}
 				],
 				"errorStatus": "declared"
@@ -226,27 +326,29 @@
 						"name": "CatalogMetadata.delete.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_metadata table; the model owns no connection lifecycle."
+						"description": "Caller-supplied persistence adapter passed the catalog_metadata table and operation arguments. This model neither constructs nor configures the adapter."
 					},
 					{
 						"name": "CatalogMetadata.delete.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Primary key of the catalog_metadata row to delete. The model passes the string to the adapter without generating or validating it.",
+						"examples": ["catalog-metadata"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogMetadata.delete",
 						"type": "Promise<boolean>",
-						"description": "Promise of the adapter deletion result for the requested catalog_metadata row."
+						"description": "Resolves to the boolean returned by adapter.delete for the supplied id. The model returns this value without interpreting it.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
-						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"type": "thrown",
+						"description": "Exceptions thrown by adapter.delete and its Promise rejections reach the caller unchanged because this method does not catch them."
 					}
 				],
 				"errorStatus": "declared"
