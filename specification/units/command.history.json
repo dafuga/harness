@@ -18,14 +18,14 @@
 				"name": "registerHistoryCommand.program",
 				"type": "Command",
 				"required": true,
-				"description": "Commander program that receives the history command tree."
+				"description": "The Commander program that receives the new `history` subcommand, which the function adds by calling its `command` method with 'history'. It is required and not validated, so it must be a Commander Command instance that has that method."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerHistoryCommand",
 				"type": "Command",
-				"description": "Returns the registered history command with attach, status, reasons, prune, fetch, push, sync, build, and import-reports subcommands; attach/status/reasons default their commit to HEAD and build defaults its limit to 2000."
+				"description": "The `history` subcommand that the function adds to the program, not the program itself, with attach, status, reasons, prune, fetch, push, sync, build and import-reports already registered on it before it returns. attach, status and reasons default --commit to HEAD, and build defaults --limit to '2000'."
 			}
 		],
 		"errors": [],
@@ -38,14 +38,14 @@
 						"name": "registerHistoryCommand.program",
 						"type": "Command",
 						"required": true,
-						"description": "Commander program that receives the history command tree."
+						"description": "The Commander program that receives the new `history` subcommand, which the function adds by calling its `command` method with 'history'. It is required and not validated, so it must be a Commander Command instance that has that method."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerHistoryCommand",
 						"type": "Command",
-						"description": "Returns the registered history command with attach, status, reasons, prune, fetch, push, sync, build, and import-reports subcommands; attach/status/reasons default their commit to HEAD and build defaults its limit to 2000."
+						"description": "The `history` subcommand that the function adds to the program, not the program itself, with attach, status, reasons, prune, fetch, push, sync, build and import-reports already registered on it before it returns. attach, status and reasons default --commit to HEAD, and build defaults --limit to '2000'."
 					}
 				],
 				"errors": [],
