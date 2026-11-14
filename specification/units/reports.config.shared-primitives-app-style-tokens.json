@@ -21,10 +21,11 @@
 			{
 				"name": "appStyleTokensConfig",
 				"type": "typeof appStyleTokensConfig",
-				"description": "Application source roots, canonical stylesheet path, semantic color roles, token groups, excluded legacy aliases and guarded CSS property patterns."
+				"description": "Shared design-token configuration for Reports, Desktop and Hub, providing their stylesheet source, catalog groups, token roles and matching patterns used to describe design values. It records role guidance and matching scope rather than token values or runtime validation behavior."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
