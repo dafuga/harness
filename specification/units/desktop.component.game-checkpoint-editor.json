@@ -39,34 +39,36 @@
 				"name": "GameCheckpointEditor.checkpoint",
 				"type": "Checkpoint | null",
 				"required": true,
-				"description": "Selected checkpoint whose guidance, rules or saved image are being edited."
+				"description": "A checkpoint to edit, or null when none is selected. A non-null value supplies the prerequisites, repeatability, conditions and actions shown by the editor; null renders the selection prompt and makes edit updates no-op.",
+				"examples": [null]
 			},
 			{
 				"name": "GameCheckpointEditor.change",
 				"type": "(node: Checkpoint) => void",
 				"required": true,
-				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
+				"description": "Receives a shallow copy of the selected checkpoint after an edit; no callback occurs when checkpoint is null."
 			},
 			{
 				"name": "GameCheckpointEditor.readonly",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Disable editing and generation for historical or otherwise immutable views."
+				"description": "Controls whether the selected checkpoint's fieldset is disabled. Its declared default is false.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameCheckpointEditor",
 				"type": "markup",
-				"description": "Edit advanced checkpoint prerequisites, repeatability, conditions and actions without changing independent mechanics. States: empty: No checkpoint is selected, so the selection prompt replaces the editor. empty-rules: The selected checkpoint has no conditions or actions and their editable empty collections are shown. long: Long condition fields and action payloads remain visible with the repeatable setting and prerequisites."
+				"description": "With a selected checkpoint, it renders prerequisite, repeatable, condition and action controls; without one, it prompts for checkpoint selection. Text whose trimmed value is true or false becomes a boolean, finite numeric text becomes a number, and other input remains the original text; readonly disables the fieldset."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback or content error",
-				"type": "propagated",
-				"description": "Errors from supplied change callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"type": "thrown",
+				"description": "If the supplied change callback throws while an edit publishes an updated checkpoint, that error propagates from the component; the component does not catch it."
 			}
 		],
 		"errorStatus": "declared",
