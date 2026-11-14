@@ -12,27 +12,110 @@
 		"symbols": ["SiteReportRepository", "SiteReportRepository.get"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SiteReportRepository.get.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of the report to read: a random UUID given at begin, and also the name of that report's directory under runs. Any value outside 1 to 100 ASCII letters, digits, hyphens or underscores is rejected before the store is read.",
+				"examples": ["3f0c9a52-6b1e-4d7a-8f2e-b5c1d9a04e77", "c81d4e2a-0f3b-4a6c-9d17-2e5b8f63a1d0"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SiteReportRepository.get",
-				"type": "Promise<Report>"
+				"type": "Promise<Report>",
+				"description": "The report as its manifest.json records it, resolved only when ownedBySite confirms that its project belongs to this site: a checkout of the same application (same repository identity), or the site's own directory when the site is not in a Git repository. For any other report the promise rejects instead.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "3f0c9a52-6b1e-4d7a-8f2e-b5c1d9a04e77",
+						"project": {
+							"id": "9b7e2c4f1a8d3e60",
+							"name": "harness-site",
+							"path": "/home/dev/projects/harness-site"
+						},
+						"title": "Checkout flow",
+						"mode": "feature",
+						"environment": "local",
+						"historical": false,
+						"startedAt": "2026-11-12T09:14:03.218Z",
+						"updatedAt": "2026-11-12T09:14:03.218Z",
+						"summary": "",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": []
+					},
+					{
+						"schemaVersion": 1,
+						"id": "c81d4e2a-0f3b-4a6c-9d17-2e5b8f63a1d0",
+						"project": {
+							"id": "5d2a8f01c7b64e93",
+							"name": "harness-site-feature",
+							"path": "/home/dev/worktrees/harness-site-feature"
+						},
+						"title": "Cart totals review",
+						"mode": "suite",
+						"environment": "staging",
+						"revision": "9f1c3e7a0b5d2468e1f0a9c8b7d6e5f4a3b2c1d0",
+						"historical": false,
+						"startedAt": "2026-11-10T16:02:47.590Z",
+						"updatedAt": "2026-11-10T17:31:12.004Z",
+						"summary": "Cart totals were not exercised; no checks were recorded.",
+						"status": "not-proven",
+						"state": "finalized",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown with the message 'ENOENT: no such report on this site' when ownedBySite is false for the report's project, so the report reads as absent; it is the only error this method throws itself."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown through ReportRepository.get with the message 'Invalid report or asset ID' when the id is not 1 to 100 ASCII letters, digits, hyphens or underscores, before any file is read."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown through ReportRepository.get with the message 'Invalid report directory' when the report's directory under runs is a symbolic link."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A Node file-system error, for example with code ENOENT, thrown through ReportRepository.get by lstat when no directory exists under runs for the id, or by readFile when that directory has no manifest.json."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown through ReportRepository.get by JSON.parse when the report's manifest.json is not valid JSON."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A Node file-system error thrown by realpathSync while the identity of a checkout without a remote is resolved, when its Git store path cannot be resolved; ownedBySite does not catch it."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by fileURLToPath while the identity of a checkout is resolved from a file:// origin that cannot be converted to a local path; ownedBySite does not catch it."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "SiteReportRepository.get",
@@ -40,22 +123,108 @@
 					{
 						"name": "SiteReportRepository.get.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of the report to read: a random UUID given at begin, and also the name of that report's directory under runs. Any value outside 1 to 100 ASCII letters, digits, hyphens or underscores is rejected before the store is read.",
+						"examples": [
+							"3f0c9a52-6b1e-4d7a-8f2e-b5c1d9a04e77",
+							"c81d4e2a-0f3b-4a6c-9d17-2e5b8f63a1d0"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SiteReportRepository.get",
-						"type": "Promise<Report>"
+						"type": "Promise<Report>",
+						"description": "The report as its manifest.json records it, resolved only when ownedBySite confirms that its project belongs to this site: a checkout of the same application (same repository identity), or the site's own directory when the site is not in a Git repository. For any other report the promise rejects instead.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "3f0c9a52-6b1e-4d7a-8f2e-b5c1d9a04e77",
+								"project": {
+									"id": "9b7e2c4f1a8d3e60",
+									"name": "harness-site",
+									"path": "/home/dev/projects/harness-site"
+								},
+								"title": "Checkout flow",
+								"mode": "feature",
+								"environment": "local",
+								"historical": false,
+								"startedAt": "2026-11-12T09:14:03.218Z",
+								"updatedAt": "2026-11-12T09:14:03.218Z",
+								"summary": "",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": []
+							},
+							{
+								"schemaVersion": 1,
+								"id": "c81d4e2a-0f3b-4a6c-9d17-2e5b8f63a1d0",
+								"project": {
+									"id": "5d2a8f01c7b64e93",
+									"name": "harness-site-feature",
+									"path": "/home/dev/worktrees/harness-site-feature"
+								},
+								"title": "Cart totals review",
+								"mode": "suite",
+								"environment": "staging",
+								"revision": "9f1c3e7a0b5d2468e1f0a9c8b7d6e5f4a3b2c1d0",
+								"historical": false,
+								"startedAt": "2026-11-10T16:02:47.590Z",
+								"updatedAt": "2026-11-10T17:31:12.004Z",
+								"summary": "Cart totals were not exercised; no checks were recorded.",
+								"status": "not-proven",
+								"state": "finalized",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'ENOENT: no such report on this site' when ownedBySite is false for the report's project, so the report reads as absent; it is the only error this method throws itself."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown through ReportRepository.get with the message 'Invalid report or asset ID' when the id is not 1 to 100 ASCII letters, digits, hyphens or underscores, before any file is read."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown through ReportRepository.get with the message 'Invalid report directory' when the report's directory under runs is a symbolic link."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A Node file-system error, for example with code ENOENT, thrown through ReportRepository.get by lstat when no directory exists under runs for the id, or by readFile when that directory has no manifest.json."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown through ReportRepository.get by JSON.parse when the report's manifest.json is not valid JSON."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A Node file-system error thrown by realpathSync while the identity of a checkout without a remote is resolved, when its Git store path cannot be resolved; ownedBySite does not catch it."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by fileURLToPath while the identity of a checkout is resolved from a file:// origin that cannot be converted to a local path; ownedBySite does not catch it."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
