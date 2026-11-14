@@ -12,12 +12,13 @@
 		"symbols": ["wasmAdapter"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "wasmAdapter",
-				"type": "AuditAdapter"
+				"type": "AuditAdapter",
+				"description": "wasmAdapter is the AuditAdapter object with id 'wasm', label 'WASM artifacts', profiles ['dapp', 'lib'], extensions ['.abi', '.wasm'] and an empty optionalTools list; its audit(file) method returns the findings of the wasm-artifact-placement, wasm-source-pairing and wasm-abi-json checks, in that order, for one AuditFile. Each finding is a {path, rule, message} record; placement passes only when '/' plus the relative path contains '/artifacts/', '/smart-contract/', '/contracts/' or '/wasm/'; pairing runs only for .wasm files and passes when a same-name .abi, .cpp, .c or .ts file sits beside it; and the ABI check runs only for .abi files and reports malformed JSON as a finding instead of throwing."
 			}
 		],
 		"errors": [],
