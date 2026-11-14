@@ -12,27 +12,81 @@
 		"symbols": ["gameFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gameFiles.input",
 				"type": "ProjectTemplateInput",
-				"required": true
+				"required": true,
+				"description": "Project metadata passed to this scaffold; name and kind identify the project, and dimension selects the generated 2D or 3D settings. If dimension is omitted or nullish, the implementation uses 2d.",
+				"examples": [
+					{
+						"name": "maze-game",
+						"kind": "game",
+						"dimension": "2d"
+					},
+					{
+						"name": "orbital-runner",
+						"kind": "game",
+						"dimension": "3d"
+					}
+				]
 			},
 			{
 				"name": "gameFiles.app",
 				"type": "PlannedFile[]",
-				"required": true
+				"required": true,
+				"description": "The planned application files that the scaffold edits and extends; the array must contain package.json, .prettierrc, and vite.config.ts, the first two must contain valid JSON, and package.json must have an object at devDependencies. The Vite text is searched for the exact marker plugins: [sveltekit()],; if absent, it remains unchanged.",
+				"examples": [
+					[
+						{
+							"path": "package.json",
+							"contents": "{\n\t\"name\": \"maze-game\",\n\t\"devDependencies\": {}\n}\n"
+						},
+						{
+							"path": ".prettierrc",
+							"contents": "{}"
+						},
+						{
+							"path": "vite.config.ts",
+							"contents": "import { sveltekit } from '@sveltejs/kit/vite';\nexport default { plugins: [sveltekit()], };\n"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gameFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "A list of PlannedFile records containing the edited input files followed by the game scaffold files. It appends game sources, game.json, the /game page, a document test, an asset README, and GAME.md; the generated document receives the selected dimension.",
+				"examples": [
+					[
+						{
+							"path": "package.json",
+							"contents": "{\n\t\"name\": \"maze-game\",\n\t\"devDependencies\": {\n\t\t\"@types/three\": \"0.180.0\"\n\t},\n\t\"harness\": {\n\t\t\"kind\": \"game\",\n\t\t\"dimension\": \"2d\",\n\t\t\"aiRendering\": false\n\t},\n\t\"dependencies\": {\n\t\t\"three\": \"0.180.0\"\n\t}\n}\n"
+						},
+						{
+							"path": "GAME.md",
+							"contents": "# Game authoring\n\nOpen this project in Harness and use Game Views to edit game.json.\n\nViews own UI and visual direction; mechanics own state/input/event contracts. Checkpoints execute structured conditions and actions. Run the /game route to play the starter. Native Three.js renders gameplay in both 2D (orthographic) and 3D (perspective). AI rendering is off by default. Generate and save art during authoring; see static/game/assets/README.md.\n"
+						}
+					]
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when package.json or .prettierrc contents are not valid JSON."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when a required file lookup in app fails, or when parsed package/config values do not support the properties this function mutates."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "gameFiles",
@@ -40,22 +94,76 @@
 					{
 						"name": "gameFiles.input",
 						"type": "ProjectTemplateInput",
-						"required": true
+						"required": true,
+						"description": "Project metadata passed to this scaffold; name and kind identify the project, and dimension selects the generated 2D or 3D settings. If dimension is omitted or nullish, the implementation uses 2d.",
+						"examples": [
+							{
+								"name": "maze-game",
+								"kind": "game",
+								"dimension": "2d"
+							},
+							{
+								"name": "orbital-runner",
+								"kind": "game",
+								"dimension": "3d"
+							}
+						]
 					},
 					{
 						"name": "gameFiles.app",
 						"type": "PlannedFile[]",
-						"required": true
+						"required": true,
+						"description": "The planned application files that the scaffold edits and extends; the array must contain package.json, .prettierrc, and vite.config.ts, the first two must contain valid JSON, and package.json must have an object at devDependencies. The Vite text is searched for the exact marker plugins: [sveltekit()],; if absent, it remains unchanged.",
+						"examples": [
+							[
+								{
+									"path": "package.json",
+									"contents": "{\n\t\"name\": \"maze-game\",\n\t\"devDependencies\": {}\n}\n"
+								},
+								{
+									"path": ".prettierrc",
+									"contents": "{}"
+								},
+								{
+									"path": "vite.config.ts",
+									"contents": "import { sveltekit } from '@sveltejs/kit/vite';\nexport default { plugins: [sveltekit()], };\n"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gameFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "A list of PlannedFile records containing the edited input files followed by the game scaffold files. It appends game sources, game.json, the /game page, a document test, an asset README, and GAME.md; the generated document receives the selected dimension.",
+						"examples": [
+							[
+								{
+									"path": "package.json",
+									"contents": "{\n\t\"name\": \"maze-game\",\n\t\"devDependencies\": {\n\t\t\"@types/three\": \"0.180.0\"\n\t},\n\t\"harness\": {\n\t\t\"kind\": \"game\",\n\t\t\"dimension\": \"2d\",\n\t\t\"aiRendering\": false\n\t},\n\t\"dependencies\": {\n\t\t\"three\": \"0.180.0\"\n\t}\n}\n"
+								},
+								{
+									"path": "GAME.md",
+									"contents": "# Game authoring\n\nOpen this project in Harness and use Game Views to edit game.json.\n\nViews own UI and visual direction; mechanics own state/input/event contracts. Checkpoints execute structured conditions and actions. Run the /game route to play the starter. Native Three.js renders gameplay in both 2D (orthographic) and 3D (perspective). AI rendering is off by default. Generate and save art during authoring; see static/game/assets/README.md.\n"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when package.json or .prettierrc contents are not valid JSON."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when a required file lookup in app fails, or when parsed package/config values do not support the properties this function mutates."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
