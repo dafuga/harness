@@ -12,18 +12,20 @@
 		"symbols": ["createDeploymentActivityStore"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createDeploymentActivityStore.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "The Workspace value captured by the store supplies projectId for deciding whether a finished activity belongs to the current project. When a received activity for that project has a truthy finishedAt different from its previously stored value, the store calls optional deployments.refresh()."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createDeploymentActivityStore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A DeploymentActivityState instance bound to the supplied Workspace, with items initially [] and error initially ''. It exposes activeCount, which counts items without a truthy finishedAt, plus remember(job) and watch(); the watcher covers desktop deployments independently of the project being browsed."
 			}
 		],
 		"errors": [],
@@ -35,17 +37,19 @@
 					{
 						"name": "createDeploymentActivityStore.workspace",
 						"type": "Workspace",
-						"required": true
+						"required": true,
+						"description": "The Workspace value captured by the store supplies projectId for deciding whether a finished activity belongs to the current project. When a received activity for that project has a truthy finishedAt different from its previously stored value, the store calls optional deployments.refresh()."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createDeploymentActivityStore",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A DeploymentActivityState instance bound to the supplied Workspace, with items initially [] and error initially ''. It exposes activeCount, which counts items without a truthy finishedAt, plus remember(job) and watch(); the watcher covers desktop deployments independently of the project being browsed."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
