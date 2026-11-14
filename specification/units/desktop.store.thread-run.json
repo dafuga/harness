@@ -15,22 +15,35 @@
 		"symbols": ["createThreadRunStore", "ThreadRun", "ThreadRunState", "ThreadRun"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createThreadRunStore.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "The Workspace the store keeps as its private workspace; start() and cancel() call its bridge's startRun and cancelRun, and event() awaits its refresh() and deployments.load(). The store never checks that bridge exists, so when bridge is missing, start() and cancel() catch the resulting error, store it in the error field, and do not reject."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createThreadRunStore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The ThreadRunState instance that createThreadRunStore returns, a new instance on each call with runId, status, streaming, and error set to empty strings and no run active. Its start() returns false while active is true, so one instance runs at most one agent run at a time."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "workspace.refresh() rejection",
+				"type": "thrown",
+				"description": "For a terminal event (failed, cancelled, or finished) that matches the active runId, event() clears runId and then awaits workspace.refresh() outside any try block. A rejection there rejects event() with the same reason, and runId is already an empty string at that point."
+			},
+			{
+				"name": "workspace.deployments.load() rejection",
+				"type": "thrown",
+				"description": "For a failed, cancelled, or finished event on a Change run, event() awaits workspace.deployments?.load() after refresh() resolves, again outside any try block, so a rejection there rejects event() with the same reason. If deployments is missing, the optional chain skips the call and nothing is thrown."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createThreadRunStore",
@@ -38,17 +51,19 @@
 					{
 						"name": "createThreadRunStore.workspace",
 						"type": "Workspace",
-						"required": true
+						"required": true,
+						"description": "The Workspace that createThreadRunStore passes unchanged to the ThreadRunState constructor, where it becomes the private workspace field. The factory does not validate it, so a missing bridge is caught later by start() or cancel() and stored in the error field."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createThreadRunStore",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The ThreadRunState instance that createThreadRunStore returns, a new instance on each call with runId, status, streaming, and error set to empty strings and no run active. Its start() returns false while active is true, so one instance runs at most one agent run at a time."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
