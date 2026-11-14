@@ -18,23 +18,29 @@
 				"name": "POST.request",
 				"type": "Request",
 				"required": true,
-				"description": "Required incoming HTTP request, admitted before reading multipart data."
+				"description": "The incoming HTTP Request argument of POST, which is passed to admitUploadRequest before request.formData() is called. It is admitted only when its Origin header equals url.origin, its Content-Type value starts with multipart/form-data, and its Content-Length header, read as a number, does not exceed 101000000 bytes (a missing header counts as 0)."
 			},
 			{
 				"name": "POST.url",
 				"type": "URL",
 				"required": true,
-				"description": "Required server-resolved URL; its origin defines the accepted upload origin."
+				"description": "The URL argument of POST; its origin (url.origin) is the only Origin value that admitUploadRequest accepts. A request whose Origin header differs from it, including one with no Origin header, gets a 403 before any multipart data is read."
 			}
 		],
 		"outputs": [
 			{
 				"name": "POST",
 				"type": "Promise<Response>",
-				"description": "A 201 JSON report on success, or an explicit JSON admission, media, report-state or storage error response. Parsing/storage exceptions are translated into responses."
+				"description": "On success it is a 201 JSON response whose body is the report returned by ScreenshotUploadService.upload, sent with Cache-Control: no-store. On failure it is a JSON {error} response and POST does not reject: admission gives 403 (Origin mismatch), 415 (Content-Type missing or not starting with multipart/form-data) or 413 (Content-Length above 101000000); any exception after admission passes is mapped in this order to 503 for messages containing 'not configured', 409 for 'finaliz', 404 for 'ENOENT' (body 'Report not found'), 400 for messages matching title, viewport, evidence, image, format, size or screenshots (case-insensitive), or else 502 (body 'Cloudflare upload failed; no evidence was added')."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by uploadFields when the form field 'before' or 'after' is not a File (missing, or sent as text). POST catches it inside its try block and uploadFailure turns it into a 400 JSON {error: 'Choose both screenshots'} response, so it never rejects out of POST."
+			}
+		],
 		"errorStatus": "declared",
 		"operations": [
 			{
@@ -44,20 +50,20 @@
 						"name": "POST.request",
 						"type": "Request",
 						"required": true,
-						"description": "Required incoming HTTP request, admitted before reading multipart data."
+						"description": "The incoming HTTP Request argument of POST, which is passed to admitUploadRequest before request.formData() is called. It is admitted only when its Origin header equals url.origin, its Content-Type value starts with multipart/form-data, and its Content-Length header, read as a number, does not exceed 101000000 bytes (a missing header counts as 0)."
 					},
 					{
 						"name": "POST.url",
 						"type": "URL",
 						"required": true,
-						"description": "Required server-resolved URL; its origin defines the accepted upload origin."
+						"description": "The URL argument of POST; its origin (url.origin) is the only Origin value that admitUploadRequest accepts. A request whose Origin header differs from it, including one with no Origin header, gets a 403 before any multipart data is read."
 					}
 				],
 				"outputs": [
 					{
 						"name": "POST",
 						"type": "Promise<Response>",
-						"description": "A 201 JSON report on success, or an explicit JSON admission, media, report-state or storage error response. Parsing/storage exceptions are translated into responses."
+						"description": "On success it is a 201 JSON response whose body is the report returned by ScreenshotUploadService.upload, sent with Cache-Control: no-store. On failure it is a JSON {error} response and POST does not reject: admission gives 403 (Origin mismatch), 415 (Content-Type missing or not starting with multipart/form-data) or 413 (Content-Length above 101000000); any exception after admission passes is mapped in this order to 503 for messages containing 'not configured', 409 for 'finaliz', 404 for 'ENOENT' (body 'Report not found'), 400 for messages matching title, viewport, evidence, image, format, size or screenshots (case-insensitive), or else 502 (body 'Cloudflare upload failed; no evidence was added')."
 					}
 				],
 				"errors": [],
