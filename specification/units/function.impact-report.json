@@ -22,28 +22,65 @@
 				"name": "impactReport.input",
 				"type": "Assembly",
 				"required": true,
-				"description": "Base/head snapshots, classified change seeds and kernel output to combine into a report."
+				"description": "An assembly of base and head impact sides, classified change seeds, and the kernel's affected and uncovered output. The head side supplies the available tests and scenarios; seed expansions and uncovered changed source files determine whether selection widens to all current tests and scenarios."
 			},
 			{
 				"name": "graphTests.graph",
 				"type": "SourceGraph",
 				"required": true,
-				"description": "Source graph whose test nodes should be extracted."
+				"description": "A source graph whose nodes are scanned for tests. A node is returned only when its kind is `test` and its ID matches the .test or .spec JavaScript/TypeScript filename pattern; the returned path has the leading `file:` removed.",
+				"examples": [
+					{
+						"nodes": [
+							{
+								"id": "file:src/services/example.test.ts",
+								"kind": "test"
+							}
+						],
+						"uncertain": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "graphTests",
 				"type": "string[]",
-				"description": "Paths of graph nodes marked test and matching a supported .test or .spec JavaScript/TypeScript filename."
+				"description": "Repository paths derived from matching test-node IDs after removing the `file:` prefix. Only test nodes with .test or .spec JavaScript/TypeScript extensions are returned.",
+				"examples": [
+					["src/services/example.test.ts"]
+				]
 			},
 			{
 				"name": "impactReport",
 				"type": "Omit<ImpactReport, 'base' | 'head' | 'runtime'>",
-				"description": "Report fields excluding base/head/runtime: changed files, direct/indirect/added/removed units, selected/excluded/removed tests, affected/unaffected scenarios and deduplicated uncertainty. Global, unclassified or uncovered source changes select all current tests and scenarios."
+				"description": "A report assembled from changed seeds, affected nodes, and the head graph and scenarios. Seed expansions or uncovered changed source files set expanded and select every current head test and scenario; otherwise selection follows reachable affected files and scenarios, with sorted unit, test, and scenario lists and deduplicated uncertainty.",
+				"examples": [
+					{
+						"expanded": false,
+						"changed": [],
+						"units": {
+							"direct": [],
+							"indirect": [],
+							"added": [],
+							"removed": []
+						},
+						"tests": {
+							"selected": ["src/services/example.test.ts"],
+							"excluded": [],
+							"removed": []
+						},
+						"scenarios": {
+							"affected": ["smoke"],
+							"unaffected": []
+						},
+						"uncertain": []
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "impactReport",
@@ -52,18 +89,40 @@
 						"name": "impactReport.input",
 						"type": "Assembly",
 						"required": true,
-						"description": "Base/head snapshots, classified change seeds and kernel output to combine into a report."
+						"description": "An assembly of base and head impact sides, classified change seeds, and the kernel's affected and uncovered output. The head side supplies the available tests and scenarios; seed expansions and uncovered changed source files determine whether selection widens to all current tests and scenarios."
 					}
 				],
 				"outputs": [
 					{
 						"name": "impactReport",
 						"type": "Omit<ImpactReport, 'base' | 'head' | 'runtime'>",
-						"description": "Report fields excluding base/head/runtime: changed files, direct/indirect/added/removed units, selected/excluded/removed tests, affected/unaffected scenarios and deduplicated uncertainty. Global, unclassified or uncovered source changes select all current tests and scenarios."
+						"description": "A report assembled from changed seeds, affected nodes, and the head graph and scenarios. Seed expansions or uncovered changed source files set expanded and select every current head test and scenario; otherwise selection follows reachable affected files and scenarios, with sorted unit, test, and scenario lists and deduplicated uncertainty.",
+						"examples": [
+							{
+								"expanded": false,
+								"changed": [],
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"tests": {
+									"selected": ["src/services/example.test.ts"],
+									"excluded": [],
+									"removed": []
+								},
+								"scenarios": {
+									"affected": ["smoke"],
+									"unaffected": []
+								},
+								"uncertain": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "graphTests",
@@ -72,18 +131,32 @@
 						"name": "graphTests.graph",
 						"type": "SourceGraph",
 						"required": true,
-						"description": "Source graph whose test nodes should be extracted."
+						"description": "A source graph whose nodes are scanned for tests. A node is returned only when its kind is `test` and its ID matches the .test or .spec JavaScript/TypeScript filename pattern; the returned path has the leading `file:` removed.",
+						"examples": [
+							{
+								"nodes": [
+									{
+										"id": "file:src/services/example.test.ts",
+										"kind": "test"
+									}
+								],
+								"uncertain": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "graphTests",
 						"type": "string[]",
-						"description": "Paths of graph nodes marked test and matching a supported .test or .spec JavaScript/TypeScript filename."
+						"description": "Repository paths derived from matching test-node IDs after removing the `file:` prefix. Only test nodes with .test or .spec JavaScript/TypeScript extensions are returned.",
+						"examples": [
+							["src/services/example.test.ts"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
