@@ -21,10 +21,53 @@
 			{
 				"name": "offlineModule",
 				"type": "unknown",
-				"description": "Declarative capability definitions, source templates, tests and setup instructions."
+				"description": "The exported offlineModule definition supplies the app-only Offline module's service and endpoint templates, collection scaffold, dependencies, and setup guidance. It is version 1.0.0; its generated endpoint limits request bodies to 65,536 bytes and downloads to 32 collections, 4 MiB per frame, and 8 MiB per batch.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "offline",
+						"version": "1.0.0",
+						"title": "Offline",
+						"appOnly": true,
+						"description": "Background data streaming, scoped device storage and durable queued writes.",
+						"instructions": [
+							"References: Fluora uses @dafuga01/offline-sync for IndexedDB and durable replay; BuildFlexity uses scoped incremental download batches."
+						],
+						"setup": [
+							{
+								"path": "src/services/offline/OfflineSyncService.types.ts",
+								"contents": "import type {\n\tIndexedDbOfflineStoreAdapter,\n\tOfflineOperation,\n\tSyncStats\n} from '@dafuga01/offline-sync';\nexport interface OfflineSyncConfig {\n\t/** Stable application/account/tenant scope; change it when the authenticated actor changes. */\n\tscope: string;\n\tcollections: readonly string[];\n\t/** Observe backend reachability, not just navigator.onLine. */\n\tisOnline: () => boolean;\n\tfetch?: typeof globalThis.fetch;\n\tstore?: IndexedDbOfflineStoreAdapter;\n\tonStats?: (stats: SyncStats) => void;\n\tonError?: (error: unknown) => void;\n}\nexport interface OfflineMutation {\n\tcollection: string;\n\taction: string;\n\tinput: unknown;\n\tbaseRevision?: string;\n}\nexport interface OfflineStreamFrame {\n\ttype: 'start' | 'record' | 'delete' | 'checkpoint' | 'complete';\n\tscope?: string;\n\tcollection?: string;\n\tid?: string;\n\tvalue?: unknown;\n\tcursor?: string;\n}\nexport type { OfflineOperation };\n\nexport interface OfflineLocalRecord {\n\tid: string;\n\tvalue: unknown;\n}\n"
+							}
+						],
+						"dependencies": {
+							"@dafuga01/offline-sync": "github:dafuga/offline-sync#5e92e7b71d8190bec68f635bd94ca81634d6a7b3"
+						},
+						"resources": [
+							{
+								"id": "collection",
+								"title": "Offline collections",
+								"singular": "Offline collection",
+								"kind": "repository",
+								"instructions": [
+									"Generate a collection and register its kebab-case name in the client allowed collections and authenticated server adapters."
+								],
+								"files": [
+									{
+										"path": "src/repositories/offline/{{PascalName}}Repository.types.ts",
+										"contents": "export interface {{PascalName}}Record {\n\tid: string;\n\ttitle: string;\n}\n"
+									}
+								]
+							}
+						],
+						"devDependencies": {
+							"fake-indexeddb": "^6.2.4"
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
