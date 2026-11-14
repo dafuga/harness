@@ -40,96 +40,106 @@
 				"name": "exactRef.client",
 				"type": "GitHubTransport",
 				"required": true,
-				"description": "Transport used to require an existing exact ref."
+				"description": "A repository-scoped transport used to request and resolve the supplied ref. Its repository and contents permission are set when the transport is created."
 			},
 			{
 				"name": "exactRef.ref",
 				"type": "string",
 				"required": true,
-				"description": "Full ref that must exist."
+				"description": "A full Git ref to resolve. It must use the heads, notes, or tags namespace and pass the ref and safe-path checks; exactRef rejects when it is missing.",
+				"examples": ["refs/heads/main", "refs/tags/v2.4.0"]
 			},
 			{
 				"name": "githubTransport.options",
 				"type": "GitHubOptions",
 				"required": true,
-				"description": "Repository identity, scoped token callback and optional fetch implementation."
+				"description": "Options supply the repository identity and scoped token callback used for requests, with an optional fetch implementation. Requests target that repository and request only its contents permission."
 			},
 			{
 				"name": "githubTransport.permission",
 				"type": "'read' | 'write'",
 				"required": true,
-				"description": "Contents permission requested for each token: read or write."
+				"description": "The contents permission requested when obtaining a token for each request. Only read and write are accepted.",
+				"examples": ["read", "write"]
 			},
 			{
 				"name": "refPath.ref",
 				"type": "string",
 				"required": true,
-				"description": "Full heads, notes or tags ref with a safe path and valid ref characters."
+				"description": "A full ref in the refs/heads, refs/notes, or refs/tags namespace. It must pass the safe-path and Git ref character checks, including rejection of whitespace, dot-dot segments, and .lock path segments.",
+				"examples": ["refs/heads/main", "refs/notes/releases", "refs/tags/v2.4.0"]
 			},
 			{
 				"name": "readRef.client",
 				"type": "GitHubTransport",
 				"required": true,
-				"description": "Transport used to resolve the ref."
+				"description": "A repository-scoped transport whose request method reads the ref from GitHub. The transport determines the repository and contents permission used for that request."
 			},
 			{
 				"name": "readRef.ref",
 				"type": "string",
 				"required": true,
-				"description": "Full ref to look up exactly, including notes refs."
+				"description": "A full ref to look up in the heads, notes, or tags namespace. Notes use the matching-refs endpoint, and the result must contain exactly one entry with this exact ref.",
+				"examples": ["refs/heads/main", "refs/notes/releases", "refs/tags/v2.4.0"]
 			},
 			{
 				"name": "base64.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Bytes to encode as standard base64."
+				"description": "A Uint8Array whose byte values are converted to standard base64 text. Each element is encoded as one byte."
 			},
 			{
 				"name": "decode64.value",
 				"type": "string",
 				"required": true,
-				"description": "Base64 text to decode; whitespace is ignored."
+				"description": "Base64 text to decode after all whitespace is removed. Content that atob cannot decode is rejected as invalid content.",
+				"examples": ["SGVsbG8=", "AAEC"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubTransport",
 				"type": "unknown",
-				"description": "Request and repository-check methods; requests reject redirects and can return explicitly accepted statuses with null data."
+				"description": "An object exposing request and check methods, scoped to the configured repository and chosen contents permission. Requests reject invalid relative or dot-dot paths and redirects; explicitly accepted statuses return null data, while check validates repository identity and can require a private repository."
 			},
 			{
 				"name": "refPath",
 				"type": "string",
-				"description": "Encoded API ref path with the refs/ prefix removed."
+				"description": "The API ref path after removing refs/ and URI-encoding each remaining segment. Only validated heads, notes, and tags refs are accepted.",
+				"examples": ["heads/main", "notes/releases", "tags/v2.4.0"]
 			},
 			{
 				"name": "readRef",
 				"type": "Promise<string | null>",
-				"description": "Exact matching ref SHA, or null for a missing ref."
+				"description": "The resolved object SHA for one exact ref, or null when the ref is absent (including an empty notes match). It rejects malformed responses or results without exactly one exact ref match.",
+				"examples": ["4e19d0b830e3f36f21f71e86850a1e79d62fd2bb", null]
 			},
 			{
 				"name": "exactRef",
 				"type": "Promise<string>",
-				"description": "Exact matching ref SHA; a missing ref rejects."
+				"description": "The resolved object SHA for one exact ref. Unlike readRef, it rejects when the ref is absent.",
+				"examples": ["4e19d0b830e3f36f21f71e86850a1e79d62fd2bb"]
 			},
 			{
 				"name": "base64",
 				"type": "string",
-				"description": "Standard base64 text."
+				"description": "Standard base64 text produced from the input bytes using btoa.",
+				"examples": ["SGVsbG8=", "AAEC"]
 			},
 			{
 				"name": "decode64",
 				"type": "Uint8Array",
-				"description": "Decoded bytes."
+				"description": "The bytes decoded from the whitespace-stripped base64 input. Invalid base64 content is rejected."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid paths, refs or content, missing or mismatched refs, denied repository identity or privacy and unavailable GitHub requests."
+				"description": "ExpectedCliError represents validation and request failures exposed by this transport, including invalid refs or paths, invalid content, missing or non-unique exact refs, repository denial, and unavailable GitHub requests. readRef returns null for an ordinary missing ref, while exactRef rejects when its ref is absent."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "exactRef",
@@ -138,29 +148,32 @@
 						"name": "exactRef.client",
 						"type": "GitHubTransport",
 						"required": true,
-						"description": "Transport used to require an existing exact ref."
+						"description": "A repository-scoped transport used to request and resolve the supplied ref. Its repository and contents permission are set when the transport is created."
 					},
 					{
 						"name": "exactRef.ref",
 						"type": "string",
 						"required": true,
-						"description": "Full ref that must exist."
+						"description": "A full Git ref to resolve. It must use the heads, notes, or tags namespace and pass the ref and safe-path checks; exactRef rejects when it is missing.",
+						"examples": ["refs/heads/main", "refs/tags/v2.4.0"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "exactRef",
 						"type": "Promise<string>",
-						"description": "Exact matching ref SHA; a missing ref rejects."
+						"description": "The resolved object SHA for one exact ref. Unlike readRef, it rejects when the ref is absent.",
+						"examples": ["4e19d0b830e3f36f21f71e86850a1e79d62fd2bb"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "ExpectedCliError is rejected for invalid refs or paths, unavailable or malformed GitHub responses, mismatched ref results, or a missing exact ref. readRef itself returns null for an ordinary missing ref."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "githubTransport",
@@ -169,24 +182,31 @@
 						"name": "githubTransport.options",
 						"type": "GitHubOptions",
 						"required": true,
-						"description": "Repository identity, scoped token callback and optional fetch implementation."
+						"description": "Options supply the repository identity and scoped token callback used for requests, with an optional fetch implementation. Requests target that repository and request only its contents permission."
 					},
 					{
 						"name": "githubTransport.permission",
 						"type": "'read' | 'write'",
 						"required": true,
-						"description": "Contents permission requested for each token: read or write."
+						"description": "The contents permission requested when obtaining a token for each request. Only read and write are accepted.",
+						"examples": ["read", "write"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "githubTransport",
 						"type": "unknown",
-						"description": "Request and repository-check methods; requests reject redirects and can return explicitly accepted statuses with null data."
+						"description": "An object exposing request and check methods, scoped to the configured repository and chosen contents permission. Requests reject invalid relative or dot-dot paths and redirects; explicitly accepted statuses return null data, while check validates repository identity and can require a private repository."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "ExpectedCliError is thrown when repository options fail validation or check detects a different repository ID or a public repository under privateOnly; request methods also throw it for invalid paths or unavailable GitHub requests. Repository validation can fail while creating the transport."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "refPath",
@@ -195,23 +215,26 @@
 						"name": "refPath.ref",
 						"type": "string",
 						"required": true,
-						"description": "Full heads, notes or tags ref with a safe path and valid ref characters."
+						"description": "A full ref in the refs/heads, refs/notes, or refs/tags namespace. It must pass the safe-path and Git ref character checks, including rejection of whitespace, dot-dot segments, and .lock path segments.",
+						"examples": ["refs/heads/main", "refs/notes/releases", "refs/tags/v2.4.0"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "refPath",
 						"type": "string",
-						"description": "Encoded API ref path with the refs/ prefix removed."
+						"description": "The API ref path after removing refs/ and URI-encoding each remaining segment. Only validated heads, notes, and tags refs are accepted.",
+						"examples": ["heads/main", "notes/releases", "tags/v2.4.0"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "ExpectedCliError is thrown when the ref is outside the heads, notes, or tags namespaces or fails the safe-path or Git ref character checks."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readRef",
@@ -220,29 +243,32 @@
 						"name": "readRef.client",
 						"type": "GitHubTransport",
 						"required": true,
-						"description": "Transport used to resolve the ref."
+						"description": "A repository-scoped transport whose request method reads the ref from GitHub. The transport determines the repository and contents permission used for that request."
 					},
 					{
 						"name": "readRef.ref",
 						"type": "string",
 						"required": true,
-						"description": "Full ref to look up exactly, including notes refs."
+						"description": "A full ref to look up in the heads, notes, or tags namespace. Notes use the matching-refs endpoint, and the result must contain exactly one entry with this exact ref.",
+						"examples": ["refs/heads/main", "refs/notes/releases", "refs/tags/v2.4.0"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readRef",
 						"type": "Promise<string | null>",
-						"description": "Exact matching ref SHA, or null for a missing ref."
+						"description": "The resolved object SHA for one exact ref, or null when the ref is absent (including an empty notes match). It rejects malformed responses or results without exactly one exact ref match.",
+						"examples": ["4e19d0b830e3f36f21f71e86850a1e79d62fd2bb", null]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "ExpectedCliError is rejected for invalid refs or paths, unavailable or malformed GitHub responses, or results without exactly one exact ref match. A 404 or an empty notes match returns null."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "base64",
@@ -251,18 +277,19 @@
 						"name": "base64.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Bytes to encode as standard base64."
+						"description": "A Uint8Array whose byte values are converted to standard base64 text. Each element is encoded as one byte."
 					}
 				],
 				"outputs": [
 					{
 						"name": "base64",
 						"type": "string",
-						"description": "Standard base64 text."
+						"description": "Standard base64 text produced from the input bytes using btoa.",
+						"examples": ["SGVsbG8=", "AAEC"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "decode64",
@@ -271,23 +298,25 @@
 						"name": "decode64.value",
 						"type": "string",
 						"required": true,
-						"description": "Base64 text to decode; whitespace is ignored."
+						"description": "Base64 text to decode after all whitespace is removed. Content that atob cannot decode is rejected as invalid content.",
+						"examples": ["SGVsbG8=", "AAEC"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "decode64",
 						"type": "Uint8Array",
-						"description": "Decoded bytes."
+						"description": "The bytes decoded from the whitespace-stripped base64 input. Invalid base64 content is rejected."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "ExpectedCliError is thrown when the whitespace-stripped input cannot be decoded as base64."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
