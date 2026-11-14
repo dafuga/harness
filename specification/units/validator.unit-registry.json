@@ -27,49 +27,68 @@
 				"name": "UnitRegistryValidator.validate.manifests",
 				"type": "ComponentManifest[]",
 				"required": true,
-				"description": "All registry manifests; active entries are validated while retired entries remain available for lineage checks."
+				"description": "The registry manifests to validate. Only active entries participate in identity, ownership, relationship and source checks; all manifests remain available as candidates for predecessor lineage.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "UnitRegistryValidator.validate.files",
 				"type": "ReadonlySet<string>",
 				"required": true,
-				"description": "Indexed source paths used to detect missing owned files."
+				"description": "The set of source paths present in the indexed repository. Each active unit produces a missing-source diagnostic for every owned path absent from this set."
 			},
 			{
 				"name": "UnitRegistryValidator.validate.sources",
 				"type": "ReadonlyMap<string, SourceFile>",
 				"required": false,
-				"description": "Optional indexed source facts; omitted means canonical import checks are unavailable. The CLI supplies this map."
+				"default": "undefined",
+				"description": "An optional map of indexed source facts for canonical import inspection. If omitted, duplicate identity checks still run but canonical source dependency inspection is skipped."
 			},
 			{
 				"name": "registryOwnershipFindings.identifiers",
 				"type": "string[]",
 				"required": true,
-				"description": "Active IDs projected by the caller using its existing collection admission behavior."
+				"description": "The IDs of active units supplied for duplicate detection. Repeated IDs produce one diagnostic per repeated ID.",
+				"examples": [
+					["validator.unit-registry"]
+				]
 			},
 			{
 				"name": "registryOwnershipFindings.units",
 				"type": "ComponentManifest[]",
 				"required": true,
-				"description": "Active manifests, including owned sources and canonical runtime entries."
+				"description": "The active manifests considered for canonical dependency inspection. Only units in the fixed reviewed-owner set are inspected, and only when sources is supplied.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "registryOwnershipFindings.sources",
 				"type": "ReadonlyMap<string, SourceFile>",
 				"required": false,
-				"description": "Optional indexed source facts for the explicitly reviewed canonical owner cohort; omitted skips dependency inspection."
+				"default": "undefined",
+				"description": "An optional map of indexed source facts used to inspect owned sources of reviewed canonical owners. If omitted, the function returns duplicate identity findings without inspecting source dependencies."
 			}
 		],
 		"outputs": [
 			{
 				"name": "UnitRegistryValidator.validate",
 				"type": "string[]",
-				"description": "Diagnostics for invalid composition, duplicate identities or source owners, missing sources, helpers, configs, dependencies, lineage and reviewed canonical backedges."
+				"description": "The diagnostic strings produced by the active-manifest composition, ownership, source, helper, config, dependency and lineage checks. The array is empty when those checks find no issues.",
+				"examples": [
+					[],
+					["validator.unit-registry owns missing source src/validators/UnitRegistryValidator.ts"]
+				]
 			},
 			{
 				"name": "registryOwnershipFindings",
 				"type": "string[]",
-				"description": "Duplicate identity diagnostics and, when sources are supplied, reviewed canonical forwarding backedges or unread-source diagnostics."
+				"description": "The duplicate active-ID diagnostics and, when sources is supplied, canonical import findings for reviewed owners. An unread owned source produces a diagnostic, while an owned path absent from the map is skipped.",
+				"examples": [
+					[],
+					["Duplicate active unit id validator.unit-registry"]
+				]
 			}
 		],
 		"errors": [],
@@ -82,30 +101,40 @@
 						"name": "UnitRegistryValidator.validate.manifests",
 						"type": "ComponentManifest[]",
 						"required": true,
-						"description": "All registry manifests; active entries are validated while retired entries remain available for lineage checks."
+						"description": "The registry manifests to validate. Only active entries participate in identity, ownership, relationship and source checks; all manifests remain available as candidates for predecessor lineage.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "UnitRegistryValidator.validate.files",
 						"type": "ReadonlySet<string>",
 						"required": true,
-						"description": "Indexed source paths used to detect missing owned files."
+						"description": "The set of source paths present in the indexed repository. Each active unit produces a missing-source diagnostic for every owned path absent from this set."
 					},
 					{
 						"name": "UnitRegistryValidator.validate.sources",
 						"type": "ReadonlyMap<string, SourceFile>",
 						"required": false,
-						"description": "Optional indexed source facts; omitted means canonical import checks are unavailable. The CLI supplies this map."
+						"default": "undefined",
+						"description": "An optional map of indexed source facts for canonical import inspection. If omitted, duplicate identity checks still run but canonical source dependency inspection is skipped."
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRegistryValidator.validate",
 						"type": "string[]",
-						"description": "Diagnostics for invalid composition, duplicate identities or source owners, missing sources, helpers, configs, dependencies, lineage and reviewed canonical backedges."
+						"description": "The diagnostic strings produced by the active-manifest composition, ownership, source, helper, config, dependency and lineage checks. The array is empty when those checks find no issues.",
+						"examples": [
+							[],
+							[
+								"validator.unit-registry owns missing source src/validators/UnitRegistryValidator.ts"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "registryOwnershipFindings",
@@ -114,30 +143,41 @@
 						"name": "registryOwnershipFindings.identifiers",
 						"type": "string[]",
 						"required": true,
-						"description": "Active IDs projected by the caller using its existing collection admission behavior."
+						"description": "The IDs of active units supplied for duplicate detection. Repeated IDs produce one diagnostic per repeated ID.",
+						"examples": [
+							["validator.unit-registry"]
+						]
 					},
 					{
 						"name": "registryOwnershipFindings.units",
 						"type": "ComponentManifest[]",
 						"required": true,
-						"description": "Active manifests, including owned sources and canonical runtime entries."
+						"description": "The active manifests considered for canonical dependency inspection. Only units in the fixed reviewed-owner set are inspected, and only when sources is supplied.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "registryOwnershipFindings.sources",
 						"type": "ReadonlyMap<string, SourceFile>",
 						"required": false,
-						"description": "Optional indexed source facts for the explicitly reviewed canonical owner cohort; omitted skips dependency inspection."
+						"default": "undefined",
+						"description": "An optional map of indexed source facts used to inspect owned sources of reviewed canonical owners. If omitted, the function returns duplicate identity findings without inspecting source dependencies."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registryOwnershipFindings",
 						"type": "string[]",
-						"description": "Duplicate identity diagnostics and, when sources are supplied, reviewed canonical forwarding backedges or unread-source diagnostics."
+						"description": "The duplicate active-ID diagnostics and, when sources is supplied, canonical import findings for reviewed owners. An unread owned source produces a diagnostic, while an owned path absent from the map is skipped.",
+						"examples": [
+							[],
+							["Duplicate active unit id validator.unit-registry"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
