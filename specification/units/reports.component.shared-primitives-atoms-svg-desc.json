@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native desc element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet rendered inside the desc element with {@render children()} only when it is truthy; when it is omitted, the element has no content. The component adds no wrapper element or text of its own, and it invokes the value as a function, so it must be a snippet."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgDesc",
 				"type": "markup",
-				"description": "The actual native desc element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native SVG desc element rendered by this component (svelte:element with tag desc in the svg namespace), with every passed attribute except children spread onto it and the children snippet rendered inside it when one is given. The component renders no wrapper element and sets no attribute of its own, and it does not filter or validate the spread attributes."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
