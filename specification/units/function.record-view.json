@@ -32,23 +32,126 @@
 				"name": "recordView.record",
 				"type": "VerificationRecord",
 				"required": true,
-				"description": "Stored verification record to project without changing its results. Optional browser diagnostics on its tests are retained."
+				"description": "A verification record projected for history display, carrying its identity, status, source, profile, timings, gates, failures, tests, scenarios, measurements, budgets, and reason status. Only reasons.status and reasons.missing are returned, builds is included only when present, and record fields outside the view (such as tools, components, and impact) are omitted.",
+				"examples": [
+					{
+						"id": "9c074a374a705c997b07d688d45225380cd97bdd813040db6d940e517f7df82b",
+						"schemaVersion": 1,
+						"componentSchemaVersion": 2,
+						"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15",
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tree": "89abcdef0123456789abcdef0123456789abcdef",
+							"base": null
+						},
+						"profile": {
+							"id": "macos-arm64-node22",
+							"platform": "macOS",
+							"arch": "arm64",
+							"cpu": "Apple Silicon",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "Node.js 22"
+						},
+						"tools": [
+							{
+								"id": "harness",
+								"version": "1.0.0"
+							}
+						],
+						"startedAt": "2026-11-14T08:00:00.000Z",
+						"finishedAt": "2026-11-14T08:01:00.000Z",
+						"status": "passed",
+						"components": [],
+						"measurements": [],
+						"impact": {
+							"runtime": "node",
+							"expanded": false,
+							"changed": [],
+							"units": {
+								"direct": [],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"uncertain": []
+						},
+						"tests": [],
+						"scenarios": [],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"missing": []
+						},
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"ledger": "passed",
+							"tests": "passed",
+							"scenarios": "passed",
+							"reasons": "passed",
+							"budgets": "passed"
+						},
+						"failures": []
+					}
+				]
 			},
 			{
 				"name": "recordView.context",
 				"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver; /** The checks an earlier record ran, by its id; undefined when it cannot be read. */ origins?: (record: string) => DiagnosticTest[] | undefined; }",
 				"required": true,
-				"description": "Validity and problems supplied by the caller, a media resolver, and optional lookup for origin-record test summaries and browser diagnostics."
+				"description": "Caller-supplied validity and problems plus the resolver used for each capture. Optional origins is called only for referenced scenarios, and its tests are filtered to IDs prefixed by the scenario ID plus a colon; if no list is returned, originTests is omitted."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordView",
 				"type": "RecordView",
-				"description": "Record view retaining source, timings, gates, measurements, budgets and reason status, with concise tests and captures augmented by resolved media/gaps. Inherited scenarios name their actual origin and scoped origin tests when available. Current test summaries and available scenario-scoped origin tests retain their optional browser diagnostics, without substituting current-run diagnostics for inherited evidence."
+				"description": "Returns the history display projection with record identity/status/source/profile/timings, gates/failures, selected test fields with optional browser errors, measurements/budgets, and only reason status/missing values. Each scenario names the actual origin record and tested commit, resolves every capture, and includes scoped origin tests only when an origin list is available; optional builds are emitted only when present.",
+				"examples": [
+					{
+						"id": "9c074a374a705c997b07d688d45225380cd97bdd813040db6d940e517f7df82b",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tree": "89abcdef0123456789abcdef0123456789abcdef",
+							"base": null
+						},
+						"profile": "macos-arm64-node22",
+						"startedAt": "2026-11-14T08:00:00.000Z",
+						"finishedAt": "2026-11-14T08:01:00.000Z",
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"ledger": "passed",
+							"tests": "passed",
+							"scenarios": "passed",
+							"reasons": "passed",
+							"budgets": "passed"
+						},
+						"failures": [],
+						"tests": [],
+						"scenarios": [],
+						"measurements": [],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"missing": []
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "recordView",
@@ -57,24 +160,126 @@
 						"name": "recordView.record",
 						"type": "VerificationRecord",
 						"required": true,
-						"description": "Stored verification record to project without changing its results. Optional browser diagnostics on its tests are retained."
+						"description": "A verification record projected for history display, carrying its identity, status, source, profile, timings, gates, failures, tests, scenarios, measurements, budgets, and reason status. Only reasons.status and reasons.missing are returned, builds is included only when present, and record fields outside the view (such as tools, components, and impact) are omitted.",
+						"examples": [
+							{
+								"id": "9c074a374a705c997b07d688d45225380cd97bdd813040db6d940e517f7df82b",
+								"schemaVersion": 1,
+								"componentSchemaVersion": 2,
+								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15",
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tree": "89abcdef0123456789abcdef0123456789abcdef",
+									"base": null
+								},
+								"profile": {
+									"id": "macos-arm64-node22",
+									"platform": "macOS",
+									"arch": "arm64",
+									"cpu": "Apple Silicon",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "Node.js 22"
+								},
+								"tools": [
+									{
+										"id": "harness",
+										"version": "1.0.0"
+									}
+								],
+								"startedAt": "2026-11-14T08:00:00.000Z",
+								"finishedAt": "2026-11-14T08:01:00.000Z",
+								"status": "passed",
+								"components": [],
+								"measurements": [],
+								"impact": {
+									"runtime": "node",
+									"expanded": false,
+									"changed": [],
+									"units": {
+										"direct": [],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [],
+								"scenarios": [],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								},
+								"gates": {
+									"snapshot": "passed",
+									"registry": "passed",
+									"ledger": "passed",
+									"tests": "passed",
+									"scenarios": "passed",
+									"reasons": "passed",
+									"budgets": "passed"
+								},
+								"failures": []
+							}
+						]
 					},
 					{
 						"name": "recordView.context",
 						"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver; /** The checks an earlier record ran, by its id; undefined when it cannot be read. */ origins?: (record: string) => DiagnosticTest[] | undefined; }",
 						"required": true,
-						"description": "Validity and problems supplied by the caller, a media resolver, and optional lookup for origin-record test summaries and browser diagnostics."
+						"description": "Caller-supplied validity and problems plus the resolver used for each capture. Optional origins is called only for referenced scenarios, and its tests are filtered to IDs prefixed by the scenario ID plus a colon; if no list is returned, originTests is omitted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordView",
 						"type": "RecordView",
-						"description": "Record view retaining source, timings, gates, measurements, budgets and reason status, with concise tests and captures augmented by resolved media/gaps. Inherited scenarios name their actual origin and scoped origin tests when available. Current test summaries and available scenario-scoped origin tests retain their optional browser diagnostics, without substituting current-run diagnostics for inherited evidence."
+						"description": "Returns the history display projection with record identity/status/source/profile/timings, gates/failures, selected test fields with optional browser errors, measurements/budgets, and only reason status/missing values. Each scenario names the actual origin record and tested commit, resolves every capture, and includes scoped origin tests only when an origin list is available; optional builds are emitted only when present.",
+						"examples": [
+							{
+								"id": "9c074a374a705c997b07d688d45225380cd97bdd813040db6d940e517f7df82b",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tree": "89abcdef0123456789abcdef0123456789abcdef",
+									"base": null
+								},
+								"profile": "macos-arm64-node22",
+								"startedAt": "2026-11-14T08:00:00.000Z",
+								"finishedAt": "2026-11-14T08:01:00.000Z",
+								"gates": {
+									"snapshot": "passed",
+									"registry": "passed",
+									"ledger": "passed",
+									"tests": "passed",
+									"scenarios": "passed",
+									"reasons": "passed",
+									"budgets": "passed"
+								},
+								"failures": [],
+								"tests": [],
+								"scenarios": [],
+								"measurements": [],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
