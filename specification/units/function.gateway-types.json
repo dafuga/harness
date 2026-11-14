@@ -30,17 +30,19 @@
 				"name": "gatewayTypes.id",
 				"type": "string",
 				"required": true,
-				"description": "Session identifier copied unchanged into the new state."
+				"description": "The required session identifier used as the new session's id and copied unchanged into the returned GatewaySession. Its format is not validated by this function.",
+				"examples": ["session-001"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayTypes",
 				"type": "GatewaySession",
-				"description": "Fresh session with an AbortController, empty pending-tool map, delivered-id set and replay map, running false and no event emitter."
+				"description": "A fresh session state object containing the supplied id, a new AbortController, empty pending and replay Maps, an empty delivered Set, and running set to false. The optional emit callback is omitted, and the id is not validated."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "gatewayTypes",
@@ -49,18 +51,19 @@
 						"name": "gatewayTypes.id",
 						"type": "string",
 						"required": true,
-						"description": "Session identifier copied unchanged into the new state."
+						"description": "The required session identifier used as the new session's id and copied unchanged into the returned GatewaySession. Its format is not validated by this function.",
+						"examples": ["session-001"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gatewayTypes",
 						"type": "GatewaySession",
-						"description": "Fresh session with an AbortController, empty pending-tool map, delivered-id set and replay map, running false and no event emitter."
+						"description": "A fresh session state object containing the supplied id, a new AbortController, empty pending and replay Maps, an empty delivered Set, and running set to false. The optional emit callback is omitted, and the id is not validated."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
