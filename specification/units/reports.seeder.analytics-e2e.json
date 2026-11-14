@@ -12,21 +12,23 @@
 		"symbols": ["seedAnalyticsE2e"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "seedAnalyticsE2e",
-				"type": "void"
+				"type": "void",
+				"description": "When it returns, the value is undefined; the outcome is that the analytics path from e2eFixtures() is deleted and then holds the 11 fixture events, which matters to code that reads that store afterwards. Importing this module runs one such call at load (line 107), so importing it resets the store."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown as a plain Error with the message 'Fixture requires a temporary analytics store.' when the analytics path does not begin with the e2eFixtures() root, '/tmp', or os.tmpdir(), each followed by a slash; this check runs before anything is deleted. Any error raised by rmSync, the AnalyticsRepository constructor, record, or close is not caught here and propagates unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "seedAnalyticsE2e",
@@ -34,16 +36,18 @@
 				"outputs": [
 					{
 						"name": "seedAnalyticsE2e",
-						"type": "void"
+						"type": "void",
+						"description": "When it returns, the value is undefined; its result is the store at the e2eFixtures() analytics path, which is deleted first and then holds the 11 fixture events (8 for site('alpha-project') and 3 for site('beta-project')). Once the path check passes, process.env.HARNESS_ANALYTICS_HOME is set to that path and stays set until something else changes it."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as a plain Error with the message 'Fixture requires a temporary analytics store.' when the analytics path does not begin with the e2eFixtures() root, '/tmp', or os.tmpdir(), each followed by a slash; this check runs before anything is deleted. Any error raised by rmSync, the AnalyticsRepository constructor, record, or close is not caught here and propagates unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
