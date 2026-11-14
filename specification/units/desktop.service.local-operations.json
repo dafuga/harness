@@ -32,36 +32,103 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "LocalOperationsService.constructor.options",
 				"type": "LocalOperationsOptions",
-				"required": true
+				"required": true,
+				"description": "The two ports this window may use: `bridge` is the desktop bridge without `onRunEvent`, and `control` is the remote control port without `onStatus`. The constructor stores this object as given and checks neither port, so a missing method fails only when a request calls it."
 			},
 			{
 				"name": "LocalOperationsService.handle.request",
 				"type": "WireRequest",
-				"required": true
+				"required": true,
+				"description": "A request envelope; `handle` reads only `method` and `input`, so `type` and `id` are never read here. It deletes `epoch` from a copy of `input`, then passes the rest unchecked to the control operations `approvePairing`, `denyPairing` and `revokeDevice`, which validate it themselves, calls the other control operations with no argument, and checks every other method's input against its bridge channel.",
+				"examples": [
+					{
+						"type": "request",
+						"id": "8f3c2a1e-6b4d-4e09-9a7f-2d5c8b1e4f60",
+						"method": "remote.status",
+						"input": {}
+					},
+					{
+						"type": "request",
+						"id": "0c7d5e21-93a8-4b6f-8e14-7a2f9c3d5b08",
+						"method": "snapshot",
+						"input": {
+							"projectId": "local-3c1f9a0e7b2d4c68e51a9f03d8c64b2e0a7f3e91c5b8d2f64e9a1c7b2f6d0e83",
+							"branch": "main",
+							"commit": "9e4b1d7a03f5c2e8b6a09d4c17e8f2a5d3c9b06e"
+						}
+					},
+					{
+						"type": "request",
+						"id": "e2a9d4f0-1c7b-4f83-b5e6-9d0a3c8f7e21",
+						"method": "remote.denyPairing",
+						"input": {
+							"pairingId": "5a1c7e93b20d8f46e7c31a094d6f2b85",
+							"epoch": "c4e8a0d3f17b52e9a6d0c8b41f3e7a92"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "LocalOperationsService.methods",
-				"type": "RemoteMethod[]"
+				"type": "RemoteMethod[]",
+				"description": "A new array holding every name in `remoteMethods`, in that order, on each call. It includes `session.attach`, which `handle` rejects because no bridge channel matches it.",
+				"examples": [
+					["session.attach", "listProjects", "capabilities", "snapshot"],
+					[
+						"remote.status",
+						"remote.enable",
+						"remote.disable",
+						"remote.createPairing",
+						"remote.closePairing",
+						"remote.approvePairing",
+						"remote.denyPairing",
+						"remote.revokeDevice"
+					]
+				]
 			},
 			{
 				"name": "LocalOperationsService.handle",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "The resolved value of the request: a control result for `remote.*` methods (`RemoteHostStatus`, or `RemotePairingOffer` from `remote.createPairing`), a `RemoteBinary` for `image` and `artifact`, and otherwise the bridge's own return value, unchanged.",
+				"examples": [
+					{
+						"supported": true,
+						"enabled": false,
+						"state": "disabled",
+						"reason": null,
+						"host": null,
+						"origin": null,
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": []
+					},
+					{
+						"encoding": "base64",
+						"mediaType": "image/png",
+						"byteLength": 3,
+						"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+						"data": "YWJj"
+					},
+					true
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The throws in `handle` reach the caller as rejected promises: `Desktop operation unavailable.` when the bridge lacks the operation, `Unknown desktop operation.` when a method has no bridge channel, and a validator's message when the input is refused. A rejection from a bridge or control operation passes through unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "LocalOperationsService.methods",
@@ -69,11 +136,25 @@
 				"outputs": [
 					{
 						"name": "LocalOperationsService.methods",
-						"type": "RemoteMethod[]"
+						"type": "RemoteMethod[]",
+						"description": "A new array holding every name in `remoteMethods`, in that order, on each call. It includes `session.attach`, which `handle` rejects because no bridge channel matches it.",
+						"examples": [
+							["session.attach", "listProjects", "capabilities", "snapshot"],
+							[
+								"remote.status",
+								"remote.enable",
+								"remote.disable",
+								"remote.createPairing",
+								"remote.closePairing",
+								"remote.approvePairing",
+								"remote.denyPairing",
+								"remote.revokeDevice"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalOperationsService.handle",
@@ -81,22 +162,74 @@
 					{
 						"name": "LocalOperationsService.handle.request",
 						"type": "WireRequest",
-						"required": true
+						"required": true,
+						"description": "A request envelope; `handle` reads only `method` and `input`, so `type` and `id` are never read here. It deletes `epoch` from a copy of `input`, then passes the rest unchecked to the control operations `approvePairing`, `denyPairing` and `revokeDevice`, which validate it themselves, calls the other control operations with no argument, and checks every other method's input against its bridge channel.",
+						"examples": [
+							{
+								"type": "request",
+								"id": "8f3c2a1e-6b4d-4e09-9a7f-2d5c8b1e4f60",
+								"method": "remote.status",
+								"input": {}
+							},
+							{
+								"type": "request",
+								"id": "0c7d5e21-93a8-4b6f-8e14-7a2f9c3d5b08",
+								"method": "snapshot",
+								"input": {
+									"projectId": "local-3c1f9a0e7b2d4c68e51a9f03d8c64b2e0a7f3e91c5b8d2f64e9a1c7b2f6d0e83",
+									"branch": "main",
+									"commit": "9e4b1d7a03f5c2e8b6a09d4c17e8f2a5d3c9b06e"
+								}
+							},
+							{
+								"type": "request",
+								"id": "e2a9d4f0-1c7b-4f83-b5e6-9d0a3c8f7e21",
+								"method": "remote.denyPairing",
+								"input": {
+									"pairingId": "5a1c7e93b20d8f46e7c31a094d6f2b85",
+									"epoch": "c4e8a0d3f17b52e9a6d0c8b41f3e7a92"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalOperationsService.handle",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "The resolved value of the request: a control result for `remote.*` methods (`RemoteHostStatus`, or `RemotePairingOffer` from `remote.createPairing`), a `RemoteBinary` for `image` and `artifact`, and otherwise the bridge's own return value, unchanged.",
+						"examples": [
+							{
+								"supported": true,
+								"enabled": false,
+								"state": "disabled",
+								"reason": null,
+								"host": null,
+								"origin": null,
+								"pairing": null,
+								"requests": [],
+								"devices": [],
+								"projects": []
+							},
+							{
+								"encoding": "base64",
+								"mediaType": "image/png",
+								"byteLength": 3,
+								"sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+								"data": "YWJj"
+							},
+							true
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The throws in `handle` reach the caller as rejected promises: `Desktop operation unavailable.` when the bridge lacks the operation, `Unknown desktop operation.` when a method has no bridge channel, and a validator's message when the input is refused. A rejection from a bridge or control operation passes through unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -106,17 +239,19 @@
 					{
 						"name": "LocalOperationsService.constructor.options",
 						"type": "LocalOperationsOptions",
-						"required": true
+						"required": true,
+						"description": "The two ports this window may use: `bridge` is the desktop bridge without `onRunEvent`, and `control` is the remote control port without `onStatus`. The constructor stores this object as given and checks neither port, so a missing method fails only when a request calls it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalOperationsService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new `LocalOperationsService` instance: it keeps the options and holds one `IpcRequestValidator` of its own."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
