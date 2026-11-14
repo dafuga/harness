@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feColorMatrix element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet rendered inside the native feColorMatrix element when supplied; when omitted, the component renders no child content. The component does not otherwise transform or interpret the snippet."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeColorMatrix",
 				"type": "markup",
-				"description": "The actual native feColorMatrix element, with forwarded attributes and content and no additional wrapper."
+				"description": "Native feColorMatrix markup created by the dynamic element; remaining attributes are spread onto it, and supplied children are rendered inside it. The component adds no wrapper or other behavior."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
