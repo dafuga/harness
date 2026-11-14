@@ -22,46 +22,63 @@
 				"name": "signalGroup.child",
 				"type": "ChildProcess",
 				"required": true,
-				"description": "Child whose pid names the process group to signal."
+				"description": "Child whose pid identifies the process group to signal. A missing or falsy pid makes group signaling a no-op."
 			},
 			{
 				"name": "signalGroup.signal",
 				"type": "'SIGTERM' | 'SIGKILL'",
 				"required": true,
-				"description": "SIGTERM or SIGKILL to send to the negative child pid."
+				"description": "Signal sent to the process group addressed by the negative child pid. Only SIGTERM and SIGKILL are accepted.",
+				"examples": ["SIGTERM", "SIGKILL"]
 			},
 			{
 				"name": "groupTeardown.child",
 				"type": "ChildProcess",
 				"required": true,
-				"description": "Completed child whose process group is killed immediately."
+				"description": "Child whose process group receives SIGKILL before descendants are checked. If its pid is missing or falsy, the group signal is skipped."
 			},
 			{
 				"name": "groupTeardown.descendants",
 				"type": "Descendants",
 				"required": true,
-				"description": "Tracker providing surviving descendant identities for follow-up cleanup."
+				"description": "Tracker queried through its survivors() method to obtain remaining descendant processes. It is checked after the group signal and polled at 100 ms intervals while the settling threshold remains."
 			},
 			{
 				"name": "groupTeardown.timing",
 				"type": "GroupTiming",
 				"required": true,
-				"description": "Milliseconds allowed for natural settling and for graceful termination before escalation."
+				"description": "Required waits in milliseconds: settleMs is checked between survivor polls spaced 100 ms apart, and graceMs is awaited after SIGTERM before SIGKILL. No defaults are applied.",
+				"examples": [
+					{
+						"settleMs": 1000,
+						"graceMs": 500
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "signalGroup",
 				"type": "void",
-				"description": "Returns nothing; attempts the group signal and ignores errors, including an already absent group."
+				"description": "Returns no value. It skips signaling when child.pid is missing or falsy and suppresses errors from process.kill."
 			},
 			{
 				"name": "groupTeardown",
 				"type": "Promise<TrackedProcess[]>",
-				"description": "Resolves with descendants found after the settling period, after sending them SIGTERM, waiting the grace period and sending SIGKILL. Returns an empty array if none remain."
+				"description": "Resolves with the last survivor list obtained before escalation. If that list is nonempty, the function sends SIGTERM, waits graceMs, sends SIGKILL, and returns the same list without checking again.",
+				"examples": [
+					[]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "Rejects with the value thrown or rejected by descendants.survivors() or signalProcesses; this implementation does not assign a specific error name."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "signalGroup",
@@ -70,24 +87,25 @@
 						"name": "signalGroup.child",
 						"type": "ChildProcess",
 						"required": true,
-						"description": "Child whose pid names the process group to signal."
+						"description": "Child whose pid identifies the process group to signal. A missing or falsy pid makes group signaling a no-op."
 					},
 					{
 						"name": "signalGroup.signal",
 						"type": "'SIGTERM' | 'SIGKILL'",
 						"required": true,
-						"description": "SIGTERM or SIGKILL to send to the negative child pid."
+						"description": "Signal sent to the process group addressed by the negative child pid. Only SIGTERM and SIGKILL are accepted.",
+						"examples": ["SIGTERM", "SIGKILL"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "signalGroup",
 						"type": "void",
-						"description": "Returns nothing; attempts the group signal and ignores errors, including an already absent group."
+						"description": "Returns no value. It skips signaling when child.pid is missing or falsy and suppresses errors from process.kill."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "groupTeardown",
@@ -96,30 +114,45 @@
 						"name": "groupTeardown.child",
 						"type": "ChildProcess",
 						"required": true,
-						"description": "Completed child whose process group is killed immediately."
+						"description": "Child whose process group receives SIGKILL before descendants are checked. If its pid is missing or falsy, the group signal is skipped."
 					},
 					{
 						"name": "groupTeardown.descendants",
 						"type": "Descendants",
 						"required": true,
-						"description": "Tracker providing surviving descendant identities for follow-up cleanup."
+						"description": "Tracker queried through its survivors() method to obtain remaining descendant processes. It is checked after the group signal and polled at 100 ms intervals while the settling threshold remains."
 					},
 					{
 						"name": "groupTeardown.timing",
 						"type": "GroupTiming",
 						"required": true,
-						"description": "Milliseconds allowed for natural settling and for graceful termination before escalation."
+						"description": "Required waits in milliseconds: settleMs is checked between survivor polls spaced 100 ms apart, and graceMs is awaited after SIGTERM before SIGKILL. No defaults are applied.",
+						"examples": [
+							{
+								"settleMs": 1000,
+								"graceMs": 500
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "groupTeardown",
 						"type": "Promise<TrackedProcess[]>",
-						"description": "Resolves with descendants found after the settling period, after sending them SIGTERM, waiting the grace period and sending SIGKILL. Returns an empty array if none remain."
+						"description": "Resolves with the last survivor list obtained before escalation. If that list is nonempty, the function sends SIGTERM, waits graceMs, sends SIGKILL, and returns the same list without checking again.",
+						"examples": [
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Rejects with the value thrown or rejected by descendants.survivors() or signalProcesses; this implementation does not assign a specific error name."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
