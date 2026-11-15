@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/report-command-service/report-retention-service/reportCleanupLog.ts",
 			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
 			"packages/reports/src/utils/reportCleanupLog.ts"
 		],
-		"symbols": ["reportCleanupLog", "reportCleanupLog", "reportCleanupLog"]
+		"symbols": ["reportCleanupLog", "reportCleanupLog"]
 	},
 	"contract": {
 		"origin": "declared",
