@@ -1,5 +1,5 @@
 import { expect, test, vi, beforeEach } from 'vitest';
-import { CodexGatewayService } from '../src/services/codex-gateway-service/CodexGatewayService';
+import { CodexGatewayService } from '../src/cli/program/codex-gateway-service/CodexGatewayService';
 
 const seen = vi.hoisted(() => ({ prompts: [] as unknown[], results: [] as unknown[], calls: 0 }));
 vi.mock('@anthropic-ai/claude-agent-sdk', () => ({

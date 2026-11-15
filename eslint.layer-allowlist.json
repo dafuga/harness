@@ -27,21 +27,6 @@
 			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
 		},
 		{
-			"from": "src/services/codex-gateway-service/CodexGatewayService.ts",
-			"to": "src/cli/program/codex-gateway-service/CodexGatewayService",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/services/codex-gateway-service/gatewayReplay.ts",
-			"to": "src/cli/program/codex-gateway-service/gatewayReplay",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/services/codex-gateway-service/gatewayStream.ts",
-			"to": "src/cli/program/codex-gateway-service/gatewayStream",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/console-install-service/consoleDataModules.ts",
 			"to": "src/cli/program/console-install-service/consoleDataModules",
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
