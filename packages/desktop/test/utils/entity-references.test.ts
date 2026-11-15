@@ -1,6 +1,6 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
-import { entityReferences } from '../../src/components/reference-text/entityReferences';
+import { entityReferences } from '../../src/components/explorer-ui/reference-text/entityReferences';
 import { isUnitId } from '../../src/utils/entityReferences';
 
 /** The grammar of a reference id, and markers that are broken around a whole one. */
