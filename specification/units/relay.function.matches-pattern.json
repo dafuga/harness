@@ -18,23 +18,36 @@
 				"name": "matchesPattern.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Unknown candidate value; non-strings return false."
+				"description": "The candidate value to check. Only string values are tested; any other type returns false without reading the pattern.",
+				"examples": [
+					"packages/relay/src/utils/matchesPattern.ts",
+					"packages/relay/src/utils/development-tooling/matchesPattern.ts",
+					42
+				]
 			},
 			{
 				"name": "matchesPattern.pattern",
 				"type": "RegExp",
 				"required": true,
-				"description": "Regular expression to test. For string inputs, lastIndex is reset to zero before and after the test."
+				"description": "The regular expression that value is tested against; it is used only when value is a string. For string values, lastIndex is set to 0 before and after the test, which overwrites any stored position, so a global or sticky pattern keeps no position between calls."
 			}
 		],
 		"outputs": [
 			{
 				"name": "matchesPattern",
 				"type": "value is string",
-				"description": "Whether the string matches, with a string type guard on success."
+				"description": "Returns true only when value is a string and pattern.test finds a match in it, which narrows value to string where the result is true. It returns false for non-string values and for strings with no match, so a false result does not show that value is not a string.",
+				"examples": [true, false]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when value is a string and pattern is null, undefined, or a value that cannot take a lastIndex or lacks a test method, because the function assigns pattern.lastIndex and calls pattern.test without a check. Non-string values return false before pattern is read, so they never throw this."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "matchesPattern",
@@ -43,24 +56,36 @@
 						"name": "matchesPattern.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Unknown candidate value; non-strings return false."
+						"description": "The candidate value to check. Only string values are tested; any other type returns false without reading the pattern.",
+						"examples": [
+							"packages/relay/src/utils/matchesPattern.ts",
+							"packages/relay/src/utils/development-tooling/matchesPattern.ts",
+							42
+						]
 					},
 					{
 						"name": "matchesPattern.pattern",
 						"type": "RegExp",
 						"required": true,
-						"description": "Regular expression to test. For string inputs, lastIndex is reset to zero before and after the test."
+						"description": "The regular expression that value is tested against; it is used only when value is a string. For string values, lastIndex is set to 0 before and after the test, which overwrites any stored position, so a global or sticky pattern keeps no position between calls."
 					}
 				],
 				"outputs": [
 					{
 						"name": "matchesPattern",
 						"type": "value is string",
-						"description": "Whether the string matches, with a string type guard on success."
+						"description": "Returns true only when value is a string and pattern.test finds a match in it, which narrows value to string where the result is true. It returns false for non-string values and for strings with no match, so a false result does not show that value is not a string.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when value is a string and pattern is null, undefined, or a value that cannot take a lastIndex or lacks a test method, because the function assigns pattern.lastIndex and calls pattern.test without a check. Non-string values return false before pattern is read, so they never throw this."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
