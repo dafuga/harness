@@ -26,29 +26,31 @@
 				"type": "number",
 				"required": false,
 				"default": 0,
-				"description": "Optional number of nondefault filter and sort choices. Defaults to 0, highlights the icon and excludes local search."
+				"description": "Number of active choices supplied by the caller, defaulting to 0; the component does not count them itself. The icon is highlighted only when the value is greater than 0, and its title shows 'Filters · N active' for any truthy value, including negative numbers.",
+				"examples": [0, 2, 3]
 			},
 			{
 				"name": "FilterDialog.onreset",
 				"type": "() => void",
 				"required": true,
-				"description": "Restores default filter and sort choices while preserving the local search query."
+				"description": "Passed directly as the Reset filters button's onclick handler, so it runs on every click and receives the click event as its first argument, although its type is () => void. The component does not close the dialog when it runs, and what the callback restores is up to the caller."
 			},
 			{
 				"name": "FilterDialog.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "The catalog’s existing filter controls, rendered inside the dialog."
+				"description": "Content snippet rendered with @render inside the hx-div.filter-fields wrapper that forms the main content of the Filters modal. The component renders it as passed and adds no controls of its own to that main content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "FilterDialog",
 				"type": "markup",
-				"description": "One icon opens a Filters modal. Done, Escape and backdrop close it and restore focus to the icon. Reset invokes the supplied callback."
+				"description": "Clicking the icon button labeled Filters opens a Modal titled Filters with the children as its main content and Reset filters and Done buttons in its footer. Done and the Modal's onClose both call close, which closes the modal and then, after tick(), focuses the icon; Reset calls onreset."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
