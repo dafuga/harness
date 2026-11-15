@@ -21,12 +21,12 @@
 				"description": "The stored capture whose media name is read; only its media field is used. A null or undefined media gives an empty name, and a media value that is neither null, undefined nor a string makes the call throw a TypeError.",
 				"examples": [
 					{
-						"evidence": "checkout-review-screens",
+						"evidence": "evidence-grid-review-screens",
 						"kind": "screenshot",
-						"state": "cart-with-items",
+						"state": "populated",
 						"viewport": "desktop",
 						"status": "passed",
-						"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-desktop.png",
+						"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-desktop.png",
 						"sha256": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f",
 						"mediaType": "image/png",
 						"capturedAt": "2026-11-10T14:32:08.114Z",
@@ -38,25 +38,25 @@
 						"media": "media/a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png"
 					},
 					{
-						"evidence": "checkout-review-walkthrough",
+						"evidence": "evidence-grid-review-walkthrough",
 						"kind": "audio",
-						"state": "cart-with-items",
+						"state": "populated",
 						"status": "passed",
-						"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-walkthrough.wav",
+						"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-walkthrough.wav",
 						"sha256": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39",
 						"mediaType": "audio/wav",
 						"capturedAt": "2026-11-10T14:35:41.902Z",
 						"durationSeconds": 42.5,
-						"transcript": "Opened the cart and confirmed the total updates.",
+						"transcript": "Opened the evidence grid and confirmed captured rows are visible.",
 						"media": "media/2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav"
 					},
 					{
-						"evidence": "checkout-review-screens",
+						"evidence": "evidence-grid-review-screens",
 						"kind": "screenshot",
-						"state": "cart-with-items",
+						"state": "populated",
 						"viewport": "mobile",
 						"status": "passed",
-						"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png",
+						"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-mobile.png",
 						"sha256": "5d0e8b3af61c9274b0d5e8a17c3f6920e4b1d7a508f3c6e29b4a1d70c6e5f283",
 						"mediaType": "image/png",
 						"capturedAt": "2026-11-10T14:33:02.557Z",
@@ -66,7 +66,7 @@
 							"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
 						},
 						"media": null,
-						"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d"
+						"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-mobile.png is not part of record c41f0e9a7b2d"
 					}
 				]
 			},
@@ -83,21 +83,21 @@
 							"units": [],
 							"scenarios": [
 								{
-									"id": "checkout-review",
-									"title": "Checkout review",
+									"id": "evidence-grid-review",
+									"title": "Evidence grid review",
 									"kind": "ui",
 									"units": ["reports.component.evidence-grid"],
 									"states": [
 										{
-											"id": "cart-with-items",
-											"title": "Cart with items",
+											"id": "populated",
+											"title": "Grid with captures",
 											"coverage": "required"
 										},
 										{
-											"id": "cart-empty",
-											"title": "Empty cart",
+											"id": "empty",
+											"title": "Empty grid",
 											"coverage": "missing",
-											"reason": "No capture of the empty cart exists yet."
+											"reason": "No capture of the empty grid exists yet."
 										}
 									],
 									"viewports": [
@@ -114,7 +114,7 @@
 									],
 									"tests": [
 										{
-											"id": "cart-review",
+											"id": "evidence-grid-render",
 											"kind": "e2e",
 											"runner": "playwright"
 										}
@@ -136,14 +136,14 @@
 							"units": [],
 							"scenarios": [
 								{
-									"id": "checkout-review",
-									"title": "Checkout review",
+									"id": "evidence-grid-review",
+									"title": "Evidence grid review",
 									"kind": "ui",
 									"units": ["reports.component.evidence-grid"],
 									"states": [
 										{
-											"id": "cart-with-items",
-											"title": "Cart with items",
+											"id": "populated",
+											"title": "Grid with captures",
 											"coverage": "required"
 										}
 									],
@@ -156,7 +156,7 @@
 									],
 									"tests": [
 										{
-											"id": "cart-review",
+											"id": "evidence-grid-render",
 											"kind": "e2e",
 											"runner": "playwright"
 										}
@@ -222,7 +222,7 @@
 						"tests": [],
 						"scenarios": [
 							{
-								"id": "checkout-review",
+								"id": "evidence-grid-review",
 								"status": "passed",
 								"testedRevision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
 								"inherited": false,
@@ -232,16 +232,16 @@
 								},
 								"states": [
 									{
-										"id": "cart-with-items",
+										"id": "populated",
 										"coverage": "required",
 										"captures": [
 											{
-												"evidence": "checkout-review-screens",
+												"evidence": "evidence-grid-review-screens",
 												"kind": "screenshot",
-												"state": "cart-with-items",
+												"state": "populated",
 												"viewport": "desktop",
 												"status": "passed",
-												"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-desktop.png",
+												"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-desktop.png",
 												"sha256": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f",
 												"mediaType": "image/png",
 												"capturedAt": "2026-11-10T14:32:08.114Z",
@@ -253,12 +253,12 @@
 												"media": "media/a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png"
 											},
 											{
-												"evidence": "checkout-review-screens",
+												"evidence": "evidence-grid-review-screens",
 												"kind": "screenshot",
-												"state": "cart-with-items",
+												"state": "populated",
 												"viewport": "mobile",
 												"status": "passed",
-												"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png",
+												"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-mobile.png",
 												"sha256": "5d0e8b3af61c9274b0d5e8a17c3f6920e4b1d7a508f3c6e29b4a1d70c6e5f283",
 												"mediaType": "image/png",
 												"capturedAt": "2026-11-10T14:33:02.557Z",
@@ -268,19 +268,19 @@
 													"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
 												},
 												"media": null,
-												"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d"
+												"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-mobile.png is not part of record c41f0e9a7b2d"
 											},
 											{
-												"evidence": "checkout-review-walkthrough",
+												"evidence": "evidence-grid-review-walkthrough",
 												"kind": "audio",
-												"state": "cart-with-items",
+												"state": "populated",
 												"status": "passed",
-												"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-walkthrough.wav",
+												"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-walkthrough.wav",
 												"sha256": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39",
 												"mediaType": "audio/wav",
 												"capturedAt": "2026-11-10T14:35:41.902Z",
 												"durationSeconds": 42.5,
-												"transcript": "Opened the cart and confirmed the total updates.",
+												"transcript": "Opened the evidence grid and confirmed captured rows are visible.",
 												"media": "media/2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav"
 											}
 										]
@@ -309,7 +309,7 @@
 						"tests": [],
 						"scenarios": [
 							{
-								"id": "checkout-review",
+								"id": "evidence-grid-review",
 								"status": "passed",
 								"testedRevision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
 								"inherited": false,
@@ -319,9 +319,9 @@
 								},
 								"states": [
 									{
-										"id": "cart-empty",
+										"id": "empty",
 										"coverage": "missing",
-										"reason": "No capture of the empty cart was recorded.",
+										"reason": "No capture of the empty grid was recorded.",
 										"captures": []
 									}
 								]
@@ -353,9 +353,9 @@
 				"examples": [
 					[
 						{
-							"id": "c41f0e9a-checkout-review-cart-with-items-desktop-0",
-							"title": "checkout-review · cart-with-items",
-							"category": "checkout-review",
+							"id": "c41f0e9a-evidence-grid-review-populated-desktop-0",
+							"title": "evidence-grid-review · populated",
+							"category": "evidence-grid-review",
 							"file": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png",
 							"status": "passed",
 							"capturedAt": "2026-11-10T14:32:08.114Z",
@@ -386,9 +386,9 @@
 							"order": 0
 						},
 						{
-							"id": "c41f0e9a-checkout-review-cart-with-items-mobile-1",
-							"title": "checkout-review · cart-with-items",
-							"category": "checkout-review",
+							"id": "c41f0e9a-evidence-grid-review-populated-mobile-1",
+							"title": "evidence-grid-review · populated",
+							"category": "evidence-grid-review",
 							"file": "",
 							"status": "passed",
 							"capturedAt": "2026-11-10T14:33:02.557Z",
@@ -412,16 +412,16 @@
 									"value": "record c41f0e9a7b2d (passed) targeting 9d2e4f1"
 								}
 							],
-							"note": "Captured from build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b. Provenance: actual capture of running software. Tested at 9d2e4f1 by passing record c41f0e9a7b2d. evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d",
+							"note": "Captured from build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b. Provenance: actual capture of running software. Tested at 9d2e4f1 by passing record c41f0e9a7b2d. evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-mobile.png is not part of record c41f0e9a7b2d",
 							"missing": true,
 							"mediaType": "image",
 							"mimeType": "image/png",
 							"order": 1
 						},
 						{
-							"id": "c41f0e9a-checkout-review-cart-with-items-audio-2",
-							"title": "checkout-review · cart-with-items",
-							"category": "checkout-review",
+							"id": "c41f0e9a-evidence-grid-review-populated-audio-2",
+							"title": "evidence-grid-review · populated",
+							"category": "evidence-grid-review",
 							"file": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav",
 							"status": "passed",
 							"capturedAt": "2026-11-10T14:35:41.902Z",
@@ -445,15 +445,15 @@
 							"mediaType": "audio",
 							"mimeType": "audio/wav",
 							"durationSeconds": 42.5,
-							"transcript": "Opened the cart and confirmed the total updates.",
+							"transcript": "Opened the evidence grid and confirmed captured rows are visible.",
 							"order": 2
 						}
 					],
 					[
 						{
-							"id": "e02b7d4c-checkout-review-cart-with-items-desktop-0",
-							"title": "checkout-review · cart-with-items",
-							"category": "checkout-review",
+							"id": "e02b7d4c-evidence-grid-review-populated-desktop-0",
+							"title": "evidence-grid-review · populated",
+							"category": "evidence-grid-review",
 							"file": "7a1c4e903f8b5d26e0c9a7f16b2d8e54a9f03c7bd4e8b1a25c6f9e03b7d2a8c4.png",
 							"status": "not-proven",
 							"capturedAt": "2026-11-12T09:12:44.630Z",
@@ -512,12 +512,12 @@
 						"description": "The stored capture whose media name is read; only its media field is used. A null or undefined media gives an empty name, and a media value that is neither null, undefined nor a string makes the call throw a TypeError.",
 						"examples": [
 							{
-								"evidence": "checkout-review-screens",
+								"evidence": "evidence-grid-review-screens",
 								"kind": "screenshot",
-								"state": "cart-with-items",
+								"state": "populated",
 								"viewport": "desktop",
 								"status": "passed",
-								"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-desktop.png",
+								"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-desktop.png",
 								"sha256": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f",
 								"mediaType": "image/png",
 								"capturedAt": "2026-11-10T14:32:08.114Z",
@@ -529,25 +529,25 @@
 								"media": "media/a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png"
 							},
 							{
-								"evidence": "checkout-review-walkthrough",
+								"evidence": "evidence-grid-review-walkthrough",
 								"kind": "audio",
-								"state": "cart-with-items",
+								"state": "populated",
 								"status": "passed",
-								"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-walkthrough.wav",
+								"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-walkthrough.wav",
 								"sha256": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39",
 								"mediaType": "audio/wav",
 								"capturedAt": "2026-11-10T14:35:41.902Z",
 								"durationSeconds": 42.5,
-								"transcript": "Opened the cart and confirmed the total updates.",
+								"transcript": "Opened the evidence grid and confirmed captured rows are visible.",
 								"media": "media/2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav"
 							},
 							{
-								"evidence": "checkout-review-screens",
+								"evidence": "evidence-grid-review-screens",
 								"kind": "screenshot",
-								"state": "cart-with-items",
+								"state": "populated",
 								"viewport": "mobile",
 								"status": "passed",
-								"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png",
+								"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-mobile.png",
 								"sha256": "5d0e8b3af61c9274b0d5e8a17c3f6920e4b1d7a508f3c6e29b4a1d70c6e5f283",
 								"mediaType": "image/png",
 								"capturedAt": "2026-11-10T14:33:02.557Z",
@@ -557,7 +557,7 @@
 									"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
 								},
 								"media": null,
-								"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d"
+								"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-mobile.png is not part of record c41f0e9a7b2d"
 							}
 						]
 					}
@@ -599,21 +599,21 @@
 									"units": [],
 									"scenarios": [
 										{
-											"id": "checkout-review",
-											"title": "Checkout review",
+											"id": "evidence-grid-review",
+											"title": "Evidence grid review",
 											"kind": "ui",
 											"units": ["reports.component.evidence-grid"],
 											"states": [
 												{
-													"id": "cart-with-items",
-													"title": "Cart with items",
+													"id": "populated",
+													"title": "Grid with captures",
 													"coverage": "required"
 												},
 												{
-													"id": "cart-empty",
-													"title": "Empty cart",
+													"id": "empty",
+													"title": "Empty grid",
 													"coverage": "missing",
-													"reason": "No capture of the empty cart exists yet."
+													"reason": "No capture of the empty grid exists yet."
 												}
 											],
 											"viewports": [
@@ -630,7 +630,7 @@
 											],
 											"tests": [
 												{
-													"id": "cart-review",
+													"id": "evidence-grid-render",
 													"kind": "e2e",
 													"runner": "playwright"
 												}
@@ -652,14 +652,14 @@
 									"units": [],
 									"scenarios": [
 										{
-											"id": "checkout-review",
-											"title": "Checkout review",
+											"id": "evidence-grid-review",
+											"title": "Evidence grid review",
 											"kind": "ui",
 											"units": ["reports.component.evidence-grid"],
 											"states": [
 												{
-													"id": "cart-with-items",
-													"title": "Cart with items",
+													"id": "populated",
+													"title": "Grid with captures",
 													"coverage": "required"
 												}
 											],
@@ -672,7 +672,7 @@
 											],
 											"tests": [
 												{
-													"id": "cart-review",
+													"id": "evidence-grid-render",
 													"kind": "e2e",
 													"runner": "playwright"
 												}
@@ -738,7 +738,7 @@
 								"tests": [],
 								"scenarios": [
 									{
-										"id": "checkout-review",
+										"id": "evidence-grid-review",
 										"status": "passed",
 										"testedRevision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
 										"inherited": false,
@@ -748,16 +748,16 @@
 										},
 										"states": [
 											{
-												"id": "cart-with-items",
+												"id": "populated",
 												"coverage": "required",
 												"captures": [
 													{
-														"evidence": "checkout-review-screens",
+														"evidence": "evidence-grid-review-screens",
 														"kind": "screenshot",
-														"state": "cart-with-items",
+														"state": "populated",
 														"viewport": "desktop",
 														"status": "passed",
-														"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-desktop.png",
+														"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-desktop.png",
 														"sha256": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f",
 														"mediaType": "image/png",
 														"capturedAt": "2026-11-10T14:32:08.114Z",
@@ -769,12 +769,12 @@
 														"media": "media/a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png"
 													},
 													{
-														"evidence": "checkout-review-screens",
+														"evidence": "evidence-grid-review-screens",
 														"kind": "screenshot",
-														"state": "cart-with-items",
+														"state": "populated",
 														"viewport": "mobile",
 														"status": "passed",
-														"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png",
+														"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-mobile.png",
 														"sha256": "5d0e8b3af61c9274b0d5e8a17c3f6920e4b1d7a508f3c6e29b4a1d70c6e5f283",
 														"mediaType": "image/png",
 														"capturedAt": "2026-11-10T14:33:02.557Z",
@@ -784,19 +784,19 @@
 															"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
 														},
 														"media": null,
-														"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d"
+														"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-mobile.png is not part of record c41f0e9a7b2d"
 													},
 													{
-														"evidence": "checkout-review-walkthrough",
+														"evidence": "evidence-grid-review-walkthrough",
 														"kind": "audio",
-														"state": "cart-with-items",
+														"state": "populated",
 														"status": "passed",
-														"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-walkthrough.wav",
+														"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-walkthrough.wav",
 														"sha256": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39",
 														"mediaType": "audio/wav",
 														"capturedAt": "2026-11-10T14:35:41.902Z",
 														"durationSeconds": 42.5,
-														"transcript": "Opened the cart and confirmed the total updates.",
+														"transcript": "Opened the evidence grid and confirmed captured rows are visible.",
 														"media": "media/2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav"
 													}
 												]
@@ -825,7 +825,7 @@
 								"tests": [],
 								"scenarios": [
 									{
-										"id": "checkout-review",
+										"id": "evidence-grid-review",
 										"status": "passed",
 										"testedRevision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
 										"inherited": false,
@@ -835,9 +835,9 @@
 										},
 										"states": [
 											{
-												"id": "cart-empty",
+												"id": "empty",
 												"coverage": "missing",
-												"reason": "No capture of the empty cart was recorded.",
+												"reason": "No capture of the empty grid was recorded.",
 												"captures": []
 											}
 										]
@@ -859,9 +859,9 @@
 						"examples": [
 							[
 								{
-									"id": "c41f0e9a-checkout-review-cart-with-items-desktop-0",
-									"title": "checkout-review · cart-with-items",
-									"category": "checkout-review",
+									"id": "c41f0e9a-evidence-grid-review-populated-desktop-0",
+									"title": "evidence-grid-review · populated",
+									"category": "evidence-grid-review",
 									"file": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png",
 									"status": "passed",
 									"capturedAt": "2026-11-10T14:32:08.114Z",
@@ -892,9 +892,9 @@
 									"order": 0
 								},
 								{
-									"id": "c41f0e9a-checkout-review-cart-with-items-mobile-1",
-									"title": "checkout-review · cart-with-items",
-									"category": "checkout-review",
+									"id": "c41f0e9a-evidence-grid-review-populated-mobile-1",
+									"title": "evidence-grid-review · populated",
+									"category": "evidence-grid-review",
 									"file": "",
 									"status": "passed",
 									"capturedAt": "2026-11-10T14:33:02.557Z",
@@ -918,16 +918,16 @@
 											"value": "record c41f0e9a7b2d (passed) targeting 9d2e4f1"
 										}
 									],
-									"note": "Captured from build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b. Provenance: actual capture of running software. Tested at 9d2e4f1 by passing record c41f0e9a7b2d. evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d",
+									"note": "Captured from build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b. Provenance: actual capture of running software. Tested at 9d2e4f1 by passing record c41f0e9a7b2d. evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/evidence-grid-review/evidence-grid-render/evidence-grid-review-mobile.png is not part of record c41f0e9a7b2d",
 									"missing": true,
 									"mediaType": "image",
 									"mimeType": "image/png",
 									"order": 1
 								},
 								{
-									"id": "c41f0e9a-checkout-review-cart-with-items-audio-2",
-									"title": "checkout-review · cart-with-items",
-									"category": "checkout-review",
+									"id": "c41f0e9a-evidence-grid-review-populated-audio-2",
+									"title": "evidence-grid-review · populated",
+									"category": "evidence-grid-review",
 									"file": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav",
 									"status": "passed",
 									"capturedAt": "2026-11-10T14:35:41.902Z",
@@ -951,15 +951,15 @@
 									"mediaType": "audio",
 									"mimeType": "audio/wav",
 									"durationSeconds": 42.5,
-									"transcript": "Opened the cart and confirmed the total updates.",
+									"transcript": "Opened the evidence grid and confirmed captured rows are visible.",
 									"order": 2
 								}
 							],
 							[
 								{
-									"id": "e02b7d4c-checkout-review-cart-with-items-desktop-0",
-									"title": "checkout-review · cart-with-items",
-									"category": "checkout-review",
+									"id": "e02b7d4c-evidence-grid-review-populated-desktop-0",
+									"title": "evidence-grid-review · populated",
+									"category": "evidence-grid-review",
 									"file": "7a1c4e903f8b5d26e0c9a7f16b2d8e54a9f03c7bd4e8b1a25c6f9e03b7d2a8c4.png",
 									"status": "not-proven",
 									"capturedAt": "2026-11-12T09:12:44.630Z",

@@ -42,7 +42,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The exact schema key requested by unitSchema; it selects one of ComponentManifest, ScenarioManifest, or VerificationRecord. Any other name raises ExpectedCliError.",
-				"examples": ["ComponentManifest", "ScenarioManifest", "VerificationRecord"]
+				"examples": ["ScenarioManifest", "ComponentManifest", "VerificationRecord"]
 			},
 			{
 				"name": "listUnits.options",
@@ -216,13 +216,10 @@
 		"outputs": [
 			{
 				"name": "unitSchema",
-				"type": "unknown",
-				"description": "The JSON Schema value returned from z.toJSONSchema for the selected manifest schema. It is available for ComponentManifest, ScenarioManifest, and VerificationRecord; unknown names raise ExpectedCliError.",
+				"type": "z.core.JSONSchema.BaseSchema",
+				"description": "The JSON Schema value returned from z.toJSONSchema for the selected manifest schema. It is available for ComponentManifest, ScenarioManifest, and VerificationRecord; unknown names raise ExpectedCliError. The example is the complete JSON serialization of the ScenarioManifest schema; non-enumerable Zod Standard Schema metadata is omitted by JSON serialization.",
 				"examples": [
-					{
-						"type": "object",
-						"additionalProperties": false
-					}
+					{"$schema": "https://json-schema.org/draft/2020-12/schema", "type": "object", "properties": {"schemaVersion": {"type": "number", "const": 1}, "id": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "title": {"type": "string", "minLength": 1}, "kind": {"type": "string", "enum": ["ui", "headless", "audio"]}, "units": {"minItems": 1, "type": "array", "items": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}}, "states": {"minItems": 1, "type": "array", "items": {"type": "object", "properties": {"id": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "title": {"type": "string", "minLength": 1}, "coverage": {"type": "string", "enum": ["required", "missing", "inapplicable"]}, "reason": {"type": "string"}, "units": {"minItems": 1, "type": "array", "items": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}}}, "required": ["id", "title", "coverage"], "additionalProperties": false}}, "viewports": {"type": "array", "items": {"type": "object", "properties": {"id": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "width": {"type": "integer", "exclusiveMinimum": 0, "maximum": 9007199254740991}, "height": {"type": "integer", "exclusiveMinimum": 0, "maximum": 9007199254740991}, "scale": {"type": "number", "exclusiveMinimum": 0}}, "required": ["id", "width", "height"], "additionalProperties": false}}, "tests": {"minItems": 1, "type": "array", "items": {"type": "object", "properties": {"id": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "kind": {"type": "string", "enum": ["unit", "integration", "e2e"]}, "runner": {"type": "string", "enum": ["vitest", "playwright", "command"]}, "target": {"type": "string", "minLength": 1}, "cwd": {"type": "string"}, "timeoutMs": {"type": "integer", "exclusiveMinimum": 0, "maximum": 9007199254740991}}, "required": ["id", "kind", "runner", "target"], "additionalProperties": false}}, "builds": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}}, "evidence": {"type": "array", "items": {"type": "object", "properties": {"id": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "kind": {"type": "string", "enum": ["screenshot", "audio", "output", "assertions", "trace", "benchmark"]}, "states": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}}, "viewports": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}}, "provenance": {"type": "string", "enum": ["fixture", "actual-capture"]}, "build": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "capture": {"type": "string", "enum": ["viewport", "full-page", "element"]}, "required": {"type": "boolean"}}, "required": ["id", "kind", "states", "viewports", "required"], "additionalProperties": false}}}, "required": ["schemaVersion", "id", "title", "kind", "units", "states", "viewports", "tests", "evidence"], "additionalProperties": false}
 				]
 			},
 			{
@@ -430,19 +427,16 @@
 						"type": "string",
 						"required": true,
 						"description": "The exact schema key requested by unitSchema; it selects one of ComponentManifest, ScenarioManifest, or VerificationRecord. Any other name raises ExpectedCliError.",
-						"examples": ["ComponentManifest", "ScenarioManifest", "VerificationRecord"]
+						"examples": ["ScenarioManifest", "ComponentManifest", "VerificationRecord"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitSchema",
-						"type": "unknown",
-						"description": "The JSON Schema value returned from z.toJSONSchema for the selected manifest schema. It is available for ComponentManifest, ScenarioManifest, and VerificationRecord; unknown names raise ExpectedCliError.",
+						"type": "z.core.JSONSchema.BaseSchema",
+						"description": "The JSON Schema value returned from z.toJSONSchema for the selected manifest schema. It is available for ComponentManifest, ScenarioManifest, and VerificationRecord; unknown names raise ExpectedCliError. The example is the complete JSON serialization of the ScenarioManifest schema; non-enumerable Zod Standard Schema metadata is omitted by JSON serialization.",
 						"examples": [
-							{
-								"type": "object",
-								"additionalProperties": false
-							}
+							{"$schema": "https://json-schema.org/draft/2020-12/schema", "type": "object", "properties": {"schemaVersion": {"type": "number", "const": 1}, "id": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "title": {"type": "string", "minLength": 1}, "kind": {"type": "string", "enum": ["ui", "headless", "audio"]}, "units": {"minItems": 1, "type": "array", "items": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}}, "states": {"minItems": 1, "type": "array", "items": {"type": "object", "properties": {"id": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "title": {"type": "string", "minLength": 1}, "coverage": {"type": "string", "enum": ["required", "missing", "inapplicable"]}, "reason": {"type": "string"}, "units": {"minItems": 1, "type": "array", "items": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}}}, "required": ["id", "title", "coverage"], "additionalProperties": false}}, "viewports": {"type": "array", "items": {"type": "object", "properties": {"id": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "width": {"type": "integer", "exclusiveMinimum": 0, "maximum": 9007199254740991}, "height": {"type": "integer", "exclusiveMinimum": 0, "maximum": 9007199254740991}, "scale": {"type": "number", "exclusiveMinimum": 0}}, "required": ["id", "width", "height"], "additionalProperties": false}}, "tests": {"minItems": 1, "type": "array", "items": {"type": "object", "properties": {"id": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "kind": {"type": "string", "enum": ["unit", "integration", "e2e"]}, "runner": {"type": "string", "enum": ["vitest", "playwright", "command"]}, "target": {"type": "string", "minLength": 1}, "cwd": {"type": "string"}, "timeoutMs": {"type": "integer", "exclusiveMinimum": 0, "maximum": 9007199254740991}}, "required": ["id", "kind", "runner", "target"], "additionalProperties": false}}, "builds": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}}, "evidence": {"type": "array", "items": {"type": "object", "properties": {"id": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "kind": {"type": "string", "enum": ["screenshot", "audio", "output", "assertions", "trace", "benchmark"]}, "states": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}}, "viewports": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}}, "provenance": {"type": "string", "enum": ["fixture", "actual-capture"]}, "build": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"}, "capture": {"type": "string", "enum": ["viewport", "full-page", "element"]}, "required": {"type": "boolean"}}, "required": ["id", "kind", "states", "viewports", "required"], "additionalProperties": false}}}, "required": ["schemaVersion", "id", "title", "kind", "units", "states", "viewports", "tests", "evidence"], "additionalProperties": false}
 						]
 					}
 				],
