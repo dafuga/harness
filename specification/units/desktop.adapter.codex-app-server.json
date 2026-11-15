@@ -20,7 +20,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CodexAppServerAdapter.constructor.command",
@@ -29,45 +29,60 @@
 				"default": {
 					"command": "codex",
 					"args": []
-				}
+				},
+				"description": "The base CLI executable and argument list used to construct the app-server command. When omitted, it defaults to { command: 'codex', args: [] }; the adapter appends 'app-server', '--stdio', '-c', and 'model_provider=\"openai\"' to the arguments.",
+				"examples": [
+					{
+						"command": "codex",
+						"args": []
+					}
+				]
 			},
 			{
 				"name": "CodexAppServerAdapter.constructor.queue",
 				"type": "ResourceQueueService",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "An optional resource queue forwarded to codexTurn by run and generateImage. It defaults to undefined when omitted."
 			},
 			{
 				"name": "CodexAppServerAdapter.run.turn",
 				"type": "AgentTurn",
-				"required": true
+				"required": true,
+				"description": "The turn supplied for execution. The adapter passes it unchanged to codexTurn with the derived server command and optional queue."
 			},
 			{
 				"name": "CodexAppServerAdapter.generateImage.request",
 				"type": "ImageRequest",
-				"required": true
+				"required": true,
+				"description": "The image-generation request used to build the turn passed to codexTurn. The adapter appends an instruction to its prompt and sets the generated turn's effort to null, access to read-only, image to true, and onText to a no-op callback."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CodexAppServerAdapter.discover",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The value returned by codexState for the configured base command and derived server command. The adapter returns that value without transformation."
 			},
 			{
 				"name": "CodexAppServerAdapter.run",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "An object containing text and model copied from codexTurn's result. The adapter returns no other fields from that result."
 			},
 			{
 				"name": "CodexAppServerAdapter.generateImage",
-				"type": "Promise<GeneratedImage>"
+				"type": "Promise<GeneratedImage>",
+				"description": "Resolves to an object containing the decoded and validated image bytes and the revised prompt, or null when the completed image result has no revised prompt. The adapter only accepts a result whose image status is completed and which has no failure and a result payload."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when codexTurn returns no image with completed status, no failure, and a result payload. Its message includes up to the last 600 characters of result text, or an image-generation availability hint when that text is empty."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CodexAppServerAdapter.discover",
@@ -75,11 +90,12 @@
 				"outputs": [
 					{
 						"name": "CodexAppServerAdapter.discover",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The value returned by codexState for the configured base command and derived server command. The adapter returns that value without transformation."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CodexAppServerAdapter.run",
@@ -87,17 +103,19 @@
 					{
 						"name": "CodexAppServerAdapter.run.turn",
 						"type": "AgentTurn",
-						"required": true
+						"required": true,
+						"description": "The turn supplied for execution. The adapter passes it unchanged to codexTurn with the derived server command and optional queue."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexAppServerAdapter.run",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "An object containing text and model copied from codexTurn's result. The adapter returns no other fields from that result."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CodexAppServerAdapter.generateImage",
@@ -105,22 +123,25 @@
 					{
 						"name": "CodexAppServerAdapter.generateImage.request",
 						"type": "ImageRequest",
-						"required": true
+						"required": true,
+						"description": "The image-generation request used to build the turn passed to codexTurn. The adapter appends an instruction to its prompt and sets the generated turn's effort to null, access to read-only, image to true, and onText to a no-op callback."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexAppServerAdapter.generateImage",
-						"type": "Promise<GeneratedImage>"
+						"type": "Promise<GeneratedImage>",
+						"description": "Resolves to an object containing the decoded and validated image bytes and the revised prompt, or null when the completed image result has no revised prompt. The adapter only accepts a result whose image status is completed and which has no failure and a result payload."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when codexTurn returns no image with completed status, no failure, and a result payload. Its message includes up to the last 600 characters of result text, or an image-generation availability hint when that text is empty."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -134,22 +155,32 @@
 						"default": {
 							"command": "codex",
 							"args": []
-						}
+						},
+						"description": "The base CLI executable and argument list used to construct the app-server command. When omitted, it defaults to { command: 'codex', args: [] }; the adapter appends 'app-server', '--stdio', '-c', and 'model_provider=\"openai\"' to the arguments.",
+						"examples": [
+							{
+								"command": "codex",
+								"args": []
+							}
+						]
 					},
 					{
 						"name": "CodexAppServerAdapter.constructor.queue",
 						"type": "ResourceQueueService",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "An optional resource queue forwarded to codexTurn by run and generateImage. It defaults to undefined when omitted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexAppServerAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A constructed CodexAppServerAdapter instance holding the selected command and optional resource queue. The command defaults to { command: 'codex', args: [] }, and an omitted queue is undefined."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
