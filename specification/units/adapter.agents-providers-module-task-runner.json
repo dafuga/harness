@@ -28,52 +28,133 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskRunnerAdapter.constructor.execute",
 				"type": "TaskProcessExecutor",
-				"required": false
+				"required": false,
+				"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command."
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.command.selection",
 				"type": "TaskSelection",
-				"required": true
+				"required": true,
+				"description": "Provider, exact model and intelligence level used to build that provider's CLI argument vector.",
+				"examples": [
+					{
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"intelligence": "high"
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.run.input",
 				"type": "TaskRunInput",
-				"required": true
+				"required": true,
+				"description": "Provider selection plus the task working directory, prompt and abort signal needed to execute and cancel one CLI run."
 			},
 			{
 				"name": "taskProcess.command",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Executable and argument strings for the selected provider CLI, launched as one admitted task process.",
+				"examples": [
+					[
+						"codex",
+						"exec",
+						"--json",
+						"--ephemeral",
+						"--sandbox",
+						"workspace-write",
+						"-m",
+						"gpt-6-luna",
+						"-c",
+						"model_reasoning_effort=\"high\"",
+						"-c",
+						"model_provider=\"openai\"",
+						"-c",
+						"approval_policy=\"never\"",
+						"-"
+					]
+				]
 			},
 			{
 				"name": "taskProcess.input",
 				"type": "TaskRunInput",
-				"required": true
+				"required": true,
+				"description": "Run context supplying the selected provider and model, child working directory, prompt for stdin and signal for cancellation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskRunnerAdapter.command",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Argument vector for the selected provider CLI, including its model, effort and output settings.",
+				"examples": [
+					[
+						"codex",
+						"exec",
+						"--json",
+						"--ephemeral",
+						"--sandbox",
+						"workspace-write",
+						"-m",
+						"gpt-6-luna",
+						"-c",
+						"model_reasoning_effort=\"high\"",
+						"-c",
+						"model_provider=\"openai\"",
+						"-c",
+						"approval_policy=\"never\"",
+						"-"
+					],
+					[
+						"claude",
+						"-p",
+						"--verbose",
+						"--output-format",
+						"stream-json",
+						"--model",
+						"claude-haiku-5-5",
+						"--effort",
+						"high",
+						"--permission-mode",
+						"acceptEdits",
+						"--tools",
+						"Read,Edit,Write,Glob,Grep,Bash",
+						"--allowedTools",
+						"Read,Edit,Write,Glob,Grep,Bash",
+						"--no-session-persistence"
+					]
+				]
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.run",
-				"type": "Promise<TaskRunResult>"
+				"type": "Promise<TaskRunResult>",
+				"description": "Resolves to the selected task identity, public response text and reported model after CLI events pass success and identity checks.",
+				"examples": [
+					{
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"intelligence": "high",
+						"text": "Task completed.",
+						"reportedModel": "gpt-6-luna"
+					}
+				]
 			},
 			{
 				"name": "taskProcess",
-				"type": "Promise<TaskProcessResult>"
+				"type": "Promise<TaskProcessResult>",
+				"description": "Resolves with the child CLI exit code and captured stdout after the admitted process closes; stderr is discarded."
 			}
 		],
 		"errors": [
 			{
 				"name": "ModuleTaskRunError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Signals a failed provider run, quota rejection, denied tool permission or a CLI model different from the requested selection."
 			}
 		],
 		"errorStatus": "unknown",
@@ -84,13 +165,41 @@
 					{
 						"name": "ModuleTaskRunnerAdapter.command.selection",
 						"type": "TaskSelection",
-						"required": true
+						"required": true,
+						"description": "Provider, exact model and intelligence level used to build that provider's CLI argument vector.",
+						"examples": [
+							{
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"intelligence": "high"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.command",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Argument vector for the selected provider CLI, including its model, effort and output settings.",
+						"examples": [
+							[
+								"codex",
+								"exec",
+								"--json",
+								"--ephemeral",
+								"--sandbox",
+								"workspace-write",
+								"-m",
+								"gpt-6-luna",
+								"-c",
+								"model_reasoning_effort=\"high\"",
+								"-c",
+								"model_provider=\"openai\"",
+								"-c",
+								"approval_policy=\"never\"",
+								"-"
+							]
+						]
 					}
 				],
 				"errors": [],
@@ -102,13 +211,24 @@
 					{
 						"name": "ModuleTaskRunnerAdapter.run.input",
 						"type": "TaskRunInput",
-						"required": true
+						"required": true,
+						"description": "Provider selection plus the task working directory, prompt and abort signal needed to execute and cancel one CLI run."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.run",
-						"type": "Promise<TaskRunResult>"
+						"type": "Promise<TaskRunResult>",
+						"description": "Resolves to the selected task identity, public response text and reported model after CLI events pass success and identity checks.",
+						"examples": [
+							{
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"intelligence": "high",
+								"text": "Task completed.",
+								"reportedModel": "gpt-6-luna"
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -120,18 +240,46 @@
 					{
 						"name": "taskProcess.command",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Executable and argument strings for the selected provider CLI, launched as one admitted task process.",
+						"examples": [
+							[
+								"codex",
+								"exec",
+								"--json",
+								"--ephemeral",
+								"--sandbox",
+								"workspace-write",
+								"-m",
+								"gpt-6-luna",
+								"-c",
+								"model_reasoning_effort=\"high\"",
+								"-c",
+								"model_provider=\"openai\"",
+								"-c",
+								"approval_policy=\"never\"",
+								"-"
+							]
+						]
 					},
 					{
 						"name": "taskProcess.input",
 						"type": "TaskRunInput",
-						"required": true
+						"required": true,
+						"description": "Run context supplying the selected provider and model, child working directory, prompt for stdin and signal for cancellation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskProcess",
-						"type": "Promise<TaskProcessResult>"
+						"type": "Promise<TaskProcessResult>",
+						"description": "Resolves with the child CLI exit code and captured stdout after the admitted process closes; stderr is discarded.",
+						"examples": [
+							{
+								"code": 0,
+								"stdout": "{\"type\":\"turn.completed\",\"model\":\"gpt-6-luna\"}\n"
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -145,13 +293,15 @@
 					{
 						"name": "ModuleTaskRunnerAdapter.constructor.execute",
 						"type": "TaskProcessExecutor",
-						"required": false
+						"required": false,
+						"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Adapter instance that provides command and run operations and retains the supplied executor for CLI process calls."
 					}
 				],
 				"errors": [],

@@ -26,8 +26,8 @@
 				"required": false,
 				"description": "Storage root that directory() joins each run ID to, so it must be a string path. Defaults to join(process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'), 'benchmarks'): the HARNESS_ANALYTICS_HOME value when it is defined, otherwise the .codex/harness folder under the home directory, with 'benchmarks' appended.",
 				"examples": [
-					"/Users/example/.codex/harness/benchmarks",
-					"/srv/harness-analytics/benchmarks"
+					"/workspace/project/.codex/harness/benchmarks",
+					"/workspace/analytics/benchmarks"
 				]
 			},
 			{
@@ -46,7 +46,7 @@
 					{
 						"version": 1,
 						"id": "3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
-						"project": "/srv/repos/checkout-service",
+						"project": "/workspace/project",
 						"revision": "e6b1f0c2d9a47358be12f0c9d7a64a1e3f85b270",
 						"fingerprint": "5f0c9e2b7a4d1836c0e9f27b4a5d8e13f6c2b9a07d4e1f58c3b6a2d9e0f7c146",
 						"seed": "comparison-1",
@@ -130,8 +130,8 @@
 				"type": "string",
 				"description": "Path of the run's private subfolder: the storage root joined with the validated run ID. directory() only computes this path and does not create the folder; save() creates it with mode 0o700.",
 				"examples": [
-					"/Users/example/.codex/harness/benchmarks/3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
-					"/srv/harness-analytics/benchmarks/c0a8f3d2-19e7-4b6a-8d35-6f0e2c9b7a14"
+					"/workspace/project/.codex/harness/benchmarks/3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
+					"/workspace/analytics/benchmarks/c0a8f3d2-19e7-4b6a-8d35-6f0e2c9b7a14"
 				]
 			},
 			{
@@ -147,7 +147,7 @@
 					{
 						"version": 1,
 						"id": "3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
-						"project": "/srv/repos/checkout-service",
+						"project": "/workspace/project",
 						"revision": "e6b1f0c2d9a47358be12f0c9d7a64a1e3f85b270",
 						"fingerprint": "5f0c9e2b7a4d1836c0e9f27b4a5d8e13f6c2b9a07d4e1f58c3b6a2d9e0f7c146",
 						"seed": "comparison-1",
@@ -262,8 +262,8 @@
 						"type": "string",
 						"description": "Path of the run's private subfolder: the storage root joined with the validated run ID. directory() only computes this path and does not create the folder; save() creates it with mode 0o700.",
 						"examples": [
-							"/Users/example/.codex/harness/benchmarks/3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
-							"/srv/harness-analytics/benchmarks/c0a8f3d2-19e7-4b6a-8d35-6f0e2c9b7a14"
+							"/workspace/project/.codex/harness/benchmarks/3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
+							"/workspace/analytics/benchmarks/c0a8f3d2-19e7-4b6a-8d35-6f0e2c9b7a14"
 						]
 					}
 				],
@@ -288,7 +288,7 @@
 							{
 								"version": 1,
 								"id": "3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
-								"project": "/srv/repos/checkout-service",
+								"project": "/workspace/project",
 								"revision": "e6b1f0c2d9a47358be12f0c9d7a64a1e3f85b270",
 								"fingerprint": "5f0c9e2b7a4d1836c0e9f27b4a5d8e13f6c2b9a07d4e1f58c3b6a2d9e0f7c146",
 								"seed": "comparison-1",
@@ -514,8 +514,8 @@
 						"required": false,
 						"description": "Storage root that directory() joins each run ID to, so it must be a string path. Defaults to join(process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'), 'benchmarks'): the HARNESS_ANALYTICS_HOME value when it is defined, otherwise the .codex/harness folder under the home directory, with 'benchmarks' appended.",
 						"examples": [
-							"/Users/example/.codex/harness/benchmarks",
-							"/srv/harness-analytics/benchmarks"
+							"/workspace/project/.codex/harness/benchmarks",
+							"/workspace/analytics/benchmarks"
 						]
 					}
 				],

@@ -32,13 +32,13 @@
 				"name": "recordView.record",
 				"type": "VerificationRecord",
 				"required": true,
-				"description": "A verification record projected for history display, carrying its identity, status, source, profile, timings, gates, failures, tests, scenarios, measurements, budgets, and reason status. Only reasons.status and reasons.missing are returned, builds is included only when present, and record fields outside the view (such as tools, components, and impact) are omitted.",
+				"description": "Complete verification record to project. The function returns its identity, status, source, profile ID, timestamps, gates, failures, measurements, budgets, and reason status/missing fields; tests and scenarios are reshaped for display. Builds are included only when present. Repository, tools, components, impact, and other unprojected fields are omitted.",
 				"examples": [
 					{
 						"id": "9c074a374a705c997b07d688d45225380cd97bdd813040db6d940e517f7df82b",
 						"schemaVersion": 1,
 						"componentSchemaVersion": 2,
-						"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15",
+						"repository": "/workspace/project",
 						"source": {
 							"commit": "0123456789abcdef0123456789abcdef01234567",
 							"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -103,14 +103,14 @@
 				"name": "recordView.context",
 				"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver; /** The checks an earlier record ran, by its id; undefined when it cannot be read. */ origins?: (record: string) => DiagnosticTest[] | undefined; }",
 				"required": true,
-				"description": "Caller-supplied validity and problems plus the resolver used for each capture. Optional origins is called only for referenced scenarios, and its tests are filtered to IDs prefixed by the scenario ID plus a colon; if no list is returned, originTests is omitted."
+				"description": "Caller-supplied validity and problems plus capture and origin resolvers. resolve(capture, origin) runs for every capture and its media/gap result is merged into that capture. For referenced scenarios, origins(origin) supplies tests; only IDs beginning with the scenario ID plus a colon are kept. If no origin list is returned, originTests is omitted; fresh scenarios do not call origins."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordView",
 				"type": "RecordView",
-				"description": "Returns the history display projection with record identity/status/source/profile/timings, gates/failures, selected test fields with optional browser errors, measurements/budgets, and only reason status/missing values. Each scenario names the actual origin record and tested commit, resolves every capture, and includes scoped origin tests only when an origin list is available; optional builds are emitted only when present.",
+				"description": "History display projection with identity, status, validity, problems, source, profile ID, timestamps, gates, failures, measurements, budgets, and only reason status/missing fields. Tests keep ID, kind, target, status, duration, and browser errors when present. Scenarios include their actual record and commit origin, states, resolved capture media/gaps, and available scoped origin tests. Builds appear only when the record declares them.",
 				"examples": [
 					{
 						"id": "9c074a374a705c997b07d688d45225380cd97bdd813040db6d940e517f7df82b",
@@ -160,13 +160,13 @@
 						"name": "recordView.record",
 						"type": "VerificationRecord",
 						"required": true,
-						"description": "A verification record projected for history display, carrying its identity, status, source, profile, timings, gates, failures, tests, scenarios, measurements, budgets, and reason status. Only reasons.status and reasons.missing are returned, builds is included only when present, and record fields outside the view (such as tools, components, and impact) are omitted.",
+						"description": "Complete verification record to project. The function returns its identity, status, source, profile ID, timestamps, gates, failures, measurements, budgets, and reason status/missing fields; tests and scenarios are reshaped for display. Builds are included only when present. Repository, tools, components, impact, and other unprojected fields are omitted.",
 						"examples": [
 							{
 								"id": "9c074a374a705c997b07d688d45225380cd97bdd813040db6d940e517f7df82b",
 								"schemaVersion": 1,
 								"componentSchemaVersion": 2,
-								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15",
+								"repository": "/workspace/project",
 								"source": {
 									"commit": "0123456789abcdef0123456789abcdef01234567",
 									"tree": "89abcdef0123456789abcdef0123456789abcdef",
@@ -231,14 +231,14 @@
 						"name": "recordView.context",
 						"type": "{ valid: boolean; problems: string[]; resolve: MediaResolver; /** The checks an earlier record ran, by its id; undefined when it cannot be read. */ origins?: (record: string) => DiagnosticTest[] | undefined; }",
 						"required": true,
-						"description": "Caller-supplied validity and problems plus the resolver used for each capture. Optional origins is called only for referenced scenarios, and its tests are filtered to IDs prefixed by the scenario ID plus a colon; if no list is returned, originTests is omitted."
+						"description": "Caller-supplied validity and problems plus capture and origin resolvers. resolve(capture, origin) runs for every capture and its media/gap result is merged into that capture. For referenced scenarios, origins(origin) supplies tests; only IDs beginning with the scenario ID plus a colon are kept. If no origin list is returned, originTests is omitted; fresh scenarios do not call origins."
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordView",
 						"type": "RecordView",
-						"description": "Returns the history display projection with record identity/status/source/profile/timings, gates/failures, selected test fields with optional browser errors, measurements/budgets, and only reason status/missing values. Each scenario names the actual origin record and tested commit, resolves every capture, and includes scoped origin tests only when an origin list is available; optional builds are emitted only when present.",
+						"description": "History display projection with identity, status, validity, problems, source, profile ID, timestamps, gates, failures, measurements, budgets, and only reason status/missing fields. Tests keep ID, kind, target, status, duration, and browser errors when present. Scenarios include their actual record and commit origin, states, resolved capture media/gaps, and available scoped origin tests. Builds appear only when the record declares them.",
 						"examples": [
 							{
 								"id": "9c074a374a705c997b07d688d45225380cd97bdd813040db6d940e517f7df82b",

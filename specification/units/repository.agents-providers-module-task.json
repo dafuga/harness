@@ -52,7 +52,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem path passed to GitAdapter as the repository root and used to resolve the shared Git directory for task-owner identity. It must point to the repository whose task ref this instance manages.",
-				"examples": ["/Users/danielfugere/projects/harness"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ModuleTaskRepository.update.change",
@@ -492,7 +492,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem path passed to GitAdapter as the repository root and used to resolve the shared Git directory for task-owner identity. It must point to the repository whose task ref this instance manages.",
-						"examples": ["/Users/danielfugere/projects/harness"]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
