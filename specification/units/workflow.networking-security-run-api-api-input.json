@@ -12,37 +12,75 @@
 		"symbols": ["apiInput", "apiQuery"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "apiInput.input",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "The value is inline JSON text, '@' followed by a file path whose UTF-8 contents are read, or '-' to read a JSON body from piped stdin (a terminal stdin is rejected). When it is undefined, apiInput returns {} without reading or parsing anything; otherwise the text must parse to a JSON object, so arrays, null and primitives are rejected.",
+				"examples": ["{\"name\": \"sample\", \"count\": 2}", "@request.json", "-"]
 			},
 			{
 				"name": "apiQuery.fields",
 				"type": "string[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Repeated query fields in name=value form, where each field needs at least one character before its first '=' and is split there; the value may be empty or contain further '=' characters. Defaults to [], which makes apiQuery return an empty array.",
+				"examples": [
+					["page=2", "sort=name"],
+					["filter=status=open"],
+					["q="]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "apiInput",
-				"type": "Promise<Record<string, unknown>>"
+				"type": "Promise<Record<string, unknown>>",
+				"description": "The resolved parsed JSON object from the input source, or {} when no input was given. It is never null, an array or a primitive, because apiInput rejects those parsed values.",
+				"examples": [
+					{},
+					{
+						"name": "sample",
+						"count": 2
+					},
+					{
+						"enabled": true,
+						"tags": ["a", "b"]
+					}
+				]
 			},
 			{
 				"name": "apiQuery",
-				"type": "Array<[string, string]>"
+				"type": "Array<[string, string]>",
+				"description": "The [name, value] tuples in input order, with names and values kept exactly as written (no trimming or URL decoding) and each field split at its first '=' only, so later '=' characters stay in the value and an empty value is allowed. An empty fields array returns an empty array.",
+				"examples": [
+					[
+						["page", "2"],
+						["sort", "name"]
+					],
+					[
+						["filter", "status=open"]
+					],
+					[]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown through fail() by apiInput when '-' is used with a terminal stdin, when the input text is not valid JSON, or when the parsed value is null, an array or a primitive; also thrown through fail() by apiQuery when a field has no '=' or starts with '='. The apiInput failures reject the promise that apiInput returns, because apiInput is async, while apiQuery throws synchronously."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A Node.js error from readFile when the file named after '@' cannot be read, or from iterating process.stdin when '-' is used, which apiInput does not catch, so the promise apiInput returns rejects with that error."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "apiInput",
@@ -50,22 +88,43 @@
 					{
 						"name": "apiInput.input",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "The value is inline JSON text, '@' followed by a file path whose UTF-8 contents are read, or '-' to read a JSON body from piped stdin (a terminal stdin is rejected). When it is undefined, apiInput returns {} without reading or parsing anything; otherwise the text must parse to a JSON object, so arrays, null and primitives are rejected.",
+						"examples": ["{\"name\": \"sample\", \"count\": 2}", "@request.json", "-"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiInput",
-						"type": "Promise<Record<string, unknown>>"
+						"type": "Promise<Record<string, unknown>>",
+						"description": "The resolved parsed JSON object from the input source, or {} when no input was given. It is never null, an array or a primitive, because apiInput rejects those parsed values.",
+						"examples": [
+							{},
+							{
+								"name": "sample",
+								"count": 2
+							},
+							{
+								"enabled": true,
+								"tags": ["a", "b"]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through fail() when '-' is used with a terminal stdin, when the input text is not valid JSON, or when the parsed value is null, an array or a primitive. Because apiInput is async, the promise it returns rejects with this error."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A Node.js error from readFile when the file named after '@' cannot be read, or from iterating process.stdin when '-' is used, which apiInput does not catch, so the promise apiInput returns rejects with that error."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "apiQuery",
@@ -74,17 +133,40 @@
 						"name": "apiQuery.fields",
 						"type": "string[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Repeated query fields in name=value form, where each field needs at least one character before its first '=' and is split there; the value may be empty or contain further '=' characters. Defaults to [], which makes apiQuery return an empty array.",
+						"examples": [
+							["page=2", "sort=name"],
+							["filter=status=open"],
+							["q="]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiQuery",
-						"type": "Array<[string, string]>"
+						"type": "Array<[string, string]>",
+						"description": "The [name, value] tuples in input order, with names and values kept exactly as written (no trimming or URL decoding) and each field split at its first '=' only, so later '=' characters stay in the value and an empty value is allowed. An empty fields array returns an empty array.",
+						"examples": [
+							[
+								["page", "2"],
+								["sort", "name"]
+							],
+							[
+								["filter", "status=open"]
+							],
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown through fail() when a field has no '=' or starts with '=', so its name is empty or missing. Because apiQuery is synchronous, the call throws instead of returning the tuples."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
