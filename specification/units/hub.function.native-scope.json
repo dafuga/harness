@@ -18,23 +18,30 @@
 				"name": "nativeScope.resource",
 				"type": "string | null",
 				"required": true,
-				"description": "projects for all current/future shared projects, project: followed by an ID for one project, or null/other text."
+				"description": "Selects the requested native project scope. The exact value `projects` covers every shared project; `project:<id>` is narrowed only when its suffix is nonempty, while null, other text, and an empty suffix are treated as an unspecified broad request.",
+				"examples": ["projects", null]
 			},
 			{
 				"name": "nativeScope.projects",
 				"type": "Pick<BrowserProjects, 'get'>",
 				"required": true,
-				"description": "Project lookup used only for a nonempty single-project ID."
+				"description": "Provides `get` for nonempty `project:<id>` selectors; its resolved project supplies the name in the response. Lookup or name-conversion failures are caught and reported as an inaccessible project."
 			}
 		],
 		"outputs": [
 			{
 				"name": "nativeScope",
 				"type": "Promise<string>",
-				"description": "Readable scope wording: all projects, the fetched project name only, or an unavailable-project message when lookup fails. Missing or unrecognized scope is described conservatively as all projects with an ambiguity note."
+				"description": "Resolves to a user-facing description of the requested scope. It names every shared project (now and later) for `projects`, a resolved project name only for a nonempty `project:<id>` whose lookup succeeds, one inaccessible project after lookup failure, and every shared project when the selector is null, unrecognized, or has an empty ID.",
+				"examples": [
+					"every shared project you can open, now and later",
+					"the project “Oak Street” only",
+					"one project that this account cannot open"
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "nativeScope",
@@ -43,24 +50,30 @@
 						"name": "nativeScope.resource",
 						"type": "string | null",
 						"required": true,
-						"description": "projects for all current/future shared projects, project: followed by an ID for one project, or null/other text."
+						"description": "Selects the requested native project scope. The exact value `projects` covers every shared project; `project:<id>` is narrowed only when its suffix is nonempty, while null, other text, and an empty suffix are treated as an unspecified broad request.",
+						"examples": ["projects", null]
 					},
 					{
 						"name": "nativeScope.projects",
 						"type": "Pick<BrowserProjects, 'get'>",
 						"required": true,
-						"description": "Project lookup used only for a nonempty single-project ID."
+						"description": "Provides `get` for nonempty `project:<id>` selectors; its resolved project supplies the name in the response. Lookup or name-conversion failures are caught and reported as an inaccessible project."
 					}
 				],
 				"outputs": [
 					{
 						"name": "nativeScope",
 						"type": "Promise<string>",
-						"description": "Readable scope wording: all projects, the fetched project name only, or an unavailable-project message when lookup fails. Missing or unrecognized scope is described conservatively as all projects with an ambiguity note."
+						"description": "Resolves to a user-facing description of the requested scope. It names every shared project (now and later) for `projects`, a resolved project name only for a nonempty `project:<id>` whose lookup succeeds, one inaccessible project after lookup failure, and every shared project when the selector is null, unrecognized, or has an empty ID.",
+						"examples": [
+							"every shared project you can open, now and later",
+							"the project “Oak Street” only",
+							"one project that this account cannot open"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
