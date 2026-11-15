@@ -50,12 +50,14 @@
 			{
 				"name": "originalClipReference.capture",
 				"type": "HarnessCapture",
-				"required": true
+				"required": true,
+				"description": "Video capture carrying an optional exact original parent and tested revision."
 			},
 			{
 				"name": "originalClipReference.fallback",
 				"type": "FrameClipReference",
-				"required": true
+				"required": true,
+				"description": "Current scenario clip address used when the capture has no original parent reference."
 			},
 			{
 				"name": "mediaFile.capture",
@@ -588,12 +590,14 @@
 					{
 						"name": "originalClipReference.capture",
 						"type": "HarnessCapture",
-						"required": true
+						"required": true,
+						"description": "Video capture carrying an optional exact original parent and tested revision."
 					},
 					{
 						"name": "originalClipReference.fallback",
 						"type": "FrameClipReference",
-						"required": true
+						"required": true,
+						"description": "Current scenario clip address used when the capture has no original parent reference."
 					}
 				],
 				"outputs": [

@@ -36,62 +36,74 @@
 			{
 				"name": "clipParentRecords.record",
 				"type": "RecordLinks",
-				"required": true
+				"required": true,
+				"description": "Record links whose own clips may cite earlier attached parent records."
 			},
 			{
 				"name": "recordDependencies.record",
 				"type": "RecordLinks",
-				"required": true
+				"required": true,
+				"description": "Record ancestry, including whole-record and clip-level parent references."
 			},
 			{
 				"name": "wholeRecordDependencies.record",
 				"type": "RecordLinks",
-				"required": true
+				"required": true,
+				"description": "Record base and whole-scenario references that require complete verification proof."
 			},
 			{
 				"name": "videoRecordPassed.record",
 				"type": "VideoOriginRecord",
-				"required": true
+				"required": true,
+				"description": "Sealed original parent metadata with owner versions, tests and scope outcome."
 			},
 			{
 				"name": "videoRecordPassed.unit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Exact declared clip owner whose successful coverage the parent must prove."
 			},
 			{
 				"name": "sameVideoCapture.left",
 				"type": "Capture",
-				"required": true
+				"required": true,
+				"description": "Original admitted capture including source, build, timing and media metadata."
 			},
 			{
 				"name": "sameVideoCapture.right",
 				"type": "Capture",
-				"required": true
+				"required": true,
+				"description": "Proposed reused capture; only reference bookkeeping may differ."
 			},
 			{
 				"name": "originalVideoCapture.record",
 				"type": "VideoOriginRecord",
-				"required": true
+				"required": true,
+				"description": "Original parent metadata used to locate one source- and build-bound own capture."
 			},
 			{
 				"name": "originalVideoCapture.capture",
 				"type": "Capture",
-				"required": true
+				"required": true,
+				"description": "Proposed reused capture identifying the owner, clip, state and viewport."
 			},
 			{
 				"name": "videoLineage.record",
 				"type": "VerificationRecord",
-				"required": true
+				"required": true,
+				"description": "Parent record whose own video references require original clip provenance."
 			},
 			{
 				"name": "videoLineage.source",
 				"type": "LineageSource",
-				"required": true
+				"required": true,
+				"description": "Trusted lookup of sealed original parents and their applicable integrity problems."
 			},
 			{
 				"name": "videoLineage.sound",
 				"type": "Soundness",
-				"required": true
+				"required": true,
+				"description": "Whole-record soundness fallback when no clip-local media proof is supplied."
 			},
 			{
 				"name": "recordLineage.record",
@@ -171,9 +183,7 @@
 				"required": false,
 				"default": [],
 				"description": "An initial trail of ancestor record IDs used to detect a cycle when it contains the current or a recursively visited record ID. Defaults to [].",
-				"examples": [
-					["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]
-				]
+				"examples": [["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]]
 			}
 		],
 		"outputs": [
@@ -181,10 +191,7 @@
 				"name": "recordLineage",
 				"type": "string[]",
 				"description": "Returns strings for detected base or referenced-scenario ancestry problems, including missing, mismatched, failed, unsound or cyclic records and differing scenario states. Returns [] when no checked lineage has a problem; referenced scenarios without referencedRecord are skipped.",
-				"examples": [
-					[],
-					["base record fe161936b67b is not available"]
-				]
+				"examples": [[], ["base record fe161936b67b is not available"]]
 			}
 		],
 		"errors": [],
@@ -196,7 +203,8 @@
 					{
 						"name": "clipParentRecords.record",
 						"type": "RecordLinks",
-						"required": true
+						"required": true,
+						"description": "Record links whose own clips may cite earlier attached parent records."
 					}
 				],
 				"outputs": [
@@ -214,7 +222,8 @@
 					{
 						"name": "recordDependencies.record",
 						"type": "RecordLinks",
-						"required": true
+						"required": true,
+						"description": "Record ancestry, including whole-record and clip-level parent references."
 					}
 				],
 				"outputs": [
@@ -232,7 +241,8 @@
 					{
 						"name": "wholeRecordDependencies.record",
 						"type": "RecordLinks",
-						"required": true
+						"required": true,
+						"description": "Record base and whole-scenario references that require complete verification proof."
 					}
 				],
 				"outputs": [
@@ -250,12 +260,14 @@
 					{
 						"name": "videoRecordPassed.record",
 						"type": "VideoOriginRecord",
-						"required": true
+						"required": true,
+						"description": "Sealed original parent metadata with owner versions, tests and scope outcome."
 					},
 					{
 						"name": "videoRecordPassed.unit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Exact declared clip owner whose successful coverage the parent must prove."
 					}
 				],
 				"outputs": [
@@ -273,12 +285,14 @@
 					{
 						"name": "sameVideoCapture.left",
 						"type": "Capture",
-						"required": true
+						"required": true,
+						"description": "Original admitted capture including source, build, timing and media metadata."
 					},
 					{
 						"name": "sameVideoCapture.right",
 						"type": "Capture",
-						"required": true
+						"required": true,
+						"description": "Proposed reused capture; only reference bookkeeping may differ."
 					}
 				],
 				"outputs": [
@@ -296,12 +310,14 @@
 					{
 						"name": "originalVideoCapture.record",
 						"type": "VideoOriginRecord",
-						"required": true
+						"required": true,
+						"description": "Original parent metadata used to locate one source- and build-bound own capture."
 					},
 					{
 						"name": "originalVideoCapture.capture",
 						"type": "Capture",
-						"required": true
+						"required": true,
+						"description": "Proposed reused capture identifying the owner, clip, state and viewport."
 					}
 				],
 				"outputs": [
@@ -319,17 +335,20 @@
 					{
 						"name": "videoLineage.record",
 						"type": "VerificationRecord",
-						"required": true
+						"required": true,
+						"description": "Parent record whose own video references require original clip provenance."
 					},
 					{
 						"name": "videoLineage.source",
 						"type": "LineageSource",
-						"required": true
+						"required": true,
+						"description": "Trusted lookup of sealed original parents and their applicable integrity problems."
 					},
 					{
 						"name": "videoLineage.sound",
 						"type": "Soundness",
-						"required": true
+						"required": true,
+						"description": "Whole-record soundness fallback when no clip-local media proof is supplied."
 					}
 				],
 				"outputs": [
@@ -422,9 +441,7 @@
 						"required": false,
 						"default": [],
 						"description": "An initial trail of ancestor record IDs used to detect a cycle when it contains the current or a recursively visited record ID. Defaults to [].",
-						"examples": [
-							["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]
-						]
+						"examples": [["fe161936b67b24b1a2ea4473a86fc891fbbf83928e5d0472a744ce2d3005c42b"]]
 					}
 				],
 				"outputs": [
@@ -432,10 +449,7 @@
 						"name": "recordLineage",
 						"type": "string[]",
 						"description": "Returns strings for detected base or referenced-scenario ancestry problems, including missing, mismatched, failed, unsound or cyclic records and differing scenario states. Returns [] when no checked lineage has a problem; referenced scenarios without referencedRecord are skipped.",
-						"examples": [
-							[],
-							["base record fe161936b67b is not available"]
-						]
+						"examples": [[], ["base record fe161936b67b is not available"]]
 					}
 				],
 				"errors": [],
