@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/models/SourceHistory.types.ts",
-			"packages/collaboration/src/models/git-source-history/SourceHistory.types.ts"
-		],
+		"source": ["packages/collaboration/src/models/git-source-history/SourceHistory.types.ts"],
 		"symbols": [
 			"SourceCommitFacts",
 			"SourceHistoryCommit",
