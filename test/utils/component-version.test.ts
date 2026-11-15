@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { componentVersion } from '../../src/utils/componentVersion';
+import { componentVersion } from '../../src/utils/development-tooling/componentVersion';
 import { indexFiles, unitOf } from '../support/memoryTree';
 
 const path = 'src/utils/rank.ts';

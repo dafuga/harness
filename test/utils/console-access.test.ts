@@ -1,6 +1,9 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { expect, test } from 'vitest';
+import groups from '../../harness.groups.json';
 import { consoleAccess } from '../../packages/reports/src/utils/explorer-ui/console-server/consoleAccess';
-import { consoleBundle } from '../../src/utils/consoleBundle';
+import { consoleBundle } from '../../src/utils/development-tooling/consoleBundle';
 
 const commit = 'a'.repeat(40);
 const image = `${'b'.repeat(64)}.png`;
@@ -106,5 +109,20 @@ test('the root and the earlier query form are redirected into the explorer, afte
 	for (const address of ['/harness', page, `/harness?commit=${head}`]) {
 		const refused = await closed.entry(event(address), '/harness');
 		expect([refused?.status, refused?.headers.get('location')]).toEqual([403, null]);
+	}
+});
+
+test('the relocated modules leave no stub at their old paths or in the groups manifest', () => {
+	const root = join(import.meta.dirname, '../..');
+	const relocated = {
+		'src/utils/complexityCoverage.ts': 'src/utils/development-tooling/complexityCoverage.ts',
+		'src/utils/componentVersion.ts': 'src/utils/development-tooling/componentVersion.ts',
+		'src/utils/consoleAccess.ts': 'src/utils/explorer-ui/consoleAccess.ts',
+		'src/utils/consoleBundle.ts': 'src/utils/development-tooling/consoleBundle.ts'
+	};
+	for (const [stub, target] of Object.entries(relocated)) {
+		expect(existsSync(join(root, stub)), stub).toBe(false);
+		expect(existsSync(join(root, target)), target).toBe(true);
+		expect(JSON.stringify(groups), stub).not.toContain(JSON.stringify(stub));
 	}
 });

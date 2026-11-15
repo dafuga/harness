@@ -4,7 +4,7 @@ import type {
 	ConsoleHost,
 	ConsoleAccess,
 	ConsoleData
-} from '../../../../../../src/utils/consoleAccess';
+} from '../../../../../../src/utils/explorer-ui/consoleAccess';
 import { buildStamp, sdkPackage } from '../../../../../../src/utils/buildStamp';
 import {
 	consoleCanonical,

@@ -11,7 +11,7 @@ import type { StoredRecord } from '../src/repositories/verification-evidence/Ver
 import type { VerificationRecord } from '../src/core/verificationTypes';
 import { CommitTreeAdapter } from '../src/adapters/git-source-history/CommitTreeAdapter';
 import { SourceIndexService } from '../src/services/development-tooling/source-index-service/SourceIndexService';
-import { componentVersion } from '../src/utils/componentVersion';
+import { componentVersion } from '../src/utils/development-tooling/componentVersion';
 import { loadSide } from '../src/workflows/development-tooling/loadRevisions';
 import { VerificationRecordValidator } from '../src/validators/verification-evidence/VerificationRecordValidator';
 import { observedTaskOperation } from './support/taskProfiles';

@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/consoleBundle.ts",
 			"src/utils/development-tooling/consoleBundle.ts",
 			"src/utils/development-tooling/consoleBundle.types.ts"
 		],
-		"symbols": ["consoleBundle", "consoleBundle", "ConsoleModules", "Loader", "ConsoleModules"]
+		"symbols": ["consoleBundle", "ConsoleModules", "Loader", "ConsoleModules"]
 	},
 	"contract": {
 		"origin": "declared",
