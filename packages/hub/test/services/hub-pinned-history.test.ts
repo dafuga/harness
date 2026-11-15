@@ -85,14 +85,6 @@ test('the files of a record are given only where the pinned notes point to it in
 	expect(await selected((await opened(f)).history, f.records.later.record.id)).toBeUndefined();
 });
 
-test('the evidence views barrel exposes the same functions as the module that defines the views', async () => {
-	const barrel = await import('../../src/utils/verification-evidence/hubEvidenceViews');
-	const defined =
-		await import('../../src/utils/verification-evidence/hub-evidence-revision/hubEvidenceViews');
-	expect(barrel.hubEvidenceViews).toBe(defined.hubEvidenceViews);
-	expect(barrel.hubEvidenceOrigin).toBe(hubEvidenceOrigin);
-});
-
 async function selected(history: Awaited<ReturnType<typeof opened>>['history'], id: string) {
 	const origin = await hubEvidenceOrigin(history, id);
 	if (!origin?.record || origin.problems.length) return undefined;

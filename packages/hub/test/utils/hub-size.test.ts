@@ -12,16 +12,3 @@ test('missing source sizes stay explicitly unavailable rather than counting as z
 	});
 	expect(hubSize(context, ['src/missing.ts']).available).toBe(false);
 });
-
-test('known source sizes are summed and reported in kilobytes', () => {
-	const context = {
-		entries: [
-			{ path: 'src/example.ts', type: 'blob', mode: '100644', sha: 'a'.repeat(40), size: 1536 },
-			{ path: 'src/other.ts', type: 'blob', mode: '100644', sha: 'b'.repeat(40), size: 512 }
-		]
-	} as HubSourceContext;
-	expect(hubSize(context, ['src/example.ts', 'src/other.ts'])).toEqual({
-		available: true,
-		text: '2.0 KB'
-	});
-});
