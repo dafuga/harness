@@ -43,39 +43,62 @@
 				"name": "runtimeFailure.code",
 				"type": "string",
 				"required": true,
-				"description": "Stable failure code to return unchanged."
+				"description": "Failure code to place in the returned RuntimeFailure. The function returns it unchanged and does not restrict it to TransportFailure.",
+				"examples": ["runtime-failed", "invalid-response"]
 			},
 			{
 				"name": "runtimeFailure.message",
 				"type": "string",
 				"required": true,
-				"description": "Human-readable failure detail to return unchanged."
+				"description": "Human-readable failure message to place in the returned RuntimeFailure. The function returns it unchanged without formatting or validation.",
+				"examples": ["worker exited unexpectedly"]
 			},
 			{
 				"name": "runtimeTimeout.timeoutMs",
 				"type": "number",
 				"required": true,
-				"description": "Timeout duration in milliseconds to name in the failure message."
+				"description": "Timeout duration in milliseconds interpolated into the runtime-timeout message. This function constructs a failure response but does not enforce the timeout.",
+				"examples": [5000, 30000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "defaultRuntimeTimeoutMs",
 				"type": "unknown",
-				"description": "Default runtime timeout of 30000 milliseconds."
+				"description": "The exported default runtime timeout value is 30,000 milliseconds. This module declares and re-exports it but does not apply it to calls.",
+				"examples": [30000]
 			},
 			{
 				"name": "runtimeFailure",
 				"type": "RuntimeResponse",
-				"description": "Failure envelope with ok false and the supplied code/message."
+				"description": "A failure RuntimeResponse containing ok false and a nested error with the supplied code and message. The strings are copied unchanged and are not validated.",
+				"examples": [
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-failed",
+							"message": "worker exited unexpectedly"
+						}
+					}
+				]
 			},
 			{
 				"name": "runtimeTimeout",
 				"type": "RuntimeResponse",
-				"description": "Failure envelope with code runtime-timeout and a message naming the timeout duration."
+				"description": "A failure RuntimeResponse with code runtime-timeout and message no response within <timeoutMs> ms. This function constructs the response but does not enforce a deadline.",
+				"examples": [
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-timeout",
+							"message": "no response within 5000 ms"
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "runtimeFailure",
@@ -84,24 +107,35 @@
 						"name": "runtimeFailure.code",
 						"type": "string",
 						"required": true,
-						"description": "Stable failure code to return unchanged."
+						"description": "Failure code to place in the returned RuntimeFailure. The function returns it unchanged and does not restrict it to TransportFailure.",
+						"examples": ["runtime-failed", "invalid-response"]
 					},
 					{
 						"name": "runtimeFailure.message",
 						"type": "string",
 						"required": true,
-						"description": "Human-readable failure detail to return unchanged."
+						"description": "Human-readable failure message to place in the returned RuntimeFailure. The function returns it unchanged without formatting or validation.",
+						"examples": ["worker exited unexpectedly"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runtimeFailure",
 						"type": "RuntimeResponse",
-						"description": "Failure envelope with ok false and the supplied code/message."
+						"description": "A failure RuntimeResponse containing ok false and a nested error with the supplied code and message. The strings are copied unchanged and are not validated.",
+						"examples": [
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-failed",
+									"message": "worker exited unexpectedly"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "runtimeTimeout",
@@ -110,18 +144,28 @@
 						"name": "runtimeTimeout.timeoutMs",
 						"type": "number",
 						"required": true,
-						"description": "Timeout duration in milliseconds to name in the failure message."
+						"description": "Timeout duration in milliseconds interpolated into the runtime-timeout message. This function constructs a failure response but does not enforce the timeout.",
+						"examples": [5000, 30000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runtimeTimeout",
 						"type": "RuntimeResponse",
-						"description": "Failure envelope with code runtime-timeout and a message naming the timeout duration."
+						"description": "A failure RuntimeResponse with code runtime-timeout and message no response within <timeoutMs> ms. This function constructs the response but does not enforce a deadline.",
+						"examples": [
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-timeout",
+									"message": "no response within 5000 ms"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
