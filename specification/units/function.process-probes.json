@@ -30,14 +30,19 @@
 				"type": "ProbeLimits",
 				"required": false,
 				"default": {},
-				"description": "Optional AbortSignal and timeout per system-tool call; defaults to 3000 ms."
+				"description": "Optional limits applied to each system-tool call created by this probe interface. `timeoutMs` sets the per-call timeout and defaults to `probeMs` (3000 ms); `signal` cancels running calls and prevents queued calls from starting, with at most eight calls running at once across this module.",
+				"examples": [
+					{
+						"timeoutMs": 1200
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "processProbes",
 				"type": "ProcessProbes",
-				"description": "Probe methods for bounded tool calls, process facts and canonical executable paths, limited to eight concurrent calls process-wide."
+				"description": "Provides `ran` for a tool's success flag and stdout, `facts` for parsed process facts, and `executable` for a process's canonical executable path. Calls use a configurable timeout (3000 ms by default), a 16,000,000-byte maximum buffer, and at most eight concurrent slots; `ran` turns tool failures into `ok: false`, while `facts` and `executable` return `null` when data cannot be read or parsed."
 			}
 		],
 		"errors": [],
@@ -51,14 +56,19 @@
 						"type": "ProbeLimits",
 						"required": false,
 						"default": {},
-						"description": "Optional AbortSignal and timeout per system-tool call; defaults to 3000 ms."
+						"description": "Optional limits applied to each system-tool call created by this probe interface. `timeoutMs` sets the per-call timeout and defaults to `probeMs` (3000 ms); `signal` cancels running calls and prevents queued calls from starting, with at most eight calls running at once across this module.",
+						"examples": [
+							{
+								"timeoutMs": 1200
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "processProbes",
 						"type": "ProcessProbes",
-						"description": "Probe methods for bounded tool calls, process facts and canonical executable paths, limited to eight concurrent calls process-wide."
+						"description": "Provides `ran` for a tool's success flag and stdout, `facts` for parsed process facts, and `executable` for a process's canonical executable path. Calls use a configurable timeout (3000 ms by default), a 16,000,000-byte maximum buffer, and at most eight concurrent slots; `ran` turns tool failures into `ok: false`, while `facts` and `executable` return `null` when data cannot be read or parsed."
 					}
 				],
 				"errors": [],
