@@ -34,44 +34,73 @@
 				"name": "composeModes.capabilities",
 				"type": "ProjectCapabilities",
 				"required": true,
-				"description": "The project capabilities. Comments and agents are the flags used here; planning and approval flags are not checked separately."
+				"description": "The project's ProjectCapabilities value for the composer. comments controls comment, and agents gates plan and change together with writable; this function ignores planning, approval, source, and optional reason.",
+				"examples": [
+					{
+						"comments": true,
+						"agents": true,
+						"planning": true,
+						"approval": true,
+						"source": "github"
+					},
+					{
+						"comments": false,
+						"agents": false,
+						"planning": false,
+						"approval": false,
+						"source": "local"
+					}
+				]
 			},
 			{
 				"name": "composeModes.writable",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether the shown revision permits writing. Agent actions require this to be true."
+				"description": "Whether the current view is writable. It gates plan and change when agents is true and does not affect comment.",
+				"examples": [true, false]
 			},
 			{
 				"name": "visualCategory.category",
 				"type": "string",
 				"required": true,
-				"description": "The catalog category to classify. Pages, shells and components are visual categories."
+				"description": "The catalog category string to classify for visual planning. Only exact pages, layouts, and components values return true; matching is case-sensitive.",
+				"examples": ["pages", "layouts", "components"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "designCounts",
 				"type": "unknown",
-				"description": "The selectable design-option counts, all whole numbers from 1 through 10."
+				"description": "The integer option counts available for visual plans. The list runs from 1 to 10 inclusive.",
+				"examples": [
+					[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+				]
 			},
 			{
 				"name": "defaultDesignCount",
 				"type": "unknown",
-				"description": "The default visual design-option count, 3."
+				"description": "The default number of design options for a Plan. Its value is 3, within the available 1-to-10 range.",
+				"examples": [3]
 			},
 			{
 				"name": "visualCategory",
 				"type": "boolean",
-				"description": "True for pages, shells and components; false for other category strings."
+				"description": "Whether the category is one of the visual categories for planning. It is true only for exact pages, layouts, or components strings.",
+				"examples": [true, false]
 			},
 			{
 				"name": "composeModes",
 				"type": "ComposeMode[]",
-				"description": "An ordered list beginning with comment when comments are allowed, followed by plan and change only when agents are allowed and the view is writable. Returns an empty list when none apply."
+				"description": "The ordered composer actions for the supplied capabilities and writable state. It contains comment when comments are enabled and then plan and change when agents are enabled on a writable view; it can be empty and never returns ask.",
+				"examples": [
+					["comment", "plan", "change"],
+					["comment"],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "composeModes",
@@ -80,24 +109,46 @@
 						"name": "composeModes.capabilities",
 						"type": "ProjectCapabilities",
 						"required": true,
-						"description": "The project capabilities. Comments and agents are the flags used here; planning and approval flags are not checked separately."
+						"description": "The project's ProjectCapabilities value for the composer. comments controls comment, and agents gates plan and change together with writable; this function ignores planning, approval, source, and optional reason.",
+						"examples": [
+							{
+								"comments": true,
+								"agents": true,
+								"planning": true,
+								"approval": true,
+								"source": "github"
+							},
+							{
+								"comments": false,
+								"agents": false,
+								"planning": false,
+								"approval": false,
+								"source": "local"
+							}
+						]
 					},
 					{
 						"name": "composeModes.writable",
 						"type": "boolean",
 						"required": true,
-						"description": "Whether the shown revision permits writing. Agent actions require this to be true."
+						"description": "Whether the current view is writable. It gates plan and change when agents is true and does not affect comment.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "composeModes",
 						"type": "ComposeMode[]",
-						"description": "An ordered list beginning with comment when comments are allowed, followed by plan and change only when agents are allowed and the view is writable. Returns an empty list when none apply."
+						"description": "The ordered composer actions for the supplied capabilities and writable state. It contains comment when comments are enabled and then plan and change when agents are enabled on a writable view; it can be empty and never returns ask.",
+						"examples": [
+							["comment", "plan", "change"],
+							["comment"],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "visualCategory",
@@ -106,18 +157,20 @@
 						"name": "visualCategory.category",
 						"type": "string",
 						"required": true,
-						"description": "The catalog category to classify. Pages, shells and components are visual categories."
+						"description": "The catalog category string to classify for visual planning. Only exact pages, layouts, and components values return true; matching is case-sensitive.",
+						"examples": ["pages", "layouts", "components"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "visualCategory",
 						"type": "boolean",
-						"description": "True for pages, shells and components; false for other category strings."
+						"description": "Whether the category is one of the visual categories for planning. It is true only for exact pages, layouts, or components strings.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
