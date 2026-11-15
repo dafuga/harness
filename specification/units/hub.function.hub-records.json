@@ -18,17 +18,27 @@
 				"name": "hubRecords.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "The source context passed to hubMetadata and hubRead; context.entries determines which paths are considered. Only entries matching specification/units/<filename>.json are read as unit manifests."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubRecords",
 				"type": "unknown",
-				"description": "Parsed unit manifests after schema, filename/ID and duplicate-ID checks, using a metadata bundle when available."
+				"description": "Returns the parsed manifests for matching entries after hubMetadata completes. Each entry must parse with componentManifestSchema, have a path matching its id, and have an ID unique among the loaded manifests.",
+				"examples": [
+					[]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "hubFail",
+				"type": "thrown",
+				"description": "The hubFail() failure path is used when a candidate JSON fails schema parsing, its path does not match its parsed id, or two parsed manifests share an ID. Failures from hubMetadata, hubRead, or hubJson are not caught here and reject this async function."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubRecords",
@@ -37,18 +47,27 @@
 						"name": "hubRecords.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "The source context passed to hubMetadata and hubRead; context.entries determines which paths are considered. Only entries matching specification/units/<filename>.json are read as unit manifests."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubRecords",
 						"type": "unknown",
-						"description": "Parsed unit manifests after schema, filename/ID and duplicate-ID checks, using a metadata bundle when available."
+						"description": "Returns the parsed manifests for matching entries after hubMetadata completes. Each entry must parse with componentManifestSchema, have a path matching its id, and have an ID unique among the loaded manifests.",
+						"examples": [
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "hubFail",
+						"type": "thrown",
+						"description": "The hubFail() failure path is used when a candidate JSON fails schema parsing, its path does not match its parsed id, or two parsed manifests share an ID. Failures from hubMetadata, hubRead, or hubJson are not caught here and reject this async function."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
