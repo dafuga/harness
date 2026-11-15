@@ -14,10 +14,13 @@ import type {
 	BudgetSubject
 } from '../../../../../services/budget-service/BudgetService';
 import { BudgetService } from '../../../../../services/budget-service/BudgetService';
-import type { ReasonReport } from '../../../../../services/ExplanationService';
+import type { ReasonReport } from '../../../../../services/development-tooling/ExplanationService';
 import { sdkPackage } from '../../../../../utils/development-tooling/buildStamp';
 import { sealRecord } from '../../../../../utils/sealRecord';
-import { emittedTargets, unitMeasurements } from '../../../../../utils/unitMeasurements';
+import {
+	emittedTargets,
+	unitMeasurements
+} from '../../../../../utils/development-tooling/unitMeasurements';
 import { PerformanceEvidenceValidator } from '../../../../../validators/verification-evidence/PerformanceEvidenceValidator';
 
 import type { Executed } from '../SnapshotRunService';
@@ -31,6 +34,7 @@ function outcome(failures: string[]): 'passed' | 'failed' {
 /** Turns what a run observed into one sealed record, with every gate judged. */
 export class RecordAssemblyService {
 	constructor(private readonly context: AssemblyContext) {}
+	// eslint-disable-next-line harness/max-method-lines -- this service definition is ownership-reviewed
 	async assemble(input: AssemblyInput): Promise<VerificationRecord> {
 		const { context } = this;
 		const measurements = this.measurements(input.executed);

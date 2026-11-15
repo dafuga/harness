@@ -7,7 +7,7 @@ import { BudgetService } from '../../src/services/budget-service/BudgetService';
 import { SourceIndexService } from '../../src/services/development-tooling/source-index-service/SourceIndexService';
 import { budgetFindings } from '../../src/services/budget-service/budgetFindings';
 import { complexityCoverage } from '../../src/services/development-tooling/source-index-service/complexityCoverage';
-import { unitMeasurements } from '../../src/utils/unitMeasurements';
+import { unitMeasurements } from '../../src/utils/development-tooling/unitMeasurements';
 
 const commit = 'a'.repeat(40);
 const sources: Record<string, string> = {

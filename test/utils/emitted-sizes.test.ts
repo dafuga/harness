@@ -5,7 +5,10 @@ import { BudgetService } from '../../src/services/budget-service/BudgetService';
 import { budgetFindings } from '../../src/services/budget-service/budgetFindings';
 import { type BudgetBaseline } from '../../src/utils/budgetFindings';
 import { emittedKey, emittedSizes } from '../../src/utils/emittedSizes';
-import { unitMeasurements, type BuiltArtifacts } from '../../src/utils/unitMeasurements';
+import {
+	unitMeasurements,
+	type BuiltArtifacts
+} from '../../src/utils/development-tooling/unitMeasurements';
 
 const commit = 'a'.repeat(40);
 const sha = (letter: string) => letter.repeat(64);

@@ -14,7 +14,7 @@ import { CatalogScenario } from '../../models/git-source-history/CatalogScenario
 import { catalogModels } from '../../core/git-source-history/catalogModels';
 import type { RevisionRegistry } from '../../utils/revisionRegistry';
 import { sqliteIdentifier } from '../../utils/development-tooling/sqliteTableSql';
-import { stableJson } from '../../utils/stableJson';
+import { stableJson } from '../../utils/development-tooling/stableJson';
 
 /** Replaces only the derived query index, in one rollback-safe transaction. */
 export class CatalogWriteService {

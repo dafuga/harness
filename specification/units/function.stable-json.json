@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/utils/development-tooling/stableJson.ts",
-			"src/utils/development-tooling/stableJson.types.ts",
-			"src/utils/stableJson.ts"
+			"src/utils/development-tooling/stableJson.types.ts"
 		],
-		"symbols": ["stableJson", "Position", "stableJson"]
+		"symbols": ["stableJson", "Position"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -1,6 +1,6 @@
 import { format } from 'prettier';
 import { expect, test } from 'vitest';
-import { stableJson } from '../../src/utils/stableJson';
+import { stableJson } from '../../src/utils/development-tooling/stableJson';
 
 const options = { parser: 'json', useTabs: true, printWidth: 100 } as const;
 
