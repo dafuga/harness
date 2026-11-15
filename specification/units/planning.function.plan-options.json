@@ -49,133 +49,777 @@
 				"name": "planOptions.input",
 				"type": "AddDesignInput",
 				"required": true,
-				"description": "Design input with either an images array or 1 to 10 options; directions must be distinct and at most 2000 characters, with images for every option."
+				"description": "Design input with either an images array, used only when options is absent, or 1 to 10 options, each with a non-empty direction of at most 2000 characters and a non-empty images array. Directions must be distinct after trimming and lowercasing, no image may appear in more than one option, and flat images given beside options must match the combined option images in state, viewport and content."
 			},
 			{
 				"name": "planOptions.base",
 				"type": "string",
 				"required": true,
-				"description": "Destination prefix for optional prompt files."
+				"description": "Repository path prefix of the version's design folder, such as src/components/evidence-grid/designs/v002. Each option's prompt is stored in files under base followed by /oN-prompt.md, and nothing is written for an option without a prompt.",
+				"examples": [
+					"src/components/evidence-grid/designs/v002",
+					"src/pages/review-queue/designs/v001"
+				]
 			},
 			{
 				"name": "planOptions.files",
 				"type": "Files",
 				"required": true,
-				"description": "Mutable file map receiving option prompt text."
+				"description": "Mutable map from repository path to file content, to which each option's prompt text is assigned in place under base/oN-prompt.md; existing entries are not removed.",
+				"examples": [
+					{},
+					{
+						"src/components/evidence-grid/designs/v002/o2-prompt.md": "Card grid with inline source previews."
+					}
+				]
 			},
 			{
 				"name": "planOptions.write",
 				"type": "WriteImages",
 				"required": true,
-				"description": "Image writer receiving images and a filename prefix and returning stored image metadata."
+				"description": "Image writer called with the images and a filename prefix, returning the stored DesignImage metadata for them. planOptions passes an empty prefix for a single design and oN- for each option's images."
 			},
 			{
 				"name": "heldBy.version",
 				"type": "DesignVersion",
 				"required": true,
-				"description": "Version whose image owner is checked."
+				"description": "Stored design version whose options are searched for the option holding the file; a version without options has no owner.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v002",
+						"createdAt": "2026-11-14T16:42:09.517Z",
+						"generator": {
+							"provider": "codex",
+							"model": "gpt-6-luna"
+						},
+						"prompt": {
+							"file": "prompt.md",
+							"sha256": "5a0e3c7f9d12b84e6c1a0f53d7e92b48c6f1a0e5d39b72c8e4f0a16d2b7c9e35"
+						},
+						"notes": null,
+						"baseRevision": "4c8e1f0a9b2d7e3c5a6f81d2b0e4c7a9f3d5b18e",
+						"images": [
+							{
+								"file": "o1-default-desktop.png",
+								"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 84211,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							},
+							{
+								"file": "o2-default-desktop.png",
+								"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 79406,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							}
+						],
+						"contract": {
+							"responsibility": "Lists the evidence rows of one report with their source links and status.",
+							"inputs": [
+								{
+									"name": "report",
+									"type": "Report"
+								}
+							],
+							"outputs": [
+								{
+									"name": "EvidenceGrid",
+									"type": "Component"
+								}
+							],
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
+						},
+						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+						"revises": null,
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Dense table with source chips",
+								"prompt": {
+									"file": "o1-prompt.md",
+									"sha256": "9b3d20e8f47a51c6d0e9b2a7f86c13d4e5a0b9c72f1d8e36a4b0c5d9e7f2a1b8"
+								},
+								"revisedPrompt": null,
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+									}
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "Card grid with inline source previews",
+								"prompt": {
+									"file": "o2-prompt.md",
+									"sha256": "0f8c2a6d4e91b35f7a0c8d2e6b49f1a3c5d7e0b82f6a9c14d3e5b7f08a2c6e91"
+								},
+								"revisedPrompt": "Card grid with inline source previews and a pinned status rail.",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"images": [
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+									}
+								]
+							}
+						],
+						"commit": "a17d93e5c04b8f26d1e9a350b7c2f4d8e6a1b9c3"
+					}
+				]
 			},
 			{
 				"name": "heldBy.file",
 				"type": "string",
 				"required": true,
-				"description": "Image filename to locate."
+				"description": "Image filename to locate, matched exactly against the file names of each option's images.",
+				"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 			},
 			{
 				"name": "heldBy.wanted",
 				"type": "string",
 				"required": false,
-				"description": "Optional expected option ID; a different owner is refused."
+				"default": "undefined",
+				"description": "Optional option ID the caller expects to own the file, such as o1. When it is given, a file owned by another option, or by no option, is refused with not-found.",
+				"examples": ["o1", "o2"]
 			},
 			{
 				"name": "checkOptions.version",
 				"type": "DesignVersion",
 				"required": true,
-				"description": "Stored version whose option numbering and image ownership are checked."
+				"description": "Stored design version whose option numbering, image ownership and option metadata are checked; a version whose options field is absent passes unchanged.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v002",
+						"createdAt": "2026-11-14T16:42:09.517Z",
+						"generator": {
+							"provider": "codex",
+							"model": "gpt-6-luna"
+						},
+						"prompt": {
+							"file": "prompt.md",
+							"sha256": "5a0e3c7f9d12b84e6c1a0f53d7e92b48c6f1a0e5d39b72c8e4f0a16d2b7c9e35"
+						},
+						"notes": null,
+						"baseRevision": "4c8e1f0a9b2d7e3c5a6f81d2b0e4c7a9f3d5b18e",
+						"images": [
+							{
+								"file": "o1-default-desktop.png",
+								"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 84211,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							},
+							{
+								"file": "o2-default-desktop.png",
+								"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 79406,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							}
+						],
+						"contract": {
+							"responsibility": "Lists the evidence rows of one report with their source links and status.",
+							"inputs": [
+								{
+									"name": "report",
+									"type": "Report"
+								}
+							],
+							"outputs": [
+								{
+									"name": "EvidenceGrid",
+									"type": "Component"
+								}
+							],
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
+						},
+						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+						"revises": null,
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Dense table with source chips",
+								"prompt": {
+									"file": "o1-prompt.md",
+									"sha256": "9b3d20e8f47a51c6d0e9b2a7f86c13d4e5a0b9c72f1d8e36a4b0c5d9e7f2a1b8"
+								},
+								"revisedPrompt": null,
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+									}
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "Card grid with inline source previews",
+								"prompt": {
+									"file": "o2-prompt.md",
+									"sha256": "0f8c2a6d4e91b35f7a0c8d2e6b49f1a3c5d7e0b82f6a9c14d3e5b7f08a2c6e91"
+								},
+								"revisedPrompt": "Card grid with inline source previews and a pinned status rail.",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"images": [
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+									}
+								]
+							}
+						],
+						"commit": "a17d93e5c04b8f26d1e9a350b7c2f4d8e6a1b9c3"
+					},
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v001",
+						"createdAt": "2026-11-10T09:15:37.203Z",
+						"generator": {
+							"provider": "codex",
+							"model": "gpt-6-luna"
+						},
+						"prompt": {
+							"file": "prompt.md",
+							"sha256": "b6e0d3a817f2c94e5d8a1b36f0c7e2d9a4b5c18f63e0d7a2b9c4f1e8d5a3b70c"
+						},
+						"notes": null,
+						"baseRevision": "e05b8c1d7a3f96420b8e1d5c9a7f3e2b4d6c0a18",
+						"images": [
+							{
+								"file": "default-desktop.png",
+								"sha256": "3b9f6d0e52a7c184e1d0f9b26a4c7e8d15f3a0b92e6c4d77a18f5e0b3c9d246a",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 91877,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							}
+						],
+						"contract": {
+							"responsibility": "Lists the evidence rows of one report with their source links and status.",
+							"inputs": [
+								{
+									"name": "report",
+									"type": "Report"
+								}
+							],
+							"outputs": [
+								{
+									"name": "EvidenceGrid",
+									"type": "Component"
+								}
+							],
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
+						},
+						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+						"revises": null,
+						"commit": "6d1f9e2a0c48b7d35e9a1f06c2b8d4e7a3f5c901"
+					}
+				]
 			},
 			{
 				"name": "id.at",
 				"type": "number",
 				"required": true,
-				"description": "Zero-based option position converted to the one-based o-prefixed identifier."
+				"description": "Zero-based option position; id adds one and prefixes o, so 0 gives o1 and 9 gives o10, the most options allowed.",
+				"examples": [0, 1, 9]
 			},
 			{
 				"name": "binding.file",
 				"type": "unknown",
 				"required": true,
-				"description": "Image file path to retain in the exact option image binding."
+				"description": "Image file name to retain in the returned ImageBinding, copied unchanged without validation.",
+				"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 			},
 			{
 				"name": "binding.sha256",
 				"type": "unknown",
 				"required": true,
-				"description": "SHA-256 digest of the referenced image bytes."
+				"description": "SHA-256 digest of the image bytes, expected as 64 lowercase hexadecimal characters, copied unchanged without validation.",
+				"examples": [
+					"7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+					"c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+				]
 			},
 			{
 				"name": "provenance.generator",
 				"type": "AgentRef",
 				"required": true,
-				"description": "Provider and model identity to validate and retain as the design generator."
+				"description": "Provider and model identity of the generator, both of which must be non-empty text; only those two fields are kept.",
+				"examples": [
+					{
+						"provider": "codex",
+						"model": "gpt-6-luna"
+					},
+					{
+						"provider": "claude",
+						"model": "claude-opus-5-5"
+					}
+				]
 			},
 			{
 				"name": "optionOf.version",
 				"type": "DesignVersion",
 				"required": true,
-				"description": "Version whose options are searched."
+				"description": "Stored design version whose options are searched for the file; a version without options yields undefined.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v002",
+						"createdAt": "2026-11-14T16:42:09.517Z",
+						"generator": {
+							"provider": "codex",
+							"model": "gpt-6-luna"
+						},
+						"prompt": {
+							"file": "prompt.md",
+							"sha256": "5a0e3c7f9d12b84e6c1a0f53d7e92b48c6f1a0e5d39b72c8e4f0a16d2b7c9e35"
+						},
+						"notes": null,
+						"baseRevision": "4c8e1f0a9b2d7e3c5a6f81d2b0e4c7a9f3d5b18e",
+						"images": [
+							{
+								"file": "o1-default-desktop.png",
+								"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 84211,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							},
+							{
+								"file": "o2-default-desktop.png",
+								"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 79406,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							}
+						],
+						"contract": {
+							"responsibility": "Lists the evidence rows of one report with their source links and status.",
+							"inputs": [
+								{
+									"name": "report",
+									"type": "Report"
+								}
+							],
+							"outputs": [
+								{
+									"name": "EvidenceGrid",
+									"type": "Component"
+								}
+							],
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
+						},
+						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+						"revises": null,
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Dense table with source chips",
+								"prompt": {
+									"file": "o1-prompt.md",
+									"sha256": "9b3d20e8f47a51c6d0e9b2a7f86c13d4e5a0b9c72f1d8e36a4b0c5d9e7f2a1b8"
+								},
+								"revisedPrompt": null,
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+									}
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "Card grid with inline source previews",
+								"prompt": {
+									"file": "o2-prompt.md",
+									"sha256": "0f8c2a6d4e91b35f7a0c8d2e6b49f1a3c5d7e0b82f6a9c14d3e5b7f08a2c6e91"
+								},
+								"revisedPrompt": "Card grid with inline source previews and a pinned status rail.",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"images": [
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+									}
+								]
+							}
+						],
+						"commit": "a17d93e5c04b8f26d1e9a350b7c2f4d8e6a1b9c3"
+					}
+				]
 			},
 			{
 				"name": "optionOf.file",
 				"type": "string",
 				"required": true,
-				"description": "Image filename to locate."
+				"description": "Image filename to locate among the option images of the version; a file that no option holds yields undefined.",
+				"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 			},
 			{
 				"name": "approvable.version",
 				"type": "DesignVersion",
 				"required": true,
-				"description": "Version whose approvable image bindings are needed."
+				"description": "Stored design version whose approvable image bindings are needed: an optioned version yields the chosen option's images, and a single design yields all of its images.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v002",
+						"createdAt": "2026-11-14T16:42:09.517Z",
+						"generator": {
+							"provider": "codex",
+							"model": "gpt-6-luna"
+						},
+						"prompt": {
+							"file": "prompt.md",
+							"sha256": "5a0e3c7f9d12b84e6c1a0f53d7e92b48c6f1a0e5d39b72c8e4f0a16d2b7c9e35"
+						},
+						"notes": null,
+						"baseRevision": "4c8e1f0a9b2d7e3c5a6f81d2b0e4c7a9f3d5b18e",
+						"images": [
+							{
+								"file": "o1-default-desktop.png",
+								"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 84211,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							},
+							{
+								"file": "o2-default-desktop.png",
+								"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 79406,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							}
+						],
+						"contract": {
+							"responsibility": "Lists the evidence rows of one report with their source links and status.",
+							"inputs": [
+								{
+									"name": "report",
+									"type": "Report"
+								}
+							],
+							"outputs": [
+								{
+									"name": "EvidenceGrid",
+									"type": "Component"
+								}
+							],
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
+						},
+						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+						"revises": null,
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Dense table with source chips",
+								"prompt": {
+									"file": "o1-prompt.md",
+									"sha256": "9b3d20e8f47a51c6d0e9b2a7f86c13d4e5a0b9c72f1d8e36a4b0c5d9e7f2a1b8"
+								},
+								"revisedPrompt": null,
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+									}
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "Card grid with inline source previews",
+								"prompt": {
+									"file": "o2-prompt.md",
+									"sha256": "0f8c2a6d4e91b35f7a0c8d2e6b49f1a3c5d7e0b82f6a9c14d3e5b7f08a2c6e91"
+								},
+								"revisedPrompt": "Card grid with inline source previews and a pinned status rail.",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"images": [
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+									}
+								]
+							}
+						],
+						"commit": "a17d93e5c04b8f26d1e9a350b7c2f4d8e6a1b9c3"
+					},
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v001",
+						"createdAt": "2026-11-10T09:15:37.203Z",
+						"generator": {
+							"provider": "codex",
+							"model": "gpt-6-luna"
+						},
+						"prompt": {
+							"file": "prompt.md",
+							"sha256": "b6e0d3a817f2c94e5d8a1b36f0c7e2d9a4b5c18f63e0d7a2b9c4f1e8d5a3b70c"
+						},
+						"notes": null,
+						"baseRevision": "e05b8c1d7a3f96420b8e1d5c9a7f3e2b4d6c0a18",
+						"images": [
+							{
+								"file": "default-desktop.png",
+								"sha256": "3b9f6d0e52a7c184e1d0f9b26a4c7e8d15f3a0b92e6c4d77a18f5e0b3c9d246a",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 91877,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							}
+						],
+						"contract": {
+							"responsibility": "Lists the evidence rows of one report with their source links and status.",
+							"inputs": [
+								{
+									"name": "report",
+									"type": "Report"
+								}
+							],
+							"outputs": [
+								{
+									"name": "EvidenceGrid",
+									"type": "Component"
+								}
+							],
+							"errors": ["empty-report"],
+							"states": ["default", "empty"],
+							"viewports": ["desktop", "tablet", "mobile"]
+						},
+						"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+						"revises": null,
+						"commit": "6d1f9e2a0c48b7d35e9a1f06c2b8d4e7a3f5c901"
+					}
+				]
 			},
 			{
 				"name": "approvable.option",
 				"type": "string",
 				"required": false,
-				"description": "Option ID for an optioned version; omitted for a single design."
+				"default": "undefined",
+				"description": "Option ID to approve, such as o1; an optioned version needs one, and an omitted or unmatched ID yields null. A single design must leave it out, because any ID yields null.",
+				"examples": ["o1", "o2"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planOptions",
 				"type": "unknown",
-				"description": "Written images and, when supplied, sequential options with prompt and generator metadata; options cannot share image hashes and any flat images must equal their combined images."
+				"description": "The written images of the design: for options, all option images combined, with options listing each DesignOption's prompt, revised prompt, generator and image bindings; a single design returns images alone.",
+				"examples": [
+					{
+						"images": [
+							{
+								"file": "o1-default-desktop.png",
+								"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 84211,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							},
+							{
+								"file": "o2-default-desktop.png",
+								"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 79406,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							}
+						],
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Dense table with source chips",
+								"prompt": {
+									"file": "o1-prompt.md",
+									"sha256": "9b3d20e8f47a51c6d0e9b2a7f86c13d4e5a0b9c72f1d8e36a4b0c5d9e7f2a1b8"
+								},
+								"revisedPrompt": null,
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+									}
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "Card grid with inline source previews",
+								"prompt": {
+									"file": "o2-prompt.md",
+									"sha256": "0f8c2a6d4e91b35f7a0c8d2e6b49f1a3c5d7e0b82f6a9c14d3e5b7f08a2c6e91"
+								},
+								"revisedPrompt": "Card grid with inline source previews and a pinned status rail.",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"images": [
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+									}
+								]
+							}
+						]
+					},
+					{
+						"images": [
+							{
+								"file": "default-desktop.png",
+								"sha256": "3b9f6d0e52a7c184e1d0f9b26a4c7e8d15f3a0b92e6c4d77a18f5e0b3c9d246a",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 91877,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "checkOptions",
 				"type": "void",
-				"description": "Returns nothing when stored options exactly divide the version images once each with matching hashes and valid metadata."
+				"description": "Returns nothing: it returns normally when the version has no options, or when its stored options claim each version image exactly once, with matching sha256, in-order ids, and valid directions, revised prompts, generators and prompt file names; otherwise it throws."
 			},
 			{
 				"name": "optionOf",
 				"type": "string | undefined",
-				"description": "Owning option ID, or undefined for a single design or unmatched file."
+				"description": "Owning option ID, such as o2, when an option of the version holds the file; undefined for a single design or when no option holds the file.",
+				"examples": ["o1", "o2"]
 			},
 			{
 				"name": "heldBy",
 				"type": "{ option?: string }",
-				"description": "Object containing the owning option when present, otherwise an empty object."
+				"description": "Object whose option field is the owning option ID when one holds the file, and an empty object when none does.",
+				"examples": [
+					{
+						"option": "o1"
+					},
+					{}
+				]
 			},
 			{
 				"name": "approvable",
 				"type": "ImageBinding[] | null",
-				"description": "Image file/hash bindings for the selected option or all single-design images; null for an invalid selection."
+				"description": "The file and sha256 bindings to approve: the chosen option's images or every image of a single design, or null when the option selection does not match the version.",
+				"examples": [
+					[
+						{
+							"file": "o1-default-desktop.png",
+							"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+						}
+					],
+					[
+						{
+							"file": "default-desktop.png",
+							"sha256": "3b9f6d0e52a7c184e1d0f9b26a4c7e8d15f3a0b92e6c4d77a18f5e0b3c9d246a"
+						}
+					],
+					null
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid option input, mismatched stored bindings and a requested option that does not own the image."
+				"description": "The name the harness gives every fail() call. The planning fail helper actually throws a plain Error whose code is invalid-input for rejected input or text, not-found when heldBy refuses a wanted option that does not own the file, artifact-tampered when stored options do not match the version images, or unsafe-path for an invalid stored prompt file name."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planOptions",
@@ -184,41 +828,135 @@
 						"name": "planOptions.input",
 						"type": "AddDesignInput",
 						"required": true,
-						"description": "Design input with either an images array or 1 to 10 options; directions must be distinct and at most 2000 characters, with images for every option."
+						"description": "Design input with either an images array, used only when options is absent, or 1 to 10 options, each with a non-empty direction of at most 2000 characters and a non-empty images array. Directions must be distinct after trimming and lowercasing, no image may appear in more than one option, and flat images given beside options must match the combined option images in state, viewport and content."
 					},
 					{
 						"name": "planOptions.base",
 						"type": "string",
 						"required": true,
-						"description": "Destination prefix for optional prompt files."
+						"description": "Repository path prefix of the version's design folder, such as src/components/evidence-grid/designs/v002. Each option's prompt is stored in files under base followed by /oN-prompt.md, and nothing is written for an option without a prompt.",
+						"examples": [
+							"src/components/evidence-grid/designs/v002",
+							"src/pages/review-queue/designs/v001"
+						]
 					},
 					{
 						"name": "planOptions.files",
 						"type": "Files",
 						"required": true,
-						"description": "Mutable file map receiving option prompt text."
+						"description": "Mutable map from repository path to file content, to which each option's prompt text is assigned in place under base/oN-prompt.md; existing entries are not removed.",
+						"examples": [
+							{},
+							{
+								"src/components/evidence-grid/designs/v002/o2-prompt.md": "Card grid with inline source previews."
+							}
+						]
 					},
 					{
 						"name": "planOptions.write",
 						"type": "WriteImages",
 						"required": true,
-						"description": "Image writer receiving images and a filename prefix and returning stored image metadata."
+						"description": "Image writer called with the images and a filename prefix, returning the stored DesignImage metadata for them. planOptions passes an empty prefix for a single design and oN- for each option's images."
 					}
 				],
 				"outputs": [
 					{
 						"name": "planOptions",
 						"type": "unknown",
-						"description": "Written images and, when supplied, sequential options with prompt and generator metadata; options cannot share image hashes and any flat images must equal their combined images."
+						"description": "The written images of the design: for options, all option images combined, with options listing each DesignOption's prompt, revised prompt, generator and image bindings; a single design returns images alone.",
+						"examples": [
+							{
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 84211,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									},
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 79406,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									}
+								],
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Dense table with source chips",
+										"prompt": {
+											"file": "o1-prompt.md",
+											"sha256": "9b3d20e8f47a51c6d0e9b2a7f86c13d4e5a0b9c72f1d8e36a4b0c5d9e7f2a1b8"
+										},
+										"revisedPrompt": null,
+										"generator": {
+											"provider": "codex",
+											"model": "gpt-6-luna"
+										},
+										"images": [
+											{
+												"file": "o1-default-desktop.png",
+												"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+											}
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Card grid with inline source previews",
+										"prompt": {
+											"file": "o2-prompt.md",
+											"sha256": "0f8c2a6d4e91b35f7a0c8d2e6b49f1a3c5d7e0b82f6a9c14d3e5b7f08a2c6e91"
+										},
+										"revisedPrompt": "Card grid with inline source previews and a pinned status rail.",
+										"generator": {
+											"provider": "codex",
+											"model": "gpt-6-luna"
+										},
+										"images": [
+											{
+												"file": "o2-default-desktop.png",
+												"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+											}
+										]
+									}
+								]
+							},
+							{
+								"images": [
+									{
+										"file": "default-desktop.png",
+										"sha256": "3b9f6d0e52a7c184e1d0f9b26a4c7e8d15f3a0b92e6c4d77a18f5e0b3c9d246a",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 91877,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised with code invalid-input when the design input is malformed: images missing or not an array, options not 1 to 10, a direction empty or over 2000 characters, an option without images, an empty prompt or revised prompt, a missing or empty generator, repeated directions or images, or flat images that differ from the option images."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "heldBy",
@@ -227,35 +965,147 @@
 						"name": "heldBy.version",
 						"type": "DesignVersion",
 						"required": true,
-						"description": "Version whose image owner is checked."
+						"description": "Stored design version whose options are searched for the option holding the file; a version without options has no owner.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v002",
+								"createdAt": "2026-11-14T16:42:09.517Z",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"prompt": {
+									"file": "prompt.md",
+									"sha256": "5a0e3c7f9d12b84e6c1a0f53d7e92b48c6f1a0e5d39b72c8e4f0a16d2b7c9e35"
+								},
+								"notes": null,
+								"baseRevision": "4c8e1f0a9b2d7e3c5a6f81d2b0e4c7a9f3d5b18e",
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 84211,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									},
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 79406,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									}
+								],
+								"contract": {
+									"responsibility": "Lists the evidence rows of one report with their source links and status.",
+									"inputs": [
+										{
+											"name": "report",
+											"type": "Report"
+										}
+									],
+									"outputs": [
+										{
+											"name": "EvidenceGrid",
+											"type": "Component"
+										}
+									],
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
+								},
+								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+								"revises": null,
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Dense table with source chips",
+										"prompt": {
+											"file": "o1-prompt.md",
+											"sha256": "9b3d20e8f47a51c6d0e9b2a7f86c13d4e5a0b9c72f1d8e36a4b0c5d9e7f2a1b8"
+										},
+										"revisedPrompt": null,
+										"generator": {
+											"provider": "codex",
+											"model": "gpt-6-luna"
+										},
+										"images": [
+											{
+												"file": "o1-default-desktop.png",
+												"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+											}
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Card grid with inline source previews",
+										"prompt": {
+											"file": "o2-prompt.md",
+											"sha256": "0f8c2a6d4e91b35f7a0c8d2e6b49f1a3c5d7e0b82f6a9c14d3e5b7f08a2c6e91"
+										},
+										"revisedPrompt": "Card grid with inline source previews and a pinned status rail.",
+										"generator": {
+											"provider": "codex",
+											"model": "gpt-6-luna"
+										},
+										"images": [
+											{
+												"file": "o2-default-desktop.png",
+												"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+											}
+										]
+									}
+								],
+								"commit": "a17d93e5c04b8f26d1e9a350b7c2f4d8e6a1b9c3"
+							}
+						]
 					},
 					{
 						"name": "heldBy.file",
 						"type": "string",
 						"required": true,
-						"description": "Image filename to locate."
+						"description": "Image filename to locate, matched exactly against the file names of each option's images.",
+						"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 					},
 					{
 						"name": "heldBy.wanted",
 						"type": "string",
 						"required": false,
-						"description": "Optional expected option ID; a different owner is refused."
+						"default": "undefined",
+						"description": "Optional option ID the caller expects to own the file, such as o1. When it is given, a file owned by another option, or by no option, is refused with not-found.",
+						"examples": ["o1", "o2"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "heldBy",
 						"type": "{ option?: string }",
-						"description": "Object containing the owning option when present, otherwise an empty object."
+						"description": "Object whose option field is the owning option ID when one holds the file, and an empty object when none does.",
+						"examples": [
+							{
+								"option": "o1"
+							},
+							{}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised with code not-found when the wanted option is not the option holding the file, including when no option holds it."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "checkOptions",
@@ -264,23 +1114,175 @@
 						"name": "checkOptions.version",
 						"type": "DesignVersion",
 						"required": true,
-						"description": "Stored version whose option numbering and image ownership are checked."
+						"description": "Stored design version whose option numbering, image ownership and option metadata are checked; a version whose options field is absent passes unchanged.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v002",
+								"createdAt": "2026-11-14T16:42:09.517Z",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"prompt": {
+									"file": "prompt.md",
+									"sha256": "5a0e3c7f9d12b84e6c1a0f53d7e92b48c6f1a0e5d39b72c8e4f0a16d2b7c9e35"
+								},
+								"notes": null,
+								"baseRevision": "4c8e1f0a9b2d7e3c5a6f81d2b0e4c7a9f3d5b18e",
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 84211,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									},
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 79406,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									}
+								],
+								"contract": {
+									"responsibility": "Lists the evidence rows of one report with their source links and status.",
+									"inputs": [
+										{
+											"name": "report",
+											"type": "Report"
+										}
+									],
+									"outputs": [
+										{
+											"name": "EvidenceGrid",
+											"type": "Component"
+										}
+									],
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
+								},
+								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+								"revises": null,
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Dense table with source chips",
+										"prompt": {
+											"file": "o1-prompt.md",
+											"sha256": "9b3d20e8f47a51c6d0e9b2a7f86c13d4e5a0b9c72f1d8e36a4b0c5d9e7f2a1b8"
+										},
+										"revisedPrompt": null,
+										"generator": {
+											"provider": "codex",
+											"model": "gpt-6-luna"
+										},
+										"images": [
+											{
+												"file": "o1-default-desktop.png",
+												"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+											}
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Card grid with inline source previews",
+										"prompt": {
+											"file": "o2-prompt.md",
+											"sha256": "0f8c2a6d4e91b35f7a0c8d2e6b49f1a3c5d7e0b82f6a9c14d3e5b7f08a2c6e91"
+										},
+										"revisedPrompt": "Card grid with inline source previews and a pinned status rail.",
+										"generator": {
+											"provider": "codex",
+											"model": "gpt-6-luna"
+										},
+										"images": [
+											{
+												"file": "o2-default-desktop.png",
+												"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+											}
+										]
+									}
+								],
+								"commit": "a17d93e5c04b8f26d1e9a350b7c2f4d8e6a1b9c3"
+							},
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v001",
+								"createdAt": "2026-11-10T09:15:37.203Z",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"prompt": {
+									"file": "prompt.md",
+									"sha256": "b6e0d3a817f2c94e5d8a1b36f0c7e2d9a4b5c18f63e0d7a2b9c4f1e8d5a3b70c"
+								},
+								"notes": null,
+								"baseRevision": "e05b8c1d7a3f96420b8e1d5c9a7f3e2b4d6c0a18",
+								"images": [
+									{
+										"file": "default-desktop.png",
+										"sha256": "3b9f6d0e52a7c184e1d0f9b26a4c7e8d15f3a0b92e6c4d77a18f5e0b3c9d246a",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 91877,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									}
+								],
+								"contract": {
+									"responsibility": "Lists the evidence rows of one report with their source links and status.",
+									"inputs": [
+										{
+											"name": "report",
+											"type": "Report"
+										}
+									],
+									"outputs": [
+										{
+											"name": "EvidenceGrid",
+											"type": "Component"
+										}
+									],
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
+								},
+								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+								"revises": null,
+								"commit": "6d1f9e2a0c48b7d35e9a1f06c2b8d4e7a3f5c901"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkOptions",
 						"type": "void",
-						"description": "Returns nothing when stored options exactly divide the version images once each with matching hashes and valid metadata."
+						"description": "Returns nothing: it returns normally when the version has no options, or when its stored options claim each version image exactly once, with matching sha256, in-order ids, and valid directions, revised prompts, generators and prompt file names; otherwise it throws."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised with code artifact-tampered when stored options do not claim each version image exactly once with matching sha256 and in-order ids, when there are no options or more than 10, or when an option has no images; invalid-input covers an invalid stored direction, revised prompt or generator, and unsafe-path an invalid prompt file name."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "id",
@@ -289,17 +1291,20 @@
 						"name": "id.at",
 						"type": "number",
 						"required": true,
-						"description": "Zero-based option position converted to the one-based o-prefixed identifier."
+						"description": "Zero-based option position; id adds one and prefixes o, so 0 gives o1 and 9 gives o10, the most options allowed.",
+						"examples": [0, 1, 9]
 					}
 				],
 				"outputs": [
 					{
 						"name": "id",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The one-based option identifier: o followed by the position plus one, such as o1 for position 0.",
+						"examples": ["o1", "o2", "o10"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "binding",
@@ -308,23 +1313,39 @@
 						"name": "binding.file",
 						"type": "unknown",
 						"required": true,
-						"description": "Image file path to retain in the exact option image binding."
+						"description": "Image file name to retain in the returned ImageBinding, copied unchanged without validation.",
+						"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 					},
 					{
 						"name": "binding.sha256",
 						"type": "unknown",
 						"required": true,
-						"description": "SHA-256 digest of the referenced image bytes."
+						"description": "SHA-256 digest of the image bytes, expected as 64 lowercase hexadecimal characters, copied unchanged without validation.",
+						"examples": [
+							"7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+							"c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "binding",
-						"type": "ImageBinding"
+						"type": "ImageBinding",
+						"description": "The ImageBinding holding only the file and sha256 of its inputs.",
+						"examples": [
+							{
+								"file": "o1-default-desktop.png",
+								"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+							},
+							{
+								"file": "o2-default-desktop.png",
+								"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "provenance",
@@ -333,17 +1354,44 @@
 						"name": "provenance.generator",
 						"type": "AgentRef",
 						"required": true,
-						"description": "Provider and model identity to validate and retain as the design generator."
+						"description": "Provider and model identity of the generator, both of which must be non-empty text; only those two fields are kept.",
+						"examples": [
+							{
+								"provider": "codex",
+								"model": "gpt-6-luna"
+							},
+							{
+								"provider": "claude",
+								"model": "claude-opus-5-5"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "provenance",
-						"type": "AgentRef"
+						"type": "AgentRef",
+						"description": "The AgentRef holding only the provider and model of the input generator.",
+						"examples": [
+							{
+								"provider": "codex",
+								"model": "gpt-6-luna"
+							},
+							{
+								"provider": "claude",
+								"model": "claude-opus-5-5"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised with code invalid-input when the provider or the model is not non-empty text."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "optionOf",
@@ -352,24 +1400,128 @@
 						"name": "optionOf.version",
 						"type": "DesignVersion",
 						"required": true,
-						"description": "Version whose options are searched."
+						"description": "Stored design version whose options are searched for the file; a version without options yields undefined.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v002",
+								"createdAt": "2026-11-14T16:42:09.517Z",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"prompt": {
+									"file": "prompt.md",
+									"sha256": "5a0e3c7f9d12b84e6c1a0f53d7e92b48c6f1a0e5d39b72c8e4f0a16d2b7c9e35"
+								},
+								"notes": null,
+								"baseRevision": "4c8e1f0a9b2d7e3c5a6f81d2b0e4c7a9f3d5b18e",
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 84211,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									},
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 79406,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									}
+								],
+								"contract": {
+									"responsibility": "Lists the evidence rows of one report with their source links and status.",
+									"inputs": [
+										{
+											"name": "report",
+											"type": "Report"
+										}
+									],
+									"outputs": [
+										{
+											"name": "EvidenceGrid",
+											"type": "Component"
+										}
+									],
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
+								},
+								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+								"revises": null,
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Dense table with source chips",
+										"prompt": {
+											"file": "o1-prompt.md",
+											"sha256": "9b3d20e8f47a51c6d0e9b2a7f86c13d4e5a0b9c72f1d8e36a4b0c5d9e7f2a1b8"
+										},
+										"revisedPrompt": null,
+										"generator": {
+											"provider": "codex",
+											"model": "gpt-6-luna"
+										},
+										"images": [
+											{
+												"file": "o1-default-desktop.png",
+												"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+											}
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Card grid with inline source previews",
+										"prompt": {
+											"file": "o2-prompt.md",
+											"sha256": "0f8c2a6d4e91b35f7a0c8d2e6b49f1a3c5d7e0b82f6a9c14d3e5b7f08a2c6e91"
+										},
+										"revisedPrompt": "Card grid with inline source previews and a pinned status rail.",
+										"generator": {
+											"provider": "codex",
+											"model": "gpt-6-luna"
+										},
+										"images": [
+											{
+												"file": "o2-default-desktop.png",
+												"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+											}
+										]
+									}
+								],
+								"commit": "a17d93e5c04b8f26d1e9a350b7c2f4d8e6a1b9c3"
+							}
+						]
 					},
 					{
 						"name": "optionOf.file",
 						"type": "string",
 						"required": true,
-						"description": "Image filename to locate."
+						"description": "Image filename to locate among the option images of the version; a file that no option holds yields undefined.",
+						"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "optionOf",
 						"type": "string | undefined",
-						"description": "Owning option ID, or undefined for a single design or unmatched file."
+						"description": "Owning option ID, such as o2, when an option of the version holds the file; undefined for a single design or when no option holds the file.",
+						"examples": ["o1", "o2"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "approvable",
@@ -378,24 +1530,192 @@
 						"name": "approvable.version",
 						"type": "DesignVersion",
 						"required": true,
-						"description": "Version whose approvable image bindings are needed."
+						"description": "Stored design version whose approvable image bindings are needed: an optioned version yields the chosen option's images, and a single design yields all of its images.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v002",
+								"createdAt": "2026-11-14T16:42:09.517Z",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"prompt": {
+									"file": "prompt.md",
+									"sha256": "5a0e3c7f9d12b84e6c1a0f53d7e92b48c6f1a0e5d39b72c8e4f0a16d2b7c9e35"
+								},
+								"notes": null,
+								"baseRevision": "4c8e1f0a9b2d7e3c5a6f81d2b0e4c7a9f3d5b18e",
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 84211,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									},
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 79406,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									}
+								],
+								"contract": {
+									"responsibility": "Lists the evidence rows of one report with their source links and status.",
+									"inputs": [
+										{
+											"name": "report",
+											"type": "Report"
+										}
+									],
+									"outputs": [
+										{
+											"name": "EvidenceGrid",
+											"type": "Component"
+										}
+									],
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
+								},
+								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+								"revises": null,
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Dense table with source chips",
+										"prompt": {
+											"file": "o1-prompt.md",
+											"sha256": "9b3d20e8f47a51c6d0e9b2a7f86c13d4e5a0b9c72f1d8e36a4b0c5d9e7f2a1b8"
+										},
+										"revisedPrompt": null,
+										"generator": {
+											"provider": "codex",
+											"model": "gpt-6-luna"
+										},
+										"images": [
+											{
+												"file": "o1-default-desktop.png",
+												"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+											}
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Card grid with inline source previews",
+										"prompt": {
+											"file": "o2-prompt.md",
+											"sha256": "0f8c2a6d4e91b35f7a0c8d2e6b49f1a3c5d7e0b82f6a9c14d3e5b7f08a2c6e91"
+										},
+										"revisedPrompt": "Card grid with inline source previews and a pinned status rail.",
+										"generator": {
+											"provider": "codex",
+											"model": "gpt-6-luna"
+										},
+										"images": [
+											{
+												"file": "o2-default-desktop.png",
+												"sha256": "c05e8b27f19d4a36e8c2b0f75a9d13e4b6c8f2a19d0e7b53c4a68f1d2e9b07a4"
+											}
+										]
+									}
+								],
+								"commit": "a17d93e5c04b8f26d1e9a350b7c2f4d8e6a1b9c3"
+							},
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v001",
+								"createdAt": "2026-11-10T09:15:37.203Z",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"prompt": {
+									"file": "prompt.md",
+									"sha256": "b6e0d3a817f2c94e5d8a1b36f0c7e2d9a4b5c18f63e0d7a2b9c4f1e8d5a3b70c"
+								},
+								"notes": null,
+								"baseRevision": "e05b8c1d7a3f96420b8e1d5c9a7f3e2b4d6c0a18",
+								"images": [
+									{
+										"file": "default-desktop.png",
+										"sha256": "3b9f6d0e52a7c184e1d0f9b26a4c7e8d15f3a0b92e6c4d77a18f5e0b3c9d246a",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 91877,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									}
+								],
+								"contract": {
+									"responsibility": "Lists the evidence rows of one report with their source links and status.",
+									"inputs": [
+										{
+											"name": "report",
+											"type": "Report"
+										}
+									],
+									"outputs": [
+										{
+											"name": "EvidenceGrid",
+											"type": "Component"
+										}
+									],
+									"errors": ["empty-report"],
+									"states": ["default", "empty"],
+									"viewports": ["desktop", "tablet", "mobile"]
+								},
+								"contractHash": "e2b7f19a4c0d836e5a1f74b9c28d0e13f6a9b4d72c58e0f1a3d69b7c4e2f8a05",
+								"revises": null,
+								"commit": "6d1f9e2a0c48b7d35e9a1f06c2b8d4e7a3f5c901"
+							}
+						]
 					},
 					{
 						"name": "approvable.option",
 						"type": "string",
 						"required": false,
-						"description": "Option ID for an optioned version; omitted for a single design."
+						"default": "undefined",
+						"description": "Option ID to approve, such as o1; an optioned version needs one, and an omitted or unmatched ID yields null. A single design must leave it out, because any ID yields null.",
+						"examples": ["o1", "o2"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "approvable",
 						"type": "ImageBinding[] | null",
-						"description": "Image file/hash bindings for the selected option or all single-design images; null for an invalid selection."
+						"description": "The file and sha256 bindings to approve: the chosen option's images or every image of a single design, or null when the option selection does not match the version.",
+						"examples": [
+							[
+								{
+									"file": "o1-default-desktop.png",
+									"sha256": "7d4a1c93e0b58f62a9d13c7e4f0b85a2d6e91c37b4f08a5d2e7c19b36f4a0d8e"
+								}
+							],
+							[
+								{
+									"file": "default-desktop.png",
+									"sha256": "3b9f6d0e52a7c184e1d0f9b26a4c7e8d15f3a0b92e6c4d77a18f5e0b3c9d246a"
+								}
+							],
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
