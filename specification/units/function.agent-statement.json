@@ -21,23 +21,52 @@
 				"name": "agentStatement.input",
 				"type": "AgentInput",
 				"required": true,
-				"description": "Optional CLI strings for agent identity and work. Ids use 1–64 letters, digits, dots, dashes or underscores and begin alphanumerically; units are comma-separated lowercase unit ids; pid and ttl must be positive whole numbers."
+				"description": "AgentInput contains optional CLI strings supplied when recording an agent statement; the object itself is required. A supplied id must begin with an ASCII letter or digit and contain at most 64 ASCII letters, digits, dots, dashes or underscores; text fields are trimmed, blank text becomes undefined, and remaining text rejects characters below space or DEL and is limited to label 120, provider/model/loop 80, and task/outcome 200 characters; units accepts at most 40 distinct comma-separated ids of 1–120 lowercase letters, digits, dots or dashes; pid and ttl must convert to whole numbers from 1–2147483647 and 1–86400, respectively.",
+				"examples": [
+					{
+						"id": "agent-42",
+						"label": "Index migration",
+						"provider": "openai",
+						"model": "gpt-6-luna",
+						"task": "Review agent activity metadata",
+						"loop": "contract-review",
+						"units": "reports.component.evidence-grid,function.agent-statement",
+						"pid": "4312",
+						"ttl": "1800",
+						"outcome": "Validated activity metadata"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "agentStatement",
 				"type": "AgentStatement",
-				"description": "Normalized statement with trimmed text, sorted unique unit ids, numeric pid or null, and ttlSeconds defaulting to 900. Text limits are label 120, provider/model/loop 80, task/outcome 200 characters; units are at most 40, ttl at most 86400, and pid at most 2147483647."
+				"description": "AgentStatement is the normalized result returned for the supplied agent facts, with optional identity and text fields, optional unit ids, a numeric pid or null, and ttlSeconds in seconds. Text is trimmed and limited to the same per-field lengths as the input, blank text is omitted, units are sorted and deduplicated, pid is null when omitted and otherwise ranges from 1 to 2147483647, and ttlSeconds defaults to 900 or ranges from 1 to 86400.",
+				"examples": [
+					{
+						"id": "agent-42",
+						"label": "Index migration",
+						"provider": "openai",
+						"model": "gpt-6-luna",
+						"task": "Review agent activity metadata",
+						"loop": "contract-review",
+						"units": ["function.agent-statement", "reports.component.evidence-grid"],
+						"pid": 4312,
+						"ttlSeconds": 1800,
+						"outcome": "Validated activity metadata"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown when the id or unit list has an invalid shape, a text field contains controls or exceeds its limit, or pid or ttl is outside its whole-number range. The message names the offending option."
+				"description": "Raised through the imported fail helper when a supplied id, text field, unit list, pid or ttl fails validation; each failure message identifies the offending option and states its allowed shape or range."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "agentStatement",
@@ -46,23 +75,52 @@
 						"name": "agentStatement.input",
 						"type": "AgentInput",
 						"required": true,
-						"description": "Optional CLI strings for agent identity and work. Ids use 1–64 letters, digits, dots, dashes or underscores and begin alphanumerically; units are comma-separated lowercase unit ids; pid and ttl must be positive whole numbers."
+						"description": "AgentInput contains optional CLI strings supplied when recording an agent statement; the object itself is required. A supplied id must begin with an ASCII letter or digit and contain at most 64 ASCII letters, digits, dots, dashes or underscores; text fields are trimmed, blank text becomes undefined, and remaining text rejects characters below space or DEL and is limited to label 120, provider/model/loop 80, and task/outcome 200 characters; units accepts at most 40 distinct comma-separated ids of 1–120 lowercase letters, digits, dots or dashes; pid and ttl must convert to whole numbers from 1–2147483647 and 1–86400, respectively.",
+						"examples": [
+							{
+								"id": "agent-42",
+								"label": "Index migration",
+								"provider": "openai",
+								"model": "gpt-6-luna",
+								"task": "Review agent activity metadata",
+								"loop": "contract-review",
+								"units": "reports.component.evidence-grid,function.agent-statement",
+								"pid": "4312",
+								"ttl": "1800",
+								"outcome": "Validated activity metadata"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "agentStatement",
 						"type": "AgentStatement",
-						"description": "Normalized statement with trimmed text, sorted unique unit ids, numeric pid or null, and ttlSeconds defaulting to 900. Text limits are label 120, provider/model/loop 80, task/outcome 200 characters; units are at most 40, ttl at most 86400, and pid at most 2147483647."
+						"description": "AgentStatement is the normalized result returned for the supplied agent facts, with optional identity and text fields, optional unit ids, a numeric pid or null, and ttlSeconds in seconds. Text is trimmed and limited to the same per-field lengths as the input, blank text is omitted, units are sorted and deduplicated, pid is null when omitted and otherwise ranges from 1 to 2147483647, and ttlSeconds defaults to 900 or ranges from 1 to 86400.",
+						"examples": [
+							{
+								"id": "agent-42",
+								"label": "Index migration",
+								"provider": "openai",
+								"model": "gpt-6-luna",
+								"task": "Review agent activity metadata",
+								"loop": "contract-review",
+								"units": ["function.agent-statement", "reports.component.evidence-grid"],
+								"pid": 4312,
+								"ttlSeconds": 1800,
+								"outcome": "Validated activity metadata"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised through the imported fail helper when a supplied id, text field, unit list, pid or ttl fails validation; each failure message identifies the offending option and states its allowed shape or range."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
