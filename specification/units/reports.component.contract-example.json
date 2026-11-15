@@ -28,23 +28,28 @@
 				"name": "ContractExample.field",
 				"type": "ContractField",
 				"required": true,
-				"description": "The selected field, including its public type, explanation, example values and their declared, illustrative or missing status."
+				"description": "The contract field whose type, optional description, example values, and source drive the view. A missing description uses a fallback message, while a missing source is labelled as not recorded.",
+				"examples": [
+					{
+						"name": "ContractExample.field",
+						"type": "ContractField",
+						"description": "The contract field passed to this component.",
+						"required": true,
+						"source": "missing",
+						"examples": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ContractExample",
 				"type": "markup",
-				"description": "Readable examples with safe markup text and structured values. Missing examples stay explicit; this is documentation, not a test result."
+				"description": "The rendered markup presents the field type and description, then shows example values with a label derived from their declared, illustrative, or missing source. Missing descriptions use a fallback message; structure examples expose full JSON, markup examples use preformatted text, and other forms use code."
 			}
 		],
-		"errors": [
-			{
-				"name": "Getter, proxy or conversion error",
-				"type": "thrown",
-				"description": "Propagates errors thrown by supplied structured example values while reading their getters, proxy traps or string conversions."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
