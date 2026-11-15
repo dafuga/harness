@@ -631,7 +631,7 @@
 				"outputs": [
 					{
 						"name": "focusedScreens",
-						"type": "unknown",
+						"type": "Promise<{ captures: NonNullable<RegressionRecord['captures']>; files: { path: string; bytes: Buffer }[] }>",
 						"description": "The object { captures, files } that the regression record stores: captures has one entry per unit of each retained screenshot, with its recorded Capture and decoded viewport, and files pairs each capture path with the Buffer of its bytes, so the value is not plain JSON."
 					}
 				],

@@ -24,7 +24,7 @@
 		"outputs": [
 			{
 				"name": "hubRecords",
-				"type": "unknown",
+				"type": "Promise<import('../../../../../src/core/unitTypes').ComponentManifest[]>",
 				"description": "Returns the parsed manifests for matching entries after hubMetadata completes. Each entry must parse with componentManifestSchema, have a path matching its id, and have an ID unique among the loaded manifests.",
 				"examples": [
 					[]
@@ -53,7 +53,7 @@
 				"outputs": [
 					{
 						"name": "hubRecords",
-						"type": "unknown",
+						"type": "Promise<import('../../../../../src/core/unitTypes').ComponentManifest[]>",
 						"description": "Returns the parsed manifests for matching entries after hubMetadata completes. Each entry must parse with componentManifestSchema, have a path matching its id, and have an ID unique among the loaded manifests.",
 						"examples": [
 							[]

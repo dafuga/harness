@@ -417,12 +417,12 @@
 			},
 			{
 				"name": "beginSourceScope",
-				"type": "()",
+				"type": "() => void",
 				"description": "Finishing callback from the collector's beginScope when profiling is enabled, or a no-op when HARNESS_RUNTIME_PROFILE_DIR is unset or a flush is running. A scope whose finish call never runs emits no successful observation."
 			},
 			{
 				"name": "watchOperation",
-				"type": "unknown",
+				"type": "T",
 				"description": "Returns the operation unchanged when HARNESS_RUNTIME_PROFILE_DIR is unset; otherwise a Proxy that keeps the receiver, arguments and return value, stops sampling after ten pending or successful calls, and stops sampling when a synchronous call returns a promise."
 			},
 			{
@@ -442,12 +442,12 @@
 			},
 			{
 				"name": "runnerConfiguration",
-				"type": "unknown",
+				"type": "{ plugins: ReturnType<typeof sourceProfilePlugin>[] }",
 				"description": "Vite configuration object whose only plugin is the source-profile plugin created for environment.profileRoot."
 			},
 			{
 				"name": "nativeProfilePlugins",
-				"type": "unknown",
+				"type": "Promise<import('vite').PluginOption[]>",
 				"description": "Promise that resolves to the plugins of the runner configuration loaded in test mode, or to an empty array when HARNESS_COLLECT_FILES is set; it rejects when Vite loads no configuration.",
 				"examples": [
 					[]
@@ -455,7 +455,7 @@
 			},
 			{
 				"name": "profileSelection",
-				"type": "unknown",
+				"type": "{ root: string; directory: string; units: import('../../../core/development-tooling/unitTypes').ComponentManifest[] } | null",
 				"description": "Canonical project root, selected profile directory and validated unit registry, or null outside an eligible evidence run or inside an explicit benchmark boundary. Each registry file is parsed with componentManifestSchema before it is returned.",
 				"examples": [
 					null,
@@ -795,7 +795,7 @@
 				"outputs": [
 					{
 						"name": "beginSourceScope",
-						"type": "()",
+						"type": "() => void",
 						"description": "Finishing callback from the collector's beginScope when profiling is enabled, or a no-op when HARNESS_RUNTIME_PROFILE_DIR is unset or a flush is running. A scope whose finish call never runs emits no successful observation."
 					}
 				],
@@ -825,7 +825,7 @@
 				"outputs": [
 					{
 						"name": "watchOperation",
-						"type": "unknown",
+						"type": "T",
 						"description": "Returns the operation unchanged when HARNESS_RUNTIME_PROFILE_DIR is unset; otherwise a Proxy that keeps the receiver, arguments and return value, stops sampling after ten pending or successful calls, and stops sampling when a synchronous call returns a promise."
 					}
 				],
@@ -950,7 +950,7 @@
 				"outputs": [
 					{
 						"name": "runnerConfiguration",
-						"type": "unknown",
+						"type": "{ plugins: ReturnType<typeof sourceProfilePlugin>[] }",
 						"description": "Vite configuration object whose only plugin is the source-profile plugin created for environment.profileRoot."
 					}
 				],
@@ -971,7 +971,7 @@
 				"outputs": [
 					{
 						"name": "nativeProfilePlugins",
-						"type": "unknown",
+						"type": "Promise<import('vite').PluginOption[]>",
 						"description": "Promise that resolves to the plugins of the runner configuration loaded in test mode, or to an empty array when HARNESS_COLLECT_FILES is set; it rejects when Vite loads no configuration.",
 						"examples": [
 							[]
@@ -1001,7 +1001,7 @@
 				"outputs": [
 					{
 						"name": "profileSelection",
-						"type": "unknown",
+						"type": "{ root: string; directory: string; units: import('../../../core/development-tooling/unitTypes').ComponentManifest[] } | null",
 						"description": "Canonical project root, selected profile directory and validated unit registry, or null outside an eligible evidence run or inside an explicit benchmark boundary. Each registry file is parsed with componentManifestSchema before it is returned.",
 						"examples": [
 							null,

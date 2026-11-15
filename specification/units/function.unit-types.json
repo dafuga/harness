@@ -172,7 +172,7 @@
 				"outputs": [
 					{
 						"name": "sourceContractSchema",
-						"type": "unknown",
+						"type": "ReturnType<typeof sourceContractSchema>",
 						"description": "The strict Zod object schema built for source-declared contract metadata. It requires origin, inputs, outputs, and errors, and optionally accepts primitives, errorStatus, operations, initialization, snippets, and storage; each operation requires name, input/output/error arrays, and errorStatus."
 					}
 				],
