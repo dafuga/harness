@@ -26,89 +26,99 @@
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional bindable selected value, defaulting to an empty string."
+				"description": "Selected native select value, bindable in both directions through the wrapper. Defaults to the empty string.",
+				"examples": ["", "open", "closed"]
 			},
 			{
 				"name": "Select.label",
 				"type": "string",
 				"required": true,
-				"description": "Required accessible label for the select."
+				"description": "Required accessible label passed to the native select as its aria-label.",
+				"examples": ["Report status", "Choose a report"]
 			},
 			{
 				"name": "Select.id",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional HTML identifier. Defaults to JavaScript undefined, omitting id."
+				"description": "Optional id passed to the native select when supplied; the component does not transform or validate it.",
+				"examples": ["report-status", "report-period"]
 			},
 			{
 				"name": "Select.name",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional form field name. Defaults to JavaScript undefined, omitting name."
+				"description": "Optional native form field name passed through when supplied; the component does not transform it.",
+				"examples": ["status", "report-period"]
 			},
 			{
 				"name": "Select.required",
 				"type": "boolean",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional native required flag. Defaults to JavaScript undefined, omitting the attribute; the browser does not require a selection."
+				"description": "Optional required flag passed to the native select. When omitted, the component forwards undefined and does not set the required attribute.",
+				"examples": [true, false]
 			},
 			{
 				"name": "Select.disabled",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional disabled state, defaulting to false."
+				"description": "Controls the native disabled state and the outer disabled styling. Defaults to false.",
+				"examples": [false, true]
 			},
 			{
 				"name": "Select.compact",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional compact size for dense navigation. Defaults to false; coarse-pointer targets remain larger."
+				"description": "Enables compact styling for the native select. Its height returns to 44 pixels on coarse-pointer devices.",
+				"examples": [false, true]
 			},
 			{
 				"name": "Select.expanded",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional in-page listbox mode, default false. True shows two to eight native rows including optgroup headings; longer lists scroll. The default mode is a native dropdown."
+				"description": "Controls the in-page listbox presentation. When true, the native select size is measured from its options and optgroups and clamped to 2–8 rows; the caret and display overlay are hidden.",
+				"examples": [false, true]
 			},
 			{
 				"name": "Select.display",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional closed-field label. Defaults to JavaScript undefined, showing the native selection. Supplied labels over 16 characters show their first and last six characters; expanded mode shows complete native options instead."
+				"description": "Optional text overlaid on the closed select when not expanded; strings longer than 16 characters are shortened to the first and last six characters with an ellipsis. When title is omitted, this value also supplies the native title.",
+				"examples": ["All reports", "A longer report category label"]
 			},
 			{
 				"name": "Select.title",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional hover text. Defaults to JavaScript undefined, falling back to the full display label when supplied; otherwise title is omitted."
+				"description": "Optional native title text. When omitted, the display value is used; if both are undefined, the native title is omitted.",
+				"examples": ["Choose a report", "Select a reporting period"]
 			},
 			{
 				"name": "Select.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "Required snippet supplying the option markup."
+				"description": "Required Svelte snippet rendered inside the native select to provide its child markup, typically option elements."
 			}
 		],
 		"outputs": [
 			{
 				"name": "Select",
 				"type": "markup",
-				"description": "A labelled native dropdown with a decorative caret, or an expanded in-page listbox with complete options. Binding updates its value; form, disabled and required semantics remain native. Expanded mode hides the closed-field display overlay and caret."
+				"description": "Renders a styled hx-span containing a native hx-select with the required label as aria-label, the child snippet, and a decorative caret. In expanded mode the select receives a measured size clamped to 2–8 rows and the caret and display overlay are hidden; otherwise, a supplied display value appears in an aria-hidden overlay."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller content or binding error",
-				"type": "propagated",
-				"description": "Errors from the required option snippet or the caller binding setter propagate; the component does not catch them."
+				"type": "thrown",
+				"description": "A synchronous exception from caller-provided children or a caller-side value binding propagates because this component does not catch it."
 			}
 		],
 		"errorStatus": "declared",
