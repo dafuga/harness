@@ -33,41 +33,86 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "listLoopTemplates.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository directory used to find project template JSON files in `specification/loop-templates`. A missing template directory contributes no project templates.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+				]
 			},
 			{
 				"name": "resolveLoopTemplate.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository directory used to find project template JSON files in `specification/loop-templates`. A missing template directory contributes no project templates.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+				]
 			},
 			{
 				"name": "resolveLoopTemplate.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Identifier validated and selected from the available built-in and project loop templates. The identifier must match a template; missing templates and inheritance cycles fail.",
+				"examples": ["project"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "listLoopTemplates",
-				"type": "Promise<LoopTemplate[]>"
+				"type": "Promise<LoopTemplate[]>",
+				"description": "Built-in templates followed by project templates read from `<root>/specification/loop-templates`, with project files processed in filename order. Project entries are normalized and their source is set to `project`; a missing directory adds no project entries.",
+				"examples": [
+					[
+						{
+							"id": "project",
+							"title": "project",
+							"summary": "Project loop template.",
+							"steps": [],
+							"evaluators": [],
+							"source": "project"
+						}
+					]
+				]
 			},
 			{
 				"name": "resolveLoopTemplate",
-				"type": "Promise<ResolvedLoopTemplate>"
+				"type": "Promise<ResolvedLoopTemplate>",
+				"description": "The selected template with its inheritance lineage, merged steps, and merged evaluators. Child entries replace parent entries with matching ids, while new child ids are appended; missing ids and inheritance cycles fail.",
+				"examples": [
+					{
+						"id": "project",
+						"title": "project",
+						"summary": "Project loop template.",
+						"lineage": ["project"],
+						"steps": [],
+						"evaluators": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Validation rejects invalid loop ids or required text, and resolution rejects a missing template or an inheritance cycle."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Invalid JSON in a project template file rejects while the file is parsed."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "File-system errors from listing the project template directory or reading a template file propagate, except a missing directory is treated as empty."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "listLoopTemplates",
@@ -75,17 +120,50 @@
 					{
 						"name": "listLoopTemplates.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository directory used to find project template JSON files in `specification/loop-templates`. A missing template directory contributes no project templates.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "listLoopTemplates",
-						"type": "Promise<LoopTemplate[]>"
+						"type": "Promise<LoopTemplate[]>",
+						"description": "Built-in templates followed by project templates read from `<root>/specification/loop-templates`, with project files processed in filename order. Project entries are normalized and their source is set to `project`; a missing directory adds no project entries.",
+						"examples": [
+							[
+								{
+									"id": "project",
+									"title": "project",
+									"summary": "Project loop template.",
+									"steps": [],
+									"evaluators": [],
+									"source": "project"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Validation rejects invalid loop ids or required text, and resolution rejects a missing template or an inheritance cycle."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Invalid JSON in a project template file rejects while the file is parsed."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "File-system errors from listing the project template directory or reading a template file propagate, except a missing directory is treated as empty."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resolveLoopTemplate",
@@ -93,22 +171,55 @@
 					{
 						"name": "resolveLoopTemplate.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository directory used to find project template JSON files in `specification/loop-templates`. A missing template directory contributes no project templates.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+						]
 					},
 					{
 						"name": "resolveLoopTemplate.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Identifier validated and selected from the available built-in and project loop templates. The identifier must match a template; missing templates and inheritance cycles fail.",
+						"examples": ["project"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resolveLoopTemplate",
-						"type": "Promise<ResolvedLoopTemplate>"
+						"type": "Promise<ResolvedLoopTemplate>",
+						"description": "The selected template with its inheritance lineage, merged steps, and merged evaluators. Child entries replace parent entries with matching ids, while new child ids are appended; missing ids and inheritance cycles fail.",
+						"examples": [
+							{
+								"id": "project",
+								"title": "project",
+								"summary": "Project loop template.",
+								"lineage": ["project"],
+								"steps": [],
+								"evaluators": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Validation rejects invalid loop ids or required text, and resolution rejects a missing template or an inheritance cycle."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Invalid JSON in a project template file rejects while the file is parsed."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "File-system errors from listing the project template directory or reading a template file propagate, except a missing directory is treated as empty."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
