@@ -12,31 +12,95 @@
 		"symbols": ["auditTypeScriptNaming", "auditSqlNaming"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "auditTypeScriptNaming.file",
 				"type": "AuditFile",
-				"required": true
+				"required": true,
+				"description": "An AuditFile supplies absolute and relative paths, extension, source contents, line views, rule limits and size for the file under review. These rules use relativePath and, for TypeScript, extension and structuralLines; the SQL rule only inspects paths beginning with db/migrations/, and TypeScript skips paths ending in .types.ts.",
+				"examples": [
+					{
+						"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/src/utils/getUser.ts",
+						"relativePath": "src/utils/getUser.ts",
+						"extension": ".ts",
+						"contents": "export function getUser() {}\nexport function Bad_Name() {}",
+						"lines": ["export function getUser() {}", "export function Bad_Name() {}"],
+						"structuralLines": ["export function getUser() {}", "export function Bad_Name() {}"],
+						"limits": {
+							"maxFileLines": 220,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						},
+						"size": 58
+					}
+				]
 			},
 			{
 				"name": "auditSqlNaming.file",
 				"type": "AuditFile",
-				"required": true
+				"required": true,
+				"description": "An AuditFile supplies absolute and relative paths, extension, source contents, line views, rule limits and size for the file under review. This rule examines only relativePath: it ignores paths outside db/migrations/ and checks the filename stem inside that directory.",
+				"examples": [
+					{
+						"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/db/migrations/2026-11-15-Add_users.sql",
+						"relativePath": "db/migrations/2026-11-15-Add_users.sql",
+						"extension": ".sql",
+						"contents": "CREATE TABLE users (id INTEGER);",
+						"lines": ["CREATE TABLE users (id INTEGER);"],
+						"structuralLines": ["CREATE TABLE users (id INTEGER);"],
+						"limits": {
+							"maxFileLines": 220,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						},
+						"size": 32
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "auditTypeScriptNaming",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "An array of naming findings from function-name and scaffold TypeScript checks. It may be empty or contain multiple findings; each finding records the input relativePath, a rule identifier and a message.",
+				"examples": [
+					[
+						{
+							"path": "src/utils/getUser.ts",
+							"rule": "function-name-pattern",
+							"message": "Function \"Bad_Name\" should use camelCase."
+						}
+					]
+				]
 			},
 			{
 				"name": "auditSqlNaming",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "An array of migration filename findings. It is empty outside db/migrations/ or when the filename stem is lowercase kebab-case or snake_case; each finding records the input relativePath, rule identifier and message.",
+				"examples": [
+					[
+						{
+							"path": "db/migrations/2026-11-15-Add_users.sql",
+							"rule": "file-name-pattern",
+							"message": "Migration files should use lowercase kebab-case or snake_case names."
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "auditTypeScriptNaming",
@@ -44,17 +108,52 @@
 					{
 						"name": "auditTypeScriptNaming.file",
 						"type": "AuditFile",
-						"required": true
+						"required": true,
+						"description": "An AuditFile supplies absolute and relative paths, extension, source contents, line views, rule limits and size for the file under review. These rules use relativePath and, for TypeScript, extension and structuralLines; the SQL rule only inspects paths beginning with db/migrations/, and TypeScript skips paths ending in .types.ts.",
+						"examples": [
+							{
+								"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/src/utils/getUser.ts",
+								"relativePath": "src/utils/getUser.ts",
+								"extension": ".ts",
+								"contents": "export function getUser() {}\nexport function Bad_Name() {}",
+								"lines": ["export function getUser() {}", "export function Bad_Name() {}"],
+								"structuralLines": [
+									"export function getUser() {}",
+									"export function Bad_Name() {}"
+								],
+								"limits": {
+									"maxFileLines": 220,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								},
+								"size": 58
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditTypeScriptNaming",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "An array of naming findings from function-name and scaffold TypeScript checks. It may be empty or contain multiple findings; each finding records the input relativePath, a rule identifier and a message.",
+						"examples": [
+							[
+								{
+									"path": "src/utils/getUser.ts",
+									"rule": "function-name-pattern",
+									"message": "Function \"Bad_Name\" should use camelCase."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "auditSqlNaming",
@@ -62,17 +161,49 @@
 					{
 						"name": "auditSqlNaming.file",
 						"type": "AuditFile",
-						"required": true
+						"required": true,
+						"description": "An AuditFile supplies absolute and relative paths, extension, source contents, line views, rule limits and size for the file under review. This rule examines only relativePath: it ignores paths outside db/migrations/ and checks the filename stem inside that directory.",
+						"examples": [
+							{
+								"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/db/migrations/2026-11-15-Add_users.sql",
+								"relativePath": "db/migrations/2026-11-15-Add_users.sql",
+								"extension": ".sql",
+								"contents": "CREATE TABLE users (id INTEGER);",
+								"lines": ["CREATE TABLE users (id INTEGER);"],
+								"structuralLines": ["CREATE TABLE users (id INTEGER);"],
+								"limits": {
+									"maxFileLines": 220,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								},
+								"size": 32
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditSqlNaming",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "An array of migration filename findings. It is empty outside db/migrations/ or when the filename stem is lowercase kebab-case or snake_case; each finding records the input relativePath, rule identifier and message.",
+						"examples": [
+							[
+								{
+									"path": "db/migrations/2026-11-15-Add_users.sql",
+									"rule": "file-name-pattern",
+									"message": "Migration files should use lowercase kebab-case or snake_case names."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
