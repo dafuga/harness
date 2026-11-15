@@ -25,31 +25,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The services of the shown revision in a table, each with its verdict and what the commit changed, to search, order and open."
+				"description": "The page markup renders `HarnessScreen` with the title `Services` and `ExplorerCatalogScreen` as its content. This route component supplies no other page data."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Services · Harness"
+				"description": "The fixed title passed to `HarnessScreen` when this route renders. Its value is always `Services` in this component.",
+				"examples": ["Services"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
