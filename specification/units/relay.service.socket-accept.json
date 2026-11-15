@@ -16,42 +16,48 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SocketAcceptService.constructor.store",
 				"type": "HostStorageAdapter",
-				"required": true
+				"required": true,
+				"description": "Provides the stored host record and device records consulted during credential validation. The service reads the host record before hashing credentials and re-reads it before comparing the presented hash; device claims are checked against the stored device credential hash."
 			},
 			{
 				"name": "SocketAcceptService.constructor.sockets",
 				"type": "HostSocketsAdapter",
-				"required": true
+				"required": true,
+				"description": "Provides the active host socket, sockets for a device, and new socket pairs for accepted connections. A host connection replaces the previous host socket, while device connections are replaced per device ID."
 			},
 			{
 				"name": "SocketAcceptService.constructor.link",
 				"type": "HostLinkService",
-				"required": true
+				"required": true,
+				"description": "Applies link side effects after credential validation succeeds: it drops replaced sockets, welcomes the host, marks a device seen, and sends a device-open notice to the host. The host path sends the welcome after opening the new socket, while the device path announces the new connection ID."
 			},
 			{
 				"name": "SocketAcceptService.constructor.rate",
 				"type": "RateLimitService",
-				"required": true
+				"required": true,
+				"description": "Counts failed connects with the connect scope and relayConfig.failedConnects threshold when a host record exists. Once the limit is reached, invalid credentials receive 429; missing-host requests return 401 without calling the rate limiter."
 			},
 			{
 				"name": "SocketAcceptService.accept.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "Carries the Upgrade header and connect claims used by the service to authenticate a WebSocket connection. Requests without a WebSocket upgrade, valid claims, a host record, or a current matching credential are refused with an HTTP error response."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SocketAcceptService.accept",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "Resolves to the HTTP response for the attempt: 426 for a non-WebSocket upgrade, 401 or 429 for refused credentials, or 101 with the accepted WebSocket. The 429 response is used after the host's failed-connect limit is exceeded; a valid credential is not refused due to other failures."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "SocketAcceptService.accept",
@@ -59,17 +65,19 @@
 					{
 						"name": "SocketAcceptService.accept.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "Carries the Upgrade header and connect claims used by the service to authenticate a WebSocket connection. Requests without a WebSocket upgrade, valid claims, a host record, or a current matching credential are refused with an HTTP error response."
 					}
 				],
 				"outputs": [
 					{
 						"name": "SocketAcceptService.accept",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "Resolves to the HTTP response for the attempt: 426 for a non-WebSocket upgrade, 401 or 429 for refused credentials, or 101 with the accepted WebSocket. The 429 response is used after the host's failed-connect limit is exceeded; a valid credential is not refused due to other failures."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -79,32 +87,37 @@
 					{
 						"name": "SocketAcceptService.constructor.store",
 						"type": "HostStorageAdapter",
-						"required": true
+						"required": true,
+						"description": "Provides the stored host record and device records consulted during credential validation. The service reads the host record before hashing credentials and re-reads it before comparing the presented hash; device claims are checked against the stored device credential hash."
 					},
 					{
 						"name": "SocketAcceptService.constructor.sockets",
 						"type": "HostSocketsAdapter",
-						"required": true
+						"required": true,
+						"description": "Provides the active host socket, sockets for a device, and new socket pairs for accepted connections. A host connection replaces the previous host socket, while device connections are replaced per device ID."
 					},
 					{
 						"name": "SocketAcceptService.constructor.link",
 						"type": "HostLinkService",
-						"required": true
+						"required": true,
+						"description": "Applies link side effects after credential validation succeeds: it drops replaced sockets, welcomes the host, marks a device seen, and sends a device-open notice to the host. The host path sends the welcome after opening the new socket, while the device path announces the new connection ID."
 					},
 					{
 						"name": "SocketAcceptService.constructor.rate",
 						"type": "RateLimitService",
-						"required": true
+						"required": true,
+						"description": "Counts failed connects with the connect scope and relayConfig.failedConnects threshold when a host record exists. Once the limit is reached, invalid credentials receive 429; missing-host requests return 401 without calling the rate limiter."
 					}
 				],
 				"outputs": [
 					{
 						"name": "SocketAcceptService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A SocketAcceptService instance retaining the four supplied adapters and services for later connection checks. The constructor performs no validation or external work."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
