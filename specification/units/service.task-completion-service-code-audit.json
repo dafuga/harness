@@ -18,36 +18,100 @@
 				"name": "codeAudit.root",
 				"type": "string",
 				"required": true,
-				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+				"description": "Project filesystem root passed to VerificationStoreRepository, VerificationCheckService, CommitTreeAdapter.open and loadSide. It matters on every call: when no verification record for the commit is found under this root, the function throws, and codeAudit does not validate the value itself.",
+				"examples": ["/home/dev/harness-app", "/srv/checkouts/harness-app"]
 			},
 			{
 				"name": "codeAudit.commit",
 				"type": "string",
 				"required": true,
-				"description": "Exact Git source commit whose verification and measurements must agree."
+				"description": "Git commit whose most recent verification record is selected and re-checked, whose commit tree is opened, and against which the performance measurements are validated. A record for any other commit is never selected, and when none exists for this commit the function throws.",
+				"examples": [
+					"9f2c4e1b7a03d5c8e61f2b9a4d07c3e5b8a16d20",
+					"1a7d3c9e05b4f82d6e10c7a3f59b84d2c6e0f731"
+				]
 			},
 			{
 				"name": "codeAudit.requested",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Additional registered unit IDs that must exist and satisfy the same evidence rules."
+				"description": "Extra unit IDs added to the affected units; a requested ID with a manifest at this commit is checked by the same performance validator, and one without a manifest fails the scope check instead of throwing. Defaults to an empty array.",
+				"examples": [
+					[],
+					["reports.component.evidence-grid"],
+					["service.verification-check", "validator.performance-evidence"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "codeAudit",
 				"type": "Promise<TaskCheck[]>",
-				"description": "Checks for intact exact-commit verification, declared unit scope and matching representative runtime evidence."
+				"description": "Resolves to three TaskCheck entries in this order: 'verification' (always passed, since a failed verification throws first), 'scope' (fails when a requested unit has no manifest at this commit) and 'performance' (fails when any problem is reported, with the problems joined by newlines in its detail).",
+				"examples": [
+					[
+						{
+							"id": "verification",
+							"passed": true,
+							"detail": "Intact record 5b9e2f0c7d41a8e36f0b2c9d17e4a58c3f6d20b9e1a7c4d85f2e06b3a9c1d7e4 proves this commit."
+						},
+						{
+							"id": "scope",
+							"passed": true,
+							"detail": "All declared units exist at this revision."
+						},
+						{
+							"id": "performance",
+							"passed": true,
+							"detail": "Current representative latency and memory profiles are recorded."
+						}
+					],
+					[
+						{
+							"id": "verification",
+							"passed": true,
+							"detail": "Intact record c3a18f74e09b2d56a7f1e4c8b05d93a2f6e17c4b8d0a5e92f3c61b7d84e0a2f5 proves this commit."
+						},
+						{
+							"id": "scope",
+							"passed": true,
+							"detail": "All declared units exist at this revision."
+						},
+						{
+							"id": "performance",
+							"passed": true,
+							"detail": "No affected executable units; runtime profiling is inapplicable to this source change."
+						}
+					],
+					[
+						{
+							"id": "verification",
+							"passed": true,
+							"detail": "Intact record 5b9e2f0c7d41a8e36f0b2c9d17e4a58c3f6d20b9e1a7c4d85f2e06b3a9c1d7e4 proves this commit."
+						},
+						{
+							"id": "scope",
+							"passed": false,
+							"detail": "Unknown task units: reports.component.evidence-grid"
+						},
+						{
+							"id": "performance",
+							"passed": false,
+							"detail": "Run relevant automated tests for executable task units."
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Missing, failed, tampered or stale verification rejects before the task can claim completion."
+				"description": "Thrown with 'Run harness verify run; no verification record proves the task commit.' when no stored record has this commit as its source, and with 'Harness verification failed: ' followed by the problems joined with '; ' when the re-check or the stored record's status is not 'passed'. Errors and rejections from the dynamic imports and from the store, check, commit-tree, loader and validator calls are not caught and reach the caller unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "codeAudit",
@@ -56,36 +120,100 @@
 						"name": "codeAudit.root",
 						"type": "string",
 						"required": true,
-						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+						"description": "Project filesystem root passed to VerificationStoreRepository, VerificationCheckService, CommitTreeAdapter.open and loadSide. It matters on every call: when no verification record for the commit is found under this root, the function throws, and codeAudit does not validate the value itself.",
+						"examples": ["/home/dev/harness-app", "/srv/checkouts/harness-app"]
 					},
 					{
 						"name": "codeAudit.commit",
 						"type": "string",
 						"required": true,
-						"description": "Exact Git source commit whose verification and measurements must agree."
+						"description": "Git commit whose most recent verification record is selected and re-checked, whose commit tree is opened, and against which the performance measurements are validated. A record for any other commit is never selected, and when none exists for this commit the function throws.",
+						"examples": [
+							"9f2c4e1b7a03d5c8e61f2b9a4d07c3e5b8a16d20",
+							"1a7d3c9e05b4f82d6e10c7a3f59b84d2c6e0f731"
+						]
 					},
 					{
 						"name": "codeAudit.requested",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Additional registered unit IDs that must exist and satisfy the same evidence rules."
+						"description": "Extra unit IDs added to the affected units; a requested ID with a manifest at this commit is checked by the same performance validator, and one without a manifest fails the scope check instead of throwing. Defaults to an empty array.",
+						"examples": [
+							[],
+							["reports.component.evidence-grid"],
+							["service.verification-check", "validator.performance-evidence"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "codeAudit",
 						"type": "Promise<TaskCheck[]>",
-						"description": "Checks for intact exact-commit verification, declared unit scope and matching representative runtime evidence."
+						"description": "Resolves to three TaskCheck entries in this order: 'verification' (always passed, since a failed verification throws first), 'scope' (fails when a requested unit has no manifest at this commit) and 'performance' (fails when any problem is reported, with the problems joined by newlines in its detail).",
+						"examples": [
+							[
+								{
+									"id": "verification",
+									"passed": true,
+									"detail": "Intact record 5b9e2f0c7d41a8e36f0b2c9d17e4a58c3f6d20b9e1a7c4d85f2e06b3a9c1d7e4 proves this commit."
+								},
+								{
+									"id": "scope",
+									"passed": true,
+									"detail": "All declared units exist at this revision."
+								},
+								{
+									"id": "performance",
+									"passed": true,
+									"detail": "Current representative latency and memory profiles are recorded."
+								}
+							],
+							[
+								{
+									"id": "verification",
+									"passed": true,
+									"detail": "Intact record c3a18f74e09b2d56a7f1e4c8b05d93a2f6e17c4b8d0a5e92f3c61b7d84e0a2f5 proves this commit."
+								},
+								{
+									"id": "scope",
+									"passed": true,
+									"detail": "All declared units exist at this revision."
+								},
+								{
+									"id": "performance",
+									"passed": true,
+									"detail": "No affected executable units; runtime profiling is inapplicable to this source change."
+								}
+							],
+							[
+								{
+									"id": "verification",
+									"passed": true,
+									"detail": "Intact record 5b9e2f0c7d41a8e36f0b2c9d17e4a58c3f6d20b9e1a7c4d85f2e06b3a9c1d7e4 proves this commit."
+								},
+								{
+									"id": "scope",
+									"passed": false,
+									"detail": "Unknown task units: reports.component.evidence-grid"
+								},
+								{
+									"id": "performance",
+									"passed": false,
+									"detail": "Run relevant automated tests for executable task units."
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with 'Run harness verify run; no verification record proves the task commit.' when no stored record has this commit as its source, and with 'Harness verification failed: ' followed by the problems joined with '; ' when the re-check or the stored record's status is not 'passed'. Errors and rejections from the dynamic imports and from the store, check, commit-tree, loader and validator calls are not caught and reach the caller unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
