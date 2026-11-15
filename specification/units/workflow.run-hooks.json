@@ -19,89 +19,229 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "manageHooks.action",
 				"type": "Action",
-				"required": true
+				"required": true,
+				"description": "Selects whether to install, uninstall, or report the opt-in hooks for the worktree.",
+				"examples": ["install", "uninstall", "status"]
 			},
 			{
 				"name": "manageHooks.command",
 				"type": "string",
 				"required": false,
-				"default": "harness"
+				"default": "harness",
+				"description": "Command string passed to the hook installer when the action is install. Defaults to `harness`.",
+				"examples": ["harness"]
 			},
 			{
 				"name": "manageHooks.root",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Root path used to locate the Git working tree for hook management. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "runHook.stage",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Hook stage requested for execution. This implementation accepts only `pre-push`; other stage strings fail.",
+				"examples": ["pre-push"]
 			},
 			{
 				"name": "runHook.input",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Input string Git supplied to the hook, passed to the pre-push runner after the stage check. It matters for the pre-push gate.",
+				"examples": [
+					"refs/heads/main 0123456789abcdef0123456789abcdef01234567 refs/heads/main 89abcdef0123456789abcdef0123456789abcdef\n"
+				]
 			},
 			{
 				"name": "runHook.root",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Root path used to locate the Git working tree for the hook run. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "checkMessage.file",
 				"type": "string | undefined",
-				"required": true
+				"required": true,
+				"description": "Path to the commit-message file Git supplied to the commit-msg hook. A missing or empty path causes an expected CLI error.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/COMMIT_EDITMSG"
+				]
 			},
 			{
 				"name": "checkMessage.root",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Root path used to locate the Git working tree for the message check. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "renderHooks.status",
 				"type": "HookStatus",
-				"required": true
+				"required": true,
+				"description": "Hook status supplied to the formatter. It reads the stage, installed and enabled flags, hooks directory, chained state, stage entries, and limitations.",
+				"examples": [
+					{
+						"installed": true,
+						"enabled": true,
+						"stage": "pre-push",
+						"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks",
+						"chained": false,
+						"stages": [
+							{
+								"stage": "pre-push",
+								"installed": true,
+								"chained": false,
+								"enabled": true
+							},
+							{
+								"stage": "commit-msg",
+								"installed": true,
+								"chained": false,
+								"enabled": true
+							}
+						],
+						"limitations": [
+							"`git push --no-verify` skips the hook; only CI checks every push.",
+							"The hooks directory is shared: other worktrees of this repository run the hook only after `harness hooks install` is run there.",
+							"A stage acts only where it was opted into: a worktree that ran `harness hooks install` under an earlier Harness keeps the stages it asked for then, until the command is run there again.",
+							"Only pushes of branches are checked; tags and deletions are not.",
+							"Before a commit exists only its message is measured: a commit that does not exist yet cannot be verified exactly.",
+							"`git commit --no-verify` skips the commit-msg hook; verification measures the stored messages again."
+						]
+					}
+				]
 			},
 			{
 				"name": "renderHookOutcome.outcome",
 				"type": "HookOutcome",
-				"required": true
+				"required": true,
+				"description": "Pre-push outcome supplied to the formatter. It reads verified commits and their records, plus blocked commits and their failure messages.",
+				"examples": [
+					{
+						"verified": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"record": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+							}
+						],
+						"blocked": [
+							{
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"failures": ["verification failed"]
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "manageHooks",
-				"type": "Promise<HookStatus>"
+				"type": "Promise<HookStatus>",
+				"description": "Resolves to the hook status returned by the install, uninstall, or status service for the selected worktree. Its root must resolve to a Git working tree.",
+				"examples": [
+					{
+						"installed": true,
+						"enabled": true,
+						"stage": "pre-push",
+						"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks",
+						"chained": false,
+						"stages": [
+							{
+								"stage": "pre-push",
+								"installed": true,
+								"chained": false,
+								"enabled": true
+							},
+							{
+								"stage": "commit-msg",
+								"installed": true,
+								"chained": false,
+								"enabled": true
+							}
+						],
+						"limitations": [
+							"`git push --no-verify` skips the hook; only CI checks every push.",
+							"The hooks directory is shared: other worktrees of this repository run the hook only after `harness hooks install` is run there.",
+							"A stage acts only where it was opted into: a worktree that ran `harness hooks install` under an earlier Harness keeps the stages it asked for then, until the command is run there again.",
+							"Only pushes of branches are checked; tags and deletions are not.",
+							"Before a commit exists only its message is measured: a commit that does not exist yet cannot be verified exactly.",
+							"`git commit --no-verify` skips the commit-msg hook; verification measures the stored messages again."
+						]
+					}
+				]
 			},
 			{
 				"name": "runHook",
-				"type": "Promise<HookOutcome>"
+				"type": "Promise<HookOutcome>",
+				"description": "Resolves to the pre-push runner outcome when the stage is `pre-push` and the root is a Git working tree. Other stage names fail before the runner is called.",
+				"examples": [
+					{
+						"verified": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"record": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+							}
+						],
+						"blocked": [
+							{
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"failures": ["verification failed"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "checkMessage",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "Resolves to the commit-message service's list of findings for the file Git supplied. The list can be empty.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "renderHooks",
-				"type": "string"
+				"type": "string",
+				"description": "Formatted hook status text, including installation and worktree enablement state, commit-msg guidance, and local-hook limitations.",
+				"examples": [
+					"The pre-push hook is not installed in /Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks and not enabled for this worktree.\nThe commit-msg hook is not installed and not enabled for this worktree. It measures a commit message where the repository declares the writing limits.\nLimits of a local hook:"
+				]
 			},
 			{
 				"name": "renderHookOutcome",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Formatted lines for verified and blocked commits. Verified lines include shortened commit and record identifiers; blocked commits include shortened commit identifiers and their failure messages.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when the selected root is not a Git working tree, when `runHook` receives a stage other than `pre-push`, or when `checkMessage` receives no message-file path."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "manageHooks",
@@ -109,28 +249,75 @@
 					{
 						"name": "manageHooks.action",
 						"type": "Action",
-						"required": true
+						"required": true,
+						"description": "Selects whether to install, uninstall, or report the opt-in hooks for the worktree.",
+						"examples": ["install", "uninstall", "status"]
 					},
 					{
 						"name": "manageHooks.command",
 						"type": "string",
 						"required": false,
-						"default": "harness"
+						"default": "harness",
+						"description": "Command string passed to the hook installer when the action is install. Defaults to `harness`.",
+						"examples": ["harness"]
 					},
 					{
 						"name": "manageHooks.root",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Root path used to locate the Git working tree for hook management. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "manageHooks",
-						"type": "Promise<HookStatus>"
+						"type": "Promise<HookStatus>",
+						"description": "Resolves to the hook status returned by the install, uninstall, or status service for the selected worktree. Its root must resolve to a Git working tree.",
+						"examples": [
+							{
+								"installed": true,
+								"enabled": true,
+								"stage": "pre-push",
+								"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks",
+								"chained": false,
+								"stages": [
+									{
+										"stage": "pre-push",
+										"installed": true,
+										"chained": false,
+										"enabled": true
+									},
+									{
+										"stage": "commit-msg",
+										"installed": true,
+										"chained": false,
+										"enabled": true
+									}
+								],
+								"limitations": [
+									"`git push --no-verify` skips the hook; only CI checks every push.",
+									"The hooks directory is shared: other worktrees of this repository run the hook only after `harness hooks install` is run there.",
+									"A stage acts only where it was opted into: a worktree that ran `harness hooks install` under an earlier Harness keeps the stages it asked for then, until the command is run there again.",
+									"Only pushes of branches are checked; tags and deletions are not.",
+									"Before a commit exists only its message is measured: a commit that does not exist yet cannot be verified exactly.",
+									"`git commit --no-verify` skips the commit-msg hook; verification measures the stored messages again."
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when the selected root is not a Git working tree."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "runHook",
@@ -138,32 +325,61 @@
 					{
 						"name": "runHook.stage",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Hook stage requested for execution. This implementation accepts only `pre-push`; other stage strings fail.",
+						"examples": ["pre-push"]
 					},
 					{
 						"name": "runHook.input",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Input string Git supplied to the hook, passed to the pre-push runner after the stage check. It matters for the pre-push gate.",
+						"examples": [
+							"refs/heads/main 0123456789abcdef0123456789abcdef01234567 refs/heads/main 89abcdef0123456789abcdef0123456789abcdef\n"
+						]
 					},
 					{
 						"name": "runHook.root",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Root path used to locate the Git working tree for the hook run. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runHook",
-						"type": "Promise<HookOutcome>"
+						"type": "Promise<HookOutcome>",
+						"description": "Resolves to the pre-push runner outcome when the stage is `pre-push` and the root is a Git working tree. Other stage names fail before the runner is called.",
+						"examples": [
+							{
+								"verified": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"record": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+									}
+								],
+								"blocked": [
+									{
+										"commit": "89abcdef0123456789abcdef0123456789abcdef",
+										"failures": ["verification failed"]
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the stage is not `pre-push` or the selected root is not a Git working tree."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "checkMessage",
@@ -171,27 +387,41 @@
 					{
 						"name": "checkMessage.file",
 						"type": "string | undefined",
-						"required": true
+						"required": true,
+						"description": "Path to the commit-message file Git supplied to the commit-msg hook. A missing or empty path causes an expected CLI error.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/COMMIT_EDITMSG"
+						]
 					},
 					{
 						"name": "checkMessage.root",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Root path used to locate the Git working tree for the message check. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkMessage",
-						"type": "Promise<string[]>"
+						"type": "Promise<string[]>",
+						"description": "Resolves to the commit-message service's list of findings for the file Git supplied. The list can be empty.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the message-file path is missing or the selected root is not a Git working tree."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderHooks",
@@ -199,17 +429,53 @@
 					{
 						"name": "renderHooks.status",
 						"type": "HookStatus",
-						"required": true
+						"required": true,
+						"description": "Hook status supplied to the formatter. It reads the stage, installed and enabled flags, hooks directory, chained state, stage entries, and limitations.",
+						"examples": [
+							{
+								"installed": true,
+								"enabled": true,
+								"stage": "pre-push",
+								"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks",
+								"chained": false,
+								"stages": [
+									{
+										"stage": "pre-push",
+										"installed": true,
+										"chained": false,
+										"enabled": true
+									},
+									{
+										"stage": "commit-msg",
+										"installed": true,
+										"chained": false,
+										"enabled": true
+									}
+								],
+								"limitations": [
+									"`git push --no-verify` skips the hook; only CI checks every push.",
+									"The hooks directory is shared: other worktrees of this repository run the hook only after `harness hooks install` is run there.",
+									"A stage acts only where it was opted into: a worktree that ran `harness hooks install` under an earlier Harness keeps the stages it asked for then, until the command is run there again.",
+									"Only pushes of branches are checked; tags and deletions are not.",
+									"Before a commit exists only its message is measured: a commit that does not exist yet cannot be verified exactly.",
+									"`git commit --no-verify` skips the commit-msg hook; verification measures the stored messages again."
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderHooks",
-						"type": "string"
+						"type": "string",
+						"description": "Formatted hook status text, including installation and worktree enablement state, commit-msg guidance, and local-hook limitations.",
+						"examples": [
+							"The pre-push hook is not installed in /Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6/.git/hooks and not enabled for this worktree.\nThe commit-msg hook is not installed and not enabled for this worktree. It measures a commit message where the repository declares the writing limits.\nLimits of a local hook:"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderHookOutcome",
@@ -217,17 +483,38 @@
 					{
 						"name": "renderHookOutcome.outcome",
 						"type": "HookOutcome",
-						"required": true
+						"required": true,
+						"description": "Pre-push outcome supplied to the formatter. It reads verified commits and their records, plus blocked commits and their failure messages.",
+						"examples": [
+							{
+								"verified": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"record": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+									}
+								],
+								"blocked": [
+									{
+										"commit": "89abcdef0123456789abcdef0123456789abcdef",
+										"failures": ["verification failed"]
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderHookOutcome",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Formatted lines for verified and blocked commits. Verified lines include shortened commit and record identifiers; blocked commits include shortened commit identifiers and their failure messages.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
