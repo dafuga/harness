@@ -18,30 +18,32 @@
 				"name": "accountView.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace whose hosted transport, source capability and selected project determine whether it is an account view."
+				"description": "A Workspace instance inspected to decide whether the displayed project belongs to its own Hub account. The view qualifies only when hostedStatus is truthy, capabilities.source is github, and snapshot.project.id is absent or does not start with local-."
 			},
 			{
 				"name": "forgetRemote.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "The workspace to invalidate and clear, including project list, snapshot, entity, cached-view state, capabilities, selected project and pending target."
+				"description": "A mutable Workspace instance whose pending work is invalidated and whose computer-owned projects are removed. When it has a hosted account, non-local projects and an eligible own-account view are retained; otherwise its project list and remote view are cleared."
 			},
 			{
 				"name": "forgetRemote.notice",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "The error notice to show after clearing; defaults to an empty string."
+				"description": "The string assigned to workspace.error after invalidation and view handling. Defaults to the empty string.",
+				"examples": ["", "Computer disconnected"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "forgetRemote",
 				"type": "void",
-				"description": "No return value. Invalidates pending work, empties the project list, clears displayed and selected content, disables change capabilities and sets the notice. If a browser address exists and is not the start address, replaces it with / without adding a history entry."
+				"description": "This contract entry is typed void, but the implementation returns a boolean indicating whether workspace.bridge.hostedStatus is truthy. Callers can use that result to decide whether the hosted account should be listed again."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "accountView",
@@ -50,17 +52,19 @@
 						"name": "accountView.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "Workspace whose hosted transport, source capability and selected project determine whether it is an account view."
+						"description": "A Workspace instance inspected to decide whether the displayed project belongs to its own Hub account. The view qualifies only when hostedStatus is truthy, capabilities.source is github, and snapshot.project.id is absent or does not start with local-."
 					}
 				],
 				"outputs": [
 					{
 						"name": "accountView",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether the workspace has a hosted account, uses the github capability source, and its snapshot project id is not local- prefixed. A missing snapshot project id passes the project-id check.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "forgetRemote",
@@ -69,25 +73,27 @@
 						"name": "forgetRemote.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "The workspace to invalidate and clear, including project list, snapshot, entity, cached-view state, capabilities, selected project and pending target."
+						"description": "A mutable Workspace instance whose pending work is invalidated and whose computer-owned projects are removed. When it has a hosted account, non-local projects and an eligible own-account view are retained; otherwise its project list and remote view are cleared."
 					},
 					{
 						"name": "forgetRemote.notice",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "The error notice to show after clearing; defaults to an empty string."
+						"description": "The string assigned to workspace.error after invalidation and view handling. Defaults to the empty string.",
+						"examples": ["", "Computer disconnected"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "forgetRemote",
 						"type": "boolean",
-						"description": "No return value. Invalidates pending work, empties the project list, clears displayed and selected content, disables change capabilities and sets the notice. If a browser address exists and is not the start address, replaces it with / without adding a history entry."
+						"description": "Whether workspace.bridge.hostedStatus is truthy after invalidation and view handling. The caller uses true to list the hosted account again; the boolean does not indicate whether an eligible account view was preserved.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
