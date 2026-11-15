@@ -2,7 +2,7 @@ import { afterEach, expect, test } from 'vitest';
 import { mkdtemp, rm, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { AudioUploadService } from '../../src/services/AudioUploadService';
+import { AudioUploadService } from '../../src/services/reports-media/AudioUploadService';
 import { ReportRepository } from '../../src/repositories/reports-media/report-repository/ReportRepository';
 import { audioFixture } from '../audioFixture';
 const roots: string[] = [];

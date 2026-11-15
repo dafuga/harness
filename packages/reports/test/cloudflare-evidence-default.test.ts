@@ -3,7 +3,7 @@ import { mkdtemp, rm, writeFile, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ReportRepository } from '../src/repositories/reports-media/report-repository/ReportRepository';
-import { AudioUploadService } from '../src/services/AudioUploadService';
+import { AudioUploadService } from '../src/services/reports-media/AudioUploadService';
 import { audioFixture } from './audioFixture';
 
 const { put } = vi.hoisted(() => ({ put: vi.fn().mockResolvedValue(undefined) }));

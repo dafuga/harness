@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { EvidenceStorageService } from '../../src/services/EvidenceStorageService';
+import { EvidenceStorageService } from '../../src/services/verification-evidence/EvidenceStorageService';
 import type { Report } from '../../src/models/reports-media/Report.types';
 
 test('metadata-only updates never need a Cloudflare connection', async () => {

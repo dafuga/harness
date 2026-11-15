@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/AudioUploadService.ts",
 			"packages/reports/src/services/reports-media/AudioUploadService.ts",
 			"packages/reports/src/services/reports-media/AudioUploadService.types.ts"
 		],
 		"symbols": [
-			"AudioUploadService",
 			"AudioUploadService",
 			"AudioUploadService.constructor",
 			"AudioUploadService.upload",

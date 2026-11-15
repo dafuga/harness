@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/HarnessAnalyticsService.ts",
 			"packages/reports/src/services/explorer-ui/HarnessAnalyticsService.ts",
 			"packages/reports/src/services/explorer-ui/HarnessAnalyticsService.types.ts"
 		],
 		"symbols": [
-			"HarnessAnalyticsService",
 			"HarnessAnalyticsService",
 			"HarnessAnalyticsService.snapshot",
 			"AnalyticsSnapshot",

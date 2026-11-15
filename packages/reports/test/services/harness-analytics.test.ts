@@ -3,7 +3,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test, vi } from 'vitest';
-import { HarnessAnalyticsService } from '../../src/services/HarnessAnalyticsService';
+import { HarnessAnalyticsService } from '../../src/services/explorer-ui/HarnessAnalyticsService';
 afterEach(() => vi.unstubAllEnvs());
 test('dashboard queries the real CLI aggregation and preserves validated filters', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'dashboard-analytics-'));
