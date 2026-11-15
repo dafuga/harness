@@ -1,3 +1,4 @@
+import { assertVideoBoundaryCoverage } from './videoBoundaryCoverage';
 import { assertPendingVideoFlagCoverage } from './pendingVideoFlagCoverage';
 import { expect } from 'vitest';
 import { scenarioManifestSchema, type ScenarioManifest } from '../../src/core/unitTypes';
@@ -30,7 +31,8 @@ export const video = {
 export function assertVideoCoverage(
 	scenario: ScenarioManifest,
 	gathered: (extra: object) => Gathered,
-	served: (buildId: string) => object
+	served: (buildId: string) => object,
+	checkpoints = false
 ) {
 	const declared = videoScenario(scenario);
 	const item: Gathered = {
@@ -76,6 +78,7 @@ export function assertVideoCoverage(
 			line: { ...item.line, video: { ...video, states: [{ id: 'pages', atSeconds: 30 }] } }
 		} as Gathered).join(' ')
 	).toMatch(/timestamp|interval/i);
+	if (checkpoints) assertVideoBoundaryCoverage(declared, item);
 	return assertVideoGraphGate(declared, item);
 }
 

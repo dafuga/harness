@@ -1,6 +1,7 @@
 import { readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
+import { assertVideoGuideBoundaries } from './support/videoGuideBoundaries';
 import { enrollGuidanceVideo } from './support/enrollGuidanceVideo';
 import { runHarness } from './support/cli';
 import { measureWorkload } from './support/measureWorkload';
@@ -100,6 +101,7 @@ test('guide distinguishes named states and heuristic prop boundaries', async () 
 });
 
 test('guide counts verified shots per state and viewport and reaches DONE', async () => {
+	assertVideoGuideBoundaries();
 	const root = await project(['default', 'loading']);
 	const unit = widgetManifest();
 	unit.contract.inputs = [
