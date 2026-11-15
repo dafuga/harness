@@ -24,41 +24,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The function with its verdict and its end-to-end run: one at a branch tip, before and after at a commit. Relationships and tests by tab."
+				"description": "The whole markup this page renders: HarnessScreen with the title 'Function' and EntityBehaviorScreen as its content. The file declares no props and no data loading, so everything shown comes from those two components."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Function · Harness"
+				"description": "The title this page passes to HarnessScreen as its title prop: the constant 'Function' in this file. The file reads no route parameters, so the value does not change with the branch, the at segments or the entity; how HarnessScreen uses it is not shown here.",
+				"examples": ["Function"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-at-revision",
-				"type": "notice",
-				"description": "A function the shown revision does not hold is said, with the way back to the collection."
-			},
-			{
-				"name": "other-category",
-				"type": "redirect",
-				"description": "A unit that is not a function at this revision is led to the address of its own category."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
