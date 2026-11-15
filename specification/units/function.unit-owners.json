@@ -21,17 +21,36 @@
 				"name": "unitOwners.units",
 				"type": "OwnedSource[]",
 				"required": true,
-				"description": "Units with ids and source entries; a trailing slash means every path under that directory."
+				"description": "The units to index, each with the id the lookup returns and its source entries; the array is read once, when unitOwners is called. An entry ending in a slash owns every path that starts with it, any other entry owns only that exact path, and later changes to the array or to the units in it do not reach the returned lookup.",
+				"examples": [
+					[
+						{
+							"id": "function.unit-owners",
+							"source": [
+								"src/utils/development-tooling/unitOwners.ts",
+								"src/utils/development-tooling/unitOwners.types.ts",
+								"src/utils/unitOwners.ts"
+							]
+						}
+					],
+					[
+						{
+							"id": "function.unit-owners",
+							"source": ["src/utils/development-tooling/", "src/utils/unitOwners.ts"]
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitOwners",
 				"type": "(path: string)",
-				"description": "Lookup function returning sorted unique owner ids for a path, from exact file matches and directory prefixes. No owner is inferred from naming."
+				"description": "A lookup function: called with a repository path, it returns the sorted, unique ids of the units that own that path, from exact file entries and from directory entries ending in a slash that the path starts with. It returns an empty array when no entry matches, and no owner is inferred from a path's name."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "unitOwners",
@@ -40,18 +59,36 @@
 						"name": "unitOwners.units",
 						"type": "OwnedSource[]",
 						"required": true,
-						"description": "Units with ids and source entries; a trailing slash means every path under that directory."
+						"description": "The units to index, each with the id the lookup returns and its source entries; the array is read once, when unitOwners is called. An entry ending in a slash owns every path that starts with it, any other entry owns only that exact path, and later changes to the array or to the units in it do not reach the returned lookup.",
+						"examples": [
+							[
+								{
+									"id": "function.unit-owners",
+									"source": [
+										"src/utils/development-tooling/unitOwners.ts",
+										"src/utils/development-tooling/unitOwners.types.ts",
+										"src/utils/unitOwners.ts"
+									]
+								}
+							],
+							[
+								{
+									"id": "function.unit-owners",
+									"source": ["src/utils/development-tooling/", "src/utils/unitOwners.ts"]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitOwners",
 						"type": "(path: string)",
-						"description": "Lookup function returning sorted unique owner ids for a path, from exact file matches and directory prefixes. No owner is inferred from naming."
+						"description": "A lookup function: called with a repository path, it returns the sorted, unique ids of the units that own that path, from exact file entries and from directory entries ending in a slash that the path starts with. It returns an empty array when no entry matches, and no owner is inferred from a path's name."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
