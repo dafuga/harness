@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/workflows/development-tooling/guide-units/stateTests.ts"
-		],
-		"symbols": [
-			"stateTests"
-		]
+		"source": ["src/workflows/development-tooling/guide-units/stateTests.ts"],
+		"symbols": ["stateTests"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,12 +36,8 @@
 						"responsibilityOrigin": "declared",
 						"status": "active",
 						"owns": {
-							"source": [
-								"packages/reports/src/components/evidence-grid.tsx"
-							],
-							"symbols": [
-								"EvidenceGrid"
-							]
+							"source": ["packages/reports/src/components/evidence-grid.tsx"],
+							"symbols": ["EvidenceGrid"]
 						},
 						"contract": {
 							"origin": "declared",
@@ -70,9 +62,7 @@
 								}
 							]
 						},
-						"scenarios": [
-							"desktop-recorded-evidence"
-						],
+						"scenarios": ["desktop-recorded-evidence"],
 						"budgets": {
 							"size": "frozen",
 							"complexity": "frozen",
@@ -86,11 +76,13 @@
 				"type": "string",
 				"required": true,
 				"description": "The state name to attribute, compared by exact string equality with the unit-level name of each required scenario state and with the string literals in candidate test files. A scenario state id loses the unit's id prefix, with dots turned into dashes, and the bare prefix means 'default'; an id without that prefix is compared unchanged.",
-				"examples": [
-					"default",
-					"loading",
-					"without-subtitle"
-				]
+				"examples": ["default", "loading", "without-subtitle"]
+			},
+			{
+				"name": "stateTests.options",
+				"type": "{ headless?: boolean }",
+				"required": false,
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -102,11 +94,7 @@
 					[
 						{
 							"file": "packages/reports/tests/e2e/explorer-shell.spec.ts",
-							"viewports": [
-								"desktop",
-								"tablet",
-								"mobile"
-							]
+							"viewports": ["desktop", "tablet", "mobile"]
 						}
 					],
 					[
@@ -153,12 +141,8 @@
 								"responsibilityOrigin": "declared",
 								"status": "active",
 								"owns": {
-									"source": [
-										"packages/reports/src/components/evidence-grid.tsx"
-									],
-									"symbols": [
-										"EvidenceGrid"
-									]
+									"source": ["packages/reports/src/components/evidence-grid.tsx"],
+									"symbols": ["EvidenceGrid"]
 								},
 								"contract": {
 									"origin": "declared",
@@ -183,9 +167,7 @@
 										}
 									]
 								},
-								"scenarios": [
-									"desktop-recorded-evidence"
-								],
+								"scenarios": ["desktop-recorded-evidence"],
 								"budgets": {
 									"size": "frozen",
 									"complexity": "frozen",
@@ -199,11 +181,13 @@
 						"type": "string",
 						"required": true,
 						"description": "The state name to attribute, compared by exact string equality with the unit-level name of each required scenario state and with the string literals in candidate test files. A scenario state id loses the unit's id prefix, with dots turned into dashes, and the bare prefix means 'default'; an id without that prefix is compared unchanged.",
-						"examples": [
-							"default",
-							"loading",
-							"without-subtitle"
-						]
+						"examples": ["default", "loading", "without-subtitle"]
+					},
+					{
+						"name": "stateTests.options",
+						"type": "{ headless?: boolean }",
+						"required": false,
+						"default": {}
 					}
 				],
 				"outputs": [
@@ -215,11 +199,7 @@
 							[
 								{
 									"file": "packages/reports/tests/e2e/explorer-shell.spec.ts",
-									"viewports": [
-										"desktop",
-										"tablet",
-										"mobile"
-									]
+									"viewports": ["desktop", "tablet", "mobile"]
 								}
 							],
 							[

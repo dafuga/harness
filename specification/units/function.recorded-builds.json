@@ -13,11 +13,7 @@
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.types.ts"
 		],
-		"symbols": [
-			"recordedBuilds",
-			"recordedBuilds",
-			"RecordedBuild"
-		]
+		"symbols": ["recordedBuilds", "recordedBuilds", "RecordedBuild"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -53,6 +49,11 @@
 					],
 					[]
 				]
+			},
+			{
+				"name": "recordedBuilds.skipped",
+				"type": "string[]",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -115,12 +116,17 @@
 							],
 							[]
 						]
+					},
+					{
+						"name": "recordedBuilds.skipped",
+						"type": "string[]",
+						"required": false
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordedBuilds",
-						"type": "Pick<VerificationRecord, 'builds'>",
+						"type": "Pick<VerificationRecord, 'builds' | 'skippedBuilds'>",
 						"description": "Empty object when observations are undefined, otherwise builds containing only id, directory, buildId and files. An explicitly empty array remains builds: [].",
 						"examples": [
 							{},
