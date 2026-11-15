@@ -64,9 +64,14 @@
 				"name": "TaskWorktreeChangedError",
 				"type": "thrown",
 				"description": "Thrown when the task worktree has a different Git common directory from the configured root, or its HEAD no longer equals input.source."
+			},
+			{
+				"name": "Input or dependency failure",
+				"type": "propagated",
+				"description": "Any other thrown value or rejected promise propagates without conversion, including failures while reading or processing input, running Git commands, managing temporary-index files or resolving commit identity."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleTaskWorktreeAdapter.checkpoint",
@@ -103,9 +108,14 @@
 						"name": "TaskWorktreeChangedError",
 						"type": "thrown",
 						"description": "Thrown when the task worktree has a different Git common directory from the configured root, or its HEAD no longer equals input.source."
+					},
+					{
+						"name": "Input or dependency failure",
+						"type": "propagated",
+						"description": "Any other thrown value or rejected promise propagates without conversion, including failures while reading or processing input, running Git commands, managing temporary-index files or resolving commit identity."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
