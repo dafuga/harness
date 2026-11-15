@@ -42,101 +42,371 @@
 				"name": "branchCommits.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Index whose revision order is retained."
+				"description": "Index supplying branch membership and ordered revisions for filtering. Only revisions present in this index can appear in the result.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "0123456789abcdef0123456789abcdef01234567"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+								"subject": "Add ancestry selector",
+								"author": "Ada Lovelace",
+								"committedAt": "2026-11-14T10:00:00.000Z",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							},
+							{
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"parents": [],
+								"subject": "Add report explorer",
+								"author": "Ada Lovelace",
+								"committedAt": "2026-11-13T10:00:00.000Z",
+								"branches": [],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "branchCommits.branch",
 				"type": "string",
 				"required": true,
-				"description": "Branch name or the Retained commits pseudo-branch."
+				"description": "Branch selector matched exactly against revision branch names, or against the Retained commits pseudo-branch. An unknown name yields an empty array.",
+				"examples": ["main", "Retained commits"]
 			},
 			{
 				"name": "revisionLabel.item",
 				"type": "HarnessRevisionSummary",
 				"required": true,
-				"description": "Revision summary to label."
+				"description": "Revision summary whose commit, subject and coverage are displayed. Its coverage value is mapped to a readable phrase.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+						"subject": "Add ancestry selector",
+						"author": "Ada Lovelace",
+						"committedAt": "2026-11-14T10:00:00.000Z",
+						"branches": ["main"],
+						"retained": false,
+						"coverage": "verified",
+						"gaps": [],
+						"records": [],
+						"legacy": []
+					}
+				]
 			},
 			{
 				"name": "harnessAncestry.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Index with recorded parent links."
+				"description": "Index supplying the recorded parent links used for traversal. A parent absent from this index is included by name but cannot be traversed further.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "0123456789abcdef0123456789abcdef01234567"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+								"subject": "Add ancestry selector",
+								"author": "Ada Lovelace",
+								"committedAt": "2026-11-14T10:00:00.000Z",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							},
+							{
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"parents": [],
+								"subject": "Add report explorer",
+								"author": "Ada Lovelace",
+								"committedAt": "2026-11-13T10:00:00.000Z",
+								"branches": [],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "harnessAncestry.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit whose ancestors are requested."
+				"description": "Commit whose indexed parent list seeds traversal. An unindexed starting commit has no recorded parents to follow, and the string is not validated.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "branchNames.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Index whose usable branch names are requested."
+				"description": "Index supplying source branch names and revision membership. Branches with no indexed revision are omitted.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "0123456789abcdef0123456789abcdef01234567"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+								"subject": "Add ancestry selector",
+								"author": "Ada Lovelace",
+								"committedAt": "2026-11-14T10:00:00.000Z",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							},
+							{
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"parents": [],
+								"subject": "Add report explorer",
+								"author": "Ada Lovelace",
+								"committedAt": "2026-11-13T10:00:00.000Z",
+								"branches": [],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "defaultCommit.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Index holding possible initial revisions."
+				"description": "Index supplying candidate branch heads and revision order. A branch head is eligible only when it is also present among indexed revisions.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "0123456789abcdef0123456789abcdef01234567"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+								"subject": "Add ancestry selector",
+								"author": "Ada Lovelace",
+								"committedAt": "2026-11-14T10:00:00.000Z",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							},
+							{
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"parents": [],
+								"subject": "Add report explorer",
+								"author": "Ada Lovelace",
+								"committedAt": "2026-11-13T10:00:00.000Z",
+								"branches": [],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "defaultCommit.asked",
 				"type": "string",
 				"required": true,
-				"description": "Requested commit, honored only if stored."
+				"description": "Requested commit used only when its string exactly matches an indexed revision. Otherwise selection falls back to a known branch head or indexed revision.",
+				"examples": [
+					"fedcba9876543210fedcba9876543210fedcba98",
+					"0123456789abcdef0123456789abcdef01234567"
+				]
 			},
 			{
 				"name": "branchOf.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Index used to choose a branch for a commit."
+				"description": "Index used to find a commit's retention status and branch membership. An unknown commit has no direct membership and uses the first offered branch as fallback, if one exists.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "0123456789abcdef0123456789abcdef01234567"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+								"subject": "Add ancestry selector",
+								"author": "Ada Lovelace",
+								"committedAt": "2026-11-14T10:00:00.000Z",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							},
+							{
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"parents": [],
+								"subject": "Add report explorer",
+								"author": "Ada Lovelace",
+								"committedAt": "2026-11-13T10:00:00.000Z",
+								"branches": [],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "branchOf.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit to locate."
+				"description": "Commit matched exactly against indexed revisions. An unknown commit uses the first offered branch or an empty string.",
+				"examples": [
+					"89abcdef0123456789abcdef0123456789abcdef",
+					"0123456789abcdef0123456789abcdef01234567"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "retainedBranch",
 				"type": "unknown",
-				"description": "The Retained commits pseudo-branch label."
+				"description": "The literal pseudo-branch name used to select retained revisions. It is separate from source branch names in the index.",
+				"examples": ["Retained commits"]
 			},
 			{
 				"name": "harnessAncestry",
 				"type": "Set<string>",
-				"description": "Set reached through recorded parent links, normally excluding the starting commit; includes named parents even when their own details are not indexed."
+				"description": "The set of commit strings reached by following indexed parent links from the requested commit. An unindexed parent is included once but cannot be traversed further; the start is included only if a parent cycle reaches it."
 			},
 			{
 				"name": "branchNames",
 				"type": "string[]",
-				"description": "Source branches with indexed members, plus Retained commits when any retained revision exists."
+				"description": "Selectable source branch names, in index branch order, whose names occur on indexed revisions, followed by Retained commits when any revision is marked retained. Source branches with no indexed member are omitted.",
+				"examples": [
+					["main", "Retained commits"]
+				]
 			},
 			{
 				"name": "defaultCommit",
 				"type": "string",
-				"description": "Requested stored commit, else first stored branch head, else first indexed revision, else an empty string."
+				"description": "The requested commit when indexed, otherwise the first indexed branch head, then the first revision, then an empty string. Branch-head order and revision order determine the fallback.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "branchCommits",
 				"type": "HarnessRevisionSummary[]",
-				"description": "Revisions belonging to the branch, or retained revisions, in index order."
+				"description": "Indexed revisions whose branch list includes the requested source name, or whose retained flag is true for Retained commits. Results preserve index order, and an unknown name returns an empty array.",
+				"examples": [
+					[
+						{
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+							"subject": "Add ancestry selector",
+							"author": "Ada Lovelace",
+							"committedAt": "2026-11-14T10:00:00.000Z",
+							"branches": ["main"],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					]
+				]
 			},
 			{
 				"name": "branchOf",
 				"type": "string",
-				"description": "Retained commits for a retained revision, otherwise its first branch, first offered branch, or an empty string."
+				"description": "The selector value for a commit: Retained commits for a retained revision, otherwise its first source branch. An unknown or unassigned commit falls back to the first offered branch or an empty string.",
+				"examples": ["Retained commits", "main"]
 			},
 			{
 				"name": "revisionLabel",
 				"type": "string",
-				"description": "Short commit, subject and readable coverage status."
+				"description": "The seven-character commit prefix, subject and coverage phrase joined as hash subject · coverage. Coverage maps verified and failed directly, invalid to evidence unusable, and unverified to no evidence.",
+				"examples": ["0123456 Add ancestry selector · verified"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "branchCommits",
@@ -145,24 +415,86 @@
 						"name": "branchCommits.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Index whose revision order is retained."
+						"description": "Index supplying branch membership and ordered revisions for filtering. Only revisions present in this index can appear in the result.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "0123456789abcdef0123456789abcdef01234567"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+										"subject": "Add ancestry selector",
+										"author": "Ada Lovelace",
+										"committedAt": "2026-11-14T10:00:00.000Z",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									},
+									{
+										"commit": "89abcdef0123456789abcdef0123456789abcdef",
+										"parents": [],
+										"subject": "Add report explorer",
+										"author": "Ada Lovelace",
+										"committedAt": "2026-11-13T10:00:00.000Z",
+										"branches": [],
+										"retained": true,
+										"coverage": "unverified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "branchCommits.branch",
 						"type": "string",
 						"required": true,
-						"description": "Branch name or the Retained commits pseudo-branch."
+						"description": "Branch selector matched exactly against revision branch names, or against the Retained commits pseudo-branch. An unknown name yields an empty array.",
+						"examples": ["main", "Retained commits"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "branchCommits",
 						"type": "HarnessRevisionSummary[]",
-						"description": "Revisions belonging to the branch, or retained revisions, in index order."
+						"description": "Indexed revisions whose branch list includes the requested source name, or whose retained flag is true for Retained commits. Results preserve index order, and an unknown name returns an empty array.",
+						"examples": [
+							[
+								{
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+									"subject": "Add ancestry selector",
+									"author": "Ada Lovelace",
+									"committedAt": "2026-11-14T10:00:00.000Z",
+									"branches": ["main"],
+									"retained": false,
+									"coverage": "verified",
+									"gaps": [],
+									"records": [],
+									"legacy": []
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "revisionLabel",
@@ -171,18 +503,34 @@
 						"name": "revisionLabel.item",
 						"type": "HarnessRevisionSummary",
 						"required": true,
-						"description": "Revision summary to label."
+						"description": "Revision summary whose commit, subject and coverage are displayed. Its coverage value is mapped to a readable phrase.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+								"subject": "Add ancestry selector",
+								"author": "Ada Lovelace",
+								"committedAt": "2026-11-14T10:00:00.000Z",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "revisionLabel",
 						"type": "string",
-						"description": "Short commit, subject and readable coverage status."
+						"description": "The seven-character commit prefix, subject and coverage phrase joined as hash subject · coverage. Coverage maps verified and failed directly, invalid to evidence unusable, and unverified to no evidence.",
+						"examples": ["0123456 Add ancestry selector · verified"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "harnessAncestry",
@@ -191,24 +539,69 @@
 						"name": "harnessAncestry.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Index with recorded parent links."
+						"description": "Index supplying the recorded parent links used for traversal. A parent absent from this index is included by name but cannot be traversed further.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "0123456789abcdef0123456789abcdef01234567"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+										"subject": "Add ancestry selector",
+										"author": "Ada Lovelace",
+										"committedAt": "2026-11-14T10:00:00.000Z",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									},
+									{
+										"commit": "89abcdef0123456789abcdef0123456789abcdef",
+										"parents": [],
+										"subject": "Add report explorer",
+										"author": "Ada Lovelace",
+										"committedAt": "2026-11-13T10:00:00.000Z",
+										"branches": [],
+										"retained": true,
+										"coverage": "unverified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "harnessAncestry.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit whose ancestors are requested."
+						"description": "Commit whose indexed parent list seeds traversal. An unindexed starting commit has no recorded parents to follow, and the string is not validated.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessAncestry",
 						"type": "Set<string>",
-						"description": "Set reached through recorded parent links, normally excluding the starting commit; includes named parents even when their own details are not indexed."
+						"description": "The set of commit strings reached by following indexed parent links from the requested commit. An unindexed parent is included once but cannot be traversed further; the start is included only if a parent cycle reaches it."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "branchNames",
@@ -217,18 +610,65 @@
 						"name": "branchNames.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Index whose usable branch names are requested."
+						"description": "Index supplying source branch names and revision membership. Branches with no indexed revision are omitted.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "0123456789abcdef0123456789abcdef01234567"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+										"subject": "Add ancestry selector",
+										"author": "Ada Lovelace",
+										"committedAt": "2026-11-14T10:00:00.000Z",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									},
+									{
+										"commit": "89abcdef0123456789abcdef0123456789abcdef",
+										"parents": [],
+										"subject": "Add report explorer",
+										"author": "Ada Lovelace",
+										"committedAt": "2026-11-13T10:00:00.000Z",
+										"branches": [],
+										"retained": true,
+										"coverage": "unverified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "branchNames",
 						"type": "string[]",
-						"description": "Source branches with indexed members, plus Retained commits when any retained revision exists."
+						"description": "Selectable source branch names, in index branch order, whose names occur on indexed revisions, followed by Retained commits when any revision is marked retained. Source branches with no indexed member are omitted.",
+						"examples": [
+							["main", "Retained commits"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "defaultCommit",
@@ -237,24 +677,73 @@
 						"name": "defaultCommit.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Index holding possible initial revisions."
+						"description": "Index supplying candidate branch heads and revision order. A branch head is eligible only when it is also present among indexed revisions.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "0123456789abcdef0123456789abcdef01234567"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+										"subject": "Add ancestry selector",
+										"author": "Ada Lovelace",
+										"committedAt": "2026-11-14T10:00:00.000Z",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									},
+									{
+										"commit": "89abcdef0123456789abcdef0123456789abcdef",
+										"parents": [],
+										"subject": "Add report explorer",
+										"author": "Ada Lovelace",
+										"committedAt": "2026-11-13T10:00:00.000Z",
+										"branches": [],
+										"retained": true,
+										"coverage": "unverified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "defaultCommit.asked",
 						"type": "string",
 						"required": true,
-						"description": "Requested commit, honored only if stored."
+						"description": "Requested commit used only when its string exactly matches an indexed revision. Otherwise selection falls back to a known branch head or indexed revision.",
+						"examples": [
+							"fedcba9876543210fedcba9876543210fedcba98",
+							"0123456789abcdef0123456789abcdef01234567"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "defaultCommit",
 						"type": "string",
-						"description": "Requested stored commit, else first stored branch head, else first indexed revision, else an empty string."
+						"description": "The requested commit when indexed, otherwise the first indexed branch head, then the first revision, then an empty string. Branch-head order and revision order determine the fallback.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "branchOf",
@@ -263,24 +752,73 @@
 						"name": "branchOf.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Index used to choose a branch for a commit."
+						"description": "Index used to find a commit's retention status and branch membership. An unknown commit has no direct membership and uses the first offered branch as fallback, if one exists.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "0123456789abcdef0123456789abcdef01234567"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+										"subject": "Add ancestry selector",
+										"author": "Ada Lovelace",
+										"committedAt": "2026-11-14T10:00:00.000Z",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									},
+									{
+										"commit": "89abcdef0123456789abcdef0123456789abcdef",
+										"parents": [],
+										"subject": "Add report explorer",
+										"author": "Ada Lovelace",
+										"committedAt": "2026-11-13T10:00:00.000Z",
+										"branches": [],
+										"retained": true,
+										"coverage": "unverified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "branchOf.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit to locate."
+						"description": "Commit matched exactly against indexed revisions. An unknown commit uses the first offered branch or an empty string.",
+						"examples": [
+							"89abcdef0123456789abcdef0123456789abcdef",
+							"0123456789abcdef0123456789abcdef01234567"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "branchOf",
 						"type": "string",
-						"description": "Retained commits for a retained revision, otherwise its first branch, first offered branch, or an empty string."
+						"description": "The selector value for a commit: Retained commits for a retained revision, otherwise its first source branch. An unknown or unassigned commit falls back to the first offered branch or an empty string.",
+						"examples": ["Retained commits", "main"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
