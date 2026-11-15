@@ -35,53 +35,242 @@
 				"name": "GameCheckpointPane.context",
 				"type": "{\n\t\t\tcheckpoint: Checkpoint;\n\t\t\tview: GameView;\n\t\t\tdocument: GameDocument;\n\t\t\tprojectId?: string | null;\n\t\t\trevision?: string;\n\t\t\tcommit?: string;\n\t\t\tbridge?: DesktopBridge;\n\t\t}",
 				"required": true,
-				"description": "Selected checkpoint, view, document, project identity, revision and host bridge used by both editors."
+				"description": "The checkpoint being edited, with its view and document, plus the projectId, revision, commit and bridge that the image review uses to read and generate images. Only the checkpoint feeds the text fields and rules; a missing or null projectId, a missing revision or bridge, or a set commit turns image generation off.",
+				"examples": [
+					{
+						"checkpoint": {
+							"id": "checkpoint-3",
+							"title": "Collect the key",
+							"description": "When the player reaches the key, add it to inventory.",
+							"x": 0,
+							"y": 80,
+							"requires": [],
+							"conditions": [
+								{
+									"field": "x",
+									"op": "gte",
+									"value": 2
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "hasKey",
+									"value": true
+								}
+							]
+						},
+						"view": {
+							"id": "view-m3k9x2qa",
+							"title": "Courtyard",
+							"dimension": "2d",
+							"style": "Lush illustrated garden, warm stone, soft sunlight.",
+							"checkpoints": [
+								{
+									"id": "checkpoint-3",
+									"title": "Collect the key",
+									"description": "When the player reaches the key, add it to inventory.",
+									"x": 0,
+									"y": 80,
+									"requires": [],
+									"conditions": [
+										{
+											"field": "x",
+											"op": "gte",
+											"value": 2
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "hasKey",
+											"value": true
+										}
+									]
+								}
+							]
+						},
+						"document": {
+							"version": 1,
+							"views": [
+								{
+									"id": "view-m3k9x2qa",
+									"title": "Courtyard",
+									"dimension": "2d",
+									"style": "Lush illustrated garden, warm stone, soft sunlight.",
+									"checkpoints": [
+										{
+											"id": "checkpoint-3",
+											"title": "Collect the key",
+											"description": "When the player reaches the key, add it to inventory.",
+											"x": 0,
+											"y": 80,
+											"requires": [],
+											"conditions": [
+												{
+													"field": "x",
+													"op": "gte",
+													"value": 2
+												}
+											],
+											"actions": [
+												{
+													"type": "set",
+													"target": "hasKey",
+													"value": true
+												}
+											]
+										}
+									]
+								}
+							],
+							"mechanics": []
+						},
+						"projectId": "local-c41e0a9f27b835d6e1f09a4c7b2d58e3f6a1c094b7e2d8153a6f0c9e4b71d2a6",
+						"revision": "3f9a1c7e5b2d8046a1e9c3f7b5d2084e6a9c1f3b7d5e2a8c0f4b6d9e1a3c5f72"
+					},
+					{
+						"checkpoint": {
+							"id": "checkpoint-3",
+							"title": "Find the key",
+							"description": "The player finds the key by the fountain.",
+							"x": 0,
+							"y": 80,
+							"requires": [],
+							"conditions": [
+								{
+									"field": "x",
+									"op": "gte",
+									"value": 2
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "hasKey",
+									"value": true
+								}
+							]
+						},
+						"view": {
+							"id": "view-m3k9x2qa",
+							"title": "Courtyard",
+							"dimension": "2d",
+							"style": "Lush illustrated garden, warm stone, soft sunlight.",
+							"checkpoints": [
+								{
+									"id": "checkpoint-3",
+									"title": "Find the key",
+									"description": "The player finds the key by the fountain.",
+									"x": 0,
+									"y": 80,
+									"requires": [],
+									"conditions": [
+										{
+											"field": "x",
+											"op": "gte",
+											"value": 2
+										}
+									],
+									"actions": [
+										{
+											"type": "set",
+											"target": "hasKey",
+											"value": true
+										}
+									]
+								}
+							]
+						},
+						"document": {
+							"version": 1,
+							"views": [
+								{
+									"id": "view-m3k9x2qa",
+									"title": "Courtyard",
+									"dimension": "2d",
+									"style": "Lush illustrated garden, warm stone, soft sunlight.",
+									"checkpoints": [
+										{
+											"id": "checkpoint-3",
+											"title": "Find the key",
+											"description": "The player finds the key by the fountain.",
+											"x": 0,
+											"y": 80,
+											"requires": [],
+											"conditions": [
+												{
+													"field": "x",
+													"op": "gte",
+													"value": 2
+												}
+											],
+											"actions": [
+												{
+													"type": "set",
+													"target": "hasKey",
+													"value": true
+												}
+											]
+										}
+									]
+								}
+							],
+							"mechanics": []
+						},
+						"projectId": "local-c41e0a9f27b835d6e1f09a4c7b2d58e3f6a1c094b7e2d8153a6f0c9e4b71d2a6",
+						"revision": "e2b7d4a19c6f38058d1b7e4a2c9f6d03b8e5a1c74f9d2b6e0a3c8d5f1b9e4a67",
+						"commit": "9d4f2b8a1c6e03f7d5a2b9e8c1f04d6a7b3e5c92"
+					}
+				]
 			},
 			{
 				"name": "GameCheckpointPane.adding",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Present the new-checkpoint title and focus its description."
+				"description": "When true, the title reads 'Add checkpoint' even if readonly is also true, and the description textarea gets focus on the next animation frame after the pane mounts unless an input, textarea, select or contenteditable element already has focus.",
+				"examples": [false, true]
 			},
 			{
 				"name": "GameCheckpointPane.readonly",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Disable editing and generation for historical or otherwise immutable views."
+				"description": "When true, the title and description textareas and the rules editor are disabled, image generation and image removal are off, and the Delete checkpoint button is hidden; the title then reads 'Checkpoint' unless adding is also true.",
+				"examples": [false, true]
 			},
 			{
 				"name": "GameCheckpointPane.change",
 				"type": "(node: Checkpoint) => void",
 				"required": true,
-				"description": "Publishes the complete edited Checkpoint to its owner. The callback returns void; no return value is consumed."
+				"description": "Receives the complete checkpoint after each edit: every keystroke in the title and description fields, each image change (Remove image reference, or Use this image, which is followed by close), and each rules edit, with the unchanged fields copied from the checkpoint in context. The pane does not use the return value."
 			},
 			{
 				"name": "GameCheckpointPane.close",
 				"type": "() => void",
 				"required": true,
-				"description": "Closes the checkpoint modal through its owner. The callback returns void; no return value is consumed."
+				"description": "Asks the owner to close the pane; it runs from the header close button, the Escape key, a click on the backdrop, the Done button and after Use this image publishes an image. The Done button passes its click event as the argument."
 			},
 			{
 				"name": "GameCheckpointPane.remove",
 				"type": "() => void",
 				"required": true,
-				"description": "Requests deletion of the selected checkpoint through its owner. The callback returns void; no return value is consumed."
+				"description": "Asks the owner to delete the selected checkpoint; the pane renders the Delete checkpoint button only when readonly is false, and it does not confirm the deletion itself. The button passes its click event as the argument."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameCheckpointPane",
 				"type": "markup",
-				"description": "Shared modal with content-sized title and description textareas, image review, optional advanced rules and owner actions. Long text wraps without an inner field scrollbar; the modal content remains scrollable at normal application viewport heights."
+				"description": "The checkpoint modal, titled 'Add checkpoint', 'Checkpoint' or 'Edit checkpoint', with the description and title fields, the image review, a collapsed 'Advanced rules' disclosure, and a footer holding 'Delete checkpoint' (not rendered when readonly) and 'Done'. Both text fields are sized to their content (field-sizing: content) instead of scrolling internally, and the modal content scrolls inside a dialog capped at 100dvh minus 24px."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback or content error",
 				"type": "propagated",
-				"description": "Errors from supplied change, close, remove callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"description": "Errors thrown by the change, close or remove callbacks, or raised while the modal content renders, are not caught by the pane, so they propagate outward unchanged; the pane has no try/catch or svelte:boundary of its own."
 			}
 		],
 		"errorStatus": "declared",
