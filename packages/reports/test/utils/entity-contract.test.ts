@@ -1,6 +1,10 @@
 import { expect, test } from 'vitest';
 import type { HarnessScenario, HarnessUnit } from '../../src/models/Harness.types';
-import { entityContract, humanize, requiredStates } from '../../src/utils/entityContract';
+import {
+	entityContract,
+	humanize,
+	requiredStates
+} from '../../src/utils/explorer-ui/entityContract';
 import { scenarioFor } from '../../src/utils/explorerState';
 import { ids, scenarios, units } from '../entityUnits';
 

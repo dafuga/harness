@@ -3,7 +3,7 @@
 <!-- @harness-uid u_lall66omcz -->
 <script lang="ts">
 	import type { EntityContract } from '../../models/development-tooling/Desktop.types';
-	import { humanize } from '$reports/utils/entityContract';
+	import { humanize } from '$reports/utils/explorer-ui/entityContract';
 	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	let { contract }: { contract: EntityContract } = $props();
 	const groups = [
