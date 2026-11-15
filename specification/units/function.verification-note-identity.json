@@ -21,29 +21,135 @@
 				"name": "verificationNoteIdentity.record",
 				"type": "VerificationRecord",
 				"required": true,
-				"description": "Verification record whose identity fields are authoritative for comparison."
+				"description": "A sealed verification record with identity fields compared against the note and supplied tree. Its id is generated as the SHA-256 hash of the other record fields, but this function checks field equality without recomputing the seal.",
+				"examples": [
+					{
+						"id": "b3c6a8459212d194c9e93d5d92b29812ff325312f384fff5fec506ab5325f3af",
+						"schemaVersion": 1,
+						"componentSchemaVersion": 2,
+						"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17",
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tree": "89abcdef0123456789abcdef0123456789abcdef",
+							"base": null
+						},
+						"profile": {
+							"id": "darwin-arm64-node",
+							"platform": "darwin",
+							"arch": "arm64",
+							"cpu": "Apple Silicon",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "node"
+						},
+						"startedAt": "2026-11-15T10:00:00.000Z",
+						"finishedAt": "2026-11-15T10:02:30.000Z",
+						"status": "passed",
+						"components": [
+							{
+								"unit": "function.verification-note-identity",
+								"change": "modified",
+								"target": "module",
+								"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+								"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+								"files": [
+									{
+										"path": "src/utils/verification-evidence/verificationNoteIdentity.ts",
+										"hash": "0123456789abcdef0123456789abcdef01234567"
+									},
+									{
+										"path": "src/utils/verification-evidence/verificationNoteIdentity.types.ts",
+										"hash": "89abcdef0123456789abcdef0123456789abcdef"
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"impact": {
+							"runtime": "module",
+							"expanded": false,
+							"changed": [
+								{
+									"path": "src/utils/verification-evidence/verificationNoteIdentity.ts",
+									"status": "modified",
+									"classification": "source"
+								}
+							],
+							"units": {
+								"direct": ["function.verification-note-identity"],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"uncertain": []
+						},
+						"tests": [],
+						"scenarios": [],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"missing": []
+						},
+						"gates": {
+							"tests": "passed"
+						},
+						"failures": []
+					}
+				]
 			},
 			{
 				"name": "verificationNoteIdentity.note",
 				"type": "Note",
 				"required": true,
-				"description": "Verification history-note entry to compare with the record."
+				"description": "The kind: verification history-note entry that indexes the record. The function checks its record id, source commit/tree/base, status, profile id and finish time; it does not inspect the evidence pointer.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"kind": "verification",
+						"record": "b3c6a8459212d194c9e93d5d92b29812ff325312f384fff5fec506ab5325f3af",
+						"status": "passed",
+						"profile": "darwin-arm64-node",
+						"finishedAt": "2026-11-15T10:02:30.000Z",
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tree": "89abcdef0123456789abcdef0123456789abcdef",
+							"base": null
+						},
+						"evidence": {
+							"commit": "fedcba9876543210fedcba9876543210fedcba98",
+							"path": "records/0123456789abcdef0123456789abcdef01234567/b3c6a8459212d194c9e93d5d92b29812ff325312f384fff5fec506ab5325f3af",
+							"manifest": "ea521afd98ee7ca2ab2b20ecfe5bbcb131633fb4eec46eacac9a94a15df5bd4b"
+						}
+					}
+				]
 			},
 			{
 				"name": "verificationNoteIdentity.tree",
 				"type": "string | null | undefined",
 				"required": true,
-				"description": "Actual commit tree hash, or null/undefined when unavailable."
+				"description": "Expected tree hash for record.source.tree. Comparison is strict, so null or undefined mismatches the schema-valid record tree.",
+				"examples": ["89abcdef0123456789abcdef0123456789abcdef", null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "verificationNoteIdentity",
 				"type": "string[]",
-				"description": "All mismatch messages in fixed order for record id, source commit/tree, outcome, note tree/base, profile and finish time; empty when they agree."
+				"description": "Mismatch messages in fixed order for record id, source commit, record tree against the supplied tree, status, note tree, base, profile id and finish time. An empty array means all eight comparisons matched; unrelated fields are not checked.",
+				"examples": [
+					[],
+					["record is not the one the note names"],
+					["record tree does not match the commit tree", "note profile differs from the record"]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "verificationNoteIdentity",
@@ -52,30 +158,135 @@
 						"name": "verificationNoteIdentity.record",
 						"type": "VerificationRecord",
 						"required": true,
-						"description": "Verification record whose identity fields are authoritative for comparison."
+						"description": "A sealed verification record with identity fields compared against the note and supplied tree. Its id is generated as the SHA-256 hash of the other record fields, but this function checks field equality without recomputing the seal.",
+						"examples": [
+							{
+								"id": "b3c6a8459212d194c9e93d5d92b29812ff325312f384fff5fec506ab5325f3af",
+								"schemaVersion": 1,
+								"componentSchemaVersion": 2,
+								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-17",
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tree": "89abcdef0123456789abcdef0123456789abcdef",
+									"base": null
+								},
+								"profile": {
+									"id": "darwin-arm64-node",
+									"platform": "darwin",
+									"arch": "arm64",
+									"cpu": "Apple Silicon",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "node"
+								},
+								"startedAt": "2026-11-15T10:00:00.000Z",
+								"finishedAt": "2026-11-15T10:02:30.000Z",
+								"status": "passed",
+								"components": [
+									{
+										"unit": "function.verification-note-identity",
+										"change": "modified",
+										"target": "module",
+										"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+										"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+										"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+										"files": [
+											{
+												"path": "src/utils/verification-evidence/verificationNoteIdentity.ts",
+												"hash": "0123456789abcdef0123456789abcdef01234567"
+											},
+											{
+												"path": "src/utils/verification-evidence/verificationNoteIdentity.types.ts",
+												"hash": "89abcdef0123456789abcdef0123456789abcdef"
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"impact": {
+									"runtime": "module",
+									"expanded": false,
+									"changed": [
+										{
+											"path": "src/utils/verification-evidence/verificationNoteIdentity.ts",
+											"status": "modified",
+											"classification": "source"
+										}
+									],
+									"units": {
+										"direct": ["function.verification-note-identity"],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [],
+								"scenarios": [],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"missing": []
+								},
+								"gates": {
+									"tests": "passed"
+								},
+								"failures": []
+							}
+						]
 					},
 					{
 						"name": "verificationNoteIdentity.note",
 						"type": "Note",
 						"required": true,
-						"description": "Verification history-note entry to compare with the record."
+						"description": "The kind: verification history-note entry that indexes the record. The function checks its record id, source commit/tree/base, status, profile id and finish time; it does not inspect the evidence pointer.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"kind": "verification",
+								"record": "b3c6a8459212d194c9e93d5d92b29812ff325312f384fff5fec506ab5325f3af",
+								"status": "passed",
+								"profile": "darwin-arm64-node",
+								"finishedAt": "2026-11-15T10:02:30.000Z",
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tree": "89abcdef0123456789abcdef0123456789abcdef",
+									"base": null
+								},
+								"evidence": {
+									"commit": "fedcba9876543210fedcba9876543210fedcba98",
+									"path": "records/0123456789abcdef0123456789abcdef01234567/b3c6a8459212d194c9e93d5d92b29812ff325312f384fff5fec506ab5325f3af",
+									"manifest": "ea521afd98ee7ca2ab2b20ecfe5bbcb131633fb4eec46eacac9a94a15df5bd4b"
+								}
+							}
+						]
 					},
 					{
 						"name": "verificationNoteIdentity.tree",
 						"type": "string | null | undefined",
 						"required": true,
-						"description": "Actual commit tree hash, or null/undefined when unavailable."
+						"description": "Expected tree hash for record.source.tree. Comparison is strict, so null or undefined mismatches the schema-valid record tree.",
+						"examples": ["89abcdef0123456789abcdef0123456789abcdef", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "verificationNoteIdentity",
 						"type": "string[]",
-						"description": "All mismatch messages in fixed order for record id, source commit/tree, outcome, note tree/base, profile and finish time; empty when they agree."
+						"description": "Mismatch messages in fixed order for record id, source commit, record tree against the supplied tree, status, note tree, base, profile id and finish time. An empty array means all eight comparisons matched; unrelated fields are not checked.",
+						"examples": [
+							[],
+							["record is not the one the note names"],
+							["record tree does not match the commit tree", "note profile differs from the record"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
