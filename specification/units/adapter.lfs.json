@@ -21,73 +21,150 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "LfsAdapter.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root this adapter is bound to: it is passed to GitAdapter, and a relative `--git-common-dir` result is joined onto it. The constructor does not check that the path is a repository.",
+				"examples": ["/home/dev/projects/example-app", "/srv/repos/billing-service"]
 			},
 			{
 				"name": "LfsAdapter.path.oid",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The object id, which is the sha256 hex digest that store computes for an object's bytes. path uses the first two characters and the next two characters as directory names and the whole id as the file name, and it does not check the format.",
+				"examples": [
+					"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+					"2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
+				]
 			},
 			{
 				"name": "LfsAdapter.read.oid",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The object id to read, in the same form path takes: the sha256 hex digest of the object's bytes. Any failure to read the file makes read return undefined, so a missing object does not reject, and the id's format is not checked.",
+				"examples": [
+					"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+					"2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
+				]
 			},
 			{
 				"name": "LfsAdapter.store.bytes",
 				"type": "Buffer",
-				"required": true
+				"required": true,
+				"description": "The bytes to store: store hashes them whole with sha256 and writes the same bytes unchanged under that hash. The whole buffer is held in memory, and nothing is written when an object with that hash is already stored."
 			},
 			{
 				"name": "LfsAdapter.push.remote",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The remote that `git lfs push --all` uploads to, passed through unchanged; this method does not check it.",
+				"examples": ["origin", "upstream"]
 			},
 			{
 				"name": "LfsAdapter.push.ref",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The ref argument of `git lfs push --all`: every object reachable from it is uploaded, and the value is passed through unchanged without a check.",
+				"examples": ["main", "refs/heads/feature/lfs-assets"]
 			},
 			{
 				"name": "LfsAdapter.fetch.remote",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The remote that `git lfs fetch` downloads from, passed through unchanged; this method does not check it.",
+				"examples": ["origin", "upstream"]
 			},
 			{
 				"name": "LfsAdapter.fetch.ref",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The ref argument of `git lfs fetch`, which the method passes through unchanged; the method's comment says it downloads the ref's objects that are not stored locally. This method does not check the value.",
+				"examples": ["main", "refs/heads/feature/lfs-assets"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "LfsAdapter.path",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "The location where the object with the given id is, or would be, stored: `lfs/objects` inside the Git common directory, then the two id-derived directories, then the id as the file name. The file is not checked for existence, and the common directory lookup is done once and cached, including when it fails.",
+				"examples": [
+					"/home/dev/projects/example-app/.git/lfs/objects/9f/86/9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+					"/home/dev/projects/example-app/.git/lfs/objects/2c/26/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
+				]
 			},
 			{
 				"name": "LfsAdapter.read",
-				"type": "Promise<Buffer | undefined>"
+				"type": "Promise<Buffer | undefined>",
+				"description": "The object's original bytes as a Buffer, or undefined when the file cannot be read, which includes an object that is not stored locally. Any error from reading the file becomes undefined, but a failure to look up the storage path still rejects."
 			},
 			{
 				"name": "LfsAdapter.store",
-				"type": "Promise<LfsObject>"
+				"type": "Promise<LfsObject>",
+				"description": "The stored object's identity: `sha256` is the lowercase hex sha256 of the input bytes, and `bytes` is the input's byte length. It is returned whether this call wrote the object or found it already stored, and an existing object's contents are not compared with the input.",
+				"examples": [
+					{
+						"sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+						"bytes": 4
+					},
+					{
+						"sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+						"bytes": 5
+					}
+				]
 			},
 			{
 				"name": "LfsAdapter.push",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise resolves with no value once the `git lfs push --all` call has finished, and the method does not inspect what that call returned."
 			},
 			{
 				"name": "LfsAdapter.fetch",
-				"type": "Promise<string | undefined>"
+				"type": "Promise<string | undefined>",
+				"description": "`undefined` when the `git lfs fetch` result has code 0; otherwise the first stderr line that matches error, missing, or fail (case-insensitive), trimmed, or 'git lfs fetch failed' when no line matches.",
+				"examples": ["git lfs fetch failed", "error: failed to fetch some objects from 'origin'"]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "GitAdapter.constructor error",
+				"type": "thrown",
+				"description": "Any error that the GitAdapter constructor throws for root propagates out of `new LfsAdapter(root)`, because this constructor does not catch it."
+			},
+			{
+				"name": "GitAdapter.run error",
+				"type": "thrown",
+				"description": "Any rejection of `this.git.run` propagates: path awaits it for `git rev-parse --git-common-dir`, push awaits it for `git lfs push --all`, and neither method catches it. path keeps a failed lookup in `objects`, so later path calls, and the read and store calls that use path, reject with the same error."
+			},
+			{
+				"name": "mkdir error",
+				"type": "thrown",
+				"description": "The rejection of `mkdir(dirname(target), { recursive: true })`, which store awaits without a catch, so store rejects with that error."
+			},
+			{
+				"name": "writeFile error",
+				"type": "thrown",
+				"description": "The rejection of `writeFile(partial, bytes)`, which store awaits without a catch, so store rejects with that error."
+			},
+			{
+				"name": "rename error",
+				"type": "thrown",
+				"description": "The error from `rename(partial, target)`, which store rethrows with `throw error` only when the object still cannot be read after the failed rename; otherwise store returns normally."
+			},
+			{
+				"name": "rm error",
+				"type": "thrown",
+				"description": "A rejection of `rm(partial, { force: true })` inside the rename failure handler, which replaces the rename error because it rejects before `throw error` runs."
+			},
+			{
+				"name": "GitAdapter.exec error",
+				"type": "thrown",
+				"description": "Any rejection of `this.git.exec` propagates out of fetch, because fetch awaits `git lfs fetch` without a catch; fetch itself turns any result whose code is not 0 into a returned string."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "LfsAdapter.path",
@@ -95,17 +172,33 @@
 					{
 						"name": "LfsAdapter.path.oid",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The object id, which is the sha256 hex digest that store computes for an object's bytes. path uses the first two characters and the next two characters as directory names and the whole id as the file name, and it does not check the format.",
+						"examples": [
+							"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+							"2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LfsAdapter.path",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "The location where the object with the given id is, or would be, stored: `lfs/objects` inside the Git common directory, then the two id-derived directories, then the id as the file name. The file is not checked for existence, and the common directory lookup is done once and cached, including when it fails.",
+						"examples": [
+							"/home/dev/projects/example-app/.git/lfs/objects/9f/86/9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+							"/home/dev/projects/example-app/.git/lfs/objects/2c/26/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "GitAdapter.run error",
+						"type": "thrown",
+						"description": "Any rejection of `this.git.run` propagates: path awaits it for `git rev-parse --git-common-dir`, push awaits it for `git lfs push --all`, and neither method catches it. path keeps a failed lookup in `objects`, so later path calls, and the read and store calls that use path, reject with the same error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LfsAdapter.read",
@@ -113,17 +206,29 @@
 					{
 						"name": "LfsAdapter.read.oid",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The object id to read, in the same form path takes: the sha256 hex digest of the object's bytes. Any failure to read the file makes read return undefined, so a missing object does not reject, and the id's format is not checked.",
+						"examples": [
+							"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+							"2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LfsAdapter.read",
-						"type": "Promise<Buffer | undefined>"
+						"type": "Promise<Buffer | undefined>",
+						"description": "The object's original bytes as a Buffer, or undefined when the file cannot be read, which includes an object that is not stored locally. Any error from reading the file becomes undefined, but a failure to look up the storage path still rejects."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "GitAdapter.run error",
+						"type": "thrown",
+						"description": "Any rejection of `this.git.run` propagates: path awaits it for `git rev-parse --git-common-dir`, push awaits it for `git lfs push --all`, and neither method catches it. path keeps a failed lookup in `objects`, so later path calls, and the read and store calls that use path, reject with the same error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LfsAdapter.store",
@@ -131,17 +236,55 @@
 					{
 						"name": "LfsAdapter.store.bytes",
 						"type": "Buffer",
-						"required": true
+						"required": true,
+						"description": "The bytes to store: store hashes them whole with sha256 and writes the same bytes unchanged under that hash. The whole buffer is held in memory, and nothing is written when an object with that hash is already stored."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LfsAdapter.store",
-						"type": "Promise<LfsObject>"
+						"type": "Promise<LfsObject>",
+						"description": "The stored object's identity: `sha256` is the lowercase hex sha256 of the input bytes, and `bytes` is the input's byte length. It is returned whether this call wrote the object or found it already stored, and an existing object's contents are not compared with the input.",
+						"examples": [
+							{
+								"sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+								"bytes": 4
+							},
+							{
+								"sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+								"bytes": 5
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "GitAdapter.run error",
+						"type": "thrown",
+						"description": "Any rejection of `this.git.run` propagates: path awaits it for `git rev-parse --git-common-dir`, push awaits it for `git lfs push --all`, and neither method catches it. path keeps a failed lookup in `objects`, so later path calls, and the read and store calls that use path, reject with the same error."
+					},
+					{
+						"name": "mkdir error",
+						"type": "thrown",
+						"description": "The rejection of `mkdir(dirname(target), { recursive: true })`, which store awaits without a catch, so store rejects with that error."
+					},
+					{
+						"name": "writeFile error",
+						"type": "thrown",
+						"description": "The rejection of `writeFile(partial, bytes)`, which store awaits without a catch, so store rejects with that error."
+					},
+					{
+						"name": "rename error",
+						"type": "thrown",
+						"description": "The error from `rename(partial, target)`, which store rethrows with `throw error` only when the object still cannot be read after the failed rename; otherwise store returns normally."
+					},
+					{
+						"name": "rm error",
+						"type": "thrown",
+						"description": "A rejection of `rm(partial, { force: true })` inside the rename failure handler, which replaces the rename error because it rejects before `throw error` runs."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LfsAdapter.push",
@@ -149,22 +292,33 @@
 					{
 						"name": "LfsAdapter.push.remote",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The remote that `git lfs push --all` uploads to, passed through unchanged; this method does not check it.",
+						"examples": ["origin", "upstream"]
 					},
 					{
 						"name": "LfsAdapter.push.ref",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The ref argument of `git lfs push --all`: every object reachable from it is uploaded, and the value is passed through unchanged without a check.",
+						"examples": ["main", "refs/heads/feature/lfs-assets"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LfsAdapter.push",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise resolves with no value once the `git lfs push --all` call has finished, and the method does not inspect what that call returned."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "GitAdapter.run error",
+						"type": "thrown",
+						"description": "Any rejection of `this.git.run` propagates: path awaits it for `git rev-parse --git-common-dir`, push awaits it for `git lfs push --all`, and neither method catches it. path keeps a failed lookup in `objects`, so later path calls, and the read and store calls that use path, reject with the same error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LfsAdapter.fetch",
@@ -172,22 +326,37 @@
 					{
 						"name": "LfsAdapter.fetch.remote",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The remote that `git lfs fetch` downloads from, passed through unchanged; this method does not check it.",
+						"examples": ["origin", "upstream"]
 					},
 					{
 						"name": "LfsAdapter.fetch.ref",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The ref argument of `git lfs fetch`, which the method passes through unchanged; the method's comment says it downloads the ref's objects that are not stored locally. This method does not check the value.",
+						"examples": ["main", "refs/heads/feature/lfs-assets"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LfsAdapter.fetch",
-						"type": "Promise<string | undefined>"
+						"type": "Promise<string | undefined>",
+						"description": "`undefined` when the `git lfs fetch` result has code 0; otherwise the first stderr line that matches error, missing, or fail (case-insensitive), trimmed, or 'git lfs fetch failed' when no line matches.",
+						"examples": [
+							"git lfs fetch failed",
+							"error: failed to fetch some objects from 'origin'"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "GitAdapter.exec error",
+						"type": "thrown",
+						"description": "Any rejection of `this.git.exec` propagates out of fetch, because fetch awaits `git lfs fetch` without a catch; fetch itself turns any result whose code is not 0 into a returned string."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -197,17 +366,26 @@
 					{
 						"name": "LfsAdapter.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root this adapter is bound to: it is passed to GitAdapter, and a relative `--git-common-dir` result is joined onto it. The constructor does not check that the path is a repository.",
+						"examples": ["/home/dev/projects/example-app", "/srv/repos/billing-service"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LfsAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new LfsAdapter instance that `new LfsAdapter(root)` evaluates to; the constructor body has no return value of its own. The git common directory is not looked up here, only when path is first called."
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "GitAdapter.constructor error",
+						"type": "thrown",
+						"description": "Any error that the GitAdapter constructor throws for root propagates out of `new LfsAdapter(root)`, because this constructor does not catch it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
