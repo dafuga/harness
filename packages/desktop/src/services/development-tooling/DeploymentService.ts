@@ -8,7 +8,7 @@ import type {
 	DeploymentPlugin,
 	DeploymentQuery
 } from '../../models/development-tooling/Deployment.types';
-import type { ProjectContext } from '../../models/ProjectContext.types';
+import type { ProjectContext } from '../../models/projects-sessions/ProjectContext.types';
 import type { ProjectSessionService } from '../ProjectSessionService';
 import { deploymentCurrent } from '../../utils/projects-sessions/deploymentProof';
 import { deploymentStatus } from '../../utils/projects-sessions/deploymentState';

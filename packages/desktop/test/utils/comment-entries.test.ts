@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { commentEntries } from '../../../hub/src/utils/browser-bridge/commentEntries';
 import { pendingEntries, threadInfo } from '../../src/components/thread-panel/commentEntries';
 import type { CommittedThread } from '../../../collaboration/src/models/planning-collaboration/Collaboration.types';
-import type { HumanCommentResult } from '../../src/models/ProjectContext.types';
+import type { HumanCommentResult } from '../../src/models/projects-sessions/ProjectContext.types';
 import type { ThreadInfo } from '../../src/models/development-tooling/Desktop.types';
 
 const anchor = {

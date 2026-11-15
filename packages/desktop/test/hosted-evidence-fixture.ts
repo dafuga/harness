@@ -9,7 +9,7 @@ import type {
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
 } from '../src/models/verification-evidence/DesktopEvidence.types';
-import type { CacheStatus } from '../src/models/ProjectContext.types';
+import type { CacheStatus } from '../src/models/projects-sessions/ProjectContext.types';
 import { ProjectionCacheService } from '../src/services/projection-cache-service/ProjectionCacheService';
 import { recordedAnswer } from '../src/utils/recorded-answer/recordedAnswer';
 import { head, home, parent, sampleDetail, sampleScope } from './recorded-sample';

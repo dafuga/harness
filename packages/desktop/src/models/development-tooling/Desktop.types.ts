@@ -1,7 +1,7 @@
 // @harness-uid u_4egzpjwwgu
-import type { ProjectIdentity } from '../ProjectContext.types';
-import type { ProjectCapabilities } from '../ProjectContext.types';
-import type { CacheProvenance } from '../ProjectContext.types';
+import type { ProjectIdentity } from '../projects-sessions/ProjectContext.types';
+import type { ProjectCapabilities } from '../projects-sessions/ProjectContext.types';
+import type { CacheProvenance } from '../projects-sessions/ProjectContext.types';
 import type { categories } from './DesktopValues';
 import type { CatalogEntity } from './DesktopEntity.types';
 export type Category = (typeof categories)[number];

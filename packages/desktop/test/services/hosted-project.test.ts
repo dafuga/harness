@@ -1,7 +1,7 @@
 import { test, expect, vi } from 'vitest';
 import { HostedProjectService } from '../../src/services/HostedProjectService';
 import { ProjectSessionService } from '../../src/services/ProjectSessionService';
-import type { RemoteProjectPort } from '../../src/models/ProjectContext.types';
+import type { RemoteProjectPort } from '../../src/models/projects-sessions/ProjectContext.types';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 test('selected shared context never falls through to local executors and stale context cannot cross projects', async () => {
 	const localRun = vi.fn(),

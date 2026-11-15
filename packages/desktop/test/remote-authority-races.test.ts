@@ -3,7 +3,7 @@ import { createRemotePhoneStore } from '../src/lib/stores/networking-security/re
 import { createRemoteHostStore } from '../src/lib/stores/networking-security/remoteHost.svelte';
 import { createWorkspaceStore } from '../src/lib/stores/projects-sessions/workspace.svelte';
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
-import type { DesktopProject } from '../src/models/ProjectContext.types';
+import type { DesktopProject } from '../src/models/projects-sessions/ProjectContext.types';
 import type {
 	RemoteHostStatus,
 	RemoteMobileStatus

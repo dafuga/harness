@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import type { CacheStatus } from '../src/models/ProjectContext.types';
+import type { CacheStatus } from '../src/models/projects-sessions/ProjectContext.types';
 import { artifactLimit } from '../src/utils/reports-media/artifactMedia';
 import {
 	asked,

@@ -7,7 +7,7 @@ import type {
 	EntityDetail,
 	ProjectSnapshot
 } from '../../src/models/development-tooling/Desktop.types';
-import type { CacheStatus } from '../../src/models/ProjectContext.types';
+import type { CacheStatus } from '../../src/models/projects-sessions/ProjectContext.types';
 
 const tip = 'a'.repeat(40);
 const saved = '2026-10-12T08:00:00.000Z';

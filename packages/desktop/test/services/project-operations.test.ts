@@ -3,7 +3,7 @@ import { fixture, git } from '../project-fixture';
 import { desktopBridge } from '../../src/utils/desktopBridge';
 import type { ProviderDiscoveryService } from '../../src/services/provider-discovery-service/ProviderDiscoveryService';
 import type { DesktopRunService } from '../../src/services/agents-providers/desktop-run-service/DesktopRunService';
-import type { HumanCommentDraft } from '../../src/models/ProjectContext.types';
+import type { HumanCommentDraft } from '../../src/models/projects-sessions/ProjectContext.types';
 function bridgeFor(session: Awaited<ReturnType<typeof fixture>>['session']) {
 	const start = vi.fn(),
 		cancel = vi.fn();

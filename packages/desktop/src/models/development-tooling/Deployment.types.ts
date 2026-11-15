@@ -1,5 +1,5 @@
 // @harness-uid u_mdfd7rgejp
-import type { ProjectContext } from '../ProjectContext.types';
+import type { ProjectContext } from '../projects-sessions/ProjectContext.types';
 import type { deploymentEnvironments, deploymentSteps } from './DeploymentValues';
 
 export type DeploymentEnvironment = (typeof deploymentEnvironments)[number];

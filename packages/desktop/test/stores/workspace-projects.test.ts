@@ -5,7 +5,7 @@ import type {
 	EntityDetail,
 	ProjectSnapshot
 } from '../../src/models/development-tooling/Desktop.types';
-import type { ProjectCapabilities } from '../../src/models/ProjectContext.types';
+import type { ProjectCapabilities } from '../../src/models/projects-sessions/ProjectContext.types';
 
 const tip = 'a'.repeat(40);
 const open: ProjectCapabilities = {
