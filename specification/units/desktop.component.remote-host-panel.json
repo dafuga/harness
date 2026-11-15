@@ -33,24 +33,26 @@
 				"name": "RemoteHostPanel.store",
 				"type": "RemoteHost",
 				"required": true,
-				"description": "Host store with status, busy/errors and access/pairing operations. Missing status renders nothing; unsupported or disabled status shows its explanation."
+				"description": "The RemoteHost instance supplies the status, busy flag, error text, and actions used by this panel. If status is absent the component renders nothing; otherwise status determines which controls and explanations appear."
 			},
 			{
 				"name": "RemoteHostPanel.compact",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional flag, false by default. True initially shows only summary and Manage; opening reveals controls in a sheet. False displays controls directly."
+				"description": "Controls whether the panel is compact, and defaults to false. When true it initially shows the summary and Manage button, revealing its body only while open.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteHostPanel",
 				"type": "markup",
-				"description": "Access panel with enable/disable actions, status, an unspent pairing code, pending requests and approved devices. An offer already represented by a request is not shown as scannable. Pair a phone appears without a scannable offer and requires online/not busy. Store errors appear only inside the expanded body."
+				"description": "Renders no markup until the store has a status; then shows phone-access summary or controls based on compact, support, enabled, pairing, request, and device state. In compact mode the body and store error are visible only while open, and an offer already represented by a request is not shown as scannable."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
