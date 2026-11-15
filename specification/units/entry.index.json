@@ -168,7 +168,8 @@
 			"PermissionsCommand",
 			"BoundedCommandAdapter",
 			"staleBuild",
-			"scenarioHealth"
+			"scenarioHealth",
+			"ContractsCommand"
 		]
 	},
 	"contract": {
@@ -263,6 +264,11 @@
 		},
 		{
 			"unit": "command.codex-picker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts",
 			"via": "reexport",
 			"origin": "derived"
 		},
