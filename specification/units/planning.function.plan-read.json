@@ -18,52 +18,511 @@
 				"name": "approvalMatches.record",
 				"type": "ApprovalRecord",
 				"required": true,
-				"description": "Approval record whose version, contract, notes and image bindings are compared."
+				"description": "The approval record to test: planRead passes each stored approval and approve passes the record it is about to write. Only version, contractHash, notesSha256, option and images decide the result; id, unitId, reviewer, approvedAt, commit and current are not compared.",
+				"examples": [
+					{
+						"id": "5c2e8a41-93bd-4f07-b6a2-1e7d0c4f9a38",
+						"unitId": "reports.component.evidence-grid",
+						"version": "v001",
+						"images": [
+							{
+								"file": "default-desktop.png",
+								"sha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28"
+							},
+							{
+								"file": "default-mobile.png",
+								"sha256": "6a0f3d8e1c9b4e72d5e8a03fb7c2d61a93f0e4b8e1d7a2c50b6f9d3e4c8a1e7f"
+							}
+						],
+						"notesSha256": null,
+						"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+						"reviewer": "Owen Park",
+						"approvedAt": "2026-11-02T11:27:55.618Z",
+						"commit": "5e0b8c4da2f7916e3d6c0b8af1e92c750a4d8e3b",
+						"current": true
+					},
+					{
+						"id": "e83f1c06-2a7d-4b95-8d30-c4f6a2e91b7d",
+						"unitId": "reports.component.evidence-grid",
+						"version": "v002",
+						"option": "o2",
+						"images": [
+							{
+								"file": "o2-default-desktop.png",
+								"sha256": "f4b07e2c9d1a3c856e0f7b49a2d5c1e87b93f0d6c4e1a25b0d8f6c9e31b7a4f2"
+							}
+						],
+						"notesSha256": null,
+						"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+						"reviewer": "Owen Park",
+						"approvedAt": "2026-11-12T09:48:10.227Z",
+						"commit": "c2a9e6d01f4b83e7a95d2c60b1f8e4d3a7c9b052",
+						"current": true
+					}
+				]
 			},
 			{
 				"name": "approvalMatches.latest",
 				"type": "DesignVersion | undefined",
 				"required": true,
-				"description": "Latest design version, or undefined."
+				"description": "The latest design version of the plan, or undefined when the plan has none, which makes the result false. A record matches it only on version, contractHash, notes hash and the images of the option the record names, or all images when the version has no options and the record names none.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v001",
+						"createdAt": "2026-10-30T15:03:18.742Z",
+						"generator": {
+							"provider": "claude",
+							"model": "claude-opus-5-5"
+						},
+						"prompt": {
+							"file": "prompt.md",
+							"sha256": "5e7b2d9ac1f48a063d9e7b52f0a6c813b4e2d7f108c5a9e36f1d2b74e9a0c5d8"
+						},
+						"notes": null,
+						"baseRevision": "3f9c1e7a0b2d4c6e8f1a3b5c7d9e0f1a2b3c4d5e",
+						"images": [
+							{
+								"file": "default-desktop.png",
+								"sha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 218734,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							},
+							{
+								"file": "default-mobile.png",
+								"sha256": "6a0f3d8e1c9b4e72d5e8a03fb7c2d61a93f0e4b8e1d7a2c50b6f9d3e4c8a1e7f",
+								"state": "default",
+								"viewport": "mobile",
+								"bytes": 96412,
+								"width": 390,
+								"height": 844,
+								"mediaType": "image/png",
+								"content": "present"
+							}
+						],
+						"contract": {
+							"responsibility": "Lists evidence rows with status, owner and source, sortable by any column.",
+							"inputs": [
+								{
+									"name": "rows",
+									"type": "EvidenceRow[]"
+								},
+								{
+									"name": "sortBy",
+									"type": "EvidenceColumn"
+								}
+							],
+							"outputs": [
+								{
+									"name": "selectedRow",
+									"type": "EvidenceRow | null"
+								}
+							],
+							"errors": ["unknown-column"],
+							"states": ["default"],
+							"viewports": ["desktop", "mobile"]
+						},
+						"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+						"revises": null,
+						"commit": "a61d7e2b9c4f0837d5e1b6a04c8f2d19e7a3b05c"
+					},
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v002",
+						"createdAt": "2026-11-09T13:55:41.067Z",
+						"generator": {
+							"provider": "claude",
+							"model": "claude-opus-5-5"
+						},
+						"prompt": {
+							"file": "prompt.md",
+							"sha256": "ab41e6d03f8c2a97d0e5b13f7c94a6e20f3d8b51e6a9c274b13f0d8e5a7c9e21"
+						},
+						"notes": null,
+						"baseRevision": "5e0b8c4da2f7916e3d6c0b8af1e92c750a4d8e3b",
+						"images": [
+							{
+								"file": "o1-default-desktop.png",
+								"sha256": "9a3c6f01d7e2b84c5f1a9d30e6c0b7a218d4f9e52b7c0a6dc9e3f152a8d6b0e4",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 231906,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							},
+							{
+								"file": "o2-default-desktop.png",
+								"sha256": "f4b07e2c9d1a3c856e0f7b49a2d5c1e87b93f0d6c4e1a25b0d8f6c9e31b7a4f2",
+								"state": "default",
+								"viewport": "desktop",
+								"bytes": 226118,
+								"width": 1440,
+								"height": 900,
+								"mediaType": "image/png",
+								"content": "present"
+							}
+						],
+						"contract": {
+							"responsibility": "Lists evidence rows with status, owner and source, sortable by any column.",
+							"inputs": [
+								{
+									"name": "rows",
+									"type": "EvidenceRow[]"
+								},
+								{
+									"name": "sortBy",
+									"type": "EvidenceColumn"
+								}
+							],
+							"outputs": [
+								{
+									"name": "selectedRow",
+									"type": "EvidenceRow | null"
+								}
+							],
+							"errors": ["unknown-column"],
+							"states": ["default"],
+							"viewports": ["desktop", "mobile"]
+						},
+						"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+						"revises": {
+							"version": "v001",
+							"file": "default-desktop.png",
+							"imageSha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28",
+							"region": null,
+							"threadId": null
+						},
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Dense rows with compact type and inline status chips",
+								"prompt": {
+									"file": "o1-prompt.md",
+									"sha256": "3e6a0c9fd18b4e27a5f09c3d6b1e8a74c0d2f9b64e7a1d389f5c2b0ed6a3e811"
+								},
+								"revisedPrompt": null,
+								"generator": {
+									"provider": "claude",
+									"model": "claude-opus-5-5"
+								},
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "9a3c6f01d7e2b84c5f1a9d30e6c0b7a218d4f9e52b7c0a6dc9e3f152a8d6b0e4"
+									}
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "Rows grouped by source, each group with a collapsible header",
+								"prompt": {
+									"file": "o2-prompt.md",
+									"sha256": "e2d9b57a0c3f8e147b6a2d90f4c1e3a859d0b26ca7e4f18d3c0b9a652f8e7d1c"
+								},
+								"revisedPrompt": "Rows grouped by source with a collapsible header per group, shown at 1440 by 900",
+								"generator": {
+									"provider": "claude",
+									"model": "claude-opus-5-5"
+								},
+								"images": [
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "f4b07e2c9d1a3c856e0f7b49a2d5c1e87b93f0d6c4e1a25b0d8f6c9e31b7a4f2"
+									}
+								]
+							}
+						],
+						"commit": "d8c2f5a16e9b0d37b4a1e8c62f5d7093c9e0b4a8"
+					}
+				]
 			},
 			{
 				"name": "planRead.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "The repository handle from planGit: every Git read goes through its run method, and Git LFS image objects are resolved under its root. Only those two members are used."
 			},
 			{
 				"name": "planRead.rev",
 				"type": "string",
 				"required": true,
-				"description": "Revision to read."
+				"description": "The revision whose commit supplies every plan, design, approval, thread and image read; planRead passes it unchanged to git ls-tree, git log and git show and does not resolve names itself, so a value Git cannot read rejects with git-failed. Callers in this package pass a full commit id from revision() or from a write result.",
+				"examples": [
+					"3f9c1e7a0b2d4c6e8f1a3b5c7d9e0f1a2b3c4d5e",
+					"d8c2f5a16e9b0d37b4a1e8c62f5d7093c9e0b4a8"
+				]
 			},
 			{
 				"name": "planRead.unitId",
 				"type": "string",
 				"required": true,
-				"description": "Unit ID whose plan is required."
+				"description": "The unit ID of the plan to read: a lowercase identity of at least two dot-separated segments, such as page.home, at most 200 characters; anything else is rejected before any Git read. planRead reads the one plan.json at rev whose unitId matches, and rejects with not-found when none exists or with artifact-tampered when two do.",
+				"examples": ["reports.component.evidence-grid", "page.home"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "approvalMatches",
 				"type": "boolean",
-				"description": "True when the approval exactly matches the latest version and selected option content; false when no matching version or option exists."
+				"description": "True when the record names the same version, contractHash and notesSha256 as latest, and its images, sorted by file and holding only file and sha256, equal the bindings of the option named by record.option (or of all images when latest has no options and record.option is absent). False otherwise, including when latest is undefined; planRead uses this result to set current.",
+				"examples": [true, false]
 			},
 			{
 				"name": "planRead",
 				"type": "Promise<PlanDetail>",
-				"description": "Plan detail with numerically ordered versions, approvals marked current, pinned-order threads, derived draft/review/approved lifecycle and counts; verified remains false."
+				"description": "The unit's PlanDetail as it stands at rev: versions in numeric order, every approval oldest first with current set, threads by pin, the derived lifecycle (draft, review or approved), latest contract and contractHash, approval (the newest current one, or null), versionCount, threadCount, and registered (whether specification/units/<unitId>.json exists at rev). verified is always false, because planning never verifies anything at runtime.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"category": "component",
+						"slug": "evidence-grid",
+						"title": "Evidence grid",
+						"goal": "Give reviewers one sortable table of the evidence rows of a report.",
+						"createdAt": "2026-10-28T09:12:44.310Z",
+						"createdBy": {
+							"kind": "person",
+							"name": "Maren Ito"
+						},
+						"baseRevision": "3f9c1e7a0b2d4c6e8f1a3b5c7d9e0f1a2b3c4d5e",
+						"path": "src/components/evidence-grid",
+						"commit": "07b9e4c2d1f6a85e9c3e0b7d4a8f2e16b5d0c93a",
+						"lifecycle": "draft",
+						"registered": true,
+						"verified": false,
+						"latestVersion": null,
+						"contract": {
+							"responsibility": "Lists evidence rows with status, owner and source, sortable by any column.",
+							"inputs": [
+								{
+									"name": "rows",
+									"type": "EvidenceRow[]"
+								}
+							],
+							"outputs": [
+								{
+									"name": "selectedRow",
+									"type": "EvidenceRow | null"
+								}
+							],
+							"errors": [],
+							"states": ["default"],
+							"viewports": ["desktop", "mobile"]
+						},
+						"contractHash": "8b4e1d6af29c0e5317a8d4b2c6e3f09da51b7c843d0f6e2a9e8c5b17d2a4f6c0",
+						"approval": null,
+						"versionCount": 0,
+						"threadCount": 1,
+						"versions": [],
+						"approvals": [],
+						"threads": [
+							{
+								"id": "a0d7c3f2-61e8-4b4a-9f15-2c8e6d0b3a97",
+								"unitId": "reports.component.evidence-grid",
+								"pin": 1,
+								"title": "Owner column on mobile",
+								"anchor": null,
+								"viewedRevision": "07b9e4c2d1f6a85e9c3e0b7d4a8f2e16b5d0c93a",
+								"createdAt": "2026-10-29T14:20:06.173Z",
+								"createdBy": {
+									"kind": "person",
+									"name": "Owen Park"
+								},
+								"commit": "b3e8f0a6c1d94e27f5b0a3c8d6e1f47b29c5a0d3",
+								"messages": [
+									{
+										"id": "7e4b9d12-c05f-4a83-b6e7-3f1d8a2c9e50",
+										"unitId": "reports.component.evidence-grid",
+										"threadId": "a0d7c3f2-61e8-4b4a-9f15-2c8e6d0b3a97",
+										"sequence": 1,
+										"previous": "0f7d2a9ce4b618532c0e9f7ab5d38e1698a2c4f06e1b7d3cd0f5a92e47c8b1e6",
+										"at": "2026-10-29T14:20:06.173Z",
+										"author": {
+											"kind": "person",
+											"name": "Owen Park"
+										},
+										"mode": "plan",
+										"agent": null,
+										"body": "Should the owner column stay visible on mobile, or only on desktop?",
+										"references": [],
+										"change": null
+									}
+								]
+							}
+						]
+					},
+					{
+						"unitId": "reports.component.evidence-grid",
+						"category": "component",
+						"slug": "evidence-grid",
+						"title": "Evidence grid",
+						"goal": "Give reviewers one sortable table of the evidence rows of a report.",
+						"createdAt": "2026-10-28T09:12:44.310Z",
+						"createdBy": {
+							"kind": "person",
+							"name": "Maren Ito"
+						},
+						"baseRevision": "3f9c1e7a0b2d4c6e8f1a3b5c7d9e0f1a2b3c4d5e",
+						"path": "src/components/evidence-grid",
+						"commit": "07b9e4c2d1f6a85e9c3e0b7d4a8f2e16b5d0c93a",
+						"lifecycle": "approved",
+						"registered": true,
+						"verified": false,
+						"latestVersion": "v001",
+						"contract": {
+							"responsibility": "Lists evidence rows with status, owner and source, sortable by any column.",
+							"inputs": [
+								{
+									"name": "rows",
+									"type": "EvidenceRow[]"
+								},
+								{
+									"name": "sortBy",
+									"type": "EvidenceColumn"
+								}
+							],
+							"outputs": [
+								{
+									"name": "selectedRow",
+									"type": "EvidenceRow | null"
+								}
+							],
+							"errors": ["unknown-column"],
+							"states": ["default"],
+							"viewports": ["desktop", "mobile"]
+						},
+						"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+						"approval": {
+							"id": "5c2e8a41-93bd-4f07-b6a2-1e7d0c4f9a38",
+							"unitId": "reports.component.evidence-grid",
+							"version": "v001",
+							"images": [
+								{
+									"file": "default-desktop.png",
+									"sha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28"
+								},
+								{
+									"file": "default-mobile.png",
+									"sha256": "6a0f3d8e1c9b4e72d5e8a03fb7c2d61a93f0e4b8e1d7a2c50b6f9d3e4c8a1e7f"
+								}
+							],
+							"notesSha256": null,
+							"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+							"reviewer": "Owen Park",
+							"approvedAt": "2026-11-02T11:27:55.618Z",
+							"commit": "5e0b8c4da2f7916e3d6c0b8af1e92c750a4d8e3b",
+							"current": true
+						},
+						"versionCount": 1,
+						"threadCount": 0,
+						"versions": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v001",
+								"createdAt": "2026-10-30T15:03:18.742Z",
+								"generator": {
+									"provider": "claude",
+									"model": "claude-opus-5-5"
+								},
+								"prompt": {
+									"file": "prompt.md",
+									"sha256": "5e7b2d9ac1f48a063d9e7b52f0a6c813b4e2d7f108c5a9e36f1d2b74e9a0c5d8"
+								},
+								"notes": null,
+								"baseRevision": "3f9c1e7a0b2d4c6e8f1a3b5c7d9e0f1a2b3c4d5e",
+								"images": [
+									{
+										"file": "default-desktop.png",
+										"sha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 218734,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									},
+									{
+										"file": "default-mobile.png",
+										"sha256": "6a0f3d8e1c9b4e72d5e8a03fb7c2d61a93f0e4b8e1d7a2c50b6f9d3e4c8a1e7f",
+										"state": "default",
+										"viewport": "mobile",
+										"bytes": 96412,
+										"width": 390,
+										"height": 844,
+										"mediaType": "image/png",
+										"content": "present"
+									}
+								],
+								"contract": {
+									"responsibility": "Lists evidence rows with status, owner and source, sortable by any column.",
+									"inputs": [
+										{
+											"name": "rows",
+											"type": "EvidenceRow[]"
+										},
+										{
+											"name": "sortBy",
+											"type": "EvidenceColumn"
+										}
+									],
+									"outputs": [
+										{
+											"name": "selectedRow",
+											"type": "EvidenceRow | null"
+										}
+									],
+									"errors": ["unknown-column"],
+									"states": ["default"],
+									"viewports": ["desktop", "mobile"]
+								},
+								"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+								"revises": null,
+								"commit": "a61d7e2b9c4f0837d5e1b6a04c8f2d19e7a3b05c"
+							}
+						],
+						"approvals": [
+							{
+								"id": "5c2e8a41-93bd-4f07-b6a2-1e7d0c4f9a38",
+								"unitId": "reports.component.evidence-grid",
+								"version": "v001",
+								"images": [
+									{
+										"file": "default-desktop.png",
+										"sha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28"
+									},
+									{
+										"file": "default-mobile.png",
+										"sha256": "6a0f3d8e1c9b4e72d5e8a03fb7c2d61a93f0e4b8e1d7a2c50b6f9d3e4c8a1e7f"
+									}
+								],
+								"notesSha256": null,
+								"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+								"reviewer": "Owen Park",
+								"approvedAt": "2026-11-02T11:27:55.618Z",
+								"commit": "5e0b8c4da2f7916e3d6c0b8af1e92c750a4d8e3b",
+								"current": true
+							}
+						],
+						"threads": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects missing, corrupt, changed or mismatched artifacts, broken design sequences and rewritten message chains/history."
+				"description": "Rejects with an Error whose code is a PlanningErrorCode (artifact-missing, artifact-corrupt or artifact-tampered for absent, unparsable, changed or mismatched artifacts, broken design sequences and rewritten message history; not-found for an unknown unit; invalid-input or unsafe-path for a bad unit ID, filename, manifest or contract field; invalid-image for a bad PNG; git-failed when a Git command exits non-zero), or with the system error when Git cannot start. A missing image file or Git LFS object does not reject: that image's content is set to 'missing'."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "approvalMatches",
@@ -72,24 +531,242 @@
 						"name": "approvalMatches.record",
 						"type": "ApprovalRecord",
 						"required": true,
-						"description": "Approval record whose version, contract, notes and image bindings are compared."
+						"description": "The approval record to test: planRead passes each stored approval and approve passes the record it is about to write. Only version, contractHash, notesSha256, option and images decide the result; id, unitId, reviewer, approvedAt, commit and current are not compared.",
+						"examples": [
+							{
+								"id": "5c2e8a41-93bd-4f07-b6a2-1e7d0c4f9a38",
+								"unitId": "reports.component.evidence-grid",
+								"version": "v001",
+								"images": [
+									{
+										"file": "default-desktop.png",
+										"sha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28"
+									},
+									{
+										"file": "default-mobile.png",
+										"sha256": "6a0f3d8e1c9b4e72d5e8a03fb7c2d61a93f0e4b8e1d7a2c50b6f9d3e4c8a1e7f"
+									}
+								],
+								"notesSha256": null,
+								"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+								"reviewer": "Owen Park",
+								"approvedAt": "2026-11-02T11:27:55.618Z",
+								"commit": "5e0b8c4da2f7916e3d6c0b8af1e92c750a4d8e3b",
+								"current": true
+							},
+							{
+								"id": "e83f1c06-2a7d-4b95-8d30-c4f6a2e91b7d",
+								"unitId": "reports.component.evidence-grid",
+								"version": "v002",
+								"option": "o2",
+								"images": [
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "f4b07e2c9d1a3c856e0f7b49a2d5c1e87b93f0d6c4e1a25b0d8f6c9e31b7a4f2"
+									}
+								],
+								"notesSha256": null,
+								"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+								"reviewer": "Owen Park",
+								"approvedAt": "2026-11-12T09:48:10.227Z",
+								"commit": "c2a9e6d01f4b83e7a95d2c60b1f8e4d3a7c9b052",
+								"current": true
+							}
+						]
 					},
 					{
 						"name": "approvalMatches.latest",
 						"type": "DesignVersion | undefined",
 						"required": true,
-						"description": "Latest design version, or undefined."
+						"description": "The latest design version of the plan, or undefined when the plan has none, which makes the result false. A record matches it only on version, contractHash, notes hash and the images of the option the record names, or all images when the version has no options and the record names none.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v001",
+								"createdAt": "2026-10-30T15:03:18.742Z",
+								"generator": {
+									"provider": "claude",
+									"model": "claude-opus-5-5"
+								},
+								"prompt": {
+									"file": "prompt.md",
+									"sha256": "5e7b2d9ac1f48a063d9e7b52f0a6c813b4e2d7f108c5a9e36f1d2b74e9a0c5d8"
+								},
+								"notes": null,
+								"baseRevision": "3f9c1e7a0b2d4c6e8f1a3b5c7d9e0f1a2b3c4d5e",
+								"images": [
+									{
+										"file": "default-desktop.png",
+										"sha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 218734,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									},
+									{
+										"file": "default-mobile.png",
+										"sha256": "6a0f3d8e1c9b4e72d5e8a03fb7c2d61a93f0e4b8e1d7a2c50b6f9d3e4c8a1e7f",
+										"state": "default",
+										"viewport": "mobile",
+										"bytes": 96412,
+										"width": 390,
+										"height": 844,
+										"mediaType": "image/png",
+										"content": "present"
+									}
+								],
+								"contract": {
+									"responsibility": "Lists evidence rows with status, owner and source, sortable by any column.",
+									"inputs": [
+										{
+											"name": "rows",
+											"type": "EvidenceRow[]"
+										},
+										{
+											"name": "sortBy",
+											"type": "EvidenceColumn"
+										}
+									],
+									"outputs": [
+										{
+											"name": "selectedRow",
+											"type": "EvidenceRow | null"
+										}
+									],
+									"errors": ["unknown-column"],
+									"states": ["default"],
+									"viewports": ["desktop", "mobile"]
+								},
+								"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+								"revises": null,
+								"commit": "a61d7e2b9c4f0837d5e1b6a04c8f2d19e7a3b05c"
+							},
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v002",
+								"createdAt": "2026-11-09T13:55:41.067Z",
+								"generator": {
+									"provider": "claude",
+									"model": "claude-opus-5-5"
+								},
+								"prompt": {
+									"file": "prompt.md",
+									"sha256": "ab41e6d03f8c2a97d0e5b13f7c94a6e20f3d8b51e6a9c274b13f0d8e5a7c9e21"
+								},
+								"notes": null,
+								"baseRevision": "5e0b8c4da2f7916e3d6c0b8af1e92c750a4d8e3b",
+								"images": [
+									{
+										"file": "o1-default-desktop.png",
+										"sha256": "9a3c6f01d7e2b84c5f1a9d30e6c0b7a218d4f9e52b7c0a6dc9e3f152a8d6b0e4",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 231906,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									},
+									{
+										"file": "o2-default-desktop.png",
+										"sha256": "f4b07e2c9d1a3c856e0f7b49a2d5c1e87b93f0d6c4e1a25b0d8f6c9e31b7a4f2",
+										"state": "default",
+										"viewport": "desktop",
+										"bytes": 226118,
+										"width": 1440,
+										"height": 900,
+										"mediaType": "image/png",
+										"content": "present"
+									}
+								],
+								"contract": {
+									"responsibility": "Lists evidence rows with status, owner and source, sortable by any column.",
+									"inputs": [
+										{
+											"name": "rows",
+											"type": "EvidenceRow[]"
+										},
+										{
+											"name": "sortBy",
+											"type": "EvidenceColumn"
+										}
+									],
+									"outputs": [
+										{
+											"name": "selectedRow",
+											"type": "EvidenceRow | null"
+										}
+									],
+									"errors": ["unknown-column"],
+									"states": ["default"],
+									"viewports": ["desktop", "mobile"]
+								},
+								"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+								"revises": {
+									"version": "v001",
+									"file": "default-desktop.png",
+									"imageSha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28",
+									"region": null,
+									"threadId": null
+								},
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Dense rows with compact type and inline status chips",
+										"prompt": {
+											"file": "o1-prompt.md",
+											"sha256": "3e6a0c9fd18b4e27a5f09c3d6b1e8a74c0d2f9b64e7a1d389f5c2b0ed6a3e811"
+										},
+										"revisedPrompt": null,
+										"generator": {
+											"provider": "claude",
+											"model": "claude-opus-5-5"
+										},
+										"images": [
+											{
+												"file": "o1-default-desktop.png",
+												"sha256": "9a3c6f01d7e2b84c5f1a9d30e6c0b7a218d4f9e52b7c0a6dc9e3f152a8d6b0e4"
+											}
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Rows grouped by source, each group with a collapsible header",
+										"prompt": {
+											"file": "o2-prompt.md",
+											"sha256": "e2d9b57a0c3f8e147b6a2d90f4c1e3a859d0b26ca7e4f18d3c0b9a652f8e7d1c"
+										},
+										"revisedPrompt": "Rows grouped by source with a collapsible header per group, shown at 1440 by 900",
+										"generator": {
+											"provider": "claude",
+											"model": "claude-opus-5-5"
+										},
+										"images": [
+											{
+												"file": "o2-default-desktop.png",
+												"sha256": "f4b07e2c9d1a3c856e0f7b49a2d5c1e87b93f0d6c4e1a25b0d8f6c9e31b7a4f2"
+											}
+										]
+									}
+								],
+								"commit": "d8c2f5a16e9b0d37b4a1e8c62f5d7093c9e0b4a8"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "approvalMatches",
 						"type": "boolean",
-						"description": "True when the approval exactly matches the latest version and selected option content; false when no matching version or option exists."
+						"description": "True when the record names the same version, contractHash and notesSha256 as latest, and its images, sorted by file and holding only file and sha256, equal the bindings of the option named by record.option (or of all images when latest has no options and record.option is absent). False otherwise, including when latest is undefined; planRead uses this result to set current.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "planRead",
@@ -98,35 +775,276 @@
 						"name": "planRead.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "The repository handle from planGit: every Git read goes through its run method, and Git LFS image objects are resolved under its root. Only those two members are used."
 					},
 					{
 						"name": "planRead.rev",
 						"type": "string",
 						"required": true,
-						"description": "Revision to read."
+						"description": "The revision whose commit supplies every plan, design, approval, thread and image read; planRead passes it unchanged to git ls-tree, git log and git show and does not resolve names itself, so a value Git cannot read rejects with git-failed. Callers in this package pass a full commit id from revision() or from a write result.",
+						"examples": [
+							"3f9c1e7a0b2d4c6e8f1a3b5c7d9e0f1a2b3c4d5e",
+							"d8c2f5a16e9b0d37b4a1e8c62f5d7093c9e0b4a8"
+						]
 					},
 					{
 						"name": "planRead.unitId",
 						"type": "string",
 						"required": true,
-						"description": "Unit ID whose plan is required."
+						"description": "The unit ID of the plan to read: a lowercase identity of at least two dot-separated segments, such as page.home, at most 200 characters; anything else is rejected before any Git read. planRead reads the one plan.json at rev whose unitId matches, and rejects with not-found when none exists or with artifact-tampered when two do.",
+						"examples": ["reports.component.evidence-grid", "page.home"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planRead",
 						"type": "Promise<PlanDetail>",
-						"description": "Plan detail with numerically ordered versions, approvals marked current, pinned-order threads, derived draft/review/approved lifecycle and counts; verified remains false."
+						"description": "The unit's PlanDetail as it stands at rev: versions in numeric order, every approval oldest first with current set, threads by pin, the derived lifecycle (draft, review or approved), latest contract and contractHash, approval (the newest current one, or null), versionCount, threadCount, and registered (whether specification/units/<unitId>.json exists at rev). verified is always false, because planning never verifies anything at runtime.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"category": "component",
+								"slug": "evidence-grid",
+								"title": "Evidence grid",
+								"goal": "Give reviewers one sortable table of the evidence rows of a report.",
+								"createdAt": "2026-10-28T09:12:44.310Z",
+								"createdBy": {
+									"kind": "person",
+									"name": "Maren Ito"
+								},
+								"baseRevision": "3f9c1e7a0b2d4c6e8f1a3b5c7d9e0f1a2b3c4d5e",
+								"path": "src/components/evidence-grid",
+								"commit": "07b9e4c2d1f6a85e9c3e0b7d4a8f2e16b5d0c93a",
+								"lifecycle": "draft",
+								"registered": true,
+								"verified": false,
+								"latestVersion": null,
+								"contract": {
+									"responsibility": "Lists evidence rows with status, owner and source, sortable by any column.",
+									"inputs": [
+										{
+											"name": "rows",
+											"type": "EvidenceRow[]"
+										}
+									],
+									"outputs": [
+										{
+											"name": "selectedRow",
+											"type": "EvidenceRow | null"
+										}
+									],
+									"errors": [],
+									"states": ["default"],
+									"viewports": ["desktop", "mobile"]
+								},
+								"contractHash": "8b4e1d6af29c0e5317a8d4b2c6e3f09da51b7c843d0f6e2a9e8c5b17d2a4f6c0",
+								"approval": null,
+								"versionCount": 0,
+								"threadCount": 1,
+								"versions": [],
+								"approvals": [],
+								"threads": [
+									{
+										"id": "a0d7c3f2-61e8-4b4a-9f15-2c8e6d0b3a97",
+										"unitId": "reports.component.evidence-grid",
+										"pin": 1,
+										"title": "Owner column on mobile",
+										"anchor": null,
+										"viewedRevision": "07b9e4c2d1f6a85e9c3e0b7d4a8f2e16b5d0c93a",
+										"createdAt": "2026-10-29T14:20:06.173Z",
+										"createdBy": {
+											"kind": "person",
+											"name": "Owen Park"
+										},
+										"commit": "b3e8f0a6c1d94e27f5b0a3c8d6e1f47b29c5a0d3",
+										"messages": [
+											{
+												"id": "7e4b9d12-c05f-4a83-b6e7-3f1d8a2c9e50",
+												"unitId": "reports.component.evidence-grid",
+												"threadId": "a0d7c3f2-61e8-4b4a-9f15-2c8e6d0b3a97",
+												"sequence": 1,
+												"previous": "0f7d2a9ce4b618532c0e9f7ab5d38e1698a2c4f06e1b7d3cd0f5a92e47c8b1e6",
+												"at": "2026-10-29T14:20:06.173Z",
+												"author": {
+													"kind": "person",
+													"name": "Owen Park"
+												},
+												"mode": "plan",
+												"agent": null,
+												"body": "Should the owner column stay visible on mobile, or only on desktop?",
+												"references": [],
+												"change": null
+											}
+										]
+									}
+								]
+							},
+							{
+								"unitId": "reports.component.evidence-grid",
+								"category": "component",
+								"slug": "evidence-grid",
+								"title": "Evidence grid",
+								"goal": "Give reviewers one sortable table of the evidence rows of a report.",
+								"createdAt": "2026-10-28T09:12:44.310Z",
+								"createdBy": {
+									"kind": "person",
+									"name": "Maren Ito"
+								},
+								"baseRevision": "3f9c1e7a0b2d4c6e8f1a3b5c7d9e0f1a2b3c4d5e",
+								"path": "src/components/evidence-grid",
+								"commit": "07b9e4c2d1f6a85e9c3e0b7d4a8f2e16b5d0c93a",
+								"lifecycle": "approved",
+								"registered": true,
+								"verified": false,
+								"latestVersion": "v001",
+								"contract": {
+									"responsibility": "Lists evidence rows with status, owner and source, sortable by any column.",
+									"inputs": [
+										{
+											"name": "rows",
+											"type": "EvidenceRow[]"
+										},
+										{
+											"name": "sortBy",
+											"type": "EvidenceColumn"
+										}
+									],
+									"outputs": [
+										{
+											"name": "selectedRow",
+											"type": "EvidenceRow | null"
+										}
+									],
+									"errors": ["unknown-column"],
+									"states": ["default"],
+									"viewports": ["desktop", "mobile"]
+								},
+								"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+								"approval": {
+									"id": "5c2e8a41-93bd-4f07-b6a2-1e7d0c4f9a38",
+									"unitId": "reports.component.evidence-grid",
+									"version": "v001",
+									"images": [
+										{
+											"file": "default-desktop.png",
+											"sha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28"
+										},
+										{
+											"file": "default-mobile.png",
+											"sha256": "6a0f3d8e1c9b4e72d5e8a03fb7c2d61a93f0e4b8e1d7a2c50b6f9d3e4c8a1e7f"
+										}
+									],
+									"notesSha256": null,
+									"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+									"reviewer": "Owen Park",
+									"approvedAt": "2026-11-02T11:27:55.618Z",
+									"commit": "5e0b8c4da2f7916e3d6c0b8af1e92c750a4d8e3b",
+									"current": true
+								},
+								"versionCount": 1,
+								"threadCount": 0,
+								"versions": [
+									{
+										"unitId": "reports.component.evidence-grid",
+										"version": "v001",
+										"createdAt": "2026-10-30T15:03:18.742Z",
+										"generator": {
+											"provider": "claude",
+											"model": "claude-opus-5-5"
+										},
+										"prompt": {
+											"file": "prompt.md",
+											"sha256": "5e7b2d9ac1f48a063d9e7b52f0a6c813b4e2d7f108c5a9e36f1d2b74e9a0c5d8"
+										},
+										"notes": null,
+										"baseRevision": "3f9c1e7a0b2d4c6e8f1a3b5c7d9e0f1a2b3c4d5e",
+										"images": [
+											{
+												"file": "default-desktop.png",
+												"sha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28",
+												"state": "default",
+												"viewport": "desktop",
+												"bytes": 218734,
+												"width": 1440,
+												"height": 900,
+												"mediaType": "image/png",
+												"content": "present"
+											},
+											{
+												"file": "default-mobile.png",
+												"sha256": "6a0f3d8e1c9b4e72d5e8a03fb7c2d61a93f0e4b8e1d7a2c50b6f9d3e4c8a1e7f",
+												"state": "default",
+												"viewport": "mobile",
+												"bytes": 96412,
+												"width": 390,
+												"height": 844,
+												"mediaType": "image/png",
+												"content": "present"
+											}
+										],
+										"contract": {
+											"responsibility": "Lists evidence rows with status, owner and source, sortable by any column.",
+											"inputs": [
+												{
+													"name": "rows",
+													"type": "EvidenceRow[]"
+												},
+												{
+													"name": "sortBy",
+													"type": "EvidenceColumn"
+												}
+											],
+											"outputs": [
+												{
+													"name": "selectedRow",
+													"type": "EvidenceRow | null"
+												}
+											],
+											"errors": ["unknown-column"],
+											"states": ["default"],
+											"viewports": ["desktop", "mobile"]
+										},
+										"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+										"revises": null,
+										"commit": "a61d7e2b9c4f0837d5e1b6a04c8f2d19e7a3b05c"
+									}
+								],
+								"approvals": [
+									{
+										"id": "5c2e8a41-93bd-4f07-b6a2-1e7d0c4f9a38",
+										"unitId": "reports.component.evidence-grid",
+										"version": "v001",
+										"images": [
+											{
+												"file": "default-desktop.png",
+												"sha256": "2c8e5a1fb93d07c4e5a2f9184d6b0c7ea1f3e95d8c02b6a7d4e9f13b7a5c0e28"
+											},
+											{
+												"file": "default-mobile.png",
+												"sha256": "6a0f3d8e1c9b4e72d5e8a03fb7c2d61a93f0e4b8e1d7a2c50b6f9d3e4c8a1e7f"
+											}
+										],
+										"notesSha256": null,
+										"contractHash": "c3a81f9e6b0d4e279f5a1c3be8d2f70a4c6b9e13d7f0a2851e9c4b6da0f3e7c2",
+										"reviewer": "Owen Park",
+										"approvedAt": "2026-11-02T11:27:55.618Z",
+										"commit": "5e0b8c4da2f7916e3d6c0b8af1e92c750a4d8e3b",
+										"current": true
+									}
+								],
+								"threads": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with an Error whose code is a PlanningErrorCode (artifact-missing, artifact-corrupt or artifact-tampered for absent, unparsable, changed or mismatched artifacts, broken design sequences and rewritten message history; not-found for an unknown unit; invalid-input or unsafe-path for a bad unit ID, filename, manifest or contract field; invalid-image for a bad PNG; git-failed when a Git command exits non-zero), or with the system error when Git cannot start. A missing image file or Git LFS object does not reject: that image's content is set to 'missing'."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
