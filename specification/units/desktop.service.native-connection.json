@@ -19,27 +19,39 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NativeConnectionService.create.options",
 				"type": "NativeConnectionOptions",
-				"required": true
+				"required": true,
+				"description": "The NativeConnectionOptions bag. When origin is missing or empty, create returns {} and reads none of the other fields; otherwise origin must parse as an absolute URL, file is the path NativeSessionAdapter reads and writes the session to, cache is passed to the remote adapter and cleared through the clearCache hook given to NativeAuthService, onCacheStatus (when set) is passed to the remote adapter and is called with { projectId: '$projects', status: 'denied' } from the onDisconnect handler, and open is passed to NativeAuthService."
 			},
 			{
 				"name": "NativeConnectionService.create.encryption",
 				"type": "NativeEncryption",
-				"required": true
+				"required": true,
+				"description": "The OS encryption port (Electron safeStorage, injected only by the main process) that NativeSessionAdapter uses to encrypt and decrypt the saved hosted session; create only passes it through and never calls its methods. Encryption counts as unavailable when isEncryptionAvailable() returns false or, on Linux, when getSelectedStorageBackend() is missing, throws, or does not return gnome_libsecret, kwallet, kwallet5 or kwallet6, and then reads return null and saves throw."
 			}
 		],
 		"outputs": [
 			{
 				"name": "NativeConnectionService.create",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The object that create returns: an empty {} when options.origin is missing or empty, otherwise an object whose remote and auth fields hold a RemoteHttpProjectAdapter and a NativeAuthService. Only the {} form can be written as JSON, because the other form holds class instances.",
+				"examples": [
+					{}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown synchronously by new URL(options.origin) when origin is set but is not an absolute URL, for example 'not a url'. It fires before any adapter is constructed, so create returns no value."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "NativeConnectionService.create",
@@ -47,22 +59,34 @@
 					{
 						"name": "NativeConnectionService.create.options",
 						"type": "NativeConnectionOptions",
-						"required": true
+						"required": true,
+						"description": "The NativeConnectionOptions bag. When origin is missing or empty, create returns {} and reads none of the other fields; otherwise origin must parse as an absolute URL, file is the path NativeSessionAdapter reads and writes the session to, cache is passed to the remote adapter and cleared through the clearCache hook given to NativeAuthService, onCacheStatus (when set) is passed to the remote adapter and is called with { projectId: '$projects', status: 'denied' } from the onDisconnect handler, and open is passed to NativeAuthService."
 					},
 					{
 						"name": "NativeConnectionService.create.encryption",
 						"type": "NativeEncryption",
-						"required": true
+						"required": true,
+						"description": "The OS encryption port (Electron safeStorage, injected only by the main process) that NativeSessionAdapter uses to encrypt and decrypt the saved hosted session; create only passes it through and never calls its methods. Encryption counts as unavailable when isEncryptionAvailable() returns false or, on Linux, when getSelectedStorageBackend() is missing, throws, or does not return gnome_libsecret, kwallet, kwallet5 or kwallet6, and then reads return null and saves throw."
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeConnectionService.create",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The object that create returns: an empty {} when options.origin is missing or empty, otherwise an object whose remote and auth fields hold a RemoteHttpProjectAdapter and a NativeAuthService. Only the {} form can be written as JSON, because the other form holds class instances.",
+						"examples": [
+							{}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously by new URL(options.origin) when origin is set but is not an absolute URL, for example 'not a url'. It fires before any adapter is constructed, so create returns no value."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
