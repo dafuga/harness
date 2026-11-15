@@ -2,7 +2,7 @@ import { render } from 'svelte/server';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import HarnessNavbar from '../../src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte';
-import type { ExplorerLocation } from '../../src/models/Explorer.types';
+import type { ExplorerLocation } from '../../src/models/explorer-ui/Explorer.types';
 import {
 	sha,
 	shellBranch,

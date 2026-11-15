@@ -1,9 +1,9 @@
 // @harness-uid u_fyowfpast3
-import type { ExplorerEvidence } from '../../../models/Explorer.types';
-import type { ExplorerBehavior } from '../../../models/Explorer.types';
-import type { ExplorerScope } from '../../../models/Explorer.types';
-import type { ExplorerEntity } from '../../../models/Explorer.types';
-import type { ExplorerLocation } from '../../../models/Explorer.types';
+import type { ExplorerEvidence } from '../../../models/explorer-ui/Explorer.types';
+import type { ExplorerBehavior } from '../../../models/explorer-ui/Explorer.types';
+import type { ExplorerScope } from '../../../models/explorer-ui/Explorer.types';
+import type { ExplorerEntity } from '../../../models/explorer-ui/Explorer.types';
+import type { ExplorerLocation } from '../../../models/explorer-ui/Explorer.types';
 import type { HarnessIndex } from '../../../models/Harness.types';
 import type { HarnessRevision } from '../../../models/Harness.types';
 import type { EntityLens } from '../../../utils/explorer-ui/entityLens';

@@ -1,6 +1,6 @@
 // @harness-uid u_23u6t7kx2y
 import type { CaptureBinding, ListedCapture } from './recordedCapture.types';
-import type { ExplorerEvidence } from '$reports/models/Explorer.types';
+import type { ExplorerEvidence } from '$reports/models/explorer-ui/Explorer.types';
 
 const unlisted = 'This capture is not listed by the evidence of this entity at these revisions.';
 

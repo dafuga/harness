@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { ExplorerScope } from '../../src/models/Explorer.types';
+import type { ExplorerScope } from '../../src/models/explorer-ui/Explorer.types';
 import { explorerHistory } from '../../src/utils/explorer-history/explorerHistory';
 import { historyDetail } from '../../src/components/explorer-ui/entity-history/explorerHistory';
 import {

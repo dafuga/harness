@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { ExplorerEvidence, ExplorerSide } from '../../src/models/Explorer.types';
+import type { ExplorerEvidence, ExplorerSide } from '../../src/models/explorer-ui/Explorer.types';
 import type { HarnessCapture } from '../../src/models/Harness.types';
 import { explorerBehavior } from '../../src/utils/explorerBehavior';
 import { capture, declared, record, sha } from '../explorerFixture';

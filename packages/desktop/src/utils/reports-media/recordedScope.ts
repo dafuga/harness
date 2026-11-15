@@ -1,7 +1,7 @@
 // @harness-uid u_2rustlmo6g
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { Asked, ScopeFacts } from './recordedScope.types';
-import type { ExplorerScope } from '$reports/models/Explorer.types';
+import type { ExplorerScope } from '$reports/models/explorer-ui/Explorer.types';
 import type { HarnessRevisionSummary } from '$reports/models/Harness.types';
 import { categoryOf } from '../shared-primitives/categoryOf';
 

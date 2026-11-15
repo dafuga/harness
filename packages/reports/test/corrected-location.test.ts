@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../test/support/measureWorkload';
-import type { ExplorerEntity, ExplorerLocation } from '../src/models/Explorer.types';
+import type { ExplorerEntity, ExplorerLocation } from '../src/models/explorer-ui/Explorer.types';
 import { correctedLocation } from '../src/utils/correctedLocation';
 
 /**

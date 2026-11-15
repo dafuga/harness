@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { explorerRoute } from '../../../../../../src/utils/explorerRoute';
 	import HarnessHeader from '../../../../src/components/explorer-ui/HarnessHeader.svelte';
-	import type { ExplorerLocation } from '../../../../src/models/Explorer.types';
+	import type { ExplorerLocation } from '../../../../src/models/explorer-ui/Explorer.types';
 	import {
 		shellBranch,
 		shellCommits,

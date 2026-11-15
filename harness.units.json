@@ -471,8 +471,8 @@
 		},
 		{
 			"from": "packages/desktop/src/lib/stores/explorer-ui/entityEvidence.svelte.ts",
-			"specifier": "$reports/models/Explorer.types",
-			"to": "packages/reports/src/models/Explorer.types.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -567,8 +567,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/shared-primitives/CoveragePanel.svelte",
-			"specifier": "$reports/models/Explorer.types",
-			"to": "packages/reports/src/models/Explorer.types.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -741,8 +741,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/explorer-ui/entity-view/evidenceVerdict.ts",
-			"specifier": "$reports/models/Explorer.types",
-			"to": "packages/reports/src/models/Explorer.types.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -807,8 +807,8 @@
 		},
 		{
 			"from": "packages/desktop/src/models/verification-evidence/DesktopEvidence.types.ts",
-			"specifier": "$reports/models/Explorer.types",
-			"to": "packages/reports/src/models/Explorer.types.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -825,8 +825,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/reports-media/recordedCapture.ts",
-			"specifier": "$reports/models/Explorer.types",
-			"to": "packages/reports/src/models/Explorer.types.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -849,8 +849,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/verification-evidence/evidenceReading.types.ts",
-			"specifier": "$reports/models/Explorer.types",
-			"to": "packages/reports/src/models/Explorer.types.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -885,8 +885,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/reports-media/recordedProjection.ts",
-			"specifier": "$reports/models/Explorer.types",
-			"to": "packages/reports/src/models/Explorer.types.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -915,8 +915,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/reports-media/recordedScope.ts",
-			"specifier": "$reports/models/Explorer.types",
-			"to": "packages/reports/src/models/Explorer.types.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -939,8 +939,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/recorded-answer/recordedProjection.ts",
-			"specifier": "$reports/models/Explorer.types",
-			"to": "packages/reports/src/models/Explorer.types.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -951,8 +951,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.types.ts",
-			"specifier": "$reports/models/Explorer.types",
-			"to": "packages/reports/src/models/Explorer.types.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{

@@ -1,6 +1,6 @@
 // @harness-uid u_xjxqzbfms6
 import { side } from '../reports-media/recordedProjection';
-import type { ExplorerEvidence } from '$reports/models/Explorer.types';
+import type { ExplorerEvidence } from '$reports/models/explorer-ui/Explorer.types';
 
 /**
  * The evidence of one entity with only what that entity needs. Each side keeps its captures and

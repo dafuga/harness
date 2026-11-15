@@ -1,4 +1,7 @@
-import type { ExplorerScope, ExplorerSide } from '../../reports/src/models/Explorer.types';
+import type {
+	ExplorerScope,
+	ExplorerSide
+} from '../../reports/src/models/explorer-ui/Explorer.types';
 import type {
 	HarnessCapture,
 	HarnessRecord,

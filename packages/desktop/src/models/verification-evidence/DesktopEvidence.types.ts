@@ -1,6 +1,6 @@
 // @harness-uid u_fy6gm7xdoi
 import type { CacheIdentity } from '../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
-import type { ExplorerScope } from '$reports/models/Explorer.types';
+import type { ExplorerScope } from '$reports/models/explorer-ui/Explorer.types';
 import type {
 	ExplorerBehavior,
 	ExplorerEvidence

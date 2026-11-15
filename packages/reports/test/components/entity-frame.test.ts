@@ -2,7 +2,7 @@ import { createRawSnippet } from 'svelte';
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import EntityFrame from '../../src/components/explorer-ui/EntityFrame.svelte';
-import type { ExplorerEntity } from '../../src/models/Explorer.types';
+import type { ExplorerEntity } from '../../src/models/explorer-ui/Explorer.types';
 import { hostProps, verdicts, words } from '../entityRender';
 import { ids } from '../entityUnits';
 

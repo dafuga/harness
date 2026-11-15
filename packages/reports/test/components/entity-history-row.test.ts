@@ -1,7 +1,10 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import EntityHistoryRow from '../../src/components/explorer-ui/entity-history-row/EntityHistoryRow.svelte';
-import type { ExplorerHistoryDetail, ExplorerHistoryRow } from '../../src/models/Explorer.types';
+import type {
+	ExplorerHistoryDetail,
+	ExplorerHistoryRow
+} from '../../src/models/explorer-ui/Explorer.types';
 import { nav, place } from '../entityPlaces';
 import { verdicts, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';

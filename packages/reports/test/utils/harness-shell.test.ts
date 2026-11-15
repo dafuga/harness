@@ -5,7 +5,7 @@ import {
 import { moduleData } from '../../tests/e2e/support/component-previews/modules';
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
-import type { ExplorerLocation } from '../../src/models/Explorer.types';
+import type { ExplorerLocation } from '../../src/models/explorer-ui/Explorer.types';
 import { retainedBranch } from '../../src/utils/harnessAncestry';
 import { harnessShell } from '../../src/components/explorer-ui/harness-navbar/harnessShell';
 import { type HarnessNavbarInput } from '../../src/utils/explorer-ui/harnessShell';

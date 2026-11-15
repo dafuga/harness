@@ -1,6 +1,9 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
-import type { ExplorerBehavior, ExplorerBehaviorRow } from '../../src/models/Explorer.types';
+import type {
+	ExplorerBehavior,
+	ExplorerBehaviorRow
+} from '../../src/models/explorer-ui/Explorer.types';
 import { explorerReading } from '../../src/utils/explorer-reading/explorerReading';
 import { capture } from '../explorerFixture';
 

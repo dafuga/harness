@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { realpath } from 'node:fs/promises';
 import { indexedRepo } from '../../../test/support/historyIndexFixture';
-import type { ExplorerCapture } from '../../reports/src/models/Explorer.types';
+import type { ExplorerCapture } from '../../reports/src/models/explorer-ui/Explorer.types';
 import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,

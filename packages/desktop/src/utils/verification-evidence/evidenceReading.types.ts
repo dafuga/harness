@@ -1,5 +1,5 @@
 // @harness-uid u_6vsxioocte
-import type { ExplorerBehavior } from '$reports/models/Explorer.types';
+import type { ExplorerBehavior } from '$reports/models/explorer-ui/Explorer.types';
 
 export interface EvidenceRead {
 	/** The behaviour with every recorded result read, checked and compared. */

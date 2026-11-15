@@ -1,5 +1,5 @@
 // @harness-uid u_lkzrod2wrf
-import type { ExplorerScope } from '$reports/models/Explorer.types';
+import type { ExplorerScope } from '$reports/models/explorer-ui/Explorer.types';
 import type { CacheIdentity } from '../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { ExplorerRevisions } from '$reports/utils/explorerEvidence';
 

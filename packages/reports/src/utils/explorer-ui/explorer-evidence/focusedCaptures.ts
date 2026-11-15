@@ -1,5 +1,5 @@
 // @harness-uid u_ihkfgi6ia3
-import type { ExplorerCapture, ExplorerSide } from '../../../models/Explorer.types';
+import type { ExplorerCapture, ExplorerSide } from '../../../models/explorer-ui/Explorer.types';
 import type { HarnessRevision, HarnessScenario } from '../../../models/Harness.types';
 
 /** @pure Select this unit's stored images from the same commit or an identical whole source tree. */

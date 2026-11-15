@@ -1,5 +1,5 @@
 import type { Row } from './shellSearch.types';
-import type { ExplorerScope } from '../../../src/models/Explorer.types';
+import type { ExplorerScope } from '../../../src/models/explorer-ui/Explorer.types';
 import { sha } from './shellData';
 const lasting: Row[] = [
 	['app.page.orders', 'pages', 'Orders', 'Lists every order of a customer.'],

@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/models/Explorer.types.ts",
-			"packages/reports/src/models/explorer-ui/Explorer.types.ts"
-		],
+		"source": ["packages/reports/src/models/explorer-ui/Explorer.types.ts"],
 		"symbols": [
 			"ExplorerCategory",
 			"ExplorerLocation",

@@ -1,7 +1,7 @@
 import type { HarnessUnit } from '../src/models/Harness.types';
 import type { ModelDefinition } from '../../../src/utils/unitMetadata';
 import type { Reads } from './entityClassFixtures.types';
-import type { ExplorerEntity } from '../src/models/Explorer.types';
+import type { ExplorerEntity } from '../src/models/explorer-ui/Explorer.types';
 import type { entityCatalog } from '../src/utils/entityCatalog';
 /** Class evidence shared by the normal catalog, detail and browser fixtures. */
 export function serviceClassProof(

@@ -3,7 +3,7 @@
 <!-- @harness-uid u_l6e66dcjtd -->
 <script lang="ts">
 	import { tick } from 'svelte';
-	import type { ExplorerCategory } from '../../models/Explorer.types';
+	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
 	import type { CatalogRow } from '../../utils/entityCatalog';
 	import type { EntityLens, EntityNav } from '../../utils/explorer-ui/entityLens';
 	import type { Row } from './ExplorerCatalogItems.types';

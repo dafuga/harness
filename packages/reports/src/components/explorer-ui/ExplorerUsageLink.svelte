@@ -2,7 +2,7 @@
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <!-- @harness-uid u_sti57vivfr -->
 <script lang="ts">
-	import type { ExplorerEntity } from '../../models/Explorer.types';
+	import type { ExplorerEntity } from '../../models/explorer-ui/Explorer.types';
 	import { catalogShot } from '../../utils/explorer-ui/entityScreens';
 	import { entityLens, shortCommit, type EntityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
 	import EntityLink from './EntityLink.svelte';

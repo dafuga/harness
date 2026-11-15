@@ -1,7 +1,7 @@
 import type { Given } from './entityRender.types';
 import type { Component } from 'svelte';
 import { render } from 'svelte/server';
-import type { ExplorerLocation } from '../src/models/Explorer.types';
+import type { ExplorerLocation } from '../src/models/explorer-ui/Explorer.types';
 import type { ExplorerScreenProps } from '../src/models/explorer-ui/ExplorerScreen.types';
 import type { HarnessIndex } from '../src/models/Harness.types';
 import ExplorerContent from '../src/components/explorer-ui/ExplorerContent.svelte';

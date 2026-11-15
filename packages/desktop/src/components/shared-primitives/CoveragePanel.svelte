@@ -11,7 +11,10 @@
 	import BrowserErrors from '$shared/shared-primitives/browser-errors/BrowserErrors.svelte';
 	import EntityStates from '$shared/explorer-ui/EntityStates.svelte';
 	import { explorerName } from '$reports/utils/explorer-ui/explorerName';
-	import type { CoverageStanding, ExplorerStateCoverage } from '$reports/models/Explorer.types';
+	import type {
+		CoverageStanding,
+		ExplorerStateCoverage
+	} from '$reports/models/explorer-ui/Explorer.types';
 	import type { EntityEvidence } from '../../lib/stores/explorer-ui/entityEvidence.svelte';
 	import type { EntityDetail } from '../../models/development-tooling/Desktop.types';
 	import { evidenceNotice } from '../../utils/verification-evidence/evidenceNotice';

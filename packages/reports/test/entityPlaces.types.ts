@@ -1,4 +1,4 @@
-import type { ExplorerScope } from '../src/models/Explorer.types';
+import type { ExplorerScope } from '../src/models/explorer-ui/Explorer.types';
 import type { HarnessRevision } from '../src/models/Harness.types';
 
 export interface View {

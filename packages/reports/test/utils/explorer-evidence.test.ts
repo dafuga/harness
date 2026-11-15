@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import type { ExplorerScope } from '../../src/models/Explorer.types';
+import type { ExplorerScope } from '../../src/models/explorer-ui/Explorer.types';
 import type { HarnessCapture, HarnessRevision } from '../../src/models/Harness.types';
 import { explorerEvidence } from '../../src/utils/explorerEvidence';
 import {

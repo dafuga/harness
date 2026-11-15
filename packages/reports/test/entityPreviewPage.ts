@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 import { existsSync, readFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
-import type { ExplorerLocation } from '../src/models/Explorer.types';
+import type { ExplorerLocation } from '../src/models/explorer-ui/Explorer.types';
 import type { PreviewVariant } from './entityPreviewData';
 import { previewHome } from './entityPreviewSetup';
 import { previewShell } from './entityPreviewShell';

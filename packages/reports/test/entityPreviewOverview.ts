@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import type { ExplorerLocation } from '../src/models/Explorer.types';
+import type { ExplorerLocation } from '../src/models/explorer-ui/Explorer.types';
 import { ids } from './entityUnits';
 
 /** Every entity screen reads current source figures, even beside an older partial record. */
