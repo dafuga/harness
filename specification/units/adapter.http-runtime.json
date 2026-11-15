@@ -21,37 +21,111 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HttpRuntimeAdapter.constructor.url",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The exact URL that every invoke call POSTs its JSON request to, with no path added. The constructor does not check it, so a malformed URL fails on each call as 'runtime-unavailable' rather than when the adapter is built.",
+				"examples": ["http://127.0.0.1:43127", "http://127.0.0.1:3001/run"]
 			},
 			{
 				"name": "HttpRuntimeAdapter.constructor.options",
 				"type": "RuntimeOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Carries only the optional timeoutMs, the longest in milliseconds that one invoke call may take; a missing or null value falls back to defaultRuntimeTimeoutMs (30000 ms), and no other value is checked. Defaults to {}.",
+				"examples": [
+					{},
+					{
+						"timeoutMs": 60000
+					},
+					{
+						"timeoutMs": 120000
+					}
+				]
 			},
 			{
 				"name": "HttpRuntimeAdapter.invoke.request",
 				"type": "RuntimeRequest",
-				"required": true
+				"required": true,
+				"description": "The request sent as the POST body: an operation name and an optional input. It must be portable JSON, meaning finite numbers, well-formed strings, plain objects and arrays nested no deeper than 64 levels; anything else anywhere in it makes invoke resolve with 'invalid-json' and nothing is sent.",
+				"examples": [
+					{
+						"operation": "version"
+					},
+					{
+						"operation": "impact",
+						"input": {
+							"base": {
+								"nodes": [
+									"file:src/adapters/HttpRuntimeAdapter.ts",
+									"file:test/services/kernel-parity.test.ts"
+								],
+								"edges": [
+									[1, 0]
+								]
+							},
+							"head": {
+								"nodes": [
+									"file:src/adapters/HttpRuntimeAdapter.ts",
+									"file:test/services/kernel-parity.test.ts"
+								],
+								"edges": [
+									[1, 0]
+								]
+							},
+							"changed": ["file:src/adapters/HttpRuntimeAdapter.ts"],
+							"uncertain": [],
+							"sinks": ["file:test/services/kernel-parity.test.ts"]
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HttpRuntimeAdapter.invoke",
-				"type": "Promise<RuntimeResponse>"
+				"type": "Promise<RuntimeResponse>",
+				"description": "Resolves with a RuntimeResponse and reports every failure as an ok: false value instead of rejecting. A valid unit envelope is returned as received, whatever the HTTP status; every other outcome is 'invalid-json', 'runtime-timeout', 'runtime-unavailable', 'runtime-failed' or 'invalid-response'.",
+				"examples": [
+					{
+						"ok": true,
+						"output": {
+							"contract": "impact-kernel/1"
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-timeout",
+							"message": "no response within 30000 ms"
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-unavailable",
+							"message": "cannot reach http://127.0.0.1:43127: fetch failed"
+						}
+					}
+				]
 			},
 			{
 				"name": "HttpRuntimeAdapter.close",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value and does nothing: the adapter holds no connection or other resource, and close does not cancel an invoke that is already in flight."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when options is null, because the constructor reads options.timeoutMs from it; only an undefined options is replaced by the default {}. The url is stored unchecked, so a bad url is never a reason for this error."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HttpRuntimeAdapter.invoke",
@@ -59,17 +133,72 @@
 					{
 						"name": "HttpRuntimeAdapter.invoke.request",
 						"type": "RuntimeRequest",
-						"required": true
+						"required": true,
+						"description": "The request sent as the POST body: an operation name and an optional input. It must be portable JSON, meaning finite numbers, well-formed strings, plain objects and arrays nested no deeper than 64 levels; anything else anywhere in it makes invoke resolve with 'invalid-json' and nothing is sent.",
+						"examples": [
+							{
+								"operation": "version"
+							},
+							{
+								"operation": "impact",
+								"input": {
+									"base": {
+										"nodes": [
+											"file:src/adapters/HttpRuntimeAdapter.ts",
+											"file:test/services/kernel-parity.test.ts"
+										],
+										"edges": [
+											[1, 0]
+										]
+									},
+									"head": {
+										"nodes": [
+											"file:src/adapters/HttpRuntimeAdapter.ts",
+											"file:test/services/kernel-parity.test.ts"
+										],
+										"edges": [
+											[1, 0]
+										]
+									},
+									"changed": ["file:src/adapters/HttpRuntimeAdapter.ts"],
+									"uncertain": [],
+									"sinks": ["file:test/services/kernel-parity.test.ts"]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HttpRuntimeAdapter.invoke",
-						"type": "Promise<RuntimeResponse>"
+						"type": "Promise<RuntimeResponse>",
+						"description": "Resolves with a RuntimeResponse and reports every failure as an ok: false value instead of rejecting. A valid unit envelope is returned as received, whatever the HTTP status; every other outcome is 'invalid-json', 'runtime-timeout', 'runtime-unavailable', 'runtime-failed' or 'invalid-response'.",
+						"examples": [
+							{
+								"ok": true,
+								"output": {
+									"contract": "impact-kernel/1"
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-timeout",
+									"message": "no response within 30000 ms"
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-unavailable",
+									"message": "cannot reach http://127.0.0.1:43127: fetch failed"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HttpRuntimeAdapter.close",
@@ -77,11 +206,12 @@
 				"outputs": [
 					{
 						"name": "HttpRuntimeAdapter.close",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value and does nothing: the adapter holds no connection or other resource, and close does not cancel an invoke that is already in flight."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -91,23 +221,42 @@
 					{
 						"name": "HttpRuntimeAdapter.constructor.url",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The exact URL that every invoke call POSTs its JSON request to, with no path added. The constructor does not check it, so a malformed URL fails on each call as 'runtime-unavailable' rather than when the adapter is built.",
+						"examples": ["http://127.0.0.1:43127", "http://127.0.0.1:3001/run"]
 					},
 					{
 						"name": "HttpRuntimeAdapter.constructor.options",
 						"type": "RuntimeOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Carries only the optional timeoutMs, the longest in milliseconds that one invoke call may take; a missing or null value falls back to defaultRuntimeTimeoutMs (30000 ms), and no other value is checked. Defaults to {}.",
+						"examples": [
+							{},
+							{
+								"timeoutMs": 60000
+							},
+							{
+								"timeoutMs": 120000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HttpRuntimeAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new HttpRuntimeAdapter, a UnitRuntime whose kind is 'http'. It keeps the url and the timeout it resolved from options: options.timeoutMs, or defaultRuntimeTimeoutMs (30000 ms) when that is missing or null."
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when options is null, because the constructor reads options.timeoutMs from it; only an undefined options is replaced by the default {}. The url is stored unchecked, so a bad url is never a reason for this error."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
