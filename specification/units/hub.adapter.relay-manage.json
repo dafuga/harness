@@ -25,54 +25,160 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RelayManageAdapter.constructor.config",
 				"type": "RelayManageAdapterConfig",
-				"required": true
+				"required": true,
+				"description": "The adapter's configuration: `hosts` is the Durable Object namespace of the relay's host objects, one per host id, and `/manage/*` is reachable through it only. Each call reads `hosts` when it runs, to address the host object named by its `hostId`."
 			},
 			{
 				"name": "RelayManageAdapter.register.input",
 				"type": "RelayManageRegister",
-				"required": true
+				"required": true,
+				"description": "The registration request, reduced to `owner.id`, `hostId`, `hostKey`, `credentialHash` and `name`; any other field is dropped, and the adapter checks none of these values. The hub requires `hostId` to be the identity of `hostKey`, and the relay checks each field's form and that `hostId` is that identity.",
+				"examples": [
+					{
+						"owner": {
+							"id": "google-104857392016548213374"
+						},
+						"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13",
+						"hostKey": "BNq3vXk9Rf2TzLw8Ys1Hd6Jc4Ua0Ge7Mp5Vb2Iy9Oi3Qa8Wt6Zr1Eu4Lx0Ck7Sn5Dh2Fj9Gm3Pb8Tv6Yo1Ka4Ze",
+						"credentialHash": "a6f0e2c94b7d13085e9af2c6d4b8107e35c9f1a2b0d7e8643c5f9a1b2d3e4f60",
+						"name": "Studio Mac mini"
+					}
+				]
 			},
 			{
 				"name": "RelayManageAdapter.summary.input",
 				"type": "RelayManageOwner",
-				"required": true
+				"required": true,
+				"description": "The owner and host to read: the adapter forwards only `owner.id`, the caller's verified identity, and `hostId`. The relay accepts `owner.id` only as a non-empty string of at most 200 characters and `hostId` only as 40 lowercase hex characters, and it refuses with HTTP 403 when `owner.id` is not the host's owner.",
+				"examples": [
+					{
+						"owner": {
+							"id": "google-104857392016548213374"
+						},
+						"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13"
+					}
+				]
 			},
 			{
 				"name": "RelayManageAdapter.revokeDevice.input",
 				"type": "RelayManageDevice",
-				"required": true
+				"required": true,
+				"description": "The owner, host and device to revoke: the adapter forwards `owner.id` and `hostId` as in the summary input, plus `deviceId`. The relay accepts `deviceId` only as 40 lowercase hex characters, the first 40 hex digits of SHA-256 over the device's public key.",
+				"examples": [
+					{
+						"owner": {
+							"id": "google-104857392016548213374"
+						},
+						"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13",
+						"deviceId": "9b41e0d7c6a25f83e1b0d4c97a6f2e5081d3ab64"
+					}
+				]
 			},
 			{
 				"name": "RelayManageAdapter.unregister.input",
 				"type": "RelayManageOwner",
-				"required": true
+				"required": true,
+				"description": "The owner and host to unregister, forwarded with the same two fields as the summary input. When the relay accepts the call, it closes every socket to the host and deletes everything the host object keeps.",
+				"examples": [
+					{
+						"owner": {
+							"id": "google-104857392016548213374"
+						},
+						"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RelayManageAdapter.register",
-				"type": "Promise<RelayRegistered>"
+				"type": "Promise<RelayRegistered>",
+				"description": "The registration as the relay answered it, rebuilt field by field: `hostId`, which must equal the id that was sent; `generation`, which starts at 1 and grows on each re-registration; and `registeredAt`, which the relay sets on the first registration and keeps afterwards.",
+				"examples": [
+					{
+						"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13",
+						"generation": 1,
+						"registeredAt": "2026-11-14T18:02:47.913Z"
+					}
+				]
 			},
 			{
 				"name": "RelayManageAdapter.summary",
-				"type": "Promise<RemoteHostSummary>"
+				"type": "Promise<RemoteHostSummary>",
+				"description": "The host summary as the relay answered it, rebuilt field by field: `hostId` (which must equal the id requested), `name`, `online`, `generation`, `registeredAt` and `devices`, each device with `deviceId`, `online`, `createdAt` and `lastSeenAt`. `lastSeenAt` is `null` when the relay has no last-seen time for the device, and an answer with a wrong field or a different `hostId` fails as `unavailable`.",
+				"examples": [
+					{
+						"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13",
+						"name": "Studio Mac mini",
+						"online": true,
+						"generation": 2,
+						"registeredAt": "2026-11-14T18:02:47.913Z",
+						"devices": [
+							{
+								"deviceId": "9b41e0d7c6a25f83e1b0d4c97a6f2e5081d3ab64",
+								"online": true,
+								"createdAt": "2026-11-14T18:40:11.205Z",
+								"lastSeenAt": "2026-11-15T09:28:51.602Z"
+							},
+							{
+								"deviceId": "c07e5a3d9f1b48e26d0a7c34b9e2f15a6d8c0e71",
+								"online": false,
+								"createdAt": "2026-11-14T19:05:22.770Z",
+								"lastSeenAt": null
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "RelayManageAdapter.revokeDevice",
-				"type": "Promise<{ ok: true }>"
+				"type": "Promise<{ ok: true }>",
+				"description": "The acknowledgement that the device was revoked: the adapter returns exactly `{ ok: true }`, and only after the relay's answer has `ok` set to `true`.",
+				"examples": [
+					{
+						"ok": true
+					}
+				]
 			},
 			{
 				"name": "RelayManageAdapter.unregister",
-				"type": "Promise<{ ok: true }>"
+				"type": "Promise<{ ok: true }>",
+				"description": "The acknowledgement that the host was unregistered: the adapter returns exactly `{ ok: true }`, and only after the relay's answer has `ok` set to `true`.",
+				"examples": [
+					{
+						"ok": true
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "unavailable",
+				"type": "thrown",
+				"description": "An `Error` with `code` `'unavailable'` and the message 'Harness artifact unavailable', thrown by `hubFail`. The adapter throws it when the call to the host object throws, the answer is not JSON, the status is not 200 and its `error` is not one of the three refusals for that status, or the answer does not have the shape the operation expects, such as a `hostId` other than the one sent."
+			},
+			{
+				"name": "invalid-input",
+				"type": "thrown",
+				"description": "An `Error` with `code` `'invalid-input'` and the same message. The adapter throws it only when the relay answers HTTP 400 with `error` `'invalid-input'`; any other failing answer is `unavailable`."
+			},
+			{
+				"name": "forbidden",
+				"type": "thrown",
+				"description": "An `Error` with `code` `'forbidden'` and the same message. The adapter throws it only when the relay answers HTTP 403 with `error` `'forbidden'`; any other failing answer is `unavailable`."
+			},
+			{
+				"name": "not-found",
+				"type": "thrown",
+				"description": "An `Error` with `code` `'not-found'` and the same message. The adapter throws it only when the relay answers HTTP 404 with `error` `'not-found'`; any other failing answer is `unavailable`."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RelayManageAdapter.register",
@@ -80,17 +186,58 @@
 					{
 						"name": "RelayManageAdapter.register.input",
 						"type": "RelayManageRegister",
-						"required": true
+						"required": true,
+						"description": "The registration request, reduced to `owner.id`, `hostId`, `hostKey`, `credentialHash` and `name`; any other field is dropped, and the adapter checks none of these values. The hub requires `hostId` to be the identity of `hostKey`, and the relay checks each field's form and that `hostId` is that identity.",
+						"examples": [
+							{
+								"owner": {
+									"id": "google-104857392016548213374"
+								},
+								"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13",
+								"hostKey": "BNq3vXk9Rf2TzLw8Ys1Hd6Jc4Ua0Ge7Mp5Vb2Iy9Oi3Qa8Wt6Zr1Eu4Lx0Ck7Sn5Dh2Fj9Gm3Pb8Tv6Yo1Ka4Ze",
+								"credentialHash": "a6f0e2c94b7d13085e9af2c6d4b8107e35c9f1a2b0d7e8643c5f9a1b2d3e4f60",
+								"name": "Studio Mac mini"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelayManageAdapter.register",
-						"type": "Promise<RelayRegistered>"
+						"type": "Promise<RelayRegistered>",
+						"description": "The registration as the relay answered it, rebuilt field by field: `hostId`, which must equal the id that was sent; `generation`, which starts at 1 and grows on each re-registration; and `registeredAt`, which the relay sets on the first registration and keeps afterwards.",
+						"examples": [
+							{
+								"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13",
+								"generation": 1,
+								"registeredAt": "2026-11-14T18:02:47.913Z"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unavailable",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'unavailable'` and the message 'Harness artifact unavailable', thrown by `hubFail`. The adapter throws it when the call to the host object throws, the answer is not JSON, the status is not 200 and its `error` is not one of the three refusals for that status, or the answer does not have the shape the operation expects, such as a `hostId` other than the one sent."
+					},
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'invalid-input'` and the same message. The adapter throws it only when the relay answers HTTP 400 with `error` `'invalid-input'`; any other failing answer is `unavailable`."
+					},
+					{
+						"name": "forbidden",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'forbidden'` and the same message. The adapter throws it only when the relay answers HTTP 403 with `error` `'forbidden'`; any other failing answer is `unavailable`."
+					},
+					{
+						"name": "not-found",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'not-found'` and the same message. The adapter throws it only when the relay answers HTTP 404 with `error` `'not-found'`; any other failing answer is `unavailable`."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RelayManageAdapter.summary",
@@ -98,17 +245,71 @@
 					{
 						"name": "RelayManageAdapter.summary.input",
 						"type": "RelayManageOwner",
-						"required": true
+						"required": true,
+						"description": "The owner and host to read: the adapter forwards only `owner.id`, the caller's verified identity, and `hostId`. The relay accepts `owner.id` only as a non-empty string of at most 200 characters and `hostId` only as 40 lowercase hex characters, and it refuses with HTTP 403 when `owner.id` is not the host's owner.",
+						"examples": [
+							{
+								"owner": {
+									"id": "google-104857392016548213374"
+								},
+								"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelayManageAdapter.summary",
-						"type": "Promise<RemoteHostSummary>"
+						"type": "Promise<RemoteHostSummary>",
+						"description": "The host summary as the relay answered it, rebuilt field by field: `hostId` (which must equal the id requested), `name`, `online`, `generation`, `registeredAt` and `devices`, each device with `deviceId`, `online`, `createdAt` and `lastSeenAt`. `lastSeenAt` is `null` when the relay has no last-seen time for the device, and an answer with a wrong field or a different `hostId` fails as `unavailable`.",
+						"examples": [
+							{
+								"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13",
+								"name": "Studio Mac mini",
+								"online": true,
+								"generation": 2,
+								"registeredAt": "2026-11-14T18:02:47.913Z",
+								"devices": [
+									{
+										"deviceId": "9b41e0d7c6a25f83e1b0d4c97a6f2e5081d3ab64",
+										"online": true,
+										"createdAt": "2026-11-14T18:40:11.205Z",
+										"lastSeenAt": "2026-11-15T09:28:51.602Z"
+									},
+									{
+										"deviceId": "c07e5a3d9f1b48e26d0a7c34b9e2f15a6d8c0e71",
+										"online": false,
+										"createdAt": "2026-11-14T19:05:22.770Z",
+										"lastSeenAt": null
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unavailable",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'unavailable'` and the message 'Harness artifact unavailable', thrown by `hubFail`. The adapter throws it when the call to the host object throws, the answer is not JSON, the status is not 200 and its `error` is not one of the three refusals for that status, or the answer does not have the shape the operation expects, such as a `hostId` other than the one sent."
+					},
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'invalid-input'` and the same message. The adapter throws it only when the relay answers HTTP 400 with `error` `'invalid-input'`; any other failing answer is `unavailable`."
+					},
+					{
+						"name": "forbidden",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'forbidden'` and the same message. The adapter throws it only when the relay answers HTTP 403 with `error` `'forbidden'`; any other failing answer is `unavailable`."
+					},
+					{
+						"name": "not-found",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'not-found'` and the same message. The adapter throws it only when the relay answers HTTP 404 with `error` `'not-found'`; any other failing answer is `unavailable`."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RelayManageAdapter.revokeDevice",
@@ -116,17 +317,54 @@
 					{
 						"name": "RelayManageAdapter.revokeDevice.input",
 						"type": "RelayManageDevice",
-						"required": true
+						"required": true,
+						"description": "The owner, host and device to revoke: the adapter forwards `owner.id` and `hostId` as in the summary input, plus `deviceId`. The relay accepts `deviceId` only as 40 lowercase hex characters, the first 40 hex digits of SHA-256 over the device's public key.",
+						"examples": [
+							{
+								"owner": {
+									"id": "google-104857392016548213374"
+								},
+								"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13",
+								"deviceId": "9b41e0d7c6a25f83e1b0d4c97a6f2e5081d3ab64"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelayManageAdapter.revokeDevice",
-						"type": "Promise<{ ok: true }>"
+						"type": "Promise<{ ok: true }>",
+						"description": "The acknowledgement that the device was revoked: the adapter returns exactly `{ ok: true }`, and only after the relay's answer has `ok` set to `true`.",
+						"examples": [
+							{
+								"ok": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unavailable",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'unavailable'` and the message 'Harness artifact unavailable', thrown by `hubFail`. The adapter throws it when the call to the host object throws, the answer is not JSON, the status is not 200 and its `error` is not one of the three refusals for that status, or the answer does not have the shape the operation expects, such as a `hostId` other than the one sent."
+					},
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'invalid-input'` and the same message. The adapter throws it only when the relay answers HTTP 400 with `error` `'invalid-input'`; any other failing answer is `unavailable`."
+					},
+					{
+						"name": "forbidden",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'forbidden'` and the same message. The adapter throws it only when the relay answers HTTP 403 with `error` `'forbidden'`; any other failing answer is `unavailable`."
+					},
+					{
+						"name": "not-found",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'not-found'` and the same message. The adapter throws it only when the relay answers HTTP 404 with `error` `'not-found'`; any other failing answer is `unavailable`."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RelayManageAdapter.unregister",
@@ -134,17 +372,53 @@
 					{
 						"name": "RelayManageAdapter.unregister.input",
 						"type": "RelayManageOwner",
-						"required": true
+						"required": true,
+						"description": "The owner and host to unregister, forwarded with the same two fields as the summary input. When the relay accepts the call, it closes every socket to the host and deletes everything the host object keeps.",
+						"examples": [
+							{
+								"owner": {
+									"id": "google-104857392016548213374"
+								},
+								"hostId": "3f9a1c07b2e84d5f96a0c1e7d4b2a8f05c9e6d13"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelayManageAdapter.unregister",
-						"type": "Promise<{ ok: true }>"
+						"type": "Promise<{ ok: true }>",
+						"description": "The acknowledgement that the host was unregistered: the adapter returns exactly `{ ok: true }`, and only after the relay's answer has `ok` set to `true`.",
+						"examples": [
+							{
+								"ok": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unavailable",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'unavailable'` and the message 'Harness artifact unavailable', thrown by `hubFail`. The adapter throws it when the call to the host object throws, the answer is not JSON, the status is not 200 and its `error` is not one of the three refusals for that status, or the answer does not have the shape the operation expects, such as a `hostId` other than the one sent."
+					},
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'invalid-input'` and the same message. The adapter throws it only when the relay answers HTTP 400 with `error` `'invalid-input'`; any other failing answer is `unavailable`."
+					},
+					{
+						"name": "forbidden",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'forbidden'` and the same message. The adapter throws it only when the relay answers HTTP 403 with `error` `'forbidden'`; any other failing answer is `unavailable`."
+					},
+					{
+						"name": "not-found",
+						"type": "thrown",
+						"description": "An `Error` with `code` `'not-found'` and the same message. The adapter throws it only when the relay answers HTTP 404 with `error` `'not-found'`; any other failing answer is `unavailable`."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -154,17 +428,19 @@
 					{
 						"name": "RelayManageAdapter.constructor.config",
 						"type": "RelayManageAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "The adapter's configuration: `hosts` is the Durable Object namespace of the relay's host objects, one per host id, and `/manage/*` is reachable through it only. Each call reads `hosts` when it runs, to address the host object named by its `hostId`."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelayManageAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new `RelayManageAdapter` instance, which keeps the config and creates its own `RelayReplyValidator`."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
