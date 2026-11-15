@@ -30,7 +30,7 @@ const build = await Bun.build({
 	entrypoints: [
 		join(
 			import.meta.dir,
-			'../src/services/native-picker-bridge-service/NativePickerBridgeService.ts'
+			'../src/services/development-tooling/native-picker-bridge-service/NativePickerBridgeService.ts'
 		)
 	],
 	target: 'browser',
