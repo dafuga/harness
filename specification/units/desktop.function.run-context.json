@@ -18,17 +18,32 @@
 				"name": "runContext.context",
 				"type": "RunContext",
 				"required": true,
-				"description": "Run context containing project planning access, revision, entity, thread and requested work."
+				"description": "The run context for one agent run: runContext reads only entity, revision.commit, request.threadId, request.text and request.environment (an absent environment is written as 'local only'), awaits planning.messages for the request's thread, and ignores the rest of the context. A missing context, entity, request, revision or planning, a missing entity.id, a non-array entity.relationships, or a relationship without an id rejects the call with a TypeError."
 			}
 		],
 		"outputs": [
 			{
 				"name": "runContext",
 				"type": "Promise<string>",
-				"description": "Prompt with entity contract, its uses and consumers, up to 20 recent messages truncated to 2000 characters each, reference instructions and requested work. Includes the shared coverage-first bug repair rules; assembling the prompt runs no repair or test."
+				"description": "The agent prompt string: the fixed working rules, the shared coverage-first bug repair rules, reference instructions listing the unique entity and relationship ids that match the unit id grammar (at most 120), the entity's id, title, summary (as responsibility), contract, owned sources and relationships as JSON at revision.commit, the last 20 thread messages in planning's order as 'author: text' lines with each text cut to 2000 characters, the environment scope with its promotion ceiling, and the request text. Building it awaits planning.messages once and runs no repair, test or commit.",
+				"examples": [
+					"Assigned entity only. Treat dependency implementations as black boxes; use their contracts. Use Harness generators, specifications and development loops for changes. Make a simplification/performance attempt and test actual behavior. Do not commit, push, deploy, change branch, or claim tests passed without evidence. Host-owned files may be changed only when needed; report every such path. Behavior notes: at most 30 words and 200 characters. Each simplification/performance attempt: at most 15 words and 140 characters.\nFor a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.\nStrengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.\nIf no existing test covers the behavior, explain the missing coverage category and extend reusable standardized coverage before product repair.\nRun the strengthened test against the broken implementation and record the failing command, assertion and observed result before repair. A fixture or environment error is not defect proof; never manufacture a failure.\nBefore changing product code, commit the failing test separately. Run harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure> on that commit. Then make a separate fix commit and run loop record --phase green: the tests, fixtures, command and environment must be unchanged. Preserve both commits when landing; do not squash away the failing-test commit. Focused regression results do not replace full verification.\nRepair the product while keeping the strengthened test unchanged. Repeat repair and the same unchanged test until it passes; retain failing and passing evidence at their tested revisions, then run normal verification.\nWhen correcting function names or APIs, parameter names describe their domain role; rename source declarations and update callers and contracts, rather than inventing display labels. Diagnose why the original name or API was accepted, then repair the earliest responsible generator, skill or review checkpoint within the authorized project scope. Verify the revised guidance is emitted for generated projects.\nFor helper catalogs, prove one selected callable per detail page: distinct links for functions sharing a source module, only that callable’s parameters, return and throws, and selection retained across tabs and revisions. Keep module ownership/history explicit; a missing callable must not silently show a sibling.\nDuring read-only planning, report the coverage diagnosis and propose the standardized test change; do not edit tests or product source. Write only within an approved implementation request.\nName a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. Name a unit that is not listed here in plain words.\nUnits you may name: [[unit:reports.component.evidence-grid]]\nEntity at 6b1e0c93f47a2d58e1c4b0a7d93f26e5a81c4f70:\n{\"id\":\"reports.component.evidence-grid\",\"title\":\"Evidence grid\",\"responsibility\":\"Shows the recorded captures of one unit as thumbnails, each with its verification state.\",\"contract\":{\"inputs\":[],\"outputs\":[],\"errors\":[],\"hash\":null},\"ownedSource\":[\"packages/reports/src/components/evidence-grid/EvidenceGrid.tsx\"],\"relationships\":[]}\nEntity thread history:\nuser: Show the capture time under each thumbnail.\nagent: Planned a capture-time label below each thumbnail; the contract does not change.\nEnvironment scope: local only. Automatic promotion stops at local only; production requires the Deploy UI. Deployment and credentials are handled by the host after verification.\nRequest:\nImplement the capture-time label under each thumbnail."
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Rejects with a TypeError when context, entity, request, revision or planning is null or undefined, when entity.relationships is not an array, when entity.id or a relationship id is null or undefined, or when a relationship entry is null or undefined. It also rejects with a TypeError when planning.messages does not resolve to an array, when one of the last 20 messages is null or has no text, or when JSON.stringify meets a BigInt or circular value among the entity fields it serializes."
+			},
+			{
+				"name": "PlanningPort.messages rejection",
+				"type": "thrown",
+				"description": "Any rejection of planning.messages(entity.id, request.threadId, revision.commit) reaches the caller unchanged because runContext does not catch it. PlanningPort's type names no error, so the name is whatever the planning adapter rejects with."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runContext",
@@ -37,18 +52,32 @@
 						"name": "runContext.context",
 						"type": "RunContext",
 						"required": true,
-						"description": "Run context containing project planning access, revision, entity, thread and requested work."
+						"description": "The run context for one agent run: runContext reads only entity, revision.commit, request.threadId, request.text and request.environment (an absent environment is written as 'local only'), awaits planning.messages for the request's thread, and ignores the rest of the context. A missing context, entity, request, revision or planning, a missing entity.id, a non-array entity.relationships, or a relationship without an id rejects the call with a TypeError."
 					}
 				],
 				"outputs": [
 					{
 						"name": "runContext",
 						"type": "Promise<string>",
-						"description": "Prompt with entity contract, its uses and consumers, up to 20 recent messages truncated to 2000 characters each, reference instructions and requested work. Includes the shared coverage-first bug repair rules; assembling the prompt runs no repair or test."
+						"description": "The agent prompt string: the fixed working rules, the shared coverage-first bug repair rules, reference instructions listing the unique entity and relationship ids that match the unit id grammar (at most 120), the entity's id, title, summary (as responsibility), contract, owned sources and relationships as JSON at revision.commit, the last 20 thread messages in planning's order as 'author: text' lines with each text cut to 2000 characters, the environment scope with its promotion ceiling, and the request text. Building it awaits planning.messages once and runs no repair, test or commit.",
+						"examples": [
+							"Assigned entity only. Treat dependency implementations as black boxes; use their contracts. Use Harness generators, specifications and development loops for changes. Make a simplification/performance attempt and test actual behavior. Do not commit, push, deploy, change branch, or claim tests passed without evidence. Host-owned files may be changed only when needed; report every such path. Behavior notes: at most 30 words and 200 characters. Each simplification/performance attempt: at most 15 words and 140 characters.\nFor a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.\nStrengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.\nIf no existing test covers the behavior, explain the missing coverage category and extend reusable standardized coverage before product repair.\nRun the strengthened test against the broken implementation and record the failing command, assertion and observed result before repair. A fixture or environment error is not defect proof; never manufacture a failure.\nBefore changing product code, commit the failing test separately. Run harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure> on that commit. Then make a separate fix commit and run loop record --phase green: the tests, fixtures, command and environment must be unchanged. Preserve both commits when landing; do not squash away the failing-test commit. Focused regression results do not replace full verification.\nRepair the product while keeping the strengthened test unchanged. Repeat repair and the same unchanged test until it passes; retain failing and passing evidence at their tested revisions, then run normal verification.\nWhen correcting function names or APIs, parameter names describe their domain role; rename source declarations and update callers and contracts, rather than inventing display labels. Diagnose why the original name or API was accepted, then repair the earliest responsible generator, skill or review checkpoint within the authorized project scope. Verify the revised guidance is emitted for generated projects.\nFor helper catalogs, prove one selected callable per detail page: distinct links for functions sharing a source module, only that callable’s parameters, return and throws, and selection retained across tabs and revisions. Keep module ownership/history explicit; a missing callable must not silently show a sibling.\nDuring read-only planning, report the coverage diagnosis and propose the standardized test change; do not edit tests or product source. Write only within an approved implementation request.\nName a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. Name a unit that is not listed here in plain words.\nUnits you may name: [[unit:reports.component.evidence-grid]]\nEntity at 6b1e0c93f47a2d58e1c4b0a7d93f26e5a81c4f70:\n{\"id\":\"reports.component.evidence-grid\",\"title\":\"Evidence grid\",\"responsibility\":\"Shows the recorded captures of one unit as thumbnails, each with its verification state.\",\"contract\":{\"inputs\":[],\"outputs\":[],\"errors\":[],\"hash\":null},\"ownedSource\":[\"packages/reports/src/components/evidence-grid/EvidenceGrid.tsx\"],\"relationships\":[]}\nEntity thread history:\nuser: Show the capture time under each thumbnail.\nagent: Planned a capture-time label below each thumbnail; the contract does not change.\nEnvironment scope: local only. Automatic promotion stops at local only; production requires the Deploy UI. Deployment and credentials are handled by the host after verification.\nRequest:\nImplement the capture-time label under each thumbnail."
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects with a TypeError when context, entity, request, revision or planning is null or undefined, when entity.relationships is not an array, when entity.id or a relationship id is null or undefined, or when a relationship entry is null or undefined. It also rejects with a TypeError when planning.messages does not resolve to an array, when one of the last 20 messages is null or has no text, or when JSON.stringify meets a BigInt or circular value among the entity fields it serializes."
+					},
+					{
+						"name": "PlanningPort.messages rejection",
+						"type": "thrown",
+						"description": "Any rejection of planning.messages(entity.id, request.threadId, revision.commit) reaches the caller unchanged because runContext does not catch it. PlanningPort's type names no error, so the name is whatever the planning adapter rejects with."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
