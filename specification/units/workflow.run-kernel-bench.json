@@ -15,36 +15,409 @@
 		"symbols": ["runKernelBench", "renderBench", "BenchOptions", "BenchOptions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "runKernelBench.options",
 				"type": "BenchOptions",
-				"required": true
+				"required": true,
+				"description": "The required options object supplies the CLI command prefix and can select a repository root, sample plan, and optional write. The root defaults to process.cwd(); omitted quick remains undefined and selects 3 workloads with 9 cold samples and 200 warm iterations, while true selects the first 2 workloads with 3 and 30; omitted write remains undefined and skips saving, while a truthy value writes through MeasurementRepository.",
+				"examples": [
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14",
+						"quick": true,
+						"write": false,
+						"cli": ["harness"]
+					}
+				]
 			},
 			{
 				"name": "renderBench.benchmark",
 				"type": "KernelBenchmark",
-				"required": true
+				"required": true,
+				"description": "A KernelBenchmark object whose workloads, measurements, default, profile, source state, and provenance are read to form the report. Missing or null matching metric values render as n/a.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"contract": "impact-kernel/1",
+						"recordedAt": "2026-11-15T10:00:00.000Z",
+						"profile": {
+							"id": "a1b2c3d4e5f60718",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "bun 1.3.1"
+						},
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"dirty": false
+						},
+						"provenance": {
+							"kind": "calibration",
+							"verified": false,
+							"note": "Observational measurements from a local benchmark run. They are not verification evidence and cannot establish or satisfy a budget baseline."
+						},
+						"workloads": [
+							{
+								"id": "graph-100",
+								"nodes": 100,
+								"edges": 205,
+								"changed": 4,
+								"requestBytes": 6100,
+								"responseBytes": 4200
+							},
+							{
+								"id": "graph-1k",
+								"nodes": 1000,
+								"edges": 2050,
+								"changed": 31,
+								"requestBytes": 58000,
+								"responseBytes": 20000
+							}
+						],
+						"measurements": [
+							{
+								"unit": "function.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.12,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-100",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "module",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "kernel.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.16,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-100",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "wasm",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "kernel.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.2,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-100",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "process",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "function.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.18,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-100",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "http",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "function.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 1.2,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-1k",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "module",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "kernel.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 1.25,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-1k",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "wasm",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "kernel.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 1.5,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-1k",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "process",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "function.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 1.1,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-1k",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "http",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							}
+						],
+						"default": {
+							"runtime": "module",
+							"basis": "measured",
+							"workload": "graph-1k",
+							"profile": "a1b2c3d4e5f60718",
+							"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+							"candidates": [
+								{
+									"runtime": "module",
+									"coldMs": 1.2
+								},
+								{
+									"runtime": "wasm",
+									"coldMs": 1.25
+								},
+								{
+									"runtime": "process",
+									"coldMs": 1.5
+								}
+							],
+							"excluded": [
+								{
+									"runtime": "http",
+									"reason": "Needs an independently served unit; never chosen automatically."
+								}
+							]
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "runKernelBench",
-				"type": "Promise<KernelBenchmark>"
+				"type": "Promise<KernelBenchmark>",
+				"description": "Resolves to calibration data containing the impact-kernel contract, source state, machine profile, workloads, measurements, provenance, and selected default runtime. Quick mode uses the first two fixed workload sizes and the full plan uses all three; writing occurs only when write is truthy.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"contract": "impact-kernel/1",
+						"recordedAt": "2026-11-15T10:00:00.000Z",
+						"profile": {
+							"id": "a1b2c3d4e5f60718",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "bun 1.3.1"
+						},
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"dirty": false
+						},
+						"provenance": {
+							"kind": "calibration",
+							"verified": false,
+							"note": "Observational measurements from a local benchmark run. They are not verification evidence and cannot establish or satisfy a budget baseline."
+						},
+						"workloads": [
+							{
+								"id": "graph-100",
+								"nodes": 100,
+								"edges": 205,
+								"changed": 4,
+								"requestBytes": 6100,
+								"responseBytes": 4200
+							},
+							{
+								"id": "graph-1k",
+								"nodes": 1000,
+								"edges": 2050,
+								"changed": 31,
+								"requestBytes": 58000,
+								"responseBytes": 20000
+							}
+						],
+						"measurements": [
+							{
+								"unit": "function.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.12,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-100",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "module",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "kernel.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.16,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-100",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "wasm",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "kernel.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.2,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-100",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "process",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "function.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.18,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-100",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "http",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "function.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 1.2,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-1k",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "module",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "kernel.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 1.25,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-1k",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "wasm",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "kernel.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 1.5,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-1k",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "process",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							},
+							{
+								"unit": "function.impact-kernel",
+								"metric": "latency-cold-ms",
+								"unitOfMeasure": "ms",
+								"value": 1.1,
+								"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+								"workload": "graph-1k",
+								"profile": "a1b2c3d4e5f60718",
+								"target": "http",
+								"samples": 3,
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							}
+						],
+						"default": {
+							"runtime": "module",
+							"basis": "measured",
+							"workload": "graph-1k",
+							"profile": "a1b2c3d4e5f60718",
+							"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+							"candidates": [
+								{
+									"runtime": "module",
+									"coldMs": 1.2
+								},
+								{
+									"runtime": "wasm",
+									"coldMs": 1.25
+								},
+								{
+									"runtime": "process",
+									"coldMs": 1.5
+								}
+							],
+							"excluded": [
+								{
+									"runtime": "http",
+									"reason": "Needs an independently served unit; never chosen automatically."
+								}
+							]
+						}
+					}
+				]
 			},
 			{
 				"name": "renderBench",
-				"type": "string"
+				"type": "string",
+				"description": "A multiline text report with one row per workload and runtime, followed by the chosen default and calibration provenance. Missing or null metric values render as n/a.",
+				"examples": [
+					"Impact kernel benchmark on Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz (bun 1.3.1).\n  graph-100  module   cold 0.120 ms  warm n/a ms  n/a ops/s\n  graph-100  wasm     cold 0.160 ms  warm n/a ms  n/a ops/s\n  graph-100  process  cold 0.200 ms  warm n/a ms  n/a ops/s\n  graph-100  http     cold 0.180 ms  warm n/a ms  n/a ops/s\n  graph-1k   module   cold 1.200 ms  warm n/a ms  n/a ops/s\n  graph-1k   wasm     cold 1.250 ms  warm n/a ms  n/a ops/s\n  graph-1k   process  cold 1.500 ms  warm n/a ms  n/a ops/s\n  graph-1k   http     cold 1.100 ms  warm n/a ms  n/a ops/s\nDefault: module (measured on graph-1k). Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.\nProvenance: calibration from a clean tree; not verification evidence or a budget baseline."
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised when the built kernel artifacts required for benchmarking are unavailable or a cold-sample CLI exits with a nonzero status."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "serveKernel rejects with Error when its child process errors, exits before readiness, exceeds the startup timeout, or returns invalid readiness JSON."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runKernelBench",
@@ -52,22 +425,214 @@
 					{
 						"name": "runKernelBench.options",
 						"type": "BenchOptions",
-						"required": true
+						"required": true,
+						"description": "The required options object supplies the CLI command prefix and can select a repository root, sample plan, and optional write. The root defaults to process.cwd(); omitted quick remains undefined and selects 3 workloads with 9 cold samples and 200 warm iterations, while true selects the first 2 workloads with 3 and 30; omitted write remains undefined and skips saving, while a truthy value writes through MeasurementRepository.",
+						"examples": [
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14",
+								"quick": true,
+								"write": false,
+								"cli": ["harness"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runKernelBench",
-						"type": "Promise<KernelBenchmark>"
+						"type": "Promise<KernelBenchmark>",
+						"description": "Resolves to calibration data containing the impact-kernel contract, source state, machine profile, workloads, measurements, provenance, and selected default runtime. Quick mode uses the first two fixed workload sizes and the full plan uses all three; writing occurs only when write is truthy.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"contract": "impact-kernel/1",
+								"recordedAt": "2026-11-15T10:00:00.000Z",
+								"profile": {
+									"id": "a1b2c3d4e5f60718",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "bun 1.3.1"
+								},
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"dirty": false
+								},
+								"provenance": {
+									"kind": "calibration",
+									"verified": false,
+									"note": "Observational measurements from a local benchmark run. They are not verification evidence and cannot establish or satisfy a budget baseline."
+								},
+								"workloads": [
+									{
+										"id": "graph-100",
+										"nodes": 100,
+										"edges": 205,
+										"changed": 4,
+										"requestBytes": 6100,
+										"responseBytes": 4200
+									},
+									{
+										"id": "graph-1k",
+										"nodes": 1000,
+										"edges": 2050,
+										"changed": 31,
+										"requestBytes": 58000,
+										"responseBytes": 20000
+									}
+								],
+								"measurements": [
+									{
+										"unit": "function.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.12,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-100",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "module",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "kernel.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.16,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-100",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "wasm",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "kernel.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.2,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-100",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "process",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "function.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.18,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-100",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "http",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "function.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 1.2,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-1k",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "module",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "kernel.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 1.25,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-1k",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "wasm",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "kernel.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 1.5,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-1k",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "process",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "function.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 1.1,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-1k",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "http",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									}
+								],
+								"default": {
+									"runtime": "module",
+									"basis": "measured",
+									"workload": "graph-1k",
+									"profile": "a1b2c3d4e5f60718",
+									"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+									"candidates": [
+										{
+											"runtime": "module",
+											"coldMs": 1.2
+										},
+										{
+											"runtime": "wasm",
+											"coldMs": 1.25
+										},
+										{
+											"runtime": "process",
+											"coldMs": 1.5
+										}
+									],
+									"excluded": [
+										{
+											"runtime": "http",
+											"reason": "Needs an independently served unit; never chosen automatically."
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when the built kernel artifacts required for benchmarking are unavailable or a cold-sample CLI exits with a nonzero status."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "serveKernel rejects with Error when its child process errors, exits before readiness, exceeds the startup timeout, or returns invalid readiness JSON."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderBench",
@@ -75,17 +640,198 @@
 					{
 						"name": "renderBench.benchmark",
 						"type": "KernelBenchmark",
-						"required": true
+						"required": true,
+						"description": "A KernelBenchmark object whose workloads, measurements, default, profile, source state, and provenance are read to form the report. Missing or null matching metric values render as n/a.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"contract": "impact-kernel/1",
+								"recordedAt": "2026-11-15T10:00:00.000Z",
+								"profile": {
+									"id": "a1b2c3d4e5f60718",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "bun 1.3.1"
+								},
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"dirty": false
+								},
+								"provenance": {
+									"kind": "calibration",
+									"verified": false,
+									"note": "Observational measurements from a local benchmark run. They are not verification evidence and cannot establish or satisfy a budget baseline."
+								},
+								"workloads": [
+									{
+										"id": "graph-100",
+										"nodes": 100,
+										"edges": 205,
+										"changed": 4,
+										"requestBytes": 6100,
+										"responseBytes": 4200
+									},
+									{
+										"id": "graph-1k",
+										"nodes": 1000,
+										"edges": 2050,
+										"changed": 31,
+										"requestBytes": 58000,
+										"responseBytes": 20000
+									}
+								],
+								"measurements": [
+									{
+										"unit": "function.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.12,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-100",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "module",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "kernel.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.16,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-100",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "wasm",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "kernel.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.2,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-100",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "process",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "function.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.18,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-100",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "http",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "function.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 1.2,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-1k",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "module",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "kernel.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 1.25,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-1k",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "wasm",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "kernel.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 1.5,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-1k",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "process",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									},
+									{
+										"unit": "function.impact-kernel",
+										"metric": "latency-cold-ms",
+										"unitOfMeasure": "ms",
+										"value": 1.1,
+										"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+										"workload": "graph-1k",
+										"profile": "a1b2c3d4e5f60718",
+										"target": "http",
+										"samples": 3,
+										"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+										"artifacts": []
+									}
+								],
+								"default": {
+									"runtime": "module",
+									"basis": "measured",
+									"workload": "graph-1k",
+									"profile": "a1b2c3d4e5f60718",
+									"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+									"candidates": [
+										{
+											"runtime": "module",
+											"coldMs": 1.2
+										},
+										{
+											"runtime": "wasm",
+											"coldMs": 1.25
+										},
+										{
+											"runtime": "process",
+											"coldMs": 1.5
+										}
+									],
+									"excluded": [
+										{
+											"runtime": "http",
+											"reason": "Needs an independently served unit; never chosen automatically."
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderBench",
-						"type": "string"
+						"type": "string",
+						"description": "A multiline text report with one row per workload and runtime, followed by the chosen default and calibration provenance. Missing or null metric values render as n/a.",
+						"examples": [
+							"Impact kernel benchmark on Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz (bun 1.3.1).\n  graph-100  module   cold 0.120 ms  warm n/a ms  n/a ops/s\n  graph-100  wasm     cold 0.160 ms  warm n/a ms  n/a ops/s\n  graph-100  process  cold 0.200 ms  warm n/a ms  n/a ops/s\n  graph-100  http     cold 0.180 ms  warm n/a ms  n/a ops/s\n  graph-1k   module   cold 1.200 ms  warm n/a ms  n/a ops/s\n  graph-1k   wasm     cold 1.250 ms  warm n/a ms  n/a ops/s\n  graph-1k   process  cold 1.500 ms  warm n/a ms  n/a ops/s\n  graph-1k   http     cold 1.100 ms  warm n/a ms  n/a ops/s\nDefault: module (measured on graph-1k). Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.\nProvenance: calibration from a clean tree; not verification evidence or a budget baseline."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
