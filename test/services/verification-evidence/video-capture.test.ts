@@ -109,7 +109,7 @@ test('capture orchestration observes configured boundary signatures and preserve
 				loadScript: async () => ({ ...script, checkpoint: async () => 'c'.repeat(64) })
 			})
 		).rejects.toThrow(/entry.*checkpoint/);
-		expect(result.raw.every((raw) => existsSync(raw.directory))).toBe(true);
+		expect(result.raw.every((raw) => existsSync(join(raw.directory, 'raw')))).toBe(true);
 	});
 }, 30_000);
 
@@ -119,16 +119,19 @@ test('capture orchestration cleans owned raw only after an attached matching rec
 		const f = await videoCaptureFixture(repo),
 			options = f.options();
 		const result = await f.service.record(options);
-		expect(result.raw.every((raw) => existsSync(raw.directory))).toBe(true);
+		expect(result.raw.every((raw) => existsSync(join(raw.directory, 'raw')))).toBe(true);
 		expect(existsSync(join(options.directory, result.captures[0].path))).toBe(false);
 		const sidecar = JSON.parse(readFileSync(join(options.directory, 'video-batches.json'), 'utf8'));
 		expect(sidecar.captures).toHaveLength(2);
 		await expect(f.service.acknowledge(result, 'a'.repeat(64))).rejects.toThrow(/attached|receipt/);
 		expect(f.native.acknowledge).not.toHaveBeenCalled();
 		f.publish(result);
-		await f.service.acknowledge(result, 'a'.repeat(64));
+		await f.service.acknowledgeDirectory(options.directory, 'a'.repeat(64));
 		expect(f.native.acknowledge).toHaveBeenCalledTimes(2);
-		expect(result.raw.every((raw) => !existsSync(raw.directory))).toBe(true);
+		expect(
+			f.native.produced.every((item) => existsSync(item.video.path) && existsSync(item.poster.path))
+		).toBe(true);
+		expect(result.raw.every((raw) => !existsSync(join(raw.directory, 'raw')))).toBe(true);
 	});
 }, 30_000);
 
@@ -152,11 +155,16 @@ test('capture orchestration re-records a corrupt sibling and bypasses old native
 		const slots = new VideoEvidenceService(repo.root)
 			.plan(captureDeclaration)
 			.record.map((slot) => ({
-				...slot,
+				unit: slot.unit,
+				clipId: slot.clipId,
+				viewport: slot.viewport,
+				inputHash: slot.inputHash,
 				reasons: ['recording required: unresolved dynamic input']
 			}));
 		options.env!.HARNESS_VIDEO_CAPTURE_CONTEXT = JSON.stringify({
 			schemaVersion: 1,
+			repository: repo.root,
+			pinned: { evidence: null, notes: null },
 			snapshot: repo.root,
 			source: options.source,
 			slots

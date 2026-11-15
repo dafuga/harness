@@ -1,6 +1,6 @@
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, rmSync, readFileSync, copyFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { vi } from 'vitest';
 import type { Browser } from '@playwright/test';
@@ -73,15 +73,7 @@ export function captureNativeFixture(root: string) {
 	const browserFactory = vi.fn(
 		async () => ({ close: vi.fn(async () => {}) }) as unknown as Browser
 	);
-	const loadScript = vi.fn(async (_input: VideoCaptureScriptInput) => ({
-		diagnostics: { watch() {}, async finish() {} },
-		async prepare() {},
-		async perform({ mark }: Parameters<NativeRecordingOptions['perform']>[0]) {
-			await mark('state', 'ready');
-			await mark('edge', 'finish');
-			await mark('state', 'done');
-		}
-	}));
+	const loadScript = vi.fn(async (_input: VideoCaptureScriptInput) => fixtureScript());
 	const record = vi.fn(async (options: NativeRecordingOptions): Promise<NativeRecording> => {
 		await options.prepare(session);
 		const events: NativeRecording['metadata']['events'] = [];
@@ -99,13 +91,13 @@ export function captureNativeFixture(root: string) {
 		});
 		const source = media[JSON.parse(options.slotKey)[1] === 'first' ? 0 : 1];
 		const directory = join(cacheRoots.at(-1)!, String(produced.length));
-		mkdirSync(directory);
+		mkdirSync(join(directory, 'raw'), { recursive: true });
 		const result = recordedNative(options, events, { source, directory });
 		produced.push(result);
 		return result;
 	});
 	const acknowledge = vi.fn(async (item: NativeRecording) => {
-		rmSync(item.directory, { recursive: true });
+		rmSync(join(item.directory, 'raw'), { recursive: true, force: true });
 	});
 	const factory = (directory: string) => {
 		cacheRoots.push(directory);
@@ -141,8 +133,10 @@ function recordedNative(
 	events: NativeRecording['metadata']['events'],
 	state: { source: { path: string; poster: string }; directory: string }
 ): NativeRecording {
-	const video = fixtureFile(state.source.path),
-		poster = fixtureFile(state.source.poster);
+	copyFileSync(state.source.path, join(state.directory, 'clip.mp4'));
+	copyFileSync(state.source.poster, join(state.directory, 'poster.png'));
+	const video = fixtureFile(join(state.directory, 'clip.mp4')),
+		poster = fixtureFile(join(state.directory, 'poster.png'));
 	return {
 		directory: state.directory,
 		video,
@@ -167,4 +161,16 @@ function recordedNative(
 			runnerRssBytes: 1
 		}
 	} as NativeRecording;
+}
+
+function fixtureScript() {
+	return {
+		diagnostics: { watch() {}, async finish() {} },
+		async prepare() {},
+		async perform({ mark }: Parameters<NativeRecordingOptions['perform']>[0]) {
+			await mark('state', 'ready');
+			await mark('edge', 'finish');
+			await mark('state', 'done');
+		}
+	};
 }

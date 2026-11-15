@@ -4,14 +4,16 @@ import { expect } from 'vitest';
 import { VideoCaptureService } from '../../src/services/verification-evidence/VideoCaptureService';
 import { videoCaptureFixture, captureDeclaration } from './videoCaptureFixture';
 import { browserErrorCollector } from './browserTest';
+import { videoCaptureDiagnostics } from './videoCaptureDiagnostics';
 import type { TemporaryRepo } from './temporary.types';
 import type { NativeRecordingSession } from '../../src/services/verification-evidence/NativeVideoRecorderService.types';
 
-const signature = (state: string) => createHash('sha256').update(`${state}|160x120`).digest('hex');
+const signature = (state: string, viewport = { width: 160, height: 120 }) =>
+	createHash('sha256').update(`${state}|${viewport.width}x${viewport.height}`).digest('hex');
 
 export async function assertRealVideoCapture(repo: TemporaryRepo) {
 	const f = await videoCaptureFixture(repo),
-		declaration = structuredClone(captureDeclaration);
+		declaration = globalThis.structuredClone(captureDeclaration);
 	declaration.clips = [declaration.clips[0]];
 	declaration.playlists[0].clips = ['first'];
 	Object.assign(declaration.clips[0], {
@@ -41,7 +43,7 @@ export async function assertRealVideoCapture(repo: TemporaryRepo) {
 			},
 			checkpoint: async ({ page }: NativeRecordingSession) => {
 				const actual = await page.getByRole('button').textContent();
-				return signature(actual!);
+				return signature(actual!, page.viewportSize()!);
 			}
 		})
 	});
@@ -57,4 +59,5 @@ export async function assertRealVideoCapture(repo: TemporaryRepo) {
 	});
 	expect(result.captures[0].video!.sourceFrameRate).toBeGreaterThan(20);
 	expect(result.raw).toHaveLength(1);
+	videoCaptureDiagnostics(result);
 }
