@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/repositories/evidence-branch-repository/EvidenceBranchRepository.ts",
 			"src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository.ts",
 			"src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository.types.ts"
 		],
 		"symbols": [
-			"EvidenceBranchRepository",
 			"EvidenceBranchRepository",
 			"EvidenceBranchRepository.constructor",
 			"EvidenceBranchRepository.tip",
