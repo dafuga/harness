@@ -36,59 +36,153 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "wasmUnavailable.message",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Text used as the message when wasmUnavailable creates its named error. The missing-export path supplies the Harness ABI explanation, while direct callers may provide any string.",
+				"examples": [
+					"Wasm module does not export the Harness JSON ABI (memory, harness_alloc, harness_free, harness_invoke)"
+				]
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.constructor.source",
 				"type": "WasmSource | WasmLoader",
-				"required": true
+				"required": true,
+				"description": "Provides a precompiled WebAssembly.Module, module bytes, or a loader that returns either synchronously or asynchronously. Byte sources are compiled when first loaded, and the adapter does not read a file.",
+				"examples": [
+					[0, 97, 115, 109, 1, 0, 0, 0]
+				]
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.constructor.options",
 				"type": "RuntimeOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Sets the per-call deadline through timeoutMs; asynchronous loading can time out, but synchronous WebAssembly work on this thread cannot be interrupted and a late result is discarded when the work returns. Defaults to {} and uses defaultRuntimeTimeoutMs (30,000 ms) when timeoutMs is absent or null.",
+				"examples": [
+					{},
+					{
+						"timeoutMs": 5000
+					}
+				]
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.invoke.request",
 				"type": "RuntimeRequest",
-				"required": true
+				"required": true,
+				"description": "Names the requested operation and may include its input in the optional input field; invoke checks the request for portable JSON before serialization. Non-finite numbers, ill-formed strings, non-plain objects, or nesting beyond 64 levels resolve as invalid-json.",
+				"examples": [
+					{
+						"operation": "run"
+					},
+					{
+						"operation": "run",
+						"input": {
+							"message": "hello"
+						}
+					}
+				]
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.invokeText.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Raw request text encoded and sent through the module ABI. This method does not parse or validate the text, so the caller must provide content the module understands.",
+				"examples": ["{\"operation\":\"run\",\"input\":{\"message\":\"hello\"}}"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "wasmUnavailable",
-				"type": "Error"
+				"type": "Error",
+				"description": "Returns an Error named RuntimeUnavailable with the supplied message. The loader path throws it when a module lacks one or more required Harness JSON ABI exports."
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.invoke",
-				"type": "Promise<RuntimeResponse>"
+				"type": "Promise<RuntimeResponse>",
+				"description": "Resolves to the module response envelope or a failure envelope for invalid JSON, invalid response text, timeout, or a runtime call failure. The deadline can expire while asynchronous loading yields; synchronous WebAssembly work cannot be interrupted and a result arriving after the deadline is discarded.",
+				"examples": [
+					{
+						"ok": true,
+						"output": {
+							"value": "done"
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "invalid-json",
+							"message": "request is not valid JSON"
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-unavailable",
+							"message": "Wasm module does not export the Harness JSON ABI (memory, harness_alloc, harness_free, harness_invoke)"
+						}
+					}
+				]
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.invokeText",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves to the raw response text returned through linear memory after the adapter encodes the request and frees both memory slices. It does not parse or validate the response; load, ABI, and memory failures reject the promise.",
+				"examples": ["{\"ok\":true,\"output\":{\"value\":\"done\"}}"]
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.memoryBytes",
-				"type": "Promise<number>"
+				"type": "Promise<number>",
+				"description": "Loads the module if needed and reports the current linear-memory buffer length in bytes. The promise rejects if loading fails or the memory export cannot be read.",
+				"examples": [65536]
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.close",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Clears the cached instance promise so a later call loads the module again. It resolves immediately and does not interrupt work already in progress."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "RuntimeUnavailable",
+				"type": "thrown",
+				"description": "The loader throws this named error when required Harness JSON ABI exports are missing; invokeText and memoryBytes reject with it, while invoke returns a runtime-unavailable failure envelope."
+			},
+			{
+				"name": "CompileError",
+				"type": "thrown",
+				"description": "WebAssembly.compile rejects when supplied bytes are not a valid module; raw methods reject with it, while invoke converts it to a runtime-unavailable failure envelope."
+			},
+			{
+				"name": "LinkError",
+				"type": "thrown",
+				"description": "WebAssembly.instantiate may reject when the module requires imports, because this adapter instantiates with an empty import object; invoke converts the call failure to runtime-failed."
+			},
+			{
+				"name": "RuntimeError",
+				"type": "thrown",
+				"description": "A trap in module initialization or an exported ABI call rejects the raw method; invoke converts call failures to runtime-failed."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Malformed export values can fail when the adapter reads memory or calls an ABI export; invoke converts call failures to runtime-failed."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "An invalid pointer or length can make a linear-memory view fail; invokeText rejects with that failure and invoke converts it to runtime-failed."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A caller-provided loader can reject with its own Error, which raw methods propagate; invoke converts errors from the inner call to runtime-failed unless the error is RuntimeUnavailable or CompileError."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "wasmUnavailable",
@@ -96,17 +190,22 @@
 					{
 						"name": "wasmUnavailable.message",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Text used as the message when wasmUnavailable creates its named error. The missing-export path supplies the Harness ABI explanation, while direct callers may provide any string.",
+						"examples": [
+							"Wasm module does not export the Harness JSON ABI (memory, harness_alloc, harness_free, harness_invoke)"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "wasmUnavailable",
-						"type": "Error"
+						"type": "Error",
+						"description": "Returns an Error named RuntimeUnavailable with the supplied message. The loader path throws it when a module lacks one or more required Harness JSON ABI exports."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.invoke",
@@ -114,17 +213,58 @@
 					{
 						"name": "WasmModuleRuntimeAdapter.invoke.request",
 						"type": "RuntimeRequest",
-						"required": true
+						"required": true,
+						"description": "Names the requested operation and may include its input in the optional input field; invoke checks the request for portable JSON before serialization. Non-finite numbers, ill-formed strings, non-plain objects, or nesting beyond 64 levels resolve as invalid-json.",
+						"examples": [
+							{
+								"operation": "run"
+							},
+							{
+								"operation": "run",
+								"input": {
+									"message": "hello"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WasmModuleRuntimeAdapter.invoke",
-						"type": "Promise<RuntimeResponse>"
+						"type": "Promise<RuntimeResponse>",
+						"description": "Resolves to the module response envelope or a failure envelope for invalid JSON, invalid response text, timeout, or a runtime call failure. The deadline can expire while asynchronous loading yields; synchronous WebAssembly work cannot be interrupted and a result arriving after the deadline is discarded.",
+						"examples": [
+							{
+								"ok": true,
+								"output": {
+									"value": "done"
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "invalid-json",
+									"message": "request is not valid JSON"
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-unavailable",
+									"message": "Wasm module does not export the Harness JSON ABI (memory, harness_alloc, harness_free, harness_invoke)"
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An error thrown while portableJson inspects accessor- or proxy-backed request values escapes before the call-level catch and rejects the promise; ordinary nonportable JSON values resolve as invalid-json."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.invokeText",
@@ -132,17 +272,57 @@
 					{
 						"name": "WasmModuleRuntimeAdapter.invokeText.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Raw request text encoded and sent through the module ABI. This method does not parse or validate the text, so the caller must provide content the module understands.",
+						"examples": ["{\"operation\":\"run\",\"input\":{\"message\":\"hello\"}}"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WasmModuleRuntimeAdapter.invokeText",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves to the raw response text returned through linear memory after the adapter encodes the request and frees both memory slices. It does not parse or validate the response; load, ABI, and memory failures reject the promise.",
+						"examples": ["{\"ok\":true,\"output\":{\"value\":\"done\"}}"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RuntimeUnavailable",
+						"type": "thrown",
+						"description": "The loader throws this named error when required Harness JSON ABI exports are missing; invokeText and memoryBytes reject with it, while invoke returns a runtime-unavailable failure envelope."
+					},
+					{
+						"name": "CompileError",
+						"type": "thrown",
+						"description": "WebAssembly.compile rejects when supplied bytes are not a valid module; raw methods reject with it, while invoke converts it to a runtime-unavailable failure envelope."
+					},
+					{
+						"name": "LinkError",
+						"type": "thrown",
+						"description": "WebAssembly.instantiate may reject when the module requires imports, because this adapter instantiates with an empty import object; invoke converts the call failure to runtime-failed."
+					},
+					{
+						"name": "RuntimeError",
+						"type": "thrown",
+						"description": "A trap in module initialization or an exported ABI call rejects the raw method; invoke converts call failures to runtime-failed."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Malformed export values can fail when the adapter reads memory or calls an ABI export; invoke converts call failures to runtime-failed."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "An invalid pointer or length can make a linear-memory view fail; invokeText rejects with that failure and invoke converts it to runtime-failed."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A caller-provided loader can reject with its own Error, which raw methods propagate; invoke converts errors from the inner call to runtime-failed unless the error is RuntimeUnavailable or CompileError."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.memoryBytes",
@@ -150,11 +330,44 @@
 				"outputs": [
 					{
 						"name": "WasmModuleRuntimeAdapter.memoryBytes",
-						"type": "Promise<number>"
+						"type": "Promise<number>",
+						"description": "Loads the module if needed and reports the current linear-memory buffer length in bytes. The promise rejects if loading fails or the memory export cannot be read.",
+						"examples": [65536]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RuntimeUnavailable",
+						"type": "thrown",
+						"description": "The loader throws this named error when required Harness JSON ABI exports are missing; invokeText and memoryBytes reject with it, while invoke returns a runtime-unavailable failure envelope."
+					},
+					{
+						"name": "CompileError",
+						"type": "thrown",
+						"description": "WebAssembly.compile rejects when supplied bytes are not a valid module; raw methods reject with it, while invoke converts it to a runtime-unavailable failure envelope."
+					},
+					{
+						"name": "LinkError",
+						"type": "thrown",
+						"description": "WebAssembly.instantiate may reject when the module requires imports, because this adapter instantiates with an empty import object; invoke converts the call failure to runtime-failed."
+					},
+					{
+						"name": "RuntimeError",
+						"type": "thrown",
+						"description": "A trap in module initialization or an exported ABI call rejects the raw method; invoke converts call failures to runtime-failed."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Malformed export values can fail when the adapter reads memory or calls an ABI export; invoke converts call failures to runtime-failed."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A caller-provided loader can reject with its own Error, which raw methods propagate; invoke converts errors from the inner call to runtime-failed unless the error is RuntimeUnavailable or CompileError."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WasmModuleRuntimeAdapter.close",
@@ -162,11 +375,12 @@
 				"outputs": [
 					{
 						"name": "WasmModuleRuntimeAdapter.close",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Clears the cached instance promise so a later call loads the module again. It resolves immediately and does not interrupt work already in progress."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -176,23 +390,35 @@
 					{
 						"name": "WasmModuleRuntimeAdapter.constructor.source",
 						"type": "WasmSource | WasmLoader",
-						"required": true
+						"required": true,
+						"description": "Provides a precompiled WebAssembly.Module, module bytes, or a loader that returns either synchronously or asynchronously. Byte sources are compiled when first loaded, and the adapter does not read a file.",
+						"examples": [
+							[0, 97, 115, 109, 1, 0, 0, 0]
+						]
 					},
 					{
 						"name": "WasmModuleRuntimeAdapter.constructor.options",
 						"type": "RuntimeOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Sets the per-call deadline through timeoutMs; asynchronous loading can time out, but synchronous WebAssembly work on this thread cannot be interrupted and a late result is discarded when the work returns. Defaults to {} and uses defaultRuntimeTimeoutMs (30,000 ms) when timeoutMs is absent or null.",
+						"examples": [
+							{},
+							{
+								"timeoutMs": 5000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WasmModuleRuntimeAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a wasm runtime with kind set to wasm and stores the source loader and selected timeout. Module loading is deferred until invoke, invokeText, or memoryBytes first needs an instance."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
