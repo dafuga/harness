@@ -22,24 +22,56 @@
 				"type": "VerifyOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional exact commit, requested base, local impact runtime, per-check timeout, entity scope, and repository root."
+				"description": "Optional controls select the repository root, commit, requested comparison base, runtime, entity scope, and per-check timeout; the workflow defaults root to process.cwd(), commit to HEAD, and base to the first parent, but uses that base only when locally provable (entity scope plans from no base). An http runtime is rejected; the shared type also permits priority, requirePerformance, and record, which this workflow does not read.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "verifyPlan",
 				"type": "Promise<VerifyPlanReport>",
-				"description": "Report-only selected plan; it never restores attached evidence or runs planned checks."
+				"description": "Resolves to a report with source revision, base, runtime, scope, planned-check counts, checks, and command-shape candidate groups. It is report-only (executedChecks is 0): planned checks are never run and attached evidence is never restored, though impact analysis may invoke the selected local kernel.",
+				"examples": [
+					{
+						"mode": "report-only",
+						"executedChecks": 0,
+						"note": "Candidates describe matching command shapes; checks remain uncombined and are not executed.",
+						"sideEffects": "Does not restore evidence or run planned checks; impact analysis may invoke the selected local kernel.",
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"base": null,
+							"requestedBase": null,
+							"runtime": "local",
+							"scope": "full",
+							"baseResolution": "empty-conservative",
+							"selectionNote": "No locally cached passing base was provable without restoring evidence. Planned from an empty base; a run may restore proof and select fewer checks."
+						},
+						"plannedChecks": 0,
+						"candidateGroups": 0,
+						"candidateChecks": 0,
+						"singletons": 0,
+						"ineligible": 0,
+						"checks": [],
+						"candidates": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Invalid repository/revision/configuration, HTTP runtime refusal, or entity without scenario coverage."
+				"description": "Thrown via fail when the root is not a Git repository, runtime is http, a commit reference cannot be resolved, or the parsed verification config fails schema validation."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Malformed verification-config JSON read from the commit tree causes JSON.parse to throw; this error propagates to the caller."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "verifyPlan",
@@ -49,21 +81,53 @@
 						"type": "VerifyOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional exact commit, requested base, local impact runtime, per-check timeout, entity scope, and repository root."
+						"description": "Optional controls select the repository root, commit, requested comparison base, runtime, entity scope, and per-check timeout; the workflow defaults root to process.cwd(), commit to HEAD, and base to the first parent, but uses that base only when locally provable (entity scope plans from no base). An http runtime is rejected; the shared type also permits priority, requirePerformance, and record, which this workflow does not read.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyPlan",
 						"type": "Promise<VerifyPlanReport>",
-						"description": "Report-only selected plan; it never restores attached evidence or runs planned checks."
+						"description": "Resolves to a report with source revision, base, runtime, scope, planned-check counts, checks, and command-shape candidate groups. It is report-only (executedChecks is 0): planned checks are never run and attached evidence is never restored, though impact analysis may invoke the selected local kernel.",
+						"examples": [
+							{
+								"mode": "report-only",
+								"executedChecks": 0,
+								"note": "Candidates describe matching command shapes; checks remain uncombined and are not executed.",
+								"sideEffects": "Does not restore evidence or run planned checks; impact analysis may invoke the selected local kernel.",
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"base": null,
+									"requestedBase": null,
+									"runtime": "local",
+									"scope": "full",
+									"baseResolution": "empty-conservative",
+									"selectionNote": "No locally cached passing base was provable without restoring evidence. Planned from an empty base; a run may restore proof and select fewer checks."
+								},
+								"plannedChecks": 0,
+								"candidateGroups": 0,
+								"candidateChecks": 0,
+								"singletons": 0,
+								"ineligible": 0,
+								"checks": [],
+								"candidates": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid repository/revision/configuration, HTTP runtime refusal, or entity without scenario coverage."
+						"description": "Thrown via fail when the root is not a Git repository, runtime is http, a commit reference cannot be resolved, or the parsed verification config fails schema validation."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Malformed verification-config JSON read from the commit tree causes JSON.parse to throw; this error propagates to the caller."
 					}
 				],
 				"errorStatus": "declared"
