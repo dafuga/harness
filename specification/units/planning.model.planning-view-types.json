@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/models/PlanningView.types.ts",
-			"packages/planning/src/models/planning-collaboration/PlanningView.types.ts"
-		],
+		"source": ["packages/planning/src/models/planning-collaboration/PlanningView.types.ts"],
 		"symbols": [
 			"PlanningErrorCode",
 			"PlanningFailure",
