@@ -27,20 +27,43 @@
 			{
 				"name": "NativeAccountStatusService.constructor.options",
 				"type": "StatusOptions",
-				"required": true
+				"required": true,
+				"description": "Collaborators for read(): http is the HostedHttpAdapter that sends the /api/auth/status request, and store.clear() is awaited to clear the saved session when access is denied. The optional clearCache() and onDisconnect() callbacks run only on that sign-out path, and errors thrown by those callbacks or by store.clear() propagate out of read()."
 			},
 			{
 				"name": "NativeAccountStatusService.read.credential",
 				"type": "NativeHostedCredential",
-				"required": true
+				"required": true,
+				"description": "The saved hosted credential that read() rechecks: a non-empty token is sent as the Bearer authorization header, and principalId must equal the actor id in the response. read() does not compare origin, and the request URL always uses the adapter's own origin.",
+				"examples": [
+					{
+						"origin": "https://hosted.example.com",
+						"principalId": "principal_7f3a9c21",
+						"token": "example-bearer-token"
+					},
+					{
+						"origin": "http://localhost:3000",
+						"principalId": "principal_2b9d4e10",
+						"token": "example-dev-token"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "status",
 				"type": "Promise<NativeHostedStatus>",
-				"description": "Verified signed-in identity, or signed-out after revocation or an identity mismatch.",
+				"description": "Resolves to signed-in, with actor.id set to the credential principalId, when the response actor id equals that principalId and emailVerified is true; name and email are String()-coerced, so a missing field becomes the text 'undefined'. Resolves to signed-out after onDisconnect, store.clear() and clearCache run, when that check fails or the request is refused with status 401 or 403.",
 				"examples": [
+					{
+						"configured": true,
+						"state": "signed-in",
+						"actor": {
+							"id": "principal_7f3a9c21",
+							"name": "Ada Lovelace",
+							"email": "ada@example.com"
+						}
+					},
 					{
 						"configured": true,
 						"state": "signed-out"
@@ -52,9 +75,10 @@
 			{
 				"name": "temporary failure",
 				"type": "HostedFailureValidator",
-				"description": "Network or service failure preserves the saved credential and reports failure."
+				"description": "Offline or failed HostedFailureValidator categories from the status request are rethrown unchanged, and the saved session is kept. Any other rejection, such as one from response.json(), is also rethrown unchanged and does not clear the session."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "NativeAccountStatusService.read",
@@ -62,22 +86,52 @@
 					{
 						"name": "NativeAccountStatusService.read.credential",
 						"type": "NativeHostedCredential",
-						"required": true
+						"required": true,
+						"description": "The saved hosted credential that read() rechecks: a non-empty token is sent as the Bearer authorization header, and principalId must equal the actor id in the response. read() does not compare origin, and the request URL always uses the adapter's own origin.",
+						"examples": [
+							{
+								"origin": "https://hosted.example.com",
+								"principalId": "principal_7f3a9c21",
+								"token": "example-bearer-token"
+							},
+							{
+								"origin": "http://localhost:3000",
+								"principalId": "principal_2b9d4e10",
+								"token": "example-dev-token"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeAccountStatusService.read",
-						"type": "Promise<NativeHostedStatus>"
+						"type": "Promise<NativeHostedStatus>",
+						"description": "Resolves to signed-in, with actor.id set to the credential principalId, when the response actor id equals that principalId and emailVerified is true; name and email are String()-coerced, so a missing field becomes the text 'undefined'. Resolves to signed-out after onDisconnect, store.clear() and clearCache run, when that check fails or the request is refused with status 401 or 403.",
+						"examples": [
+							{
+								"configured": true,
+								"state": "signed-in",
+								"actor": {
+									"id": "principal_7f3a9c21",
+									"name": "Ada Lovelace",
+									"email": "ada@example.com"
+								}
+							},
+							{
+								"configured": true,
+								"state": "signed-out"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "HostedFailureValidator",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "A HostedFailureValidator with an offline or failed category is rethrown unchanged and the saved session is kept, while a denied category resolves to signed-out instead. Any other rejection, such as one from response.json(), or an error from onDisconnect, store.clear() or clearCache, also propagates out of read() unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -87,17 +141,19 @@
 					{
 						"name": "NativeAccountStatusService.constructor.options",
 						"type": "StatusOptions",
-						"required": true
+						"required": true,
+						"description": "Collaborators for read(): http is the HostedHttpAdapter that sends the /api/auth/status request, and store.clear() is awaited to clear the saved session when access is denied. The optional clearCache() and onDisconnect() callbacks run only on that sign-out path, and errors thrown by those callbacks or by store.clear() propagate out of read()."
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeAccountStatusService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The NativeAccountStatusService instance created by the constructor, which holds options as a private field for read()."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
