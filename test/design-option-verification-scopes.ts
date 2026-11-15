@@ -87,15 +87,15 @@ export const designOptionVerificationScopes: Record<string, VerificationScope> =
 			'test/utils/plan-options.test.ts': {
 				'design option runtime cold-imports src/utils/planOptions.ts and calls planOptions':
 					'option-storage',
-				'design option runtime cold-imports src/services/planning-service/planOptions.ts and calls planOptions':
+				'design option runtime cold-imports src/lib/planning-collaboration/planning/planning-service/planOptions.ts and calls planOptions':
 					'option-storage',
 				'design option runtime cold-imports src/utils/planOptions.ts and calls checkOptions':
 					'option-storage',
-				'design option runtime cold-imports src/utils/plan-read/checkOptions.ts and calls checkOptions':
+				'design option runtime cold-imports src/utils/planning-collaboration/plan-read/checkOptions.ts and calls checkOptions':
 					'option-storage',
 				'design option runtime cold-imports src/utils/planOptions.ts and calls heldBy':
 					'option-storage',
-				'design option runtime cold-imports src/utils/plan-design/heldBy.ts and calls heldBy':
+				'design option runtime cold-imports src/utils/planning-collaboration/plan-design/heldBy.ts and calls heldBy':
 					'option-storage',
 				'a single design is written as before, with no options and unprefixed files':
 					'option-storage',
