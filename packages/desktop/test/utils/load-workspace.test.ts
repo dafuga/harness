@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { loadWorkspace } from '../../src/utils/load-workspace/loadWorkspace';
+import { loadWorkspace } from '../../src/utils/projects-sessions/load-workspace/loadWorkspace';
 import { workspaceRoute } from '../../src/utils/workspaceRoute';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../src/models/development-tooling/Desktop.types';
