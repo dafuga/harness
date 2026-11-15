@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { AuthFailure } from '../../src/utils/authFail';
 import { authFailure, authHttp, readJson } from '../../src/utils/authHttp';
-import { authRedirect } from '../../src/controllers/github-connection-controller/authHttp';
+import { authRedirect } from '../../src/lib/verification-evidence/server/auth/github-connection-controller/authHttp';
 import { bearerToken, sameOrigin } from '../../src/services/request-session-service/authHttp';
 
 const post = (body: string, type = 'application/json') =>
