@@ -22,33 +22,55 @@
 				"name": "sourceArchiveRef.commit",
 				"type": "string",
 				"required": true,
-				"description": "Tested commit id to append to the source archive prefix; shape is not validated here."
+				"description": "The tested commit id, appended exactly as given to refs/harness/source/ to name the archive ref that keeps the commit reachable after its branch is deleted or rewritten. The shape is not checked here, although the Harness history schemas require a full 40-character lowercase hex hash.",
+				"examples": [
+					"3f9a1c7e2b4d8a06c5e1f92b7d3a8c4e6f0b1d25",
+					"9c2e4b7f1a0d3e8c5b6a2f9d1e7c4b3a8f0d6e21"
+				]
 			},
 			{
 				"name": "refKind.ref",
 				"type": "string",
 				"required": true,
-				"description": "Full Git reference name to classify by exact evidence/notes names and known prefixes."
+				"description": "The full Git reference name to classify, such as refs/heads/main; it is compared exactly with refs/heads/harness-evidence and refs/notes/harness, then matched against the known prefixes in order. A name that matches neither an exact name nor a prefix, for example the short name main, is classified as other.",
+				"examples": [
+					"refs/heads/main",
+					"refs/heads/harness-evidence",
+					"refs/harness/source/3f9a1c7e2b4d8a06c5e1f92b7d3a8c4e6f0b1d25"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceArchiveRef",
 				"type": "string",
-				"description": "Reference refs/harness/source/ followed by the supplied commit."
+				"description": "The archive ref name: refs/harness/source/ followed by the supplied commit unchanged. The source archive keeps one ref per tested commit, named by its hash, so that commit outlives its branch.",
+				"examples": [
+					"refs/harness/source/3f9a1c7e2b4d8a06c5e1f92b7d3a8c4e6f0b1d25",
+					"refs/harness/source/9c2e4b7f1a0d3e8c5b6a2f9d1e7c4b3a8f0d6e21"
+				]
 			},
 			{
 				"name": "refKind",
 				"type": "RefKind",
-				"description": "Source, evidence, notes, archive, internal, tag, remote or other classification. Evidence is recognized before the general branch prefix."
+				"description": "The kind of the ref, decided from its name alone: 'evidence' only for exactly refs/heads/harness-evidence (checked before the refs/heads/ prefix), 'notes' for refs/notes/, 'archive' for refs/harness/source/, 'internal' for refs/harness/ names outside the source archive, 'tag' for refs/tags/, 'remote' for refs/remotes/, 'source' for refs/heads/ names other than the evidence branch, and 'other' when no known prefix matches. Only 'source' refs are branches of code; evidence, notes and archive refs are history about code.",
+				"examples": ["source", "evidence", "archive"]
 			},
 			{
 				"name": "historyRefs",
 				"type": "{ evidence: string; notes: string; archives: string }",
-				"description": "Evidence and notes refs plus the source archive wildcard used to select Harness history."
+				"description": "The names Harness history uses: evidence is the exact branch refs/heads/harness-evidence, notes is refs/notes/harness, and archives is the pattern refs/harness/source/* that matches the source archive refs, not a single ref. The function takes no input, so every call returns these same values.",
+				"examples": [
+					{
+						"evidence": "refs/heads/harness-evidence",
+						"notes": "refs/notes/harness",
+						"archives": "refs/harness/source/*"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "historyRefs",
@@ -57,11 +79,18 @@
 					{
 						"name": "historyRefs",
 						"type": "{ evidence: string; notes: string; archives: string }",
-						"description": "Evidence and notes refs plus the source archive wildcard used to select Harness history."
+						"description": "The names Harness history uses: evidence is the exact branch refs/heads/harness-evidence, notes is refs/notes/harness, and archives is the pattern refs/harness/source/* that matches the source archive refs, not a single ref. The function takes no input, so every call returns these same values.",
+						"examples": [
+							{
+								"evidence": "refs/heads/harness-evidence",
+								"notes": "refs/notes/harness",
+								"archives": "refs/harness/source/*"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sourceArchiveRef",
@@ -70,18 +99,26 @@
 						"name": "sourceArchiveRef.commit",
 						"type": "string",
 						"required": true,
-						"description": "Tested commit id to append to the source archive prefix; shape is not validated here."
+						"description": "The tested commit id, appended exactly as given to refs/harness/source/ to name the archive ref that keeps the commit reachable after its branch is deleted or rewritten. The shape is not checked here, although the Harness history schemas require a full 40-character lowercase hex hash.",
+						"examples": [
+							"3f9a1c7e2b4d8a06c5e1f92b7d3a8c4e6f0b1d25",
+							"9c2e4b7f1a0d3e8c5b6a2f9d1e7c4b3a8f0d6e21"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceArchiveRef",
 						"type": "string",
-						"description": "Reference refs/harness/source/ followed by the supplied commit."
+						"description": "The archive ref name: refs/harness/source/ followed by the supplied commit unchanged. The source archive keeps one ref per tested commit, named by its hash, so that commit outlives its branch.",
+						"examples": [
+							"refs/harness/source/3f9a1c7e2b4d8a06c5e1f92b7d3a8c4e6f0b1d25",
+							"refs/harness/source/9c2e4b7f1a0d3e8c5b6a2f9d1e7c4b3a8f0d6e21"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "refKind",
@@ -90,18 +127,24 @@
 						"name": "refKind.ref",
 						"type": "string",
 						"required": true,
-						"description": "Full Git reference name to classify by exact evidence/notes names and known prefixes."
+						"description": "The full Git reference name to classify, such as refs/heads/main; it is compared exactly with refs/heads/harness-evidence and refs/notes/harness, then matched against the known prefixes in order. A name that matches neither an exact name nor a prefix, for example the short name main, is classified as other.",
+						"examples": [
+							"refs/heads/main",
+							"refs/heads/harness-evidence",
+							"refs/harness/source/3f9a1c7e2b4d8a06c5e1f92b7d3a8c4e6f0b1d25"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "refKind",
 						"type": "RefKind",
-						"description": "Source, evidence, notes, archive, internal, tag, remote or other classification. Evidence is recognized before the general branch prefix."
+						"description": "The kind of the ref, decided from its name alone: 'evidence' only for exactly refs/heads/harness-evidence (checked before the refs/heads/ prefix), 'notes' for refs/notes/, 'archive' for refs/harness/source/, 'internal' for refs/harness/ names outside the source archive, 'tag' for refs/tags/, 'remote' for refs/remotes/, 'source' for refs/heads/ names other than the evidence branch, and 'other' when no known prefix matches. Only 'source' refs are branches of code; evidence, notes and archive refs are history about code.",
+						"examples": ["source", "evidence", "archive"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
