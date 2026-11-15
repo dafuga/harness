@@ -13,7 +13,7 @@ import type {
 	HarnessRevision,
 	HarnessUnit
 } from '../../models/explorer-ui/Harness.types';
-import { focusedCaptures, focusedScenario } from '../explorer-evidence/focusedCaptures';
+import { focusedCaptures, focusedScenario } from './explorer-evidence/focusedCaptures';
 import { captureProvenance } from '../reports-media/captureProvenance';
 import { covering, incomparable, merged, united } from './explorerComparison';
 import { explorerCoverage } from './explorer-verdict/explorerCoverage';
