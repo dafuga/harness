@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/development-tooling/gatewayContentError.ts",
-			"src/utils/gatewayContentError.ts"
-		],
-		"symbols": ["gatewayContentError", "gatewayContentError"]
+		"source": ["src/utils/development-tooling/gatewayContentError.ts"],
+		"symbols": ["gatewayContentError"]
 	},
 	"contract": {
 		"origin": "declared",

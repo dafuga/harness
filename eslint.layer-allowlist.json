@@ -342,16 +342,6 @@
 			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
 		},
 		{
-			"from": "src/utils/gatewayMessages.ts",
-			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayMessages",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/utils/gatewayOptions.ts",
-			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/utils/gatewayPrompt.ts",
 			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayPrompt",
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."

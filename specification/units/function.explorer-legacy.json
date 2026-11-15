@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/utils/console-canonical/explorerLegacy.ts",
-			"src/utils/explorerLegacy.ts",
 			"src/utils/projects-sessions/console-canonical/explorerLegacy.ts"
 		],
-		"symbols": ["explorerLegacy", "explorerLegacy", "explorerLegacy"]
+		"symbols": ["explorerLegacy", "explorerLegacy"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -71,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/explorerLegacy.ts",
+		"entry": "src/utils/console-canonical/explorerLegacy.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/explorerLegacy.ts"
+				"entry": "src/utils/console-canonical/explorerLegacy.ts"
 			}
 		]
 	},
