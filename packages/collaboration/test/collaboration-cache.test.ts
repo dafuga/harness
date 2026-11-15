@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { collaborationFixture, owner, sourceRepository, anchor } from './githubFixture';
-import { cacheKey, readCache, writeCache } from '../src/utils/cacheKey';
+import { cacheKey, readCache, writeCache } from '../src/utils/development-tooling/cacheKey';
 import type {
 	CacheEntry,
 	CacheIdentity

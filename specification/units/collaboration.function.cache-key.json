@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/utils/cacheKey.ts",
-			"packages/collaboration/src/utils/development-tooling/cacheKey.ts"
-		],
-		"symbols": ["cacheKey", "readCache", "writeCache", "cacheKey", "readCache", "writeCache"]
+		"source": ["packages/collaboration/src/utils/development-tooling/cacheKey.ts"],
+		"symbols": ["cacheKey", "readCache", "writeCache"]
 	},
 	"contract": {
 		"origin": "declared",

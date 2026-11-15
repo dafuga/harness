@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/collaboration/src/utils/addComment.ts",
+			"packages/collaboration/src/utils/create-collaboration/addComment.ts",
 			"packages/collaboration/src/utils/projects-sessions/create-collaboration/addComment.ts"
 		],
 		"symbols": ["addComment", "addComment"]
@@ -105,11 +105,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/addComment.ts",
+		"entry": "packages/collaboration/src/utils/create-collaboration/addComment.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/addComment.ts"
+				"entry": "packages/collaboration/src/utils/create-collaboration/addComment.ts"
 			}
 		]
 	},
