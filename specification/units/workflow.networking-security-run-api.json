@@ -12,37 +12,53 @@
 		"symbols": ["runApi"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "runApi.operation",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Selects the command dispatched by the workflow. Supported names are resources, connect, screenshot, get, request, contract, providers, cancel, events, define, start, and call; any other string raises ExpectedCliError.",
+				"examples": ["resources", "get", "request"]
 			},
 			{
 				"name": "runApi.args",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Provides positional strings consumed by the selected command; some commands ignore this array. Required positions vary by command, and handlers access entries directly, so a missing position can fail during dispatch.",
+				"examples": [
+					[],
+					["GET", "/"],
+					["/"]
+				]
 			},
 			{
 				"name": "runApi.options",
 				"type": "HarnessApiOptions",
-				"required": true
+				"required": true,
+				"description": "Provides the options passed to HarnessApiService and apiOutput. The request command reads query and input, while screenshot output formatting receives a copy with output set to undefined; the declared shape is HarnessApiOptions.",
+				"examples": [
+					{
+						"mode": "local"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "runApi",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after the selected command runs and its result is passed to apiOutput. The promise carries no return value."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised by fail when operation is not an own key of the command dispatch map. This check runs before the selected command handler."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runApi",
@@ -50,27 +66,48 @@
 					{
 						"name": "runApi.operation",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Selects the command dispatched by the workflow. Supported names are resources, connect, screenshot, get, request, contract, providers, cancel, events, define, start, and call; any other string raises ExpectedCliError.",
+						"examples": ["resources", "get", "request"]
 					},
 					{
 						"name": "runApi.args",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Provides positional strings consumed by the selected command; some commands ignore this array. Required positions vary by command, and handlers access entries directly, so a missing position can fail during dispatch.",
+						"examples": [
+							[],
+							["GET", "/"],
+							["/"]
+						]
 					},
 					{
 						"name": "runApi.options",
 						"type": "HarnessApiOptions",
-						"required": true
+						"required": true,
+						"description": "Provides the options passed to HarnessApiService and apiOutput. The request command reads query and input, while screenshot output formatting receives a copy with output set to undefined; the declared shape is HarnessApiOptions.",
+						"examples": [
+							{
+								"mode": "local"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runApi",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after the selected command runs and its result is passed to apiOutput. The promise carries no return value."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised by fail when operation is not an own key of the command dispatch map. This check runs before the selected command handler."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
