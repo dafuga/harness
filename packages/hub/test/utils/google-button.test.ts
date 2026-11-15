@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { googleButton } from '../../src/components/login-panel/googleButton';
+import { googleButton } from '../../src/components/accounts-access/login-panel/googleButton';
 import { googleIdentityScript } from '../../src/utils/googleButton';
 
 afterEach(() => vi.unstubAllGlobals());
