@@ -32,78 +32,143 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "loadBudgets.root",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Filesystem root used to load unit manifests and read the budget ledger. Defaults to process.cwd().",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+				]
 			},
 			{
 				"name": "budgetMeasure.unit",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Exact manifest id used to restrict measurements to one active unit. Defaults to undefined, which includes every active unit.",
+				"examples": ["workflow.run-budget"]
 			},
 			{
 				"name": "budgetMeasure.root",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Working-tree root used to load manifests and their measurement index. Defaults to process.cwd().",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+				]
 			},
 			{
 				"name": "budgetHistory.unit",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Exact event.unit value used to filter ledger history. Defaults to undefined, which returns all events.",
+				"examples": ["workflow.run-budget"]
 			},
 			{
 				"name": "budgetHistory.root",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Working-tree root used to load manifests and the budget ledger. Defaults to process.cwd() through loadBudgets.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+				]
 			},
 			{
 				"name": "budgetStatus.root",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Working-tree root used to load active manifests and calculated baselines. Defaults to process.cwd() through loadBudgets.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+				]
 			},
 			{
 				"name": "budgetBench.input",
 				"type": "BenchInput",
-				"required": true
+				"required": true,
+				"description": "Specifies the unit id, repository-relative workload JSON path, and optional target and capture labels. Evidence defaults to benchmark and state defaults to default when omitted.",
+				"examples": [
+					{
+						"unit": "workflow.run-budget",
+						"workload": "workloads/run-budget-smoke.json",
+						"target": "module",
+						"evidence": "benchmark",
+						"state": "default"
+					}
+				]
 			},
 			{
 				"name": "budgetBench.root",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Filesystem root used to resolve the unit registry and workload path and to run the benchmark. Defaults to process.cwd().",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "loadBudgets",
-				"type": "Promise<Loaded>"
+				"type": "Promise<Loaded>",
+				"description": "Resolves to the absolute root, fresh manifests, ledger events, calculated baselines, and ledger repository for the working tree. The result contains a Map and a repository instance, which JSON cannot represent."
 			},
 			{
 				"name": "budgetMeasure",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns measurement rows for active manifests, optionally restricted to one exact manifest id. Rows include unit, metric, value, and unitOfMeasure, with target, unavailable, and partial only when present.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "budgetHistory",
-				"type": "Promise<BudgetEvent[]>"
+				"type": "Promise<BudgetEvent[]>",
+				"description": "Resolves to ledger events for the working tree, optionally filtered by exact event.unit. With no unit filter, it returns all events.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "budgetStatus",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns active-unit counts and lists for baselined, inherited, unbaselined, and unmeasured units. Each unmeasured entry contains unit, metric, and reason.",
+				"examples": [
+					{
+						"baselined": 0,
+						"inherited": [],
+						"unbaselined": [],
+						"unmeasured": []
+					}
+				]
 			},
 			{
 				"name": "budgetBench",
-				"type": "Promise<UnitBenchmark>"
+				"type": "Promise<UnitBenchmark>",
+				"description": "Resolves to the benchmark result after measuring a unit through its declared runtime target. The result is also recorded as a JSON capture, using benchmark and default when evidence and state are omitted.",
+				"examples": [
+					{
+						"unit": "workflow.run-budget",
+						"workload": "run-budget-smoke",
+						"target": "module",
+						"responseDigest": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"measurements": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised by fail() when ledger reading reports errors, the requested unit is unknown, the workload fails schema validation, or the benchmark runtime returns a failed workload."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "loadBudgets",
@@ -111,22 +176,28 @@
 					{
 						"name": "loadBudgets.root",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Filesystem root used to load unit manifests and read the budget ledger. Defaults to process.cwd().",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "loadBudgets",
-						"type": "Promise<Loaded>"
+						"type": "Promise<Loaded>",
+						"description": "Resolves to the absolute root, fresh manifests, ledger events, calculated baselines, and ledger repository for the working tree. The result contains a Map and a repository instance, which JSON cannot represent."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when the budget ledger read reports errors."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "budgetMeasure",
@@ -134,22 +205,33 @@
 					{
 						"name": "budgetMeasure.unit",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Exact manifest id used to restrict measurements to one active unit. Defaults to undefined, which includes every active unit.",
+						"examples": ["workflow.run-budget"]
 					},
 					{
 						"name": "budgetMeasure.root",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "Working-tree root used to load manifests and their measurement index. Defaults to process.cwd().",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "budgetMeasure",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns measurement rows for active manifests, optionally restricted to one exact manifest id. Rows include unit, metric, value, and unitOfMeasure, with target, unavailable, and partial only when present.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "budgetHistory",
@@ -157,22 +239,39 @@
 					{
 						"name": "budgetHistory.unit",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Exact event.unit value used to filter ledger history. Defaults to undefined, which returns all events.",
+						"examples": ["workflow.run-budget"]
 					},
 					{
 						"name": "budgetHistory.root",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "Working-tree root used to load manifests and the budget ledger. Defaults to process.cwd() through loadBudgets.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "budgetHistory",
-						"type": "Promise<BudgetEvent[]>"
+						"type": "Promise<BudgetEvent[]>",
+						"description": "Resolves to ledger events for the working tree, optionally filtered by exact event.unit. With no unit filter, it returns all events.",
+						"examples": [
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Propagates the ExpectedCliError raised by loadBudgets when the ledger read reports errors."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "budgetStatus",
@@ -180,17 +279,36 @@
 					{
 						"name": "budgetStatus.root",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "Working-tree root used to load active manifests and calculated baselines. Defaults to process.cwd() through loadBudgets.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "budgetStatus",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns active-unit counts and lists for baselined, inherited, unbaselined, and unmeasured units. Each unmeasured entry contains unit, metric, and reason.",
+						"examples": [
+							{
+								"baselined": 0,
+								"inherited": [],
+								"unbaselined": [],
+								"unmeasured": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Propagates the ExpectedCliError raised by loadBudgets when the ledger read reports errors."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "budgetBench",
@@ -198,27 +316,52 @@
 					{
 						"name": "budgetBench.input",
 						"type": "BenchInput",
-						"required": true
+						"required": true,
+						"description": "Specifies the unit id, repository-relative workload JSON path, and optional target and capture labels. Evidence defaults to benchmark and state defaults to default when omitted.",
+						"examples": [
+							{
+								"unit": "workflow.run-budget",
+								"workload": "workloads/run-budget-smoke.json",
+								"target": "module",
+								"evidence": "benchmark",
+								"state": "default"
+							}
+						]
 					},
 					{
 						"name": "budgetBench.root",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Filesystem root used to resolve the unit registry and workload path and to run the benchmark. Defaults to process.cwd().",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "budgetBench",
-						"type": "Promise<UnitBenchmark>"
+						"type": "Promise<UnitBenchmark>",
+						"description": "Resolves to the benchmark result after measuring a unit through its declared runtime target. The result is also recorded as a JSON capture, using benchmark and default when evidence and state are omitted.",
+						"examples": [
+							{
+								"unit": "workflow.run-budget",
+								"workload": "run-budget-smoke",
+								"target": "module",
+								"responseDigest": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"measurements": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when the unit is unknown, the workload fails schema validation, or the benchmark runtime returns a failed workload."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
