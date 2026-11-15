@@ -22,29 +22,39 @@
 				"name": "gitBlobs.root",
 				"type": "string",
 				"required": true,
-				"description": "The repository directory passed to Git."
+				"description": "The repository directory passed unchanged to 'git -C' for the read. The function relies on Git to reject an invalid or non-repository directory.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+				]
 			},
 			{
 				"name": "gitBlobs.request",
 				"type": "BlobRequest",
 				"required": true,
-				"description": "The revision and paths to read. Empty paths return an empty map without starting Git. Paths containing newline, carriage return or a null character are refused."
+				"description": "Contains a Git revision and the paths whose blobs are requested; each path is sent as '<revision>:<path>' to 'git cat-file --batch'. An empty path list returns an empty map before Git is invoked, LF, CR, or NUL in any path is rejected, and other path or revision validation is left to Git.",
+				"examples": [
+					{
+						"revision": "0123456789abcdef0123456789abcdef01234567",
+						"paths": ["packages/desktop/src/utils/gitBlobs.ts", "README.md"]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gitBlobs",
 				"type": "Promise<Map<string, Buffer>>",
-				"description": "A promise for a map from each requested path to its returned byte buffer. Duplicate paths share one map key. The Git command permits at most 64,000,000 output bytes."
+				"description": "Resolves to a Map keyed by requested path whose values are the raw blob bytes as Buffer instances. Duplicate path keys collapse to one entry, and 'git cat-file' output is capped at 64,000,000 bytes."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unsupported paths, Git execution failures or a response with a missing header boundary or invalid size. Missing objects can produce an invalid-response error. Revision strings are passed through without separate validation."
+				"description": "Thrown as an Error when any path contains LF, CR, or NUL, the 'git cat-file --batch' process fails (including its max-buffer limit), or a response header or blob size fails validation."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "gitBlobs",
@@ -53,29 +63,39 @@
 						"name": "gitBlobs.root",
 						"type": "string",
 						"required": true,
-						"description": "The repository directory passed to Git."
+						"description": "The repository directory passed unchanged to 'git -C' for the read. The function relies on Git to reject an invalid or non-repository directory.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						]
 					},
 					{
 						"name": "gitBlobs.request",
 						"type": "BlobRequest",
 						"required": true,
-						"description": "The revision and paths to read. Empty paths return an empty map without starting Git. Paths containing newline, carriage return or a null character are refused."
+						"description": "Contains a Git revision and the paths whose blobs are requested; each path is sent as '<revision>:<path>' to 'git cat-file --batch'. An empty path list returns an empty map before Git is invoked, LF, CR, or NUL in any path is rejected, and other path or revision validation is left to Git.",
+						"examples": [
+							{
+								"revision": "0123456789abcdef0123456789abcdef01234567",
+								"paths": ["packages/desktop/src/utils/gitBlobs.ts", "README.md"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gitBlobs",
 						"type": "Promise<Map<string, Buffer>>",
-						"description": "A promise for a map from each requested path to its returned byte buffer. Duplicate paths share one map key. The Git command permits at most 64,000,000 output bytes."
+						"description": "Resolves to a Map keyed by requested path whose values are the raw blob bytes as Buffer instances. Duplicate path keys collapse to one entry, and 'git cat-file' output is capped at 64,000,000 bytes."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as an Error when any path contains LF, CR, or NUL, the 'git cat-file --batch' process fails (including its max-buffer limit), or a response header or blob size fails validation."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
