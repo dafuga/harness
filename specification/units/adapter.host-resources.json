@@ -20,10 +20,25 @@
 			{
 				"name": "HostResourcesAdapter.sample",
 				"type": "Promise<ResourceSnapshot>",
-				"description": "Current host sample, or an explicit unavailable sample and reason when any probe fails."
+				"description": "Resolves to one host ResourceSnapshot that never rejects, so check status before using its figures: status 'available' carries system-wide CPU over the interval since the previous counter read (a call with no previous read waits 250 ms between its two reads) and memory whose total and available bytes are capped by limits.memoryTotalBytes and limits.memoryAvailableBytes when those limits are set, while status 'unavailable' carries zero core and byte counts, cpuUsedPercent null, memoryPressure 'unknown' and a reason (the error message, or 'Resource probe failed' for a non-Error throw). CPU is never taken from load average or lifetime process CPU, and concurrent calls share one in-flight measurement.",
+				"examples": [
+					{
+						"status": "unavailable",
+						"sampledAt": 1794700812345,
+						"logicalCores": 0,
+						"usableCores": 0,
+						"cpuUsedPercent": null,
+						"cpuAvailableCores": 0,
+						"memoryTotalBytes": 0,
+						"memoryAvailableBytes": 0,
+						"memoryPressure": "unknown",
+						"reason": "Resource probe failed"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "HostResourcesAdapter.sample",
@@ -32,11 +47,25 @@
 					{
 						"name": "HostResourcesAdapter.sample",
 						"type": "Promise<ResourceSnapshot>",
-						"description": "Current host sample, or an explicit unavailable sample and reason when any probe fails."
+						"description": "Resolves to one host ResourceSnapshot that never rejects, so check status before using its figures: status 'available' carries system-wide CPU over the interval since the previous counter read (a call with no previous read waits 250 ms between its two reads) and memory whose total and available bytes are capped by limits.memoryTotalBytes and limits.memoryAvailableBytes when those limits are set, while status 'unavailable' carries zero core and byte counts, cpuUsedPercent null, memoryPressure 'unknown' and a reason (the error message, or 'Resource probe failed' for a non-Error throw). CPU is never taken from load average or lifetime process CPU, and concurrent calls share one in-flight measurement.",
+						"examples": [
+							{
+								"status": "unavailable",
+								"sampledAt": 1794700812345,
+								"logicalCores": 0,
+								"usableCores": 0,
+								"cpuUsedPercent": null,
+								"cpuAvailableCores": 0,
+								"memoryTotalBytes": 0,
+								"memoryAvailableBytes": 0,
+								"memoryPressure": "unknown",
+								"reason": "Resource probe failed"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
