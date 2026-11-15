@@ -108,7 +108,12 @@ test('clip planning follows shared dependencies and rejects missing source bindi
 		await writeFile(join(root, 'src/shared.css'), 'button { opacity: 1 }');
 		expect(service.plan(manifest, previous).record).toHaveLength(4);
 		expect(() =>
-			service.plan({ ...manifest, clips: [{ ...manifest.clips[0], inputs: ['src/missing.ts'] }] })
+			service.plan({
+				...manifest,
+				clips: manifest.clips.map((clip, index) =>
+					index === 0 ? { ...clip, inputs: ['src/missing.ts'] } : clip
+				)
+			})
 		).toThrow(/missing/i);
 	});
 });
