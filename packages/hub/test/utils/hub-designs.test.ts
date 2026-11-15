@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubHash } from '../../src/utils/hubJson';
+import { hubHash } from '../../src/utils/development-tooling/hubJson';
 import { actor, project, unit, commit } from '../support/projectionFixture';
 import { designFixture } from '../support/designFixture';
 test('exact committed plan image renders and foreign versions fail', async () => {

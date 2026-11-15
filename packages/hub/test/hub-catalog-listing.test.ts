@@ -13,7 +13,7 @@ import {
 	twin
 } from '../../desktop/test/catalog-listing-manifests';
 import type { Listing } from '../../desktop/test/catalog-listing-manifests';
-import { hubHash } from '../src/utils/hubJson';
+import { hubHash } from '../src/utils/development-tooling/hubJson';
 import { actor, commit, project, projectionFixture, unit } from './support/projectionFixture';
 
 /**

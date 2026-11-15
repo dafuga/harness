@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubHistory } from '../../src/utils/hubHistory';
+import { hubHistory } from '../../src/utils/git-source-history/hubHistory';
 import { hubSource } from '../../src/utils/hubSource';
 import { actor, project, commit, projectionFixture } from '../support/projectionFixture';
 test('history uses bounded owned paths with explicit pagination', async () => {

@@ -8,22 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/utils/development-tooling/hubJson.ts",
-			"packages/hub/src/utils/hubJson.ts"
-		],
-		"symbols": [
-			"hubJson",
-			"hubHash",
-			"hubContractHash",
-			"hubFail",
-			"hubFile",
-			"hubJson",
-			"hubHash",
-			"hubContractHash",
-			"hubFail",
-			"hubFile"
-		]
+		"source": ["packages/hub/src/utils/development-tooling/hubJson.ts"],
+		"symbols": ["hubJson", "hubHash", "hubContractHash", "hubFail", "hubFile"]
 	},
 	"contract": {
 		"origin": "declared",

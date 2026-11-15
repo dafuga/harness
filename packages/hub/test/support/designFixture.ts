@@ -1,4 +1,4 @@
-import { hubContractHash, hubHash } from '../../src/utils/hubJson';
+import { hubContractHash, hubHash } from '../../src/utils/development-tooling/hubJson';
 import { commit, unit, projectionFixture } from './projectionFixture';
 export async function designFixture() {
 	const f = projectionFixture(),

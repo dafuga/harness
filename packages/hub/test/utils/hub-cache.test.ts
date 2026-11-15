@@ -58,7 +58,7 @@ import {
 } from '../support/projectionFixture';
 import { hubSource, hubRead } from '../../src/utils/hubSource';
 import { hubBlobProfile } from '../../src/utils/hubRaw';
-import { hubHash } from '../../src/utils/hubJson';
+import { hubHash } from '../../src/utils/development-tooling/hubJson';
 test('warm cache cannot hide mismatch between committed bytes and design hash', async () => {
 	const f = projectionFixture();
 	const path = 'src/pages/example/designs/v001/prompt.md';
