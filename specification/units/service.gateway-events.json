@@ -12,22 +12,30 @@
 		"symbols": ["GatewayEventsService", "GatewayEventsService.finishToolBatch"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GatewayEventsService.finishToolBatch.session",
 				"type": "GatewaySession",
-				"required": true
+				"required": true,
+				"description": "The GatewaySession to finish: its id is the key that blocks repeat calls while a done event is pending, and its optional emit callback, when present, is called with { type: 'done' } 50 ms after the call. It must not be null or undefined, because session.id is read on the first line of the method."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GatewayEventsService.finishToolBatch",
-				"type": "void"
+				"type": "void",
+				"description": "The method returns nothing (void), so the caller gets no value; session.emit, if present, is called with { type: 'done' } later from a 50 ms timer, and an exception that emit throws there is not caught by this method. A repeat call for the same session.id made before that timer fires returns without scheduling another done event."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown synchronously by finishToolBatch when session is null or undefined (session.id is read) or when the method is called detached from its GatewayEventsService instance so that this.scheduled cannot be read. The method has no guard or try block, so the exception reaches the caller unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GatewayEventsService.finishToolBatch",
@@ -35,17 +43,25 @@
 					{
 						"name": "GatewayEventsService.finishToolBatch.session",
 						"type": "GatewaySession",
-						"required": true
+						"required": true,
+						"description": "The GatewaySession to finish: its id is the key that blocks repeat calls while a done event is pending, and its optional emit callback, when present, is called with { type: 'done' } 50 ms after the call. It must not be null or undefined, because session.id is read on the first line of the method."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GatewayEventsService.finishToolBatch",
-						"type": "void"
+						"type": "void",
+						"description": "The method returns nothing (void), so the caller gets no value; session.emit, if present, is called with { type: 'done' } later from a 50 ms timer, and an exception that emit throws there is not caught by this method. A repeat call for the same session.id made before that timer fires returns without scheduling another done event."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously by finishToolBatch when session is null or undefined (session.id is read) or when the method is called detached from its GatewayEventsService instance so that this.scheduled cannot be read. The method has no guard or try block, so the exception reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
