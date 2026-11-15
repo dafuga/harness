@@ -29,129 +29,259 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostStorageAdapter.constructor.storage",
 				"type": "DurableObjectStorage",
-				"required": true
+				"required": true,
+				"description": "The Durable Object storage instance retained by the adapter for synchronous SQL record access and alarm operations."
 			},
 			{
 				"name": "HostStorageAdapter.saveHost.record",
 				"type": "HostRecord",
-				"required": true
+				"required": true,
+				"description": "The host record serialized into the fixed `host` key. Its fields are stored as JSON without transformation.",
+				"examples": [
+					{
+						"hostId": "0123456789abcdef0123456789abcdef01234567",
+						"ownerId": "owner-01",
+						"hostKey": "BM1wvVTc6jmk8tgrRN01wDcr_bnQ7KtESeuH3ENitSQa77k8h9ExJ-_DeUCHmYX5RDsLeISG-76DSp32Yn8ulKY",
+						"credentialHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"name": "Studio workstation",
+						"generation": 1,
+						"registeredAt": "2026-11-15T12:00:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "HostStorageAdapter.device.deviceId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The device ID appended unchanged to the `device:` storage key when reading a device. The implementation applies no validation or normalization.",
+				"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 			},
 			{
 				"name": "HostStorageAdapter.saveDevice.record",
 				"type": "DeviceRecord",
-				"required": true
+				"required": true,
+				"description": "The device record serialized under `device:<record.deviceId>`. Its `deviceId` field determines the key, and the record is stored as JSON.",
+				"examples": [
+					{
+						"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+						"credentialHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"generation": 1,
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"lastSeenAt": null
+					}
+				]
 			},
 			{
 				"name": "HostStorageAdapter.removeDevice.deviceId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The device ID appended unchanged to the `device:` key to delete. If that key is absent, the operation leaves storage unchanged; the implementation applies no validation or normalization.",
+				"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 			},
 			{
 				"name": "HostStorageAdapter.pairing.pairingId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The pairing ID appended unchanged to the `pairing:` storage key when reading a pairing. The implementation applies no validation or normalization.",
+				"examples": ["0123456789abcdef0123456789abcdef"]
 			},
 			{
 				"name": "HostStorageAdapter.savePairing.record",
 				"type": "PairingRecord",
-				"required": true
+				"required": true,
+				"description": "The pairing record serialized under `pairing:<record.pairingId>`. Its `pairingId` field determines the key, and the record is stored as JSON.",
+				"examples": [
+					{
+						"pairingId": "0123456789abcdef0123456789abcdef",
+						"state": "open",
+						"expiresAt": 1794700800000,
+						"attempts": 0
+					}
+				]
 			},
 			{
 				"name": "HostStorageAdapter.removePairing.pairingId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The pairing ID appended unchanged to the `pairing:` key to delete. If that key is absent, the operation leaves storage unchanged; the implementation applies no validation or normalization.",
+				"examples": ["0123456789abcdef0123456789abcdef"]
 			},
 			{
 				"name": "HostStorageAdapter.rate.bucket",
 				"type": "RateBucket",
-				"required": true
+				"required": true,
+				"description": "The rate bucket appended unchanged to the `rate:` storage key when reading a rate record. The adapter does not validate or normalize the bucket.",
+				"examples": ["connect", "pairing"]
 			},
 			{
 				"name": "HostStorageAdapter.saveRate.bucket",
 				"type": "RateBucket",
-				"required": true
+				"required": true,
+				"description": "The rate bucket appended unchanged to the `rate:` key under which the supplied rate record is stored. The adapter does not validate or normalize the bucket.",
+				"examples": ["connect", "pairing"]
 			},
 			{
 				"name": "HostStorageAdapter.saveRate.record",
 				"type": "RateRecord",
-				"required": true
+				"required": true,
+				"description": "The rate record serialized as JSON under the key selected by the supplied bucket.",
+				"examples": [
+					{
+						"startedAt": 1794700800000,
+						"count": 1
+					}
+				]
 			},
 			{
 				"name": "HostStorageAdapter.alarmAt.time",
 				"type": "number | undefined",
-				"required": true
+				"required": true,
+				"description": "The time passed to `setAlarm`; when it is undefined, the adapter deletes the alarm instead. The implementation does not validate or transform numeric values.",
+				"examples": [1794700800000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostStorageAdapter.host",
-				"type": "HostRecord | undefined"
+				"type": "HostRecord | undefined",
+				"description": "The stored host record, or undefined when the `host` key has no value or the records table has not been created. Stored JSON is parsed into the record type.",
+				"examples": [
+					{
+						"hostId": "0123456789abcdef0123456789abcdef01234567",
+						"ownerId": "owner-01",
+						"hostKey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+						"credentialHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"name": "Studio workstation",
+						"generation": 1,
+						"registeredAt": "2026-11-15T12:00:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "HostStorageAdapter.saveHost",
-				"type": "void"
+				"type": "void",
+				"description": "No return value; serializes the supplied host record and upserts it at the fixed `host` key."
 			},
 			{
 				"name": "HostStorageAdapter.device",
-				"type": "DeviceRecord | undefined"
+				"type": "DeviceRecord | undefined",
+				"description": "The device record stored at `device:<deviceId>`, or undefined when that key is absent or the records table has not been created. Stored JSON is parsed into the record type.",
+				"examples": [
+					{
+						"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+						"credentialHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"generation": 1,
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"lastSeenAt": null
+					}
+				]
 			},
 			{
 				"name": "HostStorageAdapter.devices",
-				"type": "DeviceRecord[]"
+				"type": "DeviceRecord[]",
+				"description": "All device records, returned in storage-key order. Returns an empty array when the records table has not been created or no device keys exist.",
+				"examples": [
+					[],
+					[
+						{
+							"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+							"credentialHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+							"generation": 1,
+							"createdAt": "2026-11-15T12:00:00.000Z",
+							"lastSeenAt": null
+						}
+					]
+				]
 			},
 			{
 				"name": "HostStorageAdapter.saveDevice",
-				"type": "void"
+				"type": "void",
+				"description": "No return value; serializes the device record and upserts it at `device:<record.deviceId>`."
 			},
 			{
 				"name": "HostStorageAdapter.removeDevice",
-				"type": "void"
+				"type": "void",
+				"description": "No return value; deletes the `device:<deviceId>` key when the records table exists."
 			},
 			{
 				"name": "HostStorageAdapter.pairing",
-				"type": "PairingRecord | undefined"
+				"type": "PairingRecord | undefined",
+				"description": "The pairing record stored at `pairing:<pairingId>`, or undefined when that key is absent or the records table has not been created. Stored JSON is parsed into the record type.",
+				"examples": [
+					{
+						"pairingId": "0123456789abcdef0123456789abcdef",
+						"state": "open",
+						"expiresAt": 1794700800000,
+						"attempts": 0
+					}
+				]
 			},
 			{
 				"name": "HostStorageAdapter.pairings",
-				"type": "PairingRecord[]"
+				"type": "PairingRecord[]",
+				"description": "All pairing records, returned in storage-key order. Returns an empty array when the records table has not been created or no pairing keys exist.",
+				"examples": [
+					[],
+					[
+						{
+							"pairingId": "0123456789abcdef0123456789abcdef",
+							"state": "open",
+							"expiresAt": 1794700800000,
+							"attempts": 0
+						}
+					]
+				]
 			},
 			{
 				"name": "HostStorageAdapter.savePairing",
-				"type": "void"
+				"type": "void",
+				"description": "No return value; serializes the pairing record and upserts it at `pairing:<record.pairingId>`."
 			},
 			{
 				"name": "HostStorageAdapter.removePairing",
-				"type": "void"
+				"type": "void",
+				"description": "No return value; deletes the `pairing:<pairingId>` key when the records table exists."
 			},
 			{
 				"name": "HostStorageAdapter.rate",
-				"type": "RateRecord | undefined"
+				"type": "RateRecord | undefined",
+				"description": "The rate record stored at `rate:<bucket>`, or undefined when that key is absent or the records table has not been created. Stored JSON is parsed into the record type.",
+				"examples": [
+					{
+						"startedAt": 1794700800000,
+						"count": 1
+					}
+				]
 			},
 			{
 				"name": "HostStorageAdapter.saveRate",
-				"type": "void"
+				"type": "void",
+				"description": "No return value; serializes the rate record and upserts it at `rate:<bucket>`."
 			},
 			{
 				"name": "HostStorageAdapter.alarmAt",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after deleting the alarm when time is undefined, or after passing the supplied time to `setAlarm`."
 			},
 			{
 				"name": "HostStorageAdapter.clear",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after deleting the alarm and all stored records, then resets the adapter's table-created cache."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "A read or list operation throws this when stored value text is not valid JSON."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostStorageAdapter.host",
@@ -159,11 +289,29 @@
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.host",
-						"type": "HostRecord | undefined"
+						"type": "HostRecord | undefined",
+						"description": "The stored host record, or undefined when the `host` key has no value or the records table has not been created. Stored JSON is parsed into the record type.",
+						"examples": [
+							{
+								"hostId": "0123456789abcdef0123456789abcdef01234567",
+								"ownerId": "owner-01",
+								"hostKey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								"credentialHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"name": "Studio workstation",
+								"generation": 1,
+								"registeredAt": "2026-11-15T12:00:00.000Z"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A read or list operation throws this when stored value text is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.saveHost",
@@ -171,17 +319,30 @@
 					{
 						"name": "HostStorageAdapter.saveHost.record",
 						"type": "HostRecord",
-						"required": true
+						"required": true,
+						"description": "The host record serialized into the fixed `host` key. Its fields are stored as JSON without transformation.",
+						"examples": [
+							{
+								"hostId": "0123456789abcdef0123456789abcdef01234567",
+								"ownerId": "owner-01",
+								"hostKey": "BM1wvVTc6jmk8tgrRN01wDcr_bnQ7KtESeuH3ENitSQa77k8h9ExJ-_DeUCHmYX5RDsLeISG-76DSp32Yn8ulKY",
+								"credentialHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"name": "Studio workstation",
+								"generation": 1,
+								"registeredAt": "2026-11-15T12:00:00.000Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.saveHost",
-						"type": "void"
+						"type": "void",
+						"description": "No return value; serializes the supplied host record and upserts it at the fixed `host` key."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.device",
@@ -189,17 +350,35 @@
 					{
 						"name": "HostStorageAdapter.device.deviceId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The device ID appended unchanged to the `device:` storage key when reading a device. The implementation applies no validation or normalization.",
+						"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.device",
-						"type": "DeviceRecord | undefined"
+						"type": "DeviceRecord | undefined",
+						"description": "The device record stored at `device:<deviceId>`, or undefined when that key is absent or the records table has not been created. Stored JSON is parsed into the record type.",
+						"examples": [
+							{
+								"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+								"credentialHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"generation": 1,
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"lastSeenAt": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A read or list operation throws this when stored value text is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.devices",
@@ -207,11 +386,30 @@
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.devices",
-						"type": "DeviceRecord[]"
+						"type": "DeviceRecord[]",
+						"description": "All device records, returned in storage-key order. Returns an empty array when the records table has not been created or no device keys exist.",
+						"examples": [
+							[],
+							[
+								{
+									"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+									"credentialHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"generation": 1,
+									"createdAt": "2026-11-15T12:00:00.000Z",
+									"lastSeenAt": null
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A read or list operation throws this when stored value text is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.saveDevice",
@@ -219,17 +417,28 @@
 					{
 						"name": "HostStorageAdapter.saveDevice.record",
 						"type": "DeviceRecord",
-						"required": true
+						"required": true,
+						"description": "The device record serialized under `device:<record.deviceId>`. Its `deviceId` field determines the key, and the record is stored as JSON.",
+						"examples": [
+							{
+								"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
+								"credentialHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"generation": 1,
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"lastSeenAt": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.saveDevice",
-						"type": "void"
+						"type": "void",
+						"description": "No return value; serializes the device record and upserts it at `device:<record.deviceId>`."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.removeDevice",
@@ -237,17 +446,20 @@
 					{
 						"name": "HostStorageAdapter.removeDevice.deviceId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The device ID appended unchanged to the `device:` key to delete. If that key is absent, the operation leaves storage unchanged; the implementation applies no validation or normalization.",
+						"examples": ["89abcdef0123456789abcdef0123456789abcdef"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.removeDevice",
-						"type": "void"
+						"type": "void",
+						"description": "No return value; deletes the `device:<deviceId>` key when the records table exists."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.pairing",
@@ -255,17 +467,34 @@
 					{
 						"name": "HostStorageAdapter.pairing.pairingId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The pairing ID appended unchanged to the `pairing:` storage key when reading a pairing. The implementation applies no validation or normalization.",
+						"examples": ["0123456789abcdef0123456789abcdef"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.pairing",
-						"type": "PairingRecord | undefined"
+						"type": "PairingRecord | undefined",
+						"description": "The pairing record stored at `pairing:<pairingId>`, or undefined when that key is absent or the records table has not been created. Stored JSON is parsed into the record type.",
+						"examples": [
+							{
+								"pairingId": "0123456789abcdef0123456789abcdef",
+								"state": "open",
+								"expiresAt": 1794700800000,
+								"attempts": 0
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A read or list operation throws this when stored value text is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.pairings",
@@ -273,11 +502,29 @@
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.pairings",
-						"type": "PairingRecord[]"
+						"type": "PairingRecord[]",
+						"description": "All pairing records, returned in storage-key order. Returns an empty array when the records table has not been created or no pairing keys exist.",
+						"examples": [
+							[],
+							[
+								{
+									"pairingId": "0123456789abcdef0123456789abcdef",
+									"state": "open",
+									"expiresAt": 1794700800000,
+									"attempts": 0
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A read or list operation throws this when stored value text is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.savePairing",
@@ -285,17 +532,27 @@
 					{
 						"name": "HostStorageAdapter.savePairing.record",
 						"type": "PairingRecord",
-						"required": true
+						"required": true,
+						"description": "The pairing record serialized under `pairing:<record.pairingId>`. Its `pairingId` field determines the key, and the record is stored as JSON.",
+						"examples": [
+							{
+								"pairingId": "0123456789abcdef0123456789abcdef",
+								"state": "open",
+								"expiresAt": 1794700800000,
+								"attempts": 0
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.savePairing",
-						"type": "void"
+						"type": "void",
+						"description": "No return value; serializes the pairing record and upserts it at `pairing:<record.pairingId>`."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.removePairing",
@@ -303,17 +560,20 @@
 					{
 						"name": "HostStorageAdapter.removePairing.pairingId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The pairing ID appended unchanged to the `pairing:` key to delete. If that key is absent, the operation leaves storage unchanged; the implementation applies no validation or normalization.",
+						"examples": ["0123456789abcdef0123456789abcdef"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.removePairing",
-						"type": "void"
+						"type": "void",
+						"description": "No return value; deletes the `pairing:<pairingId>` key when the records table exists."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.rate",
@@ -321,17 +581,32 @@
 					{
 						"name": "HostStorageAdapter.rate.bucket",
 						"type": "RateBucket",
-						"required": true
+						"required": true,
+						"description": "The rate bucket appended unchanged to the `rate:` storage key when reading a rate record. The adapter does not validate or normalize the bucket.",
+						"examples": ["connect", "pairing"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.rate",
-						"type": "RateRecord | undefined"
+						"type": "RateRecord | undefined",
+						"description": "The rate record stored at `rate:<bucket>`, or undefined when that key is absent or the records table has not been created. Stored JSON is parsed into the record type.",
+						"examples": [
+							{
+								"startedAt": 1794700800000,
+								"count": 1
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A read or list operation throws this when stored value text is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.saveRate",
@@ -339,22 +614,32 @@
 					{
 						"name": "HostStorageAdapter.saveRate.bucket",
 						"type": "RateBucket",
-						"required": true
+						"required": true,
+						"description": "The rate bucket appended unchanged to the `rate:` key under which the supplied rate record is stored. The adapter does not validate or normalize the bucket.",
+						"examples": ["connect", "pairing"]
 					},
 					{
 						"name": "HostStorageAdapter.saveRate.record",
 						"type": "RateRecord",
-						"required": true
+						"required": true,
+						"description": "The rate record serialized as JSON under the key selected by the supplied bucket.",
+						"examples": [
+							{
+								"startedAt": 1794700800000,
+								"count": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.saveRate",
-						"type": "void"
+						"type": "void",
+						"description": "No return value; serializes the rate record and upserts it at `rate:<bucket>`."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.alarmAt",
@@ -362,17 +647,20 @@
 					{
 						"name": "HostStorageAdapter.alarmAt.time",
 						"type": "number | undefined",
-						"required": true
+						"required": true,
+						"description": "The time passed to `setAlarm`; when it is undefined, the adapter deletes the alarm instead. The implementation does not validate or transform numeric values.",
+						"examples": [1794700800000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.alarmAt",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after deleting the alarm when time is undefined, or after passing the supplied time to `setAlarm`."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostStorageAdapter.clear",
@@ -380,11 +668,12 @@
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.clear",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after deleting the alarm and all stored records, then resets the adapter's table-created cache."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -394,17 +683,19 @@
 					{
 						"name": "HostStorageAdapter.constructor.storage",
 						"type": "DurableObjectStorage",
-						"required": true
+						"required": true,
+						"description": "The Durable Object storage instance retained by the adapter for synchronous SQL record access and alarm operations."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostStorageAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed HostStorageAdapter instance, retaining the supplied Durable Object storage."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
