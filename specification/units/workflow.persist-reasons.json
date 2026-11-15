@@ -12,32 +12,93 @@
 		"symbols": ["persistReasons", "renderReasons", "PersistedReasons", "PersistedReasons"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "persistReasons.options",
 				"type": "{ root?: string; commit?: string; base?: string }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "root is resolved to an absolute path and defaults to process.cwd(), and commit is passed to sourceCommit as written. base is the revision the changes are measured from, passed to sourceCommit unless it is 'none', which means an empty starting point; when omitted it is the commit's parent, or 'none' when the commit has no parent.",
+				"examples": [
+					{},
+					{
+						"root": "/home/dev/harness",
+						"commit": "3b7e1f09c2a84d6e5f0b19a7c2d4e8f1a6b3c507"
+					},
+					{
+						"root": "/home/dev/harness",
+						"commit": "3b7e1f09c2a84d6e5f0b19a7c2d4e8f1a6b3c507",
+						"base": "a91c04d7e2f6b35c8d1e0a4f9b27c6d3e5f81b20"
+					}
+				]
 			},
 			{
 				"name": "renderReasons.result",
 				"type": "PersistedReasons",
-				"required": true
+				"required": true,
+				"description": "The result of a persist, in the shape persistReasons resolves to: the commit the reasons are kept on, the base they were measured from (null for an empty starting point), the number of reasons attached and the changes still missing one. renderReasons prints each entry of missing on its own indented line and prints 'an empty tree' in place of a null base.",
+				"examples": [
+					{
+						"commit": "3b7e1f09c2a84d6e5f0b19a7c2d4e8f1a6b3c507",
+						"base": "a91c04d7e2f6b35c8d1e0a4f9b27c6d3e5f81b20",
+						"attached": 2,
+						"missing": []
+					},
+					{
+						"commit": "9f2c4b1e7a3d58c60b1f2e9d4a7c83b5e0d16a42",
+						"base": null,
+						"attached": 3,
+						"missing": []
+					},
+					{
+						"commit": "5e8d2a7c91b04f36e2a1d8c5b7f0e49a3c6d1b28",
+						"base": "c4e0a9f2b71d36e8a5c0d94f1b2e7a86d3f5c109",
+						"attached": 0,
+						"missing": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "persistReasons",
-				"type": "Promise<PersistedReasons>"
+				"type": "Promise<PersistedReasons>",
+				"description": "The PersistedReasons that persistReasons resolves to: the commit the reasons are kept on, the base the changes are measured from (null for an empty starting point), the number of reasons attached and the changes still missing a reason. Reasons are appended to the commit only when at least one exists, so attached is 0 and nothing is written when there are none.",
+				"examples": [
+					{
+						"commit": "3b7e1f09c2a84d6e5f0b19a7c2d4e8f1a6b3c507",
+						"base": "a91c04d7e2f6b35c8d1e0a4f9b27c6d3e5f81b20",
+						"attached": 2,
+						"missing": []
+					},
+					{
+						"commit": "9f2c4b1e7a3d58c60b1f2e9d4a7c83b5e0d16a42",
+						"base": null,
+						"attached": 3,
+						"missing": []
+					},
+					{
+						"commit": "5e8d2a7c91b04f36e2a1d8c5b7f0e49a3c6d1b28",
+						"base": "c4e0a9f2b71d36e8a5c0d94f1b2e7a86d3f5c109",
+						"attached": 0,
+						"missing": []
+					}
+				]
 			},
 			{
 				"name": "renderReasons",
-				"type": "string"
+				"type": "string",
+				"description": "The text renderReasons returns for a result: a header with the attached count and the range from the base to the commit, each commit shortened by shortCommit and a null base shown as 'an empty tree', followed by one indented line per entry of missing. It is computed from the result argument alone.",
+				"examples": [
+					"2 reasons for a91c04d..3b7e1f0 are kept in notes.",
+					"3 reasons for an empty tree..9f2c4b1 are kept in notes.",
+					"0 reasons for c4e0a9f..5e8d2a7 are kept in notes."
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "persistReasons",
@@ -46,17 +107,51 @@
 						"name": "persistReasons.options",
 						"type": "{ root?: string; commit?: string; base?: string }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "root is resolved to an absolute path and defaults to process.cwd(), and commit is passed to sourceCommit as written. base is the revision the changes are measured from, passed to sourceCommit unless it is 'none', which means an empty starting point; when omitted it is the commit's parent, or 'none' when the commit has no parent.",
+						"examples": [
+							{},
+							{
+								"root": "/home/dev/harness",
+								"commit": "3b7e1f09c2a84d6e5f0b19a7c2d4e8f1a6b3c507"
+							},
+							{
+								"root": "/home/dev/harness",
+								"commit": "3b7e1f09c2a84d6e5f0b19a7c2d4e8f1a6b3c507",
+								"base": "a91c04d7e2f6b35c8d1e0a4f9b27c6d3e5f81b20"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "persistReasons",
-						"type": "Promise<PersistedReasons>"
+						"type": "Promise<PersistedReasons>",
+						"description": "The PersistedReasons that persistReasons resolves to: the commit the reasons are kept on, the base the changes are measured from (null for an empty starting point), the number of reasons attached and the changes still missing a reason. Reasons are appended to the commit only when at least one exists, so attached is 0 and nothing is written when there are none.",
+						"examples": [
+							{
+								"commit": "3b7e1f09c2a84d6e5f0b19a7c2d4e8f1a6b3c507",
+								"base": "a91c04d7e2f6b35c8d1e0a4f9b27c6d3e5f81b20",
+								"attached": 2,
+								"missing": []
+							},
+							{
+								"commit": "9f2c4b1e7a3d58c60b1f2e9d4a7c83b5e0d16a42",
+								"base": null,
+								"attached": 3,
+								"missing": []
+							},
+							{
+								"commit": "5e8d2a7c91b04f36e2a1d8c5b7f0e49a3c6d1b28",
+								"base": "c4e0a9f2b71d36e8a5c0d94f1b2e7a86d3f5c109",
+								"attached": 0,
+								"missing": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderReasons",
@@ -64,17 +159,44 @@
 					{
 						"name": "renderReasons.result",
 						"type": "PersistedReasons",
-						"required": true
+						"required": true,
+						"description": "The result of a persist, in the shape persistReasons resolves to: the commit the reasons are kept on, the base they were measured from (null for an empty starting point), the number of reasons attached and the changes still missing one. renderReasons prints each entry of missing on its own indented line and prints 'an empty tree' in place of a null base.",
+						"examples": [
+							{
+								"commit": "3b7e1f09c2a84d6e5f0b19a7c2d4e8f1a6b3c507",
+								"base": "a91c04d7e2f6b35c8d1e0a4f9b27c6d3e5f81b20",
+								"attached": 2,
+								"missing": []
+							},
+							{
+								"commit": "9f2c4b1e7a3d58c60b1f2e9d4a7c83b5e0d16a42",
+								"base": null,
+								"attached": 3,
+								"missing": []
+							},
+							{
+								"commit": "5e8d2a7c91b04f36e2a1d8c5b7f0e49a3c6d1b28",
+								"base": "c4e0a9f2b71d36e8a5c0d94f1b2e7a86d3f5c109",
+								"attached": 0,
+								"missing": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderReasons",
-						"type": "string"
+						"type": "string",
+						"description": "The text renderReasons returns for a result: a header with the attached count and the range from the base to the commit, each commit shortened by shortCommit and a null base shown as 'an empty tree', followed by one indented line per entry of missing. It is computed from the result argument alone.",
+						"examples": [
+							"2 reasons for a91c04d..3b7e1f0 are kept in notes.",
+							"3 reasons for an empty tree..9f2c4b1 are kept in notes.",
+							"0 reasons for c4e0a9f..5e8d2a7 are kept in notes."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
