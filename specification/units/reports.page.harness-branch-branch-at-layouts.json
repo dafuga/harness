@@ -25,31 +25,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The layouts of the shown revision in a table, each with its verdict and what the commit changed, to search, order and open."
+				"description": "The route renders HarnessScreen with the fixed title Layouts and ExplorerCatalogScreen as its content component. This file declares no route inputs or layout data, so catalog contents and behavior come from the imported components."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Layouts · Harness"
+				"description": "This is the title string passed to HarnessScreen whenever the route renders. It is fixed here as Layouts and does not depend on the branch or commit.",
+				"examples": ["Layouts"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
