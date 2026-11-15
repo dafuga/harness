@@ -19,9 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository path passed to GitAdapter and used to resolve the shared task-worktree cache; Git must be able to resolve --git-common-dir there.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "taskWorkspace.task",
@@ -94,9 +92,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository path used to validate the worktree repository and create its checkpoint.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "snapshotTaskWork.task",
@@ -163,7 +159,7 @@
 						"intelligence": "high",
 						"reportedModel": null,
 						"text": "",
-						"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
+						"worktree": "/workspace/project/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
 						"changedFiles": [
 							"src/services/agents-providers/module-task-worker-service/taskWorkspace.ts"
 						],
@@ -188,7 +184,7 @@
 						"intelligence": "high",
 						"reportedModel": null,
 						"text": "",
-						"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
+						"worktree": "/workspace/project/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
 						"changedFiles": [],
 						"fallback": false,
 						"executions": [],
@@ -221,9 +217,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository path passed to GitAdapter and used to resolve the shared task-worktree cache; Git must be able to resolve --git-common-dir there.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "taskWorkspace.task",
@@ -306,7 +300,7 @@
 								"intelligence": "high",
 								"reportedModel": null,
 								"text": "",
-								"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
+								"worktree": "/workspace/project/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
 								"changedFiles": [],
 								"fallback": false,
 								"executions": [],
@@ -334,9 +328,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository path used to validate the worktree repository and create its checkpoint.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "snapshotTaskWork.task",
@@ -405,7 +397,7 @@
 								"intelligence": "high",
 								"reportedModel": null,
 								"text": "",
-								"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
+								"worktree": "/workspace/project/.cache/harness/task-worktrees/123e4567-e89b-42d3-a456-426614174000",
 								"changedFiles": [
 									"src/services/agents-providers/module-task-worker-service/taskWorkspace.ts"
 								],

@@ -31,9 +31,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The checkout path where this service stores its agent registry. It also identifies the unit registry used to mark stated unit IDs as known.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "AgentActivityService.constructor.checkouts",
@@ -43,7 +41,7 @@
 				"examples": [
 					[
 						{
-							"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+							"path": "/workspace/project",
 							"branch": null,
 							"head": "0123456789abcdef0123456789abcdef01234567",
 							"primary": true
@@ -174,7 +172,7 @@
 								"label": "Code assistant",
 								"provider": "openai",
 								"model": "gpt-6-luna",
-								"worktree": "slot-10",
+								"worktree": "project",
 								"branch": null,
 								"task": "Implement the activity contract",
 								"loop": "contract-review",
@@ -370,7 +368,7 @@
 										"label": "Code assistant",
 										"provider": "openai",
 										"model": "gpt-6-luna",
-										"worktree": "slot-10",
+										"worktree": "project",
 										"branch": null,
 										"task": "Implement the activity contract",
 										"loop": "contract-review",
@@ -400,9 +398,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The checkout path where this service stores its agent registry. It also identifies the unit registry used to mark stated unit IDs as known.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "AgentActivityService.constructor.checkouts",
@@ -412,7 +408,7 @@
 						"examples": [
 							[
 								{
-									"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+									"path": "/workspace/project",
 									"branch": null,
 									"head": "0123456789abcdef0123456789abcdef01234567",
 									"primary": true

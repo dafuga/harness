@@ -40,9 +40,7 @@
 				"type": "unknown",
 				"required": false,
 				"description": "Filesystem root passed to ModuleTaskRepository and its Git adapter. Defaults to process.cwd(), the process working directory.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ModuleTaskService.feature.input",
@@ -744,7 +742,7 @@
 								"intelligence": "medium",
 								"reportedModel": "gpt-6-luna",
 								"text": "The task contract is implemented and reviewed.",
-								"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14",
+								"worktree": "/workspace/project",
 								"changedFiles": ["src/services/agents-providers/ModuleTaskService.ts"],
 								"fallback": false,
 								"finishedAt": "2026-11-15T11:58:00.000Z",
@@ -1519,7 +1517,7 @@
 										"intelligence": "medium",
 										"reportedModel": "gpt-6-luna",
 										"text": "The task contract is implemented and reviewed.",
-										"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14",
+										"worktree": "/workspace/project",
 										"changedFiles": ["src/services/agents-providers/ModuleTaskService.ts"],
 										"fallback": false,
 										"finishedAt": "2026-11-15T11:58:00.000Z",
@@ -1877,9 +1875,7 @@
 						"type": "unknown",
 						"required": false,
 						"description": "Filesystem root passed to ModuleTaskRepository and its Git adapter. Defaults to process.cwd(), the process working directory.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

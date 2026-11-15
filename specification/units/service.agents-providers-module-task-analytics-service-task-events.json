@@ -216,7 +216,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The project identifier written unchanged to each event's project field and hashed into every event id, so the same tasks under a different project produce different ids. The function does not validate or normalize it.",
-				"examples": ["/home/dev/code/harness", "/srv/git/billing-api"]
+				"examples": ["/workspace/project", "/workspace/billing-api"]
 			}
 		],
 		"outputs": [
@@ -229,7 +229,7 @@
 						{
 							"id": "e3a7c19f0d52b84a6c9e1f37d08b2a54c6f1e9d03b7a82c5e4f60d19b3a7c25e",
 							"timestamp": "2026-11-12T10:41:09.000Z",
-							"project": "/home/dev/code/harness",
+							"project": "/workspace/project",
 							"kind": "task",
 							"task": "service.module-task-analytics-events",
 							"action": "executed",
@@ -265,7 +265,7 @@
 						{
 							"id": "5b0f8e2c9a64d1f7e3b85c0a2d9f47e16b3c8a05d2e9f1b74c6a3d80e5f29b17",
 							"timestamp": "2026-11-12T11:58:37.000Z",
-							"project": "/home/dev/code/harness",
+							"project": "/workspace/project",
 							"kind": "task",
 							"task": "service.module-task-analytics-events",
 							"action": "executed",
@@ -301,7 +301,7 @@
 						{
 							"id": "a0c4e7b19d3f5286c1e8a4d07b9f3c52e6d1a8f04c7b2e95d3a6f1c08b4e7d29",
 							"timestamp": "2026-11-12T11:58:37.000Z",
-							"project": "/home/dev/code/harness",
+							"project": "/workspace/project",
 							"kind": "task",
 							"task": "service.module-task-analytics-events",
 							"action": "submitted",
@@ -320,7 +320,7 @@
 						{
 							"id": "7d2e91c4b8a05f36e0d7c2b19a4f8e63d5b0c7a21e9f4d86b3c1a50e7f2d9b48",
 							"timestamp": "2026-11-13T09:20:44.000Z",
-							"project": "/home/dev/code/harness",
+							"project": "/workspace/project",
 							"kind": "task",
 							"task": "service.module-task-analytics-events",
 							"action": "accepted",
@@ -341,7 +341,7 @@
 						{
 							"id": "c9e1a04f7b286d3e5a9c0f1d2b84e7a6395d0c1f8b2e4a7d96c3051e8f4b2a7d",
 							"timestamp": "2026-10-30T18:02:15.000Z",
-							"project": "/home/dev/code/harness",
+							"project": "/workspace/project",
 							"kind": "task",
 							"task": "service.module-task-analytics-backfill",
 							"action": "executed",
@@ -585,7 +585,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The project identifier written unchanged to each event's project field and hashed into every event id, so the same tasks under a different project produce different ids. The function does not validate or normalize it.",
-						"examples": ["/home/dev/code/harness", "/srv/git/billing-api"]
+						"examples": ["/workspace/project", "/workspace/billing-api"]
 					}
 				],
 				"outputs": [
@@ -598,7 +598,7 @@
 								{
 									"id": "e3a7c19f0d52b84a6c9e1f37d08b2a54c6f1e9d03b7a82c5e4f60d19b3a7c25e",
 									"timestamp": "2026-11-12T10:41:09.000Z",
-									"project": "/home/dev/code/harness",
+									"project": "/workspace/project",
 									"kind": "task",
 									"task": "service.module-task-analytics-events",
 									"action": "executed",
@@ -634,7 +634,7 @@
 								{
 									"id": "5b0f8e2c9a64d1f7e3b85c0a2d9f47e16b3c8a05d2e9f1b74c6a3d80e5f29b17",
 									"timestamp": "2026-11-12T11:58:37.000Z",
-									"project": "/home/dev/code/harness",
+									"project": "/workspace/project",
 									"kind": "task",
 									"task": "service.module-task-analytics-events",
 									"action": "executed",
@@ -670,7 +670,7 @@
 								{
 									"id": "a0c4e7b19d3f5286c1e8a4d07b9f3c52e6d1a8f04c7b2e95d3a6f1c08b4e7d29",
 									"timestamp": "2026-11-12T11:58:37.000Z",
-									"project": "/home/dev/code/harness",
+									"project": "/workspace/project",
 									"kind": "task",
 									"task": "service.module-task-analytics-events",
 									"action": "submitted",
@@ -689,7 +689,7 @@
 								{
 									"id": "7d2e91c4b8a05f36e0d7c2b19a4f8e63d5b0c7a21e9f4d86b3c1a50e7f2d9b48",
 									"timestamp": "2026-11-13T09:20:44.000Z",
-									"project": "/home/dev/code/harness",
+									"project": "/workspace/project",
 									"kind": "task",
 									"task": "service.module-task-analytics-events",
 									"action": "accepted",
@@ -710,7 +710,7 @@
 								{
 									"id": "c9e1a04f7b286d3e5a9c0f1d2b84e7a6395d0c1f8b2e4a7d96c3051e8f4b2a7d",
 									"timestamp": "2026-10-30T18:02:15.000Z",
-									"project": "/home/dev/code/harness",
+									"project": "/workspace/project",
 									"kind": "task",
 									"task": "service.module-task-analytics-backfill",
 									"action": "executed",

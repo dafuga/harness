@@ -30,7 +30,7 @@
 				"type": "unknown",
 				"required": false,
 				"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
-				"examples": ["/home/dev/harness", "/srv/harness/checkout"]
+				"examples": ["/workspace/project", "/srv/harness/checkout"]
 			},
 			{
 				"name": "ModuleTaskWorkerService.constructor.runner",
@@ -87,7 +87,7 @@
 				"required": true,
 				"description": "Absolute path of the attempt's detached Git worktree, which taskWorkspace names with the claim token under .cache/harness/task-worktrees. It is stored unchanged as the result's worktree and passed to the runner as cwd.",
 				"examples": [
-					"/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+					"/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 					"/srv/harness/checkout/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0"
 				]
 			},
@@ -351,7 +351,7 @@
 						"intelligence": "medium",
 						"reportedModel": "claude-haiku-5-5",
 						"text": "Claim and worktree checks are in place; the module's unit tests pass.",
-						"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+						"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 						"changedFiles": [
 							"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
 						],
@@ -401,9 +401,9 @@
 						"intelligence": "medium",
 						"reportedModel": null,
 						"text": "",
-						"worktree": "/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
+						"worktree": "/workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
 						"changedFiles": [],
-						"error": "git worktree add --detach /home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0 7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e failed: fatal: could not create work tree dir '/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0': No space left on device",
+						"error": "git worktree add --detach /workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0 7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e failed: fatal: could not create work tree dir '/workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0': No space left on device",
 						"fallback": false,
 						"finishedAt": "2026-11-15T09:12:58.447Z",
 						"attempt": "0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
@@ -503,7 +503,7 @@
 							"intelligence": "medium",
 							"reportedModel": "claude-haiku-5-5",
 							"text": "Claim and worktree checks are in place; the module's unit tests pass.",
-							"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+							"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 							"changedFiles": [
 								"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
 							],
@@ -561,7 +561,7 @@
 						"intelligence": "medium",
 						"reportedModel": null,
 						"text": "",
-						"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+						"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 						"changedFiles": [],
 						"fallback": false,
 						"executions": [],
@@ -709,7 +709,7 @@
 									"intelligence": "medium",
 									"reportedModel": "claude-haiku-5-5",
 									"text": "Claim and worktree checks are in place; the module's unit tests pass.",
-									"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+									"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 									"changedFiles": [
 										"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
 									],
@@ -793,7 +793,7 @@
 						"required": true,
 						"description": "Absolute path of the attempt's detached Git worktree, which taskWorkspace names with the claim token under .cache/harness/task-worktrees. It is stored unchanged as the result's worktree and passed to the runner as cwd.",
 						"examples": [
-							"/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+							"/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 							"/srv/harness/checkout/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0"
 						]
 					}
@@ -810,7 +810,7 @@
 								"intelligence": "medium",
 								"reportedModel": null,
 								"text": "",
-								"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+								"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 								"changedFiles": [],
 								"fallback": false,
 								"executions": [],
@@ -1160,7 +1160,7 @@
 								"intelligence": "medium",
 								"reportedModel": "claude-haiku-5-5",
 								"text": "Claim and worktree checks are in place; the module's unit tests pass.",
-								"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+								"worktree": "/workspace/project/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
 								"changedFiles": [
 									"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
 								],
@@ -1210,9 +1210,9 @@
 								"intelligence": "medium",
 								"reportedModel": null,
 								"text": "",
-								"worktree": "/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
+								"worktree": "/workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
 								"changedFiles": [],
-								"error": "git worktree add --detach /home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0 7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e failed: fatal: could not create work tree dir '/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0': No space left on device",
+								"error": "git worktree add --detach /workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0 7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e failed: fatal: could not create work tree dir '/workspace/project/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0': No space left on device",
 								"fallback": false,
 								"finishedAt": "2026-11-15T09:12:58.447Z",
 								"attempt": "0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
@@ -1347,7 +1347,7 @@
 						"type": "unknown",
 						"required": false,
 						"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
-						"examples": ["/home/dev/harness", "/srv/harness/checkout"]
+						"examples": ["/workspace/project", "/srv/harness/checkout"]
 					},
 					{
 						"name": "ModuleTaskWorkerService.constructor.runner",

@@ -19,9 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root passed to worktree checkpointing and module-task analytics sync. It is used when an incomplete review needs a checkpoint and after the repository update.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "reviewModuleTask.repository",
@@ -86,9 +84,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root passed to worktree checkpointing and module-task analytics sync. It is used when an incomplete review needs a checkpoint and after the repository update.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "reviewModuleTask.repository",
