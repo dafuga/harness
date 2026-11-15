@@ -26,70 +26,74 @@
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional open state, defaulting to false. Used only when isOpen is null or undefined."
+				"description": "Optional open state, defaulting to false, where true shows the dialog and false closes it. It is read only when isOpen is null or undefined, and the component never writes it, so the parent must update it to close the dialog after a close request.",
+				"examples": [false, true]
 			},
 			{
 				"name": "Modal.isOpen",
 				"type": "boolean",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional open-state alias. Defaults to JavaScript undefined, using open. A supplied boolean takes precedence, including false."
+				"description": "Optional open state that overrides open whenever it is not null or undefined, and it defaults to JavaScript undefined. A supplied boolean, including false, takes precedence over open.",
+				"examples": [true, false]
 			},
 			{
 				"name": "Modal.title",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional dialog heading, defaulting to an empty string."
+				"description": "Optional dialog heading, defaulting to an empty string, rendered as text in the hx-h2 header element. The dialog references that element through aria-labelledby, so an omitted title gives the dialog an empty label.",
+				"examples": ["Login page capture", "Test run output"]
 			},
 			{
 				"name": "Modal.variant",
 				"type": "'image' | 'text' | 'lightbox'",
 				"required": false,
 				"default": "image",
-				"description": "Optional presentation, defaulting to image. Text adds text styling; lightbox fills the viewport."
+				"description": "Optional presentation, defaulting to image, which adds neither the text nor the lightbox class. The text value adds the text class, which limits the dialog to at most 760px wide and fits its height to the content, and the lightbox value adds the lightbox class, which makes it a borderless full-viewport canvas.",
+				"examples": ["image", "text", "lightbox"]
 			},
 			{
 				"name": "Modal.onClose",
 				"type": "() => void",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional close-request callback. Defaults to JavaScript undefined (no callback). Runs first for the close button, backdrop and native cancel event; the parent owns open state."
+				"description": "Optional close-request callback, defaulting to JavaScript undefined so nothing is called. It runs before onclose for a close-button click, a backdrop click (a click whose target is the dialog element) and the native cancel event, and the component never changes open state itself."
 			},
 			{
 				"name": "Modal.onclose",
 				"type": "() => void",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional alternate close-request callback. Defaults to JavaScript undefined (no callback). Runs after onClose when supplied; a preceding throw prevents this call."
+				"description": "Optional second close-request callback, defaulting to JavaScript undefined. close() calls it after onClose in the same call, and if onClose throws, the error propagates out of close() and this callback is not called."
 			},
 			{
 				"name": "Modal.children",
 				"type": "import('svelte').Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional dialog body snippet. Defaults to JavaScript undefined, rendering no body content."
+				"description": "Optional dialog body snippet, defaulting to JavaScript undefined so no body content renders. It renders with no arguments inside the viewer-content wrapper below the header, and only while the dialog is shown."
 			},
 			{
 				"name": "Modal.footer",
 				"type": "import('svelte').Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional footer snippet. Defaults to JavaScript undefined, omitting the footer."
+				"description": "Optional footer snippet, defaulting to JavaScript undefined, which omits the footer element entirely. When supplied, it renders with no arguments inside an hx-footer element after the content wrapper, and only while the dialog is shown."
 			}
 		],
 		"outputs": [
 			{
 				"name": "Modal",
 				"type": "markup",
-				"description": "A native dialog when isOpen, or otherwise open, is true. It shows the title, child content and optional footer in the selected image, text or lightbox presentation. Close-button and backdrop actions invoke both supplied close callbacks; Escape also invokes them through the cancel event. The parent owns the open state."
+				"description": "Native modal dialog markup, rendered and opened with showModal() only while isOpen, or open when isOpen is null or undefined, is true. It shows the title heading, the body snippet and the optional footer in the image, text or lightbox presentation, and its close-button, backdrop-click and native cancel (Escape) actions run the supplied close callbacks without changing open state."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller content or close callback error",
 				"type": "propagated",
-				"description": "Body/footer snippet failures and errors from either supplied close callback propagate. onClose runs before onclose; a throw prevents the second callback."
+				"description": "Errors thrown by the body or footer snippets, or by onClose or onclose, are not caught by this component. A throw from onClose stops close() before onclose runs."
 			}
 		],
 		"errorStatus": "declared",
