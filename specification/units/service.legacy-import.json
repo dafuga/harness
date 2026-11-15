@@ -21,32 +21,93 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "LegacyImportService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path of this repository's working tree that the service is built for. It is passed to the git adapter, the evidence-branch and history-note repositories and the LFS adapter, and when no project is given, a run belongs here only if its recorded project path resolves to the same directory as this path or as another worktree of the repository.",
+				"examples": ["/home/ci/work/billing-api", "/srv/checkouts/web-storefront"]
 			},
 			{
 				"name": "LegacyImportService.import.store",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path of the old report store that the import reads. The store is opened as a LegacyReportRepository and only read, so every run it lists ends up either in imported or in skipped.",
+				"examples": ["/srv/legacy-reports", "/home/ci/.legacy-report-store"]
 			},
 			{
 				"name": "LegacyImportService.import.project",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "An optional project name or id that must equal the id or the name recorded on a run's project, compared exactly. When it is omitted (undefined) or an empty string, a run belongs here only if its recorded project path resolves to one of the repository's working trees; a given value skips that check, so it can also match runs recorded in other working trees.",
+				"examples": ["billing-api", "web-storefront"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "LegacyImportService.import",
-				"type": "Promise<LegacyImport>"
+				"type": "Promise<LegacyImport>",
+				"description": "The resolved LegacyImport of one call: imported lists the runs this call stored, ordered by startedAt and then id, and skipped lists the runs it left out with a reason. Each run in the old store appears in exactly one of the two lists.",
+				"examples": [
+					{
+						"imported": [
+							{
+								"id": "report-0412",
+								"status": "running",
+								"startedAt": "2026-10-28T14:02:51.337Z",
+								"revision": "7c1e9a24b0d35f8e1a6c9d2f5b7e04a8c3d19f60",
+								"linked": "7c1e9a24b0d35f8e1a6c9d2f5b7e04a8c3d19f60",
+								"media": 1,
+								"created": true
+							}
+						],
+						"skipped": [
+							{
+								"id": "run-0409",
+								"reason": "is not a report manifest"
+							}
+						]
+					},
+					{
+						"imported": [
+							{
+								"id": "report-0413",
+								"status": "running",
+								"startedAt": "2026-10-29T09:40:12.005Z",
+								"revision": "9d41e07",
+								"linked": null,
+								"media": 0,
+								"created": true
+							},
+							{
+								"id": "report-0414",
+								"status": "running",
+								"startedAt": "2026-10-29T09:41:33.870Z",
+								"revision": null,
+								"linked": null,
+								"media": 2,
+								"created": false
+							}
+						],
+						"skipped": [
+							{
+								"id": "run-0410",
+								"reason": "belongs to another project"
+							}
+						]
+					},
+					{
+						"imported": [],
+						"skipped": []
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "LegacyImportService.import",
@@ -54,22 +115,81 @@
 					{
 						"name": "LegacyImportService.import.store",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path of the old report store that the import reads. The store is opened as a LegacyReportRepository and only read, so every run it lists ends up either in imported or in skipped.",
+						"examples": ["/srv/legacy-reports", "/home/ci/.legacy-report-store"]
 					},
 					{
 						"name": "LegacyImportService.import.project",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "An optional project name or id that must equal the id or the name recorded on a run's project, compared exactly. When it is omitted (undefined) or an empty string, a run belongs here only if its recorded project path resolves to one of the repository's working trees; a given value skips that check, so it can also match runs recorded in other working trees.",
+						"examples": ["billing-api", "web-storefront"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LegacyImportService.import",
-						"type": "Promise<LegacyImport>"
+						"type": "Promise<LegacyImport>",
+						"description": "The resolved LegacyImport of one call: imported lists the runs this call stored, ordered by startedAt and then id, and skipped lists the runs it left out with a reason. Each run in the old store appears in exactly one of the two lists.",
+						"examples": [
+							{
+								"imported": [
+									{
+										"id": "report-0412",
+										"status": "running",
+										"startedAt": "2026-10-28T14:02:51.337Z",
+										"revision": "7c1e9a24b0d35f8e1a6c9d2f5b7e04a8c3d19f60",
+										"linked": "7c1e9a24b0d35f8e1a6c9d2f5b7e04a8c3d19f60",
+										"media": 1,
+										"created": true
+									}
+								],
+								"skipped": [
+									{
+										"id": "run-0409",
+										"reason": "is not a report manifest"
+									}
+								]
+							},
+							{
+								"imported": [
+									{
+										"id": "report-0413",
+										"status": "running",
+										"startedAt": "2026-10-29T09:40:12.005Z",
+										"revision": "9d41e07",
+										"linked": null,
+										"media": 0,
+										"created": true
+									},
+									{
+										"id": "report-0414",
+										"status": "running",
+										"startedAt": "2026-10-29T09:41:33.870Z",
+										"revision": null,
+										"linked": null,
+										"media": 2,
+										"created": false
+									}
+								],
+								"skipped": [
+									{
+										"id": "run-0410",
+										"reason": "belongs to another project"
+									}
+								]
+							},
+							{
+								"imported": [],
+								"skipped": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -79,17 +199,20 @@
 					{
 						"name": "LegacyImportService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path of this repository's working tree that the service is built for. It is passed to the git adapter, the evidence-branch and history-note repositories and the LFS adapter, and when no project is given, a run belongs here only if its recorded project path resolves to the same directory as this path or as another worktree of the repository.",
+						"examples": ["/home/ci/work/billing-api", "/srv/checkouts/web-storefront"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LegacyImportService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The LegacyImportService instance that this constructor creates, holding the git adapter, the evidence-branch and history-note repositories and the LFS adapter built for root."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
