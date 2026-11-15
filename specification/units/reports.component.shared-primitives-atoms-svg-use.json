@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native use element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet rendered as the child content of the native use element; when it is omitted, the use element renders no child content. The component invokes it as children() with no arguments and adds no wrapper around its output."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgUse",
 				"type": "markup",
-				"description": "The actual native use element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native use element in the SVG namespace, with every prop other than children applied to it as an attribute and the children snippet rendered inside it when provided. The component adds no wrapper element around it."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
