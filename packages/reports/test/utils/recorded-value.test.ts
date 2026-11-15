@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
-import { recordedValue } from '../../src/components/recorded-value/recordedValue';
+import { recordedValue } from '../../src/components/shared-primitives/recorded-value/recordedValue';
 
 test('a bounded preview leaves its input intact and makes shortening explicit', () => {
 	const value = { long: 'x'.repeat(1000), rows: Array.from({ length: 500 }, (_, id) => ({ id })) };

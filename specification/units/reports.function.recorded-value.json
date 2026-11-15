@@ -9,14 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/recorded-value/recordedValue.ts",
 			"packages/reports/src/components/shared-primitives/recorded-value/recordedValue.ts",
+			"packages/reports/src/utils/recordedValue.ts",
 			"packages/reports/src/utils/shared-primitives/recordedValue.ts",
 			"packages/reports/src/utils/shared-primitives/recordedValue.types.ts"
 		],
 		"symbols": [
 			"recordedValue",
 			"recordedValue",
+			"read",
 			"read",
 			"recordedValue",
 			"RecordedNode",
