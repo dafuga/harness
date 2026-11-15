@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
-import { artifactLimit } from '../../src/utils/artifactMedia';
+import { artifactLimit } from '../../src/utils/reports-media/artifactMedia';
 import { HostedArtifactValidator } from '../../src/validators/HostedArtifactValidator';
 
 const validator = new HostedArtifactValidator();

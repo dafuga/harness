@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
-import { artifactLimit } from '../../src/utils/artifactMedia';
+import {
+	artifactLimit,
+	artifactMedia as relocatedArtifactMedia
+} from '../../src/utils/reports-media/artifactMedia';
 import { artifactMedia } from '../../src/utils/artifact-answer/artifactMedia';
 
 const bytes = (...parts: Array<number[] | string>) =>
@@ -75,4 +78,8 @@ test('no other kind of capture is served, and nothing is ever HTML', () => {
 		types.flatMap((recorded) => [markup, png, wav].map((body) => served(kind, recorded, body)))
 	);
 	expect([...new Set(all)].sort()).toEqual(['image/png', 'refused', text]);
+});
+
+test('the relocated path names the same artifactMedia as the module that defines it', () => {
+	expect(relocatedArtifactMedia).toBe(artifactMedia);
 });

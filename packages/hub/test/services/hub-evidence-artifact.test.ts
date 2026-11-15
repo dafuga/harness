@@ -1,7 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
-import { artifactLimit } from '../../../desktop/src/utils/artifactMedia';
+import { artifactLimit } from '../../../desktop/src/utils/reports-media/artifactMedia';
 import {
 	asked,
 	bound,

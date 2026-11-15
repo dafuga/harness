@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
-import { artifactLimit } from '../../../desktop/src/utils/artifactMedia';
+import { artifactLimit } from '../../../desktop/src/utils/reports-media/artifactMedia';
 import { browserArtifact } from '../../src/utils/browser-bridge/browserArtifact';
 
 const hash = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');

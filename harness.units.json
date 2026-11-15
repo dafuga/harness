@@ -135,8 +135,8 @@
 		},
 		{
 			"from": "packages/hub/src/utils/browserApi.ts",
-			"specifier": "$desktop/utils/artifactMedia",
-			"to": "packages/desktop/src/utils/artifactMedia.ts",
+			"specifier": "$desktop/utils/reports-media/artifactMedia",
+			"to": "packages/desktop/src/utils/reports-media/artifactMedia.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the browser API imports artifactLimit from this file."
 		},
 		{
@@ -243,8 +243,8 @@
 		},
 		{
 			"from": "packages/hub/src/routes/browserApi.ts",
-			"specifier": "$desktop/utils/artifactMedia",
-			"to": "packages/desktop/src/utils/artifactMedia.ts",
+			"specifier": "$desktop/utils/reports-media/artifactMedia",
+			"to": "packages/desktop/src/utils/reports-media/artifactMedia.ts",
 			"reason": "The declared source binding matches this platform build alias and current owner-local path."
 		},
 		{

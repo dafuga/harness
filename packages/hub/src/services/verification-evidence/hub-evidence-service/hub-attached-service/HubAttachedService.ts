@@ -6,7 +6,7 @@ import {
 	evidencePointerSchema,
 	type EvidencePointer
 } from '../../../../../../../src/core/historyTypes';
-import { artifactLimit } from '../../../../../../desktop/src/utils/artifactMedia';
+import { artifactLimit } from '../../../../../../desktop/src/utils/reports-media/artifactMedia';
 import { hubEvidenceFile } from './hubEvidenceFile';
 import { hubFail, hubHash } from '../../../../utils/development-tooling/hubJson';
 import { hubRaw } from '../../../../utils/development-tooling/hubRaw';

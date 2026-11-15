@@ -6,7 +6,7 @@ import {
 	type EntityEvidence
 } from '../../src/lib/stores/explorer-ui/entityEvidence.svelte';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
-import { damagedArtifact } from '../../src/utils/artifactBytes';
+import { damagedArtifact } from '../../src/utils/shared-primitives/artifactBytes';
 import {
 	commits,
 	data,
