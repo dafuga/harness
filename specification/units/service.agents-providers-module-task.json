@@ -33,165 +33,816 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskService.constructor.root",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Filesystem root passed to ModuleTaskRepository and its Git adapter. Defaults to process.cwd(), the process working directory.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+				]
 			},
 			{
 				"name": "ModuleTaskService.feature.input",
 				"type": "TaskFeature",
-				"required": true
+				"required": true,
+				"description": "Shared feature context parsed before the task queue is updated. It contains an id, goal and TLDR; a stored id can only be reused with identical context.",
+				"examples": [
+					{
+						"id": "feature.module-task-contracts",
+						"goal": "Complete the module task service contract declaration.",
+						"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskService.add.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Untrusted task request parsed by taskInputSchema before model selection and committed-module checks. It must contain a wanted contract and a new task id.",
+				"examples": [
+					{
+						"id": "task.module-contracts",
+						"title": "Complete module task service contracts",
+						"feature": "feature.module-task-contracts",
+						"module": "service.agents-providers-module-task",
+						"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+						"wantedContract": {
+							"responsibility": "Define the accepted module task request and its stored queue behavior.",
+							"inputs": [],
+							"outputs": [
+								{
+									"name": "task",
+									"type": "ModuleTask"
+								}
+							],
+							"errors": []
+						},
+						"model": "auto"
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskService.show.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Identifier of the task to find in the shared queue. The method throws when no task with this id exists.",
+				"examples": ["task.module-contracts"]
 			},
 			{
 				"name": "ModuleTaskService.prompt.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Identifier of the task whose committed worker prompt is requested. The task must exist and its wanted-contract hash must match.",
+				"examples": ["task.module-contracts"]
 			},
 			{
 				"name": "ModuleTaskService.prepare.task",
 				"type": "ModuleTask",
-				"required": true
+				"required": true,
+				"description": "Stored module task used to build a worker prompt and resolve provider selection. Prompt creation verifies the stored wanted-contract hash.",
+				"examples": [
+					{
+						"id": "task.module-contracts",
+						"title": "Complete module task service contracts",
+						"feature": {
+							"id": "feature.module-task-contracts",
+							"goal": "Complete the module task service contract declaration.",
+							"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+						},
+						"module": {
+							"id": "service.agents-providers-module-task",
+							"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+							"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+						},
+						"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+						"wantedContract": {
+							"responsibility": "Define the accepted module task request and its stored queue behavior.",
+							"inputs": [],
+							"outputs": [
+								{
+									"name": "task",
+									"type": "ModuleTask"
+								}
+							],
+							"errors": []
+						},
+						"model": "auto",
+						"sourceCommit": "1111111111111111111111111111111111111111",
+						"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+						"status": "queued",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"attempts": [],
+						"reviews": [],
+						"claimHistory": []
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskService.prepare.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Queue commit rendered as the committed task revision in the generated prompt. This string is not validated by prepare.",
+				"examples": ["2222222222222222222222222222222222222222"]
 			},
 			{
 				"name": "ModuleTaskService.retry.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Identifier of the task to return to queued status. Retry is allowed for failed tasks or running tasks whose claim is confirmed abandoned in the same workspace.",
+				"examples": ["task.module-contracts"]
 			},
 			{
 				"name": "ModuleTaskService.review.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Identifier of the task whose submitted attempt is being reviewed. The task must be awaiting review for the supplied attempt token.",
+				"examples": ["task.module-contracts"]
 			},
 			{
 				"name": "ModuleTaskService.review.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Untrusted review request parsed by reviewInputSchema. It requires a UUID attempt and accepted or incomplete verdict; incomplete reviews require nonempty feedback.",
+				"examples": [
+					{
+						"attempt": "00000000-0000-4000-8000-000000000002",
+						"verdict": "accepted",
+						"reviewer": "Daniel",
+						"feedback": "The recorded task satisfies its wanted contract."
+					}
+				]
 			},
 			{
 				"name": "queuedTask.input",
 				"type": "ModuleTaskInput",
-				"required": true
+				"required": true,
+				"description": "Parsed task request copied into a queued record. The wanted contract is hashed, and taskInputSchema defaults model to auto when it is omitted.",
+				"examples": [
+					{
+						"id": "task.module-contracts",
+						"title": "Complete module task service contracts",
+						"feature": "feature.module-task-contracts",
+						"module": "service.agents-providers-module-task",
+						"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+						"wantedContract": {
+							"responsibility": "Define the accepted module task request and its stored queue behavior.",
+							"inputs": [],
+							"outputs": [
+								{
+									"name": "task",
+									"type": "ModuleTask"
+								}
+							],
+							"errors": []
+						},
+						"model": "auto"
+					}
+				]
 			},
 			{
 				"name": "queuedTask.feature",
 				"type": "TaskFeature",
-				"required": true
+				"required": true,
+				"description": "Shared feature context copied into the stored task. Its id, goal and TLDR provide the feature-level intent.",
+				"examples": [
+					{
+						"id": "feature.module-task-contracts",
+						"goal": "Complete the module task service contract declaration.",
+						"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+					}
+				]
 			},
 			{
 				"name": "queuedTask.unit",
 				"type": "ComponentManifest",
-				"required": true
+				"required": true,
+				"description": "Committed component manifest that supplies the task module id, responsibility and owned source paths. Its owned source paths are combined with requested verification files.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "service.agents-providers-module-task",
+						"kind": "service",
+						"title": "ModuleTaskService",
+						"responsibility": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/services/agents-providers/ModuleTaskService.ts"],
+							"symbols": ["ModuleTaskService"]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/services/agents-providers/ModuleTaskService.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/services/agents-providers/ModuleTaskService.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "queuedTask.sourceCommit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Forty-character source revision recorded on the task. It anchors the admitted task to the committed module source tree.",
+				"examples": ["1111111111111111111111111111111111111111"]
 			},
 			{
 				"name": "retryableTask.task",
 				"type": "ModuleTask",
-				"required": true
+				"required": true,
+				"description": "Stored task considered for retry eligibility. Failed tasks are retryable; running tasks require a same-workspace claim whose process is absent or has a different start time.",
+				"examples": [
+					{
+						"id": "task.module-contracts",
+						"title": "Complete module task service contracts",
+						"feature": {
+							"id": "feature.module-task-contracts",
+							"goal": "Complete the module task service contract declaration.",
+							"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+						},
+						"module": {
+							"id": "service.agents-providers-module-task",
+							"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+							"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+						},
+						"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+						"wantedContract": {
+							"responsibility": "Define the accepted module task request and its stored queue behavior.",
+							"inputs": [],
+							"outputs": [
+								{
+									"name": "task",
+									"type": "ModuleTask"
+								}
+							],
+							"errors": []
+						},
+						"model": "auto",
+						"sourceCommit": "1111111111111111111111111111111111111111",
+						"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+						"status": "failed",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"attempts": [],
+						"reviews": [],
+						"claimHistory": []
+					}
+				]
 			},
 			{
 				"name": "retryableTask.workspace",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "UUID of the workspace making the retry eligibility check. A running task's claim must name this workspace before process identity is checked.",
+				"examples": ["00000000-0000-4000-8000-000000000001"]
 			},
 			{
 				"name": "moduleTaskPrompt.task",
 				"type": "ModuleTask",
-				"required": true
+				"required": true,
+				"description": "Stored task rendered into worker instructions after its wanted-contract hash is checked. Its feature, module, task, review and source-revision fields supply the prompt content.",
+				"examples": [
+					{
+						"id": "task.module-contracts",
+						"title": "Complete module task service contracts",
+						"feature": {
+							"id": "feature.module-task-contracts",
+							"goal": "Complete the module task service contract declaration.",
+							"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+						},
+						"module": {
+							"id": "service.agents-providers-module-task",
+							"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+							"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+						},
+						"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+						"wantedContract": {
+							"responsibility": "Define the accepted module task request and its stored queue behavior.",
+							"inputs": [],
+							"outputs": [
+								{
+									"name": "task",
+									"type": "ModuleTask"
+								}
+							],
+							"errors": []
+						},
+						"model": "auto",
+						"sourceCommit": "1111111111111111111111111111111111111111",
+						"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+						"status": "queued",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"attempts": [],
+						"reviews": [],
+						"claimHistory": []
+					}
+				]
 			},
 			{
 				"name": "moduleTaskPrompt.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Task-queue commit shown in the prompt as the committed task revision on refs/harness/tasks. The function renders it without validating its format.",
+				"examples": ["2222222222222222222222222222222222222222"]
 			},
 			{
 				"name": "taskSelection.task",
 				"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>",
-				"required": true
+				"required": true,
+				"description": "Model, provider and intelligence fields used to resolve the runnable selection. Auto owns provider and intelligence; explicit models need a provider or a recognized claude- or gpt- prefix, and Claude cannot use ultra.",
+				"examples": [
+					{
+						"model": "auto"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskService.feature",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Repository update result containing the admitted feature as value and the queue commit. Reusing identical feature data leaves the existing stored feature unchanged.",
+				"examples": [
+					{
+						"value": {
+							"id": "feature.module-task-contracts",
+							"goal": "Complete the module task service contract declaration.",
+							"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+						},
+						"commit": "2222222222222222222222222222222222222222"
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskService.add",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Admission result containing the queued task and the commit that records it on the task queue ref.",
+				"examples": [
+					{
+						"task": {
+							"id": "task.module-contracts",
+							"title": "Complete module task service contracts",
+							"feature": {
+								"id": "feature.module-task-contracts",
+								"goal": "Complete the module task service contract declaration.",
+								"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+							},
+							"module": {
+								"id": "service.agents-providers-module-task",
+								"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+								"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+							},
+							"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+							"wantedContract": {
+								"responsibility": "Define the accepted module task request and its stored queue behavior.",
+								"inputs": [],
+								"outputs": [
+									{
+										"name": "task",
+										"type": "ModuleTask"
+									}
+								],
+								"errors": []
+							},
+							"model": "auto",
+							"sourceCommit": "1111111111111111111111111111111111111111",
+							"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+							"status": "queued",
+							"createdAt": "2026-11-15T12:00:00.000Z",
+							"attempts": [],
+							"reviews": [],
+							"claimHistory": []
+						},
+						"commit": "2222222222222222222222222222222222222222"
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskService.list",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Snapshot of shared feature and task records with the queue commit. Commit is null when the task queue ref has not been created.",
+				"examples": [
+					{
+						"features": [
+							{
+								"id": "feature.module-task-contracts",
+								"goal": "Complete the module task service contract declaration.",
+								"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+							}
+						],
+						"tasks": [
+							{
+								"id": "task.module-contracts",
+								"title": "Complete module task service contracts",
+								"feature": {
+									"id": "feature.module-task-contracts",
+									"goal": "Complete the module task service contract declaration.",
+									"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+								},
+								"module": {
+									"id": "service.agents-providers-module-task",
+									"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+									"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+								},
+								"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+								"wantedContract": {
+									"responsibility": "Define the accepted module task request and its stored queue behavior.",
+									"inputs": [],
+									"outputs": [
+										{
+											"name": "task",
+											"type": "ModuleTask"
+										}
+									],
+									"errors": []
+								},
+								"model": "auto",
+								"sourceCommit": "1111111111111111111111111111111111111111",
+								"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+								"status": "queued",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"attempts": [],
+								"reviews": [],
+								"claimHistory": []
+							}
+						],
+						"commit": "2222222222222222222222222222222222222222"
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskService.schema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "JSON Schema document produced from taskInputSchema for callers that need the accepted task-input shape. It reflects the current Zod task schema.",
+				"examples": [
+					{
+						"$schema": "https://json-schema.org/draft/2020-12/schema",
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$",
+								"maxLength": 150
+							},
+							"title": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 16000
+							},
+							"feature": {
+								"type": "string",
+								"pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$",
+								"maxLength": 150
+							},
+							"module": {
+								"type": "string",
+								"pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$",
+								"maxLength": 150
+							},
+							"moduleGoal": {
+								"type": "string"
+							},
+							"verificationFiles": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"maxItems": 64
+							},
+							"instructions": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 16000
+							},
+							"wantedContract": {
+								"type": "object"
+							},
+							"model": {
+								"type": "string",
+								"default": "auto"
+							},
+							"provider": {
+								"enum": ["claude", "codex"]
+							},
+							"intelligence": {
+								"enum": ["low", "medium", "high", "xhigh", "max", "ultra"]
+							},
+							"assignee": {
+								"type": "string",
+								"pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$",
+								"maxLength": 150
+							}
+						},
+						"required": [
+							"id",
+							"title",
+							"feature",
+							"module",
+							"instructions",
+							"wantedContract",
+							"model"
+						],
+						"additionalProperties": false
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskService.show",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Object containing the matching stored task and the queue snapshot commit. The task is selected by its id from list().",
+				"examples": [
+					{
+						"task": {
+							"id": "task.module-contracts",
+							"title": "Complete module task service contracts",
+							"feature": {
+								"id": "feature.module-task-contracts",
+								"goal": "Complete the module task service contract declaration.",
+								"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+							},
+							"module": {
+								"id": "service.agents-providers-module-task",
+								"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+								"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+							},
+							"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+							"wantedContract": {
+								"responsibility": "Define the accepted module task request and its stored queue behavior.",
+								"inputs": [],
+								"outputs": [
+									{
+										"name": "task",
+										"type": "ModuleTask"
+									}
+								],
+								"errors": []
+							},
+							"model": "auto",
+							"sourceCommit": "1111111111111111111111111111111111111111",
+							"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+							"status": "queued",
+							"createdAt": "2026-11-15T12:00:00.000Z",
+							"attempts": [],
+							"reviews": [],
+							"claimHistory": []
+						},
+						"commit": "2222222222222222222222222222222222222222"
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskService.prompt",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Worker prompt string prepared for the identified task and its queue commit. It includes feature context, module limits, instructions, source revisions and the wanted contract.",
+				"examples": [
+					"Overall goal: Complete the module task service contract declaration.\nFeature TLDR: Describe task admission, selection, queueing, prompts, retries and review.\nWork on this feature through its module contracts. Follow AGENTS.md and the Harness workflow. Do not delegate, commit, push, deploy or access credentials. Preserve unrelated work. CLI completion is not verification.\nModule: service.agents-providers-module-task\nOverall module goal: Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.\nAllowed task files: src/services/agents-providers/ModuleTaskService.ts\nTask: Complete module task service contracts (task.module-contracts)\nDescribe the implemented module task API, including real defaults and failure cases.\nImplement only the wanted contract below. A previous attempt may have left edits; inspect current files before changing them. Report verification performed and remaining gaps.\nOriginal source revision: 1111111111111111111111111111111111111111\nCurrent repair source revision: 1111111111111111111111111111111111111111\nCommitted task: 2222222222222222222222222222222222222222 on refs/harness/tasks; contract SHA256: ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595\nWanted contract:\n{\n\t\"responsibility\": \"Define the accepted module task request and its stored queue behavior.\",\n\t\"inputs\": [],\n\t\"outputs\": [\n\t\t{\n\t\t\t\"name\": \"task\",\n\t\t\t\"type\": \"ModuleTask\"\n\t\t}\n\t],\n\t\"errors\": []\n}\n"
+				]
 			},
 			{
 				"name": "ModuleTaskService.prepare",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Prepared worker request containing the generated prompt and resolved provider, model and intelligence selection. The prompt is bound to the supplied task and commit.",
+				"examples": [
+					{
+						"prompt": "Overall goal: Complete the module task service contract declaration.\nFeature TLDR: Describe task admission, selection, queueing, prompts, retries and review.\nWork on this feature through its module contracts. Follow AGENTS.md and the Harness workflow. Do not delegate, commit, push, deploy or access credentials. Preserve unrelated work. CLI completion is not verification.\nModule: service.agents-providers-module-task\nOverall module goal: Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.\nAllowed task files: src/services/agents-providers/ModuleTaskService.ts\nTask: Complete module task service contracts (task.module-contracts)\nDescribe the implemented module task API, including real defaults and failure cases.\nImplement only the wanted contract below. A previous attempt may have left edits; inspect current files before changing them. Report verification performed and remaining gaps.\nOriginal source revision: 1111111111111111111111111111111111111111\nCurrent repair source revision: 1111111111111111111111111111111111111111\nCommitted task: 2222222222222222222222222222222222222222 on refs/harness/tasks; contract SHA256: ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595\nWanted contract:\n{\n\t\"responsibility\": \"Define the accepted module task request and its stored queue behavior.\",\n\t\"inputs\": [],\n\t\"outputs\": [\n\t\t{\n\t\t\t\"name\": \"task\",\n\t\t\t\"type\": \"ModuleTask\"\n\t\t}\n\t],\n\t\"errors\": []\n}\n",
+						"selection": {
+							"provider": "claude",
+							"model": "claude-haiku-5-5",
+							"intelligence": "medium"
+						}
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskService.retry",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Repository update result containing the reset task and resulting queue commit. The task is queued again after its result and active claim are moved to history and cleared.",
+				"examples": [
+					{
+						"value": {
+							"id": "task.module-contracts",
+							"title": "Complete module task service contracts",
+							"feature": {
+								"id": "feature.module-task-contracts",
+								"goal": "Complete the module task service contract declaration.",
+								"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+							},
+							"module": {
+								"id": "service.agents-providers-module-task",
+								"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+								"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+							},
+							"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+							"wantedContract": {
+								"responsibility": "Define the accepted module task request and its stored queue behavior.",
+								"inputs": [],
+								"outputs": [
+									{
+										"name": "task",
+										"type": "ModuleTask"
+									}
+								],
+								"errors": []
+							},
+							"model": "auto",
+							"sourceCommit": "1111111111111111111111111111111111111111",
+							"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+							"status": "queued",
+							"createdAt": "2026-11-15T12:00:00.000Z",
+							"attempts": [],
+							"reviews": [],
+							"claimHistory": []
+						},
+						"commit": "2222222222222222222222222222222222222222"
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskService.review",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Review result containing the updated task and queue commit. An accepted verdict stores review metadata and marks the task accepted.",
+				"examples": [
+					{
+						"commit": "2222222222222222222222222222222222222222",
+						"task": {
+							"id": "task.module-contracts",
+							"title": "Complete module task service contracts",
+							"feature": {
+								"id": "feature.module-task-contracts",
+								"goal": "Complete the module task service contract declaration.",
+								"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+							},
+							"module": {
+								"id": "service.agents-providers-module-task",
+								"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+								"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+							},
+							"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+							"wantedContract": {
+								"responsibility": "Define the accepted module task request and its stored queue behavior.",
+								"inputs": [],
+								"outputs": [
+									{
+										"name": "task",
+										"type": "ModuleTask"
+									}
+								],
+								"errors": []
+							},
+							"model": "auto",
+							"sourceCommit": "1111111111111111111111111111111111111111",
+							"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+							"status": "accepted",
+							"createdAt": "2026-11-15T12:00:00.000Z",
+							"attempts": [],
+							"reviews": [
+								{
+									"attempt": "00000000-0000-4000-8000-000000000002",
+									"verdict": "accepted",
+									"reviewer": "Daniel",
+									"feedback": "The recorded task satisfies its wanted contract.",
+									"at": "2026-11-15T12:00:00.000Z",
+									"provider": "codex",
+									"model": "gpt-6-luna",
+									"intelligence": "medium",
+									"reportedModel": "gpt-6-luna"
+								}
+							],
+							"claimHistory": [],
+							"claim": {
+								"worker": "worker.module-task",
+								"token": "00000000-0000-4000-8000-000000000002",
+								"startedAt": "2026-11-15T11:55:00.000Z",
+								"owner": {
+									"workspace": "00000000-0000-4000-8000-000000000001",
+									"pid": 4242,
+									"startedAt": "2026-11-15T11:54:00.000Z"
+								}
+							},
+							"result": {
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"intelligence": "medium",
+								"reportedModel": "gpt-6-luna",
+								"text": "The task contract is implemented and reviewed.",
+								"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14",
+								"changedFiles": ["src/services/agents-providers/ModuleTaskService.ts"],
+								"fallback": false,
+								"finishedAt": "2026-11-15T11:58:00.000Z",
+								"attempt": "00000000-0000-4000-8000-000000000002",
+								"sourceCommit": "1111111111111111111111111111111111111111",
+								"checkpointCommit": "3333333333333333333333333333333333333333",
+								"executions": []
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "queuedTask",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"description": "Stored task assembled from the request, feature, unit manifest and source revision. It starts queued with a SHA256 wanted-contract hash and empty attempt, review and claim-history arrays.",
+				"examples": [
+					{
+						"id": "task.module-contracts",
+						"title": "Complete module task service contracts",
+						"feature": {
+							"id": "feature.module-task-contracts",
+							"goal": "Complete the module task service contract declaration.",
+							"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+						},
+						"module": {
+							"id": "service.agents-providers-module-task",
+							"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+							"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+						},
+						"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+						"wantedContract": {
+							"responsibility": "Define the accepted module task request and its stored queue behavior.",
+							"inputs": [],
+							"outputs": [
+								{
+									"name": "task",
+									"type": "ModuleTask"
+								}
+							],
+							"errors": []
+						},
+						"model": "auto",
+						"sourceCommit": "1111111111111111111111111111111111111111",
+						"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+						"status": "queued",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"attempts": [],
+						"reviews": [],
+						"claimHistory": []
+					}
+				]
 			},
 			{
 				"name": "retryableTask",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Boolean indicating whether the task can safely be retried under its status, claim workspace and process identity. A failed task returns true without a process check.",
+				"examples": [true]
 			},
 			{
 				"name": "moduleTaskPrompt",
-				"type": "string"
+				"type": "string",
+				"description": "Multiline worker prompt containing the feature goal, module scope, task instructions, source revisions, queue commit, contract hash and stable JSON wanted contract.",
+				"examples": [
+					"Overall goal: Complete the module task service contract declaration.\nFeature TLDR: Describe task admission, selection, queueing, prompts, retries and review.\nWork on this feature through its module contracts. Follow AGENTS.md and the Harness workflow. Do not delegate, commit, push, deploy or access credentials. Preserve unrelated work. CLI completion is not verification.\nModule: service.agents-providers-module-task\nOverall module goal: Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.\nAllowed task files: src/services/agents-providers/ModuleTaskService.ts\nTask: Complete module task service contracts (task.module-contracts)\nDescribe the implemented module task API, including real defaults and failure cases.\nImplement only the wanted contract below. A previous attempt may have left edits; inspect current files before changing them. Report verification performed and remaining gaps.\nOriginal source revision: 1111111111111111111111111111111111111111\nCurrent repair source revision: 1111111111111111111111111111111111111111\nCommitted task: 2222222222222222222222222222222222222222 on refs/harness/tasks; contract SHA256: ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595\nWanted contract:\n{\n\t\"responsibility\": \"Define the accepted module task request and its stored queue behavior.\",\n\t\"inputs\": [],\n\t\"outputs\": [\n\t\t{\n\t\t\t\"name\": \"task\",\n\t\t\t\"type\": \"ModuleTask\"\n\t\t}\n\t],\n\t\"errors\": []\n}\n"
+				]
 			},
 			{
 				"name": "taskSelection",
-				"type": "TaskSelection"
+				"type": "TaskSelection",
+				"description": "Resolved provider, model and intelligence values for a task. Auto resolves to Claude Haiku 5.5 at medium intelligence.",
+				"examples": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "medium"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown for immutable-feature conflicts, invalid model selection, missing or ineligible tasks, prompt-integrity failures, review-state conflicts and delegated operation failures."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown when Zod rejects feature, task, unit-manifest, queue or review data during parsing."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown when JSON.parse cannot decode committed task-queue data."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleTaskService.feature",
@@ -199,17 +850,52 @@
 					{
 						"name": "ModuleTaskService.feature.input",
 						"type": "TaskFeature",
-						"required": true
+						"required": true,
+						"description": "Shared feature context parsed before the task queue is updated. It contains an id, goal and TLDR; a stored id can only be reused with identical context.",
+						"examples": [
+							{
+								"id": "feature.module-task-contracts",
+								"goal": "Complete the module task service contract declaration.",
+								"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskService.feature",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Repository update result containing the admitted feature as value and the queue commit. Reusing identical feature data leaves the existing stored feature unchanged.",
+						"examples": [
+							{
+								"value": {
+									"id": "feature.module-task-contracts",
+									"goal": "Complete the module task service contract declaration.",
+									"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+								},
+								"commit": "2222222222222222222222222222222222222222"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the same feature id is supplied with different context or queue persistence fails."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown when feature input or stored queue data fails its Zod schema."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown when committed queue JSON cannot be parsed."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskService.add",
@@ -217,22 +903,95 @@
 					{
 						"name": "ModuleTaskService.add.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Untrusted task request parsed by taskInputSchema before model selection and committed-module checks. It must contain a wanted contract and a new task id.",
+						"examples": [
+							{
+								"id": "task.module-contracts",
+								"title": "Complete module task service contracts",
+								"feature": "feature.module-task-contracts",
+								"module": "service.agents-providers-module-task",
+								"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+								"wantedContract": {
+									"responsibility": "Define the accepted module task request and its stored queue behavior.",
+									"inputs": [],
+									"outputs": [
+										{
+											"name": "task",
+											"type": "ModuleTask"
+										}
+									],
+									"errors": []
+								},
+								"model": "auto"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskService.add",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Admission result containing the queued task and the commit that records it on the task queue ref.",
+						"examples": [
+							{
+								"task": {
+									"id": "task.module-contracts",
+									"title": "Complete module task service contracts",
+									"feature": {
+										"id": "feature.module-task-contracts",
+										"goal": "Complete the module task service contract declaration.",
+										"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+									},
+									"module": {
+										"id": "service.agents-providers-module-task",
+										"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+										"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+									},
+									"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+									"wantedContract": {
+										"responsibility": "Define the accepted module task request and its stored queue behavior.",
+										"inputs": [],
+										"outputs": [
+											{
+												"name": "task",
+												"type": "ModuleTask"
+											}
+										],
+										"errors": []
+									},
+									"model": "auto",
+									"sourceCommit": "1111111111111111111111111111111111111111",
+									"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+									"status": "queued",
+									"createdAt": "2026-11-15T12:00:00.000Z",
+									"attempts": [],
+									"reviews": [],
+									"claimHistory": []
+								},
+								"commit": "2222222222222222222222222222222222222222"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown for invalid model selection, inactive or unregistered modules, missing module goals, duplicate task ids, missing feature context or queue persistence failures."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown when task input, module manifests or stored queue data fail their Zod schemas."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown when committed queue JSON cannot be parsed."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskService.list",
@@ -240,11 +999,76 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskService.list",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Snapshot of shared feature and task records with the queue commit. Commit is null when the task queue ref has not been created.",
+						"examples": [
+							{
+								"features": [
+									{
+										"id": "feature.module-task-contracts",
+										"goal": "Complete the module task service contract declaration.",
+										"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+									}
+								],
+								"tasks": [
+									{
+										"id": "task.module-contracts",
+										"title": "Complete module task service contracts",
+										"feature": {
+											"id": "feature.module-task-contracts",
+											"goal": "Complete the module task service contract declaration.",
+											"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+										},
+										"module": {
+											"id": "service.agents-providers-module-task",
+											"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+											"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+										},
+										"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+										"wantedContract": {
+											"responsibility": "Define the accepted module task request and its stored queue behavior.",
+											"inputs": [],
+											"outputs": [
+												{
+													"name": "task",
+													"type": "ModuleTask"
+												}
+											],
+											"errors": []
+										},
+										"model": "auto",
+										"sourceCommit": "1111111111111111111111111111111111111111",
+										"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+										"status": "queued",
+										"createdAt": "2026-11-15T12:00:00.000Z",
+										"attempts": [],
+										"reviews": [],
+										"claimHistory": []
+									}
+								],
+								"commit": "2222222222222222222222222222222222222222"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagated when reading the task queue or its Git-backed snapshot fails."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown when committed task-queue data fails queueSchema parsing."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown when JSON.parse cannot decode committed task-queue data."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskService.schema",
@@ -252,11 +1076,83 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskService.schema",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "JSON Schema document produced from taskInputSchema for callers that need the accepted task-input shape. It reflects the current Zod task schema.",
+						"examples": [
+							{
+								"$schema": "https://json-schema.org/draft/2020-12/schema",
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string",
+										"pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$",
+										"maxLength": 150
+									},
+									"title": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 16000
+									},
+									"feature": {
+										"type": "string",
+										"pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$",
+										"maxLength": 150
+									},
+									"module": {
+										"type": "string",
+										"pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$",
+										"maxLength": 150
+									},
+									"moduleGoal": {
+										"type": "string"
+									},
+									"verificationFiles": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"maxItems": 64
+									},
+									"instructions": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 16000
+									},
+									"wantedContract": {
+										"type": "object"
+									},
+									"model": {
+										"type": "string",
+										"default": "auto"
+									},
+									"provider": {
+										"enum": ["claude", "codex"]
+									},
+									"intelligence": {
+										"enum": ["low", "medium", "high", "xhigh", "max", "ultra"]
+									},
+									"assignee": {
+										"type": "string",
+										"pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$",
+										"maxLength": 150
+									}
+								},
+								"required": [
+									"id",
+									"title",
+									"feature",
+									"module",
+									"instructions",
+									"wantedContract",
+									"model"
+								],
+								"additionalProperties": false
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskService.show",
@@ -264,22 +1160,75 @@
 					{
 						"name": "ModuleTaskService.show.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Identifier of the task to find in the shared queue. The method throws when no task with this id exists.",
+						"examples": ["task.module-contracts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskService.show",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Object containing the matching stored task and the queue snapshot commit. The task is selected by its id from list().",
+						"examples": [
+							{
+								"task": {
+									"id": "task.module-contracts",
+									"title": "Complete module task service contracts",
+									"feature": {
+										"id": "feature.module-task-contracts",
+										"goal": "Complete the module task service contract declaration.",
+										"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+									},
+									"module": {
+										"id": "service.agents-providers-module-task",
+										"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+										"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+									},
+									"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+									"wantedContract": {
+										"responsibility": "Define the accepted module task request and its stored queue behavior.",
+										"inputs": [],
+										"outputs": [
+											{
+												"name": "task",
+												"type": "ModuleTask"
+											}
+										],
+										"errors": []
+									},
+									"model": "auto",
+									"sourceCommit": "1111111111111111111111111111111111111111",
+									"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+									"status": "queued",
+									"createdAt": "2026-11-15T12:00:00.000Z",
+									"attempts": [],
+									"reviews": [],
+									"claimHistory": []
+								},
+								"commit": "2222222222222222222222222222222222222222"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the task id is absent from the queue, or propagated from reading the queue."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown when committed task-queue data fails queueSchema parsing."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown when JSON.parse cannot decode committed task-queue data."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskService.prompt",
@@ -287,17 +1236,39 @@
 					{
 						"name": "ModuleTaskService.prompt.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Identifier of the task whose committed worker prompt is requested. The task must exist and its wanted-contract hash must match.",
+						"examples": ["task.module-contracts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskService.prompt",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Worker prompt string prepared for the identified task and its queue commit. It includes feature context, module limits, instructions, source revisions and the wanted contract.",
+						"examples": [
+							"Overall goal: Complete the module task service contract declaration.\nFeature TLDR: Describe task admission, selection, queueing, prompts, retries and review.\nWork on this feature through its module contracts. Follow AGENTS.md and the Harness workflow. Do not delegate, commit, push, deploy or access credentials. Preserve unrelated work. CLI completion is not verification.\nModule: service.agents-providers-module-task\nOverall module goal: Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.\nAllowed task files: src/services/agents-providers/ModuleTaskService.ts\nTask: Complete module task service contracts (task.module-contracts)\nDescribe the implemented module task API, including real defaults and failure cases.\nImplement only the wanted contract below. A previous attempt may have left edits; inspect current files before changing them. Report verification performed and remaining gaps.\nOriginal source revision: 1111111111111111111111111111111111111111\nCurrent repair source revision: 1111111111111111111111111111111111111111\nCommitted task: 2222222222222222222222222222222222222222 on refs/harness/tasks; contract SHA256: ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595\nWanted contract:\n{\n\t\"responsibility\": \"Define the accepted module task request and its stored queue behavior.\",\n\t\"inputs\": [],\n\t\"outputs\": [\n\t\t{\n\t\t\t\"name\": \"task\",\n\t\t\t\"type\": \"ModuleTask\"\n\t\t}\n\t],\n\t\"errors\": []\n}\n"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the task is absent or its wanted-contract hash does not match, or propagated from reading the queue."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown when committed task-queue data fails queueSchema parsing."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown when JSON.parse cannot decode committed task-queue data."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskService.prepare",
@@ -305,22 +1276,78 @@
 					{
 						"name": "ModuleTaskService.prepare.task",
 						"type": "ModuleTask",
-						"required": true
+						"required": true,
+						"description": "Stored module task used to build a worker prompt and resolve provider selection. Prompt creation verifies the stored wanted-contract hash.",
+						"examples": [
+							{
+								"id": "task.module-contracts",
+								"title": "Complete module task service contracts",
+								"feature": {
+									"id": "feature.module-task-contracts",
+									"goal": "Complete the module task service contract declaration.",
+									"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+								},
+								"module": {
+									"id": "service.agents-providers-module-task",
+									"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+									"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+								},
+								"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+								"wantedContract": {
+									"responsibility": "Define the accepted module task request and its stored queue behavior.",
+									"inputs": [],
+									"outputs": [
+										{
+											"name": "task",
+											"type": "ModuleTask"
+										}
+									],
+									"errors": []
+								},
+								"model": "auto",
+								"sourceCommit": "1111111111111111111111111111111111111111",
+								"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+								"status": "queued",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"attempts": [],
+								"reviews": [],
+								"claimHistory": []
+							}
+						]
 					},
 					{
 						"name": "ModuleTaskService.prepare.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Queue commit rendered as the committed task revision in the generated prompt. This string is not validated by prepare.",
+						"examples": ["2222222222222222222222222222222222222222"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskService.prepare",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Prepared worker request containing the generated prompt and resolved provider, model and intelligence selection. The prompt is bound to the supplied task and commit.",
+						"examples": [
+							{
+								"prompt": "Overall goal: Complete the module task service contract declaration.\nFeature TLDR: Describe task admission, selection, queueing, prompts, retries and review.\nWork on this feature through its module contracts. Follow AGENTS.md and the Harness workflow. Do not delegate, commit, push, deploy or access credentials. Preserve unrelated work. CLI completion is not verification.\nModule: service.agents-providers-module-task\nOverall module goal: Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.\nAllowed task files: src/services/agents-providers/ModuleTaskService.ts\nTask: Complete module task service contracts (task.module-contracts)\nDescribe the implemented module task API, including real defaults and failure cases.\nImplement only the wanted contract below. A previous attempt may have left edits; inspect current files before changing them. Report verification performed and remaining gaps.\nOriginal source revision: 1111111111111111111111111111111111111111\nCurrent repair source revision: 1111111111111111111111111111111111111111\nCommitted task: 2222222222222222222222222222222222222222 on refs/harness/tasks; contract SHA256: ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595\nWanted contract:\n{\n\t\"responsibility\": \"Define the accepted module task request and its stored queue behavior.\",\n\t\"inputs\": [],\n\t\"outputs\": [\n\t\t{\n\t\t\t\"name\": \"task\",\n\t\t\t\"type\": \"ModuleTask\"\n\t\t}\n\t],\n\t\"errors\": []\n}\n",
+								"selection": {
+									"provider": "claude",
+									"model": "claude-haiku-5-5",
+									"intelligence": "medium"
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the wanted-contract hash is invalid or the model, provider and intelligence combination cannot be resolved."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskService.retry",
@@ -328,17 +1355,75 @@
 					{
 						"name": "ModuleTaskService.retry.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Identifier of the task to return to queued status. Retry is allowed for failed tasks or running tasks whose claim is confirmed abandoned in the same workspace.",
+						"examples": ["task.module-contracts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskService.retry",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Repository update result containing the reset task and resulting queue commit. The task is queued again after its result and active claim are moved to history and cleared.",
+						"examples": [
+							{
+								"value": {
+									"id": "task.module-contracts",
+									"title": "Complete module task service contracts",
+									"feature": {
+										"id": "feature.module-task-contracts",
+										"goal": "Complete the module task service contract declaration.",
+										"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+									},
+									"module": {
+										"id": "service.agents-providers-module-task",
+										"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+										"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+									},
+									"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+									"wantedContract": {
+										"responsibility": "Define the accepted module task request and its stored queue behavior.",
+										"inputs": [],
+										"outputs": [
+											{
+												"name": "task",
+												"type": "ModuleTask"
+											}
+										],
+										"errors": []
+									},
+									"model": "auto",
+									"sourceCommit": "1111111111111111111111111111111111111111",
+									"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+									"status": "queued",
+									"createdAt": "2026-11-15T12:00:00.000Z",
+									"attempts": [],
+									"reviews": [],
+									"claimHistory": []
+								},
+								"commit": "2222222222222222222222222222222222222222"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the task is missing or cannot be retried because its owner is active, unknown or in another clone; repository failures also propagate."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown when stored task-queue data fails queueSchema parsing."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown when JSON.parse cannot decode committed task-queue data."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskService.review",
@@ -346,22 +1431,126 @@
 					{
 						"name": "ModuleTaskService.review.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Identifier of the task whose submitted attempt is being reviewed. The task must be awaiting review for the supplied attempt token.",
+						"examples": ["task.module-contracts"]
 					},
 					{
 						"name": "ModuleTaskService.review.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Untrusted review request parsed by reviewInputSchema. It requires a UUID attempt and accepted or incomplete verdict; incomplete reviews require nonempty feedback.",
+						"examples": [
+							{
+								"attempt": "00000000-0000-4000-8000-000000000002",
+								"verdict": "accepted",
+								"reviewer": "Daniel",
+								"feedback": "The recorded task satisfies its wanted contract."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskService.review",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Review result containing the updated task and queue commit. An accepted verdict stores review metadata and marks the task accepted.",
+						"examples": [
+							{
+								"commit": "2222222222222222222222222222222222222222",
+								"task": {
+									"id": "task.module-contracts",
+									"title": "Complete module task service contracts",
+									"feature": {
+										"id": "feature.module-task-contracts",
+										"goal": "Complete the module task service contract declaration.",
+										"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+									},
+									"module": {
+										"id": "service.agents-providers-module-task",
+										"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+										"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+									},
+									"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+									"wantedContract": {
+										"responsibility": "Define the accepted module task request and its stored queue behavior.",
+										"inputs": [],
+										"outputs": [
+											{
+												"name": "task",
+												"type": "ModuleTask"
+											}
+										],
+										"errors": []
+									},
+									"model": "auto",
+									"sourceCommit": "1111111111111111111111111111111111111111",
+									"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+									"status": "accepted",
+									"createdAt": "2026-11-15T12:00:00.000Z",
+									"attempts": [],
+									"reviews": [
+										{
+											"attempt": "00000000-0000-4000-8000-000000000002",
+											"verdict": "accepted",
+											"reviewer": "Daniel",
+											"feedback": "The recorded task satisfies its wanted contract.",
+											"at": "2026-11-15T12:00:00.000Z",
+											"provider": "codex",
+											"model": "gpt-6-luna",
+											"intelligence": "medium",
+											"reportedModel": "gpt-6-luna"
+										}
+									],
+									"claimHistory": [],
+									"claim": {
+										"worker": "worker.module-task",
+										"token": "00000000-0000-4000-8000-000000000002",
+										"startedAt": "2026-11-15T11:55:00.000Z",
+										"owner": {
+											"workspace": "00000000-0000-4000-8000-000000000001",
+											"pid": 4242,
+											"startedAt": "2026-11-15T11:54:00.000Z"
+										}
+									},
+									"result": {
+										"provider": "codex",
+										"model": "gpt-6-luna",
+										"intelligence": "medium",
+										"reportedModel": "gpt-6-luna",
+										"text": "The task contract is implemented and reviewed.",
+										"worktree": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14",
+										"changedFiles": ["src/services/agents-providers/ModuleTaskService.ts"],
+										"fallback": false,
+										"finishedAt": "2026-11-15T11:58:00.000Z",
+										"attempt": "00000000-0000-4000-8000-000000000002",
+										"sourceCommit": "1111111111111111111111111111111111111111",
+										"checkpointCommit": "3333333333333333333333333333333333333333",
+										"executions": []
+									}
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the task is not awaiting the supplied attempt or its review becomes stale; delegated worktree, repository and analytics failures also propagate."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown when review input or stored queue data fails its Zod schema."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown when JSON.parse cannot decode committed task-queue data."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "queuedTask",
@@ -369,32 +1558,140 @@
 					{
 						"name": "queuedTask.input",
 						"type": "ModuleTaskInput",
-						"required": true
+						"required": true,
+						"description": "Parsed task request copied into a queued record. The wanted contract is hashed, and taskInputSchema defaults model to auto when it is omitted.",
+						"examples": [
+							{
+								"id": "task.module-contracts",
+								"title": "Complete module task service contracts",
+								"feature": "feature.module-task-contracts",
+								"module": "service.agents-providers-module-task",
+								"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+								"wantedContract": {
+									"responsibility": "Define the accepted module task request and its stored queue behavior.",
+									"inputs": [],
+									"outputs": [
+										{
+											"name": "task",
+											"type": "ModuleTask"
+										}
+									],
+									"errors": []
+								},
+								"model": "auto"
+							}
+						]
 					},
 					{
 						"name": "queuedTask.feature",
 						"type": "TaskFeature",
-						"required": true
+						"required": true,
+						"description": "Shared feature context copied into the stored task. Its id, goal and TLDR provide the feature-level intent.",
+						"examples": [
+							{
+								"id": "feature.module-task-contracts",
+								"goal": "Complete the module task service contract declaration.",
+								"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+							}
+						]
 					},
 					{
 						"name": "queuedTask.unit",
 						"type": "ComponentManifest",
-						"required": true
+						"required": true,
+						"description": "Committed component manifest that supplies the task module id, responsibility and owned source paths. Its owned source paths are combined with requested verification files.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "service.agents-providers-module-task",
+								"kind": "service",
+								"title": "ModuleTaskService",
+								"responsibility": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/services/agents-providers/ModuleTaskService.ts"],
+									"symbols": ["ModuleTaskService"]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/services/agents-providers/ModuleTaskService.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/services/agents-providers/ModuleTaskService.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "queuedTask.sourceCommit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Forty-character source revision recorded on the task. It anchors the admitted task to the committed module source tree.",
+						"examples": ["1111111111111111111111111111111111111111"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "queuedTask",
-						"type": "ModuleTask"
+						"type": "ModuleTask",
+						"description": "Stored task assembled from the request, feature, unit manifest and source revision. It starts queued with a SHA256 wanted-contract hash and empty attempt, review and claim-history arrays.",
+						"examples": [
+							{
+								"id": "task.module-contracts",
+								"title": "Complete module task service contracts",
+								"feature": {
+									"id": "feature.module-task-contracts",
+									"goal": "Complete the module task service contract declaration.",
+									"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+								},
+								"module": {
+									"id": "service.agents-providers-module-task",
+									"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+									"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+								},
+								"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+								"wantedContract": {
+									"responsibility": "Define the accepted module task request and its stored queue behavior.",
+									"inputs": [],
+									"outputs": [
+										{
+											"name": "task",
+											"type": "ModuleTask"
+										}
+									],
+									"errors": []
+								},
+								"model": "auto",
+								"sourceCommit": "1111111111111111111111111111111111111111",
+								"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+								"status": "queued",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"attempts": [],
+								"reviews": [],
+								"claimHistory": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "retryableTask",
@@ -402,22 +1699,63 @@
 					{
 						"name": "retryableTask.task",
 						"type": "ModuleTask",
-						"required": true
+						"required": true,
+						"description": "Stored task considered for retry eligibility. Failed tasks are retryable; running tasks require a same-workspace claim whose process is absent or has a different start time.",
+						"examples": [
+							{
+								"id": "task.module-contracts",
+								"title": "Complete module task service contracts",
+								"feature": {
+									"id": "feature.module-task-contracts",
+									"goal": "Complete the module task service contract declaration.",
+									"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+								},
+								"module": {
+									"id": "service.agents-providers-module-task",
+									"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+									"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+								},
+								"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+								"wantedContract": {
+									"responsibility": "Define the accepted module task request and its stored queue behavior.",
+									"inputs": [],
+									"outputs": [
+										{
+											"name": "task",
+											"type": "ModuleTask"
+										}
+									],
+									"errors": []
+								},
+								"model": "auto",
+								"sourceCommit": "1111111111111111111111111111111111111111",
+								"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+								"status": "failed",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"attempts": [],
+								"reviews": [],
+								"claimHistory": []
+							}
+						]
 					},
 					{
 						"name": "retryableTask.workspace",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "UUID of the workspace making the retry eligibility check. A running task's claim must name this workspace before process identity is checked.",
+						"examples": ["00000000-0000-4000-8000-000000000001"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "retryableTask",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Boolean indicating whether the task can safely be retried under its status, claim workspace and process identity. A failed task returns true without a process check.",
+						"examples": [true]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "moduleTaskPrompt",
@@ -425,27 +1763,71 @@
 					{
 						"name": "moduleTaskPrompt.task",
 						"type": "ModuleTask",
-						"required": true
+						"required": true,
+						"description": "Stored task rendered into worker instructions after its wanted-contract hash is checked. Its feature, module, task, review and source-revision fields supply the prompt content.",
+						"examples": [
+							{
+								"id": "task.module-contracts",
+								"title": "Complete module task service contracts",
+								"feature": {
+									"id": "feature.module-task-contracts",
+									"goal": "Complete the module task service contract declaration.",
+									"tldr": "Describe task admission, selection, queueing, prompts, retries and review."
+								},
+								"module": {
+									"id": "service.agents-providers-module-task",
+									"goal": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+									"files": ["src/services/agents-providers/ModuleTaskService.ts"]
+								},
+								"instructions": "Describe the implemented module task API, including real defaults and failure cases.",
+								"wantedContract": {
+									"responsibility": "Define the accepted module task request and its stored queue behavior.",
+									"inputs": [],
+									"outputs": [
+										{
+											"name": "task",
+											"type": "ModuleTask"
+										}
+									],
+									"errors": []
+								},
+								"model": "auto",
+								"sourceCommit": "1111111111111111111111111111111111111111",
+								"contractHash": "ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595",
+								"status": "queued",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"attempts": [],
+								"reviews": [],
+								"claimHistory": []
+							}
+						]
 					},
 					{
 						"name": "moduleTaskPrompt.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Task-queue commit shown in the prompt as the committed task revision on refs/harness/tasks. The function renders it without validating its format.",
+						"examples": ["2222222222222222222222222222222222222222"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "moduleTaskPrompt",
-						"type": "string"
+						"type": "string",
+						"description": "Multiline worker prompt containing the feature goal, module scope, task instructions, source revisions, queue commit, contract hash and stable JSON wanted contract.",
+						"examples": [
+							"Overall goal: Complete the module task service contract declaration.\nFeature TLDR: Describe task admission, selection, queueing, prompts, retries and review.\nWork on this feature through its module contracts. Follow AGENTS.md and the Harness workflow. Do not delegate, commit, push, deploy or access credentials. Preserve unrelated work. CLI completion is not verification.\nModule: service.agents-providers-module-task\nOverall module goal: Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.\nAllowed task files: src/services/agents-providers/ModuleTaskService.ts\nTask: Complete module task service contracts (task.module-contracts)\nDescribe the implemented module task API, including real defaults and failure cases.\nImplement only the wanted contract below. A previous attempt may have left edits; inspect current files before changing them. Report verification performed and remaining gaps.\nOriginal source revision: 1111111111111111111111111111111111111111\nCurrent repair source revision: 1111111111111111111111111111111111111111\nCommitted task: 2222222222222222222222222222222222222222 on refs/harness/tasks; contract SHA256: ea5d9cf79f342aaa7080acef6d87e93fd1bb4fab3a4c1600fd1f511453adb595\nWanted contract:\n{\n\t\"responsibility\": \"Define the accepted module task request and its stored queue behavior.\",\n\t\"inputs\": [],\n\t\"outputs\": [\n\t\t{\n\t\t\t\"name\": \"task\",\n\t\t\t\"type\": \"ModuleTask\"\n\t\t}\n\t],\n\t\"errors\": []\n}\n"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the wanted-contract SHA256 differs from the hash recorded on the task."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "taskSelection",
@@ -453,22 +1835,37 @@
 					{
 						"name": "taskSelection.task",
 						"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>",
-						"required": true
+						"required": true,
+						"description": "Model, provider and intelligence fields used to resolve the runnable selection. Auto owns provider and intelligence; explicit models need a provider or a recognized claude- or gpt- prefix, and Claude cannot use ultra.",
+						"examples": [
+							{
+								"model": "auto"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskSelection",
-						"type": "TaskSelection"
+						"type": "TaskSelection",
+						"description": "Resolved provider, model and intelligence values for a task. Auto resolves to Claude Haiku 5.5 at medium intelligence.",
+						"examples": [
+							{
+								"provider": "claude",
+								"model": "claude-haiku-5-5",
+								"intelligence": "medium"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when auto is combined with an explicit provider or intelligence, when an unrecognized explicit model lacks a provider, or when Claude is assigned ultra intelligence."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -478,17 +1875,22 @@
 					{
 						"name": "ModuleTaskService.constructor.root",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Filesystem root passed to ModuleTaskRepository and its Git adapter. Defaults to process.cwd(), the process working directory.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Constructed ModuleTaskService instance with a readonly ModuleTaskRepository bound to the selected root. This class instance cannot be represented as a JSON example."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
