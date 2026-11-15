@@ -31,39 +31,96 @@
 				"name": "runtimeResponse.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Unknown value to inspect for ok true with an output property, or ok false with string error code/message."
+				"description": "Any value to validate; runtimeResponseText passes it the result of JSON.parse. Only a non-null object can pass: it is returned unchanged when ok is exactly true and it has an output property (any value), or when ok is exactly false and error has string code and message properties; any other value becomes an invalid-response failure.",
+				"examples": [
+					{
+						"ok": true,
+						"output": {
+							"exitCode": 0,
+							"stdout": "built 12 files\n"
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "invalid-response",
+							"message": "runtime returned text that is not JSON"
+						}
+					},
+					{
+						"result": 42
+					}
+				]
 			},
 			{
 				"name": "runtimeResponseText.text",
 				"type": "string",
 				"required": true,
-				"description": "JSON text returned by a byte transport."
+				"description": "The text a byte transport returned, parsed with JSON.parse before envelope validation. Text that JSON.parse rejects yields an invalid-response failure with the message 'runtime returned text that is not JSON', and parsed JSON that is not a valid envelope yields an invalid-response failure with the message 'runtime returned a value that is not a response envelope'.",
+				"examples": [
+					"{\"ok\":true,\"output\":{\"exitCode\":0}}",
+					"runtime exited with code 137 before writing a reply",
+					"{\"result\":42}"
+				]
 			},
 			{
 				"name": "runtimeDeadline.timeoutMs",
 				"type": "number",
 				"required": true,
-				"description": "Milliseconds allowed for the call, measured from deadline creation."
+				"description": "Milliseconds allowed for the call, measured from deadline creation. It is passed to setTimeout, and settle replaces a result with a timeout failure when more than timeoutMs has elapsed since creation; the value is not validated.",
+				"examples": [5000, 30000, 120000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "runtimeResponse",
 				"type": "RuntimeResponse",
-				"description": "Original valid envelope, or invalid-response failure explaining that the value is not an envelope."
+				"description": "The input object itself, not a copy, when it is a valid envelope; otherwise an invalid-response failure with the message 'runtime returned a value that is not a response envelope'. A valid envelope has ok exactly true with an output property, or ok exactly false with string error.code and error.message.",
+				"examples": [
+					{
+						"ok": true,
+						"output": {
+							"exitCode": 0,
+							"stdout": "built 12 files\n"
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "invalid-response",
+							"message": "runtime returned a value that is not a response envelope"
+						}
+					}
+				]
 			},
 			{
 				"name": "runtimeResponseText",
 				"type": "RuntimeResponse",
-				"description": "Validated parsed envelope, or invalid-response for non-JSON text."
+				"description": "A valid envelope is the object JSON.parse produced, returned unchanged. Text that JSON.parse rejects yields an invalid-response failure with the message 'runtime returned text that is not JSON', and parsed JSON that is not a valid envelope yields an invalid-response failure with the message 'runtime returned a value that is not a response envelope'.",
+				"examples": [
+					{
+						"ok": true,
+						"output": {
+							"exitCode": 0
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "invalid-response",
+							"message": "runtime returned text that is not JSON"
+						}
+					}
+				]
 			},
 			{
 				"name": "runtimeDeadline",
 				"type": "RuntimeDeadline",
-				"description": "Deadline with an expired promise and settle method. The timer produces runtime-timeout; settle clears it and rejects a result arriving strictly after the elapsed limit, including work that blocked the timer."
+				"description": "An object with an expired promise, which resolves with runtimeTimeout(timeoutMs) once the timer fires, and a settle(response) method that clears the timer and returns response unless more than timeoutMs has elapsed since creation, in which case it returns runtimeTimeout(timeoutMs). A timer cannot fire while the thread is blocked, so settle is what catches a result that blocking work produced after the limit."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "runtimeResponse",
@@ -72,18 +129,53 @@
 						"name": "runtimeResponse.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Unknown value to inspect for ok true with an output property, or ok false with string error code/message."
+						"description": "Any value to validate; runtimeResponseText passes it the result of JSON.parse. Only a non-null object can pass: it is returned unchanged when ok is exactly true and it has an output property (any value), or when ok is exactly false and error has string code and message properties; any other value becomes an invalid-response failure.",
+						"examples": [
+							{
+								"ok": true,
+								"output": {
+									"exitCode": 0,
+									"stdout": "built 12 files\n"
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "invalid-response",
+									"message": "runtime returned text that is not JSON"
+								}
+							},
+							{
+								"result": 42
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runtimeResponse",
 						"type": "RuntimeResponse",
-						"description": "Original valid envelope, or invalid-response failure explaining that the value is not an envelope."
+						"description": "The input object itself, not a copy, when it is a valid envelope; otherwise an invalid-response failure with the message 'runtime returned a value that is not a response envelope'. A valid envelope has ok exactly true with an output property, or ok exactly false with string error.code and error.message.",
+						"examples": [
+							{
+								"ok": true,
+								"output": {
+									"exitCode": 0,
+									"stdout": "built 12 files\n"
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "invalid-response",
+									"message": "runtime returned a value that is not a response envelope"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "runtimeResponseText",
@@ -92,18 +184,38 @@
 						"name": "runtimeResponseText.text",
 						"type": "string",
 						"required": true,
-						"description": "JSON text returned by a byte transport."
+						"description": "The text a byte transport returned, parsed with JSON.parse before envelope validation. Text that JSON.parse rejects yields an invalid-response failure with the message 'runtime returned text that is not JSON', and parsed JSON that is not a valid envelope yields an invalid-response failure with the message 'runtime returned a value that is not a response envelope'.",
+						"examples": [
+							"{\"ok\":true,\"output\":{\"exitCode\":0}}",
+							"runtime exited with code 137 before writing a reply",
+							"{\"result\":42}"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runtimeResponseText",
 						"type": "RuntimeResponse",
-						"description": "Validated parsed envelope, or invalid-response for non-JSON text."
+						"description": "A valid envelope is the object JSON.parse produced, returned unchanged. Text that JSON.parse rejects yields an invalid-response failure with the message 'runtime returned text that is not JSON', and parsed JSON that is not a valid envelope yields an invalid-response failure with the message 'runtime returned a value that is not a response envelope'.",
+						"examples": [
+							{
+								"ok": true,
+								"output": {
+									"exitCode": 0
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "invalid-response",
+									"message": "runtime returned text that is not JSON"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "runtimeDeadline",
@@ -112,18 +224,19 @@
 						"name": "runtimeDeadline.timeoutMs",
 						"type": "number",
 						"required": true,
-						"description": "Milliseconds allowed for the call, measured from deadline creation."
+						"description": "Milliseconds allowed for the call, measured from deadline creation. It is passed to setTimeout, and settle replaces a result with a timeout failure when more than timeoutMs has elapsed since creation; the value is not validated.",
+						"examples": [5000, 30000, 120000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runtimeDeadline",
 						"type": "RuntimeDeadline",
-						"description": "Deadline with an expired promise and settle method. The timer produces runtime-timeout; settle clears it and rejects a result arriving strictly after the elapsed limit, including work that blocked the timer."
+						"description": "An object with an expired promise, which resolves with runtimeTimeout(timeoutMs) once the timer fires, and a settle(response) method that clears the timer and returns response unless more than timeoutMs has elapsed since creation, in which case it returns runtimeTimeout(timeoutMs). A timer cannot fire while the thread is blocked, so settle is what catches a result that blocking work produced after the limit."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
