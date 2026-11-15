@@ -23,23 +23,42 @@
 				"name": "sourceBlocks.code",
 				"type": "string",
 				"required": true,
-				"description": "Original source text to divide into blocks."
+				"description": "Complete source text passed to the splitter. The function dispatches this full string by language and imposes no explicit size limit.",
+				"examples": [
+					"",
+					"export function add(a: number, b: number): number {\n\treturn a + b;\n}",
+					"<script>let count = 0;</script>\n<p>{count}</p>"
+				]
 			},
 			{
 				"name": "sourceBlocks.language",
 				"type": "SourceLanguage",
 				"required": true,
-				"description": "Source family; ts scans script blocks, svelte also emits template and first style remainder, and other families produce one module remainder."
+				"description": "Selects the splitting branch. \"ts\" is treated as one script region, \"svelte\" emits script blocks, a template remainder, and at most the first style remainder, and every other SourceLanguage value emits one module remainder.",
+				"examples": ["ts", "svelte"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceBlocks",
 				"type": "SourceBlock[]",
-				"description": "Blocks with name, kind, line bounds, 16-character normalized-content hash and complexity. Script fingerprints ignore masked comments and normalize whitespace; named functions start complexity at one, module decisions at zero."
+				"description": "Returns a module remainder and any named script blocks; Svelte additionally returns a template remainder and the first style remainder when present. Each block reports its kind, source line bounds, a 16-character SHA-256 fingerprint, and complexity.",
+				"examples": [
+					[
+						{
+							"name": "<module>",
+							"kind": "module",
+							"startLine": 1,
+							"endLine": 1,
+							"hash": "e3b0c44298fc1c14",
+							"complexity": 0
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "sourceBlocks",
@@ -48,24 +67,42 @@
 						"name": "sourceBlocks.code",
 						"type": "string",
 						"required": true,
-						"description": "Original source text to divide into blocks."
+						"description": "Complete source text passed to the splitter. The function dispatches this full string by language and imposes no explicit size limit.",
+						"examples": [
+							"",
+							"export function add(a: number, b: number): number {\n\treturn a + b;\n}",
+							"<script>let count = 0;</script>\n<p>{count}</p>"
+						]
 					},
 					{
 						"name": "sourceBlocks.language",
 						"type": "SourceLanguage",
 						"required": true,
-						"description": "Source family; ts scans script blocks, svelte also emits template and first style remainder, and other families produce one module remainder."
+						"description": "Selects the splitting branch. \"ts\" is treated as one script region, \"svelte\" emits script blocks, a template remainder, and at most the first style remainder, and every other SourceLanguage value emits one module remainder.",
+						"examples": ["ts", "svelte"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceBlocks",
 						"type": "SourceBlock[]",
-						"description": "Blocks with name, kind, line bounds, 16-character normalized-content hash and complexity. Script fingerprints ignore masked comments and normalize whitespace; named functions start complexity at one, module decisions at zero."
+						"description": "Returns a module remainder and any named script blocks; Svelte additionally returns a template remainder and the first style remainder when present. Each block reports its kind, source line bounds, a 16-character SHA-256 fingerprint, and complexity.",
+						"examples": [
+							[
+								{
+									"name": "<module>",
+									"kind": "module",
+									"startLine": 1,
+									"endLine": 1,
+									"hash": "e3b0c44298fc1c14",
+									"complexity": 0
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
