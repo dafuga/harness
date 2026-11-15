@@ -2,7 +2,7 @@ import type { Upload } from './cloudflare-screenshot-upload.spec.types';
 import { expect, test, type APIRequestContext } from '../../../../test/support/browserTest';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
+import { ReportRepository } from '../../src/repositories/reports-media/report-repository/ReportRepository';
 import { ScreenshotRetentionService } from '../../src/services/ScreenshotRetentionService';
 import { fixtures, seededId } from './support/fixtures';
 import { expectRetired } from './support/retiredAddress';

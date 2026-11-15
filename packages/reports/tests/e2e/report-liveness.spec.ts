@@ -1,7 +1,7 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
+import { ReportRepository } from '../../src/repositories/reports-media/report-repository/ReportRepository';
 import { fixtures } from './support/fixtures';
 import { expectRetired } from './support/retiredAddress';
 

@@ -2,7 +2,7 @@ import { mkdtemp, writeFile, rm, readdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
-import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
+import { ReportRepository } from '../../src/repositories/reports-media/report-repository/ReportRepository';
 import { ReplayVideoService } from '../../src/services/replay-video-service/ReplayVideoService';
 import { reportProcess } from '../../src/utils/reportProcess';
 const roots: string[] = [];
