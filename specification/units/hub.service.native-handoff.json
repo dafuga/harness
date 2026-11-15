@@ -35,67 +35,213 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NativeHandoffService.constructor.options",
 				"type": "NativeHandoffOptions",
-				"required": true
+				"required": true,
+				"description": "Collaborators and settings the service runs with: the exchange store, the session repository, the secrets helper, the origin, the environment and a now() clock that returns epoch milliseconds. start records origin and environment on each handoff, and exchange rejects any handoff whose origin or environment differs from these values."
 			},
 			{
 				"name": "NativeHandoffService.start.input",
 				"type": "NativeStartInput",
-				"required": true
+				"required": true,
+				"description": "The desktop's PKCE challenge (the base64url SHA-256 of its verifier), an opaque nonce that exchange must repeat, and the requested resource, projects or project:<projectId>. start stores the challenge and resource unchanged and keeps only a keyed hash of the nonce.",
+				"examples": [
+					{
+						"challenge": "Tn8bQ2vLr5xWcZ0yKe7HaM4sJdP9gUoF3iXq1RkNwYA",
+						"nonce": "Xb3Qp9rT1wZk7LmV0cNa4Hs8JdYe2UgF",
+						"resource": "projects"
+					},
+					{
+						"challenge": "vD4kR8mQ2sLx0ZnW6aYt3BcJ9eHuPf7NgTo5iKrE1qA",
+						"nonce": "Lp0sVw8Ke3RtQ5zYn1XaBc7HdGm6JuTi",
+						"resource": "project:3f2a9c1e-6b7d-4e8a-9f01-2c3d4e5f6a7b"
+					}
+				]
 			},
 			{
 				"name": "NativeHandoffService.approve.session",
 				"type": "SessionRecord",
-				"required": true
+				"required": true,
+				"description": "The approver's own browser session: approve takes its actor id as the handoff subject and its idHash as the parent. approve does not check kind or expiry, so exchange later requires that parent to be a live browser session for the same actor.",
+				"examples": [
+					{
+						"idHash": "5f0c9a2e7d41b8c36e1a0f9d24b7c8e53a6d91f0b2c4e7a8d3f6b1c9e0a2d4f7",
+						"kind": "browser",
+						"parentHash": null,
+						"actor": {
+							"id": "google-110248697315628390471",
+							"email": "ada@example.com",
+							"name": "Ada Park",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"createdAt": 1794731400000,
+						"expiresAt": 1795336200000,
+						"revokedAt": null
+					}
+				]
 			},
 			{
 				"name": "NativeHandoffService.approve.input",
 				"type": "NativeApproveInput",
-				"required": true
+				"required": true,
+				"description": "The handoff id and the user code the desktop showed, which the request validator has normalized to uppercase with the dash removed. approve hashes userCode exactly as given and compares it with the hash start stored for the normalized code, so a dashed or lowercase code never matches.",
+				"examples": [
+					{
+						"handoffId": "kP3xV9qLrT2mZbW7yNc4HsD8fJa1UeG6oIlQwErYt0M",
+						"userCode": "KP7Q3WHD"
+					},
+					{
+						"handoffId": "w4Gq7LbX1nRk9TzVe2Mc8JyHu0sPd6FaQoZi3WlNxKr",
+						"userCode": "H4NX27BM"
+					}
+				]
 			},
 			{
 				"name": "NativeHandoffService.poll.handoffId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The handoff id that start returned, a 43-character base64url token that poll looks up exactly as given. An unknown, consumed or expired id is not an error: poll returns status expired with resource null.",
+				"examples": [
+					"kP3xV9qLrT2mZbW7yNc4HsD8fJa1UeG6oIlQwErYt0M",
+					"w4Gq7LbX1nRk9TzVe2Mc8JyHu0sPd6FaQoZi3WlNxKr",
+					"Zr8wN2hQ5cLx0VdTb7KgE3mUoA9pYs1JfWiCnH4aRtD"
+				]
 			},
 			{
 				"name": "NativeHandoffService.exchange.input",
 				"type": "NativeExchangeInput",
-				"required": true
+				"required": true,
+				"description": "The desktop's single attempt at the handoff: its id, PKCE verifier, nonce and resource. The handoff is consumed before the verifier, nonce and resource are compared, so one failed attempt uses it up.",
+				"examples": [
+					{
+						"handoffId": "kP3xV9qLrT2mZbW7yNc4HsD8fJa1UeG6oIlQwErYt0M",
+						"verifier": "3rFw9KzQ1mVbX7tHc0LyE5nSaJ8uPdGo2iWq4ZkRxT6",
+						"nonce": "Xb3Qp9rT1wZk7LmV0cNa4Hs8JdYe2UgF",
+						"resource": "projects"
+					},
+					{
+						"handoffId": "w4Gq7LbX1nRk9TzVe2Mc8JyHu0sPd6FaQoZi3WlNxKr",
+						"verifier": "Qa7Lr2Wn9TzXb4KdM1vHs8JyE0cUgP6oRi3FtZ5wNkA",
+						"nonce": "Lp0sVw8Ke3RtQ5zYn1XaBc7HdGm6JuTi",
+						"resource": "project:3f2a9c1e-6b7d-4e8a-9f01-2c3d4e5f6a7b"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HANDOFF_TTL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Lifetime of a native handoff in milliseconds, 5 * 60 * 1000 (300000). start sets the handoff's expiry to now plus this value, and poll reports the handoff as expired from that expiry time on.",
+				"examples": [300000]
 			},
 			{
 				"name": "POLL_INTERVAL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The poll interval, 2, that start returns as the interval field of NativeStartResult; the desktop counts it in seconds. poll does not check how often it is called, so the value is advice to the caller and not an enforced limit.",
+				"examples": [2]
 			},
 			{
 				"name": "NativeHandoffService.start",
-				"type": "Promise<NativeStartResult>"
+				"type": "Promise<NativeStartResult>",
+				"description": "The resolved NativeStartResult: the handoff id, the userCode the desktop shows (eight code characters with a dash), the verificationUrl at the service's origin, the expiry as an ISO string and the poll interval. The store keeps only a hash of the normalized code, so this result is the one place the plain code is returned.",
+				"examples": [
+					{
+						"handoffId": "kP3xV9qLrT2mZbW7yNc4HsD8fJa1UeG6oIlQwErYt0M",
+						"userCode": "KP7Q-3WHD",
+						"verificationUrl": "https://hub.example.com/native/kP3xV9qLrT2mZbW7yNc4HsD8fJa1UeG6oIlQwErYt0M",
+						"expiresAt": "2026-11-15T09:05:00.000Z",
+						"interval": 2
+					},
+					{
+						"handoffId": "w4Gq7LbX1nRk9TzVe2Mc8JyHu0sPd6FaQoZi3WlNxKr",
+						"userCode": "H4NX-27BM",
+						"verificationUrl": "https://hub.example.com/native/w4Gq7LbX1nRk9TzVe2Mc8JyHu0sPd6FaQoZi3WlNxKr",
+						"expiresAt": "2026-11-15T10:20:00.000Z",
+						"interval": 2
+					}
+				]
 			},
 			{
 				"name": "NativeHandoffService.approve",
-				"type": "Promise<{ approved: true; resource: string }>"
+				"type": "Promise<{ approved: true; resource: string }>",
+				"description": "The resolved value: approved is always true, and resource is the handoff's resource, projects or project:<projectId>. approve throws AuthFailure when the store changes nothing, which means no pending handoff matches the id and user code.",
+				"examples": [
+					{
+						"approved": true,
+						"resource": "projects"
+					},
+					{
+						"approved": true,
+						"resource": "project:3f2a9c1e-6b7d-4e8a-9f01-2c3d4e5f6a7b"
+					}
+				]
 			},
 			{
 				"name": "NativeHandoffService.poll",
-				"type": "Promise<NativePollResult>"
+				"type": "Promise<NativePollResult>",
+				"description": "The resolved NativePollResult: status is pending or approved while the handoff is live, and expired with resource null once it is unknown, consumed or past its expiry. resource names what is being asked for so the approval page can show it, and the result never carries a credential.",
+				"examples": [
+					{
+						"status": "pending",
+						"resource": "projects"
+					},
+					{
+						"status": "approved",
+						"resource": "project:3f2a9c1e-6b7d-4e8a-9f01-2c3d4e5f6a7b"
+					},
+					{
+						"status": "expired",
+						"resource": null
+					}
+				]
 			},
 			{
 				"name": "NativeHandoffService.exchange",
-				"type": "Promise<NativeAuthorization>"
+				"type": "Promise<NativeAuthorization>",
+				"description": "The resolved NativeAuthorization: an opaque credential for a new native session, with the approving browser session's actor, the audience harness-desktop, the resource, the nonce echoed back and the expiry as an ISO string. The credential is shown once, only a keyed hash of it is stored, and the native session expires 30 days after issue unless it is revoked.",
+				"examples": [
+					{
+						"authorization": "Qm9V3xT7LpK1wZ8eRaN2sYcHd6JgU0iFbXtE4nWlA5r",
+						"actor": {
+							"id": "google-110248697315628390471",
+							"email": "ada@example.com",
+							"name": "Ada Park",
+							"emailVerified": true
+						},
+						"audience": "harness-desktop",
+						"resource": "projects",
+						"nonce": "Xb3Qp9rT1wZk7LmV0cNa4Hs8JdYe2UgF",
+						"expiresAt": "2026-12-15T09:01:00.000Z"
+					},
+					{
+						"authorization": "Lm5Td0ZqW3vRa8KcE2nYx7HsJ6bPu1GiQo9FkNzA4tX",
+						"actor": {
+							"id": "google-104862931755042186303",
+							"email": "sam@example.com",
+							"name": "Sam Ortiz",
+							"emailVerified": true
+						},
+						"audience": "harness-desktop",
+						"resource": "project:3f2a9c1e-6b7d-4e8a-9f01-2c3d4e5f6a7b",
+						"nonce": "Lp0sVw8Ke3RtQ5zYn1XaBc7HdGm6JuTi",
+						"expiresAt": "2026-12-15T11:45:30.000Z"
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "The only error this service throws: approve and exchange throw it with code handoff-invalid (status 400) for every refusal, and its message names only that code."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "NativeHandoffService.start",
@@ -103,17 +249,47 @@
 					{
 						"name": "NativeHandoffService.start.input",
 						"type": "NativeStartInput",
-						"required": true
+						"required": true,
+						"description": "The desktop's PKCE challenge (the base64url SHA-256 of its verifier), an opaque nonce that exchange must repeat, and the requested resource, projects or project:<projectId>. start stores the challenge and resource unchanged and keeps only a keyed hash of the nonce.",
+						"examples": [
+							{
+								"challenge": "Tn8bQ2vLr5xWcZ0yKe7HaM4sJdP9gUoF3iXq1RkNwYA",
+								"nonce": "Xb3Qp9rT1wZk7LmV0cNa4Hs8JdYe2UgF",
+								"resource": "projects"
+							},
+							{
+								"challenge": "vD4kR8mQ2sLx0ZnW6aYt3BcJ9eHuPf7NgTo5iKrE1qA",
+								"nonce": "Lp0sVw8Ke3RtQ5zYn1XaBc7HdGm6JuTi",
+								"resource": "project:3f2a9c1e-6b7d-4e8a-9f01-2c3d4e5f6a7b"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeHandoffService.start",
-						"type": "Promise<NativeStartResult>"
+						"type": "Promise<NativeStartResult>",
+						"description": "The resolved NativeStartResult: the handoff id, the userCode the desktop shows (eight code characters with a dash), the verificationUrl at the service's origin, the expiry as an ISO string and the poll interval. The store keeps only a hash of the normalized code, so this result is the one place the plain code is returned.",
+						"examples": [
+							{
+								"handoffId": "kP3xV9qLrT2mZbW7yNc4HsD8fJa1UeG6oIlQwErYt0M",
+								"userCode": "KP7Q-3WHD",
+								"verificationUrl": "https://hub.example.com/native/kP3xV9qLrT2mZbW7yNc4HsD8fJa1UeG6oIlQwErYt0M",
+								"expiresAt": "2026-11-15T09:05:00.000Z",
+								"interval": 2
+							},
+							{
+								"handoffId": "w4Gq7LbX1nRk9TzVe2Mc8JyHu0sPd6FaQoZi3WlNxKr",
+								"userCode": "H4NX-27BM",
+								"verificationUrl": "https://hub.example.com/native/w4Gq7LbX1nRk9TzVe2Mc8JyHu0sPd6FaQoZi3WlNxKr",
+								"expiresAt": "2026-11-15T10:20:00.000Z",
+								"interval": 2
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "NativeHandoffService.approve",
@@ -121,22 +297,68 @@
 					{
 						"name": "NativeHandoffService.approve.session",
 						"type": "SessionRecord",
-						"required": true
+						"required": true,
+						"description": "The approver's own browser session: approve takes its actor id as the handoff subject and its idHash as the parent. approve does not check kind or expiry, so exchange later requires that parent to be a live browser session for the same actor.",
+						"examples": [
+							{
+								"idHash": "5f0c9a2e7d41b8c36e1a0f9d24b7c8e53a6d91f0b2c4e7a8d3f6b1c9e0a2d4f7",
+								"kind": "browser",
+								"parentHash": null,
+								"actor": {
+									"id": "google-110248697315628390471",
+									"email": "ada@example.com",
+									"name": "Ada Park",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"createdAt": 1794731400000,
+								"expiresAt": 1795336200000,
+								"revokedAt": null
+							}
+						]
 					},
 					{
 						"name": "NativeHandoffService.approve.input",
 						"type": "NativeApproveInput",
-						"required": true
+						"required": true,
+						"description": "The handoff id and the user code the desktop showed, which the request validator has normalized to uppercase with the dash removed. approve hashes userCode exactly as given and compares it with the hash start stored for the normalized code, so a dashed or lowercase code never matches.",
+						"examples": [
+							{
+								"handoffId": "kP3xV9qLrT2mZbW7yNc4HsD8fJa1UeG6oIlQwErYt0M",
+								"userCode": "KP7Q3WHD"
+							},
+							{
+								"handoffId": "w4Gq7LbX1nRk9TzVe2Mc8JyHu0sPd6FaQoZi3WlNxKr",
+								"userCode": "H4NX27BM"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeHandoffService.approve",
-						"type": "Promise<{ approved: true; resource: string }>"
+						"type": "Promise<{ approved: true; resource: string }>",
+						"description": "The resolved value: approved is always true, and resource is the handoff's resource, projects or project:<projectId>. approve throws AuthFailure when the store changes nothing, which means no pending handoff matches the id and user code.",
+						"examples": [
+							{
+								"approved": true,
+								"resource": "projects"
+							},
+							{
+								"approved": true,
+								"resource": "project:3f2a9c1e-6b7d-4e8a-9f01-2c3d4e5f6a7b"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown with code handoff-invalid (status 400) when the store changes nothing, which means no pending handoff matches the id and user code, or when the approved handoff cannot be read back."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "NativeHandoffService.poll",
@@ -144,17 +366,38 @@
 					{
 						"name": "NativeHandoffService.poll.handoffId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The handoff id that start returned, a 43-character base64url token that poll looks up exactly as given. An unknown, consumed or expired id is not an error: poll returns status expired with resource null.",
+						"examples": [
+							"kP3xV9qLrT2mZbW7yNc4HsD8fJa1UeG6oIlQwErYt0M",
+							"w4Gq7LbX1nRk9TzVe2Mc8JyHu0sPd6FaQoZi3WlNxKr",
+							"Zr8wN2hQ5cLx0VdTb7KgE3mUoA9pYs1JfWiCnH4aRtD"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeHandoffService.poll",
-						"type": "Promise<NativePollResult>"
+						"type": "Promise<NativePollResult>",
+						"description": "The resolved NativePollResult: status is pending or approved while the handoff is live, and expired with resource null once it is unknown, consumed or past its expiry. resource names what is being asked for so the approval page can show it, and the result never carries a credential.",
+						"examples": [
+							{
+								"status": "pending",
+								"resource": "projects"
+							},
+							{
+								"status": "approved",
+								"resource": "project:3f2a9c1e-6b7d-4e8a-9f01-2c3d4e5f6a7b"
+							},
+							{
+								"status": "expired",
+								"resource": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "NativeHandoffService.exchange",
@@ -162,17 +405,67 @@
 					{
 						"name": "NativeHandoffService.exchange.input",
 						"type": "NativeExchangeInput",
-						"required": true
+						"required": true,
+						"description": "The desktop's single attempt at the handoff: its id, PKCE verifier, nonce and resource. The handoff is consumed before the verifier, nonce and resource are compared, so one failed attempt uses it up.",
+						"examples": [
+							{
+								"handoffId": "kP3xV9qLrT2mZbW7yNc4HsD8fJa1UeG6oIlQwErYt0M",
+								"verifier": "3rFw9KzQ1mVbX7tHc0LyE5nSaJ8uPdGo2iWq4ZkRxT6",
+								"nonce": "Xb3Qp9rT1wZk7LmV0cNa4Hs8JdYe2UgF",
+								"resource": "projects"
+							},
+							{
+								"handoffId": "w4Gq7LbX1nRk9TzVe2Mc8JyHu0sPd6FaQoZi3WlNxKr",
+								"verifier": "Qa7Lr2Wn9TzXb4KdM1vHs8JyE0cUgP6oRi3FtZ5wNkA",
+								"nonce": "Lp0sVw8Ke3RtQ5zYn1XaBc7HdGm6JuTi",
+								"resource": "project:3f2a9c1e-6b7d-4e8a-9f01-2c3d4e5f6a7b"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeHandoffService.exchange",
-						"type": "Promise<NativeAuthorization>"
+						"type": "Promise<NativeAuthorization>",
+						"description": "The resolved NativeAuthorization: an opaque credential for a new native session, with the approving browser session's actor, the audience harness-desktop, the resource, the nonce echoed back and the expiry as an ISO string. The credential is shown once, only a keyed hash of it is stored, and the native session expires 30 days after issue unless it is revoked.",
+						"examples": [
+							{
+								"authorization": "Qm9V3xT7LpK1wZ8eRaN2sYcHd6JgU0iFbXtE4nWlA5r",
+								"actor": {
+									"id": "google-110248697315628390471",
+									"email": "ada@example.com",
+									"name": "Ada Park",
+									"emailVerified": true
+								},
+								"audience": "harness-desktop",
+								"resource": "projects",
+								"nonce": "Xb3Qp9rT1wZk7LmV0cNa4Hs8JdYe2UgF",
+								"expiresAt": "2026-12-15T09:01:00.000Z"
+							},
+							{
+								"authorization": "Lm5Td0ZqW3vRa8KcE2nYx7HsJ6bPu1GiQo9FkNzA4tX",
+								"actor": {
+									"id": "google-104862931755042186303",
+									"email": "sam@example.com",
+									"name": "Sam Ortiz",
+									"emailVerified": true
+								},
+								"audience": "harness-desktop",
+								"resource": "project:3f2a9c1e-6b7d-4e8a-9f01-2c3d4e5f6a7b",
+								"nonce": "Lp0sVw8Ke3RtQ5zYn1XaBc7HdGm6JuTi",
+								"expiresAt": "2026-12-15T11:45:30.000Z"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown with code handoff-invalid (status 400) when no approved, unconsumed handoff matches the id, when the verifier, nonce or resource differs or the handoff's audience, action, environment or origin is not the one expected, or when the approving browser session is missing, not live, not a browser session or not the handoff's subject. It is also thrown, after the new native session is revoked, when that browser session ends while the native session is being issued."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -182,17 +475,19 @@
 					{
 						"name": "NativeHandoffService.constructor.options",
 						"type": "NativeHandoffOptions",
-						"required": true
+						"required": true,
+						"description": "Collaborators and settings the service runs with: the exchange store, the session repository, the secrets helper, the origin, the environment and a now() clock that returns epoch milliseconds. start records origin and environment on each handoff, and exchange rejects any handoff whose origin or environment differs from these values."
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeHandoffService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The NativeHandoffService instance that the constructor creates. It holds only the options it was given, and every method reads them from there."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
