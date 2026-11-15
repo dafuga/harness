@@ -1,4 +1,5 @@
 // @harness-uid u_nfctcgnv7g
+import { clipRuntimeInputs } from './clipGeneratedInputs';
 import { posix } from 'node:path';
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { clipWorkspace, readClipInput } from './clipInputFiles';
@@ -60,7 +61,11 @@ function addOwner(
 		throw new ExpectedCliError(`Missing video source bindings for ${id}`);
 	closure.contracts.set(id, owner);
 	pending.push(...owner.owns.source);
-	pending.push(...runtimeInputs(owner));
+	for (const entry of runtimeInputs(owner)) {
+		const runtime = clipRuntimeInputs(context, owner, entry);
+		pending.push(...runtime.paths);
+		for (const reason of runtime.reasons) closure.reasons.add(reason);
+	}
 	for (const dependency of owner.dependencies) addOwner(context, closure, dependency.unit, pending);
 }
 
@@ -80,7 +85,7 @@ function ambientInputs(context: ClipInputContext, path: string): string[] {
 	];
 	const inputs = [
 		...configs.map((name) => posix.join(workspace, name)),
-		'package.json',
+		...configs,
 		'bun.lock',
 		'yarn.lock',
 		'package-lock.json',

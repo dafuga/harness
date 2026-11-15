@@ -42,18 +42,24 @@ export function createClipInputContext(root: string): ClipInputContext {
 
 export function readClipInput(context: ClipInputContext, path: string): ClipInputFile {
 	assertSafePath(path);
+	assertSnapshotPath(context, path);
 	const absolute = join(context.root, path);
 	if (!existsSync(absolute)) throw new ExpectedCliError(`Missing video input ${path}`);
 	const resolved = realpathSync(absolute),
 		bound = relative(context.root, resolved);
 	if (bound === '..' || bound.startsWith(`..${sep}`))
 		throw new ExpectedCliError(`Video input escapes source root: ${path}`);
+	const canonical = bound.split(sep).join('/');
+	assertSnapshotPath(context, canonical);
 	if (!statSync(resolved).isFile())
 		throw new ExpectedCliError(`Video input is not a file: ${path}`);
 	let input = context.contents.get(resolved);
 	if (!input) {
 		const bytes = readFileSync(resolved);
-		input = { sha256: clipDigest(bytes), text: textualInput(path) ? bytes.toString('utf8') : '' };
+		input = {
+			sha256: clipDigest(bytes),
+			text: textualInput(canonical) ? bytes.toString('utf8') : ''
+		};
 		context.contents.set(resolved, input);
 	}
 	return input;
@@ -132,4 +138,11 @@ function assertSafePath(path: string): void {
 		path.split('/').some((part) => !part || part === '.' || part === '..')
 	)
 		throw new ExpectedCliError(`Unsafe video input ${path}`);
+}
+
+function assertSnapshotPath(context: ClipInputContext, path: string): void {
+	if (/(?:^|\/)\.env(?:\.local)?$/.test(path))
+		throw new ExpectedCliError(`Unsafe or private video source snapshot binding ${path}`);
+	if (!context.paths.has(path))
+		throw new ExpectedCliError(`Missing video source snapshot binding ${path}`);
 }

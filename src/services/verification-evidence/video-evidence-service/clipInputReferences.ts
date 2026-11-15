@@ -1,4 +1,8 @@
 // @harness-uid u_nfctcgnv7g
+import { clipGeneratedReference } from './clipGeneratedInputs';
+import { clipConfigInputs } from './clipConfigInputs';
+import { clipStyleInputs } from './clipStyleInputs';
+import { clipAtomInputs } from './clipAtomInputs';
 import { posix } from 'node:path';
 import { builtinModules } from 'node:module';
 import { scanImports } from '../../../utils/development-tooling/scanImports';
@@ -9,7 +13,7 @@ import type {
 	SourceReference,
 	SourceLanguage
 } from '../../../utils/development-tooling/scanImports.types';
-import type { ClipInputContext } from './clipInputs.types';
+import type { ClipInputContext, ClipStyleInputs } from './clipInputs.types';
 
 /** Resolve committed imports, local API calls, style URLs and literal media bindings. */
 export function clipInputReferences(context: ClipInputContext, path: string) {
@@ -17,18 +21,19 @@ export function clipInputReferences(context: ClipInputContext, path: string) {
 	if (cached) return cached;
 	const code = readClipInput(context, path).text,
 		language = inputLanguage(path);
-	const references = scanImports(code, language),
-		paths: string[] = [],
-		reasons: string[] = [];
-	if (language === 'svelte')
-		for (const style of code.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/g))
-			references.push(...scanImports(style[1], 'css'));
+	const styles = clipStyleInputs(path, code),
+		config = clipConfigInputs(context, path);
+	const scanned = scanImports(code, language),
+		references = language === 'svelte' ? clipAtomInputs(code, scanned) : scanned,
+		paths = [...config.paths],
+		reasons = [...config.reasons, ...styles.reasons];
+	if (language === 'svelte') references.push(...scanImports(styles.css, 'css'));
 	for (const reference of references) {
 		const resolved = resolveClipReference(context, path, reference);
 		paths.push(...resolved.paths);
 		reasons.push(...resolved.reasons);
 	}
-	paths.push(...assetInputs(context, path, code, reasons));
+	paths.push(...assetInputs(context, path, styles, reasons));
 	const result = { paths: [...new Set(paths)], reasons: [...new Set(reasons)] };
 	context.references.set(path, result);
 	return result;
@@ -37,25 +42,26 @@ export function clipInputReferences(context: ClipInputContext, path: string) {
 function assetInputs(
 	context: ClipInputContext,
 	path: string,
-	code: string,
+	styles: ClipStyleInputs,
 	reasons: string[]
 ): string[] {
-	const styles = path.endsWith('.css')
-		? code
-		: [...code.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/g)].map((match) => match[1]).join('\n');
-	const urls = [...styles.matchAll(/url\(\s*(['"]?)([^)'"\s]+)\1\s*\)/g)].map((match) => match[2]);
-	if (/url\(\s*(?:var\(|\{)|\bnew\s+URL\(\s*[^'"\s]/.test(styles))
+	const urls = [...styles.css.matchAll(/url\(\s*(['"]?)([^)'"\s]+)\1\s*\)/g)].map(
+		(match) => match[2]
+	);
+	if (/url\(\s*(?:var\(|\{)|\bnew\s+URL\(\s*[^'"\s]/.test(styles.css))
 		reasons.push(`Dynamic style dependency in ${path}; widened to source snapshot`);
 	if (path.endsWith('.svelte') || path.endsWith('.html')) {
 		urls.push(
-			...[...code.matchAll(/\b(?:src|poster)\s*=\s*(['"])(.*?)\1/g)].map((match) => match[2])
-		);
-		urls.push(
-			...[...code.matchAll(/<(?:link|use|image)\b[^>]*\bhref\s*=\s*(['"])(.*?)\1/g)].map(
+			...[...styles.markup.matchAll(/\b(?:src|poster)\s*=\s*(['"])(.*?)\1/g)].map(
 				(match) => match[2]
 			)
 		);
-		if (/\b(?:src|poster|srcset)\s*=\s*\{|\bsrcset\s*=|url\(\s*(?:var\(|\{)/.test(code))
+		urls.push(
+			...[...styles.markup.matchAll(/<(?:link|use|image)\b[^>]*\bhref\s*=\s*(['"])(.*?)\1/g)].map(
+				(match) => match[2]
+			)
+		);
+		if (/\b(?:src|poster|srcset)\s*=\s*\{|\bsrcset\s*=|url\(\s*(?:var\(|\{)/.test(styles.markup))
 			reasons.push(`Dynamic asset dependency in ${path}; widened to source snapshot`);
 	}
 	return urls.flatMap((url) => localAsset(context, path, url, reasons));
@@ -74,9 +80,10 @@ function localAsset(
 		);
 		return [];
 	}
-	const clean = url.split(/[?#]/)[0],
+	const binding = url.replace(/^%sveltekit\.assets%(?=\/|$)/, '');
+	const clean = binding.split(/[?#]/)[0],
 		workspace = clipWorkspace(context, path);
-	const target = url.startsWith('/')
+	const target = binding.startsWith('/')
 		? posix.join(workspace, 'static', clean)
 		: posix.join(posix.dirname(path), clean);
 	if (!context.paths.has(target))
@@ -155,6 +162,8 @@ function resolveClipReference(context: ClipInputContext, path: string, reference
 		return { paths, reasons };
 	}
 	if (resolved.uncertain) {
+		const generated = clipGeneratedReference(context, path, reference);
+		if (generated) return generated;
 		assertResolvable(path, reference);
 		reasons.push(
 			`Uncertain ${reference.via} dependency in ${path}: ${resolved.uncertain.detail}; widened to source snapshot`
