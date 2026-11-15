@@ -26,36 +26,215 @@
 				"name": "EntityOverview.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "The entity name, category, registered purpose and removal state at the viewed revision."
+				"description": "The explorer entity being overviewed; this component reads only its name, which labels the tabpanel as '<name> overview', its category, which decides where children render, and its purpose, which is shown as the lead line only when the category is pages and the purpose is non-empty. Its other fields, such as id, role, unit, verdict and change, are not read here.",
+				"examples": [
+					{
+						"id": "reports.component.harness-entity-overview",
+						"category": "components",
+						"role": "Component",
+						"name": "EntityOverview",
+						"purpose": "Introduces each page's purpose, then shows visual evidence before measurements; contract and usage have dedicated tabs.",
+						"unit": {
+							"id": "reports.component.harness-entity-overview",
+							"kind": "component",
+							"status": "active",
+							"title": "Entity overview",
+							"responsibility": "Introduces each page's purpose, then shows visual evidence before measurements; contract and usage have dedicated tabs.",
+							"dependencies": [
+								{
+									"unit": "reports.component.harness-entity-summary",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-div",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-p",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-measure",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.explorer-ui-metric-changes",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": ["packages/reports/src/components/explorer-ui/EntityOverview.svelte"],
+								"symbols": ["EntityOverview"]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "EntityOverview.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "EntityOverview.measure",
+										"type": "EntityMeasure",
+										"required": true
+									},
+									{
+										"name": "EntityOverview.comparison",
+										"type": "MetricComparison | null",
+										"required": false,
+										"default": null
+									},
+									{
+										"name": "EntityOverview.children",
+										"type": "Snippet",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "EntityOverview",
+										"type": "markup"
+									}
+								],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/EntityOverview.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "5d1f8c3a9e27b046"
+						},
+						"verdict": {
+							"passed": true,
+							"label": "Full coverage passed",
+							"reasons": []
+						},
+						"change": null,
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "EntityOverview.measure",
 				"type": "EntityMeasure",
 				"required": true,
-				"description": "Required prepared measurements passed to the summary."
+				"description": "The entity's prepared size and performance measurements, passed unchanged to EntitySummary. EntitySummary reads them for its facts list and its no-benchmark note only when no comparison is given, because a comparison replaces that view.",
+				"examples": [
+					{
+						"size": [
+							{
+								"label": "Source size",
+								"value": "3.2 KB",
+								"rawValue": 3200,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Complexity",
+								"value": "14",
+								"rawValue": 14
+							}
+						],
+						"performance": []
+					},
+					{
+						"size": [
+							{
+								"label": "Source size",
+								"value": "Not measured",
+								"rawValue": null,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Complexity",
+								"value": "Not measured",
+								"rawValue": null
+							}
+						],
+						"performance": []
+					}
+				]
 			},
 			{
 				"name": "EntityOverview.comparison",
 				"type": "MetricComparison | null",
 				"required": false,
 				"default": null,
-				"description": "Optional before/after metric context for the summary; defaults to null."
+				"description": "Optional before and after metric context, each side with its commit and measure; when a comparison is given, EntitySummary shows a 'Performance metric changes' table built from both measures, with a note naming the before commit as the first parent, in place of its facts list. Defaults to null.",
+				"examples": [
+					null,
+					{
+						"before": {
+							"commit": "4c9e1a7d2f80b653e7a1d94c0b5f2e8a6d13c7b0",
+							"measure": {
+								"size": [
+									{
+										"label": "Source size",
+										"value": "2.9 KB",
+										"rawValue": 2900,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Complexity",
+										"value": "12",
+										"rawValue": 12
+									}
+								],
+								"performance": []
+							}
+						},
+						"after": {
+							"commit": "9b2f6e0c4d7a18e53c2b9f0d6a4e7c1b85d3f2a9",
+							"measure": {
+								"size": [
+									{
+										"label": "Source size",
+										"value": "3.2 KB",
+										"rawValue": 3200,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Complexity",
+										"value": "14",
+										"rawValue": 14
+									}
+								],
+								"performance": []
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "EntityOverview.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "Required content snippet for evidence appropriate to this entity."
+				"description": "The evidence snippet for the entity, rendered exactly once: before EntitySummary when the category is pages, components or layouts, and after it for every other category."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityOverview",
 				"type": "markup",
-				"description": "Pages begin with their registered purpose when available. Visual evidence follows, then one Performance profile with normal stack spacing between content blocks. Other entities retain measurement-first evidence. Contract and usage appear in their own tabs."
+				"description": "An hx-div with role 'tabpanel' and class ex-stack, labelled '<name> overview', that holds the purpose as an hx-p with class ex-lead when the category is pages and the purpose is non-empty, then the children snippet and a compact EntitySummary (its Performance profile card), with the snippet first for pages, components and layouts and the summary first for every other category. It renders no Contract, Used In or Uses content, since those are tabs of their own."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
