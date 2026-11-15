@@ -30,74 +30,109 @@
 				"name": "planCommit.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle whose root is the working-tree directory that file paths are joined to, whose dir is the Git directory holding index and index.lock, and whose run executes each Git command. The planGit implementation of run rejects with an Error whose code is git-failed when Git exits non-zero."
 			},
 			{
 				"name": "planCommit.files",
 				"type": "Files",
 				"required": true,
-				"description": "Map of files to materialize and stage."
+				"description": "Record from repository-relative path to the new text or bytes that planCommit backs up, stages and writes into the working tree. backupFiles reads each key before stageFiles checks it with safePath, so an unsafe key that exists is read and then written back with the same bytes when the call fails.",
+				"examples": [
+					{
+						"planning/reports.component.evidence-grid/plan.json": "{\"id\": \"reports.component.evidence-grid\"}\n"
+					},
+					{
+						"planning/reports.component.evidence-grid/.gitattributes": "*.png filter=lfs\n"
+					}
+				]
 			},
 			{
 				"name": "planCommit.context",
 				"type": "CommitContext",
 				"required": true,
-				"description": "Expected parent and branch, prepared commit and temporary directory."
+				"description": "parent is the commit the branch ref must still hold, which is the expected old value for update-ref, and commit is the prepared commit that replaces it, while branch is the short name HEAD must name. temp must already exist because planCommit writes temp/next-index there and never creates or removes temp.",
+				"examples": [
+					{
+						"parent": "3f6c1a0d9b2e47c5a8f1d0e3b6a9c2d4e7f80a12",
+						"branch": "main",
+						"commit": "9d2b7e4f1a0c8e6d3b5a7f9c1e2d4b6a8f0c3e5d",
+						"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9"
+					},
+					{
+						"parent": "b71e0c4d82a95f3e6107d2c8b4f9a0e3d5c76b18",
+						"branch": "planning/daily-sync",
+						"commit": "e04a9d2c7f1b6e8350a4d9c2f7b1e6083a5d4c9f",
+						"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2"
+					}
+				]
 			},
 			{
 				"name": "requireLfsFilters.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle whose run executes git lfs version, git config and hash-object, and whose dir is passed as GIT_DIR so the probe uses this repository's filter configuration. The probe's hash-object calls run without -w, so they write no objects into the repository."
 			},
 			{
 				"name": "stageFiles.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle whose root is the directory that safePath checks each path against, and whose run executes git lfs clean, hash-object -w and update-index, the last with GIT_INDEX_FILE set to index."
 			},
 			{
 				"name": "stageFiles.files",
 				"type": "Files",
 				"required": true,
-				"description": "Map of repository-relative paths to text or bytes."
+				"description": "Record from repository-relative path to text or bytes; each path must pass safePath, and content for a path ending in .png (case-sensitive) is first passed through git lfs clean. The data for each entry is written as a blob with hash-object -w, which stores it in the repository, and entries are processed in Object.entries order, so those staged before a failing path stay in the supplied index.",
+				"examples": [
+					{
+						"planning/reports.component.evidence-grid/plan.json": "{\"id\": \"reports.component.evidence-grid\"}\n"
+					},
+					{
+						"planning/reports.component.evidence-grid/.gitattributes": "*.png filter=lfs\n"
+					}
+				]
 			},
 			{
 				"name": "stageFiles.index",
 				"type": "string",
 				"required": true,
-				"description": "Temporary index path to update."
+				"description": "Index file path passed as GIT_INDEX_FILE to each update-index call, which records every file as a 100644 entry. planCommit passes temp/next-index, a copy of the real index, so the real index is replaced only later by the rename.",
+				"examples": [
+					"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9/next-index",
+					"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2/index"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "stageFiles",
 				"type": "Promise<void>",
-				"description": "Stages safe files in the supplied index, applying Git LFS cleaning to PNG files."
+				"description": "Resolves with no value after every entry has passed safePath and been added to the index file at index as a mode 100644 entry, with .png content cleaned by git lfs clean first. It rejects at the first entry that fails, and entries added before it stay in the index file."
 			},
 			{
 				"name": "planCommit",
 				"type": "Promise<void>",
-				"description": "Updates files, branch reference and real index after locking; attempts to restore files and the old reference on failure."
+				"description": "Resolves with no value after the files are written, the branch ref has moved from parent to commit, and the real index has been replaced by renaming the lock file. On failure it reverts the ref if it had moved, restores each backed-up file (or removes it when it did not exist), and rethrows the original error unless a rollback step fails first."
 			},
 			{
 				"name": "requireLfsFilters",
 				"type": "Promise<void>",
-				"description": "Checks Git LFS availability and configured filters using an isolated PNG probe."
+				"description": "Resolves with no value when git lfs version succeeds, a filter.lfs.clean or filter.lfs.process entry is configured, and hashing the probe content as probe.png through the repository's filter gives the same hash as the expected LFS pointer. Failures inside the probe reject with git-failed, and the temporary probe directory is removed in a finally block."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Filesystem and command failures can propagate while staging or installing files."
+				"description": "Node system errors (for example EACCES) from filesystem calls and spawned Git processes, such as copyFile, rename or a spawn failure, propagate unchanged, and a rollback step that fails replaces the original error."
 			},
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Coded failures include repository-busy, conflict, unsafe-path and git-failed when required LFS filters are unavailable or ineffective."
+				"description": "Error objects whose code property is a planning error code (repository-busy, conflict, unsafe-path or git-failed), created by fail() or by planGit's run; no ExpectedCliError class is thrown."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planCommit",
@@ -106,35 +141,63 @@
 						"name": "planCommit.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle whose root is the working-tree directory that file paths are joined to, whose dir is the Git directory holding index and index.lock, and whose run executes each Git command. The planGit implementation of run rejects with an Error whose code is git-failed when Git exits non-zero."
 					},
 					{
 						"name": "planCommit.files",
 						"type": "Files",
 						"required": true,
-						"description": "Map of files to materialize and stage."
+						"description": "Record from repository-relative path to the new text or bytes that planCommit backs up, stages and writes into the working tree. backupFiles reads each key before stageFiles checks it with safePath, so an unsafe key that exists is read and then written back with the same bytes when the call fails.",
+						"examples": [
+							{
+								"planning/reports.component.evidence-grid/plan.json": "{\"id\": \"reports.component.evidence-grid\"}\n"
+							},
+							{
+								"planning/reports.component.evidence-grid/.gitattributes": "*.png filter=lfs\n"
+							}
+						]
 					},
 					{
 						"name": "planCommit.context",
 						"type": "CommitContext",
 						"required": true,
-						"description": "Expected parent and branch, prepared commit and temporary directory."
+						"description": "parent is the commit the branch ref must still hold, which is the expected old value for update-ref, and commit is the prepared commit that replaces it, while branch is the short name HEAD must name. temp must already exist because planCommit writes temp/next-index there and never creates or removes temp.",
+						"examples": [
+							{
+								"parent": "3f6c1a0d9b2e47c5a8f1d0e3b6a9c2d4e7f80a12",
+								"branch": "main",
+								"commit": "9d2b7e4f1a0c8e6d3b5a7f9c1e2d4b6a8f0c3e5d",
+								"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9"
+							},
+							{
+								"parent": "b71e0c4d82a95f3e6107d2c8b4f9a0e3d5c76b18",
+								"branch": "planning/daily-sync",
+								"commit": "e04a9d2c7f1b6e8350a4d9c2f7b1e6083a5d4c9f",
+								"temp": "/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planCommit",
 						"type": "Promise<void>",
-						"description": "Updates files, branch reference and real index after locking; attempts to restore files and the old reference on failure."
+						"description": "Resolves with no value after the files are written, the branch ref has moved from parent to commit, and the real index has been replaced by renaming the lock file. On failure it reverts the ref if it had moved, restores each backed-up file (or removes it when it did not exist), and rethrows the original error unless a rollback step fails first."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Error objects with a planning code in their code property: repository-busy when index.lock cannot be created exclusively (any open failure, including a missing Git directory), conflict when HEAD names a different branch than context.branch, unsafe-path from safePath, and git-failed from a non-zero Git exit such as a failed update-ref compare-and-swap; no ExpectedCliError class is thrown."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Node system errors from filesystem calls in planCommit (backupFiles reads other than ENOENT, the index copies, materialize writes, closing the lock handle, copyFile into the lock, rename and removing the lock) and from spawn failures; a rollback step that fails replaces the original error."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "requireLfsFilters",
@@ -143,27 +206,29 @@
 						"name": "requireLfsFilters.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle whose run executes git lfs version, git config and hash-object, and whose dir is passed as GIT_DIR so the probe uses this repository's filter configuration. The probe's hash-object calls run without -w, so they write no objects into the repository."
 					}
 				],
 				"outputs": [
 					{
 						"name": "requireLfsFilters",
 						"type": "Promise<void>",
-						"description": "Checks Git LFS availability and configured filters using an isolated PNG probe."
+						"description": "Resolves with no value when git lfs version succeeds, a filter.lfs.clean or filter.lfs.process entry is configured, and hashing the probe content as probe.png through the repository's filter gives the same hash as the expected LFS pointer. Failures inside the probe reject with git-failed, and the temporary probe directory is removed in a finally block."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Node system error from removing the temporary probe directory in the finally block; it replaces a git-failed error that was already being thrown, because every failure inside the probe is converted to git-failed."
 					},
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Error objects with the planning code git-failed for every failure inside the probe: git lfs version failing, no configured clean or process filter, a filter result that differs from the expected pointer, or a failed mkdtemp or writeFile; no ExpectedCliError class is thrown."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "stageFiles",
@@ -172,30 +237,48 @@
 						"name": "stageFiles.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle whose root is the directory that safePath checks each path against, and whose run executes git lfs clean, hash-object -w and update-index, the last with GIT_INDEX_FILE set to index."
 					},
 					{
 						"name": "stageFiles.files",
 						"type": "Files",
 						"required": true,
-						"description": "Map of repository-relative paths to text or bytes."
+						"description": "Record from repository-relative path to text or bytes; each path must pass safePath, and content for a path ending in .png (case-sensitive) is first passed through git lfs clean. The data for each entry is written as a blob with hash-object -w, which stores it in the repository, and entries are processed in Object.entries order, so those staged before a failing path stay in the supplied index.",
+						"examples": [
+							{
+								"planning/reports.component.evidence-grid/plan.json": "{\"id\": \"reports.component.evidence-grid\"}\n"
+							},
+							{
+								"planning/reports.component.evidence-grid/.gitattributes": "*.png filter=lfs\n"
+							}
+						]
 					},
 					{
 						"name": "stageFiles.index",
 						"type": "string",
 						"required": true,
-						"description": "Temporary index path to update."
+						"description": "Index file path passed as GIT_INDEX_FILE to each update-index call, which records every file as a 100644 entry. planCommit passes temp/next-index, a copy of the real index, so the real index is replaced only later by the rename.",
+						"examples": [
+							"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Xk3pQ9/next-index",
+							"/var/folders/0c/q8f2m1zt4xk9v7b3d5n6p8r20000gp/T/planning-index-Qb7mZ2/index"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "stageFiles",
 						"type": "Promise<void>",
-						"description": "Stages safe files in the supplied index, applying Git LFS cleaning to PNG files."
+						"description": "Resolves with no value after every entry has passed safePath and been added to the index file at index as a mode 100644 entry, with .png content cleaned by git lfs clean first. It rejects at the first entry that fails, and entries added before it stay in the index file."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Error objects with a planning code in their code property: unsafe-path from safePath and git-failed from a non-zero Git exit; plus Node system errors from lstat or spawn failures. Entries staged before the failing one remain in the supplied index."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
