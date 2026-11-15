@@ -29,133 +29,666 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GitSourceAdapter.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path passed to Git operations as the repository working directory. It determines which repository this adapter instance reads.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+				]
 			},
 			{
 				"name": "GitSourceAdapter.revision.query",
 				"type": "{ branch: string | null; commit: string | null }",
-				"required": true
+				"required": true,
+				"description": "Selects a local branch and optionally a commit for revision resolution. A null branch uses the current local branch, while a supplied commit must be an ancestor of the selected branch tip.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null
+					},
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "GitSourceAdapter.commits.branch",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Name of the local branch whose tip is used to read commit history. The history result is limited to the 200 commits requested by the Git log command.",
+				"examples": ["main"]
 			},
 			{
 				"name": "GitSourceAdapter.units.revision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git revision resolved to a commit before unit manifest files are read. The resulting manifest promise is cached by resolved commit for this adapter instance.",
+				"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "GitSourceAdapter.changed.revision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git revision passed to diff-tree to list paths changed in that commit, including a root commit. The returned paths are collected in a Set.",
+				"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "GitSourceAdapter.sources.unit",
 				"type": "ComponentManifest",
-				"required": true
+				"required": true,
+				"description": "Manifest whose owns.source entries select the repository files included in the result. Each entry matches itself and descendants below that entry after a trailing slash is removed.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "desktop.adapter.git-source",
+						"uid": "u_xxzceoo5bx",
+						"kind": "adapter",
+						"title": "GitSourceAdapter",
+						"responsibility": "Owns the GitSourceAdapter integration boundary.",
+						"responsibilityOrigin": "derived",
+						"status": "active",
+						"owns": {
+							"source": [
+								"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+								"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+							],
+							"symbols": [
+								"GitSourceAdapter",
+								"GitSourceAdapter",
+								"GitSourceAdapter.constructor",
+								"GitSourceAdapter.branches",
+								"GitSourceAdapter.revision",
+								"GitSourceAdapter.commits",
+								"GitSourceAdapter.units",
+								"GitSourceAdapter.changed",
+								"GitSourceAdapter.sources",
+								"GitSourceAdapter.source",
+								"GitSourceAdapter.documentation",
+								"GitSourceAdapter.size",
+								"GitSourceAdapter.contractHash"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"errorStatus": "none-found",
+							"operations": [],
+							"initialization": []
+						},
+						"dependencies": [
+							{
+								"unit": "desktop.function.git-blobs",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.function.git-read",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.model.desktop-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-documentation",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "module.contracts",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+								}
+							]
+						},
+						"scenarios": ["desktop-native", "desktop-project-runs"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "GitSourceAdapter.sources.revision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git revision used to list repository paths before applying the unit source rules. The paths are returned as repository-relative names.",
+				"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "GitSourceAdapter.source.unit",
 				"type": "ComponentManifest",
-				"required": true
+				"required": true,
+				"description": "Manifest whose owns.source entries define which repository paths may be read. A path outside those entries is rejected.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "desktop.adapter.git-source",
+						"uid": "u_xxzceoo5bx",
+						"kind": "adapter",
+						"title": "GitSourceAdapter",
+						"responsibility": "Owns the GitSourceAdapter integration boundary.",
+						"responsibilityOrigin": "derived",
+						"status": "active",
+						"owns": {
+							"source": [
+								"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+								"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+							],
+							"symbols": [
+								"GitSourceAdapter",
+								"GitSourceAdapter",
+								"GitSourceAdapter.constructor",
+								"GitSourceAdapter.branches",
+								"GitSourceAdapter.revision",
+								"GitSourceAdapter.commits",
+								"GitSourceAdapter.units",
+								"GitSourceAdapter.changed",
+								"GitSourceAdapter.sources",
+								"GitSourceAdapter.source",
+								"GitSourceAdapter.documentation",
+								"GitSourceAdapter.size",
+								"GitSourceAdapter.contractHash"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"errorStatus": "none-found",
+							"operations": [],
+							"initialization": []
+						},
+						"dependencies": [
+							{
+								"unit": "desktop.function.git-blobs",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.function.git-read",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.model.desktop-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-documentation",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "module.contracts",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+								}
+							]
+						},
+						"scenarios": ["desktop-native", "desktop-project-runs"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "GitSourceAdapter.source.revision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git revision passed to the source text reader after the requested path is checked against the unit source list. The returned text is read from that revision.",
+				"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "GitSourceAdapter.source.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative file path requested from the selected revision. It must be listed by sources for the unit or the method throws.",
+				"examples": [
+					"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+				]
 			},
 			{
 				"name": "GitSourceAdapter.documentation.unit",
 				"type": "ComponentManifest | undefined",
-				"required": true
+				"required": true,
+				"description": "Manifest that supplies the documentation reference for the reader. If the value is undefined or has no documentation field, the method returns undefined without resolving the revision.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "desktop.adapter.git-source",
+						"uid": "u_xxzceoo5bx",
+						"kind": "adapter",
+						"title": "GitSourceAdapter",
+						"responsibility": "Owns the GitSourceAdapter integration boundary.",
+						"responsibilityOrigin": "derived",
+						"status": "active",
+						"owns": {
+							"source": [
+								"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+								"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+							],
+							"symbols": [
+								"GitSourceAdapter",
+								"GitSourceAdapter",
+								"GitSourceAdapter.constructor",
+								"GitSourceAdapter.branches",
+								"GitSourceAdapter.revision",
+								"GitSourceAdapter.commits",
+								"GitSourceAdapter.units",
+								"GitSourceAdapter.changed",
+								"GitSourceAdapter.sources",
+								"GitSourceAdapter.source",
+								"GitSourceAdapter.documentation",
+								"GitSourceAdapter.size",
+								"GitSourceAdapter.contractHash"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"errorStatus": "none-found",
+							"operations": [],
+							"initialization": []
+						},
+						"dependencies": [
+							{
+								"unit": "desktop.function.git-blobs",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.function.git-read",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.model.desktop-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-documentation",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "module.contracts",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+								}
+							]
+						},
+						"scenarios": ["desktop-native", "desktop-project-runs"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "GitSourceAdapter.documentation.revision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git revision resolved to a commit before the declared documentation is read. It is not resolved when the manifest has no documentation field.",
+				"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "GitSourceAdapter.size.unit",
 				"type": "ComponentManifest",
-				"required": true
+				"required": true,
+				"description": "Manifest whose owned source files determine which Git blobs are measured. An empty matching file list produces available false and the text Not measured.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "desktop.adapter.git-source",
+						"uid": "u_xxzceoo5bx",
+						"kind": "adapter",
+						"title": "GitSourceAdapter",
+						"responsibility": "Owns the GitSourceAdapter integration boundary.",
+						"responsibilityOrigin": "derived",
+						"status": "active",
+						"owns": {
+							"source": [
+								"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+								"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+							],
+							"symbols": [
+								"GitSourceAdapter",
+								"GitSourceAdapter",
+								"GitSourceAdapter.constructor",
+								"GitSourceAdapter.branches",
+								"GitSourceAdapter.revision",
+								"GitSourceAdapter.commits",
+								"GitSourceAdapter.units",
+								"GitSourceAdapter.changed",
+								"GitSourceAdapter.sources",
+								"GitSourceAdapter.source",
+								"GitSourceAdapter.documentation",
+								"GitSourceAdapter.size",
+								"GitSourceAdapter.contractHash"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"errorStatus": "none-found",
+							"operations": [],
+							"initialization": []
+						},
+						"dependencies": [
+							{
+								"unit": "desktop.function.git-blobs",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.function.git-read",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.model.desktop-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-documentation",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "module.contracts",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+								}
+							]
+						},
+						"scenarios": ["desktop-native", "desktop-project-runs"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "GitSourceAdapter.size.revision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git revision used for source enumeration and for each git cat-file size lookup. This method passes the revision through without first resolving it with gitRevision.",
+				"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "GitSourceAdapter.contractHash.unit",
 				"type": "ComponentManifest",
-				"required": true
+				"required": true,
+				"description": "Manifest whose contract value is serialized with JSON.stringify and hashed with SHA-256. Other manifest fields are not included in the digest.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "desktop.adapter.git-source",
+						"uid": "u_xxzceoo5bx",
+						"kind": "adapter",
+						"title": "GitSourceAdapter",
+						"responsibility": "Owns the GitSourceAdapter integration boundary.",
+						"responsibilityOrigin": "derived",
+						"status": "active",
+						"owns": {
+							"source": [
+								"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+								"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+							],
+							"symbols": [
+								"GitSourceAdapter",
+								"GitSourceAdapter",
+								"GitSourceAdapter.constructor",
+								"GitSourceAdapter.branches",
+								"GitSourceAdapter.revision",
+								"GitSourceAdapter.commits",
+								"GitSourceAdapter.units",
+								"GitSourceAdapter.changed",
+								"GitSourceAdapter.sources",
+								"GitSourceAdapter.source",
+								"GitSourceAdapter.documentation",
+								"GitSourceAdapter.size",
+								"GitSourceAdapter.contractHash"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"errorStatus": "none-found",
+							"operations": [],
+							"initialization": []
+						},
+						"dependencies": [
+							{
+								"unit": "desktop.function.git-blobs",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.function.git-read",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "desktop.model.desktop-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-documentation",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "module.contracts",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+								}
+							]
+						},
+						"scenarios": ["desktop-native", "desktop-project-runs"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GitSourceAdapter.branches",
-				"type": "Promise<BranchInfo[]>"
+				"type": "Promise<BranchInfo[]>",
+				"description": "Returns local branch refs as name, tip and current entries. The current flag is true only for the name matching symbolic HEAD; when HEAD is detached, no branch is marked current.",
+				"examples": [
+					[
+						{
+							"name": "main",
+							"tip": "0123456789abcdef0123456789abcdef01234567",
+							"current": true
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "GitSourceAdapter.revision",
-				"type": "Promise<Revision>"
+				"type": "Promise<Revision>",
+				"description": "Returns the selected branch name, resolved commit, branch tip and whether the commit equals the tip. A supplied commit must resolve within the selected branch ancestry.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"tip": "0123456789abcdef0123456789abcdef01234567",
+						"atTip": true
+					},
+					{
+						"branch": "main",
+						"commit": "89abcdef0123456789abcdef0123456789abcdef",
+						"tip": "0123456789abcdef0123456789abcdef01234567",
+						"atTip": false
+					}
+				]
 			},
 			{
 				"name": "GitSourceAdapter.commits",
-				"type": "Promise<CommitInfo[]>"
+				"type": "Promise<CommitInfo[]>",
+				"description": "Returns up to 200 commits reachable from the selected branch tip. Each entry contains the commit hash, author and committer timestamps from Git, and subject.",
+				"examples": [
+					[
+						{
+							"hash": "0123456789abcdef0123456789abcdef01234567",
+							"authoredAt": "2026-11-14T12:30:00+00:00",
+							"committedAt": "2026-11-14T12:45:00+00:00",
+							"subject": "Add Git source inspection"
+						}
+					]
+				]
 			},
 			{
 				"name": "GitSourceAdapter.units",
-				"type": "Promise<ComponentManifest[]>"
+				"type": "Promise<ComponentManifest[]>",
+				"description": "Returns manifests parsed from specification/units/*.json at the resolved commit after checking each manifest ID against its filename. The resolved commit is used as the per-instance cache key.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "GitSourceAdapter.changed",
-				"type": "Promise<Set<string>>"
+				"type": "Promise<Set<string>>",
+				"description": "Returns a Set of repository-relative paths reported by diff-tree for the requested revision. NUL-separated empty entries are removed and duplicate paths collapse in the Set."
 			},
 			{
 				"name": "GitSourceAdapter.sources",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "Returns repository-relative paths that match an owns.source entry or lie below one after its trailing slash is removed. Paths are selected from the Git tree at the requested revision.",
+				"examples": [
+					[
+						"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+					]
+				]
 			},
 			{
 				"name": "GitSourceAdapter.source",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the requested repository-relative path and its text read from the selected revision. The path is returned only after it passes the unit source check.",
+				"examples": [
+					{
+						"path": "packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+						"text": "// @harness-uid u_xxzceoo5bx\nexport { GitSourceAdapter } from '../../projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter';\nexport * from '../../projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter';"
+					}
+				]
 			},
 			{
 				"name": "GitSourceAdapter.documentation",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns undefined when the unit has no documentation field; otherwise returns the result of readUnitDocumentation using Git text from the resolved commit. The documentation result shape is determined by that reader."
 			},
 			{
 				"name": "GitSourceAdapter.size",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns available and text fields for the total size of files selected by the unit source rules. The size is the summed Git blob byte count divided by 1024 and formatted to one decimal place, or Not measured when no paths match.",
+				"examples": [
+					{
+						"available": true,
+						"text": "12.4 KB"
+					},
+					{
+						"available": false,
+						"text": "Not measured"
+					}
+				]
 			},
 			{
 				"name": "GitSourceAdapter.contractHash",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the lowercase hexadecimal SHA-256 digest of JSON.stringify(unit.contract). The digest does not cover the rest of the manifest.",
+				"examples": ["3353d2f60ca6b5237e40223c69c0792a81da459302e8f844da86dfeadf78d6f8"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Revision selection throws when no local branch is available or the commit fails the branch ancestry check, and source reading throws when a path is outside the unit source contract. Errors rejected by awaited Git, blob, manifest and documentation readers also propagate."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GitSourceAdapter.branches",
@@ -163,11 +696,28 @@
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.branches",
-						"type": "Promise<BranchInfo[]>"
+						"type": "Promise<BranchInfo[]>",
+						"description": "Returns local branch refs as name, tip and current entries. The current flag is true only for the name matching symbolic HEAD; when HEAD is detached, no branch is marked current.",
+						"examples": [
+							[
+								{
+									"name": "main",
+									"tip": "0123456789abcdef0123456789abcdef01234567",
+									"current": true
+								}
+							],
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects if listing local branch refs fails; failure to resolve symbolic HEAD is caught and leaves no branch marked current."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitSourceAdapter.revision",
@@ -175,22 +725,49 @@
 					{
 						"name": "GitSourceAdapter.revision.query",
 						"type": "{ branch: string | null; commit: string | null }",
-						"required": true
+						"required": true,
+						"description": "Selects a local branch and optionally a commit for revision resolution. A null branch uses the current local branch, while a supplied commit must be an ancestor of the selected branch tip.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null
+							},
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.revision",
-						"type": "Promise<Revision>"
+						"type": "Promise<Revision>",
+						"description": "Returns the selected branch name, resolved commit, branch tip and whether the commit equals the tip. A supplied commit must resolve within the selected branch ancestry.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"tip": "0123456789abcdef0123456789abcdef01234567",
+								"atTip": true
+							},
+							{
+								"branch": "main",
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"tip": "0123456789abcdef0123456789abcdef01234567",
+								"atTip": false
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws when no local named branch is selected or when the selected commit fails the branch ancestry check. Git revision-resolution failures also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitSourceAdapter.commits",
@@ -198,17 +775,36 @@
 					{
 						"name": "GitSourceAdapter.commits.branch",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Name of the local branch whose tip is used to read commit history. The history result is limited to the 200 commits requested by the Git log command.",
+						"examples": ["main"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.commits",
-						"type": "Promise<CommitInfo[]>"
+						"type": "Promise<CommitInfo[]>",
+						"description": "Returns up to 200 commits reachable from the selected branch tip. Each entry contains the commit hash, author and committer timestamps from Git, and subject.",
+						"examples": [
+							[
+								{
+									"hash": "0123456789abcdef0123456789abcdef01234567",
+									"authoredAt": "2026-11-14T12:30:00+00:00",
+									"committedAt": "2026-11-14T12:45:00+00:00",
+									"subject": "Add Git source inspection"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects if branch selection fails or the Git log read fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitSourceAdapter.units",
@@ -216,17 +812,29 @@
 					{
 						"name": "GitSourceAdapter.units.revision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git revision resolved to a commit before unit manifest files are read. The resulting manifest promise is cached by resolved commit for this adapter instance.",
+						"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.units",
-						"type": "Promise<ComponentManifest[]>"
+						"type": "Promise<ComponentManifest[]>",
+						"description": "Returns manifests parsed from specification/units/*.json at the resolved commit after checking each manifest ID against its filename. The resolved commit is used as the per-instance cache key.",
+						"examples": [
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects on revision, tree or blob read failures, JSON or manifest-schema parse failures, or a manifest ID that does not match its filename."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitSourceAdapter.changed",
@@ -234,17 +842,26 @@
 					{
 						"name": "GitSourceAdapter.changed.revision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git revision passed to diff-tree to list paths changed in that commit, including a root commit. The returned paths are collected in a Set.",
+						"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.changed",
-						"type": "Promise<Set<string>>"
+						"type": "Promise<Set<string>>",
+						"description": "Returns a Set of repository-relative paths reported by diff-tree for the requested revision. NUL-separated empty entries are removed and duplicate paths collapse in the Set."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects when diff-tree cannot read the requested revision."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitSourceAdapter.sources",
@@ -252,22 +869,122 @@
 					{
 						"name": "GitSourceAdapter.sources.unit",
 						"type": "ComponentManifest",
-						"required": true
+						"required": true,
+						"description": "Manifest whose owns.source entries select the repository files included in the result. Each entry matches itself and descendants below that entry after a trailing slash is removed.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "desktop.adapter.git-source",
+								"uid": "u_xxzceoo5bx",
+								"kind": "adapter",
+								"title": "GitSourceAdapter",
+								"responsibility": "Owns the GitSourceAdapter integration boundary.",
+								"responsibilityOrigin": "derived",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+										"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+									],
+									"symbols": [
+										"GitSourceAdapter",
+										"GitSourceAdapter",
+										"GitSourceAdapter.constructor",
+										"GitSourceAdapter.branches",
+										"GitSourceAdapter.revision",
+										"GitSourceAdapter.commits",
+										"GitSourceAdapter.units",
+										"GitSourceAdapter.changed",
+										"GitSourceAdapter.sources",
+										"GitSourceAdapter.source",
+										"GitSourceAdapter.documentation",
+										"GitSourceAdapter.size",
+										"GitSourceAdapter.contractHash"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "none-found",
+									"operations": [],
+									"initialization": []
+								},
+								"dependencies": [
+									{
+										"unit": "desktop.function.git-blobs",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.function.git-read",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.model.desktop-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-documentation",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "module.contracts",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+										}
+									]
+								},
+								"scenarios": ["desktop-native", "desktop-project-runs"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "GitSourceAdapter.sources.revision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git revision used to list repository paths before applying the unit source rules. The paths are returned as repository-relative names.",
+						"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.sources",
-						"type": "Promise<string[]>"
+						"type": "Promise<string[]>",
+						"description": "Returns repository-relative paths that match an owns.source entry or lie below one after its trailing slash is removed. Paths are selected from the Git tree at the requested revision.",
+						"examples": [
+							[
+								"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects when the Git file listing for the revision fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitSourceAdapter.source",
@@ -275,32 +992,132 @@
 					{
 						"name": "GitSourceAdapter.source.unit",
 						"type": "ComponentManifest",
-						"required": true
+						"required": true,
+						"description": "Manifest whose owns.source entries define which repository paths may be read. A path outside those entries is rejected.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "desktop.adapter.git-source",
+								"uid": "u_xxzceoo5bx",
+								"kind": "adapter",
+								"title": "GitSourceAdapter",
+								"responsibility": "Owns the GitSourceAdapter integration boundary.",
+								"responsibilityOrigin": "derived",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+										"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+									],
+									"symbols": [
+										"GitSourceAdapter",
+										"GitSourceAdapter",
+										"GitSourceAdapter.constructor",
+										"GitSourceAdapter.branches",
+										"GitSourceAdapter.revision",
+										"GitSourceAdapter.commits",
+										"GitSourceAdapter.units",
+										"GitSourceAdapter.changed",
+										"GitSourceAdapter.sources",
+										"GitSourceAdapter.source",
+										"GitSourceAdapter.documentation",
+										"GitSourceAdapter.size",
+										"GitSourceAdapter.contractHash"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "none-found",
+									"operations": [],
+									"initialization": []
+								},
+								"dependencies": [
+									{
+										"unit": "desktop.function.git-blobs",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.function.git-read",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.model.desktop-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-documentation",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "module.contracts",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+										}
+									]
+								},
+								"scenarios": ["desktop-native", "desktop-project-runs"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "GitSourceAdapter.source.revision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git revision passed to the source text reader after the requested path is checked against the unit source list. The returned text is read from that revision.",
+						"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "GitSourceAdapter.source.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative file path requested from the selected revision. It must be listed by sources for the unit or the method throws.",
+						"examples": [
+							"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.source",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the requested repository-relative path and its text read from the selected revision. The path is returned only after it passes the unit source check.",
+						"examples": [
+							{
+								"path": "packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+								"text": "// @harness-uid u_xxzceoo5bx\nexport { GitSourceAdapter } from '../../projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter';\nexport * from '../../projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter';"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws when the path is outside the unit source contract; Git text-read failures also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitSourceAdapter.documentation",
@@ -308,22 +1125,117 @@
 					{
 						"name": "GitSourceAdapter.documentation.unit",
 						"type": "ComponentManifest | undefined",
-						"required": true
+						"required": true,
+						"description": "Manifest that supplies the documentation reference for the reader. If the value is undefined or has no documentation field, the method returns undefined without resolving the revision.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "desktop.adapter.git-source",
+								"uid": "u_xxzceoo5bx",
+								"kind": "adapter",
+								"title": "GitSourceAdapter",
+								"responsibility": "Owns the GitSourceAdapter integration boundary.",
+								"responsibilityOrigin": "derived",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+										"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+									],
+									"symbols": [
+										"GitSourceAdapter",
+										"GitSourceAdapter",
+										"GitSourceAdapter.constructor",
+										"GitSourceAdapter.branches",
+										"GitSourceAdapter.revision",
+										"GitSourceAdapter.commits",
+										"GitSourceAdapter.units",
+										"GitSourceAdapter.changed",
+										"GitSourceAdapter.sources",
+										"GitSourceAdapter.source",
+										"GitSourceAdapter.documentation",
+										"GitSourceAdapter.size",
+										"GitSourceAdapter.contractHash"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "none-found",
+									"operations": [],
+									"initialization": []
+								},
+								"dependencies": [
+									{
+										"unit": "desktop.function.git-blobs",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.function.git-read",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.model.desktop-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-documentation",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "module.contracts",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+										}
+									]
+								},
+								"scenarios": ["desktop-native", "desktop-project-runs"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "GitSourceAdapter.documentation.revision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git revision resolved to a commit before the declared documentation is read. It is not resolved when the manifest has no documentation field.",
+						"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.documentation",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns undefined when the unit has no documentation field; otherwise returns the result of readUnitDocumentation using Git text from the resolved commit. The documentation result shape is determined by that reader."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "When documentation is declared, rejects if revision resolution, Git text reading or the documentation reader fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitSourceAdapter.size",
@@ -331,22 +1243,127 @@
 					{
 						"name": "GitSourceAdapter.size.unit",
 						"type": "ComponentManifest",
-						"required": true
+						"required": true,
+						"description": "Manifest whose owned source files determine which Git blobs are measured. An empty matching file list produces available false and the text Not measured.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "desktop.adapter.git-source",
+								"uid": "u_xxzceoo5bx",
+								"kind": "adapter",
+								"title": "GitSourceAdapter",
+								"responsibility": "Owns the GitSourceAdapter integration boundary.",
+								"responsibilityOrigin": "derived",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+										"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+									],
+									"symbols": [
+										"GitSourceAdapter",
+										"GitSourceAdapter",
+										"GitSourceAdapter.constructor",
+										"GitSourceAdapter.branches",
+										"GitSourceAdapter.revision",
+										"GitSourceAdapter.commits",
+										"GitSourceAdapter.units",
+										"GitSourceAdapter.changed",
+										"GitSourceAdapter.sources",
+										"GitSourceAdapter.source",
+										"GitSourceAdapter.documentation",
+										"GitSourceAdapter.size",
+										"GitSourceAdapter.contractHash"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "none-found",
+									"operations": [],
+									"initialization": []
+								},
+								"dependencies": [
+									{
+										"unit": "desktop.function.git-blobs",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.function.git-read",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.model.desktop-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-documentation",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "module.contracts",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+										}
+									]
+								},
+								"scenarios": ["desktop-native", "desktop-project-runs"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "GitSourceAdapter.size.revision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git revision used for source enumeration and for each git cat-file size lookup. This method passes the revision through without first resolving it with gitRevision.",
+						"examples": ["main", "0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.size",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns available and text fields for the total size of files selected by the unit source rules. The size is the summed Git blob byte count divided by 1024 and formatted to one decimal place, or Not measured when no paths match.",
+						"examples": [
+							{
+								"available": true,
+								"text": "12.4 KB"
+							},
+							{
+								"available": false,
+								"text": "Not measured"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects when source enumeration or any Git blob-size read fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GitSourceAdapter.contractHash",
@@ -354,17 +1371,105 @@
 					{
 						"name": "GitSourceAdapter.contractHash.unit",
 						"type": "ComponentManifest",
-						"required": true
+						"required": true,
+						"description": "Manifest whose contract value is serialized with JSON.stringify and hashed with SHA-256. Other manifest fields are not included in the digest.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "desktop.adapter.git-source",
+								"uid": "u_xxzceoo5bx",
+								"kind": "adapter",
+								"title": "GitSourceAdapter",
+								"responsibility": "Owns the GitSourceAdapter integration boundary.",
+								"responsibilityOrigin": "derived",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+										"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+									],
+									"symbols": [
+										"GitSourceAdapter",
+										"GitSourceAdapter",
+										"GitSourceAdapter.constructor",
+										"GitSourceAdapter.branches",
+										"GitSourceAdapter.revision",
+										"GitSourceAdapter.commits",
+										"GitSourceAdapter.units",
+										"GitSourceAdapter.changed",
+										"GitSourceAdapter.sources",
+										"GitSourceAdapter.source",
+										"GitSourceAdapter.documentation",
+										"GitSourceAdapter.size",
+										"GitSourceAdapter.contractHash"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"errorStatus": "none-found",
+									"operations": [],
+									"initialization": []
+								},
+								"dependencies": [
+									{
+										"unit": "desktop.function.git-blobs",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.function.git-read",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "desktop.model.desktop-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-documentation",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "module.contracts",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts"
+										}
+									]
+								},
+								"scenarios": ["desktop-native", "desktop-project-runs"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.contractHash",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the lowercase hexadecimal SHA-256 digest of JSON.stringify(unit.contract). The digest does not cover the rest of the manifest.",
+						"examples": ["3353d2f60ca6b5237e40223c69c0792a81da459302e8f844da86dfeadf78d6f8"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -374,17 +1479,22 @@
 					{
 						"name": "GitSourceAdapter.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path passed to Git operations as the repository working directory. It determines which repository this adapter instance reads.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a GitSourceAdapter instance that stores the supplied root in its readonly root field. Construction performs no Git reads."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
