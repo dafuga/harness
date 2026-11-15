@@ -29,5 +29,5 @@
 </hx-section>
 
 <style>
-	.video-graph-navigation { display: grid; gap: var(--space-3, 0.75rem); margin-block: var(--space-4, 1rem); }
+	.video-graph-navigation { display: grid; gap: var(--space-3); margin-block: var(--space-4); }
 </style>

@@ -11,7 +11,7 @@ import {
 	viewerRelease
 } from './reportData';
 import { evidenceGridItems } from './evidenceGridData';
-import { videoEvidenceProps } from './videoEvidenceProps';
+import { videoEvidenceProps, videoGraphNavigationProps } from './videoEvidenceProps';
 import { recordedValueFixture } from './recordedValueVariants';
 import { evidenceViewerProps } from './evidenceViewerVariants';
 import * as d from './explorerData';
@@ -22,6 +22,7 @@ import { resolveStateImage } from './reportEntityStatesVariants';
 const entries = explorerSearchEntries(d.entities, d.shown.head.commit);
 export const reportCases: PreviewCases = {
 	'reports.component.verification-evidence-video-evidence': videoEvidenceProps,
+	'reports.component.verification-evidence-video-graph-navigation': videoGraphNavigationProps,
 	'reports.component.verification-evidence-audio-icon': {},
 	'reports.component.audio-comparison': {
 		before: baselineNarration,

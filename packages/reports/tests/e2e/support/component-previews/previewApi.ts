@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { catalogFixtureMedia } from './catalogFixtureMedia';
 import { shellMedia } from './shellArtworkImages';
+import { videoPlayerFixture } from './videoPlayerFixture';
 import { shellActivity } from './shellCatalogRoutes';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
@@ -197,6 +198,7 @@ async function media(route: Route, path: string, home: string) {
 function storedMedia(all: ReturnType<typeof catalogFixtureMedia>, file: string) {
 	const svg = shellMedia(file);
 	return (
+		videoPlayerFixture(file) ??
 		all.bytes[file.replace(/\.[^.]+$/, '')] ??
 		(svg ? { mediaType: 'image/svg+xml', data: [...Buffer.from(svg)] } : undefined)
 	);
