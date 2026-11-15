@@ -23,63 +23,133 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SourceImpactService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem path for the repository used by GitAdapter and CommitTreeAdapter to resolve commits and read source trees. It matters for every service method and must identify the repository containing the requested commits.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
+				]
 			},
 			{
 				"name": "SourceImpactService.of.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit reference whose source tree is compared with its first parent; a root commit uses an empty base. The reference must resolve in the repository configured on the service.",
+				"examples": ["6f91a8c2d4e7b1035a6f8c9d0e1b2a3c4d5e6f70"]
 			},
 			{
 				"name": "SourceImpactService.reasons.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit reference whose changes against its first parent are checked for required reasons. The reference must resolve in the repository configured on the service, and an unreadable source tree makes the result undefined.",
+				"examples": ["6f91a8c2d4e7b1035a6f8c9d0e1b2a3c4d5e6f70"]
 			},
 			{
 				"name": "SourceImpactService.parent.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit reference whose first parent is resolved with rev-parse --verify --quiet. It must be resolvable in the repository configured on the service; a commit without a first parent has no parent result.",
+				"examples": ["6f91a8c2d4e7b1035a6f8c9d0e1b2a3c4d5e6f70"]
 			},
 			{
 				"name": "SourceImpactService.stored.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit reference whose source tree is converted to the compact StoredSide form. It must resolve to a readable source tree; otherwise the result is undefined.",
+				"examples": ["6f91a8c2d4e7b1035a6f8c9d0e1b2a3c4d5e6f70"]
 			},
 			{
 				"name": "SourceImpactService.measurements.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit reference whose loaded source side supplies static measurements tagged with that commit. If the side cannot be loaded, this method returns an empty list.",
+				"examples": ["6f91a8c2d4e7b1035a6f8c9d0e1b2a3c4d5e6f70"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SourceImpactService.of",
-				"type": "Promise<SourceImpact | undefined>"
+				"type": "Promise<SourceImpact | undefined>",
+				"description": "Impact view comparing a commit tree with its first-parent tree, using an empty base for a root commit. The result is undefined if either source side cannot be read or impact computation fails.",
+				"examples": [
+					{
+						"base": null,
+						"expanded": false,
+						"units": {
+							"direct": [],
+							"indirect": [],
+							"added": [],
+							"removed": []
+						},
+						"scenarios": [],
+						"uncertain": [],
+						"changed": []
+					}
+				]
 			},
 			{
 				"name": "SourceImpactService.reasons",
-				"type": "Promise<RequiredReason[] | undefined>"
+				"type": "Promise<RequiredReason[] | undefined>",
+				"description": "RequiredReason entries for changes against the first parent, with fingerprints bound to each changed symbol or unit. The result is undefined if either source side cannot be read.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "SourceImpactService.parent",
-				"type": "Promise<string | undefined>"
+				"type": "Promise<string | undefined>",
+				"description": "The first-parent commit hash, or undefined when the commit has no first parent. It is resolved by Git using rev-parse --verify --quiet.",
+				"examples": ["4c2d7e9a1b3f608d5c7e2a9b4d6f103a8c5e2f71"]
 			},
 			{
 				"name": "SourceImpactService.stored",
-				"type": "Promise<StoredSide | undefined>"
+				"type": "Promise<StoredSide | undefined>",
+				"description": "The commit side serialized with its source config, tracked files, units, scenarios, graph nodes, edges and uncertain nodes. It resolves to undefined when loading that side fails.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"config": {
+							"schemaVersion": 1,
+							"workspaces": [
+								{
+									"name": "",
+									"root": "."
+								}
+							],
+							"tests": ["test/", "tests/"],
+							"global": [],
+							"ignored": [
+								"**/*.md",
+								"specification/features/",
+								"specification/loops/",
+								".gitignore"
+							],
+							"references": []
+						},
+						"files": [],
+						"units": [],
+						"scenarios": [],
+						"nodes": [],
+						"edges": [],
+						"uncertain": []
+					}
+				]
 			},
 			{
 				"name": "SourceImpactService.measurements",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Static measurements produced for each manifest in the loaded source side and tagged with the requested commit. It returns an empty list when side loading fails.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "SourceImpactService.of",
@@ -87,17 +157,35 @@
 					{
 						"name": "SourceImpactService.of.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git commit reference whose source tree is compared with its first parent; a root commit uses an empty base. The reference must resolve in the repository configured on the service.",
+						"examples": ["6f91a8c2d4e7b1035a6f8c9d0e1b2a3c4d5e6f70"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceImpactService.of",
-						"type": "Promise<SourceImpact | undefined>"
+						"type": "Promise<SourceImpact | undefined>",
+						"description": "Impact view comparing a commit tree with its first-parent tree, using an empty base for a root commit. The result is undefined if either source side cannot be read or impact computation fails.",
+						"examples": [
+							{
+								"base": null,
+								"expanded": false,
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"scenarios": [],
+								"uncertain": [],
+								"changed": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SourceImpactService.reasons",
@@ -105,17 +193,23 @@
 					{
 						"name": "SourceImpactService.reasons.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git commit reference whose changes against its first parent are checked for required reasons. The reference must resolve in the repository configured on the service, and an unreadable source tree makes the result undefined.",
+						"examples": ["6f91a8c2d4e7b1035a6f8c9d0e1b2a3c4d5e6f70"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceImpactService.reasons",
-						"type": "Promise<RequiredReason[] | undefined>"
+						"type": "Promise<RequiredReason[] | undefined>",
+						"description": "RequiredReason entries for changes against the first parent, with fingerprints bound to each changed symbol or unit. The result is undefined if either source side cannot be read.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SourceImpactService.parent",
@@ -123,17 +217,21 @@
 					{
 						"name": "SourceImpactService.parent.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git commit reference whose first parent is resolved with rev-parse --verify --quiet. It must be resolvable in the repository configured on the service; a commit without a first parent has no parent result.",
+						"examples": ["6f91a8c2d4e7b1035a6f8c9d0e1b2a3c4d5e6f70"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceImpactService.parent",
-						"type": "Promise<string | undefined>"
+						"type": "Promise<string | undefined>",
+						"description": "The first-parent commit hash, or undefined when the commit has no first parent. It is resolved by Git using rev-parse --verify --quiet.",
+						"examples": ["4c2d7e9a1b3f608d5c7e2a9b4d6f103a8c5e2f71"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SourceImpactService.stored",
@@ -141,17 +239,49 @@
 					{
 						"name": "SourceImpactService.stored.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git commit reference whose source tree is converted to the compact StoredSide form. It must resolve to a readable source tree; otherwise the result is undefined.",
+						"examples": ["6f91a8c2d4e7b1035a6f8c9d0e1b2a3c4d5e6f70"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceImpactService.stored",
-						"type": "Promise<StoredSide | undefined>"
+						"type": "Promise<StoredSide | undefined>",
+						"description": "The commit side serialized with its source config, tracked files, units, scenarios, graph nodes, edges and uncertain nodes. It resolves to undefined when loading that side fails.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"config": {
+									"schemaVersion": 1,
+									"workspaces": [
+										{
+											"name": "",
+											"root": "."
+										}
+									],
+									"tests": ["test/", "tests/"],
+									"global": [],
+									"ignored": [
+										"**/*.md",
+										"specification/features/",
+										"specification/loops/",
+										".gitignore"
+									],
+									"references": []
+								},
+								"files": [],
+								"units": [],
+								"scenarios": [],
+								"nodes": [],
+								"edges": [],
+								"uncertain": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SourceImpactService.measurements",
@@ -159,17 +289,23 @@
 					{
 						"name": "SourceImpactService.measurements.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git commit reference whose loaded source side supplies static measurements tagged with that commit. If the side cannot be loaded, this method returns an empty list.",
+						"examples": ["6f91a8c2d4e7b1035a6f8c9d0e1b2a3c4d5e6f70"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceImpactService.measurements",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Static measurements produced for each manifest in the loaded source side and tagged with the requested commit. It returns an empty list when side loading fails.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -179,17 +315,22 @@
 					{
 						"name": "SourceImpactService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem path for the repository used by GitAdapter and CommitTreeAdapter to resolve commits and read source trees. It matters for every service method and must identify the repository containing the requested commits.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceImpactService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A SourceImpactService instance bound to the repository root, with its Git adapter, source indexer and impact runtime initialized. It caches each commit side promise so a tree is indexed once per service instance."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
