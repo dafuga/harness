@@ -15,6 +15,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { measureWorkload } from '../../support/measureWorkload';
 import { attachedFrameFixture } from '../../support/attachedFrameFixture';
+import { assertSelectedFrameReader } from '../../support/frameSelectedReader';
 
 test('FrameFlagService runs', () => {
 	expect(new FrameFlagService().run()).toBe('frame-flag');
@@ -214,4 +215,5 @@ test('the default reader refuses clip references without attached verified evide
 			else await expect(flag).rejects.toThrow(/pass|scope|verification/i);
 		}
 	});
-});
+	await assertSelectedFrameReader();
+}, 30_000);
