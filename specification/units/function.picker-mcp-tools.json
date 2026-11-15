@@ -27,50 +27,85 @@
 				"name": "pickerMcpTools.service",
 				"type": "ProviderSwitchService",
 				"required": true,
-				"description": "Provider-switch service exposing catalog, observed sessions, status, request and cancellation operations."
+				"description": "The provider-switch service the dispatcher calls: catalog.list() for list_models, store.list() for list_observed_sessions, request() for request_model_switch, cancel() for cancel_model_switch, and status() for open_model_picker and get_provider_status. The dispatcher performs no check on it before calling these members."
 			},
 			{
 				"name": "pickerMcpTools.name",
 				"type": "string",
 				"required": true,
-				"description": "Operation name: list_models, list_observed_sessions, request_model_switch, cancel_model_switch, open_model_picker or get_provider_status."
+				"description": "The operation to run: list_models, list_observed_sessions, request_model_switch, cancel_model_switch, open_model_picker or get_provider_status; open_model_picker and get_provider_status both call service.status. Any other string rejects with an Error before any service member is called.",
+				"examples": ["list_models", "request_model_switch", "get_provider_status"]
 			},
 			{
 				"name": "pickerMcpTools.input",
 				"type": "unknown",
 				"required": true,
-				"description": "Operation arguments, validated against the applicable strict schema for status, switch or cancel. List operations ignore input."
+				"description": "Arguments for the operation, parsed by the strict schema for that operation: pickerSwitchSchema for request_model_switch, pickerCancelSchema for cancel_model_switch, and pickerSessionSchema for open_model_picker and get_provider_status. list_models and list_observed_sessions never read it, and a value that fails its schema rejects with a ZodError.",
+				"examples": [
+					{
+						"session_id": "session-4f2a"
+					},
+					{
+						"session_id": "session-4f2a",
+						"provider": "harness-claude",
+						"model": "claude-sonnet-5-5",
+						"effort": "high"
+					},
+					{
+						"session_id": "session-4f2a",
+						"request_id": "request-7b9d"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "pickerSessionSchema",
 				"type": "unknown",
-				"description": "Strict object schema with an optional string session_id."
+				"description": "Strict zod object schema for open_model_picker and get_provider_status arguments: it accepts an optional string session_id and rejects any other key. The dispatcher parses input with it and passes session_id, or null when it is absent, to service.status."
 			},
 			{
 				"name": "pickerSwitchSchema",
 				"type": "unknown",
-				"description": "Strict schema requiring session_id, provider openai or harness-claude, model and effort strings."
+				"description": "Strict zod object schema for request_model_switch arguments: session_id, model and effort must be strings, provider must be 'openai' or 'harness-claude', and any other key is rejected. The dispatcher passes session_id as the first argument to service.request and provider, model and effort in an object as the second argument."
 			},
 			{
 				"name": "pickerCancelSchema",
 				"type": "unknown",
-				"description": "Strict schema requiring session_id and request_id strings."
+				"description": "Strict zod object schema for cancel_model_switch arguments: session_id and request_id must both be strings, and any other key is rejected. The dispatcher passes session_id and request_id, in that order, to service.cancel."
 			},
 			{
 				"name": "pickerMcpTools",
 				"type": "unknown",
-				"description": "Promise of the service result: model/session lists, switch request, cancellation or status. Missing session for status becomes null; this dispatcher does not itself launch a UI."
+				"description": "Resolves to { models: <catalog.list() result> } for list_models, to { sessions: <store.list() result> } for list_observed_sessions, and otherwise to the result of service.request, service.cancel or service.status. For open_model_picker and get_provider_status a missing session_id reaches service.status as null, and the dispatcher does not launch a UI itself.",
+				"examples": [
+					{
+						"models": []
+					},
+					{
+						"sessions": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Thrown for an unknown operation; schema parse and service failures may also reject."
+				"description": "Thrown with the message 'Unknown picker operation.' when name is none of the six operations; because pickerMcpTools is async, the caller receives it as a rejected promise."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by the zod parse call when input fails the schema for its operation, for example a missing required string, a provider other than 'openai' or 'harness-claude', or an extra key; the returned promise rejects with it."
+			},
+			{
+				"name": "service error",
+				"type": "thrown",
+				"description": "Not caught in this file: any error thrown or promise rejected by service.catalog.list, service.store.list, service.request, service.cancel or service.status propagates unchanged, so its name is defined by the provider-switch service."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "pickerMcpTools",
@@ -79,35 +114,70 @@
 						"name": "pickerMcpTools.service",
 						"type": "ProviderSwitchService",
 						"required": true,
-						"description": "Provider-switch service exposing catalog, observed sessions, status, request and cancellation operations."
+						"description": "The provider-switch service the dispatcher calls: catalog.list() for list_models, store.list() for list_observed_sessions, request() for request_model_switch, cancel() for cancel_model_switch, and status() for open_model_picker and get_provider_status. The dispatcher performs no check on it before calling these members."
 					},
 					{
 						"name": "pickerMcpTools.name",
 						"type": "string",
 						"required": true,
-						"description": "Operation name: list_models, list_observed_sessions, request_model_switch, cancel_model_switch, open_model_picker or get_provider_status."
+						"description": "The operation to run: list_models, list_observed_sessions, request_model_switch, cancel_model_switch, open_model_picker or get_provider_status; open_model_picker and get_provider_status both call service.status. Any other string rejects with an Error before any service member is called.",
+						"examples": ["list_models", "request_model_switch", "get_provider_status"]
 					},
 					{
 						"name": "pickerMcpTools.input",
 						"type": "unknown",
 						"required": true,
-						"description": "Operation arguments, validated against the applicable strict schema for status, switch or cancel. List operations ignore input."
+						"description": "Arguments for the operation, parsed by the strict schema for that operation: pickerSwitchSchema for request_model_switch, pickerCancelSchema for cancel_model_switch, and pickerSessionSchema for open_model_picker and get_provider_status. list_models and list_observed_sessions never read it, and a value that fails its schema rejects with a ZodError.",
+						"examples": [
+							{
+								"session_id": "session-4f2a"
+							},
+							{
+								"session_id": "session-4f2a",
+								"provider": "harness-claude",
+								"model": "claude-sonnet-5-5",
+								"effort": "high"
+							},
+							{
+								"session_id": "session-4f2a",
+								"request_id": "request-7b9d"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pickerMcpTools",
 						"type": "unknown",
-						"description": "Promise of the service result: model/session lists, switch request, cancellation or status. Missing session for status becomes null; this dispatcher does not itself launch a UI."
+						"description": "Resolves to { models: <catalog.list() result> } for list_models, to { sessions: <store.list() result> } for list_observed_sessions, and otherwise to the result of service.request, service.cancel or service.status. For open_model_picker and get_provider_status a missing session_id reaches service.status as null, and the dispatcher does not launch a UI itself.",
+						"examples": [
+							{
+								"models": []
+							},
+							{
+								"sessions": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'Unknown picker operation.' when name is none of the six operations; because pickerMcpTools is async, the caller receives it as a rejected promise."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by the zod parse call when input fails the schema for its operation, for example a missing required string, a provider other than 'openai' or 'harness-claude', or an extra key; the returned promise rejects with it."
+					},
+					{
+						"name": "service error",
+						"type": "thrown",
+						"description": "Not caught in this file: any error thrown or promise rejected by service.catalog.list, service.store.list, service.request, service.cancel or service.status propagates unchanged, so its name is defined by the provider-switch service."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
