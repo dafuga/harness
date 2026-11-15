@@ -27,106 +27,227 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ConsoleChangeService.constructor.host",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project root used as the base for file reads, writes, and replacement storage. The service joins supplied paths to it and does not validate the root.",
+				"examples": ["/Users/daniel/projects/example-app"]
 			},
 			{
 				"name": "ConsoleChangeService.constructor.manifest",
 				"type": "ConsoleManifest",
-				"required": true
+				"required": true,
+				"description": "Manifest whose file entries classify ownership and whose change history is searched by state and restore. This service reads its files and changes arrays.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"files": [],
+						"changes": []
+					}
+				]
 			},
 			{
 				"name": "ConsoleChangeService.state.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project file path whose current bytes and manifest entry determine the returned state. It is joined to the host root without path validation.",
+				"examples": ["src/console.ts"]
 			},
 			{
 				"name": "ConsoleChangeService.state.contents",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "Text the caller wants at the path, or null when it wants the path removed. State compares the current bytes with this value but does not write it.",
+				"examples": ["export const enabled = true;\n", null]
 			},
 			{
 				"name": "ConsoleChangeService.replace.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project file path whose current bytes are saved before the requested write or removal. It is joined to the host root without path validation.",
+				"examples": ["src/console.ts"]
 			},
 			{
 				"name": "ConsoleChangeService.replace.contents",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "Replacement text to write at the path, or null to remove it after saving its current bytes. A missing current file is saved as empty bytes.",
+				"examples": ["export const enabled = true;\n", null]
 			},
 			{
 				"name": "ConsoleChangeService.replace.change",
 				"type": "Pick<ConsoleChange, 'action' | 'reason'>",
-				"required": true
+				"required": true,
+				"description": "The action and reason recorded for this change. The action must be one of the ConsoleChange action values; this method passes both fields into the returned record.",
+				"examples": [
+					{
+						"action": "replaced",
+						"reason": "console install updated the existing file"
+					},
+					{
+						"action": "removed",
+						"reason": "console install removed an obsolete file"
+					}
+				]
 			},
 			{
 				"name": "ConsoleChangeService.restore.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project file path whose most recent matching change should be restored. The service searches the manifest history from newest to oldest.",
+				"examples": ["src/console.ts"]
 			},
 			{
 				"name": "ConsoleChangeService.remove.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project file path to remove under the host root. Missing paths are tolerated by the force option, while other filesystem failures can reject.",
+				"examples": ["src/generated-console.ts"]
 			},
 			{
 				"name": "ConsoleChangeService.write.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project file path to write under the host root. Its parent directories are created recursively before writing.",
+				"examples": ["src/generated/console.ts"]
 			},
 			{
 				"name": "ConsoleChangeService.write.contents",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Text written to the path after its parent directories are created. Existing file contents are overwritten.",
+				"examples": ["export const enabled = true;\n"]
 			},
 			{
 				"name": "ConsoleChangeService.entryFor.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project file path to record with its current content hash. If the file cannot be read, the entry is hashed as empty bytes.",
+				"examples": ["src/console.ts"]
 			},
 			{
 				"name": "ConsoleChangeService.entryFor.owner",
 				"type": "ConsoleFileEntry['owner']",
-				"required": true
+				"required": true,
+				"description": "Owner recorded for the file entry. The value is either harness or host.",
+				"examples": ["harness", "host"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "replacedDirectory",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Relative directory under the project root where replace stores the bytes it overwrites. Each saved copy is named with the SHA-256 hash of those bytes.",
+				"examples": [".harness/console/replaced"]
 			},
 			{
 				"name": "ConsoleChangeService.state",
-				"type": "Promise<FileState>"
+				"type": "Promise<FileState>",
+				"description": "The resolved FileState describing whether writing the requested content is free, unchanged, kept by the host, or in conflict. It does not modify the file.",
+				"examples": [
+					{
+						"kind": "free"
+					},
+					{
+						"kind": "kept",
+						"reason": "kept by the host"
+					},
+					{
+						"kind": "conflict",
+						"reason": "edited since it was installed"
+					}
+				]
 			},
 			{
 				"name": "ConsoleChangeService.replace",
-				"type": "Promise<ConsoleChange>"
+				"type": "Promise<ConsoleChange>",
+				"description": "The resolved ConsoleChange record for the write or removal. It includes the saved before identity and path, and after is null when contents is null.",
+				"examples": [
+					{
+						"path": "src/console.ts",
+						"action": "replaced",
+						"reason": "console install updated the existing file",
+						"at": "2026-11-15T09:30:00.000Z",
+						"before": {
+							"sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+							"bytes": 5,
+							"saved": ".harness/console/replaced/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+						},
+						"after": {
+							"sha256": "486ea46224d1bb4fb680f34f7c9ad96a8f24ec88be73ea8e5a6c65260e9cb8a7",
+							"bytes": 5
+						}
+					},
+					{
+						"path": "src/console.ts",
+						"action": "removed",
+						"reason": "console install removed an obsolete file",
+						"at": "2026-11-15T09:30:00.000Z",
+						"before": {
+							"sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+							"bytes": 5,
+							"saved": ".harness/console/replaced/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+						},
+						"after": null
+					}
+				]
 			},
 			{
 				"name": "ConsoleChangeService.restore",
-				"type": "Promise<ConsoleChange | undefined>"
+				"type": "Promise<ConsoleChange | undefined>",
+				"description": "The resolved latest restoration record, or undefined when no matching change exists or its saved bytes cannot be read. A successful restore saves the current bytes in turn and writes back the bytes saved by the latest change.",
+				"examples": [
+					{
+						"path": "src/console.ts",
+						"action": "restored",
+						"reason": "restores what was replaced at 2026-11-14T09:30:00.000Z",
+						"at": "2026-11-15T09:30:00.000Z",
+						"before": {
+							"sha256": "486ea46224d1bb4fb680f34f7c9ad96a8f24ec88be73ea8e5a6c65260e9cb8a7",
+							"bytes": 5,
+							"saved": ".harness/console/replaced/486ea46224d1bb4fb680f34f7c9ad96a8f24ec88be73ea8e5a6c65260e9cb8a7"
+						},
+						"after": {
+							"sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+							"bytes": 5
+						}
+					}
+				]
 			},
 			{
 				"name": "ConsoleChangeService.remove",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after asking the filesystem to remove the path. The force option makes a missing path a successful no-op."
 			},
 			{
 				"name": "ConsoleChangeService.write",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after recursively creating the parent directories and writing the supplied text. Existing contents at the path are replaced."
 			},
 			{
 				"name": "ConsoleChangeService.entryFor",
-				"type": "Promise<ConsoleFileEntry>"
+				"type": "Promise<ConsoleFileEntry>",
+				"description": "The resolved file entry containing the path, SHA-256 of its current bytes, and the supplied owner. An unreadable or missing file is represented using the SHA-256 of empty bytes.",
+				"examples": [
+					{
+						"path": "src/console.ts",
+						"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+						"owner": "harness"
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Filesystem operations that are not caught by the service reject with the underlying filesystem error when the operation fails."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ConsoleChangeService.state",
@@ -134,22 +255,40 @@
 					{
 						"name": "ConsoleChangeService.state.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project file path whose current bytes and manifest entry determine the returned state. It is joined to the host root without path validation.",
+						"examples": ["src/console.ts"]
 					},
 					{
 						"name": "ConsoleChangeService.state.contents",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "Text the caller wants at the path, or null when it wants the path removed. State compares the current bytes with this value but does not write it.",
+						"examples": ["export const enabled = true;\n", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConsoleChangeService.state",
-						"type": "Promise<FileState>"
+						"type": "Promise<FileState>",
+						"description": "The resolved FileState describing whether writing the requested content is free, unchanged, kept by the host, or in conflict. It does not modify the file.",
+						"examples": [
+							{
+								"kind": "free"
+							},
+							{
+								"kind": "kept",
+								"reason": "kept by the host"
+							},
+							{
+								"kind": "conflict",
+								"reason": "edited since it was installed"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ConsoleChangeService.replace",
@@ -157,27 +296,78 @@
 					{
 						"name": "ConsoleChangeService.replace.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project file path whose current bytes are saved before the requested write or removal. It is joined to the host root without path validation.",
+						"examples": ["src/console.ts"]
 					},
 					{
 						"name": "ConsoleChangeService.replace.contents",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "Replacement text to write at the path, or null to remove it after saving its current bytes. A missing current file is saved as empty bytes.",
+						"examples": ["export const enabled = true;\n", null]
 					},
 					{
 						"name": "ConsoleChangeService.replace.change",
 						"type": "Pick<ConsoleChange, 'action' | 'reason'>",
-						"required": true
+						"required": true,
+						"description": "The action and reason recorded for this change. The action must be one of the ConsoleChange action values; this method passes both fields into the returned record.",
+						"examples": [
+							{
+								"action": "replaced",
+								"reason": "console install updated the existing file"
+							},
+							{
+								"action": "removed",
+								"reason": "console install removed an obsolete file"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConsoleChangeService.replace",
-						"type": "Promise<ConsoleChange>"
+						"type": "Promise<ConsoleChange>",
+						"description": "The resolved ConsoleChange record for the write or removal. It includes the saved before identity and path, and after is null when contents is null.",
+						"examples": [
+							{
+								"path": "src/console.ts",
+								"action": "replaced",
+								"reason": "console install updated the existing file",
+								"at": "2026-11-15T09:30:00.000Z",
+								"before": {
+									"sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+									"bytes": 5,
+									"saved": ".harness/console/replaced/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+								},
+								"after": {
+									"sha256": "486ea46224d1bb4fb680f34f7c9ad96a8f24ec88be73ea8e5a6c65260e9cb8a7",
+									"bytes": 5
+								}
+							},
+							{
+								"path": "src/console.ts",
+								"action": "removed",
+								"reason": "console install removed an obsolete file",
+								"at": "2026-11-15T09:30:00.000Z",
+								"before": {
+									"sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+									"bytes": 5,
+									"saved": ".harness/console/replaced/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+								},
+								"after": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the underlying filesystem error if creating the backup directory, saving the current bytes, or writing or removing the target fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ConsoleChangeService.restore",
@@ -185,17 +375,43 @@
 					{
 						"name": "ConsoleChangeService.restore.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project file path whose most recent matching change should be restored. The service searches the manifest history from newest to oldest.",
+						"examples": ["src/console.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConsoleChangeService.restore",
-						"type": "Promise<ConsoleChange | undefined>"
+						"type": "Promise<ConsoleChange | undefined>",
+						"description": "The resolved latest restoration record, or undefined when no matching change exists or its saved bytes cannot be read. A successful restore saves the current bytes in turn and writes back the bytes saved by the latest change.",
+						"examples": [
+							{
+								"path": "src/console.ts",
+								"action": "restored",
+								"reason": "restores what was replaced at 2026-11-14T09:30:00.000Z",
+								"at": "2026-11-15T09:30:00.000Z",
+								"before": {
+									"sha256": "486ea46224d1bb4fb680f34f7c9ad96a8f24ec88be73ea8e5a6c65260e9cb8a7",
+									"bytes": 5,
+									"saved": ".harness/console/replaced/486ea46224d1bb4fb680f34f7c9ad96a8f24ec88be73ea8e5a6c65260e9cb8a7"
+								},
+								"after": {
+									"sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+									"bytes": 5
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the underlying filesystem error if its delegated replace step cannot save or restore the file."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ConsoleChangeService.remove",
@@ -203,17 +419,26 @@
 					{
 						"name": "ConsoleChangeService.remove.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project file path to remove under the host root. Missing paths are tolerated by the force option, while other filesystem failures can reject.",
+						"examples": ["src/generated-console.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConsoleChangeService.remove",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after asking the filesystem to remove the path. The force option makes a missing path a successful no-op."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the underlying filesystem error if removing the path fails; the force option only makes a missing path succeed."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ConsoleChangeService.write",
@@ -221,22 +446,33 @@
 					{
 						"name": "ConsoleChangeService.write.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project file path to write under the host root. Its parent directories are created recursively before writing.",
+						"examples": ["src/generated/console.ts"]
 					},
 					{
 						"name": "ConsoleChangeService.write.contents",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Text written to the path after its parent directories are created. Existing file contents are overwritten.",
+						"examples": ["export const enabled = true;\n"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConsoleChangeService.write",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after recursively creating the parent directories and writing the supplied text. Existing contents at the path are replaced."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the underlying filesystem error if creating parent directories or writing the file fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ConsoleChangeService.entryFor",
@@ -244,22 +480,34 @@
 					{
 						"name": "ConsoleChangeService.entryFor.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project file path to record with its current content hash. If the file cannot be read, the entry is hashed as empty bytes.",
+						"examples": ["src/console.ts"]
 					},
 					{
 						"name": "ConsoleChangeService.entryFor.owner",
 						"type": "ConsoleFileEntry['owner']",
-						"required": true
+						"required": true,
+						"description": "Owner recorded for the file entry. The value is either harness or host.",
+						"examples": ["harness", "host"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConsoleChangeService.entryFor",
-						"type": "Promise<ConsoleFileEntry>"
+						"type": "Promise<ConsoleFileEntry>",
+						"description": "The resolved file entry containing the path, SHA-256 of its current bytes, and the supplied owner. An unreadable or missing file is represented using the SHA-256 of empty bytes.",
+						"examples": [
+							{
+								"path": "src/console.ts",
+								"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+								"owner": "harness"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -269,22 +517,33 @@
 					{
 						"name": "ConsoleChangeService.constructor.host",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project root used as the base for file reads, writes, and replacement storage. The service joins supplied paths to it and does not validate the root.",
+						"examples": ["/Users/daniel/projects/example-app"]
 					},
 					{
 						"name": "ConsoleChangeService.constructor.manifest",
 						"type": "ConsoleManifest",
-						"required": true
+						"required": true,
+						"description": "Manifest whose file entries classify ownership and whose change history is searched by state and restore. This service reads its files and changes arrays.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"files": [],
+								"changes": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConsoleChangeService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a ConsoleChangeService instance that holds the host root and manifest."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
