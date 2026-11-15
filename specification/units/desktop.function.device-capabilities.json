@@ -22,24 +22,53 @@
 				"name": "deviceCapabilities.agents",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether the approved device is also allowed to use agents. This value controls agent, planning and approval actions together."
+				"description": "Whether the approved device may use agents, planning and approval. It takes effect only when comments is also true, because the returned agents, planning and approval are all set to agents && comments.",
+				"examples": [true, false]
 			},
 			{
 				"name": "deviceCapabilities.comments",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Whether the device may comment; false also disables agent and planning actions. Defaults to true."
+				"description": "Whether the device may comment, returned unchanged as the comments field of the result. Passing false forces agents, planning and approval to false, and it defaults to true.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "deviceCapabilities",
 				"type": "ProjectCapabilities",
-				"description": "Capabilities with comments enabled and local as the source. Agents, planning and approval equal the supplied flag. The reason explains read-and-comment-only access when false, or that comments remain pending on the computer until connected when true."
+				"description": "The ProjectCapabilities object, with comments equal to the comments input, source set to 'local', and agents, planning and approval all set to agents && comments. Its reason is the pending-drafts message when the returned agents value is true, the read-and-comment-only message when the returned agents value is false and comments is true, and the read-access message when comments is false.",
+				"examples": [
+					{
+						"comments": true,
+						"agents": true,
+						"planning": true,
+						"approval": true,
+						"source": "local",
+						"reason": "Comments are saved on the computer as pending drafts until connected."
+					},
+					{
+						"comments": true,
+						"agents": false,
+						"planning": false,
+						"approval": false,
+						"source": "local",
+						"reason": "This device was approved to read and comment only."
+					},
+					{
+						"comments": false,
+						"agents": false,
+						"planning": false,
+						"approval": false,
+						"source": "local",
+						"reason": "This device has Read access."
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "deviceCapabilities",
@@ -48,25 +77,53 @@
 						"name": "deviceCapabilities.agents",
 						"type": "boolean",
 						"required": true,
-						"description": "Whether the approved device is also allowed to use agents. This value controls agent, planning and approval actions together."
+						"description": "Whether the approved device may use agents, planning and approval. It takes effect only when comments is also true, because the returned agents, planning and approval are all set to agents && comments.",
+						"examples": [true, false]
 					},
 					{
 						"name": "deviceCapabilities.comments",
 						"type": "boolean",
 						"required": false,
 						"default": true,
-						"description": "Whether the device may comment; false also disables agent and planning actions. Defaults to true."
+						"description": "Whether the device may comment, returned unchanged as the comments field of the result. Passing false forces agents, planning and approval to false, and it defaults to true.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "deviceCapabilities",
 						"type": "ProjectCapabilities",
-						"description": "Capabilities with comments enabled and local as the source. Agents, planning and approval equal the supplied flag. The reason explains read-and-comment-only access when false, or that comments remain pending on the computer until connected when true."
+						"description": "The ProjectCapabilities object, with comments equal to the comments input, source set to 'local', and agents, planning and approval all set to agents && comments. Its reason is the pending-drafts message when the returned agents value is true, the read-and-comment-only message when the returned agents value is false and comments is true, and the read-access message when comments is false.",
+						"examples": [
+							{
+								"comments": true,
+								"agents": true,
+								"planning": true,
+								"approval": true,
+								"source": "local",
+								"reason": "Comments are saved on the computer as pending drafts until connected."
+							},
+							{
+								"comments": true,
+								"agents": false,
+								"planning": false,
+								"approval": false,
+								"source": "local",
+								"reason": "This device was approved to read and comment only."
+							},
+							{
+								"comments": false,
+								"agents": false,
+								"planning": false,
+								"approval": false,
+								"source": "local",
+								"reason": "This device has Read access."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
