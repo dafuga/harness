@@ -12,27 +12,37 @@
 		"symbols": ["sqliteModelDefinition"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sqliteModelDefinition.table",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Names the table placed in the generated definition. It is interpolated directly into a single-quoted string literal without escaping, so it must be suitable for that literal.",
+				"examples": ["users", "project_members"]
 			},
 			{
 				"name": "sqliteModelDefinition.fields",
 				"type": "Field[]",
-				"required": true
+				"required": true,
+				"description": "Provides the field entries added after the generated id field. For each entry, the implementation reads name, type and column; only type values exactly equal to json, boolean, or number are preserved, while all others become string.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sqliteModelDefinition",
-				"type": "string"
+				"type": "string",
+				"description": "Returns TypeScript source for a static readonly definition with the supplied table, id, mapped fields, and createdAt and updatedAt timestamp defaults. Table and column values are interpolated into single-quoted source literals and field names into property positions without escaping.",
+				"examples": [
+					"\tstatic readonly definition = {\n\t\ttable: 'users',\n\t\tfields: {\n\t\t\tid: { type: 'number' },\n\t\t\tcreatedAt: { type: 'string', default: 'timestamp' },\n\t\t\tupdatedAt: { type: 'string', default: 'timestamp' }\n\t\t}\n\t} as const;\n\n"
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "sqliteModelDefinition",
@@ -40,22 +50,32 @@
 					{
 						"name": "sqliteModelDefinition.table",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Names the table placed in the generated definition. It is interpolated directly into a single-quoted string literal without escaping, so it must be suitable for that literal.",
+						"examples": ["users", "project_members"]
 					},
 					{
 						"name": "sqliteModelDefinition.fields",
 						"type": "Field[]",
-						"required": true
+						"required": true,
+						"description": "Provides the field entries added after the generated id field. For each entry, the implementation reads name, type and column; only type values exactly equal to json, boolean, or number are preserved, while all others become string.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sqliteModelDefinition",
-						"type": "string"
+						"type": "string",
+						"description": "Returns TypeScript source for a static readonly definition with the supplied table, id, mapped fields, and createdAt and updatedAt timestamp defaults. Table and column values are interpolated into single-quoted source literals and field names into property positions without escaping.",
+						"examples": [
+							"\tstatic readonly definition = {\n\t\ttable: 'users',\n\t\tfields: {\n\t\t\tid: { type: 'number' },\n\t\t\tcreatedAt: { type: 'string', default: 'timestamp' },\n\t\t\tupdatedAt: { type: 'string', default: 'timestamp' }\n\t\t}\n\t} as const;\n\n"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
