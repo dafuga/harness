@@ -33,86 +33,1156 @@
 				"name": "entityShown.host",
 				"type": "Shown",
 				"required": true,
-				"description": "Shown revision and optional parent context."
+				"description": "The shown revision, whose head supplies the verdict record (the newest valid record of exactly its commit), the regressions that may add focused observations, and the commit, source tree and side those observations are matched against. Only head is read; parent is not used by this function.",
+				"examples": [
+					{
+						"head": {
+							"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+							"registry": {
+								"available": false,
+								"gap": "no unit registry is stored at this revision",
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": {
+								"base": "a41d6b08e2f7c93d5b1a0e46f2c8d7b9e3a50f16",
+								"record": "c0d5e1f3a7b9284c6e0f1d2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c",
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"scenarios": [],
+								"uncertain": []
+							},
+							"side": "sides/5e2d0c7f9a18b463d7e0f2c5a9b8e1d4f6c3a027.json",
+							"records": [
+								{
+									"id": "c0d5e1f3a7b9284c6e0f1d2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c",
+									"status": "passed",
+									"valid": true,
+									"problems": [],
+									"source": {
+										"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+										"base": "a41d6b08e2f7c93d5b1a0e46f2c8d7b9e3a50f16"
+									},
+									"profile": "darwin-arm64",
+									"startedAt": "2026-11-14T09:31:07.512Z",
+									"finishedAt": "2026-11-14T09:38:52.104Z",
+									"gates": {
+										"tests": "passed",
+										"scenarios": "passed",
+										"budgets": "passed"
+									},
+									"failures": [],
+									"tests": [
+										{
+											"id": "packages/reports/test/components/entity-overview.test.ts",
+											"kind": "unit",
+											"target": "module",
+											"status": "passed",
+											"durationMs": 412
+										}
+									],
+									"scenarios": [],
+									"measurements": [
+										{
+											"unit": "reports.function.entity-shown",
+											"metric": "source-bytes",
+											"unitOfMeasure": "bytes",
+											"value": 9412,
+											"workload": null,
+											"profile": null,
+											"testedRevision": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b"
+										},
+										{
+											"unit": "reports.function.entity-shown",
+											"metric": "complexity",
+											"unitOfMeasure": "points",
+											"value": 14,
+											"workload": null,
+											"profile": null,
+											"testedRevision": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b"
+										}
+									],
+									"budgets": {
+										"findings": []
+									}
+								}
+							],
+							"explanations": []
+						},
+						"parent": null
+					}
+				]
 			},
 			{
 				"name": "entityShown.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "Entity to describe, including category, unit and removal state."
+				"description": "The entity to describe: its category and app route choose the contract rows, and its unit supplies the contract, the owned symbols and the budgets that the measurement reads. Its id, name, role, purpose, verdict, change and lastAt fields are not read by this function.",
+				"examples": [
+					{
+						"id": "reports.function.entity-shown",
+						"category": "functions",
+						"role": "Function",
+						"name": "entityShown",
+						"purpose": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+						"unit": {
+							"id": "reports.function.entity-shown",
+							"kind": "function",
+							"status": "active",
+							"title": "Entity overview data",
+							"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+							"dependencies": [
+								{
+									"unit": "reports.function.entity-contract",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-measure",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-reasons",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.explorer-entities",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.explorer-verdict",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-screen-types",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-types",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.harness-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+									"packages/reports/src/utils/entityShown.ts",
+									"packages/reports/src/utils/explorer-ui/entityShown.ts",
+									"packages/reports/src/utils/explorer-ui/entityShown.types.ts"
+								],
+								"symbols": [
+									"entityShown",
+									"modelTableView",
+									"entityShown",
+									"entityChanged",
+									"helperEntity",
+									"entityChanged",
+									"entityShown",
+									"helperEntity",
+									"helperRelations",
+									"EntityShown",
+									"Shown",
+									"EntityShown",
+									"Shown"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "entityShown.host",
+										"type": "Shown",
+										"required": true
+									},
+									{
+										"name": "entityShown.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "modelTableView.unit",
+										"type": "HarnessUnit",
+										"required": true
+									},
+									{
+										"name": "entityChanged.host",
+										"type": "Pick<Shown, 'head'>",
+										"required": true
+									},
+									{
+										"name": "entityChanged.unit",
+										"type": "string",
+										"required": true
+									},
+									{
+										"name": "helperEntity.owner",
+										"type": "ExplorerEntity | undefined",
+										"required": true
+									},
+									{
+										"name": "helperEntity.helperName",
+										"type": "string",
+										"required": false
+									},
+									{
+										"name": "helperRelations.host",
+										"type": "Pick<ExplorerScreenProps, 'head' | 'route'>",
+										"required": true
+									},
+									{
+										"name": "helperRelations.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "helperRelations.relations",
+										"type": "ExplorerRelations",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "entityShown",
+										"type": "EntityShown"
+									},
+									{
+										"name": "entityChanged",
+										"type": "EntityReasons"
+									},
+									{
+										"name": "helperEntity",
+										"type": "ExplorerEntity | undefined"
+									},
+									{
+										"name": "helperRelations.relations",
+										"type": "ExplorerRelations"
+									}
+								],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/utils/explorer-ui/entityShown.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "7b1e04c9d2a85f36"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Coverage incomplete",
+							"reasons": ["No scenario covers this unit; tests alone do not show how it behaves."]
+						},
+						"change": null,
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "modelTableView.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Selected model unit whose source-declared storage definitions and unresolved gaps are presented."
+				"description": "The model unit to project: only its title and modelDefinitions are read. Definitions named exactly as the unit's title are used; when none has that name, all of them are, and a unit without modelDefinitions gives empty lists.",
+				"examples": [
+					{
+						"id": "reports.model.harness-types",
+						"kind": "model",
+						"status": "active",
+						"title": "Harness types",
+						"responsibility": "Declares the shared harness shapes that the explorer reads.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["packages/reports/src/models/explorer-ui/Harness.types.ts"],
+							"symbols": ["HarnessRecordSummary", "HarnessRevisionSummary"]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/models/explorer-ui/Harness.types.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "2a6d9f0c71e4b583",
+						"modelDefinitions": [
+							{
+								"name": "HarnessRecordSummary",
+								"kind": "interface",
+								"source": "packages/reports/src/models/explorer-ui/Harness.types.ts",
+								"fields": [
+									{
+										"name": "id",
+										"type": "string",
+										"optional": false
+									},
+									{
+										"name": "status",
+										"type": "'passed' | 'failed'",
+										"optional": false
+									}
+								],
+								"methods": [],
+								"tableGap": "Declared as an interface, so no storage table is recorded."
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "entityChanged.host",
 				"type": "Pick<Shown, 'head'>",
 				"required": true,
-				"description": "Shown revision holding recorded explanations."
+				"description": "The shown revision, of which only head.explanations is read: the reasons its own commit recorded. No other field of the revision is used by entityChanged.",
+				"examples": [
+					{
+						"head": {
+							"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+							"registry": {
+								"available": false,
+								"gap": "no unit registry is stored at this revision",
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": [
+								{
+									"unit": "reports.function.entity-shown",
+									"symbol": "entityChanged",
+									"file": "packages/reports/src/utils/explorer-ui/entityShown.ts",
+									"change": "Selects this unit's explanations from the head so the reason summary can be built.",
+									"behavior": "Lists what the head's own commit recorded for a single entity.",
+									"simplification": {
+										"attempt": "Filter once and pass the result to the summary builder.",
+										"outcome": "kept as one pass"
+									},
+									"performance": {
+										"attempt": "Share the filtered list between the summary and the notes.",
+										"outcome": "no measurable change"
+									}
+								}
+							]
+						}
+					}
+				]
 			},
 			{
 				"name": "entityChanged.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit identifier used to select its explanations."
+				"description": "The unit identifier, such as reports.function.entity-shown, compared exactly with the unit of each explanation to select its reasons. A unit with no matching explanation gets an empty summary.",
+				"examples": ["reports.function.entity-shown", "reports.function.entity-contract"]
 			},
 			{
 				"name": "helperEntity.owner",
 				"type": "ExplorerEntity | undefined",
 				"required": true,
-				"description": "Owning module entity at the selected revision."
+				"description": "The module entity that owns the callable. Undefined gives undefined, and without a helper name the owner is returned as it is; with a helper name, an owner that is not a functions entity gives undefined.",
+				"examples": [
+					{
+						"id": "reports.function.entity-shown",
+						"category": "functions",
+						"role": "Function",
+						"name": "entityShown",
+						"purpose": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+						"unit": {
+							"id": "reports.function.entity-shown",
+							"kind": "function",
+							"status": "active",
+							"title": "Entity overview data",
+							"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+							"dependencies": [
+								{
+									"unit": "reports.function.entity-contract",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-measure",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-reasons",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.explorer-entities",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.explorer-verdict",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-screen-types",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-types",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.harness-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+									"packages/reports/src/utils/entityShown.ts",
+									"packages/reports/src/utils/explorer-ui/entityShown.ts",
+									"packages/reports/src/utils/explorer-ui/entityShown.types.ts"
+								],
+								"symbols": [
+									"entityShown",
+									"modelTableView",
+									"entityShown",
+									"entityChanged",
+									"helperEntity",
+									"entityChanged",
+									"entityShown",
+									"helperEntity",
+									"helperRelations",
+									"EntityShown",
+									"Shown",
+									"EntityShown",
+									"Shown"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "entityShown.host",
+										"type": "Shown",
+										"required": true
+									},
+									{
+										"name": "entityShown.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "modelTableView.unit",
+										"type": "HarnessUnit",
+										"required": true
+									},
+									{
+										"name": "entityChanged.host",
+										"type": "Pick<Shown, 'head'>",
+										"required": true
+									},
+									{
+										"name": "entityChanged.unit",
+										"type": "string",
+										"required": true
+									},
+									{
+										"name": "helperEntity.owner",
+										"type": "ExplorerEntity | undefined",
+										"required": true
+									},
+									{
+										"name": "helperEntity.helperName",
+										"type": "string",
+										"required": false
+									},
+									{
+										"name": "helperRelations.host",
+										"type": "Pick<ExplorerScreenProps, 'head' | 'route'>",
+										"required": true
+									},
+									{
+										"name": "helperRelations.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "helperRelations.relations",
+										"type": "ExplorerRelations",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "entityShown",
+										"type": "EntityShown"
+									},
+									{
+										"name": "entityChanged",
+										"type": "EntityReasons"
+									},
+									{
+										"name": "helperEntity",
+										"type": "ExplorerEntity | undefined"
+									},
+									{
+										"name": "helperRelations.relations",
+										"type": "ExplorerRelations"
+									}
+								],
+								"errors": []
+							},
+							"helpers": [
+								{
+									"name": "entityShown",
+									"source": "packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+									"inputs": [
+										{
+											"name": "host",
+											"type": "Shown",
+											"required": true
+										},
+										{
+											"name": "entity",
+											"type": "ExplorerEntity",
+											"required": true
+										}
+									],
+									"output": "EntityShown"
+								},
+								{
+									"name": "entityChanged",
+									"source": "packages/reports/src/utils/explorer-ui/entityShown.ts",
+									"inputs": [
+										{
+											"name": "host",
+											"type": "Pick<Shown, 'head'>",
+											"required": true
+										},
+										{
+											"name": "unit",
+											"type": "string",
+											"required": true
+										}
+									],
+									"output": "EntityReasons"
+								}
+							],
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/utils/explorer-ui/entityShown.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "7b1e04c9d2a85f36"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Coverage incomplete",
+							"reasons": ["No scenario covers this unit; tests alone do not show how it behaves."]
+						},
+						"change": null,
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "helperEntity.helperName",
 				"type": "string",
 				"required": false,
-				"description": "Optional selected callable name; no matching callable returns undefined."
+				"default": "undefined",
+				"description": "The callable to select, matched exactly against the owner unit's helpers. Omitted or empty, it returns the owner unchanged; otherwise a name that no helper of the owner matches gives undefined.",
+				"examples": ["entityChanged", "entityShown"]
 			},
 			{
 				"name": "helperRelations.host",
 				"type": "Pick<ExplorerScreenProps, 'head' | 'route'>",
 				"required": true,
-				"description": "Selected revision registry and named helper route."
+				"description": "The shown revision and route: the active units of head's registry are searched for pure helpers that list the caller as a consumer of the entity, and route.helper names that caller. Without route.helper nothing is selected, and the relations are returned unchanged.",
+				"examples": [
+					{
+						"head": {
+							"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+							"registry": {
+								"available": false,
+								"gap": "no unit registry is stored at this revision",
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						},
+						"route": {
+							"branch": "main",
+							"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+							"category": "functions",
+							"entity": "reports.function.entity-shown",
+							"helper": "entityChanged"
+						}
+					}
+				]
 			},
 			{
 				"name": "helperRelations.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "Selected callable and its real owning unit identity."
+				"description": "The selected callable: when it is not a functions entity the relations are returned unchanged, and otherwise its id is compared with the unit of each helper consumer. Its other fields are not read by this function.",
+				"examples": [
+					{
+						"id": "reports.function.entity-shown",
+						"category": "functions",
+						"role": "Function",
+						"name": "entityShown",
+						"purpose": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+						"unit": {
+							"id": "reports.function.entity-shown",
+							"kind": "function",
+							"status": "active",
+							"title": "Entity overview data",
+							"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+							"dependencies": [
+								{
+									"unit": "reports.function.entity-contract",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-measure",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-reasons",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.explorer-entities",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.explorer-verdict",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-screen-types",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-types",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.harness-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+									"packages/reports/src/utils/entityShown.ts",
+									"packages/reports/src/utils/explorer-ui/entityShown.ts",
+									"packages/reports/src/utils/explorer-ui/entityShown.types.ts"
+								],
+								"symbols": [
+									"entityShown",
+									"modelTableView",
+									"entityShown",
+									"entityChanged",
+									"helperEntity",
+									"entityChanged",
+									"entityShown",
+									"helperEntity",
+									"helperRelations",
+									"EntityShown",
+									"Shown",
+									"EntityShown",
+									"Shown"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "entityShown.host",
+										"type": "Shown",
+										"required": true
+									},
+									{
+										"name": "entityShown.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "modelTableView.unit",
+										"type": "HarnessUnit",
+										"required": true
+									},
+									{
+										"name": "entityChanged.host",
+										"type": "Pick<Shown, 'head'>",
+										"required": true
+									},
+									{
+										"name": "entityChanged.unit",
+										"type": "string",
+										"required": true
+									},
+									{
+										"name": "helperEntity.owner",
+										"type": "ExplorerEntity | undefined",
+										"required": true
+									},
+									{
+										"name": "helperEntity.helperName",
+										"type": "string",
+										"required": false
+									},
+									{
+										"name": "helperRelations.host",
+										"type": "Pick<ExplorerScreenProps, 'head' | 'route'>",
+										"required": true
+									},
+									{
+										"name": "helperRelations.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "helperRelations.relations",
+										"type": "ExplorerRelations",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "entityShown",
+										"type": "EntityShown"
+									},
+									{
+										"name": "entityChanged",
+										"type": "EntityReasons"
+									},
+									{
+										"name": "helperEntity",
+										"type": "ExplorerEntity | undefined"
+									},
+									{
+										"name": "helperRelations.relations",
+										"type": "ExplorerRelations"
+									}
+								],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/utils/explorer-ui/entityShown.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "7b1e04c9d2a85f36"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Coverage incomplete",
+							"reasons": ["No scenario covers this unit; tests alone do not show how it behaves."]
+						},
+						"change": null,
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "helperRelations.relations",
 				"type": "ExplorerRelations",
 				"required": true,
-				"description": "Existing module relationships whose Used In side remains available."
+				"description": "The module relationships before selection. When a helper is selected for a functions entity, pages, usedBy and apis pass through unchanged, functions is replaced, and layouts, components, services, configs, models, types and support are emptied; otherwise the relationships are returned as they are.",
+				"examples": [
+					{
+						"pages": [],
+						"layouts": [],
+						"components": [],
+						"functions": [],
+						"configs": [],
+						"services": [],
+						"usedBy": [],
+						"support": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityShown",
 				"type": "EntityShown",
-				"description": "Readable contract, measurements and the selected verdict record. Removed entities use parent declarations for applicable states. Source and full-record figures can be supplemented by focused observations of the same commit or identical complete source tree, retaining their tested revision without granting a full verification verdict."
+				"description": "The contract rows of entity.unit (Inputs, Output and, when the unit declares errors, Fails with, plus category-specific labels such as Purpose, App route, Provides, Props or Runs as), the size and performance rows of its measurement, and record: the newest valid verification record of exactly the head's commit, or null. Focused observations from regressions can add figures to the measurement rows, but they never become record.",
+				"examples": [
+					{
+						"contract": [
+							{
+								"label": "Inputs",
+								"value": "host, entity, unit, owner, helper name, relations"
+							},
+							{
+								"label": "Output",
+								"value": "entity shown, entity changed, helper entity, relations"
+							}
+						],
+						"measure": {
+							"size": [
+								{
+									"label": "Source size",
+									"value": "9.4 KB",
+									"rawValue": 9412,
+									"unitOfMeasure": "bytes"
+								},
+								{
+									"label": "Complexity",
+									"value": "14",
+									"rawValue": 14
+								}
+							],
+							"performance": []
+						},
+						"record": {
+							"id": "c0d5e1f3a7b9284c6e0f1d2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c",
+							"status": "passed",
+							"valid": true,
+							"problems": [],
+							"source": {
+								"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+								"base": "a41d6b08e2f7c93d5b1a0e46f2c8d7b9e3a50f16"
+							},
+							"profile": "darwin-arm64",
+							"startedAt": "2026-11-14T09:31:07.512Z",
+							"finishedAt": "2026-11-14T09:38:52.104Z",
+							"gates": {
+								"tests": "passed",
+								"scenarios": "passed",
+								"budgets": "passed"
+							},
+							"failures": [],
+							"tests": [
+								{
+									"id": "packages/reports/test/components/entity-overview.test.ts",
+									"kind": "unit",
+									"target": "module",
+									"status": "passed",
+									"durationMs": 412
+								}
+							],
+							"scenarios": [],
+							"measurements": [
+								{
+									"unit": "reports.function.entity-shown",
+									"metric": "source-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 9412,
+									"workload": null,
+									"profile": null,
+									"testedRevision": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b"
+								},
+								{
+									"unit": "reports.function.entity-shown",
+									"metric": "complexity",
+									"unitOfMeasure": "points",
+									"value": 14,
+									"workload": null,
+									"profile": null,
+									"testedRevision": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b"
+								}
+							],
+							"budgets": {
+								"findings": []
+							}
+						}
+					},
+					{
+						"contract": [
+							{
+								"label": "Inputs",
+								"value": "host, entity, unit, owner, helper name, relations"
+							},
+							{
+								"label": "Output",
+								"value": "entity shown, entity changed, helper entity, relations"
+							}
+						],
+						"measure": {
+							"size": [
+								{
+									"label": "Source size",
+									"value": "Not measured",
+									"rawValue": null,
+									"unitOfMeasure": "bytes"
+								},
+								{
+									"label": "Complexity",
+									"value": "Not measured",
+									"rawValue": null
+								}
+							],
+							"performance": []
+						},
+						"record": null
+					}
+				]
 			},
 			{
 				"name": "entityChanged",
 				"type": "EntityReasons",
-				"description": "Bounded and full explanations recorded by the head for that unit."
+				"description": "The reasons the head recorded for that unit, summarised by entityReasons: a bounded behavior text, bounded simplification and performance attempts with their outcomes, every note and attempt as written, and long, which is true when the summary says less than the reasons do. It holds empty text and empty lists when the head recorded no reason for the unit.",
+				"examples": [
+					{
+						"behavior": {
+							"text": "Lists what the head's own commit recorded for a single entity.",
+							"cut": false
+						},
+						"simplification": {
+							"text": "Filter once and pass the result to the summary builder.",
+							"cut": false,
+							"outcomes": ["kept as one pass"]
+						},
+						"performance": {
+							"text": "Share the filtered list between the summary and the notes.",
+							"cut": false,
+							"outcomes": ["no measurable change"]
+						},
+						"notes": [
+							{
+								"behavior": "Lists what the head's own commit recorded for a single entity.",
+								"subjects": ["entity changed"]
+							}
+						],
+						"attempted": [
+							{
+								"attempt": "Filter once and pass the result to the summary builder.",
+								"uses": [
+									{
+										"subject": "entity changed",
+										"kind": "simplification",
+										"outcome": "kept as one pass"
+									}
+								]
+							},
+							{
+								"attempt": "Share the filtered list between the summary and the notes.",
+								"uses": [
+									{
+										"subject": "entity changed",
+										"kind": "performance",
+										"outcome": "no measurable change"
+									}
+								]
+							}
+						],
+						"long": false
+					},
+					{
+						"behavior": {
+							"text": "",
+							"cut": false
+						},
+						"simplification": {
+							"text": "",
+							"cut": false,
+							"outcomes": []
+						},
+						"performance": {
+							"text": "",
+							"cut": false,
+							"outcomes": []
+						},
+						"notes": [],
+						"attempted": [],
+						"long": false
+					}
+				]
 			},
 			{
 				"name": "helperEntity",
 				"type": "ExplorerEntity | undefined",
-				"description": "One callable’s actual parameters, return, errors and source. Keeps owning unit id for module evidence; excludes sibling APIs and unscoped multi-callable documentation."
+				"description": "The owner itself when no helper name is given; otherwise the named callable as its own entity, under the owner's id, with its own name, purpose, inputs, outputs, errors and documentation. It is undefined when the owner is not a functions entity or none of its helpers has that name.",
+				"examples": [
+					{
+						"id": "reports.function.entity-shown",
+						"category": "functions",
+						"role": "Function",
+						"name": "entityChanged",
+						"purpose": "Bounded and full explanations recorded by the head for that unit.",
+						"unit": {
+							"id": "reports.function.entity-shown",
+							"kind": "function",
+							"status": "active",
+							"title": "entityChanged",
+							"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+							"dependencies": [
+								{
+									"unit": "reports.function.entity-contract",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-measure",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-reasons",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.explorer-entities",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.explorer-verdict",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-screen-types",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-types",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.harness-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": ["packages/reports/src/utils/explorer-ui/entityShown.ts"],
+								"symbols": ["entityChanged"]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "entityChanged.host",
+										"type": "Pick<Shown, 'head'>",
+										"required": true
+									},
+									{
+										"name": "entityChanged.unit",
+										"type": "string",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "entityChanged",
+										"type": "EntityReasons",
+										"description": "Bounded and full explanations recorded by the head for that unit."
+									}
+								],
+								"errors": []
+							},
+							"helpers": [
+								{
+									"name": "entityChanged",
+									"source": "packages/reports/src/utils/explorer-ui/entityShown.ts",
+									"inputs": [
+										{
+											"name": "host",
+											"type": "Pick<Shown, 'head'>",
+											"required": true
+										},
+										{
+											"name": "unit",
+											"type": "string",
+											"required": true
+										}
+									],
+									"output": "EntityReasons"
+								}
+							],
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/utils/explorer-ui/entityShown.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "7b1e04c9d2a85f36"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Coverage incomplete",
+							"reasons": ["No scenario covers this unit; tests alone do not show how it behaves."]
+						},
+						"change": null,
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "helperRelations.relations",
 				"type": "ExplorerRelations",
-				"description": "Selected helper callees from per-callable consumer facts; owner-module dependencies never leak into Uses. Unselected module relationships remain unchanged."
+				"description": "The module relationships with functions replaced by the callees of the selected caller: one entry per active unit of the head that is a functions entity and has a pure helper consumed by that caller, the callee itself when one helper matches and the unit narrowed to its matching helpers otherwise. Layouts, components, services, configs, models, types and support are empty, while pages, usedBy and apis are carried over; the input is returned as it is when no helper is selected or the entity is not a function.",
+				"examples": [
+					{
+						"pages": [],
+						"layouts": [],
+						"components": [],
+						"functions": [],
+						"configs": [],
+						"services": [],
+						"models": [],
+						"types": [],
+						"usedBy": [],
+						"support": []
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "entityShown",
@@ -121,24 +1191,391 @@
 						"name": "entityShown.host",
 						"type": "Shown",
 						"required": true,
-						"description": "Shown revision and optional parent context."
+						"description": "The shown revision, whose head supplies the verdict record (the newest valid record of exactly its commit), the regressions that may add focused observations, and the commit, source tree and side those observations are matched against. Only head is read; parent is not used by this function.",
+						"examples": [
+							{
+								"head": {
+									"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+									"registry": {
+										"available": false,
+										"gap": "no unit registry is stored at this revision",
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": {
+										"base": "a41d6b08e2f7c93d5b1a0e46f2c8d7b9e3a50f16",
+										"record": "c0d5e1f3a7b9284c6e0f1d2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c",
+										"units": {
+											"direct": [],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"scenarios": [],
+										"uncertain": []
+									},
+									"side": "sides/5e2d0c7f9a18b463d7e0f2c5a9b8e1d4f6c3a027.json",
+									"records": [
+										{
+											"id": "c0d5e1f3a7b9284c6e0f1d2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c",
+											"status": "passed",
+											"valid": true,
+											"problems": [],
+											"source": {
+												"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+												"base": "a41d6b08e2f7c93d5b1a0e46f2c8d7b9e3a50f16"
+											},
+											"profile": "darwin-arm64",
+											"startedAt": "2026-11-14T09:31:07.512Z",
+											"finishedAt": "2026-11-14T09:38:52.104Z",
+											"gates": {
+												"tests": "passed",
+												"scenarios": "passed",
+												"budgets": "passed"
+											},
+											"failures": [],
+											"tests": [
+												{
+													"id": "packages/reports/test/components/entity-overview.test.ts",
+													"kind": "unit",
+													"target": "module",
+													"status": "passed",
+													"durationMs": 412
+												}
+											],
+											"scenarios": [],
+											"measurements": [
+												{
+													"unit": "reports.function.entity-shown",
+													"metric": "source-bytes",
+													"unitOfMeasure": "bytes",
+													"value": 9412,
+													"workload": null,
+													"profile": null,
+													"testedRevision": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b"
+												},
+												{
+													"unit": "reports.function.entity-shown",
+													"metric": "complexity",
+													"unitOfMeasure": "points",
+													"value": 14,
+													"workload": null,
+													"profile": null,
+													"testedRevision": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b"
+												}
+											],
+											"budgets": {
+												"findings": []
+											}
+										}
+									],
+									"explanations": []
+								},
+								"parent": null
+							}
+						]
 					},
 					{
 						"name": "entityShown.entity",
 						"type": "ExplorerEntity",
 						"required": true,
-						"description": "Entity to describe, including category, unit and removal state."
+						"description": "The entity to describe: its category and app route choose the contract rows, and its unit supplies the contract, the owned symbols and the budgets that the measurement reads. Its id, name, role, purpose, verdict, change and lastAt fields are not read by this function.",
+						"examples": [
+							{
+								"id": "reports.function.entity-shown",
+								"category": "functions",
+								"role": "Function",
+								"name": "entityShown",
+								"purpose": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+								"unit": {
+									"id": "reports.function.entity-shown",
+									"kind": "function",
+									"status": "active",
+									"title": "Entity overview data",
+									"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+									"dependencies": [
+										{
+											"unit": "reports.function.entity-contract",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.entity-measure",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.entity-reasons",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.explorer-entities",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.explorer-verdict",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-screen-types",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-types",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.harness-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+											"packages/reports/src/utils/entityShown.ts",
+											"packages/reports/src/utils/explorer-ui/entityShown.ts",
+											"packages/reports/src/utils/explorer-ui/entityShown.types.ts"
+										],
+										"symbols": [
+											"entityShown",
+											"modelTableView",
+											"entityShown",
+											"entityChanged",
+											"helperEntity",
+											"entityChanged",
+											"entityShown",
+											"helperEntity",
+											"helperRelations",
+											"EntityShown",
+											"Shown",
+											"EntityShown",
+											"Shown"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "entityShown.host",
+												"type": "Shown",
+												"required": true
+											},
+											{
+												"name": "entityShown.entity",
+												"type": "ExplorerEntity",
+												"required": true
+											},
+											{
+												"name": "modelTableView.unit",
+												"type": "HarnessUnit",
+												"required": true
+											},
+											{
+												"name": "entityChanged.host",
+												"type": "Pick<Shown, 'head'>",
+												"required": true
+											},
+											{
+												"name": "entityChanged.unit",
+												"type": "string",
+												"required": true
+											},
+											{
+												"name": "helperEntity.owner",
+												"type": "ExplorerEntity | undefined",
+												"required": true
+											},
+											{
+												"name": "helperEntity.helperName",
+												"type": "string",
+												"required": false
+											},
+											{
+												"name": "helperRelations.host",
+												"type": "Pick<ExplorerScreenProps, 'head' | 'route'>",
+												"required": true
+											},
+											{
+												"name": "helperRelations.entity",
+												"type": "ExplorerEntity",
+												"required": true
+											},
+											{
+												"name": "helperRelations.relations",
+												"type": "ExplorerRelations",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "entityShown",
+												"type": "EntityShown"
+											},
+											{
+												"name": "entityChanged",
+												"type": "EntityReasons"
+											},
+											{
+												"name": "helperEntity",
+												"type": "ExplorerEntity | undefined"
+											},
+											{
+												"name": "helperRelations.relations",
+												"type": "ExplorerRelations"
+											}
+										],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/entityShown.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "7b1e04c9d2a85f36"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Coverage incomplete",
+									"reasons": [
+										"No scenario covers this unit; tests alone do not show how it behaves."
+									]
+								},
+								"change": null,
+								"appRoute": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityShown",
 						"type": "EntityShown",
-						"description": "Readable contract, measurements and the selected verdict record. Removed entities use parent declarations for applicable states. Source and full-record figures can be supplemented by focused observations of the same commit or identical complete source tree, retaining their tested revision without granting a full verification verdict."
+						"description": "The contract rows of entity.unit (Inputs, Output and, when the unit declares errors, Fails with, plus category-specific labels such as Purpose, App route, Provides, Props or Runs as), the size and performance rows of its measurement, and record: the newest valid verification record of exactly the head's commit, or null. Focused observations from regressions can add figures to the measurement rows, but they never become record.",
+						"examples": [
+							{
+								"contract": [
+									{
+										"label": "Inputs",
+										"value": "host, entity, unit, owner, helper name, relations"
+									},
+									{
+										"label": "Output",
+										"value": "entity shown, entity changed, helper entity, relations"
+									}
+								],
+								"measure": {
+									"size": [
+										{
+											"label": "Source size",
+											"value": "9.4 KB",
+											"rawValue": 9412,
+											"unitOfMeasure": "bytes"
+										},
+										{
+											"label": "Complexity",
+											"value": "14",
+											"rawValue": 14
+										}
+									],
+									"performance": []
+								},
+								"record": {
+									"id": "c0d5e1f3a7b9284c6e0f1d2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c",
+									"status": "passed",
+									"valid": true,
+									"problems": [],
+									"source": {
+										"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+										"base": "a41d6b08e2f7c93d5b1a0e46f2c8d7b9e3a50f16"
+									},
+									"profile": "darwin-arm64",
+									"startedAt": "2026-11-14T09:31:07.512Z",
+									"finishedAt": "2026-11-14T09:38:52.104Z",
+									"gates": {
+										"tests": "passed",
+										"scenarios": "passed",
+										"budgets": "passed"
+									},
+									"failures": [],
+									"tests": [
+										{
+											"id": "packages/reports/test/components/entity-overview.test.ts",
+											"kind": "unit",
+											"target": "module",
+											"status": "passed",
+											"durationMs": 412
+										}
+									],
+									"scenarios": [],
+									"measurements": [
+										{
+											"unit": "reports.function.entity-shown",
+											"metric": "source-bytes",
+											"unitOfMeasure": "bytes",
+											"value": 9412,
+											"workload": null,
+											"profile": null,
+											"testedRevision": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b"
+										},
+										{
+											"unit": "reports.function.entity-shown",
+											"metric": "complexity",
+											"unitOfMeasure": "points",
+											"value": 14,
+											"workload": null,
+											"profile": null,
+											"testedRevision": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b"
+										}
+									],
+									"budgets": {
+										"findings": []
+									}
+								}
+							},
+							{
+								"contract": [
+									{
+										"label": "Inputs",
+										"value": "host, entity, unit, owner, helper name, relations"
+									},
+									{
+										"label": "Output",
+										"value": "entity shown, entity changed, helper entity, relations"
+									}
+								],
+								"measure": {
+									"size": [
+										{
+											"label": "Source size",
+											"value": "Not measured",
+											"rawValue": null,
+											"unitOfMeasure": "bytes"
+										},
+										{
+											"label": "Complexity",
+											"value": "Not measured",
+											"rawValue": null
+										}
+									],
+									"performance": []
+								},
+								"record": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "modelTableView",
@@ -147,17 +1584,89 @@
 						"name": "modelTableView.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Selected model unit whose source-declared storage definitions and unresolved gaps are presented."
+						"description": "The model unit to project: only its title and modelDefinitions are read. Definitions named exactly as the unit's title are used; when none has that name, all of them are, and a unit without modelDefinitions gives empty lists.",
+						"examples": [
+							{
+								"id": "reports.model.harness-types",
+								"kind": "model",
+								"status": "active",
+								"title": "Harness types",
+								"responsibility": "Declares the shared harness shapes that the explorer reads.",
+								"dependencies": [],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/models/explorer-ui/Harness.types.ts"],
+									"symbols": ["HarnessRecordSummary", "HarnessRevisionSummary"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/models/explorer-ui/Harness.types.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "2a6d9f0c71e4b583",
+								"modelDefinitions": [
+									{
+										"name": "HarnessRecordSummary",
+										"kind": "interface",
+										"source": "packages/reports/src/models/explorer-ui/Harness.types.ts",
+										"fields": [
+											{
+												"name": "id",
+												"type": "string",
+												"optional": false
+											},
+											{
+												"name": "status",
+												"type": "'passed' | 'failed'",
+												"optional": false
+											}
+										],
+										"methods": [],
+										"tableGap": "Declared as an interface, so no storage table is recorded."
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "modelTableView",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The projection of the selected model definitions: tables holds an entry of name, source and table for each selected definition that declares a table, and gaps holds an entry of name and gap for each selected definition with a tableGap.",
+						"examples": [
+							{
+								"tables": [],
+								"gaps": [
+									{
+										"name": "HarnessRecordSummary",
+										"gap": "Declared as an interface, so no storage table is recorded."
+									}
+								]
+							},
+							{
+								"tables": [],
+								"gaps": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "entityChanged",
@@ -166,24 +1675,126 @@
 						"name": "entityChanged.host",
 						"type": "Pick<Shown, 'head'>",
 						"required": true,
-						"description": "Shown revision holding recorded explanations."
+						"description": "The shown revision, of which only head.explanations is read: the reasons its own commit recorded. No other field of the revision is used by entityChanged.",
+						"examples": [
+							{
+								"head": {
+									"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+									"registry": {
+										"available": false,
+										"gap": "no unit registry is stored at this revision",
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": [
+										{
+											"unit": "reports.function.entity-shown",
+											"symbol": "entityChanged",
+											"file": "packages/reports/src/utils/explorer-ui/entityShown.ts",
+											"change": "Selects this unit's explanations from the head so the reason summary can be built.",
+											"behavior": "Lists what the head's own commit recorded for a single entity.",
+											"simplification": {
+												"attempt": "Filter once and pass the result to the summary builder.",
+												"outcome": "kept as one pass"
+											},
+											"performance": {
+												"attempt": "Share the filtered list between the summary and the notes.",
+												"outcome": "no measurable change"
+											}
+										}
+									]
+								}
+							}
+						]
 					},
 					{
 						"name": "entityChanged.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit identifier used to select its explanations."
+						"description": "The unit identifier, such as reports.function.entity-shown, compared exactly with the unit of each explanation to select its reasons. A unit with no matching explanation gets an empty summary.",
+						"examples": ["reports.function.entity-shown", "reports.function.entity-contract"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityChanged",
 						"type": "EntityReasons",
-						"description": "Bounded and full explanations recorded by the head for that unit."
+						"description": "The reasons the head recorded for that unit, summarised by entityReasons: a bounded behavior text, bounded simplification and performance attempts with their outcomes, every note and attempt as written, and long, which is true when the summary says less than the reasons do. It holds empty text and empty lists when the head recorded no reason for the unit.",
+						"examples": [
+							{
+								"behavior": {
+									"text": "Lists what the head's own commit recorded for a single entity.",
+									"cut": false
+								},
+								"simplification": {
+									"text": "Filter once and pass the result to the summary builder.",
+									"cut": false,
+									"outcomes": ["kept as one pass"]
+								},
+								"performance": {
+									"text": "Share the filtered list between the summary and the notes.",
+									"cut": false,
+									"outcomes": ["no measurable change"]
+								},
+								"notes": [
+									{
+										"behavior": "Lists what the head's own commit recorded for a single entity.",
+										"subjects": ["entity changed"]
+									}
+								],
+								"attempted": [
+									{
+										"attempt": "Filter once and pass the result to the summary builder.",
+										"uses": [
+											{
+												"subject": "entity changed",
+												"kind": "simplification",
+												"outcome": "kept as one pass"
+											}
+										]
+									},
+									{
+										"attempt": "Share the filtered list between the summary and the notes.",
+										"uses": [
+											{
+												"subject": "entity changed",
+												"kind": "performance",
+												"outcome": "no measurable change"
+											}
+										]
+									}
+								],
+								"long": false
+							},
+							{
+								"behavior": {
+									"text": "",
+									"cut": false
+								},
+								"simplification": {
+									"text": "",
+									"cut": false,
+									"outcomes": []
+								},
+								"performance": {
+									"text": "",
+									"cut": false,
+									"outcomes": []
+								},
+								"notes": [],
+								"attempted": [],
+								"long": false
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "helperEntity",
@@ -192,24 +1803,353 @@
 						"name": "helperEntity.owner",
 						"type": "ExplorerEntity | undefined",
 						"required": true,
-						"description": "Owning module entity at the selected revision."
+						"description": "The module entity that owns the callable. Undefined gives undefined, and without a helper name the owner is returned as it is; with a helper name, an owner that is not a functions entity gives undefined.",
+						"examples": [
+							{
+								"id": "reports.function.entity-shown",
+								"category": "functions",
+								"role": "Function",
+								"name": "entityShown",
+								"purpose": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+								"unit": {
+									"id": "reports.function.entity-shown",
+									"kind": "function",
+									"status": "active",
+									"title": "Entity overview data",
+									"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+									"dependencies": [
+										{
+											"unit": "reports.function.entity-contract",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.entity-measure",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.entity-reasons",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.explorer-entities",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.explorer-verdict",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-screen-types",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-types",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.harness-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+											"packages/reports/src/utils/entityShown.ts",
+											"packages/reports/src/utils/explorer-ui/entityShown.ts",
+											"packages/reports/src/utils/explorer-ui/entityShown.types.ts"
+										],
+										"symbols": [
+											"entityShown",
+											"modelTableView",
+											"entityShown",
+											"entityChanged",
+											"helperEntity",
+											"entityChanged",
+											"entityShown",
+											"helperEntity",
+											"helperRelations",
+											"EntityShown",
+											"Shown",
+											"EntityShown",
+											"Shown"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "entityShown.host",
+												"type": "Shown",
+												"required": true
+											},
+											{
+												"name": "entityShown.entity",
+												"type": "ExplorerEntity",
+												"required": true
+											},
+											{
+												"name": "modelTableView.unit",
+												"type": "HarnessUnit",
+												"required": true
+											},
+											{
+												"name": "entityChanged.host",
+												"type": "Pick<Shown, 'head'>",
+												"required": true
+											},
+											{
+												"name": "entityChanged.unit",
+												"type": "string",
+												"required": true
+											},
+											{
+												"name": "helperEntity.owner",
+												"type": "ExplorerEntity | undefined",
+												"required": true
+											},
+											{
+												"name": "helperEntity.helperName",
+												"type": "string",
+												"required": false
+											},
+											{
+												"name": "helperRelations.host",
+												"type": "Pick<ExplorerScreenProps, 'head' | 'route'>",
+												"required": true
+											},
+											{
+												"name": "helperRelations.entity",
+												"type": "ExplorerEntity",
+												"required": true
+											},
+											{
+												"name": "helperRelations.relations",
+												"type": "ExplorerRelations",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "entityShown",
+												"type": "EntityShown"
+											},
+											{
+												"name": "entityChanged",
+												"type": "EntityReasons"
+											},
+											{
+												"name": "helperEntity",
+												"type": "ExplorerEntity | undefined"
+											},
+											{
+												"name": "helperRelations.relations",
+												"type": "ExplorerRelations"
+											}
+										],
+										"errors": []
+									},
+									"helpers": [
+										{
+											"name": "entityShown",
+											"source": "packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+											"inputs": [
+												{
+													"name": "host",
+													"type": "Shown",
+													"required": true
+												},
+												{
+													"name": "entity",
+													"type": "ExplorerEntity",
+													"required": true
+												}
+											],
+											"output": "EntityShown"
+										},
+										{
+											"name": "entityChanged",
+											"source": "packages/reports/src/utils/explorer-ui/entityShown.ts",
+											"inputs": [
+												{
+													"name": "host",
+													"type": "Pick<Shown, 'head'>",
+													"required": true
+												},
+												{
+													"name": "unit",
+													"type": "string",
+													"required": true
+												}
+											],
+											"output": "EntityReasons"
+										}
+									],
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/entityShown.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "7b1e04c9d2a85f36"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Coverage incomplete",
+									"reasons": [
+										"No scenario covers this unit; tests alone do not show how it behaves."
+									]
+								},
+								"change": null,
+								"appRoute": null
+							}
+						]
 					},
 					{
 						"name": "helperEntity.helperName",
 						"type": "string",
 						"required": false,
-						"description": "Optional selected callable name; no matching callable returns undefined."
+						"default": "undefined",
+						"description": "The callable to select, matched exactly against the owner unit's helpers. Omitted or empty, it returns the owner unchanged; otherwise a name that no helper of the owner matches gives undefined.",
+						"examples": ["entityChanged", "entityShown"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "helperEntity",
 						"type": "ExplorerEntity | undefined",
-						"description": "One callable’s actual parameters, return, errors and source. Keeps owning unit id for module evidence; excludes sibling APIs and unscoped multi-callable documentation."
+						"description": "The owner itself when no helper name is given; otherwise the named callable as its own entity, under the owner's id, with its own name, purpose, inputs, outputs, errors and documentation. It is undefined when the owner is not a functions entity or none of its helpers has that name.",
+						"examples": [
+							{
+								"id": "reports.function.entity-shown",
+								"category": "functions",
+								"role": "Function",
+								"name": "entityChanged",
+								"purpose": "Bounded and full explanations recorded by the head for that unit.",
+								"unit": {
+									"id": "reports.function.entity-shown",
+									"kind": "function",
+									"status": "active",
+									"title": "entityChanged",
+									"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+									"dependencies": [
+										{
+											"unit": "reports.function.entity-contract",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.entity-measure",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.entity-reasons",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.explorer-entities",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.explorer-verdict",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-screen-types",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-types",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.harness-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": ["packages/reports/src/utils/explorer-ui/entityShown.ts"],
+										"symbols": ["entityChanged"]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "entityChanged.host",
+												"type": "Pick<Shown, 'head'>",
+												"required": true
+											},
+											{
+												"name": "entityChanged.unit",
+												"type": "string",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "entityChanged",
+												"type": "EntityReasons",
+												"description": "Bounded and full explanations recorded by the head for that unit."
+											}
+										],
+										"errors": []
+									},
+									"helpers": [
+										{
+											"name": "entityChanged",
+											"source": "packages/reports/src/utils/explorer-ui/entityShown.ts",
+											"inputs": [
+												{
+													"name": "host",
+													"type": "Pick<Shown, 'head'>",
+													"required": true
+												},
+												{
+													"name": "unit",
+													"type": "string",
+													"required": true
+												}
+											],
+											"output": "EntityReasons"
+										}
+									],
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/entityShown.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "7b1e04c9d2a85f36"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Coverage incomplete",
+									"reasons": [
+										"No scenario covers this unit; tests alone do not show how it behaves."
+									]
+								},
+								"change": null,
+								"appRoute": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "helperRelations",
@@ -218,29 +2158,253 @@
 						"name": "helperRelations.host",
 						"type": "Pick<ExplorerScreenProps, 'head' | 'route'>",
 						"required": true,
-						"description": "Selected revision registry and named helper route."
+						"description": "The shown revision and route: the active units of head's registry are searched for pure helpers that list the caller as a consumer of the entity, and route.helper names that caller. Without route.helper nothing is selected, and the relations are returned unchanged.",
+						"examples": [
+							{
+								"head": {
+									"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+									"registry": {
+										"available": false,
+										"gap": "no unit registry is stored at this revision",
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"route": {
+									"branch": "main",
+									"commit": "3f9c1e7a2b4d5e6f708192a3b4c5d6e7f8091a2b",
+									"category": "functions",
+									"entity": "reports.function.entity-shown",
+									"helper": "entityChanged"
+								}
+							}
+						]
 					},
 					{
 						"name": "helperRelations.entity",
 						"type": "ExplorerEntity",
 						"required": true,
-						"description": "Selected callable and its real owning unit identity."
+						"description": "The selected callable: when it is not a functions entity the relations are returned unchanged, and otherwise its id is compared with the unit of each helper consumer. Its other fields are not read by this function.",
+						"examples": [
+							{
+								"id": "reports.function.entity-shown",
+								"category": "functions",
+								"role": "Function",
+								"name": "entityShown",
+								"purpose": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+								"unit": {
+									"id": "reports.function.entity-shown",
+									"kind": "function",
+									"status": "active",
+									"title": "Entity overview data",
+									"responsibility": "Assembles an entity’s contract and measurements, retaining focused observations for the same commit or identical complete source tree with original provenance. Selected helper Uses resolve only callees attributed to its exact named caller at that revision.",
+									"dependencies": [
+										{
+											"unit": "reports.function.entity-contract",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.entity-measure",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.entity-reasons",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.explorer-entities",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.explorer-verdict",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-screen-types",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-types",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.harness-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+											"packages/reports/src/utils/entityShown.ts",
+											"packages/reports/src/utils/explorer-ui/entityShown.ts",
+											"packages/reports/src/utils/explorer-ui/entityShown.types.ts"
+										],
+										"symbols": [
+											"entityShown",
+											"modelTableView",
+											"entityShown",
+											"entityChanged",
+											"helperEntity",
+											"entityChanged",
+											"entityShown",
+											"helperEntity",
+											"helperRelations",
+											"EntityShown",
+											"Shown",
+											"EntityShown",
+											"Shown"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "entityShown.host",
+												"type": "Shown",
+												"required": true
+											},
+											{
+												"name": "entityShown.entity",
+												"type": "ExplorerEntity",
+												"required": true
+											},
+											{
+												"name": "modelTableView.unit",
+												"type": "HarnessUnit",
+												"required": true
+											},
+											{
+												"name": "entityChanged.host",
+												"type": "Pick<Shown, 'head'>",
+												"required": true
+											},
+											{
+												"name": "entityChanged.unit",
+												"type": "string",
+												"required": true
+											},
+											{
+												"name": "helperEntity.owner",
+												"type": "ExplorerEntity | undefined",
+												"required": true
+											},
+											{
+												"name": "helperEntity.helperName",
+												"type": "string",
+												"required": false
+											},
+											{
+												"name": "helperRelations.host",
+												"type": "Pick<ExplorerScreenProps, 'head' | 'route'>",
+												"required": true
+											},
+											{
+												"name": "helperRelations.entity",
+												"type": "ExplorerEntity",
+												"required": true
+											},
+											{
+												"name": "helperRelations.relations",
+												"type": "ExplorerRelations",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "entityShown",
+												"type": "EntityShown"
+											},
+											{
+												"name": "entityChanged",
+												"type": "EntityReasons"
+											},
+											{
+												"name": "helperEntity",
+												"type": "ExplorerEntity | undefined"
+											},
+											{
+												"name": "helperRelations.relations",
+												"type": "ExplorerRelations"
+											}
+										],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/entityShown.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "7b1e04c9d2a85f36"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Coverage incomplete",
+									"reasons": [
+										"No scenario covers this unit; tests alone do not show how it behaves."
+									]
+								},
+								"change": null,
+								"appRoute": null
+							}
+						]
 					},
 					{
 						"name": "helperRelations.relations",
 						"type": "ExplorerRelations",
 						"required": true,
-						"description": "Existing module relationships whose Used In side remains available."
+						"description": "The module relationships before selection. When a helper is selected for a functions entity, pages, usedBy and apis pass through unchanged, functions is replaced, and layouts, components, services, configs, models, types and support are emptied; otherwise the relationships are returned as they are.",
+						"examples": [
+							{
+								"pages": [],
+								"layouts": [],
+								"components": [],
+								"functions": [],
+								"configs": [],
+								"services": [],
+								"usedBy": [],
+								"support": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "helperRelations",
-						"type": "ExplorerRelations"
+						"type": "ExplorerRelations",
+						"description": "The module relationships with functions replaced by the callees of the selected caller: one entry per active unit of the head that is a functions entity and has a pure helper consumed by that caller, the callee itself when one helper matches and the unit narrowed to its matching helpers otherwise. Layouts, components, services, configs, models, types and support are empty, while pages, usedBy and apis are carried over; the input is returned as it is when no helper is selected or the entity is not a function.",
+						"examples": [
+							{
+								"pages": [],
+								"layouts": [],
+								"components": [],
+								"functions": [],
+								"configs": [],
+								"services": [],
+								"models": [],
+								"types": [],
+								"usedBy": [],
+								"support": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
