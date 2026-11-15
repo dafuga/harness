@@ -34,84 +34,222 @@
 				"name": "approvalPayload.value",
 				"type": "unknown",
 				"required": true,
-				"description": "An approval object with a version, up to 24 image hashes, contract hash and optional option o1 through o10. Hashes must be 64 lowercase hexadecimal characters; version is v plus at least three digits, at most 20 characters."
+				"description": "The untrusted approval object must contain a valid version, an imageHashes array of at most 24 entries, and a valid contractHash. Version and hash values pass imported pattern validators; a supplied option must be o1 through o10.",
+				"examples": [
+					{
+						"version": "v001",
+						"imageHashes": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
+						"contractHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"option": "o1"
+					}
+				]
 			},
 			{
 				"name": "threadPayload.x",
 				"type": "Record<string, unknown>",
 				"required": true,
-				"description": "Thread fields naming an entity and either a complete image anchor or null version, image hash, state and viewport. An unanchored thread must also have a null region. Optional design option is o1 through o10."
+				"description": "The thread request names an entity and supplies either a complete image anchor or null for version, imageSha256, state, and viewport. A null version requires a null region; an optional option must be o1 through o10.",
+				"examples": [
+					{
+						"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+						"version": "v001",
+						"imageSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"state": "initial",
+						"viewport": "desktop",
+						"region": null,
+						"option": "o2"
+					},
+					{
+						"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null
+					}
+				]
 			},
 			{
 				"name": "creationProject.value",
 				"type": "unknown",
 				"required": true,
-				"description": "The explicit project identity for a creation request: local- plus 64 hexadecimal characters, or a UUID-shaped identifier. Matching is case-insensitive."
+				"description": "The project identity is either local- followed by 64 hexadecimal characters or a UUID-shaped string. Matching is case-insensitive.",
+				"examples": [
+					"local-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+					"550e8400-e29b-41d4-a716-446655440000"
+				]
 			},
 			{
 				"name": "creationPayload.x",
 				"type": "Record<string, unknown>",
 				"required": true,
-				"description": "A creation request with only intent, projectId, category, mode, provider, model, effort, text and optional designOptions. Requires create intent, plan mode, a catalog category and codex or claude provider."
+				"description": "The creation request allows only intent, projectId, category, mode, provider, model, effort, text, and optional designOptions. It requires create intent, plan mode, a catalog category, a codex or claude provider, and text of at most 20,000 characters; designOptions, when present, is an integer from 1 to 10.",
+				"examples": [
+					{
+						"intent": "create",
+						"projectId": "550e8400-e29b-41d4-a716-446655440000",
+						"category": "feature",
+						"mode": "plan",
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"effort": null,
+						"text": "Add a filter to the report list.",
+						"designOptions": 3
+					}
+				]
 			},
 			{
 				"name": "runPayload.x",
 				"type": "Record<string, unknown>",
 				"required": true,
-				"description": "An existing-entity run request, or a creation request when intent is present. Existing runs need mode, approval or null, provider, model, effort or null, entity, thread and nonblank text up to 20,000 characters. Change needs approval and forbids a design-option count."
+				"description": "Accepts an existing-entity run request, an intent=create request, or an intent=task request. Run text is limited to 20,000 characters; task conversations default to an empty array and may contain at most 20 entries with text up to 4,000 characters each, while change runs require approval and forbid designOptions.",
+				"examples": [
+					{
+						"mode": "plan",
+						"approval": null,
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"effort": null,
+						"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+						"threadId": "thread-123",
+						"text": "Review the current design."
+					}
+				]
 			},
 			{
 				"name": "ipcPayload.channel",
 				"type": "string",
 				"required": true,
-				"description": "The operation name used to choose a payload shape. The caller is responsible for allowing known operations before this helper; unknown names can fall through to an entity-shaped payload."
+				"description": "The channel string selects the payload parser. project:open and providers:list return null without parsing input; unrecognized channel strings fall through to entityPayload.",
+				"examples": ["project:open", "project:snapshot", "entity:history"]
 			},
 			{
 				"name": "ipcPayload.input",
 				"type": "unknown",
 				"required": true,
-				"description": "The untrusted operation input. Most operations require an object; project opening and provider listing ignore input and return null."
+				"description": "The untrusted value passed to the selected channel parser. project:open and providers:list ignore it; other channels pass it through the selected field and payload validators.",
+				"examples": [
+					null,
+					{
+						"branch": "main",
+						"commit": null
+					},
+					{
+						"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"page": 1
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "approvalPayload",
 				"type": "unknown",
-				"description": "A validated approval binding with version, hashes, contract hash and optional option. Unrecognized fields are omitted."
+				"description": "Returns version, imageHashes, and contractHash, adding option only when it was supplied. Returned version and hash values have passed their imported validators.",
+				"examples": [
+					{
+						"version": "v001",
+						"imageHashes": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
+						"contractHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"option": "o1"
+					}
+				]
 			},
 			{
 				"name": "threadPayload",
 				"type": "unknown",
-				"description": "A validated thread request with only its entity, image-anchor values, region and optional option."
+				"description": "Returns entityId, version, imageSha256, state, viewport, and region, adding option only when supplied. Image-anchor fields are either all non-null or all null, and a null version requires a null region.",
+				"examples": [
+					{
+						"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+						"version": "v001",
+						"imageSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"state": "initial",
+						"viewport": "desktop",
+						"region": null,
+						"option": "o2"
+					},
+					{
+						"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null
+					}
+				]
 			},
 			{
 				"name": "creationProject",
 				"type": "string",
-				"description": "The accepted project identity unchanged."
+				"description": "Returns the accepted project identity unchanged. It is local- followed by 64 hexadecimal characters or a UUID-shaped string, matched case-insensitively.",
+				"examples": [
+					"local-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+					"550e8400-e29b-41d4-a716-446655440000"
+				]
 			},
 			{
 				"name": "creationPayload",
 				"type": "unknown",
-				"description": "A validated creation request. Design count is omitted or a whole number from 1 to 10; effort is null or text. Unknown keys are refused."
+				"description": "Returns intent, projectId, category, mode, provider, model, effort, and text, adding designOptions only when supplied. designOptions must be an integer from 1 to 10 and text is limited to 20,000 characters.",
+				"examples": [
+					{
+						"intent": "create",
+						"projectId": "550e8400-e29b-41d4-a716-446655440000",
+						"category": "feature",
+						"mode": "plan",
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"effort": null,
+						"text": "Add a filter to the report list.",
+						"designOptions": 3
+					}
+				]
 			},
 			{
 				"name": "runPayload",
 				"type": "unknown",
-				"description": "A validated run or creation request. Extra keys on an existing-entity run are omitted. Plan may omit its count; any supplied count must be 1–10."
+				"description": "Returns one validated existing-entity run, creation request, or task request shape. Omitted optional fields stay omitted; an omitted task conversation becomes an empty array, with at most 20 entries and 4,000 characters of text per entry.",
+				"examples": [
+					{
+						"mode": "plan",
+						"approval": null,
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"effort": null,
+						"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+						"threadId": "thread-123",
+						"text": "Review the current design."
+					}
+				]
 			},
 			{
 				"name": "ipcPayload",
 				"type": "unknown",
-				"description": "The validated operation-specific payload, retaining only selected fields. History pages must be integers 1–10,000; revision and image identifiers follow the shared patterns. No operation is executed."
+				"description": "Returns null for project:open and providers:list, or the selected operation’s validated payload. Entity-history pages must be integers from 1 to 10,000, and entity-source paths are limited to 1,000 characters.",
+				"examples": [
+					null,
+					{
+						"branch": "main",
+						"commit": null
+					},
+					{
+						"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"page": 1
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws for invalid or missing fields, incomplete image anchors, a Change without approval or with design options, invalid creation identity or keys, invalid history pages, and shared field-validation failures."
+				"description": "Thrown when an input object or field fails validation, a thread has an incomplete image anchor or a region on a draft, a creation request has invalid keys or project identity, a change lacks approval or supplies designOptions, or an entity-history page is outside 1 to 10,000. Imported plan, evidence, and field validators can also throw Error for invalid selected-channel payloads."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "approvalPayload",
@@ -120,23 +258,40 @@
 						"name": "approvalPayload.value",
 						"type": "unknown",
 						"required": true,
-						"description": "An approval object with a version, up to 24 image hashes, contract hash and optional option o1 through o10. Hashes must be 64 lowercase hexadecimal characters; version is v plus at least three digits, at most 20 characters."
+						"description": "The untrusted approval object must contain a valid version, an imageHashes array of at most 24 entries, and a valid contractHash. Version and hash values pass imported pattern validators; a supplied option must be o1 through o10.",
+						"examples": [
+							{
+								"version": "v001",
+								"imageHashes": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
+								"contractHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"option": "o1"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "approvalPayload",
 						"type": "unknown",
-						"description": "A validated approval binding with version, hashes, contract hash and optional option. Unrecognized fields are omitted."
+						"description": "Returns version, imageHashes, and contractHash, adding option only when it was supplied. Returned version and hash values have passed their imported validators.",
+						"examples": [
+							{
+								"version": "v001",
+								"imageHashes": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
+								"contractHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"option": "o1"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the value is not a valid object, imageHashes is not an array or has more than 24 entries, or an approval field fails its validator."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "threadPayload",
@@ -145,23 +300,62 @@
 						"name": "threadPayload.x",
 						"type": "Record<string, unknown>",
 						"required": true,
-						"description": "Thread fields naming an entity and either a complete image anchor or null version, image hash, state and viewport. An unanchored thread must also have a null region. Optional design option is o1 through o10."
+						"description": "The thread request names an entity and supplies either a complete image anchor or null for version, imageSha256, state, and viewport. A null version requires a null region; an optional option must be o1 through o10.",
+						"examples": [
+							{
+								"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+								"version": "v001",
+								"imageSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"state": "initial",
+								"viewport": "desktop",
+								"region": null,
+								"option": "o2"
+							},
+							{
+								"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "threadPayload",
 						"type": "unknown",
-						"description": "A validated thread request with only its entity, image-anchor values, region and optional option."
+						"description": "Returns entityId, version, imageSha256, state, viewport, and region, adding option only when supplied. Image-anchor fields are either all non-null or all null, and a null version requires a null region.",
+						"examples": [
+							{
+								"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+								"version": "v001",
+								"imageSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"state": "initial",
+								"viewport": "desktop",
+								"region": null,
+								"option": "o2"
+							},
+							{
+								"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when a thread field fails validation, the image-anchor fields do not all have the same null status as version, or a null version is paired with a non-null region."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "creationProject",
@@ -170,23 +364,32 @@
 						"name": "creationProject.value",
 						"type": "unknown",
 						"required": true,
-						"description": "The explicit project identity for a creation request: local- plus 64 hexadecimal characters, or a UUID-shaped identifier. Matching is case-insensitive."
+						"description": "The project identity is either local- followed by 64 hexadecimal characters or a UUID-shaped string. Matching is case-insensitive.",
+						"examples": [
+							"local-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"550e8400-e29b-41d4-a716-446655440000"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "creationProject",
 						"type": "string",
-						"description": "The accepted project identity unchanged."
+						"description": "Returns the accepted project identity unchanged. It is local- followed by 64 hexadecimal characters or a UUID-shaped string, matched case-insensitively.",
+						"examples": [
+							"local-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+							"550e8400-e29b-41d4-a716-446655440000"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown unless the value is a string matching local- plus 64 hexadecimal characters or a UUID-shaped identity."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "creationPayload",
@@ -195,23 +398,50 @@
 						"name": "creationPayload.x",
 						"type": "Record<string, unknown>",
 						"required": true,
-						"description": "A creation request with only intent, projectId, category, mode, provider, model, effort, text and optional designOptions. Requires create intent, plan mode, a catalog category and codex or claude provider."
+						"description": "The creation request allows only intent, projectId, category, mode, provider, model, effort, text, and optional designOptions. It requires create intent, plan mode, a catalog category, a codex or claude provider, and text of at most 20,000 characters; designOptions, when present, is an integer from 1 to 10.",
+						"examples": [
+							{
+								"intent": "create",
+								"projectId": "550e8400-e29b-41d4-a716-446655440000",
+								"category": "feature",
+								"mode": "plan",
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"effort": null,
+								"text": "Add a filter to the report list.",
+								"designOptions": 3
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "creationPayload",
 						"type": "unknown",
-						"description": "A validated creation request. Design count is omitted or a whole number from 1 to 10; effort is null or text. Unknown keys are refused."
+						"description": "Returns intent, projectId, category, mode, provider, model, effort, and text, adding designOptions only when supplied. designOptions must be an integer from 1 to 10 and text is limited to 20,000 characters.",
+						"examples": [
+							{
+								"intent": "create",
+								"projectId": "550e8400-e29b-41d4-a716-446655440000",
+								"category": "feature",
+								"mode": "plan",
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"effort": null,
+								"text": "Add a filter to the report list.",
+								"designOptions": 3
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the request contains a key outside the creation field list or a required field, catalog value, or optional designOptions value fails validation."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "runPayload",
@@ -220,23 +450,48 @@
 						"name": "runPayload.x",
 						"type": "Record<string, unknown>",
 						"required": true,
-						"description": "An existing-entity run request, or a creation request when intent is present. Existing runs need mode, approval or null, provider, model, effort or null, entity, thread and nonblank text up to 20,000 characters. Change needs approval and forbids a design-option count."
+						"description": "Accepts an existing-entity run request, an intent=create request, or an intent=task request. Run text is limited to 20,000 characters; task conversations default to an empty array and may contain at most 20 entries with text up to 4,000 characters each, while change runs require approval and forbid designOptions.",
+						"examples": [
+							{
+								"mode": "plan",
+								"approval": null,
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"effort": null,
+								"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+								"threadId": "thread-123",
+								"text": "Review the current design."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runPayload",
 						"type": "unknown",
-						"description": "A validated run or creation request. Extra keys on an existing-entity run are omitted. Plan may omit its count; any supplied count must be 1–10."
+						"description": "Returns one validated existing-entity run, creation request, or task request shape. Omitted optional fields stay omitted; an omitted task conversation becomes an empty array, with at most 20 entries and 4,000 characters of text per entry.",
+						"examples": [
+							{
+								"mode": "plan",
+								"approval": null,
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"effort": null,
+								"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+								"threadId": "thread-123",
+								"text": "Review the current design."
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the selected creation, task, or existing-run payload fails field validation, the task conversation is not an array of at most 20 entries, or a change lacks approval or includes designOptions."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ipcPayload",
@@ -245,24 +500,55 @@
 						"name": "ipcPayload.channel",
 						"type": "string",
 						"required": true,
-						"description": "The operation name used to choose a payload shape. The caller is responsible for allowing known operations before this helper; unknown names can fall through to an entity-shaped payload."
+						"description": "The channel string selects the payload parser. project:open and providers:list return null without parsing input; unrecognized channel strings fall through to entityPayload.",
+						"examples": ["project:open", "project:snapshot", "entity:history"]
 					},
 					{
 						"name": "ipcPayload.input",
 						"type": "unknown",
 						"required": true,
-						"description": "The untrusted operation input. Most operations require an object; project opening and provider listing ignore input and return null."
+						"description": "The untrusted value passed to the selected channel parser. project:open and providers:list ignore it; other channels pass it through the selected field and payload validators.",
+						"examples": [
+							null,
+							{
+								"branch": "main",
+								"commit": null
+							},
+							{
+								"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"page": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ipcPayload",
 						"type": "unknown",
-						"description": "The validated operation-specific payload, retaining only selected fields. History pages must be integers 1–10,000; revision and image identifiers follow the shared patterns. No operation is executed."
+						"description": "Returns null for project:open and providers:list, or the selected operation’s validated payload. Entity-history pages must be integers from 1 to 10,000, and entity-source paths are limited to 1,000 characters.",
+						"examples": [
+							null,
+							{
+								"branch": "main",
+								"commit": null
+							},
+							{
+								"entityId": "c1234567-89ab-4cde-8fab-0123456789ab",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"page": 1
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the selected channel payload or one of its fields fails validation, including invalid entity-history pages and delegated plan or evidence payload validation."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
