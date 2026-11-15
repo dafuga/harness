@@ -18,14 +18,20 @@
 				"name": "skipsAnalytics.args",
 				"type": "readonly string[]",
 				"required": true,
-				"description": "CLI argument vector excluding the executable and script names."
+				"description": "CLI argument vector, excluding the executable and script names, that the function reads without modifying. Only args[0] and the entries before the first `--` are checked, by exact case-sensitive string match, and an empty array returns true.",
+				"examples": [
+					[],
+					["help"],
+					["export", "--", "--help"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "skipsAnalytics",
 				"type": "boolean",
-				"description": "True for no arguments, help flags before `--`, or a first argument of help, info, --version, or -V."
+				"description": "Whether analytics should be skipped for this invocation: true when there are no arguments, when `--help` or `-h` appears before the first `--` (or anywhere, if there is no `--`), or when args[0] is `help`, `info`, `--version`, or `-V`. It is false otherwise, and it depends only on the arguments because the function reads no state.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
@@ -38,14 +44,20 @@
 						"name": "skipsAnalytics.args",
 						"type": "readonly string[]",
 						"required": true,
-						"description": "CLI argument vector excluding the executable and script names."
+						"description": "CLI argument vector, excluding the executable and script names, that the function reads without modifying. Only args[0] and the entries before the first `--` are checked, by exact case-sensitive string match, and an empty array returns true.",
+						"examples": [
+							[],
+							["help"],
+							["export", "--", "--help"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "skipsAnalytics",
 						"type": "boolean",
-						"description": "True for no arguments, help flags before `--`, or a first argument of help, info, --version, or -V."
+						"description": "Whether analytics should be skipped for this invocation: true when there are no arguments, when `--help` or `-h` appears before the first `--` (or anywhere, if there is no `--`), or when args[0] is `help`, `info`, `--version`, or `-V`. It is false otherwise, and it depends only on the arguments because the function reads no state.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
