@@ -174,7 +174,8 @@ function countIgnored(
 	else result.summary.reorderedOnlyFiles++;
 }
 
-export function validateHistoryFields(field?: string): void {
+export function validateHistoryFields(field = ''): void {
+	if (!field) return;
 	if (
 		field
 			?.split(',')

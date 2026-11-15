@@ -39,7 +39,8 @@
 				"name": "validateHistoryFields.field",
 				"type": "string",
 				"required": false,
-				"description": "Optional comma-separated metadata categories: type, description, examples, errors and dependencies; unsupported categories are rejected."
+				"description": "Empty or omitted means no field restriction; otherwise comma-separated type, description, examples, errors and dependencies categories. Unsupported categories are rejected.",
+				"default": ""
 			}
 		],
 		"outputs": [
@@ -108,7 +109,8 @@
 						"name": "validateHistoryFields.field",
 						"type": "string",
 						"required": false,
-						"description": "Optional comma-separated metadata categories: type, description, examples, errors and dependencies; unsupported categories are rejected."
+						"description": "Empty or omitted means no field restriction; otherwise comma-separated type, description, examples, errors and dependencies categories. Unsupported categories are rejected.",
+						"default": ""
 					}
 				],
 				"outputs": [
