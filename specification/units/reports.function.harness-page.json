@@ -21,41 +21,251 @@
 				"name": "homePath.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "History index used to find the canonical home."
+				"description": "The history index the home is chosen from, read for its branches (name and head) and revisions (commit): the first branch named main or master whose head is one of its revisions, else the first branch whose head is one, else the commit of its first revision. It matters because a missing result links to that home and the root redirects to it unless its query names a commit the index holds, and the home is null only when the index lists no revision.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86",
+								"parents": ["e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97"],
+								"subject": "Resolve explorer page addresses",
+								"author": "Grace Hopper",
+								"committedAt": "2026-11-10T13:58:04+00:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "5f3c9a1e0b7d2c84f6a1e9d30b5c7a2f8e4d1b6c9a0f3e7d25b8c1f4a6e0d9b3",
+										"status": "passed",
+										"profile": "6a2f9c1d4e7b0835",
+										"finishedAt": "2026-11-10T14:05:31.218Z",
+										"base": null,
+										"valid": true,
+										"problems": []
+									}
+								],
+								"legacy": []
+							},
+							{
+								"commit": "e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97",
+								"parents": ["7d0b4a9e6c1f38520e4d7b9a2c6f1e8d3b5a0c74"],
+								"subject": "Add the explorer scope resolver",
+								"author": "Grace Hopper",
+								"committedAt": "2026-11-09T17:22:40+00:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": ["no verification record is attached to this commit"],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [
+							{
+								"id": "6a2f9c1d4e7b0835",
+								"platform": "darwin",
+								"arch": "arm64",
+								"cpu": "Apple M3 Pro",
+								"runtime": "node 22.11.0"
+							}
+						],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					},
+					{
+						"branches": [],
+						"revisions": [],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "harnessPage.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "History index used for canonicalization and scope resolution."
+				"description": "The history index the path is resolved against: its branches (name and head) and the commits and branches of its revisions decide the redirect, page or missing result, and a page shows the full summary of its revision, with its parents and records. An explorer address in canonical form that names a branch or commit the index does not hold is missing, while an address in another form redirects first, and a console page that names a commit it does not hold redirects to the home.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86",
+								"parents": ["e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97"],
+								"subject": "Resolve explorer page addresses",
+								"author": "Grace Hopper",
+								"committedAt": "2026-11-10T13:58:04+00:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "5f3c9a1e0b7d2c84f6a1e9d30b5c7a2f8e4d1b6c9a0f3e7d25b8c1f4a6e0d9b3",
+										"status": "passed",
+										"profile": "6a2f9c1d4e7b0835",
+										"finishedAt": "2026-11-10T14:05:31.218Z",
+										"base": null,
+										"valid": true,
+										"problems": []
+									}
+								],
+								"legacy": []
+							},
+							{
+								"commit": "e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97",
+								"parents": ["7d0b4a9e6c1f38520e4d7b9a2c6f1e8d3b5a0c74"],
+								"subject": "Add the explorer scope resolver",
+								"author": "Grace Hopper",
+								"committedAt": "2026-11-09T17:22:40+00:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": ["no verification record is attached to this commit"],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [
+							{
+								"id": "6a2f9c1d4e7b0835",
+								"platform": "darwin",
+								"arch": "arm64",
+								"cpu": "Apple M3 Pro",
+								"runtime": "node 22.11.0"
+							}
+						],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					},
+					{
+						"branches": [],
+						"revisions": [],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "harnessPage.path",
 				"type": "string",
 				"required": true,
-				"description": "Console-relative path."
+				"description": "The console path to resolve, which begins with `/` (the root is `/` or an empty string) and may end in slashes, which are ignored. A path without the leading `/` is not read as written, because the explorer drops the first segment before it.",
+				"examples": [
+					"/branch/main/pages",
+					"/branch/main/commit/4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86/functions/reports.function.harness-page",
+					"/"
+				]
 			},
 			{
 				"name": "harnessPage.search",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional query string, defaulting to empty."
+				"description": "The query string that goes with the path, read as URLSearchParams so a leading `?` is optional: an entity address reads its `tab` and `helper` keys, the root or an earlier console page reads its `commit`, `view` and `unit` keys, and other addresses ignore it. It defaults to an empty string, which carries no query.",
+				"examples": [
+					"",
+					"?tab=source",
+					"?commit=4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86&view=history"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "homePath",
 				"type": "string | null",
-				"description": "Canonical home route or null when no home can be resolved."
+				"description": "The canonical home route: `/branch/<name>/pages`, with the branch name URL-encoded, when a branch head is one of the revisions, else `/commit/<sha>/pages` for the first revision. It is `null` only when the index lists no revision, and it is the route the explorer opens at.",
+				"examples": [
+					"/branch/main/pages",
+					"/commit/4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86/pages",
+					null
+				]
 			},
 			{
 				"name": "harnessPage",
 				"type": "HarnessPage",
-				"description": "Redirect for a canonical alternative; page with validated scope for a stored branch/commit; otherwise missing message and optional home link. Root with no history and invalid explorer addresses remain missing."
+				"description": "One of three shapes: a `redirect` to the canonical explorer path the address stands for, a `page` whose `scope` is the addressed commit (the branch tip when only a branch is named), or a `missing` result with a `message` and the `home` link. An address that names only a commit on a branch redirects to that branch's address, while the root of a history with no revision, an address that names no page, and a canonical explorer address whose branch or commit the index does not hold are `missing`, never shown in its place.",
+				"examples": [
+					{
+						"kind": "redirect",
+						"path": "/branch/main/pages"
+					},
+					{
+						"kind": "page",
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": null,
+								"category": "pages"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86",
+							"commit": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86",
+							"atTip": true,
+							"parent": "e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97",
+							"summary": {
+								"commit": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86",
+								"parents": ["e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97"],
+								"subject": "Resolve explorer page addresses",
+								"author": "Grace Hopper",
+								"committedAt": "2026-11-10T13:58:04+00:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "5f3c9a1e0b7d2c84f6a1e9d30b5c7a2f8e4d1b6c9a0f3e7d25b8c1f4a6e0d9b3",
+										"status": "passed",
+										"profile": "6a2f9c1d4e7b0835",
+										"finishedAt": "2026-11-10T14:05:31.218Z",
+										"base": null,
+										"valid": true,
+										"problems": []
+									}
+								],
+								"legacy": []
+							}
+						}
+					},
+					{
+						"kind": "missing",
+						"message": "Commit 9d3f2a1 is not in this history.",
+						"home": "/branch/main/pages"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "homePath",
@@ -64,18 +274,95 @@
 						"name": "homePath.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "History index used to find the canonical home."
+						"description": "The history index the home is chosen from, read for its branches (name and head) and revisions (commit): the first branch named main or master whose head is one of its revisions, else the first branch whose head is one, else the commit of its first revision. It matters because a missing result links to that home and the root redirects to it unless its query names a commit the index holds, and the home is null only when the index lists no revision.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86",
+										"parents": ["e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97"],
+										"subject": "Resolve explorer page addresses",
+										"author": "Grace Hopper",
+										"committedAt": "2026-11-10T13:58:04+00:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [
+											{
+												"id": "5f3c9a1e0b7d2c84f6a1e9d30b5c7a2f8e4d1b6c9a0f3e7d25b8c1f4a6e0d9b3",
+												"status": "passed",
+												"profile": "6a2f9c1d4e7b0835",
+												"finishedAt": "2026-11-10T14:05:31.218Z",
+												"base": null,
+												"valid": true,
+												"problems": []
+											}
+										],
+										"legacy": []
+									},
+									{
+										"commit": "e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97",
+										"parents": ["7d0b4a9e6c1f38520e4d7b9a2c6f1e8d3b5a0c74"],
+										"subject": "Add the explorer scope resolver",
+										"author": "Grace Hopper",
+										"committedAt": "2026-11-09T17:22:40+00:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "unverified",
+										"gaps": ["no verification record is attached to this commit"],
+										"records": [],
+										"legacy": []
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [
+									{
+										"id": "6a2f9c1d4e7b0835",
+										"platform": "darwin",
+										"arch": "arm64",
+										"cpu": "Apple M3 Pro",
+										"runtime": "node 22.11.0"
+									}
+								],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							},
+							{
+								"branches": [],
+								"revisions": [],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "homePath",
 						"type": "string | null",
-						"description": "Canonical home route or null when no home can be resolved."
+						"description": "The canonical home route: `/branch/<name>/pages`, with the branch name URL-encoded, when a branch head is one of the revisions, else `/commit/<sha>/pages` for the first revision. It is `null` only when the index lists no revision, and it is the route the explorer opens at.",
+						"examples": [
+							"/branch/main/pages",
+							"/commit/4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86/pages",
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "harnessPage",
@@ -84,31 +371,163 @@
 						"name": "harnessPage.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "History index used for canonicalization and scope resolution."
+						"description": "The history index the path is resolved against: its branches (name and head) and the commits and branches of its revisions decide the redirect, page or missing result, and a page shows the full summary of its revision, with its parents and records. An explorer address in canonical form that names a branch or commit the index does not hold is missing, while an address in another form redirects first, and a console page that names a commit it does not hold redirects to the home.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86",
+										"parents": ["e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97"],
+										"subject": "Resolve explorer page addresses",
+										"author": "Grace Hopper",
+										"committedAt": "2026-11-10T13:58:04+00:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [
+											{
+												"id": "5f3c9a1e0b7d2c84f6a1e9d30b5c7a2f8e4d1b6c9a0f3e7d25b8c1f4a6e0d9b3",
+												"status": "passed",
+												"profile": "6a2f9c1d4e7b0835",
+												"finishedAt": "2026-11-10T14:05:31.218Z",
+												"base": null,
+												"valid": true,
+												"problems": []
+											}
+										],
+										"legacy": []
+									},
+									{
+										"commit": "e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97",
+										"parents": ["7d0b4a9e6c1f38520e4d7b9a2c6f1e8d3b5a0c74"],
+										"subject": "Add the explorer scope resolver",
+										"author": "Grace Hopper",
+										"committedAt": "2026-11-09T17:22:40+00:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "unverified",
+										"gaps": ["no verification record is attached to this commit"],
+										"records": [],
+										"legacy": []
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [
+									{
+										"id": "6a2f9c1d4e7b0835",
+										"platform": "darwin",
+										"arch": "arm64",
+										"cpu": "Apple M3 Pro",
+										"runtime": "node 22.11.0"
+									}
+								],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							},
+							{
+								"branches": [],
+								"revisions": [],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "harnessPage.path",
 						"type": "string",
 						"required": true,
-						"description": "Console-relative path."
+						"description": "The console path to resolve, which begins with `/` (the root is `/` or an empty string) and may end in slashes, which are ignored. A path without the leading `/` is not read as written, because the explorer drops the first segment before it.",
+						"examples": [
+							"/branch/main/pages",
+							"/branch/main/commit/4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86/functions/reports.function.harness-page",
+							"/"
+						]
 					},
 					{
 						"name": "harnessPage.search",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Optional query string, defaulting to empty."
+						"description": "The query string that goes with the path, read as URLSearchParams so a leading `?` is optional: an entity address reads its `tab` and `helper` keys, the root or an earlier console page reads its `commit`, `view` and `unit` keys, and other addresses ignore it. It defaults to an empty string, which carries no query.",
+						"examples": [
+							"",
+							"?tab=source",
+							"?commit=4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86&view=history"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessPage",
 						"type": "HarnessPage",
-						"description": "Redirect for a canonical alternative; page with validated scope for a stored branch/commit; otherwise missing message and optional home link. Root with no history and invalid explorer addresses remain missing."
+						"description": "One of three shapes: a `redirect` to the canonical explorer path the address stands for, a `page` whose `scope` is the addressed commit (the branch tip when only a branch is named), or a `missing` result with a `message` and the `home` link. An address that names only a commit on a branch redirects to that branch's address, while the root of a history with no revision, an address that names no page, and a canonical explorer address whose branch or commit the index does not hold are `missing`, never shown in its place.",
+						"examples": [
+							{
+								"kind": "redirect",
+								"path": "/branch/main/pages"
+							},
+							{
+								"kind": "page",
+								"scope": {
+									"location": {
+										"branch": "main",
+										"commit": null,
+										"category": "pages"
+									},
+									"mode": "current",
+									"branch": "main",
+									"tip": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86",
+									"commit": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86",
+									"atTip": true,
+									"parent": "e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97",
+									"summary": {
+										"commit": "4b8e1d2f9a0c7e5b3d6f1a8c2e9b04d7f5a31c86",
+										"parents": ["e1a7c3f09b5d2846a0c9e7f3b1d8a5c2e6f04b97"],
+										"subject": "Resolve explorer page addresses",
+										"author": "Grace Hopper",
+										"committedAt": "2026-11-10T13:58:04+00:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [
+											{
+												"id": "5f3c9a1e0b7d2c84f6a1e9d30b5c7a2f8e4d1b6c9a0f3e7d25b8c1f4a6e0d9b3",
+												"status": "passed",
+												"profile": "6a2f9c1d4e7b0835",
+												"finishedAt": "2026-11-10T14:05:31.218Z",
+												"base": null,
+												"valid": true,
+												"problems": []
+											}
+										],
+										"legacy": []
+									}
+								}
+							},
+							{
+								"kind": "missing",
+								"message": "Commit 9d3f2a1 is not in this history.",
+								"home": "/branch/main/pages"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
