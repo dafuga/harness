@@ -8,6 +8,7 @@ import { mediaFacts } from '../../../src/utils/verification-evidence/mediaFacts'
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { measureWorkload } from '../../support/measureWorkload';
+import { attachedFrameFixture } from '../../support/attachedFrameFixture';
 
 test('FrameFlagService runs', () => {
 	expect(new FrameFlagService().run()).toBe('frame-flag');
@@ -166,5 +167,21 @@ test('the default reader refuses clip references without attached verified evide
 		await expect(
 			new FrameFlagService(root).flag({ clip: f.reference, atSeconds: 0.2 })
 		).rejects.toThrow(/attach|evidence|record/i);
+		for (const standing of ['full', 'scoped', 'wrong-owner', 'failed'] as const) {
+			const clip = await attachedFrameFixture({
+				root,
+				git,
+				reference: f.reference,
+				video: f.original,
+				standing
+			});
+			const flag = new FrameFlagService(root).flag({ clip, atSeconds: 0.2 });
+			if (standing === 'full' || standing === 'scoped')
+				expect(await flag, 'valid attached clip supports frame feedback').toMatchObject({
+					clip: { record: clip.record, revision: f.reference.revision },
+					frameNumber: 2
+				});
+			else await expect(flag).rejects.toThrow(/pass|scope|verification/i);
+		}
 	});
 });
