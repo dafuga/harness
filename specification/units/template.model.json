@@ -10,17 +10,9 @@
 	"owns": {
 		"source": [
 			"src/templates/development-tooling/model.ts",
-			"src/templates/development-tooling/model.types.ts",
-			"src/templates/model.ts"
+			"src/templates/development-tooling/model.types.ts"
 		],
-		"symbols": [
-			"modelFiles",
-			"AdapterName",
-			"ModelInput",
-			"AdapterName",
-			"ModelInput",
-			"modelFiles"
-		]
+		"symbols": ["modelFiles", "AdapterName", "ModelInput", "AdapterName", "ModelInput"]
 	},
 	"contract": {
 		"origin": "derived",

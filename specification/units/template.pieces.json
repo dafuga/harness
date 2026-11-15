@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/templates/development-tooling/pieces.ts",
-			"src/templates/development-tooling/pieces.types.ts",
-			"src/templates/pieces.ts"
+			"src/templates/development-tooling/pieces.types.ts"
 		],
-		"symbols": ["PieceKind", "pieceFiles", "PieceContext", "PieceContext", "pieceFiles"]
+		"symbols": ["PieceKind", "pieceFiles", "PieceContext", "PieceContext"]
 	},
 	"contract": {
 		"origin": "derived",

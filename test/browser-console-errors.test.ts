@@ -7,7 +7,7 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { projectFiles } from '../src/templates/projects-sessions/project';
-import { pieceFiles } from '../src/templates/pieces';
+import { pieceFiles } from '../src/templates/development-tooling/pieces';
 import { findGuide } from '../src/guides/development-tooling/guide';
 import { generatePiece } from '../src/workflows/generate-code/generateCode';
 

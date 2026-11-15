@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/templates/development-tooling/formatConfig.ts",
-			"src/templates/formatConfig.ts"
-		],
-		"symbols": ["formatConfigFiles", "formatConfigFiles"]
+		"source": ["src/templates/development-tooling/formatConfig.ts"],
+		"symbols": ["formatConfigFiles"]
 	},
 	"contract": {
 		"origin": "derived",
