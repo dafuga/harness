@@ -18,23 +18,190 @@
 				"name": "siteProcesses.snapshot",
 				"type": "CpuSnapshot",
 				"required": true,
-				"description": "CPU sample with machine totals, groups and optional agent entries."
+				"description": "The CPU sample to narrow, as cpuMetrics produces it: its agents are filtered and its agents group recalculated. A sample whose agents or groups is falsy is returned as the same object, with no filtering or recalculation.",
+				"examples": [
+					{
+						"status": "available",
+						"sampledAt": "2026-11-15T14:03:27.415Z",
+						"intervalMs": 2001,
+						"logicalCores": 8,
+						"machinePercent": 37.5,
+						"trackedPercent": 11,
+						"groups": [
+							{
+								"id": "codex",
+								"label": "Codex app",
+								"corePercent": 32,
+								"machinePercent": 4,
+								"processes": 5
+							},
+							{
+								"id": "harness",
+								"label": "Harness",
+								"corePercent": 12,
+								"machinePercent": 1.5,
+								"processes": 3
+							},
+							{
+								"id": "agents",
+								"label": "Local agents",
+								"corePercent": 44,
+								"machinePercent": 5.5,
+								"processes": 6
+							}
+						],
+						"agents": [
+							{
+								"pid": 4127,
+								"label": "Local agent",
+								"corePercent": 24,
+								"machinePercent": 3,
+								"processes": 4
+							},
+							{
+								"pid": 9810,
+								"label": "Local agent",
+								"corePercent": 20,
+								"machinePercent": 2.5,
+								"processes": 2
+							}
+						]
+					},
+					{
+						"status": "available",
+						"sampledAt": "2026-11-15T14:05:03.118Z",
+						"intervalMs": 2001,
+						"logicalCores": 8,
+						"machinePercent": 21.5,
+						"trackedPercent": 5.5,
+						"groups": [
+							{
+								"id": "codex",
+								"label": "Codex app",
+								"corePercent": 32,
+								"machinePercent": 4,
+								"processes": 5
+							},
+							{
+								"id": "harness",
+								"label": "Harness",
+								"corePercent": 12,
+								"machinePercent": 1.5,
+								"processes": 3
+							},
+							{
+								"id": "agents",
+								"label": "Local agents",
+								"corePercent": 0,
+								"machinePercent": 0,
+								"processes": 0
+							}
+						],
+						"agents": []
+					}
+				]
 			},
 			{
 				"name": "siteProcesses.directoryOf",
 				"type": "(pid: number) => string | undefined",
 				"required": false,
-				"description": "Optional PID-to-working-directory lookup. Defaults to reading the process directory, falling back to lsof; unknown directories exclude the agent."
+				"description": "Maps an agent's pid to its working directory; an agent whose result is undefined is left out, and an exception thrown by it is not caught. Defaults to workingDirectory, which reads /proc/<pid>/cwd and falls back to lsof -a -d cwd -Fn -p <pid>, returning undefined when neither gives a directory."
 			}
 		],
 		"outputs": [
 			{
 				"name": "siteProcesses",
 				"type": "CpuSnapshot",
-				"description": "Snapshot preserving machine data and non-agent groups, with only site-owned agents, recalculated agent totals and recalculated tracked percentage unless it was null. Samples lacking agents or groups are returned unchanged."
+				"description": "A new object built from the input: agents keeps only the entries whose directory is defined and passes ownedBySite, and the agents group's corePercent, machinePercent and processes are the sums over those entries (0 when none remain). Every other group and every other top-level field, including machinePercent, is copied unchanged except trackedPercent, which is the sum of machinePercent over all output groups or stays null when the input's is null; a sample whose agents or groups is falsy is returned as the same object.",
+				"examples": [
+					{
+						"status": "available",
+						"sampledAt": "2026-11-15T14:03:27.415Z",
+						"intervalMs": 2001,
+						"logicalCores": 8,
+						"machinePercent": 37.5,
+						"trackedPercent": 8.5,
+						"groups": [
+							{
+								"id": "codex",
+								"label": "Codex app",
+								"corePercent": 32,
+								"machinePercent": 4,
+								"processes": 5
+							},
+							{
+								"id": "harness",
+								"label": "Harness",
+								"corePercent": 12,
+								"machinePercent": 1.5,
+								"processes": 3
+							},
+							{
+								"id": "agents",
+								"label": "Local agents",
+								"corePercent": 24,
+								"machinePercent": 3,
+								"processes": 4
+							}
+						],
+						"agents": [
+							{
+								"pid": 4127,
+								"label": "Local agent",
+								"corePercent": 24,
+								"machinePercent": 3,
+								"processes": 4
+							}
+						]
+					},
+					{
+						"status": "available",
+						"sampledAt": "2026-11-15T14:03:27.415Z",
+						"intervalMs": 2001,
+						"logicalCores": 8,
+						"machinePercent": 37.5,
+						"trackedPercent": 5.5,
+						"groups": [
+							{
+								"id": "codex",
+								"label": "Codex app",
+								"corePercent": 32,
+								"machinePercent": 4,
+								"processes": 5
+							},
+							{
+								"id": "harness",
+								"label": "Harness",
+								"corePercent": 12,
+								"machinePercent": 1.5,
+								"processes": 3
+							},
+							{
+								"id": "agents",
+								"label": "Local agents",
+								"corePercent": 0,
+								"machinePercent": 0,
+								"processes": 0
+							}
+						],
+						"agents": []
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Raised by realpathSync in repositoryIdentity, reached through ownedBySite, when a checkout with no remote has a Git store path that realpathSync cannot resolve; repositoryIdentity rethrows it and siteProcesses does not catch it."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Raised by fileURLToPath in repositoryIdentity, reached through ownedBySite, when the upstream remote is a file:// address that cannot be converted to a local path; repositoryIdentity rethrows it and siteProcesses does not catch it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "siteProcesses",
@@ -43,24 +210,190 @@
 						"name": "siteProcesses.snapshot",
 						"type": "CpuSnapshot",
 						"required": true,
-						"description": "CPU sample with machine totals, groups and optional agent entries."
+						"description": "The CPU sample to narrow, as cpuMetrics produces it: its agents are filtered and its agents group recalculated. A sample whose agents or groups is falsy is returned as the same object, with no filtering or recalculation.",
+						"examples": [
+							{
+								"status": "available",
+								"sampledAt": "2026-11-15T14:03:27.415Z",
+								"intervalMs": 2001,
+								"logicalCores": 8,
+								"machinePercent": 37.5,
+								"trackedPercent": 11,
+								"groups": [
+									{
+										"id": "codex",
+										"label": "Codex app",
+										"corePercent": 32,
+										"machinePercent": 4,
+										"processes": 5
+									},
+									{
+										"id": "harness",
+										"label": "Harness",
+										"corePercent": 12,
+										"machinePercent": 1.5,
+										"processes": 3
+									},
+									{
+										"id": "agents",
+										"label": "Local agents",
+										"corePercent": 44,
+										"machinePercent": 5.5,
+										"processes": 6
+									}
+								],
+								"agents": [
+									{
+										"pid": 4127,
+										"label": "Local agent",
+										"corePercent": 24,
+										"machinePercent": 3,
+										"processes": 4
+									},
+									{
+										"pid": 9810,
+										"label": "Local agent",
+										"corePercent": 20,
+										"machinePercent": 2.5,
+										"processes": 2
+									}
+								]
+							},
+							{
+								"status": "available",
+								"sampledAt": "2026-11-15T14:05:03.118Z",
+								"intervalMs": 2001,
+								"logicalCores": 8,
+								"machinePercent": 21.5,
+								"trackedPercent": 5.5,
+								"groups": [
+									{
+										"id": "codex",
+										"label": "Codex app",
+										"corePercent": 32,
+										"machinePercent": 4,
+										"processes": 5
+									},
+									{
+										"id": "harness",
+										"label": "Harness",
+										"corePercent": 12,
+										"machinePercent": 1.5,
+										"processes": 3
+									},
+									{
+										"id": "agents",
+										"label": "Local agents",
+										"corePercent": 0,
+										"machinePercent": 0,
+										"processes": 0
+									}
+								],
+								"agents": []
+							}
+						]
 					},
 					{
 						"name": "siteProcesses.directoryOf",
 						"type": "(pid: number) => string | undefined",
 						"required": false,
-						"description": "Optional PID-to-working-directory lookup. Defaults to reading the process directory, falling back to lsof; unknown directories exclude the agent."
+						"description": "Maps an agent's pid to its working directory; an agent whose result is undefined is left out, and an exception thrown by it is not caught. Defaults to workingDirectory, which reads /proc/<pid>/cwd and falls back to lsof -a -d cwd -Fn -p <pid>, returning undefined when neither gives a directory."
 					}
 				],
 				"outputs": [
 					{
 						"name": "siteProcesses",
 						"type": "CpuSnapshot",
-						"description": "Snapshot preserving machine data and non-agent groups, with only site-owned agents, recalculated agent totals and recalculated tracked percentage unless it was null. Samples lacking agents or groups are returned unchanged."
+						"description": "A new object built from the input: agents keeps only the entries whose directory is defined and passes ownedBySite, and the agents group's corePercent, machinePercent and processes are the sums over those entries (0 when none remain). Every other group and every other top-level field, including machinePercent, is copied unchanged except trackedPercent, which is the sum of machinePercent over all output groups or stays null when the input's is null; a sample whose agents or groups is falsy is returned as the same object.",
+						"examples": [
+							{
+								"status": "available",
+								"sampledAt": "2026-11-15T14:03:27.415Z",
+								"intervalMs": 2001,
+								"logicalCores": 8,
+								"machinePercent": 37.5,
+								"trackedPercent": 8.5,
+								"groups": [
+									{
+										"id": "codex",
+										"label": "Codex app",
+										"corePercent": 32,
+										"machinePercent": 4,
+										"processes": 5
+									},
+									{
+										"id": "harness",
+										"label": "Harness",
+										"corePercent": 12,
+										"machinePercent": 1.5,
+										"processes": 3
+									},
+									{
+										"id": "agents",
+										"label": "Local agents",
+										"corePercent": 24,
+										"machinePercent": 3,
+										"processes": 4
+									}
+								],
+								"agents": [
+									{
+										"pid": 4127,
+										"label": "Local agent",
+										"corePercent": 24,
+										"machinePercent": 3,
+										"processes": 4
+									}
+								]
+							},
+							{
+								"status": "available",
+								"sampledAt": "2026-11-15T14:03:27.415Z",
+								"intervalMs": 2001,
+								"logicalCores": 8,
+								"machinePercent": 37.5,
+								"trackedPercent": 5.5,
+								"groups": [
+									{
+										"id": "codex",
+										"label": "Codex app",
+										"corePercent": 32,
+										"machinePercent": 4,
+										"processes": 5
+									},
+									{
+										"id": "harness",
+										"label": "Harness",
+										"corePercent": 12,
+										"machinePercent": 1.5,
+										"processes": 3
+									},
+									{
+										"id": "agents",
+										"label": "Local agents",
+										"corePercent": 0,
+										"machinePercent": 0,
+										"processes": 0
+									}
+								],
+								"agents": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Raised by realpathSync in repositoryIdentity, reached through ownedBySite, when a checkout with no remote has a Git store path that realpathSync cannot resolve; repositoryIdentity rethrows it and siteProcesses does not catch it."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Raised by fileURLToPath in repositoryIdentity, reached through ownedBySite, when the upstream remote is a file:// address that cannot be converted to a local path; repositoryIdentity rethrows it and siteProcesses does not catch it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
