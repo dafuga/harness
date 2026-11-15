@@ -25,41 +25,46 @@
 				"name": "ImageThumbnail.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace supplied to the image-URL helper for preview retrieval and effect cleanup."
+				"description": "Workspace instance passed to `imageUrl` for each effect run. The component does not serialize or validate it."
 			},
 			{
 				"name": "ImageThumbnail.entityId",
 				"type": "string",
 				"required": true,
-				"description": "Required entity identifier in the image request."
+				"description": "Entity identifier passed as `entityId` in the request sent to `imageUrl`. The component passes the string through without validation or transformation.",
+				"examples": ["entity-123"]
 			},
 			{
 				"name": "ImageThumbnail.version",
 				"type": "string",
 				"required": true,
-				"description": "Required design-version identifier in the image request."
+				"description": "Version string passed as `version` in the request sent to `imageUrl`. The component passes it through without validation or transformation.",
+				"examples": ["version-1"]
 			},
 			{
 				"name": "ImageThumbnail.sha256",
 				"type": "string",
 				"required": true,
-				"description": "Required image hash in the request; this view does not independently verify bytes."
+				"description": "SHA-256 string passed as `sha256` in the request sent to `imageUrl`. The component does not verify the digest or image bytes.",
+				"examples": ["2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"]
 			},
 			{
 				"name": "ImageThumbnail.title",
 				"type": "string",
 				"required": true,
-				"description": "Required alternative text for the thumbnail."
+				"description": "Text used as the `alt` value when the image is rendered. It is not rendered in the unavailable-preview fallback.",
+				"examples": ["Floor plan preview"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ImageThumbnail",
 				"type": "markup",
-				"description": "Image when the helper supplies a nonempty URL; otherwise Preview unavailable, including while loading. Ignores the helper’s error argument, so loading and failure are not distinguished."
+				"description": "Renders `<hx-img>` with the URL and title as `src` and `alt` when the URL string is truthy; otherwise it renders muted “Preview unavailable” text. The URL starts empty, so this fallback also appears before a URL is supplied."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
