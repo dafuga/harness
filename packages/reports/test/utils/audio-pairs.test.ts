@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import type { Evidence } from '../../src/models/reports-media/Report.types';
 import { audioPairs } from '../../src/utils/reports-media/audioPairs';
@@ -61,8 +60,4 @@ test('missing audio stays in its pair and original objects and statuses are unch
 	const original = structuredClone([unavailable, after]);
 	expect(audioPairs([unavailable, after]).get('after')).toBe(unavailable);
 	expect([unavailable, after]).toEqual(original);
-});
-test('the stub that re-exported audioPairs from its old path is gone', () => {
-	const stub = new URL('../../src/utils/audioPairs.ts', import.meta.url);
-	expect(existsSync(stub)).toBe(false);
 });

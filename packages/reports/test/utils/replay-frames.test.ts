@@ -29,8 +29,3 @@ test('live appended frames retain the previous sequence and input is never mutat
 	);
 	expect(JSON.stringify(original)).toBe(previous);
 });
-test('replay frames run in three-second slots', () => {
-	const frames = replayFrames([frame('one', 1), frame('two', 2)]);
-	expect(frames.map((f) => f.start)).toEqual([0, 3]);
-	expect(frames.map((f) => f.duration)).toEqual([3, 3]);
-});

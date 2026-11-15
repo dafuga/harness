@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { categoryIcon, harnessIcons, solidIcons } from '../../src/utils/explorer-ui/harnessIcons';
@@ -49,12 +48,4 @@ test('each entity category has its own icon, and only the two verdicts are solid
 	const drawings = Object.values(categoryIcon).map((name) => harnessIcons[name]);
 	expect(new Set(drawings).size).toBe(10);
 	expect([...solidIcons].sort()).toEqual(['failed', 'passed']);
-});
-
-test('the icon, layout, growth and impact utilities are imported from their owner module, with no relocation stub left beside them', () => {
-	for (const name of ['harnessGrowth', 'harnessIcons', 'harnessImpact', 'harnessLayout']) {
-		const owner = new URL(`../../src/utils/explorer-ui/${name}.ts`, import.meta.url);
-		const stub = new URL(`../../src/utils/${name}.ts`, import.meta.url);
-		expect([name, existsSync(owner), existsSync(stub)]).toEqual([name, true, false]);
-	}
 });

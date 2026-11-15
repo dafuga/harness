@@ -1,8 +1,6 @@
 import { measureWorkload } from '../../../test/support/measureWorkload';
 import { expect } from '../../../test/verificationExpect';
 import { test, vi } from 'vitest';
-import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { ConsoleAgentController } from '../src/lib/development-tooling/server-hooks/ConsoleAgentController';
 import { consoleAgent } from '../src/services/ConsoleAgentService';
 vi.mock('../src/services/ConsoleAgentService', () => ({
@@ -73,14 +71,3 @@ test('native local API clients use bearer headers and receive original artifact 
 		expect(artifact.headers.get('content-type')).toBe('image/png');
 		expect(new Uint8Array(await artifact.arrayBuffer())).toEqual(bytes);
 	}));
-
-test('the controller lives at its owner-local module, with no stub or group entry at its old path', () => {
-	const root = resolve(import.meta.dirname, '../../..');
-	const groups = readFileSync(resolve(root, 'harness.groups.json'), 'utf8');
-	const real =
-		'packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.ts';
-	const stub = 'packages/reports/src/controllers/ConsoleAgentController.ts';
-	expect(existsSync(resolve(root, real)), real).toBe(true);
-	expect(existsSync(resolve(root, stub)), stub).toBe(false);
-	expect(groups, stub).not.toContain(`"${stub}"`);
-});

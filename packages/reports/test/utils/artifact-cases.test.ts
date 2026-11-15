@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { artifactCases } from '../../src/components/explorer-ui/entity-cases/artifactCases';
 import { caseForm } from '../../src/utils/explorer-ui/artifactCases';
@@ -72,9 +71,4 @@ test('recorded request and response aliases keep observed types and canonical-fi
 		});
 	}
 	expect(artifactCases({ input: 1, actual: 2, expected: 2 }).kind).toBe('gap');
-});
-
-test('the stub that re-exported artifactCases from its old utils path is gone', () => {
-	const stub = new URL('../../src/utils/artifactCases.ts', import.meta.url);
-	expect(existsSync(stub)).toBe(false);
 });

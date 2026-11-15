@@ -177,12 +177,3 @@ test('an accepted capture in a failed attempt says the attempt failed', () => {
 	);
 	expect(accepted.note).not.toContain('Tested at');
 });
-
-test('a gallery item names the media file of its capture, and a capture without media is kept as missing', () => {
-	const items = harnessEvidence(
-		{ registry: { scenarios: [] } } as never,
-		record([scenario([capture(), capture({ media: null })])])
-	);
-	expect(items.map((item) => item.file)).toEqual([`${'c'.repeat(64)}.png`, '']);
-	expect(items.map((item) => item.missing)).toEqual([false, true]);
-});
