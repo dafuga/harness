@@ -29,23 +29,136 @@
 				"name": "GameTrace.run",
 				"type": "GameRun",
 				"required": true,
-				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
+				"description": "The run whose `trace` array is the only run field this component reads, so only its entries determine the heading count and the rows; checkpointGraph keeps only the latest 1000 entries. An entry matches when its `viewId` equals `view.id`, and an entry whose `viewId` is null or undefined also matches, since it is treated as the current view.",
+				"examples": [
+					{
+						"tick": 0,
+						"seed": 1,
+						"state": {
+							"x": 0,
+							"y": 0,
+							"hasKey": false,
+							"doorOpen": false,
+							"outcome": "",
+							"choice": ""
+						},
+						"completed": [],
+						"events": [],
+						"trace": []
+					},
+					{
+						"viewId": "courtyard",
+						"tick": 58,
+						"seed": 1834512346,
+						"state": {
+							"x": 4,
+							"y": 0,
+							"hasKey": true,
+							"doorOpen": true,
+							"outcome": "",
+							"choice": "",
+							"view": "courtyard",
+							"event:key-collected": true
+						},
+						"completed": ["key", "door"],
+						"events": ["key-collected"],
+						"trace": [
+							{
+								"viewId": "courtyard",
+								"tick": 41,
+								"checkpointId": "key",
+								"reason": "x gte 2"
+							},
+							{
+								"viewId": "courtyard",
+								"tick": 57,
+								"checkpointId": "door",
+								"reason": "x gte 4 AND hasKey eq true"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "GameTrace.view",
 				"type": "GameView",
 				"required": true,
-				"description": "Active game view containing scene direction and executable checkpoints."
+				"description": "The game view being previewed; the component reads only its `id`, to decide which trace entries match, and its `checkpoints`, to title each row from its `checkpointId`. A `checkpointId` that no checkpoint in `view.checkpoints` has is shown as the raw id, and the view's title, style, dimension, planning and world are not read.",
+				"examples": [
+					{
+						"id": "courtyard",
+						"title": "The courtyard",
+						"dimension": "2d",
+						"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+						"checkpoints": [
+							{
+								"id": "key",
+								"title": "Collect the key",
+								"description": "When the player reaches the key, add it to inventory.",
+								"x": 0,
+								"y": 80,
+								"requires": [],
+								"conditions": [
+									{
+										"field": "x",
+										"op": "gte",
+										"value": 2
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "hasKey",
+										"value": true
+									},
+									{
+										"type": "emit",
+										"target": "key-collected",
+										"value": true
+									}
+								]
+							},
+							{
+								"id": "door",
+								"title": "Unlock the door",
+								"description": "The key unlocks the door. Reveal two possible destinations.",
+								"x": 270,
+								"y": 80,
+								"requires": ["key"],
+								"conditions": [
+									{
+										"field": "x",
+										"op": "gte",
+										"value": 4
+									},
+									{
+										"field": "hasKey",
+										"op": "eq",
+										"value": true
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "doorOpen",
+										"value": true
+									}
+								]
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameTrace",
 				"type": "markup",
-				"description": "Show the current game view checkpoint execution trace in a collapsible list. Renders reactive UI and publishes edits through its callbacks."
+				"description": "The markup of one `hx-details` element whose `hx-summary` reads `Execution trace (N)`, where N is the number of matching entries; it holds either an `hx-ol` with one `hx-li` per matching entry, in trace order (an `hx-strong` with the checkpoint title, or the raw checkpoint id if no checkpoint in the view has that id, followed by the entry's tick and reason), or, when N is 0, an `hx-p` reading 'No checkpoints have fired in this preview.' It is built only from the `run` and `view` props and declares no callbacks."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
