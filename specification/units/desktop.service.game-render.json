@@ -12,42 +12,94 @@
 		"symbols": ["GameRenderService", "GameRenderService.constructor", "GameRenderService.start"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameRenderService.constructor.session",
 				"type": "ProjectSessionService",
-				"required": true
+				"required": true,
+				"description": "The open project's session service: start() passes input.projectId to assertProject(), reads the project root from mutable(), and rejects while busy is true. The constructor only stores it, so its members are first used when start() runs."
 			},
 			{
 				"name": "GameRenderService.constructor.transportReady",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Defaults to () => false, so start() always rejects with 'Live AI is blocked until a credential-safe provider transport is available.' unless a caller passes a callback that returns a truthy value. start() calls this callback on every call that passes the busy check, before any credential read."
 			},
 			{
 				"name": "GameRenderService.constructor.send",
 				"type": "(url: string, options: RequestInit) => Promise<Response>",
-				"required": false
+				"required": false,
+				"description": "Defaults to globalThis.fetch: it is called to POST each token request to https://api.decart.ai/v1/client/tokens, with redirect set to 'error' and a 30-second AbortSignal.timeout. The function is captured when the first adapter for a project root is created and then reused for that root by later start() calls, because adapters are cached per root at module level."
 			},
 			{
 				"name": "GameRenderService.start.input",
 				"type": "RenderSessionRequest",
-				"required": true
+				"required": true,
+				"description": "The render request: projectId must equal the open project's id (assertProject() skips the check when the value is undefined), and DecartAdapter.start then requires model 'lucy-restyle-2' or 'lucy-2.5', a boolean fast that may be true only with 'lucy-2.5', and an integer seconds from 10 to 60. Those model, fast and seconds checks run after the busy and transport checks and, on a project root's first start, after the credential read, so an invalid request can still trigger that read.",
+				"examples": [
+					{
+						"projectId": "local-3f9a1c07b2e84d65a0f1c9e7d24b8a635e0d91c4a7f2b836d10e5c9a48f7b2d1",
+						"model": "lucy-restyle-2",
+						"fast": false,
+						"seconds": 30
+					},
+					{
+						"projectId": "local-3f9a1c07b2e84d65a0f1c9e7d24b8a635e0d91c4a7f2b836d10e5c9a48f7b2d1",
+						"model": "lucy-2.5",
+						"fast": false,
+						"seconds": 60
+					},
+					{
+						"projectId": "local-3f9a1c07b2e84d65a0f1c9e7d24b8a635e0d91c4a7f2b836d10e5c9a48f7b2d1",
+						"model": "lucy-2.5",
+						"fast": true,
+						"seconds": 10
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameRenderService.start",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The RenderSession that start() resolves with, as built by DecartAdapter.start: model, fast and seconds echo the request, and rate is 0.01 for 'lucy-restyle-2', 0.02 for 'lucy-2.5' and 0.04 for fast 'lucy-2.5'. apiKey and expiresAt are the strings from the token response (checked only to be strings, not parsed), apiKey is that client token rather than the stored HARNESS_GAME_DECART_API_KEY credential, and the promise settles only after the token request completes.",
+				"examples": [
+					{
+						"apiKey": "client-token-7f3a9c2e41b8d06a",
+						"expiresAt": "2026-11-15T10:01:00.000Z",
+						"model": "lucy-restyle-2",
+						"fast": false,
+						"seconds": 30,
+						"rate": 0.01
+					},
+					{
+						"apiKey": "client-token-b41d08aa6e2f9c15",
+						"expiresAt": "2026-11-15T10:02:00.000Z",
+						"model": "lucy-2.5",
+						"fast": false,
+						"seconds": 60,
+						"rate": 0.02
+					},
+					{
+						"apiKey": "client-token-e90c2f17d3a5b684",
+						"expiresAt": "2026-11-15T10:03:00.000Z",
+						"model": "lucy-2.5",
+						"fast": true,
+						"seconds": 10,
+						"rate": 0.04
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "start() rejects with 'Wait for the current run.' while session.busy is true, with 'Live AI is blocked until a credential-safe provider transport is available.' when transportReady() returns a falsy value, and with 'Invalid AI preview. Choose a supported model and 10–60 seconds.', 'An AI preview lease is already active.' or 'Unable to start the Decart preview. Check this project’s provider configuration.' from DecartAdapter.start. That last message replaces every failure of the token request (including 'Token request failed.' and 'Invalid token response.'), and errors from session.assertProject(), session.mutable() and the credential read pass through unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GameRenderService.start",
@@ -55,22 +107,71 @@
 					{
 						"name": "GameRenderService.start.input",
 						"type": "RenderSessionRequest",
-						"required": true
+						"required": true,
+						"description": "The render request: projectId must equal the open project's id (assertProject() skips the check when the value is undefined), and DecartAdapter.start then requires model 'lucy-restyle-2' or 'lucy-2.5', a boolean fast that may be true only with 'lucy-2.5', and an integer seconds from 10 to 60. Those model, fast and seconds checks run after the busy and transport checks and, on a project root's first start, after the credential read, so an invalid request can still trigger that read.",
+						"examples": [
+							{
+								"projectId": "local-3f9a1c07b2e84d65a0f1c9e7d24b8a635e0d91c4a7f2b836d10e5c9a48f7b2d1",
+								"model": "lucy-restyle-2",
+								"fast": false,
+								"seconds": 30
+							},
+							{
+								"projectId": "local-3f9a1c07b2e84d65a0f1c9e7d24b8a635e0d91c4a7f2b836d10e5c9a48f7b2d1",
+								"model": "lucy-2.5",
+								"fast": false,
+								"seconds": 60
+							},
+							{
+								"projectId": "local-3f9a1c07b2e84d65a0f1c9e7d24b8a635e0d91c4a7f2b836d10e5c9a48f7b2d1",
+								"model": "lucy-2.5",
+								"fast": true,
+								"seconds": 10
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameRenderService.start",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The RenderSession that start() resolves with, as built by DecartAdapter.start: model, fast and seconds echo the request, and rate is 0.01 for 'lucy-restyle-2', 0.02 for 'lucy-2.5' and 0.04 for fast 'lucy-2.5'. apiKey and expiresAt are the strings from the token response (checked only to be strings, not parsed), apiKey is that client token rather than the stored HARNESS_GAME_DECART_API_KEY credential, and the promise settles only after the token request completes.",
+						"examples": [
+							{
+								"apiKey": "client-token-7f3a9c2e41b8d06a",
+								"expiresAt": "2026-11-15T10:01:00.000Z",
+								"model": "lucy-restyle-2",
+								"fast": false,
+								"seconds": 30,
+								"rate": 0.01
+							},
+							{
+								"apiKey": "client-token-b41d08aa6e2f9c15",
+								"expiresAt": "2026-11-15T10:02:00.000Z",
+								"model": "lucy-2.5",
+								"fast": false,
+								"seconds": 60,
+								"rate": 0.02
+							},
+							{
+								"apiKey": "client-token-e90c2f17d3a5b684",
+								"expiresAt": "2026-11-15T10:03:00.000Z",
+								"model": "lucy-2.5",
+								"fast": true,
+								"seconds": 10,
+								"rate": 0.04
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "start() rejects with 'Wait for the current run.' while session.busy is true, with 'Live AI is blocked until a credential-safe provider transport is available.' when transportReady() returns a falsy value, and with 'Invalid AI preview. Choose a supported model and 10–60 seconds.', 'An AI preview lease is already active.' or 'Unable to start the Decart preview. Check this project’s provider configuration.' from DecartAdapter.start. That last message replaces every failure of the token request (including 'Token request failed.' and 'Invalid token response.'), and errors from session.assertProject(), session.mutable() and the credential read pass through unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -80,27 +181,31 @@
 					{
 						"name": "GameRenderService.constructor.session",
 						"type": "ProjectSessionService",
-						"required": true
+						"required": true,
+						"description": "The open project's session service: start() passes input.projectId to assertProject(), reads the project root from mutable(), and rejects while busy is true. The constructor only stores it, so its members are first used when start() runs."
 					},
 					{
 						"name": "GameRenderService.constructor.transportReady",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Defaults to () => false, so start() always rejects with 'Live AI is blocked until a credential-safe provider transport is available.' unless a caller passes a callback that returns a truthy value. start() calls this callback on every call that passes the busy check, before any credential read."
 					},
 					{
 						"name": "GameRenderService.constructor.send",
 						"type": "(url: string, options: RequestInit) => Promise<Response>",
-						"required": false
+						"required": false,
+						"description": "Defaults to globalThis.fetch: it is called to POST each token request to https://api.decart.ai/v1/client/tokens, with redirect set to 'error' and a 30-second AbortSignal.timeout. The function is captured when the first adapter for a project root is created and then reused for that root by later start() calls, because adapters are cached per root at module level."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameRenderService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new GameRenderService instance, which keeps session, transportReady and send as private fields and has an empty constructor body. Adapters are cached in a module-level map that every instance shares."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
