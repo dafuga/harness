@@ -12,47 +12,77 @@
 		"symbols": ["PairingController", "PairingController.constructor", "PairingController.handle"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PairingController.constructor.store",
 				"type": "HostStorageAdapter",
-				"required": true
+				"required": true,
+				"description": "HostStorageAdapter checked before the rate limit and action dispatch. If host() is falsy, handle returns 404 not-found immediately."
 			},
 			{
 				"name": "PairingController.constructor.rate",
 				"type": "RateLimitService",
-				"required": true
+				"required": true,
+				"description": "RateLimitService counts every public pairing call in the pairing bucket against relayConfig.pairingCalls. If hit() returns false, handle returns 429 rate-limited before action dispatch."
 			},
 			{
 				"name": "PairingController.constructor.access",
 				"type": "PairingAccessService",
-				"required": true
+				"required": true,
+				"description": "PairingAccessService supplies info and poll values and handles validated pairing requests. Missing info or poll values and a request result of not-found return 404; other string request results return 409."
 			},
 			{
 				"name": "PairingController.constructor.exchanges",
 				"type": "PairingExchangeService",
-				"required": true
+				"required": true,
+				"description": "PairingExchangeService performs the exchange using the route pairingId and the PairingBodyValidator verifier result. A truthy result returns 200, while a falsy result returns 400 pairing-invalid."
 			},
 			{
 				"name": "PairingController.handle.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "Fetch API Request whose JSON body is read for every action except info. A missing body returns 400 for poll and request actions; exchange passes the verifier result to the exchange service and returns 400 pairing-invalid when that result is falsy."
 			},
 			{
 				"name": "PairingController.handle.route",
 				"type": "PairingRoute",
-				"required": true
+				"required": true,
+				"description": "Pairing route descriptor with kind, path, hostId, pairingId, and action fields. handle dispatches info, exchange, and poll explicitly and sends every other action through request validation.",
+				"examples": [
+					{
+						"kind": "pairing",
+						"path": "/pairings/pair_7f3a9c",
+						"hostId": "host_4c91a2",
+						"pairingId": "pair_7f3a9c",
+						"action": "info"
+					},
+					{
+						"kind": "pairing",
+						"path": "/pairings/pair_7f3a9c",
+						"hostId": "host_4c91a2",
+						"pairingId": "pair_7f3a9c",
+						"action": "poll"
+					},
+					{
+						"kind": "pairing",
+						"path": "/pairings/pair_7f3a9c",
+						"hostId": "host_4c91a2",
+						"pairingId": "pair_7f3a9c",
+						"action": "exchange"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "PairingController.handle",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "Fetch API response produced for the route after the host and rate-limit gates and action handling. Status and body depend on the handler result, including 404 and 429 gate responses."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "PairingController.handle",
@@ -60,22 +90,48 @@
 					{
 						"name": "PairingController.handle.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "Fetch API Request whose JSON body is read for every action except info. A missing body returns 400 for poll and request actions; exchange passes the verifier result to the exchange service and returns 400 pairing-invalid when that result is falsy."
 					},
 					{
 						"name": "PairingController.handle.route",
 						"type": "PairingRoute",
-						"required": true
+						"required": true,
+						"description": "Pairing route descriptor with kind, path, hostId, pairingId, and action fields. handle dispatches info, exchange, and poll explicitly and sends every other action through request validation.",
+						"examples": [
+							{
+								"kind": "pairing",
+								"path": "/pairings/pair_7f3a9c",
+								"hostId": "host_4c91a2",
+								"pairingId": "pair_7f3a9c",
+								"action": "info"
+							},
+							{
+								"kind": "pairing",
+								"path": "/pairings/pair_7f3a9c",
+								"hostId": "host_4c91a2",
+								"pairingId": "pair_7f3a9c",
+								"action": "poll"
+							},
+							{
+								"kind": "pairing",
+								"path": "/pairings/pair_7f3a9c",
+								"hostId": "host_4c91a2",
+								"pairingId": "pair_7f3a9c",
+								"action": "exchange"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingController.handle",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "Promise that resolves to the Fetch API Response for a public pairing call. Depending on the host, rate limit, action, body, and service result, the response status is 200, 202, 400, 404, 409, or 429."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -85,32 +141,37 @@
 					{
 						"name": "PairingController.constructor.store",
 						"type": "HostStorageAdapter",
-						"required": true
+						"required": true,
+						"description": "HostStorageAdapter checked before the rate limit and action dispatch. If host() is falsy, handle returns 404 not-found immediately."
 					},
 					{
 						"name": "PairingController.constructor.rate",
 						"type": "RateLimitService",
-						"required": true
+						"required": true,
+						"description": "RateLimitService counts every public pairing call in the pairing bucket against relayConfig.pairingCalls. If hit() returns false, handle returns 429 rate-limited before action dispatch."
 					},
 					{
 						"name": "PairingController.constructor.access",
 						"type": "PairingAccessService",
-						"required": true
+						"required": true,
+						"description": "PairingAccessService supplies info and poll values and handles validated pairing requests. Missing info or poll values and a request result of not-found return 404; other string request results return 409."
 					},
 					{
 						"name": "PairingController.constructor.exchanges",
 						"type": "PairingExchangeService",
-						"required": true
+						"required": true,
+						"description": "PairingExchangeService performs the exchange using the route pairingId and the PairingBodyValidator verifier result. A truthy result returns 200, while a falsy result returns 400 pairing-invalid."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingController.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Initialized PairingController instance retaining the four supplied collaborators and its PairingBodyValidator."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
