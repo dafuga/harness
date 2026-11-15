@@ -37,7 +37,10 @@ export class VerificationService {
 		const directory = this.store.directoryFor(context.commit, startedAt);
 		const { plan, referenced, rerun } = this.selection();
 		const needed = context.entity ? neededBuilds(rerun) : undefined;
-		const executed = await this.snapshotRun(directory, needed).execute(plan, this.artifactPaths());
+		const executed = await this.snapshotRun(directory, needed, rerun).execute(
+			plan,
+			artifactPaths(context)
+		);
 		const scenarios = rerun.map((scenario) => this.judge(scenario, executed));
 		const assembly = new RecordAssemblyService({
 			...context,
@@ -76,17 +79,15 @@ export class VerificationService {
 		};
 	}
 
-	/** Files that declared Wasm and process targets build, to be measured in the snapshot. */
-	private artifactPaths(): string[] {
-		const built = this.context.head.manifests.flatMap(emittedTargets);
-		return [...new Set(built.map((target) => target.entry))];
-	}
-
 	/** A scoped run passes the builds its scenarios need; a full run passes none. */
-	private snapshotRun(directory: string, needed?: ReadonlySet<string> | 'all'): SnapshotRunService {
+	private snapshotRun(
+		directory: string,
+		needed?: ReadonlySet<string> | 'all',
+		videos: ScenarioManifest[] = []
+	): SnapshotRunService {
 		const { root, config, commit, tree, env } = this.context;
 		const context = { directory, commit, tree, profile: this.profile.id, env };
-		return new SnapshotRunService({ root, config, context, needed });
+		return new SnapshotRunService({ root, config, context, needed, videos });
 	}
 
 	/**
@@ -119,6 +120,7 @@ export class VerificationService {
 			commit: this.context.commit,
 			gathered: own.flatMap((outcome) => outcome.gathered),
 			checkFailed: own.some((outcome) => !outcome.passed),
+			videoSlots: executed.videoSlots?.[scenario.id],
 			builds
 		});
 		const ran = own.length === scenario.tests.length;
@@ -137,4 +139,10 @@ export class VerificationService {
 			failures: [...failures, ...(this.context.entity ? [scopeFailure(this.context.entity)] : [])]
 		};
 	}
+}
+
+/** Files that declared Wasm and process targets build, to be measured in the snapshot. */
+function artifactPaths(context: VerifyContext): string[] {
+	const built = context.head.manifests.flatMap(emittedTargets);
+	return [...new Set(built.map((target) => target.entry))];
 }

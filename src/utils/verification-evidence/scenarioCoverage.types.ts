@@ -10,6 +10,8 @@ export interface CoverageInput {
 	gathered: Gathered[];
 	/** True when a check that produced these captures failed or timed out. */
 	checkFailed: boolean;
+	/** Input hashes computed from this run's exact clean snapshot, before checks execute. */
+	videoSlots?: { unit: string; clipId: string; viewport: string; inputHash: string }[];
 	/** The builds the project declares, and the identity of each one setup compiled. */
 	builds?: { declared: string[]; compiled: Map<string, string> };
 }

@@ -6,6 +6,7 @@ import type {
 import { problem } from './captureProblem';
 import type { Gathered } from '../../../../utils/verification-evidence/gatherCaptures';
 import { scenarioRequirements } from '../../../../utils/verification-evidence/scenarioRequirements';
+import { videoCoverageFailures } from './videoCoverage';
 
 /** Judges gathered captures against the scenario contract: completeness, validity, freshness. */
 export function scenarioCoverage(input: CoverageInput): CoverageResult {
@@ -23,6 +24,10 @@ export function scenarioCoverage(input: CoverageInput): CoverageResult {
 			(item) => `state ${item.state} is declared missing: ${item.reason}`
 		),
 		...absent,
+		...videoCoverageFailures(
+			input,
+			gathered.filter((item) => problems.get(item) === undefined)
+		),
 		...[...problems.values()].flatMap((found) => found ?? [])
 	];
 	const failed = (item: Gathered) => input.checkFailed || problems.get(item) !== undefined;

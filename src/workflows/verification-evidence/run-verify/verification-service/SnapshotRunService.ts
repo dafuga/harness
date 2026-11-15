@@ -8,6 +8,7 @@ import { BuildIdentityService } from '../../../../services/verification-evidence
 import { CheckRunService, type CheckOutcome } from './check-run-service/CheckRunService';
 import type { CaptureLimits } from './check-run-service/captureLimits.types';
 import { scopedSetup } from './buildScope';
+import { snapshotVideoInputs } from './snapshotVideoInputs';
 
 /**
  * Exports the commit and runs setup and every check inside the export. The export is compared
@@ -32,23 +33,23 @@ export class SnapshotRunService {
 			for (const path of config.link) await snapshot.link(root, path);
 			const limits = captureLimits(config);
 			const runner = new CheckRunService({ ...context, snapshot: snapshot.directory, limits });
-			const misdeclared = snapshot.misdeclared().map(describeOutput);
+			const { videoSlots, failures } = snapshotVideoInputs(
+				snapshot.directory,
+				this.run.videos ?? []
+			);
+			const misdeclared = [...snapshot.misdeclared().map(describeOutput), ...failures];
 			const setupFailures = misdeclared.length > 0 ? misdeclared : await this.setup(runner, needed);
 			const tools = setupFailures.length > 0 ? [] : await this.tools(runner, setupFailures);
 			const wanted = config.builds.filter((build) => needed === 'all' || needed.has(build.id));
 			const compiled = await this.identities.declared(snapshot.directory, wanted);
 			await observe();
-			const outcomes: CheckOutcome[] = [];
-			for (const check of setupFailures.length > 0 ? [] : plan) {
-				outcomes.push(await runner.run(check));
-				await observe();
-			}
+			const outcomes = await checkedSnapshot(runner, plan, setupFailures, observe);
 			const artifacts = await built(snapshot, artifactPaths);
 			const [mutated, added] = [[...seen.mutated].sort(), [...seen.added].sort()];
 			const moved = await this.identities.changed(snapshot.directory, compiled.found);
 			const builds = config.builds.length > 0 ? { builds: compiled.found } : {};
 			const buildFailures = [...compiled.failures, ...moved];
-			const observed = { outcomes, mutated, added, setupFailures, tools, artifacts };
+			const observed = { outcomes, mutated, added, setupFailures, tools, artifacts, videoSlots };
 			return { ...observed, ...builds, ...skippedBuilds(config, needed), buildFailures };
 		} finally {
 			await snapshot.remove();
@@ -130,3 +131,18 @@ async function built(snapshot: SnapshotAdapter, paths: string[]): Promise<BuiltA
 }
 
 export type { SnapshotRun, Executed } from './SnapshotRunService.types';
+
+/** Observe drift after each check, including a failing check before another could undo it. */
+async function checkedSnapshot(
+	runner: CheckRunService,
+	plan: PlannedCheck[],
+	failures: string[],
+	observe: () => Promise<void>
+): Promise<CheckOutcome[]> {
+	const outcomes: CheckOutcome[] = [];
+	for (const check of failures.length > 0 ? [] : plan) {
+		outcomes.push(await runner.run(check));
+		await observe();
+	}
+	return outcomes;
+}

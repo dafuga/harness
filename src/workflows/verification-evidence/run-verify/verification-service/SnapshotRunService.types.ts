@@ -4,6 +4,8 @@ import type { RunContext } from './check-run-service/CheckRunService';
 import type { CheckOutcome } from './check-run-service/CheckRunService';
 import type { BuiltArtifacts } from '../../../../utils/development-tooling/unitMeasurements';
 import type { BuiltIdentity } from '../../../../services/verification-evidence/BuildIdentityService';
+import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
+import type { VideoSlot } from '../../../../services/verification-evidence/VideoEvidenceService.types';
 
 export interface SnapshotRun {
 	root: string;
@@ -16,9 +18,11 @@ export interface SnapshotRun {
 	 * given, runs and identifies everything.
 	 */
 	needed?: ReadonlySet<string> | 'all';
+	videos?: ScenarioManifest[];
 }
 
 export interface Executed {
+	videoSlots?: Record<string, VideoSlot[]>;
 	outcomes: CheckOutcome[];
 	/** Tracked files that setup or a check changed or deleted. */
 	mutated: string[];
