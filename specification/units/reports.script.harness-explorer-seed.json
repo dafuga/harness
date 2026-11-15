@@ -12,30 +12,51 @@
 		"symbols": ["explorerBranch", "explorerUnits", "seedExplorer"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "seedExplorer.repo",
 				"type": "VerifyRepo",
-				"required": true
+				"required": true,
+				"description": "The VerifyRepo handle that is the only way seedExplorer touches the repository: its write method for the sources, scripts/explorer.mjs and the scenario files, its harness method for two `harness units index --write` runs, and its json method to read the config unit spec before it is rewritten with write. The seed does not check the handle, so a missing handle or method only fails when the call that needs it runs."
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerBranch",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The branch name 'explorer/tip', which the source comment describes as a branch whose tip is a verified commit. A caller that puts it into an address has to encode the slash, and seedExplorer never uses it.",
+				"examples": ["explorer/tip"]
 			},
 			{
 				"name": "explorerUnits",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The unit ids of the explorer fixture under the keys page, list, row, slugify, config and service. seedExplorer's scenarios use list and row (titles-list) and slugify (slugify-run), the seed uses config to locate the config unit spec, and nothing in this module reads page or service.",
+				"examples": [
+					{
+						"page": "page.titles",
+						"list": "component.title-list",
+						"row": "component.title-row",
+						"slugify": "function.slugify",
+						"config": "config.titles",
+						"service": "service.title"
+					}
+				]
 			},
 			{
 				"name": "seedExplorer",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise that seedExplorer returns, which resolves with no value only after the config spec has been rewritten and the second `harness units index --write` has finished. It rejects if one of its repo calls does, and the calls after that one do not run."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "VerifyRepo rejection",
+				"type": "thrown",
+				"description": "The seed creates no error of its own: seedExplorer has no try/catch, so when repo.write, repo.harness or repo.json rejects, seedExplorer rejects with that same reason and skips the calls after it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "seedExplorer",
@@ -43,17 +64,25 @@
 					{
 						"name": "seedExplorer.repo",
 						"type": "VerifyRepo",
-						"required": true
+						"required": true,
+						"description": "The VerifyRepo handle that is the only way seedExplorer touches the repository: its write method for the sources, scripts/explorer.mjs and the scenario files, its harness method for two `harness units index --write` runs, and its json method to read the config unit spec before it is rewritten with write. The seed does not check the handle, so a missing handle or method only fails when the call that needs it runs."
 					}
 				],
 				"outputs": [
 					{
 						"name": "seedExplorer",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise that seedExplorer returns, which resolves with no value only after the config spec has been rewritten and the second `harness units index --write` has finished. It rejects if one of its repo calls does, and the calls after that one do not run."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "VerifyRepo rejection",
+						"type": "thrown",
+						"description": "The seed creates no error of its own: seedExplorer has no try/catch, so when repo.write, repo.harness or repo.json rejects, seedExplorer rejects with that same reason and skips the calls after it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
