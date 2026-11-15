@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { createdThread } from '../../src/components/explorer-ui/entity-view/createdThread';
-import { rememberCreatedThread } from '../../src/utils/project-agent-events/rememberCreatedThread';
+import { rememberCreatedThread } from '../../src/utils/explorer-ui/project-agent-events/rememberCreatedThread';
 import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { EntityDetail } from '../../src/models/development-tooling/Desktop.types';
 
