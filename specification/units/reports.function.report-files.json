@@ -21,62 +21,108 @@
 				"name": "reportFiles.root",
 				"type": "string",
 				"required": false,
-				"description": "Optional root override; empty falls through to environment and then the user-home default."
+				"default": "undefined",
+				"description": "Optional report-store root override; when omitted, its value is undefined. A truthy value is returned directly, while an empty string falls through to PROJECT_REPORTS_HOME and then join(homedir(), '.codex', 'project-reports').",
+				"examples": ["/srv/project-reports", ""]
 			},
 			{
 				"name": "safeId.id",
 				"type": "string",
 				"required": true,
-				"description": "Identifier containing only ASCII letters, digits, underscore or hyphen, from one to 100 characters."
+				"description": "Report or asset identifier accepted only when it matches ^[a-zA-Z0-9_-]{1,100}$. Empty strings, non-ASCII characters, other punctuation, and values longer than 100 characters throw Error.",
+				"examples": ["report-2026-11-15", "asset_01"]
 			},
 			{
 				"name": "readJson.path",
 				"type": "string",
 				"required": true,
-				"description": "JSON file to read."
+				"description": "Path passed to readFile; the file is read as UTF-8 and parsed as JSON. The helper does not create the file or validate the parsed value against a runtime schema.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/reports.function.report-files/unit.json"
+				]
 			},
 			{
 				"name": "atomicJson.path",
 				"type": "string",
 				"required": true,
-				"description": "Destination JSON path."
+				"description": "Destination path for the JSON file. Its parent directory is created recursively before the temporary file is renamed over this path.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19/packages/reports/.codex/project-reports/reports/report-2026-11-15.json"
+				]
 			},
 			{
 				"name": "atomicJson.data",
 				"type": "unknown",
 				"required": true,
-				"description": "Serializable value to write."
+				"description": "Value passed to JSON.stringify with two-space indentation before writing. Cyclic data, BigInt values, or serialization hooks can make serialization fail, and JSON.stringify can omit or transform unsupported values.",
+				"examples": [
+					{
+						"id": "report-2026-11-15",
+						"title": "Weekly report",
+						"status": "ready"
+					},
+					[
+						{
+							"id": "asset_01",
+							"path": "packages/reports/assets/asset_01.json"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportFiles",
 				"type": "unknown",
-				"description": "Explicit root, PROJECT_REPORTS_HOME, or the project-reports directory under the user’s Codex home folder."
+				"description": "Returns a string root path. A truthy root wins, then PROJECT_REPORTS_HOME, otherwise the result is join(homedir(), '.codex', 'project-reports'); an empty root does not override either fallback.",
+				"examples": ["/srv/project-reports", "/Users/danielfugere/.codex/project-reports"]
 			},
 			{
 				"name": "safeId",
 				"type": "unknown",
-				"description": "Validated identifier unchanged."
+				"description": "Returns the input string unchanged when it matches the accepted identifier pattern. Values outside that pattern throw Error with message Invalid report or asset ID.",
+				"examples": ["report-2026-11-15", "asset_01"]
 			},
 			{
 				"name": "readJson",
 				"type": "Promise<T>",
-				"description": "Promise resolving to parsed JSON cast to the requested type, without runtime shape validation."
+				"description": "Resolves with JSON.parse output cast to the requested T type. No runtime type or schema validation is performed.",
+				"examples": [
+					{
+						"id": "report-2026-11-15",
+						"status": "ready"
+					},
+					[
+						{
+							"id": "asset_01"
+						}
+					]
+				]
 			},
 			{
 				"name": "atomicJson",
 				"type": "unknown",
-				"description": "Promise that creates parent directories, writes formatted JSON to a UUID-suffixed temporary file and renames it over the destination."
+				"description": "Resolves with undefined after it creates parent directories recursively with mode 0700, writes two-space-formatted JSON to a UUID-suffixed temporary file with mode 0600, and renames that file over the destination."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid identifiers throw Invalid report or asset ID. Read, parse, serialization and filesystem failures propagate."
+				"description": "safeId throws Error with message Invalid report or asset ID when the identifier fails its pattern. Filesystem errors from readJson and atomicJson propagate."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "readJson rejects with SyntaxError when JSON.parse cannot parse the file contents."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "atomicJson can throw or reject with TypeError when JSON serialization fails for cyclic data or BigInt, or when writeFile receives an unsupported serialized result."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportFiles",
@@ -85,18 +131,21 @@
 						"name": "reportFiles.root",
 						"type": "string",
 						"required": false,
-						"description": "Optional root override; empty falls through to environment and then the user-home default."
+						"default": "undefined",
+						"description": "Optional report-store root override; when omitted, its value is undefined. A truthy value is returned directly, while an empty string falls through to PROJECT_REPORTS_HOME and then join(homedir(), '.codex', 'project-reports').",
+						"examples": ["/srv/project-reports", ""]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportFiles",
 						"type": "unknown",
-						"description": "Explicit root, PROJECT_REPORTS_HOME, or the project-reports directory under the user’s Codex home folder."
+						"description": "Returns a string root path. A truthy root wins, then PROJECT_REPORTS_HOME, otherwise the result is join(homedir(), '.codex', 'project-reports'); an empty root does not override either fallback.",
+						"examples": ["/srv/project-reports", "/Users/danielfugere/.codex/project-reports"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "safeId",
@@ -105,23 +154,26 @@
 						"name": "safeId.id",
 						"type": "string",
 						"required": true,
-						"description": "Identifier containing only ASCII letters, digits, underscore or hyphen, from one to 100 characters."
+						"description": "Report or asset identifier accepted only when it matches ^[a-zA-Z0-9_-]{1,100}$. Empty strings, non-ASCII characters, other punctuation, and values longer than 100 characters throw Error.",
+						"examples": ["report-2026-11-15", "asset_01"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "safeId",
 						"type": "unknown",
-						"description": "Validated identifier unchanged."
+						"description": "Returns the input string unchanged when it matches the accepted identifier pattern. Values outside that pattern throw Error with message Invalid report or asset ID.",
+						"examples": ["report-2026-11-15", "asset_01"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error with message Invalid report or asset ID when id does not match ^[a-zA-Z0-9_-]{1,100}$."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readJson",
@@ -130,18 +182,43 @@
 						"name": "readJson.path",
 						"type": "string",
 						"required": true,
-						"description": "JSON file to read."
+						"description": "Path passed to readFile; the file is read as UTF-8 and parsed as JSON. The helper does not create the file or validate the parsed value against a runtime schema.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/reports.function.report-files/unit.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readJson",
 						"type": "Promise<T>",
-						"description": "Promise resolving to parsed JSON cast to the requested type, without runtime shape validation."
+						"description": "Resolves with JSON.parse output cast to the requested T type. No runtime type or schema validation is performed.",
+						"examples": [
+							{
+								"id": "report-2026-11-15",
+								"status": "ready"
+							},
+							[
+								{
+									"id": "asset_01"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with a filesystem Error when readFile cannot read the requested path."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejects with SyntaxError when JSON.parse cannot parse the file contents."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "atomicJson",
@@ -150,24 +227,51 @@
 						"name": "atomicJson.path",
 						"type": "string",
 						"required": true,
-						"description": "Destination JSON path."
+						"description": "Destination path for the JSON file. Its parent directory is created recursively before the temporary file is renamed over this path.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19/packages/reports/.codex/project-reports/reports/report-2026-11-15.json"
+						]
 					},
 					{
 						"name": "atomicJson.data",
 						"type": "unknown",
 						"required": true,
-						"description": "Serializable value to write."
+						"description": "Value passed to JSON.stringify with two-space indentation before writing. Cyclic data, BigInt values, or serialization hooks can make serialization fail, and JSON.stringify can omit or transform unsupported values.",
+						"examples": [
+							{
+								"id": "report-2026-11-15",
+								"title": "Weekly report",
+								"status": "ready"
+							},
+							[
+								{
+									"id": "asset_01",
+									"path": "packages/reports/assets/asset_01.json"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "atomicJson",
 						"type": "unknown",
-						"description": "Promise that creates parent directories, writes formatted JSON to a UUID-suffixed temporary file and renames it over the destination."
+						"description": "Resolves with undefined after it creates parent directories recursively with mode 0700, writes two-space-formatted JSON to a UUID-suffixed temporary file with mode 0600, and renames that file over the destination."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with a filesystem Error if mkdir, writeFile, or rename fails."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Can throw or reject with TypeError when JSON serialization fails for cyclic data or BigInt, or when writeFile receives an unsupported serialized result."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
