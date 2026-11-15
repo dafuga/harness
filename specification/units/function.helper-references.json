@@ -28,7 +28,7 @@
 				"name": "helperReferences.code",
 				"type": "string",
 				"required": true,
-				"description": "TypeScript or JavaScript source text to inspect for actual runtime references and export forwarding.",
+				"description": "Source text to parse into runtime references, forwarding bindings and top-level class facts. Import/export declarations and type nodes are omitted from reference scanning, while export declarations can still contribute forwarding bindings.",
 				"examples": [
 					"import { slugify } from './slugify'; export function title() { return slugify('Hello'); }"
 				]
@@ -38,17 +38,32 @@
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Whether code is a Svelte component. When true, inspect its script blocks and real template expressions; defaults to false."
+				"description": "Selects whether code is preprocessed through helperTemplates before parsing. Defaults to false.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "helperReferences",
 				"type": "HelperFacts",
-				"description": "Runtime references and forwarding bindings, with actual new-expression flags and named class declarations, public instance methods and base-class bindings. Types and unused imports are not runtime references."
+				"description": "Contains recognized runtime references, top-level class facts and export forwarding bindings. Reference facts mark actual new-expression callees and caller scopes, while class facts list named top-level declarations and callable public instance members.",
+				"examples": [
+					{
+						"references": [
+							{
+								"specifier": "./slugify",
+								"imported": "slugify",
+								"caller": null
+							}
+						],
+						"classes": [],
+						"forwards": []
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "helperReferences",
@@ -57,7 +72,7 @@
 						"name": "helperReferences.code",
 						"type": "string",
 						"required": true,
-						"description": "TypeScript or JavaScript source text to inspect for actual runtime references and export forwarding.",
+						"description": "Source text to parse into runtime references, forwarding bindings and top-level class facts. Import/export declarations and type nodes are omitted from reference scanning, while export declarations can still contribute forwarding bindings.",
 						"examples": [
 							"import { slugify } from './slugify'; export function title() { return slugify('Hello'); }"
 						]
@@ -67,18 +82,32 @@
 						"type": "boolean",
 						"required": false,
 						"default": false,
-						"description": "Whether code is a Svelte component. When true, inspect its script blocks and real template expressions; defaults to false."
+						"description": "Selects whether code is preprocessed through helperTemplates before parsing. Defaults to false.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "helperReferences",
 						"type": "HelperFacts",
-						"description": "Runtime references and forwarding bindings, with actual new-expression flags and named class declarations, public instance methods and base-class bindings. Types and unused imports are not runtime references."
+						"description": "Contains recognized runtime references, top-level class facts and export forwarding bindings. Reference facts mark actual new-expression callees and caller scopes, while class facts list named top-level declarations and callable public instance members.",
+						"examples": [
+							{
+								"references": [
+									{
+										"specifier": "./slugify",
+										"imported": "slugify",
+										"caller": null
+									}
+								],
+								"classes": [],
+								"forwards": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
