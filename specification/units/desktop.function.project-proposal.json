@@ -33,35 +33,123 @@
 				"name": "projectProposal.answer",
 				"type": "string",
 				"required": true,
-				"description": "The agent response: one JSON object, optionally enclosed in one JSON Markdown fence. Trimmed response length is at most 20,000 characters. It must contain category, title, goal, proposal and contract only."
+				"description": "The agent's answer: one JSON object, optionally wrapped in one Markdown code fence labelled json or unlabelled, with the fence on its own lines. The trimmed answer is at most 20,000 characters, and the object must have exactly the fields category, title, goal, proposal and contract.",
+				"examples": [
+					"{\"category\":\"functions\",\"title\":\"Evidence row formatter\",\"goal\":\"Turn the check results of one unit into the rows of the evidence grid.\",\"proposal\":\"A pure function over the list of check results. It returns one row per result, in the order the checks ran, and writes nothing.\",\"contract\":{\"inputs\":[{\"name\":\"results\",\"type\":\"CheckResult[]\"}],\"outputs\":[{\"name\":\"rows\",\"type\":\"EvidenceRow[]\"}],\"errors\":[\"A result without a check name is refused.\"]}}",
+					"```json\n{\"category\":\"components\",\"title\":\"Evidence grid\",\"goal\":\"Show one row per unit check with its verification state.\",\"proposal\":\"A read-only table. Each row shows the unit, the check and its state; no row is edited in place.\",\"contract\":{\"inputs\":[{\"name\":\"rows\",\"type\":\"EvidenceRow[]\"}],\"outputs\":[],\"errors\":[]}}\n```"
+				]
 			},
 			{
 				"name": "proposalPrompt.request",
 				"type": "Pick<ProjectRunRequest, 'category' | 'text'>",
 				"required": true,
-				"description": "The requested catalog category and text. The category is presented as a hint, not forced as the proposal’s final category."
+				"description": "It holds the catalog category the request was made in and the request text. The category reaches the agent only as a hint, and the text is appended after the line 'Request:'.",
+				"examples": [
+					{
+						"category": "functions",
+						"text": "Add a function that formats the check results of a unit as the rows of the evidence grid."
+					},
+					{
+						"category": "components",
+						"text": "Add a read-only panel that lists the units whose verification is unknown."
+					}
+				]
 			},
 			{
 				"name": "proposalPrompt.known",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Known unit identities to include as allowed references; defaults to an empty list."
+				"description": "These are the registered unit ids the notes may name. referencePrompt drops any that is not a unit id (two or more dot-separated segments of lower-case letters, digits and hyphens, each starting with a letter, at most 200 characters), drops repeats and lists at most 120; the default, an empty list, names no unit.",
+				"examples": [
+					[],
+					["desktop.function.reference-prompt"],
+					["desktop.model.desktop-types", "desktop.model.desktop-bridge-types"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectProposal",
 				"type": "ProjectProposal",
-				"description": "A proposal in one of the six catalog categories, with trimmed title, goal and notes. Title is at most 160 characters and cannot look like a path; goal is at most 600 and notes at most 6,000 with no code fences. Contract inputs, outputs and errors are required lists of at most 24 items. Field names/types and error strings are nonblank and at most 160 characters; duplicate errors are refused. Invalid answers throw before any write."
+				"description": "A proposal whose category is one of the eight catalog categories and whose title, goal and proposal (the notes) are trimmed: title is at most 160 characters with no slash, backslash, control character or '..', and not starting with '.' or '~'; goal is at most 600 characters; proposal is at most 6,000 characters with no triple backtick. Its contract has required inputs, outputs and errors lists of at most 24 entries each, where every name, type and error is non-blank text of at most 160 characters, kept as written, and a repeated error is refused; an invalid answer throws before anything is written.",
+				"examples": [
+					{
+						"category": "functions",
+						"title": "Evidence row formatter",
+						"goal": "Turn the check results of one unit into the rows of the evidence grid.",
+						"proposal": "A pure function over the list of check results. It returns one row per result, in the order the checks ran, and writes nothing.",
+						"contract": {
+							"inputs": [
+								{
+									"name": "results",
+									"type": "CheckResult[]"
+								}
+							],
+							"outputs": [
+								{
+									"name": "rows",
+									"type": "EvidenceRow[]"
+								}
+							],
+							"errors": ["A result without a check name is refused."]
+						}
+					},
+					{
+						"category": "components",
+						"title": "Evidence grid",
+						"goal": "Show one row per unit check with its verification state.",
+						"proposal": "A read-only table. Each row shows the unit, the check and its state; no row is edited in place.",
+						"contract": {
+							"inputs": [
+								{
+									"name": "rows",
+									"type": "EvidenceRow[]"
+								}
+							],
+							"outputs": [],
+							"errors": []
+						}
+					}
+				]
 			},
 			{
 				"name": "proposalPrompt",
 				"type": "string",
-				"description": "A prompt requesting exactly that proposal shape, allowing registry/contracts reading, forbidding writes and other units’ implementation reads, and appending the request and allowed references. It generates instructions only."
+				"description": "The full instruction text for one proposal run: it asks for one JSON object with exactly the five fields, the eight categories and contract lists of at most 24 entries of at most 160 characters each; it allows reading AGENTS.md, the specifications and the unit registry with its contracts, forbids writes and reading other registered units' implementation, lists the known unit ids as allowed references, and ends with the catalog hint and the request text. It only builds this text: it writes nothing and calls no agent.",
+				"examples": [
+					"Propose one new unit for this project. Write nothing.\nYou may read AGENTS.md, the specifications and the unit registry with its contracts. Do not\nread the implementation of other registered units: rely on their contracts alone.\nAnswer with one JSON object and nothing else, with exactly these five fields:\n{\"category\": one of pages, apis, layouts, components, functions, configs, services, models, \"title\": a short name in plain words,\n\"goal\": one sentence saying what it is responsible for, \"proposal\": precise design or\n\"contract\": {\"inputs\": [{\"name\", \"type\"}], \"outputs\": [{\"name\", \"type\"}],\n\"errors\": [text]}}. A list holds at most 24 entries of at most 160\ncharacters each, and may be empty.\nThe title is a name, never a path or a file name. The notes hold no source code, no file\npaths, no instruction to write files and no claim that anything was built, run or verified.\nCode is written only after a person approves the plan.\nName a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. Name a unit that is not listed here in plain words.\nUnits you may name: none\nThe notes may name existing units so; the title names the new unit in plain words.\nThe request was made in the functions catalog. That is a hint: choose the kind\nthe request describes.\nRequest:\nAdd a function that formats the check results of a unit as the rows of the evidence grid."
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'The agent's proposal was not used: it is too long.' when the trimmed answer is over 20,000 characters. It is also thrown with 'The agent's proposal was not used: it is not one JSON object.' when, after one optional code fence is removed, the answer does not parse to one JSON object (text that does not parse, a primitive, null or an array)."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with 'it has the unknown field <field>.' when the object has a field other than category, title, goal, proposal and contract; the field name is cut to 40 characters. It is also thrown with 'its category is unknown.' when category is not one of the eight catalog categories."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with 'its title is empty, too long or not text.' (or the same message for goal or proposal) when that field is missing, is not text, is empty after trimming, or is longer than its limit of 160 characters for the title, 600 for the goal or 6,000 for the proposal. It is also thrown with 'its title reads as a path.' when the title holds a slash, a backslash, a control character or '..', or starts with '.' or '~', and with 'its notes hold source code.' when the proposal contains three backticks in a row."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with 'its contract is not one JSON object.' or 'its contract has the unknown field <field>.' when contract is missing or is not an object with only inputs, outputs and errors. It is also thrown with 'its contract inputs are not a list of at most 24.' (or the same message for outputs or errors) when that list is missing, is not an array or has more than 24 entries."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with 'a contract field is not one JSON object.' or 'a contract field has the unknown field <field>.' when an input or output is not an object with only name and type, and with 'a contract name is empty, too long or not text.' (type or error in place of name, for those values) when that value is missing, is not text, is empty after trimming or is longer than 160 characters. It is also thrown with 'its contract repeats an error.' when two errors are the same string."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "projectProposal",
@@ -70,18 +158,87 @@
 						"name": "projectProposal.answer",
 						"type": "string",
 						"required": true,
-						"description": "The agent response: one JSON object, optionally enclosed in one JSON Markdown fence. Trimmed response length is at most 20,000 characters. It must contain category, title, goal, proposal and contract only."
+						"description": "The agent's answer: one JSON object, optionally wrapped in one Markdown code fence labelled json or unlabelled, with the fence on its own lines. The trimmed answer is at most 20,000 characters, and the object must have exactly the fields category, title, goal, proposal and contract.",
+						"examples": [
+							"{\"category\":\"functions\",\"title\":\"Evidence row formatter\",\"goal\":\"Turn the check results of one unit into the rows of the evidence grid.\",\"proposal\":\"A pure function over the list of check results. It returns one row per result, in the order the checks ran, and writes nothing.\",\"contract\":{\"inputs\":[{\"name\":\"results\",\"type\":\"CheckResult[]\"}],\"outputs\":[{\"name\":\"rows\",\"type\":\"EvidenceRow[]\"}],\"errors\":[\"A result without a check name is refused.\"]}}",
+							"```json\n{\"category\":\"components\",\"title\":\"Evidence grid\",\"goal\":\"Show one row per unit check with its verification state.\",\"proposal\":\"A read-only table. Each row shows the unit, the check and its state; no row is edited in place.\",\"contract\":{\"inputs\":[{\"name\":\"rows\",\"type\":\"EvidenceRow[]\"}],\"outputs\":[],\"errors\":[]}}\n```"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectProposal",
 						"type": "ProjectProposal",
-						"description": "A proposal in one of the six catalog categories, with trimmed title, goal and notes. Title is at most 160 characters and cannot look like a path; goal is at most 600 and notes at most 6,000 with no code fences. Contract inputs, outputs and errors are required lists of at most 24 items. Field names/types and error strings are nonblank and at most 160 characters; duplicate errors are refused. Invalid answers throw before any write."
+						"description": "A proposal whose category is one of the eight catalog categories and whose title, goal and proposal (the notes) are trimmed: title is at most 160 characters with no slash, backslash, control character or '..', and not starting with '.' or '~'; goal is at most 600 characters; proposal is at most 6,000 characters with no triple backtick. Its contract has required inputs, outputs and errors lists of at most 24 entries each, where every name, type and error is non-blank text of at most 160 characters, kept as written, and a repeated error is refused; an invalid answer throws before anything is written.",
+						"examples": [
+							{
+								"category": "functions",
+								"title": "Evidence row formatter",
+								"goal": "Turn the check results of one unit into the rows of the evidence grid.",
+								"proposal": "A pure function over the list of check results. It returns one row per result, in the order the checks ran, and writes nothing.",
+								"contract": {
+									"inputs": [
+										{
+											"name": "results",
+											"type": "CheckResult[]"
+										}
+									],
+									"outputs": [
+										{
+											"name": "rows",
+											"type": "EvidenceRow[]"
+										}
+									],
+									"errors": ["A result without a check name is refused."]
+								}
+							},
+							{
+								"category": "components",
+								"title": "Evidence grid",
+								"goal": "Show one row per unit check with its verification state.",
+								"proposal": "A read-only table. Each row shows the unit, the check and its state; no row is edited in place.",
+								"contract": {
+									"inputs": [
+										{
+											"name": "rows",
+											"type": "EvidenceRow[]"
+										}
+									],
+									"outputs": [],
+									"errors": []
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'The agent's proposal was not used: it is too long.' when the trimmed answer is over 20,000 characters. It is also thrown with 'The agent's proposal was not used: it is not one JSON object.' when, after one optional code fence is removed, the answer does not parse to one JSON object (text that does not parse, a primitive, null or an array)."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'it has the unknown field <field>.' when the object has a field other than category, title, goal, proposal and contract; the field name is cut to 40 characters. It is also thrown with 'its category is unknown.' when category is not one of the eight catalog categories."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'its title is empty, too long or not text.' (or the same message for goal or proposal) when that field is missing, is not text, is empty after trimming, or is longer than its limit of 160 characters for the title, 600 for the goal or 6,000 for the proposal. It is also thrown with 'its title reads as a path.' when the title holds a slash, a backslash, a control character or '..', or starts with '.' or '~', and with 'its notes hold source code.' when the proposal contains three backticks in a row."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'its contract is not one JSON object.' or 'its contract has the unknown field <field>.' when contract is missing or is not an object with only inputs, outputs and errors. It is also thrown with 'its contract inputs are not a list of at most 24.' (or the same message for outputs or errors) when that list is missing, is not an array or has more than 24 entries."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'a contract field is not one JSON object.' or 'a contract field has the unknown field <field>.' when an input or output is not an object with only name and type, and with 'a contract name is empty, too long or not text.' (type or error in place of name, for those values) when that value is missing, is not text, is empty after trimming or is longer than 160 characters. It is also thrown with 'its contract repeats an error.' when two errors are the same string."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "proposalPrompt",
@@ -90,25 +247,43 @@
 						"name": "proposalPrompt.request",
 						"type": "Pick<ProjectRunRequest, 'category' | 'text'>",
 						"required": true,
-						"description": "The requested catalog category and text. The category is presented as a hint, not forced as the proposal’s final category."
+						"description": "It holds the catalog category the request was made in and the request text. The category reaches the agent only as a hint, and the text is appended after the line 'Request:'.",
+						"examples": [
+							{
+								"category": "functions",
+								"text": "Add a function that formats the check results of a unit as the rows of the evidence grid."
+							},
+							{
+								"category": "components",
+								"text": "Add a read-only panel that lists the units whose verification is unknown."
+							}
+						]
 					},
 					{
 						"name": "proposalPrompt.known",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Known unit identities to include as allowed references; defaults to an empty list."
+						"description": "These are the registered unit ids the notes may name. referencePrompt drops any that is not a unit id (two or more dot-separated segments of lower-case letters, digits and hyphens, each starting with a letter, at most 200 characters), drops repeats and lists at most 120; the default, an empty list, names no unit.",
+						"examples": [
+							[],
+							["desktop.function.reference-prompt"],
+							["desktop.model.desktop-types", "desktop.model.desktop-bridge-types"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "proposalPrompt",
 						"type": "string",
-						"description": "A prompt requesting exactly that proposal shape, allowing registry/contracts reading, forbidding writes and other units’ implementation reads, and appending the request and allowed references. It generates instructions only."
+						"description": "The full instruction text for one proposal run: it asks for one JSON object with exactly the five fields, the eight categories and contract lists of at most 24 entries of at most 160 characters each; it allows reading AGENTS.md, the specifications and the unit registry with its contracts, forbids writes and reading other registered units' implementation, lists the known unit ids as allowed references, and ends with the catalog hint and the request text. It only builds this text: it writes nothing and calls no agent.",
+						"examples": [
+							"Propose one new unit for this project. Write nothing.\nYou may read AGENTS.md, the specifications and the unit registry with its contracts. Do not\nread the implementation of other registered units: rely on their contracts alone.\nAnswer with one JSON object and nothing else, with exactly these five fields:\n{\"category\": one of pages, apis, layouts, components, functions, configs, services, models, \"title\": a short name in plain words,\n\"goal\": one sentence saying what it is responsible for, \"proposal\": precise design or\n\"contract\": {\"inputs\": [{\"name\", \"type\"}], \"outputs\": [{\"name\", \"type\"}],\n\"errors\": [text]}}. A list holds at most 24 entries of at most 160\ncharacters each, and may be empty.\nThe title is a name, never a path or a file name. The notes hold no source code, no file\npaths, no instruction to write files and no claim that anything was built, run or verified.\nCode is written only after a person approves the plan.\nName a unit as [[unit:<id>]] with its registered id, never by a file name, a path or a\nguessed id. Name a unit that is not listed here in plain words.\nUnits you may name: none\nThe notes may name existing units so; the title names the new unit in plain words.\nThe request was made in the functions catalog. That is a hint: choose the kind\nthe request describes.\nRequest:\nAdd a function that formats the check results of a unit as the rows of the evidence grid."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
