@@ -153,9 +153,12 @@ export function assertProjectBootstrap(environment: Record<string, string>) {
 	const root = repository;
 	for (const first of [
 		"import {unitIdPattern} from './src/core/unitTypes';",
-		"import {PerformanceProfileService} from './src/services/verification-evidence/PerformanceProfileService';"
+		"import {PerformanceProfileService} from './src/services/verification-evidence/PerformanceProfileService';",
+		"import {videoManifestSchema} from './src/utils/verification-evidence/videoClipSchema';",
+		"import {captureSchema} from './src/core/verification-evidence/verificationTypes';"
 	])
 		assertColdBootstrap(root, environment, first);
+	return 4;
 }
 
 function assertColdBootstrap(root: string, environment: Record<string, string>, first: string) {
@@ -168,8 +171,11 @@ function assertColdBootstrap(root: string, environment: Record<string, string>, 
 			`${first}
 import {componentManifestSchema} from './src/core/unitTypes';
 import {PerformanceProfileService as Profiler} from './src/services/verification-evidence/PerformanceProfileService';
+import {videoManifestSchema as Videos,videoCaptureSchema as Capture} from './src/utils/verification-evidence/videoClipSchema';
+const validVideo=Videos.safeParse({schemaVersion:1,viewports:[{id:'desktop',width:920,height:700}],clips:[],graphs:[],playlists:[]}).success;
+const invalidCapture=Capture.safeParse({}).success === false;
 const profiler = new Profiler();
-console.log(profiler.observe({unit:'function.real',workload:'cold-bootstrap'},()=>componentManifestSchema.safeParse({}).success === false));`
+console.log(profiler.observe({unit:'function.real',workload:'cold-bootstrap'},()=>validVideo && invalidCapture && componentManifestSchema.safeParse({}).success === false));`
 		],
 		{
 			cwd: root,
