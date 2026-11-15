@@ -1,11 +1,11 @@
 // @harness-uid u_slsujlaboc
-import type { PairingOffer } from '../../../../../remote/src/utils/pairingOffer';
+import type { PairingOffer } from '../../../../../remote/src/utils/networking-security/pairingOffer';
 import {
 	offerEnvironment,
 	written,
 	offerRules,
 	shape
-} from '../../../../../remote/src/utils/pairingOffer';
+} from '../../../../../remote/src/utils/networking-security/pairingOffer';
 
 /**
  * The text of the QR code for an offer: its fields in one fixed order and nothing else. It is

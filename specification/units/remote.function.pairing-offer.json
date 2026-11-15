@@ -13,8 +13,7 @@
 			"packages/remote/src/services/device-pairing-service/pairingOffer.ts",
 			"packages/remote/src/services/networking-security/device-pairing-service/pairingOffer.ts",
 			"packages/remote/src/utils/networking-security/pairingOffer.ts",
-			"packages/remote/src/utils/networking-security/pairingOffer.types.ts",
-			"packages/remote/src/utils/pairingOffer.ts"
+			"packages/remote/src/utils/networking-security/pairingOffer.types.ts"
 		],
 		"symbols": [
 			"pairingOffer",
@@ -35,13 +34,7 @@
 			"OfferEnvironment",
 			"OfferRefusal",
 			"OfferReading",
-			"OfferRead",
-			"pairingOffer",
-			"readPairingOffer",
-			"offerRules",
-			"shape",
-			"offerEnvironment",
-			"written"
+			"OfferRead"
 		]
 	},
 	"contract": {

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { relayOrigin, relaySocketUrl } from '../../src/utils/relayOrigin';
+import { relayOrigin, relaySocketUrl } from '../../src/utils/networking-security/relayOrigin';
 
 const hostId = 'a'.repeat(40);
 test('only an exact https origin, or loopback http, is a relay origin', () => {

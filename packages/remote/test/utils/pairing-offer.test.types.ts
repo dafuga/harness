@@ -1,5 +1,5 @@
-import type { PairingOffer } from '../../src/utils/pairingOffer';
-import type { OfferEnvironment } from '../../src/utils/pairingOffer';
+import type { PairingOffer } from '../../src/utils/networking-security/pairingOffer';
+import type { OfferEnvironment } from '../../src/utils/networking-security/pairingOffer';
 
 export interface OfferVectors {
 	now: number;

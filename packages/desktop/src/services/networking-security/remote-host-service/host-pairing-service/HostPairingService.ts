@@ -15,7 +15,7 @@ import {
 	openPairing,
 	pairingEnvelope,
 	sealPairing
-} from '../../../../../../remote/src/utils/pairingEnvelope';
+} from '../../../../../../remote/src/utils/networking-security/pairingEnvelope';
 import { fromBase64Url, safeEqual } from '../../../../../../remote/src/utils/remoteBytes';
 import {
 	normalizeCode,

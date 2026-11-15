@@ -1,6 +1,10 @@
 import { expect, test } from 'vitest';
 import { importRemoteKeys, sharedSecret } from '../../src/utils/remoteKeys';
-import { openPairing, pairingEnvelope, sealPairing } from '../../src/utils/pairingEnvelope';
+import {
+	openPairing,
+	pairingEnvelope,
+	sealPairing
+} from '../../src/utils/networking-security/pairingEnvelope';
 import { vectors } from '../support/vectors';
 
 const { pairing } = vectors;

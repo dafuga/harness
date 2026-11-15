@@ -3,7 +3,7 @@ import { SecureFailure } from '../../src/models/RemoteSecure.types';
 import { bytesText, fromBase64Url, remoteBytes } from '../../src/utils/remoteBytes';
 import { aesKey } from '../../src/utils/remoteKeys';
 import { openPacket, sealPacket } from '../../src/services/secure-channel-service/sealPacket';
-import type { SealContext } from '../../src/utils/sealPacket';
+import type { SealContext } from '../../src/utils/networking-security/sealPacket';
 
 const context = async (fill = 7): Promise<SealContext> => ({
 	key: await aesKey(new Uint8Array(32).fill(fill)),

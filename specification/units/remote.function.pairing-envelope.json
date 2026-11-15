@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/utils/networking-security/pairingEnvelope.ts",
-			"packages/remote/src/utils/networking-security/pairingEnvelope.types.ts",
-			"packages/remote/src/utils/pairingEnvelope.ts"
+			"packages/remote/src/utils/networking-security/pairingEnvelope.types.ts"
 		],
 		"symbols": [
 			"pairingEnvelope",
@@ -22,10 +21,7 @@
 			"PairingKeys",
 			"PairingContext",
 			"PairingKind",
-			"PairingKeys",
-			"pairingEnvelope",
-			"sealPairing",
-			"openPairing"
+			"PairingKeys"
 		]
 	},
 	"contract": {
