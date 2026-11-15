@@ -30,54 +30,112 @@
 				"name": "AnnotatedImage.src",
 				"type": "string",
 				"required": true,
-				"description": "Required image URL. A nonempty source change clears drawn and selected-thread regions. No dedicated image-load failure message is provided."
+				"description": "Image URL set as the image element's src; the component does not validate it. A change to a nonempty value clears the drawn region and the selected thread's region, and no load-failure message is shown.",
+				"examples": [
+					"blob:harness://app/7d2e4f1a-9c0b-4e6d-8a53-b1f2c3d4e5a6",
+					"blob:harness://app/0c9f3e2a-5b71-4d8e-9f06-2a7b4c1e8d35"
+				]
 			},
 			{
 				"name": "AnnotatedImage.title",
 				"type": "string",
 				"required": true,
-				"description": "Required alternative text for the image."
+				"description": "Alternative text set as the image's alt attribute; the component uses it nowhere else and does not check its value.",
+				"examples": [
+					"Checkout summary v012 desktop default",
+					"Checkout summary v003 Option 2 mobile empty"
+				]
 			},
 			{
 				"name": "AnnotatedImage.caption",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional text above the image, empty by default."
+				"description": "Optional text shown in a strong element in the action bar before the image; nothing is rendered when it is empty, and the default is an empty string.",
+				"examples": ["After · v012", ""]
 			},
 			{
 				"name": "AnnotatedImage.threads",
 				"type": "ThreadInfo[]",
 				"required": true,
-				"description": "Required thread records. Those with regions become numbered pins; clicking one highlights its region and calls select. Threads without regions have no pins."
+				"description": "Thread records; each one with a region becomes a pin labeled with its numeric pin at the region's x and y, and a thread whose region is null gets no pin. Clicking a pin highlights that region and calls select with that thread.",
+				"examples": [
+					[
+						{
+							"id": "5e7d9b30-2f14-4c8a-b6e2-91a4d0c7f5e8",
+							"pin": 1,
+							"version": "v012",
+							"imageSha256": "4c9e1f7ab2d8035e91a6c4f27d0e5b83e6f1a92c0b47d8e53a9c61f0d2b74e18",
+							"state": "default",
+							"viewport": "desktop",
+							"region": {
+								"x": 0.42,
+								"y": 0.18,
+								"width": 0.2,
+								"height": 0.12
+							},
+							"messageCount": 3
+						},
+						{
+							"id": "c1f0a2d4-7e3b-4a9c-8d51-2b6e0f9a3c17",
+							"pin": 2,
+							"version": "v012",
+							"imageSha256": "4c9e1f7ab2d8035e91a6c4f27d0e5b83e6f1a92c0b47d8e53a9c61f0d2b74e18",
+							"state": "default",
+							"viewport": "desktop",
+							"region": null,
+							"messageCount": 1
+						}
+					],
+					[
+						{
+							"id": "0f3a6c91-58d2-4e7b-9a14-6c2e8d0b5f73",
+							"pin": 1,
+							"version": "v003",
+							"imageSha256": "a13f5c097e2d84b6c0f9a31e5d6b27c419e8f3a0b5c72d6ef4091a8b2e6c5d37",
+							"state": "empty",
+							"viewport": "mobile",
+							"region": {
+								"x": 0.1,
+								"y": 0.55,
+								"width": 0.8,
+								"height": 0.3
+							},
+							"messageCount": 2
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "AnnotatedImage.writable",
 				"type": "boolean",
 				"required": true,
-				"description": "Enables whole-image and keyboard-region actions and permits starting pointer selection. Existing pins remain available when false. Already-created selections and an already-open keyboard form do not recheck this flag at submission."
+				"description": "Enables the whole-image and keyboard-region buttons and lets a pointer drag start a selection; when false, those buttons are disabled and no drag can start, but pins stay clickable. A selection already made or a keyboard form already open is still submitted without rechecking this value.",
+				"examples": [true, false]
 			},
 			{
 				"name": "AnnotatedImage.comment",
 				"type": "(region: Region | null) => void",
 				"required": true,
-				"description": "Called with null for the whole image or a rectangle in fractions of image dimensions. Pointer rectangles smaller than one percent in either dimension are discarded. Keyboard percentages are converted to fractions and dimensions capped at the remaining image area. Errors are not caught here."
+				"description": "Called with null for the whole-image action, or with a rectangle whose x, y, width and height are fractions of the image size. Pointer rectangles under 1% in width or height are discarded, keyboard width and height are capped at the space left after x and y, and errors thrown by this callback are not caught."
 			},
 			{
 				"name": "AnnotatedImage.select",
 				"type": "(thread: ThreadInfo) => void",
 				"required": true,
-				"description": "Called with an existing thread when its pin is clicked; the component also highlights its region."
+				"description": "Called only when a pin is clicked, with the thread object from threads; the component highlights that thread's region before the call. Errors thrown by this callback are not caught."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AnnotatedImage",
 				"type": "markup",
-				"description": "Image viewer with full-size toggle, thread pins and drag/numeric-region selection. Keyboard defaults are x=10%, y=10%, width=40%, height=30%. A completed region offers a comment action. Calling comment does not itself persist a comment."
+				"description": "Image viewer with a full-size toggle, thread pins, drag selection, and a keyboard form for region percentages whose defaults are x=10%, y=10%, width=40% and height=30%. A drawn region shows a Comment on selection button, and calling comment does not itself persist a comment."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
