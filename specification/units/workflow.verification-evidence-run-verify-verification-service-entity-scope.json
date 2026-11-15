@@ -14,55 +14,354 @@
 		"symbols": ["scopeFailure", "scopedScenarios", "scopedCheck"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "scopeFailure.entity",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The entity the record is scoped to, written into the statement exactly as given. The function does not check that any scenario covers it.",
+				"examples": ["reports.component.evidence-grid", "reports.component.run-summary"]
 			},
 			{
 				"name": "scopedScenarios.scenarios",
 				"type": "ScenarioManifest[]",
-				"required": true
+				"required": true,
+				"description": "The scenario manifests to narrow: only those whose units list includes the entity are kept, in their original order, and the input objects are not changed. If none of them covers the entity, the function fails.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "component-catalog-previews",
+							"title": "Component catalog previews",
+							"kind": "ui",
+							"units": ["reports.component.evidence-grid", "reports.component.run-summary"],
+							"states": [
+								{
+									"id": "default",
+									"title": "Default",
+									"coverage": "required"
+								},
+								{
+									"id": "empty",
+									"title": "No evidence",
+									"coverage": "required",
+									"units": ["reports.component.evidence-grid"]
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1280,
+									"height": 800
+								}
+							],
+							"tests": [
+								{
+									"id": "reports.component.evidence-grid",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/component-catalog.spec.ts"
+								},
+								{
+									"id": "reports.component.run-summary",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/component-catalog.spec.ts"
+								}
+							],
+							"evidence": [
+								{
+									"id": "component-catalog-screenshot",
+									"kind": "screenshot",
+									"states": ["default", "empty"],
+									"viewports": ["desktop"],
+									"capture": "element",
+									"required": true
+								}
+							]
+						}
+					],
+					[
+						{
+							"schemaVersion": 1,
+							"id": "component-catalog-previews",
+							"title": "Component catalog previews",
+							"kind": "ui",
+							"units": ["reports.component.evidence-grid", "reports.component.run-summary"],
+							"states": [
+								{
+									"id": "default",
+									"title": "Default",
+									"coverage": "required"
+								},
+								{
+									"id": "empty",
+									"title": "No evidence",
+									"coverage": "required",
+									"units": ["reports.component.evidence-grid"]
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1280,
+									"height": 800
+								}
+							],
+							"tests": [
+								{
+									"id": "reports.component.evidence-grid",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/component-catalog.spec.ts"
+								},
+								{
+									"id": "reports.component.run-summary",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/component-catalog.spec.ts"
+								}
+							],
+							"evidence": [
+								{
+									"id": "component-catalog-screenshot",
+									"kind": "screenshot",
+									"states": ["default", "empty"],
+									"viewports": ["desktop"],
+									"capture": "element",
+									"required": true
+								}
+							]
+						},
+						{
+							"schemaVersion": 1,
+							"id": "reports-page",
+							"title": "Reports page",
+							"kind": "ui",
+							"units": ["reports.page.overview"],
+							"states": [
+								{
+									"id": "loaded",
+									"title": "Loaded",
+									"coverage": "required"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1280,
+									"height": 800
+								}
+							],
+							"tests": [
+								{
+									"id": "reports-page",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/reports-page.spec.ts"
+								}
+							],
+							"evidence": []
+						}
+					]
+				]
 			},
 			{
 				"name": "scopedScenarios.entity",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The entity to narrow to, matched exactly against each scenario's units and each state's units; in a scenario where some state names it, only the states that name it are kept, and otherwise only the states whose units are missing or empty are kept. An entity no scenario covers makes the function fail.",
+				"examples": ["reports.component.evidence-grid", "reports.component.run-summary"]
 			},
 			{
 				"name": "scopedCheck.check",
 				"type": "PlannedCheck",
-				"required": true
+				"required": true,
+				"description": "The planned check to narrow: it is returned unchanged unless its scenario is component-catalog-previews, it runs Playwright (runner 'playwright' or a command containing 'playwright test'), and its command has no --grep or -g option yet. Only its scenario, runner and command decide whether it is narrowed.",
+				"examples": [
+					{
+						"id": "component-catalog-previews:reports.component.evidence-grid",
+						"scenario": "component-catalog-previews",
+						"name": "reports.component.evidence-grid",
+						"kind": "e2e",
+						"runner": "playwright",
+						"target": "tests/e2e/component-catalog.spec.ts",
+						"cwd": ".",
+						"command": "bun x playwright test tests/e2e/component-catalog.spec.ts",
+						"timeoutMs": 600000
+					},
+					{
+						"id": "component-catalog-previews:reports.component.run-summary",
+						"scenario": "component-catalog-previews",
+						"name": "reports.component.run-summary",
+						"kind": "e2e",
+						"runner": "playwright",
+						"target": "tests/e2e/component-catalog.spec.ts",
+						"cwd": ".",
+						"command": "bun x playwright test tests/e2e/component-catalog.spec.ts --grep 'reports.component.run-summary'",
+						"timeoutMs": 600000
+					}
+				]
 			},
 			{
 				"name": "scopedCheck.entity",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The entity whose test titles the added --grep selects: its regex characters are escaped, and the pattern matches it at the start of a title or after a space, optionally followed by ':<state>' and then ' at '. The pattern is wrapped in single quotes in the command with no further escaping.",
+				"examples": ["reports.component.evidence-grid", "reports.component.run-summary"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scopeFailure",
-				"type": "string"
+				"type": "string",
+				"description": "The statement a scoped record carries: it names the entity and says only its scenario states ran, so the record is partial and never a full pass. It is built from the entity alone.",
+				"examples": [
+					"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass.",
+					"Scoped to reports.component.run-summary: only its scenario states ran, so this record is partial and never a full pass."
+				]
 			},
 			{
 				"name": "scopedScenarios",
-				"type": "ScenarioManifest[]"
+				"type": "ScenarioManifest[]",
+				"description": "Each covering scenario, in input order, with units set to only the entity, its states narrowed by the rule described for the entity input, and each evidence item's states narrowed to the kept states. The list is never empty, because an entity no scenario covers makes the function fail.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "component-catalog-previews",
+							"title": "Component catalog previews",
+							"kind": "ui",
+							"units": ["reports.component.evidence-grid"],
+							"states": [
+								{
+									"id": "empty",
+									"title": "No evidence",
+									"coverage": "required",
+									"units": ["reports.component.evidence-grid"]
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1280,
+									"height": 800
+								}
+							],
+							"tests": [
+								{
+									"id": "reports.component.evidence-grid",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/component-catalog.spec.ts"
+								},
+								{
+									"id": "reports.component.run-summary",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/component-catalog.spec.ts"
+								}
+							],
+							"evidence": [
+								{
+									"id": "component-catalog-screenshot",
+									"kind": "screenshot",
+									"states": ["empty"],
+									"viewports": ["desktop"],
+									"capture": "element",
+									"required": true
+								}
+							]
+						}
+					],
+					[
+						{
+							"schemaVersion": 1,
+							"id": "component-catalog-previews",
+							"title": "Component catalog previews",
+							"kind": "ui",
+							"units": ["reports.component.run-summary"],
+							"states": [
+								{
+									"id": "default",
+									"title": "Default",
+									"coverage": "required"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1280,
+									"height": 800
+								}
+							],
+							"tests": [
+								{
+									"id": "reports.component.evidence-grid",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/component-catalog.spec.ts"
+								},
+								{
+									"id": "reports.component.run-summary",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/component-catalog.spec.ts"
+								}
+							],
+							"evidence": [
+								{
+									"id": "component-catalog-screenshot",
+									"kind": "screenshot",
+									"states": ["default"],
+									"viewports": ["desktop"],
+									"capture": "element",
+									"required": true
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "scopedCheck",
-				"type": "PlannedCheck"
+				"type": "PlannedCheck",
+				"description": "The same check object when it is not a Playwright component-catalog-previews check or already selects with --grep or -g; otherwise a copy whose command gains a --grep for the entity's test titles. Only the command differs in that copy.",
+				"examples": [
+					{
+						"id": "component-catalog-previews:reports.component.evidence-grid",
+						"scenario": "component-catalog-previews",
+						"name": "reports.component.evidence-grid",
+						"kind": "e2e",
+						"runner": "playwright",
+						"target": "tests/e2e/component-catalog.spec.ts",
+						"cwd": ".",
+						"command": "bun x playwright test tests/e2e/component-catalog.spec.ts --grep '(^| )reports\\.component\\.evidence-grid(:[^ ]+)? at '",
+						"timeoutMs": 600000
+					},
+					{
+						"id": "component-catalog-previews:reports.component.run-summary",
+						"scenario": "component-catalog-previews",
+						"name": "reports.component.run-summary",
+						"kind": "e2e",
+						"runner": "playwright",
+						"target": "tests/e2e/component-catalog.spec.ts",
+						"cwd": ".",
+						"command": "bun x playwright test tests/e2e/component-catalog.spec.ts --grep 'reports.component.run-summary'",
+						"timeoutMs": 600000
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by scopedScenarios, through fail(), when no scenario's units list includes the entity; its message says nothing can be verified for it."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "scopeFailure",
@@ -70,17 +369,24 @@
 					{
 						"name": "scopeFailure.entity",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The entity the record is scoped to, written into the statement exactly as given. The function does not check that any scenario covers it.",
+						"examples": ["reports.component.evidence-grid", "reports.component.run-summary"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scopeFailure",
-						"type": "string"
+						"type": "string",
+						"description": "The statement a scoped record carries: it names the entity and says only its scenario states ran, so the record is partial and never a full pass. It is built from the entity alone.",
+						"examples": [
+							"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass.",
+							"Scoped to reports.component.run-summary: only its scenario states ran, so this record is partial and never a full pass."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scopedScenarios",
@@ -88,27 +394,267 @@
 					{
 						"name": "scopedScenarios.scenarios",
 						"type": "ScenarioManifest[]",
-						"required": true
+						"required": true,
+						"description": "The scenario manifests to narrow: only those whose units list includes the entity are kept, in their original order, and the input objects are not changed. If none of them covers the entity, the function fails.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "component-catalog-previews",
+									"title": "Component catalog previews",
+									"kind": "ui",
+									"units": ["reports.component.evidence-grid", "reports.component.run-summary"],
+									"states": [
+										{
+											"id": "default",
+											"title": "Default",
+											"coverage": "required"
+										},
+										{
+											"id": "empty",
+											"title": "No evidence",
+											"coverage": "required",
+											"units": ["reports.component.evidence-grid"]
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										}
+									],
+									"tests": [
+										{
+											"id": "reports.component.evidence-grid",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/e2e/component-catalog.spec.ts"
+										},
+										{
+											"id": "reports.component.run-summary",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/e2e/component-catalog.spec.ts"
+										}
+									],
+									"evidence": [
+										{
+											"id": "component-catalog-screenshot",
+											"kind": "screenshot",
+											"states": ["default", "empty"],
+											"viewports": ["desktop"],
+											"capture": "element",
+											"required": true
+										}
+									]
+								}
+							],
+							[
+								{
+									"schemaVersion": 1,
+									"id": "component-catalog-previews",
+									"title": "Component catalog previews",
+									"kind": "ui",
+									"units": ["reports.component.evidence-grid", "reports.component.run-summary"],
+									"states": [
+										{
+											"id": "default",
+											"title": "Default",
+											"coverage": "required"
+										},
+										{
+											"id": "empty",
+											"title": "No evidence",
+											"coverage": "required",
+											"units": ["reports.component.evidence-grid"]
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										}
+									],
+									"tests": [
+										{
+											"id": "reports.component.evidence-grid",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/e2e/component-catalog.spec.ts"
+										},
+										{
+											"id": "reports.component.run-summary",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/e2e/component-catalog.spec.ts"
+										}
+									],
+									"evidence": [
+										{
+											"id": "component-catalog-screenshot",
+											"kind": "screenshot",
+											"states": ["default", "empty"],
+											"viewports": ["desktop"],
+											"capture": "element",
+											"required": true
+										}
+									]
+								},
+								{
+									"schemaVersion": 1,
+									"id": "reports-page",
+									"title": "Reports page",
+									"kind": "ui",
+									"units": ["reports.page.overview"],
+									"states": [
+										{
+											"id": "loaded",
+											"title": "Loaded",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										}
+									],
+									"tests": [
+										{
+											"id": "reports-page",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/e2e/reports-page.spec.ts"
+										}
+									],
+									"evidence": []
+								}
+							]
+						]
 					},
 					{
 						"name": "scopedScenarios.entity",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The entity to narrow to, matched exactly against each scenario's units and each state's units; in a scenario where some state names it, only the states that name it are kept, and otherwise only the states whose units are missing or empty are kept. An entity no scenario covers makes the function fail.",
+						"examples": ["reports.component.evidence-grid", "reports.component.run-summary"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scopedScenarios",
-						"type": "ScenarioManifest[]"
+						"type": "ScenarioManifest[]",
+						"description": "Each covering scenario, in input order, with units set to only the entity, its states narrowed by the rule described for the entity input, and each evidence item's states narrowed to the kept states. The list is never empty, because an entity no scenario covers makes the function fail.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "component-catalog-previews",
+									"title": "Component catalog previews",
+									"kind": "ui",
+									"units": ["reports.component.evidence-grid"],
+									"states": [
+										{
+											"id": "empty",
+											"title": "No evidence",
+											"coverage": "required",
+											"units": ["reports.component.evidence-grid"]
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										}
+									],
+									"tests": [
+										{
+											"id": "reports.component.evidence-grid",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/e2e/component-catalog.spec.ts"
+										},
+										{
+											"id": "reports.component.run-summary",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/e2e/component-catalog.spec.ts"
+										}
+									],
+									"evidence": [
+										{
+											"id": "component-catalog-screenshot",
+											"kind": "screenshot",
+											"states": ["empty"],
+											"viewports": ["desktop"],
+											"capture": "element",
+											"required": true
+										}
+									]
+								}
+							],
+							[
+								{
+									"schemaVersion": 1,
+									"id": "component-catalog-previews",
+									"title": "Component catalog previews",
+									"kind": "ui",
+									"units": ["reports.component.run-summary"],
+									"states": [
+										{
+											"id": "default",
+											"title": "Default",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										}
+									],
+									"tests": [
+										{
+											"id": "reports.component.evidence-grid",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/e2e/component-catalog.spec.ts"
+										},
+										{
+											"id": "reports.component.run-summary",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "tests/e2e/component-catalog.spec.ts"
+										}
+									],
+									"evidence": [
+										{
+											"id": "component-catalog-screenshot",
+											"kind": "screenshot",
+											"states": ["default"],
+											"viewports": ["desktop"],
+											"capture": "element",
+											"required": true
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by scopedScenarios, through fail(), when no scenario's units list includes the entity; its message says nothing can be verified for it."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scopedCheck",
@@ -116,22 +662,74 @@
 					{
 						"name": "scopedCheck.check",
 						"type": "PlannedCheck",
-						"required": true
+						"required": true,
+						"description": "The planned check to narrow: it is returned unchanged unless its scenario is component-catalog-previews, it runs Playwright (runner 'playwright' or a command containing 'playwright test'), and its command has no --grep or -g option yet. Only its scenario, runner and command decide whether it is narrowed.",
+						"examples": [
+							{
+								"id": "component-catalog-previews:reports.component.evidence-grid",
+								"scenario": "component-catalog-previews",
+								"name": "reports.component.evidence-grid",
+								"kind": "e2e",
+								"runner": "playwright",
+								"target": "tests/e2e/component-catalog.spec.ts",
+								"cwd": ".",
+								"command": "bun x playwright test tests/e2e/component-catalog.spec.ts",
+								"timeoutMs": 600000
+							},
+							{
+								"id": "component-catalog-previews:reports.component.run-summary",
+								"scenario": "component-catalog-previews",
+								"name": "reports.component.run-summary",
+								"kind": "e2e",
+								"runner": "playwright",
+								"target": "tests/e2e/component-catalog.spec.ts",
+								"cwd": ".",
+								"command": "bun x playwright test tests/e2e/component-catalog.spec.ts --grep 'reports.component.run-summary'",
+								"timeoutMs": 600000
+							}
+						]
 					},
 					{
 						"name": "scopedCheck.entity",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The entity whose test titles the added --grep selects: its regex characters are escaped, and the pattern matches it at the start of a title or after a space, optionally followed by ':<state>' and then ' at '. The pattern is wrapped in single quotes in the command with no further escaping.",
+						"examples": ["reports.component.evidence-grid", "reports.component.run-summary"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scopedCheck",
-						"type": "PlannedCheck"
+						"type": "PlannedCheck",
+						"description": "The same check object when it is not a Playwright component-catalog-previews check or already selects with --grep or -g; otherwise a copy whose command gains a --grep for the entity's test titles. Only the command differs in that copy.",
+						"examples": [
+							{
+								"id": "component-catalog-previews:reports.component.evidence-grid",
+								"scenario": "component-catalog-previews",
+								"name": "reports.component.evidence-grid",
+								"kind": "e2e",
+								"runner": "playwright",
+								"target": "tests/e2e/component-catalog.spec.ts",
+								"cwd": ".",
+								"command": "bun x playwright test tests/e2e/component-catalog.spec.ts --grep '(^| )reports\\.component\\.evidence-grid(:[^ ]+)? at '",
+								"timeoutMs": 600000
+							},
+							{
+								"id": "component-catalog-previews:reports.component.run-summary",
+								"scenario": "component-catalog-previews",
+								"name": "reports.component.run-summary",
+								"kind": "e2e",
+								"runner": "playwright",
+								"target": "tests/e2e/component-catalog.spec.ts",
+								"cwd": ".",
+								"command": "bun x playwright test tests/e2e/component-catalog.spec.ts --grep 'reports.component.run-summary'",
+								"timeoutMs": 600000
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
