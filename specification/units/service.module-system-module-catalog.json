@@ -23,51 +23,195 @@
 				"name": "ModuleCatalogService.load.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute project directory containing the package manifest and module metadata."
+				"description": "Project root path passed to moduleTree(root) for reading harness.modules.json and listing specification/modules. This method does not validate that the path is absolute.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
+				]
 			},
 			{
 				"name": "ModuleCatalogService.at.tree",
 				"type": "Pick<SourceTree, 'read'> & { list(): Promise<Array<{ path: string }>> }",
 				"required": true,
-				"description": "Source reader for exactly the selected project revision."
+				"description": "Reader used to list repository-relative paths and read module JSON plus installation state. at() requires read() and list() only; a revision field is not part of its input type."
 			},
 			{
 				"name": "ModuleCatalogService.state.tree",
 				"type": "Pick<SourceTree, 'read'>",
 				"required": true,
-				"description": "Source reader for exactly the selected project revision."
+				"description": "Reader used only to read harness.modules.json. state() does not require a listing method."
 			},
 			{
 				"name": "ModuleCatalogService.state.gaps",
 				"type": "string[]",
 				"required": false,
-				"description": "Optional collection of readable catalog errors; omitted for strict mutation admission."
+				"default": "undefined",
+				"description": "Optional array where recoverable installation-state read or parse problems are appended. When omitted, invalid state and non-missing read failures reject instead.",
+				"examples": [
+					["Invalid module installation state."]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleCatalogService.load",
 				"type": "Promise<ModuleCatalog>",
-				"description": "Validated definitions, installed flags, generated instances and explicit discovery gaps."
+				"description": "Lists built-in definitions and valid project modules found at specification/modules/<id>/module.json, with source, installed flags, matching resource instances, and discovery gaps. Invalid project definitions and identity collisions are skipped and recorded as gaps.",
+				"examples": [
+					{
+						"gaps": [],
+						"modules": [
+							{
+								"definition": {
+									"schemaVersion": 1,
+									"id": "reports",
+									"version": "1.0.0",
+									"title": "Reports",
+									"description": "Provides a report component.",
+									"instructions": ["Use the report component to display summaries."],
+									"setup": [],
+									"dependencies": {},
+									"resources": [
+										{
+											"id": "report",
+											"title": "Report",
+											"singular": "Report",
+											"kind": "component",
+											"instructions": ["Create a report component."],
+											"files": [
+												{
+													"path": "src/components/ReportCard.ts",
+													"contents": "export const ReportCard = true;"
+												}
+											]
+										}
+									]
+								},
+								"source": "project",
+								"installed": true,
+								"instances": [
+									{
+										"module": "reports",
+										"type": "report",
+										"name": "monthly-summary",
+										"files": ["src/components/ReportCard.ts"]
+									}
+								]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "ModuleCatalogService.at",
 				"type": "Promise<ModuleCatalog>",
-				"description": "Validated definitions, installed flags, generated instances and explicit discovery gaps."
+				"description": "Lists built-in definitions and valid project modules found at specification/modules/<id>/module.json, with source, installed flags, matching resource instances, and discovery gaps. Invalid project definitions and identity collisions are skipped and recorded as gaps.",
+				"examples": [
+					{
+						"gaps": [],
+						"modules": [
+							{
+								"definition": {
+									"schemaVersion": 1,
+									"id": "reports",
+									"version": "1.0.0",
+									"title": "Reports",
+									"description": "Provides a report component.",
+									"instructions": ["Use the report component to display summaries."],
+									"setup": [],
+									"dependencies": {},
+									"resources": [
+										{
+											"id": "report",
+											"title": "Report",
+											"singular": "Report",
+											"kind": "component",
+											"instructions": ["Create a report component."],
+											"files": [
+												{
+													"path": "src/components/ReportCard.ts",
+													"contents": "export const ReportCard = true;"
+												}
+											]
+										}
+									]
+								},
+								"source": "project",
+								"installed": true,
+								"instances": [
+									{
+										"module": "reports",
+										"type": "report",
+										"name": "monthly-summary",
+										"files": ["src/components/ReportCard.ts"]
+									}
+								]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "ModuleCatalogService.state",
 				"type": "Promise<ModuleState>",
-				"description": "Persisted module snapshots and generated resource records; absent state is empty."
+				"description": "Parsed harness.modules.json installation state. A missing file returns an empty version-1 state; when gaps is supplied, other read or parse problems are recorded and also return empty state.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"modules": [],
+						"resources": []
+					},
+					{
+						"schemaVersion": 1,
+						"modules": [
+							{
+								"definition": {
+									"schemaVersion": 1,
+									"id": "reports",
+									"version": "1.0.0",
+									"title": "Reports",
+									"description": "Provides a report component.",
+									"instructions": ["Use the report component to display summaries."],
+									"setup": [],
+									"dependencies": {},
+									"resources": [
+										{
+											"id": "report",
+											"title": "Report",
+											"singular": "Report",
+											"kind": "component",
+											"instructions": ["Create a report component."],
+											"files": [
+												{
+													"path": "src/components/ReportCard.ts",
+													"contents": "export const ReportCard = true;"
+												}
+											]
+										}
+									]
+								},
+								"source": "project"
+							}
+						],
+						"resources": [
+							{
+								"module": "reports",
+								"type": "report",
+								"name": "monthly-summary",
+								"files": ["src/components/ReportCard.ts"]
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
+				"description": "Module-listing failures can propagate through load() and at(); direct state() without gaps throws Error('Invalid module installation state.') for invalid or duplicate state and propagates non-missing read failures."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleCatalogService.load",
@@ -76,18 +220,71 @@
 						"name": "ModuleCatalogService.load.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute project directory containing the package manifest and module metadata."
+						"description": "Project root path passed to moduleTree(root) for reading harness.modules.json and listing specification/modules. This method does not validate that the path is absolute.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleCatalogService.load",
 						"type": "Promise<ModuleCatalog>",
-						"description": "Validated definitions, installed flags, generated instances and explicit discovery gaps."
+						"description": "Lists built-in definitions and valid project modules found at specification/modules/<id>/module.json, with source, installed flags, matching resource instances, and discovery gaps. Invalid project definitions and identity collisions are skipped and recorded as gaps.",
+						"examples": [
+							{
+								"gaps": [],
+								"modules": [
+									{
+										"definition": {
+											"schemaVersion": 1,
+											"id": "reports",
+											"version": "1.0.0",
+											"title": "Reports",
+											"description": "Provides a report component.",
+											"instructions": ["Use the report component to display summaries."],
+											"setup": [],
+											"dependencies": {},
+											"resources": [
+												{
+													"id": "report",
+													"title": "Report",
+													"singular": "Report",
+													"kind": "component",
+													"instructions": ["Create a report component."],
+													"files": [
+														{
+															"path": "src/components/ReportCard.ts",
+															"contents": "export const ReportCard = true;"
+														}
+													]
+												}
+											]
+										},
+										"source": "project",
+										"installed": true,
+										"instances": [
+											{
+												"module": "reports",
+												"type": "report",
+												"name": "monthly-summary",
+												"files": ["src/components/ReportCard.ts"]
+											}
+										]
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A non-ENOENT filesystem failure during module listing propagates through the source tree; definition and installation-state problems handled by at() are recorded as gaps."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleCatalogService.at",
@@ -96,18 +293,68 @@
 						"name": "ModuleCatalogService.at.tree",
 						"type": "Pick<SourceTree, 'read'> & { list(): Promise<Array<{ path: string }>> }",
 						"required": true,
-						"description": "Source reader for exactly the selected project revision."
+						"description": "Reader used to list repository-relative paths and read module JSON plus installation state. at() requires read() and list() only; a revision field is not part of its input type."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleCatalogService.at",
 						"type": "Promise<ModuleCatalog>",
-						"description": "Validated definitions, installed flags, generated instances and explicit discovery gaps."
+						"description": "Lists built-in definitions and valid project modules found at specification/modules/<id>/module.json, with source, installed flags, matching resource instances, and discovery gaps. Invalid project definitions and identity collisions are skipped and recorded as gaps.",
+						"examples": [
+							{
+								"gaps": [],
+								"modules": [
+									{
+										"definition": {
+											"schemaVersion": 1,
+											"id": "reports",
+											"version": "1.0.0",
+											"title": "Reports",
+											"description": "Provides a report component.",
+											"instructions": ["Use the report component to display summaries."],
+											"setup": [],
+											"dependencies": {},
+											"resources": [
+												{
+													"id": "report",
+													"title": "Report",
+													"singular": "Report",
+													"kind": "component",
+													"instructions": ["Create a report component."],
+													"files": [
+														{
+															"path": "src/components/ReportCard.ts",
+															"contents": "export const ReportCard = true;"
+														}
+													]
+												}
+											]
+										},
+										"source": "project",
+										"installed": true,
+										"instances": [
+											{
+												"module": "reports",
+												"type": "report",
+												"name": "monthly-summary",
+												"files": ["src/components/ReportCard.ts"]
+											}
+										]
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A rejection from tree.list() propagates because definitions() awaits the listing without catching it; installation-state read and parse problems are converted to gaps."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleCatalogService.state",
@@ -116,29 +363,82 @@
 						"name": "ModuleCatalogService.state.tree",
 						"type": "Pick<SourceTree, 'read'>",
 						"required": true,
-						"description": "Source reader for exactly the selected project revision."
+						"description": "Reader used only to read harness.modules.json. state() does not require a listing method."
 					},
 					{
 						"name": "ModuleCatalogService.state.gaps",
 						"type": "string[]",
 						"required": false,
-						"description": "Optional collection of readable catalog errors; omitted for strict mutation admission."
+						"default": "undefined",
+						"description": "Optional array where recoverable installation-state read or parse problems are appended. When omitted, invalid state and non-missing read failures reject instead.",
+						"examples": [
+							["Invalid module installation state."]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleCatalogService.state",
 						"type": "Promise<ModuleState>",
-						"description": "Persisted module snapshots and generated resource records; absent state is empty."
+						"description": "Parsed harness.modules.json installation state. A missing file returns an empty version-1 state; when gaps is supplied, other read or parse problems are recorded and also return empty state.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"modules": [],
+								"resources": []
+							},
+							{
+								"schemaVersion": 1,
+								"modules": [
+									{
+										"definition": {
+											"schemaVersion": 1,
+											"id": "reports",
+											"version": "1.0.0",
+											"title": "Reports",
+											"description": "Provides a report component.",
+											"instructions": ["Use the report component to display summaries."],
+											"setup": [],
+											"dependencies": {},
+											"resources": [
+												{
+													"id": "report",
+													"title": "Report",
+													"singular": "Report",
+													"kind": "component",
+													"instructions": ["Create a report component."],
+													"files": [
+														{
+															"path": "src/components/ReportCard.ts",
+															"contents": "export const ReportCard = true;"
+														}
+													]
+												}
+											]
+										},
+										"source": "project"
+									}
+								],
+								"resources": [
+									{
+										"module": "reports",
+										"type": "report",
+										"name": "monthly-summary",
+										"files": ["src/components/ReportCard.ts"]
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "When gaps is omitted, invalid JSON or schema data and duplicate module ids reject with Error('Invalid module installation state.'); other read failures except recognized missing-file errors propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
