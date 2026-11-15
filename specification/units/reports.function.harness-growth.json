@@ -33,56 +33,94 @@
 				"name": "harnessGrowth.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Index holding unit growth and revision order."
+				"description": "HarnessIndex supplying unit growth points and revision metadata. An absent unit yields no rows, and unmatched revisions leave the row subject and timestamp empty.",
+				"examples": [
+					{
+						"branches": [],
+						"revisions": [],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "harnessGrowth.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit whose growth is requested."
+				"description": "Unit ID whose growth points are selected from the index. Matching uses exact string equality, and an absent unit yields an empty array.",
+				"examples": ["reports.function.harness-growth"]
 			},
 			{
 				"name": "unitTimings.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Index containing benchmark series."
+				"description": "HarnessIndex supplying benchmark records. Only its benchmark entries are considered, and an empty benchmark list yields no timing rows.",
+				"examples": [
+					{
+						"branches": [],
+						"revisions": [],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "unitTimings.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit whose benchmark entries are requested."
+				"description": "Unit ID compared with each benchmark's unit field. Matching uses exact string equality, and no matches produce an empty array.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "signed.delta",
 				"type": "number | undefined",
 				"required": true,
-				"description": "Optional numeric difference to format."
+				"description": "Numeric delta to format, or undefined when no delta is available. Zero, undefined, and other falsy numbers produce an empty string; positive numbers receive a plus sign and other truthy numbers use String.",
+				"examples": [0, 8, -3]
 			}
 		],
 		"outputs": [
 			{
 				"name": "growthMetrics",
 				"type": "unknown",
-				"description": "The source-bytes, complexity and dependencies metric keys."
+				"description": "Ordered metric keys used to read measured values and calculate deltas. The keys are source-bytes, complexity, and dependencies.",
+				"examples": [
+					["source-bytes", "complexity", "dependencies"]
+				]
 			},
 			{
 				"name": "harnessGrowth",
 				"type": "GrowthRow[]",
-				"description": "Oldest-first growth rows with values, notes and differences from the immediately preceding growth point when both values exist. Missing metrics stay undefined; changed is true only for a nonzero numeric delta."
+				"description": "Growth rows for the selected unit, ordered oldest first according to revision positions. Missing units produce an empty array; missing metric values or prior values remain undefined, and changed reflects whether any computed delta is truthy.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "unitTimings",
 				"type": "HarnessBenchmark[]",
-				"description": "Matching benchmark entries unchanged, preserving their independent series."
+				"description": "Benchmark records whose unit exactly matches the requested unit, returned in their original order. Each matching record is returned unchanged, so distinct measurement conditions remain separate.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "signed",
 				"type": "string",
-				"description": "Empty for zero, undefined or other falsy numeric values; a plus sign for positive differences, otherwise the numeric string."
+				"description": "Formatted delta string. It is empty for zero, undefined, or another falsy number, prefixes positive values with plus, and stringifies other truthy values.",
+				"examples": ["", "+8", "-3"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "harnessGrowth",
@@ -91,24 +129,40 @@
 						"name": "harnessGrowth.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Index holding unit growth and revision order."
+						"description": "HarnessIndex supplying unit growth points and revision metadata. An absent unit yields no rows, and unmatched revisions leave the row subject and timestamp empty.",
+						"examples": [
+							{
+								"branches": [],
+								"revisions": [],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "harnessGrowth.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit whose growth is requested."
+						"description": "Unit ID whose growth points are selected from the index. Matching uses exact string equality, and an absent unit yields an empty array.",
+						"examples": ["reports.function.harness-growth"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessGrowth",
 						"type": "GrowthRow[]",
-						"description": "Oldest-first growth rows with values, notes and differences from the immediately preceding growth point when both values exist. Missing metrics stay undefined; changed is true only for a nonzero numeric delta."
+						"description": "Growth rows for the selected unit, ordered oldest first according to revision positions. Missing units produce an empty array; missing metric values or prior values remain undefined, and changed reflects whether any computed delta is truthy.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "unitTimings",
@@ -117,24 +171,40 @@
 						"name": "unitTimings.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Index containing benchmark series."
+						"description": "HarnessIndex supplying benchmark records. Only its benchmark entries are considered, and an empty benchmark list yields no timing rows.",
+						"examples": [
+							{
+								"branches": [],
+								"revisions": [],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "unitTimings.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit whose benchmark entries are requested."
+						"description": "Unit ID compared with each benchmark's unit field. Matching uses exact string equality, and no matches produce an empty array.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitTimings",
 						"type": "HarnessBenchmark[]",
-						"description": "Matching benchmark entries unchanged, preserving their independent series."
+						"description": "Benchmark records whose unit exactly matches the requested unit, returned in their original order. Each matching record is returned unchanged, so distinct measurement conditions remain separate.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "signed",
@@ -143,18 +213,20 @@
 						"name": "signed.delta",
 						"type": "number | undefined",
 						"required": true,
-						"description": "Optional numeric difference to format."
+						"description": "Numeric delta to format, or undefined when no delta is available. Zero, undefined, and other falsy numbers produce an empty string; positive numbers receive a plus sign and other truthy numbers use String.",
+						"examples": [0, 8, -3]
 					}
 				],
 				"outputs": [
 					{
 						"name": "signed",
 						"type": "string",
-						"description": "Empty for zero, undefined or other falsy numeric values; a plus sign for positive differences, otherwise the numeric string."
+						"description": "Formatted delta string. It is empty for zero, undefined, or another falsy number, prefixes positive values with plus, and stringifies other truthy values.",
+						"examples": ["", "+8", "-3"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
