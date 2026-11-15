@@ -19,46 +19,78 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProviderDiscoveryService.constructor.runners",
 				"type": "Record<ProviderId, AgentRunner>",
-				"required": true
+				"required": true,
+				"description": "A record keyed by codex and claude that supplies the AgentRunner instances used by this service. Each value must provide discover() and run(); construction stores the record without invoking either method."
 			},
 			{
 				"name": "ProviderDiscoveryService.select.provider",
 				"type": "ProviderId",
-				"required": true
+				"required": true,
+				"description": "The ProviderId key used to choose a stored runner and discover its state. The type permits only codex or claude.",
+				"examples": ["codex", "claude"]
 			},
 			{
 				"name": "ProviderDiscoveryService.select.model",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The model identifier matched exactly against an entry in the selected runner's discovered models. Selection throws if no discovered model has this ID.",
+				"examples": ["claude-opus-5-5"]
 			},
 			{
 				"name": "ProviderDiscoveryService.select.effort",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "The requested effort passed to validateModel for the selected model. Null or the empty string skips effort membership checking; any other truthy value must occur in that model's efforts.",
+				"examples": ["xhigh", null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProviderDiscoveryService.list",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to an array of each configured runner's ProviderState, in the order returned by Object.values(this.runners). The array length follows the configured record, and any rejected discover() call rejects the list operation.",
+				"examples": [
+					[
+						{
+							"id": "codex",
+							"label": "Codex CLI",
+							"available": false,
+							"reason": "Codex CLI unavailable.",
+							"version": null,
+							"imageGeneration": false,
+							"models": []
+						},
+						{
+							"id": "claude",
+							"label": "Claude CLI",
+							"available": false,
+							"reason": "Claude CLI unavailable.",
+							"version": null,
+							"imageGeneration": false,
+							"models": []
+						}
+					]
+				]
 			},
 			{
 				"name": "ProviderDiscoveryService.select",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the stored AgentRunner for the selected provider after discover() reports it available and validateModel accepts the model and effort. The value is a runner instance, not the discovered state."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Runner discovery rejections propagate from list() or select(); select also throws when discovery reports an unavailable provider or model validation fails. Unavailable state uses state.reason ?? 'CLI unavailable.'; validation messages are 'The selected model is not available from this CLI.' and 'The selected model does not support this effort.'"
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProviderDiscoveryService.list",
@@ -66,11 +98,40 @@
 				"outputs": [
 					{
 						"name": "ProviderDiscoveryService.list",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to an array of each configured runner's ProviderState, in the order returned by Object.values(this.runners). The array length follows the configured record, and any rejected discover() call rejects the list operation.",
+						"examples": [
+							[
+								{
+									"id": "codex",
+									"label": "Codex CLI",
+									"available": false,
+									"reason": "Codex CLI unavailable.",
+									"version": null,
+									"imageGeneration": false,
+									"models": []
+								},
+								{
+									"id": "claude",
+									"label": "Claude CLI",
+									"available": false,
+									"reason": "Claude CLI unavailable.",
+									"version": null,
+									"imageGeneration": false,
+									"models": []
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Promise.all rejects if any runner's discover() rejects, and this method propagates the rejection without wrapping it. The rejection reason comes from that runner."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderDiscoveryService.select",
@@ -78,32 +139,40 @@
 					{
 						"name": "ProviderDiscoveryService.select.provider",
 						"type": "ProviderId",
-						"required": true
+						"required": true,
+						"description": "The ProviderId key used to choose a stored runner and discover its state. The type permits only codex or claude.",
+						"examples": ["codex", "claude"]
 					},
 					{
 						"name": "ProviderDiscoveryService.select.model",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The model identifier matched exactly against an entry in the selected runner's discovered models. Selection throws if no discovered model has this ID.",
+						"examples": ["claude-opus-5-5"]
 					},
 					{
 						"name": "ProviderDiscoveryService.select.effort",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "The requested effort passed to validateModel for the selected model. Null or the empty string skips effort membership checking; any other truthy value must occur in that model's efforts.",
+						"examples": ["xhigh", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderDiscoveryService.select",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the stored AgentRunner for the selected provider after discover() reports it available and validateModel accepts the model and effort. The value is a runner instance, not the discovered state."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "select throws an Error with state.reason ?? 'CLI unavailable.' when discovery reports an unavailable provider. It also throws the exact model-not-found or unsupported-effort Error from validateModel; rejected discovery promises propagate from the runner."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -113,17 +182,19 @@
 					{
 						"name": "ProviderDiscoveryService.constructor.runners",
 						"type": "Record<ProviderId, AgentRunner>",
-						"required": true
+						"required": true,
+						"description": "A record keyed by codex and claude that supplies the AgentRunner instances used by this service. Each value must provide discover() and run(); construction stores the record without invoking either method."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderDiscoveryService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a ProviderDiscoveryService instance containing the supplied runner record. It does not discover provider state until list() or select() is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
