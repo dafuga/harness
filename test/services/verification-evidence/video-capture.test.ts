@@ -128,7 +128,8 @@ test('capture orchestration observes configured boundary signatures and preserve
 test('capture orchestration cleans owned raw only after an attached matching receipt', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
 	await expect(withTempRepo(assertDurableVideoReceipt)).resolves.toEqual({
-		addressedFlags: [expect.stringMatching(/^[a-f0-9-]{36}$/)]
+		addressedFlags: [expect.stringMatching(/^[a-f0-9-]{36}$/)],
+		record: expect.stringMatching(/^[a-f0-9]{64}$/)
 	});
 }, 30_000);
 

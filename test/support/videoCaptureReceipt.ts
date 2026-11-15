@@ -10,6 +10,7 @@ import { HistoryNoteRepository } from '../../src/repositories/git-source-history
 import type { TemporaryRepo } from './temporary.types';
 import type { VerificationRecord } from '../../src/core/verification-evidence/verificationTypes';
 import { captureReceiptStore } from '../../src/services/verification-evidence/video-capture-service/captureReceiptStore';
+import type { VideoCaptureResult } from '../../src/services/verification-evidence/VideoCaptureService.types';
 
 export async function assertDurableVideoReceipt(repo: TemporaryRepo) {
 	const f = await videoCaptureFixture(repo),
@@ -58,15 +59,22 @@ export async function assertDurableVideoReceipt(repo: TemporaryRepo) {
 	await expect(
 		service.acknowledgeDirectory(replacementOptions.directory, next.id)
 	).resolves.toBeUndefined();
+	await assertReceiptFiles(f, replacement);
+	return {
+		addressedFlags: captureReceiptStore(replacementOptions.directory).raw[0].addressedFlags,
+		record: next.id
+	};
+}
+async function assertReceiptFiles(
+	f: Awaited<ReturnType<typeof videoCaptureFixture>>,
+	replacement: VideoCaptureResult
+) {
 	expect(replacement.raw.every((raw) => !existsSync(join(raw.directory, 'raw')))).toBe(true);
 	expect(
 		f.native.produced.every((item) => existsSync(item.video.path) && existsSync(item.poster.path))
 	).toBe(true);
 	f.publish(replacement);
 	await assertCaptureIndexOwnership(f);
-	return {
-		addressedFlags: captureReceiptStore(replacementOptions.directory).raw[0].addressedFlags
-	};
 }
 async function assertResolvedReceiptFlag(root: string, record: VerificationRecord, flag: string) {
 	expect(await new HistoryNoteRepository(root).text(record.source.commit)).toContain(record.id);
