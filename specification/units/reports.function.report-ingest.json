@@ -18,29 +18,261 @@
 				"name": "reportIngest.report",
 				"type": "Report",
 				"required": true,
-				"description": "Report object to mutate and return."
+				"description": "The Report to update, mutated in place and returned as the same object; ReportRepository.record only passes a run whose state is active. Its checks, evidence, findings and coverage arrays must exist for the record kinds that write to them.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
+						"project": {
+							"id": "a41f0c9d2b7e3f58",
+							"name": "storefront",
+							"path": "/home/ci/work/storefront"
+						},
+						"title": "Checkout flow",
+						"mode": "feature",
+						"environment": "local",
+						"historical": false,
+						"startedAt": "2026-11-15T09:12:44.318Z",
+						"updatedAt": "2026-11-15T09:12:44.318Z",
+						"summary": "",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Guest checkout completes", "Totals match the cart"]
+					},
+					{
+						"schemaVersion": 1,
+						"id": "7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
+						"project": {
+							"id": "a41f0c9d2b7e3f58",
+							"name": "storefront",
+							"path": "/home/ci/work/storefront"
+						},
+						"title": "Checkout flow",
+						"mode": "feature",
+						"environment": "local",
+						"historical": false,
+						"startedAt": "2026-11-15T09:12:44.318Z",
+						"updatedAt": "2026-11-15T09:13:31.605Z",
+						"summary": "Desktop checkout passes; the mobile layout is still under review.",
+						"status": "running",
+						"state": "active",
+						"checks": [
+							{
+								"id": "pw-1",
+								"title": "guest checkout completes",
+								"status": "passed",
+								"durationMs": 8421,
+								"group": "Playwright"
+							}
+						],
+						"evidence": [],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Guest checkout completes", "Totals match the cart"]
+					}
+				]
 			},
 			{
 				"name": "reportIngest.record",
 				"type": "RecordInput",
 				"required": true,
-				"description": "Record kind and payload. Summary/acceptance replace their values; check, finding, coverage and evidence records replace an existing item with the same identifier and append the new item."
+				"description": "The record to apply: data is first passed through cleanData, so strings are sanitized and keys that end in secret, password, token or apiKey, or that are named authorization or cookie, become '[REDACTED]'. summary stores String(data.text) (a missing text becomes 'undefined'), acceptance stores data.items as given, check, finding, coverage and evidence replace the item with the same id and append it at the end, heartbeat changes only updatedAt, and no field is validated here.",
+				"examples": [
+					{
+						"kind": "check",
+						"data": {
+							"id": "pw-1",
+							"title": "guest checkout completes",
+							"status": "passed",
+							"durationMs": 8421,
+							"group": "Playwright"
+						}
+					},
+					{
+						"kind": "evidence",
+						"data": {
+							"id": "pw-1-0",
+							"title": "guest checkout completes - desktop",
+							"category": "Playwright",
+							"status": "passed",
+							"path": "/home/ci/work/storefront/test-results/checkout-guest-chromium/desktop.png",
+							"checkId": "pw-1",
+							"order": 1
+						}
+					},
+					{
+						"kind": "summary",
+						"data": {
+							"text": "Desktop checkout passes; the mobile layout is still under review."
+						}
+					}
+				]
 			},
 			{
 				"name": "reportIngest.directory",
 				"type": "string",
 				"required": true,
-				"description": "Report directory used when importing evidence assets."
+				"description": "The report run directory, the value ReportRepository.directory returns for the run id; only evidence records use it, writing the image or audio bytes to its assets subfolder under a SHA-256-based file name. The path is not checked here, so an evidence record whose directory cannot be created or written rejects.",
+				"examples": [
+					"/home/ci/.codex/project-reports/runs/7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
+					"/srv/project-reports/runs/3c5e8a10-6d2f-4b71-8e09-a5c4d1f27e36"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportIngest",
 				"type": "unknown",
-				"description": "Promise resolving to the same mutated report with a fresh update timestamp. Evidence uses the original source path for import, discards caller-supplied path/storage fields, and applies generated file metadata with default Evidence category and not-proven status."
+				"description": "Promise that resolves to the same report object passed in, mutated in place, with updatedAt set to the current time as an ISO string. For evidence, the file is imported from the unsanitized record.data.path, path and storage are dropped, the generated file, mediaType, mimeType and (for WAV) durationSeconds overwrite same-named caller fields, and category and status default to 'Evidence' and 'not-proven' when falsy.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
+						"project": {
+							"id": "a41f0c9d2b7e3f58",
+							"name": "storefront",
+							"path": "/home/ci/work/storefront"
+						},
+						"title": "Checkout flow",
+						"mode": "feature",
+						"environment": "local",
+						"historical": false,
+						"startedAt": "2026-11-15T09:12:44.318Z",
+						"updatedAt": "2026-11-15T09:14:07.512Z",
+						"summary": "Desktop checkout passes; the mobile layout is still under review.",
+						"status": "running",
+						"state": "active",
+						"checks": [
+							{
+								"id": "pw-1",
+								"title": "guest checkout completes",
+								"status": "passed",
+								"durationMs": 8421,
+								"group": "Playwright"
+							}
+						],
+						"evidence": [
+							{
+								"id": "pw-1-0",
+								"title": "guest checkout completes - desktop",
+								"category": "Playwright",
+								"file": "9c2f4a7e1b8d3065f2a9c7e4d01b68f35a2e9d7c40b6f1a83e5d2c9b7a4f6e10.png",
+								"status": "passed",
+								"checkId": "pw-1",
+								"order": 1,
+								"mediaType": "image",
+								"mimeType": "image/png"
+							}
+						],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Guest checkout completes", "Totals match the cart"]
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Rejects when the input breaks the declared types, such as a missing report, record or record.data, or a missing checks, evidence, findings or coverage array for the record kind being applied. Those fields are read without guards, so well-typed input never raises it."
+			},
+			{
+				"name": "Error (Node fs error from lstat or readFile)",
+				"type": "thrown",
+				"description": "Rejects with the Node fs error when data.path cannot be inspected or read, for example ENOENT for a missing file or EACCES for a path that cannot be accessed. A missing data.path is passed as the string 'undefined', so it normally fails with ENOENT."
+			},
+			{
+				"name": "Error: Evidence symlinks are not accepted",
+				"type": "thrown",
+				"description": "Rejects when data.path itself is a symbolic link, because lstat does not follow the final path component. Symbolic links in parent directories are followed and are not rejected."
+			},
+			{
+				"name": "Error: Invalid evidence file or size",
+				"type": "thrown",
+				"description": "Rejects when data.path is not a regular file or is larger than 50,000,000 bytes, and an empty image file fails with the same message from the image check."
+			},
+			{
+				"name": "Error: Invalid audio file or size",
+				"type": "thrown",
+				"description": "Rejects an audio source (.wav, .mp3, .m4a or .ogg) whose bytes are empty. Files over 50,000,000 bytes are rejected earlier with the invalid evidence message."
+			},
+			{
+				"name": "Error: Invalid WAV audio",
+				"type": "thrown",
+				"description": "Rejects a .wav source shorter than 44 bytes or without the RIFF and WAVE signatures."
+			},
+			{
+				"name": "Error: Invalid WAV container length",
+				"type": "thrown",
+				"description": "Rejects a .wav source whose RIFF size field plus 8 does not equal the file length."
+			},
+			{
+				"name": "Error: Truncated WAV chunk",
+				"type": "thrown",
+				"description": "Rejects a .wav source in which a chunk's declared length runs past the end of the RIFF container."
+			},
+			{
+				"name": "Error: Invalid WAV chunk boundary",
+				"type": "thrown",
+				"description": "Rejects a .wav source whose chunk walk does not end exactly at the end of the RIFF container."
+			},
+			{
+				"name": "Error: Unsupported WAV audio format",
+				"type": "thrown",
+				"description": "Rejects a .wav source that is neither PCM (format 1) nor 32-bit float (format 3), has a channel count outside 1 to 8, or has a sample rate outside 4000 to 384000 Hz."
+			},
+			{
+				"name": "Error: Invalid WAV format",
+				"type": "thrown",
+				"description": "Rejects a .wav source whose fmt chunk is shorter than 16 bytes."
+			},
+			{
+				"name": "Error: Invalid WAV sample format",
+				"type": "thrown",
+				"description": "Rejects a .wav source whose bits per sample are not 8, 16, 24 or 32, or whose block align or bytes-per-second field does not match its channels, bits and sample rate."
+			},
+			{
+				"name": "Error: Invalid WAV audio data length",
+				"type": "thrown",
+				"description": "Rejects a .wav source whose data chunk length is not a multiple of the block align."
+			},
+			{
+				"name": "Error: WAV format and audio data are required",
+				"type": "thrown",
+				"description": "Rejects a .wav source that has no fmt chunk or no data chunk, or whose data chunk is empty."
+			},
+			{
+				"name": "Error: Audio content does not match its filename",
+				"type": "thrown",
+				"description": "Rejects a .mp3, .ogg or .m4a source whose bytes fail the format check for its extension; .wav sources skip this check and use the WAV errors instead."
+			},
+			{
+				"name": "Error: Unsupported evidence format",
+				"type": "thrown",
+				"description": "Rejects a non-audio source whose lowercase extension is not .png, .jpg, .jpeg or .webp, such as .gif, .pdf or a name without an extension."
+			},
+			{
+				"name": "Error: Evidence must be a valid PNG, JPEG or WebP image",
+				"type": "thrown",
+				"description": "Rejects an image source whose bytes do not start with the PNG, JPEG or WebP signature."
+			},
+			{
+				"name": "Error: Image content does not match its filename",
+				"type": "thrown",
+				"description": "Rejects an image source whose detected format differs from its extension; a .jpeg name is accepted for JPEG content."
+			},
+			{
+				"name": "Error (Node fs error from mkdir or writeFile)",
+				"type": "thrown",
+				"description": "Rejects with the Node fs error when the assets subfolder of the report directory cannot be created or the asset file cannot be written, for example EACCES, ENOTDIR or ENOSPC."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportIngest",
@@ -49,30 +281,261 @@
 						"name": "reportIngest.report",
 						"type": "Report",
 						"required": true,
-						"description": "Report object to mutate and return."
+						"description": "The Report to update, mutated in place and returned as the same object; ReportRepository.record only passes a run whose state is active. Its checks, evidence, findings and coverage arrays must exist for the record kinds that write to them.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
+								"project": {
+									"id": "a41f0c9d2b7e3f58",
+									"name": "storefront",
+									"path": "/home/ci/work/storefront"
+								},
+								"title": "Checkout flow",
+								"mode": "feature",
+								"environment": "local",
+								"historical": false,
+								"startedAt": "2026-11-15T09:12:44.318Z",
+								"updatedAt": "2026-11-15T09:12:44.318Z",
+								"summary": "",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Guest checkout completes", "Totals match the cart"]
+							},
+							{
+								"schemaVersion": 1,
+								"id": "7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
+								"project": {
+									"id": "a41f0c9d2b7e3f58",
+									"name": "storefront",
+									"path": "/home/ci/work/storefront"
+								},
+								"title": "Checkout flow",
+								"mode": "feature",
+								"environment": "local",
+								"historical": false,
+								"startedAt": "2026-11-15T09:12:44.318Z",
+								"updatedAt": "2026-11-15T09:13:31.605Z",
+								"summary": "Desktop checkout passes; the mobile layout is still under review.",
+								"status": "running",
+								"state": "active",
+								"checks": [
+									{
+										"id": "pw-1",
+										"title": "guest checkout completes",
+										"status": "passed",
+										"durationMs": 8421,
+										"group": "Playwright"
+									}
+								],
+								"evidence": [],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Guest checkout completes", "Totals match the cart"]
+							}
+						]
 					},
 					{
 						"name": "reportIngest.record",
 						"type": "RecordInput",
 						"required": true,
-						"description": "Record kind and payload. Summary/acceptance replace their values; check, finding, coverage and evidence records replace an existing item with the same identifier and append the new item."
+						"description": "The record to apply: data is first passed through cleanData, so strings are sanitized and keys that end in secret, password, token or apiKey, or that are named authorization or cookie, become '[REDACTED]'. summary stores String(data.text) (a missing text becomes 'undefined'), acceptance stores data.items as given, check, finding, coverage and evidence replace the item with the same id and append it at the end, heartbeat changes only updatedAt, and no field is validated here.",
+						"examples": [
+							{
+								"kind": "check",
+								"data": {
+									"id": "pw-1",
+									"title": "guest checkout completes",
+									"status": "passed",
+									"durationMs": 8421,
+									"group": "Playwright"
+								}
+							},
+							{
+								"kind": "evidence",
+								"data": {
+									"id": "pw-1-0",
+									"title": "guest checkout completes - desktop",
+									"category": "Playwright",
+									"status": "passed",
+									"path": "/home/ci/work/storefront/test-results/checkout-guest-chromium/desktop.png",
+									"checkId": "pw-1",
+									"order": 1
+								}
+							},
+							{
+								"kind": "summary",
+								"data": {
+									"text": "Desktop checkout passes; the mobile layout is still under review."
+								}
+							}
+						]
 					},
 					{
 						"name": "reportIngest.directory",
 						"type": "string",
 						"required": true,
-						"description": "Report directory used when importing evidence assets."
+						"description": "The report run directory, the value ReportRepository.directory returns for the run id; only evidence records use it, writing the image or audio bytes to its assets subfolder under a SHA-256-based file name. The path is not checked here, so an evidence record whose directory cannot be created or written rejects.",
+						"examples": [
+							"/home/ci/.codex/project-reports/runs/7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
+							"/srv/project-reports/runs/3c5e8a10-6d2f-4b71-8e09-a5c4d1f27e36"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportIngest",
 						"type": "unknown",
-						"description": "Promise resolving to the same mutated report with a fresh update timestamp. Evidence uses the original source path for import, discards caller-supplied path/storage fields, and applies generated file metadata with default Evidence category and not-proven status."
+						"description": "Promise that resolves to the same report object passed in, mutated in place, with updatedAt set to the current time as an ISO string. For evidence, the file is imported from the unsanitized record.data.path, path and storage are dropped, the generated file, mediaType, mimeType and (for WAV) durationSeconds overwrite same-named caller fields, and category and status default to 'Evidence' and 'not-proven' when falsy.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "7f9c2b1e-4a3d-4e8b-9c1a-2d5e6f7a8b90",
+								"project": {
+									"id": "a41f0c9d2b7e3f58",
+									"name": "storefront",
+									"path": "/home/ci/work/storefront"
+								},
+								"title": "Checkout flow",
+								"mode": "feature",
+								"environment": "local",
+								"historical": false,
+								"startedAt": "2026-11-15T09:12:44.318Z",
+								"updatedAt": "2026-11-15T09:14:07.512Z",
+								"summary": "Desktop checkout passes; the mobile layout is still under review.",
+								"status": "running",
+								"state": "active",
+								"checks": [
+									{
+										"id": "pw-1",
+										"title": "guest checkout completes",
+										"status": "passed",
+										"durationMs": 8421,
+										"group": "Playwright"
+									}
+								],
+								"evidence": [
+									{
+										"id": "pw-1-0",
+										"title": "guest checkout completes - desktop",
+										"category": "Playwright",
+										"file": "9c2f4a7e1b8d3065f2a9c7e4d01b68f35a2e9d7c40b6f1a83e5d2c9b7a4f6e10.png",
+										"status": "passed",
+										"checkId": "pw-1",
+										"order": 1,
+										"mediaType": "image",
+										"mimeType": "image/png"
+									}
+								],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Guest checkout completes", "Totals match the cart"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects when the input breaks the declared types, such as a missing report, record or record.data, or a missing checks, evidence, findings or coverage array for the record kind being applied. Those fields are read without guards, so well-typed input never raises it."
+					},
+					{
+						"name": "Error (Node fs error from lstat or readFile)",
+						"type": "thrown",
+						"description": "Rejects with the Node fs error when data.path cannot be inspected or read, for example ENOENT for a missing file or EACCES for a path that cannot be accessed. A missing data.path is passed as the string 'undefined', so it normally fails with ENOENT."
+					},
+					{
+						"name": "Error: Evidence symlinks are not accepted",
+						"type": "thrown",
+						"description": "Rejects when data.path itself is a symbolic link, because lstat does not follow the final path component. Symbolic links in parent directories are followed and are not rejected."
+					},
+					{
+						"name": "Error: Invalid evidence file or size",
+						"type": "thrown",
+						"description": "Rejects when data.path is not a regular file or is larger than 50,000,000 bytes, and an empty image file fails with the same message from the image check."
+					},
+					{
+						"name": "Error: Invalid audio file or size",
+						"type": "thrown",
+						"description": "Rejects an audio source (.wav, .mp3, .m4a or .ogg) whose bytes are empty. Files over 50,000,000 bytes are rejected earlier with the invalid evidence message."
+					},
+					{
+						"name": "Error: Invalid WAV audio",
+						"type": "thrown",
+						"description": "Rejects a .wav source shorter than 44 bytes or without the RIFF and WAVE signatures."
+					},
+					{
+						"name": "Error: Invalid WAV container length",
+						"type": "thrown",
+						"description": "Rejects a .wav source whose RIFF size field plus 8 does not equal the file length."
+					},
+					{
+						"name": "Error: Truncated WAV chunk",
+						"type": "thrown",
+						"description": "Rejects a .wav source in which a chunk's declared length runs past the end of the RIFF container."
+					},
+					{
+						"name": "Error: Invalid WAV chunk boundary",
+						"type": "thrown",
+						"description": "Rejects a .wav source whose chunk walk does not end exactly at the end of the RIFF container."
+					},
+					{
+						"name": "Error: Unsupported WAV audio format",
+						"type": "thrown",
+						"description": "Rejects a .wav source that is neither PCM (format 1) nor 32-bit float (format 3), has a channel count outside 1 to 8, or has a sample rate outside 4000 to 384000 Hz."
+					},
+					{
+						"name": "Error: Invalid WAV format",
+						"type": "thrown",
+						"description": "Rejects a .wav source whose fmt chunk is shorter than 16 bytes."
+					},
+					{
+						"name": "Error: Invalid WAV sample format",
+						"type": "thrown",
+						"description": "Rejects a .wav source whose bits per sample are not 8, 16, 24 or 32, or whose block align or bytes-per-second field does not match its channels, bits and sample rate."
+					},
+					{
+						"name": "Error: Invalid WAV audio data length",
+						"type": "thrown",
+						"description": "Rejects a .wav source whose data chunk length is not a multiple of the block align."
+					},
+					{
+						"name": "Error: WAV format and audio data are required",
+						"type": "thrown",
+						"description": "Rejects a .wav source that has no fmt chunk or no data chunk, or whose data chunk is empty."
+					},
+					{
+						"name": "Error: Audio content does not match its filename",
+						"type": "thrown",
+						"description": "Rejects a .mp3, .ogg or .m4a source whose bytes fail the format check for its extension; .wav sources skip this check and use the WAV errors instead."
+					},
+					{
+						"name": "Error: Unsupported evidence format",
+						"type": "thrown",
+						"description": "Rejects a non-audio source whose lowercase extension is not .png, .jpg, .jpeg or .webp, such as .gif, .pdf or a name without an extension."
+					},
+					{
+						"name": "Error: Evidence must be a valid PNG, JPEG or WebP image",
+						"type": "thrown",
+						"description": "Rejects an image source whose bytes do not start with the PNG, JPEG or WebP signature."
+					},
+					{
+						"name": "Error: Image content does not match its filename",
+						"type": "thrown",
+						"description": "Rejects an image source whose detected format differs from its extension; a .jpeg name is accepted for JPEG content."
+					},
+					{
+						"name": "Error (Node fs error from mkdir or writeFile)",
+						"type": "thrown",
+						"description": "Rejects with the Node fs error when the assets subfolder of the report directory cannot be created or the asset file cannot be written, for example EACCES, ENOTDIR or ENOSPC."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
