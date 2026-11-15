@@ -21,33 +21,61 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReportStorageSyncService.constructor.repository",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The ReportRepository dependency used to load reports and resolve report directories. Defaults to new ReportRepository(); a supplied repository replaces that default."
 			},
 			{
 				"name": "ReportStorageSyncService.run.options",
 				"type": "StorageSyncOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional selector and flag for a sync pass: run selects one report ID, while dryRun prevents storage writes. Defaults to {}; when run is absent, all reports are listed, and an absent dryRun behaves as false.",
+				"examples": [
+					{},
+					{
+						"dryRun": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportStorageSyncService.run",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Summarizes report IDs with at least one pending evidence file or eligible replay, aggregate file counts, retention skips, per-report error messages, and the effective dryRun flag. evidence counts distinct pending evidence filenames; replays counts hash-named .mp4 files without storage receipts.",
+				"examples": [
+					{
+						"reports": [],
+						"evidence": 0,
+						"replays": 0,
+						"skipped": 0,
+						"errors": [],
+						"dryRun": false
+					},
+					{
+						"reports": [],
+						"evidence": 0,
+						"replays": 0,
+						"skipped": 0,
+						"errors": [],
+						"dryRun": true
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An Error from repository.get(options.run) or repository.list() can reject run before its per-report error handling begins. Failures during an individual report sync are caught and added to the returned errors array."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ReportStorageSyncService.run",
@@ -56,17 +84,49 @@
 						"name": "ReportStorageSyncService.run.options",
 						"type": "StorageSyncOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional selector and flag for a sync pass: run selects one report ID, while dryRun prevents storage writes. Defaults to {}; when run is absent, all reports are listed, and an absent dryRun behaves as false.",
+						"examples": [
+							{},
+							{
+								"dryRun": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportStorageSyncService.run",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Summarizes report IDs with at least one pending evidence file or eligible replay, aggregate file counts, retention skips, per-report error messages, and the effective dryRun flag. evidence counts distinct pending evidence filenames; replays counts hash-named .mp4 files without storage receipts.",
+						"examples": [
+							{
+								"reports": [],
+								"evidence": 0,
+								"replays": 0,
+								"skipped": 0,
+								"errors": [],
+								"dryRun": false
+							},
+							{
+								"reports": [],
+								"evidence": 0,
+								"replays": 0,
+								"skipped": 0,
+								"errors": [],
+								"dryRun": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An Error from repository.get(options.run) or repository.list() can reject run before its per-report error handling begins. Failures during an individual report sync are caught and added to the returned errors array."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -76,17 +136,19 @@
 					{
 						"name": "ReportStorageSyncService.constructor.repository",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The ReportRepository dependency used to load reports and resolve report directories. Defaults to new ReportRepository(); a supplied repository replaces that default."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportStorageSyncService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ReportStorageSyncService instance, which holds the selected repository for later calls."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
