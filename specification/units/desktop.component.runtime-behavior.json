@@ -124,7 +124,7 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional unit identifier forwarded to both run panels. Defaults to JavaScript undefined (omitted), not the literal string.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["desktop.component.runtime-behavior"]
 			}
 		],
 		"outputs": [

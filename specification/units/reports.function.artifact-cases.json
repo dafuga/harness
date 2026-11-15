@@ -27,33 +27,63 @@
 					{
 						"schemaVersion": 1,
 						"kind": "function-invocations",
-						"unitId": "reports.component.evidence-grid",
+						"unitId": "reports.function.artifact-cases",
 						"symbol": "artifactCases",
 						"cases": [
 							{
-								"name": "read saved evidence",
+								"name": "No recorded values",
 								"input": {
-									"unitId": "reports.component.evidence-grid"
+									"document": null,
+									"unit": "reports.function.artifact-cases"
 								},
 								"output": {
-									"count": 1
+									"kind": "gap",
+									"why": "This result records no input and output."
 								}
 							},
 							{
-								"name": "read unavailable artifact",
+								"name": "Read a test observation",
 								"input": {
-									"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+									"document": {
+										"request": {
+											"operation": "inspect"
+										},
+										"response": {
+											"rows": []
+										}
+									},
+									"unit": "reports.function.artifact-cases"
 								},
-								"error": {
-									"name": "Error",
-									"message": "Artifact is unavailable"
+								"output": {
+									"kind": "cases",
+									"source": "observation",
+									"symbol": null,
+									"cases": [
+										{
+											"name": "Test observation",
+											"input": {
+												"operation": "inspect"
+											},
+											"output": {
+												"rows": []
+											},
+											"failed": false
+										}
+									]
 								}
 							}
 						]
 					},
 					{
+						"schemaVersion": 1,
+						"kind": "function-invocations",
+						"unitId": "reports.function.artifact-cases",
+						"symbol": "artifactCases",
+						"cases": []
+					},
+					{
 						"request": {
-							"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+							"operation": "inspect"
 						},
 						"response": {
 							"rows": []
@@ -67,7 +97,7 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Optional unit identifier used only to filter recorded-invocation documents; a different `unitId` produces a gap, while legacy observations are not filtered. Defaults to undefined, so omitting it leaves valid recorded invocations unfiltered.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["reports.function.artifact-cases"]
 			}
 		],
 		"outputs": [
@@ -95,25 +125,48 @@
 						"symbol": "artifactCases",
 						"cases": [
 							{
-								"name": "read saved evidence",
+								"name": "No recorded values",
 								"input": {
-									"unitId": "reports.component.evidence-grid"
+									"document": null,
+									"unit": "reports.function.artifact-cases"
 								},
 								"output": {
-									"count": 1
+									"kind": "gap",
+									"why": "This result records no input and output."
 								},
 								"failed": false
 							},
 							{
-								"name": "read unavailable artifact",
+								"name": "Read a test observation",
 								"input": {
-									"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+									"document": {
+										"request": {
+											"operation": "inspect"
+										},
+										"response": {
+											"rows": []
+										}
+									},
+									"unit": "reports.function.artifact-cases"
 								},
-								"error": {
-									"name": "Error",
-									"message": "Artifact is unavailable"
+								"output": {
+									"kind": "cases",
+									"source": "observation",
+									"symbol": null,
+									"cases": [
+										{
+											"name": "Test observation",
+											"input": {
+												"operation": "inspect"
+											},
+											"output": {
+												"rows": []
+											},
+											"failed": false
+										}
+									]
 								},
-								"failed": true
+								"failed": false
 							}
 						]
 					},
@@ -129,10 +182,10 @@
 							{
 								"name": "Test observation",
 								"input": {
-									"requestId": "request-42"
+									"operation": "inspect"
 								},
 								"output": {
-									"count": 0
+									"rows": []
 								},
 								"failed": false
 							}
@@ -156,33 +209,63 @@
 							{
 								"schemaVersion": 1,
 								"kind": "function-invocations",
-								"unitId": "reports.component.evidence-grid",
+								"unitId": "reports.function.artifact-cases",
 								"symbol": "artifactCases",
 								"cases": [
 									{
-										"name": "read saved evidence",
+										"name": "No recorded values",
 										"input": {
-											"unitId": "reports.component.evidence-grid"
+											"document": null,
+											"unit": "reports.function.artifact-cases"
 										},
 										"output": {
-											"count": 1
+											"kind": "gap",
+											"why": "This result records no input and output."
 										}
 									},
 									{
-										"name": "read unavailable artifact",
+										"name": "Read a test observation",
 										"input": {
-											"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+											"document": {
+												"request": {
+													"operation": "inspect"
+												},
+												"response": {
+													"rows": []
+												}
+											},
+											"unit": "reports.function.artifact-cases"
 										},
-										"error": {
-											"name": "Error",
-											"message": "Artifact is unavailable"
+										"output": {
+											"kind": "cases",
+											"source": "observation",
+											"symbol": null,
+											"cases": [
+												{
+													"name": "Test observation",
+													"input": {
+														"operation": "inspect"
+													},
+													"output": {
+														"rows": []
+													},
+													"failed": false
+												}
+											]
 										}
 									}
 								]
 							},
 							{
+								"schemaVersion": 1,
+								"kind": "function-invocations",
+								"unitId": "reports.function.artifact-cases",
+								"symbol": "artifactCases",
+								"cases": []
+							},
+							{
 								"request": {
-									"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+									"operation": "inspect"
 								},
 								"response": {
 									"rows": []
@@ -196,7 +279,7 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Optional unit identifier used only to filter recorded-invocation documents; a different `unitId` produces a gap, while legacy observations are not filtered. Defaults to undefined, so omitting it leaves valid recorded invocations unfiltered.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": ["reports.function.artifact-cases"]
 					}
 				],
 				"outputs": [
@@ -211,25 +294,48 @@
 								"symbol": "artifactCases",
 								"cases": [
 									{
-										"name": "read saved evidence",
+										"name": "No recorded values",
 										"input": {
-											"unitId": "reports.component.evidence-grid"
+											"document": null,
+											"unit": "reports.function.artifact-cases"
 										},
 										"output": {
-											"count": 1
+											"kind": "gap",
+											"why": "This result records no input and output."
 										},
 										"failed": false
 									},
 									{
-										"name": "read unavailable artifact",
+										"name": "Read a test observation",
 										"input": {
-											"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+											"document": {
+												"request": {
+													"operation": "inspect"
+												},
+												"response": {
+													"rows": []
+												}
+											},
+											"unit": "reports.function.artifact-cases"
 										},
-										"error": {
-											"name": "Error",
-											"message": "Artifact is unavailable"
+										"output": {
+											"kind": "cases",
+											"source": "observation",
+											"symbol": null,
+											"cases": [
+												{
+													"name": "Test observation",
+													"input": {
+														"operation": "inspect"
+													},
+													"output": {
+														"rows": []
+													},
+													"failed": false
+												}
+											]
 										},
-										"failed": true
+										"failed": false
 									}
 								]
 							},
@@ -245,10 +351,10 @@
 									{
 										"name": "Test observation",
 										"input": {
-											"requestId": "request-42"
+											"operation": "inspect"
 										},
 										"output": {
-											"count": 0
+											"rows": []
 										},
 										"failed": false
 									}

@@ -49,9 +49,7 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional array of UsageExample values; defining it selects documented mode, and an empty array shows the no-documented-examples message. It takes precedence over document and its entries provide expected rows.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "EntityCases.unit",
@@ -59,7 +57,7 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional unit identifier passed with document to artifactCases only when examples is undefined. It defaults to undefined (omitted), so examples mode does not use it.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["reports.function.artifact-cases"]
 			},
 			{
 				"name": "EntityCases.callable",
