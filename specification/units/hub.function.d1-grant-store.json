@@ -38,22 +38,42 @@
 				"name": "d1GrantStore.records",
 				"type": "AuthRecordValidator",
 				"required": true,
-				"description": "Validator used to turn stored database rows into typed records."
+				"description": "Validator whose grantState(row) turns a row found by read() into the grant state that read() returns. The file calls it only in read() and only for an existing row, and no try/catch wraps the call."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EXPIRE_GRANTS",
 				"type": "unknown",
-				"description": "SQL statement that erases expired grant tokens, increments generation and retains a revoked row; caller supplies time and executes it."
+				"description": "String constant holding an UPDATE for auth_github_grants that tombstones each row with revoked_at still NULL and expires_at at or before its single ? placeholder: it erases the token, refresh and lease columns, increments generation and sets revoked_at to expires_at. This file only exports the string, and rows are never deleted, so a generation never repeats.",
+				"examples": [
+					"UPDATE auth_github_grants SET token_cipher = '', token_expires_at = NULL, refresh_cipher = NULL, refresh_expires_at = NULL, refreshing_until = NULL, generation = generation + 1, revoked_at = expires_at WHERE expires_at <= ? AND revoked_at IS NULL"
+				]
 			},
 			{
 				"name": "d1GrantStore",
 				"type": "GrantStore",
-				"description": "Store for reading grant state, connecting at an expected generation, leasing refresh, rotating held tokens and revoking grants. Conditional mutations return whether a row matched. Missing records read as generation zero with no grant or lease."
+				"description": "Store object with read, connect, lease, rotate, revoke and revokeLeased methods; connect, lease, rotate and revokeLeased resolve to true when a row matched and false otherwise, and revoke resolves with no value. read resolves to { generation: 0, grant: null, refreshingUntil: null } when no row exists for the actor."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "connect, lease, rotate and revokeLeased read properties of their record or lease argument synchronously before any query is sent, so a null or undefined argument throws a TypeError from the call itself."
+			},
+			{
+				"name": "db error",
+				"type": "thrown",
+				"description": "An error from db.prepare(...), .bind(...), .first() or .run(), including a TypeError when db is null or undefined, makes the store method that made the call reject with that error, because the file has no try/catch."
+			},
+			{
+				"name": "records.grantState error",
+				"type": "thrown",
+				"description": "read() rejects with any error raised while calling records.grantState(row) for an existing row, because the file does not catch it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "d1GrantStore",
@@ -68,18 +88,18 @@
 						"name": "d1GrantStore.records",
 						"type": "AuthRecordValidator",
 						"required": true,
-						"description": "Validator used to turn stored database rows into typed records."
+						"description": "Validator whose grantState(row) turns a row found by read() into the grant state that read() returns. The file calls it only in read() and only for an existing row, and no try/catch wraps the call."
 					}
 				],
 				"outputs": [
 					{
 						"name": "d1GrantStore",
 						"type": "GrantStore",
-						"description": "Store for reading grant state, connecting at an expected generation, leasing refresh, rotating held tokens and revoking grants. Conditional mutations return whether a row matched. Missing records read as generation zero with no grant or lease."
+						"description": "Store object with read, connect, lease, rotate, revoke and revokeLeased methods; connect, lease, rotate and revokeLeased resolve to true when a row matched and false otherwise, and revoke resolves with no value. read resolves to { generation: 0, grant: null, refreshingUntil: null } when no row exists for the actor."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
