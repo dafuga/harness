@@ -18,54 +18,91 @@
 				"name": "relayResponse.status",
 				"type": "number",
 				"required": true,
-				"description": "HTTP response status."
+				"description": "HTTP status set on the returned Response; it must be from 200 to 599 inclusive, or the Response constructor throws a RangeError. Statuses 204, 205 and 304 cannot carry a body, so they throw a TypeError when the serialized body is not undefined.",
+				"examples": [200, 201, 202]
 			},
 			{
 				"name": "relayResponse.body",
 				"type": "unknown",
 				"required": true,
-				"description": "JSON-serializable response body."
+				"description": "Value passed to JSON.stringify to form the response text. A BigInt or circular value makes JSON.stringify throw a TypeError, and undefined produces a response with no body.",
+				"examples": [
+					{
+						"ok": true
+					},
+					{
+						"items": [],
+						"total": 0
+					},
+					"accepted"
+				]
 			},
 			{
 				"name": "relayResponse.headers",
 				"type": "Record<string, string>",
 				"required": false,
 				"default": {},
-				"description": "Optional additional headers, defaulting to empty; supplied keys override the default headers."
+				"description": "Extra headers merged over the defaults Content-Type, Cache-Control and X-Content-Type-Options; a key spelled exactly like a default replaces it, while another casing is combined with the default value. An invalid header name or value makes the Response constructor throw a TypeError.",
+				"examples": [
+					{},
+					{
+						"Retry-After": "30"
+					}
+				]
 			},
 			{
 				"name": "relayError.status",
 				"type": "number",
 				"required": true,
-				"description": "HTTP failure status."
+				"description": "HTTP failure status passed straight to the Response; it must be from 200 to 599 inclusive, and 204, 205 and 304 always throw a TypeError because the error body is always present. The function does not check that the status is a failure status.",
+				"examples": [401, 404, 429]
 			},
 			{
 				"name": "relayError.error",
 				"type": "RelayErrorCode",
 				"required": true,
-				"description": "Typed relay error code, serialized as the only body field."
+				"description": "The code is sent as the only field of the body, so the body is an object with a single error property. The type limits it to the RelayErrorCode union, and the function does not check the value at runtime.",
+				"examples": ["not-found", "rate-limited", "credential-invalid"]
 			},
 			{
 				"name": "relayError.headers",
 				"type": "Record<string, string>",
 				"required": false,
 				"default": {},
-				"description": "Optional additional failure-response headers, defaulting to empty."
+				"description": "Extra failure-response headers merged over the same defaults as relayResponse; a key spelled exactly like a default replaces it, while another casing is combined with the default value. An invalid header name or value makes the Response constructor throw a TypeError.",
+				"examples": [
+					{},
+					{
+						"Retry-After": "30"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "relayResponse",
 				"type": "Response",
-				"description": "Response containing JSON with default application/json, no-store and nosniff headers."
+				"description": "A Response whose text is the JSON of body, with the given status and the headers Content-Type: application/json, Cache-Control: no-store and X-Content-Type-Options: nosniff, each one replaced when a supplied header uses the exact same key."
 			},
 			{
 				"name": "relayError",
 				"type": "Response",
-				"description": "Response containing only the error code object, using the same response/header construction."
+				"description": "A Response whose body is a JSON object with one field, error, holding the given code, with the given status and the same header rules as relayResponse."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Thrown synchronously by the Response constructor when a status passed to relayResponse or relayError is outside 200 to 599 inclusive. Neither function catches it, so the caller receives the exception instead of a Response."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown synchronously when JSON.stringify fails on the body, when a header name or value is invalid, or when status is 204, 205 or 304 and the serialized body is present. Neither function catches it, so the caller receives the exception instead of a Response."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "relayResponse",
@@ -74,31 +111,59 @@
 						"name": "relayResponse.status",
 						"type": "number",
 						"required": true,
-						"description": "HTTP response status."
+						"description": "HTTP status set on the returned Response; it must be from 200 to 599 inclusive, or the Response constructor throws a RangeError. Statuses 204, 205 and 304 cannot carry a body, so they throw a TypeError when the serialized body is not undefined.",
+						"examples": [200, 201, 202]
 					},
 					{
 						"name": "relayResponse.body",
 						"type": "unknown",
 						"required": true,
-						"description": "JSON-serializable response body."
+						"description": "Value passed to JSON.stringify to form the response text. A BigInt or circular value makes JSON.stringify throw a TypeError, and undefined produces a response with no body.",
+						"examples": [
+							{
+								"ok": true
+							},
+							{
+								"items": [],
+								"total": 0
+							},
+							"accepted"
+						]
 					},
 					{
 						"name": "relayResponse.headers",
 						"type": "Record<string, string>",
 						"required": false,
 						"default": {},
-						"description": "Optional additional headers, defaulting to empty; supplied keys override the default headers."
+						"description": "Extra headers merged over the defaults Content-Type, Cache-Control and X-Content-Type-Options; a key spelled exactly like a default replaces it, while another casing is combined with the default value. An invalid header name or value makes the Response constructor throw a TypeError.",
+						"examples": [
+							{},
+							{
+								"Retry-After": "30"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "relayResponse",
 						"type": "Response",
-						"description": "Response containing JSON with default application/json, no-store and nosniff headers."
+						"description": "A Response whose text is the JSON of body, with the given status and the headers Content-Type: application/json, Cache-Control: no-store and X-Content-Type-Options: nosniff, each one replaced when a supplied header uses the exact same key."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown synchronously by the Response constructor when status is outside 200 to 599 inclusive; relayResponse does not catch it."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously when JSON.stringify fails on body, when a header name or value is invalid, or when status is 204, 205 or 304 and the serialized body is present; relayResponse does not catch it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "relayError",
@@ -107,31 +172,50 @@
 						"name": "relayError.status",
 						"type": "number",
 						"required": true,
-						"description": "HTTP failure status."
+						"description": "HTTP failure status passed straight to the Response; it must be from 200 to 599 inclusive, and 204, 205 and 304 always throw a TypeError because the error body is always present. The function does not check that the status is a failure status.",
+						"examples": [401, 404, 429]
 					},
 					{
 						"name": "relayError.error",
 						"type": "RelayErrorCode",
 						"required": true,
-						"description": "Typed relay error code, serialized as the only body field."
+						"description": "The code is sent as the only field of the body, so the body is an object with a single error property. The type limits it to the RelayErrorCode union, and the function does not check the value at runtime.",
+						"examples": ["not-found", "rate-limited", "credential-invalid"]
 					},
 					{
 						"name": "relayError.headers",
 						"type": "Record<string, string>",
 						"required": false,
 						"default": {},
-						"description": "Optional additional failure-response headers, defaulting to empty."
+						"description": "Extra failure-response headers merged over the same defaults as relayResponse; a key spelled exactly like a default replaces it, while another casing is combined with the default value. An invalid header name or value makes the Response constructor throw a TypeError.",
+						"examples": [
+							{},
+							{
+								"Retry-After": "30"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "relayError",
 						"type": "Response",
-						"description": "Response containing only the error code object, using the same response/header construction."
+						"description": "A Response whose body is a JSON object with one field, error, holding the given code, with the given status and the same header rules as relayResponse."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown synchronously through relayResponse when status is outside 200 to 599 inclusive; relayError does not catch it."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously through relayResponse when JSON.stringify fails on the error object, when a header name or value is invalid, or when status is 204, 205 or 304, since the error body is always present; relayError does not catch it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
