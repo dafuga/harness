@@ -12,27 +12,30 @@
 		"symbols": ["registerInfoCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerInfoCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "Commander `Command` instance that receives this command registration. It must provide the `command`, `option`, `description`, and `action` methods used here; this function does not invoke the registered action."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerInfoCommand",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned. Calling this function attaches `info <topic>`, the `--json` option, the description, and an action to the supplied program; the action runs only when the command is invoked."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised when `findGuide(topic)` returns no guide. The code calls `fail` with a message naming the unknown topic and listing the topics returned by `availableGuideTopics()`."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerInfoCommand",
@@ -40,17 +43,19 @@
 					{
 						"name": "registerInfoCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "Commander `Command` instance that receives this command registration. It must provide the `command`, `option`, `description`, and `action` methods used here; this function does not invoke the registered action."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerInfoCommand",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned. Calling this function attaches `info <topic>`, the `--json` option, the description, and an action to the supplied program; the action runs only when the command is invoked."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
