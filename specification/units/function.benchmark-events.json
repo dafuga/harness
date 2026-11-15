@@ -18,45 +18,137 @@
 				"name": "benchmarkEvents.stdout",
 				"type": "string",
 				"required": true,
-				"description": "Newline-delimited provider JSON event output to parse and validate."
+				"description": "Newline-delimited JSON text from a provider stdout stream; each nonempty split line is parsed as one runner event. Each event needs a string type, optional supplied identifiers and model must be nonempty strings, and optional usage and cost counts must be finite and nonnegative.",
+				"examples": [
+					"{\"type\":\"thread.started\",\"thread_id\":\"thread-01JQ4Y6D4YH5\"}\n{\"type\":\"turn.completed\",\"model\":\"codex-model\",\"usage\":{\"input_tokens\":120,\"output_tokens\":24,\"cached_input_tokens\":8}}"
+				]
 			},
 			{
 				"name": "codexTurn.events",
 				"type": "RunnerEvent[]",
 				"required": true,
-				"description": "Validated provider events containing session identity and a completed turn."
+				"description": "Runner events supplied for Codex turn extraction. The conversion uses the first thread.started event for thread_id, the last turn.completed event for model and usage, and checks all events for turn.failed.",
+				"examples": [
+					[
+						{
+							"type": "thread.started",
+							"thread_id": "thread-01JQ4Y6D4YH5"
+						},
+						{
+							"type": "turn.completed",
+							"model": "codex-model",
+							"usage": {
+								"input_tokens": 120,
+								"output_tokens": 24,
+								"cached_input_tokens": 8
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "claudeTurn.events",
 				"type": "RunnerEvent[]",
 				"required": true,
-				"description": "Validated provider events containing session identity and a completed turn."
+				"description": "Runner events supplied for Claude turn extraction. The conversion uses the first system/init event for model and the last result event for session, usage, error status, and success subtype.",
+				"examples": [
+					[
+						{
+							"type": "system",
+							"subtype": "init",
+							"model": "claude-model"
+						},
+						{
+							"type": "result",
+							"subtype": "success",
+							"session_id": "session-01JQ4Y6D4YH5",
+							"is_error": false,
+							"total_cost_usd": 0.004,
+							"usage": {
+								"input_tokens": 140,
+								"output_tokens": 30,
+								"cache_read_input_tokens": 12
+							}
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "benchmarkEvents",
 				"type": "RunnerEvent[]",
-				"description": "Validated provider events in their original order; blank lines are omitted."
+				"description": "Runner events parsed from retained lines and returned in source order. The function trims stdout before splitting, filters empty split lines, and validates each retained record against the runner event schema.",
+				"examples": [
+					[
+						{
+							"type": "thread.started",
+							"thread_id": "thread-01JQ4Y6D4YH5"
+						},
+						{
+							"type": "turn.completed",
+							"model": "codex-model",
+							"usage": {
+								"input_tokens": 120,
+								"output_tokens": 24,
+								"cached_input_tokens": 8
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "codexTurn",
 				"type": "BenchmarkTurn",
-				"description": "Completed Codex session, reported model and any reported token counts."
+				"description": "A completed Codex turn using the first thread.started event thread_id and the last turn.completed event model and usage. Missing model or token counts remain undefined, and this conversion supplies no cost field.",
+				"examples": [
+					{
+						"session": "thread-01JQ4Y6D4YH5",
+						"reportedModel": "codex-model",
+						"usage": {
+							"inputTokens": 120,
+							"outputTokens": 24,
+							"cacheReadTokens": 8
+						}
+					}
+				]
 			},
 			{
 				"name": "claudeTurn",
 				"type": "BenchmarkTurn",
-				"description": "Completed Claude session, reported model and any reported usage and cost."
+				"description": "A completed Claude turn using the last result event session ID, usage, and cost, with the first system/init event model when present. Missing model or result metrics remain undefined.",
+				"examples": [
+					{
+						"session": "session-01JQ4Y6D4YH5",
+						"reportedModel": "claude-model",
+						"usage": {
+							"inputTokens": 140,
+							"outputTokens": 30,
+							"cacheReadTokens": 12,
+							"reportedCostUsd": 0.004
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when a nonempty split line is not valid JSON."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown when parsed JSON does not satisfy the runner event schema, including invalid field types, empty supplied identifiers or model, or negative or nonfinite usage and cost counts."
+			},
+			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects malformed event JSON and missing or failed provider completion."
+				"description": "Thrown by codexTurn when its session or completion conditions fail, or by claudeTurn when its result does not satisfy the session and success conditions."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "benchmarkEvents",
@@ -65,18 +157,49 @@
 						"name": "benchmarkEvents.stdout",
 						"type": "string",
 						"required": true,
-						"description": "Newline-delimited provider JSON event output to parse and validate."
+						"description": "Newline-delimited JSON text from a provider stdout stream; each nonempty split line is parsed as one runner event. Each event needs a string type, optional supplied identifiers and model must be nonempty strings, and optional usage and cost counts must be finite and nonnegative.",
+						"examples": [
+							"{\"type\":\"thread.started\",\"thread_id\":\"thread-01JQ4Y6D4YH5\"}\n{\"type\":\"turn.completed\",\"model\":\"codex-model\",\"usage\":{\"input_tokens\":120,\"output_tokens\":24,\"cached_input_tokens\":8}}"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchmarkEvents",
 						"type": "RunnerEvent[]",
-						"description": "Validated provider events in their original order; blank lines are omitted."
+						"description": "Runner events parsed from retained lines and returned in source order. The function trims stdout before splitting, filters empty split lines, and validates each retained record against the runner event schema.",
+						"examples": [
+							[
+								{
+									"type": "thread.started",
+									"thread_id": "thread-01JQ4Y6D4YH5"
+								},
+								{
+									"type": "turn.completed",
+									"model": "codex-model",
+									"usage": {
+										"input_tokens": 120,
+										"output_tokens": 24,
+										"cached_input_tokens": 8
+									}
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when a nonempty split line is not valid JSON."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown when parsed JSON does not satisfy the runner event schema, including invalid field types, empty supplied identifiers or model, or negative or nonfinite usage and cost counts."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "codexTurn",
@@ -85,23 +208,52 @@
 						"name": "codexTurn.events",
 						"type": "RunnerEvent[]",
 						"required": true,
-						"description": "Validated provider events containing session identity and a completed turn."
+						"description": "Runner events supplied for Codex turn extraction. The conversion uses the first thread.started event for thread_id, the last turn.completed event for model and usage, and checks all events for turn.failed.",
+						"examples": [
+							[
+								{
+									"type": "thread.started",
+									"thread_id": "thread-01JQ4Y6D4YH5"
+								},
+								{
+									"type": "turn.completed",
+									"model": "codex-model",
+									"usage": {
+										"input_tokens": 120,
+										"output_tokens": 24,
+										"cached_input_tokens": 8
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "codexTurn",
 						"type": "BenchmarkTurn",
-						"description": "Completed Codex session, reported model and any reported token counts."
+						"description": "A completed Codex turn using the first thread.started event thread_id and the last turn.completed event model and usage. Missing model or token counts remain undefined, and this conversion supplies no cost field.",
+						"examples": [
+							{
+								"session": "thread-01JQ4Y6D4YH5",
+								"reportedModel": "codex-model",
+								"usage": {
+									"inputTokens": 120,
+									"outputTokens": 24,
+									"cacheReadTokens": 8
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when no thread.started event supplies a truthy thread_id, no turn.completed event exists, or any event has type turn.failed; message: 'Codex did not complete a benchmark submission.'"
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "claudeTurn",
@@ -110,23 +262,57 @@
 						"name": "claudeTurn.events",
 						"type": "RunnerEvent[]",
 						"required": true,
-						"description": "Validated provider events containing session identity and a completed turn."
+						"description": "Runner events supplied for Claude turn extraction. The conversion uses the first system/init event for model and the last result event for session, usage, error status, and success subtype.",
+						"examples": [
+							[
+								{
+									"type": "system",
+									"subtype": "init",
+									"model": "claude-model"
+								},
+								{
+									"type": "result",
+									"subtype": "success",
+									"session_id": "session-01JQ4Y6D4YH5",
+									"is_error": false,
+									"total_cost_usd": 0.004,
+									"usage": {
+										"input_tokens": 140,
+										"output_tokens": 30,
+										"cache_read_input_tokens": 12
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "claudeTurn",
 						"type": "BenchmarkTurn",
-						"description": "Completed Claude session, reported model and any reported usage and cost."
+						"description": "A completed Claude turn using the last result event session ID, usage, and cost, with the first system/init event model when present. Missing model or result metrics remain undefined.",
+						"examples": [
+							{
+								"session": "session-01JQ4Y6D4YH5",
+								"reportedModel": "claude-model",
+								"usage": {
+									"inputTokens": 140,
+									"outputTokens": 30,
+									"cacheReadTokens": 12,
+									"reportedCostUsd": 0.004
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when there is no result with a truthy session_id, result.is_error is true, or the result subtype is not success; message: 'Claude did not complete a benchmark submission.'"
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
