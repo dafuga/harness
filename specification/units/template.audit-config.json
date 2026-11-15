@@ -12,16 +12,25 @@
 		"symbols": ["auditConfigFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "auditConfigFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns one planned file at `harness.audit.json`. Its contents are a tab-indented JSON string containing the imported `harnessRuleLimits`, an empty `ignore` array, and the imported `cleanCodeDefaults`, followed by a newline.",
+				"examples": [
+					[
+						{
+							"path": "harness.audit.json",
+							"contents": "{\n\t\"limits\": {},\n\t\"ignore\": [],\n\t\"cleanCode\": {}\n}\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "auditConfigFiles",
@@ -29,11 +38,20 @@
 				"outputs": [
 					{
 						"name": "auditConfigFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns one planned file at `harness.audit.json`. Its contents are a tab-indented JSON string containing the imported `harnessRuleLimits`, an empty `ignore` array, and the imported `cleanCodeDefaults`, followed by a newline.",
+						"examples": [
+							[
+								{
+									"path": "harness.audit.json",
+									"contents": "{\n\t\"limits\": {},\n\t\"ignore\": [],\n\t\"cleanCode\": {}\n}\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
