@@ -1,4 +1,5 @@
 import type { VerificationRecord } from '../../src/core/verification-evidence/verificationTypes';
+import { measureWorkload } from './measureWorkload';
 import { expect, vi } from 'vitest';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -78,10 +79,12 @@ async function assertAttachmentCase(
 }
 
 async function assertOldProof(root: string, record: VerificationRecord, pending: boolean) {
-	const report = await new VerificationCheckService(root).check(record.source.commit, {
-		record,
-		directory: root
-	});
+	const report = await measureWorkload(
+		'service.verification-check',
+		'current-video-review-proof',
+		() =>
+			new VerificationCheckService(root).check(record.source.commit, { record, directory: root })
+	);
 	expect(report.status).toBe(pending ? 'failed' : 'passed');
 	if (pending) expect(report.problems.join(' ')).toMatch(/pending.*flag|flag.*pending/i);
 }

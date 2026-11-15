@@ -164,7 +164,11 @@ test('replacement recordings must address pending flags and resolve them append-
 			flags: []
 		});
 	});
-	await assertAttachedFrameFlagResolution();
+	await measureWorkload(
+		'service.evidence-attach',
+		'resolve-addressed-attached-video-flags',
+		assertAttachedFrameFlagResolution
+	);
 }, 30_000);
 
 test('the default reader refuses clip references without attached verified evidence', async () => {
