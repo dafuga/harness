@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/validators/ReportRecordValidator.ts",
-			"packages/reports/src/validators/reports-media/ReportRecordValidator.ts"
-		],
-		"symbols": ["ReportRecordValidator", "ReportRecordValidator", "ReportRecordValidator.validate"]
+		"source": ["packages/reports/src/validators/reports-media/ReportRecordValidator.ts"],
+		"symbols": ["ReportRecordValidator", "ReportRecordValidator.validate"]
 	},
 	"contract": {
 		"origin": "derived",
