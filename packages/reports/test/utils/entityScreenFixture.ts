@@ -1,6 +1,6 @@
 import type { HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import type { Revision } from './entity-screens.test.types';
-import { explorerEvidence } from '../../src/utils/explorerEvidence';
+import { explorerEvidence } from '../../src/utils/explorer-ui/explorerEvidence';
 import { scope } from '../entityPlaces';
 
 /** What the host gives for the page: the tip alone, or a commit beside the parent it names. */

@@ -1,7 +1,7 @@
 // @harness-uid u_lkzrod2wrf
 import type { ExplorerScope } from '$reports/models/explorer-ui/Explorer.types';
 import type { CacheIdentity } from '../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
-import type { ExplorerRevisions } from '$reports/utils/explorerEvidence';
+import type { ExplorerRevisions } from '$reports/utils/explorer-ui/explorerEvidence';
 
 export interface AnswerInput {
 	/** Where the read is in history, with the entity it is of. */

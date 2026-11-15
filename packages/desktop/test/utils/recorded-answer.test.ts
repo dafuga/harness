@@ -2,7 +2,7 @@ import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import type { CacheIdentity } from '../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import { explorerBehavior } from '../../../reports/src/utils/explorer-ui/explorerBehavior';
-import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
+import { explorerEvidence } from '../../../reports/src/utils/explorer-ui/explorerEvidence';
 import { recordedAnswer } from '../../src/utils/recorded-answer/recordedAnswer';
 import { recordedProjection } from '../../src/utils/recorded-answer/recordedProjection';
 import { feed, head, home, parent, sampleDetail, sampleScope } from '../recorded-sample';

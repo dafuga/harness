@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import type { ExplorerScope } from '../../src/models/explorer-ui/Explorer.types';
 import type { HarnessCapture, HarnessRevision } from '../../src/models/explorer-ui/Harness.types';
-import { explorerEvidence } from '../../src/utils/explorerEvidence';
+import { explorerEvidence } from '../../src/utils/explorer-ui/explorerEvidence';
 import {
 	complete,
 	declared,

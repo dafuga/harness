@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
+import { explorerEvidence } from '../../../reports/src/utils/explorer-ui/explorerEvidence';
 import { recordedCapture } from '../../src/utils/reports-media/recordedCapture';
 import {
 	feed,

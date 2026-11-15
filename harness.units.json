@@ -441,8 +441,8 @@
 		},
 		{
 			"from": "packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts",
-			"specifier": "$reports/utils/explorerEvidence",
-			"to": "packages/reports/src/utils/explorerEvidence.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerEvidence",
+			"to": "packages/reports/src/utils/explorer-ui/explorerEvidence.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -945,8 +945,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.types.ts",
-			"specifier": "$reports/utils/explorerEvidence",
-			"to": "packages/reports/src/utils/explorerEvidence.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerEvidence",
+			"to": "packages/reports/src/utils/explorer-ui/explorerEvidence.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -957,8 +957,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
-			"specifier": "$reports/utils/explorerEvidence",
-			"to": "packages/reports/src/utils/explorerEvidence.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerEvidence",
+			"to": "packages/reports/src/utils/explorer-ui/explorerEvidence.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -969,8 +969,8 @@
 		},
 		{
 			"from": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
-			"specifier": "$reports/utils/explorerEvidence",
-			"to": "packages/reports/src/utils/explorerEvidence.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerEvidence",
+			"to": "packages/reports/src/utils/explorer-ui/explorerEvidence.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{

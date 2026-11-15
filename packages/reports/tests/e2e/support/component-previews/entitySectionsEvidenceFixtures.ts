@@ -6,7 +6,7 @@ import type { Data } from './illustratedData.types';
 import { record, revision } from '../../../../test/entityFixture';
 import { capture, commits, ids } from '../../../../test/entityUnits';
 import { place, scope } from '../../../../test/entityPlaces';
-import { explorerEvidence } from '../../../../src/utils/explorerEvidence';
+import { explorerEvidence } from '../../../../src/utils/explorer-ui/explorerEvidence';
 import { shellImage } from './shellArtworkImages';
 
 const viewports = [

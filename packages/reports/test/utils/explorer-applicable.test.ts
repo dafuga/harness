@@ -5,7 +5,7 @@ import {
 } from '../../../../src/utils/record-capture/recordCapture';
 import { scenarioFor } from '../../src/utils/explorerState';
 import type { ExplorerScope } from '../../src/models/explorer-ui/Explorer.types';
-import { explorerEvidence } from '../../src/utils/explorerEvidence';
+import { explorerEvidence } from '../../src/utils/explorer-ui/explorerEvidence';
 import { explorerVerdict } from '../../src/utils/explorer-verdict/explorerVerdict';
 import {
 	capture,

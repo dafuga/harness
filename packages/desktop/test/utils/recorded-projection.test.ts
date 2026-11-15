@@ -5,7 +5,7 @@ import {
 	evidenceRequested,
 	recordCapture
 } from '../../../../src/utils/record-capture/recordCapture';
-import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
+import { explorerEvidence } from '../../../reports/src/utils/explorer-ui/explorerEvidence';
 import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';
 import { recordedProjection } from '../../src/utils/recorded-answer/recordedProjection';
 import { feed, head, held, home, parent, sampleDetail, sampleScope } from '../recorded-sample';
