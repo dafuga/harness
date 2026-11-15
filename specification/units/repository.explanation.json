@@ -18,40 +18,219 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ExplanationRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root: git runs here to read the history notes, and the scratch file path is joined onto it. Outside a repository, all() returns only the scratch-file reasons, without an error.",
+				"examples": ["/home/dev/shop-api", "/srv/git/payments-service"]
 			},
 			{
 				"name": "ExplanationRepository.constructor.file",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Defaults to explanationsFile: .cache/harness/explanations.ndjson, the scratch store for reasons written before a commit exists. It is joined onto root with path.join, so only undefined selects the default, and any other non-string value makes the constructor throw a TypeError.",
+				"examples": [".cache/harness/explanations.ndjson", "state/explanations.ndjson"]
 			},
 			{
 				"name": "ExplanationRepository.append.entries",
 				"type": "Explanation[]",
-				"required": true
+				"required": true,
+				"description": "The explanations to add, each written as one JSON line at the end of the scratch file, whose folder and file are created when missing. Entries are written without a check against explanationSchema, so one that the schema rejects is later skipped by read().",
+				"examples": [
+					[
+						{
+							"unit": "repository.explanation",
+							"symbol": "ExplanationRepository.append",
+							"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+							"change": "modified",
+							"from": "5f0a9c1e3b7d2846",
+							"to": "c24e8b19d0a63f7e",
+							"behavior": "Appends each entry as one JSON line and creates the scratch folder first.",
+							"simplification": {
+								"attempt": "Tried one appendFile call per entry; the single batched call was kept.",
+								"outcome": "improved"
+							},
+							"performance": {
+								"attempt": "Not measured; the batch is written with one appendFile call.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-14T16:42:09.517Z"
+						}
+					],
+					[
+						{
+							"unit": "function.explanation-types",
+							"symbol": "<manifest>",
+							"change": "modified",
+							"from": "a7e3c10f94d2b586",
+							"to": "0b6d8e2f5a1c93e7",
+							"behavior": "The unit's declared dependency list changed; no symbol in its source changed.",
+							"simplification": {
+								"attempt": "Considered moving the outcome list into the manifest; it stays in the schema file.",
+								"outcome": "not-improved"
+							},
+							"performance": {
+								"attempt": "No performance-sensitive path was affected.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-12T08:05:44.903Z"
+						},
+						{
+							"unit": "repository.explanation",
+							"symbol": "ExplanationRepository.read",
+							"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+							"change": "added",
+							"from": null,
+							"to": "9d41be07a6f2c58e",
+							"behavior": "Reads the scratch file in order and skips any line that fails explanationSchema.",
+							"simplification": {
+								"attempt": "Considered a streaming reader; readFileSync was kept for a small scratch file.",
+								"outcome": "not-improved"
+							},
+							"performance": {
+								"attempt": "Not measured; the scratch file holds one line per reason.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-15T09:11:37.204Z"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplanationRepository.all",
-				"type": "Promise<Explanation[]>"
+				"type": "Promise<Explanation[]>",
+				"description": "Every reason known to the repository: those held in history notes, each once and sorted by recordedAt in UTC and then by serialized text, with a recordedAt that is not a UTC timestamp sorting first; scratch-file reasons follow in file order. A failure to read history notes contributes no reasons, while a failure to read the scratch file rejects the promise.",
+				"examples": [
+					[
+						{
+							"unit": "function.explanation-types",
+							"symbol": "<manifest>",
+							"change": "modified",
+							"from": "a7e3c10f94d2b586",
+							"to": "0b6d8e2f5a1c93e7",
+							"behavior": "The unit's declared dependency list changed; no symbol in its source changed.",
+							"simplification": {
+								"attempt": "Considered moving the outcome list into the manifest; it stays in the schema file.",
+								"outcome": "not-improved"
+							},
+							"performance": {
+								"attempt": "No performance-sensitive path was affected.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-12T08:05:44.903Z"
+						},
+						{
+							"unit": "repository.explanation",
+							"symbol": "ExplanationRepository.append",
+							"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+							"change": "modified",
+							"from": "5f0a9c1e3b7d2846",
+							"to": "c24e8b19d0a63f7e",
+							"behavior": "Appends each entry as one JSON line and creates the scratch folder first.",
+							"simplification": {
+								"attempt": "Tried one appendFile call per entry; the single batched call was kept.",
+								"outcome": "improved"
+							},
+							"performance": {
+								"attempt": "Not measured; the batch is written with one appendFile call.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-14T16:42:09.517Z"
+						}
+					],
+					[
+						{
+							"unit": "repository.explanation",
+							"symbol": "ExplanationRepository.read",
+							"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+							"change": "added",
+							"from": null,
+							"to": "9d41be07a6f2c58e",
+							"behavior": "Reads the scratch file in order and skips any line that fails explanationSchema.",
+							"simplification": {
+								"attempt": "Considered a streaming reader; readFileSync was kept for a small scratch file.",
+								"outcome": "not-improved"
+							},
+							"performance": {
+								"attempt": "Not measured; the scratch file holds one line per reason.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-15T09:11:37.204Z"
+						}
+					]
+				]
 			},
 			{
 				"name": "ExplanationRepository.read",
-				"type": "Explanation[]"
+				"type": "Explanation[]",
+				"description": "The reasons in the scratch file, in file order; a line that is not JSON or fails explanationSchema is skipped, and a missing file yields an empty array.",
+				"examples": [
+					[
+						{
+							"unit": "repository.explanation",
+							"symbol": "ExplanationRepository.append",
+							"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+							"change": "modified",
+							"from": "5f0a9c1e3b7d2846",
+							"to": "c24e8b19d0a63f7e",
+							"behavior": "Appends each entry as one JSON line and creates the scratch folder first.",
+							"simplification": {
+								"attempt": "Tried one appendFile call per entry; the single batched call was kept.",
+								"outcome": "improved"
+							},
+							"performance": {
+								"attempt": "Not measured; the batch is written with one appendFile call.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-14T16:42:09.517Z"
+						}
+					],
+					[
+						{
+							"unit": "repository.explanation",
+							"symbol": "ExplanationRepository.read",
+							"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+							"change": "added",
+							"from": null,
+							"to": "9d41be07a6f2c58e",
+							"behavior": "Reads the scratch file in order and skips any line that fails explanationSchema.",
+							"simplification": {
+								"attempt": "Considered a streaming reader; readFileSync was kept for a small scratch file.",
+								"outcome": "not-improved"
+							},
+							"performance": {
+								"attempt": "Not measured; the scratch file holds one line per reason.",
+								"outcome": "not-applicable"
+							},
+							"recordedAt": "2026-11-15T09:11:37.204Z"
+						}
+					]
+				]
 			},
 			{
 				"name": "ExplanationRepository.append",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value once the lines have been appended, so awaiting it means the write has finished; it rejects when the scratch folder cannot be created or the file cannot be written."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by the constructor when root is not a string or file is neither undefined nor a string, and rejected by append() when entries is not an array or an entry cannot be serialized to JSON."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A filesystem error from creating the scratch folder, reading the scratch file or appending to it, which the code does not catch: read() throws it, and all() and append() reject with it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ExplanationRepository.all",
@@ -59,11 +238,77 @@
 				"outputs": [
 					{
 						"name": "ExplanationRepository.all",
-						"type": "Promise<Explanation[]>"
+						"type": "Promise<Explanation[]>",
+						"description": "Every reason known to the repository: those held in history notes, each once and sorted by recordedAt in UTC and then by serialized text, with a recordedAt that is not a UTC timestamp sorting first; scratch-file reasons follow in file order. A failure to read history notes contributes no reasons, while a failure to read the scratch file rejects the promise.",
+						"examples": [
+							[
+								{
+									"unit": "function.explanation-types",
+									"symbol": "<manifest>",
+									"change": "modified",
+									"from": "a7e3c10f94d2b586",
+									"to": "0b6d8e2f5a1c93e7",
+									"behavior": "The unit's declared dependency list changed; no symbol in its source changed.",
+									"simplification": {
+										"attempt": "Considered moving the outcome list into the manifest; it stays in the schema file.",
+										"outcome": "not-improved"
+									},
+									"performance": {
+										"attempt": "No performance-sensitive path was affected.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-12T08:05:44.903Z"
+								},
+								{
+									"unit": "repository.explanation",
+									"symbol": "ExplanationRepository.append",
+									"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+									"change": "modified",
+									"from": "5f0a9c1e3b7d2846",
+									"to": "c24e8b19d0a63f7e",
+									"behavior": "Appends each entry as one JSON line and creates the scratch folder first.",
+									"simplification": {
+										"attempt": "Tried one appendFile call per entry; the single batched call was kept.",
+										"outcome": "improved"
+									},
+									"performance": {
+										"attempt": "Not measured; the batch is written with one appendFile call.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-14T16:42:09.517Z"
+								}
+							],
+							[
+								{
+									"unit": "repository.explanation",
+									"symbol": "ExplanationRepository.read",
+									"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+									"change": "added",
+									"from": null,
+									"to": "9d41be07a6f2c58e",
+									"behavior": "Reads the scratch file in order and skips any line that fails explanationSchema.",
+									"simplification": {
+										"attempt": "Considered a streaming reader; readFileSync was kept for a small scratch file.",
+										"outcome": "not-improved"
+									},
+									"performance": {
+										"attempt": "Not measured; the scratch file holds one line per reason.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-15T09:11:37.204Z"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the filesystem error from reading the scratch file when it exists but cannot be read; failures reading history notes are caught and contribute no reasons."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ExplanationRepository.read",
@@ -71,11 +316,60 @@
 				"outputs": [
 					{
 						"name": "ExplanationRepository.read",
-						"type": "Explanation[]"
+						"type": "Explanation[]",
+						"description": "The reasons in the scratch file, in file order; a line that is not JSON or fails explanationSchema is skipped, and a missing file yields an empty array.",
+						"examples": [
+							[
+								{
+									"unit": "repository.explanation",
+									"symbol": "ExplanationRepository.append",
+									"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+									"change": "modified",
+									"from": "5f0a9c1e3b7d2846",
+									"to": "c24e8b19d0a63f7e",
+									"behavior": "Appends each entry as one JSON line and creates the scratch folder first.",
+									"simplification": {
+										"attempt": "Tried one appendFile call per entry; the single batched call was kept.",
+										"outcome": "improved"
+									},
+									"performance": {
+										"attempt": "Not measured; the batch is written with one appendFile call.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-14T16:42:09.517Z"
+								}
+							],
+							[
+								{
+									"unit": "repository.explanation",
+									"symbol": "ExplanationRepository.read",
+									"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+									"change": "added",
+									"from": null,
+									"to": "9d41be07a6f2c58e",
+									"behavior": "Reads the scratch file in order and skips any line that fails explanationSchema.",
+									"simplification": {
+										"attempt": "Considered a streaming reader; readFileSync was kept for a small scratch file.",
+										"outcome": "not-improved"
+									},
+									"performance": {
+										"attempt": "Not measured; the scratch file holds one line per reason.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-15T09:11:37.204Z"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws the filesystem error from readFileSync when the scratch file exists but cannot be read; a missing file and damaged lines do not throw."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ExplanationRepository.append",
@@ -83,17 +377,89 @@
 					{
 						"name": "ExplanationRepository.append.entries",
 						"type": "Explanation[]",
-						"required": true
+						"required": true,
+						"description": "The explanations to add, each written as one JSON line at the end of the scratch file, whose folder and file are created when missing. Entries are written without a check against explanationSchema, so one that the schema rejects is later skipped by read().",
+						"examples": [
+							[
+								{
+									"unit": "repository.explanation",
+									"symbol": "ExplanationRepository.append",
+									"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+									"change": "modified",
+									"from": "5f0a9c1e3b7d2846",
+									"to": "c24e8b19d0a63f7e",
+									"behavior": "Appends each entry as one JSON line and creates the scratch folder first.",
+									"simplification": {
+										"attempt": "Tried one appendFile call per entry; the single batched call was kept.",
+										"outcome": "improved"
+									},
+									"performance": {
+										"attempt": "Not measured; the batch is written with one appendFile call.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-14T16:42:09.517Z"
+								}
+							],
+							[
+								{
+									"unit": "function.explanation-types",
+									"symbol": "<manifest>",
+									"change": "modified",
+									"from": "a7e3c10f94d2b586",
+									"to": "0b6d8e2f5a1c93e7",
+									"behavior": "The unit's declared dependency list changed; no symbol in its source changed.",
+									"simplification": {
+										"attempt": "Considered moving the outcome list into the manifest; it stays in the schema file.",
+										"outcome": "not-improved"
+									},
+									"performance": {
+										"attempt": "No performance-sensitive path was affected.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-12T08:05:44.903Z"
+								},
+								{
+									"unit": "repository.explanation",
+									"symbol": "ExplanationRepository.read",
+									"file": "src/repositories/verification-evidence/ExplanationRepository.ts",
+									"change": "added",
+									"from": null,
+									"to": "9d41be07a6f2c58e",
+									"behavior": "Reads the scratch file in order and skips any line that fails explanationSchema.",
+									"simplification": {
+										"attempt": "Considered a streaming reader; readFileSync was kept for a small scratch file.",
+										"outcome": "not-improved"
+									},
+									"performance": {
+										"attempt": "Not measured; the scratch file holds one line per reason.",
+										"outcome": "not-applicable"
+									},
+									"recordedAt": "2026-11-15T09:11:37.204Z"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ExplanationRepository.append",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value once the lines have been appended, so awaiting it means the write has finished; it rejects when the scratch folder cannot be created or the file cannot be written."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the filesystem error from creating the scratch folder or appending to the scratch file, such as when the file cannot be written."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects when entries is not an array, or when JSON.stringify cannot serialize an entry, such as a BigInt or circular value."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -103,22 +469,33 @@
 					{
 						"name": "ExplanationRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root: git runs here to read the history notes, and the scratch file path is joined onto it. Outside a repository, all() returns only the scratch-file reasons, without an error.",
+						"examples": ["/home/dev/shop-api", "/srv/git/payments-service"]
 					},
 					{
 						"name": "ExplanationRepository.constructor.file",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Defaults to explanationsFile: .cache/harness/explanations.ndjson, the scratch store for reasons written before a commit exists. It is joined onto root with path.join, so only undefined selects the default, and any other non-string value makes the constructor throw a TypeError.",
+						"examples": [".cache/harness/explanations.ndjson", "state/explanations.ndjson"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ExplanationRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ExplanationRepository instance, which keeps root and the scratch path join(root, file) for its methods."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when root is not a string, or when file is neither undefined nor a string, because path.join rejects non-string arguments."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
