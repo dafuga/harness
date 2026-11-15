@@ -32,54 +32,75 @@
 				"name": "rendererPolicy.html",
 				"type": "string",
 				"required": true,
-				"description": "HTML whose inline scripts are hashed for the script policy."
+				"description": "HTML source scanned for inline <script> elements whose bodies are added to script-src as SHA-256 hashes. Only bodies matching the case-sensitive script pattern are included.",
+				"examples": ["<main>Desktop</main>", "<script>window.ready = true;</script>"]
 			},
 			{
 				"name": "rendererPolicy.connect",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Additional trusted connection-policy text; defaults to empty."
+				"description": "Optional CSP source text appended verbatim to connect-src after 'self' when nonempty; this function does not parse or validate it. Defaults to the empty string.",
+				"examples": ["", "ws://localhost:4312"]
 			},
 			{
 				"name": "rendererAssets.root",
 				"type": "string",
 				"required": true,
-				"description": "Directory containing the built renderer."
+				"description": "Filesystem root used to resolve the requested asset and the index.html fallback. The resolved file must remain inside this root, and failure to resolve the root rejects the request.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/desktop"
+				]
 			},
 			{
 				"name": "rendererAssets.url",
 				"type": "string",
 				"required": true,
-				"description": "Requested URL; must use harness://app."
+				"description": "Absolute URL parsed to select a renderer asset; only the harness: scheme with hostname app is accepted. The decoded pathname is refused if it contains NUL or a .. path segment; query and fragment do not select the file.",
+				"examples": ["harness://app/index.html", "harness://app/assets/main.js", "harness://app/"]
 			},
 			{
 				"name": "rendererAssets.connect",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Additional trusted connection-policy text; defaults to empty."
+				"description": "Optional CSP source text passed to rendererPolicy and appended verbatim to connect-src when nonempty; it is not validated as a CSP source here. Defaults to the empty string.",
+				"examples": ["", "ws://localhost:4312"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "rendererPolicy",
 				"type": "string",
-				"description": "Content policy allowing local assets and the HTML inline-script hashes, with restricted frames, objects and base URLs."
+				"description": "Content-Security-Policy text with SHA-256 sources for inline script bodies matching the function's script pattern and an optional connect-src addition. The remaining directives restrict scripts, styles, images, media, fonts, frames, objects, and base URLs.",
+				"examples": [
+					"default-src 'self'; script-src 'self' ; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'"
+				]
 			},
 			{
 				"name": "rendererAssets",
 				"type": "Promise<Response>",
-				"description": "Response with file bytes, media type, content policy and no-sniff header; missing files fall back to index.html, while rejected routes or escaped paths receive a refusal response."
+				"description": "Resolves to a Fetch Response containing the selected file bytes, extension-based Content-Type (or application/octet-stream), Content-Security-Policy, and X-Content-Type-Options: nosniff. Invalid origins, decoded traversal paths, and real files outside root return 403 Refused; a non-file or failed initial stat selects index.html."
 			}
 		],
 		"errors": [
 			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Malformed absolute URLs and response headers rejected by Response raise TypeError; connect text containing forbidden header characters can cause the latter."
+			},
+			{
+				"name": "URIError",
+				"type": "thrown",
+				"description": "A percent-encoded pathname that decodeURIComponent cannot decode raises URIError."
+			},
+			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Malformed URLs or escapes and filesystem/read failures can reject the operation."
+				"description": "Filesystem failures while resolving the selected file or root, or reading the selected file, reject rendererAssets; failures from its initial stat are caught and instead select index.html."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "rendererPolicy",
@@ -88,25 +109,30 @@
 						"name": "rendererPolicy.html",
 						"type": "string",
 						"required": true,
-						"description": "HTML whose inline scripts are hashed for the script policy."
+						"description": "HTML source scanned for inline <script> elements whose bodies are added to script-src as SHA-256 hashes. Only bodies matching the case-sensitive script pattern are included.",
+						"examples": ["<main>Desktop</main>", "<script>window.ready = true;</script>"]
 					},
 					{
 						"name": "rendererPolicy.connect",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Additional trusted connection-policy text; defaults to empty."
+						"description": "Optional CSP source text appended verbatim to connect-src after 'self' when nonempty; this function does not parse or validate it. Defaults to the empty string.",
+						"examples": ["", "ws://localhost:4312"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "rendererPolicy",
 						"type": "string",
-						"description": "Content policy allowing local assets and the HTML inline-script hashes, with restricted frames, objects and base URLs."
+						"description": "Content-Security-Policy text with SHA-256 sources for inline script bodies matching the function's script pattern and an optional connect-src addition. The remaining directives restrict scripts, styles, images, media, fonts, frames, objects, and base URLs.",
+						"examples": [
+							"default-src 'self'; script-src 'self' ; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "rendererAssets",
@@ -115,36 +141,56 @@
 						"name": "rendererAssets.root",
 						"type": "string",
 						"required": true,
-						"description": "Directory containing the built renderer."
+						"description": "Filesystem root used to resolve the requested asset and the index.html fallback. The resolved file must remain inside this root, and failure to resolve the root rejects the request.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/desktop"
+						]
 					},
 					{
 						"name": "rendererAssets.url",
 						"type": "string",
 						"required": true,
-						"description": "Requested URL; must use harness://app."
+						"description": "Absolute URL parsed to select a renderer asset; only the harness: scheme with hostname app is accepted. The decoded pathname is refused if it contains NUL or a .. path segment; query and fragment do not select the file.",
+						"examples": [
+							"harness://app/index.html",
+							"harness://app/assets/main.js",
+							"harness://app/"
+						]
 					},
 					{
 						"name": "rendererAssets.connect",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Additional trusted connection-policy text; defaults to empty."
+						"description": "Optional CSP source text passed to rendererPolicy and appended verbatim to connect-src when nonempty; it is not validated as a CSP source here. Defaults to the empty string.",
+						"examples": ["", "ws://localhost:4312"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "rendererAssets",
 						"type": "Promise<Response>",
-						"description": "Response with file bytes, media type, content policy and no-sniff header; missing files fall back to index.html, while rejected routes or escaped paths receive a refusal response."
+						"description": "Resolves to a Fetch Response containing the selected file bytes, extension-based Content-Type (or application/octet-stream), Content-Security-Policy, and X-Content-Type-Options: nosniff. Invalid origins, decoded traversal paths, and real files outside root return 403 Refused; a non-file or failed initial stat selects index.html."
 					}
 				],
 				"errors": [
 					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Malformed absolute URLs and response headers rejected by Response raise TypeError; connect text containing forbidden header characters can cause the latter."
+					},
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "A percent-encoded pathname that decodeURIComponent cannot decode raises URIError."
+					},
+					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Filesystem failures while resolving the selected file or root, or reading the selected file, reject rendererAssets; failures from its initial stat are caught and instead select index.html."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
