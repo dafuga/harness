@@ -1,4 +1,6 @@
 // @harness-uid u_zhz7hjx43x
+import type { MediaFacts } from '../../utils/verification-evidence/mediaFacts';
+
 export interface FrameClipReference {
 	record: string;
 	revision: string;
@@ -55,4 +57,17 @@ export interface FrameFeedback {
 	text: string;
 	images: string[];
 	flags: string[];
+}
+
+export type StoredFrameFlag = Omit<FrameFlag, 'evidence'>;
+export type FrameVideoFacts = Extract<MediaFacts, { kind: 'video' }>;
+export interface LoadedFrameClip {
+	clip: FrameClip;
+	facts: FrameVideoFacts;
+}
+export interface FrameResolution {
+	schemaVersion: 1;
+	flag: string;
+	replacement: FrameFlag['clip'];
+	addressedFlags: string[];
 }
