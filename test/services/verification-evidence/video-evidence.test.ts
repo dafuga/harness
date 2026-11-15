@@ -163,53 +163,59 @@ test('clip planning follows shared dependencies and rejects missing source bindi
 	});
 });
 test('graph coverage counts only asserted timestamped states and real edges', async () => {
-	await measureWorkload('service.video-evidence', 'judge-clip-coverage', () => {
-		const graph = {
-			id: 'first-page',
-			unit: 'component.first',
-			initial: 'ready',
-			terminals: ['done'],
-			states: ['ready', 'done'].map((id) => ({ id, predicate: `${id} visible` })),
-			edges: [{ id: 'finish', from: 'ready', to: 'done', action: 'Activate finish' }],
-			clips: ['first']
-		};
-		const declared = { ...manifest, graphs: [graph] };
-		const service = new VideoEvidenceService();
-		const assess = (observations: VideoObservation[]) =>
-			service.coverage(declared, observations)[0];
-		const visits = ['desktop', 'mobile'].map((viewport) => ({
-			clipId: 'first',
-			viewport,
-			durationSeconds: 3,
-			fresh: true,
-			states: [
-				{ id: 'ready', atSeconds: 0.3 },
-				{ id: 'done', atSeconds: 2 }
-			],
-			edges: [{ id: 'finish', atSeconds: 1 }]
-		}));
-		expect(assess(visits)).toMatchObject({
-			complete: true,
-			states: 1,
-			edges: 1
-		});
-		expect(assess(visits.map((visit) => ({ ...visit, fresh: undefined }))).complete).toBe(false);
-		expect(assess(visits.map((visit) => ({ ...visit, edges: [] })))).toMatchObject({
-			complete: false,
-			edges: 0
-		});
-		expect(assess([{ ...visits[0], states: [{ id: 'done', atSeconds: 9 }] }]).complete).toBe(false);
-		const siblings = {
-			...declared,
-			clips: declared.clips.map((clip) => ({ ...clip, unit: graph.unit })),
-			graphs: [{ ...graph, clips: ['first', 'second'] }]
-		};
-		const partial = visits.map((visit) => ({ ...visit, states: [visit.states[0]], edges: [] }));
-		const combined = service.coverage(siblings, [
-			...partial,
-			...visits.map((visit) => ({ ...visit, clipId: 'second' }))
-		])[0];
-		expect(combined).toMatchObject({ complete: false, states: 1, edges: 1, clips: 0.5 });
-		expect(combined.missing).toEqual(['desktop/clip/first', 'mobile/clip/first']);
-	});
+	await measureWorkload(
+		'service.verification-evidence-video-evidence',
+		'judge-clip-coverage',
+		() => {
+			const graph = {
+				id: 'first-page',
+				unit: 'component.first',
+				initial: 'ready',
+				terminals: ['done'],
+				states: ['ready', 'done'].map((id) => ({ id, predicate: `${id} visible` })),
+				edges: [{ id: 'finish', from: 'ready', to: 'done', action: 'Activate finish' }],
+				clips: ['first']
+			};
+			const declared = { ...manifest, graphs: [graph] };
+			const service = new VideoEvidenceService();
+			const assess = (observations: VideoObservation[]) =>
+				service.coverage(declared, observations)[0];
+			const visits = ['desktop', 'mobile'].map((viewport) => ({
+				clipId: 'first',
+				viewport,
+				durationSeconds: 3,
+				fresh: true,
+				states: [
+					{ id: 'ready', atSeconds: 0.3 },
+					{ id: 'done', atSeconds: 2 }
+				],
+				edges: [{ id: 'finish', atSeconds: 1 }]
+			}));
+			expect(assess(visits)).toMatchObject({
+				complete: true,
+				states: 1,
+				edges: 1
+			});
+			expect(assess(visits.map((visit) => ({ ...visit, fresh: undefined }))).complete).toBe(false);
+			expect(assess(visits.map((visit) => ({ ...visit, edges: [] })))).toMatchObject({
+				complete: false,
+				edges: 0
+			});
+			expect(assess([{ ...visits[0], states: [{ id: 'done', atSeconds: 9 }] }]).complete).toBe(
+				false
+			);
+			const siblings = {
+				...declared,
+				clips: declared.clips.map((clip) => ({ ...clip, unit: graph.unit })),
+				graphs: [{ ...graph, clips: ['first', 'second'] }]
+			};
+			const partial = visits.map((visit) => ({ ...visit, states: [visit.states[0]], edges: [] }));
+			const combined = service.coverage(siblings, [
+				...partial,
+				...visits.map((visit) => ({ ...visit, clipId: 'second' }))
+			])[0];
+			expect(combined).toMatchObject({ complete: false, states: 1, edges: 1, clips: 0.5 });
+			expect(combined.missing).toEqual(['desktop/clip/first', 'mobile/clip/first']);
+		}
+	);
 });
