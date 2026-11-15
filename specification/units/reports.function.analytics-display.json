@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/analyticsDisplay.ts",
-			"packages/reports/src/utils/reports-media/analyticsDisplay.ts"
-		],
-		"symbols": ["analyticsDisplay", "analyticsCount", "analyticsDisplay", "analyticsCount"]
+		"source": ["packages/reports/src/utils/reports-media/analyticsDisplay.ts"],
+		"symbols": ["analyticsDisplay", "analyticsCount"]
 	},
 	"contract": {
 		"origin": "declared",

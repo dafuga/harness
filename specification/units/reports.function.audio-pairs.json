@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/utils/audioPairs.ts",
 			"packages/reports/src/utils/reports-media/audioPairs.ts",
 			"packages/reports/src/utils/reports-media/audioPairs.types.ts"
 		],
-		"symbols": ["audioPairs", "audioPairs", "Comparable"]
+		"symbols": ["audioPairs", "Comparable"]
 	},
 	"contract": {
 		"origin": "declared",
