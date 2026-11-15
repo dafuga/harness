@@ -21,17 +21,83 @@
 				"name": "workspaceSearch.shown",
 				"type": "{ snapshot: ProjectSnapshot | null; pinned: boolean; busy: boolean; }",
 				"required": true,
-				"description": "Snapshot, busy flag and pinned flag for the view."
+				"description": "The view's `snapshot` (null while no project is read) with its `busy` and `pinned` flags. A true `busy` gives no entries and the label 'Reading the project' even when a snapshot is present, and a true `pinned` keeps the revision's full commit in each result's workspace address and its first seven characters in the scope, as a revision that is not at tip already does.",
+				"examples": [
+					{
+						"snapshot": null,
+						"pinned": false,
+						"busy": true
+					},
+					{
+						"snapshot": {
+							"project": {
+								"name": "harness",
+								"root": "/work/harness",
+								"id": "local-3a7f9c21d08b4e65f2c1a9e75b03d8c4e61f72a09d4c8b3e1f6a0e52c7b94d18"
+							},
+							"revision": {
+								"branch": "main",
+								"commit": "9c1e4f0a7b2d835e6f1a0c9d4b7e2f8a3d5c6b1e",
+								"tip": "9c1e4f0a7b2d835e6f1a0c9d4b7e2f8a3d5c6b1e",
+								"atTip": true
+							},
+							"branches": [
+								{
+									"name": "main",
+									"tip": "9c1e4f0a7b2d835e6f1a0c9d4b7e2f8a3d5c6b1e",
+									"current": true
+								}
+							],
+							"commits": [
+								{
+									"hash": "9c1e4f0a7b2d835e6f1a0c9d4b7e2f8a3d5c6b1e",
+									"subject": "Scope workspace search to the shown revision",
+									"authoredAt": "2026-11-13T10:42:08+01:00",
+									"committedAt": "2026-11-13T10:44:19+01:00"
+								},
+								{
+									"hash": "5e0b7d3a2c9f41e8d6b0a7c3f5e92d1b8a4c6f70",
+									"subject": "Keep pinned commits in workspace routes",
+									"authoredAt": "2026-11-12T17:05:33+01:00",
+									"committedAt": "2026-11-12T17:05:33+01:00"
+								}
+							],
+							"entities": [
+								{
+									"id": "desktop.function.workspace-search",
+									"category": "functions",
+									"kind": "function",
+									"title": "workspaceSearch",
+									"summary": "List searchable units for the shown project and revision and resolve only those result objects.",
+									"changed": false,
+									"planned": false,
+									"hasPlan": false,
+									"lifecycle": null,
+									"verification": "unknown",
+									"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+									"latestVersion": null,
+									"approvedVersion": null,
+									"threadCount": 0,
+									"thumbnail": null
+								}
+							],
+							"writable": true
+						},
+						"pinned": false,
+						"busy": false
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "workspaceSearch",
 				"type": "WorkspaceSearch",
-				"description": "Entries with names, purpose and commit, scope wording, and routes only for exact listed entry objects with supported desktop categories; loading and unsupported categories produce no routes."
+				"description": "`entries` holds one entry per entity of the shown revision, each with the full revision commit and no search terms, or null while reading. `scope.label` names the project at the tip of its branch, or at the first seven characters of the commit when that commit is kept (or reads 'Reading the project' while reading), `scope.pinned` is those seven characters or null, and `at` returns a workspace address only for an object taken from `entries` itself whose category is one of the supported categories, otherwise null."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "workspaceSearch",
@@ -40,18 +106,83 @@
 						"name": "workspaceSearch.shown",
 						"type": "{ snapshot: ProjectSnapshot | null; pinned: boolean; busy: boolean; }",
 						"required": true,
-						"description": "Snapshot, busy flag and pinned flag for the view."
+						"description": "The view's `snapshot` (null while no project is read) with its `busy` and `pinned` flags. A true `busy` gives no entries and the label 'Reading the project' even when a snapshot is present, and a true `pinned` keeps the revision's full commit in each result's workspace address and its first seven characters in the scope, as a revision that is not at tip already does.",
+						"examples": [
+							{
+								"snapshot": null,
+								"pinned": false,
+								"busy": true
+							},
+							{
+								"snapshot": {
+									"project": {
+										"name": "harness",
+										"root": "/work/harness",
+										"id": "local-3a7f9c21d08b4e65f2c1a9e75b03d8c4e61f72a09d4c8b3e1f6a0e52c7b94d18"
+									},
+									"revision": {
+										"branch": "main",
+										"commit": "9c1e4f0a7b2d835e6f1a0c9d4b7e2f8a3d5c6b1e",
+										"tip": "9c1e4f0a7b2d835e6f1a0c9d4b7e2f8a3d5c6b1e",
+										"atTip": true
+									},
+									"branches": [
+										{
+											"name": "main",
+											"tip": "9c1e4f0a7b2d835e6f1a0c9d4b7e2f8a3d5c6b1e",
+											"current": true
+										}
+									],
+									"commits": [
+										{
+											"hash": "9c1e4f0a7b2d835e6f1a0c9d4b7e2f8a3d5c6b1e",
+											"subject": "Scope workspace search to the shown revision",
+											"authoredAt": "2026-11-13T10:42:08+01:00",
+											"committedAt": "2026-11-13T10:44:19+01:00"
+										},
+										{
+											"hash": "5e0b7d3a2c9f41e8d6b0a7c3f5e92d1b8a4c6f70",
+											"subject": "Keep pinned commits in workspace routes",
+											"authoredAt": "2026-11-12T17:05:33+01:00",
+											"committedAt": "2026-11-12T17:05:33+01:00"
+										}
+									],
+									"entities": [
+										{
+											"id": "desktop.function.workspace-search",
+											"category": "functions",
+											"kind": "function",
+											"title": "workspaceSearch",
+											"summary": "List searchable units for the shown project and revision and resolve only those result objects.",
+											"changed": false,
+											"planned": false,
+											"hasPlan": false,
+											"lifecycle": null,
+											"verification": "unknown",
+											"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+											"latestVersion": null,
+											"approvedVersion": null,
+											"threadCount": 0,
+											"thumbnail": null
+										}
+									],
+									"writable": true
+								},
+								"pinned": false,
+								"busy": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "workspaceSearch",
 						"type": "WorkspaceSearch",
-						"description": "Entries with names, purpose and commit, scope wording, and routes only for exact listed entry objects with supported desktop categories; loading and unsupported categories produce no routes."
+						"description": "`entries` holds one entry per entity of the shown revision, each with the full revision commit and no search terms, or null while reading. `scope.label` names the project at the tip of its branch, or at the first seven characters of the commit when that commit is kept (or reads 'Reading the project' while reading), `scope.pinned` is those seven characters or null, and `at` returns a workspace address only for an object taken from `entries` itself whose category is one of the supported categories, otherwise null."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
