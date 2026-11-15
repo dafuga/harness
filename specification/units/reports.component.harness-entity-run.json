@@ -37,55 +37,74 @@
 				"name": "EntityRun.shown",
 				"type": "EntityBehavior",
 				"required": true,
-				"description": "Required grouped behavior/scenario data. Overall passes only with at least one group and every selected-side group passing."
+				"description": "Contains the scenarios and grouped before/after results rendered in the pane. The overall verdict passes only when at least one group exists and every group has a passed outcome for the selected side; scenario titles fall back to their ids.",
+				"examples": [
+					{
+						"mode": "current",
+						"label": "No end-to-end result is recorded",
+						"recorded": false,
+						"passed": false,
+						"unknown": true,
+						"groups": [],
+						"reasons": [],
+						"scenarios": []
+					}
+				]
 			},
 			{
 				"name": "EntityRun.side",
 				"type": "'before' | 'after'",
 				"required": true,
-				"description": "Required before or after, selecting each group/line outcome. After alone displays difference paths."
+				"description": "Selects each group's and result line's before or after outcome. Difference paths are shown only for the after side.",
+				"examples": ["before", "after"]
 			},
 			{
 				"name": "EntityRun.title",
 				"type": "string",
 				"required": true,
-				"description": "Required pane heading and accessible name."
+				"description": "Text shown as the pane heading and used as its accessible section name.",
+				"examples": ["Current run"]
 			},
 			{
 				"name": "EntityRun.role",
 				"type": "string",
 				"required": true,
-				"description": "Required descriptive side badge."
+				"description": "Text shown in the side badge next to the title. It does not select a result side or change the verdict.",
+				"examples": ["Before", "After"]
 			},
 			{
 				"name": "EntityRun.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Required artifact URL base passed to result viewers."
+				"description": "String prefix concatenated with a recorded media path to form an artifact link when a capture has media. It is passed through without normalization.",
+				"examples": ["/media/"]
 			},
 			{
 				"name": "EntityRun.lost",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional flag, false by default, telling artifacts that reading failed rather than remains pending."
+				"description": "Optional flag forwarded to artifact views; when true, an unread result is shown as not verified instead of remaining in the reading state. Defaults to false.",
+				"examples": [false, true]
 			},
 			{
 				"name": "EntityRun.unit",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional function identifier passed through to callable case rows."
+				"description": "Optional function unit id forwarded to artifact rows; when supplied, those rows are treated as callable and show only that unit's calls. When omitted, its value is undefined.",
+				"examples": ["reports.function.entity-behavior"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityRun",
 				"type": "markup",
-				"description": "Run pane with overall/state verdicts, scenario/state names, result kinds and Passed/Failed/Not recorded labels. Shows supplied artifacts and after-side differences without calculating new verification."
+				"description": "Renders a pane headed by title with a verdict based only on a nonempty groups array whose selected-side outcomes all pass, plus one state section per group. It shows each result's kind and selected-side status, adds difference paths only for after, and delegates artifact rendering and links to EntityArtifact."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
