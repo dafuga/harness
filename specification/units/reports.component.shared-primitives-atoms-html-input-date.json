@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "Optional Svelte Snippet prop, destructured out of the props so it is never spread onto the input as an attribute. The markup never renders it, so passing it has no effect on the output."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputDate",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native input element itself, rendered through svelte:element with this set to 'input': every prop except children is spread onto it, then type is set to 'date' after the spread, so any type passed by the caller is overridden. There is no wrapper element and no child content."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
