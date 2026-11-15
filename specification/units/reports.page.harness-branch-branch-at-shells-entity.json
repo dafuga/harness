@@ -24,41 +24,53 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The shell with its verdict and its screenshots: one at a branch tip, before and after at a commit. Relationships and tests by tab."
+				"description": "The page of one shell, shown at its layouts address (a shells address is replaced by it): its name and verdict in the header, its screenshots at the top of the Overview tab, and its Contract, Used In, Uses, States, History and Source tabs. The screenshots are one current screenshot at a branch tip and a before and after pair at a selected commit, and a notice from errors stands in for the shell when the history, the revision or the shell cannot be shown."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Shell · Harness"
+				"description": "The document title: the page gives HarnessScreen the title Shell, and HarnessScreen sets the document title to that text followed by ' · Harness'. It is the same for every shell, branch and commit.",
+				"examples": ["Shell · Harness"]
 			}
 		],
 		"errors": [
 			{
 				"name": "not-in-history",
 				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
+				"description": "A branch that the history does not list, a branch whose recorded tip it does not hold, a commit it does not hold, or a commit that a named branch does not contain, is said in the notice above the page. No other revision is shown for that address, and the notice has an 'Open the newest commit' link to the explorer's home when the history has one."
 			},
 			{
 				"name": "no-registry",
 				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
+				"description": "A revision whose registry is not available says 'No registry at this revision' in place of the shell, giving its recorded gap or, when it has none, 'No unit registry is stored at' and the short commit. A 'Stay on this revision' link leads to its category's collection at the same branch and commit, and nothing from another revision is shown in its place."
 			},
 			{
 				"name": "not-at-revision",
 				"type": "notice",
-				"description": "A shell the shown revision does not hold is said, with the way back to the collection."
+				"description": "A shell that the shown revision does not hold is said under the title 'Not at this revision', with a 'Back to the collection' link to its category's collection at the same branch and commit. A unit that this commit removed is not said missing: it is shown with a 'Removed at this commit' verdict and its contract as its parent last had it."
 			},
 			{
 				"name": "other-category",
 				"type": "redirect",
-				"description": "A unit that is not a shell at this revision is led to the address of its own category."
+				"description": "A unit that this revision lists under a category other than layouts, the category a shells address stands for, is replaced, with no new history entry, by the address of its own category, keeping its branch, commit, section and tab. A unit that the revision does not list is not moved by this correction."
 			},
 			{
 				"name": "not-admitted",
 				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
+				"description": "A request that the owner policy does not admit gets a plain-text 403 Forbidden from the server hook before the page is rendered or any history file is read. The policy admits a request only when HARNESS_OWNER_MODE is loopback, HARNESS_BIND (or HOST when that is unset) is a loopback address, ADDRESS_HEADER is unset or blank, and the client address is loopback."
+			},
+			{
+				"name": "history-not-loaded",
+				"type": "thrown",
+				"description": "The history index request rejects when it fails or its response is not OK, and the page then shows 'The history could not be loaded. Refresh the page to try again.' in place of the shell."
+			},
+			{
+				"name": "revision-not-loaded",
+				"type": "thrown",
+				"description": "The shown revision's detail request rejects when it fails or its response is not OK, and the page then shows 'This revision could not be loaded. Refresh the page to try again.' in place of the shell. A parent revision that fails to load is not reported."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
