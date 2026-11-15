@@ -17,8 +17,13 @@ test('module filters and assignment claims select once, then preserve changes fo
 		});
 		const input = JSON.parse(await readFile(await f.input({ assignee: 'owner' }), 'utf8'));
 		await service.add(input);
-		const worker = new ModuleTaskWorkerService(f.root, {
+		const linkedRoot = join(f.root, 'linked-owner');
+		await f.git.run(['worktree', 'add', '--detach', linkedRoot, f.source]);
+		const worker = new ModuleTaskWorkerService(linkedRoot, {
 			run: async (input) => {
+				expect(input.cwd.startsWith(join(linkedRoot, '.cache/harness/task-worktrees') + '/')).toBe(
+					true
+				);
 				await writeFile(join(input.cwd, 'src/orders.ts'), 'export const orders=2;');
 				return {
 					provider: input.provider,
