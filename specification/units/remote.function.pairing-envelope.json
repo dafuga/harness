@@ -31,63 +31,137 @@
 				"name": "pairingEnvelope.context",
 				"type": "PairingContext",
 				"required": true,
-				"description": "Host and pairing IDs, phone ephemeral public key, host public key and their ECDH secret."
+				"description": "Contains the host and pairing identifiers, the phone one-time public key, the host public key, and their ECDH secret. The identifiers and byte arrays are incorporated into the pairing salt, while the secret is used to derive key material."
 			},
 			{
 				"name": "sealPairing.key",
 				"type": "CryptoKey",
 				"required": true,
-				"description": "Single-use AES-GCM key derived for the specified message kind."
+				"description": "AES-GCM key used to seal one message for the selected purpose. The fixed zero-byte nonce makes the derived key single-use; the function does not track reuse.",
+				"examples": [
+					{
+						"type": "secret",
+						"extractable": false,
+						"algorithm": {
+							"name": "AES-GCM"
+						},
+						"usages": ["encrypt", "decrypt"]
+					}
+				]
 			},
 			{
 				"name": "sealPairing.kind",
 				"type": "PairingKind",
 				"required": true,
-				"description": "Message purpose: request or approval."
+				"description": "Selects the request or approval purpose. It determines the additional authenticated data used for encryption.",
+				"examples": ["request", "approval"]
 			},
 			{
 				"name": "sealPairing.value",
 				"type": "unknown",
 				"required": true,
-				"description": "JSON-serializable pairing payload."
+				"description": "Value passed to JSON.stringify and encrypted as its resulting text. It should be JSON-serializable; serialization can reject values such as cyclic objects or BigInt.",
+				"examples": [
+					{
+						"message": "pairing request"
+					},
+					null
+				]
 			},
 			{
 				"name": "openPairing.key",
 				"type": "CryptoKey",
 				"required": true,
-				"description": "Matching AES-GCM key for this message purpose."
+				"description": "AES-GCM key used to open a message sealed for the selected purpose. Authentication succeeds only with the matching key and purpose.",
+				"examples": [
+					{
+						"type": "secret",
+						"extractable": false,
+						"algorithm": {
+							"name": "AES-GCM"
+						},
+						"usages": ["encrypt", "decrypt"]
+					}
+				]
 			},
 			{
 				"name": "openPairing.kind",
 				"type": "PairingKind",
 				"required": true,
-				"description": "Expected purpose: request or approval."
+				"description": "Purpose expected for the ciphertext: request or approval. It must match the purpose used when sealing because it selects the authenticated additional data.",
+				"examples": ["request", "approval"]
 			},
 			{
 				"name": "openPairing.sealed",
 				"type": "string",
 				"required": true,
-				"description": "Unpadded base64url ciphertext and authentication tag."
+				"description": "Base64url encoding of the AES-GCM ciphertext and authentication tag returned by sealPairing. Any changed byte, a different key, or a different purpose prevents successful authentication.",
+				"examples": ["YMnZsmIwXgjdT5q1Zr6r1WWFFOk"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "pairingEnvelope",
 				"type": "Promise<PairingKeys>",
-				"description": "Separate nonextractable AES keys for request and approval, bound to the pairing identities and public keys."
+				"description": "Resolves to separate request and approval AES-GCM keys derived from the context secret and bound to both identifiers and public keys. Each key is intended to seal one message for its corresponding purpose.",
+				"examples": [
+					{
+						"request": {
+							"type": "secret",
+							"extractable": false,
+							"algorithm": {
+								"name": "AES-GCM"
+							},
+							"usages": ["encrypt", "decrypt"]
+						},
+						"approval": {
+							"type": "secret",
+							"extractable": false,
+							"algorithm": {
+								"name": "AES-GCM"
+							},
+							"usages": ["encrypt", "decrypt"]
+						}
+					}
+				]
 			},
 			{
 				"name": "sealPairing",
 				"type": "Promise<string>",
-				"description": "Base64url authenticated ciphertext of the JSON value using a zero nonce and purpose-specific associated data."
+				"description": "Resolves to base64url encoding of the AES-GCM ciphertext and authentication tag for JSON.stringify(value). Encryption uses a twelve-byte zero IV and purpose-specific additional authenticated data.",
+				"examples": ["YMnZsmIwXgjdT5q1Zr6r1WWFFOk"]
 			},
 			{
 				"name": "openPairing",
 				"type": "Promise<unknown>",
-				"description": "Parsed JSON payload after authentication and strict UTF-8 decoding."
+				"description": "Resolves to the value produced by JSON.parse after AES-GCM authentication, decryption, and byte-to-text conversion. The result can be any JSON value.",
+				"examples": [
+					null,
+					"pairing response",
+					{
+						"message": "pairing response"
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "sealPairing rejects if JSON.stringify(value) throws, for example for a cyclic value or a BigInt without a JSON conversion."
+			},
+			{
+				"name": "OperationError",
+				"type": "thrown",
+				"description": "openPairing rejects when AES-GCM authentication fails, including when the key or purpose differs or ciphertext bytes have changed."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "openPairing rejects if the authenticated plaintext is not valid JSON for JSON.parse."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "pairingEnvelope",
@@ -96,18 +170,38 @@
 						"name": "pairingEnvelope.context",
 						"type": "PairingContext",
 						"required": true,
-						"description": "Host and pairing IDs, phone ephemeral public key, host public key and their ECDH secret."
+						"description": "Contains the host and pairing identifiers, the phone one-time public key, the host public key, and their ECDH secret. The identifiers and byte arrays are incorporated into the pairing salt, while the secret is used to derive key material."
 					}
 				],
 				"outputs": [
 					{
 						"name": "pairingEnvelope",
 						"type": "Promise<PairingKeys>",
-						"description": "Separate nonextractable AES keys for request and approval, bound to the pairing identities and public keys."
+						"description": "Resolves to separate request and approval AES-GCM keys derived from the context secret and bound to both identifiers and public keys. Each key is intended to seal one message for its corresponding purpose.",
+						"examples": [
+							{
+								"request": {
+									"type": "secret",
+									"extractable": false,
+									"algorithm": {
+										"name": "AES-GCM"
+									},
+									"usages": ["encrypt", "decrypt"]
+								},
+								"approval": {
+									"type": "secret",
+									"extractable": false,
+									"algorithm": {
+										"name": "AES-GCM"
+									},
+									"usages": ["encrypt", "decrypt"]
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sealPairing",
@@ -116,30 +210,54 @@
 						"name": "sealPairing.key",
 						"type": "CryptoKey",
 						"required": true,
-						"description": "Single-use AES-GCM key derived for the specified message kind."
+						"description": "AES-GCM key used to seal one message for the selected purpose. The fixed zero-byte nonce makes the derived key single-use; the function does not track reuse.",
+						"examples": [
+							{
+								"type": "secret",
+								"extractable": false,
+								"algorithm": {
+									"name": "AES-GCM"
+								},
+								"usages": ["encrypt", "decrypt"]
+							}
+						]
 					},
 					{
 						"name": "sealPairing.kind",
 						"type": "PairingKind",
 						"required": true,
-						"description": "Message purpose: request or approval."
+						"description": "Selects the request or approval purpose. It determines the additional authenticated data used for encryption.",
+						"examples": ["request", "approval"]
 					},
 					{
 						"name": "sealPairing.value",
 						"type": "unknown",
 						"required": true,
-						"description": "JSON-serializable pairing payload."
+						"description": "Value passed to JSON.stringify and encrypted as its resulting text. It should be JSON-serializable; serialization can reject values such as cyclic objects or BigInt.",
+						"examples": [
+							{
+								"message": "pairing request"
+							},
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealPairing",
 						"type": "Promise<string>",
-						"description": "Base64url authenticated ciphertext of the JSON value using a zero nonce and purpose-specific associated data."
+						"description": "Resolves to base64url encoding of the AES-GCM ciphertext and authentication tag for JSON.stringify(value). Encryption uses a twelve-byte zero IV and purpose-specific additional authenticated data.",
+						"examples": ["YMnZsmIwXgjdT5q1Zr6r1WWFFOk"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "The returned promise rejects if JSON.stringify(value) throws, for example for a cyclic value or a BigInt without a JSON conversion."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "openPairing",
@@ -148,30 +266,60 @@
 						"name": "openPairing.key",
 						"type": "CryptoKey",
 						"required": true,
-						"description": "Matching AES-GCM key for this message purpose."
+						"description": "AES-GCM key used to open a message sealed for the selected purpose. Authentication succeeds only with the matching key and purpose.",
+						"examples": [
+							{
+								"type": "secret",
+								"extractable": false,
+								"algorithm": {
+									"name": "AES-GCM"
+								},
+								"usages": ["encrypt", "decrypt"]
+							}
+						]
 					},
 					{
 						"name": "openPairing.kind",
 						"type": "PairingKind",
 						"required": true,
-						"description": "Expected purpose: request or approval."
+						"description": "Purpose expected for the ciphertext: request or approval. It must match the purpose used when sealing because it selects the authenticated additional data.",
+						"examples": ["request", "approval"]
 					},
 					{
 						"name": "openPairing.sealed",
 						"type": "string",
 						"required": true,
-						"description": "Unpadded base64url ciphertext and authentication tag."
+						"description": "Base64url encoding of the AES-GCM ciphertext and authentication tag returned by sealPairing. Any changed byte, a different key, or a different purpose prevents successful authentication.",
+						"examples": ["YMnZsmIwXgjdT5q1Zr6r1WWFFOk"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "openPairing",
 						"type": "Promise<unknown>",
-						"description": "Parsed JSON payload after authentication and strict UTF-8 decoding."
+						"description": "Resolves to the value produced by JSON.parse after AES-GCM authentication, decryption, and byte-to-text conversion. The result can be any JSON value.",
+						"examples": [
+							null,
+							"pairing response",
+							{
+								"message": "pairing response"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "OperationError",
+						"type": "thrown",
+						"description": "AES-GCM decryption rejects when authentication fails, including when the key or purpose differs or ciphertext bytes have changed."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "The returned promise rejects if the authenticated plaintext is not valid JSON for JSON.parse."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
