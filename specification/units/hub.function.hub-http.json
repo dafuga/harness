@@ -31,57 +31,110 @@
 				"name": "hubQuery.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request URL containing entity and commit selections."
+				"description": "A Fetch Request whose URL query supplies the selection values. Only entityId and commit are validated: entityId must match a dotted lowercase unit ID and commit must be 40 lowercase hexadecimal characters; branch, path, version, sha256 and threadId are copied as strings and default to empty strings."
 			},
 			{
 				"name": "hubHttpFailure.error",
 				"type": "unknown",
 				"required": true,
-				"description": "Unknown error whose code may be safe to expose."
+				"description": "An arbitrary error value inspected for a code property when it is an object. A string code in the public status map selects that public error; other values fall back to unavailable.",
+				"examples": [
+					{
+						"code": "artifact-too-large"
+					},
+					{
+						"code": "unlisted-code"
+					}
+				]
 			},
 			{
 				"name": "hubHttp.value",
 				"type": "unknown",
 				"required": true,
-				"description": "JSON response value."
+				"description": "A value passed to Response.json as the response body. It must be JSON-serializable or response construction can throw.",
+				"examples": [
+					{
+						"ok": true
+					},
+					{
+						"error": "not-found"
+					}
+				]
 			},
 			{
 				"name": "hubHttp.status",
 				"type": "number",
 				"required": false,
 				"default": 200,
-				"description": "HTTP status; defaults to 200."
+				"description": "The HTTP status passed to Response.json. It defaults to 200 and must be accepted by the Fetch Response implementation.",
+				"examples": [200, 409]
 			},
 			{
 				"name": "hubBody.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request with a JSON object body of at most 20000 bytes."
+				"description": "A Fetch Request whose Content-Type begins with application/json and whose body is limited to 20,000 bytes. The bytes must decode as fatal UTF-8 and parse as a non-null, non-array JSON object; other content types, oversized bodies, or invalid content invoke hubFail('invalid-input')."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubHttp",
 				"type": "unknown",
-				"description": "JSON response with no-store, no-referrer and no-sniff headers."
+				"description": "A Fetch Response containing the JSON encoding of value with the supplied HTTP status. It sets Cache-Control: no-store, Referrer-Policy: no-referrer and X-Content-Type-Options: nosniff."
 			},
 			{
 				"name": "hubQuery",
 				"type": "unknown",
-				"description": "Query with a dotted unit ID and exactly 40 lowercase hexadecimal commit characters; other known selections default to empty strings."
+				"description": "An object with entityId, commit, branch, path, version, sha256 and threadId when the required identifiers pass validation. Missing query fields are returned as empty strings; invalid entityId or commit invokes hubFail('invalid-input').",
+				"examples": [
+					{
+						"entityId": "reports.component.evidence-grid",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
+						"version": "1.2.3",
+						"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"threadId": ""
+					}
+				]
 			},
 			{
 				"name": "hubBody",
 				"type": "Promise<Record<string, unknown>>",
-				"description": "Parsed non-array object; rejects missing/oversized body, invalid UTF-8/JSON or unacceptable content-type prefix with invalid-input."
+				"description": "Resolves to the parsed non-null, non-array JSON object. The helper accepts only a Content-Type beginning with application/json and body bytes within its 20,000-byte limit; decode, parse or shape failures invoke hubFail('invalid-input').",
+				"examples": [
+					{
+						"ok": true
+					},
+					{
+						"items": []
+					}
+				]
 			},
 			{
 				"name": "hubHttpFailure",
 				"type": "unknown",
-				"description": "Known public code and mapped status, or unavailable with 503 for unknown failures."
+				"description": "A Fetch Response with a JSON error code and the mapped status for a recognized public code. Missing, non-string or unrecognized codes become unavailable with status 503."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "invalid-input",
+				"type": "thrown",
+				"description": "hubFail is invoked with this code when hubQuery rejects entityId or commit, or hubBody rejects the content type, body limit, UTF-8, JSON or parsed object shape."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Response.json can throw this when value cannot be serialized as JSON."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Response.json can throw this when status is outside the supported response status range."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubQuery",
@@ -90,18 +143,35 @@
 						"name": "hubQuery.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request URL containing entity and commit selections."
+						"description": "A Fetch Request whose URL query supplies the selection values. Only entityId and commit are validated: entityId must match a dotted lowercase unit ID and commit must be 40 lowercase hexadecimal characters; branch, path, version, sha256 and threadId are copied as strings and default to empty strings."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubQuery",
 						"type": "unknown",
-						"description": "Query with a dotted unit ID and exactly 40 lowercase hexadecimal commit characters; other known selections default to empty strings."
+						"description": "An object with entityId, commit, branch, path, version, sha256 and threadId when the required identifiers pass validation. Missing query fields are returned as empty strings; invalid entityId or commit invokes hubFail('invalid-input').",
+						"examples": [
+							{
+								"entityId": "reports.component.evidence-grid",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts",
+								"version": "1.2.3",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"threadId": ""
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "hubFail is invoked with this code when hubQuery rejects entityId or commit, or hubBody rejects the content type, body limit, UTF-8, JSON or parsed object shape."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubHttpFailure",
@@ -110,18 +180,26 @@
 						"name": "hubHttpFailure.error",
 						"type": "unknown",
 						"required": true,
-						"description": "Unknown error whose code may be safe to expose."
+						"description": "An arbitrary error value inspected for a code property when it is an object. A string code in the public status map selects that public error; other values fall back to unavailable.",
+						"examples": [
+							{
+								"code": "artifact-too-large"
+							},
+							{
+								"code": "unlisted-code"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubHttpFailure",
 						"type": "unknown",
-						"description": "Known public code and mapped status, or unavailable with 503 for unknown failures."
+						"description": "A Fetch Response with a JSON error code and the mapped status for a recognized public code. Missing, non-string or unrecognized codes become unavailable with status 503."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubHttp",
@@ -130,25 +208,45 @@
 						"name": "hubHttp.value",
 						"type": "unknown",
 						"required": true,
-						"description": "JSON response value."
+						"description": "A value passed to Response.json as the response body. It must be JSON-serializable or response construction can throw.",
+						"examples": [
+							{
+								"ok": true
+							},
+							{
+								"error": "not-found"
+							}
+						]
 					},
 					{
 						"name": "hubHttp.status",
 						"type": "number",
 						"required": false,
 						"default": 200,
-						"description": "HTTP status; defaults to 200."
+						"description": "The HTTP status passed to Response.json. It defaults to 200 and must be accepted by the Fetch Response implementation.",
+						"examples": [200, 409]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubHttp",
 						"type": "unknown",
-						"description": "JSON response with no-store, no-referrer and no-sniff headers."
+						"description": "A Fetch Response containing the JSON encoding of value with the supplied HTTP status. It sets Cache-Control: no-store, Referrer-Policy: no-referrer and X-Content-Type-Options: nosniff."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Response.json can throw this when value cannot be serialized as JSON."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Response.json can throw this when status is outside the supported response status range."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubBody",
@@ -157,18 +255,32 @@
 						"name": "hubBody.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request with a JSON object body of at most 20000 bytes."
+						"description": "A Fetch Request whose Content-Type begins with application/json and whose body is limited to 20,000 bytes. The bytes must decode as fatal UTF-8 and parse as a non-null, non-array JSON object; other content types, oversized bodies, or invalid content invoke hubFail('invalid-input')."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubBody",
 						"type": "Promise<Record<string, unknown>>",
-						"description": "Parsed non-array object; rejects missing/oversized body, invalid UTF-8/JSON or unacceptable content-type prefix with invalid-input."
+						"description": "Resolves to the parsed non-null, non-array JSON object. The helper accepts only a Content-Type beginning with application/json and body bytes within its 20,000-byte limit; decode, parse or shape failures invoke hubFail('invalid-input').",
+						"examples": [
+							{
+								"ok": true
+							},
+							{
+								"items": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "hubFail is invoked with this code when hubQuery rejects entityId or commit, or hubBody rejects the content type, body limit, UTF-8, JSON or parsed object shape."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
