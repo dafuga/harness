@@ -37,27 +37,100 @@
 				"name": "harnessRuleSummariesFor.limits",
 				"type": "HarnessRuleLimits",
 				"required": true,
-				"description": "Numeric limits for file, function, class and method lines, nesting, parameters, complexity and classes per file."
+				"description": "The HarnessRuleLimits object whose eight numbers are printed as upper bounds into the first eight summary lines: maxFileLines, maxFunctionLines, maxClassLines, maxMethodLines, maxNestingDepth, maxParameters, maxComplexity and maxClassesPerFile. It matters whenever summaries must state thresholds other than the standard harnessRuleLimits values, and because the function does no range or integer checks, every field must be a number and each supplied number appears in its summary line unchanged.",
+				"examples": [
+					{
+						"maxFileLines": 220,
+						"maxFunctionLines": 55,
+						"maxClassLines": 120,
+						"maxMethodLines": 35,
+						"maxNestingDepth": 4,
+						"maxParameters": 4,
+						"maxComplexity": 10,
+						"maxClassesPerFile": 1
+					},
+					{
+						"maxFileLines": 180,
+						"maxFunctionLines": 40,
+						"maxClassLines": 100,
+						"maxMethodLines": 25,
+						"maxNestingDepth": 3,
+						"maxParameters": 3,
+						"maxComplexity": 8,
+						"maxClassesPerFile": 1
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessRuleLimits",
 				"type": "HarnessRuleLimits",
-				"description": "Default limits: 220 file lines, 55 function lines, 120 class lines, 35 method lines, nesting 4, parameters 4, complexity 10 and one class per file."
+				"description": "The standard audit thresholds exported as the constant harnessRuleLimits: 220 file lines, 55 function lines, 120 class lines, 35 method lines, nesting depth 4, 4 parameters, complexity 10 and one class per file, each an upper bound. It matters when the standard thresholds are needed, such as to derive the default harnessRuleSummaries.",
+				"examples": [
+					{
+						"maxFileLines": 220,
+						"maxFunctionLines": 55,
+						"maxClassLines": 120,
+						"maxMethodLines": 35,
+						"maxNestingDepth": 4,
+						"maxParameters": 4,
+						"maxComplexity": 10,
+						"maxClassesPerFile": 1
+					}
+				]
 			},
 			{
 				"name": "harnessRuleSummaries",
 				"type": "unknown",
-				"description": "Rule summary strings generated from the default limits, followed by fixed naming, structure, dependency and coverage guidance."
+				"description": "Rule summary strings computed once at module load as harnessRuleSummariesFor(harnessRuleLimits), so they always state the default limits: the eight limit sentences, a naming pointer, the naming rules, the module-grouping rules and the fixed structure, dependency and coverage guidance. It is the rule text to read for the standard limits, and it is a snapshot, so later changes to harnessRuleLimits do not change it.",
+				"examples": [
+					[
+						"Files stay at or below 220 lines.",
+						"Functions stay at or below 55 lines.",
+						"Classes stay at or below 120 lines.",
+						"Methods stay at or below 35 lines.",
+						"Nesting stays at or below 4 levels.",
+						"Functions and methods take at most 4 parameters.",
+						"Cyclomatic complexity stays at or below 10.",
+						"Each file defines at most 1 class."
+					],
+					[
+						"Use harness info naming and the scaffold guide before naming a module.",
+						"Naming: Helpers are pure camelCase functions; colliding SDK exports use <camelName>Helper while retaining the existing binding. Implementations belong in src/helpers/<responsibility>/<camelName>.ts; keep single-consumer functions in their owner folder."
+					]
+				]
 			},
 			{
 				"name": "harnessRuleSummariesFor",
 				"type": "string[]",
-				"description": "Ordered rule summaries using the supplied numeric limits together with the fixed Harness guidance; no files are inspected or changed."
+				"description": "Ordered rule summary strings built from the supplied limits without range checks: eight sentences that print each numeric limit, then a naming pointer, the naming rules, the module-grouping rules and the fixed guidance. It matters when summaries must state thresholds other than the standard ones, and it inspects and changes no files.",
+				"examples": [
+					[
+						"Files stay at or below 220 lines.",
+						"Functions stay at or below 55 lines.",
+						"Classes stay at or below 120 lines.",
+						"Methods stay at or below 35 lines.",
+						"Nesting stays at or below 4 levels.",
+						"Functions and methods take at most 4 parameters.",
+						"Cyclomatic complexity stays at or below 10.",
+						"Each file defines at most 1 class."
+					],
+					[
+						"Files stay at or below 180 lines.",
+						"Functions stay at or below 40 lines.",
+						"Classes stay at or below 100 lines.",
+						"Methods stay at or below 25 lines.",
+						"Nesting stays at or below 3 levels.",
+						"Functions and methods take at most 3 parameters.",
+						"Cyclomatic complexity stays at or below 8.",
+						"Each file defines at most 1 class."
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "harnessRuleSummariesFor",
@@ -66,18 +139,62 @@
 						"name": "harnessRuleSummariesFor.limits",
 						"type": "HarnessRuleLimits",
 						"required": true,
-						"description": "Numeric limits for file, function, class and method lines, nesting, parameters, complexity and classes per file."
+						"description": "The HarnessRuleLimits object whose eight numbers are printed as upper bounds into the first eight summary lines: maxFileLines, maxFunctionLines, maxClassLines, maxMethodLines, maxNestingDepth, maxParameters, maxComplexity and maxClassesPerFile. It matters whenever summaries must state thresholds other than the standard harnessRuleLimits values, and because the function does no range or integer checks, every field must be a number and each supplied number appears in its summary line unchanged.",
+						"examples": [
+							{
+								"maxFileLines": 220,
+								"maxFunctionLines": 55,
+								"maxClassLines": 120,
+								"maxMethodLines": 35,
+								"maxNestingDepth": 4,
+								"maxParameters": 4,
+								"maxComplexity": 10,
+								"maxClassesPerFile": 1
+							},
+							{
+								"maxFileLines": 180,
+								"maxFunctionLines": 40,
+								"maxClassLines": 100,
+								"maxMethodLines": 25,
+								"maxNestingDepth": 3,
+								"maxParameters": 3,
+								"maxComplexity": 8,
+								"maxClassesPerFile": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessRuleSummariesFor",
 						"type": "string[]",
-						"description": "Ordered rule summaries using the supplied numeric limits together with the fixed Harness guidance; no files are inspected or changed."
+						"description": "Ordered rule summary strings built from the supplied limits without range checks: eight sentences that print each numeric limit, then a naming pointer, the naming rules, the module-grouping rules and the fixed guidance. It matters when summaries must state thresholds other than the standard ones, and it inspects and changes no files.",
+						"examples": [
+							[
+								"Files stay at or below 220 lines.",
+								"Functions stay at or below 55 lines.",
+								"Classes stay at or below 120 lines.",
+								"Methods stay at or below 35 lines.",
+								"Nesting stays at or below 4 levels.",
+								"Functions and methods take at most 4 parameters.",
+								"Cyclomatic complexity stays at or below 10.",
+								"Each file defines at most 1 class."
+							],
+							[
+								"Files stay at or below 180 lines.",
+								"Functions stay at or below 40 lines.",
+								"Classes stay at or below 100 lines.",
+								"Methods stay at or below 25 lines.",
+								"Nesting stays at or below 3 levels.",
+								"Functions and methods take at most 3 parameters.",
+								"Cyclomatic complexity stays at or below 8.",
+								"Each file defines at most 1 class."
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
