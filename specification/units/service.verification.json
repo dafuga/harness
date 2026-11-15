@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/workflows/run-verify/verification-service/VerificationService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/VerificationService.types.ts"
 		],
 		"symbols": [
-			"VerificationService",
 			"VerifyContext",
 			"VerificationService",
 			"VerificationService.constructor",

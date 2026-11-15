@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/workflows/run-verify/verification-service/SnapshotRunService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.types.ts"
 		],
 		"symbols": [
-			"SnapshotRunService",
 			"SnapshotRunService",
 			"SnapshotRunService.constructor",
 			"SnapshotRunService.execute",
