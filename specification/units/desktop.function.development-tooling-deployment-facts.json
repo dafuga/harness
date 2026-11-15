@@ -21,32 +21,232 @@
 				"name": "deploymentFacts.deployment",
 				"type": "DeploymentActivity",
 				"required": true,
-				"description": "Required deployment activity; only timestamps actually present are included."
+				"description": "The deployment activity whose identity and timing DeploymentDetails shows when showIdentity is true; the function reads only projectName, branch, commit, startedAt, createdAt and finishedAt and ignores its other fields. createdAt is used only when startedAt is null or undefined, and each timestamp adds a row only when it is a non-empty string.",
+				"examples": [
+					{
+						"phase": "building",
+						"detail": "Building source commit",
+						"sourceEnvironment": null,
+						"id": "0d9b6e42-a1f3-4c7e-8b25-9e3f1a6c7d08",
+						"projectId": "local-4f0c9a1e7b2d835c6e9f1a40d7b3c26e8f5a9d0c1b4e7372a6d9f3c8e1b05a42",
+						"projectName": "field-notes-site",
+						"environment": "dev",
+						"commit": "2b7d9f04a6c1e83d5f0b7a2c94e6d1f8a3b5c709",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": "building",
+						"error": null,
+						"receipt": null,
+						"createdAt": "2026-11-15T15:20:02.310Z",
+						"startedAt": "2026-11-15T15:20:03.118Z",
+						"updatedAt": "2026-11-15T15:20:41.772Z",
+						"finishedAt": null
+					},
+					{
+						"phase": "complete",
+						"detail": "Deployed to preprod",
+						"sourceEnvironment": "stage",
+						"id": "5c2f9e1a-7d3b-4a86-b1e0-2f4c9d8a6b13",
+						"projectId": "local-4f0c9a1e7b2d835c6e9f1a40d7b3c26e8f5a9d0c1b4e7372a6d9f3c8e1b05a42",
+						"projectName": "field-notes-site",
+						"environment": "preprod",
+						"commit": "8e41c0d2f9a7b35e61d4c2a0f8b9e7d3c5a1f604",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": "verifying",
+						"error": null,
+						"receipt": {
+							"environment": "preprod",
+							"commit": "8e41c0d2f9a7b35e61d4c2a0f8b9e7d3c5a1f604",
+							"branch": "main",
+							"updatedAt": "2026-11-15T14:06:01.612Z",
+							"adapter": "cloudflare",
+							"deploymentId": "3f9a1c2e",
+							"configuration": "c0f3a6d9e2b5470816fa9d3c2e7b1a84d5f6093be2c17a8f4d6e9b03a5c28f17",
+							"url": "https://3f9a1c2e.field-notes-site.pages.dev"
+						},
+						"createdAt": "2026-11-15T14:01:09.880Z",
+						"startedAt": "2026-11-15T14:01:11.023Z",
+						"updatedAt": "2026-11-15T14:06:01.944Z",
+						"finishedAt": "2026-11-15T14:06:01.944Z"
+					}
+				]
 			},
 			{
 				"name": "receiptFacts.receipt",
 				"type": "DeploymentReceipt",
 				"required": true,
-				"description": "Required verified receipt with its full deployment id, address and optional verified time."
+				"description": "The verified receipt that DeploymentDetails shows under Verified receipt, which appears only for a complete deployment that has a receipt; the function reads only deploymentId, url and updatedAt. The Verified row is added only when updatedAt is a non-empty string, although the type makes updatedAt a required string.",
+				"examples": [
+					{
+						"environment": "preprod",
+						"commit": "8e41c0d2f9a7b35e61d4c2a0f8b9e7d3c5a1f604",
+						"branch": "main",
+						"updatedAt": "2026-11-15T14:06:01.612Z",
+						"adapter": "cloudflare",
+						"deploymentId": "3f9a1c2e",
+						"configuration": "c0f3a6d9e2b5470816fa9d3c2e7b1a84d5f6093be2c17a8f4d6e9b03a5c28f17",
+						"url": "https://3f9a1c2e.field-notes-site.pages.dev"
+					},
+					{
+						"environment": "dev",
+						"commit": "2b7d9f04a6c1e83d5f0b7a2c94e6d1f8a3b5c709",
+						"branch": "main",
+						"updatedAt": "2026-11-15T12:30:48.227Z",
+						"adapter": "cloudflare",
+						"deploymentId": "7b1e4f0a-3c2d-4e5f-9a8b-1c2d3e4f5a6b",
+						"configuration": "5a9e21c4b07d3f68e1a4c9b2d70f35e8a6c1d4f97b03e2a8c5d91f6e4b720a3d",
+						"url": "https://field-notes-api-dev.example-team.workers.dev"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "deploymentFacts",
 				"type": "DeploymentFact[]",
-				"description": "Ordered project, branch, full commit and present deployment timestamp facts."
+				"description": "Ordered rows: Project (text) from projectName, Branch (code) from branch, Commit (code) from commit, then Started from startedAt or, when startedAt is null or undefined, Queued from createdAt, then Finished from finishedAt; a timestamp row appears only when its value is a non-empty string. Values are copied unchanged, so the Commit row carries the activity's commit exactly as stored.",
+				"examples": [
+					[
+						{
+							"name": "Project",
+							"value": "field-notes-site",
+							"format": "text"
+						},
+						{
+							"name": "Branch",
+							"value": "main",
+							"format": "code"
+						},
+						{
+							"name": "Commit",
+							"value": "2b7d9f04a6c1e83d5f0b7a2c94e6d1f8a3b5c709",
+							"format": "code"
+						},
+						{
+							"name": "Queued",
+							"value": "2026-11-15T16:45:12.604Z",
+							"format": "time"
+						}
+					],
+					[
+						{
+							"name": "Project",
+							"value": "field-notes-site",
+							"format": "text"
+						},
+						{
+							"name": "Branch",
+							"value": "main",
+							"format": "code"
+						},
+						{
+							"name": "Commit",
+							"value": "8e41c0d2f9a7b35e61d4c2a0f8b9e7d3c5a1f604",
+							"format": "code"
+						},
+						{
+							"name": "Started",
+							"value": "2026-11-15T14:01:11.023Z",
+							"format": "time"
+						},
+						{
+							"name": "Finished",
+							"value": "2026-11-15T14:06:01.944Z",
+							"format": "time"
+						}
+					]
+				]
 			},
 			{
 				"name": "receiptFacts",
 				"type": "DeploymentFact[]",
-				"description": "Ordered deployment id, address and present verified timestamp facts."
+				"description": "Ordered rows: Deployment (code) from deploymentId, Address (text) from url, then Verified (time) from updatedAt, which appears only when updatedAt is a non-empty string. Values are copied unchanged, so the Address row carries the receipt's url exactly as stored.",
+				"examples": [
+					[
+						{
+							"name": "Deployment",
+							"value": "3f9a1c2e",
+							"format": "code"
+						},
+						{
+							"name": "Address",
+							"value": "https://3f9a1c2e.field-notes-site.pages.dev",
+							"format": "text"
+						},
+						{
+							"name": "Verified",
+							"value": "2026-11-15T14:06:01.612Z",
+							"format": "time"
+						}
+					],
+					[
+						{
+							"name": "Deployment",
+							"value": "7b1e4f0a-3c2d-4e5f-9a8b-1c2d3e4f5a6b",
+							"format": "code"
+						},
+						{
+							"name": "Address",
+							"value": "https://field-notes-api-dev.example-team.workers.dev",
+							"format": "text"
+						},
+						{
+							"name": "Verified",
+							"value": "2026-11-15T12:30:48.227Z",
+							"format": "time"
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Input access error",
 				"type": "propagated",
-				"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+				"description": "Any error raised while the function reads a property of its supplied input, such as a throwing getter or a null or undefined input, propagates out unchanged. The function catches nothing and does not clone, serialize or replace the input."
 			}
 		],
 		"errorStatus": "declared",
@@ -58,21 +258,163 @@
 						"name": "deploymentFacts.deployment",
 						"type": "DeploymentActivity",
 						"required": true,
-						"description": "Required deployment activity; only timestamps actually present are included."
+						"description": "The deployment activity whose identity and timing DeploymentDetails shows when showIdentity is true; the function reads only projectName, branch, commit, startedAt, createdAt and finishedAt and ignores its other fields. createdAt is used only when startedAt is null or undefined, and each timestamp adds a row only when it is a non-empty string.",
+						"examples": [
+							{
+								"phase": "building",
+								"detail": "Building source commit",
+								"sourceEnvironment": null,
+								"id": "0d9b6e42-a1f3-4c7e-8b25-9e3f1a6c7d08",
+								"projectId": "local-4f0c9a1e7b2d835c6e9f1a40d7b3c26e8f5a9d0c1b4e7372a6d9f3c8e1b05a42",
+								"projectName": "field-notes-site",
+								"environment": "dev",
+								"commit": "2b7d9f04a6c1e83d5f0b7a2c94e6d1f8a3b5c709",
+								"branch": "main",
+								"steps": [
+									{
+										"id": "preparing",
+										"title": "Prepare source"
+									},
+									{
+										"id": "checking",
+										"title": "Run checks"
+									},
+									{
+										"id": "building",
+										"title": "Build source"
+									},
+									{
+										"id": "uploading",
+										"title": "Deploy to Cloudflare"
+									},
+									{
+										"id": "verifying",
+										"title": "Verify health"
+									}
+								],
+								"step": "building",
+								"error": null,
+								"receipt": null,
+								"createdAt": "2026-11-15T15:20:02.310Z",
+								"startedAt": "2026-11-15T15:20:03.118Z",
+								"updatedAt": "2026-11-15T15:20:41.772Z",
+								"finishedAt": null
+							},
+							{
+								"phase": "complete",
+								"detail": "Deployed to preprod",
+								"sourceEnvironment": "stage",
+								"id": "5c2f9e1a-7d3b-4a86-b1e0-2f4c9d8a6b13",
+								"projectId": "local-4f0c9a1e7b2d835c6e9f1a40d7b3c26e8f5a9d0c1b4e7372a6d9f3c8e1b05a42",
+								"projectName": "field-notes-site",
+								"environment": "preprod",
+								"commit": "8e41c0d2f9a7b35e61d4c2a0f8b9e7d3c5a1f604",
+								"branch": "main",
+								"steps": [
+									{
+										"id": "preparing",
+										"title": "Prepare source"
+									},
+									{
+										"id": "checking",
+										"title": "Run checks"
+									},
+									{
+										"id": "building",
+										"title": "Build source"
+									},
+									{
+										"id": "uploading",
+										"title": "Deploy to Cloudflare"
+									},
+									{
+										"id": "verifying",
+										"title": "Verify health"
+									}
+								],
+								"step": "verifying",
+								"error": null,
+								"receipt": {
+									"environment": "preprod",
+									"commit": "8e41c0d2f9a7b35e61d4c2a0f8b9e7d3c5a1f604",
+									"branch": "main",
+									"updatedAt": "2026-11-15T14:06:01.612Z",
+									"adapter": "cloudflare",
+									"deploymentId": "3f9a1c2e",
+									"configuration": "c0f3a6d9e2b5470816fa9d3c2e7b1a84d5f6093be2c17a8f4d6e9b03a5c28f17",
+									"url": "https://3f9a1c2e.field-notes-site.pages.dev"
+								},
+								"createdAt": "2026-11-15T14:01:09.880Z",
+								"startedAt": "2026-11-15T14:01:11.023Z",
+								"updatedAt": "2026-11-15T14:06:01.944Z",
+								"finishedAt": "2026-11-15T14:06:01.944Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "deploymentFacts",
 						"type": "DeploymentFact[]",
-						"description": "Ordered project, branch, full commit and present deployment timestamp facts."
+						"description": "Ordered rows: Project (text) from projectName, Branch (code) from branch, Commit (code) from commit, then Started from startedAt or, when startedAt is null or undefined, Queued from createdAt, then Finished from finishedAt; a timestamp row appears only when its value is a non-empty string. Values are copied unchanged, so the Commit row carries the activity's commit exactly as stored.",
+						"examples": [
+							[
+								{
+									"name": "Project",
+									"value": "field-notes-site",
+									"format": "text"
+								},
+								{
+									"name": "Branch",
+									"value": "main",
+									"format": "code"
+								},
+								{
+									"name": "Commit",
+									"value": "2b7d9f04a6c1e83d5f0b7a2c94e6d1f8a3b5c709",
+									"format": "code"
+								},
+								{
+									"name": "Queued",
+									"value": "2026-11-15T16:45:12.604Z",
+									"format": "time"
+								}
+							],
+							[
+								{
+									"name": "Project",
+									"value": "field-notes-site",
+									"format": "text"
+								},
+								{
+									"name": "Branch",
+									"value": "main",
+									"format": "code"
+								},
+								{
+									"name": "Commit",
+									"value": "8e41c0d2f9a7b35e61d4c2a0f8b9e7d3c5a1f604",
+									"format": "code"
+								},
+								{
+									"name": "Started",
+									"value": "2026-11-15T14:01:11.023Z",
+									"format": "time"
+								},
+								{
+									"name": "Finished",
+									"value": "2026-11-15T14:06:01.944Z",
+									"format": "time"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Input access error",
 						"type": "propagated",
-						"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+						"description": "Any error raised while the function reads a property of its supplied input, such as a throwing getter or a null or undefined input, propagates out unchanged. The function catches nothing and does not clone, serialize or replace the input."
 					}
 				],
 				"errorStatus": "declared"
@@ -84,21 +426,79 @@
 						"name": "receiptFacts.receipt",
 						"type": "DeploymentReceipt",
 						"required": true,
-						"description": "Required verified receipt with its full deployment id, address and optional verified time."
+						"description": "The verified receipt that DeploymentDetails shows under Verified receipt, which appears only for a complete deployment that has a receipt; the function reads only deploymentId, url and updatedAt. The Verified row is added only when updatedAt is a non-empty string, although the type makes updatedAt a required string.",
+						"examples": [
+							{
+								"environment": "preprod",
+								"commit": "8e41c0d2f9a7b35e61d4c2a0f8b9e7d3c5a1f604",
+								"branch": "main",
+								"updatedAt": "2026-11-15T14:06:01.612Z",
+								"adapter": "cloudflare",
+								"deploymentId": "3f9a1c2e",
+								"configuration": "c0f3a6d9e2b5470816fa9d3c2e7b1a84d5f6093be2c17a8f4d6e9b03a5c28f17",
+								"url": "https://3f9a1c2e.field-notes-site.pages.dev"
+							},
+							{
+								"environment": "dev",
+								"commit": "2b7d9f04a6c1e83d5f0b7a2c94e6d1f8a3b5c709",
+								"branch": "main",
+								"updatedAt": "2026-11-15T12:30:48.227Z",
+								"adapter": "cloudflare",
+								"deploymentId": "7b1e4f0a-3c2d-4e5f-9a8b-1c2d3e4f5a6b",
+								"configuration": "5a9e21c4b07d3f68e1a4c9b2d70f35e8a6c1d4f97b03e2a8c5d91f6e4b720a3d",
+								"url": "https://field-notes-api-dev.example-team.workers.dev"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "receiptFacts",
 						"type": "DeploymentFact[]",
-						"description": "Ordered deployment id, address and present verified timestamp facts."
+						"description": "Ordered rows: Deployment (code) from deploymentId, Address (text) from url, then Verified (time) from updatedAt, which appears only when updatedAt is a non-empty string. Values are copied unchanged, so the Address row carries the receipt's url exactly as stored.",
+						"examples": [
+							[
+								{
+									"name": "Deployment",
+									"value": "3f9a1c2e",
+									"format": "code"
+								},
+								{
+									"name": "Address",
+									"value": "https://3f9a1c2e.field-notes-site.pages.dev",
+									"format": "text"
+								},
+								{
+									"name": "Verified",
+									"value": "2026-11-15T14:06:01.612Z",
+									"format": "time"
+								}
+							],
+							[
+								{
+									"name": "Deployment",
+									"value": "7b1e4f0a-3c2d-4e5f-9a8b-1c2d3e4f5a6b",
+									"format": "code"
+								},
+								{
+									"name": "Address",
+									"value": "https://field-notes-api-dev.example-team.workers.dev",
+									"format": "text"
+								},
+								{
+									"name": "Verified",
+									"value": "2026-11-15T12:30:48.227Z",
+									"format": "time"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Input access error",
 						"type": "propagated",
-						"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+						"description": "Any error raised while the function reads a property of its supplied input, such as a throwing getter or a null or undefined input, propagates out unchanged. The function catches nothing and does not clone, serialize or replace the input."
 					}
 				],
 				"errorStatus": "declared"
