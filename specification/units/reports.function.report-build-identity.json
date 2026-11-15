@@ -18,17 +18,28 @@
 				"name": "reportBuildIdentity.directory",
 				"type": "string | undefined",
 				"required": false,
-				"description": "Optional build directory, defaulting to the nearest compiled server directory found within six ancestor checks of the running module."
+				"description": "Optional directory whose regular files are used to build the report server identity. Defaults to ownBuild(): the nearest ancestor found within six checks that contains handler.js and client, or undefined if none is found.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/reports/src/utils"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportBuildIdentity",
 				"type": "string",
-				"description": "Cached digest of regular files and relative names in the chosen directory. Returns harness-reports-development when no directory exists or no regular files are found."
+				"description": "Identifies the report server from relative paths and SHA-256 values for regular files in the selected directory, and caches that result by directory string. It returns harness-reports-development when no directory is selected, the directory does not exist, or it has no regular files; later file changes are not re-read for a cached directory.",
+				"examples": ["harness-reports-development"]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Filesystem errors propagate if the selected directory cannot be enumerated or one of its files cannot be read."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportBuildIdentity",
@@ -37,18 +48,28 @@
 						"name": "reportBuildIdentity.directory",
 						"type": "string | undefined",
 						"required": false,
-						"description": "Optional build directory, defaulting to the nearest compiled server directory found within six ancestor checks of the running module."
+						"description": "Optional directory whose regular files are used to build the report server identity. Defaults to ownBuild(): the nearest ancestor found within six checks that contains handler.js and client, or undefined if none is found.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12/packages/reports/src/utils"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportBuildIdentity",
 						"type": "string",
-						"description": "Cached digest of regular files and relative names in the chosen directory. Returns harness-reports-development when no directory exists or no regular files are found."
+						"description": "Identifies the report server from relative paths and SHA-256 values for regular files in the selected directory, and caches that result by directory string. It returns harness-reports-development when no directory is selected, the directory does not exist, or it has no regular files; later file changes are not re-read for a cached directory.",
+						"examples": ["harness-reports-development"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem errors propagate if the selected directory cannot be enumerated or one of its files cannot be read."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
