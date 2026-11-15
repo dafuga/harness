@@ -8,19 +8,12 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/cli/program/AnalyticsService.ts",
-			"src/cli/program/AnalyticsService.types.ts",
-			"src/services/AnalyticsService.ts"
-		],
+		"source": ["src/cli/program/AnalyticsService.ts", "src/cli/program/AnalyticsService.types.ts"],
 		"symbols": [
 			"AnalyticsService",
 			"AnalyticsService.execute",
 			"normalizeFilter",
 			"AnalyticsOptions",
-			"AnalyticsOptions",
-			"AnalyticsService",
-			"normalizeFilter",
 			"AnalyticsOptions"
 		]
 	},

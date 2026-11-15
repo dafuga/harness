@@ -1,7 +1,10 @@
 import { expect, test } from 'vitest';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
-import { CodexPickerMcpService, pickerResource } from '../../src/services/CodexPickerMcpService';
+import {
+	CodexPickerMcpService,
+	pickerResource
+} from '../../src/services/agents-providers/CodexPickerMcpService';
 import { ProviderSwitchService } from '../../src/services/ProviderSwitchService';
 import { createPickerFixture } from '../support/picker';
 

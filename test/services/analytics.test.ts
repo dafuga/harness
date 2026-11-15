@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { normalizeFilter } from '../../src/services/AnalyticsService';
+import { normalizeFilter } from '../../src/cli/program/AnalyticsService';
 test('date filters reject invalid input and normalize ISO dates', async () => {
 	await expect(normalizeFilter({ since: 'invalid' })).rejects.toThrow('Invalid --since');
 	expect(await normalizeFilter({ since: '2026-10-06' })).toEqual({

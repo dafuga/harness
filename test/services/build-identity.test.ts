@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { BuildIdentityService } from '../../src/services/BuildIdentityService';
+import { BuildIdentityService } from '../../src/services/verification-evidence/BuildIdentityService';
 
 let root: string;
 const service = new BuildIdentityService();

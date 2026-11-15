@@ -1,7 +1,7 @@
 // @harness-uid u_3zhubpdjiy
 import type { FrozenBuild } from './frozenBuild.types';
 import { cp, rm } from 'node:fs/promises';
-import { BuildIdentityService } from '../../../../../src/services/BuildIdentityService';
+import { BuildIdentityService } from '../../../../../src/services/verification-evidence/BuildIdentityService';
 
 /**
  * Copies a finished build to where one run serves it from. A built server loads its files as

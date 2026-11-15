@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { BuildIdentityService } from '../../src/services/BuildIdentityService';
+import { BuildIdentityService } from '../../src/services/verification-evidence/BuildIdentityService';
 import { buildStamp } from '../../src/utils/buildStamp';
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 

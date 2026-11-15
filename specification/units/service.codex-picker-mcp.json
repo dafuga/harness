@@ -8,13 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/CodexPickerMcpService.ts",
-			"src/services/agents-providers/CodexPickerMcpService.ts"
-		],
+		"source": ["src/services/agents-providers/CodexPickerMcpService.ts"],
 		"symbols": [
-			"pickerResource",
-			"CodexPickerMcpService",
 			"pickerResource",
 			"CodexPickerMcpService",
 			"CodexPickerMcpService.constructor",

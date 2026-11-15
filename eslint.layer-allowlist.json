@@ -12,11 +12,6 @@
 			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
 		},
 		{
-			"from": "src/services/AnalyticsService.ts",
-			"to": "src/cli/program/AnalyticsService",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService",
 			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."

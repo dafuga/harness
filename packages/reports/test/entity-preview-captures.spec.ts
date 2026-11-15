@@ -5,7 +5,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { gatherCaptures } from '../../../src/services/check-run-service/gatherCaptures';
-import { BuildIdentityService } from '../../../src/services/BuildIdentityService';
+import { BuildIdentityService } from '../../../src/services/verification-evidence/BuildIdentityService';
 import { benchmarkCaptureSchema } from '../../../src/core/verification-evidence/verifyTypes';
 import { previewHome } from './entityPreviewSetup';
 

@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { benchmarkCaptureSchema } from '../../../src/core/verifyTypes';
-import { BuildIdentityService } from '../../../src/services/BuildIdentityService';
+import { BuildIdentityService } from '../../../src/services/verification-evidence/BuildIdentityService';
 import { evidenceRequested, recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { previewHome } from './entityPreviewSetup';
 

@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/BuildIdentityService.ts",
 			"src/services/verification-evidence/BuildIdentityService.ts",
 			"src/services/verification-evidence/BuildIdentityService.types.ts"
 		],
 		"symbols": [
-			"BuildIdentityService",
 			"BuildIdentityService",
 			"BuildIdentityService.declared",
 			"BuildIdentityService.changed",

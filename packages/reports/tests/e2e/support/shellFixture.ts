@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test';
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { BuildIdentityService } from '../../../../../src/services/BuildIdentityService';
+import { BuildIdentityService } from '../../../../../src/services/verification-evidence/BuildIdentityService';
 import {
 	evidenceRequested,
 	recordCapture
