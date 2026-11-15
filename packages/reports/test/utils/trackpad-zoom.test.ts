@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { trackpadZoom } from '../../src/utils/trackpadZoom';
+import { trackpadZoom } from '../../src/utils/shared-primitives/trackpadZoom';
 
 test('trackpad zoom consumes pinch gestures and leaves ordinary scrolling alone', () => {
 	const stage = Object.assign(new EventTarget(), {

@@ -53,7 +53,7 @@ const sample: CpuSnapshot = {
 };
 
 test('only agents working in this site are listed, and the machine total stays the machine', async () => {
-	const { siteProcesses } = await import('../../src/utils/siteProcesses');
+	const { siteProcesses } = await import('../../src/routes/api/analytics-cpu/siteProcesses');
 	const directories = new Map([
 		[11, join(site, 'packages')],
 		[22, other]

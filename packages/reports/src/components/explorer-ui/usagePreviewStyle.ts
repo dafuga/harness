@@ -1,5 +1,5 @@
 // @harness-uid u_2ldh4ufj6z
-import { tooltipPlace } from '../../utils/tooltipPlace';
+import { tooltipPlace } from '../../utils/explorer-ui/tooltipPlace';
 
 const edge = 8;
 const widest = 280;

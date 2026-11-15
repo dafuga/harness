@@ -11,8 +11,7 @@
 		"source": [
 			"packages/reports/src/components/shared-primitives/image-zoom/trackpadZoom.ts",
 			"packages/reports/src/utils/shared-primitives/trackpadZoom.ts",
-			"packages/reports/src/utils/shared-primitives/trackpadZoom.types.ts",
-			"packages/reports/src/utils/trackpadZoom.ts"
+			"packages/reports/src/utils/shared-primitives/trackpadZoom.types.ts"
 		],
 		"symbols": [
 			"imageAnchor",
@@ -23,10 +22,7 @@
 			"Point",
 			"Point",
 			"ZoomControls",
-			"Gesture",
-			"imageAnchor",
-			"keepPointerInPlace",
-			"trackpadZoom"
+			"Gesture"
 		]
 	},
 	"contract": {

@@ -9,8 +9,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/utils/reports-media/audio-asset/wavInfo.ts",
-			"packages/reports/src/utils/wavInfo.ts"
+			"packages/reports/src/utils/audio-asset/wavInfo.ts",
+			"packages/reports/src/utils/reports-media/audio-asset/wavInfo.ts"
 		],
 		"symbols": ["wavInfo", "wavInfo"]
 	},
@@ -70,11 +70,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/wavInfo.ts",
+		"entry": "packages/reports/src/utils/audio-asset/wavInfo.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/wavInfo.ts"
+				"entry": "packages/reports/src/utils/audio-asset/wavInfo.ts"
 			}
 		]
 	},
