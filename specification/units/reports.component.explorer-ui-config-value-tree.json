@@ -47,33 +47,74 @@
 				"name": "ConfigValueTree.node",
 				"type": "ConfigValueNode",
 				"required": true,
-				"description": "Committed source expression or collection node to inspect. Object and array entries preserve exact keys; unknown counts stay omitted. No source is executed."
+				"description": "A committed ConfigValueNode whose source is shown as read-only content. Listed object or array entries can be expanded, and the source is never evaluated.",
+				"examples": [
+					{
+						"kind": "expression",
+						"source": "process.env.API_URL"
+					},
+					{
+						"kind": "object",
+						"source": "{ host: 'localhost' }",
+						"count": 1,
+						"entries": [
+							{
+								"name": "host",
+								"node": {
+									"kind": "expression",
+									"source": "'localhost'"
+								}
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ConfigValueTree",
 				"type": "markup",
-				"description": "Read-only source hierarchy with a Value contents region, exact keys, collection counts and keyboard-operated nested disclosures. Source expressions render as escaped text."
+				"description": "Renders a Value contents section with the node source and any listed entries. Collections with listed entries use nested disclosures, and source text is displayed without evaluation."
 			},
 			{
 				"name": "collection",
 				"type": "ConfigCollection | undefined",
-				"description": "The supplied object or array collection node, or undefined for an absent or expression node."
+				"description": "Returns an object or array node unchanged, or undefined when the argument is absent or is an expression.",
+				"examples": [
+					{
+						"kind": "object",
+						"source": "{ host: 'localhost' }",
+						"count": 1,
+						"entries": [
+							{
+								"name": "host",
+								"node": {
+									"kind": "expression",
+									"source": "'localhost'"
+								}
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "valueMark",
 				"type": "ConfigValueMark | undefined",
-				"description": "Icon name and count/size label for an inspectable value, or undefined for a short unstructured expression."
+				"description": "Returns a shape icon and holds label for a collection, or a code icon and source-size label for a long expression. A single-line expression of at most 48 characters has no mark.",
+				"examples": [
+					{
+						"icon": "object",
+						"size": "1 attribute"
+					},
+					{
+						"icon": "code",
+						"size": "2 lines"
+					}
+				]
 			}
 		],
-		"errors": [
-			{
-				"name": "Property access error",
-				"type": "thrown",
-				"description": "A caller-supplied node getter or proxy can throw when its source structure is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "collection",
@@ -82,23 +123,54 @@
 						"name": "collection.node",
 						"type": "ConfigValueNode",
 						"required": false,
-						"description": "Optional source node, defaulting to JavaScript undefined; an absent or expression node returns undefined."
+						"default": "undefined",
+						"description": "Optional source node inspected for collection shape. The omitted argument defaults to undefined; undefined and expression nodes return undefined.",
+						"examples": [
+							{
+								"kind": "expression",
+								"source": "process.env.API_URL"
+							},
+							{
+								"kind": "object",
+								"source": "{ host: 'localhost' }",
+								"count": 1,
+								"entries": [
+									{
+										"name": "host",
+										"node": {
+											"kind": "expression",
+											"source": "'localhost'"
+										}
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "collection",
 						"type": "ConfigCollection | undefined",
-						"description": "The supplied object or array collection node, or undefined for an absent or expression node."
+						"description": "Returns an object or array node unchanged, or undefined when the argument is absent or is an expression.",
+						"examples": [
+							{
+								"kind": "object",
+								"source": "{ host: 'localhost' }",
+								"count": 1,
+								"entries": [
+									{
+										"name": "host",
+										"node": {
+											"kind": "expression",
+											"source": "'localhost'"
+										}
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [
-					{
-						"name": "Property access error",
-						"type": "thrown",
-						"description": "A supplied node getter or proxy can throw when its kind is read."
-					}
-				],
+				"errors": [],
 				"errorStatus": "declared"
 			},
 			{
@@ -108,29 +180,54 @@
 						"name": "valueMark.node",
 						"type": "ConfigValueNode | undefined",
 						"required": true,
-						"description": "Required argument; undefined means the text has no structured source node."
+						"description": "Optional structured node used to choose a collection mark before measuring text. Undefined or expression nodes use the text rules.",
+						"examples": [
+							{
+								"kind": "expression",
+								"source": "process.env.API_URL"
+							},
+							{
+								"kind": "object",
+								"source": "{ host: 'localhost' }",
+								"count": 1,
+								"entries": [
+									{
+										"name": "host",
+										"node": {
+											"kind": "expression",
+											"source": "'localhost'"
+										}
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "valueMark.text",
 						"type": "string",
 						"required": true,
-						"description": "Required source text used to measure an unstructured value in lines or characters."
+						"description": "Source text measured when node is absent or an expression. A one-line value at most 48 characters has no mark; longer one-line text is measured in characters and multiline text in lines.",
+						"examples": ["process.env.API_URL", "feature.enabled &&\nrollout.isOpen"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "valueMark",
 						"type": "ConfigValueMark | undefined",
-						"description": "Icon name and count/size label for an inspectable value, or undefined for a short unstructured expression."
+						"description": "Returns a collection shape and holds label, or a code icon and source-size label for a long expression. A single-line expression of at most 48 characters returns undefined.",
+						"examples": [
+							{
+								"icon": "object",
+								"size": "1 attribute"
+							},
+							{
+								"icon": "code",
+								"size": "2 lines"
+							}
+						]
 					}
 				],
-				"errors": [
-					{
-						"name": "Property access error",
-						"type": "thrown",
-						"description": "A supplied node getter or proxy can throw when its shape and count are read."
-					}
-				],
+				"errors": [],
 				"errorStatus": "declared"
 			}
 		],
