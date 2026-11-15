@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/utils/development-tooling/maskSource.ts",
-			"src/utils/development-tooling/maskSource.types.ts",
-			"src/utils/maskSource.ts"
+			"src/utils/development-tooling/maskSource.types.ts"
 		],
-		"symbols": ["maskSource", "MaskOptions", "MaskOptions", "Cursor", "maskSource"]
+		"symbols": ["maskSource", "MaskOptions", "MaskOptions", "Cursor"]
 	},
 	"contract": {
 		"origin": "declared",

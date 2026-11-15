@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/project-activity-service/loopUsage.ts",
-			"src/services/projects-sessions/project-activity-service/loopUsage.ts",
-			"src/utils/loopUsage.ts"
-		],
-		"symbols": ["loopUsage", "loopUsage", "loopUsage"]
+		"source": ["src/services/projects-sessions/project-activity-service/loopUsage.ts"],
+		"symbols": ["loopUsage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -71,11 +67,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/loopUsage.ts",
+		"entry": "src/services/projects-sessions/project-activity-service/loopUsage.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/loopUsage.ts"
+				"entry": "src/services/projects-sessions/project-activity-service/loopUsage.ts"
 			}
 		]
 	},

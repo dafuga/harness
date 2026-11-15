@@ -377,11 +377,6 @@
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
 		},
 		{
-			"from": "src/utils/loopUsage.ts",
-			"to": "src/services/projects-sessions/project-activity-service/loopUsage",
-			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
-		},
-		{
 			"from": "src/utils/pickerPaths.ts",
 			"to": "src/cli/program/codex-picker-command/pickerPaths",
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
