@@ -7,7 +7,7 @@ import { fail } from '../../../src/core/errors';
 import {
 	VerificationStoreRepository,
 	type StoredRecord
-} from '../../../src/repositories/VerificationStoreRepository';
+} from '../../../src/repositories/verification-evidence/VerificationStoreRepository';
 import {
 	EvidenceAttachService,
 	type Attached

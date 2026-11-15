@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/repositories/VerificationStoreRepository.ts",
 			"src/repositories/verification-evidence/VerificationStoreRepository.ts",
 			"src/repositories/verification-evidence/VerificationStoreRepository.types.ts"
 		],
 		"symbols": [
-			"VerificationStoreRepository",
 			"VerificationStoreRepository",
 			"VerificationStoreRepository.constructor",
 			"VerificationStoreRepository.directoryFor",

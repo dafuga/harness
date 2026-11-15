@@ -3,7 +3,7 @@ import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, test } from 'vitest';
 import { SeedAttacher } from '../packages/reports/scripts/harness-seed-attacher';
-import { VerificationStoreRepository } from '../src/repositories/VerificationStoreRepository';
+import { VerificationStoreRepository } from '../src/repositories/verification-evidence/VerificationStoreRepository';
 import { canonicalJson } from '../src/utils/canonicalJson';
 import { attach, evidenceRef, noteLines, notesRef } from './support/historyRepo';
 import { baselineRepo, cloneRepo, type VerifyOutcome, type VerifyRepo } from './support/verifyRepo';

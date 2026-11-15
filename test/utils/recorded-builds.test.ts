@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
-import { VerificationStoreRepository } from '../../src/repositories/VerificationStoreRepository';
+import { VerificationStoreRepository } from '../../src/repositories/verification-evidence/VerificationStoreRepository';
 import { BuildIdentityService } from '../../src/services/verification-evidence/BuildIdentityService';
 import { emptyBuildStamp } from '../../src/utils/buildStamp';
 import { recordedBuilds } from '../../src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds';

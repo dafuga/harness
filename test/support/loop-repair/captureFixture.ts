@@ -1,5 +1,5 @@
 import { ScenarioRepository } from '../../../src/repositories/verification-evidence/ScenarioRepository';
-import { UnitRegistryRepository } from '../../../src/repositories/UnitRegistryRepository';
+import { UnitRegistryRepository } from '../../../src/repositories/verification-evidence/UnitRegistryRepository';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect } from 'vitest';
