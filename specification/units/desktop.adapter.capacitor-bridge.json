@@ -24,36 +24,140 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CapacitorBridgeAdapter.constructor.config",
 				"type": "CapacitorBridgeAdapterConfig",
-				"required": true
+				"required": true,
+				"description": "The adapter's configuration, whose only field is `plugin`: the HarnessRemote native plugin that carries every request and listener call. The adapter reads `config.plugin` at each call rather than copying it, so the plugin must stay usable for as long as the adapter is in use."
 			},
 			{
 				"name": "CapacitorBridgeAdapter.allow.status",
 				"type": "RemoteNativeStatus | null",
-				"required": true
+				"required": true,
+				"description": "The latest status the native plugin published, or null before any is known; each one replaces the granted methods, the principal (its device id) and the reached flag, which is set only when the state is online. Null, a status without a grant, and a state other than connecting, online or offline all grant nothing.",
+				"examples": [
+					null,
+					{
+						"state": "online",
+						"origin": "https://relay.example",
+						"host": {
+							"id": "4f9c2a7b1d8e3f60a5b2c9d1e7f08a3b6c4d2e19",
+							"name": "Studio Mac"
+						},
+						"device": {
+							"id": "9a1d4e7c02b8f63d5e1a9c7b4f20d8e6a3c5b712",
+							"name": "Review iPhone"
+						},
+						"grant": {
+							"projects": [
+								{
+									"id": "local-5c2e8f1a9b07d43e6f2a8c1d5e9b7a03f4c6d28e1b9a7f05c3d2e8a6b4f1c907",
+									"name": "Design system"
+								}
+							],
+							"agents": false,
+							"comments": true
+						},
+						"reason": null,
+						"lastOnlineAt": "2026-11-15T08:05:31Z",
+						"methods": [
+							"listProjects",
+							"capabilities",
+							"snapshot",
+							"entity",
+							"history",
+							"source",
+							"image",
+							"evidence",
+							"artifact",
+							"messages",
+							"pendingComments",
+							"providers",
+							"addComment",
+							"openThread"
+						],
+						"locked": false
+					},
+					{
+						"state": "offline",
+						"origin": "https://relay.example",
+						"host": {
+							"id": "4f9c2a7b1d8e3f60a5b2c9d1e7f08a3b6c4d2e19",
+							"name": "Studio Mac"
+						},
+						"device": {
+							"id": "9a1d4e7c02b8f63d5e1a9c7b4f20d8e6a3c5b712",
+							"name": "Review iPhone"
+						},
+						"grant": {
+							"projects": [
+								{
+									"id": "local-5c2e8f1a9b07d43e6f2a8c1d5e9b7a03f4c6d28e1b9a7f05c3d2e8a6b4f1c907",
+									"name": "Design system"
+								}
+							],
+							"agents": false,
+							"comments": true
+						},
+						"reason": "The computer is asleep or has no network.",
+						"lastOnlineAt": "2026-11-15T07:58:12Z",
+						"methods": [
+							"listProjects",
+							"capabilities",
+							"snapshot",
+							"entity",
+							"history",
+							"source",
+							"image",
+							"evidence",
+							"artifact",
+							"messages",
+							"pendingComments",
+							"providers",
+							"addComment",
+							"openThread"
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CapacitorBridgeAdapter.allow",
-				"type": "void"
+				"type": "void",
+				"description": "Nothing is returned: the call replaces the granted methods, the principal and the reached flag from the status it was given, and clears the recorded revisions when that leaves nothing granted."
 			},
 			{
 				"name": "CapacitorBridgeAdapter.connect",
-				"type": "DesktopBridge"
+				"type": "DesktopBridge",
+				"description": "The DesktopBridge the page uses on a phone: its core methods are always present, with openProject always rejecting, and its other methods are getters that return undefined until the current grant allows them; capabilities, addComment and pendingComments also need the reached flag."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised before anything is sent when the method is not in the granted set, so the bridge call rejects with an Error whose code is 'method-denied' and whose message says the operation is not available on this connection. The granted set is the one that the latest status given to allow produced."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Raised before createPlan, openThread, approve or startRun is sent when no branch and commit are on record for the project, so the bridge call rejects with an Error telling the person to open the project at its branch tip first. A record is kept only from a live snapshot of the branch tip, and is cleared by a cached, commit-pinned or non-tip snapshot or by an allow that grants nothing."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "openProject always rejects on a phone, with an Error that says a phone has no folders to open and tells the person to add the project on the computer. Nothing is sent to the computer for this call."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Every failed plugin request is converted here: the bridge call rejects with an Error that keeps the plugin's own message and code, falling back to a message saying the computer could not complete the request and to the code 'failed' when the plugin gives none. The raw value the plugin rejected with never reaches the caller."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CapacitorBridgeAdapter.allow",
@@ -61,17 +165,103 @@
 					{
 						"name": "CapacitorBridgeAdapter.allow.status",
 						"type": "RemoteNativeStatus | null",
-						"required": true
+						"required": true,
+						"description": "The latest status the native plugin published, or null before any is known; each one replaces the granted methods, the principal (its device id) and the reached flag, which is set only when the state is online. Null, a status without a grant, and a state other than connecting, online or offline all grant nothing.",
+						"examples": [
+							null,
+							{
+								"state": "online",
+								"origin": "https://relay.example",
+								"host": {
+									"id": "4f9c2a7b1d8e3f60a5b2c9d1e7f08a3b6c4d2e19",
+									"name": "Studio Mac"
+								},
+								"device": {
+									"id": "9a1d4e7c02b8f63d5e1a9c7b4f20d8e6a3c5b712",
+									"name": "Review iPhone"
+								},
+								"grant": {
+									"projects": [
+										{
+											"id": "local-5c2e8f1a9b07d43e6f2a8c1d5e9b7a03f4c6d28e1b9a7f05c3d2e8a6b4f1c907",
+											"name": "Design system"
+										}
+									],
+									"agents": false,
+									"comments": true
+								},
+								"reason": null,
+								"lastOnlineAt": "2026-11-15T08:05:31Z",
+								"methods": [
+									"listProjects",
+									"capabilities",
+									"snapshot",
+									"entity",
+									"history",
+									"source",
+									"image",
+									"evidence",
+									"artifact",
+									"messages",
+									"pendingComments",
+									"providers",
+									"addComment",
+									"openThread"
+								],
+								"locked": false
+							},
+							{
+								"state": "offline",
+								"origin": "https://relay.example",
+								"host": {
+									"id": "4f9c2a7b1d8e3f60a5b2c9d1e7f08a3b6c4d2e19",
+									"name": "Studio Mac"
+								},
+								"device": {
+									"id": "9a1d4e7c02b8f63d5e1a9c7b4f20d8e6a3c5b712",
+									"name": "Review iPhone"
+								},
+								"grant": {
+									"projects": [
+										{
+											"id": "local-5c2e8f1a9b07d43e6f2a8c1d5e9b7a03f4c6d28e1b9a7f05c3d2e8a6b4f1c907",
+											"name": "Design system"
+										}
+									],
+									"agents": false,
+									"comments": true
+								},
+								"reason": "The computer is asleep or has no network.",
+								"lastOnlineAt": "2026-11-15T07:58:12Z",
+								"methods": [
+									"listProjects",
+									"capabilities",
+									"snapshot",
+									"entity",
+									"history",
+									"source",
+									"image",
+									"evidence",
+									"artifact",
+									"messages",
+									"pendingComments",
+									"providers",
+									"addComment",
+									"openThread"
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CapacitorBridgeAdapter.allow",
-						"type": "void"
+						"type": "void",
+						"description": "Nothing is returned: the call replaces the granted methods, the principal and the reached flag from the status it was given, and clears the recorded revisions when that leaves nothing granted."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CapacitorBridgeAdapter.connect",
@@ -79,11 +269,12 @@
 				"outputs": [
 					{
 						"name": "CapacitorBridgeAdapter.connect",
-						"type": "DesktopBridge"
+						"type": "DesktopBridge",
+						"description": "The DesktopBridge the page uses on a phone: its core methods are always present, with openProject always rejecting, and its other methods are getters that return undefined until the current grant allows them; capabilities, addComment and pendingComments also need the reached flag."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -93,17 +284,19 @@
 					{
 						"name": "CapacitorBridgeAdapter.constructor.config",
 						"type": "CapacitorBridgeAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "The adapter's configuration, whose only field is `plugin`: the HarnessRemote native plugin that carries every request and listener call. The adapter reads `config.plugin` at each call rather than copying it, so the plugin must stay usable for as long as the adapter is in use."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CapacitorBridgeAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new CapacitorBridgeAdapter instance, which keeps the config and starts with no selected project, no recorded revisions, no granted methods, an empty principal and the reached flag unset until allow is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
