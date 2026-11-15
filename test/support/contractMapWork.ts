@@ -5,9 +5,7 @@ import { measureWorkload } from './measureWorkload';
 
 /** Direct callable admission accepts getters, own iterators and array species; file JSON cannot. */
 export async function assertLinearContractMap(): Promise<void> {
-	let reads = 0,
-		iterations = 0,
-		species = 0;
+	const counts = { reads: 0, iterations: 0, species: 0 };
 	const ids = ['service.root', 'service.branch', 'service.leaf', 'service.end'];
 	const entries = ids.map((id, index) => {
 		const manifest = contractUnit(
@@ -15,27 +13,7 @@ export async function assertLinearContractMap(): Promise<void> {
 			`src/${id}.ts`,
 			ids[index + 1] ? Array(6).fill(ids[index + 1]) : []
 		);
-		const dependencies = manifest.dependencies;
-		Object.defineProperty(dependencies, Symbol.iterator, {
-			value() {
-				iterations++;
-				return Array.prototype[Symbol.iterator].call(this);
-			}
-		});
-		Object.defineProperty(dependencies, 'constructor', {
-			value: {
-				get [Symbol.species]() {
-					species++;
-					return Array;
-				}
-			}
-		});
-		Object.defineProperty(manifest, 'dependencies', {
-			get() {
-				reads++;
-				return dependencies;
-			}
-		});
+		observeDependencies(manifest, counts);
 		return {
 			id,
 			title: id,
@@ -54,13 +32,40 @@ export async function assertLinearContractMap(): Promise<void> {
 	);
 	expect(result.dependencies.map((entry) => entry.id)).toEqual(ids.slice(1).sort());
 	expect(result.dependents).toEqual([]);
-	expect(reads, 'dependency reads stay linear in distinct contracts').toBeLessThanOrEqual(
+	expect(counts.reads, 'dependency reads stay linear in distinct contracts').toBeLessThanOrEqual(
 		entries.length * 2
 	);
-	expect(iterations, 'the reverse index retains admitted dependency iterators').toBe(
+	expect(counts.iterations, 'the reverse index retains admitted dependency iterators').toBe(
 		entries.length
 	);
-	expect(species, 'each visited dependency array retains its admitted species').toBe(
+	expect(counts.species, 'each visited dependency array retains its admitted species').toBe(
 		entries.length
 	);
+}
+
+function observeDependencies(
+	manifest: ReturnType<typeof contractUnit>,
+	counts: { reads: number; iterations: number; species: number }
+): void {
+	const dependencies = manifest.dependencies;
+	Object.defineProperty(dependencies, Symbol.iterator, {
+		value() {
+			counts.iterations++;
+			return Array.prototype[Symbol.iterator].call(this);
+		}
+	});
+	Object.defineProperty(dependencies, 'constructor', {
+		value: {
+			get [Symbol.species]() {
+				counts.species++;
+				return Array;
+			}
+		}
+	});
+	Object.defineProperty(manifest, 'dependencies', {
+		get() {
+			counts.reads++;
+			return dependencies;
+		}
+	});
 }
