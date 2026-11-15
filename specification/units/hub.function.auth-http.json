@@ -62,144 +62,206 @@
 				"name": "authRedirect.location",
 				"type": "string",
 				"required": true,
-				"description": "Redirect destination supplied by the caller."
+				"description": "This string is copied to the Location header of a 303 response. No URL allowlist or redirect-target normalization is applied, and a value invalid as a header can cause a TypeError.",
+				"examples": ["/api/auth/callback?code=sample", "https://accounts.example.test/complete"]
 			},
 			{
 				"name": "authRedirect.cookies",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Cookie headers to append; defaults to none."
+				"description": "Each string is appended as a separate Set-Cookie header after response creation. Defaults to []; invalid header values can cause a TypeError.",
+				"examples": [
+					["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]
+				]
 			},
 			{
 				"name": "sameOrigin.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request whose Origin header is checked."
+				"description": "The request whose origin header is read. A missing header compares as null and returns false."
 			},
 			{
 				"name": "sameOrigin.origin",
 				"type": "string",
 				"required": true,
-				"description": "Expected exact Origin header value."
+				"description": "The expected origin string compared exactly with the request's origin header. The value is not parsed or normalized.",
+				"examples": ["https://app.example.test", "http://localhost:5173"]
 			},
 			{
 				"name": "bearerToken.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request to inspect for an opaque Bearer token."
+				"description": "The request whose authorization header is checked against the bearer-token pattern. A missing or non-matching value produces null."
 			},
 			{
 				"name": "withCookies.response",
 				"type": "Response",
 				"required": true,
-				"description": "Response whose headers receive the supplied Set-Cookie values."
+				"description": "The response whose headers are modified in place. Its header list must permit appending values."
 			},
 			{
 				"name": "withCookies.cookies",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Optional individual cookie header values to append; defaults to an empty list."
+				"description": "Each string is appended as a separate Set-Cookie header to the response. Defaults to []; invalid header values or immutable response headers can cause a TypeError.",
+				"examples": [
+					["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]
+				]
 			},
 			{
 				"name": "authHttp.body",
 				"type": "unknown",
 				"required": true,
-				"description": "JSON-serializable response body."
+				"description": "The value passed to JSON.stringify for the response body. Cyclic values or BigInt values cause serialization to fail with TypeError.",
+				"examples": [
+					{
+						"ok": true
+					},
+					{
+						"error": "invalid-request"
+					}
+				]
 			},
 			{
 				"name": "authHttp.options",
 				"type": "AuthHttpOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional HTTP status, default 200, and separate Set-Cookie values."
+				"description": "Optional AuthHttpOptions used for response status and cookies; defaults to {}. Status defaults to 200 and omitted cookies append no headers; invalid statuses or cookie/header values can fail.",
+				"examples": [
+					{},
+					{
+						"status": 201
+					},
+					{
+						"status": 200,
+						"cookies": ["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]
+					}
+				]
 			},
 			{
 				"name": "authFailure.error",
 				"type": "unknown",
 				"required": true,
-				"description": "Unknown failure to turn into a public auth response."
+				"description": "The value checked to determine whether it is an AuthFailure. An AuthFailure supplies its code and status; every other value becomes auth-unavailable with status 500.",
+				"examples": [
+					{
+						"message": "GitHub request timed out"
+					}
+				]
 			},
 			{
 				"name": "hasAuthorization.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request to inspect for an Authorization header."
+				"description": "The request whose authorization header presence is tested. The header value is not validated."
 			},
 			{
 				"name": "boundedText.body",
 				"type": "ReadableStream<Uint8Array> | null",
 				"required": true,
-				"description": "Byte stream to read, or null for an empty body."
+				"description": "A nullable byte stream consumed by the helper; null yields an empty string. Reading stops and cancels the stream once accumulated bytes exceed limit."
 			},
 			{
 				"name": "boundedText.limit",
 				"type": "number",
 				"required": true,
-				"description": "Maximum accumulated body size in bytes."
+				"description": "The maximum number of accumulated bytes before the helper returns null. No lower bound is enforced, so a nonempty body exceeds a negative limit.",
+				"examples": [16384, 1024]
 			},
 			{
 				"name": "readJson.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request requiring application/json and an object body of at most 16384 bytes."
+				"description": "The request must declare application/json, with optional parameters and case-insensitive matching, and its declared content length must not exceed 16384 bytes. The streamed body is also limited to 16384 bytes and must decode as UTF-8 to a non-array JSON object; otherwise it rejects with AuthFailure code invalid-request."
 			},
 			{
 				"name": "authPath.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request whose URL path is checked."
+				"description": "The request whose URL pathname is read. Only paths beginning with /api/auth/ or /api/github/ are returned, without the query string."
 			}
 		],
 		"outputs": [
 			{
 				"name": "authHttp",
 				"type": "Response",
-				"description": "JSON response with no-store and no-sniff headers and optional cookies."
+				"description": "A Response containing the JSON.stringify result, with status defaulting to 200 and no-store, nosniff, and JSON content-type headers. Cookies are appended individually; serialization or Response/header validation can fail."
 			},
 			{
 				"name": "authRedirect",
 				"type": "Response",
-				"description": "303 redirect with no-store, no-sniff and no-referrer headers and optional cookies."
+				"description": "A 303 Response with Location, no-store, nosniff, and no-referrer headers. Each supplied cookie is appended as a separate Set-Cookie header."
 			},
 			{
 				"name": "authFailure",
 				"type": "Response",
-				"description": "AuthFailure code/status response, or opaque auth-unavailable with status 500 for other failures."
+				"description": "An AuthFailure becomes a JSON error body containing its code and status; every other value becomes {\"error\":\"auth-unavailable\"} with status 500. The response has the no-store, nosniff, and JSON content-type headers."
 			},
 			{
 				"name": "sameOrigin",
 				"type": "boolean",
-				"description": "True when the Origin header exactly equals the supplied origin."
+				"description": "True only when the request's origin header exactly equals the supplied origin string; a missing header returns false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "hasAuthorization",
 				"type": "boolean",
-				"description": "True when the Authorization header exists, even if invalid or empty."
+				"description": "True when the request has an authorization header, including an empty or otherwise invalid value.",
+				"examples": [true, false]
 			},
 			{
 				"name": "bearerToken",
 				"type": "string | null",
-				"description": "Token from exact Bearer syntax with 32 to 128 allowed characters, otherwise null."
+				"description": "The captured token from a full-string match of Bearer followed by one space and 32 to 128 ASCII letters, digits, underscores, or hyphens; all other values return null.",
+				"examples": ["abcdefghijklmnopqrstuvwxyz123456", null]
 			},
 			{
 				"name": "boundedText",
 				"type": "Promise<string | null>",
-				"description": "Strict UTF-8 text; null for oversized, invalid UTF-8 or failed streams. Oversized reads cancel the stream."
+				"description": "The promise resolves to decoded UTF-8 text when the stream stays within the byte limit, or null for oversized, invalid UTF-8, or failed reads. A null body resolves to an empty string.",
+				"examples": ["{\"ok\":true}", null, ""]
 			},
 			{
 				"name": "readJson",
 				"type": "Promise<Record<string, unknown>>",
-				"description": "Parsed non-array JSON object; rejects invalid content type, body size, encoding or JSON with invalid-request."
+				"description": "The promise resolves to the parsed non-array JSON object. Invalid content type, declared or streamed size, UTF-8, JSON, or object shape rejects with AuthFailure code invalid-request.",
+				"examples": [
+					{
+						"redirect": "/dashboard"
+					},
+					{
+						"ok": true
+					}
+				]
 			},
 			{
 				"name": "authPath",
 				"type": "string | null",
-				"description": "Path within /api/auth/ or /api/github/, otherwise null."
+				"description": "The URL pathname when it begins with /api/auth/ or /api/github/, otherwise null.",
+				"examples": ["/api/auth/callback", "/api/github/installations", null]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "readJson rejects with code invalid-request when the content type or declared length is invalid, the body exceeds 16384 bytes, UTF-8 or JSON parsing fails, or the parsed value is not an object."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A locked stream can make getReader reject; invalid response header values and cyclic or BigInt JSON input can also cause TypeError. These failures propagate from boundedText, authRedirect, withCookies, or authHttp when not caught by their implementations."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Response construction can reject an authHttp status outside the supported Response status range. authHttp passes the supplied status to Response without validating it first."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "authRedirect",
@@ -208,25 +270,35 @@
 						"name": "authRedirect.location",
 						"type": "string",
 						"required": true,
-						"description": "Redirect destination supplied by the caller."
+						"description": "This string is copied to the Location header of a 303 response. No URL allowlist or redirect-target normalization is applied, and a value invalid as a header can cause a TypeError.",
+						"examples": ["/api/auth/callback?code=sample", "https://accounts.example.test/complete"]
 					},
 					{
 						"name": "authRedirect.cookies",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Cookie headers to append; defaults to none."
+						"description": "Each string is appended as a separate Set-Cookie header after response creation. Defaults to []; invalid header values can cause a TypeError.",
+						"examples": [
+							["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "authRedirect",
 						"type": "Response",
-						"description": "303 redirect with no-store, no-sniff and no-referrer headers and optional cookies."
+						"description": "A 303 Response with Location, no-store, nosniff, and no-referrer headers. Each supplied cookie is appended as a separate Set-Cookie header."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A locked stream can make getReader reject; invalid response header values and cyclic or BigInt JSON input can also cause TypeError. These failures propagate from boundedText, authRedirect, withCookies, or authHttp when not caught by their implementations."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sameOrigin",
@@ -235,24 +307,26 @@
 						"name": "sameOrigin.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request whose Origin header is checked."
+						"description": "The request whose origin header is read. A missing header compares as null and returns false."
 					},
 					{
 						"name": "sameOrigin.origin",
 						"type": "string",
 						"required": true,
-						"description": "Expected exact Origin header value."
+						"description": "The expected origin string compared exactly with the request's origin header. The value is not parsed or normalized.",
+						"examples": ["https://app.example.test", "http://localhost:5173"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sameOrigin",
 						"type": "boolean",
-						"description": "True when the Origin header exactly equals the supplied origin."
+						"description": "True only when the request's origin header exactly equals the supplied origin string; a missing header returns false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "bearerToken",
@@ -261,18 +335,19 @@
 						"name": "bearerToken.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request to inspect for an opaque Bearer token."
+						"description": "The request whose authorization header is checked against the bearer-token pattern. A missing or non-matching value produces null."
 					}
 				],
 				"outputs": [
 					{
 						"name": "bearerToken",
 						"type": "string | null",
-						"description": "Token from exact Bearer syntax with 32 to 128 allowed characters, otherwise null."
+						"description": "The captured token from a full-string match of Bearer followed by one space and 32 to 128 ASCII letters, digits, underscores, or hyphens; all other values return null.",
+						"examples": ["abcdefghijklmnopqrstuvwxyz123456", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "withCookies",
@@ -281,24 +356,34 @@
 						"name": "withCookies.response",
 						"type": "Response",
 						"required": true,
-						"description": "Response whose headers receive the supplied Set-Cookie values."
+						"description": "The response whose headers are modified in place. Its header list must permit appending values."
 					},
 					{
 						"name": "withCookies.cookies",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Optional individual cookie header values to append; defaults to an empty list."
+						"description": "Each string is appended as a separate Set-Cookie header to the response. Defaults to []; invalid header values or immutable response headers can cause a TypeError.",
+						"examples": [
+							["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "withCookies",
-						"type": "Response"
+						"type": "Response",
+						"description": "The same Response object after the supplied Set-Cookie headers have been appended."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A locked stream can make getReader reject; invalid response header values and cyclic or BigInt JSON input can also cause TypeError. These failures propagate from boundedText, authRedirect, withCookies, or authHttp when not caught by their implementations."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "authHttp",
@@ -307,25 +392,54 @@
 						"name": "authHttp.body",
 						"type": "unknown",
 						"required": true,
-						"description": "JSON-serializable response body."
+						"description": "The value passed to JSON.stringify for the response body. Cyclic values or BigInt values cause serialization to fail with TypeError.",
+						"examples": [
+							{
+								"ok": true
+							},
+							{
+								"error": "invalid-request"
+							}
+						]
 					},
 					{
 						"name": "authHttp.options",
 						"type": "AuthHttpOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional HTTP status, default 200, and separate Set-Cookie values."
+						"description": "Optional AuthHttpOptions used for response status and cookies; defaults to {}. Status defaults to 200 and omitted cookies append no headers; invalid statuses or cookie/header values can fail.",
+						"examples": [
+							{},
+							{
+								"status": 201
+							},
+							{
+								"status": 200,
+								"cookies": ["session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "authHttp",
 						"type": "Response",
-						"description": "JSON response with no-store and no-sniff headers and optional cookies."
+						"description": "A Response containing the JSON.stringify result, with status defaulting to 200 and no-store, nosniff, and JSON content-type headers. Cookies are appended individually; serialization or Response/header validation can fail."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A locked stream can make getReader reject; invalid response header values and cyclic or BigInt JSON input can also cause TypeError. These failures propagate from boundedText, authRedirect, withCookies, or authHttp when not caught by their implementations."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Response construction can reject an authHttp status outside the supported Response status range. authHttp passes the supplied status to Response without validating it first."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "authFailure",
@@ -334,18 +448,23 @@
 						"name": "authFailure.error",
 						"type": "unknown",
 						"required": true,
-						"description": "Unknown failure to turn into a public auth response."
+						"description": "The value checked to determine whether it is an AuthFailure. An AuthFailure supplies its code and status; every other value becomes auth-unavailable with status 500.",
+						"examples": [
+							{
+								"message": "GitHub request timed out"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "authFailure",
 						"type": "Response",
-						"description": "AuthFailure code/status response, or opaque auth-unavailable with status 500 for other failures."
+						"description": "An AuthFailure becomes a JSON error body containing its code and status; every other value becomes {\"error\":\"auth-unavailable\"} with status 500. The response has the no-store, nosniff, and JSON content-type headers."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hasAuthorization",
@@ -354,18 +473,19 @@
 						"name": "hasAuthorization.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request to inspect for an Authorization header."
+						"description": "The request whose authorization header presence is tested. The header value is not validated."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hasAuthorization",
 						"type": "boolean",
-						"description": "True when the Authorization header exists, even if invalid or empty."
+						"description": "True when the request has an authorization header, including an empty or otherwise invalid value.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "boundedText",
@@ -374,24 +494,32 @@
 						"name": "boundedText.body",
 						"type": "ReadableStream<Uint8Array> | null",
 						"required": true,
-						"description": "Byte stream to read, or null for an empty body."
+						"description": "A nullable byte stream consumed by the helper; null yields an empty string. Reading stops and cancels the stream once accumulated bytes exceed limit."
 					},
 					{
 						"name": "boundedText.limit",
 						"type": "number",
 						"required": true,
-						"description": "Maximum accumulated body size in bytes."
+						"description": "The maximum number of accumulated bytes before the helper returns null. No lower bound is enforced, so a nonempty body exceeds a negative limit.",
+						"examples": [16384, 1024]
 					}
 				],
 				"outputs": [
 					{
 						"name": "boundedText",
 						"type": "Promise<string | null>",
-						"description": "Strict UTF-8 text; null for oversized, invalid UTF-8 or failed streams. Oversized reads cancel the stream."
+						"description": "The promise resolves to decoded UTF-8 text when the stream stays within the byte limit, or null for oversized, invalid UTF-8, or failed reads. A null body resolves to an empty string.",
+						"examples": ["{\"ok\":true}", null, ""]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A locked stream can make getReader reject; invalid response header values and cyclic or BigInt JSON input can also cause TypeError. These failures propagate from boundedText, authRedirect, withCookies, or authHttp when not caught by their implementations."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readJson",
@@ -400,18 +528,37 @@
 						"name": "readJson.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request requiring application/json and an object body of at most 16384 bytes."
+						"description": "The request must declare application/json, with optional parameters and case-insensitive matching, and its declared content length must not exceed 16384 bytes. The streamed body is also limited to 16384 bytes and must decode as UTF-8 to a non-array JSON object; otherwise it rejects with AuthFailure code invalid-request."
 					}
 				],
 				"outputs": [
 					{
 						"name": "readJson",
 						"type": "Promise<Record<string, unknown>>",
-						"description": "Parsed non-array JSON object; rejects invalid content type, body size, encoding or JSON with invalid-request."
+						"description": "The promise resolves to the parsed non-array JSON object. Invalid content type, declared or streamed size, UTF-8, JSON, or object shape rejects with AuthFailure code invalid-request.",
+						"examples": [
+							{
+								"redirect": "/dashboard"
+							},
+							{
+								"ok": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "readJson rejects with code invalid-request when the content type or declared length is invalid, the body exceeds 16384 bytes, UTF-8 or JSON parsing fails, or the parsed value is not an object."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A locked stream can make getReader reject; invalid response header values and cyclic or BigInt JSON input can also cause TypeError. These failures propagate from boundedText, authRedirect, withCookies, or authHttp when not caught by their implementations."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "authPath",
@@ -420,18 +567,19 @@
 						"name": "authPath.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request whose URL path is checked."
+						"description": "The request whose URL pathname is read. Only paths beginning with /api/auth/ or /api/github/ are returned, without the query string."
 					}
 				],
 				"outputs": [
 					{
 						"name": "authPath",
 						"type": "string | null",
-						"description": "Path within /api/auth/ or /api/github/, otherwise null."
+						"description": "The URL pathname when it begins with /api/auth/ or /api/github/, otherwise null.",
+						"examples": ["/api/auth/callback", "/api/github/installations", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
