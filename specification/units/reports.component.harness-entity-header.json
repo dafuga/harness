@@ -43,44 +43,308 @@
 				"name": "EntityHeader.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "Required identity, category, role, purpose and verdict. Page headers keep identity concise; purpose and app route remain in Contract."
+				"description": "Required revision entity whose name, role, verdict and category label are rendered, with purpose rendered except for pages. Its category controls the tab set, its change selects the removal badge, and its category and unit decide the private-function breadcrumb.",
+				"examples": [
+					{
+						"id": "reports.component.harness-entity-header",
+						"category": "components",
+						"role": "Component",
+						"name": "Entity header",
+						"purpose": "Shows entity identity and scoped section tabs, including model Table schema, component audio, usage, tests, history and optional source.",
+						"unit": {
+							"id": "reports.component.harness-entity-header",
+							"kind": "component",
+							"status": "active",
+							"title": "Entity header",
+							"responsibility": "Shows entity identity and scoped section tabs, including model Table schema, component audio, usage, tests, history and optional source.",
+							"dependencies": [
+								{
+									"unit": "reports.component.explorer-ui-explorer-kit-pill",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-entity-link",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-harness-icon",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-harness-tabs",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-harness-verdict",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-div",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-h1",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-header",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-li",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-nav",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-ol",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-p",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-span",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"packages/reports/src/components/explorer-ui/EntityHeader.svelte",
+									"packages/reports/src/components/explorer-ui/EntityHeader.types.ts"
+								],
+								"symbols": ["EntityHeader", "Place"]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "EntityHeader.entity",
+										"type": "ExplorerEntity"
+									},
+									{
+										"name": "EntityHeader.owner",
+										"type": "ExplorerEntity"
+									},
+									{
+										"name": "EntityHeader.nav",
+										"type": "EntityNav"
+									},
+									{
+										"name": "EntityHeader.preview",
+										"type": "Snippet"
+									},
+									{
+										"name": "EntityHeader.usesAvailable",
+										"type": "boolean"
+									}
+								],
+								"outputs": [
+									{
+										"name": "EntityHeader",
+										"type": "markup"
+									}
+								],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/EntityHeader.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "7f32a91c4d6e8b05"
+						},
+						"verdict": {
+							"passed": true,
+							"label": "Verified",
+							"reasons": []
+						},
+						"change": "direct",
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "EntityHeader.owner",
 				"type": "ExplorerEntity",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Sole recorded consumer for a private function breadcrumb; absent when ownership is unknown or not unique."
+				"description": "Optional owner entity used as the breadcrumb link only when the entity category is functions and explorerCategory(entity.unit) is null. If absent in that case, the breadcrumb text is Function; otherwise this prop is unused.",
+				"examples": [
+					{
+						"id": "reports.component.harness-entity-header",
+						"category": "components",
+						"role": "Component",
+						"name": "Entity header",
+						"purpose": "Shows entity identity and scoped section tabs, including model Table schema, component audio, usage, tests, history and optional source.",
+						"unit": {
+							"id": "reports.component.harness-entity-header",
+							"kind": "component",
+							"status": "active",
+							"title": "Entity header",
+							"responsibility": "Shows entity identity and scoped section tabs, including model Table schema, component audio, usage, tests, history and optional source.",
+							"dependencies": [
+								{
+									"unit": "reports.component.explorer-ui-explorer-kit-pill",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-entity-link",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-harness-icon",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-harness-tabs",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-harness-verdict",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-div",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-h1",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-header",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-li",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-nav",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-ol",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-p",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-span",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"packages/reports/src/components/explorer-ui/EntityHeader.svelte",
+									"packages/reports/src/components/explorer-ui/EntityHeader.types.ts"
+								],
+								"symbols": ["EntityHeader", "Place"]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "EntityHeader.entity",
+										"type": "ExplorerEntity"
+									},
+									{
+										"name": "EntityHeader.owner",
+										"type": "ExplorerEntity"
+									},
+									{
+										"name": "EntityHeader.nav",
+										"type": "EntityNav"
+									},
+									{
+										"name": "EntityHeader.preview",
+										"type": "Snippet"
+									},
+									{
+										"name": "EntityHeader.usesAvailable",
+										"type": "boolean"
+									}
+								],
+								"outputs": [
+									{
+										"name": "EntityHeader",
+										"type": "markup"
+									}
+								],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/EntityHeader.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "7f32a91c4d6e8b05"
+						},
+						"verdict": {
+							"passed": true,
+							"label": "Verified",
+							"reasons": []
+						},
+						"change": "direct",
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "EntityHeader.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "The branch, commit and selected tab, with functions for links and navigation."
+				"description": "Required current route and navigation callbacks; href builds scoped tab links and go handles a selected tab, while optional source opens an owned file without changing the address."
 			},
 			{
 				"name": "EntityHeader.preview",
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional component screenshot shown above every tab."
+				"description": "Optional Svelte snippet rendered after the header and before the tabs; when absent, no preview is rendered."
 			},
 			{
 				"name": "EntityHeader.usesAvailable",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Optional Uses visibility; false for a selected helper with no recorded helper callees."
+				"description": "Controls whether the Uses tab is included for this entity; it defaults to true, and false filters that tab out.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityHeader",
 				"type": "markup",
-				"description": "Entity identity, verification and one tab bar. Pages omit Used In, purpose prose and route metadata. Models expose a Table tab after Contract. Component screenshots remain above tabs, and component recordings open in Audio. Private function breadcrumbs identify their recorded owner and never link to Helpers. Grouped catalog entities include the selected revision’s responsibility folder between collection and entity in every tab breadcrumb."
+				"description": "Returns breadcrumb and header markup with category icon, name, role, verdict, a Removed at this commit pill only when change is removed, and purpose text except for pages; an optional preview is placed before the tab bar. Tab labels and active view follow the category, usesAvailable and route: pages omit Used In and rename Contract to Models, visual entities label Tests as States, functions and services as Examples, and other categories as Tests; APIs, models and components add Permissions, Table and Audio respectively."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
