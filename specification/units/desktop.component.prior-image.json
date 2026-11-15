@@ -27,41 +27,46 @@
 				"name": "PriorImage.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace used by the image-URL helper to load the earlier image."
+				"description": "Workspace used by imageUrl to resolve the earlier image URL. It is required and passed through without inspection by this component."
 			},
 			{
 				"name": "PriorImage.entityId",
 				"type": "string",
 				"required": true,
-				"description": "Required entity identifier for the image request."
+				"description": "Entity identifier passed to imageUrl with the version and digest. This component treats it as an opaque string and does not parse or validate it.",
+				"examples": ["entity-123"]
 			},
 			{
 				"name": "PriorImage.version",
 				"type": "string",
 				"required": true,
-				"description": "Required earlier version, used in the request and Before caption."
+				"description": "Version string passed to imageUrl and rendered in the Before · {version} caption. This component does not parse it or choose which version is earlier.",
+				"examples": ["v2"]
 			},
 			{
 				"name": "PriorImage.sha256",
 				"type": "string",
 				"required": true,
-				"description": "Required image hash for the request; the component does not choose which image is earlier."
+				"description": "SHA-256 digest passed to imageUrl with the entity identifier and version. This component does not calculate or validate the digest.",
+				"examples": ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"]
 			},
 			{
 				"name": "PriorImage.title",
 				"type": "string",
 				"required": true,
-				"description": "Required alternative text for the image."
+				"description": "Title used as the image alt text when the resolved URL is non-empty. It is not shown in the fallback message.",
+				"examples": ["Earlier kitchen elevation"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "PriorImage",
 				"type": "markup",
-				"description": "Figure labeled Before and the supplied version. Shows the returned image or Loading earlier image. Ignores the helper’s error argument, so a failure can remain indistinguishable from loading."
+				"description": "Renders a figure with a Before · {version} caption. It shows the resolved image with title as alt text when the URL is truthy, otherwise shows Loading earlier image…; the component has no annotation controls."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
