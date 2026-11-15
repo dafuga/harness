@@ -24,55 +24,139 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostedEvidenceAdapter.constructor.options",
 				"type": "RemoteHttpOptions | HostedHttpAdapter",
-				"required": true
+				"required": true,
+				"description": "The configuration used to create an HTTP transport, or an existing HostedHttpAdapter reused by this adapter. The options form requires an origin and credentials callback; its origin must be exact HTTPS (HTTP is allowed only for localhost), while fetch, authorityVersion, and onDenied are optional."
 			},
 			{
 				"name": "HostedEvidenceAdapter.path.operation",
 				"type": "'evidence' | 'artifact'",
-				"required": true
+				"required": true,
+				"description": "Selects whether the hosted request reads an evidence answer or one artifact; it determines the endpoint and evidence permission channel. Only evidence and artifact are accepted by the declared type.",
+				"examples": ["evidence", "artifact"]
 			},
 			{
 				"name": "HostedEvidenceAdapter.path.query",
 				"type": "Query | (EvidenceArtifactQuery & { projectId: string })",
-				"required": true
+				"required": true,
+				"description": "Supplies the project and entity evidence fields used to build the hosted URL, with artifact binding fields for an artifact read. The project ID and payload fields are validated, and fields outside the evidence payload are dropped.",
+				"examples": [
+					{
+						"projectId": "buildflexity-app",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"mode": "commit"
+					},
+					{
+						"projectId": "buildflexity-app",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"mode": "commit",
+						"side": "after",
+						"recordId": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"scenarioId": "verification-happy-path",
+						"state": "verified",
+						"evidenceId": "screenshot-after",
+						"viewport": "desktop-1440x900",
+						"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+						"notesRevision": "abcdef0123456789abcdef0123456789abcdef01",
+						"evidenceRevision": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "HostedEvidenceAdapter.evidence.query",
 				"type": "Query",
-				"required": true
+				"required": true,
+				"description": "Identifies the project entity, branch, mode, and commit for a hosted evidence read. The project ID must match the hosted project pattern, the entity ID is a bounded identifier, the commit is 40 lowercase hexadecimal characters, and mode is current or commit.",
+				"examples": [
+					{
+						"projectId": "buildflexity-app",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"mode": "commit"
+					}
+				]
 			},
 			{
 				"name": "HostedEvidenceAdapter.artifact.query",
 				"type": "EvidenceArtifactQuery & { projectId: string }",
-				"required": true
+				"required": true,
+				"description": "Names one capture from an evidence answer by side, record, scenario, state, evidence, viewport, content hash, and pinned revisions. Identifier and hash patterns are enforced, revisions may be null or 40 lowercase hexadecimal characters, and the returned body is capped at 11 MiB.",
+				"examples": [
+					{
+						"projectId": "buildflexity-app",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"mode": "commit",
+						"side": "after",
+						"recordId": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"scenarioId": "verification-happy-path",
+						"state": "verified",
+						"evidenceId": "screenshot-after",
+						"viewport": "desktop-1440x900",
+						"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+						"notesRevision": "abcdef0123456789abcdef0123456789abcdef01",
+						"evidenceRevision": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostedEvidenceAdapter.path",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The hosted URL path and query string built from the operation and validated evidence fields; the adapter uses it for the authenticated request. The project ID is in the path, null fields are omitted, and unrecognized payload fields are dropped.",
+				"examples": [
+					"/api/projects/buildflexity-app/evidence?entityId=reports.component.evidence-grid&commit=0123456789abcdef0123456789abcdef01234567&branch=main&mode=commit",
+					"/api/projects/buildflexity-app/artifact?entityId=reports.component.evidence-grid&commit=0123456789abcdef0123456789abcdef01234567&branch=main&mode=commit&side=after&recordId=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef&scenarioId=verification-happy-path&state=verified&evidenceId=screenshot-after&sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&viewport=desktop-1440x900&notesRevision=abcdef0123456789abcdef0123456789abcdef01&evidenceRevision=0123456789abcdef0123456789abcdef01234567"
+				]
 			},
 			{
 				"name": "HostedEvidenceAdapter.evidence",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "Resolves to the JSON value decoded from the hosted evidence response with fatal UTF-8 decoding; the adapter does not validate a response schema. The body is limited to 16 MiB, and invalid UTF-8 or JSON rejects with an Error.",
+				"examples": [
+					{
+						"scope": {},
+						"identity": {},
+						"evidence": {},
+						"behavior": {}
+					}
+				]
 			},
 			{
 				"name": "HostedEvidenceAdapter.artifact",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the shared authenticated read promise, which resolves to the bounded response bytes, the response content type or an empty string, and the verified credential principal ID. The artifact body is limited to 11 MiB and bytes are a Uint8Array."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown for syntactically valid but disallowed hosted origins, invalid project or query fields, oversized response bodies, or evidence that is not fatal UTF-8 JSON. Evidence decode and parse failures are replaced with the message This app does not accept the hosted evidence answer."
+			},
+			{
+				"name": "HostedFailureValidator",
+				"type": "thrown",
+				"description": "The hosted status or evidence/artifact request rejects with this classified transport failure for an HTTP denial, HTTP failure, or network error. Its category is offline, denied, or failed; the evidence reader preserves the offline classification."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Native URL construction can throw this while options are wrapped if origin cannot be parsed as a URL. Supplying an existing HostedHttpAdapter bypasses origin parsing in this constructor."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostedEvidenceAdapter.path",
@@ -80,22 +164,61 @@
 					{
 						"name": "HostedEvidenceAdapter.path.operation",
 						"type": "'evidence' | 'artifact'",
-						"required": true
+						"required": true,
+						"description": "Selects whether the hosted request reads an evidence answer or one artifact; it determines the endpoint and evidence permission channel. Only evidence and artifact are accepted by the declared type.",
+						"examples": ["evidence", "artifact"]
 					},
 					{
 						"name": "HostedEvidenceAdapter.path.query",
 						"type": "Query | (EvidenceArtifactQuery & { projectId: string })",
-						"required": true
+						"required": true,
+						"description": "Supplies the project and entity evidence fields used to build the hosted URL, with artifact binding fields for an artifact read. The project ID and payload fields are validated, and fields outside the evidence payload are dropped.",
+						"examples": [
+							{
+								"projectId": "buildflexity-app",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"mode": "commit"
+							},
+							{
+								"projectId": "buildflexity-app",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"mode": "commit",
+								"side": "after",
+								"recordId": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"scenarioId": "verification-happy-path",
+								"state": "verified",
+								"evidenceId": "screenshot-after",
+								"viewport": "desktop-1440x900",
+								"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+								"notesRevision": "abcdef0123456789abcdef0123456789abcdef01",
+								"evidenceRevision": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedEvidenceAdapter.path",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The hosted URL path and query string built from the operation and validated evidence fields; the adapter uses it for the authenticated request. The project ID is in the path, null fields are omitted, and unrecognized payload fields are dropped.",
+						"examples": [
+							"/api/projects/buildflexity-app/evidence?entityId=reports.component.evidence-grid&commit=0123456789abcdef0123456789abcdef01234567&branch=main&mode=commit",
+							"/api/projects/buildflexity-app/artifact?entityId=reports.component.evidence-grid&commit=0123456789abcdef0123456789abcdef01234567&branch=main&mode=commit&side=after&recordId=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef&scenarioId=verification-happy-path&state=verified&evidenceId=screenshot-after&sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&viewport=desktop-1440x900&notesRevision=abcdef0123456789abcdef0123456789abcdef01&evidenceRevision=0123456789abcdef0123456789abcdef01234567"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the project ID fails hosted path validation or a required query field fails its pattern, length, or enum check; invalid payload fields prevent a URL from being returned."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostedEvidenceAdapter.evidence",
@@ -103,22 +226,47 @@
 					{
 						"name": "HostedEvidenceAdapter.evidence.query",
 						"type": "Query",
-						"required": true
+						"required": true,
+						"description": "Identifies the project entity, branch, mode, and commit for a hosted evidence read. The project ID must match the hosted project pattern, the entity ID is a bounded identifier, the commit is 40 lowercase hexadecimal characters, and mode is current or commit.",
+						"examples": [
+							{
+								"projectId": "buildflexity-app",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"mode": "commit"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedEvidenceAdapter.evidence",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "Resolves to the JSON value decoded from the hosted evidence response with fatal UTF-8 decoding; the adapter does not validate a response schema. The body is limited to 16 MiB, and invalid UTF-8 or JSON rejects with an Error.",
+						"examples": [
+							{
+								"scope": {},
+								"identity": {},
+								"evidence": {},
+								"behavior": {}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The read rejects when there is no verified hosted session, project or query fields are invalid, the body exceeds 16 MiB, or fatal UTF-8 JSON decoding fails. Decode and parse failures are replaced with the fixed app-facing message."
+					},
+					{
+						"name": "HostedFailureValidator",
+						"type": "thrown",
+						"description": "The hosted status or evidence request rejects with this classified transport failure for an HTTP denial, HTTP failure, or network error. Its category is offline, denied, or failed, and offline failures are rethrown as the classified failure."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostedEvidenceAdapter.artifact",
@@ -126,17 +274,48 @@
 					{
 						"name": "HostedEvidenceAdapter.artifact.query",
 						"type": "EvidenceArtifactQuery & { projectId: string }",
-						"required": true
+						"required": true,
+						"description": "Names one capture from an evidence answer by side, record, scenario, state, evidence, viewport, content hash, and pinned revisions. Identifier and hash patterns are enforced, revisions may be null or 40 lowercase hexadecimal characters, and the returned body is capped at 11 MiB.",
+						"examples": [
+							{
+								"projectId": "buildflexity-app",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"mode": "commit",
+								"side": "after",
+								"recordId": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"scenarioId": "verification-happy-path",
+								"state": "verified",
+								"evidenceId": "screenshot-after",
+								"viewport": "desktop-1440x900",
+								"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+								"notesRevision": "abcdef0123456789abcdef0123456789abcdef01",
+								"evidenceRevision": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedEvidenceAdapter.artifact",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the shared authenticated read promise, which resolves to the bounded response bytes, the response content type or an empty string, and the verified credential principal ID. The artifact body is limited to 11 MiB and bytes are a Uint8Array."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The read rejects when there is no verified hosted session, project or query fields are invalid, or response bytes exceed 11 MiB. Artifact bytes are returned without JSON parsing."
+					},
+					{
+						"name": "HostedFailureValidator",
+						"type": "thrown",
+						"description": "The hosted status or artifact request rejects with this classified transport failure for an HTTP denial, HTTP failure, or network error. Its category is offline, denied, or failed, and offline failures are rethrown as the classified failure."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -146,17 +325,30 @@
 					{
 						"name": "HostedEvidenceAdapter.constructor.options",
 						"type": "RemoteHttpOptions | HostedHttpAdapter",
-						"required": true
+						"required": true,
+						"description": "The configuration used to create an HTTP transport, or an existing HostedHttpAdapter reused by this adapter. The options form requires an origin and credentials callback; its origin must be exact HTTPS (HTTP is allowed only for localhost), while fetch, authorityVersion, and onDenied are optional."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedEvidenceAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The newly constructed HostedEvidenceAdapter instance, holding either the supplied HostedHttpAdapter or a transport created from the options. It exposes path, evidence, and artifact and adds no cache policy."
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Native URL construction can throw this if the options origin cannot be parsed as a URL. This occurs before the adapter can validate the exact allowed hosted origin."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the parsed options origin is not an exact HTTPS hosted origin or an allowed localhost HTTP origin. An existing HostedHttpAdapter is reused without this origin check."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
