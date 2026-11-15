@@ -8,17 +8,13 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
-			"packages/relay/src/lib/host-runtime/PairingAccessService.ts"
-		],
+		"source": ["packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts"],
 		"symbols": [
 			"PairingAccessService",
 			"PairingAccessService.constructor",
 			"PairingAccessService.info",
 			"PairingAccessService.poll",
-			"PairingAccessService.request",
-			"PairingAccessService"
+			"PairingAccessService.request"
 		]
 	},
 	"contract": {

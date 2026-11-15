@@ -8,15 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/lib/execution-runtimes/host-runtime/PairingExchangeService.ts",
-			"packages/relay/src/lib/host-runtime/PairingExchangeService.ts"
-		],
+		"source": ["packages/relay/src/lib/execution-runtimes/host-runtime/PairingExchangeService.ts"],
 		"symbols": [
 			"PairingExchangeService",
 			"PairingExchangeService.constructor",
-			"PairingExchangeService.exchange",
-			"PairingExchangeService"
+			"PairingExchangeService.exchange"
 		]
 	},
 	"contract": {

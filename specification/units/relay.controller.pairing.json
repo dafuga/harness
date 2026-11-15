@@ -8,16 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/lib/execution-runtimes/host-runtime/PairingController.ts",
-			"packages/relay/src/lib/host-runtime/PairingController.ts"
-		],
-		"symbols": [
-			"PairingController",
-			"PairingController.constructor",
-			"PairingController.handle",
-			"PairingController"
-		]
+		"source": ["packages/relay/src/lib/execution-runtimes/host-runtime/PairingController.ts"],
+		"symbols": ["PairingController", "PairingController.constructor", "PairingController.handle"]
 	},
 	"contract": {
 		"origin": "derived",
