@@ -2,7 +2,7 @@ import { rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GitAdapter } from '../src/adapters/git-source-history/GitAdapter';
-import { SourceHistoryRepository } from '../src/repositories/source-history-repository/SourceHistoryRepository';
+import { SourceHistoryRepository } from '../src/repositories/git-source-history/source-history-repository/SourceHistoryRepository';
 import { withTempRepo } from './support/temporary';
 
 /**
