@@ -28,24 +28,26 @@
 				"name": "HostedConnection.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace used once to create connection state. Loads that state on mount and disposes it on unmount; the connection store owns endpoint and session operations."
+				"description": "The Workspace instance used to create the connection store when the component initializes. The component loads store state on mount and disposes the store on unmount; endpoint and session behavior belongs to the store."
 			},
 			{
 				"name": "HostedConnection.compact",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional compact styling flag, false by default; does not change the available connection actions."
+				"description": "Controls compact styling and whether explanatory copy is shown. It defaults to false and does not change the connection actions.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostedConnection",
 				"type": "markup",
-				"description": "Renders when support and status exist. Shows not-configured guidance, signed-in identity with Disconnect, or browser sign-in code with expiry/waiting text and Cancel. Shows only the store-approved address, otherwise an invalid-address alert. Other states offer Connect shared projects. Busy disables actions; store errors are alerts."
+				"description": "The component's rendered markup, shown only when the connection is available and status is truthy. It chooses setup, signed-in, handoff, or connect UI from store state; it shows connection.address only when present, disables actions while busy, and renders connection.error as an alert."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
