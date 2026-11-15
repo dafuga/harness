@@ -30,39 +30,47 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteHostRuntimeService.constructor.options",
 				"type": "RemoteHostRuntimeOptions",
-				"required": true
+				"required": true,
+				"description": "Provides the live host state, host keys and name, socket factory, shared session dependencies, and callbacks used to build pairing, sessions, and the relay link. Link tuning and the locked callback are optional; a missing state.origin is passed to the relay link as an empty string, and the locked callback may return undefined."
 			},
 			{
 				"name": "RemoteHostRuntimeService.online.deviceId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Identifies the device whose relay-socket presence is queried. The value is checked by exact string membership in the presence set, which is refreshed by ready frames and changed by device-open, device-close, and link-state events.",
+				"examples": ["device-01", "device-02"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteHostRuntimeService.start",
-				"type": "void"
+				"type": "void",
+				"description": "Starts the relay link and returns no value."
 			},
 			{
 				"name": "RemoteHostRuntimeService.stop",
-				"type": "void"
+				"type": "void",
+				"description": "Stops the relay link while retaining device sessions for offline suspension or before a restart, and returns no value."
 			},
 			{
 				"name": "RemoteHostRuntimeService.end",
-				"type": "void"
+				"type": "void",
+				"description": "Stops the relay link, ends device sessions, and closes pairing when remote access is disabled or the app quits; it returns no value."
 			},
 			{
 				"name": "RemoteHostRuntimeService.online",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Reports whether the device is in this runtime's relay-presence set; it reads the locally tracked set.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "RemoteHostRuntimeService.start",
@@ -70,11 +78,12 @@
 				"outputs": [
 					{
 						"name": "RemoteHostRuntimeService.start",
-						"type": "void"
+						"type": "void",
+						"description": "Starts the relay link and returns no value."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostRuntimeService.stop",
@@ -82,11 +91,12 @@
 				"outputs": [
 					{
 						"name": "RemoteHostRuntimeService.stop",
-						"type": "void"
+						"type": "void",
+						"description": "Stops the relay link while retaining device sessions for offline suspension or before a restart, and returns no value."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostRuntimeService.end",
@@ -94,11 +104,12 @@
 				"outputs": [
 					{
 						"name": "RemoteHostRuntimeService.end",
-						"type": "void"
+						"type": "void",
+						"description": "Stops the relay link, ends device sessions, and closes pairing when remote access is disabled or the app quits; it returns no value."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostRuntimeService.online",
@@ -106,17 +117,21 @@
 					{
 						"name": "RemoteHostRuntimeService.online.deviceId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Identifies the device whose relay-socket presence is queried. The value is checked by exact string membership in the presence set, which is refreshed by ready frames and changed by device-open, device-close, and link-state events.",
+						"examples": ["device-01", "device-02"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostRuntimeService.online",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Reports whether the device is in this runtime's relay-presence set; it reads the locally tracked set.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -126,17 +141,19 @@
 					{
 						"name": "RemoteHostRuntimeService.constructor.options",
 						"type": "RemoteHostRuntimeOptions",
-						"required": true
+						"required": true,
+						"description": "Provides the live host state, host keys and name, socket factory, shared session dependencies, and callbacks used to build pairing, sessions, and the relay link. Link tuning and the locked callback are optional; a missing state.origin is passed to the relay link as an empty string, and the locked callback may return undefined."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostRuntimeService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates the runtime service with pairing, device sessions, and a relay link initialized from the supplied options."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
