@@ -82,7 +82,17 @@
 				"name": "stateTests.options",
 				"type": "{ headless?: boolean }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional headless mode. When true, skips dependency-attributed files and accepts scenario-declared test calls without a state literal or viewport-matrix marker; when false or omitted, attributed files are included and candidates must contain the state literal or, for declared viewports, a matrix marker.",
+				"examples": [
+					{},
+					{
+						"headless": true
+					},
+					{
+						"headless": false
+					}
+				]
 			}
 		],
 		"outputs": [
@@ -187,7 +197,17 @@
 						"name": "stateTests.options",
 						"type": "{ headless?: boolean }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional headless mode. When true, skips dependency-attributed files and accepts scenario-declared test calls without a state literal or viewport-matrix marker; when false or omitted, attributed files are included and candidates must contain the state literal or, for declared viewports, a matrix marker.",
+						"examples": [
+							{},
+							{
+								"headless": true
+							},
+							{
+								"headless": false
+							}
+						]
 					}
 				],
 				"outputs": [

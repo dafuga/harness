@@ -22,7 +22,7 @@
 				"type": "ImpactOptions",
 				"required": false,
 				"default": {},
-				"description": "Chooses what to compare: root is the directory of the Git repository to read (default: the current directory), base is the revision to compare from (default: HEAD; 'none' compares against an empty starting point), head is the revision to compare to (default: the working tree), and runtime is module, wasm, process or http, or default for the measured choice on this machine (used when omitted). Every field is optional, so an empty object compares HEAD with the working tree of the repository in the current directory on the measured default runtime.",
+				"description": "Selects the repository and revisions to compare and the runtime to use. `root` defaults to the current working directory; `base` defaults to `HEAD` and accepts `none` for an empty starting point; `head` defaults to the working tree. `runtime` accepts `module`, `wasm`, `process`, `http`, or `default`; if omitted or set to `default`, the environment selects its measured runtime. All properties are optional, so `{}` compares `HEAD` with the working tree rooted at the current directory using the environment's measured default runtime.",
 				"examples": [
 					{},
 					{
@@ -31,7 +31,7 @@
 						"runtime": "process"
 					},
 					{
-						"root": "/home/dev/harness",
+						"root": "/workspace/project",
 						"base": "none",
 						"runtime": "module"
 					}
@@ -220,7 +220,7 @@
 						"type": "ImpactOptions",
 						"required": false,
 						"default": {},
-						"description": "Chooses what to compare: root is the directory of the Git repository to read (default: the current directory), base is the revision to compare from (default: HEAD; 'none' compares against an empty starting point), head is the revision to compare to (default: the working tree), and runtime is module, wasm, process or http, or default for the measured choice on this machine (used when omitted). Every field is optional, so an empty object compares HEAD with the working tree of the repository in the current directory on the measured default runtime.",
+						"description": "Selects the repository and revisions to compare and the runtime to use. `root` defaults to the current working directory; `base` defaults to `HEAD` and accepts `none` for an empty starting point; `head` defaults to the working tree. `runtime` accepts `module`, `wasm`, `process`, `http`, or `default`; if omitted or set to `default`, the environment selects its measured runtime. All properties are optional, so `{}` compares `HEAD` with the working tree rooted at the current directory using the environment's measured default runtime.",
 						"examples": [
 							{},
 							{
@@ -229,7 +229,7 @@
 								"runtime": "process"
 							},
 							{
-								"root": "/home/dev/harness",
+								"root": "/workspace/project",
 								"base": "none",
 								"runtime": "module"
 							}

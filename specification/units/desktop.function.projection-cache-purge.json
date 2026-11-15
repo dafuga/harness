@@ -42,7 +42,7 @@
 		"outputs": [
 			{
 				"name": "projectionCachePurge",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves to undefined after the scan has removed every file it selects, so callers can await completion but receive no result. Recognized files whose identity is missing, falsy, or unparseable (including files that cannot be read or parsed) are removed regardless of principal; a directory-listing failure is treated as no entries, and any unlink failure rejects the promise."
 			}
 		],
@@ -89,7 +89,7 @@
 				"outputs": [
 					{
 						"name": "projectionCachePurge",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves to undefined after the scan has removed every file it selects, so callers can await completion but receive no result. Recognized files whose identity is missing, falsy, or unparseable (including files that cannot be read or parsed) are removed regardless of principal; a directory-listing failure is treated as no entries, and any unlink failure rejects the promise."
 					}
 				],

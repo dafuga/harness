@@ -37,7 +37,7 @@
 				"description": "Identifies the repository and source revisions for a reason comparison. The root defaults to the current working directory, base defaults to HEAD (none means an empty base), and an omitted head uses the working tree; evidence revisions are rejected.",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+						"root": "/workspace/project",
 						"base": "HEAD~1",
 						"head": "HEAD"
 					}
@@ -50,7 +50,7 @@
 				"description": "Identifies the repository and source revisions for a reason comparison. The root defaults to the current working directory, base defaults to HEAD (none means an empty base), and an omitted head uses the working tree; evidence revisions are rejected.",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+						"root": "/workspace/project",
 						"base": "HEAD~1",
 						"head": "HEAD"
 					}
@@ -89,7 +89,7 @@
 				"description": "Specifies the revision range, selection, and reason text consumed by explainAdd; a reason requires nonblank behavior and simplification and performance attempts with outcomes improved, not-improved, or not-applicable. New reason text is checked against the target writing limits (version 1 if undeclared): behavior allows 30 words/200 characters, and each attempt allows 20 words/140 characters in v1 or 15 words/140 characters in v2; omitted now uses the current ISO timestamp and replace also selects overlong stored reasons.",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+						"root": "/workspace/project",
 						"base": "HEAD~1",
 						"head": "HEAD",
 						"all": false,
@@ -145,7 +145,7 @@
 						],
 						"overlong": [],
 						"failures": [],
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+						"root": "/workspace/project",
 						"writing": 2
 					}
 				]
@@ -160,7 +160,7 @@
 						"entries": [],
 						"overlong": [],
 						"failures": [],
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+						"root": "/workspace/project"
 					}
 				]
 			},
@@ -227,7 +227,7 @@
 						"description": "Identifies the repository and source revisions for a reason comparison. The root defaults to the current working directory, base defaults to HEAD (none means an empty base), and an omitted head uses the working tree; evidence revisions are rejected.",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+								"root": "/workspace/project",
 								"base": "HEAD~1",
 								"head": "HEAD"
 							}
@@ -274,7 +274,7 @@
 								],
 								"overlong": [],
 								"failures": [],
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+								"root": "/workspace/project",
 								"writing": 2
 							}
 						]
@@ -299,7 +299,7 @@
 						"description": "Identifies the repository and source revisions for a reason comparison. The root defaults to the current working directory, base defaults to HEAD (none means an empty base), and an omitted head uses the working tree; evidence revisions are rejected.",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+								"root": "/workspace/project",
 								"base": "HEAD~1",
 								"head": "HEAD"
 							}
@@ -317,7 +317,7 @@
 								"entries": [],
 								"overlong": [],
 								"failures": [],
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+								"root": "/workspace/project"
 							}
 						]
 					}
@@ -392,7 +392,7 @@
 						"description": "Specifies the revision range, selection, and reason text consumed by explainAdd; a reason requires nonblank behavior and simplification and performance attempts with outcomes improved, not-improved, or not-applicable. New reason text is checked against the target writing limits (version 1 if undeclared): behavior allows 30 words/200 characters, and each attempt allows 20 words/140 characters in v1 or 15 words/140 characters in v2; omitted now uses the current ISO timestamp and replace also selects overlong stored reasons.",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+								"root": "/workspace/project",
 								"base": "HEAD~1",
 								"head": "HEAD",
 								"all": false,

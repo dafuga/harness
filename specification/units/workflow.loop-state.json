@@ -60,7 +60,7 @@
 				"description": "An optional options object that may supply a root directory and a clock callback; loopRoot reads only its root field. If root is absent or nullish, loopRoot returns process.cwd().",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/example"
+						"root": "/workspace/project"
 					},
 					{}
 				]
@@ -70,7 +70,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The root directory used to build the loop storage paths. The helper joins it with specification/loops and the supplied loop segment, without creating directories.",
-				"examples": ["/Users/danielfugere/projects/example"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "loopPaths.loop",
@@ -86,9 +86,9 @@
 				"description": "The directory, state-file, trace-file, and relative trace paths for the new loop. writeNewLoop creates paths.dir recursively and writes the state at paths.state.",
 				"examples": [
 					{
-						"dir": "/Users/danielfugere/projects/example/specification/loops/release-tracker",
-						"state": "/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json",
-						"trace": "/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson",
+						"dir": "/workspace/project/specification/loops/release-tracker",
+						"state": "/workspace/project/specification/loops/release-tracker/loop.json",
+						"trace": "/workspace/project/specification/loops/release-tracker/trace.ndjson",
 						"traceRelative": "specification/loops/release-tracker/trace.ndjson"
 					}
 				]
@@ -119,9 +119,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The filesystem path of a stored loop JSON file to parse and validate. Missing files and schema mismatches become ExpectedCliError; malformed JSON and other read failures propagate.",
-				"examples": [
-					"/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json"
-				]
+				"examples": ["/workspace/project/specification/loops/release-tracker/loop.json"]
 			},
 			{
 				"name": "assertLoopOpen.state",
@@ -149,9 +147,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The filesystem path to overwrite with serialized loop state. The function writes tab-indented JSON followed by a newline and does not validate the state first.",
-				"examples": [
-					"/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json"
-				]
+				"examples": ["/workspace/project/specification/loops/release-tracker/loop.json"]
 			},
 			{
 				"name": "writeLoop.state",
@@ -179,18 +175,14 @@
 				"type": "string",
 				"required": true,
 				"description": "The trace file path that receives the event. The function appends one compact JSON value and a newline without creating the parent directory.",
-				"examples": [
-					"/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson"
-				]
+				"examples": ["/workspace/project/specification/loops/release-tracker/trace.ndjson"]
 			},
 			{
 				"name": "appendTrace.event",
 				"type": "Record<string, unknown>",
 				"required": true,
 				"description": "A JSON-serializable record appended as one compact JSON line to the trace file. The function does not validate event fields.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "validateLoopId.value",
@@ -230,7 +222,13 @@
 				"name": "isMissingFile.error",
 				"type": "unknown",
 				"required": true,
-				"description": "The value to inspect after a filesystem failure. It returns true only for an Error instance whose code property is exactly ENOENT."
+				"description": "A value to inspect after a filesystem failure. Only an Error instance whose code is exactly ENOENT returns true; a plain JSON object with that code remains false.",
+				"examples": [
+					{
+						"code": "ENOENT"
+					},
+					null
+				]
 			}
 		],
 		"outputs": [
@@ -238,7 +236,7 @@
 				"name": "loopRoot",
 				"type": "string",
 				"description": "The selected loop root directory. It returns input.root when that value is non-nullish, otherwise the current working directory.",
-				"examples": ["/Users/danielfugere/projects/example"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "loopPaths",
@@ -246,9 +244,9 @@
 				"description": "The four paths used to store a loop: its directory, state JSON, trace file, and relative trace file. The helper computes paths only and performs no filesystem writes.",
 				"examples": [
 					{
-						"dir": "/Users/danielfugere/projects/example/specification/loops/release-tracker",
-						"state": "/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json",
-						"trace": "/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson",
+						"dir": "/workspace/project/specification/loops/release-tracker",
+						"state": "/workspace/project/specification/loops/release-tracker/loop.json",
+						"trace": "/workspace/project/specification/loops/release-tracker/trace.ndjson",
 						"traceRelative": "specification/loops/release-tracker/trace.ndjson"
 					}
 				]
@@ -353,7 +351,7 @@
 						"description": "An optional options object that may supply a root directory and a clock callback; loopRoot reads only its root field. If root is absent or nullish, loopRoot returns process.cwd().",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/example"
+								"root": "/workspace/project"
 							},
 							{}
 						]
@@ -364,7 +362,7 @@
 						"name": "loopRoot",
 						"type": "string",
 						"description": "The selected loop root directory. It returns input.root when that value is non-nullish, otherwise the current working directory.",
-						"examples": ["/Users/danielfugere/projects/example"]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"errors": [],
@@ -378,7 +376,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The root directory used to build the loop storage paths. The helper joins it with specification/loops and the supplied loop segment, without creating directories.",
-						"examples": ["/Users/danielfugere/projects/example"]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "loopPaths.loop",
@@ -395,9 +393,9 @@
 						"description": "The four paths used to store a loop: its directory, state JSON, trace file, and relative trace file. The helper computes paths only and performs no filesystem writes.",
 						"examples": [
 							{
-								"dir": "/Users/danielfugere/projects/example/specification/loops/release-tracker",
-								"state": "/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json",
-								"trace": "/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson",
+								"dir": "/workspace/project/specification/loops/release-tracker",
+								"state": "/workspace/project/specification/loops/release-tracker/loop.json",
+								"trace": "/workspace/project/specification/loops/release-tracker/trace.ndjson",
 								"traceRelative": "specification/loops/release-tracker/trace.ndjson"
 							}
 						]
@@ -416,9 +414,9 @@
 						"description": "The directory, state-file, trace-file, and relative trace paths for the new loop. writeNewLoop creates paths.dir recursively and writes the state at paths.state.",
 						"examples": [
 							{
-								"dir": "/Users/danielfugere/projects/example/specification/loops/release-tracker",
-								"state": "/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json",
-								"trace": "/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson",
+								"dir": "/workspace/project/specification/loops/release-tracker",
+								"state": "/workspace/project/specification/loops/release-tracker/loop.json",
+								"trace": "/workspace/project/specification/loops/release-tracker/trace.ndjson",
 								"traceRelative": "specification/loops/release-tracker/trace.ndjson"
 							}
 						]
@@ -479,9 +477,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The filesystem path of a stored loop JSON file to parse and validate. Missing files and schema mismatches become ExpectedCliError; malformed JSON and other read failures propagate.",
-						"examples": [
-							"/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json"
-						]
+						"examples": ["/workspace/project/specification/loops/release-tracker/loop.json"]
 					}
 				],
 				"outputs": [
@@ -574,9 +570,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The filesystem path to overwrite with serialized loop state. The function writes tab-indented JSON followed by a newline and does not validate the state first.",
-						"examples": [
-							"/Users/danielfugere/projects/example/specification/loops/release-tracker/loop.json"
-						]
+						"examples": ["/workspace/project/specification/loops/release-tracker/loop.json"]
 					},
 					{
 						"name": "writeLoop.state",
@@ -629,18 +623,14 @@
 						"type": "string",
 						"required": true,
 						"description": "The trace file path that receives the event. The function appends one compact JSON value and a newline without creating the parent directory.",
-						"examples": [
-							"/Users/danielfugere/projects/example/specification/loops/release-tracker/trace.ndjson"
-						]
+						"examples": ["/workspace/project/specification/loops/release-tracker/trace.ndjson"]
 					},
 					{
 						"name": "appendTrace.event",
 						"type": "Record<string, unknown>",
 						"required": true,
 						"description": "A JSON-serializable record appended as one compact JSON line to the trace file. The function does not validate event fields.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [
@@ -768,7 +758,13 @@
 						"name": "isMissingFile.error",
 						"type": "unknown",
 						"required": true,
-						"description": "The value to inspect after a filesystem failure. It returns true only for an Error instance whose code property is exactly ENOENT."
+						"description": "A value to inspect after a filesystem failure. Only an Error instance whose code is exactly ENOENT returns true; a plain JSON object with that code remains false.",
+						"examples": [
+							{
+								"code": "ENOENT"
+							},
+							null
+						]
 					}
 				],
 				"outputs": [

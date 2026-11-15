@@ -84,43 +84,350 @@
 			{
 				"name": "scenarioStatesFor.scenario",
 				"type": "ScenarioManifest",
-				"required": true
+				"required": true,
+				"description": "The scenario manifest whose unit membership and state declarations are filtered. Its states matter when guide-unit coverage is derived: inapplicable states are dropped, explicit state unit lists take precedence, and multi-unit scenarios also require the state id to match this unit's dashed id prefix.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "guide-units.headless-coverage",
+						"title": "Headless state coverage for the guidance context",
+						"kind": "headless",
+						"units": [
+							"workflow.development-tooling-guide-units-guidance-context",
+							"workflow.other"
+						],
+						"states": [
+							{
+								"id": "workflow-development-tooling-guide-units-guidance-context-ready",
+								"title": "Ready",
+								"coverage": "required",
+								"units": ["workflow.development-tooling-guide-units-guidance-context"]
+							},
+							{
+								"id": "workflow-other-ready",
+								"title": "Ready for the related unit",
+								"coverage": "required",
+								"units": ["workflow.other"]
+							},
+							{
+								"id": "workflow-development-tooling-guide-units-guidance-context-unavailable",
+								"title": "Unavailable",
+								"coverage": "inapplicable",
+								"units": ["workflow.development-tooling-guide-units-guidance-context"]
+							}
+						],
+						"viewports": [],
+						"tests": [
+							{
+								"id": "headless-state-coverage",
+								"kind": "unit",
+								"runner": "command",
+								"target": "bun test"
+							}
+						],
+						"evidence": []
+					}
+				]
 			},
 			{
 				"name": "scenarioStatesFor.unitId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The exact unit id whose membership in scenario.units determines attribution. For multi-unit scenarios it also selects states named for this unit and applies the dashed unit-id prefix rule.",
+				"examples": ["workflow.development-tooling-guide-units-guidance-context"]
 			},
 			{
 				"name": "headlessStateNames.scenarios",
 				"type": "ScenarioManifest[]",
-				"required": true
+				"required": true,
+				"description": "The candidate scenario manifests for state discovery. Only required states attributed to this unit by headless scenarios with no viewports count; matching UI scenario states are excluded so already-declared visual states are not reported as headless-only coverage.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "guide-units.headless-coverage",
+							"title": "Headless state coverage for the guidance context",
+							"kind": "headless",
+							"units": [
+								"workflow.development-tooling-guide-units-guidance-context",
+								"workflow.other"
+							],
+							"states": [
+								{
+									"id": "workflow-development-tooling-guide-units-guidance-context-ready",
+									"title": "Ready",
+									"coverage": "required",
+									"units": ["workflow.development-tooling-guide-units-guidance-context"]
+								},
+								{
+									"id": "workflow-other-ready",
+									"title": "Ready for the related unit",
+									"coverage": "required",
+									"units": ["workflow.other"]
+								},
+								{
+									"id": "workflow-development-tooling-guide-units-guidance-context-unavailable",
+									"title": "Unavailable",
+									"coverage": "inapplicable",
+									"units": ["workflow.development-tooling-guide-units-guidance-context"]
+								}
+							],
+							"viewports": [],
+							"tests": [
+								{
+									"id": "headless-state-coverage",
+									"kind": "unit",
+									"runner": "command",
+									"target": "bun test"
+								}
+							],
+							"evidence": []
+						}
+					],
+					[
+						{
+							"schemaVersion": 1,
+							"id": "guide-units.headless-coverage",
+							"title": "Headless state coverage for the guidance context",
+							"kind": "headless",
+							"units": [
+								"workflow.development-tooling-guide-units-guidance-context",
+								"workflow.other"
+							],
+							"states": [
+								{
+									"id": "workflow-development-tooling-guide-units-guidance-context-ready",
+									"title": "Ready",
+									"coverage": "required",
+									"units": ["workflow.development-tooling-guide-units-guidance-context"]
+								},
+								{
+									"id": "workflow-other-ready",
+									"title": "Ready for the related unit",
+									"coverage": "required",
+									"units": ["workflow.other"]
+								},
+								{
+									"id": "workflow-development-tooling-guide-units-guidance-context-unavailable",
+									"title": "Unavailable",
+									"coverage": "inapplicable",
+									"units": ["workflow.development-tooling-guide-units-guidance-context"]
+								}
+							],
+							"viewports": [],
+							"tests": [
+								{
+									"id": "headless-state-coverage",
+									"kind": "unit",
+									"runner": "command",
+									"target": "bun test"
+								}
+							],
+							"evidence": []
+						},
+						{
+							"schemaVersion": 1,
+							"id": "guide-units.ui-coverage",
+							"title": "UI state coverage for the guidance context",
+							"kind": "ui",
+							"units": ["workflow.development-tooling-guide-units-guidance-context"],
+							"states": [
+								{
+									"id": "workflow-development-tooling-guide-units-guidance-context-ui",
+									"title": "UI state",
+									"coverage": "required"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1280,
+									"height": 800
+								}
+							],
+							"tests": [
+								{
+									"id": "ui-state-coverage",
+									"kind": "unit",
+									"runner": "command",
+									"target": "bun test"
+								}
+							],
+							"evidence": []
+						}
+					]
+				]
 			},
 			{
 				"name": "headlessStateNames.unitId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The exact unit id whose scenario states are normalized and compared with registry entries when identifying headless coverage still needed for that unit.",
+				"examples": ["workflow.development-tooling-guide-units-guidance-context"]
 			},
 			{
 				"name": "headlessStateNames.registryStates",
 				"type": "StateRegistry[]",
-				"required": true
+				"required": true,
+				"description": "Catalog or required-state registry rows used to exclude states already declared for this unit. Rows for other entities do not suppress its headless state names.",
+				"examples": [
+					[],
+					[
+						{
+							"entity": "workflow.development-tooling-guide-units-guidance-context",
+							"where": "specification/required-states.json",
+							"kind": "required-states",
+							"states": ["ready"]
+						}
+					]
+				]
 			},
 			{
 				"name": "headlessOnly.scenarios",
 				"type": "ScenarioManifest[]",
-				"required": true
+				"required": true,
+				"description": "The candidate scenario manifests for this unit. This matters when deciding whether the unit has at least one required, viewport-free headless state after exclusions and no attributed UI scenario state.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "guide-units.headless-coverage",
+							"title": "Headless state coverage for the guidance context",
+							"kind": "headless",
+							"units": [
+								"workflow.development-tooling-guide-units-guidance-context",
+								"workflow.other"
+							],
+							"states": [
+								{
+									"id": "workflow-development-tooling-guide-units-guidance-context-ready",
+									"title": "Ready",
+									"coverage": "required",
+									"units": ["workflow.development-tooling-guide-units-guidance-context"]
+								},
+								{
+									"id": "workflow-other-ready",
+									"title": "Ready for the related unit",
+									"coverage": "required",
+									"units": ["workflow.other"]
+								},
+								{
+									"id": "workflow-development-tooling-guide-units-guidance-context-unavailable",
+									"title": "Unavailable",
+									"coverage": "inapplicable",
+									"units": ["workflow.development-tooling-guide-units-guidance-context"]
+								}
+							],
+							"viewports": [],
+							"tests": [
+								{
+									"id": "headless-state-coverage",
+									"kind": "unit",
+									"runner": "command",
+									"target": "bun test"
+								}
+							],
+							"evidence": []
+						}
+					],
+					[
+						{
+							"schemaVersion": 1,
+							"id": "guide-units.headless-coverage",
+							"title": "Headless state coverage for the guidance context",
+							"kind": "headless",
+							"units": [
+								"workflow.development-tooling-guide-units-guidance-context",
+								"workflow.other"
+							],
+							"states": [
+								{
+									"id": "workflow-development-tooling-guide-units-guidance-context-ready",
+									"title": "Ready",
+									"coverage": "required",
+									"units": ["workflow.development-tooling-guide-units-guidance-context"]
+								},
+								{
+									"id": "workflow-other-ready",
+									"title": "Ready for the related unit",
+									"coverage": "required",
+									"units": ["workflow.other"]
+								},
+								{
+									"id": "workflow-development-tooling-guide-units-guidance-context-unavailable",
+									"title": "Unavailable",
+									"coverage": "inapplicable",
+									"units": ["workflow.development-tooling-guide-units-guidance-context"]
+								}
+							],
+							"viewports": [],
+							"tests": [
+								{
+									"id": "headless-state-coverage",
+									"kind": "unit",
+									"runner": "command",
+									"target": "bun test"
+								}
+							],
+							"evidence": []
+						},
+						{
+							"schemaVersion": 1,
+							"id": "guide-units.ui-coverage",
+							"title": "UI state coverage for the guidance context",
+							"kind": "ui",
+							"units": ["workflow.development-tooling-guide-units-guidance-context"],
+							"states": [
+								{
+									"id": "workflow-development-tooling-guide-units-guidance-context-ui",
+									"title": "UI state",
+									"coverage": "required"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1280,
+									"height": 800
+								}
+							],
+							"tests": [
+								{
+									"id": "ui-state-coverage",
+									"kind": "unit",
+									"runner": "command",
+									"target": "bun test"
+								}
+							],
+							"evidence": []
+						}
+					]
+				]
 			},
 			{
 				"name": "headlessOnly.unitId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The exact unit id used to attribute scenario states and normalize their names while deciding whether coverage for the unit is headless-only.",
+				"examples": ["workflow.development-tooling-guide-units-guidance-context"]
 			},
 			{
 				"name": "headlessOnly.registryStates",
 				"type": "StateRegistry[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Existing catalog or required-state rows for the unit. A matching registry state is already declared and cannot make the unit headless-only; when omitted, the existing empty-list default is used.",
+				"examples": [
+					[],
+					[
+						{
+							"entity": "workflow.development-tooling-guide-units-guidance-context",
+							"where": "specification/required-states.json",
+							"kind": "required-states",
+							"states": ["ready"]
+						}
+					]
+				]
 			},
 			{
 				"name": "namedUnitStates.context",
@@ -769,18 +1076,74 @@
 					{
 						"name": "scenarioStatesFor.scenario",
 						"type": "ScenarioManifest",
-						"required": true
+						"required": true,
+						"description": "The scenario manifest whose unit membership and state declarations are filtered. Its states matter when guide-unit coverage is derived: inapplicable states are dropped, explicit state unit lists take precedence, and multi-unit scenarios also require the state id to match this unit's dashed id prefix.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "guide-units.headless-coverage",
+								"title": "Headless state coverage for the guidance context",
+								"kind": "headless",
+								"units": [
+									"workflow.development-tooling-guide-units-guidance-context",
+									"workflow.other"
+								],
+								"states": [
+									{
+										"id": "workflow-development-tooling-guide-units-guidance-context-ready",
+										"title": "Ready",
+										"coverage": "required",
+										"units": ["workflow.development-tooling-guide-units-guidance-context"]
+									},
+									{
+										"id": "workflow-other-ready",
+										"title": "Ready for the related unit",
+										"coverage": "required",
+										"units": ["workflow.other"]
+									},
+									{
+										"id": "workflow-development-tooling-guide-units-guidance-context-unavailable",
+										"title": "Unavailable",
+										"coverage": "inapplicable",
+										"units": ["workflow.development-tooling-guide-units-guidance-context"]
+									}
+								],
+								"viewports": [],
+								"tests": [
+									{
+										"id": "headless-state-coverage",
+										"kind": "unit",
+										"runner": "command",
+										"target": "bun test"
+									}
+								],
+								"evidence": []
+							}
+						]
 					},
 					{
 						"name": "scenarioStatesFor.unitId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The exact unit id whose membership in scenario.units determines attribution. For multi-unit scenarios it also selects states named for this unit and applies the dashed unit-id prefix rule.",
+						"examples": ["workflow.development-tooling-guide-units-guidance-context"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scenarioStatesFor",
-						"type": "ScenarioManifest['states']"
+						"type": "ScenarioManifest['states']",
+						"description": "The scenario state entries attributed to unitId after excluding inapplicable states and applying explicit state.units and, for multi-unit scenarios, the dashed unit-id prefix rule. Returns an empty array when the scenario does not include the unit or no states qualify.",
+						"examples": [
+							[
+								{
+									"id": "workflow-development-tooling-guide-units-guidance-context-ready",
+									"title": "Ready",
+									"coverage": "required",
+									"units": ["workflow.development-tooling-guide-units-guidance-context"]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
@@ -792,23 +1155,156 @@
 					{
 						"name": "headlessStateNames.scenarios",
 						"type": "ScenarioManifest[]",
-						"required": true
+						"required": true,
+						"description": "The candidate scenario manifests for state discovery. Only required states attributed to this unit by headless scenarios with no viewports count; matching UI scenario states are excluded so already-declared visual states are not reported as headless-only coverage.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "guide-units.headless-coverage",
+									"title": "Headless state coverage for the guidance context",
+									"kind": "headless",
+									"units": [
+										"workflow.development-tooling-guide-units-guidance-context",
+										"workflow.other"
+									],
+									"states": [
+										{
+											"id": "workflow-development-tooling-guide-units-guidance-context-ready",
+											"title": "Ready",
+											"coverage": "required",
+											"units": ["workflow.development-tooling-guide-units-guidance-context"]
+										},
+										{
+											"id": "workflow-other-ready",
+											"title": "Ready for the related unit",
+											"coverage": "required",
+											"units": ["workflow.other"]
+										},
+										{
+											"id": "workflow-development-tooling-guide-units-guidance-context-unavailable",
+											"title": "Unavailable",
+											"coverage": "inapplicable",
+											"units": ["workflow.development-tooling-guide-units-guidance-context"]
+										}
+									],
+									"viewports": [],
+									"tests": [
+										{
+											"id": "headless-state-coverage",
+											"kind": "unit",
+											"runner": "command",
+											"target": "bun test"
+										}
+									],
+									"evidence": []
+								}
+							],
+							[
+								{
+									"schemaVersion": 1,
+									"id": "guide-units.headless-coverage",
+									"title": "Headless state coverage for the guidance context",
+									"kind": "headless",
+									"units": [
+										"workflow.development-tooling-guide-units-guidance-context",
+										"workflow.other"
+									],
+									"states": [
+										{
+											"id": "workflow-development-tooling-guide-units-guidance-context-ready",
+											"title": "Ready",
+											"coverage": "required",
+											"units": ["workflow.development-tooling-guide-units-guidance-context"]
+										},
+										{
+											"id": "workflow-other-ready",
+											"title": "Ready for the related unit",
+											"coverage": "required",
+											"units": ["workflow.other"]
+										},
+										{
+											"id": "workflow-development-tooling-guide-units-guidance-context-unavailable",
+											"title": "Unavailable",
+											"coverage": "inapplicable",
+											"units": ["workflow.development-tooling-guide-units-guidance-context"]
+										}
+									],
+									"viewports": [],
+									"tests": [
+										{
+											"id": "headless-state-coverage",
+											"kind": "unit",
+											"runner": "command",
+											"target": "bun test"
+										}
+									],
+									"evidence": []
+								},
+								{
+									"schemaVersion": 1,
+									"id": "guide-units.ui-coverage",
+									"title": "UI state coverage for the guidance context",
+									"kind": "ui",
+									"units": ["workflow.development-tooling-guide-units-guidance-context"],
+									"states": [
+										{
+											"id": "workflow-development-tooling-guide-units-guidance-context-ui",
+											"title": "UI state",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										}
+									],
+									"tests": [
+										{
+											"id": "ui-state-coverage",
+											"kind": "unit",
+											"runner": "command",
+											"target": "bun test"
+										}
+									],
+									"evidence": []
+								}
+							]
+						]
 					},
 					{
 						"name": "headlessStateNames.unitId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The exact unit id whose scenario states are normalized and compared with registry entries when identifying headless coverage still needed for that unit.",
+						"examples": ["workflow.development-tooling-guide-units-guidance-context"]
 					},
 					{
 						"name": "headlessStateNames.registryStates",
 						"type": "StateRegistry[]",
-						"required": true
+						"required": true,
+						"description": "Catalog or required-state registry rows used to exclude states already declared for this unit. Rows for other entities do not suppress its headless state names.",
+						"examples": [
+							[],
+							[
+								{
+									"entity": "workflow.development-tooling-guide-units-guidance-context",
+									"where": "specification/required-states.json",
+									"kind": "required-states",
+									"states": ["ready"]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "headlessStateNames",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Unique normalized names of required states from viewport-free headless scenarios, excluding names already declared by UI scenarios or registry rows for this unit.",
+						"examples": [["ready"], []]
 					}
 				],
 				"errors": [],
@@ -820,24 +1316,157 @@
 					{
 						"name": "headlessOnly.scenarios",
 						"type": "ScenarioManifest[]",
-						"required": true
+						"required": true,
+						"description": "The candidate scenario manifests for this unit. This matters when deciding whether the unit has at least one required, viewport-free headless state after exclusions and no attributed UI scenario state.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "guide-units.headless-coverage",
+									"title": "Headless state coverage for the guidance context",
+									"kind": "headless",
+									"units": [
+										"workflow.development-tooling-guide-units-guidance-context",
+										"workflow.other"
+									],
+									"states": [
+										{
+											"id": "workflow-development-tooling-guide-units-guidance-context-ready",
+											"title": "Ready",
+											"coverage": "required",
+											"units": ["workflow.development-tooling-guide-units-guidance-context"]
+										},
+										{
+											"id": "workflow-other-ready",
+											"title": "Ready for the related unit",
+											"coverage": "required",
+											"units": ["workflow.other"]
+										},
+										{
+											"id": "workflow-development-tooling-guide-units-guidance-context-unavailable",
+											"title": "Unavailable",
+											"coverage": "inapplicable",
+											"units": ["workflow.development-tooling-guide-units-guidance-context"]
+										}
+									],
+									"viewports": [],
+									"tests": [
+										{
+											"id": "headless-state-coverage",
+											"kind": "unit",
+											"runner": "command",
+											"target": "bun test"
+										}
+									],
+									"evidence": []
+								}
+							],
+							[
+								{
+									"schemaVersion": 1,
+									"id": "guide-units.headless-coverage",
+									"title": "Headless state coverage for the guidance context",
+									"kind": "headless",
+									"units": [
+										"workflow.development-tooling-guide-units-guidance-context",
+										"workflow.other"
+									],
+									"states": [
+										{
+											"id": "workflow-development-tooling-guide-units-guidance-context-ready",
+											"title": "Ready",
+											"coverage": "required",
+											"units": ["workflow.development-tooling-guide-units-guidance-context"]
+										},
+										{
+											"id": "workflow-other-ready",
+											"title": "Ready for the related unit",
+											"coverage": "required",
+											"units": ["workflow.other"]
+										},
+										{
+											"id": "workflow-development-tooling-guide-units-guidance-context-unavailable",
+											"title": "Unavailable",
+											"coverage": "inapplicable",
+											"units": ["workflow.development-tooling-guide-units-guidance-context"]
+										}
+									],
+									"viewports": [],
+									"tests": [
+										{
+											"id": "headless-state-coverage",
+											"kind": "unit",
+											"runner": "command",
+											"target": "bun test"
+										}
+									],
+									"evidence": []
+								},
+								{
+									"schemaVersion": 1,
+									"id": "guide-units.ui-coverage",
+									"title": "UI state coverage for the guidance context",
+									"kind": "ui",
+									"units": ["workflow.development-tooling-guide-units-guidance-context"],
+									"states": [
+										{
+											"id": "workflow-development-tooling-guide-units-guidance-context-ui",
+											"title": "UI state",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										}
+									],
+									"tests": [
+										{
+											"id": "ui-state-coverage",
+											"kind": "unit",
+											"runner": "command",
+											"target": "bun test"
+										}
+									],
+									"evidence": []
+								}
+							]
+						]
 					},
 					{
 						"name": "headlessOnly.unitId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The exact unit id used to attribute scenario states and normalize their names while deciding whether coverage for the unit is headless-only.",
+						"examples": ["workflow.development-tooling-guide-units-guidance-context"]
 					},
 					{
 						"name": "headlessOnly.registryStates",
 						"type": "StateRegistry[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Existing catalog or required-state rows for the unit. A matching registry state is already declared and cannot make the unit headless-only; when omitted, the existing empty-list default is used.",
+						"examples": [
+							[],
+							[
+								{
+									"entity": "workflow.development-tooling-guide-units-guidance-context",
+									"where": "specification/required-states.json",
+									"kind": "required-states",
+									"states": ["ready"]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "headlessOnly",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when at least one required headless state remains after UI and registry exclusions and the unit has no attributed UI scenario states.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],

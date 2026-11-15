@@ -40,18 +40,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository directory used to find project template JSON files in `specification/loop-templates`. A missing template directory contributes no project templates.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "resolveLoopTemplate.root",
 				"type": "string",
 				"required": true,
 				"description": "Repository directory used to find project template JSON files in `specification/loop-templates`. A missing template directory contributes no project templates.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "resolveLoopTemplate.id",
@@ -122,9 +118,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository directory used to find project template JSON files in `specification/loop-templates`. A missing template directory contributes no project templates.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -173,9 +167,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository directory used to find project template JSON files in `specification/loop-templates`. A missing template directory contributes no project templates.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "resolveLoopTemplate.id",

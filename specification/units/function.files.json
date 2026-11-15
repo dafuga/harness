@@ -39,9 +39,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Base directory passed to `join(root, path)` for each planned target. The implementation does not independently validate traversal segments.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "writePlannedFiles.files",
@@ -75,9 +73,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Base directory passed to `join(root, path)` when deriving each parent directory. The implementation does not independently validate traversal segments.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ensureParents.files",
@@ -177,9 +173,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Base directory passed to `join(root, path)` for each planned target. The implementation does not independently validate traversal segments.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "writePlannedFiles.files",
@@ -261,9 +255,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Base directory passed to `join(root, path)` when deriving each parent directory. The implementation does not independently validate traversal segments.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "ensureParents.files",

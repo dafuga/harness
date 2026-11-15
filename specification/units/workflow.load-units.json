@@ -22,9 +22,7 @@
 				"type": "unknown",
 				"required": false,
 				"description": "Repository root used to resolve the source tree and registry paths for this load. Defaults to process.cwd(); resolve() turns it into an absolute path.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "loadUnits.tree",
@@ -50,9 +48,7 @@
 				"type": "unknown",
 				"required": false,
 				"description": "Manifest list used for graph ownership and dependencies when provided. Defaults to loaded.stored.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"outputs": [
@@ -91,9 +87,7 @@
 						"type": "unknown",
 						"required": false,
 						"description": "The repository root that loadUnits resolves to an absolute path before creating the registry repositories and selecting a working-tree source. It matters when loading a repository other than the process working directory; omission uses process.cwd().",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "loadUnits.tree",
@@ -139,9 +133,7 @@
 						"type": "unknown",
 						"required": false,
 						"description": "The manifest list passed to SourceGraphService.build in place of the snapshot's stored manifests. When omitted, the default is loaded.stored; the loaded index and scenarios still come from loaded.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [
