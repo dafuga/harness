@@ -15,27 +15,64 @@
 		"symbols": ["reviewCleanCode", "ReviewCleanCodeInput", "ReviewCleanCodeInput", "ReviewedEntry"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reviewCleanCode.input",
 				"type": "ReviewCleanCodeInput",
-				"required": true
+				"required": true,
+				"description": "Supplies a resolvable repository root and required clean-code settings for file discovery and review. Optional options control dry-run or cancellation, findings add snapshot context, and a supplied evaluator replaces the lazy Jev adapter; per-file failures become incomplete results, while discovery or final freshness-check failures can reject.",
+				"examples": [
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+						"settings": {
+							"mode": "advisory",
+							"model": "jev-model",
+							"minConfidence": 0.8,
+							"apiKeyEnv": "JEV_API_KEY",
+							"exclude": []
+						},
+						"options": {
+							"dryRun": true
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reviewCleanCode",
-				"type": "Promise<CleanCodeReport>"
+				"type": "Promise<CleanCodeReport>",
+				"description": "Resolves to a report with the input mode, model and confidence threshold, rubric version, discovered-file coverage, per-file results, and token usage summed over noncached reviews. Dry runs return status `dry-run` without evaluating files; other runs derive status from file results, and errors outside per-file handling can reject the promise.",
+				"examples": [
+					{
+						"mode": "advisory",
+						"status": "dry-run",
+						"rubricVersion": "clean-code-v1",
+						"requestedModel": "jev-model",
+						"minConfidence": 0.8,
+						"coverage": {
+							"selectedFiles": ["src/audit/development-tooling/reviewCleanCode.ts"],
+							"excludedPaths": [],
+							"unsupportedFiles": []
+						},
+						"files": [],
+						"usage": {
+							"input_tokens": 0,
+							"output_tokens": 0
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The promise may reject on root resolution, audited-file collection or discovery, or the final source/context freshness check, which occur outside the per-file catch. Snapshot or evaluator failures within an individual review are caught and represented as an `incomplete` file result."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reviewCleanCode",
@@ -43,17 +80,59 @@
 					{
 						"name": "reviewCleanCode.input",
 						"type": "ReviewCleanCodeInput",
-						"required": true
+						"required": true,
+						"description": "Supplies a resolvable repository root and required clean-code settings for file discovery and review. Optional options control dry-run or cancellation, findings add snapshot context, and a supplied evaluator replaces the lazy Jev adapter; per-file failures become incomplete results, while discovery or final freshness-check failures can reject.",
+						"examples": [
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+								"settings": {
+									"mode": "advisory",
+									"model": "jev-model",
+									"minConfidence": 0.8,
+									"apiKeyEnv": "JEV_API_KEY",
+									"exclude": []
+								},
+								"options": {
+									"dryRun": true
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reviewCleanCode",
-						"type": "Promise<CleanCodeReport>"
+						"type": "Promise<CleanCodeReport>",
+						"description": "Resolves to a report with the input mode, model and confidence threshold, rubric version, discovered-file coverage, per-file results, and token usage summed over noncached reviews. Dry runs return status `dry-run` without evaluating files; other runs derive status from file results, and errors outside per-file handling can reject the promise.",
+						"examples": [
+							{
+								"mode": "advisory",
+								"status": "dry-run",
+								"rubricVersion": "clean-code-v1",
+								"requestedModel": "jev-model",
+								"minConfidence": 0.8,
+								"coverage": {
+									"selectedFiles": ["src/audit/development-tooling/reviewCleanCode.ts"],
+									"excludedPaths": [],
+									"unsupportedFiles": []
+								},
+								"files": [],
+								"usage": {
+									"input_tokens": 0,
+									"output_tokens": 0
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The promise may reject on root resolution, audited-file collection or discovery, or the final source/context freshness check, which occur outside the per-file catch. Snapshot or evaluator failures within an individual review are caught and represented as an `incomplete` file result."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
