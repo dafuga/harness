@@ -35,29 +35,153 @@
 				"name": "EntityConfig.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "Required entity whose contract outputs supply setting names and declared types. Labels use the readable final name segment."
+				"description": "The config entity whose unit contract outputs become the setting rows: each output is labeled with the humanized final segment of its name and shows its declared type, or 'structured value' when that type is over 48 characters. Only its id, which the View commit changes link uses in current mode, and its unit contract outputs are read; an empty outputs list shows a line saying no setting is declared instead.",
+				"examples": [
+					{
+						"id": "reports.config.shared-primitives-app-style-tokens",
+						"category": "configs",
+						"role": "Config",
+						"name": "appStyleTokensConfig",
+						"purpose": "Declares the canonical app token source, color-role usage guidance, catalog groups and design-value admission scope.",
+						"unit": {
+							"id": "reports.config.shared-primitives-app-style-tokens",
+							"kind": "config",
+							"status": "active",
+							"title": "appStyleTokensConfig",
+							"responsibility": "Declares the canonical app token source, color-role usage guidance, catalog groups and design-value admission scope.",
+							"dependencies": [],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+								],
+								"symbols": ["appStyleTokensConfig"]
+							},
+							"contract": {
+								"inputs": [],
+								"outputs": [
+									{
+										"name": "appStyleTokensConfig",
+										"type": "typeof appStyleTokensConfig",
+										"description": "Application source roots, canonical stylesheet path, semantic color roles, token groups, excluded legacy aliases and guarded CSS property patterns."
+									}
+								],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "6f2d9a4c18e3b075"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Evidence missing",
+							"reasons": ["No verification record is attached to this commit."]
+						},
+						"change": null,
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "EntityConfig.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Required current/commit context, selecting heading and displayed commit."
+				"description": "Only mode and commit are read: mode 'current' gives the Current configuration heading, the Current snapshot label and the View commit changes action, while mode 'commit' gives Configuration and Values at. The commit's first seven characters are shown after that label, and in current mode the link opens the config at that commit.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": null,
+							"category": "configs",
+							"entity": "reports.config.shared-primitives-app-style-tokens"
+						},
+						"mode": "current",
+						"branch": "main",
+						"tip": "4b8e1f0c9d27a563e8f1b0a7c25d9e4f6a3b1c20",
+						"commit": "4b8e1f0c9d27a563e8f1b0a7c25d9e4f6a3b1c20",
+						"atTip": true,
+						"parent": "9c1d07e5a2b84f36d0e9c7a1b5f28d4e3a6c9b71",
+						"summary": {
+							"commit": "4b8e1f0c9d27a563e8f1b0a7c25d9e4f6a3b1c20",
+							"parents": ["9c1d07e5a2b84f36d0e9c7a1b5f28d4e3a6c9b71"],
+							"subject": "Show the settings a config declares",
+							"author": "Sam Rivera",
+							"committedAt": "2026-11-14T10:22:05+01:00",
+							"branches": ["main"],
+							"retained": false,
+							"coverage": "unverified",
+							"gaps": ["no verification record is attached to this commit"],
+							"records": [],
+							"legacy": []
+						}
+					},
+					{
+						"location": {
+							"branch": "main",
+							"commit": "e27a9b4c61f0d83a5b2e7c9d14f6a0b8c3e5d927",
+							"category": "configs",
+							"entity": "reports.config.shared-primitives-app-style-tokens"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "4b8e1f0c9d27a563e8f1b0a7c25d9e4f6a3b1c20",
+						"commit": "e27a9b4c61f0d83a5b2e7c9d14f6a0b8c3e5d927",
+						"atTip": false,
+						"parent": "a51f3d8e0c7b26941e9d4a6f2c8b07e3d5a1f6c4",
+						"summary": {
+							"commit": "e27a9b4c61f0d83a5b2e7c9d14f6a0b8c3e5d927",
+							"parents": ["a51f3d8e0c7b26941e9d4a6f2c8b07e3d5a1f6c4"],
+							"subject": "Record evidence for the token source",
+							"author": "Sam Rivera",
+							"committedAt": "2026-11-13T17:48:22+01:00",
+							"branches": ["main"],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [
+								{
+									"id": "7d3f0a9c4e1b26785f0e3d9a1c7b4628e5f09d3a6c1b8e47f2a0d59c3e6b1f84",
+									"status": "passed",
+									"profile": "b64e2a0d9c1f7853",
+									"finishedAt": "2026-11-13T21:17:44.302Z",
+									"base": null,
+									"valid": true,
+									"problems": []
+								}
+							],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "EntityConfig.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Required navigation context used to open this config at its recorded commit from current view."
+				"description": "The navigation the page supplies: its route is the base location that the config's location at the displayed commit is built from, and its href and go functions give the View commit changes link its address and its click action. It is used only in current mode, the only mode that renders that link."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityConfig",
 				"type": "markup",
-				"description": "Configuration card listing declared outputs, with types over 48 characters labeled structured value. Empty outputs are explicitly described. Current mode offers View commit changes. Explains that config cost is measured through consuming entities; the panel does not display resolved configuration values."
+				"description": "The config card, a section headed Current configuration in current mode and Configuration otherwise, shows the short commit and one row per declared output with its humanized final name segment and its declared type, or structured value above 48 characters, and says its contract declares no setting at this revision when there are none. It offers the View commit changes action only in current mode, its note says a config has no screenshot or benchmark and that its cost is measured on the entities that use it, and it shows names and types only, never resolved configuration values."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
