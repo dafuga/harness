@@ -1,7 +1,8 @@
 import { measureWorkload } from '../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { hostedResponse } from '../src/utils/hostedResponse';
-import { hostedArtifact } from '../../hub/src/utils/browser-bridge/hostedArtifact';
+import { hostedArtifact } from '../src/adapters/explorer-ui/browser-project-adapter/hostedArtifact';
+import { artifactLimit } from '../src/utils/reports-media/artifactMedia';
 import { HostedEvidenceValidator } from '../src/validators/HostedEvidenceValidator';
 import { asked, hubAnswer } from './hosted-evidence-fixture';
 
@@ -29,6 +30,12 @@ test('a reply bound to another selected branch is rejected', () => {
 	value.identity.requestedRef = 'other';
 	expect(() => new HostedEvidenceValidator().evidence(value, asked)).toThrow(
 		'another evidence read'
+	);
+});
+test('a hosted artifact over eleven MiB is refused by its size before any hash', async () => {
+	const bytes = new Uint8Array(artifactLimit + 1);
+	await expect(hostedArtifact({ bytes, mediaType: 'image/png' }, '0'.repeat(64))).rejects.toThrow(
+		'11 MiB'
 	);
 });
 test('supported but mismatched image MIME is refused', async () =>
