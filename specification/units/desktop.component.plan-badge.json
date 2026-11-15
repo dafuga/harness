@@ -23,17 +23,19 @@
 				"type": "string",
 				"required": false,
 				"default": "Plan",
-				"description": "Optional badge text, defaulting to Plan. Explicitly empty text stays empty."
+				"description": "Optional string rendered as the badge content, defaulting to `Plan` when omitted. The component applies no validation or transformation, so an explicit empty string stays empty.",
+				"examples": ["Plan", ""]
 			}
 		],
 		"outputs": [
 			{
 				"name": "PlanBadge",
 				"type": "markup",
-				"description": "A styled span with the given label; it does not inspect plan or approval state."
+				"description": "The component renders the label inside an `hx-span` element with class `plan-badge`. It adds no plan-state or approval-state logic."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
