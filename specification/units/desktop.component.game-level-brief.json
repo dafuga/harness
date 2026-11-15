@@ -37,88 +37,145 @@
 				"name": "GameLevelBrief.step",
 				"type": "LevelStep",
 				"required": true,
-				"description": "Show the concept alone first, then the full level brief."
+				"description": "Only 'concept' renders the concept step alone, with its Concept field and Continue to level brief button; every other value, including 'brief', 'review' and 'built', renders the full level brief.",
+				"examples": ["concept", "brief"]
 			},
 			{
 				"name": "GameLevelBrief.planning",
 				"type": "LevelPlanning",
 				"required": true,
-				"description": "Concept and current layout brief."
+				"description": "The concept and level brief text: the Concept field shows planning.concept, the level brief field shows planning.description, and Continue to level brief stays disabled while concept is blank after trimming. The optional proposal, approved and built fields are not read by this component.",
+				"examples": [
+					{
+						"concept": "A harbor at low tide where the player races the rising water to the lighthouse",
+						"description": "Three docks joined by a rope bridge, with the lighthouse at the far end and two crates blocking the lower path."
+					},
+					{
+						"concept": "A clockwork greenhouse the player rewinds to reach the seed vault",
+						"description": "One room with a central boiler, two pressure gates and the vault door on the north wall."
+					}
+				]
 			},
 			{
 				"name": "GameLevelBrief.dimension",
 				"type": "Dimension",
 				"required": true,
-				"description": "The 2D or 3D format requested from the model."
+				"description": "The level format, shown as the selected 2D or 3D option of the brief step's Select; choosing a different option calls reshape with the new value. The Select is rendered only in the brief step and is disabled while status.readonly is true.",
+				"examples": ["2d", "3d"]
 			},
 			{
 				"name": "GameLevelBrief.providers",
 				"type": "ProviderState[] | null",
 				"required": true,
-				"description": "Discovered local provider availability and advertised models."
+				"description": "The local providers discovered so far, passed to the model picker; null means the providers are not yet known or none are looked for. The picker is rendered only when this list has entries and status.readonly is false, so null and an empty array both hide it.",
+				"examples": [
+					null,
+					[
+						{
+							"id": "claude",
+							"label": "Claude",
+							"available": true,
+							"reason": null,
+							"version": "2.1.0",
+							"imageGeneration": false,
+							"models": [
+								{
+									"id": "claude-sonnet-5-5",
+									"label": "Claude Sonnet 5.5",
+									"efforts": [],
+									"defaultEffort": null,
+									"isDefault": true
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "GameLevelBrief.provider",
 				"type": "ProviderId",
 				"required": true,
-				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. No fallback provider is selected."
+				"description": "The provider selected in the model picker, bound two-way through $bindable() with no fallback, so an undefined value matches no provider. While the picker is rendered, an unmatched provider leaves the chosen label reading 'No model chosen'.",
+				"examples": ["claude", "codex"]
 			},
 			{
 				"name": "GameLevelBrief.model",
 				"type": "string",
 				"required": true,
-				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. No fallback model is selected."
+				"description": "The model identifier selected in the model picker, bound two-way through $bindable() with no fallback. While the picker is rendered, a value matching no model of the chosen provider shows 'No model chosen', and the component does not disable Generate level for a missing model.",
+				"examples": ["claude-sonnet-5-5", "claude-haiku-5-5"]
 			},
 			{
 				"name": "GameLevelBrief.status",
 				"type": "LevelStatus",
 				"required": true,
-				"description": "Pending, read-only, unavailable or failed generation state."
+				"description": "Its busy flag disables Generate level and switches the note to its generating message, and its readonly flag makes the textareas read-only, disables the dimension Select and hides the model picker, Edit concept and Generate level. A non-empty reason also disables Generate level and is shown as the note while busy is false, and a non-empty error is shown in an alert.",
+				"examples": [
+					{
+						"busy": false,
+						"readonly": false,
+						"reason": "",
+						"error": ""
+					},
+					{
+						"busy": true,
+						"readonly": false,
+						"reason": "",
+						"error": ""
+					},
+					{
+						"busy": false,
+						"readonly": false,
+						"reason": "No local model is available.",
+						"error": ""
+					}
+				]
 			},
 			{
 				"name": "GameLevelBrief.reviewable",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Whether a matching current proposal can be reopened."
+				"description": "Whether the current proposal still matches this brief, so its review can be reopened; true shows the Back to review button in the brief step, which calls go('review'). It defaults to false, which hides that button.",
+				"examples": [true, false]
 			},
 			{
 				"name": "GameLevelBrief.revise",
 				"type": "(patch: Partial<LevelPlanning>) => void",
 				"required": true,
-				"description": "Update concept or brief and invalidate earlier approval."
+				"description": "Called with a patch holding only the edited field: { concept } from the Concept textarea or { description } from the level brief textarea, on each input event. The component keeps no approval state, so invalidating earlier approval is left to the caller."
 			},
 			{
 				"name": "GameLevelBrief.reshape",
 				"type": "(dimension: Dimension) => void",
 				"required": true,
-				"description": "Change the level dimension and invalidate earlier approval."
+				"description": "Called with the dimension Select's value, cast to Dimension without a runtime check, when the dimension Select changes in the brief step. The component keeps no approval state, so invalidating earlier approval is left to the caller."
 			},
 			{
 				"name": "GameLevelBrief.generate",
 				"type": "() => void",
 				"required": true,
-				"description": "Request one generated level proposal."
+				"description": "Called with no arguments when the Generate level button is clicked; that button is rendered only when status.readonly is false and is disabled while status.busy is true or status.reason is non-empty. The component neither awaits nor catches its result."
 			},
 			{
 				"name": "GameLevelBrief.go",
 				"type": "(step: LevelStep) => void",
 				"required": true,
-				"description": "Open the concept or existing proposal review."
+				"description": "Called with 'brief' by the Continue to level brief button, with 'concept' by the Edit concept button (rendered only when status.readonly is false) and with 'review' by the Back to review button (rendered only when reviewable is true). The component calls it from these three buttons only."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameLevelBrief",
 				"type": "markup",
-				"description": "Collect the level description, dimension and selected local model. States: empty: The concept step shows blank concept and description fields. readonly: The brief remains visible while editing and proposal actions are disabled. busy: The proposal is being generated and authoring controls are disabled. no-model: The provider/model controls have no available choice and show the supplied reason. long: The concept and level-description fields retain a lengthy authored brief."
+				"description": "With step 'concept' the markup is the Concept textarea, sized to its content, and a Continue to level brief button that is disabled while the concept is blank; otherwise it shows the concept as text with an Edit concept button, the level brief textarea, sized to its content, the 2D/3D Select, the model picker when providers are present, Back to review when reviewable is true, the Generate level button, the status note and an alert for status.error. When status.readonly is true, the textareas are read-only, the Select is disabled, and the model picker, Edit concept and Generate level are not rendered; when status.busy is true, Generate level is disabled and the note switches to its generating message, and otherwise a non-empty status.reason also disables Generate level and replaces the note."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback error",
 				"type": "propagated",
-				"description": "Errors from revise, reshape, generate or go propagate during their corresponding edit or action; the component does not catch them."
+				"description": "Errors thrown by revise, reshape, generate or go during their edit or action are not caught by the component, so each propagates out of the event handler that called it."
 			}
 		],
 		"errorStatus": "declared",
