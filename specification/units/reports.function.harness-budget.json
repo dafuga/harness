@@ -29,13 +29,49 @@
 				"name": "harnessBudget.found",
 				"type": "Measurement | undefined",
 				"required": true,
-				"description": "Recorded measurement or undefined."
+				"description": "The measurement for this unit and metric, or undefined when this revision has no measurement. A null value is shown as unavailable; a present value is rendered with its unit of measure, and partial records can add a note.",
+				"examples": [
+					{
+						"unit": "reports.function.harness-budget",
+						"metric": "size",
+						"unitOfMeasure": "bytes",
+						"value": 2048,
+						"workload": null,
+						"profile": null
+					},
+					{
+						"unit": "reports.function.harness-budget",
+						"metric": "size",
+						"unitOfMeasure": "bytes",
+						"value": null,
+						"unavailable": "source could not be measured",
+						"workload": null,
+						"profile": null
+					}
+				]
 			},
 			{
 				"name": "harnessBudget.finding",
 				"type": "Finding",
 				"required": false,
-				"description": "Optional budget finding supplying baseline, status and measured value."
+				"default": "undefined",
+				"description": "An optional budget finding whose baseline takes priority over the ledger limit; an unavailable status marks review as not measurable. Defaults to undefined; an exceeded finding adds a growth note only when its baseline is present.",
+				"examples": [
+					{
+						"unit": "reports.function.harness-budget",
+						"metric": "size",
+						"status": "exceeded",
+						"baseline": 1024,
+						"measured": 2048
+					},
+					{
+						"unit": "reports.function.harness-budget",
+						"metric": "size",
+						"status": "unavailable",
+						"baseline": null,
+						"measured": null
+					}
+				]
 			},
 			{
 				"name": "harnessBudget.known",
@@ -44,17 +80,46 @@
 				"default": {
 					"declared": true
 				},
-				"description": "Optional reviewed-limit knowledge, defaulting to a declared freeze with no numeric limit."
+				"description": "The manifest declaration and optional ledger review for a metric. Defaults to {declared: true}; the declaration alone supplies no numeric limit, while a ledger limit or unmeasured marker provides review information.",
+				"examples": [
+					{
+						"declared": true
+					},
+					{
+						"declared": false,
+						"limit": 2048
+					},
+					{
+						"declared": true,
+						"unmeasured": "metric could not be measured"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessBudget",
 				"type": "FrozenLine",
-				"description": "Value, limit and optional partial/growth note. Prefers the finding baseline over the ledger limit; otherwise distinguishes reviewed-unmeasurable, no value, merely declared freeze and no limit. Missing measurements and null values remain explicit."
+				"description": "A formatted value and limit, with an optional note. The limit prefers a finding baseline, then a reviewed ledger limit, and otherwise describes the applicable no-limit state; values remain explicit when missing or unavailable.",
+				"examples": [
+					{
+						"value": "2048 bytes",
+						"limit": "frozen at 1024",
+						"note": "Partial: generated source only. Grew from 1024 to 2048 without a recorded approval."
+					},
+					{
+						"value": "not measured at this revision",
+						"limit": "freeze declared; no reviewed limit is recorded at this revision"
+					},
+					{
+						"value": "unavailable: source could not be measured",
+						"limit": "not frozen: reviewed as not measurable"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "harnessBudget",
@@ -63,13 +128,49 @@
 						"name": "harnessBudget.found",
 						"type": "Measurement | undefined",
 						"required": true,
-						"description": "Recorded measurement or undefined."
+						"description": "The measurement for this unit and metric, or undefined when this revision has no measurement. A null value is shown as unavailable; a present value is rendered with its unit of measure, and partial records can add a note.",
+						"examples": [
+							{
+								"unit": "reports.function.harness-budget",
+								"metric": "size",
+								"unitOfMeasure": "bytes",
+								"value": 2048,
+								"workload": null,
+								"profile": null
+							},
+							{
+								"unit": "reports.function.harness-budget",
+								"metric": "size",
+								"unitOfMeasure": "bytes",
+								"value": null,
+								"unavailable": "source could not be measured",
+								"workload": null,
+								"profile": null
+							}
+						]
 					},
 					{
 						"name": "harnessBudget.finding",
 						"type": "Finding",
 						"required": false,
-						"description": "Optional budget finding supplying baseline, status and measured value."
+						"default": "undefined",
+						"description": "An optional budget finding whose baseline takes priority over the ledger limit; an unavailable status marks review as not measurable. Defaults to undefined; an exceeded finding adds a growth note only when its baseline is present.",
+						"examples": [
+							{
+								"unit": "reports.function.harness-budget",
+								"metric": "size",
+								"status": "exceeded",
+								"baseline": 1024,
+								"measured": 2048
+							},
+							{
+								"unit": "reports.function.harness-budget",
+								"metric": "size",
+								"status": "unavailable",
+								"baseline": null,
+								"measured": null
+							}
+						]
 					},
 					{
 						"name": "harnessBudget.known",
@@ -78,18 +179,46 @@
 						"default": {
 							"declared": true
 						},
-						"description": "Optional reviewed-limit knowledge, defaulting to a declared freeze with no numeric limit."
+						"description": "The manifest declaration and optional ledger review for a metric. Defaults to {declared: true}; the declaration alone supplies no numeric limit, while a ledger limit or unmeasured marker provides review information.",
+						"examples": [
+							{
+								"declared": true
+							},
+							{
+								"declared": false,
+								"limit": 2048
+							},
+							{
+								"declared": true,
+								"unmeasured": "metric could not be measured"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessBudget",
 						"type": "FrozenLine",
-						"description": "Value, limit and optional partial/growth note. Prefers the finding baseline over the ledger limit; otherwise distinguishes reviewed-unmeasurable, no value, merely declared freeze and no limit. Missing measurements and null values remain explicit."
+						"description": "A formatted value and limit, with an optional note. The limit prefers a finding baseline, then a reviewed ledger limit, and otherwise describes the applicable no-limit state; values remain explicit when missing or unavailable.",
+						"examples": [
+							{
+								"value": "2048 bytes",
+								"limit": "frozen at 1024",
+								"note": "Partial: generated source only. Grew from 1024 to 2048 without a recorded approval."
+							},
+							{
+								"value": "not measured at this revision",
+								"limit": "freeze declared; no reviewed limit is recorded at this revision"
+							},
+							{
+								"value": "unavailable: source could not be measured",
+								"limit": "not frozen: reviewed as not measurable"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
