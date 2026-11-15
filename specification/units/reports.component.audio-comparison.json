@@ -33,35 +33,62 @@
 				"name": "AudioComparison.before",
 				"type": "Evidence",
 				"required": true,
-				"description": "Required original recording whose identity preserves its gallery anchor. Missing flag or empty file marks its side unavailable."
+				"description": "Required Evidence for the Before row; its id becomes the preserved #evidence-{id} gallery anchor. The row is unavailable when missing is truthy or file is empty, and duration is shown only for finite positive durationSeconds.",
+				"examples": [
+					{
+						"id": "before-home|ready|voice-pair|desktop",
+						"title": "home · ready",
+						"category": "home",
+						"file": "home/ready-before.wav",
+						"status": "passed",
+						"phase": "before",
+						"comparison": "home|ready|voice-pair|desktop",
+						"mediaType": "audio",
+						"durationSeconds": 12.4
+					}
+				]
 			},
 			{
 				"name": "AudioComparison.after",
 				"type": "Evidence",
 				"required": true,
-				"description": "Required updated recording supplying the card title, category and main anchor. Missing flag or empty file marks its side unavailable."
+				"description": "Required Evidence for the After row; its title and category fill the card labels, and its id sets the card anchor. The row is unavailable when missing is truthy or file is empty, and duration is shown only for finite positive durationSeconds.",
+				"examples": [
+					{
+						"id": "after-home|ready|voice-pair|desktop",
+						"title": "home · ready",
+						"category": "home",
+						"file": "home/ready-after.wav",
+						"status": "failed",
+						"phase": "after",
+						"comparison": "home|ready|voice-pair|desktop",
+						"mediaType": "audio",
+						"durationSeconds": 15.6
+					}
+				]
 			},
 			{
 				"name": "AudioComparison.onopen",
 				"type": "() => void",
 				"required": true,
-				"description": "Required callback for opening the comparison viewer. Its button is disabled until mount completes. The disabled pre-mount button has a muted appearance and waiting cursor."
+				"description": "Required zero-argument callback invoked when the preview button is activated. The button remains disabled until onMount marks the component ready."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AudioComparison",
 				"type": "markup",
-				"description": "Paired-audio card with independent before/after badges and positive finite duration labels. Unavailable sides show not-proven. Does not create a combined passing result or play audio itself."
+				"description": "Renders one article card whose button opens the comparison and whose Before and After rows keep each recording’s status separate. A row is unavailable when missing is truthy or file is empty, and duration text appears only for finite positive durationSeconds; this component does not play audio."
 			}
 		],
 		"errors": [
 			{
 				"name": "onopen callback error",
 				"type": "thrown",
-				"description": "An error thrown by onopen propagates when the comparison is opened."
+				"description": "An exception thrown synchronously by onopen when the preview button is activated is not caught by this component."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
