@@ -22,56 +22,182 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "auditCurlyFunctions.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository path of the audited file, copied unchanged into the path field of every finding it returns. The function never opens this path; it only labels the findings.",
+				"examples": [
+					"src/audit/development-tooling/blockRules.ts",
+					"src/audit/development-tooling/commonRules.ts"
+				]
 			},
 			{
 				"name": "auditCurlyFunctions.lines",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Source lines of the audited file in file order, scanned once to find brace-delimited blocks; the reported line of a block is its first line's zero-based index plus one. An empty array returns no findings, and a block that has not closed by the last line is dropped without a finding.",
+				"examples": [
+					[
+						"export function parseRange(text: string): Range {",
+						"    const [start, end] = text.split('-');",
+						"    return { start: Number(start), end: Number(end) };",
+						"}"
+					],
+					[
+						"export function formatLabel(count: number): string {",
+						"    return count === 1 ? 'One item' : `${count} items`;",
+						"}"
+					]
+				]
 			},
 			{
 				"name": "auditCurlyFunctions.startsFunction",
 				"type": "(line: string) => boolean",
-				"required": true
+				"required": true,
+				"description": "Predicate called on each line while no block is open; the first line for which it returns true opens a block and is included in that block. Lines inside an open block are never tested, so a match nested inside a block is not reported as a separate block."
 			},
 			{
 				"name": "auditCurlyFunctions.limits",
 				"type": "HarnessRuleLimits",
-				"required": false
+				"required": false,
+				"description": "Defaults to harnessRuleLimits: maxFunctionLines 55, maxParameters 4, maxComplexity 10 and maxNestingDepth 4. This function reads only those four fields; a block is reported when its line count, parameter count, complexity or nesting depth is greater than the matching field, and maxFileLines, maxClassLines, maxMethodLines and maxClassesPerFile are ignored.",
+				"examples": [
+					{
+						"maxFileLines": 220,
+						"maxFunctionLines": 55,
+						"maxClassLines": 120,
+						"maxMethodLines": 35,
+						"maxNestingDepth": 4,
+						"maxParameters": 4,
+						"maxComplexity": 10,
+						"maxClassesPerFile": 1
+					},
+					{
+						"maxFileLines": 300,
+						"maxFunctionLines": 40,
+						"maxClassLines": 150,
+						"maxMethodLines": 25,
+						"maxNestingDepth": 3,
+						"maxParameters": 3,
+						"maxComplexity": 8,
+						"maxClassesPerFile": 1
+					}
+				]
 			},
 			{
 				"name": "auditIndentedPythonBlocks.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository path of the audited Python file, copied unchanged into the path field of every finding it returns. The function never opens this path; it only labels the findings.",
+				"examples": ["scripts/check_budgets.py", "scripts/export_evidence.py"]
 			},
 			{
 				"name": "auditIndentedPythonBlocks.lines",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Source lines of the audited Python file in file order. A line that starts with optional whitespace, then def, whitespace and a word opens a block that ends before the next non-blank line indented no deeper than that def line; lines such as async def are never matched.",
+				"examples": [
+					[
+						"import json",
+						"",
+						"def load_report(path):",
+						"    with open(path) as handle:",
+						"        return json.load(handle)"
+					],
+					[
+						"def sync_units(units, dry_run=False):",
+						"    for unit in units:",
+						"        if dry_run:",
+						"            continue",
+						"        unit.sync()"
+					]
+				]
 			},
 			{
 				"name": "auditIndentedPythonBlocks.limits",
 				"type": "HarnessRuleLimits",
-				"required": false
+				"required": false,
+				"description": "Defaults to harnessRuleLimits: maxFunctionLines 55, maxParameters 4, maxComplexity 10 and maxNestingDepth 4. This function reads only those four fields; a def block is reported when its line count, parameter count, complexity or nesting depth is greater than the matching field, and maxFileLines, maxClassLines, maxMethodLines and maxClassesPerFile are ignored.",
+				"examples": [
+					{
+						"maxFileLines": 220,
+						"maxFunctionLines": 55,
+						"maxClassLines": 120,
+						"maxMethodLines": 35,
+						"maxNestingDepth": 4,
+						"maxParameters": 4,
+						"maxComplexity": 10,
+						"maxClassesPerFile": 1
+					},
+					{
+						"maxFileLines": 300,
+						"maxFunctionLines": 40,
+						"maxClassLines": 150,
+						"maxMethodLines": 25,
+						"maxNestingDepth": 3,
+						"maxParameters": 3,
+						"maxComplexity": 8,
+						"maxClassesPerFile": 1
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "auditCurlyFunctions",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "One AuditFinding is returned for each exceeded limit of each detected curly-brace block, in block order, so one block can yield up to four findings with the rules small-function, max-parameters, max-complexity and max-nesting. Every finding copies the path argument, and its message names the 1-based line where the block starts; an empty array means no block exceeded a limit.",
+				"examples": [
+					[
+						{
+							"path": "src/audit/development-tooling/blockRules.ts",
+							"rule": "small-function",
+							"message": "Block starting near line 14 has 61 lines. Limit is 55."
+						}
+					],
+					[
+						{
+							"path": "src/audit/development-tooling/commonRules.ts",
+							"rule": "max-parameters",
+							"message": "Block starting near line 38 has 6 parameters. Limit is 4."
+						},
+						{
+							"path": "src/audit/development-tooling/commonRules.ts",
+							"rule": "max-complexity",
+							"message": "Block starting near line 38 has complexity 13. Limit is 10."
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "auditIndentedPythonBlocks",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "One AuditFinding is returned for each exceeded limit of each line that opens a def block, in line order, so nested defs are reported as separate blocks and one block can yield up to four findings with the rules small-function, max-parameters, max-complexity and max-nesting. Every finding copies the path argument, and an empty array means no def block exceeded a limit.",
+				"examples": [
+					[
+						{
+							"path": "scripts/check_budgets.py",
+							"rule": "max-nesting",
+							"message": "Block starting near line 22 has 5 nested levels. Limit is 4."
+						}
+					],
+					[
+						{
+							"path": "scripts/export_evidence.py",
+							"rule": "small-function",
+							"message": "Block starting near line 1 has 58 lines. Limit is 55."
+						}
+					],
+					[]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "auditCurlyFunctions",
@@ -79,32 +205,98 @@
 					{
 						"name": "auditCurlyFunctions.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository path of the audited file, copied unchanged into the path field of every finding it returns. The function never opens this path; it only labels the findings.",
+						"examples": [
+							"src/audit/development-tooling/blockRules.ts",
+							"src/audit/development-tooling/commonRules.ts"
+						]
 					},
 					{
 						"name": "auditCurlyFunctions.lines",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Source lines of the audited file in file order, scanned once to find brace-delimited blocks; the reported line of a block is its first line's zero-based index plus one. An empty array returns no findings, and a block that has not closed by the last line is dropped without a finding.",
+						"examples": [
+							[
+								"export function parseRange(text: string): Range {",
+								"    const [start, end] = text.split('-');",
+								"    return { start: Number(start), end: Number(end) };",
+								"}"
+							],
+							[
+								"export function formatLabel(count: number): string {",
+								"    return count === 1 ? 'One item' : `${count} items`;",
+								"}"
+							]
+						]
 					},
 					{
 						"name": "auditCurlyFunctions.startsFunction",
 						"type": "(line: string) => boolean",
-						"required": true
+						"required": true,
+						"description": "Predicate called on each line while no block is open; the first line for which it returns true opens a block and is included in that block. Lines inside an open block are never tested, so a match nested inside a block is not reported as a separate block."
 					},
 					{
 						"name": "auditCurlyFunctions.limits",
 						"type": "HarnessRuleLimits",
-						"required": false
+						"required": false,
+						"description": "Defaults to harnessRuleLimits: maxFunctionLines 55, maxParameters 4, maxComplexity 10 and maxNestingDepth 4. This function reads only those four fields; a block is reported when its line count, parameter count, complexity or nesting depth is greater than the matching field, and maxFileLines, maxClassLines, maxMethodLines and maxClassesPerFile are ignored.",
+						"examples": [
+							{
+								"maxFileLines": 220,
+								"maxFunctionLines": 55,
+								"maxClassLines": 120,
+								"maxMethodLines": 35,
+								"maxNestingDepth": 4,
+								"maxParameters": 4,
+								"maxComplexity": 10,
+								"maxClassesPerFile": 1
+							},
+							{
+								"maxFileLines": 300,
+								"maxFunctionLines": 40,
+								"maxClassLines": 150,
+								"maxMethodLines": 25,
+								"maxNestingDepth": 3,
+								"maxParameters": 3,
+								"maxComplexity": 8,
+								"maxClassesPerFile": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditCurlyFunctions",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "One AuditFinding is returned for each exceeded limit of each detected curly-brace block, in block order, so one block can yield up to four findings with the rules small-function, max-parameters, max-complexity and max-nesting. Every finding copies the path argument, and its message names the 1-based line where the block starts; an empty array means no block exceeded a limit.",
+						"examples": [
+							[
+								{
+									"path": "src/audit/development-tooling/blockRules.ts",
+									"rule": "small-function",
+									"message": "Block starting near line 14 has 61 lines. Limit is 55."
+								}
+							],
+							[
+								{
+									"path": "src/audit/development-tooling/commonRules.ts",
+									"rule": "max-parameters",
+									"message": "Block starting near line 38 has 6 parameters. Limit is 4."
+								},
+								{
+									"path": "src/audit/development-tooling/commonRules.ts",
+									"rule": "max-complexity",
+									"message": "Block starting near line 38 has complexity 13. Limit is 10."
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "auditIndentedPythonBlocks",
@@ -112,27 +304,87 @@
 					{
 						"name": "auditIndentedPythonBlocks.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository path of the audited Python file, copied unchanged into the path field of every finding it returns. The function never opens this path; it only labels the findings.",
+						"examples": ["scripts/check_budgets.py", "scripts/export_evidence.py"]
 					},
 					{
 						"name": "auditIndentedPythonBlocks.lines",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Source lines of the audited Python file in file order. A line that starts with optional whitespace, then def, whitespace and a word opens a block that ends before the next non-blank line indented no deeper than that def line; lines such as async def are never matched.",
+						"examples": [
+							[
+								"import json",
+								"",
+								"def load_report(path):",
+								"    with open(path) as handle:",
+								"        return json.load(handle)"
+							],
+							[
+								"def sync_units(units, dry_run=False):",
+								"    for unit in units:",
+								"        if dry_run:",
+								"            continue",
+								"        unit.sync()"
+							]
+						]
 					},
 					{
 						"name": "auditIndentedPythonBlocks.limits",
 						"type": "HarnessRuleLimits",
-						"required": false
+						"required": false,
+						"description": "Defaults to harnessRuleLimits: maxFunctionLines 55, maxParameters 4, maxComplexity 10 and maxNestingDepth 4. This function reads only those four fields; a def block is reported when its line count, parameter count, complexity or nesting depth is greater than the matching field, and maxFileLines, maxClassLines, maxMethodLines and maxClassesPerFile are ignored.",
+						"examples": [
+							{
+								"maxFileLines": 220,
+								"maxFunctionLines": 55,
+								"maxClassLines": 120,
+								"maxMethodLines": 35,
+								"maxNestingDepth": 4,
+								"maxParameters": 4,
+								"maxComplexity": 10,
+								"maxClassesPerFile": 1
+							},
+							{
+								"maxFileLines": 300,
+								"maxFunctionLines": 40,
+								"maxClassLines": 150,
+								"maxMethodLines": 25,
+								"maxNestingDepth": 3,
+								"maxParameters": 3,
+								"maxComplexity": 8,
+								"maxClassesPerFile": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditIndentedPythonBlocks",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "One AuditFinding is returned for each exceeded limit of each line that opens a def block, in line order, so nested defs are reported as separate blocks and one block can yield up to four findings with the rules small-function, max-parameters, max-complexity and max-nesting. Every finding copies the path argument, and an empty array means no def block exceeded a limit.",
+						"examples": [
+							[
+								{
+									"path": "scripts/check_budgets.py",
+									"rule": "max-nesting",
+									"message": "Block starting near line 22 has 5 nested levels. Limit is 4."
+								}
+							],
+							[
+								{
+									"path": "scripts/export_evidence.py",
+									"rule": "small-function",
+									"message": "Block starting near line 1 has 58 lines. Limit is 55."
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
