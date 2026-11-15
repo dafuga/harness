@@ -43,71 +43,179 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostPairingService.constructor.options",
 				"type": "HostPairingOptions",
-				"required": true
+				"required": true,
+				"description": "The host's identity and P-256 key pair: hostId and keys.publicKey are bound into the envelope's key derivation, and keys.privateKey performs the key agreement with each phone's ephemeralKey. Optional now, ttlMs and attempts are read on every call: now defaults to Date.now(), ttlMs defaults to remoteLimits.pairingTtlMs (300000 ms) and attempts defaults to remoteLimits.pairingAttempts (5)."
 			},
 			{
 				"name": "HostPairingService.receive.frame",
 				"type": "HostPairingFrame",
-				"required": true
+				"required": true,
+				"description": "The relay's pairing-request frame: pairingId must equal the open offer's pairingId, ephemeralKey is the phone's ephemeral P-256 public point in base64url, sealed is the phone's base64url request envelope, and challenge must equal the challenge sealed inside it. A frame for another pairingId, or one that arrives after the offer already holds a request, is ignored and receive resolves to null.",
+				"examples": [
+					{
+						"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
+						"ephemeralKey": "BDr4Kx9mQet1Lw7ZsNcVhA3gYp0UoJbR8fXdM2iTeqW5vN6kGaLs0OyHzJ4cBuP7nFxRtd3Mi9VoSqkWEa1ZgTl",
+						"sealed": "Yk3vN8sQ1rHcT6pLw0EamZ9XfB2uDiqO5gRe7KyVn4JjSa1WbTxG8hMc3PlQ0dFwZr6oNsViUe2tAyKqc9BpH4LnXzgJ1rDo7MvE3tWkQa8Ye5RbS0hLuIfNp6xCzG2dJoTmA7wVeq4K9rYbFn3sLhwUoP5jIgZ1eD8kNtXc6AMq2yHrS0vBlF7gJ-pWz4KaQ3uOnRx9bVe6cTiM1sZhD0xYwL5gJoS4pEq8trfN2uWcK7_mA1zRbHy3PdsG9oLjTe0vCxI5nQwFk6uM8aYdSb2rhPlT7vE4Nj3oKgWq1zXiDcR9eUaJ6ytBfH0mLs5nQw4",
+						"challenge": "Q2x7LrXk9vB3TzP1mH8wYdN4sJfA6UoE0cR5gKi2VlM"
+					}
+				]
 			},
 			{
 				"name": "HostPairingService.approve.pairingId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The pairingId of the request to approve: it must match the live offer, and that offer must already hold a request, or approve throws.",
+				"examples": ["5e1c0b9a7f3d24e8a6b0c71d9f48e2a3", "c04a7e19d6f2835b1e0a94c7d3f6b218"]
 			},
 			{
 				"name": "HostPairingService.approve.approval",
 				"type": "{ hostName: string; generation: number; grant: RemoteGrant; deviceId?: string }",
-				"required": true
+				"required": true,
+				"description": "The approval the person gave for this phone: hostName, generation and grant are sealed to the phone unchanged, and deviceId is optional but, when present, must equal the requesting phone's deviceId or approve throws.",
+				"examples": [
+					{
+						"hostName": "Studio Mac",
+						"generation": 2,
+						"grant": {
+							"projects": [
+								{
+									"id": "local-4b1d9e0a6f2c83d75e10b4a92c6f7d18e3a05b9c4d2f61e8a7c0b35d9e4f2a16",
+									"name": "design-system"
+								}
+							],
+							"comments": true,
+							"agents": false
+						}
+					},
+					{
+						"deviceId": "a71f3c9e05b2d4864f1e0c7a93b5d2e68f0c4a1d",
+						"hostName": "Studio Mac",
+						"generation": 2,
+						"grant": {
+							"projects": [
+								{
+									"id": "local-c3e8a1f70d94b26e5a0c1f8d3b7e92a46d1f05c8b2e7a93d4f6c10e8b5a7d291",
+									"name": "field-notes"
+								}
+							],
+							"agents": true
+						}
+					}
+				]
 			},
 			{
 				"name": "HostPairingService.deny.pairingId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The pairingId of the request to deny: deny returns false unless the live offer holds a request with this pairingId, and a match closes the offer.",
+				"examples": ["5e1c0b9a7f3d24e8a6b0c71d9f48e2a3", "c04a7e19d6f2835b1e0a94c7d3f6b218"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostPairingService.open",
-				"type": "HostPairingOffer"
+				"type": "HostPairingOffer",
+				"description": "The new offer: pairingId (32 lowercase hex characters) and code (XXXX-XXXX, typed on the phone) identify it, and expiresAt is the ISO 8601 time ttlMs after it was opened (remoteLimits.pairingTtlMs, 300000 ms, by default). Calling open again replaces the current offer, so the earlier one stops working.",
+				"examples": [
+					{
+						"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
+						"code": "K7QF-3MTN",
+						"expiresAt": "2026-11-15T12:05:00.000Z"
+					},
+					{
+						"pairingId": "c04a7e19d6f2835b1e0a94c7d3f6b218",
+						"code": "W3HN-29RP",
+						"expiresAt": "2026-11-15T09:25:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "HostPairingService.offer",
-				"type": "HostPairingOffer | null"
+				"type": "HostPairingOffer | null",
+				"description": "The live offer's pairingId, code and expiresAt, or null when no offer is open or the open offer has expired; it carries no request data.",
+				"examples": [
+					{
+						"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
+						"code": "K7QF-3MTN",
+						"expiresAt": "2026-11-15T12:05:00.000Z"
+					},
+					null
+				]
 			},
 			{
 				"name": "HostPairingService.requests",
-				"type": "RemotePairingRequest[]"
+				"type": "RemotePairingRequest[]",
+				"description": "The requests of the live offer: an empty array when no offer is open or no phone has been received, otherwise a single entry with the offer's pairingId and expiresAt and the phone's deviceId, deviceName, platform and requestedAt. The phone's deviceKey, challenge and approvalKey are never included.",
+				"examples": [
+					[],
+					[
+						{
+							"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
+							"deviceId": "a71f3c9e05b2d4864f1e0c7a93b5d2e68f0c4a1d",
+							"deviceName": "iPhone 15 Pro",
+							"platform": "ios",
+							"requestedAt": "2026-11-15T12:01:37.512Z",
+							"expiresAt": "2026-11-15T12:05:00.000Z"
+						}
+					]
+				]
 			},
 			{
 				"name": "HostPairingService.receive",
-				"type": "Promise<RemotePairingRequest | null>"
+				"type": "Promise<RemotePairingRequest | null>",
+				"description": "Resolves to the request the live offer now holds, or to null when the frame is ignored, fails to open and prove the code, or lands after the offer was closed or replaced or already holds another request. Each frame that fails to open or prove the code counts as a miss, and the offer closes once misses reach attempts (remoteLimits.pairingAttempts, 5 by default).",
+				"examples": [
+					{
+						"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
+						"deviceId": "a71f3c9e05b2d4864f1e0c7a93b5d2e68f0c4a1d",
+						"deviceName": "iPhone 15 Pro",
+						"platform": "ios",
+						"requestedAt": "2026-11-15T12:01:37.512Z",
+						"expiresAt": "2026-11-15T12:05:00.000Z"
+					},
+					null
+				]
 			},
 			{
 				"name": "HostPairingService.approve",
-				"type": "Promise<HostPairingApproved>"
+				"type": "Promise<HostPairingApproved>",
+				"description": "Resolves to the phone's deviceId, deviceKey, deviceName, platform and challenge (the request the relay binds the approval to), plus sealed: the approval encrypted with this request's approval key. The offer is closed before sealing begins, so it stops working even when sealing fails.",
+				"examples": [
+					{
+						"deviceId": "a71f3c9e05b2d4864f1e0c7a93b5d2e68f0c4a1d",
+						"deviceKey": "BQ8mT2vKxL4dZr7NwHsaeJ0pYcU6GiVbOl3RkMxFt9AhWnDqz5SjEyX8Bg1PuKcVo4LmQrH7aTf0NwZyDx2sJeC",
+						"deviceName": "iPhone 15 Pro",
+						"platform": "ios",
+						"sealed": "Ua7Dk2RmXo4pVn9cYhTqLz0BsWe6jGiNf3tQrM8aXyP5oDv1Ku6HcJ2wEgZsbR0lTa9iFxqSvM7nUd4ChW8yKe3ObJrG1xZp5tNa0Ei6LfQc7mVdT4uJhB2skOw9gAyP3nFzS1rMbX8ecQ5iHlKt0vyN3sGdW7aReUo8pTfZ2xwJ6mCvB4lItK0aYnDr9qPsE7jXh5gUdO2wLzS-3c8MbRfVy6QknAeH1uT4oPgI9dCxK0sWzTjE5rN7hY3aLpQoU8fbmXv2Gc6iSdRlB0eN4wJtoKh7ZsYa1FjC3uWq9TrMxDg8vEn5Ip2OyS4bKfLhAcW6tRm0JzsPq1XeG9NvHlT3oa7KybRw8dU",
+						"challenge": "Q2x7LrXk9vB3TzP1mH8wYdN4sJfA6UoE0cR5gKi2VlM"
+					}
+				]
 			},
 			{
 				"name": "HostPairingService.deny",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "true when the live offer held a request with this pairingId, and that offer is now closed; false otherwise.",
+				"examples": [true, false]
 			},
 			{
 				"name": "HostPairingService.close",
-				"type": "void"
+				"type": "void",
+				"description": "Closes the current offer, if any, and discards any request it held; it returns nothing and may be called when no offer is open."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown inside approve, so the returned promise rejects, with 'There is no pairing request to approve.' when no live offer holds a request with pairingId, or with 'This is not the phone that was shown.' when approval.deviceId differs from the request's deviceId; a failure while sealing the approval also rejects approve."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostPairingService.open",
@@ -115,11 +223,24 @@
 				"outputs": [
 					{
 						"name": "HostPairingService.open",
-						"type": "HostPairingOffer"
+						"type": "HostPairingOffer",
+						"description": "The new offer: pairingId (32 lowercase hex characters) and code (XXXX-XXXX, typed on the phone) identify it, and expiresAt is the ISO 8601 time ttlMs after it was opened (remoteLimits.pairingTtlMs, 300000 ms, by default). Calling open again replaces the current offer, so the earlier one stops working.",
+						"examples": [
+							{
+								"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
+								"code": "K7QF-3MTN",
+								"expiresAt": "2026-11-15T12:05:00.000Z"
+							},
+							{
+								"pairingId": "c04a7e19d6f2835b1e0a94c7d3f6b218",
+								"code": "W3HN-29RP",
+								"expiresAt": "2026-11-15T09:25:00.000Z"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostPairingService.offer",
@@ -127,11 +248,20 @@
 				"outputs": [
 					{
 						"name": "HostPairingService.offer",
-						"type": "HostPairingOffer | null"
+						"type": "HostPairingOffer | null",
+						"description": "The live offer's pairingId, code and expiresAt, or null when no offer is open or the open offer has expired; it carries no request data.",
+						"examples": [
+							{
+								"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
+								"code": "K7QF-3MTN",
+								"expiresAt": "2026-11-15T12:05:00.000Z"
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostPairingService.requests",
@@ -139,11 +269,25 @@
 				"outputs": [
 					{
 						"name": "HostPairingService.requests",
-						"type": "RemotePairingRequest[]"
+						"type": "RemotePairingRequest[]",
+						"description": "The requests of the live offer: an empty array when no offer is open or no phone has been received, otherwise a single entry with the offer's pairingId and expiresAt and the phone's deviceId, deviceName, platform and requestedAt. The phone's deviceKey, challenge and approvalKey are never included.",
+						"examples": [
+							[],
+							[
+								{
+									"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
+									"deviceId": "a71f3c9e05b2d4864f1e0c7a93b5d2e68f0c4a1d",
+									"deviceName": "iPhone 15 Pro",
+									"platform": "ios",
+									"requestedAt": "2026-11-15T12:01:37.512Z",
+									"expiresAt": "2026-11-15T12:05:00.000Z"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostPairingService.receive",
@@ -151,17 +295,38 @@
 					{
 						"name": "HostPairingService.receive.frame",
 						"type": "HostPairingFrame",
-						"required": true
+						"required": true,
+						"description": "The relay's pairing-request frame: pairingId must equal the open offer's pairingId, ephemeralKey is the phone's ephemeral P-256 public point in base64url, sealed is the phone's base64url request envelope, and challenge must equal the challenge sealed inside it. A frame for another pairingId, or one that arrives after the offer already holds a request, is ignored and receive resolves to null.",
+						"examples": [
+							{
+								"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
+								"ephemeralKey": "BDr4Kx9mQet1Lw7ZsNcVhA3gYp0UoJbR8fXdM2iTeqW5vN6kGaLs0OyHzJ4cBuP7nFxRtd3Mi9VoSqkWEa1ZgTl",
+								"sealed": "Yk3vN8sQ1rHcT6pLw0EamZ9XfB2uDiqO5gRe7KyVn4JjSa1WbTxG8hMc3PlQ0dFwZr6oNsViUe2tAyKqc9BpH4LnXzgJ1rDo7MvE3tWkQa8Ye5RbS0hLuIfNp6xCzG2dJoTmA7wVeq4K9rYbFn3sLhwUoP5jIgZ1eD8kNtXc6AMq2yHrS0vBlF7gJ-pWz4KaQ3uOnRx9bVe6cTiM1sZhD0xYwL5gJoS4pEq8trfN2uWcK7_mA1zRbHy3PdsG9oLjTe0vCxI5nQwFk6uM8aYdSb2rhPlT7vE4Nj3oKgWq1zXiDcR9eUaJ6ytBfH0mLs5nQw4",
+								"challenge": "Q2x7LrXk9vB3TzP1mH8wYdN4sJfA6UoE0cR5gKi2VlM"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostPairingService.receive",
-						"type": "Promise<RemotePairingRequest | null>"
+						"type": "Promise<RemotePairingRequest | null>",
+						"description": "Resolves to the request the live offer now holds, or to null when the frame is ignored, fails to open and prove the code, or lands after the offer was closed or replaced or already holds another request. Each frame that fails to open or prove the code counts as a miss, and the offer closes once misses reach attempts (remoteLimits.pairingAttempts, 5 by default).",
+						"examples": [
+							{
+								"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
+								"deviceId": "a71f3c9e05b2d4864f1e0c7a93b5d2e68f0c4a1d",
+								"deviceName": "iPhone 15 Pro",
+								"platform": "ios",
+								"requestedAt": "2026-11-15T12:01:37.512Z",
+								"expiresAt": "2026-11-15T12:05:00.000Z"
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostPairingService.approve",
@@ -169,27 +334,72 @@
 					{
 						"name": "HostPairingService.approve.pairingId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The pairingId of the request to approve: it must match the live offer, and that offer must already hold a request, or approve throws.",
+						"examples": ["5e1c0b9a7f3d24e8a6b0c71d9f48e2a3", "c04a7e19d6f2835b1e0a94c7d3f6b218"]
 					},
 					{
 						"name": "HostPairingService.approve.approval",
 						"type": "{ hostName: string; generation: number; grant: RemoteGrant; deviceId?: string }",
-						"required": true
+						"required": true,
+						"description": "The approval the person gave for this phone: hostName, generation and grant are sealed to the phone unchanged, and deviceId is optional but, when present, must equal the requesting phone's deviceId or approve throws.",
+						"examples": [
+							{
+								"hostName": "Studio Mac",
+								"generation": 2,
+								"grant": {
+									"projects": [
+										{
+											"id": "local-4b1d9e0a6f2c83d75e10b4a92c6f7d18e3a05b9c4d2f61e8a7c0b35d9e4f2a16",
+											"name": "design-system"
+										}
+									],
+									"comments": true,
+									"agents": false
+								}
+							},
+							{
+								"deviceId": "a71f3c9e05b2d4864f1e0c7a93b5d2e68f0c4a1d",
+								"hostName": "Studio Mac",
+								"generation": 2,
+								"grant": {
+									"projects": [
+										{
+											"id": "local-c3e8a1f70d94b26e5a0c1f8d3b7e92a46d1f05c8b2e7a93d4f6c10e8b5a7d291",
+											"name": "field-notes"
+										}
+									],
+									"agents": true
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostPairingService.approve",
-						"type": "Promise<HostPairingApproved>"
+						"type": "Promise<HostPairingApproved>",
+						"description": "Resolves to the phone's deviceId, deviceKey, deviceName, platform and challenge (the request the relay binds the approval to), plus sealed: the approval encrypted with this request's approval key. The offer is closed before sealing begins, so it stops working even when sealing fails.",
+						"examples": [
+							{
+								"deviceId": "a71f3c9e05b2d4864f1e0c7a93b5d2e68f0c4a1d",
+								"deviceKey": "BQ8mT2vKxL4dZr7NwHsaeJ0pYcU6GiVbOl3RkMxFt9AhWnDqz5SjEyX8Bg1PuKcVo4LmQrH7aTf0NwZyDx2sJeC",
+								"deviceName": "iPhone 15 Pro",
+								"platform": "ios",
+								"sealed": "Ua7Dk2RmXo4pVn9cYhTqLz0BsWe6jGiNf3tQrM8aXyP5oDv1Ku6HcJ2wEgZsbR0lTa9iFxqSvM7nUd4ChW8yKe3ObJrG1xZp5tNa0Ei6LfQc7mVdT4uJhB2skOw9gAyP3nFzS1rMbX8ecQ5iHlKt0vyN3sGdW7aReUo8pTfZ2xwJ6mCvB4lItK0aYnDr9qPsE7jXh5gUdO2wLzS-3c8MbRfVy6QknAeH1uT4oPgI9dCxK0sWzTjE5rN7hY3aLpQoU8fbmXv2Gc6iSdRlB0eN4wJtoKh7ZsYa1FjC3uWq9TrMxDg8vEn5Ip2OyS4bKfLhAcW6tRm0JzsPq1XeG9NvHlT3oa7KybRw8dU",
+								"challenge": "Q2x7LrXk9vB3TzP1mH8wYdN4sJfA6UoE0cR5gKi2VlM"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown inside approve, so the returned promise rejects, with 'There is no pairing request to approve.' when no live offer holds a request with pairingId, or with 'This is not the phone that was shown.' when approval.deviceId differs from the request's deviceId; a failure while sealing the approval also rejects approve."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostPairingService.deny",
@@ -197,17 +407,21 @@
 					{
 						"name": "HostPairingService.deny.pairingId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The pairingId of the request to deny: deny returns false unless the live offer holds a request with this pairingId, and a match closes the offer.",
+						"examples": ["5e1c0b9a7f3d24e8a6b0c71d9f48e2a3", "c04a7e19d6f2835b1e0a94c7d3f6b218"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostPairingService.deny",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "true when the live offer held a request with this pairingId, and that offer is now closed; false otherwise.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostPairingService.close",
@@ -215,11 +429,12 @@
 				"outputs": [
 					{
 						"name": "HostPairingService.close",
-						"type": "void"
+						"type": "void",
+						"description": "Closes the current offer, if any, and discards any request it held; it returns nothing and may be called when no offer is open."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -229,17 +444,19 @@
 					{
 						"name": "HostPairingService.constructor.options",
 						"type": "HostPairingOptions",
-						"required": true
+						"required": true,
+						"description": "The host's identity and P-256 key pair: hostId and keys.publicKey are bound into the envelope's key derivation, and keys.privateKey performs the key agreement with each phone's ephemeralKey. Optional now, ttlMs and attempts are read on every call: now defaults to Date.now(), ttlMs defaults to remoteLimits.pairingTtlMs (300000 ms) and attempts defaults to remoteLimits.pairingAttempts (5)."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostPairingService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The HostPairingService instance itself, which starts with no offer open until open() is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
