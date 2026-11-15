@@ -21,23 +21,31 @@
 				"name": "browserError.code",
 				"type": "string",
 				"required": true,
-				"description": "Server error code to look up."
+				"description": "The API failure code matched against this module’s known-code mapping; codes outside its own keys receive only generic status or unreachable wording, without server details.",
+				"examples": ["session-required", "unavailable", "unknown-code"]
 			},
 			{
 				"name": "browserError.status",
 				"type": "number",
 				"required": true,
-				"description": "HTTP status, or zero for an unreachable server."
+				"description": "The numeric request status consulted only for an unrecognized code; a truthy value is interpolated in the generic failure, while a falsy value selects the server-unreachable wording.",
+				"examples": [401, 0]
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserError",
 				"type": "string",
-				"description": "Known code wording; otherwise a generic failure containing a nonzero status, or server-unreachable wording for zero."
+				"description": "The user-readable explanation returned for the code; known codes use fixed wording, while unknown codes reveal no server message and fall back to status or unreachable wording.",
+				"examples": [
+					"Sign in to continue.",
+					"The request failed (503).",
+					"The server could not be reached."
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "browserError",
@@ -46,24 +54,31 @@
 						"name": "browserError.code",
 						"type": "string",
 						"required": true,
-						"description": "Server error code to look up."
+						"description": "The API failure code matched against this module’s known-code mapping; codes outside its own keys receive only generic status or unreachable wording, without server details.",
+						"examples": ["session-required", "unavailable", "unknown-code"]
 					},
 					{
 						"name": "browserError.status",
 						"type": "number",
 						"required": true,
-						"description": "HTTP status, or zero for an unreachable server."
+						"description": "The numeric request status consulted only for an unrecognized code; a truthy value is interpolated in the generic failure, while a falsy value selects the server-unreachable wording.",
+						"examples": [401, 0]
 					}
 				],
 				"outputs": [
 					{
 						"name": "browserError",
 						"type": "string",
-						"description": "Known code wording; otherwise a generic failure containing a nonzero status, or server-unreachable wording for zero."
+						"description": "The user-readable explanation returned for the code; known codes use fixed wording, while unknown codes reveal no server message and fall back to status or unreachable wording.",
+						"examples": [
+							"Sign in to continue.",
+							"The request failed (503).",
+							"The server could not be reached."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
