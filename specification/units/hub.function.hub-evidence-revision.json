@@ -20,29 +20,111 @@
 				"name": "hubEvidenceRevision.base",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "The source context for the repository, supplied by the caller: facts are read through its source adapter and repository, and the registry reads its tree entries and cache. When commit equals base.commit this context is used as-is; any other commit gets a new context pinned to it by hubPinnedSource, and the function performs no authorization check of its own."
 			},
 			{
 				"name": "hubEvidenceRevision.history",
 				"type": "HubRecordStatusService",
 				"required": true,
-				"description": "Pinned record-status service used to load statuses, notes and original records."
+				"description": "The pinned record-status service: status(commit) gives the record statuses of the requested commit, all() gives every note keyed by commit, and attached.load and attached.regression read the original records and regression evidence. It supplies the records, comparison, explanations and regressions in detail, plus judged and legacy, and the function does not verify how it is pinned."
 			},
 			{
 				"name": "hubEvidenceRevision.commit",
 				"type": "string",
 				"required": true,
-				"description": "Exact commit whose facts and evidence are required."
+				"description": "The exact commit whose facts and evidence are required: the source must return facts for it, and facts.commit must equal it, or the call throws evidence-unreadable. When it differs from base.commit it must also be a full 40-character lowercase hex hash, because hubPinnedSource accepts only such commits.",
+				"examples": [
+					"9b2e4f7a1c0d83e56f4a2b7c9d1e0f3a8b6c5d42",
+					"c41d07e9a3f85b26d0e7c19a4b8f3d52e6a09f17",
+					"5e8a3f0c2d91b74e6a0f58c3d7e2b19f4c6a8d30"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEvidenceRevision",
 				"type": "unknown",
-				"description": "Commit facts, registry/detail, summary judgment and legacy IDs. Comparison uses the first passed original record, otherwise the first available record; sourceImpact remains null."
+				"description": "The resolved evidence object for the commit: facts are its Git facts, detail holds the registry, comparison, record views, explanations and regressions, judged is the revision summary, and legacy lists the ids of its legacy-report notes. detail.comparison uses the first passed original record, otherwise the first original record, and is null when there are none; detail.sourceImpact is always null, and failures are thrown rather than returned.",
+				"examples": [
+					{
+						"facts": {
+							"commit": "9b2e4f7a1c0d83e56f4a2b7c9d1e0f3a8b6c5d42",
+							"tree": "7e1c5b3a9d0f284c6e5a1b7d3f9c0e2a4b8d6f15",
+							"parents": ["4d7a0c93e2b15f86a1c4d09e7b3f2a58c6d1e704"],
+							"subject": "Show evidence grid on the revision page",
+							"author": "Jordan Lee",
+							"committedAt": "2026-11-02T14:31:08Z"
+						},
+						"detail": {
+							"commit": "9b2e4f7a1c0d83e56f4a2b7c9d1e0f3a8b6c5d42",
+							"registry": {
+								"available": false,
+								"gap": "no unit registry is stored at this revision",
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"nodes": [],
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"sourceImpact": null,
+							"records": [],
+							"explanations": [],
+							"regressions": []
+						},
+						"judged": {
+							"coverage": "unverified",
+							"gaps": ["no verification record is attached to this commit"],
+							"records": []
+						},
+						"legacy": []
+					},
+					{
+						"facts": {
+							"commit": "c41d07e9a3f85b26d0e7c19a4b8f3d52e6a09f17",
+							"tree": "a6f2d9c04e8b13571d7f0a2c9e6b48d1f35c7e90",
+							"parents": ["e07b5a2c9d4f18e63b0a7c5d2f9e41b8a6c3d075"],
+							"subject": "Record legacy report for the checkout flow",
+							"author": "Jordan Lee",
+							"committedAt": "2026-11-09T09:12:44Z"
+						},
+						"detail": {
+							"commit": "c41d07e9a3f85b26d0e7c19a4b8f3d52e6a09f17",
+							"registry": {
+								"available": false,
+								"gap": "no unit registry is stored at this revision",
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"nodes": [],
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"sourceImpact": null,
+							"records": [],
+							"explanations": [],
+							"regressions": []
+						},
+						"judged": {
+							"coverage": "unverified",
+							"gaps": ["no verification record is attached to this commit"],
+							"records": []
+						},
+						"legacy": ["checkout-flow-2024-03-18"]
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "evidence-unreadable",
+				"type": "thrown",
+				"description": "Thrown by hubFail as an Error with the message 'Harness artifact unavailable' and the property code 'evidence-unreadable' when base.source has no facts method, when facts returns null for commit, or when facts.commit differs from commit. Failures inside the helpers it calls, such as hubPinnedSource, are listed by those units, not here."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubEvidenceRevision",
@@ -51,30 +133,111 @@
 						"name": "hubEvidenceRevision.base",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "The source context for the repository, supplied by the caller: facts are read through its source adapter and repository, and the registry reads its tree entries and cache. When commit equals base.commit this context is used as-is; any other commit gets a new context pinned to it by hubPinnedSource, and the function performs no authorization check of its own."
 					},
 					{
 						"name": "hubEvidenceRevision.history",
 						"type": "HubRecordStatusService",
 						"required": true,
-						"description": "Pinned record-status service used to load statuses, notes and original records."
+						"description": "The pinned record-status service: status(commit) gives the record statuses of the requested commit, all() gives every note keyed by commit, and attached.load and attached.regression read the original records and regression evidence. It supplies the records, comparison, explanations and regressions in detail, plus judged and legacy, and the function does not verify how it is pinned."
 					},
 					{
 						"name": "hubEvidenceRevision.commit",
 						"type": "string",
 						"required": true,
-						"description": "Exact commit whose facts and evidence are required."
+						"description": "The exact commit whose facts and evidence are required: the source must return facts for it, and facts.commit must equal it, or the call throws evidence-unreadable. When it differs from base.commit it must also be a full 40-character lowercase hex hash, because hubPinnedSource accepts only such commits.",
+						"examples": [
+							"9b2e4f7a1c0d83e56f4a2b7c9d1e0f3a8b6c5d42",
+							"c41d07e9a3f85b26d0e7c19a4b8f3d52e6a09f17",
+							"5e8a3f0c2d91b74e6a0f58c3d7e2b19f4c6a8d30"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEvidenceRevision",
 						"type": "unknown",
-						"description": "Commit facts, registry/detail, summary judgment and legacy IDs. Comparison uses the first passed original record, otherwise the first available record; sourceImpact remains null."
+						"description": "The resolved evidence object for the commit: facts are its Git facts, detail holds the registry, comparison, record views, explanations and regressions, judged is the revision summary, and legacy lists the ids of its legacy-report notes. detail.comparison uses the first passed original record, otherwise the first original record, and is null when there are none; detail.sourceImpact is always null, and failures are thrown rather than returned.",
+						"examples": [
+							{
+								"facts": {
+									"commit": "9b2e4f7a1c0d83e56f4a2b7c9d1e0f3a8b6c5d42",
+									"tree": "7e1c5b3a9d0f284c6e5a1b7d3f9c0e2a4b8d6f15",
+									"parents": ["4d7a0c93e2b15f86a1c4d09e7b3f2a58c6d1e704"],
+									"subject": "Show evidence grid on the revision page",
+									"author": "Jordan Lee",
+									"committedAt": "2026-11-02T14:31:08Z"
+								},
+								"detail": {
+									"commit": "9b2e4f7a1c0d83e56f4a2b7c9d1e0f3a8b6c5d42",
+									"registry": {
+										"available": false,
+										"gap": "no unit registry is stored at this revision",
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"nodes": [],
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"sourceImpact": null,
+									"records": [],
+									"explanations": [],
+									"regressions": []
+								},
+								"judged": {
+									"coverage": "unverified",
+									"gaps": ["no verification record is attached to this commit"],
+									"records": []
+								},
+								"legacy": []
+							},
+							{
+								"facts": {
+									"commit": "c41d07e9a3f85b26d0e7c19a4b8f3d52e6a09f17",
+									"tree": "a6f2d9c04e8b13571d7f0a2c9e6b48d1f35c7e90",
+									"parents": ["e07b5a2c9d4f18e63b0a7c5d2f9e41b8a6c3d075"],
+									"subject": "Record legacy report for the checkout flow",
+									"author": "Jordan Lee",
+									"committedAt": "2026-11-09T09:12:44Z"
+								},
+								"detail": {
+									"commit": "c41d07e9a3f85b26d0e7c19a4b8f3d52e6a09f17",
+									"registry": {
+										"available": false,
+										"gap": "no unit registry is stored at this revision",
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"nodes": [],
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"sourceImpact": null,
+									"records": [],
+									"explanations": [],
+									"regressions": []
+								},
+								"judged": {
+									"coverage": "unverified",
+									"gaps": ["no verification record is attached to this commit"],
+									"records": []
+								},
+								"legacy": ["checkout-flow-2024-03-18"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "evidence-unreadable",
+						"type": "thrown",
+						"description": "Thrown by hubFail as an Error with the message 'Harness artifact unavailable' and the property code 'evidence-unreadable' when base.source has no facts method, when facts returns null for commit, or when facts.commit differs from commit. Failures inside the helpers it calls, such as hubPinnedSource, are listed by those units, not here."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
