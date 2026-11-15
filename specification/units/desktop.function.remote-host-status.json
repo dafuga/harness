@@ -21,17 +21,143 @@
 				"name": "remoteHostStatus.input",
 				"type": "RemoteHostStatusInput",
 				"required": true,
-				"description": "Support flag, persisted state, runtime, phase, reason, display name and available project IDs/names."
+				"description": "The facts the status is built from: whether OS encryption allows remote access (`supported`); the persisted host state (`state`, null when nothing is stored yet; its host, origin, devices and pairing are used only when `supported` and `enabled` are both true); the live `runtime` (a RemoteHostRuntimeService, or null, in which case no pairing request is listed and no device is online); the switch `phase` and `reason`; the display `name`; and the `projects` (only each project's id and name are read). Unless `supported` is false, a phase other than 'idle' is reported as the state itself, and a non-null `reason` replaces the default message of that state.",
+				"examples": [
+					{
+						"supported": true,
+						"state": null,
+						"runtime": null,
+						"phase": "idle",
+						"reason": null,
+						"name": "Office Mac",
+						"projects": []
+					},
+					{
+						"supported": true,
+						"state": null,
+						"runtime": null,
+						"phase": "signed-out",
+						"reason": null,
+						"name": "Office Mac",
+						"projects": [
+							{
+								"id": "local-9d2c4e7a1b8f03d5e6a4c9f1027b5d384f0a9c2e7d1b6835a2e8d4c0f7b93e16",
+								"name": "orders-app"
+							}
+						]
+					},
+					{
+						"supported": true,
+						"state": null,
+						"runtime": null,
+						"phase": "idle",
+						"reason": "Remote access could not be registered. Try again.",
+						"name": "Office Mac",
+						"projects": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "remoteHostStatus",
 				"type": "RemoteHostStatus",
-				"description": "Public status with enabled state, connection phase, host, pairing offer and requests, approved device summaries and projects; private keys and credentials are omitted."
+				"description": "The status shown to the renderer: `supported`, `enabled`, `state`, `reason`, `host` as {id, name}, `origin`, the open `pairing` offer or null, the pending `requests`, the device summaries in `devices`, and `projects` as {id, name}. It carries no key or credential: devices omit their device key, the offer holds only its pairing id, code, expiry, host, origin and scan text, and project roots are never copied.",
+				"examples": [
+					{
+						"supported": true,
+						"enabled": false,
+						"state": "disabled",
+						"reason": null,
+						"host": null,
+						"origin": null,
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": []
+					},
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "online",
+						"reason": null,
+						"host": {
+							"id": "5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9",
+							"name": "Office Mac"
+						},
+						"origin": "https://relay.harness.example",
+						"pairing": {
+							"pairingId": "7e1b9c04d2a6f853b0d4e97c21f6a3e8",
+							"hostId": "5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9",
+							"origin": "https://relay.harness.example",
+							"code": "K7HM-QT2R",
+							"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794737554;host=5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9;pairing=7e1b9c04d2a6f853b0d4e97c21f6a3e8;code=K7HMQT2R;origin=https://relay.harness.example",
+							"expiresAt": "2026-11-15T10:12:34.567Z"
+						},
+						"requests": [],
+						"devices": [
+							{
+								"deviceId": "a4f7c20e9b15d83f6c02e7a91d4b5e38c60f7d21",
+								"name": "Work iPhone",
+								"platform": "ios",
+								"projectIds": [
+									"local-9d2c4e7a1b8f03d5e6a4c9f1027b5d384f0a9c2e7d1b6835a2e8d4c0f7b93e16"
+								],
+								"comments": true,
+								"agents": true,
+								"approvedAt": "2026-11-14T18:20:05.912Z",
+								"lastSeenAt": "2026-11-15T09:58:41.103Z",
+								"online": true
+							}
+						],
+						"projects": [
+							{
+								"id": "local-9d2c4e7a1b8f03d5e6a4c9f1027b5d384f0a9c2e7d1b6835a2e8d4c0f7b93e16",
+								"name": "orders-app"
+							}
+						]
+					},
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "online",
+						"reason": null,
+						"host": {
+							"id": "5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9",
+							"name": "Office Mac"
+						},
+						"origin": "https://relay.harness.example",
+						"pairing": {
+							"pairingId": "7e1b9c04d2a6f853b0d4e97c21f6a3e8",
+							"hostId": "5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9",
+							"origin": "https://relay.harness.example",
+							"code": "K7HM-QT2R",
+							"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794737554;host=5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9;pairing=7e1b9c04d2a6f853b0d4e97c21f6a3e8;code=K7HMQT2R;origin=https://relay.harness.example",
+							"expiresAt": "2026-11-15T10:12:34.567Z"
+						},
+						"requests": [
+							{
+								"pairingId": "7e1b9c04d2a6f853b0d4e97c21f6a3e8",
+								"deviceId": "c3e09b5a1f7d24680e91ab3c5d7f0e62b8a4d1c9",
+								"deviceName": "Studio iPhone",
+								"platform": "ios",
+								"requestedAt": "2026-11-15T10:03:12.045Z",
+								"expiresAt": "2026-11-15T10:12:34.567Z"
+							}
+						],
+						"devices": [],
+						"projects": [
+							{
+								"id": "local-9d2c4e7a1b8f03d5e6a4c9f1027b5d384f0a9c2e7d1b6835a2e8d4c0f7b93e16",
+								"name": "orders-app"
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "remoteHostStatus",
@@ -40,18 +166,143 @@
 						"name": "remoteHostStatus.input",
 						"type": "RemoteHostStatusInput",
 						"required": true,
-						"description": "Support flag, persisted state, runtime, phase, reason, display name and available project IDs/names."
+						"description": "The facts the status is built from: whether OS encryption allows remote access (`supported`); the persisted host state (`state`, null when nothing is stored yet; its host, origin, devices and pairing are used only when `supported` and `enabled` are both true); the live `runtime` (a RemoteHostRuntimeService, or null, in which case no pairing request is listed and no device is online); the switch `phase` and `reason`; the display `name`; and the `projects` (only each project's id and name are read). Unless `supported` is false, a phase other than 'idle' is reported as the state itself, and a non-null `reason` replaces the default message of that state.",
+						"examples": [
+							{
+								"supported": true,
+								"state": null,
+								"runtime": null,
+								"phase": "idle",
+								"reason": null,
+								"name": "Office Mac",
+								"projects": []
+							},
+							{
+								"supported": true,
+								"state": null,
+								"runtime": null,
+								"phase": "signed-out",
+								"reason": null,
+								"name": "Office Mac",
+								"projects": [
+									{
+										"id": "local-9d2c4e7a1b8f03d5e6a4c9f1027b5d384f0a9c2e7d1b6835a2e8d4c0f7b93e16",
+										"name": "orders-app"
+									}
+								]
+							},
+							{
+								"supported": true,
+								"state": null,
+								"runtime": null,
+								"phase": "idle",
+								"reason": "Remote access could not be registered. Try again.",
+								"name": "Office Mac",
+								"projects": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "remoteHostStatus",
 						"type": "RemoteHostStatus",
-						"description": "Public status with enabled state, connection phase, host, pairing offer and requests, approved device summaries and projects; private keys and credentials are omitted."
+						"description": "The status shown to the renderer: `supported`, `enabled`, `state`, `reason`, `host` as {id, name}, `origin`, the open `pairing` offer or null, the pending `requests`, the device summaries in `devices`, and `projects` as {id, name}. It carries no key or credential: devices omit their device key, the offer holds only its pairing id, code, expiry, host, origin and scan text, and project roots are never copied.",
+						"examples": [
+							{
+								"supported": true,
+								"enabled": false,
+								"state": "disabled",
+								"reason": null,
+								"host": null,
+								"origin": null,
+								"pairing": null,
+								"requests": [],
+								"devices": [],
+								"projects": []
+							},
+							{
+								"supported": true,
+								"enabled": true,
+								"state": "online",
+								"reason": null,
+								"host": {
+									"id": "5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9",
+									"name": "Office Mac"
+								},
+								"origin": "https://relay.harness.example",
+								"pairing": {
+									"pairingId": "7e1b9c04d2a6f853b0d4e97c21f6a3e8",
+									"hostId": "5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9",
+									"origin": "https://relay.harness.example",
+									"code": "K7HM-QT2R",
+									"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794737554;host=5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9;pairing=7e1b9c04d2a6f853b0d4e97c21f6a3e8;code=K7HMQT2R;origin=https://relay.harness.example",
+									"expiresAt": "2026-11-15T10:12:34.567Z"
+								},
+								"requests": [],
+								"devices": [
+									{
+										"deviceId": "a4f7c20e9b15d83f6c02e7a91d4b5e38c60f7d21",
+										"name": "Work iPhone",
+										"platform": "ios",
+										"projectIds": [
+											"local-9d2c4e7a1b8f03d5e6a4c9f1027b5d384f0a9c2e7d1b6835a2e8d4c0f7b93e16"
+										],
+										"comments": true,
+										"agents": true,
+										"approvedAt": "2026-11-14T18:20:05.912Z",
+										"lastSeenAt": "2026-11-15T09:58:41.103Z",
+										"online": true
+									}
+								],
+								"projects": [
+									{
+										"id": "local-9d2c4e7a1b8f03d5e6a4c9f1027b5d384f0a9c2e7d1b6835a2e8d4c0f7b93e16",
+										"name": "orders-app"
+									}
+								]
+							},
+							{
+								"supported": true,
+								"enabled": true,
+								"state": "online",
+								"reason": null,
+								"host": {
+									"id": "5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9",
+									"name": "Office Mac"
+								},
+								"origin": "https://relay.harness.example",
+								"pairing": {
+									"pairingId": "7e1b9c04d2a6f853b0d4e97c21f6a3e8",
+									"hostId": "5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9",
+									"origin": "https://relay.harness.example",
+									"code": "K7HM-QT2R",
+									"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794737554;host=5c0e91a7d3f24b86e10a9c7d52f3b804e6d1a2f9;pairing=7e1b9c04d2a6f853b0d4e97c21f6a3e8;code=K7HMQT2R;origin=https://relay.harness.example",
+									"expiresAt": "2026-11-15T10:12:34.567Z"
+								},
+								"requests": [
+									{
+										"pairingId": "7e1b9c04d2a6f853b0d4e97c21f6a3e8",
+										"deviceId": "c3e09b5a1f7d24680e91ab3c5d7f0e62b8a4d1c9",
+										"deviceName": "Studio iPhone",
+										"platform": "ios",
+										"requestedAt": "2026-11-15T10:03:12.045Z",
+										"expiresAt": "2026-11-15T10:12:34.567Z"
+									}
+								],
+								"devices": [],
+								"projects": [
+									{
+										"id": "local-9d2c4e7a1b8f03d5e6a4c9f1027b5d384f0a9c2e7d1b6835a2e8d4c0f7b93e16",
+										"name": "orders-app"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
