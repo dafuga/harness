@@ -21,34 +21,103 @@
 				"name": "hubPlanRecord.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "Provides the source entries and reader used to load plan designs. It is required for resolving design files from the hosted source."
 			},
 			{
 				"name": "hubPlanRecord.plan",
 				"type": "HubPlan",
 				"required": true,
-				"description": "Validated plan whose design versions and current contract are needed."
+				"description": "Validated plan metadata and contract to convert into a catalog record. Its path, identity, category, title, goal and contract supply the plan fields; designs are read through the context.",
+				"examples": [
+					{
+						"unitId": "hub.function.hub-plans",
+						"path": "src/functions/hub-plans",
+						"category": "function",
+						"slug": "hub-plans",
+						"title": "Read hosted plans",
+						"goal": "Validate committed plans and turn their current designs into catalog planning records.",
+						"createdAt": "2026-11-15T00:00:00.000Z",
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"contract": {
+							"responsibility": "Validate committed plans and turn their current designs into catalog planning records.",
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"states": [],
+							"viewports": []
+						},
+						"contractHash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+					}
+				]
 			},
 			{
 				"name": "hubPlans.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "Provides source entries and reads for finding and parsing hosted plan files. Only plan.json entries under the supported category directories are considered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubPlans",
 				"type": "Promise<HubPlan[]>",
-				"description": "Plans from the supported category folders after schema, path, contract-hash and duplicate-identity checks."
+				"description": "Resolves to schema-validated plans from supported category directories. Each included plan must match its source path and contract hash, and its unitId must be unique.",
+				"examples": [
+					[
+						{
+							"unitId": "hub.function.hub-plans",
+							"path": "src/functions/hub-plans",
+							"category": "function",
+							"slug": "hub-plans",
+							"title": "Read hosted plans",
+							"goal": "Validate committed plans and turn their current designs into catalog planning records.",
+							"createdAt": "2026-11-15T00:00:00.000Z",
+							"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+							"contract": {
+								"responsibility": "Validate committed plans and turn their current designs into catalog planning records.",
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"states": [],
+								"viewports": []
+							},
+							"contractHash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+						}
+					]
+				]
 			},
 			{
 				"name": "hubPlanRecord",
 				"type": "Promise<PlanRecord>",
-				"description": "Plan record with versions, latest contract fields/hash, empty local threads and draft/review/approved lifecycle determined by its latest design and current approval."
+				"description": "Resolves to a catalog record containing the plan fields, design versions, an empty thread list and a contract hash. The latest design supplies the contract when present; lifecycle is draft without a design, review with an unapproved latest design, and approved with a current approval.",
+				"examples": [
+					{
+						"id": "hub.function.hub-plans",
+						"path": "src/functions/hub-plans",
+						"category": "functions",
+						"title": "Read hosted plans",
+						"goal": "Validate committed plans and turn their current designs into catalog planning records.",
+						"lifecycle": "draft",
+						"versions": [],
+						"threads": [],
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "hubFail",
+				"type": "thrown",
+				"description": "Used when a parsed plan path does not match its source entry or category and slug, its contract hash does not match, or unitId values are duplicated."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubPlanRecord",
@@ -57,24 +126,63 @@
 						"name": "hubPlanRecord.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "Provides the source entries and reader used to load plan designs. It is required for resolving design files from the hosted source."
 					},
 					{
 						"name": "hubPlanRecord.plan",
 						"type": "HubPlan",
 						"required": true,
-						"description": "Validated plan whose design versions and current contract are needed."
+						"description": "Validated plan metadata and contract to convert into a catalog record. Its path, identity, category, title, goal and contract supply the plan fields; designs are read through the context.",
+						"examples": [
+							{
+								"unitId": "hub.function.hub-plans",
+								"path": "src/functions/hub-plans",
+								"category": "function",
+								"slug": "hub-plans",
+								"title": "Read hosted plans",
+								"goal": "Validate committed plans and turn their current designs into catalog planning records.",
+								"createdAt": "2026-11-15T00:00:00.000Z",
+								"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+								"contract": {
+									"responsibility": "Validate committed plans and turn their current designs into catalog planning records.",
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"states": [],
+									"viewports": []
+								},
+								"contractHash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubPlanRecord",
 						"type": "Promise<PlanRecord>",
-						"description": "Plan record with versions, latest contract fields/hash, empty local threads and draft/review/approved lifecycle determined by its latest design and current approval."
+						"description": "Resolves to a catalog record containing the plan fields, design versions, an empty thread list and a contract hash. The latest design supplies the contract when present; lifecycle is draft without a design, review with an unapproved latest design, and approved with a current approval.",
+						"examples": [
+							{
+								"id": "hub.function.hub-plans",
+								"path": "src/functions/hub-plans",
+								"category": "functions",
+								"title": "Read hosted plans",
+								"goal": "Validate committed plans and turn their current designs into catalog planning records.",
+								"lifecycle": "draft",
+								"versions": [],
+								"threads": [],
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubPlans",
@@ -83,18 +191,47 @@
 						"name": "hubPlans.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "Provides source entries and reads for finding and parsing hosted plan files. Only plan.json entries under the supported category directories are considered."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubPlans",
 						"type": "Promise<HubPlan[]>",
-						"description": "Plans from the supported category folders after schema, path, contract-hash and duplicate-identity checks."
+						"description": "Resolves to schema-validated plans from supported category directories. Each included plan must match its source path and contract hash, and its unitId must be unique.",
+						"examples": [
+							[
+								{
+									"unitId": "hub.function.hub-plans",
+									"path": "src/functions/hub-plans",
+									"category": "function",
+									"slug": "hub-plans",
+									"title": "Read hosted plans",
+									"goal": "Validate committed plans and turn their current designs into catalog planning records.",
+									"createdAt": "2026-11-15T00:00:00.000Z",
+									"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+									"contract": {
+										"responsibility": "Validate committed plans and turn their current designs into catalog planning records.",
+										"inputs": [],
+										"outputs": [],
+										"errors": [],
+										"states": [],
+										"viewports": []
+									},
+									"contractHash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "hubFail",
+						"type": "thrown",
+						"description": "Used when a parsed plan path does not match its source entry or category and slug, its contract hash does not match, or unitId values are duplicated."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
