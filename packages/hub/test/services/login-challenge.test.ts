@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
-import { CHALLENGE_TTL, LoginChallengeService } from '../../src/services/LoginChallengeService';
+import {
+	CHALLENGE_TTL,
+	LoginChallengeService
+} from '../../src/services/accounts-access/LoginChallengeService';
 import { AuthFailure } from '../../src/utils/authFail';
 import { authFixture } from '../support/authFixture';
 

@@ -1,7 +1,7 @@
 import type { Actor } from 'collaboration';
 import { GithubApiAdapter } from '../../src/adapters/GithubApiAdapter';
 import { GithubGrantService } from '../../src/services/GithubGrantService';
-import { GithubOwnerService } from '../../src/services/GithubOwnerService';
+import { GithubOwnerService } from '../../src/lib/verification-evidence/server/auth/GithubOwnerService';
 import { InstallationTokenService } from '../../src/services/installation-token-service/InstallationTokenService';
 import type { CachedInstallationToken } from '../../src/services/installation-token-service/InstallationTokenService';
 import type { GithubAppConfig } from '../../src/utils/authConfig';
