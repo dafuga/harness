@@ -29,34 +29,81 @@
 				"name": "requestDigest.request",
 				"type": "unknown",
 				"required": true,
-				"description": "Complete JSON-shaped request, including operation and input, to fingerprint with canonical serialization."
+				"description": "Value passed to canonicalJson and then hashed when a stable request fingerprint is needed. It is typed unknown, and this function does not check a request schema before serialization.",
+				"examples": [
+					{
+						"operation": "sum",
+						"input": {
+							"values": [2, 3]
+						}
+					}
+				]
 			},
 			{
 				"name": "comparisonContext.request",
 				"type": "unknown",
 				"required": true,
-				"description": "Complete JSON-shaped request actually sent by the benchmark."
+				"description": "Request being compared; its canonical digest is stored in the returned comparison context. It is typed unknown and passed through requestDigest without a request-schema check.",
+				"examples": [
+					{
+						"operation": "sum",
+						"input": {
+							"values": [2, 3]
+						}
+					}
+				]
 			},
 			{
 				"name": "comparisonContext.sampling",
 				"type": "{ rounds: number; iterations: number }",
 				"required": true,
-				"description": "Round count and calls per round used by the benchmark; this helper copies rather than validates them."
+				"description": "Round and iteration counts copied into the returned sampling record for the benchmark being compared. The helper does not check that they are positive integers or otherwise consistent.",
+				"examples": [
+					{
+						"rounds": 5,
+						"iterations": 10
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "requestDigest",
 				"type": "string",
-				"description": "Lowercase SHA-256 digest of canonical request JSON, independent of object-key order."
+				"description": "Lowercase hexadecimal SHA-256 digest of the request's canonical JSON serialization, used as the request fingerprint in a comparison. Object keys are sorted recursively before serialization; values that cannot be serialized or recursively sorted can throw.",
+				"examples": ["10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53"]
 			},
 			{
 				"name": "comparisonContext",
 				"type": "Comparison",
-				"description": "Context containing the request digest, public-invocation boundary, harness-rounds/1 protocol and sampling with three warm-up calls."
+				"description": "Context returned for one compared invocation, with the request digest, public-invocation boundary, roundsProtocol, and sampling populated with warmupCalls plus the supplied round and iteration counts. It copies rounds and iterations without validation, so it can return sampling values that do not satisfy stricter comparison-schema constraints.",
+				"examples": [
+					{
+						"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+						"boundary": "public-invocation",
+						"protocol": "harness-rounds/1",
+						"sampling": {
+							"warmup": 3,
+							"rounds": 5,
+							"iterations": 10
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when JSON serialization rejects a value such as a BigInt, or when canonicalJson produces no string for a top-level unsupported value and createHash.update receives it. The request is unknown and is not prevalidated."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Thrown when recursive key sorting exhausts the call stack, for example on a cyclic or excessively deep request. canonicalJson has no cycle or depth guard."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "requestDigest",
@@ -65,18 +112,38 @@
 						"name": "requestDigest.request",
 						"type": "unknown",
 						"required": true,
-						"description": "Complete JSON-shaped request, including operation and input, to fingerprint with canonical serialization."
+						"description": "Value passed to canonicalJson and then hashed when a stable request fingerprint is needed. It is typed unknown, and this function does not check a request schema before serialization.",
+						"examples": [
+							{
+								"operation": "sum",
+								"input": {
+									"values": [2, 3]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "requestDigest",
 						"type": "string",
-						"description": "Lowercase SHA-256 digest of canonical request JSON, independent of object-key order."
+						"description": "Lowercase hexadecimal SHA-256 digest of the request's canonical JSON serialization, used as the request fingerprint in a comparison. Object keys are sorted recursively before serialization; values that cannot be serialized or recursively sorted can throw.",
+						"examples": ["10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when JSON serialization rejects a value such as a BigInt, or when canonicalJson produces no string for a top-level unsupported value and createHash.update receives it. The request is unknown and is not prevalidated."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown when recursive key sorting exhausts the call stack, for example on a cyclic or excessively deep request. canonicalJson has no cycle or depth guard."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "comparisonContext",
@@ -85,24 +152,61 @@
 						"name": "comparisonContext.request",
 						"type": "unknown",
 						"required": true,
-						"description": "Complete JSON-shaped request actually sent by the benchmark."
+						"description": "Request being compared; its canonical digest is stored in the returned comparison context. It is typed unknown and passed through requestDigest without a request-schema check.",
+						"examples": [
+							{
+								"operation": "sum",
+								"input": {
+									"values": [2, 3]
+								}
+							}
+						]
 					},
 					{
 						"name": "comparisonContext.sampling",
 						"type": "{ rounds: number; iterations: number }",
 						"required": true,
-						"description": "Round count and calls per round used by the benchmark; this helper copies rather than validates them."
+						"description": "Round and iteration counts copied into the returned sampling record for the benchmark being compared. The helper does not check that they are positive integers or otherwise consistent.",
+						"examples": [
+							{
+								"rounds": 5,
+								"iterations": 10
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "comparisonContext",
 						"type": "Comparison",
-						"description": "Context containing the request digest, public-invocation boundary, harness-rounds/1 protocol and sampling with three warm-up calls."
+						"description": "Context returned for one compared invocation, with the request digest, public-invocation boundary, roundsProtocol, and sampling populated with warmupCalls plus the supplied round and iteration counts. It copies rounds and iterations without validation, so it can return sampling values that do not satisfy stricter comparison-schema constraints.",
+						"examples": [
+							{
+								"request": "10ab7097012b0fbce547679da3ab226bee437a8b00bd910ab431edab57896c53",
+								"boundary": "public-invocation",
+								"protocol": "harness-rounds/1",
+								"sampling": {
+									"warmup": 3,
+									"rounds": 5,
+									"iterations": 10
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when JSON serialization rejects a value such as a BigInt, or when canonicalJson produces no string for a top-level unsupported value and createHash.update receives it. The request is unknown and is not prevalidated."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown when recursive key sorting exhausts the call stack, for example on a cyclic or excessively deep request. canonicalJson has no cycle or depth guard."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
