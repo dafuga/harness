@@ -169,22 +169,22 @@
 			},
 			{
 				"name": "hashPattern",
-				"type": "unknown",
+				"type": "RegExp",
 				"description": "A RegExp, /^[a-f0-9]{64}$/, that accepts exactly 64 lowercase hexadecimal characters and nothing else."
 			},
 			{
 				"name": "commitPattern",
-				"type": "unknown",
+				"type": "RegExp",
 				"description": "A RegExp, /^[a-f0-9]{40}$/, that accepts exactly 40 lowercase hexadecimal characters and nothing else."
 			},
 			{
 				"name": "idPattern",
-				"type": "unknown",
+				"type": "RegExp",
 				"description": "A RegExp, /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/, that accepts lowercase letter-or-digit segments separated by single dots or hyphens, such as reports.component.evidence-grid. It rejects uppercase letters, leading or trailing separators and doubled separators."
 			},
 			{
 				"name": "versionPattern",
-				"type": "unknown",
+				"type": "RegExp",
 				"description": "A RegExp that accepts a lowercase v followed by three or more decimal digits and nothing else, such as v001."
 			},
 			{

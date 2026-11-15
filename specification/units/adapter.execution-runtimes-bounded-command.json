@@ -531,7 +531,7 @@
 				"outputs": [
 					{
 						"name": "commandOutput",
-						"type": "unknown",
+						"type": "{ append(stream: \"stdout\" | \"stderr\", chunk: Buffer): boolean; read(): { stdout: Buffer; stderr: string } }",
 						"description": "Creates a stateful collector with append(stream, chunk) and read(); stdout is returned as a Buffer and stderr as UTF-8 text, with a shared byte cap."
 					}
 				],
@@ -567,7 +567,7 @@
 				"outputs": [
 					{
 						"name": "BoundedCommandFailure.constructor",
-						"type": "unknown",
+						"type": "BoundedCommandFailure",
 						"description": "Creates an Error named BoundedCommandFailure with the supplied message and captured stdout Buffer and stderr string attached as non-enumerable properties."
 					}
 				],

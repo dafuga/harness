@@ -47,7 +47,7 @@
 		"outputs": [
 			{
 				"name": "ReportCommand.run",
-				"type": "unknown",
+				"type": "ReturnType<ReportCommandService['execute']>",
 				"description": "The promise that run returns from ReportCommandService.execute, resolving to the result of the operation named in argv[0]: a Report for begin, record and finalize; { run, ...result } for import, where result is the import path's own return value ({ records } for manual, { checks: 1 } for command); { port, reused, url, pid } for serve; a stop result for stop; and a retention or storage-sync summary for cleanup and sync-storage. Failures on individual reports during cleanup and sync-storage go into their errors arrays rather than rejecting, and stop resolves with stopped set to false when no server is recorded on the port or the recorded one had already ended.",
 				"examples": [
 					{
@@ -256,7 +256,7 @@
 				"outputs": [
 					{
 						"name": "ReportCommand.run",
-						"type": "unknown",
+						"type": "ReturnType<ReportCommandService['execute']>",
 						"description": "The promise that run returns from ReportCommandService.execute, resolving to the result of the operation named in argv[0]: a Report for begin, record and finalize; { run, ...result } for import, where result is the import path's own return value ({ records } for manual, { checks: 1 } for command); { port, reused, url, pid } for serve; a stop result for stop; and a retention or storage-sync summary for cleanup and sync-storage. Failures on individual reports during cleanup and sync-storage go into their errors arrays rather than rejecting, and stop resolves with stopped set to false when no server is recorded on the port or the recorded one had already ended.",
 						"examples": [
 							{

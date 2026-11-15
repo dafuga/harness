@@ -574,7 +574,7 @@
 				"outputs": [
 					{
 						"name": "HistoryStatusService.constructor",
-						"type": "unknown",
+						"type": "HistoryStatusService",
 						"description": "The HistoryStatusService instance, which holds the attached-record service, the note repository and the Git adapter; constructing it runs no Git command, so nothing is read until a method is called."
 					}
 				],

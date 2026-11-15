@@ -176,13 +176,13 @@
 		"outputs": [
 			{
 				"name": "notMeasured",
-				"type": "unknown",
+				"type": "\"Not measured\"",
 				"description": "The Not measured placeholder used for absent or unavailable measurements, so missing data is not displayed as zero.",
 				"examples": ["Not measured"]
 			},
 			{
 				"name": "tolerancePolicy",
-				"type": "unknown",
+				"type": "0.05",
 				"description": "The fixed tolerance threshold used by PerformanceRow.over. A row is marked over only when its budget tolerance is defined and greater than 0.05.",
 				"examples": [0.05]
 			},

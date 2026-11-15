@@ -46,13 +46,13 @@
 		"outputs": [
 			{
 				"name": "shellsBranch",
-				"type": "unknown",
+				"type": "\"feature/shells\"",
 				"description": "Name of the branch on which the frame, baseline, and shell declaration commits are made. It contains a slash.",
 				"examples": ["feature/shells"]
 			},
 			{
 				"name": "shellUnit",
-				"type": "unknown",
+				"type": "\"component.title-frame\"",
 				"description": "Unit identifier of the title frame, used to establish the budget and locate its unit manifest. The identifier stays component.title-frame while the manifest kind changes to layout.",
 				"examples": ["component.title-frame"]
 			},

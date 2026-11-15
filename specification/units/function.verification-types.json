@@ -51,37 +51,37 @@
 		"outputs": [
 			{
 				"name": "captureSchema",
-				"type": "unknown",
+				"type": "typeof captureSchema",
 				"description": "Zod strict-object schema for validating one artifact capture attached to a verification state. It requires identifier-valued evidence and state, kind screenshot/audio/output/assertions/trace/benchmark, status passed/failed, nonempty path/mediaType/capturedAt, a 64-character lowercase hexadecimal SHA-256, and nonnegative integer bytes; optional clip uses nonnegative integer x/y and positive integer width/height, optional durationSeconds is positive, and optional server.revision is a 40-character lowercase commit or tree hash."
 			},
 			{
 				"name": "scenarioResultSchema",
-				"type": "unknown",
+				"type": "typeof scenarioResultSchema",
 				"description": "Zod strict-object schema for one scenario's result and evidence states when recording scenario verification. It requires an identifier, status passed/failed/referenced, a 40-character lowercase testedRevision hash, and states containing an identifier, coverage required/missing/inapplicable, and captures validated by captureSchema; optional referencedRecord is nonempty and optional reason is a string."
 			},
 			{
 				"name": "profileSchema",
-				"type": "unknown",
+				"type": "typeof profileSchema",
 				"description": "Zod strict-object schema for the machine and runtime profile associated with verification or measurement evidence. It requires nonempty id, platform, arch, cpu, and runtime strings plus positive integer cores and memoryBytes."
 			},
 			{
 				"name": "budgetFindingSchema",
-				"type": "unknown",
+				"type": "typeof budgetFindingSchema",
 				"description": "Zod strict-object schema for one metric's budget comparison or explicit measurement state when reporting verification budgets. It requires an identifier-valued unit, nonempty metric, one of passed/exceeded/missing-baseline/missing-measurement/incomplete/incompatible/unavailable, and nullable numeric baseline and measured values; target is optional and limited to runtimeKinds, while optional differences is an array of nonempty strings."
 			},
 			{
 				"name": "componentVersionSchema",
-				"type": "unknown",
+				"type": "typeof componentVersionSchema",
 				"description": "Zod strict-object schema for the exact version of a unit observed in a verification record. It requires an identifier-valued unit, change unchanged/modified/added/removed, a target from runtimeKinds, four 64-character lowercase hexadecimal SHA-256 digests, and files whose nonempty paths have 40-character lowercase commit or tree hashes."
 			},
 			{
 				"name": "measurementSchema",
-				"type": "unknown",
+				"type": "typeof measurementSchema",
 				"description": "Zod strict-object schema for one measured metric or an explicit unavailable measurement in a verification record. It requires an identifier-valued unit, nonempty metric/unitOfMeasure/method, numeric or null value, nullable identifier workload and string profile, a 40-character lowercase testedRevision hash, and artifacts with nonempty paths, 64-character lowercase SHA-256 hashes, and nonnegative integer byte counts; optional samples must be positive, optional target comes from runtimeKinds, and optional comparison is validated by comparisonSchema."
 			},
 			{
 				"name": "verificationRecordSchema",
-				"type": "unknown",
+				"type": "typeof verificationRecordSchema",
 				"description": "Zod strict-object schema for validating a complete verification record against its source revision, profile, evidence, and gates. It fixes schemaVersion at 1, permits optional componentSchemaVersion 2, requires source commit/tree and tested revisions to be 40-character lowercase hashes, requires a profile and the components, measurements, impact, tests, scenarios, budgets, reasons, and failures sections, and constrains status values and nested objects as declared by their schemas; tools, builds, gates, and componentSchemaVersion are optional, and test browserErrors is an optional array validated by browserDiagnosticSchema."
 			}
 		],

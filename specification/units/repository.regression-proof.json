@@ -228,7 +228,7 @@
 				"outputs": [
 					{
 						"name": "RegressionProofRepository.history",
-						"type": "unknown",
+						"type": "Promise<import('../../core/verification-evidence/regressionTypes').RegressionView[]>",
 						"description": "Promise resolving to flattened regression views for the requested commit and eligible commits with identical source trees. Corrupt or unreadable per-note evidence is retained as a gap in its view.",
 						"examples": [
 							[
@@ -347,7 +347,7 @@
 				"outputs": [
 					{
 						"name": "RegressionProofRepository.load",
-						"type": "unknown",
+						"type": "Promise<{ record: RegressionRecord; output: string; files: Map<string, Buffer> }>",
 						"description": "Returns the parsed record, UTF-8 output text, and a Map of capture paths to validated original Buffers. It reads from the note’s evidence commit, checks the pinned history and source tree, and validates checkpoint identities, hashes, capture bytes, decoding, and served revision when present."
 					}
 				],
@@ -477,7 +477,7 @@
 				"outputs": [
 					{
 						"name": "RegressionProofRepository.constructor",
-						"type": "unknown",
+						"type": "RegressionProofRepository",
 						"description": "Creates a repository instance retaining the Git root and optional evidence-history pin. Construction stores these values without reading Git history."
 					}
 				],

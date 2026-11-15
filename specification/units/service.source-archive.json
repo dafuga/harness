@@ -626,7 +626,7 @@
 				"outputs": [
 					{
 						"name": "SourceArchiveService.constructor",
-						"type": "unknown",
+						"type": "SourceArchiveService",
 						"description": "A service instance bound to the repository root and output directory; its instance-local write map coalesces concurrent writes of identical archived media."
 					}
 				],

@@ -141,7 +141,7 @@
 				"outputs": [
 					{
 						"name": "HostCommandService.constructor",
-						"type": "unknown",
+						"type": "HostCommandService",
 						"description": "The new HostCommandService instance. The constructor body is empty: it stores the four constructor parameters as readonly fields and creates a HostCommandValidator for command checks."
 					}
 				],

@@ -141,12 +141,12 @@
 			},
 			{
 				"name": "keepPointerInPlace",
-				"type": "unknown",
+				"type": "void",
 				"description": "No value is returned; the function adds a computed offset to each of viewport.scrollLeft and viewport.scrollTop. The browser clamps the new offsets to the viewport's scrollable range, so the anchor may not reach the pointer near the scroll limits."
 			},
 			{
 				"name": "trackpadZoom",
-				"type": "unknown",
+				"type": "{ destroy(): void }",
 				"description": "Installs nonpassive wheel, gesturestart and gesturechange listeners and a gestureend listener on the node, and returns an object whose destroy() method removes all four. Plain wheel scrolling is left untouched, Ctrl-wheel, gesturestart and gesturechange events are default-prevented, each Ctrl-wheel step scales zoom by a factor between about 0.61 and 1.65 and does not zoom during an active Safari gesture, and zoom is clamped to the supplied minimum and maximum with null passed to apply when the result is at or within rounding of the minimum."
 			}
 		],
@@ -266,7 +266,7 @@
 				"outputs": [
 					{
 						"name": "keepPointerInPlace",
-						"type": "unknown",
+						"type": "void",
 						"description": "No value is returned; the function adds a computed offset to each of viewport.scrollLeft and viewport.scrollTop. The browser clamps the new offsets to the viewport's scrollable range, so the anchor may not reach the pointer near the scroll limits."
 					}
 				],
@@ -292,7 +292,7 @@
 				"outputs": [
 					{
 						"name": "trackpadZoom",
-						"type": "unknown",
+						"type": "{ destroy(): void }",
 						"description": "Installs nonpassive wheel, gesturestart and gesturechange listeners and a gestureend listener on the node, and returns an object whose destroy() method removes all four. Plain wheel scrolling is left untouched, Ctrl-wheel, gesturestart and gesturechange events are default-prevented, each Ctrl-wheel step scales zoom by a factor between about 0.61 and 1.65 and does not zoom during an active Safari gesture, and zoom is clamped to the supplied minimum and maximum with null passed to apply when the result is at or within rounding of the minimum."
 					}
 				],

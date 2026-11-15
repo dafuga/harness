@@ -264,7 +264,7 @@
 				"outputs": [
 					{
 						"name": "regressionHash",
-						"type": "unknown",
+						"type": "string",
 						"description": "SHA-256 digest of the input bytes as a 64-character lowercase hexadecimal string.",
 						"examples": [
 							"0f9e3b7a1c5d28e4b06a7f3c9d1e52b8a4c07f6e3d9b1a58c2e7f04d6b3a9c15",
@@ -481,7 +481,7 @@
 				"outputs": [
 					{
 						"name": "readRegression",
-						"type": "unknown",
+						"type": "Promise<{ record: RegressionRecord; output: string; files: Map<string, Buffer> }>",
 						"description": "Resolved object holding the verified record, the output.log text decoded as UTF-8, and a Map of verified focused capture bytes keyed by capture path; any verification failure rejects instead of resolving."
 					}
 				],

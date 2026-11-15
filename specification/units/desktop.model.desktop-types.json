@@ -46,7 +46,7 @@
 		"outputs": [
 			{
 				"name": "categories",
-				"type": "unknown",
+				"type": "typeof categories",
 				"description": "`categories` is the `as const` array of the eight category names (`pages`, `apis`, `layouts`, `components`, `functions`, `configs`, `services`, `models`) that the Electron main process tells the renderer about a project. Every value is serializable and crosses the preload bridge by structured clone, and the `Category` type is the union of exactly these eight strings, so no other name is a valid `Category`.",
 				"examples": [
 					["pages", "apis", "layouts", "components", "functions", "configs", "services", "models"]

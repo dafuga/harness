@@ -134,7 +134,7 @@
 		"outputs": [
 			{
 				"name": "categories",
-				"type": "unknown",
+				"type": "typeof categories",
 				"description": "The exported constant maps page, shell, layout, component, function, config, and service to pages, shells, layouts, components, functions, configs, and services. planValidate uses the mapping to form a relative plan folder.",
 				"examples": [
 					{

@@ -53,7 +53,7 @@
 		"outputs": [
 			{
 				"name": "channels",
-				"type": "unknown",
+				"type": "typeof channels",
 				"description": "The table of 37 channel names for the desktop bridge, keyed by a camelCase name (for example, `snapshot` maps to `project:snapshot`); use it when a channel name is needed. The values are fixed string literals because of `as const`, and `ChannelName` is the union of all 37 of them, so no other string is typed as a channel name.",
 				"examples": [
 					{
@@ -99,13 +99,13 @@
 			},
 			{
 				"name": "runEventChannel",
-				"type": "unknown",
+				"type": "\"run:event\"",
 				"description": "The fixed channel name `run:event` for run events, exported separately rather than as one of the 37 entries of `channels`. It is a single string constant, so it is the one run-event channel name this module defines; use it wherever that name is needed.",
 				"examples": ["run:event"]
 			},
 			{
 				"name": "cacheEventChannel",
-				"type": "unknown",
+				"type": "\"cache:status\"",
 				"description": "The fixed channel name `cache:status` for cache status events, exported separately rather than as one of the 37 entries of `channels`. It is a single string constant, so it is the one cache-event channel name this module defines; use it wherever that name is needed.",
 				"examples": ["cache:status"]
 			}

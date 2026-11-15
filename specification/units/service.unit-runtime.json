@@ -386,7 +386,7 @@
 				"outputs": [
 					{
 						"name": "UnitRuntimeService.constructor",
-						"type": "unknown",
+						"type": "UnitRuntimeService",
 						"description": "Initialized UnitRuntimeService instance using the supplied root and options. Omitted root uses process.cwd(), and omitted options.env uses process.env for kernel artifact lookup."
 					}
 				],
