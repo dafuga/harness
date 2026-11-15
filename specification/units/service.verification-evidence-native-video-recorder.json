@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "service.verification-evidence-native-video-recorder",
+	"uid": "u_akqk4uwm6b",
+	"kind": "service",
+	"title": "NativeVideoRecorderService",
+	"responsibility": "Captures native browser frames and maps scripted assertions into bounded admitted silent video.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/verification-evidence/NativeVideoRecorderService.ts"],
+		"symbols": ["NativeVideoRecorderService", "NativeVideoRecorderService.run"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "NativeVideoRecorderService.run",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "NativeVideoRecorderService.run",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeVideoRecorderService.run",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/NativeVideoRecorderService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/NativeVideoRecorderService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

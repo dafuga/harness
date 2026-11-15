@@ -190,3 +190,4 @@ export { ContractsCommand } from './commands/development-tooling/ContractsComman
 export { VideoEvidenceService } from './services/verification-evidence/VideoEvidenceService';
 export { videoClipSchema } from './utils/verification-evidence/videoClipSchema';
 export { FrameFlagService } from './services/verification-evidence/FrameFlagService';
+export { NativeVideoRecorderService } from './services/verification-evidence/NativeVideoRecorderService';
