@@ -22,23 +22,58 @@
 				"name": "browserEvidenceReads.api",
 				"type": "BrowserApi",
 				"required": true,
-				"description": "API client used for JSON evidence and bounded media reads."
+				"description": "The BrowserApi client that both reads use: get is called with `${path}/evidence` for the evidence read and media with `${path}/artifact` for an artifact, where path is the base the guard resolves. This unit adds no handling to the client's rejections."
 			},
 			{
 				"name": "browserEvidenceReads.guard",
 				"type": "Guard",
 				"required": true,
-				"description": "Guard that resolves the project base path and handles permission failures."
+				"description": "The project permission guard, called with each request's input as its context and with a read callback that receives the base path the guard resolves. Every evidence and artifact request goes through it and its result is returned unchanged, and this unit makes no permission check of its own and sends no request outside that callback."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserEvidenceReads",
 				"type": "Pick<DesktopBridge, 'evidence' | 'artifact'>",
-				"description": "evidence and artifact bridge methods using public evidence fields; artifact additionally validates returned media against the requested hash."
+				"description": "The bridge object with an evidence method, which resolves with the JSON that api.get returns for one entity's recorded evidence, and an artifact method, which resolves with the bytes, mediaType and sha256 of one capture only after browserArtifact has checked its media type, size and SHA-256. Both methods send only the fields that evidencePayload keeps, so any other field of the input is dropped.",
+				"examples": [
+					{}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Invalid text field.",
+				"type": "thrown",
+				"description": "Thrown by textField when a text field of the request is not a string, is blank after trimming, or is longer than its limit: 120 for entityId, scenarioId, state and evidenceId, 40 for commit, 255 for branch, 64 for recordId and sha256, and 300 for viewport, notesRevision and evidenceRevision. It is thrown while the payload is built, before api.get or api.media is called."
+			},
+			{
+				"name": "Invalid identifier.",
+				"type": "thrown",
+				"description": "Thrown by textField when a text field is within its length limit but does not match its pattern: idPattern (lowercase letters and digits joined by single dots or hyphens) for entityId, scenarioId, state, evidenceId and a non-null viewport; commitPattern (40 lowercase hex characters) for commit, notesRevision and evidenceRevision; and hashPattern (64 lowercase hex characters) for recordId and sha256. It is thrown before api.get or api.media is called."
+			},
+			{
+				"name": "Invalid option.",
+				"type": "thrown",
+				"description": "Thrown by enumField when mode is not 'current' or 'commit', and, for artifact requests, when side is not 'before' or 'after'. It is thrown before api.get or api.media is called."
+			},
+			{
+				"name": "The service sent a file of a kind this page does not show.",
+				"type": "thrown",
+				"description": "Thrown by browserArtifact when the returned media type is not exactly one of the eight artifactMediaTypes (image/png, image/jpeg, audio/wav, audio/mpeg, audio/mp4, audio/ogg, application/json, text/plain; charset=utf-8), and when hostedArtifact fails for any reason other than the SHA-256 and size cases. No bytes are returned."
+			},
+			{
+				"name": "The recorded file is too large for this page.",
+				"type": "thrown",
+				"description": "Thrown by browserArtifact when hostedArtifact fails with the size refusal of artifactAnswer, which applies to bytes longer than artifactLimit (11 * 1024 * 1024 bytes, that is 11 MiB). No bytes are returned."
+			},
+			{
+				"name": "This is not the recorded file that was asked for (SHA-256).",
+				"type": "thrown",
+				"description": "Thrown by hostedArtifact when the bytes do not hash to the requested sha256, and rethrown unchanged by browserArtifact. No bytes are returned."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "browserEvidenceReads",
@@ -47,24 +82,58 @@
 						"name": "browserEvidenceReads.api",
 						"type": "BrowserApi",
 						"required": true,
-						"description": "API client used for JSON evidence and bounded media reads."
+						"description": "The BrowserApi client that both reads use: get is called with `${path}/evidence` for the evidence read and media with `${path}/artifact` for an artifact, where path is the base the guard resolves. This unit adds no handling to the client's rejections."
 					},
 					{
 						"name": "browserEvidenceReads.guard",
 						"type": "Guard",
 						"required": true,
-						"description": "Guard that resolves the project base path and handles permission failures."
+						"description": "The project permission guard, called with each request's input as its context and with a read callback that receives the base path the guard resolves. Every evidence and artifact request goes through it and its result is returned unchanged, and this unit makes no permission check of its own and sends no request outside that callback."
 					}
 				],
 				"outputs": [
 					{
 						"name": "browserEvidenceReads",
 						"type": "Pick<DesktopBridge, 'evidence' | 'artifact'>",
-						"description": "evidence and artifact bridge methods using public evidence fields; artifact additionally validates returned media against the requested hash."
+						"description": "The bridge object with an evidence method, which resolves with the JSON that api.get returns for one entity's recorded evidence, and an artifact method, which resolves with the bytes, mediaType and sha256 of one capture only after browserArtifact has checked its media type, size and SHA-256. Both methods send only the fields that evidencePayload keeps, so any other field of the input is dropped.",
+						"examples": [
+							{}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "Invalid text field.",
+						"type": "thrown",
+						"description": "Thrown by textField when a text field of the request is not a string, is blank after trimming, or is longer than its limit: 120 for entityId, scenarioId, state and evidenceId, 40 for commit, 255 for branch, 64 for recordId and sha256, and 300 for viewport, notesRevision and evidenceRevision. It is thrown while the payload is built, before api.get or api.media is called."
+					},
+					{
+						"name": "Invalid identifier.",
+						"type": "thrown",
+						"description": "Thrown by textField when a text field is within its length limit but does not match its pattern: idPattern (lowercase letters and digits joined by single dots or hyphens) for entityId, scenarioId, state, evidenceId and a non-null viewport; commitPattern (40 lowercase hex characters) for commit, notesRevision and evidenceRevision; and hashPattern (64 lowercase hex characters) for recordId and sha256. It is thrown before api.get or api.media is called."
+					},
+					{
+						"name": "Invalid option.",
+						"type": "thrown",
+						"description": "Thrown by enumField when mode is not 'current' or 'commit', and, for artifact requests, when side is not 'before' or 'after'. It is thrown before api.get or api.media is called."
+					},
+					{
+						"name": "The service sent a file of a kind this page does not show.",
+						"type": "thrown",
+						"description": "Thrown by browserArtifact when the returned media type is not exactly one of the eight artifactMediaTypes (image/png, image/jpeg, audio/wav, audio/mpeg, audio/mp4, audio/ogg, application/json, text/plain; charset=utf-8), and when hostedArtifact fails for any reason other than the SHA-256 and size cases. No bytes are returned."
+					},
+					{
+						"name": "The recorded file is too large for this page.",
+						"type": "thrown",
+						"description": "Thrown by browserArtifact when hostedArtifact fails with the size refusal of artifactAnswer, which applies to bytes longer than artifactLimit (11 * 1024 * 1024 bytes, that is 11 MiB). No bytes are returned."
+					},
+					{
+						"name": "This is not the recorded file that was asked for (SHA-256).",
+						"type": "thrown",
+						"description": "Thrown by hostedArtifact when the bytes do not hash to the requested sha256, and rethrown unchanged by browserArtifact. No bytes are returned."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
