@@ -12,20 +12,42 @@
 		"symbols": ["nativeAtomSource", "atomicComponentFiles", "atomicTypeFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "atomicComponentFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns planned files for every native atom, the two atomic type declarations, and each imported atomic runtime source. It emits one Svelte component per native atom, plus the declaration pair and one script per runtime source.",
+				"examples": [
+					[
+						{
+							"path": "src/components/atoms/HtmlA.svelte",
+							"contents": "<!-- @harness-tier atom -->\n<!-- @harness-element a -->\n<script lang=\"ts\">\n\timport type { Snippet } from 'svelte';\n\tlet { children, ...attributes }: { children?: Snippet; [attribute: string]: unknown } = $props();\n</script>\n\n<svelte:element this={'a'} {...attributes}>\n\t{#if children}{@render children()}{/if}\n</svelte:element>\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "atomicTypeFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns the two planned TypeScript declaration files that add native atom tags to the Svelte element and DOM tag interfaces. Entries are generated from nativeAtoms; svelte:element maps to div with optional this in Svelte and to HTMLElement in the DOM map.",
+				"examples": [
+					[
+						{
+							"path": "src/lib/atoms/native-elements.d.ts",
+							"contents": "import type { SvelteHTMLElements as NativeElements } from 'svelte/elements';\n\ndeclare module 'svelte/elements' {\n\tinterface SvelteHTMLElements {\n\t\t'hx-a': NativeElements['a'];\n\t}\n}\n"
+						},
+						{
+							"path": "src/lib/atoms/native-dom.d.ts",
+							"contents": "export {};\n\ndeclare global {\n\tinterface HTMLElementTagNameMap {\n\t\t'hx-a': HTMLElementTagNameMap['a'];\n\t}\n}\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "atomicComponentFiles",
@@ -33,11 +55,20 @@
 				"outputs": [
 					{
 						"name": "atomicComponentFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns planned files for every native atom, the two atomic type declarations, and each imported atomic runtime source. It emits one Svelte component per native atom, plus the declaration pair and one script per runtime source.",
+						"examples": [
+							[
+								{
+									"path": "src/components/atoms/HtmlA.svelte",
+									"contents": "<!-- @harness-tier atom -->\n<!-- @harness-element a -->\n<script lang=\"ts\">\n\timport type { Snippet } from 'svelte';\n\tlet { children, ...attributes }: { children?: Snippet; [attribute: string]: unknown } = $props();\n</script>\n\n<svelte:element this={'a'} {...attributes}>\n\t{#if children}{@render children()}{/if}\n</svelte:element>\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "atomicTypeFiles",
@@ -45,11 +76,24 @@
 				"outputs": [
 					{
 						"name": "atomicTypeFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns the two planned TypeScript declaration files that add native atom tags to the Svelte element and DOM tag interfaces. Entries are generated from nativeAtoms; svelte:element maps to div with optional this in Svelte and to HTMLElement in the DOM map.",
+						"examples": [
+							[
+								{
+									"path": "src/lib/atoms/native-elements.d.ts",
+									"contents": "import type { SvelteHTMLElements as NativeElements } from 'svelte/elements';\n\ndeclare module 'svelte/elements' {\n\tinterface SvelteHTMLElements {\n\t\t'hx-a': NativeElements['a'];\n\t}\n}\n"
+								},
+								{
+									"path": "src/lib/atoms/native-dom.d.ts",
+									"contents": "export {};\n\ndeclare global {\n\tinterface HTMLElementTagNameMap {\n\t\t'hx-a': HTMLElementTagNameMap['a'];\n\t}\n}\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
