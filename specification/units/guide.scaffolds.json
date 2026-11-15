@@ -8,15 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/guides/development-tooling/scaffolds.ts", "src/guides/scaffolds.ts"],
-		"symbols": [
-			"scaffoldGuides",
-			"scaffoldsGuide",
-			"namingGuide",
-			"scaffoldGuides",
-			"scaffoldsGuide",
-			"namingGuide"
-		]
+		"source": ["src/guides/development-tooling/scaffolds.ts"],
+		"symbols": ["scaffoldGuides", "scaffoldsGuide", "namingGuide"]
 	},
 	"contract": {
 		"origin": "derived",

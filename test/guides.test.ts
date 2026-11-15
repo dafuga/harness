@@ -3,7 +3,7 @@ import { harnessRuleLimits, harnessRuleSummariesFor } from '../src/rules/catalog
 import { expect, test } from 'vitest';
 import { availableGuideTopics, findGuide, guides } from '../src/guides/guide';
 import { scaffoldKinds } from '../src/templates/scaffoldTypes';
-import { findGuideByTopic } from '../src/guides/topics';
+import { findGuideByTopic } from '../src/guides/development-tooling/topics';
 
 test('model guidance is available for agents', () =>
 	measureWorkload('guide.scaffolds', 'layout-catalog-behavior', () => {
