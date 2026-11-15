@@ -6,6 +6,7 @@ import { withTempRepo } from '../../support/temporary';
 import { videoCaptureFixture, captureDeclaration } from '../../support/videoCaptureFixture';
 import { assertCaptureLifecycle } from '../../support/videoCaptureLifecycle';
 import { VideoEvidenceService } from '../../../src/services/verification-evidence/VideoEvidenceService';
+import { captureReviewFlag } from '../../support/videoCaptureFlags';
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -34,6 +35,40 @@ test('capture orchestration refuses unbound recording before scripts or browser 
 		expect(f.native.loadScript).not.toHaveBeenCalled();
 	});
 });
+
+test('pending frame feedback forces an explicit owning acknowledgement before browser work', async () => {
+	expect(typeof new VideoCaptureService().record).toBe('function');
+	await withTempRepo(async (repo) => {
+		const f = await videoCaptureFixture(repo),
+			cold = await f.service.record(f.options());
+		f.publish(cold);
+		const flag = await captureReviewFlag(f, cold);
+		const plan = await f.service.plan(f.options());
+		expect(plan.record.map((slot) => slot.clipId)).toEqual(['first']);
+		await expect(f.service.record(f.options())).rejects.toThrow(/explicitly address/);
+		expect(f.native.browserFactory).toHaveBeenCalledTimes(1);
+		const script = await f.native.loadScript({} as never);
+		await expect(
+			f.service.record({
+				...f.options(),
+				loadScript: async () => ({ ...script, addressedFlags: [flag.id, '0'.repeat(64)] })
+			})
+		).rejects.toThrow(/unknown|wrong-owner/);
+		const replaced = await f.service.record({
+			...f.options(),
+			loadScript: async (input) => {
+				expect(input.pendingFlags).toEqual([
+					{ id: flag.id, note: 'Read this actual frame before replacement' }
+				]);
+				return { ...script, addressedFlags: [flag.id] };
+			}
+		});
+		expect(replaced.recorded.map((slot) => slot.clipId)).toEqual(['first']);
+		expect(
+			replaced.captures.find((c) => c.video!.clipId === 'first')!.video!.addressedFlags
+		).toEqual([flag.id]);
+	});
+}, 30_000);
 
 test('capture orchestration observes configured boundary signatures and preserves failed raw data', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
