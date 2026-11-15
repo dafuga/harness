@@ -41,6 +41,10 @@ export async function gatherVideoReferenceFixture({ root, git }: TemporaryRepo) 
 	};
 	const write = (value: Capture = capture) => {
 		const { path, status, sha256, bytes, capturedAt, ...wire } = value;
+		void status;
+		void sha256;
+		void bytes;
+		void capturedAt;
 		writeFileSync(
 			join(directory, 'captures.ndjson'),
 			JSON.stringify({ ...wire, file: basename(path) }) + '\n'
@@ -55,7 +59,12 @@ export async function gatherVideoReferenceFixture({ root, git }: TemporaryRepo) 
 		);
 	};
 	write();
-	const scenario = scenarioManifestSchema.parse({
+	const scenario = gatherVideoScenario();
+	return { ...f, capture, directory, context, write, scenario };
+}
+
+function gatherVideoScenario() {
+	return scenarioManifestSchema.parse({
 		schemaVersion: 1,
 		id: 'player',
 		title: 'Player',
@@ -65,8 +74,14 @@ export async function gatherVideoReferenceFixture({ root, git }: TemporaryRepo) 
 		viewports: [{ id: 'desktop', width: 160, height: 120 }],
 		tests: [{ id: 'video', kind: 'unit', runner: 'command', target: 'video' }],
 		evidence: [
-			{ id: 'motion', kind: 'video', states: ['playing'], viewports: ['desktop'], build: 'preview' }
+			{
+				id: 'motion',
+				required: true,
+				kind: 'video',
+				states: ['playing'],
+				viewports: ['desktop'],
+				build: 'preview'
+			}
 		]
 	});
-	return { ...f, capture, directory, context, write, scenario };
 }

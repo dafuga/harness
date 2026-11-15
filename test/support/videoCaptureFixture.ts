@@ -34,6 +34,45 @@ export const captureDeclaration = {
 
 /** Real archive media, with injected browser/native boundaries so selection is deterministic. */
 export async function videoCaptureFixture({ root, git }: TemporaryRepo) {
+	const commit = initializeCaptureRepo(root, git);
+	const archive = new VideoArchiveService(root),
+		native = captureNativeFixture(root);
+	const proposals: VideoReferenceCandidate[] = [];
+	const references = captureReferences(archive, proposals);
+	const service = new VideoCaptureService(root, { references, archive, native: native.factory });
+	let runs = 0;
+	const options = (): VideoCaptureOptions => ({
+		snapshot: root,
+		source: { commit: git('rev-parse', 'HEAD'), tree: git('rev-parse', 'HEAD^{tree}') },
+		buildId: 'b'.repeat(64),
+		declaration: captureDeclaration,
+		evidence: 'motion',
+		directory: join(root, `.cache/captures-${runs++}`),
+		env: { HARNESS_VIDEO_RECORD_TASK: 'video-build-20261115' },
+		recordingAuthorization: { task: 'video-build-20261115' },
+		browserFactory: native.browserFactory,
+		loadScript: native.loadScript
+	});
+	const publish = (result: VideoCaptureResult) => {
+		for (const capture of result.captures.filter((c) => !c.videoReference?.record))
+			proposals.unshift({
+				capture: {
+					...capture,
+					path: `evidence/${result.source.commit}/pilot/${capture.path}`,
+					videoReference: {
+						...capture.videoReference!,
+						record: 'a'.repeat(64),
+						revision: result.source.commit
+					}
+				},
+				batches: [result.videoBatches.find((p) => p.batch === capture.videoReference!.batch)!],
+				parent: { record: 'a'.repeat(64), revision: result.source.commit }
+			});
+	};
+	return { root, git, commit, service, options, publish, proposals, references, native, archive };
+}
+
+function initializeCaptureRepo(root: string, git: TemporaryRepo['git']) {
 	for (const path of ['src', 'test', 'specification/units'])
 		mkdirSync(join(root, path), { recursive: true });
 	writeFileSync(join(root, '.gitignore'), '.cache/\n');
@@ -60,10 +99,11 @@ export async function videoCaptureFixture({ root, git }: TemporaryRepo) {
 		git('commit', '-qm', 'feat: update capture fixture');
 	};
 	commit();
-	const archive = new VideoArchiveService(root),
-		native = captureNativeFixture(root);
-	const proposals: VideoReferenceCandidate[] = [];
-	const references = {
+	return commit;
+}
+
+function captureReferences(archive: VideoArchiveService, proposals: VideoReferenceCandidate[]) {
+	return {
 		candidates: vi.fn(async (slot: { clipId: string; inputHash: string }) =>
 			proposals.filter(
 				(row) =>
@@ -98,35 +138,4 @@ export async function videoCaptureFixture({ root, git }: TemporaryRepo) {
 			}
 		)
 	};
-	const service = new VideoCaptureService(root, { references, archive, native: native.factory });
-	let runs = 0;
-	const options = (): VideoCaptureOptions => ({
-		snapshot: root,
-		source: { commit: git('rev-parse', 'HEAD'), tree: git('rev-parse', 'HEAD^{tree}') },
-		buildId: 'b'.repeat(64),
-		declaration: captureDeclaration,
-		evidence: 'motion',
-		directory: join(root, `.cache/captures-${runs++}`),
-		env: { HARNESS_VIDEO_RECORD_TASK: 'video-build-20261115' },
-		recordingAuthorization: { task: 'video-build-20261115' },
-		browserFactory: native.browserFactory,
-		loadScript: native.loadScript
-	});
-	const publish = (result: VideoCaptureResult) => {
-		for (const capture of result.captures.filter((c) => !c.videoReference?.record))
-			proposals.unshift({
-				capture: {
-					...capture,
-					path: `evidence/${result.source.commit}/pilot/${capture.path}`,
-					videoReference: {
-						...capture.videoReference!,
-						record: 'a'.repeat(64),
-						revision: result.source.commit
-					}
-				},
-				batches: [result.videoBatches.find((p) => p.batch === capture.videoReference!.batch)!],
-				parent: { record: 'a'.repeat(64), revision: result.source.commit }
-			});
-	};
-	return { root, git, commit, service, options, publish, proposals, references, native, archive };
 }

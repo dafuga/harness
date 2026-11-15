@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import * as gathering from '../src/utils/verification-evidence/gatherCaptures';
+import * as gathering from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures';
 import { withTempRepo } from './support/temporary';
 import { gatherVideoReferenceFixture } from './support/gatherVideoReferenceFixture';
 import { RecordBudget } from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
@@ -33,7 +33,10 @@ test('verified child references bypass only parent media budget and preserve ori
 		};
 		expect(scenarioCoverage(input).failures).toEqual([]);
 		expect(
-			scenarioCoverage({ ...input, gathered: structuredClone(result.gathered) }).failures.join(' ')
+			scenarioCoverage({
+				...input,
+				gathered: globalThis.structuredClone(result.gathered)
+			}).failures.join(' ')
 		).toMatch(/revision|build/);
 		result.gathered[0].capture.server!.buildId = 'c'.repeat(64);
 		expect(scenarioCoverage(input).failures.join(' ')).toMatch(/revision|build/);
@@ -60,7 +63,7 @@ test('serialized references require matching current inputs and an intact origin
 		expect(stale.failures.join(' ')).toMatch(/current snapshot/);
 		f.write({
 			...f.capture,
-			videoReference: { ...f.capture.videoReference!, record: '0'.repeat(64) }
+			videoReference: { ...f.capture.videoReference, record: '0'.repeat(64) }
 		});
 		const forged = await gather();
 		expect(forged.gathered).toEqual([]);

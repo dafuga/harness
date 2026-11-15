@@ -1,6 +1,6 @@
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { vi } from 'vitest';
 import type { Browser } from '@playwright/test';
@@ -100,32 +100,7 @@ export function captureNativeFixture(root: string) {
 		const source = media[JSON.parse(options.slotKey)[1] === 'first' ? 0 : 1];
 		const directory = join(cacheRoots.at(-1)!, String(produced.length));
 		mkdirSync(directory);
-		const video = fixtureFile(source.path),
-			poster = fixtureFile(source.poster);
-		const result = {
-			directory,
-			video,
-			poster,
-			metadata: {
-				schemaVersion: 1,
-				slotKey: options.slotKey,
-				inputHash: options.inputHash,
-				testedRevision: options.testedRevision,
-				capturedAt: new Date().toISOString(),
-				addressedFlags: options.addressedFlags ?? [],
-				viewport: options.viewport,
-				recipe: 'native-jpeg-sample-previous-h264-yuv420p-30fps-v1',
-				marker: { shownTimestamp: 0, removedTimestamp: 0, nativeTimestamp: 0 },
-				interval: { startTimestamp: 0, endTimestamp: 2 },
-				native: { frames: [], meanFrameRate: 30, maxGapMs: 34, bytes: video.bytes },
-				mapping: [],
-				events,
-				facts: mediaFacts(video.data, 'video/mp4'),
-				posterFrame: 0,
-				elapsedMs: 1,
-				runnerRssBytes: 1
-			}
-		} as NativeRecording;
+		const result = recordedNative(options, events, { source, directory });
 		produced.push(result);
 		return result;
 	});
@@ -150,7 +125,6 @@ export function captureNativeFixture(root: string) {
 	return { factory, record, acknowledge, browserFactory, loadScript, cacheRoots, produced };
 }
 
-import { readFileSync } from 'node:fs';
 function fixtureFile(path: string) {
 	const data = readFileSync(path);
 	return {
@@ -160,4 +134,37 @@ function fixtureFile(path: string) {
 		bytes: data.length,
 		data
 	};
+}
+
+function recordedNative(
+	options: NativeRecordingOptions,
+	events: NativeRecording['metadata']['events'],
+	state: { source: { path: string; poster: string }; directory: string }
+): NativeRecording {
+	const video = fixtureFile(state.source.path),
+		poster = fixtureFile(state.source.poster);
+	return {
+		directory: state.directory,
+		video,
+		poster,
+		metadata: {
+			schemaVersion: 1,
+			slotKey: options.slotKey,
+			inputHash: options.inputHash,
+			testedRevision: options.testedRevision,
+			capturedAt: new Date().toISOString(),
+			addressedFlags: options.addressedFlags ?? [],
+			viewport: options.viewport,
+			recipe: 'native-jpeg-sample-previous-h264-yuv420p-30fps-v1',
+			marker: { shownTimestamp: 0, removedTimestamp: 0, nativeTimestamp: 0 },
+			interval: { startTimestamp: 0, endTimestamp: 2 },
+			native: { frames: [], meanFrameRate: 30, maxGapMs: 34, bytes: video.bytes },
+			mapping: [],
+			events,
+			facts: mediaFacts(video.data, 'video/mp4'),
+			posterFrame: 0,
+			elapsedMs: 1,
+			runnerRssBytes: 1
+		}
+	} as NativeRecording;
 }
