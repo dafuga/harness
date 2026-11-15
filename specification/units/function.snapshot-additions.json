@@ -30,47 +30,68 @@
 				"name": "declaredOutput.path",
 				"type": "string",
 				"required": true,
-				"description": "Snapshot-relative file or directory path to test against output patterns."
+				"description": "Snapshot-relative path of a file or folder, written without a trailing slash; the function tests it as given and again with a slash appended, so a folder pattern such as 'coverage/' covers the folder itself.",
+				"examples": ["dist/assets/app.js", "reports/evidence/grid.json", "coverage"]
 			},
 			{
 				"name": "declaredOutput.outputs",
 				"type": "string[]",
 				"required": true,
-				"description": "Declared output glob patterns."
+				"description": "Declared output patterns; the path is covered when any one of them matches, a pattern ending in a slash covers everything under that prefix, a pattern without '*' must equal the path, and in a glob '*' stays within one folder while '**/' crosses folders (a trailing '/**' does not). An empty array covers nothing.",
+				"examples": [
+					["dist/", "coverage/"],
+					["reports/**/*.json", "tmp/*.log"],
+					["reports/summary.json"]
+				]
 			},
 			{
 				"name": "snapshotAdditions.directory",
 				"type": "string",
 				"required": true,
-				"description": "Snapshot root directory to walk recursively."
+				"description": "Root directory of the snapshot, walked recursively with readdir; every returned path is relative to it, and a missing or unreadable root rejects the promise.",
+				"examples": ["/tmp/harness-verify/export-7f3a2c", "/tmp/harness-verify/export-c41d09"]
 			},
 			{
 				"name": "snapshotAdditions.bounds",
 				"type": "SnapshotBounds",
 				"required": true,
-				"description": "Tracked paths, declared output patterns and shared-link paths that are allowed."
+				"description": "The tracked set holds the exact snapshot-relative paths of the files the exported commit contains, and a file whose path is in it is never reported. The links set holds exact shared-link paths, given without a trailing slash, and outputs holds declared output patterns; an entry whose path is in links or is covered by an output pattern is neither reported nor walked."
 			},
 			{
 				"name": "snapshotAdditions.prefix",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional relative subtree prefix ending in slash when nonempty; defaults to empty."
+				"description": "Relative folder under directory to walk; it must end in a slash when nonempty because entry paths are built by concatenating prefix and name, and the default empty string walks the whole directory. Returned paths still include the prefix, since they are relative to directory.",
+				"examples": ["", "src/", "reports/evidence/"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "declaredOutput",
 				"type": "boolean",
-				"description": "True when a pattern matches the path or its directory form with a trailing slash."
+				"description": "True when at least one output pattern matches the path itself or the path with a trailing slash appended, which lets a folder pattern cover the folder's own name. False otherwise, including when outputs is empty.",
+				"examples": [true, false]
 			},
 			{
 				"name": "snapshotAdditions",
 				"type": "Promise<string[]>",
-				"description": "Sorted paths of untracked non-directory entries outside allowed outputs/links. Allowed directories are not entered; filesystem errors reject."
+				"description": "Sorted snapshot-relative paths of the non-directory entries that are not tracked, not shared links and not covered by an output pattern; links and covered folders are not entered, folders are never listed, and a filesystem error rejects the promise.",
+				"examples": [
+					[],
+					["README.local.txt"],
+					["scratch/debug-trace.log", "src/generated/tmp-index.json"]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "thrown",
+				"description": "Filesystem error from readdir, such as ENOENT for a missing root or subfolder, ENOTDIR for a root that is a file, or a permission error such as EACCES for an unreadable folder; the promise rejects and no partial list is returned."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "declaredOutput",
@@ -79,24 +100,31 @@
 						"name": "declaredOutput.path",
 						"type": "string",
 						"required": true,
-						"description": "Snapshot-relative file or directory path to test against output patterns."
+						"description": "Snapshot-relative path of a file or folder, written without a trailing slash; the function tests it as given and again with a slash appended, so a folder pattern such as 'coverage/' covers the folder itself.",
+						"examples": ["dist/assets/app.js", "reports/evidence/grid.json", "coverage"]
 					},
 					{
 						"name": "declaredOutput.outputs",
 						"type": "string[]",
 						"required": true,
-						"description": "Declared output glob patterns."
+						"description": "Declared output patterns; the path is covered when any one of them matches, a pattern ending in a slash covers everything under that prefix, a pattern without '*' must equal the path, and in a glob '*' stays within one folder while '**/' crosses folders (a trailing '/**' does not). An empty array covers nothing.",
+						"examples": [
+							["dist/", "coverage/"],
+							["reports/**/*.json", "tmp/*.log"],
+							["reports/summary.json"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "declaredOutput",
 						"type": "boolean",
-						"description": "True when a pattern matches the path or its directory form with a trailing slash."
+						"description": "True when at least one output pattern matches the path itself or the path with a trailing slash appended, which lets a folder pattern cover the folder's own name. False otherwise, including when outputs is empty.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "snapshotAdditions",
@@ -105,31 +133,44 @@
 						"name": "snapshotAdditions.directory",
 						"type": "string",
 						"required": true,
-						"description": "Snapshot root directory to walk recursively."
+						"description": "Root directory of the snapshot, walked recursively with readdir; every returned path is relative to it, and a missing or unreadable root rejects the promise.",
+						"examples": ["/tmp/harness-verify/export-7f3a2c", "/tmp/harness-verify/export-c41d09"]
 					},
 					{
 						"name": "snapshotAdditions.bounds",
 						"type": "SnapshotBounds",
 						"required": true,
-						"description": "Tracked paths, declared output patterns and shared-link paths that are allowed."
+						"description": "The tracked set holds the exact snapshot-relative paths of the files the exported commit contains, and a file whose path is in it is never reported. The links set holds exact shared-link paths, given without a trailing slash, and outputs holds declared output patterns; an entry whose path is in links or is covered by an output pattern is neither reported nor walked."
 					},
 					{
 						"name": "snapshotAdditions.prefix",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Optional relative subtree prefix ending in slash when nonempty; defaults to empty."
+						"description": "Relative folder under directory to walk; it must end in a slash when nonempty because entry paths are built by concatenating prefix and name, and the default empty string walks the whole directory. Returned paths still include the prefix, since they are relative to directory.",
+						"examples": ["", "src/", "reports/evidence/"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "snapshotAdditions",
 						"type": "Promise<string[]>",
-						"description": "Sorted paths of untracked non-directory entries outside allowed outputs/links. Allowed directories are not entered; filesystem errors reject."
+						"description": "Sorted snapshot-relative paths of the non-directory entries that are not tracked, not shared links and not covered by an output pattern; links and covered folders are not entered, folders are never listed, and a filesystem error rejects the promise.",
+						"examples": [
+							[],
+							["README.local.txt"],
+							["scratch/debug-trace.log", "src/generated/tmp-index.json"]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Filesystem error from readdir, such as ENOENT for a missing root or subfolder, ENOTDIR for a root that is a file, or a permission error such as EACCES for an unreadable folder; the promise rejects and no partial list is returned."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
