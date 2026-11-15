@@ -25,27 +25,112 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RecordAssemblyService.constructor.context",
 				"type": "AssemblyContext",
-				"required": true
+				"required": true,
+				"description": "Carries the repository root, tested commit and tree, base and head revisions, impact report, profile, store, and a callback for the reason report; requirePerformance, baseRecord, requestedBase, and sourceHashes are optional. The performance gate runs only when requirePerformance is truthy, and supplied sourceHashes replace the revision indexes used to record component files; the store, callback, and source-hash maps cannot be represented in JSON."
 			},
 			{
 				"name": "RecordAssemblyService.assemble.input",
 				"type": "AssemblyInput",
-				"required": true
+				"required": true,
+				"description": "Carries the run start time, executed check and build observations, scenario results with their failures, and referenced scenario results. Assembly derives measurements and gates from these values, filters setup checks out of the recorded tests, and combines run and referenced scenarios.",
+				"examples": [
+					{
+						"startedAt": "2026-11-15T10:00:00.000Z",
+						"executed": {
+							"outcomes": [],
+							"mutated": [],
+							"added": [],
+							"setupFailures": [],
+							"tools": [],
+							"artifacts": {},
+							"buildFailures": []
+						},
+						"scenarios": [],
+						"referenced": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RecordAssemblyService.assemble",
-				"type": "Promise<VerificationRecord>"
+				"type": "Promise<VerificationRecord>",
+				"description": "Resolves to a sealed verification record containing source identity, profile and tools, component versions, measurements, impact, filtered tests, judged scenarios, optional builds, budget and reason results, gates, and failures. Assembly generates finishedAt, omits setup checks from tests, and sets id to the SHA-256 hash of the other record fields.",
+				"examples": [
+					{
+						"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",
+						"schemaVersion": 1,
+						"componentSchemaVersion": 2,
+						"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"source": {
+							"commit": "1111111111111111111111111111111111111111",
+							"tree": "2222222222222222222222222222222222222222",
+							"base": "3333333333333333333333333333333333333333"
+						},
+						"profile": {
+							"id": "linux-x64",
+							"platform": "linux",
+							"arch": "x64",
+							"cpu": "Generic x64 CPU",
+							"cores": 8,
+							"memoryBytes": 17179869184,
+							"runtime": "Node.js 22"
+						},
+						"tools": [
+							{
+								"id": "harness",
+								"version": "0.1.4"
+							}
+						],
+						"startedAt": "2026-11-15T10:00:00.000Z",
+						"finishedAt": "2026-11-15T10:00:01.000Z",
+						"status": "passed",
+						"components": [],
+						"measurements": [],
+						"impact": {
+							"runtime": "module",
+							"expanded": false,
+							"changed": [],
+							"units": {
+								"direct": [],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"uncertain": []
+						},
+						"tests": [],
+						"scenarios": [],
+						"budgets": {
+							"status": "passed",
+							"findings": []
+						},
+						"reasons": {
+							"status": "passed",
+							"entries": [],
+							"missing": []
+						},
+						"gates": {
+							"snapshot": "passed",
+							"registry": "passed",
+							"ledger": "passed",
+							"tests": "passed",
+							"scenarios": "passed",
+							"reasons": "passed",
+							"budgets": "passed"
+						},
+						"failures": []
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "RecordAssemblyService.assemble",
@@ -53,17 +138,101 @@
 					{
 						"name": "RecordAssemblyService.assemble.input",
 						"type": "AssemblyInput",
-						"required": true
+						"required": true,
+						"description": "Carries the run start time, executed check and build observations, scenario results with their failures, and referenced scenario results. Assembly derives measurements and gates from these values, filters setup checks out of the recorded tests, and combines run and referenced scenarios.",
+						"examples": [
+							{
+								"startedAt": "2026-11-15T10:00:00.000Z",
+								"executed": {
+									"outcomes": [],
+									"mutated": [],
+									"added": [],
+									"setupFailures": [],
+									"tools": [],
+									"artifacts": {},
+									"buildFailures": []
+								},
+								"scenarios": [],
+								"referenced": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RecordAssemblyService.assemble",
-						"type": "Promise<VerificationRecord>"
+						"type": "Promise<VerificationRecord>",
+						"description": "Resolves to a sealed verification record containing source identity, profile and tools, component versions, measurements, impact, filtered tests, judged scenarios, optional builds, budget and reason results, gates, and failures. Assembly generates finishedAt, omits setup checks from tests, and sets id to the SHA-256 hash of the other record fields.",
+						"examples": [
+							{
+								"id": "4727c5bd8473ce5bc3e7b376318425909810beaaf87b8f12f6fd046a1c61c1e0",
+								"schemaVersion": 1,
+								"componentSchemaVersion": 2,
+								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"source": {
+									"commit": "1111111111111111111111111111111111111111",
+									"tree": "2222222222222222222222222222222222222222",
+									"base": "3333333333333333333333333333333333333333"
+								},
+								"profile": {
+									"id": "linux-x64",
+									"platform": "linux",
+									"arch": "x64",
+									"cpu": "Generic x64 CPU",
+									"cores": 8,
+									"memoryBytes": 17179869184,
+									"runtime": "Node.js 22"
+								},
+								"tools": [
+									{
+										"id": "harness",
+										"version": "0.1.4"
+									}
+								],
+								"startedAt": "2026-11-15T10:00:00.000Z",
+								"finishedAt": "2026-11-15T10:00:01.000Z",
+								"status": "passed",
+								"components": [],
+								"measurements": [],
+								"impact": {
+									"runtime": "module",
+									"expanded": false,
+									"changed": [],
+									"units": {
+										"direct": [],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"uncertain": []
+								},
+								"tests": [],
+								"scenarios": [],
+								"budgets": {
+									"status": "passed",
+									"findings": []
+								},
+								"reasons": {
+									"status": "passed",
+									"entries": [],
+									"missing": []
+								},
+								"gates": {
+									"snapshot": "passed",
+									"registry": "passed",
+									"ledger": "passed",
+									"tests": "passed",
+									"scenarios": "passed",
+									"reasons": "passed",
+									"budgets": "passed"
+								},
+								"failures": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -73,17 +242,19 @@
 					{
 						"name": "RecordAssemblyService.constructor.context",
 						"type": "AssemblyContext",
-						"required": true
+						"required": true,
+						"description": "Carries the repository root, tested commit and tree, base and head revisions, impact report, profile, store, and a callback for the reason report; requirePerformance, baseRecord, requestedBase, and sourceHashes are optional. The performance gate runs only when requirePerformance is truthy, and supplied sourceHashes replace the revision indexes used to record component files; the store, callback, and source-hash maps cannot be represented in JSON."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RecordAssemblyService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed RecordAssemblyService instance, which retains the supplied context for later assemble calls."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
