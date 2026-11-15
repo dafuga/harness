@@ -4,7 +4,7 @@ import { test } from 'vitest';
 import { createHash } from 'node:crypto';
 import { PNG } from 'pngjs';
 import { planningService } from '../../src/lib/planning-collaboration/planning/planning-service/PlanningService';
-import { readImage } from '../../src/utils/plan-design/readImage';
+import { readImage } from '../../src/utils/planning-collaboration/plan-design/readImage';
 import { planGit } from '../../src/lib/planning-collaboration/planning/planGit';
 import { revision, type Git } from '../../src/utils/planning-collaboration/planGit';
 import { planRead } from '../../src/utils/planning-collaboration/plan-read/planRead';
@@ -137,4 +137,26 @@ test('each operation reads again: it sees an approval, a new commit and a branch
 	look('after an external commit', moved);
 	expect(moved).toEqual(await truth());
 	trace('plan-reads-freshness.json', cases);
+}, 30000);
+
+test('a thread anchor records the state and viewport of the image it reads', async () => {
+	const { api, design } = await designed();
+	const image = design.value.images[0];
+	const thread = await api.openThread({
+		unitId: 'page.home',
+		version: 'v001',
+		file: image.file,
+		imageSha256: image.sha256,
+		region: null,
+		author,
+		viewedRevision: design.commit
+	});
+	expect(thread.value.anchor).toEqual({
+		version: 'v001',
+		file: image.file,
+		imageSha256: image.sha256,
+		state: 'default',
+		viewport: 'desktop',
+		region: null
+	});
 }, 30000);

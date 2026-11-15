@@ -20,7 +20,7 @@ import type {
 import type { Git } from '../../../../utils/planning-collaboration/planGit';
 import { blob, revision } from '../../../../utils/planning-collaboration/planGit';
 import { planRead } from '../../../../utils/planning-collaboration/plan-read/planRead';
-import { readImage } from '../../../../utils/plan-design/readImage';
+import { readImage } from '../../../../utils/planning-collaboration/plan-design/readImage';
 import { optionOf } from '../../../../utils/planOptions';
 import {
 	clean,
