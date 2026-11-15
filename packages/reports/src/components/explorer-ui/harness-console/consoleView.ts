@@ -6,7 +6,7 @@ import type { EntityLens } from '../../../utils/explorer-ui/entityLens';
 import { correctedLocation } from '../../../utils/development-tooling/correctedLocation';
 import { explorerBehavior } from '../../../utils/explorer-ui/explorerBehavior';
 import { explorerEvidence } from '../../../utils/explorer-ui/explorerEvidence';
-import { explorerHistory } from '../../../utils/explorer-history/explorerHistory';
+import { explorerHistory } from '../../../utils/explorer-ui/explorer-history/explorerHistory';
 import { explorerRelationsReader } from '../../../utils/explorer-ui/explorerRelations';
 
 /** Remount content when its exact selected route changes, including callable and tab identity. */

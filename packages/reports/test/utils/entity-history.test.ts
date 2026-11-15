@@ -7,7 +7,7 @@ import {
 } from '../../src/components/explorer-ui/entity-history/entityHistory';
 import { reviewChanges } from '../../src/components/explorer-ui/entity-change/entityHistory';
 import { signedBytes, signedCount } from '../../src/utils/entityHistory';
-import { explorerHistory } from '../../src/utils/explorer-history/explorerHistory';
+import { explorerHistory } from '../../src/utils/explorer-ui/explorer-history/explorerHistory';
 import { historyDetail } from '../../src/components/explorer-ui/entity-history/explorerHistory';
 import { index, record, revision } from '../entityFixture';
 import { answers, view } from '../entityPlaces';

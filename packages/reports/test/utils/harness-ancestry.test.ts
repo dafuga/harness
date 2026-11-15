@@ -11,7 +11,7 @@ import {
 	defaultCommit,
 	retainedBranch
 } from '../../src/utils/harnessAncestry';
-import { harnessAncestry } from '../../src/utils/explorer-history/harnessAncestry';
+import { harnessAncestry } from '../../src/utils/explorer-ui/explorer-history/harnessAncestry';
 
 const id = (letter: string) => letter.repeat(40);
 function revision(letter: string, extra: Partial<HarnessRevisionSummary>): HarnessRevisionSummary {
