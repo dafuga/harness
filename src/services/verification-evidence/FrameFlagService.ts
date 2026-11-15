@@ -36,7 +36,7 @@ import type {
 
 export class FrameFlagService {
 	constructor(
-		private readonly root = process.cwd(),
+		private readonly root: string = process.cwd(),
 		private readonly reader: FrameClipReader = defaultAttachedReader
 	) {}
 

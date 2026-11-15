@@ -9,6 +9,7 @@ import { EvidenceBranchRepository } from '../../../repositories/verification-evi
 import { mediaFacts } from '../../../utils/verification-evidence/mediaFacts';
 import { HistoryStatusService } from '../history-status-service/HistoryStatusService';
 import { frameHash, owningFrameCapture } from './flagSchema';
+import type { VerificationRecord } from '../../../core/verification-evidence/verificationTypes';
 import type { AttachedRecord } from '../history-status-service/attached-record-service/AttachedRecordService.types';
 import type {
 	FrameClip,
@@ -20,7 +21,7 @@ import type {
 /** Follow only a verification note on the requested source, within the current evidence history. */
 export async function defaultAttachedReader(
 	reference: FrameClipReference,
-	root = process.cwd()
+	root: string = process.cwd()
 ): Promise<FrameClip> {
 	const evidence = new EvidenceBranchRepository(root);
 	const history = new HistoryStatusService(root, {
@@ -63,9 +64,23 @@ async function attachedFrameRecord(
 	if (problems.length)
 		throw new ExpectedCliError(`Invalid attached evidence: ${problems.join('; ')}`);
 	const loaded = await history.attached.load(line.evidence);
-	if (loaded.record?.status !== 'passed')
+	if (!loaded.record || !frameRecordPassed(loaded.record, reference.unit))
 		throw new ExpectedCliError('Clip record has not passed verification.');
 	return loaded;
+}
+
+/** A successful focused record retains its explicit partial verdict. */
+function frameRecordPassed(record: VerificationRecord, unit: string): boolean {
+	const full = record.status === 'passed' && record.failures.length === 0;
+	const scoped =
+		record.failures.length === 1 &&
+		record.failures[0] ===
+			`Scoped to ${unit}: only its scenario states ran, so this record is partial and never a full pass.` &&
+		record.tests.length > 0 &&
+		record.tests.every((test) => test.status === 'passed') &&
+		record.scenarios.length > 0 &&
+		record.scenarios.every((scenario) => scenario.status === 'passed');
+	return full || scoped;
 }
 
 export function inspectFrameClip(clip: FrameClip): FrameVideoFacts {
