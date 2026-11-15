@@ -20,24 +20,40 @@
 				"name": "remoteFailureText.error",
 				"type": "unknown",
 				"required": true,
-				"description": "Failure to describe; declared RemoteFailure values retain their code and message."
+				"description": "The thrown or rejected value to describe. A RemoteFailure keeps its code and message unchanged, an Error passes its message to the ordinary-message checks, and any other value contributes no text and so gets the generic wording."
 			},
 			{
 				"name": "remoteFailureText.roots",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Project roots to hide when inspecting ordinary errors; defaults to an empty list, with the home directory also considered."
+				"description": "Project roots to hide from an ordinary error message. Each non-empty root, then the home directory, is replaced with '…' in the message before the checks, so a message containing one of them gets the generic wording; the default [] hides only the home directory.",
+				"examples": [
+					[],
+					["/Users/example/projects/harness-app"],
+					["/Users/example/projects/harness-app", "/Users/example/projects/design-system"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "remoteFailureText",
 				"type": "RemoteError",
-				"description": "Declared remote failure unchanged, or code failed with an ordinary message only when short, nonempty and free of detected paths; otherwise generic failure wording."
+				"description": "A RemoteFailure yields its own code and message unchanged. Any other value yields code 'failed' with an Error's message only when that message is nonempty, at most 300 characters long, free of the '…' character that marks a hidden root or home directory, and free of any detected path; otherwise it yields the remoteErrorMessages.failed wording.",
+				"examples": [
+					{
+						"code": "failed",
+						"message": "Pairing request was cancelled."
+					},
+					{
+						"code": "failed",
+						"message": "Device session closed before the response arrived."
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "remoteFailureText",
@@ -46,25 +62,40 @@
 						"name": "remoteFailureText.error",
 						"type": "unknown",
 						"required": true,
-						"description": "Failure to describe; declared RemoteFailure values retain their code and message."
+						"description": "The thrown or rejected value to describe. A RemoteFailure keeps its code and message unchanged, an Error passes its message to the ordinary-message checks, and any other value contributes no text and so gets the generic wording."
 					},
 					{
 						"name": "remoteFailureText.roots",
 						"type": "string[]",
 						"required": false,
 						"default": [],
-						"description": "Project roots to hide when inspecting ordinary errors; defaults to an empty list, with the home directory also considered."
+						"description": "Project roots to hide from an ordinary error message. Each non-empty root, then the home directory, is replaced with '…' in the message before the checks, so a message containing one of them gets the generic wording; the default [] hides only the home directory.",
+						"examples": [
+							[],
+							["/Users/example/projects/harness-app"],
+							["/Users/example/projects/harness-app", "/Users/example/projects/design-system"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "remoteFailureText",
 						"type": "RemoteError",
-						"description": "Declared remote failure unchanged, or code failed with an ordinary message only when short, nonempty and free of detected paths; otherwise generic failure wording."
+						"description": "A RemoteFailure yields its own code and message unchanged. Any other value yields code 'failed' with an Error's message only when that message is nonempty, at most 300 characters long, free of the '…' character that marks a hidden root or home directory, and free of any detected path; otherwise it yields the remoteErrorMessages.failed wording.",
+						"examples": [
+							{
+								"code": "failed",
+								"message": "Pairing request was cancelled."
+							},
+							{
+								"code": "failed",
+								"message": "Device session closed before the response arrived."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
