@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
 import { assertTrackedVideoInputs } from '../../support/videoTrackedInputs';
-import { videoClipSchema } from '../../../src/utils/verification-evidence/videoClipSchema';
+import { assertVideoCheckpoints } from '../../support/videoCheckpointAssertions';
 const videoUnit = 'service.verification-evidence-video-evidence';
 afterEach(() => vi.restoreAllMocks());
 vi.mock('node:fs', { spy: true });
@@ -59,25 +59,7 @@ async function fixture(root: string) {
 }
 test('VideoEvidenceService runs', () => {
 	expect(new VideoEvidenceService().run()).toBe('video-evidence');
-	const configured = {
-		...manifest,
-		discoveryGaps: [{ unit: 'page.reports', reason: 'Pilot covers only its declared graph.' }],
-		clips: manifest.clips.map((clip) => ({
-			...clip,
-			checkpoints: [
-				{ viewport: 'desktop', entrySignature: 'a'.repeat(64), exitSignature: 'b'.repeat(64) }
-			]
-		}))
-	};
-	expect(videoClipSchema(configured).discoveryGaps).toEqual(configured.discoveryGaps);
-	const clip = configured.clips[0];
-	for (const checkpoints of [
-		[...clip.checkpoints, ...clip.checkpoints],
-		[{ ...clip.checkpoints[0], viewport: 'tablet' }]
-	])
-		expect(() => videoClipSchema({ ...configured, clips: [{ ...clip, checkpoints }] })).toThrow(
-			/viewport/i
-		);
+	assertVideoCheckpoints(manifest);
 });
 test('clip planning reuses unchanged inputs and invalidates only actual consumers', async () => {
 	await measureWorkload(videoUnit, 'plan-input-closure', () =>
