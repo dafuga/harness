@@ -52,27 +52,67 @@
 				"name": "CoveragePanel.entity",
 				"type": "EntityDetail",
 				"required": true,
-				"description": "Entity whose kind informs evidence notices and whose category and identifier scope the behavior display. Function entities pass their identifier to the behavior panel; other categories leave that filter unset."
+				"description": "The explorer entity provides the name, kind, category, and id used by this panel. With a ready result, only pages, components, and layouts render EntityStates; a supplied workspace enables regression proof for the id, and only functions pass it to RuntimeBehavior.",
+				"examples": [
+					{
+						"id": "desktop.component.runtime-behavior",
+						"category": "components",
+						"kind": "component",
+						"title": "Runtime behavior",
+						"summary": "Recorded inputs and observed outputs for a component.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": null
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [],
+						"sources": [
+							"packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte"
+						],
+						"size": {
+							"available": false,
+							"text": ""
+						},
+						"performance": {
+							"available": false,
+							"text": ""
+						}
+					}
+				]
 			},
 			{
 				"name": "CoveragePanel.evidence",
 				"type": "EntityEvidence",
 				"required": true,
-				"description": "Evidence state supplying loading or failure notices and, only when ready, the recorded result. Its status is one of idle, planned, unavailable, loading, failed or ready; idle and planned show the planned or no-record notice. Uses the result’s after side for coverage, including its commit, record, gaps, scenario and state standings, test statuses and capture slots. Coverage checks may carry browser-error diagnostics from the test attempt that produced their result."
+				"description": "Evidence status, error, result, and URL resolver drive the panel's notice, recorded evidence, and image links. Only ready exposes a result; coverage and behavior use its after-side data when no notice is shown, while image resolution can request the corresponding before or after capture."
 			},
 			{
 				"name": "CoveragePanel.workspace",
 				"type": "Workspace",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional current workspace used to resolve recorded evidence and regression links. Undefined by default: the regression proof section is then not offered. The default catalog state passes it, and the without-workspace state omits it."
+				"description": "An optional workspace supplies link and navigate for the regression proof associated with this entity. It defaults to undefined, which omits that section."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CoveragePanel",
 				"type": "markup",
-				"description": "Evidence panel with a runtime-capture label, recorded commit and record identifier when available, and any evidence notice. When no notice blocks it, shows coverage gaps, scenarios, states and captures from the record. Only passed coverage receives a check mark; other standings receive a cross with recorded reasons. Shows observed behavior when rows exist, otherwise explicitly says no input and observed output were recorded at that commit. Each check with recorded diagnostics also offers an expandable browser-error display with observations, expectations and test-attempt context. Catalog states: default, loading, failed (failed notice), unavailable, planned and without-workspace. The before and after images come from the entity states component, not from this panel."
+				"description": "Renders the Evidence and Runtime capture labels and shows an evidence notice when one is present; otherwise it can show the ready result's after-side gap, shortened commit, optional record id, and scenario coverage. For a notice-free ready result, it renders RuntimeBehavior when behavior rows exist or an empty state when they do not; visual categories with a ready result also render EntityStates, and regression proof appears only when a workspace is supplied."
 			}
 		],
 		"errors": [],
