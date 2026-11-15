@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.types.ts"
 		],
 		"symbols": [
-			"RecordAssemblyService",
 			"AssemblyContext",
 			"AssemblyInput",
 			"RecordAssemblyService",
