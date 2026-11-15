@@ -35,52 +35,87 @@
 				"name": "repositoryIdentity.directory",
 				"type": "string",
 				"required": true,
-				"description": "Checkout directory identified through its selected upstream or canonical local Git store."
+				"description": "The checkout directory whose application identity is computed; Git reads it with `git -C`, so a relative path is taken from the process working directory. A path that is not a Git repository, a checkout with several remotes and no origin, or a checkout whose remote URL is unrecognized, yields null.",
+				"examples": [
+					"/srv/checkouts/billing-web",
+					"/home/build/src/docs-portal",
+					"/home/build/worktrees/billing-web-hotfix"
+				]
 			},
 			{
 				"name": "sameRepository.left",
 				"type": "string",
 				"required": true,
-				"description": "First checkout directory to identify."
+				"description": "The first checkout directory to compare, identified before the right one; when its repository identity is null the result is false and the right directory is never identified.",
+				"examples": ["/srv/checkouts/billing-web", "/home/build/src/docs-portal"]
 			},
 			{
 				"name": "sameRepository.right",
 				"type": "string",
 				"required": true,
-				"description": "Second checkout directory to identify."
+				"description": "The second checkout directory to compare, identified only when the left identity is non-null; the result is true only when its identity equals the left identity, so a null identity never matches.",
+				"examples": [
+					"/home/build/worktrees/billing-web-hotfix",
+					"/srv/checkouts/billing-web-mirror"
+				]
 			},
 			{
 				"name": "sameSite.site",
 				"type": "string",
 				"required": true,
-				"description": "Site directory whose repository identity or exact plain-directory path defines membership."
+				"description": "The site directory that defines membership: when its repository identity is non-null, every checkout with that identity belongs to it, while a site in no Git repository admits only its own realpath. A site that does not exist, or one inside a Git repository whose repository identity is null, admits nothing.",
+				"examples": ["/srv/checkouts/billing-web", "/srv/sites/status-page"]
 			},
 			{
 				"name": "sameSite.directory",
 				"type": "string",
 				"required": true,
-				"description": "Candidate directory whose membership in the site is tested."
+				"description": "The candidate directory tested for membership, compared by repository identity when the site has one, or by exact realpath when the site is in no Git repository. A subdirectory of a site in no Git repository is never a member, and so is a path that does not exist.",
+				"examples": ["/home/build/worktrees/billing-web-hotfix", "/srv/sites/status-page"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "repositoryIdentity",
 				"type": "string | null",
-				"description": "SHA-256 of the normalized network origin or canonical local store after at most five local-origin hops; null when identity is missing or ambiguous."
+				"description": "The lowercase hex SHA-256 of `remote:host/path` for a network origin (host lowercased, trailing slashes and `.git` removed from the path), or of `local:` plus the realpath of the Git common store for a checkout with no remote, after following at most five local-origin hops. It is null when the directory, or a local origin it follows, is not a repository, when several remotes include no origin, when the remote is neither a local path nor a network address, when the chain is deeper than five hops, or when a Git call times out after 3000 ms; timeouts are never cached, and other results, null included, are cached per directory string in a 256-entry LRU.",
+				"examples": [
+					"5e0a9c3f7b1d4e2a8c6f0b9d3e7a1c5f2b8d6e0a4c9f3b7d1e5a8c2f6b0d4e9a",
+					"c41f08ab9d2e7b63a0c5f1e84b7d9e21f63a0c5d8e2b4d170a9f6c3ed5b8e42a",
+					null
+				]
 			},
 			{
 				"name": "sameRepository",
 				"type": "boolean",
-				"description": "True only when both directories resolve to the same non-null repository identity."
+				"description": "True only when both directories resolve to the same non-null repository identity, so a null identity on either side makes the result false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "sameSite",
 				"type": "boolean",
-				"description": "True for a checkout of the same known site repository or the exact canonical directory of a non-Git site; unknown repository origin is not path-matched."
+				"description": "True for a checkout whose non-null repository identity equals that of a repository site, or for a directory whose realpath is exactly that of a site in no Git repository. A site that has a null repository identity while sitting inside a Git repository matches nothing, so the result is false.",
+				"examples": [true, false]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A TypeError from fileURLToPath when a file:// remote is not a valid URL, has a host (for example file://server/repo), or holds an encoded slash (%2F) in its path. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+			},
+			{
+				"name": "URIError",
+				"type": "thrown",
+				"description": "A URIError from decodeURIComponent inside fileURLToPath when the path of a file:// remote holds malformed percent-encoding, such as %zz. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A file-system Error (for example code ENOENT or EACCES) from realpathSync on the Git common store, reached only when the checkout has no remote. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "repositoryIdentity",
@@ -89,17 +124,43 @@
 						"name": "repositoryIdentity.directory",
 						"type": "string",
 						"required": true,
-						"description": "Checkout directory identified through its selected upstream or canonical local Git store."
+						"description": "The checkout directory whose application identity is computed; Git reads it with `git -C`, so a relative path is taken from the process working directory. A path that is not a Git repository, a checkout with several remotes and no origin, or a checkout whose remote URL is unrecognized, yields null.",
+						"examples": [
+							"/srv/checkouts/billing-web",
+							"/home/build/src/docs-portal",
+							"/home/build/worktrees/billing-web-hotfix"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "repositoryIdentity",
 						"type": "string | null",
-						"description": "SHA-256 of the normalized network origin or canonical local store after at most five local-origin hops; null when identity is missing or ambiguous."
+						"description": "The lowercase hex SHA-256 of `remote:host/path` for a network origin (host lowercased, trailing slashes and `.git` removed from the path), or of `local:` plus the realpath of the Git common store for a checkout with no remote, after following at most five local-origin hops. It is null when the directory, or a local origin it follows, is not a repository, when several remotes include no origin, when the remote is neither a local path nor a network address, when the chain is deeper than five hops, or when a Git call times out after 3000 ms; timeouts are never cached, and other results, null included, are cached per directory string in a 256-entry LRU.",
+						"examples": [
+							"5e0a9c3f7b1d4e2a8c6f0b9d3e7a1c5f2b8d6e0a4c9f3b7d1e5a8c2f6b0d4e9a",
+							"c41f08ab9d2e7b63a0c5f1e84b7d9e21f63a0c5d8e2b4d170a9f6c3ed5b8e42a",
+							null
+						]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A TypeError from fileURLToPath when a file:// remote is not a valid URL, has a host (for example file://server/repo), or holds an encoded slash (%2F) in its path. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+					},
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "A URIError from decodeURIComponent inside fileURLToPath when the path of a file:// remote holds malformed percent-encoding, such as %zz. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A file-system Error (for example code ENOENT or EACCES) from realpathSync on the Git common store, reached only when the checkout has no remote. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+					}
+				],
 				"errorStatus": "declared"
 			},
 			{
@@ -109,23 +170,45 @@
 						"name": "sameRepository.left",
 						"type": "string",
 						"required": true,
-						"description": "First checkout directory to identify."
+						"description": "The first checkout directory to compare, identified before the right one; when its repository identity is null the result is false and the right directory is never identified.",
+						"examples": ["/srv/checkouts/billing-web", "/home/build/src/docs-portal"]
 					},
 					{
 						"name": "sameRepository.right",
 						"type": "string",
 						"required": true,
-						"description": "Second checkout directory to identify."
+						"description": "The second checkout directory to compare, identified only when the left identity is non-null; the result is true only when its identity equals the left identity, so a null identity never matches.",
+						"examples": [
+							"/home/build/worktrees/billing-web-hotfix",
+							"/srv/checkouts/billing-web-mirror"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sameRepository",
 						"type": "boolean",
-						"description": "True only when both directories resolve to the same non-null repository identity."
+						"description": "True only when both directories resolve to the same non-null repository identity, so a null identity on either side makes the result false.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A TypeError from fileURLToPath when a file:// remote is not a valid URL, has a host (for example file://server/repo), or holds an encoded slash (%2F) in its path. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+					},
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "A URIError from decodeURIComponent inside fileURLToPath when the path of a file:// remote holds malformed percent-encoding, such as %zz. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A file-system Error (for example code ENOENT or EACCES) from realpathSync on the Git common store, reached only when the checkout has no remote. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+					}
+				],
 				"errorStatus": "declared"
 			},
 			{
@@ -135,23 +218,42 @@
 						"name": "sameSite.site",
 						"type": "string",
 						"required": true,
-						"description": "Site directory whose repository identity or exact plain-directory path defines membership."
+						"description": "The site directory that defines membership: when its repository identity is non-null, every checkout with that identity belongs to it, while a site in no Git repository admits only its own realpath. A site that does not exist, or one inside a Git repository whose repository identity is null, admits nothing.",
+						"examples": ["/srv/checkouts/billing-web", "/srv/sites/status-page"]
 					},
 					{
 						"name": "sameSite.directory",
 						"type": "string",
 						"required": true,
-						"description": "Candidate directory whose membership in the site is tested."
+						"description": "The candidate directory tested for membership, compared by repository identity when the site has one, or by exact realpath when the site is in no Git repository. A subdirectory of a site in no Git repository is never a member, and so is a path that does not exist.",
+						"examples": ["/home/build/worktrees/billing-web-hotfix", "/srv/sites/status-page"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sameSite",
 						"type": "boolean",
-						"description": "True for a checkout of the same known site repository or the exact canonical directory of a non-Git site; unknown repository origin is not path-matched."
+						"description": "True for a checkout whose non-null repository identity equals that of a repository site, or for a directory whose realpath is exactly that of a site in no Git repository. A site that has a null repository identity while sitting inside a Git repository matches nothing, so the result is false.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A TypeError from fileURLToPath when a file:// remote is not a valid URL, has a host (for example file://server/repo), or holds an encoded slash (%2F) in its path. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+					},
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "A URIError from decodeURIComponent inside fileURLToPath when the path of a file:// remote holds malformed percent-encoding, such as %zz. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A file-system Error (for example code ENOENT or EACCES) from realpathSync on the Git common store, reached only when the checkout has no remote. Only Git timeouts are caught, so repositoryIdentity, sameRepository and sameSite throw it."
+					}
+				],
 				"errorStatus": "declared"
 			}
 		],
