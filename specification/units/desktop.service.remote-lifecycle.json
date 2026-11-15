@@ -32,30 +32,35 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteLifecycleService.constructor.options",
 				"type": "RemoteLifecycleOptions",
-				"required": true
+				"required": true,
+				"description": "The ports the service works through: power (Electron's powerMonitor in the app, an emitter in tests) supplies the lock-screen, unlock-screen, suspend and resume events that start() subscribes to; host gives enabled(), suspend(), resume() and stop(); cancelLocal() cancels the runs of the desktop window, never those of phones; and the optional screen(locked) callback is told when the screen is locked or unlocked. The constructor stores the object as given and reads none of its members."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteLifecycleService.start",
-				"type": "void"
+				"type": "void",
+				"description": "start() returns nothing; its effect is to register lock-screen, unlock-screen, suspend and resume listeners on options.power, and every call registers them again."
 			},
 			{
 				"name": "RemoteLifecycleService.windowsClosed",
-				"type": "'keep' | 'quit'"
+				"type": "'keep' | 'quit'",
+				"description": "The value windowsClosed() returns after calling cancelLocal(): 'keep' when options.host.enabled() returns true, so the app stays up for phones, and 'quit' when it returns false.",
+				"examples": ["keep", "quit"]
 			},
 			{
 				"name": "RemoteLifecycleService.quit",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise quit() returns: it resolves with nothing after cancelLocal() has run and options.host.stop() has settled, and rejects with the same error if options.host.stop() throws or rejects. Any call after the first returns at once, without calling cancelLocal() or options.host.stop() again."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "RemoteLifecycleService.start",
@@ -63,11 +68,12 @@
 				"outputs": [
 					{
 						"name": "RemoteLifecycleService.start",
-						"type": "void"
+						"type": "void",
+						"description": "start() returns nothing; its effect is to register lock-screen, unlock-screen, suspend and resume listeners on options.power, and every call registers them again."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteLifecycleService.windowsClosed",
@@ -75,11 +81,13 @@
 				"outputs": [
 					{
 						"name": "RemoteLifecycleService.windowsClosed",
-						"type": "'keep' | 'quit'"
+						"type": "'keep' | 'quit'",
+						"description": "The value windowsClosed() returns after calling cancelLocal(): 'keep' when options.host.enabled() returns true, so the app stays up for phones, and 'quit' when it returns false.",
+						"examples": ["keep", "quit"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteLifecycleService.quit",
@@ -87,11 +95,12 @@
 				"outputs": [
 					{
 						"name": "RemoteLifecycleService.quit",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise quit() returns: it resolves with nothing after cancelLocal() has run and options.host.stop() has settled, and rejects with the same error if options.host.stop() throws or rejects. Any call after the first returns at once, without calling cancelLocal() or options.host.stop() again."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -101,17 +110,19 @@
 					{
 						"name": "RemoteLifecycleService.constructor.options",
 						"type": "RemoteLifecycleOptions",
-						"required": true
+						"required": true,
+						"description": "The ports the service works through: power (Electron's powerMonitor in the app, an emitter in tests) supplies the lock-screen, unlock-screen, suspend and resume events that start() subscribes to; host gives enabled(), suspend(), resume() and stop(); cancelLocal() cancels the runs of the desktop window, never those of phones; and the optional screen(locked) callback is told when the screen is locked or unlocked. The constructor stores the object as given and reads none of its members."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteLifecycleService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The RemoteLifecycleService instance that new creates; it starts with locked and suspended set to false and keeps the options it was given."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
