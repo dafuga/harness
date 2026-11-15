@@ -12,11 +12,22 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "RuntimeError",
+				"type": "thrown",
+				"description": "Raised when shutil.which(\"bun\") finds no Bun executable on PATH; installation stops before creating the LaunchAgent."
+			},
+			{
+				"name": "CalledProcessError",
+				"type": "thrown",
+				"description": "Raised if plutil -lint, launchctl bootstrap, or launchctl print exits nonzero; the launchctl bootout exit status is ignored."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
