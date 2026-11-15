@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/models/RelayHost.types.ts",
-			"packages/relay/src/models/networking-security/RelayHost.types.ts"
-		],
+		"source": ["packages/relay/src/models/networking-security/RelayHost.types.ts"],
 		"symbols": [
 			"RelayEnv",
 			"HostScope",
