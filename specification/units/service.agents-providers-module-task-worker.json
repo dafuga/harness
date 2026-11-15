@@ -23,119 +23,644 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskWorkerService.constructor.root",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
+				"examples": ["/home/dev/harness", "/srv/harness/checkout"]
 			},
 			{
 				"name": "ModuleTaskWorkerService.constructor.runner",
 				"type": "TaskRunner",
-				"required": false
+				"required": false,
+				"description": "The runner whose run(input) executes each attempt with its provider, model, intelligence, worktree cwd, prompt and signal. Defaults to new ModuleTaskRunnerAdapter(), which runs the installed provider CLIs with saved login."
 			},
 			{
 				"name": "ModuleTaskWorkerService.once.worker",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Name recorded as the claim's worker and matched against task assignees; once() throws before touching the queue unless it matches ^[a-z0-9]+(?:[.-][a-z0-9]+)*$. Only queued tasks with no assignee or with this exact assignee can be claimed.",
+				"examples": ["luna-worker-1", "codex.luna-2"]
 			},
 			{
 				"name": "ModuleTaskWorkerService.once.modules",
 				"type": "string[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Restricts the claim to queued tasks whose module.id is listed; the default empty list leaves every module eligible. A module that already has a running task is skipped whatever this list contains.",
+				"examples": [
+					[],
+					["service.agents-providers-module-task-worker"],
+					["adapter.agents-providers-module-task-runner", "adapter.git"]
+				]
 			},
 			{
 				"name": "ModuleTaskWorkerService.once.signal",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Abort signal given to the runner as TaskRunInput.signal; the quota fallback checks it with throwIfAborted() before dispatching again. Defaults to AbortSignal.timeout(900000), which aborts after 900000 ms (15 minutes)."
 			},
 			{
 				"name": "pendingTaskResult.selection",
 				"type": "TaskSelection",
-				"required": true
+				"required": true,
+				"description": "The provider, model and intelligence the attempt runs with, as resolved from the task by taskSelection; pendingTaskResult copies these fields into the result unchanged. An auto task always resolves to claude-haiku-5-5 at medium intelligence.",
+				"examples": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "medium"
+					},
+					{
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"intelligence": "max"
+					}
+				]
 			},
 			{
 				"name": "pendingTaskResult.worktree",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Absolute path of the attempt's detached Git worktree, which taskWorkspace names with the claim token under .cache/harness/task-worktrees. It is stored unchanged as the result's worktree and passed to the runner as cwd.",
+				"examples": [
+					"/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+					"/srv/harness/checkout/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0"
+				]
 			},
 			{
 				"name": "claimedTask.queue",
 				"type": "ModuleTaskQueue",
-				"required": true
+				"required": true,
+				"description": "The queue snapshot that claimedTask edits inside repository.update; it marks the first eligible queued task as running with a claim, and the queue is committed only when that edit changed it.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"features": [
+							{
+								"id": "agents-providers.module-tasks",
+								"goal": "Let foreground workers take module tasks without racing each other.",
+								"tldr": "Atomic claims, isolated worktrees, reviewed output."
+							}
+						],
+						"tasks": [
+							{
+								"id": "module-task-worker.claim-contract",
+								"title": "Claim matching module tasks once",
+								"instructions": "Keep the claim, worktree and finish checks in ModuleTaskWorkerService.ts and taskClaim.ts, and add no new providers.",
+								"wantedContract": {
+									"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+									"inputs": [
+										{
+											"name": "ModuleTaskWorkerService.once.worker",
+											"type": "string",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "ModuleTaskWorkerService.once",
+											"type": "unknown"
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "thrown"
+										}
+									]
+								},
+								"model": "auto",
+								"feature": {
+									"id": "agents-providers.module-tasks",
+									"goal": "Let foreground workers take module tasks without racing each other.",
+									"tldr": "Atomic claims, isolated worktrees, reviewed output."
+								},
+								"module": {
+									"id": "service.agents-providers-module-task-worker",
+									"goal": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+									"files": [
+										"src/services/agents-providers/ModuleTaskWorkerService.ts",
+										"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+									]
+								},
+								"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+								"contractHash": "c3f1a8e05b72d946e0a1c7b3f58d2e90a4b6c1d7e2f09a3b58c4d1e6f7a20b95",
+								"status": "queued",
+								"reviews": [],
+								"createdAt": "2026-11-14T18:05:12.418Z",
+								"claimHistory": [],
+								"attempts": []
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "claimedTask.worker",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Worker name matched against each task's assignee and written into the new claim. The queue schema requires it to match the unit id pattern, so a name that does not match fails the queue update.",
+				"examples": ["luna-worker-1", "codex.luna-2"]
 			},
 			{
 				"name": "claimedTask.modules",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Module ids a claim may take; an empty array leaves every module eligible. A module that already has a running task is skipped whatever this array contains.",
+				"examples": [
+					[],
+					["service.agents-providers-module-task-worker"],
+					["adapter.agents-providers-module-task-runner", "adapter.git"]
+				]
 			},
 			{
 				"name": "claimedTask.owner",
 				"type": "NonNullable<ModuleTask['claim']>['owner']",
-				"required": true
+				"required": true,
+				"description": "Identity of the clone and process making the claim, from repository.owner(): the workspace UUID, this process's pid and its ps start time. It is stored unchanged on the claim, and its startedAt must be a non-empty string.",
+				"examples": [
+					{
+						"workspace": "e9f3d1a6-27b4-4c8e-a05d-6b9c2f1e8a73",
+						"pid": 48213,
+						"startedAt": "Sun Nov 15 09:12:03 2026"
+					},
+					{
+						"workspace": "3a7c9e15-0b82-4f6d-9d41-e8b2c5a70f19",
+						"pid": 51870,
+						"startedAt": "Sun Nov 15 08:47:10 2026"
+					}
+				]
 			},
 			{
 				"name": "finishTask.queue",
 				"type": "ModuleTaskQueue",
-				"required": true
+				"required": true,
+				"description": "The queue snapshot that finishTask edits inside repository.update; it finds the task by id and writes status and result only when the stored task still matches the claimed copy.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"features": [
+							{
+								"id": "agents-providers.module-tasks",
+								"goal": "Let foreground workers take module tasks without racing each other.",
+								"tldr": "Atomic claims, isolated worktrees, reviewed output."
+							}
+						],
+						"tasks": [
+							{
+								"id": "module-task-worker.claim-contract",
+								"title": "Claim matching module tasks once",
+								"instructions": "Keep the claim, worktree and finish checks in ModuleTaskWorkerService.ts and taskClaim.ts, and add no new providers.",
+								"wantedContract": {
+									"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+									"inputs": [
+										{
+											"name": "ModuleTaskWorkerService.once.worker",
+											"type": "string",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "ModuleTaskWorkerService.once",
+											"type": "unknown"
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "thrown"
+										}
+									]
+								},
+								"model": "auto",
+								"feature": {
+									"id": "agents-providers.module-tasks",
+									"goal": "Let foreground workers take module tasks without racing each other.",
+									"tldr": "Atomic claims, isolated worktrees, reviewed output."
+								},
+								"module": {
+									"id": "service.agents-providers-module-task-worker",
+									"goal": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+									"files": [
+										"src/services/agents-providers/ModuleTaskWorkerService.ts",
+										"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+									]
+								},
+								"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+								"contractHash": "c3f1a8e05b72d946e0a1c7b3f58d2e90a4b6c1d7e2f09a3b58c4d1e6f7a20b95",
+								"status": "running",
+								"reviews": [],
+								"createdAt": "2026-11-14T18:05:12.418Z",
+								"claim": {
+									"worker": "luna-worker-1",
+									"token": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+									"startedAt": "2026-11-15T09:12:44.512Z",
+									"owner": {
+										"workspace": "e9f3d1a6-27b4-4c8e-a05d-6b9c2f1e8a73",
+										"pid": 48213,
+										"startedAt": "Sun Nov 15 09:12:03 2026"
+									}
+								},
+								"claimHistory": [],
+								"attempts": []
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "finishTask.claimed",
 				"type": "ModuleTask",
-				"required": true
+				"required": true,
+				"description": "The task as it was claimed; finishTask finds the stored task by id and compares its claim token, contractHash, sourceCommit and repairCommit with this copy. Any difference, or a stored task that is no longer running, throws and leaves the queue unchanged.",
+				"examples": [
+					{
+						"id": "module-task-worker.claim-contract",
+						"title": "Claim matching module tasks once",
+						"instructions": "Keep the claim, worktree and finish checks in ModuleTaskWorkerService.ts and taskClaim.ts, and add no new providers.",
+						"wantedContract": {
+							"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+							"inputs": [
+								{
+									"name": "ModuleTaskWorkerService.once.worker",
+									"type": "string",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "ModuleTaskWorkerService.once",
+									"type": "unknown"
+								}
+							],
+							"errors": [
+								{
+									"name": "Error",
+									"type": "thrown"
+								}
+							]
+						},
+						"model": "auto",
+						"feature": {
+							"id": "agents-providers.module-tasks",
+							"goal": "Let foreground workers take module tasks without racing each other.",
+							"tldr": "Atomic claims, isolated worktrees, reviewed output."
+						},
+						"module": {
+							"id": "service.agents-providers-module-task-worker",
+							"goal": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+							"files": [
+								"src/services/agents-providers/ModuleTaskWorkerService.ts",
+								"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+							]
+						},
+						"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+						"contractHash": "c3f1a8e05b72d946e0a1c7b3f58d2e90a4b6c1d7e2f09a3b58c4d1e6f7a20b95",
+						"status": "running",
+						"reviews": [],
+						"createdAt": "2026-11-14T18:05:12.418Z",
+						"claim": {
+							"worker": "luna-worker-1",
+							"token": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+							"startedAt": "2026-11-15T09:12:44.512Z",
+							"owner": {
+								"workspace": "e9f3d1a6-27b4-4c8e-a05d-6b9c2f1e8a73",
+								"pid": 48213,
+								"startedAt": "Sun Nov 15 09:12:03 2026"
+							}
+						},
+						"claimHistory": [],
+						"attempts": []
+					}
+				]
 			},
 			{
 				"name": "finishTask.result",
 				"type": "ModuleTask['result']",
-				"required": true
+				"required": true,
+				"description": "The attempt's final result, stored unchanged on the task; a result with error sets the task to failed, and any other result sets it to review.",
+				"examples": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "medium",
+						"reportedModel": "claude-haiku-5-5",
+						"text": "Claim and worktree checks are in place; the module's unit tests pass.",
+						"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+						"changedFiles": [
+							"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+						],
+						"fallback": false,
+						"finishedAt": "2026-11-15T09:19:07.126Z",
+						"attempt": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+						"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+						"checkpointCommit": "1a9d7f20c6e4b83d5f0a2e91c7b64d05f3e8a12c",
+						"usage": {
+							"inputTokens": 18432,
+							"outputTokens": 2210,
+							"cacheReadTokens": 12288,
+							"cacheWriteTokens": 4096,
+							"reportedCostUsd": null
+						},
+						"executions": [
+							{
+								"provider": "claude",
+								"model": "claude-haiku-5-5",
+								"intelligence": "medium",
+								"reportedModel": "claude-haiku-5-5",
+								"usage": {
+									"inputTokens": 18432,
+									"outputTokens": 2210,
+									"cacheReadTokens": 12288,
+									"cacheWriteTokens": 4096,
+									"reportedCostUsd": null
+								},
+								"apiCost": {
+									"rateCard": "standard-global-2026-10-25",
+									"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+									"usd": null,
+									"minimumUsd": 0.00194468,
+									"maximumUsd": 0.00225188,
+									"basis": "standard-api-estimate",
+									"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+								},
+								"status": "succeeded",
+								"startedAt": "2026-11-15T09:12:45.003Z",
+								"finishedAt": "2026-11-15T09:19:07.110Z"
+							}
+						]
+					},
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "medium",
+						"reportedModel": null,
+						"text": "",
+						"worktree": "/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
+						"changedFiles": [],
+						"error": "git worktree add --detach /home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0 7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e failed: fatal: could not create work tree dir '/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0': No space left on device",
+						"fallback": false,
+						"finishedAt": "2026-11-15T09:12:58.447Z",
+						"attempt": "0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
+						"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+						"executions": []
+					}
+				]
 			},
 			{
 				"name": "taskWrites.git",
 				"type": "GitAdapter",
-				"required": true
+				"required": true,
+				"description": "Git adapter rooted in the attempt's worktree, used to run rev-parse HEAD and the diff and ls-files commands that list changed paths."
 			},
 			{
 				"name": "taskWrites.task",
 				"type": "ModuleTask",
-				"required": true
+				"required": true,
+				"description": "The claimed task whose module.files are the only paths allowed to change; taskWrites compares HEAD with the sourceCommit it is given before listing changes.",
+				"examples": [
+					{
+						"id": "module-task-worker.claim-contract",
+						"title": "Claim matching module tasks once",
+						"instructions": "Keep the claim, worktree and finish checks in ModuleTaskWorkerService.ts and taskClaim.ts, and add no new providers.",
+						"wantedContract": {
+							"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+							"inputs": [
+								{
+									"name": "ModuleTaskWorkerService.once.worker",
+									"type": "string",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "ModuleTaskWorkerService.once",
+									"type": "unknown"
+								}
+							],
+							"errors": [
+								{
+									"name": "Error",
+									"type": "thrown"
+								}
+							]
+						},
+						"model": "auto",
+						"feature": {
+							"id": "agents-providers.module-tasks",
+							"goal": "Let foreground workers take module tasks without racing each other.",
+							"tldr": "Atomic claims, isolated worktrees, reviewed output."
+						},
+						"module": {
+							"id": "service.agents-providers-module-task-worker",
+							"goal": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+							"files": [
+								"src/services/agents-providers/ModuleTaskWorkerService.ts",
+								"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+							]
+						},
+						"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+						"contractHash": "c3f1a8e05b72d946e0a1c7b3f58d2e90a4b6c1d7e2f09a3b58c4d1e6f7a20b95",
+						"status": "running",
+						"reviews": [],
+						"createdAt": "2026-11-14T18:05:12.418Z",
+						"claim": {
+							"worker": "luna-worker-1",
+							"token": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+							"startedAt": "2026-11-15T09:12:44.512Z",
+							"owner": {
+								"workspace": "e9f3d1a6-27b4-4c8e-a05d-6b9c2f1e8a73",
+								"pid": 48213,
+								"startedAt": "Sun Nov 15 09:12:03 2026"
+							}
+						},
+						"claimHistory": [],
+						"attempts": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskWorkerService.once",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Result of one claim attempt: { status: 'idle' } when no eligible task was claimed; otherwise { status, task, result }, where status is 'failed' if result.error is set and 'review' if not, task is the claimed task's id and result is the final result.",
+				"examples": [
+					{
+						"status": "idle"
+					},
+					{
+						"status": "review",
+						"task": "module-task-worker.claim-contract",
+						"result": {
+							"provider": "claude",
+							"model": "claude-haiku-5-5",
+							"intelligence": "medium",
+							"reportedModel": "claude-haiku-5-5",
+							"text": "Claim and worktree checks are in place; the module's unit tests pass.",
+							"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+							"changedFiles": [
+								"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+							],
+							"fallback": false,
+							"finishedAt": "2026-11-15T09:19:07.126Z",
+							"attempt": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+							"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+							"checkpointCommit": "1a9d7f20c6e4b83d5f0a2e91c7b64d05f3e8a12c",
+							"usage": {
+								"inputTokens": 18432,
+								"outputTokens": 2210,
+								"cacheReadTokens": 12288,
+								"cacheWriteTokens": 4096,
+								"reportedCostUsd": null
+							},
+							"executions": [
+								{
+									"provider": "claude",
+									"model": "claude-haiku-5-5",
+									"intelligence": "medium",
+									"reportedModel": "claude-haiku-5-5",
+									"usage": {
+										"inputTokens": 18432,
+										"outputTokens": 2210,
+										"cacheReadTokens": 12288,
+										"cacheWriteTokens": 4096,
+										"reportedCostUsd": null
+									},
+									"apiCost": {
+										"rateCard": "standard-global-2026-10-25",
+										"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+										"usd": null,
+										"minimumUsd": 0.00194468,
+										"maximumUsd": 0.00225188,
+										"basis": "standard-api-estimate",
+										"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+									},
+									"status": "succeeded",
+									"startedAt": "2026-11-15T09:12:45.003Z",
+									"finishedAt": "2026-11-15T09:19:07.110Z"
+								}
+							]
+						}
+					}
+				]
 			},
 			{
 				"name": "pendingTaskResult",
-				"type": "NonNullable<ModuleTask['result']>"
+				"type": "NonNullable<ModuleTask['result']>",
+				"description": "The initial result for an attempt before it runs: empty text, reportedModel null, no changed files and no executions, with the selection and worktree filled in. fallback is false and finishedAt is set to the creation time.",
+				"examples": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "medium",
+						"reportedModel": null,
+						"text": "",
+						"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+						"changedFiles": [],
+						"fallback": false,
+						"executions": [],
+						"finishedAt": "2026-11-15T09:12:44.530Z"
+					}
+				]
 			},
 			{
 				"name": "claimedTask",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The claimed ModuleTask, mutated in place to status running with a new claim, or null when no queued task matches the worker, the modules list and the rule that a module with a running task is skipped.",
+				"examples": [
+					null,
+					{
+						"id": "module-task-worker.claim-contract",
+						"title": "Claim matching module tasks once",
+						"instructions": "Keep the claim, worktree and finish checks in ModuleTaskWorkerService.ts and taskClaim.ts, and add no new providers.",
+						"wantedContract": {
+							"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+							"inputs": [
+								{
+									"name": "ModuleTaskWorkerService.once.worker",
+									"type": "string",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "ModuleTaskWorkerService.once",
+									"type": "unknown"
+								}
+							],
+							"errors": [
+								{
+									"name": "Error",
+									"type": "thrown"
+								}
+							]
+						},
+						"model": "auto",
+						"feature": {
+							"id": "agents-providers.module-tasks",
+							"goal": "Let foreground workers take module tasks without racing each other.",
+							"tldr": "Atomic claims, isolated worktrees, reviewed output."
+						},
+						"module": {
+							"id": "service.agents-providers-module-task-worker",
+							"goal": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+							"files": [
+								"src/services/agents-providers/ModuleTaskWorkerService.ts",
+								"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+							]
+						},
+						"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+						"contractHash": "c3f1a8e05b72d946e0a1c7b3f58d2e90a4b6c1d7e2f09a3b58c4d1e6f7a20b95",
+						"status": "running",
+						"reviews": [],
+						"createdAt": "2026-11-14T18:05:12.418Z",
+						"claim": {
+							"worker": "luna-worker-1",
+							"token": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+							"startedAt": "2026-11-15T09:12:44.512Z",
+							"owner": {
+								"workspace": "e9f3d1a6-27b4-4c8e-a05d-6b9c2f1e8a73",
+								"pid": 48213,
+								"startedAt": "Sun Nov 15 09:12:03 2026"
+							}
+						},
+						"claimHistory": [],
+						"attempts": []
+					}
+				]
 			},
 			{
 				"name": "finishTask",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns nothing: it sets the matching stored task's status and result in place, and throws when the claim or definition no longer matches."
 			},
 			{
 				"name": "taskWrites",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "Resolves to the de-duplicated repository-relative paths that differ from HEAD, tracked changes first and untracked files after. It rejects when HEAD differs from task.sourceCommit or a path lies outside task.module.files.",
+				"examples": [
+					[
+						"src/services/agents-providers/ModuleTaskWorkerService.ts",
+						"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+					],
+					[]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Explicit throws: an invalid worker name in once(), a finish whose stored task no longer matches the claim, and changed paths outside the module or a HEAD that differs from the source commit. Owner lookup, queue updates, task preparation and workspace setup reject with their own errors, while runner, worktree and snapshot failures are recorded in result.error instead."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleTaskWorkerService.once",
@@ -143,33 +668,103 @@
 					{
 						"name": "ModuleTaskWorkerService.once.worker",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Name recorded as the claim's worker and matched against task assignees; once() throws before touching the queue unless it matches ^[a-z0-9]+(?:[.-][a-z0-9]+)*$. Only queued tasks with no assignee or with this exact assignee can be claimed.",
+						"examples": ["luna-worker-1", "codex.luna-2"]
 					},
 					{
 						"name": "ModuleTaskWorkerService.once.modules",
 						"type": "string[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Restricts the claim to queued tasks whose module.id is listed; the default empty list leaves every module eligible. A module that already has a running task is skipped whatever this list contains.",
+						"examples": [
+							[],
+							["service.agents-providers-module-task-worker"],
+							["adapter.agents-providers-module-task-runner", "adapter.git"]
+						]
 					},
 					{
 						"name": "ModuleTaskWorkerService.once.signal",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Abort signal given to the runner as TaskRunInput.signal; the quota fallback checks it with throwIfAborted() before dispatching again. Defaults to AbortSignal.timeout(900000), which aborts after 900000 ms (15 minutes)."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskWorkerService.once",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Result of one claim attempt: { status: 'idle' } when no eligible task was claimed; otherwise { status, task, result }, where status is 'failed' if result.error is set and 'review' if not, task is the claimed task's id and result is the final result.",
+						"examples": [
+							{
+								"status": "idle"
+							},
+							{
+								"status": "review",
+								"task": "module-task-worker.claim-contract",
+								"result": {
+									"provider": "claude",
+									"model": "claude-haiku-5-5",
+									"intelligence": "medium",
+									"reportedModel": "claude-haiku-5-5",
+									"text": "Claim and worktree checks are in place; the module's unit tests pass.",
+									"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+									"changedFiles": [
+										"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+									],
+									"fallback": false,
+									"finishedAt": "2026-11-15T09:19:07.126Z",
+									"attempt": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+									"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+									"checkpointCommit": "1a9d7f20c6e4b83d5f0a2e91c7b64d05f3e8a12c",
+									"usage": {
+										"inputTokens": 18432,
+										"outputTokens": 2210,
+										"cacheReadTokens": 12288,
+										"cacheWriteTokens": 4096,
+										"reportedCostUsd": null
+									},
+									"executions": [
+										{
+											"provider": "claude",
+											"model": "claude-haiku-5-5",
+											"intelligence": "medium",
+											"reportedModel": "claude-haiku-5-5",
+											"usage": {
+												"inputTokens": 18432,
+												"outputTokens": 2210,
+												"cacheReadTokens": 12288,
+												"cacheWriteTokens": 4096,
+												"reportedCostUsd": null
+											},
+											"apiCost": {
+												"rateCard": "standard-global-2026-10-25",
+												"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+												"usd": null,
+												"minimumUsd": 0.00194468,
+												"maximumUsd": 0.00225188,
+												"basis": "standard-api-estimate",
+												"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+											},
+											"status": "succeeded",
+											"startedAt": "2026-11-15T09:12:45.003Z",
+											"finishedAt": "2026-11-15T09:19:07.110Z"
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown before any I/O for an invalid worker name. Owner lookup, the claim update, task preparation, workspace setup and the finish update reject with their own errors, including the claim-changed error from the finish update; runner, worktree and snapshot failures are recorded in result.error and returned as status 'failed'."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "pendingTaskResult",
@@ -177,22 +772,55 @@
 					{
 						"name": "pendingTaskResult.selection",
 						"type": "TaskSelection",
-						"required": true
+						"required": true,
+						"description": "The provider, model and intelligence the attempt runs with, as resolved from the task by taskSelection; pendingTaskResult copies these fields into the result unchanged. An auto task always resolves to claude-haiku-5-5 at medium intelligence.",
+						"examples": [
+							{
+								"provider": "claude",
+								"model": "claude-haiku-5-5",
+								"intelligence": "medium"
+							},
+							{
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"intelligence": "max"
+							}
+						]
 					},
 					{
 						"name": "pendingTaskResult.worktree",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Absolute path of the attempt's detached Git worktree, which taskWorkspace names with the claim token under .cache/harness/task-worktrees. It is stored unchanged as the result's worktree and passed to the runner as cwd.",
+						"examples": [
+							"/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+							"/srv/harness/checkout/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pendingTaskResult",
-						"type": "NonNullable<ModuleTask['result']>"
+						"type": "NonNullable<ModuleTask['result']>",
+						"description": "The initial result for an attempt before it runs: empty text, reportedModel null, no changed files and no executions, with the selection and worktree filled in. fallback is false and finishedAt is set to the creation time.",
+						"examples": [
+							{
+								"provider": "claude",
+								"model": "claude-haiku-5-5",
+								"intelligence": "medium",
+								"reportedModel": null,
+								"text": "",
+								"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+								"changedFiles": [],
+								"fallback": false,
+								"executions": [],
+								"finishedAt": "2026-11-15T09:12:44.530Z"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "claimedTask",
@@ -200,32 +828,178 @@
 					{
 						"name": "claimedTask.queue",
 						"type": "ModuleTaskQueue",
-						"required": true
+						"required": true,
+						"description": "The queue snapshot that claimedTask edits inside repository.update; it marks the first eligible queued task as running with a claim, and the queue is committed only when that edit changed it.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"features": [
+									{
+										"id": "agents-providers.module-tasks",
+										"goal": "Let foreground workers take module tasks without racing each other.",
+										"tldr": "Atomic claims, isolated worktrees, reviewed output."
+									}
+								],
+								"tasks": [
+									{
+										"id": "module-task-worker.claim-contract",
+										"title": "Claim matching module tasks once",
+										"instructions": "Keep the claim, worktree and finish checks in ModuleTaskWorkerService.ts and taskClaim.ts, and add no new providers.",
+										"wantedContract": {
+											"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+											"inputs": [
+												{
+													"name": "ModuleTaskWorkerService.once.worker",
+													"type": "string",
+													"required": true
+												}
+											],
+											"outputs": [
+												{
+													"name": "ModuleTaskWorkerService.once",
+													"type": "unknown"
+												}
+											],
+											"errors": [
+												{
+													"name": "Error",
+													"type": "thrown"
+												}
+											]
+										},
+										"model": "auto",
+										"feature": {
+											"id": "agents-providers.module-tasks",
+											"goal": "Let foreground workers take module tasks without racing each other.",
+											"tldr": "Atomic claims, isolated worktrees, reviewed output."
+										},
+										"module": {
+											"id": "service.agents-providers-module-task-worker",
+											"goal": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+											"files": [
+												"src/services/agents-providers/ModuleTaskWorkerService.ts",
+												"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+											]
+										},
+										"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+										"contractHash": "c3f1a8e05b72d946e0a1c7b3f58d2e90a4b6c1d7e2f09a3b58c4d1e6f7a20b95",
+										"status": "queued",
+										"reviews": [],
+										"createdAt": "2026-11-14T18:05:12.418Z",
+										"claimHistory": [],
+										"attempts": []
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "claimedTask.worker",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Worker name matched against each task's assignee and written into the new claim. The queue schema requires it to match the unit id pattern, so a name that does not match fails the queue update.",
+						"examples": ["luna-worker-1", "codex.luna-2"]
 					},
 					{
 						"name": "claimedTask.modules",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Module ids a claim may take; an empty array leaves every module eligible. A module that already has a running task is skipped whatever this array contains.",
+						"examples": [
+							[],
+							["service.agents-providers-module-task-worker"],
+							["adapter.agents-providers-module-task-runner", "adapter.git"]
+						]
 					},
 					{
 						"name": "claimedTask.owner",
 						"type": "NonNullable<ModuleTask['claim']>['owner']",
-						"required": true
+						"required": true,
+						"description": "Identity of the clone and process making the claim, from repository.owner(): the workspace UUID, this process's pid and its ps start time. It is stored unchanged on the claim, and its startedAt must be a non-empty string.",
+						"examples": [
+							{
+								"workspace": "e9f3d1a6-27b4-4c8e-a05d-6b9c2f1e8a73",
+								"pid": 48213,
+								"startedAt": "Sun Nov 15 09:12:03 2026"
+							},
+							{
+								"workspace": "3a7c9e15-0b82-4f6d-9d41-e8b2c5a70f19",
+								"pid": 51870,
+								"startedAt": "Sun Nov 15 08:47:10 2026"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "claimedTask",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The claimed ModuleTask, mutated in place to status running with a new claim, or null when no queued task matches the worker, the modules list and the rule that a module with a running task is skipped.",
+						"examples": [
+							null,
+							{
+								"id": "module-task-worker.claim-contract",
+								"title": "Claim matching module tasks once",
+								"instructions": "Keep the claim, worktree and finish checks in ModuleTaskWorkerService.ts and taskClaim.ts, and add no new providers.",
+								"wantedContract": {
+									"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+									"inputs": [
+										{
+											"name": "ModuleTaskWorkerService.once.worker",
+											"type": "string",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "ModuleTaskWorkerService.once",
+											"type": "unknown"
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "thrown"
+										}
+									]
+								},
+								"model": "auto",
+								"feature": {
+									"id": "agents-providers.module-tasks",
+									"goal": "Let foreground workers take module tasks without racing each other.",
+									"tldr": "Atomic claims, isolated worktrees, reviewed output."
+								},
+								"module": {
+									"id": "service.agents-providers-module-task-worker",
+									"goal": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+									"files": [
+										"src/services/agents-providers/ModuleTaskWorkerService.ts",
+										"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+									]
+								},
+								"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+								"contractHash": "c3f1a8e05b72d946e0a1c7b3f58d2e90a4b6c1d7e2f09a3b58c4d1e6f7a20b95",
+								"status": "running",
+								"reviews": [],
+								"createdAt": "2026-11-14T18:05:12.418Z",
+								"claim": {
+									"worker": "luna-worker-1",
+									"token": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+									"startedAt": "2026-11-15T09:12:44.512Z",
+									"owner": {
+										"workspace": "e9f3d1a6-27b4-4c8e-a05d-6b9c2f1e8a73",
+										"pid": 48213,
+										"startedAt": "Sun Nov 15 09:12:03 2026"
+									}
+								},
+								"claimHistory": [],
+								"attempts": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "finishTask",
@@ -233,32 +1007,236 @@
 					{
 						"name": "finishTask.queue",
 						"type": "ModuleTaskQueue",
-						"required": true
+						"required": true,
+						"description": "The queue snapshot that finishTask edits inside repository.update; it finds the task by id and writes status and result only when the stored task still matches the claimed copy.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"features": [
+									{
+										"id": "agents-providers.module-tasks",
+										"goal": "Let foreground workers take module tasks without racing each other.",
+										"tldr": "Atomic claims, isolated worktrees, reviewed output."
+									}
+								],
+								"tasks": [
+									{
+										"id": "module-task-worker.claim-contract",
+										"title": "Claim matching module tasks once",
+										"instructions": "Keep the claim, worktree and finish checks in ModuleTaskWorkerService.ts and taskClaim.ts, and add no new providers.",
+										"wantedContract": {
+											"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+											"inputs": [
+												{
+													"name": "ModuleTaskWorkerService.once.worker",
+													"type": "string",
+													"required": true
+												}
+											],
+											"outputs": [
+												{
+													"name": "ModuleTaskWorkerService.once",
+													"type": "unknown"
+												}
+											],
+											"errors": [
+												{
+													"name": "Error",
+													"type": "thrown"
+												}
+											]
+										},
+										"model": "auto",
+										"feature": {
+											"id": "agents-providers.module-tasks",
+											"goal": "Let foreground workers take module tasks without racing each other.",
+											"tldr": "Atomic claims, isolated worktrees, reviewed output."
+										},
+										"module": {
+											"id": "service.agents-providers-module-task-worker",
+											"goal": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+											"files": [
+												"src/services/agents-providers/ModuleTaskWorkerService.ts",
+												"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+											]
+										},
+										"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+										"contractHash": "c3f1a8e05b72d946e0a1c7b3f58d2e90a4b6c1d7e2f09a3b58c4d1e6f7a20b95",
+										"status": "running",
+										"reviews": [],
+										"createdAt": "2026-11-14T18:05:12.418Z",
+										"claim": {
+											"worker": "luna-worker-1",
+											"token": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+											"startedAt": "2026-11-15T09:12:44.512Z",
+											"owner": {
+												"workspace": "e9f3d1a6-27b4-4c8e-a05d-6b9c2f1e8a73",
+												"pid": 48213,
+												"startedAt": "Sun Nov 15 09:12:03 2026"
+											}
+										},
+										"claimHistory": [],
+										"attempts": []
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "finishTask.claimed",
 						"type": "ModuleTask",
-						"required": true
+						"required": true,
+						"description": "The task as it was claimed; finishTask finds the stored task by id and compares its claim token, contractHash, sourceCommit and repairCommit with this copy. Any difference, or a stored task that is no longer running, throws and leaves the queue unchanged.",
+						"examples": [
+							{
+								"id": "module-task-worker.claim-contract",
+								"title": "Claim matching module tasks once",
+								"instructions": "Keep the claim, worktree and finish checks in ModuleTaskWorkerService.ts and taskClaim.ts, and add no new providers.",
+								"wantedContract": {
+									"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+									"inputs": [
+										{
+											"name": "ModuleTaskWorkerService.once.worker",
+											"type": "string",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "ModuleTaskWorkerService.once",
+											"type": "unknown"
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "thrown"
+										}
+									]
+								},
+								"model": "auto",
+								"feature": {
+									"id": "agents-providers.module-tasks",
+									"goal": "Let foreground workers take module tasks without racing each other.",
+									"tldr": "Atomic claims, isolated worktrees, reviewed output."
+								},
+								"module": {
+									"id": "service.agents-providers-module-task-worker",
+									"goal": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+									"files": [
+										"src/services/agents-providers/ModuleTaskWorkerService.ts",
+										"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+									]
+								},
+								"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+								"contractHash": "c3f1a8e05b72d946e0a1c7b3f58d2e90a4b6c1d7e2f09a3b58c4d1e6f7a20b95",
+								"status": "running",
+								"reviews": [],
+								"createdAt": "2026-11-14T18:05:12.418Z",
+								"claim": {
+									"worker": "luna-worker-1",
+									"token": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+									"startedAt": "2026-11-15T09:12:44.512Z",
+									"owner": {
+										"workspace": "e9f3d1a6-27b4-4c8e-a05d-6b9c2f1e8a73",
+										"pid": 48213,
+										"startedAt": "Sun Nov 15 09:12:03 2026"
+									}
+								},
+								"claimHistory": [],
+								"attempts": []
+							}
+						]
 					},
 					{
 						"name": "finishTask.result",
 						"type": "ModuleTask['result']",
-						"required": true
+						"required": true,
+						"description": "The attempt's final result, stored unchanged on the task; a result with error sets the task to failed, and any other result sets it to review.",
+						"examples": [
+							{
+								"provider": "claude",
+								"model": "claude-haiku-5-5",
+								"intelligence": "medium",
+								"reportedModel": "claude-haiku-5-5",
+								"text": "Claim and worktree checks are in place; the module's unit tests pass.",
+								"worktree": "/home/dev/harness/.cache/harness/task-worktrees/5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+								"changedFiles": [
+									"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+								],
+								"fallback": false,
+								"finishedAt": "2026-11-15T09:19:07.126Z",
+								"attempt": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+								"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+								"checkpointCommit": "1a9d7f20c6e4b83d5f0a2e91c7b64d05f3e8a12c",
+								"usage": {
+									"inputTokens": 18432,
+									"outputTokens": 2210,
+									"cacheReadTokens": 12288,
+									"cacheWriteTokens": 4096,
+									"reportedCostUsd": null
+								},
+								"executions": [
+									{
+										"provider": "claude",
+										"model": "claude-haiku-5-5",
+										"intelligence": "medium",
+										"reportedModel": "claude-haiku-5-5",
+										"usage": {
+											"inputTokens": 18432,
+											"outputTokens": 2210,
+											"cacheReadTokens": 12288,
+											"cacheWriteTokens": 4096,
+											"reportedCostUsd": null
+										},
+										"apiCost": {
+											"rateCard": "standard-global-2026-10-25",
+											"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+											"usd": null,
+											"minimumUsd": 0.00194468,
+											"maximumUsd": 0.00225188,
+											"basis": "standard-api-estimate",
+											"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+										},
+										"status": "succeeded",
+										"startedAt": "2026-11-15T09:12:45.003Z",
+										"finishedAt": "2026-11-15T09:19:07.110Z"
+									}
+								]
+							},
+							{
+								"provider": "claude",
+								"model": "claude-haiku-5-5",
+								"intelligence": "medium",
+								"reportedModel": null,
+								"text": "",
+								"worktree": "/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
+								"changedFiles": [],
+								"error": "git worktree add --detach /home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0 7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e failed: fatal: could not create work tree dir '/home/dev/harness/.cache/harness/task-worktrees/0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0': No space left on device",
+								"fallback": false,
+								"finishedAt": "2026-11-15T09:12:58.447Z",
+								"attempt": "0d6a4f2e-93c1-4b7a-8e5f-2a9c7d1b64e0",
+								"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+								"executions": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "finishTask",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns nothing: it sets the matching stored task's status and result in place, and throws when the claim or definition no longer matches."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the stored task is missing or no longer running, or when its claim token, contractHash, sourceCommit or repairCommit differs from the claimed copy; the queue is left unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "taskWrites",
@@ -266,27 +1244,98 @@
 					{
 						"name": "taskWrites.git",
 						"type": "GitAdapter",
-						"required": true
+						"required": true,
+						"description": "Git adapter rooted in the attempt's worktree, used to run rev-parse HEAD and the diff and ls-files commands that list changed paths."
 					},
 					{
 						"name": "taskWrites.task",
 						"type": "ModuleTask",
-						"required": true
+						"required": true,
+						"description": "The claimed task whose module.files are the only paths allowed to change; taskWrites compares HEAD with the sourceCommit it is given before listing changes.",
+						"examples": [
+							{
+								"id": "module-task-worker.claim-contract",
+								"title": "Claim matching module tasks once",
+								"instructions": "Keep the claim, worktree and finish checks in ModuleTaskWorkerService.ts and taskClaim.ts, and add no new providers.",
+								"wantedContract": {
+									"responsibility": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+									"inputs": [
+										{
+											"name": "ModuleTaskWorkerService.once.worker",
+											"type": "string",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "ModuleTaskWorkerService.once",
+											"type": "unknown"
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "thrown"
+										}
+									]
+								},
+								"model": "auto",
+								"feature": {
+									"id": "agents-providers.module-tasks",
+									"goal": "Let foreground workers take module tasks without racing each other.",
+									"tldr": "Atomic claims, isolated worktrees, reviewed output."
+								},
+								"module": {
+									"id": "service.agents-providers-module-task-worker",
+									"goal": "Claim matching module assignments once, run isolated worktrees with exact model intelligence and quota-only fallback, and preserve changes for review.",
+									"files": [
+										"src/services/agents-providers/ModuleTaskWorkerService.ts",
+										"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+									]
+								},
+								"sourceCommit": "7e4b0c9a2d15f83b6a90e4c17d2f5b38a6c01d9e",
+								"contractHash": "c3f1a8e05b72d946e0a1c7b3f58d2e90a4b6c1d7e2f09a3b58c4d1e6f7a20b95",
+								"status": "running",
+								"reviews": [],
+								"createdAt": "2026-11-14T18:05:12.418Z",
+								"claim": {
+									"worker": "luna-worker-1",
+									"token": "5b1e0c7a-8f3d-4a6e-9c2b-1d7f0e4a9b36",
+									"startedAt": "2026-11-15T09:12:44.512Z",
+									"owner": {
+										"workspace": "e9f3d1a6-27b4-4c8e-a05d-6b9c2f1e8a73",
+										"pid": 48213,
+										"startedAt": "Sun Nov 15 09:12:03 2026"
+									}
+								},
+								"claimHistory": [],
+								"attempts": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskWrites",
-						"type": "Promise<string[]>"
+						"type": "Promise<string[]>",
+						"description": "Resolves to the de-duplicated repository-relative paths that differ from HEAD, tracked changes first and untracked files after. It rejects when HEAD differs from task.sourceCommit or a path lies outside task.module.files.",
+						"examples": [
+							[
+								"src/services/agents-providers/ModuleTaskWorkerService.ts",
+								"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+							],
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when HEAD differs from task.sourceCommit or a changed path lies outside task.module.files; a failed git command rejects with its own Error."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -296,22 +1345,32 @@
 					{
 						"name": "ModuleTaskWorkerService.constructor.root",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
+						"examples": ["/home/dev/harness", "/srv/harness/checkout"]
 					},
 					{
 						"name": "ModuleTaskWorkerService.constructor.runner",
 						"type": "TaskRunner",
-						"required": false
+						"required": false,
+						"description": "The runner whose run(input) executes each attempt with its provider, model, intelligence, worktree cwd, prompt and signal. Defaults to new ModuleTaskRunnerAdapter(), which runs the installed provider CLIs with saved login."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskWorkerService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ModuleTaskWorkerService, whose repository is a ModuleTaskRepository bound to root."
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown only when root is omitted and the default process.cwd() fails because the working directory no longer exists (Node reports an ENOENT error from uv_cwd). Building the default ModuleTaskRunnerAdapter and the ModuleTaskRepository, which builds a GitAdapter, only stores fields and throws nothing."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
