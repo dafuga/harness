@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeEach, expect, test } from 'vitest';
 import { ConsoleInstallService } from '../../src/services/console-install-service/ConsoleInstallService';
-import { consoleHostFiles } from '../../src/services/console-install-service/consoleHostFiles';
+import { consoleHostFiles } from '../../src/cli/program/console-install-service/consoleHostFiles';
 
 let root: string;
 let host: string;

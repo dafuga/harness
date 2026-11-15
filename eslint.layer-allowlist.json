@@ -82,11 +82,6 @@
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
 		},
 		{
-			"from": "src/services/console-install-service/consoleHostFiles.ts",
-			"to": "src/cli/program/console-install-service/consoleHostFiles",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/console-install-service/ConsoleInstallService.ts",
 			"to": "src/cli/program/console-install-service/ConsoleInstallService",
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
