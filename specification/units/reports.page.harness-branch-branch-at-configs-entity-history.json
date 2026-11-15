@@ -24,41 +24,43 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The commits that changed the config, newest first, each against its first parent, with reasons, sizes and reviews. A commit whose change is unknown says so."
+				"description": "The commits through the shown commit that changed this config, newest first, each compared with its first parent, with its commit time, short commit hash, behavior change (the commit subject when that text is empty), size and complexity (each with its change), and an approved budget increase where one exists. Commits whose change is not known yet are counted in a note that says so until they are read, and the 'Read the next commits' button reads the next ten of them; with no commit listed, a 'No recorded change' notice takes the table's place."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Config history · Harness"
+				"description": "The document title the page sets through HarnessScreen: its screen title 'Config history' followed by ' · Harness'. The page passes the same screen title for every config and commit, so the value never varies.",
+				"examples": ["Config history · Harness"]
 			}
 		],
 		"errors": [
 			{
 				"name": "not-in-history",
 				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
+				"description": "A branch the history does not hold, a branch whose tip it does not hold, a commit it does not hold, or a commit its branch does not contain is said in a notice that names it, with an 'Open the newest commit' link when the history has one. No other revision is shown."
 			},
 			{
 				"name": "no-registry",
 				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
+				"description": "When the shown revision has no available unit registry, the config's screen is replaced by a 'No registry at this revision' notice with the text of the registry's gap, or 'No unit registry is stored at' and the short commit when there is none. Nothing from another revision is shown in its place."
 			},
 			{
 				"name": "not-at-revision",
 				"type": "notice",
-				"description": "A config the shown revision does not hold is said, with the way back to the collection."
+				"description": "A config the shown revision does not hold is replaced by a 'Not at this revision' notice saying that nothing named by the address is in the registry at the short commit, with a 'Back to the collection' link to its category. Nothing from another revision is shown in its place."
 			},
 			{
 				"name": "other-category",
 				"type": "redirect",
-				"description": "A unit that is not a config at this revision is led to the address of its own category."
+				"description": "A config address whose entity the shown revision lists under another category is replaced, with no new history entry, by the address under that category, keeping the rest of the address."
 			},
 			{
 				"name": "not-admitted",
 				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
+				"description": "The server hook refuses any request its owner policy does not admit with status 403 and the text 'Forbidden', before the page or data route runs, so no history is read. A history index refused this way leaves the page showing 'The history could not be loaded. Refresh the page to try again.'"
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
