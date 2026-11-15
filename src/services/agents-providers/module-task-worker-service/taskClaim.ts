@@ -31,6 +31,7 @@ export function claimedTask(
 	const task = queue.tasks.find(
 		(t) =>
 			t.status === 'queued' &&
+			!['role', 'assignedFiles', 'dependsOn'].some((key) => Object.hasOwn(t, key)) &&
 			(!t.assignee || t.assignee === worker) &&
 			(!modules.length || modules.includes(t.module.id)) &&
 			!busy.has(t.module.id)

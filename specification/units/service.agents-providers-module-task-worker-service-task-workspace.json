@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/agents-providers/module-task-worker-service/taskWorkspace.ts"],
-		"symbols": ["taskWorkspace", "snapshotTaskWork"]
+		"symbols": ["taskWorkspace", "prepareTaskWorkspace", "snapshotTaskWork"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -86,6 +86,16 @@
 						"intelligence": "high"
 					}
 				]
+			},
+			{
+				"name": "prepareTaskWorkspace.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "prepareTaskWorkspace.worktree",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "snapshotTaskWork.root",
@@ -319,6 +329,29 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "prepareTaskWorkspace",
+				"inputs": [
+					{
+						"name": "prepareTaskWorkspace.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "prepareTaskWorkspace.worktree",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "prepareTaskWorkspace",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "snapshotTaskWork",

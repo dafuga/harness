@@ -3,7 +3,11 @@ import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { ModuleTaskRunnerAdapter } from '../../adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { ModuleTaskAnalyticsService } from './ModuleTaskAnalyticsService';
 import { dispatchTaskAttempt } from './module-task-worker-service/dispatchTaskAttempt';
-import { taskWorkspace, snapshotTaskWork } from './module-task-worker-service/taskWorkspace';
+import {
+	taskWorkspace,
+	snapshotTaskWork,
+	prepareTaskWorkspace
+} from './module-task-worker-service/taskWorkspace';
 import type {
 	ModuleTask,
 	TaskRunner,
@@ -38,6 +42,7 @@ export class ModuleTaskWorkerService {
 		const { sourceCommit, worktree } = result;
 		try {
 			await new GitAdapter(this.root).run(['worktree', 'add', '--detach', worktree, sourceCommit]);
+			await prepareTaskWorkspace(this.root, worktree);
 			const execution = await this.run(
 				task,
 				{ ...selection, cwd: worktree, prompt, signal },

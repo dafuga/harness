@@ -5,16 +5,24 @@ import type {
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { ModuleTaskWorktreeAdapter } from '../../../adapters/agents-providers/ModuleTaskWorktreeAdapter';
-import { resolve } from 'node:path';
+import { resolve, join } from 'node:path';
+import { existsSync } from 'node:fs';
+import { symlink } from 'node:fs/promises';
 import { pendingTaskResult, taskWrites } from './taskClaim';
 export async function taskWorkspace(root: string, task: ModuleTask, selection: TaskSelection) {
-	const common = await new GitAdapter(root).run(['rev-parse', '--git-common-dir']);
-	const worktree = resolve(root, common, '..', '.cache/harness/task-worktrees', task.claim!.token);
+	const worktree = resolve(root, '.cache/harness/task-worktrees', task.claim!.token);
 	return {
 		...pendingTaskResult(selection, worktree),
 		attempt: task.claim!.token,
 		sourceCommit: task.repairCommit ?? task.sourceCommit
 	};
+}
+
+/** Share installed dependencies without moving worker output into the common checkout. */
+export async function prepareTaskWorkspace(root: string, worktree: string): Promise<void> {
+	const source = join(root, 'node_modules'),
+		target = join(worktree, 'node_modules');
+	if (existsSync(source) && !existsSync(target)) await symlink(source, target, 'dir');
 }
 export async function snapshotTaskWork(
 	root: string,
