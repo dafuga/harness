@@ -8,13 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/development-tooling/namingRules.ts", "src/audit/namingRules.ts"],
-		"symbols": [
-			"auditTypeScriptNaming",
-			"auditSqlNaming",
-			"auditTypeScriptNaming",
-			"auditSqlNaming"
-		]
+		"source": ["src/audit/development-tooling/namingRules.ts"],
+		"symbols": ["auditTypeScriptNaming", "auditSqlNaming"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/development-tooling/render.ts", "src/audit/render.ts"],
-		"symbols": ["renderAudit", "renderAuditCoverage", "renderAudit", "renderAuditCoverage"]
+		"source": ["src/audit/development-tooling/render.ts"],
+		"symbols": ["renderAudit", "renderAuditCoverage"]
 	},
 	"contract": {
 		"origin": "derived",

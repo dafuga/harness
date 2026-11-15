@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/audit/development-tooling/profile.ts", "src/audit/profile.ts"],
-		"symbols": ["parseAuditProfile", "parseAuditProfile"]
+		"source": ["src/audit/development-tooling/profile.ts"],
+		"symbols": ["parseAuditProfile"]
 	},
 	"contract": {
 		"origin": "derived",
