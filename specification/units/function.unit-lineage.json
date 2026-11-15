@@ -10,8 +10,8 @@
 	"owns": {
 		"source": [
 			"src/utils/development-tooling/unitLineage.ts",
-			"src/workflows/development-tooling/load-units/unit-index-service/unitLineage.ts",
-			"src/workflows/load-units/unit-index-service/unitLineage.ts"
+			"src/utils/unitLineage.ts",
+			"src/workflows/development-tooling/load-units/unit-index-service/unitLineage.ts"
 		],
 		"symbols": ["LineageSubject", "unitLineage", "unitLineage", "unitLineage"]
 	},
