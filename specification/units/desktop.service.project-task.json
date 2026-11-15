@@ -9,10 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
-			"packages/desktop/src/services/desktop-run-service/project-task-service/ProjectTaskService.ts"
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts"
 		],
-		"symbols": ["ProjectTaskService", "ProjectTaskService.run", "ProjectTaskService"]
+		"symbols": ["ProjectTaskService", "ProjectTaskService.run"]
 	},
 	"contract": {
 		"origin": "derived",
