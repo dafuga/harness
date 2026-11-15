@@ -12,12 +12,13 @@
 		"symbols": ["shellAdapter"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "shellAdapter",
-				"type": "AuditAdapter"
+				"type": "AuditAdapter",
+				"description": "The shell AuditAdapter object for '.sh' files in the 'app', 'dapp' and 'lib' profiles, with id 'shell', label 'Shell' and optional tool 'shellcheck'; its audit(file) method returns the file-length, shebang, strict-mode, unsafe rm -rf, unquoted-variable and curly-function findings for one file. The checks defined in this file are text matches (a '#!' prefix on the first line, a literal 'set -euo pipefail' substring that also matches inside comments, and regular expressions), so they do not parse shell syntax."
 			}
 		],
 		"errors": [],
