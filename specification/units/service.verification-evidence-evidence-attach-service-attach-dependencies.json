@@ -12,45 +12,158 @@
 		"symbols": ["isScopedRecord", "inheritedRecords", "citedRecords"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "isScopedRecord.record",
 				"type": "Pick<DependentRecord, 'failures'>",
-				"required": true
+				"required": true,
+				"description": "The record, read only through its `failures` list. It counts as scoped when some failure starts with `Scoped to ` (case-sensitive, with its trailing space); an empty failures list is not scoped.",
+				"examples": [
+					{
+						"failures": []
+					},
+					{
+						"failures": [
+							"snapshot mutated during verification: src/services/verification-evidence/evidence-attach-service/attachDependencies.ts"
+						]
+					},
+					{
+						"failures": [
+							"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
+						]
+					}
+				]
 			},
 			{
 				"name": "inheritedRecords.record",
 				"type": "DependentRecord",
-				"required": true
+				"required": true,
+				"description": "The record being attached, read through `source.baseRecord`, `scenarios[].referencedRecord` and `failures`; its `id` is never read. A scoped record inherits nothing, and a base or reference that is missing, null or empty is skipped.",
+				"examples": [
+					{
+						"id": "4b7e1c9d2a06f83e5d1b7c40a9e2f6837d5c1b0a94e8f2d6c3b7a15e09d4f8a2",
+						"source": {
+							"baseRecord": "e81a3f0c7b52d964a1c08e3f5b27d9e06c4a8f15b3d70e29a6c1f84b5d37e2c0"
+						},
+						"scenarios": [
+							{
+								"referencedRecord": "0d6a9f27c4e1b83d5a0f7c2e91b6d4a8f3e5c07b29d1a6e4f8c3b5d2a7e90f16"
+							}
+						],
+						"failures": []
+					},
+					{
+						"id": "7c2f5a8e1d4b9063f7a2c5e8d1b4f0a97e3c6d2b8f5a1e4c9d0b7f3a6e2c8d15",
+						"source": {},
+						"scenarios": [],
+						"failures": []
+					},
+					{
+						"id": "b5e0c3a9d6f1e8b4c7a2d5f0e9b3c6a1d8f4e7b2c5a0d9f6e3b8c1a4d7f2e5b0",
+						"source": {
+							"baseRecord": "e81a3f0c7b52d964a1c08e3f5b27d9e06c4a8f15b3d70e29a6c1f84b5d37e2c0"
+						},
+						"scenarios": [
+							{
+								"referencedRecord": "0d6a9f27c4e1b83d5a0f7c2e91b6d4a8f3e5c07b29d1a6e4f8c3b5d2a7e90f16"
+							}
+						],
+						"failures": [
+							"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
+						]
+					}
+				]
 			},
 			{
 				"name": "citedRecords.record",
 				"type": "DependentRecord",
-				"required": true
+				"required": true,
+				"description": "The record being attached, read only through its `failures` (to tell whether it is scoped) and its `id` (to drop it from the ledger ids). A scoped record cites nothing, whatever the ledger holds.",
+				"examples": [
+					{
+						"id": "4b7e1c9d2a06f83e5d1b7c40a9e2f6837d5c1b0a94e8f2d6c3b7a15e09d4f8a2",
+						"source": {
+							"baseRecord": "e81a3f0c7b52d964a1c08e3f5b27d9e06c4a8f15b3d70e29a6c1f84b5d37e2c0"
+						},
+						"scenarios": [
+							{
+								"referencedRecord": "0d6a9f27c4e1b83d5a0f7c2e91b6d4a8f3e5c07b29d1a6e4f8c3b5d2a7e90f16"
+							}
+						],
+						"failures": []
+					},
+					{
+						"id": "7c2f5a8e1d4b9063f7a2c5e8d1b4f0a97e3c6d2b8f5a1e4c9d0b7f3a6e2c8d15",
+						"source": {},
+						"scenarios": [],
+						"failures": []
+					},
+					{
+						"id": "b5e0c3a9d6f1e8b4c7a2d5f0e9b3c6a1d8f4e7b2c5a0d9f6e3b8c1a4d7f2e5b0",
+						"source": {
+							"baseRecord": "e81a3f0c7b52d964a1c08e3f5b27d9e06c4a8f15b3d70e29a6c1f84b5d37e2c0"
+						},
+						"scenarios": [
+							{
+								"referencedRecord": "0d6a9f27c4e1b83d5a0f7c2e91b6d4a8f3e5c07b29d1a6e4f8c3b5d2a7e90f16"
+							}
+						],
+						"failures": [
+							"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
+						]
+					}
+				]
 			},
 			{
 				"name": "citedRecords.ledger",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "The record ids the commit's budget ledger cites, which a full (non-scoped) record attaches first. `citedRecords` drops duplicates and the record's own id from them and checks no other entry, so an empty string would be kept.",
+				"examples": [
+					[
+						"7c2f5a8e1d4b9063f7a2c5e8d1b4f0a97e3c6d2b8f5a1e4c9d0b7f3a6e2c8d15",
+						"a3d9e6f1b0c7a5d2e8f4b9c1a6d3e0f7b2c5a8d1e4f9b6c3a0d7e2f5b8c1a4d9",
+						"7c2f5a8e1d4b9063f7a2c5e8d1b4f0a97e3c6d2b8f5a1e4c9d0b7f3a6e2c8d15"
+					],
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "isScopedRecord",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when some failure starts with `Scoped to `, the prefix of the statement every scoped (--entity) record carries; for such a record, `inheritedRecords` and `citedRecords` both return an empty list. False when no failure has that prefix, including when the failures list is empty.",
+				"examples": [true, false]
 			},
 			{
 				"name": "inheritedRecords",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The ids the record inherits from: its base record first, then the referenced scenario records, each id once and with empty ids dropped. The list is empty when the record has no base or reference, and also when the record is scoped.",
+				"examples": [
+					[
+						"e81a3f0c7b52d964a1c08e3f5b27d9e06c4a8f15b3d70e29a6c1f84b5d37e2c0",
+						"0d6a9f27c4e1b83d5a0f7c2e91b6d4a8f3e5c07b29d1a6e4f8c3b5d2a7e90f16"
+					],
+					[]
+				]
 			},
 			{
 				"name": "citedRecords",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The ledger's record ids in first-seen order, with duplicates and the record's own id removed. A scoped record gets an empty list, and empty strings from the ledger are kept.",
+				"examples": [
+					[
+						"7c2f5a8e1d4b9063f7a2c5e8d1b4f0a97e3c6d2b8f5a1e4c9d0b7f3a6e2c8d15",
+						"a3d9e6f1b0c7a5d2e8f4b9c1a6d3e0f7b2c5a8d1e4f9b6c3a0d7e2f5b8c1a4d9"
+					],
+					[]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "isScopedRecord",
@@ -58,17 +171,35 @@
 					{
 						"name": "isScopedRecord.record",
 						"type": "Pick<DependentRecord, 'failures'>",
-						"required": true
+						"required": true,
+						"description": "The record, read only through its `failures` list. It counts as scoped when some failure starts with `Scoped to ` (case-sensitive, with its trailing space); an empty failures list is not scoped.",
+						"examples": [
+							{
+								"failures": []
+							},
+							{
+								"failures": [
+									"snapshot mutated during verification: src/services/verification-evidence/evidence-attach-service/attachDependencies.ts"
+								]
+							},
+							{
+								"failures": [
+									"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isScopedRecord",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when some failure starts with `Scoped to `, the prefix of the statement every scoped (--entity) record carries; for such a record, `inheritedRecords` and `citedRecords` both return an empty list. False when no failure has that prefix, including when the failures list is empty.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "inheritedRecords",
@@ -76,17 +207,60 @@
 					{
 						"name": "inheritedRecords.record",
 						"type": "DependentRecord",
-						"required": true
+						"required": true,
+						"description": "The record being attached, read through `source.baseRecord`, `scenarios[].referencedRecord` and `failures`; its `id` is never read. A scoped record inherits nothing, and a base or reference that is missing, null or empty is skipped.",
+						"examples": [
+							{
+								"id": "4b7e1c9d2a06f83e5d1b7c40a9e2f6837d5c1b0a94e8f2d6c3b7a15e09d4f8a2",
+								"source": {
+									"baseRecord": "e81a3f0c7b52d964a1c08e3f5b27d9e06c4a8f15b3d70e29a6c1f84b5d37e2c0"
+								},
+								"scenarios": [
+									{
+										"referencedRecord": "0d6a9f27c4e1b83d5a0f7c2e91b6d4a8f3e5c07b29d1a6e4f8c3b5d2a7e90f16"
+									}
+								],
+								"failures": []
+							},
+							{
+								"id": "7c2f5a8e1d4b9063f7a2c5e8d1b4f0a97e3c6d2b8f5a1e4c9d0b7f3a6e2c8d15",
+								"source": {},
+								"scenarios": [],
+								"failures": []
+							},
+							{
+								"id": "b5e0c3a9d6f1e8b4c7a2d5f0e9b3c6a1d8f4e7b2c5a0d9f6e3b8c1a4d7f2e5b0",
+								"source": {
+									"baseRecord": "e81a3f0c7b52d964a1c08e3f5b27d9e06c4a8f15b3d70e29a6c1f84b5d37e2c0"
+								},
+								"scenarios": [
+									{
+										"referencedRecord": "0d6a9f27c4e1b83d5a0f7c2e91b6d4a8f3e5c07b29d1a6e4f8c3b5d2a7e90f16"
+									}
+								],
+								"failures": [
+									"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "inheritedRecords",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The ids the record inherits from: its base record first, then the referenced scenario records, each id once and with empty ids dropped. The list is empty when the record has no base or reference, and also when the record is scoped.",
+						"examples": [
+							[
+								"e81a3f0c7b52d964a1c08e3f5b27d9e06c4a8f15b3d70e29a6c1f84b5d37e2c0",
+								"0d6a9f27c4e1b83d5a0f7c2e91b6d4a8f3e5c07b29d1a6e4f8c3b5d2a7e90f16"
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "citedRecords",
@@ -94,22 +268,74 @@
 					{
 						"name": "citedRecords.record",
 						"type": "DependentRecord",
-						"required": true
+						"required": true,
+						"description": "The record being attached, read only through its `failures` (to tell whether it is scoped) and its `id` (to drop it from the ledger ids). A scoped record cites nothing, whatever the ledger holds.",
+						"examples": [
+							{
+								"id": "4b7e1c9d2a06f83e5d1b7c40a9e2f6837d5c1b0a94e8f2d6c3b7a15e09d4f8a2",
+								"source": {
+									"baseRecord": "e81a3f0c7b52d964a1c08e3f5b27d9e06c4a8f15b3d70e29a6c1f84b5d37e2c0"
+								},
+								"scenarios": [
+									{
+										"referencedRecord": "0d6a9f27c4e1b83d5a0f7c2e91b6d4a8f3e5c07b29d1a6e4f8c3b5d2a7e90f16"
+									}
+								],
+								"failures": []
+							},
+							{
+								"id": "7c2f5a8e1d4b9063f7a2c5e8d1b4f0a97e3c6d2b8f5a1e4c9d0b7f3a6e2c8d15",
+								"source": {},
+								"scenarios": [],
+								"failures": []
+							},
+							{
+								"id": "b5e0c3a9d6f1e8b4c7a2d5f0e9b3c6a1d8f4e7b2c5a0d9f6e3b8c1a4d7f2e5b0",
+								"source": {
+									"baseRecord": "e81a3f0c7b52d964a1c08e3f5b27d9e06c4a8f15b3d70e29a6c1f84b5d37e2c0"
+								},
+								"scenarios": [
+									{
+										"referencedRecord": "0d6a9f27c4e1b83d5a0f7c2e91b6d4a8f3e5c07b29d1a6e4f8c3b5d2a7e90f16"
+									}
+								],
+								"failures": [
+									"Scoped to reports.component.evidence-grid: only its scenario states ran, so this record is partial and never a full pass."
+								]
+							}
+						]
 					},
 					{
 						"name": "citedRecords.ledger",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "The record ids the commit's budget ledger cites, which a full (non-scoped) record attaches first. `citedRecords` drops duplicates and the record's own id from them and checks no other entry, so an empty string would be kept.",
+						"examples": [
+							[
+								"7c2f5a8e1d4b9063f7a2c5e8d1b4f0a97e3c6d2b8f5a1e4c9d0b7f3a6e2c8d15",
+								"a3d9e6f1b0c7a5d2e8f4b9c1a6d3e0f7b2c5a8d1e4f9b6c3a0d7e2f5b8c1a4d9",
+								"7c2f5a8e1d4b9063f7a2c5e8d1b4f0a97e3c6d2b8f5a1e4c9d0b7f3a6e2c8d15"
+							],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "citedRecords",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The ledger's record ids in first-seen order, with duplicates and the record's own id removed. A scoped record gets an empty list, and empty strings from the ledger are kept.",
+						"examples": [
+							[
+								"7c2f5a8e1d4b9063f7a2c5e8d1b4f0a97e3c6d2b8f5a1e4c9d0b7f3a6e2c8d15",
+								"a3d9e6f1b0c7a5d2e8f4b9c1a6d3e0f7b2c5a8d1e4f9b6c3a0d7e2f5b8c1a4d9"
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
