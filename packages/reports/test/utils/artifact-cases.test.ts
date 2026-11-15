@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { artifactCases } from '../../src/components/entity-cases/artifactCases';
+import { artifactCases } from '../../src/components/explorer-ui/entity-cases/artifactCases';
 import { caseForm } from '../../src/utils/artifactCases';
 import { calls, compared, elsewhere, gaps, malformed, observed, unit } from '../artifactCaseDocs';
 
