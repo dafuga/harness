@@ -18,23 +18,92 @@
 				"name": "evidencePayload.channel",
 				"type": "string",
 				"required": true,
-				"description": "The channel name. Exactly evidence:artifact requires capture-binding fields; every other channel value uses only the evidence scope."
+				"description": "The channel name, which the function never validates: only the exact string evidence:artifact adds the capture-binding fields, and every other value, including a non-string, returns the scope fields alone.",
+				"examples": ["evidence:artifact"]
 			},
 			{
 				"name": "evidencePayload.x",
 				"type": "Record<string, unknown>",
 				"required": true,
-				"description": "The request object. Scope needs a valid entity identifier up to 120 characters, a 40-character lowercase hexadecimal commit, a nonblank branch up to 255 characters and current or commit mode. Artifact reads additionally require before or after, a 64-character lowercase hexadecimal record hash, scenario/state/evidence identifiers, nullable viewport, 64-character SHA-256 and nullable 40-character notes and evidence revisions. Identifier segments use lowercase letters or digits separated by dots or hyphens."
+				"description": "The request object, read by field name; a null or undefined value throws a TypeError, and an identifier is lowercase letters or digits with single dots or hyphens only between them. Every call needs entityId (an identifier up to 120 characters), commit (exactly 40 lowercase hex characters), branch (not blank and up to 255 characters, otherwise unchecked) and mode (current or commit), and an evidence:artifact call also needs side (before or after), recordId and sha256 (exactly 64 lowercase hex characters each), scenarioId, state and evidenceId (identifiers up to 120 characters each), viewport (null or an identifier up to 300 characters), and notesRevision and evidenceRevision (null or exactly 40 lowercase hex characters).",
+				"examples": [
+					{
+						"entityId": "reports.component.evidence-grid",
+						"commit": "9d41c2e7a8b03f5c61d2e94b7a0c3f58e1d64a2b",
+						"branch": "feature/evidence-grid",
+						"mode": "current"
+					},
+					{
+						"entityId": "reports.component.evidence-grid",
+						"commit": "9d41c2e7a8b03f5c61d2e94b7a0c3f58e1d64a2b",
+						"branch": "feature/evidence-grid",
+						"mode": "commit",
+						"side": "after",
+						"recordId": "5b0e8d1f3c7a92e4d6b1f08a7c3e5d92f41b6a0c8e7d3f19a2c5b4e6d8f0a1c3",
+						"scenarioId": "desktop-recorded-evidence",
+						"state": "rows-filtered",
+						"evidenceId": "evidence-grid.header-contrast",
+						"viewport": "desktop-1440x900",
+						"sha256": "0a6f3d219e4c7b581d2a6f0ec94b7e3a58d1f6c20b7e9a4d3f6c1e85a29d4b07",
+						"notesRevision": "4e2b9c07d1a8f365e0b4c92d7a1f38e6b05c2d41",
+						"evidenceRevision": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidencePayload",
 				"type": "unknown",
-				"description": "A fresh object containing only validated scope fields and, for artifact reads, the capture binding. Extra fields, including project identity, paths and addresses, are omitted here. Invalid, missing, blank, oversized or wrongly formatted fields throw a validation error; nullable fields accept null, not omission."
+				"description": "A new object holding only the validated scope fields (entityId, commit, branch, mode) and, when channel is exactly evidence:artifact, also the capture-binding fields (side, recordId, scenarioId, state, evidenceId, viewport, sha256, notesRevision, evidenceRevision), with any other field of x, such as a path or an address, dropped. A missing, blank, oversized or wrongly formatted field makes the call throw an Error whose message is 'Invalid text field.', 'Invalid identifier.' or 'Invalid option.', and a nullable field accepts null but not omission.",
+				"examples": [
+					{
+						"entityId": "reports.component.evidence-grid",
+						"commit": "9d41c2e7a8b03f5c61d2e94b7a0c3f58e1d64a2b",
+						"branch": "feature/evidence-grid",
+						"mode": "current"
+					},
+					{
+						"entityId": "reports.component.evidence-grid",
+						"commit": "9d41c2e7a8b03f5c61d2e94b7a0c3f58e1d64a2b",
+						"branch": "feature/evidence-grid",
+						"mode": "commit",
+						"side": "after",
+						"recordId": "5b0e8d1f3c7a92e4d6b1f08a7c3e5d92f41b6a0c8e7d3f19a2c5b4e6d8f0a1c3",
+						"scenarioId": "desktop-recorded-evidence",
+						"state": "rows-filtered",
+						"evidenceId": "evidence-grid.header-contrast",
+						"viewport": "desktop-1440x900",
+						"sha256": "0a6f3d219e4c7b581d2a6f0ec94b7e3a58d1f6c20b7e9a4d3f6c1e85a29d4b07",
+						"notesRevision": "4e2b9c07d1a8f365e0b4c92d7a1f38e6b05c2d41",
+						"evidenceRevision": null
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error: Invalid text field.",
+				"type": "thrown",
+				"description": "Raised by the ipcFields helper textField, which nullableText also calls for a non-null value, when a value is not a string (a missing field counts), is blank after trimming, or is longer than its limit: 120 for entityId, scenarioId, state and evidenceId, 255 for branch, 40 for commit, 64 for recordId and sha256, and 300 for a non-null viewport, notesRevision or evidenceRevision."
+			},
+			{
+				"name": "Error: Invalid identifier.",
+				"type": "thrown",
+				"description": "Raised by textField when a non-blank string within its limit fails its pattern: idPattern for entityId, scenarioId, state, evidenceId and a non-null viewport; commitPattern (exactly 40 lowercase hex characters) for commit, notesRevision and evidenceRevision; and hashPattern (exactly 64 lowercase hex characters) for recordId and sha256."
+			},
+			{
+				"name": "Error: Invalid option.",
+				"type": "thrown",
+				"description": "Raised by enumField when mode is not exactly current or commit, or, only for an evidence:artifact read, when side is not exactly before or after."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Raised when x is null or undefined, because its first field read, x.entityId, fails before any validation runs; other values, such as a string or an array, do not raise it and fail with Error: Invalid text field. instead."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "evidencePayload",
@@ -43,24 +112,92 @@
 						"name": "evidencePayload.channel",
 						"type": "string",
 						"required": true,
-						"description": "The channel name. Exactly evidence:artifact requires capture-binding fields; every other channel value uses only the evidence scope."
+						"description": "The channel name, which the function never validates: only the exact string evidence:artifact adds the capture-binding fields, and every other value, including a non-string, returns the scope fields alone.",
+						"examples": ["evidence:artifact"]
 					},
 					{
 						"name": "evidencePayload.x",
 						"type": "Record<string, unknown>",
 						"required": true,
-						"description": "The request object. Scope needs a valid entity identifier up to 120 characters, a 40-character lowercase hexadecimal commit, a nonblank branch up to 255 characters and current or commit mode. Artifact reads additionally require before or after, a 64-character lowercase hexadecimal record hash, scenario/state/evidence identifiers, nullable viewport, 64-character SHA-256 and nullable 40-character notes and evidence revisions. Identifier segments use lowercase letters or digits separated by dots or hyphens."
+						"description": "The request object, read by field name; a null or undefined value throws a TypeError, and an identifier is lowercase letters or digits with single dots or hyphens only between them. Every call needs entityId (an identifier up to 120 characters), commit (exactly 40 lowercase hex characters), branch (not blank and up to 255 characters, otherwise unchecked) and mode (current or commit), and an evidence:artifact call also needs side (before or after), recordId and sha256 (exactly 64 lowercase hex characters each), scenarioId, state and evidenceId (identifiers up to 120 characters each), viewport (null or an identifier up to 300 characters), and notesRevision and evidenceRevision (null or exactly 40 lowercase hex characters).",
+						"examples": [
+							{
+								"entityId": "reports.component.evidence-grid",
+								"commit": "9d41c2e7a8b03f5c61d2e94b7a0c3f58e1d64a2b",
+								"branch": "feature/evidence-grid",
+								"mode": "current"
+							},
+							{
+								"entityId": "reports.component.evidence-grid",
+								"commit": "9d41c2e7a8b03f5c61d2e94b7a0c3f58e1d64a2b",
+								"branch": "feature/evidence-grid",
+								"mode": "commit",
+								"side": "after",
+								"recordId": "5b0e8d1f3c7a92e4d6b1f08a7c3e5d92f41b6a0c8e7d3f19a2c5b4e6d8f0a1c3",
+								"scenarioId": "desktop-recorded-evidence",
+								"state": "rows-filtered",
+								"evidenceId": "evidence-grid.header-contrast",
+								"viewport": "desktop-1440x900",
+								"sha256": "0a6f3d219e4c7b581d2a6f0ec94b7e3a58d1f6c20b7e9a4d3f6c1e85a29d4b07",
+								"notesRevision": "4e2b9c07d1a8f365e0b4c92d7a1f38e6b05c2d41",
+								"evidenceRevision": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "evidencePayload",
 						"type": "unknown",
-						"description": "A fresh object containing only validated scope fields and, for artifact reads, the capture binding. Extra fields, including project identity, paths and addresses, are omitted here. Invalid, missing, blank, oversized or wrongly formatted fields throw a validation error; nullable fields accept null, not omission."
+						"description": "A new object holding only the validated scope fields (entityId, commit, branch, mode) and, when channel is exactly evidence:artifact, also the capture-binding fields (side, recordId, scenarioId, state, evidenceId, viewport, sha256, notesRevision, evidenceRevision), with any other field of x, such as a path or an address, dropped. A missing, blank, oversized or wrongly formatted field makes the call throw an Error whose message is 'Invalid text field.', 'Invalid identifier.' or 'Invalid option.', and a nullable field accepts null but not omission.",
+						"examples": [
+							{
+								"entityId": "reports.component.evidence-grid",
+								"commit": "9d41c2e7a8b03f5c61d2e94b7a0c3f58e1d64a2b",
+								"branch": "feature/evidence-grid",
+								"mode": "current"
+							},
+							{
+								"entityId": "reports.component.evidence-grid",
+								"commit": "9d41c2e7a8b03f5c61d2e94b7a0c3f58e1d64a2b",
+								"branch": "feature/evidence-grid",
+								"mode": "commit",
+								"side": "after",
+								"recordId": "5b0e8d1f3c7a92e4d6b1f08a7c3e5d92f41b6a0c8e7d3f19a2c5b4e6d8f0a1c3",
+								"scenarioId": "desktop-recorded-evidence",
+								"state": "rows-filtered",
+								"evidenceId": "evidence-grid.header-contrast",
+								"viewport": "desktop-1440x900",
+								"sha256": "0a6f3d219e4c7b581d2a6f0ec94b7e3a58d1f6c20b7e9a4d3f6c1e85a29d4b07",
+								"notesRevision": "4e2b9c07d1a8f365e0b4c92d7a1f38e6b05c2d41",
+								"evidenceRevision": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error: Invalid text field.",
+						"type": "thrown",
+						"description": "Raised by the ipcFields helper textField, which nullableText also calls for a non-null value, when a value is not a string (a missing field counts), is blank after trimming, or is longer than its limit: 120 for entityId, scenarioId, state and evidenceId, 255 for branch, 40 for commit, 64 for recordId and sha256, and 300 for a non-null viewport, notesRevision or evidenceRevision."
+					},
+					{
+						"name": "Error: Invalid identifier.",
+						"type": "thrown",
+						"description": "Raised by textField when a non-blank string within its limit fails its pattern: idPattern for entityId, scenarioId, state, evidenceId and a non-null viewport; commitPattern (exactly 40 lowercase hex characters) for commit, notesRevision and evidenceRevision; and hashPattern (exactly 64 lowercase hex characters) for recordId and sha256."
+					},
+					{
+						"name": "Error: Invalid option.",
+						"type": "thrown",
+						"description": "Raised by enumField when mode is not exactly current or commit, or, only for an evidence:artifact read, when side is not exactly before or after."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Raised when x is null or undefined, because its first field read, x.entityId, fails before any validation runs; other values, such as a string or an array, do not raise it and fail with Error: Invalid text field. instead."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
