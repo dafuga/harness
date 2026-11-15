@@ -28,35 +28,103 @@
 				"type": "SearchLoopsInput",
 				"required": false,
 				"default": {},
-				"description": "Optional project root and case-insensitive query; defaults to the current directory and all matching templates and loop instances."
+				"description": "Optional object: root is the project directory whose specification/loop-templates and specification/loops are read, defaulting to process.cwd() when omitted; query is trimmed and matched case-insensitively as a substring of each row's kind, id, title, summary and source, and an absent, empty or whitespace-only query returns every row. Only root and query are read, so the inherited now callback has no effect.",
+				"examples": [
+					{},
+					{
+						"query": "password"
+					},
+					{
+						"root": "/workspace/harness-app",
+						"query": "feature"
+					}
+				]
 			},
 			{
 				"name": "renderLoopSearchResults.results",
 				"type": "LoopSearchResult[]",
 				"required": true,
-				"description": "Search rows to display in their supplied order."
+				"description": "Rows to render, in the order supplied; the text shows each row's kind, id, title and summary and omits source, and an empty array produces the no-match message.",
+				"examples": [
+					[],
+					[
+						{
+							"kind": "template",
+							"id": "feature",
+							"title": "Feature Delivery",
+							"summary": "Spec, implement, test, and verify a user-facing or API feature.",
+							"source": "built-in"
+						},
+						{
+							"kind": "loop",
+							"id": "password-reset",
+							"title": "Add password reset to the login flow",
+							"summary": "2 of 4 steps complete.",
+							"source": "project"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "searchLoops",
 				"type": "Promise<LoopSearchResult[]>",
-				"description": "Templates and loop rows filtered by query; malformed or unreadable persisted loops become diagnostic rows and missing states are omitted."
+				"description": "Resolves to template rows (built-in templates first, then project templates from specification/loop-templates) followed by loop rows sorted by directory name, filtered by the query when it is not blank. A loop directory without loop.json is omitted; a loop.json that is malformed, fails the loop schema or cannot be read becomes a diagnostic row whose id is the directory name, and a readable loop's id is its stored name.",
+				"examples": [
+					[
+						{
+							"kind": "template",
+							"id": "feature",
+							"title": "Feature Delivery",
+							"summary": "Spec, implement, test, and verify a user-facing or API feature.",
+							"source": "built-in"
+						},
+						{
+							"kind": "template",
+							"id": "data-migration",
+							"title": "Data Migration",
+							"summary": "Plan, apply, and verify a schema migration.",
+							"source": "project"
+						},
+						{
+							"kind": "loop",
+							"id": "password-reset",
+							"title": "Add password reset to the login flow",
+							"summary": "2 of 4 steps complete.",
+							"source": "project"
+						}
+					],
+					[
+						{
+							"kind": "loop",
+							"id": "billing-export",
+							"title": "Invalid persisted loop",
+							"summary": "Persisted loop JSON is malformed; stored steps are unavailable.",
+							"source": "project"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "renderLoopSearchResults",
 				"type": "string",
-				"description": "Plain-text kind, identifier, title and summary for each row, or a no-match message."
+				"description": "Plain text with one block per row in input order: a `kind: id` line, then the title and summary lines indented by two spaces, with blocks separated by a blank line. An empty array returns exactly 'No loop templates or loop instances matched.'",
+				"examples": [
+					"template: feature\n  Feature Delivery\n  Spec, implement, test, and verify a user-facing or API feature.\n\nloop: password-reset\n  Add password reset to the login flow\n  2 of 4 steps complete.",
+					"No loop templates or loop instances matched."
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Loop search filesystem failure",
 				"type": "propagated",
-				"description": "Unexpected directory or template discovery failures propagate; individual persisted loop failures are represented by diagnostic rows."
+				"description": "A read error on specification/loops other than a missing directory is rethrown, and a template discovery error (an unreadable specification/loop-templates directory or file, malformed template JSON, or an invalid template field) passes through; either one rejects searchLoops. Unreadable or malformed persisted loop files never reject searchLoops and become diagnostic rows instead."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "searchLoops",
@@ -66,21 +134,66 @@
 						"type": "SearchLoopsInput",
 						"required": false,
 						"default": {},
-						"description": "Optional project root and case-insensitive query; defaults to the current directory and all matching templates and loop instances."
+						"description": "Optional object: root is the project directory whose specification/loop-templates and specification/loops are read, defaulting to process.cwd() when omitted; query is trimmed and matched case-insensitively as a substring of each row's kind, id, title, summary and source, and an absent, empty or whitespace-only query returns every row. Only root and query are read, so the inherited now callback has no effect.",
+						"examples": [
+							{},
+							{
+								"query": "password"
+							},
+							{
+								"root": "/workspace/harness-app",
+								"query": "feature"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "searchLoops",
 						"type": "Promise<LoopSearchResult[]>",
-						"description": "Templates and loop rows filtered by query; malformed or unreadable persisted loops become diagnostic rows and missing states are omitted."
+						"description": "Resolves to template rows (built-in templates first, then project templates from specification/loop-templates) followed by loop rows sorted by directory name, filtered by the query when it is not blank. A loop directory without loop.json is omitted; a loop.json that is malformed, fails the loop schema or cannot be read becomes a diagnostic row whose id is the directory name, and a readable loop's id is its stored name.",
+						"examples": [
+							[
+								{
+									"kind": "template",
+									"id": "feature",
+									"title": "Feature Delivery",
+									"summary": "Spec, implement, test, and verify a user-facing or API feature.",
+									"source": "built-in"
+								},
+								{
+									"kind": "template",
+									"id": "data-migration",
+									"title": "Data Migration",
+									"summary": "Plan, apply, and verify a schema migration.",
+									"source": "project"
+								},
+								{
+									"kind": "loop",
+									"id": "password-reset",
+									"title": "Add password reset to the login flow",
+									"summary": "2 of 4 steps complete.",
+									"source": "project"
+								}
+							],
+							[
+								{
+									"kind": "loop",
+									"id": "billing-export",
+									"title": "Invalid persisted loop",
+									"summary": "Persisted loop JSON is malformed; stored steps are unavailable.",
+									"source": "project"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Loop search filesystem failure",
 						"type": "propagated",
-						"description": "Unexpected directory or template discovery failures propagate; individual persisted loop failures are represented by diagnostic rows."
+						"description": "A read error on specification/loops other than a missing directory is rethrown, and a template discovery error (an unreadable specification/loop-templates directory or file, malformed template JSON, or an invalid template field) passes through; either one rejects searchLoops. Unreadable or malformed persisted loop files never reject searchLoops and become diagnostic rows instead."
 					}
 				],
 				"errorStatus": "declared"
@@ -92,14 +205,37 @@
 						"name": "renderLoopSearchResults.results",
 						"type": "LoopSearchResult[]",
 						"required": true,
-						"description": "Search rows to display in their supplied order."
+						"description": "Rows to render, in the order supplied; the text shows each row's kind, id, title and summary and omits source, and an empty array produces the no-match message.",
+						"examples": [
+							[],
+							[
+								{
+									"kind": "template",
+									"id": "feature",
+									"title": "Feature Delivery",
+									"summary": "Spec, implement, test, and verify a user-facing or API feature.",
+									"source": "built-in"
+								},
+								{
+									"kind": "loop",
+									"id": "password-reset",
+									"title": "Add password reset to the login flow",
+									"summary": "2 of 4 steps complete.",
+									"source": "project"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderLoopSearchResults",
 						"type": "string",
-						"description": "Plain-text kind, identifier, title and summary for each row, or a no-match message."
+						"description": "Plain text with one block per row in input order: a `kind: id` line, then the title and summary lines indented by two spaces, with blocks separated by a blank line. An empty array returns exactly 'No loop templates or loop instances matched.'",
+						"examples": [
+							"template: feature\n  Feature Delivery\n  Spec, implement, test, and verify a user-facing or API feature.\n\nloop: password-reset\n  Add password reset to the login flow\n  2 of 4 steps complete.",
+							"No loop templates or loop instances matched."
+						]
 					}
 				],
 				"errors": [],
