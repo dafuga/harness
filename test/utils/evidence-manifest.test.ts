@@ -97,6 +97,8 @@ test('video posters remain durable with their exact video record', () => {
 		bytes: 1200,
 		mediaType: 'image/png'
 	});
+	withVideo.scenarios[0].states[0].captures[0].videoReference = { batch: digest('7') };
+	expect(recordFiles(withVideo).map((file) => file.path)).toEqual(['logs/unit.log']);
 });
 
 test('evidenceManifest states the original hash, size and storage of every file', () => {

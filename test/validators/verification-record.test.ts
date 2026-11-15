@@ -11,6 +11,17 @@ test('a record carries explicit tested component versions and measurement record
 	const sample = verificationSample();
 	expect(errorsOf(sample)).toEqual([]);
 	expect(new VerificationRecordValidator().validate(sample).value).toEqual(sample);
+	const pointer = {
+		schemaVersion: 1,
+		kind: 'harness-video-batch',
+		batch: 'b'.repeat(64),
+		evidence: {
+			commit: 'c'.repeat(40),
+			path: `video-batches/${'b'.repeat(64)}`,
+			manifest: 'd'.repeat(64)
+		}
+	};
+	expect(errorsOf({ ...sample, videoBatches: [pointer] })).toEqual([]);
 	const schema = unitSchema('VerificationRecord') as { required: string[] };
 	expect(schema.required).toEqual(expect.arrayContaining(['components', 'measurements']));
 });

@@ -69,6 +69,18 @@ export function assertVideoProjection(page: HarnessUnit, tip: Revision) {
 			freshness: 'inherited'
 		}
 	});
+	video.after.captures.at(-1)!.capture.videoReference = {
+		batch: 'b'.repeat(64),
+		record: 'c'.repeat(64),
+		revision: commits.first
+	};
+	expect(galleryItems(video).find((item) => item.mediaType === 'video')).toMatchObject({
+		video: {
+			reference: { record: 'c'.repeat(64), revision: commits.first },
+			freshness: 'inherited',
+			selectedRevision: commits.tip
+		}
+	});
 	return video;
 }
 
