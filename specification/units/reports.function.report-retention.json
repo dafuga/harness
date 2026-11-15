@@ -49,13 +49,13 @@
 		"outputs": [
 			{
 				"name": "reportLifetimeMs",
-				"type": "unknown",
+				"type": "number",
 				"description": "Retention lifetime in milliseconds, 30 days computed as 30 * 24 * 60 * 60 * 1000 (2592000000); reportRetention adds it to the start instant to find the expiry instant. It is a fixed module constant, the same for every report.",
 				"examples": [2592000000]
 			},
 			{
 				"name": "reportCloudPrefixes",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "Array of three cloud storage key prefixes in this order: 'report-evidence/runs/' for report evidence, 'uploaded-screenshots/runs/' for uploaded screenshots and 'published-reports/' for published reports. Every prefix ends with a slash, and reportRetention does not read this list.",
 				"examples": [
 					["report-evidence/runs/", "uploaded-screenshots/runs/", "published-reports/"]

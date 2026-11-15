@@ -48,7 +48,7 @@
 		"outputs": [
 			{
 				"name": "artifactLimit",
-				"type": "unknown",
+				"type": "number",
 				"description": "The most raw bytes one artifact may have, 11 MiB or 11,534,336 bytes, so that its base64 form still fits one 16 MiB message. The limit is only exported; artifactMedia does not check byte length against it.",
 				"examples": [11534336]
 			},

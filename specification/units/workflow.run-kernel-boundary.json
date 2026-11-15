@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "boundaryUnit",
-				"type": "unknown",
+				"type": "\"service.unit-runtime\"",
 				"description": "This fixed service unit identifier is attached to every returned measurement and each capture record. Its value is service.unit-runtime.",
 				"examples": ["service.unit-runtime"]
 			},

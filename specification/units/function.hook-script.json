@@ -66,25 +66,25 @@
 		"outputs": [
 			{
 				"name": "hookMarker",
-				"type": "unknown",
+				"type": "\"harness-managed hook\"",
 				"description": "The fixed marker text harness-managed hook, which each wrapper writes into its header comment and managedHook searches for as a plain substring.",
 				"examples": ["harness-managed hook"]
 			},
 			{
 				"name": "chainedSuffix",
-				"type": "unknown",
+				"type": "\".harness-chained\"",
 				"description": "The suffix .harness-chained, appended to the stage name to form the file beside the wrapper that keeps a hook which was already there. The wrapper runs that file first only when it exists and is executable.",
 				"examples": [".harness-chained"]
 			},
 			{
 				"name": "enabledFile",
-				"type": "unknown",
+				"type": "\"harness-hooks\"",
 				"description": "The per-worktree opt-in file name harness-hooks, read from each worktree's own Git directory, which opts a worktree into the pre-push stage and holds its Harness command. Every version of Harness has written this name, so it means a push and nothing else.",
 				"examples": ["harness-hooks"]
 			},
 			{
 				"name": "hookStages",
-				"type": "unknown",
+				"type": "readonly [\"pre-push\", \"commit-msg\"]",
 				"description": "The stages Harness offers, in this order: pre-push, where a push is verified, and commit-msg, where the message of a commit is measured. hookScript and stageFile accept any string and do not check it against this list.",
 				"examples": [
 					["pre-push", "commit-msg"]

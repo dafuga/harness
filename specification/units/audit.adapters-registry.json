@@ -68,7 +68,7 @@
 		"outputs": [
 			{
 				"name": "auditAdapters",
-				"type": "unknown",
+				"type": "[AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter, AuditAdapter]",
 				"description": "The ordered registry of imported audit adapter implementations available to profile filtering and extension lookup."
 			},
 			{

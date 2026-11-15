@@ -137,7 +137,7 @@
 		"outputs": [
 			{
 				"name": "screenshotObjectPrefix",
-				"type": "unknown",
+				"type": "\"uploaded-screenshots/\"",
 				"description": "Constant prefix prepended to every screenshot object key produced by this adapter.",
 				"examples": ["uploaded-screenshots/"]
 			},

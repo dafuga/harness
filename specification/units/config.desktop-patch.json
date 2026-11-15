@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "desktopPatchConfig",
-				"type": "unknown",
+				"type": "typeof desktopPatchConfig",
 				"description": "The exported configuration describes desktop-patch asset paths with a version and five 64-character hexadecimal digest strings. It matters to consumers that read desktopPatchConfig, and contains only version and assets.",
 				"examples": [
 					{

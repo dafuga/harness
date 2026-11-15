@@ -50,7 +50,7 @@
 		"outputs": [
 			{
 				"name": "evidenceFileLimit",
-				"type": "unknown",
+				"type": "50000000",
 				"description": "The maximum accepted file size is 50,000,000 bytes, for both Git LFS objects and ordinary stored files. The function rejects declared, stored, or raw file content above this ceiling.",
 				"examples": [50000000]
 			},

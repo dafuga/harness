@@ -81,7 +81,7 @@
 		"outputs": [
 			{
 				"name": "checkedDocuments",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "The documents every run checks first, in this order: `ARCHITECTURE-BOUNDARIES.md`, then `README.md`. Markdown files that they link to are checked after them, so this list is only the starting set and not every file the run checks.",
 				"examples": [
 					["ARCHITECTURE-BOUNDARIES.md", "README.md"]
@@ -89,7 +89,7 @@
 			},
 			{
 				"name": "pathCheckedDocuments",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "The documents whose backticked repository paths must also exist, because they map owners to files; `main` passes this list as the `pathChecked` argument of `brokenDocLinks`. In this module it holds only `ARCHITECTURE-BOUNDARIES.md`.",
 				"examples": [
 					["ARCHITECTURE-BOUNDARIES.md"]

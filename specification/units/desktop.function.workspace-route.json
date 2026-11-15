@@ -78,7 +78,7 @@
 		"outputs": [
 			{
 				"name": "routeSuffixes",
-				"type": "unknown",
+				"type": "readonly [\"apis\", \"designs\", \"plan\", \"used-in\", \"uses\", \"relationships\", \"evidence\", \"examples\", \"states\", \"history\", \"source\", \"details\"]",
 				"description": "The recognized entity sections: designs, plan, used-in, uses, relationships, evidence, history and details. Relationships remains accepted as an older address. An overview has no section suffix."
 			},
 			{

@@ -26,22 +26,22 @@
 		"outputs": [
 			{
 				"name": "allowedSrcFolders",
-				"type": "unknown",
+				"type": "Set<string>",
 				"description": "A Set of source-folder names listed by this module. Consumers can consult it as a source-folder allowlist; this declaration itself does not inspect or validate paths."
 			},
 			{
 				"name": "allowedTestFolders",
-				"type": "unknown",
+				"type": "Set<string>",
 				"description": "A Set of test-folder names listed by this module. Consumers can consult it as a test-folder allowlist; this declaration itself does not inspect or validate paths."
 			},
 			{
 				"name": "allowedRootTypeScriptFiles",
-				"type": "unknown",
+				"type": "Set<string>",
 				"description": "A Set of root TypeScript file names listed by this module. Consumers can consult it as an allowlist for root TypeScript files; this declaration itself does not inspect or validate paths."
 			},
 			{
 				"name": "allowedDirectSrcFiles",
-				"type": "unknown",
+				"type": "Set<string>",
 				"description": "A Set of file names listed by this module for direct placement under src. Consumers can consult it as an allowlist for those files; this declaration itself does not inspect or validate paths."
 			}
 		],

@@ -285,7 +285,7 @@
 		"outputs": [
 			{
 				"name": "reviewer",
-				"type": "unknown",
+				"type": "{ kind: \"person\"; name: string; }",
 				"description": "The local author identity, a person named Local reviewer, that plans and threads are authored under and whose name approvals record.",
 				"examples": [
 					{

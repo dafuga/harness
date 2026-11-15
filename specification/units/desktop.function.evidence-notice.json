@@ -54,13 +54,13 @@
 		"outputs": [
 			{
 				"name": "unavailableEvidence",
-				"type": "unknown",
+				"type": "\"Recorded runtime evidence is not available on this connection.\"",
 				"description": "The fixed notice text used when status is unavailable, which means this connection cannot read recorded runtime evidence. It is an exported constant, so it never changes and does not depend on any input.",
 				"examples": ["Recorded runtime evidence is not available on this connection."]
 			},
 			{
 				"name": "readingEvidence",
-				"type": "unknown",
+				"type": "\"Reading recorded evidence…\"",
 				"description": "The fixed notice text used when status is idle or loading, which means recorded evidence is being read. It is an exported constant, so it never changes and does not depend on any input.",
 				"examples": ["Reading recorded evidence…"]
 			},

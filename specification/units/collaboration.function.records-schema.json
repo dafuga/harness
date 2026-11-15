@@ -17,12 +17,12 @@
 		"outputs": [
 			{
 				"name": "projectSchema",
-				"type": "unknown",
+				"type": "typeof projectSchema",
 				"description": "Strict schema for project records requiring `id`, `name`, `sourceRepository`, `createdAt`, and `ownerId`; unknown fields are rejected. `createdAt` uses `z.iso.datetime()`, while the other fields use the imported `id`, `label`, and `repositorySchema` validators."
 			},
 			{
 				"name": "recordsSchema",
-				"type": "unknown",
+				"type": "typeof recordsSchema",
 				"description": "Strict schema for version-1 snapshots containing `projects`, `members`, `invitations`, and `threads`; nested records are strict, timestamps use `z.iso.datetime()`, and comment text is trimmed to 1–20,000 characters with at most 100,000 comments per thread. It rejects duplicate project IDs, member `projectId/actorId` pairs, invitation IDs, thread IDs or per-project comment request IDs, records referencing absent projects, and projects without an owner member."
 			}
 		],

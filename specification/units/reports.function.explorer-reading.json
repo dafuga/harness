@@ -143,7 +143,7 @@
 		"outputs": [
 			{
 				"name": "artifactRun",
-				"type": "unknown",
+				"type": "{ readonly field: \"harnessRun\"; readonly version: 1; readonly metadata: readonly string[]; }",
 				"description": "The run-declaration constant: the field name harnessRun, version 1, and the five keys a declaration may set aside as metadata (startedAt, finishedAt, at, durationMs and pid). A declared key whose value is not of its kind (a time as a string or number, a duration or process id as a number) stays in the declaration and is compared.",
 				"examples": [
 					{

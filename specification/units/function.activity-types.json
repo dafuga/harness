@@ -54,17 +54,17 @@
 		"outputs": [
 			{
 				"name": "agentRegistrationSchema",
-				"type": "unknown",
+				"type": "typeof agentRegistrationSchema",
 				"description": "A strict Zod object schema for a registration record: schemaVersion is 1; id, label, and registeredAt are nonempty strings; provider, model, and processStartedAt are nullable strings; pid is a nullable positive integer; ttlSeconds is a positive integer. The TTL is how long after a heartbeat the agent may be quiet and still count as working; extra fields are rejected."
 			},
 			{
 				"name": "agentBeatSchema",
-				"type": "unknown",
+				"type": "typeof agentBeatSchema",
 				"description": "A strict Zod object schema for an agent's latest heartbeat: at is a nonempty string, branch, task, and loop are nullable strings, and units is an array of nonempty strings. Extra fields are rejected."
 			},
 			{
 				"name": "agentEndSchema",
-				"type": "unknown",
+				"type": "typeof agentEndSchema",
 				"description": "A strict Zod object schema for an agent's final record: at is a nonempty string, status is completed or failed, and outcome is a nullable string. It represents how the agent ended; extra fields are rejected."
 			}
 		],

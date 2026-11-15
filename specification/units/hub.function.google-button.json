@@ -42,7 +42,7 @@
 		"outputs": [
 			{
 				"name": "googleIdentityScript",
-				"type": "unknown",
+				"type": "\"https://accounts.google.com/gsi/client\"",
 				"description": "The fixed Google Identity Services script URL inserted when no script load is already pending. It always points to https://accounts.google.com/gsi/client.",
 				"examples": ["https://accounts.google.com/gsi/client"]
 			},

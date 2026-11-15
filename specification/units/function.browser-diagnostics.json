@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "browserDiagnosticSchema",
-				"type": "unknown",
+				"type": "typeof browserDiagnosticSchema",
 				"description": "Strict Zod object schema for one test attempt's browser diagnostics, which the source documents as retained even when the test's log assertion fails: the test name must be a nonempty string, file and project are required strings that may be empty, browser is an optional string, retry is a required nonnegative integer, and errors and expected are required arrays that may be empty. Each observed error requires type 'console' or 'pageerror' plus string message and page (either may be empty), and may include a string source and stack and a nonnegative integer line and column; each expected entry requires type plus a nonempty message and reason, and may include a string source; unknown keys are rejected in the top-level, observed and expected objects."
 			}
 		],

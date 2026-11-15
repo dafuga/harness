@@ -94,19 +94,19 @@
 		"outputs": [
 			{
 				"name": "SESSION_COOKIE",
-				"type": "unknown",
+				"type": "\"__Host-harness_session\"",
 				"description": "Cookie name for session authentication. It is only the name constant; the cookie header is formed separately by issueCookie.",
 				"examples": ["__Host-harness_session"]
 			},
 			{
 				"name": "CHALLENGE_COOKIE",
-				"type": "unknown",
+				"type": "\"__Host-harness_challenge\"",
 				"description": "Cookie name for the authentication challenge. It is only the name constant; the cookie header is formed separately by issueCookie.",
 				"examples": ["__Host-harness_challenge"]
 			},
 			{
 				"name": "EMAIL_PROOF_COOKIE",
-				"type": "unknown",
+				"type": "\"__Host-harness_email_proof\"",
 				"description": "Cookie name for email proof. It is only the name constant; the cookie header is formed separately by issueCookie.",
 				"examples": ["__Host-harness_email_proof"]
 			},

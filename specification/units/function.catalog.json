@@ -82,7 +82,7 @@
 			},
 			{
 				"name": "harnessRuleSummaries",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "Rule summary strings computed once at module load as harnessRuleSummariesFor(harnessRuleLimits), so they always state the default limits: the eight limit sentences, a naming pointer, the naming rules, the module-grouping rules and the fixed structure, dependency and coverage guidance. It is the rule text to read for the standard limits, and it is a snapshot, so later changes to harnessRuleLimits do not change it.",
 				"examples": [
 					[

@@ -52,7 +52,7 @@
 		"outputs": [
 			{
 				"name": "consoleServerDirectory",
-				"type": "unknown",
+				"type": "\"src/lib/server/harness\"",
 				"description": "Fixed host-relative directory used for the generated server module and console data modules. Its value is `src/lib/server/harness`.",
 				"examples": ["src/lib/server/harness"]
 			},

@@ -106,126 +106,53 @@
 		"outputs": [
 			{
 				"name": "id",
-				"type": "unknown",
-				"description": "Zod schema z.uuid() that accepts only a UUID string and returns it unchanged. It matters wherever a value must be a UUID, and any other string or value type fails validation.",
-				"examples": ["3f9a1c0e-5b7d-4a46-8c1e-f0b9d4a7c2e5", "0b8e6f2a-1c3d-4e5f-8a9b-7c6d5e4f3a2b"]
+				"type": "typeof id",
+				"description": "Zod schema z.uuid() that accepts only a UUID string and returns it unchanged. It matters wherever a value must be a UUID, and any other string or value type fails validation. Accepted data examples include the UUID strings 3f9a1c0e-5b7d-4a46-8c1e-f0b9d4a7c2e5 and 0b8e6f2a-1c3d-4e5f-8a9b-7c6d5e4f3a2b."
 			},
 			{
 				"name": "sha",
-				"type": "unknown",
-				"description": "Zod regex schema for exactly 40 lowercase hexadecimal characters, the form that anchorSchema uses for its commit field. Uppercase, shorter, longer or non-hex input fails validation, and nothing is trimmed or transformed.",
-				"examples": [
-					"9c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d",
-					"0123456789abcdef0123456789abcdef01234567"
-				]
+				"type": "typeof sha",
+				"description": "Zod regex schema for exactly 40 lowercase hexadecimal characters, the form that anchorSchema uses for its commit field. Uppercase, shorter, longer or non-hex input fails validation, and nothing is trimmed or transformed. Accepted data examples include the 40-character commit hash 0123456789abcdef0123456789abcdef01234567."
 			},
 			{
 				"name": "hash",
-				"type": "unknown",
-				"description": "Zod regex schema for exactly 64 lowercase hexadecimal characters, the length of a SHA-256 hex digest, which anchorSchema uses for imageSha256. Uppercase, other lengths or non-hex input fails validation, and nothing is transformed.",
-				"examples": [
-					"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-					"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-				]
+				"type": "typeof hash",
+				"description": "Zod regex schema for exactly 64 lowercase hexadecimal characters, the length of a SHA-256 hex digest, which anchorSchema uses for imageSha256. Uppercase, other lengths or non-hex input fails validation, and nothing is transformed. Accepted data examples include the SHA-256 digest ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad."
 			},
 			{
 				"name": "label",
-				"type": "unknown",
-				"description": "Zod string schema that trims surrounding whitespace and then requires 1 to 200 characters, returning the trimmed value; actorSchema uses it for id and name, and anchorSchema uses it for state. Empty input and whitespace-only input fail validation.",
-				"examples": ["Release review", "Mobile checkout"]
+				"type": "typeof label",
+				"description": "Zod string schema that trims surrounding whitespace and then requires 1 to 200 characters, returning the trimmed value; actorSchema uses it for id and name, and anchorSchema uses it for state. Empty input and whitespace-only input fail validation. Accepted data examples include Release review and Mobile checkout."
 			},
 			{
 				"name": "email",
-				"type": "unknown",
-				"description": "Zod email schema that accepts addresses of at most 320 characters and returns them lowercased; actorSchema uses it for its email field. Validation runs on the original input, and the lowercase transform runs only after it passes.",
-				"examples": ["reviewer@example.com", "maintainer@example.org"]
+				"type": "typeof email",
+				"description": "Zod email schema that accepts addresses of at most 320 characters and returns them lowercased; actorSchema uses it for its email field. Validation runs on the original input, and the lowercase transform runs only after it passes. Accepted data examples include reviewer@example.com and maintainer@example.org."
 			},
 			{
 				"name": "actorSchema",
-				"type": "unknown",
-				"description": "Strict Zod object for a verified actor with exactly the keys id, email, name and emailVerified, where id and name are labels, email is lowercased, and emailVerified must be the literal true. Unknown keys and unverified actors fail validation.",
-				"examples": [
-					{
-						"id": "reviewer-0142",
-						"email": "reviewer@example.com",
-						"name": "Release reviewer",
-						"emailVerified": true
-					},
-					{
-						"id": "maintainer-07",
-						"email": "maintainer@example.org",
-						"name": "Docs maintainer",
-						"emailVerified": true
-					}
-				]
+				"type": "typeof actorSchema",
+				"description": "Strict Zod object for a verified actor with exactly the keys id, email, name and emailVerified, where id and name are labels, email is lowercased, and emailVerified must be the literal true. Unknown keys and unverified actors fail validation. Accepted data can describe a verified reviewer with id reviewer-0142, email reviewer@example.com, name Release reviewer and emailVerified true."
 			},
 			{
 				"name": "repositorySchema",
-				"type": "unknown",
-				"description": "Strict Zod object with exactly the keys id, owner, name, private and installationId, where id and installationId are positive integers, owner allows only letters, digits and hyphens, name also allows underscores and dots, and private is a boolean. Missing keys, extra keys and wrong-typed or out-of-pattern values fail validation.",
-				"examples": [
-					{
-						"id": 817254036,
-						"owner": "acme-labs",
-						"name": "sample-repository",
-						"private": true,
-						"installationId": 49120377
-					},
-					{
-						"id": 90412,
-						"owner": "octo-org",
-						"name": "docs.site",
-						"private": false,
-						"installationId": 1182
-					}
-				]
+				"type": "typeof repositorySchema",
+				"description": "Strict Zod object with exactly the keys id, owner, name, private and installationId, where id and installationId are positive integers, owner allows only letters, digits and hyphens, name also allows underscores and dots, and private is a boolean. Missing keys, extra keys and wrong-typed or out-of-pattern values fail validation. Accepted data can describe the private acme-labs/sample-repository repository with positive repository and installation IDs."
 			},
 			{
 				"name": "branch",
-				"type": "unknown",
-				"description": "Zod string schema of 1 to 255 characters that rejects names with a leading or trailing slash, double-dot sequences, @{, whitespace, ~, ^, :, ?, *, [, a backslash, double slashes, a .lock path component, or a path component that starts with a dot. It is returned unchanged, so an invalid name fails instead of being repaired, and anchorSchema uses it for its branch field.",
-				"examples": ["main", "feature/evidence-grid", "release/2026.11"]
+				"type": "typeof branch",
+				"description": "Zod string schema of 1 to 255 characters that rejects names with a leading or trailing slash, double-dot sequences, @{, whitespace, ~, ^, :, ?, *, [, a backslash, double slashes, a .lock path component, or a path component that starts with a dot. It is returned unchanged, so an invalid name fails instead of being repaired, and anchorSchema uses it for its branch field. Accepted data examples include main, feature/evidence-grid and release/2026.11."
 			},
 			{
 				"name": "entityId",
-				"type": "unknown",
-				"description": "Harness unit ID string that must match unitIdPattern from src/lib/contracts and be at most 240 characters. It matters wherever a value names a unit, such as the entityId field of anchorSchema, and the value is returned unchanged.",
-				"examples": [
-					"reports.component.evidence-grid",
-					"collaboration.function.parse-collaboration-input"
-				]
+				"type": "typeof entityId",
+				"description": "Harness unit ID string that must match unitIdPattern from src/lib/contracts and be at most 240 characters. It matters wherever a value names a unit, such as the entityId field of anchorSchema, and the value is returned unchanged. Accepted data examples include reports.component.evidence-grid and collaboration.function.parse-collaboration-input."
 			},
 			{
 				"name": "anchorSchema",
-				"type": "unknown",
-				"description": "Strict Zod object whose keys branch, commit (a sha), entityId, version, imageSha256, state, viewport and region must all be present; branch, commit and entityId are never null, while version (v followed by at least three digits), imageSha256 (a hash), state (a label), viewport (desktop, tablet, mobile or diagram) and region (x and y from 0 to 1, width and height above 0 and at most 1, and x plus width and y plus height at most 1) may be null. A non-null imageSha256 requires non-null version, state and viewport, and a null imageSha256 requires state, viewport and region to be null.",
-				"examples": [
-					{
-						"branch": "main",
-						"commit": "9c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d",
-						"entityId": "reports.component.evidence-grid",
-						"version": "v012",
-						"imageSha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-						"state": "default",
-						"viewport": "desktop",
-						"region": {
-							"x": 0.1,
-							"y": 0.2,
-							"width": 0.5,
-							"height": 0.25
-						}
-					},
-					{
-						"branch": "feature/evidence-grid",
-						"commit": "0123456789abcdef0123456789abcdef01234567",
-						"entityId": "collaboration.function.parse-collaboration-input",
-						"version": null,
-						"imageSha256": null,
-						"state": null,
-						"viewport": null,
-						"region": null
-					}
-				]
+				"type": "typeof anchorSchema",
+				"description": "Strict Zod object whose keys branch, commit (a sha), entityId, version, imageSha256, state, viewport and region must all be present; branch, commit and entityId are never null, while version (v followed by at least three digits), imageSha256 (a hash), state (a label), viewport (desktop, tablet, mobile or diagram) and region (x and y from 0 to 1, width and height above 0 and at most 1, and x plus width and y plus height at most 1) may be null. A non-null imageSha256 requires non-null version, state and viewport, and a null imageSha256 requires state, viewport and region to be null. Accepted data can anchor a default desktop evidence-grid design at version v012, or name an entity with null image fields."
 			},
 			{
 				"name": "fail",

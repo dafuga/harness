@@ -17,13 +17,13 @@
 		"outputs": [
 			{
 				"name": "brandGrid",
-				"type": "unknown",
+				"type": "32",
 				"description": "The side length of the mark's square grid, 32 units, which the tiles in brandTiles span from 0 to 32 on both axes; it matters to code that works in tile coordinates. It is a fixed const number that is not computed from the tiles, and brandMark() does not read it: its SVG has its own fixed 52-unit viewBox.",
 				"examples": [32]
 			},
 			{
 				"name": "brandTiles",
-				"type": "unknown",
+				"type": "{ id: number; x: number; y: number; size: number; }[]",
 				"description": "The five tiles of the mark in order, each an object with a numeric id (its index, 0 to 4), an x and y origin in the 32-unit grid, and a size of 10 units; brandMark() adds 10 to each origin when it draws them. The tiles sit at the four corners and the center of a 3 by 3 lattice, spaced in 11-unit steps (a 10-unit tile plus a 1-unit gap), and the array is not frozen, so edits to it change the output of later brandMark() calls.",
 				"examples": [
 					[
@@ -62,7 +62,7 @@
 			},
 			{
 				"name": "brandColors",
-				"type": "unknown",
+				"type": "{ gold: string; navy: string; }",
 				"description": "The two brand colors as hex strings: gold #f2bf3f fills the tiles and navy #0b1a37 fills the plate behind them in brandMark(). The object is not frozen, so a caller that changes a property changes the colors used by later brandMark() calls.",
 				"examples": [
 					{

@@ -38,12 +38,12 @@
 		"outputs": [
 			{
 				"name": "buildStampPattern",
-				"type": "unknown",
+				"type": "RegExp",
 				"description": "It is a global regular expression, /harness-build:[0-9a-f]{64}/g, that matches each stamp slot with 64 lowercase hexadecimal characters in emitted text, whether filled or empty (all zeros). It has no anchors, so when more than 64 hexadecimal characters follow the marker, it matches only the first 64, and its g flag keeps lastIndex between calls to test or exec."
 			},
 			{
 				"name": "sdkPackage",
-				"type": "unknown",
+				"type": "{ name: string; version: string; }",
 				"description": "The package a console answers from is named @dafuga01/harness at version 0.1.4. Its code comment says a test keeps it equal to package.json.",
 				"examples": [
 					{

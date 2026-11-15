@@ -35,18 +35,18 @@
 		"outputs": [
 			{
 				"name": "moduleGroupsFile",
-				"type": "unknown",
+				"type": "\"harness.groups.json\"",
 				"description": "The exported const string 'harness.groups.json', which this module defines as the module groups file name. The module only names the file and never reads or writes it, and the value is fixed.",
 				"examples": ["harness.groups.json"]
 			},
 			{
 				"name": "moduleGroupConfig",
-				"type": "unknown",
+				"type": "typeof moduleGroupConfig",
 				"description": "A zod strictObject schema, a validator rather than a group value, that checks one module group: id is lowercase letters and digits joined by single hyphens and cannot be 'uncategorized'; title is non-empty after trimming; terms is an array of non-empty trimmed strings that defaults to []; and folders is optional, each entry being a relative, slash-terminated path that contains src/routes/ and has no backslashes or '.' or '..' segments. Unknown keys fail validation."
 			},
 			{
 				"name": "moduleGroupsConfig",
-				"type": "unknown",
+				"type": "typeof moduleGroupsConfig",
 				"description": "A zod strictObject schema, refined with superRefine, that validates a whole module-groups config object: schemaVersion must be the literal 1, groups is an array of moduleGroupConfig entries whose ids must be unique (a duplicate fails with 'Category ids must be unique.'), and legacy defaults to [] and holds exact relative path entries with no backslashes or '.' or '..' segments, retained during migration and never a blanket folder exclusion. The export is a validator rather than a config value."
 			}
 		],

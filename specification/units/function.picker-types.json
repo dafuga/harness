@@ -55,7 +55,7 @@
 		"outputs": [
 			{
 				"name": "desktopControlUnavailable",
-				"type": "unknown",
+				"type": "\"Desktop control connection unavailable. Requests stay pending; no provider settings change.\"",
 				"description": "Fixed notice used when the desktop control connection is unavailable; it states that requests remain pending and provider settings do not change. Its text is constant.",
 				"examples": [
 					"Desktop control connection unavailable. Requests stay pending; no provider settings change."

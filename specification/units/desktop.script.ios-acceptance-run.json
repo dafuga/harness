@@ -132,19 +132,19 @@
 		"outputs": [
 			{
 				"name": "computerName",
-				"type": "unknown",
+				"type": "\"Harness fixture computer\"",
 				"description": "Fixture computer name constant used to identify the computer in the acceptance fixture. Its exact value is Harness fixture computer.",
 				"examples": ["Harness fixture computer"]
 			},
 			{
 				"name": "panelText",
-				"type": "unknown",
+				"type": "\"return panel();\"",
 				"description": "Fixture panel script text exposed for the acceptance fixture. Its exact value is return panel();.",
 				"examples": ["return panel();"]
 			},
 			{
 				"name": "footerText",
-				"type": "unknown",
+				"type": "\"return footer();\"",
 				"description": "Fixture footer script text exposed for the acceptance fixture. Its exact value is return footer();.",
 				"examples": ["return footer();"]
 			},

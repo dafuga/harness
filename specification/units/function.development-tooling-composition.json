@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "compositionSchema",
-				"type": "unknown",
+				"type": "typeof compositionSchema",
 				"description": "Zod strict object schema for composition metadata, validated whenever a value is parsed: `level` is required and must be one of atom, molecule, organism, layout or page, `element` is an optional trimmed, non-empty string, and `uses` is an optional array of trimmed, non-empty strings listing direct runtime component calls (type imports and navigation links are excluded). Unknown keys are rejected, and composition is independent from the responsibility category and stable unit identity."
 			}
 		],

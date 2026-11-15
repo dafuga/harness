@@ -17,22 +17,8 @@
 		"outputs": [
 			{
 				"name": "desktopNodeOptions",
-				"type": "unknown",
-				"description": "Shared Bun.build options (target node, format cjs, electron external, the jsonc-parser resolve plugin, outdir dist, external sourcemaps) that buildDesktopMain spreads into the main.cjs and preload.cjs builds, adding only entrypoints and naming. The plugin's setup callback is a function that JSON cannot express, so the example keeps only the plugin's name.",
-				"examples": [
-					{
-						"target": "node",
-						"format": "cjs",
-						"external": ["electron"],
-						"plugins": [
-							{
-								"name": "bundle-jsonc-parser-module"
-							}
-						],
-						"outdir": "dist",
-						"sourcemap": "external"
-					}
-				]
+				"type": "{ target: \"node\"; format: \"cjs\"; external: string[]; plugins: Bun.BunPlugin[]; outdir: string; sourcemap: \"external\"; }",
+				"description": "Shared Bun.build options (target node, format cjs, electron external, the jsonc-parser resolve plugin, outdir dist, external sourcemaps) that buildDesktopMain spreads into the main.cjs and preload.cjs builds, adding only entrypoints and naming. The plugin includes an executable setup callback, so the complete options value cannot be represented as JSON."
 			}
 		],
 		"errors": [

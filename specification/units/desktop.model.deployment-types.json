@@ -41,7 +41,7 @@
 		"outputs": [
 			{
 				"name": "deploymentEnvironments",
-				"type": "unknown",
+				"type": "readonly [\"dev\", \"stage\", \"preprod\", \"prod\"]",
 				"description": "Lists the supported deployment environment literals used by Deployment types. Its values are limited to dev, stage, preprod, and prod.",
 				"examples": [
 					["dev", "stage", "preprod", "prod"]
@@ -49,7 +49,7 @@
 			},
 			{
 				"name": "deploymentSteps",
-				"type": "unknown",
+				"type": "typeof deploymentSteps",
 				"description": "Lists the ordered deployment step IDs and titles used by Deployment types. The list contains preparing, checking, building, uploading, and verifying in that order.",
 				"examples": [
 					[
