@@ -67,9 +67,9 @@ export function assertVideoCoverage(
 	expect(judge({ ...item, facts: { error: 'corrupt video' } }).join(' ')).toMatch(
 		/valid.*video|playable.*video/i
 	);
-	expect(
-		judge({ ...item, line: { ...item.line, kind: 'screenshot' } }).join(' ')
-	).toMatch(/missing/i);
+	expect(judge({ ...item, line: { ...item.line, kind: 'screenshot' } }).join(' ')).toMatch(
+		/missing/i
+	);
 	expect(
 		judge({
 			...item,

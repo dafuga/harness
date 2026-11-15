@@ -35,7 +35,7 @@ async function assertAttachmentCase(
 		git,
 		reference: f.reference,
 		video: f.replacement,
-		standing: rejected ? 'full' : standing,
+		standing: retainedStanding(standing),
 		addressedFlags: [flag.id],
 		capturedAt:
 			standing === 'old' ? '2026-01-01T00:00:00Z' : new Date(Date.now() + 10).toISOString()
@@ -59,10 +59,22 @@ async function assertAttachmentCase(
 		const tip = await new EvidenceBranchRepository(root).tip();
 		await attach.attach(f.reference.revision, { record, directory });
 		expect(await new EvidenceBranchRepository(root).tip()).toBe(tip);
+		if (standing === 'full') {
+			const late = await flags.flag({
+				clip: original,
+				frameNumber: 4,
+				note: 'Arrived after attachment'
+			});
+			await expect(attach.attach(f.reference.revision, { record, directory })).rejects.toThrow(
+				/pending.*flag|flag.*pending/i
+			);
+			expect((await flags.list(original.unit)).find((item) => item.id === late.id)?.status).toBe(
+				'active'
+			);
+		}
 	}
 	expect(await new HistoryNoteRepository(root).text(f.reference.revision)).toContain(record.id);
-	if (rejected)
-		expect((await flags.list(original.unit)).every((item) => item.status === 'active')).toBe(true);
+	await assertFailedAttachmentStanding(flags, original.unit, rejected);
 }
 
 async function assertOldProof(root: string, record: VerificationRecord, pending: boolean) {
@@ -99,4 +111,17 @@ async function originalFlagFixture({
 	await assertOldProof(root, prior, true);
 	expect(await flags.frame(original.unit, flag.id)).toBeInstanceOf(Buffer);
 	return { f, original, flag, flags };
+}
+
+function retainedStanding(standing: Parameters<typeof assertAttachmentCase>[1]) {
+	return standing === 'late' || standing === 'old' ? 'full' : standing;
+}
+
+async function assertFailedAttachmentStanding(
+	flags: FrameFlagService,
+	unit: string,
+	rejected: boolean
+) {
+	if (rejected)
+		expect((await flags.list(unit)).every((item) => item.status === 'active')).toBe(true);
 }
