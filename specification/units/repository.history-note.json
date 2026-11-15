@@ -9,8 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/repositories/git-source-history/history-note-repository/HistoryNoteRepository.ts",
-			"src/repositories/history-note-repository/HistoryNoteRepository.ts"
+			"src/repositories/git-source-history/history-note-repository/HistoryNoteRepository.ts"
 		],
 		"symbols": [
 			"HistoryNoteRepository",
@@ -20,8 +19,7 @@
 			"HistoryNoteRepository.append",
 			"HistoryNoteRepository.merge",
 			"HistoryNoteRepository.all",
-			"HistoryNoteRepository.verifications",
-			"HistoryNoteRepository"
+			"HistoryNoteRepository.verifications"
 		]
 	},
 	"contract": {

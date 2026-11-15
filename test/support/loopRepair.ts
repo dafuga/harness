@@ -4,7 +4,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect } from 'vitest';
 import { runCommand, runHarness } from './cli';
-import { HistoryNoteRepository } from '../../src/repositories/history-note-repository/HistoryNoteRepository';
+import { HistoryNoteRepository } from '../../src/repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { EvidenceTreeAdapter } from '../../src/adapters/verification-evidence/EvidenceTreeAdapter';
 import { readRegression } from '../../src/utils/regressionHistory';
 

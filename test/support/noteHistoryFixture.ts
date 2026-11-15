@@ -2,7 +2,7 @@ import { writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import type { Explanation } from '../../src/core/explanationTypes';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
-import { HistoryNoteRepository } from '../../src/repositories/history-note-repository/HistoryNoteRepository';
+import { HistoryNoteRepository } from '../../src/repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { VerificationStoreRepository } from '../../src/repositories/verification-evidence/VerificationStoreRepository';
 import { sealRecord } from '../../src/utils/sealRecord';
 import { runCommand } from './cli';
