@@ -21,17 +21,35 @@
 				"name": "hubRuntime.env",
 				"type": "HubEnv",
 				"required": true,
-				"description": "Hub environment with optional authentication database, cache, relay binding and collaboration repository settings."
+				"description": "Hub environment whose fields are all optional: DB, when present, backs the D1 auth store (otherwise the store is null), and CACHE is passed to hubCache. The HARNESS_COLLABORATION_* settings are read only when connect() runs, and a missing or empty owner or repo, or a repository or installation id that is missing, empty, zero or non-numeric, makes connect() throw collaboration-disabled.",
+				"examples": [
+					{
+						"HARNESS_COLLABORATION_OWNER": "acme-labs",
+						"HARNESS_COLLABORATION_REPO": "harness-workspace",
+						"HARNESS_COLLABORATION_REPOSITORY_ID": "812405173",
+						"HARNESS_COLLABORATION_INSTALLATION_ID": "47352811"
+					},
+					{
+						"HARNESS_ENVIRONMENT": "local"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubRuntime",
 				"type": "HubApiRuntime",
-				"description": "Runtime with auth, nullable remote access and connect(). Connecting creates collaboration and projection services using configured repository identity and auth-provided tokens. Missing required repository settings throw collaboration-disabled."
+				"description": "Runtime with auth (the actor and handle members of HubAuth), remote (null or absent when the relay binding or its origin is not configured), connect(), and an optional agent that hubRuntime never sets. Each connect() call creates new collaboration and projection services for the configured repository, with the fixed ref refs/heads/harness-collaboration and path collaboration.json, authenticated by auth-provided tokens, and throws collaboration-disabled when a repository setting is missing or invalid."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "collaboration-disabled",
+				"type": "thrown",
+				"description": "Error thrown by connect() through hubFail, whose code property is 'collaboration-disabled' and message is 'Harness artifact unavailable'. It is thrown before any collaboration or projection service is created, when HARNESS_COLLABORATION_REPOSITORY_ID or HARNESS_COLLABORATION_INSTALLATION_ID is missing, empty, zero or non-numeric, or when HARNESS_COLLABORATION_OWNER or HARNESS_COLLABORATION_REPO is missing or empty."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubRuntime",
@@ -40,18 +58,29 @@
 						"name": "hubRuntime.env",
 						"type": "HubEnv",
 						"required": true,
-						"description": "Hub environment with optional authentication database, cache, relay binding and collaboration repository settings."
+						"description": "Hub environment whose fields are all optional: DB, when present, backs the D1 auth store (otherwise the store is null), and CACHE is passed to hubCache. The HARNESS_COLLABORATION_* settings are read only when connect() runs, and a missing or empty owner or repo, or a repository or installation id that is missing, empty, zero or non-numeric, makes connect() throw collaboration-disabled.",
+						"examples": [
+							{
+								"HARNESS_COLLABORATION_OWNER": "acme-labs",
+								"HARNESS_COLLABORATION_REPO": "harness-workspace",
+								"HARNESS_COLLABORATION_REPOSITORY_ID": "812405173",
+								"HARNESS_COLLABORATION_INSTALLATION_ID": "47352811"
+							},
+							{
+								"HARNESS_ENVIRONMENT": "local"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubRuntime",
 						"type": "HubApiRuntime",
-						"description": "Runtime with auth, nullable remote access and connect(). Connecting creates collaboration and projection services using configured repository identity and auth-provided tokens. Missing required repository settings throw collaboration-disabled."
+						"description": "Runtime with auth (the actor and handle members of HubAuth), remote (null or absent when the relay binding or its origin is not configured), connect(), and an optional agent that hubRuntime never sets. Each connect() call creates new collaboration and projection services for the configured repository, with the fixed ref refs/heads/harness-collaboration and path collaboration.json, authenticated by auth-provided tokens, and throws collaboration-disabled when a repository setting is missing or invalid."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
