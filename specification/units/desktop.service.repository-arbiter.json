@@ -18,64 +18,108 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RepositoryArbiterService.hold.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root string used as the run-lock key; only calls with the identical string contend for this lock.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "RepositoryArbiterService.hold.owner",
 				"type": "object",
-				"required": true
+				"required": true,
+				"description": "The object identity requesting the run lock; an existing lock is retained for this same object and refused to a different object.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "RepositoryArbiterService.release.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root string identifying the run lock to release; it must match the string used to hold that lock.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "RepositoryArbiterService.release.owner",
 				"type": "object",
-				"required": true
+				"required": true,
+				"description": "The object identity requesting release; only the identical object currently holding this root can release it.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "RepositoryArbiterService.held.root",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "The repository root string whose run-lock state is checked; null always produces false.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+					null
+				]
 			},
 			{
 				"name": "RepositoryArbiterService.exclusive.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root string used to serialize writes; only identical strings share a write queue.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "RepositoryArbiterService.exclusive.work",
 				"type": "() => Promise<T>",
-				"required": true
+				"required": true,
+				"description": "The zero-argument asynchronous work callback queued for this repository root. It runs after earlier queued work settles, and its promise may resolve or reject with T or the callback rejection reason."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RepositoryArbiterService.hold",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when this owner holds the run lock after the call; false when a different owner already holds it.",
+				"examples": [true, false]
 			},
 			{
 				"name": "RepositoryArbiterService.release",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned; the run lock is deleted only when the supplied owner is its current holder."
 			},
 			{
 				"name": "RepositoryArbiterService.held",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when a non-null root currently has a run lock, and false for null or an unlocked root.",
+				"examples": [true, false]
 			},
 			{
 				"name": "RepositoryArbiterService.exclusive",
-				"type": "Promise<T>"
+				"type": "Promise<T>",
+				"description": "The fulfilled value is whatever the work callback resolves with. Writes for this exact root run in request order, and the returned promise rejects with the callback rejection reason.",
+				"examples": [
+					"saved",
+					{
+						"saved": true
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "work callback rejection",
+				"type": "thrown",
+				"description": "exclusive rejects with the reason produced by its work callback; the internal queue recovers so the next queued write for that root can run."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RepositoryArbiterService.hold",
@@ -83,22 +127,32 @@
 					{
 						"name": "RepositoryArbiterService.hold.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root string used as the run-lock key; only calls with the identical string contend for this lock.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					},
 					{
 						"name": "RepositoryArbiterService.hold.owner",
 						"type": "object",
-						"required": true
+						"required": true,
+						"description": "The object identity requesting the run lock; an existing lock is retained for this same object and refused to a different object.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RepositoryArbiterService.hold",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when this owner holds the run lock after the call; false when a different owner already holds it.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RepositoryArbiterService.release",
@@ -106,22 +160,31 @@
 					{
 						"name": "RepositoryArbiterService.release.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root string identifying the run lock to release; it must match the string used to hold that lock.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					},
 					{
 						"name": "RepositoryArbiterService.release.owner",
 						"type": "object",
-						"required": true
+						"required": true,
+						"description": "The object identity requesting release; only the identical object currently holding this root can release it.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RepositoryArbiterService.release",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned; the run lock is deleted only when the supplied owner is its current holder."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RepositoryArbiterService.held",
@@ -129,17 +192,24 @@
 					{
 						"name": "RepositoryArbiterService.held.root",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "The repository root string whose run-lock state is checked; null always produces false.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6",
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RepositoryArbiterService.held",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when a non-null root currently has a run lock, and false for null or an unlocked root.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RepositoryArbiterService.exclusive",
@@ -147,22 +217,40 @@
 					{
 						"name": "RepositoryArbiterService.exclusive.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root string used to serialize writes; only identical strings share a write queue.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					},
 					{
 						"name": "RepositoryArbiterService.exclusive.work",
 						"type": "() => Promise<T>",
-						"required": true
+						"required": true,
+						"description": "The zero-argument asynchronous work callback queued for this repository root. It runs after earlier queued work settles, and its promise may resolve or reject with T or the callback rejection reason."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RepositoryArbiterService.exclusive",
-						"type": "Promise<T>"
+						"type": "Promise<T>",
+						"description": "The fulfilled value is whatever the work callback resolves with. Writes for this exact root run in request order, and the returned promise rejects with the callback rejection reason.",
+						"examples": [
+							"saved",
+							{
+								"saved": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "work callback rejection",
+						"type": "thrown",
+						"description": "exclusive rejects with the reason produced by its work callback; the internal queue recovers so the next queued write for that root can run."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
