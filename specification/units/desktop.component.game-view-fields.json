@@ -36,58 +36,99 @@
 				"name": "GameViewFields.view",
 				"type": "GameView",
 				"required": true,
-				"description": "Active game view containing scene direction and executable checkpoints."
+				"description": "The active game view supplies the selected id and the title, dimension, and art direction shown in settings. Its planning state controls whether Level is shown, and LevelValidator.isReady(view) gates Preview and Checkpoints.",
+				"examples": [
+					{
+						"id": "view-mwh9tyj0",
+						"title": "Forest path",
+						"dimension": "2d",
+						"style": "Warm hand-painted woodland",
+						"checkpoints": [],
+						"planning": {
+							"concept": "Guide a lantern through the forest.",
+							"description": "Reach the old bridge before nightfall."
+						}
+					}
+				]
 			},
 			{
 				"name": "GameViewFields.views",
 				"type": "GameView[]",
 				"required": true,
-				"description": "Available game views displayed by the view selector."
+				"description": "The game views offered in the picker; each option uses a view id as its value and title as its label. More than one view expands the picker.",
+				"examples": [
+					[
+						{
+							"id": "view-mwh9tyj0",
+							"title": "Forest path",
+							"dimension": "2d",
+							"style": "Warm hand-painted woodland",
+							"checkpoints": [],
+							"planning": {
+								"concept": "Guide a lantern through the forest.",
+								"description": "Reach the old bridge before nightfall."
+							}
+						},
+						{
+							"id": "view-mwh7osr0",
+							"title": "Moonlit harbor",
+							"dimension": "3d",
+							"style": "Low-poly shapes with soft blue light",
+							"checkpoints": [],
+							"planning": {
+								"concept": "Explore a quiet harbor.",
+								"description": "Find the lighthouse path."
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "GameViewFields.readonly",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Disable editing and generation for historical or otherwise immutable views."
+				"description": "When true, the title, dimension, and art direction editors are disabled, a read-only note is shown, and New level is hidden. Defaults to false.",
+				"examples": [false, true]
 			},
 			{
 				"name": "GameViewFields.section",
 				"type": "GameSection",
 				"required": true,
-				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. New level selects Level."
+				"description": "The currently selected workspace section; it must be Level, Preview, Checkpoints, or Mechanics, and New level sets it to Level. It is bindable and has no runtime fallback, so an omitted value is undefined even though the declared prop type requires it.",
+				"examples": ["Level", "Preview", "Mechanics"]
 			},
 			{
 				"name": "GameViewFields.select",
 				"type": "(id: string) => void",
 				"required": true,
-				"description": "Callback selecting the requested view or checkpoint identity without saving the document."
+				"description": "Called with the selected view id when a picker option is chosen, and with the newly created id after New level. It receives only the id string."
 			},
 			{
 				"name": "GameViewFields.create",
 				"type": "(level: GameView) => void",
 				"required": true,
-				"description": "Add a new empty level with its concept and brief planning state."
+				"description": "Called when New level is activated in an editable view, with a new view using the current dimension and art direction, title New level, empty checkpoints, and blank planning text. Selection and the section change to Level follow only if this callback returns normally."
 			},
 			{
 				"name": "GameViewFields.change",
 				"type": "(patch: Partial<GameView>) => void",
 				"required": true,
-				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
+				"description": "Called for title and art direction edits and for dimension changes, with a partial view patch. A dimension change also clears approved and built to undefined in a copied planning object when planning is present; other planning fields are retained."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameViewFields",
 				"type": "markup",
-				"description": "Select game views in a compact toolbar and progressively disclose view title, dimension and art direction. Multiple views are listed visibly in the shared picker; a single view keeps the compact picker. States: settings-open: The level settings section is expanded with its editable fields. gated: An unbuilt level shows the planning gate instead of built-level editing controls."
+				"description": "Renders a View picker that expands when more than one view is supplied, plus section buttons; Level appears only when view.planning is truthy, and Preview and Checkpoints are disabled unless LevelValidator.isReady(view) succeeds. View settings start closed and reveal title, 2D/3D dimension, and art direction; when readonly is true their editors are disabled, a read-only note is shown, and New level is hidden."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback error",
-				"type": "propagated",
-				"description": "Errors from select, create or change propagate during selection, level creation or edits; later steps in the same action do not run."
+				"type": "thrown",
+				"description": "A synchronous exception thrown by select, create, or change propagates from the event handler; the component does not catch it. In createLevel, a thrown create prevents selection and local section updates, and a thrown select prevents those local updates."
 			}
 		],
 		"errorStatus": "declared",
