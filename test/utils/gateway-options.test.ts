@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { gatewayOptions } from '../../src/services/claude-query-service/gatewayOptions';
+import { gatewayOptions } from '../../src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions';
 import { CodexSessionRepository } from '../../src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository';
 test('subscription bridge excludes API billing overrides and builtin execution tools', () => {
 	vi.stubEnv('ANTHROPIC_API_KEY', 'synthetic');

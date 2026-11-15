@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { gatewayPrompt } from '../../src/services/claude-query-service/gatewayPrompt';
+import { gatewayPrompt } from '../../src/cli/program/codex-gateway-service/claude-query-service/gatewayPrompt';
 test('replayed history retains role labels and tool call correlation', () => {
 	const input = [
 		{ role: 'user', content: 'remember alpha' },

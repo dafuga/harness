@@ -27,26 +27,6 @@
 			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
 		},
 		{
-			"from": "src/services/claude-query-service/ClaudeQueryService.ts",
-			"to": "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/services/claude-query-service/gatewayMessages.ts",
-			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayMessages",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/services/claude-query-service/gatewayOptions.ts",
-			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/services/claude-query-service/gatewayPrompt.ts",
-			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayPrompt",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/codex-gateway-service/CodexGatewayService.ts",
 			"to": "src/cli/program/codex-gateway-service/CodexGatewayService",
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."

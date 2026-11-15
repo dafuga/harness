@@ -8,7 +8,7 @@ vi.mock('@anthropic-ai/claude-agent-sdk', () => ({
 	}),
 	createSdkMcpServer: () => ({ type: 'sdk' })
 }));
-import { ClaudeQueryService } from '../../src/services/claude-query-service/ClaudeQueryService';
+import { ClaudeQueryService } from '../../src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService';
 test('process failure is sanitized, ends running state and has no paid fallback', async () => {
 	const repository = new CodexSessionRepository();
 	const session = repository.create('thread');

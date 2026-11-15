@@ -11,7 +11,7 @@ export { CodexResponsesSerializer } from './serializers/agents-providers/CodexRe
 export { CodexRequestValidator } from './validators/agents-providers/CodexRequestValidator';
 export { CodexSessionRepository } from './cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository';
 export { GatewayEventsService } from './serializers/agents-providers/claude-tools-serializer/GatewayEventsService';
-export { ClaudeQueryService } from './services/claude-query-service/ClaudeQueryService';
+export { ClaudeQueryService } from './cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService';
 export { ClaudeToolsSerializer } from './serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer';
 export { gatewayPrompt } from './cli/program/codex-gateway-service/claude-query-service/gatewayPrompt';
 export type { GatewayRequest, GatewaySession } from './utils/development-tooling/gatewayTypes';

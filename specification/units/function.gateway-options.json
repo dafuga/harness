@@ -10,7 +10,7 @@
 	"owns": {
 		"source": [
 			"src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts",
-			"src/services/claude-query-service/gatewayOptions.ts"
+			"src/utils/gatewayOptions.ts"
 		],
 		"symbols": ["gatewayOptions", "gatewayOptions"]
 	},
@@ -65,11 +65,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts",
+		"entry": "src/utils/gatewayOptions.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts"
+				"entry": "src/utils/gatewayOptions.ts"
 			}
 		]
 	},
