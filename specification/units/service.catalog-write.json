@@ -27,29 +27,366 @@
 				"name": "CatalogWriteService.constructor.adapter",
 				"type": "SqliteAdapter",
 				"required": true,
-				"description": "Transactional database adapter for replacing the derived catalog tables."
+				"description": "The SqliteAdapter that replace() writes through: replace() runs all of its work in one adapter.transaction() call, clears each catalog model table with adapter.execute() and inserts each row with adapter.insert(). The constructor only stores it as a private readonly field and makes no database call."
 			},
 			{
 				"name": "CatalogWriteService.replace.index",
 				"type": "HistoryIndex",
 				"required": true,
-				"description": "History branches, revisions, records and metadata to project."
+				"description": "The history index that every replace() call projects: each branch becomes a catalog branch row keyed by its name and holding its head, and each revision becomes a row keyed by its commit, with each record keyed by JSON.stringify([commit, record id]). The whole index is also hashed with stableJson and its SHA-256 digest is stored in the catalog metadata row; the index is used as given and is not validated here.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"refs": {
+							"evidence": "6c2e0f9a41d7b58e3f10a2c9d4b6e7f8a9013c52",
+							"notes": null
+						},
+						"branches": [
+							{
+								"name": "main",
+								"head": "b71d4e2a9c0f3857d6e1a4b2c8f09e7d3a5b6c14"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "b71d4e2a9c0f3857d6e1a4b2c8f09e7d3a5b6c14",
+								"tree": "d8f03a6c52b1e9470a7d2c8f5e13b6a94c0e7f21",
+								"parents": ["4a9e7c10f2d8b35e6a1c7d9f0b24e8c6d3a71f05"],
+								"subject": "Write the catalog projection in one transaction",
+								"author": "Riley Chen",
+								"authoredAt": "2026-11-14T10:12:03-05:00",
+								"committedAt": "2026-11-14T10:20:47-05:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "a3f9c1e70b5d28469e1c7a3f58d0b2e46f9a1c3e7d2b5084e6c9a1f3b8d27e05",
+										"status": "passed",
+										"profile": "5e1c9a04b7d2f863",
+										"finishedAt": "2026-11-14T15:31:58.204Z",
+										"base": "4a9e7c10f2d8b35e6a1c7d9f0b24e8c6d3a71f05",
+										"valid": true,
+										"problems": []
+									}
+								],
+								"reasons": 1,
+								"legacy": [],
+								"changes": {
+									"base": "4a9e7c10f2d8b35e6a1c7d9f0b24e8c6d3a71f05",
+									"direct": ["service.catalog-write"],
+									"added": [],
+									"removed": []
+								},
+								"detail": "revisions/b71d4e2a9c0f3857d6e1a4b2c8f09e7d3a5b6c14.json"
+							}
+						],
+						"units": [
+							{
+								"id": "service.catalog-write",
+								"growth": []
+							}
+						],
+						"benchmarks": [],
+						"profiles": [
+							{
+								"id": "5e1c9a04b7d2f863",
+								"platform": "darwin",
+								"arch": "arm64",
+								"cpu": "Apple M3 Pro",
+								"cores": 12,
+								"memoryBytes": 38654705664,
+								"runtime": "node 22.11.0"
+							}
+						],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					},
+					{
+						"schemaVersion": 1,
+						"refs": {
+							"evidence": null,
+							"notes": null
+						},
+						"branches": [
+							{
+								"name": "main",
+								"head": "e05c9b3d7a1f48620c9e5d2b8a7f1036c4d9e8a2"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "e05c9b3d7a1f48620c9e5d2b8a7f1036c4d9e8a2",
+								"tree": "9f1a7e3c05d2b84e6c1a9f07d3e28b5a4c60d1e9",
+								"parents": [],
+								"subject": "Initial commit",
+								"author": "Sam Okafor",
+								"authoredAt": "2026-11-12T16:03:44-05:00",
+								"committedAt": "2026-11-12T16:03:44-05:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": ["no verification record is attached to this commit"],
+								"records": [],
+								"reasons": 0,
+								"legacy": [],
+								"detail": "revisions/e05c9b3d7a1f48620c9e5d2b8a7f1036c4d9e8a2.json"
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "CatalogWriteService.replace.snapshots",
 				"type": "CatalogSnapshot[]",
 				"required": true,
-				"description": "Revision registries retained verbatim; identical target and relation pairs share one query edge."
+				"description": "Each index revision takes its registry from the snapshot with the same commit (the last such snapshot when a commit repeats): that registry sets the revision's registryAvailable flag and its scenarios become rows, while a revision with no matching snapshot gets registryAvailable false and no scenario rows. Every unit of every snapshot is linked to that snapshot's commit, and each distinct unit, identified by the SHA-256 of its stable JSON, is stored once with its data column holding the unit as given and its dependencies kept unique by unit and via.",
+				"examples": [
+					[
+						{
+							"commit": "b71d4e2a9c0f3857d6e1a4b2c8f09e7d3a5b6c14",
+							"registry": {
+								"available": true,
+								"units": [
+									{
+										"id": "service.catalog-write",
+										"kind": "service",
+										"status": "active",
+										"title": "CatalogWriteService",
+										"responsibility": "Atomically projects revision snapshots into SQLite, preserving entity metadata and distinct dependency relations.",
+										"dependencies": [
+											{
+												"unit": "adapter.sqlite",
+												"via": "import"
+											},
+											{
+												"unit": "function.catalog-models",
+												"via": "import"
+											},
+											{
+												"unit": "function.history-index-types",
+												"via": "import"
+											},
+											{
+												"unit": "function.revision-registry",
+												"via": "import"
+											},
+											{
+												"unit": "function.sqlite-table-sql",
+												"via": "import"
+											},
+											{
+												"unit": "function.stable-json",
+												"via": "import"
+											},
+											{
+												"unit": "model.catalog-branch",
+												"via": "import"
+											},
+											{
+												"unit": "model.catalog-dependency",
+												"via": "import"
+											},
+											{
+												"unit": "model.catalog-entity",
+												"via": "import"
+											},
+											{
+												"unit": "model.catalog-metadata",
+												"via": "import"
+											},
+											{
+												"unit": "model.catalog-record",
+												"via": "import"
+											},
+											{
+												"unit": "model.catalog-revision",
+												"via": "import"
+											},
+											{
+												"unit": "model.catalog-revision-entity",
+												"via": "import"
+											},
+											{
+												"unit": "model.catalog-scenario",
+												"via": "import"
+											}
+										],
+										"scenarios": [],
+										"owns": {
+											"source": [
+												"src/services/git-source-history/CatalogWriteService.ts",
+												"src/services/git-source-history/CatalogWriteService.types.ts"
+											],
+											"symbols": [
+												"CatalogWriteService",
+												"CatalogWriteService.constructor",
+												"CatalogWriteService.replace",
+												"CatalogSnapshot"
+											]
+										},
+										"contract": {
+											"inputs": [
+												{
+													"name": "CatalogWriteService.constructor.adapter",
+													"type": "SqliteAdapter",
+													"required": true
+												},
+												{
+													"name": "CatalogWriteService.replace.index",
+													"type": "HistoryIndex",
+													"required": true
+												},
+												{
+													"name": "CatalogWriteService.replace.snapshots",
+													"type": "CatalogSnapshot[]",
+													"required": true
+												}
+											],
+											"outputs": [
+												{
+													"name": "CatalogWriteService.replace",
+													"type": "void"
+												}
+											],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "src/services/git-source-history/CatalogWriteService.ts"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "9c1f4e2ab7d03f58"
+									}
+								],
+								"scenarios": [],
+								"graph": {
+									"nodes": [
+										{
+											"id": "unit:service.catalog-write",
+											"kind": "unit"
+										}
+									],
+									"edges": [
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:adapter.sqlite",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:function.catalog-models",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:function.history-index-types",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:function.revision-registry",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:function.sqlite-table-sql",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:function.stable-json",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:model.catalog-branch",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:model.catalog-dependency",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:model.catalog-entity",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:model.catalog-metadata",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:model.catalog-record",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:model.catalog-revision",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:model.catalog-revision-entity",
+											"via": "import"
+										},
+										{
+											"from": "unit:service.catalog-write",
+											"to": "unit:model.catalog-scenario",
+											"via": "import"
+										}
+									]
+								}
+							}
+						}
+					],
+					[
+						{
+							"commit": "4a9e7c10f2d8b35e6a1c7d9f0b24e8c6d3a71f05",
+							"registry": {
+								"available": false,
+								"gap": "no unit registry is stored at this revision",
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"nodes": [],
+									"edges": []
+								}
+							}
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogWriteService.replace",
 				"type": "void",
-				"description": "Replaces catalog tables atomically; repeated dependency keys do not discard raw provenance or distinct relation types."
+				"description": "Returns nothing: the method clears every catalog model table and re-inserts the projection inside one adapter.transaction() call, which the file's comment calls rollback-safe. The code has no try or catch, so any error from the adapter propagates to the caller unchanged."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "CatalogWriteService.replace",
@@ -58,24 +395,360 @@
 						"name": "CatalogWriteService.replace.index",
 						"type": "HistoryIndex",
 						"required": true,
-						"description": "History branches, revisions, records and metadata to project."
+						"description": "The history index that every replace() call projects: each branch becomes a catalog branch row keyed by its name and holding its head, and each revision becomes a row keyed by its commit, with each record keyed by JSON.stringify([commit, record id]). The whole index is also hashed with stableJson and its SHA-256 digest is stored in the catalog metadata row; the index is used as given and is not validated here.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"refs": {
+									"evidence": "6c2e0f9a41d7b58e3f10a2c9d4b6e7f8a9013c52",
+									"notes": null
+								},
+								"branches": [
+									{
+										"name": "main",
+										"head": "b71d4e2a9c0f3857d6e1a4b2c8f09e7d3a5b6c14"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "b71d4e2a9c0f3857d6e1a4b2c8f09e7d3a5b6c14",
+										"tree": "d8f03a6c52b1e9470a7d2c8f5e13b6a94c0e7f21",
+										"parents": ["4a9e7c10f2d8b35e6a1c7d9f0b24e8c6d3a71f05"],
+										"subject": "Write the catalog projection in one transaction",
+										"author": "Riley Chen",
+										"authoredAt": "2026-11-14T10:12:03-05:00",
+										"committedAt": "2026-11-14T10:20:47-05:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [
+											{
+												"id": "a3f9c1e70b5d28469e1c7a3f58d0b2e46f9a1c3e7d2b5084e6c9a1f3b8d27e05",
+												"status": "passed",
+												"profile": "5e1c9a04b7d2f863",
+												"finishedAt": "2026-11-14T15:31:58.204Z",
+												"base": "4a9e7c10f2d8b35e6a1c7d9f0b24e8c6d3a71f05",
+												"valid": true,
+												"problems": []
+											}
+										],
+										"reasons": 1,
+										"legacy": [],
+										"changes": {
+											"base": "4a9e7c10f2d8b35e6a1c7d9f0b24e8c6d3a71f05",
+											"direct": ["service.catalog-write"],
+											"added": [],
+											"removed": []
+										},
+										"detail": "revisions/b71d4e2a9c0f3857d6e1a4b2c8f09e7d3a5b6c14.json"
+									}
+								],
+								"units": [
+									{
+										"id": "service.catalog-write",
+										"growth": []
+									}
+								],
+								"benchmarks": [],
+								"profiles": [
+									{
+										"id": "5e1c9a04b7d2f863",
+										"platform": "darwin",
+										"arch": "arm64",
+										"cpu": "Apple M3 Pro",
+										"cores": 12,
+										"memoryBytes": 38654705664,
+										"runtime": "node 22.11.0"
+									}
+								],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							},
+							{
+								"schemaVersion": 1,
+								"refs": {
+									"evidence": null,
+									"notes": null
+								},
+								"branches": [
+									{
+										"name": "main",
+										"head": "e05c9b3d7a1f48620c9e5d2b8a7f1036c4d9e8a2"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "e05c9b3d7a1f48620c9e5d2b8a7f1036c4d9e8a2",
+										"tree": "9f1a7e3c05d2b84e6c1a9f07d3e28b5a4c60d1e9",
+										"parents": [],
+										"subject": "Initial commit",
+										"author": "Sam Okafor",
+										"authoredAt": "2026-11-12T16:03:44-05:00",
+										"committedAt": "2026-11-12T16:03:44-05:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "unverified",
+										"gaps": ["no verification record is attached to this commit"],
+										"records": [],
+										"reasons": 0,
+										"legacy": [],
+										"detail": "revisions/e05c9b3d7a1f48620c9e5d2b8a7f1036c4d9e8a2.json"
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "CatalogWriteService.replace.snapshots",
 						"type": "CatalogSnapshot[]",
 						"required": true,
-						"description": "Revision registries retained verbatim; identical target and relation pairs share one query edge."
+						"description": "Each index revision takes its registry from the snapshot with the same commit (the last such snapshot when a commit repeats): that registry sets the revision's registryAvailable flag and its scenarios become rows, while a revision with no matching snapshot gets registryAvailable false and no scenario rows. Every unit of every snapshot is linked to that snapshot's commit, and each distinct unit, identified by the SHA-256 of its stable JSON, is stored once with its data column holding the unit as given and its dependencies kept unique by unit and via.",
+						"examples": [
+							[
+								{
+									"commit": "b71d4e2a9c0f3857d6e1a4b2c8f09e7d3a5b6c14",
+									"registry": {
+										"available": true,
+										"units": [
+											{
+												"id": "service.catalog-write",
+												"kind": "service",
+												"status": "active",
+												"title": "CatalogWriteService",
+												"responsibility": "Atomically projects revision snapshots into SQLite, preserving entity metadata and distinct dependency relations.",
+												"dependencies": [
+													{
+														"unit": "adapter.sqlite",
+														"via": "import"
+													},
+													{
+														"unit": "function.catalog-models",
+														"via": "import"
+													},
+													{
+														"unit": "function.history-index-types",
+														"via": "import"
+													},
+													{
+														"unit": "function.revision-registry",
+														"via": "import"
+													},
+													{
+														"unit": "function.sqlite-table-sql",
+														"via": "import"
+													},
+													{
+														"unit": "function.stable-json",
+														"via": "import"
+													},
+													{
+														"unit": "model.catalog-branch",
+														"via": "import"
+													},
+													{
+														"unit": "model.catalog-dependency",
+														"via": "import"
+													},
+													{
+														"unit": "model.catalog-entity",
+														"via": "import"
+													},
+													{
+														"unit": "model.catalog-metadata",
+														"via": "import"
+													},
+													{
+														"unit": "model.catalog-record",
+														"via": "import"
+													},
+													{
+														"unit": "model.catalog-revision",
+														"via": "import"
+													},
+													{
+														"unit": "model.catalog-revision-entity",
+														"via": "import"
+													},
+													{
+														"unit": "model.catalog-scenario",
+														"via": "import"
+													}
+												],
+												"scenarios": [],
+												"owns": {
+													"source": [
+														"src/services/git-source-history/CatalogWriteService.ts",
+														"src/services/git-source-history/CatalogWriteService.types.ts"
+													],
+													"symbols": [
+														"CatalogWriteService",
+														"CatalogWriteService.constructor",
+														"CatalogWriteService.replace",
+														"CatalogSnapshot"
+													]
+												},
+												"contract": {
+													"inputs": [
+														{
+															"name": "CatalogWriteService.constructor.adapter",
+															"type": "SqliteAdapter",
+															"required": true
+														},
+														{
+															"name": "CatalogWriteService.replace.index",
+															"type": "HistoryIndex",
+															"required": true
+														},
+														{
+															"name": "CatalogWriteService.replace.snapshots",
+															"type": "CatalogSnapshot[]",
+															"required": true
+														}
+													],
+													"outputs": [
+														{
+															"name": "CatalogWriteService.replace",
+															"type": "void"
+														}
+													],
+													"errors": []
+												},
+												"runtime": {
+													"kind": "module",
+													"targets": [
+														{
+															"kind": "module",
+															"entry": "src/services/git-source-history/CatalogWriteService.ts"
+														}
+													]
+												},
+												"budgets": {
+													"size": "frozen",
+													"complexity": "frozen",
+													"performance": []
+												},
+												"version": "9c1f4e2ab7d03f58"
+											}
+										],
+										"scenarios": [],
+										"graph": {
+											"nodes": [
+												{
+													"id": "unit:service.catalog-write",
+													"kind": "unit"
+												}
+											],
+											"edges": [
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:adapter.sqlite",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:function.catalog-models",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:function.history-index-types",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:function.revision-registry",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:function.sqlite-table-sql",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:function.stable-json",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:model.catalog-branch",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:model.catalog-dependency",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:model.catalog-entity",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:model.catalog-metadata",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:model.catalog-record",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:model.catalog-revision",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:model.catalog-revision-entity",
+													"via": "import"
+												},
+												{
+													"from": "unit:service.catalog-write",
+													"to": "unit:model.catalog-scenario",
+													"via": "import"
+												}
+											]
+										}
+									}
+								}
+							],
+							[
+								{
+									"commit": "4a9e7c10f2d8b35e6a1c7d9f0b24e8c6d3a71f05",
+									"registry": {
+										"available": false,
+										"gap": "no unit registry is stored at this revision",
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"nodes": [],
+											"edges": []
+										}
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogWriteService.replace",
 						"type": "void",
-						"description": "Replaces catalog tables atomically; repeated dependency keys do not discard raw provenance or distinct relation types."
+						"description": "Returns nothing: the method clears every catalog model table and re-inserts the projection inside one adapter.transaction() call, which the file's comment calls rollback-safe. The code has no try or catch, so any error from the adapter propagates to the caller unchanged."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -86,17 +759,18 @@
 						"name": "CatalogWriteService.constructor.adapter",
 						"type": "SqliteAdapter",
 						"required": true,
-						"description": "Transactional database adapter for replacing the derived catalog tables."
+						"description": "The SqliteAdapter that replace() writes through: replace() runs all of its work in one adapter.transaction() call, clears each catalog model table with adapter.execute() and inserts each row with adapter.insert(). The constructor only stores it as a private readonly field and makes no database call."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogWriteService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new CatalogWriteService instance, whose only state is the adapter it stores as a private readonly field; the constructor runs no database operation."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
