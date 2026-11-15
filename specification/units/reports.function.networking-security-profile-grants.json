@@ -20,27 +20,116 @@
 				"name": "profileGrants.profile",
 				"type": "ProfileEntry",
 				"required": true,
-				"description": "Profile whose own grant list is filtered; no inheritance or normalization is performed."
+				"description": "One declared profile of the selected revision, with the `source` path of the file that declares it; the function reads only `profile.grants` from it, with no inheritance lookup, merge or normalization. A null or undefined profile, or a `grants` value that is null, undefined or lacks a callable `filter`, makes the call throw a TypeError.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "release-auditor",
+						"title": "Release auditor",
+						"description": "Reads release evidence and the API that publishes it.",
+						"grants": [
+							{
+								"kind": "api",
+								"resource": "reports.endpoint.evidence-records",
+								"actions": ["GET"],
+								"data": [
+									{
+										"resource": "evidence-records",
+										"actions": ["read"],
+										"fields": ["id", "status", "commit"],
+										"scope": "own"
+									}
+								]
+							},
+							{
+								"kind": "page",
+								"resource": "reports.component.evidence-grid",
+								"actions": ["view"]
+							},
+							{
+								"kind": "data",
+								"resource": "release-notes",
+								"actions": ["read"],
+								"fields": ["id", "title"],
+								"scope": "all"
+							}
+						],
+						"source": "specification/permissions/release-auditor.json"
+					},
+					{
+						"schemaVersion": 1,
+						"id": "viewer",
+						"title": "Viewer",
+						"description": "Views the evidence grid only.",
+						"grants": [
+							{
+								"kind": "page",
+								"resource": "reports.component.evidence-grid",
+								"actions": ["view"]
+							}
+						],
+						"source": "specification/permissions/viewer.json"
+					},
+					{
+						"schemaVersion": 1,
+						"id": "no-access",
+						"title": "No access",
+						"description": "Declares no grants.",
+						"grants": [],
+						"source": "specification/permissions/no-access.json"
+					}
+				]
 			},
 			{
 				"name": "profileGrants.kind",
 				"type": "K",
 				"required": true,
-				"description": "Exact grant discriminator to select; no default is supplied."
+				"description": "The grant kind to keep, typed `K extends ProfileGrant['kind']` (`'api'`, `'page'` or `'data'`); a grant is kept only when `grant.kind === kind` holds, and no default is supplied. A value that no grant has as its kind yields an empty array rather than an error.",
+				"examples": ["api", "page", "data"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "profileGrants",
 				"type": "GrantOfKind<K>[]",
-				"description": "Native filtered collection containing only the requested kind, preserving filter method and species behavior."
+				"description": "A new array returned by the `filter` method of `profile.grants`, created with that array's species, holding the same grant objects (not copies) whose `kind` equals `kind`, in their original order. It is empty when no grant matches, and it is never the `profile.grants` array itself.",
+				"examples": [
+					[
+						{
+							"kind": "api",
+							"resource": "reports.endpoint.evidence-records",
+							"actions": ["GET"],
+							"data": [
+								{
+									"resource": "evidence-records",
+									"actions": ["read"],
+									"fields": ["id", "status", "commit"],
+									"scope": "own"
+								}
+							]
+						}
+					],
+					[
+						{
+							"kind": "page",
+							"resource": "reports.component.evidence-grid",
+							"actions": ["view"]
+						}
+					],
+					[]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Input access failure",
 				"type": "propagated",
-				"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+				"description": "Any error thrown by a getter that supplies `profile.grants` or a grant's `kind`, by an overridden `filter` method, or by the species constructor used for the result propagates unchanged, because the function neither catches nor wraps it."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "The code has no explicit `throw`; the engine throws a TypeError when `profile` is null or undefined, when `profile.grants` is null or undefined or has no callable `filter`, or when `profile.grants` is an array with a non-constructor species. It is also thrown when an element of `grants` is null or undefined, because the predicate reads its `kind`."
 			}
 		],
 		"errorStatus": "declared",
@@ -52,27 +141,116 @@
 						"name": "profileGrants.profile",
 						"type": "ProfileEntry",
 						"required": true,
-						"description": "Profile whose own grant list is filtered; no inheritance or normalization is performed."
+						"description": "One declared profile of the selected revision, with the `source` path of the file that declares it; the function reads only `profile.grants` from it, with no inheritance lookup, merge or normalization. A null or undefined profile, or a `grants` value that is null, undefined or lacks a callable `filter`, makes the call throw a TypeError.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "release-auditor",
+								"title": "Release auditor",
+								"description": "Reads release evidence and the API that publishes it.",
+								"grants": [
+									{
+										"kind": "api",
+										"resource": "reports.endpoint.evidence-records",
+										"actions": ["GET"],
+										"data": [
+											{
+												"resource": "evidence-records",
+												"actions": ["read"],
+												"fields": ["id", "status", "commit"],
+												"scope": "own"
+											}
+										]
+									},
+									{
+										"kind": "page",
+										"resource": "reports.component.evidence-grid",
+										"actions": ["view"]
+									},
+									{
+										"kind": "data",
+										"resource": "release-notes",
+										"actions": ["read"],
+										"fields": ["id", "title"],
+										"scope": "all"
+									}
+								],
+								"source": "specification/permissions/release-auditor.json"
+							},
+							{
+								"schemaVersion": 1,
+								"id": "viewer",
+								"title": "Viewer",
+								"description": "Views the evidence grid only.",
+								"grants": [
+									{
+										"kind": "page",
+										"resource": "reports.component.evidence-grid",
+										"actions": ["view"]
+									}
+								],
+								"source": "specification/permissions/viewer.json"
+							},
+							{
+								"schemaVersion": 1,
+								"id": "no-access",
+								"title": "No access",
+								"description": "Declares no grants.",
+								"grants": [],
+								"source": "specification/permissions/no-access.json"
+							}
+						]
 					},
 					{
 						"name": "profileGrants.kind",
 						"type": "K",
 						"required": true,
-						"description": "Exact grant discriminator to select; no default is supplied."
+						"description": "The grant kind to keep, typed `K extends ProfileGrant['kind']` (`'api'`, `'page'` or `'data'`); a grant is kept only when `grant.kind === kind` holds, and no default is supplied. A value that no grant has as its kind yields an empty array rather than an error.",
+						"examples": ["api", "page", "data"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "profileGrants",
 						"type": "GrantOfKind<K>[]",
-						"description": "Native filtered collection containing only the requested kind, preserving filter method and species behavior."
+						"description": "A new array returned by the `filter` method of `profile.grants`, created with that array's species, holding the same grant objects (not copies) whose `kind` equals `kind`, in their original order. It is empty when no grant matches, and it is never the `profile.grants` array itself.",
+						"examples": [
+							[
+								{
+									"kind": "api",
+									"resource": "reports.endpoint.evidence-records",
+									"actions": ["GET"],
+									"data": [
+										{
+											"resource": "evidence-records",
+											"actions": ["read"],
+											"fields": ["id", "status", "commit"],
+											"scope": "own"
+										}
+									]
+								}
+							],
+							[
+								{
+									"kind": "page",
+									"resource": "reports.component.evidence-grid",
+									"actions": ["view"]
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Input access failure",
 						"type": "propagated",
-						"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+						"description": "Any error thrown by a getter that supplies `profile.grants` or a grant's `kind`, by an overridden `filter` method, or by the species constructor used for the result propagates unchanged, because the function neither catches nor wraps it."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "The code has no explicit `throw`; the engine throws a TypeError when `profile` is null or undefined, when `profile.grants` is null or undefined or has no callable `filter`, or when `profile.grants` is an array with a non-constructor species. It is also thrown when an element of `grants` is null or undefined, because the predicate reads its `kind`."
 					}
 				],
 				"errorStatus": "declared"
