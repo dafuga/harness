@@ -37,51 +37,208 @@
 				"name": "entityMeasure.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Unit supplying identity, emitted targets and performance budgets."
+				"description": "The unit supplies source measurements, the ID used to filter measurements, owned symbols used to filter callable-specific measurements, and performance budgets used to create rows. Its runtime targets determine which emitted process or Wasm size rows appear.",
+				"examples": [
+					{
+						"id": "reports.function.entity-measure",
+						"kind": "function",
+						"status": "active",
+						"title": "Entity measurement display",
+						"responsibility": "Formats one unit’s recorded size and declared performance measurements without combining profiles.",
+						"dependencies": [
+							{
+								"unit": "reports.function.entity-contract",
+								"via": "import"
+							},
+							{
+								"unit": "reports.function.explorer-state",
+								"via": "import"
+							},
+							{
+								"unit": "reports.function.harness-emitted",
+								"via": "import"
+							},
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"packages/reports/src/components/explorer-ui/entity-sections/entityMeasure.ts",
+								"packages/reports/src/components/explorer-ui/entity-sections/entityMeasure.types.ts",
+								"packages/reports/src/utils/entityMeasure.ts",
+								"packages/reports/src/utils/explorer-ui/entityMeasure.ts",
+								"packages/reports/src/utils/explorer-ui/entityMeasure.types.ts"
+							],
+							"symbols": ["entityMeasure"]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorer-ui/entityMeasure.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "1"
+					}
+				]
 			},
 			{
 				"name": "entityMeasure.record",
 				"type": "HarnessRecord | null",
 				"required": true,
-				"description": "Host-selected verification record, or null when none is available."
+				"description": "The selected record contributes measurements and emitted-size or budget-judgment data; null leaves record-backed measurements unavailable while unit source measurements and explicit observations can still appear. Record status and validity are not checked before its measurements are used.",
+				"examples": [
+					null,
+					{
+						"id": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"base": null
+						},
+						"profile": "linux-arm64-node22",
+						"startedAt": "2026-11-15T12:00:00.000Z",
+						"finishedAt": "2026-11-15T12:00:01.000Z",
+						"failures": [],
+						"tests": [],
+						"scenarios": [],
+						"measurements": [
+							{
+								"unit": "reports.function.entity-measure",
+								"metric": "source-bytes",
+								"unitOfMeasure": "bytes",
+								"value": 1200,
+								"workload": null,
+								"profile": null
+							},
+							{
+								"unit": "reports.function.entity-measure",
+								"metric": "complexity",
+								"unitOfMeasure": "score",
+								"value": 8,
+								"workload": null,
+								"profile": null
+							}
+						],
+						"budgets": {
+							"findings": []
+						}
+					}
+				]
 			},
 			{
 				"name": "entityMeasure.observations",
 				"type": "Measurement[]",
 				"required": false,
 				"default": [],
-				"description": "Optional focused runtime observations to show alongside the selected record, keeping their original profiles; defaults to an empty list."
+				"description": "Additional measurements appended after unit source measurements and record measurements, then filtered to this unit and its owned callables. Defaults to [].",
+				"examples": [
+					[
+						{
+							"unit": "reports.function.entity-measure",
+							"metric": "latency-warm-ms",
+							"callable": "entityMeasure",
+							"method": "timer",
+							"unitOfMeasure": "ms",
+							"value": 0.7,
+							"workload": "warm-call",
+							"profile": "linux-arm64-node22",
+							"target": "module"
+						}
+					]
+				]
 			},
 			{
 				"name": "byteSize.count",
 				"type": "number",
 				"required": true,
-				"description": "Byte count to format; sign is retained."
+				"description": "A byte count to format; absolute magnitude selects B, KB, or MB while the original sign is preserved. The scale thresholds are 1,000 and 1,000,000 bytes, and non-integer scaled values are rounded to one decimal place.",
+				"examples": [999, 1000, -1200000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "notMeasured",
 				"type": "unknown",
-				"description": "The Not measured placeholder."
+				"description": "The Not measured placeholder used for absent or unavailable measurements, so missing data is not displayed as zero.",
+				"examples": ["Not measured"]
 			},
 			{
 				"name": "tolerancePolicy",
 				"type": "unknown",
-				"description": "Maximum accepted declared timing tolerance of 0.05, used to flag looser budgets."
+				"description": "The fixed tolerance threshold used by PerformanceRow.over. A row is marked over only when its budget tolerance is defined and greater than 0.05.",
+				"examples": [0.05]
 			},
 			{
 				"name": "byteSize",
 				"type": "string",
-				"description": "Decimal B, KB or MB size, rounded to at most one decimal place using 1,000-based units."
+				"description": "Formats a byte count with decimal B, KB, or MB units, using 1,000 bytes per KB and 1,000,000 bytes per MB. Non-integer scaled values are rounded to one decimal place and the input sign is retained.",
+				"examples": ["999 B", "1 KB", "-1.2 MB"]
 			},
 			{
 				"name": "entityMeasure",
 				"type": "EntityMeasure",
-				"description": "Source, emitted-size and complexity rows plus separate workload/profile observations. Selected-commit source observations take precedence over missing or older record placeholders. Emitted rows retain target identity; none is inapplicable. Focused benchmarks remain distinct from full verification."
+				"description": "Returns size and performance arrays: size includes source-byte and complexity rows plus emitted-size rows for process/Wasm targets (or one none row), with missing measurements shown as Not measured. Unit source measurements, record measurements, and explicit observations are combined in that order and filtered to this unit and its owned callables; each performance budget yields its matching observations separately or a placeholder, while unbudgeted rows require both workload and profile.",
+				"examples": [
+					{
+						"size": [
+							{
+								"label": "Source size",
+								"value": "1.2 KB",
+								"rawValue": 1200,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Emitted size",
+								"target": "none",
+								"value": "Not measured",
+								"rawValue": null,
+								"unitOfMeasure": "bytes",
+								"note": "none"
+							},
+							{
+								"label": "Complexity",
+								"value": "8",
+								"rawValue": 8
+							}
+						],
+						"performance": [
+							{
+								"workload": "warm call",
+								"metric": "Warm latency per call",
+								"target": "module",
+								"profile": "linux-arm64-node22",
+								"value": "0.7 ms",
+								"rawValue": 0.7,
+								"unitOfMeasure": "ms",
+								"note": "timer",
+								"tolerance": "—",
+								"over": false
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "entityMeasure",
@@ -90,31 +247,183 @@
 						"name": "entityMeasure.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Unit supplying identity, emitted targets and performance budgets."
+						"description": "The unit supplies source measurements, the ID used to filter measurements, owned symbols used to filter callable-specific measurements, and performance budgets used to create rows. Its runtime targets determine which emitted process or Wasm size rows appear.",
+						"examples": [
+							{
+								"id": "reports.function.entity-measure",
+								"kind": "function",
+								"status": "active",
+								"title": "Entity measurement display",
+								"responsibility": "Formats one unit’s recorded size and declared performance measurements without combining profiles.",
+								"dependencies": [
+									{
+										"unit": "reports.function.entity-contract",
+										"via": "import"
+									},
+									{
+										"unit": "reports.function.explorer-state",
+										"via": "import"
+									},
+									{
+										"unit": "reports.function.harness-emitted",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/components/explorer-ui/entity-sections/entityMeasure.ts",
+										"packages/reports/src/components/explorer-ui/entity-sections/entityMeasure.types.ts",
+										"packages/reports/src/utils/entityMeasure.ts",
+										"packages/reports/src/utils/explorer-ui/entityMeasure.ts",
+										"packages/reports/src/utils/explorer-ui/entityMeasure.types.ts"
+									],
+									"symbols": ["entityMeasure"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/entityMeasure.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "1"
+							}
+						]
 					},
 					{
 						"name": "entityMeasure.record",
 						"type": "HarnessRecord | null",
 						"required": true,
-						"description": "Host-selected verification record, or null when none is available."
+						"description": "The selected record contributes measurements and emitted-size or budget-judgment data; null leaves record-backed measurements unavailable while unit source measurements and explicit observations can still appear. Record status and validity are not checked before its measurements are used.",
+						"examples": [
+							null,
+							{
+								"id": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"base": null
+								},
+								"profile": "linux-arm64-node22",
+								"startedAt": "2026-11-15T12:00:00.000Z",
+								"finishedAt": "2026-11-15T12:00:01.000Z",
+								"failures": [],
+								"tests": [],
+								"scenarios": [],
+								"measurements": [
+									{
+										"unit": "reports.function.entity-measure",
+										"metric": "source-bytes",
+										"unitOfMeasure": "bytes",
+										"value": 1200,
+										"workload": null,
+										"profile": null
+									},
+									{
+										"unit": "reports.function.entity-measure",
+										"metric": "complexity",
+										"unitOfMeasure": "score",
+										"value": 8,
+										"workload": null,
+										"profile": null
+									}
+								],
+								"budgets": {
+									"findings": []
+								}
+							}
+						]
 					},
 					{
 						"name": "entityMeasure.observations",
 						"type": "Measurement[]",
 						"required": false,
 						"default": [],
-						"description": "Optional focused runtime observations to show alongside the selected record, keeping their original profiles; defaults to an empty list."
+						"description": "Additional measurements appended after unit source measurements and record measurements, then filtered to this unit and its owned callables. Defaults to [].",
+						"examples": [
+							[
+								{
+									"unit": "reports.function.entity-measure",
+									"metric": "latency-warm-ms",
+									"callable": "entityMeasure",
+									"method": "timer",
+									"unitOfMeasure": "ms",
+									"value": 0.7,
+									"workload": "warm-call",
+									"profile": "linux-arm64-node22",
+									"target": "module"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityMeasure",
 						"type": "EntityMeasure",
-						"description": "Source, emitted-size and complexity rows plus separate workload/profile observations. Selected-commit source observations take precedence over missing or older record placeholders. Emitted rows retain target identity; none is inapplicable. Focused benchmarks remain distinct from full verification."
+						"description": "Returns size and performance arrays: size includes source-byte and complexity rows plus emitted-size rows for process/Wasm targets (or one none row), with missing measurements shown as Not measured. Unit source measurements, record measurements, and explicit observations are combined in that order and filtered to this unit and its owned callables; each performance budget yields its matching observations separately or a placeholder, while unbudgeted rows require both workload and profile.",
+						"examples": [
+							{
+								"size": [
+									{
+										"label": "Source size",
+										"value": "1.2 KB",
+										"rawValue": 1200,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Emitted size",
+										"target": "none",
+										"value": "Not measured",
+										"rawValue": null,
+										"unitOfMeasure": "bytes",
+										"note": "none"
+									},
+									{
+										"label": "Complexity",
+										"value": "8",
+										"rawValue": 8
+									}
+								],
+								"performance": [
+									{
+										"workload": "warm call",
+										"metric": "Warm latency per call",
+										"target": "module",
+										"profile": "linux-arm64-node22",
+										"value": "0.7 ms",
+										"rawValue": 0.7,
+										"unitOfMeasure": "ms",
+										"note": "timer",
+										"tolerance": "—",
+										"over": false
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "byteSize",
@@ -123,18 +432,20 @@
 						"name": "byteSize.count",
 						"type": "number",
 						"required": true,
-						"description": "Byte count to format; sign is retained."
+						"description": "A byte count to format; absolute magnitude selects B, KB, or MB while the original sign is preserved. The scale thresholds are 1,000 and 1,000,000 bytes, and non-integer scaled values are rounded to one decimal place.",
+						"examples": [999, 1000, -1200000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "byteSize",
 						"type": "string",
-						"description": "Decimal B, KB or MB size, rounded to at most one decimal place using 1,000-based units."
+						"description": "Formats a byte count with decimal B, KB, or MB units, using 1,000 bytes per KB and 1,000,000 bytes per MB. Non-integer scaled values are rounded to one decimal place and the input sign is retained.",
+						"examples": ["999 B", "1 KB", "-1.2 MB"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
