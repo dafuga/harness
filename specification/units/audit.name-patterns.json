@@ -27,81 +27,154 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "fileName.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path whose last '/'-separated segment fileName returns; a path with no '/' is returned whole, and a backslash is not a separator. It matters because the SQL migration check and the '+server.ts' handler check both use that base name.",
+				"examples": [
+					"src/audit/namePatterns.ts",
+					"src/utils/formatBytes.ts",
+					"src/models/Customer.types.ts"
+				]
 			},
 			{
 				"name": "typeScriptStem.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The path whose last segment typeScriptStem returns after removing one trailing .ts, .tsx, .js or .jsx extension. It matters for naming rules that compare a file's stem, and endings such as .json or .mts are kept.",
+				"examples": [
+					"src/audit/development-tooling/namePatterns.ts",
+					"src/utils/formatBytes.ts",
+					"src/models/Customer.types.ts"
+				]
 			},
 			{
 				"name": "fileNameFinding.file",
 				"type": "AuditFile",
-				"required": true
+				"required": true,
+				"description": "The audited file whose relativePath is copied into the finding's path; fileNameFinding reads no other AuditFile field. It matters because the finding is reported against that repository-relative path.",
+				"examples": [
+					{
+						"absolutePath": "/workspace/app/src/models/user-profile.ts",
+						"relativePath": "src/models/user-profile.ts",
+						"extension": ".ts",
+						"contents": "export interface UserProfile {\n\tid: string;\n}\n",
+						"lines": ["export interface UserProfile {", "\tid: string;", "}", ""],
+						"structuralLines": ["export interface UserProfile {", "\tid: string;", "}", ""],
+						"limits": {
+							"maxFileLines": 220,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						},
+						"size": 46
+					}
+				]
 			},
 			{
 				"name": "fileNameFinding.message",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The text the calling rule supplies, which fileNameFinding copies unchanged into the finding's message field. It matters because it is the only explanation a reader sees for the failed name, and the function does not check its wording or length.",
+				"examples": [
+					"Model files should be named <PascalName>.ts or <PascalName>.types.ts.",
+					"Config files should be named <camelName>Config.ts.",
+					"Migration files should use lowercase kebab-case or snake_case names."
+				]
 			},
 			{
 				"name": "isPascalCase.value",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The candidate name checked against the PascalCase pattern: one uppercase ASCII letter, then any ASCII letters or digits. It matters for model, class and component names; an empty string, a hyphen, an underscore or a leading lowercase letter fails the check.",
+				"examples": ["CustomerProfile", "HttpClient2", "userProfile"]
 			},
 			{
 				"name": "isCamelCase.value",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The candidate name checked against the camelCase pattern: one lowercase ASCII letter, then any ASCII letters or digits. It matters for function, utility and store names; an empty string, a hyphen, an underscore or a leading capital fails the check.",
+				"examples": ["formatBytes", "userSessionStore", "UserSession"]
 			},
 			{
 				"name": "isKebabCase.value",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The candidate stem checked against the kebab-case pattern: lowercase ASCII letters or digits in groups joined by single hyphens. It matters for seed-data file stems; capitals, underscores, leading or trailing hyphens, doubled hyphens and an empty string fail the check.",
+				"examples": ["seed-users", "user-profile-2", "UserProfile"]
 			},
 			{
 				"name": "escapeRegExp.value",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The text to escape: each dot, asterisk, plus, question mark, caret, dollar sign, brace, parenthesis, pipe, square bracket and backslash gets a backslash in front. It matters when a name is embedded in a RegExp pattern, and hyphens, slashes, letters and digits are left unchanged.",
+				"examples": ["createD1Adapter", "$store"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "fileName",
-				"type": "string"
+				"type": "string",
+				"description": "The last '/'-separated segment of the input path, or the whole input when it has no '/'. It matters because the SQL migration check and the '+server.ts' handler check both use it as the base name; a path ending in '/' gives an empty string.",
+				"examples": ["namePatterns.ts", "formatBytes.ts", "Customer.types.ts"]
 			},
 			{
 				"name": "typeScriptStem",
-				"type": "string"
+				"type": "string",
+				"description": "The last path segment with one trailing .ts, .tsx, .js or .jsx removed, so 'Customer.types.ts' gives 'Customer.types'. It matters for naming rules that compare a file's stem, and a name with no such extension is returned unchanged.",
+				"examples": ["namePatterns", "formatBytes", "Customer.types"]
 			},
 			{
 				"name": "fileNameFinding",
-				"type": "AuditFinding"
+				"type": "AuditFinding",
+				"description": "The finding for the input file, with path set to its relativePath, rule set to 'file-name-pattern' and message set to the input message. It matters because the audit reports the finding under that repository-relative path and the fixed rule name.",
+				"examples": [
+					{
+						"path": "src/models/user-profile.ts",
+						"rule": "file-name-pattern",
+						"message": "Model files should be named <PascalName>.ts or <PascalName>.types.ts."
+					},
+					{
+						"path": "src/configs/appSettings.ts",
+						"rule": "file-name-pattern",
+						"message": "Config files should be named <camelName>Config.ts."
+					}
+				]
 			},
 			{
 				"name": "isPascalCase",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the value is one uppercase ASCII letter followed by any ASCII letters or digits, and false otherwise. It matters for rules that accept model, class and component names; hyphens, underscores, spaces and a leading lowercase letter make it false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "isCamelCase",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the value is one lowercase ASCII letter followed by any ASCII letters or digits, and false otherwise. It matters for rules that accept function, utility and store names; hyphens, underscores and a leading capital make it false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "isKebabCase",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the value is lowercase ASCII letters or digits in groups joined by single hyphens, and false otherwise. It matters for seed-data file stems; capitals, underscores, doubled hyphens and leading or trailing hyphens make it false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "escapeRegExp",
-				"type": "string"
+				"type": "string",
+				"description": "The input with a backslash placed before each dot, asterisk, plus, question mark, caret, dollar sign, brace, parenthesis, pipe, square bracket and backslash character. It matters when a name is embedded in a RegExp source, and hyphens, slashes, letters and digits are returned unchanged.",
+				"examples": ["createD1Adapter", "\\$store"]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "fileName",
@@ -109,17 +182,25 @@
 					{
 						"name": "fileName.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path whose last '/'-separated segment fileName returns; a path with no '/' is returned whole, and a backslash is not a separator. It matters because the SQL migration check and the '+server.ts' handler check both use that base name.",
+						"examples": [
+							"src/audit/namePatterns.ts",
+							"src/utils/formatBytes.ts",
+							"src/models/Customer.types.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fileName",
-						"type": "string"
+						"type": "string",
+						"description": "The last '/'-separated segment of the input path, or the whole input when it has no '/'. It matters because the SQL migration check and the '+server.ts' handler check both use it as the base name; a path ending in '/' gives an empty string.",
+						"examples": ["namePatterns.ts", "formatBytes.ts", "Customer.types.ts"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "typeScriptStem",
@@ -127,17 +208,25 @@
 					{
 						"name": "typeScriptStem.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The path whose last segment typeScriptStem returns after removing one trailing .ts, .tsx, .js or .jsx extension. It matters for naming rules that compare a file's stem, and endings such as .json or .mts are kept.",
+						"examples": [
+							"src/audit/development-tooling/namePatterns.ts",
+							"src/utils/formatBytes.ts",
+							"src/models/Customer.types.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "typeScriptStem",
-						"type": "string"
+						"type": "string",
+						"description": "The last path segment with one trailing .ts, .tsx, .js or .jsx removed, so 'Customer.types.ts' gives 'Customer.types'. It matters for naming rules that compare a file's stem, and a name with no such extension is returned unchanged.",
+						"examples": ["namePatterns", "formatBytes", "Customer.types"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "fileNameFinding",
@@ -145,22 +234,63 @@
 					{
 						"name": "fileNameFinding.file",
 						"type": "AuditFile",
-						"required": true
+						"required": true,
+						"description": "The audited file whose relativePath is copied into the finding's path; fileNameFinding reads no other AuditFile field. It matters because the finding is reported against that repository-relative path.",
+						"examples": [
+							{
+								"absolutePath": "/workspace/app/src/models/user-profile.ts",
+								"relativePath": "src/models/user-profile.ts",
+								"extension": ".ts",
+								"contents": "export interface UserProfile {\n\tid: string;\n}\n",
+								"lines": ["export interface UserProfile {", "\tid: string;", "}", ""],
+								"structuralLines": ["export interface UserProfile {", "\tid: string;", "}", ""],
+								"limits": {
+									"maxFileLines": 220,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								},
+								"size": 46
+							}
+						]
 					},
 					{
 						"name": "fileNameFinding.message",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The text the calling rule supplies, which fileNameFinding copies unchanged into the finding's message field. It matters because it is the only explanation a reader sees for the failed name, and the function does not check its wording or length.",
+						"examples": [
+							"Model files should be named <PascalName>.ts or <PascalName>.types.ts.",
+							"Config files should be named <camelName>Config.ts.",
+							"Migration files should use lowercase kebab-case or snake_case names."
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fileNameFinding",
-						"type": "AuditFinding"
+						"type": "AuditFinding",
+						"description": "The finding for the input file, with path set to its relativePath, rule set to 'file-name-pattern' and message set to the input message. It matters because the audit reports the finding under that repository-relative path and the fixed rule name.",
+						"examples": [
+							{
+								"path": "src/models/user-profile.ts",
+								"rule": "file-name-pattern",
+								"message": "Model files should be named <PascalName>.ts or <PascalName>.types.ts."
+							},
+							{
+								"path": "src/configs/appSettings.ts",
+								"rule": "file-name-pattern",
+								"message": "Config files should be named <camelName>Config.ts."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "isPascalCase",
@@ -168,17 +298,21 @@
 					{
 						"name": "isPascalCase.value",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The candidate name checked against the PascalCase pattern: one uppercase ASCII letter, then any ASCII letters or digits. It matters for model, class and component names; an empty string, a hyphen, an underscore or a leading lowercase letter fails the check.",
+						"examples": ["CustomerProfile", "HttpClient2", "userProfile"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isPascalCase",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the value is one uppercase ASCII letter followed by any ASCII letters or digits, and false otherwise. It matters for rules that accept model, class and component names; hyphens, underscores, spaces and a leading lowercase letter make it false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "isCamelCase",
@@ -186,17 +320,21 @@
 					{
 						"name": "isCamelCase.value",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The candidate name checked against the camelCase pattern: one lowercase ASCII letter, then any ASCII letters or digits. It matters for function, utility and store names; an empty string, a hyphen, an underscore or a leading capital fails the check.",
+						"examples": ["formatBytes", "userSessionStore", "UserSession"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isCamelCase",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the value is one lowercase ASCII letter followed by any ASCII letters or digits, and false otherwise. It matters for rules that accept function, utility and store names; hyphens, underscores and a leading capital make it false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "isKebabCase",
@@ -204,17 +342,21 @@
 					{
 						"name": "isKebabCase.value",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The candidate stem checked against the kebab-case pattern: lowercase ASCII letters or digits in groups joined by single hyphens. It matters for seed-data file stems; capitals, underscores, leading or trailing hyphens, doubled hyphens and an empty string fail the check.",
+						"examples": ["seed-users", "user-profile-2", "UserProfile"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isKebabCase",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the value is lowercase ASCII letters or digits in groups joined by single hyphens, and false otherwise. It matters for seed-data file stems; capitals, underscores, doubled hyphens and leading or trailing hyphens make it false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "escapeRegExp",
@@ -222,17 +364,21 @@
 					{
 						"name": "escapeRegExp.value",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The text to escape: each dot, asterisk, plus, question mark, caret, dollar sign, brace, parenthesis, pipe, square bracket and backslash gets a backslash in front. It matters when a name is embedded in a RegExp pattern, and hyphens, slashes, letters and digits are left unchanged.",
+						"examples": ["createD1Adapter", "$store"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "escapeRegExp",
-						"type": "string"
+						"type": "string",
+						"description": "The input with a backslash placed before each dot, asterisk, plus, question mark, caret, dollar sign, brace, parenthesis, pipe, square bracket and backslash character. It matters when a name is embedded in a RegExp source, and hyphens, slashes, letters and digits are returned unchanged.",
+						"examples": ["createD1Adapter", "\\$store"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
