@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubEnvConfig } from '../../src/configs/hubEnvConfig';
+import { hubEnvConfig } from '../../src/configs/development-tooling/hubEnvConfig';
 import { remoteHostsFake } from '../support/remoteHostsFake';
 
 test('the relay origin and the host binding enter configuration and nothing near them does', () => {

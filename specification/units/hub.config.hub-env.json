@@ -13,10 +13,9 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/configs/development-tooling/hubEnvConfig.ts",
-			"packages/hub/src/configs/development-tooling/hubEnvConfig.types.ts",
-			"packages/hub/src/configs/hubEnvConfig.ts"
+			"packages/hub/src/configs/development-tooling/hubEnvConfig.types.ts"
 		],
-		"symbols": ["hubEnvConfig", "HubEnv", "HubEnv", "hubEnvConfig"]
+		"symbols": ["hubEnvConfig", "HubEnv", "HubEnv"]
 	},
 	"contract": {
 		"origin": "derived",
