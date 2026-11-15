@@ -39,43 +39,201 @@
 				"name": "hubSchemas.schema",
 				"type": "z.ZodType<T>",
 				"required": true,
-				"description": "Runtime schema used to parse the value."
+				"description": "The Zod type that checks the value, such as hubPlanSchema, hubDesignSchema, hubApprovalSchema or hubContractSchema; only its safeParse result is used. Its shape decides which fields are required, whether unknown keys are dropped (z.object) or rejected (z.strictObject), and the output type T."
 			},
 			{
 				"name": "hubSchemas.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Untrusted record to validate."
+				"description": "The untrusted value to check, such as a plan, design or approval record read from hosted storage; it is passed unchanged to schema.safeParse, so nothing is coerced, defaulted or trimmed before the check. A value the schema rejects makes hubSchemas throw artifact-corrupt, and no partial result is returned.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"category": "component",
+						"slug": "evidence-grid",
+						"title": "Evidence grid",
+						"goal": "Show the evidence for a report finding as a grid that stays readable at every viewport.",
+						"path": "packages/reports/src/components/evidence-grid/EvidenceGrid.tsx",
+						"createdAt": "2026-11-13T16:20:00Z",
+						"baseRevision": "4b9e2d71c05f8a36e1d4b7092f5c8e3a16d0b8f2",
+						"contract": {
+							"responsibility": "Lay out the evidence attached to one report finding as a responsive grid.",
+							"inputs": [
+								{
+									"name": "findingId",
+									"type": "string"
+								},
+								{
+									"name": "evidence",
+									"type": "EvidenceItem[]"
+								}
+							],
+							"outputs": [
+								{
+									"name": "onSelect",
+									"type": "(evidenceId: string) => void"
+								}
+							],
+							"errors": ["evidence-unavailable"],
+							"states": ["loading", "empty", "loaded"],
+							"viewports": ["desktop", "tablet", "mobile"]
+						},
+						"contractHash": "9d41a7e25c0b8f36e91d4a72b06c3f8e1a5d9b47c2e8f0a63b71d95ef04a8c2d"
+					},
+					{
+						"unitId": "reports.component.evidence-grid",
+						"version": "v001",
+						"createdAt": "2026-11-14T10:05:00Z",
+						"generator": {
+							"provider": "imagegen",
+							"model": "imagegen-1"
+						},
+						"prompt": {
+							"file": "prompt-v001.md",
+							"sha256": "6e2fb0c9a14d7835f0b2e6c18d9a4f57b3e01c26d8a9f4e05b7c1d3a92e6f870"
+						},
+						"notes": {
+							"file": "notes-v001.md",
+							"sha256": "0c8e5a3f7d19b642a85e0f3c9d17b4e6f2a8c053d9e14b7a6f0c2d85e3b19a47"
+						},
+						"baseRevision": "4b9e2d71c05f8a36e1d4b7092f5c8e3a16d0b8f2",
+						"contract": {
+							"responsibility": "Lay out the evidence attached to one report finding as a responsive grid.",
+							"inputs": [
+								{
+									"name": "findingId",
+									"type": "string"
+								},
+								{
+									"name": "evidence",
+									"type": "EvidenceItem[]"
+								}
+							],
+							"outputs": [
+								{
+									"name": "onSelect",
+									"type": "(evidenceId: string) => void"
+								}
+							],
+							"errors": ["evidence-unavailable"],
+							"states": ["loading", "empty", "loaded"],
+							"viewports": ["desktop", "tablet", "mobile"]
+						},
+						"contractHash": "9d41a7e25c0b8f36e91d4a72b06c3f8e1a5d9b47c2e8f0a63b71d95ef04a8c2d",
+						"images": [
+							{
+								"file": "v001-desktop.png",
+								"sha256": "b7d20e4f9a61c835d0e7f2b49c1a6d88e5f03b72a9c4d16e8f7b0a39d25c6e14",
+								"state": "loaded",
+								"viewport": "desktop",
+								"bytes": 248113,
+								"width": 1440,
+								"height": 900
+							},
+							{
+								"file": "v001-mobile.png",
+								"sha256": "5a0f7d3c9e21b684f3d0a7c5e19b2d46a8f1c0e37d5b9a24c6e8f0d1b3a7e592",
+								"state": "loaded",
+								"viewport": "mobile",
+								"bytes": 96418,
+								"width": 390,
+								"height": 844
+							}
+						],
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Dense table with evidence thumbnails in the first column",
+								"prompt": {
+									"file": "prompt-v001-o1.md",
+									"sha256": "c4a81e7f02d9b35a6e1c8f40d7b2a93e5f06c1d8b4e27a9f3c0d5e6b8a14f2d7"
+								},
+								"revisedPrompt": "A dense evidence table with thumbnails and the finding ID pinned in the first column.",
+								"generator": {
+									"provider": "imagegen",
+									"model": "imagegen-1"
+								},
+								"images": [
+									{
+										"file": "v001-o1-desktop.png",
+										"sha256": "3e9a0c7d5b182f64a0d9e3c7b15f28a6d4c0e9b37f2a1d85c6e0b4f9a72d13c8"
+									}
+								]
+							},
+							{
+								"id": "o2",
+								"direction": "Card grid with one evidence card per row on mobile",
+								"prompt": {
+									"file": "prompt-v001-o2.md",
+									"sha256": "a03e9d5b7c12f84e6b0a3d9c1f57e28b4d6a0c93e7f15b2d8c4a6e0f39b1d75a"
+								},
+								"revisedPrompt": "A responsive card grid of evidence, one card per row at mobile width.",
+								"generator": {
+									"provider": "imagegen",
+									"model": "imagegen-1"
+								},
+								"images": [
+									{
+										"file": "v001-o2-mobile.png",
+										"sha256": "d15c8e02a7f4b93e6c0a1d58f72e9b4c3a6d0f81e5b27c94a0d3e8f61c2b7a59"
+									}
+								]
+							}
+						]
+					},
+					{
+						"id": "7c1e2b94-5d3a-4f08-9a6e-3b8d1f2c4e70",
+						"unitId": "reports.component.evidence-grid",
+						"version": "v001",
+						"images": [
+							{
+								"file": "v001-o2-mobile.png",
+								"sha256": "d15c8e02a7f4b93e6c0a1d58f72e9b4c3a6d0f81e5b27c94a0d3e8f61c2b7a59"
+							}
+						],
+						"notesSha256": "0c8e5a3f7d19b642a85e0f3c9d17b4e6f2a8c053d9e14b7a6f0c2d85e3b19a47",
+						"contractHash": "9d41a7e25c0b8f36e91d4a72b06c3f8e1a5d9b47c2e8f0a63b71d95ef04a8c2d",
+						"approvedAt": "2026-11-14T15:42:00Z",
+						"option": "o2"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubContractSchema",
 				"type": "unknown",
-				"description": "Contract schema containing responsibility, named/typed input and output arrays, string error/state arrays and supported viewport names."
+				"description": "The Zod object schema for a unit's contract: responsibility text, inputs and outputs as name and type pairs, errors and states as string lists, and viewports limited to desktop, tablet, mobile or diagram. hubPlanSchema and hubDesignSchema embed it as their contract, so a contract that fails it makes those records fail too."
 			},
 			{
 				"name": "hubPlanSchema",
 				"type": "unknown",
-				"description": "Plan schema with supported category, identity/path/title/goal, timestamp, base commit, contract and SHA-256."
+				"description": "The Zod object schema for a plan record: unitId, slug, title, goal and path as plain strings; category as one of page, shell, layout, component, function, config or service; createdAt as a timestamp ending in Z; baseRevision as a 40-character lowercase hexadecimal commit SHA; the embedded contract; and contractHash as a 64-character lowercase hexadecimal SHA-256. The plain strings are not format-checked, so an empty unitId, slug, title, goal or path passes."
 			},
 			{
 				"name": "hubDesignSchema",
 				"type": "unknown",
-				"description": "Design schema with numbered version, generator, prompt/notes, contract, images with positive sizes/dimensions, optional revision anchor and 1 to 10 options. Option objects require nonblank direction/provenance and at least one image."
+				"description": "The Zod object schema for a design version: version such as v001 (v plus at least three digits); generator provider and model as plain strings; prompt and notes as file and SHA-256 pairs (notes may be null); baseRevision as a 40-character lowercase hexadecimal commit SHA; contract and contractHash; an images list (may be empty) whose entries carry file, SHA-256, state, viewport, bytes from 1 to 33554432 and positive integer width and height; and an optional revises anchor. When present, the options list holds 1 to 10 strict objects, each with an id from o1 to o10, a nonblank direction, provider and model, and at least one image."
 			},
 			{
 				"name": "hubApprovalSchema",
 				"type": "unknown",
-				"description": "Approval schema with UUID, unit/version, image bindings, nullable notes hash, contract hash, timestamp and optional option ID."
+				"description": "The Zod object schema for an approval record: a UUID id, unitId and version as plain strings (version has no format check), an images list of file and SHA-256 pairs (may be empty), notesSha256 as a 64-character hash or null, the 64-character contractHash, approvedAt as a timestamp ending in Z, and an optional option ID from o1 to o10. The schema does not check that the option appears in the version's options, so this module does not verify that link."
 			},
 			{
 				"name": "hubSchemas",
 				"type": "T",
-				"description": "Parsed schema result, including transformations and removal of unknown keys where the chosen schema permits; rejects unsuccessful parsing with artifact-corrupt."
+				"description": "The data from schema.safeParse(value).data, typed as the schema's output T: keys that a z.object schema does not declare are removed, while z.strictObject schemas, such as the design options, reject them instead. A failed parse never returns a partial result; it throws artifact-corrupt."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "artifact-corrupt",
+				"type": "thrown",
+				"description": "The Error hubSchemas throws when schema.safeParse fails, with message 'Invalid Harness artifact' and code 'artifact-corrupt'. It carries no Zod issue list, so a caller learns that the value was rejected but not which field failed."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubSchemas",
@@ -84,24 +242,181 @@
 						"name": "hubSchemas.schema",
 						"type": "z.ZodType<T>",
 						"required": true,
-						"description": "Runtime schema used to parse the value."
+						"description": "The Zod type that checks the value, such as hubPlanSchema, hubDesignSchema, hubApprovalSchema or hubContractSchema; only its safeParse result is used. Its shape decides which fields are required, whether unknown keys are dropped (z.object) or rejected (z.strictObject), and the output type T."
 					},
 					{
 						"name": "hubSchemas.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Untrusted record to validate."
+						"description": "The untrusted value to check, such as a plan, design or approval record read from hosted storage; it is passed unchanged to schema.safeParse, so nothing is coerced, defaulted or trimmed before the check. A value the schema rejects makes hubSchemas throw artifact-corrupt, and no partial result is returned.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"category": "component",
+								"slug": "evidence-grid",
+								"title": "Evidence grid",
+								"goal": "Show the evidence for a report finding as a grid that stays readable at every viewport.",
+								"path": "packages/reports/src/components/evidence-grid/EvidenceGrid.tsx",
+								"createdAt": "2026-11-13T16:20:00Z",
+								"baseRevision": "4b9e2d71c05f8a36e1d4b7092f5c8e3a16d0b8f2",
+								"contract": {
+									"responsibility": "Lay out the evidence attached to one report finding as a responsive grid.",
+									"inputs": [
+										{
+											"name": "findingId",
+											"type": "string"
+										},
+										{
+											"name": "evidence",
+											"type": "EvidenceItem[]"
+										}
+									],
+									"outputs": [
+										{
+											"name": "onSelect",
+											"type": "(evidenceId: string) => void"
+										}
+									],
+									"errors": ["evidence-unavailable"],
+									"states": ["loading", "empty", "loaded"],
+									"viewports": ["desktop", "tablet", "mobile"]
+								},
+								"contractHash": "9d41a7e25c0b8f36e91d4a72b06c3f8e1a5d9b47c2e8f0a63b71d95ef04a8c2d"
+							},
+							{
+								"unitId": "reports.component.evidence-grid",
+								"version": "v001",
+								"createdAt": "2026-11-14T10:05:00Z",
+								"generator": {
+									"provider": "imagegen",
+									"model": "imagegen-1"
+								},
+								"prompt": {
+									"file": "prompt-v001.md",
+									"sha256": "6e2fb0c9a14d7835f0b2e6c18d9a4f57b3e01c26d8a9f4e05b7c1d3a92e6f870"
+								},
+								"notes": {
+									"file": "notes-v001.md",
+									"sha256": "0c8e5a3f7d19b642a85e0f3c9d17b4e6f2a8c053d9e14b7a6f0c2d85e3b19a47"
+								},
+								"baseRevision": "4b9e2d71c05f8a36e1d4b7092f5c8e3a16d0b8f2",
+								"contract": {
+									"responsibility": "Lay out the evidence attached to one report finding as a responsive grid.",
+									"inputs": [
+										{
+											"name": "findingId",
+											"type": "string"
+										},
+										{
+											"name": "evidence",
+											"type": "EvidenceItem[]"
+										}
+									],
+									"outputs": [
+										{
+											"name": "onSelect",
+											"type": "(evidenceId: string) => void"
+										}
+									],
+									"errors": ["evidence-unavailable"],
+									"states": ["loading", "empty", "loaded"],
+									"viewports": ["desktop", "tablet", "mobile"]
+								},
+								"contractHash": "9d41a7e25c0b8f36e91d4a72b06c3f8e1a5d9b47c2e8f0a63b71d95ef04a8c2d",
+								"images": [
+									{
+										"file": "v001-desktop.png",
+										"sha256": "b7d20e4f9a61c835d0e7f2b49c1a6d88e5f03b72a9c4d16e8f7b0a39d25c6e14",
+										"state": "loaded",
+										"viewport": "desktop",
+										"bytes": 248113,
+										"width": 1440,
+										"height": 900
+									},
+									{
+										"file": "v001-mobile.png",
+										"sha256": "5a0f7d3c9e21b684f3d0a7c5e19b2d46a8f1c0e37d5b9a24c6e8f0d1b3a7e592",
+										"state": "loaded",
+										"viewport": "mobile",
+										"bytes": 96418,
+										"width": 390,
+										"height": 844
+									}
+								],
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Dense table with evidence thumbnails in the first column",
+										"prompt": {
+											"file": "prompt-v001-o1.md",
+											"sha256": "c4a81e7f02d9b35a6e1c8f40d7b2a93e5f06c1d8b4e27a9f3c0d5e6b8a14f2d7"
+										},
+										"revisedPrompt": "A dense evidence table with thumbnails and the finding ID pinned in the first column.",
+										"generator": {
+											"provider": "imagegen",
+											"model": "imagegen-1"
+										},
+										"images": [
+											{
+												"file": "v001-o1-desktop.png",
+												"sha256": "3e9a0c7d5b182f64a0d9e3c7b15f28a6d4c0e9b37f2a1d85c6e0b4f9a72d13c8"
+											}
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Card grid with one evidence card per row on mobile",
+										"prompt": {
+											"file": "prompt-v001-o2.md",
+											"sha256": "a03e9d5b7c12f84e6b0a3d9c1f57e28b4d6a0c93e7f15b2d8c4a6e0f39b1d75a"
+										},
+										"revisedPrompt": "A responsive card grid of evidence, one card per row at mobile width.",
+										"generator": {
+											"provider": "imagegen",
+											"model": "imagegen-1"
+										},
+										"images": [
+											{
+												"file": "v001-o2-mobile.png",
+												"sha256": "d15c8e02a7f4b93e6c0a1d58f72e9b4c3a6d0f81e5b27c94a0d3e8f61c2b7a59"
+											}
+										]
+									}
+								]
+							},
+							{
+								"id": "7c1e2b94-5d3a-4f08-9a6e-3b8d1f2c4e70",
+								"unitId": "reports.component.evidence-grid",
+								"version": "v001",
+								"images": [
+									{
+										"file": "v001-o2-mobile.png",
+										"sha256": "d15c8e02a7f4b93e6c0a1d58f72e9b4c3a6d0f81e5b27c94a0d3e8f61c2b7a59"
+									}
+								],
+								"notesSha256": "0c8e5a3f7d19b642a85e0f3c9d17b4e6f2a8c053d9e14b7a6f0c2d85e3b19a47",
+								"contractHash": "9d41a7e25c0b8f36e91d4a72b06c3f8e1a5d9b47c2e8f0a63b71d95ef04a8c2d",
+								"approvedAt": "2026-11-14T15:42:00Z",
+								"option": "o2"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubSchemas",
 						"type": "T",
-						"description": "Parsed schema result, including transformations and removal of unknown keys where the chosen schema permits; rejects unsuccessful parsing with artifact-corrupt."
+						"description": "The data from schema.safeParse(value).data, typed as the schema's output T: keys that a z.object schema does not declare are removed, while z.strictObject schemas, such as the design options, reject them instead. A failed parse never returns a partial result; it throws artifact-corrupt."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "artifact-corrupt",
+						"type": "thrown",
+						"description": "The Error hubSchemas throws when schema.safeParse fails, with message 'Invalid Harness artifact' and code 'artifact-corrupt'. It carries no Zod issue list, so a caller learns that the value was rejected but not which field failed."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
