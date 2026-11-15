@@ -8,18 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/validators/cleanCodeValue.ts",
-			"src/validators/development-tooling/cleanCodeValue.ts"
-		],
-		"symbols": [
-			"recordValue",
-			"probabilityValue",
-			"tokenCount",
-			"recordValue",
-			"probabilityValue",
-			"tokenCount"
-		]
+		"source": ["src/validators/development-tooling/cleanCodeValue.ts"],
+		"symbols": ["recordValue", "probabilityValue", "tokenCount"]
 	},
 	"contract": {
 		"origin": "derived",

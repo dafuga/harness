@@ -8,15 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/validators/VerificationRecordValidator.ts",
-			"src/validators/verification-evidence/VerificationRecordValidator.ts"
-		],
-		"symbols": [
-			"VerificationRecordValidator",
-			"VerificationRecordValidator",
-			"VerificationRecordValidator.validate"
-		]
+		"source": ["src/validators/verification-evidence/VerificationRecordValidator.ts"],
+		"symbols": ["VerificationRecordValidator", "VerificationRecordValidator.validate"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -2,7 +2,7 @@ import type { Verified, Declared } from './verify-stamped-build.e2e.test.types';
 import { readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { VerificationRecordValidator } from '../src/validators/VerificationRecordValidator';
+import { VerificationRecordValidator } from '../src/validators/verification-evidence/VerificationRecordValidator';
 import { runCommand } from './support/cli';
 import { attach, evidenceRef, statusOf } from './support/historyRepo';
 import { servedRepo } from './support/servedRepo';

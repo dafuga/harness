@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { VerificationRecordValidator } from '../../src/validators/VerificationRecordValidator';
+import { VerificationRecordValidator } from '../../src/validators/verification-evidence/VerificationRecordValidator';
 import { unitSchema } from '../../src/workflows/inspectUnits';
 import { verificationSample } from '../support/verificationSample';
 

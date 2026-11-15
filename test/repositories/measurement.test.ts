@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { kernelBenchmarkSchema } from '../../src/core/benchmarkTypes';
-import { VerificationRecordValidator } from '../../src/validators/VerificationRecordValidator';
+import { VerificationRecordValidator } from '../../src/validators/verification-evidence/VerificationRecordValidator';
 import { verificationSample } from '../support/verificationSample';
 
 function calibration() {

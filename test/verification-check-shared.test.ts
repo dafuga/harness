@@ -13,7 +13,7 @@ import { CommitTreeAdapter } from '../src/adapters/git-source-history/CommitTree
 import { SourceIndexService } from '../src/services/development-tooling/source-index-service/SourceIndexService';
 import { componentVersion } from '../src/utils/componentVersion';
 import { loadSide } from '../src/workflows/loadRevisions';
-import { VerificationRecordValidator } from '../src/validators/VerificationRecordValidator';
+import { VerificationRecordValidator } from '../src/validators/verification-evidence/VerificationRecordValidator';
 import { observedTaskOperation } from './support/taskProfiles';
 import { baselineRepo, type VerifyRepo } from './support/verifyRepo';
 
