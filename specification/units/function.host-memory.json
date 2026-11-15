@@ -20,64 +20,99 @@
 				"name": "macMemory.text",
 				"type": "string",
 				"required": true,
-				"description": "Output of vm_stat in the expected page-counter format."
+				"description": "`vm_stat` output parsed for a nonzero page size and the `Pages free`, `Pages inactive`, and `Pages speculative` counters. Missing or invalid values make the calculated available bytes non-finite and cause an error.",
+				"examples": [
+					"Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free: 100.\nPages inactive: 200.\nPages speculative: 50."
+				]
 			},
 			{
 				"name": "macMemory.pressure",
 				"type": "string",
 				"required": true,
-				"description": "kern.memorystatus_vm_pressure_level output; values 1, 2 and 4 map to normal, warning and critical, other values map to unknown."
+				"description": "The raw `kern.memorystatus_vm_pressure_level` text consumed by `macMemory`. Whitespace is trimmed; `1`, `2`, and `4` map to `normal`, `warning`, and `critical`, and every other value maps to `unknown`.",
+				"examples": ["1", "2", "4"]
 			},
 			{
 				"name": "macMemory.total",
 				"type": "number",
 				"required": true,
-				"description": "Host physical-memory total in bytes, used to cap available-page bytes."
+				"description": "Physical-memory total in bytes passed to `macMemory`; it becomes `memoryTotalBytes` and caps calculated available bytes with `Math.min`. The function does not validate this value.",
+				"examples": [17179869184]
 			},
 			{
 				"name": "linuxMemory.text",
 				"type": "string",
 				"required": true,
-				"description": "/proc/meminfo text containing MemTotal and MemAvailable in kB."
+				"description": "Text parsed for `MemTotal` and `MemAvailable` in kB and converted to bytes. Missing or nonnumeric counters, or a nonpositive `MemTotal`, make `linuxMemory` throw.",
+				"examples": ["MemTotal:       16384000 kB\nMemAvailable:    8192000 kB\n"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "macMemory",
 				"type": "Memory",
-				"description": "Total and available bytes plus mapped pressure; available pages are capped by total physical memory."
+				"description": "Memory result containing the supplied total, available bytes computed as page size times the free, inactive, and speculative page counts and capped at total, and mapped pressure. Pressure values outside `1`, `2`, or `4` become `unknown`.",
+				"examples": [
+					{
+						"memoryTotalBytes": 17179869184,
+						"memoryAvailableBytes": 5734400,
+						"memoryPressure": "normal"
+					}
+				]
 			},
 			{
 				"name": "linuxMemory",
 				"type": "Memory",
-				"description": "Total and available bytes, with critical pressure only below five percent available and normal pressure otherwise."
+				"description": "Memory result containing `MemTotal` and `MemAvailable` converted from kB to bytes. Pressure is `critical` only when available bytes divided by total bytes is below `0.05`; otherwise it is `normal`.",
+				"examples": [
+					{
+						"memoryTotalBytes": 16777216000,
+						"memoryAvailableBytes": 8388608000,
+						"memoryPressure": "normal"
+					},
+					{
+						"memoryTotalBytes": 16777216000,
+						"memoryAvailableBytes": 419430400,
+						"memoryPressure": "critical"
+					}
+				]
 			},
 			{
 				"name": "hostMemory",
 				"type": "Promise<Memory>",
-				"description": "Platform observation using vm_stat/sysctl on macOS, /proc/meminfo on Linux, or OS memory values on Windows."
+				"description": "Promise resolving to total bytes, available bytes, and pressure read from the current platform: macOS counters, Linux `/proc/meminfo`, or Windows `totalmem()`/`freemem()`. It rejects if a probe rejects or the platform is unsupported.",
+				"examples": [
+					{
+						"memoryTotalBytes": 17179869184,
+						"memoryAvailableBytes": 8589934592,
+						"memoryPressure": "normal"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Invalid memory counters",
 				"type": "thrown",
-				"description": "macMemory and linuxMemory reject when platform counters cannot be parsed or totals are not positive",
-				"examples": ["Cannot read macOS memory counters", "Cannot read Linux available memory"]
+				"description": "`macMemory` throws `Error('Cannot read macOS memory counters')` for a missing or zero page size, or a non-finite available-byte calculation. `linuxMemory` throws `Error('Cannot read Linux available memory')` when parsed counters are non-finite or `MemTotal` is not positive."
 			},
 			{
 				"name": "Unsupported resource platform",
 				"type": "thrown",
-				"description": "hostMemory rejects platforms other than macOS, Linux and Windows",
-				"examples": ["Unsupported resource platform"]
+				"description": "`hostMemory` throws `Error('Unsupported resource platform')` when `platform()` is not `darwin`, `linux`, or `win32`."
 			},
 			{
 				"name": "Memory probe failure",
-				"type": "propagated",
-				"description": "macOS tool execution and Linux /proc/meminfo read failures reject to the caller"
+				"type": "thrown",
+				"description": "`hostMemory` rejects when either macOS `checked` command rejects or the Linux `/proc/meminfo` read rejects; the awaited failure reaches the caller."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "`macMemory` throws `Error('Cannot read macOS memory counters')` when its page size is absent or zero, or its available-byte calculation is non-finite. `linuxMemory` throws `Error('Cannot read Linux available memory')` when parsed counters are non-finite or `MemTotal` is not positive. `hostMemory` throws `Error('Unsupported resource platform')` for any platform other than `darwin`, `linux`, or `win32`, and propagates parser errors."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "macMemory",
@@ -86,34 +121,50 @@
 						"name": "macMemory.text",
 						"type": "string",
 						"required": true,
-						"description": "Output of vm_stat in the expected page-counter format."
+						"description": "`vm_stat` output parsed for a nonzero page size and the `Pages free`, `Pages inactive`, and `Pages speculative` counters. Missing or invalid values make the calculated available bytes non-finite and cause an error.",
+						"examples": [
+							"Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free: 100.\nPages inactive: 200.\nPages speculative: 50."
+						]
 					},
 					{
 						"name": "macMemory.pressure",
 						"type": "string",
 						"required": true,
-						"description": "kern.memorystatus_vm_pressure_level output; values 1, 2 and 4 map to normal, warning and critical, other values map to unknown."
+						"description": "The raw `kern.memorystatus_vm_pressure_level` text consumed by `macMemory`. Whitespace is trimmed; `1`, `2`, and `4` map to `normal`, `warning`, and `critical`, and every other value maps to `unknown`.",
+						"examples": ["1", "2", "4"]
 					},
 					{
 						"name": "macMemory.total",
 						"type": "number",
 						"required": true,
-						"description": "Host physical-memory total in bytes, used to cap available-page bytes."
+						"description": "Physical-memory total in bytes passed to `macMemory`; it becomes `memoryTotalBytes` and caps calculated available bytes with `Math.min`. The function does not validate this value.",
+						"examples": [17179869184]
 					}
 				],
 				"outputs": [
 					{
 						"name": "macMemory",
 						"type": "Memory",
-						"description": "Total and available bytes plus mapped pressure; available pages are capped by total physical memory."
+						"description": "Memory result containing the supplied total, available bytes computed as page size times the free, inactive, and speculative page counts and capped at total, and mapped pressure. Pressure values outside `1`, `2`, or `4` become `unknown`.",
+						"examples": [
+							{
+								"memoryTotalBytes": 17179869184,
+								"memoryAvailableBytes": 5734400,
+								"memoryPressure": "normal"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Invalid memory counters",
 						"type": "thrown",
-						"description": "macMemory and linuxMemory reject when platform counters cannot be parsed or totals are not positive",
-						"examples": ["Cannot read macOS memory counters", "Cannot read Linux available memory"]
+						"description": "`macMemory` throws `Error('Cannot read macOS memory counters')` for a missing or zero page size, or a non-finite available-byte calculation."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "`macMemory` throws `Error('Cannot read macOS memory counters')` when its page size is absent or zero, or its available-byte calculation is non-finite."
 					}
 				],
 				"errorStatus": "declared"
@@ -125,22 +176,39 @@
 						"name": "linuxMemory.text",
 						"type": "string",
 						"required": true,
-						"description": "/proc/meminfo text containing MemTotal and MemAvailable in kB."
+						"description": "Text parsed for `MemTotal` and `MemAvailable` in kB and converted to bytes. Missing or nonnumeric counters, or a nonpositive `MemTotal`, make `linuxMemory` throw.",
+						"examples": ["MemTotal:       16384000 kB\nMemAvailable:    8192000 kB\n"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "linuxMemory",
 						"type": "Memory",
-						"description": "Total and available bytes, with critical pressure only below five percent available and normal pressure otherwise."
+						"description": "Memory result containing `MemTotal` and `MemAvailable` converted from kB to bytes. Pressure is `critical` only when available bytes divided by total bytes is below `0.05`; otherwise it is `normal`.",
+						"examples": [
+							{
+								"memoryTotalBytes": 16777216000,
+								"memoryAvailableBytes": 8388608000,
+								"memoryPressure": "normal"
+							},
+							{
+								"memoryTotalBytes": 16777216000,
+								"memoryAvailableBytes": 419430400,
+								"memoryPressure": "critical"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Invalid memory counters",
 						"type": "thrown",
-						"description": "macMemory and linuxMemory reject when platform counters cannot be parsed or totals are not positive",
-						"examples": ["Cannot read macOS memory counters", "Cannot read Linux available memory"]
+						"description": "`linuxMemory` throws `Error('Cannot read Linux available memory')` when parsed counters are non-finite or `MemTotal` is not positive."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "`linuxMemory` throws `Error('Cannot read Linux available memory')` when parsed counters are non-finite or `MemTotal` is not positive."
 					}
 				],
 				"errorStatus": "declared"
@@ -152,20 +220,31 @@
 					{
 						"name": "hostMemory",
 						"type": "Promise<Memory>",
-						"description": "Platform observation using vm_stat/sysctl on macOS, /proc/meminfo on Linux, or OS memory values on Windows."
+						"description": "Promise resolving to total bytes, available bytes, and pressure read from the current platform: macOS counters, Linux `/proc/meminfo`, or Windows `totalmem()`/`freemem()`. It rejects if a probe rejects or the platform is unsupported.",
+						"examples": [
+							{
+								"memoryTotalBytes": 17179869184,
+								"memoryAvailableBytes": 8589934592,
+								"memoryPressure": "normal"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Unsupported resource platform",
 						"type": "thrown",
-						"description": "hostMemory rejects platforms other than macOS, Linux and Windows",
-						"examples": ["Unsupported resource platform"]
+						"description": "`hostMemory` throws `Error('Unsupported resource platform')` when `platform()` is not `darwin`, `linux`, or `win32`."
 					},
 					{
 						"name": "Memory probe failure",
-						"type": "propagated",
-						"description": "macOS tool execution and Linux /proc/meminfo read failures reject to the caller"
+						"type": "thrown",
+						"description": "`hostMemory` rejects when either macOS `checked` command rejects or the Linux `/proc/meminfo` read rejects; the awaited failure reaches the caller."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "`hostMemory` throws `Error('Unsupported resource platform')` for any platform other than `darwin`, `linux`, or `win32`. It also propagates an `Error` thrown by `macMemory` or `linuxMemory` when parsed counters are invalid."
 					}
 				],
 				"errorStatus": "declared"
