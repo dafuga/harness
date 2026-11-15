@@ -18,29 +18,99 @@
 				"name": "newLoopState.root",
 				"type": "string",
 				"required": true,
-				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+				"description": "Project root that newLoopState passes to resolveLoopTemplate only when input.from is set; resolveLoopTemplate then reads project templates from specification/loop-templates under it, and newLoopState itself does not check the value.",
+				"examples": ["/workspace/checkout-service", "/home/ci/projects/acme-api"]
 			},
 			{
 				"name": "newLoopState.input",
 				"type": "{ name: string; goal: string; createdAt: string; from?: string; kind?: 'coding' | 'planning'; plan?: string; }",
 				"required": true,
-				"description": "Loop name, goal, creation time, optional inherited template, task kind and committed plan address."
+				"description": "name, goal and createdAt are stored unchanged (createdAt also becomes updatedAt) and are not validated here. from names a template to inherit, and kind (which must be 'coding' or 'planning') adds completion; plan is stored in completion.plan only when kind is set, and the completion audit later reads it as a committed project-relative path.",
+				"examples": [
+					{
+						"name": "fix-checkout-totals",
+						"goal": "Correct the tax rounding in the checkout summary.",
+						"createdAt": "2026-11-15T09:30:00.000Z",
+						"from": "bug-fix",
+						"kind": "coding"
+					},
+					{
+						"name": "csv-export-plan",
+						"goal": "Plan a CSV export for the orders report.",
+						"createdAt": "2026-11-15T10:12:45.318Z",
+						"kind": "planning",
+						"plan": "src/services/csv-export/plan.json"
+					},
+					{
+						"name": "fix-login-redirect",
+						"goal": "Stop the login page from redirecting back to itself after sign-in.",
+						"createdAt": "2026-11-15T08:05:00.000Z"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "newLoopState",
 				"type": "Promise<LoopState>",
-				"description": "Initial pending steps and template lineage; a coding or planning completion contract appears only for an explicitly supplied task kind."
+				"description": "The returned state carries name, goal, createdAt and updatedAt (set to createdAt), steps copied from the resolved template with status pending (an empty list without from), and template, templateLineage and evaluators from that template (undefined without from). completion appears only when kind is set, and enforceOrder is true with regressionCommits 1 when the template lineage contains bug-fix or regression-prevention.",
+				"examples": [
+					{
+						"name": "fix-login-redirect",
+						"goal": "Stop the login page from redirecting back to itself after sign-in.",
+						"createdAt": "2026-11-15T08:05:00.000Z",
+						"updatedAt": "2026-11-15T08:05:00.000Z",
+						"completion": {
+							"version": 1,
+							"kind": "coding"
+						},
+						"steps": []
+					},
+					{
+						"name": "csv-export-plan",
+						"goal": "Plan a CSV export for the orders report.",
+						"createdAt": "2026-11-15T10:12:45.318Z",
+						"updatedAt": "2026-11-15T10:12:45.318Z",
+						"completion": {
+							"version": 1,
+							"kind": "planning",
+							"plan": "src/services/csv-export/plan.json"
+						},
+						"steps": []
+					},
+					{
+						"name": "nightly-cleanup",
+						"goal": "Remove stale report caches older than seven days.",
+						"createdAt": "2026-11-15T23:00:00.000Z",
+						"updatedAt": "2026-11-15T23:00:00.000Z",
+						"steps": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Invalid task kind or unavailable template is reported through the existing expected CLI error contract."
+				"description": "Thrown by fail() when input.kind is not 'coding' or 'planning'; resolveLoopTemplate also throws it for an invalid or unknown template id, an inheritance cycle, or an empty required template field."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Rejected when a project template file under specification/loop-templates is not valid JSON, because readProjectTemplates rethrows every error except ENOENT."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Rejected when a project template field has the wrong type, such as a non-array steps or evaluators value or a non-string id, because normalizeSteps, normalizeEvaluators, validateLoopId and validateRequiredText call array or string methods on it without a type check."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejected with a Node file-system error other than ENOENT, such as EACCES or ENOTDIR, raised while reading specification/loop-templates when from is set."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "newLoopState",
@@ -49,29 +119,99 @@
 						"name": "newLoopState.root",
 						"type": "string",
 						"required": true,
-						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+						"description": "Project root that newLoopState passes to resolveLoopTemplate only when input.from is set; resolveLoopTemplate then reads project templates from specification/loop-templates under it, and newLoopState itself does not check the value.",
+						"examples": ["/workspace/checkout-service", "/home/ci/projects/acme-api"]
 					},
 					{
 						"name": "newLoopState.input",
 						"type": "{ name: string; goal: string; createdAt: string; from?: string; kind?: 'coding' | 'planning'; plan?: string; }",
 						"required": true,
-						"description": "Loop name, goal, creation time, optional inherited template, task kind and committed plan address."
+						"description": "name, goal and createdAt are stored unchanged (createdAt also becomes updatedAt) and are not validated here. from names a template to inherit, and kind (which must be 'coding' or 'planning') adds completion; plan is stored in completion.plan only when kind is set, and the completion audit later reads it as a committed project-relative path.",
+						"examples": [
+							{
+								"name": "fix-checkout-totals",
+								"goal": "Correct the tax rounding in the checkout summary.",
+								"createdAt": "2026-11-15T09:30:00.000Z",
+								"from": "bug-fix",
+								"kind": "coding"
+							},
+							{
+								"name": "csv-export-plan",
+								"goal": "Plan a CSV export for the orders report.",
+								"createdAt": "2026-11-15T10:12:45.318Z",
+								"kind": "planning",
+								"plan": "src/services/csv-export/plan.json"
+							},
+							{
+								"name": "fix-login-redirect",
+								"goal": "Stop the login page from redirecting back to itself after sign-in.",
+								"createdAt": "2026-11-15T08:05:00.000Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "newLoopState",
 						"type": "Promise<LoopState>",
-						"description": "Initial pending steps and template lineage; a coding or planning completion contract appears only for an explicitly supplied task kind."
+						"description": "The returned state carries name, goal, createdAt and updatedAt (set to createdAt), steps copied from the resolved template with status pending (an empty list without from), and template, templateLineage and evaluators from that template (undefined without from). completion appears only when kind is set, and enforceOrder is true with regressionCommits 1 when the template lineage contains bug-fix or regression-prevention.",
+						"examples": [
+							{
+								"name": "fix-login-redirect",
+								"goal": "Stop the login page from redirecting back to itself after sign-in.",
+								"createdAt": "2026-11-15T08:05:00.000Z",
+								"updatedAt": "2026-11-15T08:05:00.000Z",
+								"completion": {
+									"version": 1,
+									"kind": "coding"
+								},
+								"steps": []
+							},
+							{
+								"name": "csv-export-plan",
+								"goal": "Plan a CSV export for the orders report.",
+								"createdAt": "2026-11-15T10:12:45.318Z",
+								"updatedAt": "2026-11-15T10:12:45.318Z",
+								"completion": {
+									"version": 1,
+									"kind": "planning",
+									"plan": "src/services/csv-export/plan.json"
+								},
+								"steps": []
+							},
+							{
+								"name": "nightly-cleanup",
+								"goal": "Remove stale report caches older than seven days.",
+								"createdAt": "2026-11-15T23:00:00.000Z",
+								"updatedAt": "2026-11-15T23:00:00.000Z",
+								"steps": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by fail() when input.kind is not 'coding' or 'planning'; resolveLoopTemplate also throws it for an invalid or unknown template id, an inheritance cycle, or an empty required template field."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejected when a project template file under specification/loop-templates is not valid JSON, because readProjectTemplates rethrows every error except ENOENT."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejected when a project template field has the wrong type, such as a non-array steps or evaluators value or a non-string id, because normalizeSteps, normalizeEvaluators, validateLoopId and validateRequiredText call array or string methods on it without a type check."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected with a Node file-system error other than ENOENT, such as EACCES or ENOTDIR, raised while reading specification/loop-templates when from is set."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
