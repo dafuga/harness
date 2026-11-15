@@ -32,17 +32,21 @@
 				"name": "ProjectList.projects",
 				"type": "ProjectSummary[]",
 				"required": true,
-				"description": "Required project summaries in display order, including identity, name, source repository and role."
+				"description": "Required project summaries supplied to the list. Items with role `owner` appear under “Owned by you”; every other role appears under “Shared with you”, preserving order within each group and omitting empty groups.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectList",
 				"type": "markup",
-				"description": "Owned by you and Shared with you groups show project names, repositories and membership roles. Owners also get Members links. An empty list explains how projects appear across devices."
+				"description": "Markup groups nonempty owner and non-owner project arrays under “Owned by you” and “Shared with you”, preserving order within each group. Owner rows include a Members link, every row has an Open link to the `pages` path, and an empty input renders the no-project explanation."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
