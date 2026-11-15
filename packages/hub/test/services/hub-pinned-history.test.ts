@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { hubEvidenceRevision } from '../../src/utils/hub-evidence-revision/hubEvidenceRevision';
-import { hubEvidenceOrigin } from '../../src/utils/hubEvidenceViews';
+import { hubEvidenceOrigin } from '../../src/utils/verification-evidence/hubEvidenceViews';
 import { statusAt } from '../support/evidenceReaders';
 import {
 	evidenceFixture,
@@ -83,6 +83,14 @@ test('the files of a record are given only where the pinned notes point to it in
 		f.records.later.files.get(shot)
 	);
 	expect(await selected((await opened(f)).history, f.records.later.record.id)).toBeUndefined();
+});
+
+test('the evidence views barrel exposes the same functions as the module that defines the views', async () => {
+	const barrel = await import('../../src/utils/verification-evidence/hubEvidenceViews');
+	const defined =
+		await import('../../src/utils/verification-evidence/hub-evidence-revision/hubEvidenceViews');
+	expect(barrel.hubEvidenceViews).toBe(defined.hubEvidenceViews);
+	expect(barrel.hubEvidenceOrigin).toBe(hubEvidenceOrigin);
 });
 
 async function selected(history: Awaited<ReturnType<typeof opened>>['history'], id: string) {
