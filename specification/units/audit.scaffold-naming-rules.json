@@ -15,22 +15,100 @@
 		"symbols": ["auditScaffoldTypeScriptNaming", "FunctionFileRule"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "auditScaffoldTypeScriptNaming.file",
 				"type": "AuditFile",
-				"required": true
+				"required": true,
+				"description": "The AuditFile record for one source file. This unit reads only relativePath, a forward-slash path whose prefix and folder select the naming rules, and structuralLines, which are scanned for exported classes and for the named export a generated-function rule requires; the other fields are ignored.",
+				"examples": [
+					{
+						"absolutePath": "/workspace/app/src/models/user-profile.ts",
+						"relativePath": "src/models/user-profile.ts",
+						"extension": ".ts",
+						"contents": "export class UserProfile {\n\tname: string;\n}",
+						"lines": ["export class UserProfile {", "\tname: string;", "}"],
+						"structuralLines": ["export class UserProfile {", "\tname: string;", "}"],
+						"limits": {
+							"maxFileLines": 220,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						},
+						"size": 43
+					},
+					{
+						"absolutePath": "/workspace/app/src/utils/format-date.ts",
+						"relativePath": "src/utils/format-date.ts",
+						"extension": ".ts",
+						"contents": "export function parseDate(value: string): Date {\n\treturn new Date(value);\n}",
+						"lines": [
+							"export function parseDate(value: string): Date {",
+							"\treturn new Date(value);",
+							"}"
+						],
+						"structuralLines": [
+							"export function parseDate(value: string): Date {",
+							"\treturn new Date(value);",
+							"}"
+						],
+						"limits": {
+							"maxFileLines": 220,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						},
+						"size": 75
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "auditScaffoldTypeScriptNaming",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "Every naming finding for that file, one entry per failed check, in the order class file name, model file name, generated function file, config file name, test file name and E2E file name. Each path is the file's relativePath, each rule is 'file-name-pattern' for a file-name check or 'function-name-pattern' for a missing export, and an empty array means no check failed.",
+				"examples": [
+					[
+						{
+							"path": "src/models/user-profile.ts",
+							"rule": "file-name-pattern",
+							"message": "Model files should be named <PascalName>.ts or <PascalName>.types.ts."
+						}
+					],
+					[
+						{
+							"path": "src/utils/format-date.ts",
+							"rule": "file-name-pattern",
+							"message": "Utility files should be named <camelName>.ts."
+						},
+						{
+							"path": "src/utils/format-date.ts",
+							"rule": "function-name-pattern",
+							"message": "Utility files should export \"formatDate\"."
+						}
+					],
+					[]
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown while checking a file under src/models/adapters/ whose stem (its file name without a .ts, .tsx, .js or .jsx extension) is an Object.prototype member name such as constructor or toString, because modelAdapters[stem] then returns the inherited value and escapeRegExp calls .replace on it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "auditScaffoldTypeScriptNaming",
@@ -38,17 +116,95 @@
 					{
 						"name": "auditScaffoldTypeScriptNaming.file",
 						"type": "AuditFile",
-						"required": true
+						"required": true,
+						"description": "The AuditFile record for one source file. This unit reads only relativePath, a forward-slash path whose prefix and folder select the naming rules, and structuralLines, which are scanned for exported classes and for the named export a generated-function rule requires; the other fields are ignored.",
+						"examples": [
+							{
+								"absolutePath": "/workspace/app/src/models/user-profile.ts",
+								"relativePath": "src/models/user-profile.ts",
+								"extension": ".ts",
+								"contents": "export class UserProfile {\n\tname: string;\n}",
+								"lines": ["export class UserProfile {", "\tname: string;", "}"],
+								"structuralLines": ["export class UserProfile {", "\tname: string;", "}"],
+								"limits": {
+									"maxFileLines": 220,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								},
+								"size": 43
+							},
+							{
+								"absolutePath": "/workspace/app/src/utils/format-date.ts",
+								"relativePath": "src/utils/format-date.ts",
+								"extension": ".ts",
+								"contents": "export function parseDate(value: string): Date {\n\treturn new Date(value);\n}",
+								"lines": [
+									"export function parseDate(value: string): Date {",
+									"\treturn new Date(value);",
+									"}"
+								],
+								"structuralLines": [
+									"export function parseDate(value: string): Date {",
+									"\treturn new Date(value);",
+									"}"
+								],
+								"limits": {
+									"maxFileLines": 220,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								},
+								"size": 75
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditScaffoldTypeScriptNaming",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "Every naming finding for that file, one entry per failed check, in the order class file name, model file name, generated function file, config file name, test file name and E2E file name. Each path is the file's relativePath, each rule is 'file-name-pattern' for a file-name check or 'function-name-pattern' for a missing export, and an empty array means no check failed.",
+						"examples": [
+							[
+								{
+									"path": "src/models/user-profile.ts",
+									"rule": "file-name-pattern",
+									"message": "Model files should be named <PascalName>.ts or <PascalName>.types.ts."
+								}
+							],
+							[
+								{
+									"path": "src/utils/format-date.ts",
+									"rule": "file-name-pattern",
+									"message": "Utility files should be named <camelName>.ts."
+								},
+								{
+									"path": "src/utils/format-date.ts",
+									"rule": "function-name-pattern",
+									"message": "Utility files should export \"formatDate\"."
+								}
+							],
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown while checking a file under src/models/adapters/ whose stem (its file name without a .ts, .tsx, .js or .jsx extension) is an Object.prototype member name such as constructor or toString, because modelAdapters[stem] then returns the inherited value and escapeRegExp calls .replace on it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
