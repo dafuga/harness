@@ -30,46 +30,167 @@
 				"name": "historyDetail.detail",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Stored revision to inspect for this entity."
+				"description": "Stored revision used to derive this unit's source measurements, presence, change, version, explanations, and verdict. Source measurements come only from the active registry unit without workload or profile qualifiers, and known status requires both an available registry and stored source impact.",
+				"examples": [
+					{
+						"registry": {
+							"available": false,
+							"units": []
+						},
+						"sourceImpact": null,
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "historyDetail.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit identifier to inspect in that revision."
+				"description": "Unit identifier matched against active registry entries, explanations, source measurements, and the revision's change evidence. A non-active or absent registry entry does not produce a version or verdict.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "explorerHistory.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "History index with revision summaries, unit growth and reviews."
+				"description": "Harness history index supplying revision summaries and per-unit growth and reviews. Revisions are limited to the selected commit's ancestry, and growth points and reviews are matched by commit.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+								"parents": [],
+								"subject": "Record entity history update",
+								"author": "Dana Lee",
+								"committedAt": "2026-11-10T12:00:00.000Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": [],
+								"changes": {
+									"base": null,
+									"direct": ["reports.function.explorer-history"],
+									"added": [],
+									"removed": []
+								}
+							}
+						],
+						"units": [
+							{
+								"id": "reports.function.explorer-history",
+								"growth": []
+							}
+						],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "explorerHistory.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Resolved scope whose commit bounds the ancestry search."
+				"description": "Resolved explorer scope whose commit anchors the ancestry walk. Only that commit and its ancestors can contribute rows; later revisions are excluded.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+							"category": "functions",
+							"entity": "reports.function.explorer-history"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+						"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+						"atTip": true,
+						"parent": null,
+						"summary": {
+							"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+							"parents": [],
+							"subject": "Record entity history update",
+							"author": "Dana Lee",
+							"committedAt": "2026-11-10T12:00:00.000Z",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": [],
+							"changes": {
+								"base": null,
+								"direct": ["reports.function.explorer-history"],
+								"added": [],
+								"removed": []
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "explorerHistory.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit identifier whose direct changes are listed."
+				"description": "Unit identifier matched against each revision's added, removed, or direct change lists and against indexed growth and reviews. A recorded unchanged revision is omitted, while a revision without change data is represented as a gap.",
+				"examples": ["reports.component.evidence-grid"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerHistory",
 				"type": "ExplorerHistoryRow[]",
-				"description": "Newest-first rows for the shown commit and known ancestors that directly changed, added or removed the entity, plus rows whose change status is unknown. Each retains first-parent identity, measured values, changes from the preceding retained measurement and reviews at that commit. Known unchanged or indirectly affected commits are omitted."
+				"description": "Newest-first rows for the selected commit and its ancestors when the history records a direct, added, or removed change, or lacks change data. Each row keeps its first parent, measurement at that commit, the size and complexity delta from the preceding measured ancestor, and reviews recorded at that commit; known unchanged revisions are omitted.",
+				"examples": [
+					[
+						{
+							"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+							"subject": "Record entity history update",
+							"author": "Dana Lee",
+							"committedAt": "2026-11-10T12:00:00.000Z",
+							"coverage": "verified",
+							"previous": null,
+							"standing": "changed",
+							"change": "direct",
+							"gap": null,
+							"measured": null,
+							"sizeChange": null,
+							"complexityChange": null,
+							"reviews": []
+						}
+					]
+				]
 			},
 			{
 				"name": "historyDetail",
 				"type": "ExplorerHistoryDetail",
-				"description": "Whether registry/impact information is available, active presence, change mark, version, matching explanations and the entity verdict when present."
+				"description": "Exact-revision details for the requested unit: active source measurements, whether registry and source-impact evidence are known, presence, change, version, matching explanations, optional non-empty regressions, and a verdict only when the unit is active. Source measurements exclude workload and profile measurements, and absent values are null.",
+				"examples": [
+					{
+						"sourceSize": null,
+						"sourceComplexity": null,
+						"known": false,
+						"present": false,
+						"change": null,
+						"version": null,
+						"explanations": [],
+						"verdict": null
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "historyDetail",
@@ -78,24 +199,47 @@
 						"name": "historyDetail.detail",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Stored revision to inspect for this entity."
+						"description": "Stored revision used to derive this unit's source measurements, presence, change, version, explanations, and verdict. Source measurements come only from the active registry unit without workload or profile qualifiers, and known status requires both an available registry and stored source impact.",
+						"examples": [
+							{
+								"registry": {
+									"available": false,
+									"units": []
+								},
+								"sourceImpact": null,
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "historyDetail.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit identifier to inspect in that revision."
+						"description": "Unit identifier matched against active registry entries, explanations, source measurements, and the revision's change evidence. A non-active or absent registry entry does not produce a version or verdict.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "historyDetail",
 						"type": "ExplorerHistoryDetail",
-						"description": "Whether registry/impact information is available, active presence, change mark, version, matching explanations and the entity verdict when present."
+						"description": "Exact-revision details for the requested unit: active source measurements, whether registry and source-impact evidence are known, presence, change, version, matching explanations, optional non-empty regressions, and a verdict only when the unit is active. Source measurements exclude workload and profile measurements, and absent values are null.",
+						"examples": [
+							{
+								"sourceSize": null,
+								"sourceComplexity": null,
+								"known": false,
+								"present": false,
+								"change": null,
+								"version": null,
+								"explanations": [],
+								"verdict": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerHistory",
@@ -104,30 +248,127 @@
 						"name": "explorerHistory.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "History index with revision summaries, unit growth and reviews."
+						"description": "Harness history index supplying revision summaries and per-unit growth and reviews. Revisions are limited to the selected commit's ancestry, and growth points and reviews are matched by commit.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+										"parents": [],
+										"subject": "Record entity history update",
+										"author": "Dana Lee",
+										"committedAt": "2026-11-10T12:00:00.000Z",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [],
+										"legacy": [],
+										"changes": {
+											"base": null,
+											"direct": ["reports.function.explorer-history"],
+											"added": [],
+											"removed": []
+										}
+									}
+								],
+								"units": [
+									{
+										"id": "reports.function.explorer-history",
+										"growth": []
+									}
+								],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "explorerHistory.scope",
 						"type": "ExplorerScope",
 						"required": true,
-						"description": "Resolved scope whose commit bounds the ancestry search."
+						"description": "Resolved explorer scope whose commit anchors the ancestry walk. Only that commit and its ancestors can contribute rows; later revisions are excluded.",
+						"examples": [
+							{
+								"location": {
+									"branch": "main",
+									"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+									"category": "functions",
+									"entity": "reports.function.explorer-history"
+								},
+								"mode": "commit",
+								"branch": "main",
+								"tip": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+								"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+								"atTip": true,
+								"parent": null,
+								"summary": {
+									"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+									"parents": [],
+									"subject": "Record entity history update",
+									"author": "Dana Lee",
+									"committedAt": "2026-11-10T12:00:00.000Z",
+									"branches": ["main"],
+									"retained": true,
+									"coverage": "verified",
+									"gaps": [],
+									"records": [],
+									"legacy": [],
+									"changes": {
+										"base": null,
+										"direct": ["reports.function.explorer-history"],
+										"added": [],
+										"removed": []
+									}
+								}
+							}
+						]
 					},
 					{
 						"name": "explorerHistory.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit identifier whose direct changes are listed."
+						"description": "Unit identifier matched against each revision's added, removed, or direct change lists and against indexed growth and reviews. A recorded unchanged revision is omitted, while a revision without change data is represented as a gap.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerHistory",
 						"type": "ExplorerHistoryRow[]",
-						"description": "Newest-first rows for the shown commit and known ancestors that directly changed, added or removed the entity, plus rows whose change status is unknown. Each retains first-parent identity, measured values, changes from the preceding retained measurement and reviews at that commit. Known unchanged or indirectly affected commits are omitted."
+						"description": "Newest-first rows for the selected commit and its ancestors when the history records a direct, added, or removed change, or lacks change data. Each row keeps its first parent, measurement at that commit, the size and complexity delta from the preceding measured ancestor, and reviews recorded at that commit; known unchanged revisions are omitted.",
+						"examples": [
+							[
+								{
+									"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+									"subject": "Record entity history update",
+									"author": "Dana Lee",
+									"committedAt": "2026-11-10T12:00:00.000Z",
+									"coverage": "verified",
+									"previous": null,
+									"standing": "changed",
+									"change": "direct",
+									"gap": null,
+									"measured": null,
+									"sizeChange": null,
+									"complexityChange": null,
+									"reviews": []
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
