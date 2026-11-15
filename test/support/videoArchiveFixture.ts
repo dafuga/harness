@@ -10,7 +10,8 @@ import { EvidenceBranchRepository } from '../../src/repositories/verification-ev
 import { lfsPointer } from '../../src/utils/verification-evidence/lfsPointer';
 import type {
 	VideoArchiveInput,
-	VideoArchiveClip
+	VideoArchiveClip,
+	VideoBatchPointer
 } from '../../src/services/verification-evidence/VideoArchiveService.types';
 
 export async function videoArchiveFixture(root: string, git: (...args: string[]) => string) {
@@ -134,6 +135,7 @@ export function invalidVideoArchiveInputs(
 ): VideoArchiveInput[] {
 	return [
 		{ ...input, sha256: '0'.repeat(64) },
+		{ ...input, original: { ...input.original, revision: 'e'.repeat(40) } },
 		{ ...input, videoBytes: Buffer.alloc(8 * 1024 * 1024 + 1) },
 		{ ...input, posterBytes: Buffer.from('bad PNG') },
 		{
@@ -151,6 +153,15 @@ export function invalidVideoArchiveInputs(
 		{ ...input, video: { ...input.video, width: 162 } },
 		{ ...input, video: { ...input.video, states: [{ id: 'playing', atSeconds: 2 }] } }
 	];
+}
+
+export function aliasedVideoBatchPointer(
+	pointer: VideoBatchPointer,
+	git: (...args: string[]) => string
+): VideoBatchPointer {
+	const alias = 'd'.repeat(40);
+	git('update-ref', `refs/heads/${alias}`, pointer.evidence.commit);
+	return { ...pointer, evidence: { ...pointer.evidence, commit: alias } };
 }
 
 /** Task-owned bare filesystem remote, containing only evidence and the retained source ref. */

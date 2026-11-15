@@ -6,7 +6,8 @@ import {
 	videoArchiveBudgetExamples,
 	invalidVideoArchiveInputs,
 	videoArchiveRemote,
-	seedUnrelatedArchiveMedia
+	seedUnrelatedArchiveMedia,
+	aliasedVideoBatchPointer
 } from '../../support/videoArchiveFixture';
 import { EvidenceBranchRepository } from '../../../src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
 import { LfsAdapter } from '../../../src/adapters/git-source-history/LfsAdapter';
@@ -93,6 +94,7 @@ test('archive rejects malformed, oversized or unbound pairs before evidence publ
 	await withTempRepo(async ({ root, git }) => {
 		const input = await videoArchiveFixture(root, git),
 			service = new VideoArchiveService(root);
+		git('update-ref', `refs/heads/${'e'.repeat(40)}`, input.original.revision);
 		for (const invalid of invalidVideoArchiveInputs(input, input.alternatePoster))
 			await expect(service.write([invalid])).rejects.toThrow();
 		await expect(
@@ -115,6 +117,7 @@ test('archive pins ancestry and refuses broken seals, absent media and corrupt o
 			service = new VideoArchiveService(root);
 		const [pointer] = await service.write([input]),
 			evidence = new EvidenceBranchRepository(root);
+		await expect(service.read(aliasedVideoBatchPointer(pointer, git))).rejects.toThrow();
 		await expect(service.read(pointer, input.original.revision)).rejects.toThrow(
 			/ancestry|evidence/i
 		);
