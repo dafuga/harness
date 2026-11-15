@@ -35,36 +35,85 @@
 				"name": "RelationshipsPanel.relationships",
 				"type": "Relationship[]",
 				"required": true,
-				"description": "Required relationships filtered by direction and deduplicated by identifier; the last matching duplicate supplies displayed values. Includes category, title and plan flag."
+				"description": "Relationship entries of the entity; only those whose direction equals the direction input are listed, once per id, and for a repeated id the last matching entry supplies the title, category and plan flag. The verification field is never read, and when no entry matches the empty-state message is shown.",
+				"examples": [
+					[
+						{
+							"id": "desktop.component.icon",
+							"title": "Icon",
+							"category": "components",
+							"direction": "uses",
+							"hasPlan": false,
+							"verification": "verified"
+						},
+						{
+							"id": "reports.function.explorer-name",
+							"title": "Explorer name",
+							"category": "functions",
+							"direction": "uses",
+							"hasPlan": false,
+							"verification": "verified"
+						},
+						{
+							"id": "desktop.model.desktop-types",
+							"title": "Desktop types",
+							"category": "models",
+							"direction": "uses",
+							"hasPlan": true,
+							"verification": "unverified"
+						},
+						{
+							"id": "desktop.store.workspace",
+							"title": "Workspace store",
+							"category": null,
+							"direction": "uses",
+							"hasPlan": false,
+							"verification": "unknown"
+						}
+					],
+					[
+						{
+							"id": "desktop.component.relationships-panel",
+							"title": "Used In and Uses",
+							"category": "components",
+							"direction": "used-by",
+							"hasPlan": false,
+							"verification": "unverified"
+						}
+					]
+				]
 			},
 			{
 				"name": "RelationshipsPanel.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace used to link known-category entities. Records without a category remain plain text."
+				"description": "The workspace store whose path(category, id) gives the target of each link; it is called only for items with a category, and items without one stay plain text. Until a snapshot is loaded, path returns '/', so those links point to '/'."
 			},
 			{
 				"name": "RelationshipsPanel.direction",
 				"type": "Relationship['direction']",
 				"required": true,
-				"description": "Required uses or used-by. Uses groups dependencies by category; used-by produces one Used In list with kind badges."
+				"description": "Selects the side that is listed: 'uses' shows what the entity depends on, grouped under a heading for each kind that has items, while 'used-by' shows what uses it in one list with a kind chip on each item. The value also sets the default heading (Uses or Used In) and the empty-state message.",
+				"examples": ["uses", "used-by"]
 			},
 			{
 				"name": "RelationshipsPanel.label",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional heading overriding Uses or Used In, which otherwise follows the relationship direction."
+				"description": "Optional heading that replaces the default Uses or Used In title; an undefined value keeps the default, but an empty string is shown as an empty heading. Only the exact value 'APIs' changes the empty-state text, to 'No APIs are recorded for this page.'",
+				"examples": ["APIs", "Dependencies", "Consumers"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RelationshipsPanel",
 				"type": "markup",
-				"description": "Lists dependencies or users with names, category icons and optional plan badges. Verification marks stay on entity pages. Dependencies are grouped by kind; empty lists explain missing records."
+				"description": "A section headed by the title with the count of listed entries; with none it shows the empty-state paragraph, otherwise groups of articles (headed per kind for uses, one unheaded list for used-by). Each article has a category icon (the components icon when category is null), its name as a WorkspaceLink when category is set or as plain text otherwise, a kind chip for used-by, and a PlanBadge when hasPlan is set; no verification value is rendered."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
