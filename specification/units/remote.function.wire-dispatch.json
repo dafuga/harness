@@ -21,23 +21,66 @@
 				"name": "wireDispatch.context",
 				"type": "WireDispatchContext",
 				"required": true,
-				"description": "Attachment and allowed methods, pending-request count, limits, response ledger, handler and error translator, plus optional session epoch binding."
+				"description": "Connection state and callbacks for this request: `attached` must be true, `methods` must include the request's method, and `pending` (not counting this request) must stay below `limits.pendingRequests`, or the request is refused before anything runs. `handle` runs the request, `explain` maps any error that is not a `RemoteFailure` to a `RemoteError`, `ledger` keeps mutation answers by id, and `limits` gives the `requestDeadlineMs` and `mutationDeadlineMs` deadlines; when `bound` is true, a mutation whose `input.epoch` differs from the context's `epoch` is refused as `request-expired`."
 			},
 			{
 				"name": "wireDispatch.request",
 				"type": "WireRequest",
 				"required": true,
-				"description": "Already validated request with ID, method and input."
+				"description": "The request to answer, already validated: `id` is echoed in the response and keys a mutation's ledger entry, `method` must be one the context's `methods` lists and decides whether the mutation rules apply, and for a mutation `input` is hashed with `method`, so the same `id` with a different method or input is refused as `request-conflict`.",
+				"examples": [
+					{
+						"type": "request",
+						"id": "4f9c2a7e-61b3-4d8e-9a05-7c2e1b8d3f40",
+						"method": "listProjects",
+						"input": {}
+					},
+					{
+						"type": "request",
+						"id": "b7d02e16-93a4-4c1f-8e6b-2a5f0d9c7e31",
+						"method": "addComment",
+						"input": {
+							"epoch": "9e41b07c2d6f4a83b15e0c7d29f8a3e6"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "wireDispatch",
 				"type": "Promise<WireResponse>",
-				"description": "Response with the same ID, a value or null on success, or a declared failure. Mutations join ledger work by ID and input digest; timeouts do not cancel that work."
+				"description": "The response to the request, with its `id`: `ok: true` and `value` (`null` when the handler returns `null` or `undefined`), or `ok: false` with an `error` holding a `code` and `message` for a refusal, a handler or ledger failure, or a deadline. A mutation runs at most once per `id` and keeps running past a deadline, so a re-send either joins that work or is refused, and is never run a second time.",
+				"examples": [
+					{
+						"type": "response",
+						"id": "b7d02e16-93a4-4c1f-8e6b-2a5f0d9c7e31",
+						"ok": true,
+						"value": null
+					},
+					{
+						"type": "response",
+						"id": "4f9c2a7e-61b3-4d8e-9a05-7c2e1b8d3f40",
+						"ok": false,
+						"error": {
+							"code": "too-many-requests",
+							"message": "Too many requests are waiting."
+						}
+					},
+					{
+						"type": "response",
+						"id": "0c6e8f2a-5b19-4e7d-a3c4-91d7f6b2e850",
+						"ok": false,
+						"error": {
+							"code": "request-expired",
+							"message": "This change may already have been made. Reload before trying again."
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "wireDispatch",
@@ -46,24 +89,66 @@
 						"name": "wireDispatch.context",
 						"type": "WireDispatchContext",
 						"required": true,
-						"description": "Attachment and allowed methods, pending-request count, limits, response ledger, handler and error translator, plus optional session epoch binding."
+						"description": "Connection state and callbacks for this request: `attached` must be true, `methods` must include the request's method, and `pending` (not counting this request) must stay below `limits.pendingRequests`, or the request is refused before anything runs. `handle` runs the request, `explain` maps any error that is not a `RemoteFailure` to a `RemoteError`, `ledger` keeps mutation answers by id, and `limits` gives the `requestDeadlineMs` and `mutationDeadlineMs` deadlines; when `bound` is true, a mutation whose `input.epoch` differs from the context's `epoch` is refused as `request-expired`."
 					},
 					{
 						"name": "wireDispatch.request",
 						"type": "WireRequest",
 						"required": true,
-						"description": "Already validated request with ID, method and input."
+						"description": "The request to answer, already validated: `id` is echoed in the response and keys a mutation's ledger entry, `method` must be one the context's `methods` lists and decides whether the mutation rules apply, and for a mutation `input` is hashed with `method`, so the same `id` with a different method or input is refused as `request-conflict`.",
+						"examples": [
+							{
+								"type": "request",
+								"id": "4f9c2a7e-61b3-4d8e-9a05-7c2e1b8d3f40",
+								"method": "listProjects",
+								"input": {}
+							},
+							{
+								"type": "request",
+								"id": "b7d02e16-93a4-4c1f-8e6b-2a5f0d9c7e31",
+								"method": "addComment",
+								"input": {
+									"epoch": "9e41b07c2d6f4a83b15e0c7d29f8a3e6"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "wireDispatch",
 						"type": "Promise<WireResponse>",
-						"description": "Response with the same ID, a value or null on success, or a declared failure. Mutations join ledger work by ID and input digest; timeouts do not cancel that work."
+						"description": "The response to the request, with its `id`: `ok: true` and `value` (`null` when the handler returns `null` or `undefined`), or `ok: false` with an `error` holding a `code` and `message` for a refusal, a handler or ledger failure, or a deadline. A mutation runs at most once per `id` and keeps running past a deadline, so a re-send either joins that work or is refused, and is never run a second time.",
+						"examples": [
+							{
+								"type": "response",
+								"id": "b7d02e16-93a4-4c1f-8e6b-2a5f0d9c7e31",
+								"ok": true,
+								"value": null
+							},
+							{
+								"type": "response",
+								"id": "4f9c2a7e-61b3-4d8e-9a05-7c2e1b8d3f40",
+								"ok": false,
+								"error": {
+									"code": "too-many-requests",
+									"message": "Too many requests are waiting."
+								}
+							},
+							{
+								"type": "response",
+								"id": "0c6e8f2a-5b19-4e7d-a3c4-91d7f6b2e850",
+								"ok": false,
+								"error": {
+									"code": "request-expired",
+									"message": "This change may already have been made. Reload before trying again."
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
