@@ -32,23 +32,42 @@
 				"name": "RemoteOfferCode.offer",
 				"type": "RemotePairingOffer",
 				"required": true,
-				"description": "Required scan content and expiration. QR is drawn only while parsed expiration is in the future; scan content is not printed as text."
+				"description": "The open pairing offer from the host: only its `scan` (drawn as the QR code, never printed) and its `expiresAt` are read, and the QR is drawn only while `Date.parse(expiresAt)` is later than the current time, checked every second. An unparsable `expiresAt` counts as expired, and a `scan` that qrSymbol refuses (not plain printable ASCII without spaces, over 320 characters, or a symbol wider than 77 modules at correction level M) shows the cannot-show message instead of a QR code.",
+				"examples": [
+					{
+						"pairingId": "9c4e1b7a0d2f48e6a3b5c7d9e1f20a4b",
+						"hostId": "3f9a1c07b2e4d85a6c10e7f3b9d24a8e51c60b7d",
+						"origin": "https://relay.example",
+						"code": "K7QM-2WDX",
+						"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794765900;host=3f9a1c07b2e4d85a6c10e7f3b9d24a8e51c60b7d;pairing=9c4e1b7a0d2f48e6a3b5c7d9e1f20a4b;code=K7QM2WDX;origin=https://relay.example",
+						"expiresAt": "2026-11-15T18:05:00.000Z"
+					},
+					{
+						"pairingId": "0b7d3e9f1a2c4e6b8d0f2a4c6e8b0d2f",
+						"hostId": "c81e4a7f0d3b9e2c6a5f1d8b4e7c0a3f9d2b6e15",
+						"origin": "http://127.0.0.1:8787",
+						"code": "M4PT-7HVS",
+						"scan": "harness-pair:v1;aud=harness-phone;env=local;exp=1794771000;host=c81e4a7f0d3b9e2c6a5f1d8b4e7c0a3f9d2b6e15;pairing=0b7d3e9f1a2c4e6b8d0f2a4c6e8b0d2f;code=M4PT7HVS;origin=http://127.0.0.1:8787",
+						"expiresAt": "2026-11-15T19:30:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "RemoteOfferCode.store",
 				"type": "RemoteHost",
 				"required": true,
-				"description": "Host store providing busy state and createPairing/closePairing for New code/Hide code. Busy disables these actions."
+				"description": "The host store (a `RemoteHostState` instance): while its `busy` flag is true, New code and Hide code are disabled, and New code calls `createPairing()` while Hide code calls `closePairing()`. The component neither reads their results nor catches them, and a failed call is caught inside the store and kept in its `error` field."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteOfferCode",
 				"type": "markup",
-				"description": "QR with instructions and countdown while live and drawable. Checks expiry every second and clears the timer on cleanup. Invalid/expired timestamps show expired; QR failures show cannot-show guidance. New code is always offered, Hide code only when a symbol is displayed."
+				"description": "The offer panel: while the offer is live and drawable it shows the scan instruction, the QR symbol and an `Expires in M:SS` countdown, and otherwise it shows the expired message (not live, including an unparsable `expiresAt`) or the cannot-show message (live, but qrSymbol refuses the scan text). A timer rechecks expiry every second and is cleared on cleanup; New code is always offered, and Hide code only when a symbol is displayed."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
