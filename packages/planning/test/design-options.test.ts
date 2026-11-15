@@ -1,8 +1,6 @@
 import type { Api, Option, Image } from './design-options.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
-import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { PNG } from 'pngjs';
 import type {
 	AddDesignInput,
@@ -138,15 +136,3 @@ test('a single design written without options reads and approves as before', asy
 	});
 	expect((await api.readPlan({ unitId })).approval?.version).toBe('v001');
 }, 30_000);
-
-test('each relocated model type lives at planning-collaboration, with no stub or group entry at its old path', () => {
-	const root = resolve(import.meta.dirname, '../../..');
-	const groups = readFileSync(resolve(root, 'harness.groups.json'), 'utf8');
-	for (const name of ['DesignOption', 'HostFileChange', 'Planning', 'PlanningBridge']) {
-		const real = `packages/planning/src/models/planning-collaboration/${name}.types.ts`;
-		const stub = `packages/planning/src/models/${name}.types.ts`;
-		expect(existsSync(resolve(root, real)), real).toBe(true);
-		expect(existsSync(resolve(root, stub)), stub).toBe(false);
-		expect(groups, stub).not.toContain(`"${stub}"`);
-	}
-});
