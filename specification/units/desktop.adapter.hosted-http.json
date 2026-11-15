@@ -27,80 +27,180 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostedHttpAdapter.constructor.options",
 				"type": "RemoteHttpOptions",
-				"required": true
+				"required": true,
+				"description": "Adapter configuration: the constructor normalizes origin through hostedOrigin, which accepts only an exact https origin (or http for localhost, 127.0.0.1 or [::1]) with no username, password, path other than '/', query or fragment. The stored object then supplies credentials(), which authorize() calls for each session check, plus the optional fetch and onDenied hooks, and authorityVersion is never read by the adapter source."
 			},
 			{
 				"name": "HostedHttpAdapter.publicJson.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Hosted API path appended to the adapter origin: it must start with '/api/' and resolve to that same origin, or request() throws 'Untrusted hosted request path.' before any fetch. publicJson() sends it with an empty principalId and token, so no authorization header is attached.",
+				"examples": ["/api/auth/status"]
 			},
 			{
 				"name": "HostedHttpAdapter.publicJson.body",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The value passed to JSON.stringify and sent as the POST body with content-type application/json, so it must be JSON-serializable: a circular structure or a BigInt throws a TypeError, and undefined (or a function or symbol) yields no body.",
+				"examples": [
+					{},
+					{
+						"enabled": true
+					},
+					["first", "second"]
+				]
 			},
 			{
 				"name": "HostedHttpAdapter.json.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Hosted API path for a GET sent with the verified bearer token; it must start with '/api/' and resolve to the adapter origin. authorize() runs before the path is checked, so a bad path is rejected only after one /api/auth/status request has confirmed the session.",
+				"examples": ["/api/auth/status"]
 			},
 			{
 				"name": "HostedHttpAdapter.request.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Hosted API path appended to the adapter origin, which must start with '/api/' and resolve to that same origin, or the call throws 'Untrusted hosted request path.' before any fetch. The path is not checked against the credential, so choosing the right credential is the caller's responsibility.",
+				"examples": ["/api/auth/status"]
 			},
 			{
 				"name": "HostedHttpAdapter.request.credential",
 				"type": "NativeHostedCredential",
-				"required": true
+				"required": true,
+				"description": "The credential whose non-empty token is sent as 'authorization: Bearer <token>' (an empty token sends no authorization header), and whose principalId is passed to the optional onDenied hook on a 401 or 403 response. request() does not check its origin or principalId, so callers must verify them first, as authorize() does.",
+				"examples": [
+					{
+						"origin": "https://hosted.example.com",
+						"principalId": "principal-1",
+						"token": "example-token"
+					},
+					{
+						"origin": "https://hosted.example.com",
+						"principalId": "",
+						"token": ""
+					}
+				]
 			},
 			{
 				"name": "HostedHttpAdapter.request.init",
 				"type": "RequestInit",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Extra fetch options spread into the call, such as method and body; it defaults to {}. The adapter then overrides redirect with 'error', signal with a 30-second AbortSignal.timeout, and headers entirely (content-type application/json plus the bearer token when present), so caller headers, signal and redirect settings are ignored.",
+				"examples": [
+					{},
+					{
+						"method": "GET"
+					},
+					{
+						"method": "POST",
+						"body": "{\"enabled\":true}"
+					}
+				]
 			},
 			{
 				"name": "HostedHttpAdapter.request.publicFailure",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "When true, a non-ok response is replaced by the value of hostedPublicFailure(response) before HostedFailureValidator.classify runs; when false (the default), it becomes new HostedFailureValidator('denied', status) for 401 or 403 and new HostedFailureValidator('failed', status) for any other non-ok status.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostedHttpAdapter.publicStatus",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "The parsed JSON body of GET /api/auth/status, requested without a session; a non-JSON body rejects with SyntaxError, and a failed or non-ok request rejects with the value of HostedFailureValidator.classify.",
+				"examples": [
+					{},
+					{
+						"enabled": true
+					},
+					["first", "second"]
+				]
 			},
 			{
 				"name": "HostedHttpAdapter.publicJson",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "The parsed JSON body of the POST that publicJson() sends without a session, returned unchanged; a non-JSON body rejects with SyntaxError.",
+				"examples": [
+					{},
+					{
+						"enabled": true
+					},
+					["first", "second"]
+				]
 			},
 			{
 				"name": "HostedHttpAdapter.authorize",
-				"type": "Promise<NativeHostedCredential>"
+				"type": "Promise<NativeHostedCredential>",
+				"description": "The credential object that options.credentials() returned, released only after its origin equals the adapter origin, its principalId and token are non-empty, /api/auth/status answers with an ok status, and the call to RemoteProjectResponseValidator.actor with that body and principalId does not throw synchronously (its return value is ignored).",
+				"examples": [
+					{
+						"origin": "https://hosted.example.com",
+						"principalId": "principal-1",
+						"token": "example-token"
+					}
+				]
 			},
 			{
 				"name": "HostedHttpAdapter.json",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "The parsed JSON body of a GET to the given hosted API path, sent with the verified bearer token only after authorize() succeeds; a non-JSON body rejects with SyntaxError.",
+				"examples": [
+					{},
+					{
+						"enabled": true
+					},
+					["first", "second"]
+				]
 			},
 			{
 				"name": "HostedHttpAdapter.request",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "The fetch Response for an ok status, with its body left unread so the caller chooses how to consume it; a redirect, network failure, 30-second timeout or non-ok status rejects with the value of HostedFailureValidator.classify instead."
 			}
 		],
 		"errors": [
 			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by new URL(options.origin) for a non-absolute origin string, by reading options.origin when options is null or undefined, and by JSON.stringify(body) in publicJson() for a circular or BigInt body."
+			},
+			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Plain Error with one of three messages: 'Use an exact HTTPS hosted origin.' from the constructor, 'A verified hosted session is required.' from authorize() (and so json()), or 'Untrusted hosted request path.' from request() (and so publicJson() and json())."
+			},
+			{
+				"name": "HostedFailureValidator.classify result",
+				"type": "thrown",
+				"description": "The value HostedFailureValidator.classify returns for an error caught inside request(), such as a fetch rejection (network error, redirect or the 30-second AbortSignal timeout) or a non-ok response. A non-ok response is caught as new HostedFailureValidator('denied', status) for 401 or 403 and new HostedFailureValidator('failed', status) otherwise, or as the value of hostedPublicFailure(response) when publicFailure is true."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Rejected by Response.json() when a response body that the adapter parses is not valid JSON, in publicStatus, publicJson, authorize or json."
+			},
+			{
+				"name": "RemoteProjectResponseValidator.actor error",
+				"type": "thrown",
+				"description": "Whatever RemoteProjectResponseValidator.actor throws synchronously for the /api/auth/status body and principalId; authorize() reports it to onDenied(principalId) and rethrows it unchanged."
+			},
+			{
+				"name": "options.credentials() rejection",
+				"type": "thrown",
+				"description": "Whatever options.credentials() rejects with, passed through unchanged; onDenied is not called for it."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostedHttpAdapter.publicStatus",
@@ -108,11 +208,30 @@
 				"outputs": [
 					{
 						"name": "HostedHttpAdapter.publicStatus",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "The parsed JSON body of GET /api/auth/status, requested without a session; a non-JSON body rejects with SyntaxError, and a failed or non-ok request rejects with the value of HostedFailureValidator.classify.",
+						"examples": [
+							{},
+							{
+								"enabled": true
+							},
+							["first", "second"]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "HostedFailureValidator.classify result",
+						"type": "thrown",
+						"description": "The value HostedFailureValidator.classify returns for an error caught inside request(), such as a fetch rejection (network error, redirect or the 30-second AbortSignal timeout) or a non-ok response. A non-ok response is caught as new HostedFailureValidator('denied', status) for 401 or 403 and new HostedFailureValidator('failed', status) otherwise, or as the value of hostedPublicFailure(response) when publicFailure is true."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejected by Response.json() when the response body is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostedHttpAdapter.publicJson",
@@ -120,22 +239,61 @@
 					{
 						"name": "HostedHttpAdapter.publicJson.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Hosted API path appended to the adapter origin: it must start with '/api/' and resolve to that same origin, or request() throws 'Untrusted hosted request path.' before any fetch. publicJson() sends it with an empty principalId and token, so no authorization header is attached.",
+						"examples": ["/api/auth/status"]
 					},
 					{
 						"name": "HostedHttpAdapter.publicJson.body",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The value passed to JSON.stringify and sent as the POST body with content-type application/json, so it must be JSON-serializable: a circular structure or a BigInt throws a TypeError, and undefined (or a function or symbol) yields no body.",
+						"examples": [
+							{},
+							{
+								"enabled": true
+							},
+							["first", "second"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedHttpAdapter.publicJson",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "The parsed JSON body of the POST that publicJson() sends without a session, returned unchanged; a non-JSON body rejects with SyntaxError.",
+						"examples": [
+							{},
+							{
+								"enabled": true
+							},
+							["first", "second"]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'Untrusted hosted request path.' by request() before any fetch when path does not start with '/api/' or resolves to another origin."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by JSON.stringify(body) when the body is circular or contains a BigInt, before any request is sent."
+					},
+					{
+						"name": "HostedFailureValidator.classify result",
+						"type": "thrown",
+						"description": "The value HostedFailureValidator.classify returns for an error caught inside request(), such as a fetch rejection (network error, redirect or the 30-second AbortSignal timeout) or a non-ok response. A non-ok response is caught as new HostedFailureValidator('denied', status) for 401 or 403 and new HostedFailureValidator('failed', status) otherwise, or as the value of hostedPublicFailure(response) when publicFailure is true."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejected by Response.json() when the response body is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostedHttpAdapter.authorize",
@@ -143,16 +301,45 @@
 				"outputs": [
 					{
 						"name": "HostedHttpAdapter.authorize",
-						"type": "Promise<NativeHostedCredential>"
+						"type": "Promise<NativeHostedCredential>",
+						"description": "The credential object that options.credentials() returned, released only after its origin equals the adapter origin, its principalId and token are non-empty, /api/auth/status answers with an ok status, and the call to RemoteProjectResponseValidator.actor with that body and principalId does not throw synchronously (its return value is ignored).",
+						"examples": [
+							{
+								"origin": "https://hosted.example.com",
+								"principalId": "principal-1",
+								"token": "example-token"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with 'A verified hosted session is required.' when credentials() resolves to null, to a credential whose origin differs from the adapter origin, or to one with an empty principalId or token; onDenied(principalId) is awaited first, and a rejection from it replaces this error."
+					},
+					{
+						"name": "RemoteProjectResponseValidator.actor error",
+						"type": "thrown",
+						"description": "Whatever RemoteProjectResponseValidator.actor throws synchronously for the /api/auth/status body and principalId; authorize() reports it to onDenied(principalId) and rethrows it unchanged."
+					},
+					{
+						"name": "options.credentials() rejection",
+						"type": "thrown",
+						"description": "Whatever options.credentials() rejects with, passed through unchanged; onDenied is not called for it."
+					},
+					{
+						"name": "HostedFailureValidator.classify result",
+						"type": "thrown",
+						"description": "The value HostedFailureValidator.classify returns for an error caught inside request(), such as a fetch rejection (network error, redirect or the 30-second AbortSignal timeout) or a non-ok response. A non-ok response is caught as new HostedFailureValidator('denied', status) for 401 or 403 and new HostedFailureValidator('failed', status) otherwise, or as the value of hostedPublicFailure(response) when publicFailure is true."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejected by Response.json() when the /api/auth/status body is not valid JSON; authorize() reports it to onDenied(principalId) and rethrows it unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostedHttpAdapter.json",
@@ -160,17 +347,53 @@
 					{
 						"name": "HostedHttpAdapter.json.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Hosted API path for a GET sent with the verified bearer token; it must start with '/api/' and resolve to the adapter origin. authorize() runs before the path is checked, so a bad path is rejected only after one /api/auth/status request has confirmed the session.",
+						"examples": ["/api/auth/status"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedHttpAdapter.json",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "The parsed JSON body of a GET to the given hosted API path, sent with the verified bearer token only after authorize() succeeds; a non-JSON body rejects with SyntaxError.",
+						"examples": [
+							{},
+							{
+								"enabled": true
+							},
+							["first", "second"]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'A verified hosted session is required.' by authorize() when no verified credential is returned, or with 'Untrusted hosted request path.' by request() after authorize() has succeeded and path does not start with '/api/' or resolves to another origin."
+					},
+					{
+						"name": "RemoteProjectResponseValidator.actor error",
+						"type": "thrown",
+						"description": "Whatever RemoteProjectResponseValidator.actor throws synchronously for the /api/auth/status body and principalId; authorize() reports it to onDenied(principalId) and rethrows it unchanged."
+					},
+					{
+						"name": "options.credentials() rejection",
+						"type": "thrown",
+						"description": "Whatever options.credentials() rejects with, passed through unchanged; onDenied is not called for it."
+					},
+					{
+						"name": "HostedFailureValidator.classify result",
+						"type": "thrown",
+						"description": "The value HostedFailureValidator.classify returns for an error caught inside request(), such as a fetch rejection (network error, redirect or the 30-second AbortSignal timeout) or a non-ok response. A non-ok response is caught as new HostedFailureValidator('denied', status) for 401 or 403 and new HostedFailureValidator('failed', status) otherwise, or as the value of hostedPublicFailure(response) when publicFailure is true."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejected by Response.json() when the /api/auth/status body read by authorize() or the body of the GET itself is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostedHttpAdapter.request",
@@ -178,39 +401,74 @@
 					{
 						"name": "HostedHttpAdapter.request.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Hosted API path appended to the adapter origin, which must start with '/api/' and resolve to that same origin, or the call throws 'Untrusted hosted request path.' before any fetch. The path is not checked against the credential, so choosing the right credential is the caller's responsibility.",
+						"examples": ["/api/auth/status"]
 					},
 					{
 						"name": "HostedHttpAdapter.request.credential",
 						"type": "NativeHostedCredential",
-						"required": true
+						"required": true,
+						"description": "The credential whose non-empty token is sent as 'authorization: Bearer <token>' (an empty token sends no authorization header), and whose principalId is passed to the optional onDenied hook on a 401 or 403 response. request() does not check its origin or principalId, so callers must verify them first, as authorize() does.",
+						"examples": [
+							{
+								"origin": "https://hosted.example.com",
+								"principalId": "principal-1",
+								"token": "example-token"
+							},
+							{
+								"origin": "https://hosted.example.com",
+								"principalId": "",
+								"token": ""
+							}
+						]
 					},
 					{
 						"name": "HostedHttpAdapter.request.init",
 						"type": "RequestInit",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Extra fetch options spread into the call, such as method and body; it defaults to {}. The adapter then overrides redirect with 'error', signal with a 30-second AbortSignal.timeout, and headers entirely (content-type application/json plus the bearer token when present), so caller headers, signal and redirect settings are ignored.",
+						"examples": [
+							{},
+							{
+								"method": "GET"
+							},
+							{
+								"method": "POST",
+								"body": "{\"enabled\":true}"
+							}
+						]
 					},
 					{
 						"name": "HostedHttpAdapter.request.publicFailure",
 						"type": "boolean",
 						"required": false,
-						"default": false
+						"default": false,
+						"description": "When true, a non-ok response is replaced by the value of hostedPublicFailure(response) before HostedFailureValidator.classify runs; when false (the default), it becomes new HostedFailureValidator('denied', status) for 401 or 403 and new HostedFailureValidator('failed', status) for any other non-ok status.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedHttpAdapter.request",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "The fetch Response for an ok status, with its body left unread so the caller chooses how to consume it; a redirect, network failure, 30-second timeout or non-ok status rejects with the value of HostedFailureValidator.classify instead."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with 'Untrusted hosted request path.' before any fetch when path does not start with '/api/' or resolves to another origin; this error is not passed through HostedFailureValidator.classify."
+					},
+					{
+						"name": "HostedFailureValidator.classify result",
+						"type": "thrown",
+						"description": "The value HostedFailureValidator.classify returns for an error caught inside request(), such as a fetch rejection (network error, redirect or the 30-second AbortSignal timeout) or a non-ok response. A non-ok response is caught as new HostedFailureValidator('denied', status) for 401 or 403 and new HostedFailureValidator('failed', status) otherwise, or as the value of hostedPublicFailure(response) when publicFailure is true."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -220,17 +478,30 @@
 					{
 						"name": "HostedHttpAdapter.constructor.options",
 						"type": "RemoteHttpOptions",
-						"required": true
+						"required": true,
+						"description": "Adapter configuration: the constructor normalizes origin through hostedOrigin, which accepts only an exact https origin (or http for localhost, 127.0.0.1 or [::1]) with no username, password, path other than '/', query or fragment. The stored object then supplies credentials(), which authorize() calls for each session check, plus the optional fetch and onDenied hooks, and authorityVersion is never read by the adapter source."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedHttpAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new HostedHttpAdapter instance, whose private origin is the value hostedOrigin returns for options.origin; if that check throws, no instance is produced."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by new URL(options.origin) when the origin is not an absolute URL string, and by reading options.origin when options is null or undefined."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'Use an exact HTTPS hosted origin.' when the origin is not https (or http for localhost, 127.0.0.1 or [::1]) or carries a username, password, path other than '/', query or fragment."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
