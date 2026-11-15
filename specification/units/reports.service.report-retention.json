@@ -22,7 +22,7 @@
 		"inputs": [
 			{
 				"name": "ReportRetentionService.constructor.repository",
-				"type": "unknown",
+				"type": "ReportRepository",
 				"required": false,
 				"description": "The repository instance supplies report reads and paths used by retention cleanup. If omitted, the default parameter constructs new ReportRepository()."
 			},
@@ -112,7 +112,7 @@
 				"inputs": [
 					{
 						"name": "ReportRetentionService.constructor.repository",
-						"type": "unknown",
+						"type": "ReportRepository",
 						"required": false,
 						"description": "The repository instance supplies report reads and paths used by retention cleanup. If omitted, the default parameter constructs new ReportRepository()."
 					}

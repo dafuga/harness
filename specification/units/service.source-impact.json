@@ -139,7 +139,7 @@
 			},
 			{
 				"name": "SourceImpactService.measurements",
-				"type": "unknown",
+				"type": "Promise<Measurement[]>",
 				"description": "Static measurements produced for each manifest in the loaded source side and tagged with the requested commit. It returns an empty list when side loading fails.",
 				"examples": [
 					[]
@@ -295,7 +295,7 @@
 				"outputs": [
 					{
 						"name": "SourceImpactService.measurements",
-						"type": "unknown",
+						"type": "Promise<Measurement[]>",
 						"description": "Static measurements produced for each manifest in the loaded source side and tagged with the requested commit. It returns an empty list when side loading fails.",
 						"examples": [
 							[]

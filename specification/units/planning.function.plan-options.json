@@ -368,7 +368,7 @@
 			},
 			{
 				"name": "binding.file",
-				"type": "unknown",
+				"type": "string",
 				"required": true,
 				"description": "Image file name to retain in the returned ImageBinding, copied unchanged without validation.",
 				"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]
@@ -1311,7 +1311,7 @@
 				"inputs": [
 					{
 						"name": "binding.file",
-						"type": "unknown",
+						"type": "string",
 						"required": true,
 						"description": "Image file name to retain in the returned ImageBinding, copied unchanged without validation.",
 						"examples": ["o1-default-desktop.png", "o2-default-desktop.png"]

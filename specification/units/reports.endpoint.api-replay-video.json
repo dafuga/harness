@@ -22,7 +22,7 @@
 			},
 			{
 				"name": "GET.request",
-				"type": "unknown",
+				"type": "Request",
 				"required": true,
 				"description": "The incoming Request from SvelteKit's RequestEvent; the handler reads only its 'range' header through request.headers.get('range'). That value is null when the request has no Range header, and the endpoint passes it unchanged as the third argument to mediaResponse."
 			}
@@ -59,7 +59,7 @@
 					},
 					{
 						"name": "GET.request",
-						"type": "unknown",
+						"type": "Request",
 						"required": true,
 						"description": "The incoming Request from SvelteKit's RequestEvent; the handler reads only its 'range' header through request.headers.get('range'). That value is null when the request has no Range header, and the endpoint passes it unchanged as the third argument to mediaResponse."
 					}

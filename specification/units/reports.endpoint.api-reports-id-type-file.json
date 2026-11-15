@@ -34,7 +34,7 @@
 			},
 			{
 				"name": "GET.request",
-				"type": "unknown",
+				"type": "Request",
 				"required": true,
 				"description": "The Fetch Request of this call, of which only the Range header is read through request.headers.get('range'); a missing header returns the whole asset with status 200. A Range header of the form bytes=start-end, bytes=start- or bytes=-N returns 206 with that slice, and a malformed or unsatisfiable header returns 416 with an empty body."
 			}
@@ -93,7 +93,7 @@
 					},
 					{
 						"name": "GET.request",
-						"type": "unknown",
+						"type": "Request",
 						"required": true,
 						"description": "The Fetch Request of this call, of which only the Range header is read through request.headers.get('range'); a missing header returns the whole asset with status 200. A Range header of the form bytes=start-end, bytes=start- or bytes=-N returns 206 with that slice, and a malformed or unsatisfiable header returns 416 with an empty body."
 					}

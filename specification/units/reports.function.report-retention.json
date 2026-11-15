@@ -40,7 +40,7 @@
 			},
 			{
 				"name": "reportRetention.now",
-				"type": "unknown",
+				"type": "number",
 				"required": false,
 				"description": "Defaults to Date.now(), the current time in epoch milliseconds, when the argument is undefined; the value is compared with the start instant plus reportLifetimeMs. Any other value that is not a finite number, such as NaN, Infinity, null or a numeric string, makes the call throw an Error.",
 				"examples": [1794745800000, 1794700800000]
@@ -96,7 +96,7 @@
 					},
 					{
 						"name": "reportRetention.now",
-						"type": "unknown",
+						"type": "number",
 						"required": false,
 						"description": "Defaults to Date.now(), the current time in epoch milliseconds, when the argument is undefined; the value is compared with the start instant plus reportLifetimeMs. Any other value that is not a finite number, such as NaN, Infinity, null or a numeric string, makes the call throw an Error.",
 						"examples": [1794745800000, 1794700800000]

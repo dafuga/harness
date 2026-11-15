@@ -37,7 +37,7 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskService.constructor.root",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "Filesystem root passed to ModuleTaskRepository and its Git adapter. Defaults to process.cwd(), the process working directory.",
 				"examples": ["/workspace/project"]
@@ -1872,7 +1872,7 @@
 				"inputs": [
 					{
 						"name": "ModuleTaskService.constructor.root",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "Filesystem root passed to ModuleTaskRepository and its Git adapter. Defaults to process.cwd(), the process working directory.",
 						"examples": ["/workspace/project"]

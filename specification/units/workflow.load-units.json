@@ -19,7 +19,7 @@
 		"inputs": [
 			{
 				"name": "loadUnits.root",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "Repository root used to resolve the source tree and registry paths for this load. Defaults to process.cwd(); resolve() turns it into an absolute path.",
 				"examples": ["/workspace/project"]
@@ -86,7 +86,7 @@
 				"inputs": [
 					{
 						"name": "loadUnits.root",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "The repository root that loadUnits resolves to an absolute path before creating the registry repositories and selecting a working-tree source. It matters when loading a repository other than the process working directory; omission uses process.cwd().",
 						"examples": ["/workspace/project"]

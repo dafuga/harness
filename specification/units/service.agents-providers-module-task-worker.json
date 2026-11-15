@@ -27,7 +27,7 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskWorkerService.constructor.root",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
 				"examples": ["/workspace/project", "/srv/harness/checkout"]
@@ -1344,7 +1344,7 @@
 				"inputs": [
 					{
 						"name": "ModuleTaskWorkerService.constructor.root",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "Repository root that Git commands, the task queue, task worktrees and the analytics sync are bound to. Defaults to process.cwd(), read when the worker is constructed without a root.",
 						"examples": ["/workspace/project", "/srv/harness/checkout"]

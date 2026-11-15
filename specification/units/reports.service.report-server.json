@@ -50,7 +50,7 @@
 			},
 			{
 				"name": "ReportServerService.constructor.repository",
-				"type": "unknown",
+				"type": "ReportRepository",
 				"required": false,
 				"description": "The ReportRepository instance whose root identifies the report store for health matching and server records. Defaults to new ReportRepository()."
 			},
@@ -284,7 +284,7 @@
 				"inputs": [
 					{
 						"name": "ReportServerService.constructor.repository",
-						"type": "unknown",
+						"type": "ReportRepository",
 						"required": false,
 						"description": "The ReportRepository instance whose root identifies the report store for health matching and server records. Defaults to new ReportRepository()."
 					}

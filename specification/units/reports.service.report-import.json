@@ -24,7 +24,7 @@
 		"inputs": [
 			{
 				"name": "ReportImportService.constructor.repository",
-				"type": "unknown",
+				"type": "ReportRepository",
 				"required": false,
 				"description": "Optional repository instance used for imported records and passed to the selected adapter. Defaults to `new ReportRepository()`."
 			},
@@ -170,7 +170,7 @@
 				"inputs": [
 					{
 						"name": "ReportImportService.constructor.repository",
-						"type": "unknown",
+						"type": "ReportRepository",
 						"required": false,
 						"description": "Optional repository instance used for imported records and passed to the selected adapter. Defaults to `new ReportRepository()`."
 					}

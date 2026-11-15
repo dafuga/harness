@@ -36,7 +36,7 @@
 		"inputs": [
 			{
 				"name": "loadBudgets.root",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "Filesystem root used to load unit manifests and read the budget ledger. Defaults to process.cwd().",
 				"examples": ["/workspace/project"]
@@ -95,7 +95,7 @@
 			},
 			{
 				"name": "budgetBench.root",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "Filesystem root used to resolve the unit registry and workload path and to run the benchmark. Defaults to process.cwd().",
 				"examples": ["/workspace/project"]
@@ -165,7 +165,7 @@
 				"inputs": [
 					{
 						"name": "loadBudgets.root",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "Filesystem root used to load unit manifests and read the budget ledger. Defaults to process.cwd().",
 						"examples": ["/workspace/project"]
@@ -312,7 +312,7 @@
 					},
 					{
 						"name": "budgetBench.root",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "Filesystem root used to resolve the unit registry and workload path and to run the benchmark. Defaults to process.cwd().",
 						"examples": ["/workspace/project"]

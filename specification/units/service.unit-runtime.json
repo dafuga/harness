@@ -28,7 +28,7 @@
 		"inputs": [
 			{
 				"name": "UnitRuntimeService.constructor.root",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "Filesystem root used to resolve relative target entries and to locate recorded measurements. Defaults to process.cwd().",
 				"examples": ["/workspace/project"]
@@ -361,7 +361,7 @@
 				"inputs": [
 					{
 						"name": "UnitRuntimeService.constructor.root",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "Filesystem root used to resolve relative target entries and to locate recorded measurements. Defaults to process.cwd().",
 						"examples": ["/workspace/project"]

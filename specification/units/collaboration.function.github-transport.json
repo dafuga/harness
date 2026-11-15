@@ -99,7 +99,7 @@
 		"outputs": [
 			{
 				"name": "githubTransport",
-				"type": "unknown",
+				"type": "GitHubTransport",
 				"description": "An object exposing request and check methods, scoped to the configured repository and chosen contents permission. Requests reject invalid relative or dot-dot paths and redirects; explicitly accepted statuses return null data, while check validates repository identity and can require a private repository."
 			},
 			{
@@ -195,7 +195,7 @@
 				"outputs": [
 					{
 						"name": "githubTransport",
-						"type": "unknown",
+						"type": "GitHubTransport",
 						"description": "An object exposing request and check methods, scoped to the configured repository and chosen contents permission. Requests reject invalid relative or dot-dot paths and redirects; explicitly accepted statuses return null data, while check validates repository identity and can require a private repository."
 					}
 				],

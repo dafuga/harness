@@ -32,7 +32,7 @@
 			},
 			{
 				"name": "DecartAdapter.constructor.now",
-				"type": "unknown",
+				"type": "() => number",
 				"required": false,
 				"description": "Defaults to Date.now: a no-argument function returning the current time in milliseconds; start uses it to check the stored until time and to set that time to now plus (seconds + 60) * 1000 milliseconds."
 			},
@@ -336,7 +336,7 @@
 					},
 					{
 						"name": "DecartAdapter.constructor.now",
-						"type": "unknown",
+						"type": "() => number",
 						"required": false,
 						"description": "Defaults to Date.now: a no-argument function returning the current time in milliseconds; start uses it to check the stored until time and to set that time to now plus (seconds + 60) * 1000 milliseconds."
 					}

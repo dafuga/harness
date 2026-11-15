@@ -31,7 +31,7 @@
 			},
 			{
 				"name": "syncHistory.root",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "The directory whose git repository is used; it is resolved to an absolute path before the remote check. Defaults to process.cwd(), evaluated on each call.",
 				"examples": ["/workspace/project", "/workspace/billing-service"]
@@ -124,7 +124,7 @@
 					},
 					{
 						"name": "syncHistory.root",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "The directory whose git repository is used; it is resolved to an absolute path before the remote check. Defaults to process.cwd(), evaluated on each call.",
 						"examples": ["/workspace/project", "/workspace/billing-service"]

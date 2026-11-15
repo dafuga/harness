@@ -18,7 +18,7 @@
 		"inputs": [
 			{
 				"name": "ReplayVideoService.constructor.repository",
-				"type": "unknown",
+				"type": "ReportRepository",
 				"required": false,
 				"description": "Optional repository used to load reports and resolve their directories. Defaults to new ReportRepository() when omitted."
 			},
@@ -80,7 +80,7 @@
 				"inputs": [
 					{
 						"name": "ReplayVideoService.constructor.repository",
-						"type": "unknown",
+						"type": "ReportRepository",
 						"required": false,
 						"description": "Optional repository used to load reports and resolve their directories. Defaults to new ReportRepository() when omitted."
 					}

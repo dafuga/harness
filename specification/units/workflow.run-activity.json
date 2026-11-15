@@ -41,7 +41,7 @@
 		"inputs": [
 			{
 				"name": "activityRoot.directory",
-				"type": "unknown",
+				"type": "string",
 				"required": false,
 				"description": "The directory the checkout is found from, as a path. Defaults to process.cwd(), the directory the command runs in: Git gives the top level of the checkout there, and when Git gives none, the resolved directory itself is used.",
 				"examples": ["/work/harness", "/work/harness/src/workflows"]
@@ -566,7 +566,7 @@
 				"inputs": [
 					{
 						"name": "activityRoot.directory",
-						"type": "unknown",
+						"type": "string",
 						"required": false,
 						"description": "The directory the checkout is found from, as a path. Defaults to process.cwd(), the directory the command runs in: Git gives the top level of the checkout there, and when Git gives none, the resolved directory itself is used.",
 						"examples": ["/work/harness", "/work/harness/src/workflows"]
