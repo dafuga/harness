@@ -18,29 +18,64 @@
 				"name": "audioAsset.bytes",
 				"type": "Buffer",
 				"required": true,
-				"description": "Nonempty audio bytes, limited to 50,000,000 bytes."
+				"description": "The complete audio file as a Buffer, which must hold at least 1 and at most 50,000,000 bytes or the call throws before any other check. The bytes are checked by the WAV parser for .wav filenames or by the header or container check for .mp3, .ogg and .m4a filenames, and they are hashed into the output name only after those checks pass."
 			},
 			{
 				"name": "audioAsset.filename",
 				"type": "string",
 				"required": true,
-				"description": "Original filename whose lowercase extension selects the format."
+				"description": "The original file name, whose extension (matched case-insensitively) selects the format, the MIME type and the lowercase extension of the output name; only .wav, .mp3, .m4a and .ogg are accepted. Other extensions throw 'Unsupported audio format' before any content is checked.",
+				"examples": ["witness-interview.mp3", "Site-Visit-2026-11-02.WAV", "voicemail-0412.ogg"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "audioAsset",
 				"type": "unknown",
-				"description": "SHA-256 filename with the original lowercase extension, audio MIME type and media kind, plus WAV metadata when applicable. MP3, Ogg and M4A undergo header/container checks; no file is written."
+				"description": "The object returned on success: name is the lowercase hex SHA-256 digest of the bytes followed by the lowercase extension, mimeType is audio/wav, audio/mpeg, audio/mp4 or audio/ogg for .wav, .mp3, .m4a or .ogg respectively, and mediaType is always 'audio'. Only .wav results add durationSeconds, the data chunk length divided by the fmt chunk's byte rate, and nothing is written to disk.",
+				"examples": [
+					{
+						"name": "a41c7e09d2f85b36e0b9473c1d6a52f87c3e0a95b2d41f68d5e8092b7a3c46f1.wav",
+						"mimeType": "audio/wav",
+						"mediaType": "audio",
+						"durationSeconds": 8.4375
+					},
+					{
+						"name": "5f02c8e7b1a94d630e8b2d7fa491c5e6b93a6f1d08c27e542d7f4a1c9e6b03f8.mp3",
+						"mimeType": "audio/mpeg",
+						"mediaType": "audio"
+					},
+					{
+						"name": "c17e5a0d8b3f92e43a9d6c0f47e1b825e6b40d9a2c5f71839f2a07c6e4d18b5e.m4a",
+						"mimeType": "audio/mp4",
+						"mediaType": "audio"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects empty/oversized data, unsupported formats and content that fails the selected format check. WAV parser failures propagate."
+				"description": "Thrown with 'Invalid audio file or size' when bytes is empty or longer than 50,000,000 bytes; it is the first check, so it runs before the filename is examined."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with 'Unsupported audio format' when the name's extension does not map to an audio MIME type (only .wav, .mp3, .m4a and .ogg do), which includes a name without any dot."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with 'Audio content does not match its filename' when an .mp3, .ogg or .m4a header or container check fails, and also for a dot-led name such as '.mp3' or '.wav' because path.extname gives it no extension to validate against."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "For .wav filenames the wavInfo errors propagate unchanged, with messages 'Invalid WAV audio' (under 44 bytes or not RIFF/WAVE), 'Invalid WAV container length', 'Truncated WAV chunk', 'Invalid WAV chunk boundary', 'WAV format and audio data are required', 'Invalid WAV format', 'Unsupported WAV audio format', 'Invalid WAV sample format' and 'Invalid WAV audio data length'."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "audioAsset",
@@ -49,29 +84,64 @@
 						"name": "audioAsset.bytes",
 						"type": "Buffer",
 						"required": true,
-						"description": "Nonempty audio bytes, limited to 50,000,000 bytes."
+						"description": "The complete audio file as a Buffer, which must hold at least 1 and at most 50,000,000 bytes or the call throws before any other check. The bytes are checked by the WAV parser for .wav filenames or by the header or container check for .mp3, .ogg and .m4a filenames, and they are hashed into the output name only after those checks pass."
 					},
 					{
 						"name": "audioAsset.filename",
 						"type": "string",
 						"required": true,
-						"description": "Original filename whose lowercase extension selects the format."
+						"description": "The original file name, whose extension (matched case-insensitively) selects the format, the MIME type and the lowercase extension of the output name; only .wav, .mp3, .m4a and .ogg are accepted. Other extensions throw 'Unsupported audio format' before any content is checked.",
+						"examples": ["witness-interview.mp3", "Site-Visit-2026-11-02.WAV", "voicemail-0412.ogg"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "audioAsset",
 						"type": "unknown",
-						"description": "SHA-256 filename with the original lowercase extension, audio MIME type and media kind, plus WAV metadata when applicable. MP3, Ogg and M4A undergo header/container checks; no file is written."
+						"description": "The object returned on success: name is the lowercase hex SHA-256 digest of the bytes followed by the lowercase extension, mimeType is audio/wav, audio/mpeg, audio/mp4 or audio/ogg for .wav, .mp3, .m4a or .ogg respectively, and mediaType is always 'audio'. Only .wav results add durationSeconds, the data chunk length divided by the fmt chunk's byte rate, and nothing is written to disk.",
+						"examples": [
+							{
+								"name": "a41c7e09d2f85b36e0b9473c1d6a52f87c3e0a95b2d41f68d5e8092b7a3c46f1.wav",
+								"mimeType": "audio/wav",
+								"mediaType": "audio",
+								"durationSeconds": 8.4375
+							},
+							{
+								"name": "5f02c8e7b1a94d630e8b2d7fa491c5e6b93a6f1d08c27e542d7f4a1c9e6b03f8.mp3",
+								"mimeType": "audio/mpeg",
+								"mediaType": "audio"
+							},
+							{
+								"name": "c17e5a0d8b3f92e43a9d6c0f47e1b825e6b40d9a2c5f71839f2a07c6e4d18b5e.m4a",
+								"mimeType": "audio/mp4",
+								"mediaType": "audio"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with 'Invalid audio file or size' when bytes is empty or longer than 50,000,000 bytes; it is the first check, so it runs before the filename is examined."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'Unsupported audio format' when the name's extension does not map to an audio MIME type (only .wav, .mp3, .m4a and .ogg do), which includes a name without any dot."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with 'Audio content does not match its filename' when an .mp3, .ogg or .m4a header or container check fails, and also for a dot-led name such as '.mp3' or '.wav' because path.extname gives it no extension to validate against."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "For .wav filenames the wavInfo errors propagate unchanged, with messages 'Invalid WAV audio' (under 44 bytes or not RIFF/WAVE), 'Invalid WAV container length', 'Truncated WAV chunk', 'Invalid WAV chunk boundary', 'WAV format and audio data are required', 'Invalid WAV format', 'Unsupported WAV audio format', 'Invalid WAV sample format' and 'Invalid WAV audio data length'."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
