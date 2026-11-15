@@ -3,7 +3,7 @@ import { randomUUID, createHash } from 'node:crypto';
 import { ProjectSessionService } from '../../../../../desktop/src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { DesktopRunService } from '../../../../../desktop/src/services/agents-providers/desktop-run-service/DesktopRunService';
 import { DesktopBridgeService } from '../../../../../desktop/src/services/development-tooling/desktop-bridge-service/DesktopBridgeService';
-import { ProviderDiscoveryService } from '../../../../../desktop/src/services/provider-discovery-service/ProviderDiscoveryService';
+import { ProviderDiscoveryService } from '../../../../../desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import { CodexAppServerAdapter } from '../../../../../desktop/src/adapters/agents-providers/codex-app-server-adapter/CodexAppServerAdapter';
 import { ClaudeCliAdapter } from '../../../../../desktop/src/adapters/agents-providers/claude-cli-adapter/ClaudeCliAdapter';
 import { RepositoryArbiterService } from '../../../../../desktop/src/services/projects-sessions/RepositoryArbiterService';

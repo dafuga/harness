@@ -7,7 +7,7 @@ import { DesktopRunService } from '../src/services/agents-providers/desktop-run-
 import { DeviceSessionService } from '../src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService';
 import { ProjectRegistryService } from '../src/services/projects-sessions/ProjectRegistryService';
 import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
-import { ProviderDiscoveryService } from '../src/services/provider-discovery-service/ProviderDiscoveryService';
+import { ProviderDiscoveryService } from '../src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import { RepositoryArbiterService } from '../src/services/projects-sessions/RepositoryArbiterService';
 import { desktopBridge } from '../src/utils/desktopBridge';
 import { PNG } from 'pngjs';
