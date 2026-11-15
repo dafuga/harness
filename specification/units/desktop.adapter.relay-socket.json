@@ -24,33 +24,52 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RelaySocketAdapter.constructor.config",
 				"type": "RelaySocketAdapterConfig",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional header-capable socket constructor used to open relay connections. Defaults to {}; when socket is absent, open uses the global WebSocket constructor.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "RelaySocketAdapter.open.url",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Relay URL passed unchanged to the selected socket constructor. The adapter relies on the supplied headers for relay credentials.",
+				"examples": ["wss://relay.example.test/socket"]
 			},
 			{
 				"name": "RelaySocketAdapter.open.headers",
 				"type": "Record<string, string>",
-				"required": true
+				"required": true,
+				"description": "String-valued request headers passed to the selected socket constructor as options.headers. The adapter sends relay credentials in headers rather than adding them to the URL.",
+				"examples": [
+					{
+						"Authorization": "Bearer example-relay-token"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RelaySocketAdapter.open",
-				"type": "RemoteSocket"
+				"type": "RemoteSocket",
+				"description": "RemoteSocket facade around the constructed socket. opened resolves on open and rejects on error; send sends only while readyState is 1, close defaults to code 1000, onMessage forwards only string data, and onClose reports event.code or 1006."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects the returned opened promise when the socket emits an error event, with message “The relay could not be reached.”"
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RelaySocketAdapter.open",
@@ -58,22 +77,37 @@
 					{
 						"name": "RelaySocketAdapter.open.url",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Relay URL passed unchanged to the selected socket constructor. The adapter relies on the supplied headers for relay credentials.",
+						"examples": ["wss://relay.example.test/socket"]
 					},
 					{
 						"name": "RelaySocketAdapter.open.headers",
 						"type": "Record<string, string>",
-						"required": true
+						"required": true,
+						"description": "String-valued request headers passed to the selected socket constructor as options.headers. The adapter sends relay credentials in headers rather than adding them to the URL.",
+						"examples": [
+							{
+								"Authorization": "Bearer example-relay-token"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelaySocketAdapter.open",
-						"type": "RemoteSocket"
+						"type": "RemoteSocket",
+						"description": "RemoteSocket facade around the constructed socket. opened resolves on open and rejects on error; send sends only while readyState is 1, close defaults to code 1000, onMessage forwards only string data, and onClose reports event.code or 1006."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects the returned opened promise when the socket emits an error event, with message “The relay could not be reached.”"
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -84,17 +118,22 @@
 						"name": "RelaySocketAdapter.constructor.config",
 						"type": "RelaySocketAdapterConfig",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional header-capable socket constructor used to open relay connections. Defaults to {}; when socket is absent, open uses the global WebSocket constructor.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelaySocketAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "RelaySocketAdapter instance that retains the provided configuration for subsequent open calls."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
