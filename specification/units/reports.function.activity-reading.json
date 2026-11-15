@@ -29,35 +29,106 @@
 				"name": "activityReading.agents",
 				"type": "AgentRoster",
 				"required": true,
-				"description": "Roster and its reported working count."
+				"description": "The sampled roster: `working` is the count the sampler reported, or null when tracking is `never-used`; the reading subtracts each `roster` entry whose state is 'working' and whose `expiresAt` is earlier than `now`. Entries in any other state are not counted and keep the agentStates label of their own state.",
+				"examples": [
+					{
+						"tracking": "available",
+						"working": 2,
+						"unreadable": 0,
+						"roster": [
+							{
+								"id": "c0a4e7d1-7f3b-4d92-b5e8-16a9c3f2d074",
+								"label": "Reports reader",
+								"provider": "anthropic",
+								"model": "claude-haiku-5-5",
+								"worktree": "slot-07",
+								"branch": "p1-contracts-a",
+								"task": "Write the activity-freshness contract",
+								"loop": "contract-pass-1",
+								"units": ["reports.function.activity-reading"],
+								"unknownUnits": [],
+								"registeredAt": "2026-11-15T08:55:12.418Z",
+								"heartbeatAt": "2026-11-15T09:29:40.102Z",
+								"expiresAt": "2026-11-15T09:44:40.102Z",
+								"state": "working",
+								"detail": "Last heartbeat at 2026-11-15T09:29:40.102Z"
+							},
+							{
+								"id": "5b1e9f0c-2d4a-4c7e-9a3f-8e6d1b2c7f40",
+								"label": "Contract checker",
+								"provider": "anthropic",
+								"model": "claude-sonnet-5-5",
+								"worktree": "slot-11",
+								"branch": "p1-contracts-b",
+								"task": "Check the unit contracts",
+								"loop": "contract-pass-2",
+								"units": ["reports.function.activity-display"],
+								"unknownUnits": [],
+								"registeredAt": "2026-11-15T09:10:03.770Z",
+								"heartbeatAt": "2026-11-15T09:25:20.000Z",
+								"expiresAt": "2026-11-15T09:30:20.000Z",
+								"state": "working",
+								"detail": "Last heartbeat at 2026-11-15T09:25:20.000Z"
+							},
+							{
+								"id": "pyramid-checker-2",
+								"label": "Pyramid checker",
+								"provider": null,
+								"model": null,
+								"worktree": "slot-03",
+								"branch": "main",
+								"task": null,
+								"loop": null,
+								"units": [],
+								"unknownUnits": [],
+								"registeredAt": "2026-11-15T07:02:44.915Z",
+								"heartbeatAt": "2026-11-15T09:12:08.333Z",
+								"expiresAt": "2026-11-15T09:27:08.333Z",
+								"state": "completed",
+								"detail": "Finished at 2026-11-15T09:14:51.007Z",
+								"finishedAt": "2026-11-15T09:14:51.007Z",
+								"outcome": "All three contracts were checked."
+							}
+						]
+					},
+					{
+						"tracking": "never-used",
+						"working": null,
+						"unreadable": 0,
+						"roster": []
+					}
+				]
 			},
 			{
 				"name": "activityReading.sampledAt",
 				"type": "string",
 				"required": true,
-				"description": "Time the roster was sampled."
+				"description": "The time the roster was sampled: the live sampler writes it as `new Date().toISOString()`, and this function reads it with Date.parse. The reading is current while `now` minus this time is at most `readingAge` (60,000 ms), so a time later than `now` also counts as current, and a value Date.parse cannot read makes the reading not current.",
+				"examples": ["2026-11-15T09:30:00.000Z", "2026-11-15T09:12:00.000Z"]
 			},
 			{
 				"name": "activityReading.now",
 				"type": "number",
 				"required": true,
-				"description": "Current time in milliseconds since the epoch."
+				"description": "The time the reading is judged at, in milliseconds since the epoch (the unit Date.parse returns). It is compared with `sampledAt` for the current flag and with each working entry's `expiresAt`, where an entry counts as lapsed only when that `expiresAt` is strictly earlier than `now`; no range check is made, so NaN makes the reading not current.",
+				"examples": [1794735030000, 1794735150000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "readingAge",
 				"type": "number",
-				"description": "Freshness allowance of 60,000 milliseconds.",
+				"description": "The freshness allowance: the constant `60_000` (one minute, in milliseconds) exported from packages/reports/src/utils/projects-sessions/activityReading.ts. The activityReading function uses it only for the `current` flag, which is true while the reading's age is at most this value.",
 				"examples": [60000]
 			},
 			{
 				"name": "activityReading",
 				"type": "ActivityReading",
-				"description": "Returns whether the reading is at most one minute old, a working count reduced by expired working entries or null when unknown/old, and a labeling function. Finished states retain their labels; old working observations become Not confirmed and individually expired ones become Stale."
+				"description": "`current` is true while the reading is at most `readingAge` old, and `working` is the reported count minus the working entries whose `expiresAt` is earlier than `now`, or null when the reported count is null or the reading is not current. `label(agent)` keeps the agentStates label of an agent whose state is not 'working'; for a working agent it gives 'Not confirmed' when the reading is not current, otherwise the agentStates stale label when its `expiresAt` is earlier than `now`, and otherwise the agentStates working label."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "activityReading",
@@ -66,30 +137,100 @@
 						"name": "activityReading.agents",
 						"type": "AgentRoster",
 						"required": true,
-						"description": "Roster and its reported working count."
+						"description": "The sampled roster: `working` is the count the sampler reported, or null when tracking is `never-used`; the reading subtracts each `roster` entry whose state is 'working' and whose `expiresAt` is earlier than `now`. Entries in any other state are not counted and keep the agentStates label of their own state.",
+						"examples": [
+							{
+								"tracking": "available",
+								"working": 2,
+								"unreadable": 0,
+								"roster": [
+									{
+										"id": "c0a4e7d1-7f3b-4d92-b5e8-16a9c3f2d074",
+										"label": "Reports reader",
+										"provider": "anthropic",
+										"model": "claude-haiku-5-5",
+										"worktree": "slot-07",
+										"branch": "p1-contracts-a",
+										"task": "Write the activity-freshness contract",
+										"loop": "contract-pass-1",
+										"units": ["reports.function.activity-reading"],
+										"unknownUnits": [],
+										"registeredAt": "2026-11-15T08:55:12.418Z",
+										"heartbeatAt": "2026-11-15T09:29:40.102Z",
+										"expiresAt": "2026-11-15T09:44:40.102Z",
+										"state": "working",
+										"detail": "Last heartbeat at 2026-11-15T09:29:40.102Z"
+									},
+									{
+										"id": "5b1e9f0c-2d4a-4c7e-9a3f-8e6d1b2c7f40",
+										"label": "Contract checker",
+										"provider": "anthropic",
+										"model": "claude-sonnet-5-5",
+										"worktree": "slot-11",
+										"branch": "p1-contracts-b",
+										"task": "Check the unit contracts",
+										"loop": "contract-pass-2",
+										"units": ["reports.function.activity-display"],
+										"unknownUnits": [],
+										"registeredAt": "2026-11-15T09:10:03.770Z",
+										"heartbeatAt": "2026-11-15T09:25:20.000Z",
+										"expiresAt": "2026-11-15T09:30:20.000Z",
+										"state": "working",
+										"detail": "Last heartbeat at 2026-11-15T09:25:20.000Z"
+									},
+									{
+										"id": "pyramid-checker-2",
+										"label": "Pyramid checker",
+										"provider": null,
+										"model": null,
+										"worktree": "slot-03",
+										"branch": "main",
+										"task": null,
+										"loop": null,
+										"units": [],
+										"unknownUnits": [],
+										"registeredAt": "2026-11-15T07:02:44.915Z",
+										"heartbeatAt": "2026-11-15T09:12:08.333Z",
+										"expiresAt": "2026-11-15T09:27:08.333Z",
+										"state": "completed",
+										"detail": "Finished at 2026-11-15T09:14:51.007Z",
+										"finishedAt": "2026-11-15T09:14:51.007Z",
+										"outcome": "All three contracts were checked."
+									}
+								]
+							},
+							{
+								"tracking": "never-used",
+								"working": null,
+								"unreadable": 0,
+								"roster": []
+							}
+						]
 					},
 					{
 						"name": "activityReading.sampledAt",
 						"type": "string",
 						"required": true,
-						"description": "Time the roster was sampled."
+						"description": "The time the roster was sampled: the live sampler writes it as `new Date().toISOString()`, and this function reads it with Date.parse. The reading is current while `now` minus this time is at most `readingAge` (60,000 ms), so a time later than `now` also counts as current, and a value Date.parse cannot read makes the reading not current.",
+						"examples": ["2026-11-15T09:30:00.000Z", "2026-11-15T09:12:00.000Z"]
 					},
 					{
 						"name": "activityReading.now",
 						"type": "number",
 						"required": true,
-						"description": "Current time in milliseconds since the epoch."
+						"description": "The time the reading is judged at, in milliseconds since the epoch (the unit Date.parse returns). It is compared with `sampledAt` for the current flag and with each working entry's `expiresAt`, where an entry counts as lapsed only when that `expiresAt` is strictly earlier than `now`; no range check is made, so NaN makes the reading not current.",
+						"examples": [1794735030000, 1794735150000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "activityReading",
 						"type": "ActivityReading",
-						"description": "Returns whether the reading is at most one minute old, a working count reduced by expired working entries or null when unknown/old, and a labeling function. Finished states retain their labels; old working observations become Not confirmed and individually expired ones become Stale."
+						"description": "`current` is true while the reading is at most `readingAge` old, and `working` is the reported count minus the working entries whose `expiresAt` is earlier than `now`, or null when the reported count is null or the reading is not current. `label(agent)` keeps the agentStates label of an agent whose state is not 'working'; for a working agent it gives 'Not confirmed' when the reading is not current, otherwise the agentStates stale label when its `expiresAt` is earlier than `now`, and otherwise the agentStates working label."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
