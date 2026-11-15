@@ -18,47 +18,70 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NativePickerBridgeService.constructor.rpc",
 				"type": "PickerRpc",
-				"required": true
+				"required": true,
+				"description": "The RPC callback used to perform picker protocol calls for the service. The bridge invokes it with a method, parameter record, and optional options record, then awaits its result; callback failures can reject send."
 			},
 			{
 				"name": "NativePickerBridgeService.constructor.catalogPath",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional catalog path passed to the picker defaults and switch services and used as model_catalog_json when opening a harness-claude thread. Defaults to undefined.",
+				"examples": ["src/config/model-catalog.json"]
 			},
 			{
 				"name": "NativePickerBridgeService.send.method",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The RPC method routed by the bridge. Recognized methods receive config, discovery, or thread-open handling; other methods go to the RPC, with provider checks for thread/settings/update and turn/start when params.model is a string.",
+				"examples": ["config/read", "model/list", "thread/start"]
 			},
 			{
 				"name": "NativePickerBridgeService.send.params",
 				"type": "PickerData",
-				"required": true
+				"required": true,
+				"description": "The parameter record used by route selection and RPC dispatch. The bridge conditionally reads threadId, model, modelProvider, config, and modelProviders; it does not validate a complete parameter schema before dispatch.",
+				"examples": [
+					{},
+					{
+						"modelProviders": ["openai", "harness-claude"]
+					}
+				]
 			},
 			{
 				"name": "NativePickerBridgeService.send.options",
 				"type": "PickerData",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional options record passed through to the selected route's helper or RPC call. The bridge does not read its fields; when omitted, it remains undefined.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "NativePickerBridgeService.send",
-				"type": "Promise<PickerData>"
+				"type": "Promise<PickerData>",
+				"description": "The resolved response record from the selected route. For model/list, data must be an array and nativeOpusModel is added if absent; other route results are returned from the selected helper or RPC.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The service throws Error with message Close this chat before resuming with a different provider when thread/resume selects a different provider from a loaded thread. It throws Error with message Reopen this chat in the experimental client before switching when thread/settings/update or turn/start changes provider without saved thread context, and with message Invalid model discovery response when model/list returns non-array data."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "NativePickerBridgeService.send",
@@ -66,27 +89,51 @@
 					{
 						"name": "NativePickerBridgeService.send.method",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The RPC method routed by the bridge. Recognized methods receive config, discovery, or thread-open handling; other methods go to the RPC, with provider checks for thread/settings/update and turn/start when params.model is a string.",
+						"examples": ["config/read", "model/list", "thread/start"]
 					},
 					{
 						"name": "NativePickerBridgeService.send.params",
 						"type": "PickerData",
-						"required": true
+						"required": true,
+						"description": "The parameter record used by route selection and RPC dispatch. The bridge conditionally reads threadId, model, modelProvider, config, and modelProviders; it does not validate a complete parameter schema before dispatch.",
+						"examples": [
+							{},
+							{
+								"modelProviders": ["openai", "harness-claude"]
+							}
+						]
 					},
 					{
 						"name": "NativePickerBridgeService.send.options",
 						"type": "PickerData",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional options record passed through to the selected route's helper or RPC call. The bridge does not read its fields; when omitted, it remains undefined.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativePickerBridgeService.send",
-						"type": "Promise<PickerData>"
+						"type": "Promise<PickerData>",
+						"description": "The resolved response record from the selected route. For model/list, data must be an array and nativeOpusModel is added if absent; other route results are returned from the selected helper or RPC.",
+						"examples": [
+							{}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The service throws Error with message Close this chat before resuming with a different provider when thread/resume selects a different provider from a loaded thread. It throws Error with message Reopen this chat in the experimental client before switching when thread/settings/update or turn/start changes provider without saved thread context, and with message Invalid model discovery response when model/list returns non-array data."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -96,22 +143,27 @@
 					{
 						"name": "NativePickerBridgeService.constructor.rpc",
 						"type": "PickerRpc",
-						"required": true
+						"required": true,
+						"description": "The RPC callback used to perform picker protocol calls for the service. The bridge invokes it with a method, parameter record, and optional options record, then awaits its result; callback failures can reject send."
 					},
 					{
 						"name": "NativePickerBridgeService.constructor.catalogPath",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional catalog path passed to the picker defaults and switch services and used as model_catalog_json when opening a harness-claude thread. Defaults to undefined.",
+						"examples": ["src/config/model-catalog.json"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativePickerBridgeService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed NativePickerBridgeService instance. Construction also creates its picker switching and defaults services."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
