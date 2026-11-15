@@ -18,29 +18,30 @@
 				"name": "activityClient.arrived",
 				"type": "(shown: Shown) => void",
 				"required": true,
-				"description": "Callback receiving parsed activity after a successful request while the client remains active."
+				"description": "Callback that receives the response body parsed with response.json() and cast to Shown (from src/workflows/runActivity) with no runtime check, and it runs only for an ok response while the client is active. If it throws, the exception goes to the same catch as request failures, which calls missed while the client is still active."
 			},
 			{
 				"name": "activityClient.missed",
 				"type": "() => void",
 				"required": true,
-				"description": "Callback invoked when an active request fails, including an HTTP or JSON failure."
+				"description": "Callback called from the catch of a refresh while the client is active, for a rejected fetch, a non-ok HTTP status, a body that cannot be parsed as JSON, or an exception thrown by arrived. It is not called after stop, including for a request that stop aborts, or for a refresh skipped because one is already pending, and an exception it throws is not caught, so the promise returned by refresh rejects."
 			}
 		],
 		"outputs": [
 			{
 				"name": "activityClient",
 				"type": "unknown",
-				"description": "Returns refresh and stop methods. Refresh skips overlapping or stopped requests and uses a no-cache activity request. Polls every 15 seconds while visible and when visibility changes to visible; it does not request immediately on construction. Stop removes the timer/listener and aborts the request."
+				"description": "An object with refresh and stop methods; creating it reads document synchronously, so it needs a DOM document, and it sends no request on construction. refresh returns without fetching while a request is pending or after stop, otherwise fetching /api/project-activity with cache 'no-store' and not checking visibility itself; a 15-second timer and a visibilitychange listener call it only while document.visibilityState is 'visible', and stop clears the timer, removes the listener, marks the client inactive and aborts any in-flight request."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "A non-success HTTP status creates Activity unavailable. internally, but refresh catches it and calls missed while active."
+				"description": "Thrown inside refresh when the response status is not ok, with the message 'Activity unavailable.'; refresh catches it and calls missed while the client is active, so the methods returned by activityClient never reject with it."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "activityClient",
@@ -49,24 +50,24 @@
 						"name": "activityClient.arrived",
 						"type": "(shown: Shown) => void",
 						"required": true,
-						"description": "Callback receiving parsed activity after a successful request while the client remains active."
+						"description": "Callback that receives the response body parsed with response.json() and cast to Shown (from src/workflows/runActivity) with no runtime check, and it runs only for an ok response while the client is active. If it throws, the exception goes to the same catch as request failures, which calls missed while the client is still active."
 					},
 					{
 						"name": "activityClient.missed",
 						"type": "() => void",
 						"required": true,
-						"description": "Callback invoked when an active request fails, including an HTTP or JSON failure."
+						"description": "Callback called from the catch of a refresh while the client is active, for a rejected fetch, a non-ok HTTP status, a body that cannot be parsed as JSON, or an exception thrown by arrived. It is not called after stop, including for a request that stop aborts, or for a refresh skipped because one is already pending, and an exception it throws is not caught, so the promise returned by refresh rejects."
 					}
 				],
 				"outputs": [
 					{
 						"name": "activityClient",
 						"type": "unknown",
-						"description": "Returns refresh and stop methods. Refresh skips overlapping or stopped requests and uses a no-cache activity request. Polls every 15 seconds while visible and when visibility changes to visible; it does not request immediately on construction. Stop removes the timer/listener and aborts the request."
+						"description": "An object with refresh and stop methods; creating it reads document synchronously, so it needs a DOM document, and it sends no request on construction. refresh returns without fetching while a request is pending or after stop, otherwise fetching /api/project-activity with cache 'no-store' and not checking visibility itself; a 15-second timer and a visibilitychange listener call it only while document.visibilityState is 'visible', and stop clears the timer, removes the listener, marks the client inactive and aborts any in-flight request."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
