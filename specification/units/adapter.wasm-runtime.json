@@ -10,15 +10,9 @@
 	"owns": {
 		"source": [
 			"src/adapters/WasmRuntimeAdapter.ts",
-			"src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter.ts",
-			"src/adapters/wasm-runtime-adapter/WasmRuntimeAdapter.ts"
+			"src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter.ts"
 		],
-		"symbols": [
-			"WasmRuntimeAdapter",
-			"WasmRuntimeAdapter",
-			"WasmRuntimeAdapter.constructor",
-			"WasmRuntimeAdapter"
-		]
+		"symbols": ["WasmRuntimeAdapter", "WasmRuntimeAdapter", "WasmRuntimeAdapter.constructor"]
 	},
 	"contract": {
 		"origin": "derived",
