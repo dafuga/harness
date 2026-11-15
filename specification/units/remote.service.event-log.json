@@ -23,46 +23,138 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EventLogService.constructor.options",
 				"type": "{ epoch?: string; capacity?: number }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional settings: epoch names this log so that a cursor from an earlier host process is recognised as a gap, and capacity sets how many of the newest events are kept. Defaults to {}: an omitted epoch becomes randomId(16), 32 lowercase hex characters, and an omitted capacity becomes remoteLimits.eventLog (512); neither value is validated.",
+				"examples": [
+					{},
+					{
+						"capacity": 128
+					},
+					{
+						"epoch": "3e7b0d52a9f14c6e8d30b7a2c5f19e46",
+						"capacity": 256
+					}
+				]
 			},
 			{
 				"name": "EventLogService.append.channel",
 				"type": "WireChannel",
-				"required": true
+				"required": true,
+				"description": "The wire channel the event is tagged with, one of 'run', 'cache' or 'connection'. The log stores it unchanged and does not check it at runtime.",
+				"examples": ["run", "cache", "connection"]
 			},
 			{
 				"name": "EventLogService.append.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The payload of the event, of any type. The log keeps the same reference rather than a copy and never checks it, so a later change to that object also changes the retained event.",
+				"examples": [
+					{
+						"status": "started"
+					},
+					"ready",
+					{
+						"count": 3
+					}
+				]
 			},
 			{
 				"name": "EventLogService.since.resume",
 				"type": "RemoteResume | null",
-				"required": true
+				"required": true,
+				"description": "The resume cursor, an epoch and sequence pair, or null when there is none, which gives a replay of 'none'. A cursor is accepted only when its epoch equals this log's epoch and its sequence lies from the sequence just before the oldest retained event up to the latest sequence; any other cursor gives a 'gap'.",
+				"examples": [
+					null,
+					{
+						"epoch": "9c41e0a7f3b25d8e6a1c04f7d2b98e3a",
+						"sequence": 17
+					},
+					{
+						"epoch": "3e7b0d52a9f14c6e8d30b7a2c5f19e46",
+						"sequence": 0
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EventLogService.sequence",
-				"type": "number"
+				"type": "number",
+				"description": "The sequence of the newest appended event: 0 before any append, and one higher after each append. It keeps counting after old events leave the bounded window, so it never decreases.",
+				"examples": [0, 17, 1042]
 			},
 			{
 				"name": "EventLogService.append",
-				"type": "WireEvent"
+				"type": "WireEvent",
+				"description": "The event just appended: type 'event', its channel, its sequence (one more than the previous append) and the value as passed. The same object is kept in the log and returned to the caller.",
+				"examples": [
+					{
+						"type": "event",
+						"channel": "run",
+						"sequence": 1,
+						"value": {
+							"status": "started"
+						}
+					},
+					{
+						"type": "event",
+						"channel": "connection",
+						"sequence": 18,
+						"value": "ready"
+					},
+					{
+						"type": "event",
+						"channel": "cache",
+						"sequence": 1043,
+						"value": {
+							"count": 3
+						}
+					}
+				]
 			},
 			{
 				"name": "EventLogService.since",
-				"type": "EventReplay"
+				"type": "EventReplay",
+				"description": "The result of a replay: 'none' with no events when no cursor was given, 'gap' with no events when the cursor is not accepted, or 'resumed' with the retained events newer than the cursor, oldest first. Events the window has already dropped are never returned.",
+				"examples": [
+					{
+						"replay": "none",
+						"events": []
+					},
+					{
+						"replay": "gap",
+						"events": []
+					},
+					{
+						"replay": "resumed",
+						"events": [
+							{
+								"type": "event",
+								"channel": "connection",
+								"sequence": 18,
+								"value": "ready"
+							},
+							{
+								"type": "event",
+								"channel": "run",
+								"sequence": 19,
+								"value": {
+									"status": "started"
+								}
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "EventLogService.sequence",
@@ -70,11 +162,13 @@
 				"outputs": [
 					{
 						"name": "EventLogService.sequence",
-						"type": "number"
+						"type": "number",
+						"description": "The sequence of the newest appended event: 0 before any append, and one higher after each append. It keeps counting after old events leave the bounded window, so it never decreases.",
+						"examples": [0, 17, 1042]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EventLogService.append",
@@ -82,22 +176,59 @@
 					{
 						"name": "EventLogService.append.channel",
 						"type": "WireChannel",
-						"required": true
+						"required": true,
+						"description": "The wire channel the event is tagged with, one of 'run', 'cache' or 'connection'. The log stores it unchanged and does not check it at runtime.",
+						"examples": ["run", "cache", "connection"]
 					},
 					{
 						"name": "EventLogService.append.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The payload of the event, of any type. The log keeps the same reference rather than a copy and never checks it, so a later change to that object also changes the retained event.",
+						"examples": [
+							{
+								"status": "started"
+							},
+							"ready",
+							{
+								"count": 3
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EventLogService.append",
-						"type": "WireEvent"
+						"type": "WireEvent",
+						"description": "The event just appended: type 'event', its channel, its sequence (one more than the previous append) and the value as passed. The same object is kept in the log and returned to the caller.",
+						"examples": [
+							{
+								"type": "event",
+								"channel": "run",
+								"sequence": 1,
+								"value": {
+									"status": "started"
+								}
+							},
+							{
+								"type": "event",
+								"channel": "connection",
+								"sequence": 18,
+								"value": "ready"
+							},
+							{
+								"type": "event",
+								"channel": "cache",
+								"sequence": 1043,
+								"value": {
+									"count": 3
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EventLogService.since",
@@ -105,17 +236,59 @@
 					{
 						"name": "EventLogService.since.resume",
 						"type": "RemoteResume | null",
-						"required": true
+						"required": true,
+						"description": "The resume cursor, an epoch and sequence pair, or null when there is none, which gives a replay of 'none'. A cursor is accepted only when its epoch equals this log's epoch and its sequence lies from the sequence just before the oldest retained event up to the latest sequence; any other cursor gives a 'gap'.",
+						"examples": [
+							null,
+							{
+								"epoch": "9c41e0a7f3b25d8e6a1c04f7d2b98e3a",
+								"sequence": 17
+							},
+							{
+								"epoch": "3e7b0d52a9f14c6e8d30b7a2c5f19e46",
+								"sequence": 0
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EventLogService.since",
-						"type": "EventReplay"
+						"type": "EventReplay",
+						"description": "The result of a replay: 'none' with no events when no cursor was given, 'gap' with no events when the cursor is not accepted, or 'resumed' with the retained events newer than the cursor, oldest first. Events the window has already dropped are never returned.",
+						"examples": [
+							{
+								"replay": "none",
+								"events": []
+							},
+							{
+								"replay": "gap",
+								"events": []
+							},
+							{
+								"replay": "resumed",
+								"events": [
+									{
+										"type": "event",
+										"channel": "connection",
+										"sequence": 18,
+										"value": "ready"
+									},
+									{
+										"type": "event",
+										"channel": "run",
+										"sequence": 19,
+										"value": {
+											"status": "started"
+										}
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -126,17 +299,29 @@
 						"name": "EventLogService.constructor.options",
 						"type": "{ epoch?: string; capacity?: number }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional settings: epoch names this log so that a cursor from an earlier host process is recognised as a gap, and capacity sets how many of the newest events are kept. Defaults to {}: an omitted epoch becomes randomId(16), 32 lowercase hex characters, and an omitted capacity becomes remoteLimits.eventLog (512); neither value is validated.",
+						"examples": [
+							{},
+							{
+								"capacity": 128
+							},
+							{
+								"epoch": "3e7b0d52a9f14c6e8d30b7a2c5f19e46",
+								"capacity": 256
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EventLogService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new EventLogService instance: its epoch and capacity are fixed at construction, it starts with no events, and its sequence starts at 0."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
