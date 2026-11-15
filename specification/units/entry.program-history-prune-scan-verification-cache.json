@@ -18,20 +18,31 @@
 				"name": "scanVerificationCache.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository root used to identify cache ancestors and produce repository-relative paths."
+				"description": "The repository root used to build the .cache ancestor paths and to make inventory paths repository-relative. The function does not verify that it is a Git root or that store is inside it.",
+				"examples": ["/workspace/harness"]
 			},
 			{
 				"name": "scanVerificationCache.store",
 				"type": "string",
 				"required": true,
-				"description": "Verification-cache directory whose commit and run entries are inventoried."
+				"description": "The directory whose immediate child names are scanned as commit entries. A missing directory returns the current context, while an unreadable listing is recorded in problems and a non-directory or symlink is protected and stops the scan.",
+				"examples": ["/workspace/harness/.cache/harness/verification"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scanVerificationCache",
 				"type": "Promise<CacheScanContext>",
-				"description": "CacheScanContext with valid registered records, protected entry rows, and scan problems; the scan does not mutate cache data."
+				"description": "Resolves to a CacheScanContext containing the input paths, protected inventory entries, valid run entries, and scan problems. A run is added to valid only when its tree has no protection reasons, its record validates, its lowercase 40-character commit directory matches the record source commit, its directory name matches the record start time, and its files are declared.",
+				"examples": [
+					{
+						"root": "/workspace/harness",
+						"store": "/workspace/harness/.cache/harness/verification",
+						"entries": [],
+						"valid": [],
+						"problems": []
+					}
+				]
 			}
 		],
 		"errors": [],
@@ -44,20 +55,31 @@
 						"name": "scanVerificationCache.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository root used to identify cache ancestors and produce repository-relative paths."
+						"description": "The repository root used to build the .cache ancestor paths and to make inventory paths repository-relative. The function does not verify that it is a Git root or that store is inside it.",
+						"examples": ["/workspace/harness"]
 					},
 					{
 						"name": "scanVerificationCache.store",
 						"type": "string",
 						"required": true,
-						"description": "Verification-cache directory whose commit and run entries are inventoried."
+						"description": "The directory whose immediate child names are scanned as commit entries. A missing directory returns the current context, while an unreadable listing is recorded in problems and a non-directory or symlink is protected and stops the scan.",
+						"examples": ["/workspace/harness/.cache/harness/verification"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanVerificationCache",
 						"type": "Promise<CacheScanContext>",
-						"description": "CacheScanContext with valid registered records, protected entry rows, and scan problems; the scan does not mutate cache data."
+						"description": "Resolves to a CacheScanContext containing the input paths, protected inventory entries, valid run entries, and scan problems. A run is added to valid only when its tree has no protection reasons, its record validates, its lowercase 40-character commit directory matches the record source commit, its directory name matches the record start time, and its files are declared.",
+						"examples": [
+							{
+								"root": "/workspace/harness",
+								"store": "/workspace/harness/.cache/harness/verification",
+								"entries": [],
+								"valid": [],
+								"problems": []
+							}
+						]
 					}
 				],
 				"errors": [],
