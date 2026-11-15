@@ -12,32 +12,232 @@
 		"symbols": ["CatalogIndexService", "CatalogIndexService.write"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CatalogIndexService.write.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "This must be an existing, writable directory, because write creates a temporary directory whose name starts with .catalog- inside it and then places the finished database at catalog.sqlite; write does not create the directory itself.",
+				"examples": ["/home/dev/app/.harness/catalog", "/var/lib/harness/catalog"]
 			},
 			{
 				"name": "CatalogIndexService.write.index",
 				"type": "HistoryIndex",
-				"required": true
+				"required": true,
+				"description": "The history index is forwarded unchanged to CatalogRepository.replace on the temporary database, which writes it into the new catalog.sqlite together with the snapshots; write itself does not read its fields.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"sourceRepository": "https://github.com/acme/web-app",
+						"refs": {
+							"evidence": "2e6b0d9f14a8c37e5d20b49f1c6a8ed03e7b2c95",
+							"notes": "f5a9c31e083d7b6e2a4f90c1e8d5b76a2f4c0e39"
+						},
+						"branches": [
+							{
+								"name": "main",
+								"head": "9b3e7f1c0a5d842e6f19c3b7a02d58e4f6c1a7d3"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "9b3e7f1c0a5d842e6f19c3b7a02d58e4f6c1a7d3",
+								"tree": "1f8a4d6e30b97c2a5e18d4f0c63b9ae27d5f1c84",
+								"parents": ["4e1a8c2f7b09d6e3a5c17f2b8d4e90a3c6f1b7e2"],
+								"subject": "Show evidence grid counts on the reports page",
+								"author": "Riley Park",
+								"authoredAt": "2026-11-13T14:05:31+00:00",
+								"committedAt": "2026-11-13T14:08:47+00:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "5b1e0c9d4f2a7e83c6b09d1f4a2e7c58d3b6f0a91e4c2d7b8f5a3e0c6d9b1f24",
+										"status": "passed",
+										"profile": "3a9d0f6e1c4b7285",
+										"finishedAt": "2026-11-13T14:21:09.112Z",
+										"base": null,
+										"valid": true,
+										"problems": []
+									}
+								],
+								"reasons": 2,
+								"legacy": [],
+								"changes": {
+									"base": "4e1a8c2f7b09d6e3a5c17f2b8d4e90a3c6f1b7e2",
+									"direct": ["reports.component.evidence-grid"],
+									"added": [],
+									"removed": []
+								},
+								"detail": "revisions/9b3e7f1c0a5d842e6f19c3b7a02d58e4f6c1a7d3.json"
+							},
+							{
+								"commit": "4e1a8c2f7b09d6e3a5c17f2b8d4e90a3c6f1b7e2",
+								"tree": "7c20e9b4d15a8f3e6c079d1b4a2f6ec85e0d3a9b",
+								"parents": [],
+								"subject": "Create the reports page shell",
+								"author": "Riley Park",
+								"authoredAt": "2026-11-12T09:47:03+00:00",
+								"committedAt": "2026-11-12T09:47:03+00:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": ["no verification record is attached to this commit"],
+								"records": [],
+								"reasons": 0,
+								"legacy": [],
+								"changes": {
+									"base": null,
+									"direct": [],
+									"added": ["reports.page.shell"],
+									"removed": []
+								},
+								"detail": "revisions/4e1a8c2f7b09d6e3a5c17f2b8d4e90a3c6f1b7e2.json"
+							}
+						],
+						"units": [
+							{
+								"id": "reports.component.evidence-grid",
+								"growth": [
+									{
+										"commit": "9b3e7f1c0a5d842e6f19c3b7a02d58e4f6c1a7d3",
+										"record": "5b1e0c9d4f2a7e83c6b09d1f4a2e7c58d3b6f0a91e4c2d7b8f5a3e0c6d9b1f24",
+										"source-bytes": 18432,
+										"complexity": 12,
+										"dependencies": 4
+									}
+								]
+							}
+						],
+						"benchmarks": [],
+						"profiles": [
+							{
+								"id": "3a9d0f6e1c4b7285",
+								"platform": "darwin",
+								"arch": "arm64",
+								"cpu": "Apple M3 Pro",
+								"cores": 12,
+								"memoryBytes": 38654705664,
+								"runtime": "node 22.11.0"
+							}
+						],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					},
+					{
+						"schemaVersion": 1,
+						"refs": {
+							"evidence": "8a0d2f5c71e4b93d06a7f2c18e5b4d90a3f6c27e",
+							"notes": "b6e19c4f0a2d87e53c1f9a6b0d4e72c85f3a1d9e"
+						},
+						"branches": [
+							{
+								"name": "feature/evidence-export",
+								"head": "a6f20c8d4e51b9e7a3c02d6f8b4e19c7a05e3d82"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "a6f20c8d4e51b9e7a3c02d6f8b4e19c7a05e3d82",
+								"tree": "0e9c3a7f18d2b64e5a097c1f8d3b6ea4902f5c1d",
+								"parents": ["d07c5b9e216a4f8e3c0db1975a2f6e8c3d0e4a71"],
+								"subject": "Export the evidence grid as CSV",
+								"author": "Morgan Ellis",
+								"authoredAt": "2026-11-14T16:30:12-05:00",
+								"committedAt": "2026-11-14T16:31:40-05:00",
+								"branches": ["feature/evidence-export"],
+								"retained": false,
+								"coverage": "invalid",
+								"gaps": ["record c04a71e9b263: record.json is not a record"],
+								"records": [
+									{
+										"id": "c04a71e9b263f8d0a5c7e1b94d2f6a8e07c3d5b19f2a6e40d87c5b1e3a09d6f2",
+										"status": "passed",
+										"profile": "unknown",
+										"finishedAt": "unknown",
+										"base": null,
+										"valid": false,
+										"problems": ["record.json is not a record"]
+									}
+								],
+								"reasons": 0,
+								"legacy": [],
+								"changes": {
+									"base": "d07c5b9e216a4f8e3c0db1975a2f6e8c3d0e4a71",
+									"direct": ["reports.component.evidence-export"],
+									"added": [],
+									"removed": []
+								},
+								"detail": "revisions/a6f20c8d4e51b9e7a3c02d6f8b4e19c7a05e3d82.json"
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": true,
+						"problems": ["record c04a71e9b263: record.json is not a record"]
+					}
+				]
 			},
 			{
 				"name": "CatalogIndexService.write.snapshots",
 				"type": "CatalogSnapshot[]",
-				"required": true
+				"required": true,
+				"description": "The array is forwarded unchanged to CatalogRepository.replace on the temporary database, alongside index. write does not check its length or read its elements, so an empty array is passed through as-is.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogIndexService.write",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "The method resolves to the path made by joining directory with catalog.sqlite, and only after the temporary database has been renamed onto that path and the temporary directory has been removed. The string is the database location, not the database contents.",
+				"examples": [
+					"/home/dev/app/.harness/catalog/catalog.sqlite",
+					"/var/lib/harness/catalog/catalog.sqlite"
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Rejects with a TypeError from path.join when directory is not a string, before any temporary directory is created; a value that matches the declared string type never triggers it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects when mkdtemp cannot create the temporary directory whose name starts with .catalog- inside directory, for example when directory does not exist or is not writable; no catalog.sqlite is written or replaced in that case."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Any error thrown by openSqlite(path), by new CatalogRepository(db), by its replace(index, snapshots) call, or by db.close() propagates out of write unchanged because write has no catch around them; rename is never reached, and the finally block still removes the temporary directory."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects when chmod cannot set mode 0o600 on the temporary catalog.sqlite; rename is never reached, so any existing catalog.sqlite is left unchanged."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects when rename cannot move the temporary catalog.sqlite onto directory/catalog.sqlite; any existing catalog.sqlite is left unchanged, and the finally block still removes the temporary directory."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects when the final rm(temporary, { recursive: true, force: true }) fails for a reason other than a missing path; because rm runs in a finally block, that rejection replaces the resolved path or any earlier error."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CatalogIndexService.write",
@@ -45,27 +245,227 @@
 					{
 						"name": "CatalogIndexService.write.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "This must be an existing, writable directory, because write creates a temporary directory whose name starts with .catalog- inside it and then places the finished database at catalog.sqlite; write does not create the directory itself.",
+						"examples": ["/home/dev/app/.harness/catalog", "/var/lib/harness/catalog"]
 					},
 					{
 						"name": "CatalogIndexService.write.index",
 						"type": "HistoryIndex",
-						"required": true
+						"required": true,
+						"description": "The history index is forwarded unchanged to CatalogRepository.replace on the temporary database, which writes it into the new catalog.sqlite together with the snapshots; write itself does not read its fields.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"sourceRepository": "https://github.com/acme/web-app",
+								"refs": {
+									"evidence": "2e6b0d9f14a8c37e5d20b49f1c6a8ed03e7b2c95",
+									"notes": "f5a9c31e083d7b6e2a4f90c1e8d5b76a2f4c0e39"
+								},
+								"branches": [
+									{
+										"name": "main",
+										"head": "9b3e7f1c0a5d842e6f19c3b7a02d58e4f6c1a7d3"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "9b3e7f1c0a5d842e6f19c3b7a02d58e4f6c1a7d3",
+										"tree": "1f8a4d6e30b97c2a5e18d4f0c63b9ae27d5f1c84",
+										"parents": ["4e1a8c2f7b09d6e3a5c17f2b8d4e90a3c6f1b7e2"],
+										"subject": "Show evidence grid counts on the reports page",
+										"author": "Riley Park",
+										"authoredAt": "2026-11-13T14:05:31+00:00",
+										"committedAt": "2026-11-13T14:08:47+00:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [
+											{
+												"id": "5b1e0c9d4f2a7e83c6b09d1f4a2e7c58d3b6f0a91e4c2d7b8f5a3e0c6d9b1f24",
+												"status": "passed",
+												"profile": "3a9d0f6e1c4b7285",
+												"finishedAt": "2026-11-13T14:21:09.112Z",
+												"base": null,
+												"valid": true,
+												"problems": []
+											}
+										],
+										"reasons": 2,
+										"legacy": [],
+										"changes": {
+											"base": "4e1a8c2f7b09d6e3a5c17f2b8d4e90a3c6f1b7e2",
+											"direct": ["reports.component.evidence-grid"],
+											"added": [],
+											"removed": []
+										},
+										"detail": "revisions/9b3e7f1c0a5d842e6f19c3b7a02d58e4f6c1a7d3.json"
+									},
+									{
+										"commit": "4e1a8c2f7b09d6e3a5c17f2b8d4e90a3c6f1b7e2",
+										"tree": "7c20e9b4d15a8f3e6c079d1b4a2f6ec85e0d3a9b",
+										"parents": [],
+										"subject": "Create the reports page shell",
+										"author": "Riley Park",
+										"authoredAt": "2026-11-12T09:47:03+00:00",
+										"committedAt": "2026-11-12T09:47:03+00:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "unverified",
+										"gaps": ["no verification record is attached to this commit"],
+										"records": [],
+										"reasons": 0,
+										"legacy": [],
+										"changes": {
+											"base": null,
+											"direct": [],
+											"added": ["reports.page.shell"],
+											"removed": []
+										},
+										"detail": "revisions/4e1a8c2f7b09d6e3a5c17f2b8d4e90a3c6f1b7e2.json"
+									}
+								],
+								"units": [
+									{
+										"id": "reports.component.evidence-grid",
+										"growth": [
+											{
+												"commit": "9b3e7f1c0a5d842e6f19c3b7a02d58e4f6c1a7d3",
+												"record": "5b1e0c9d4f2a7e83c6b09d1f4a2e7c58d3b6f0a91e4c2d7b8f5a3e0c6d9b1f24",
+												"source-bytes": 18432,
+												"complexity": 12,
+												"dependencies": 4
+											}
+										]
+									}
+								],
+								"benchmarks": [],
+								"profiles": [
+									{
+										"id": "3a9d0f6e1c4b7285",
+										"platform": "darwin",
+										"arch": "arm64",
+										"cpu": "Apple M3 Pro",
+										"cores": 12,
+										"memoryBytes": 38654705664,
+										"runtime": "node 22.11.0"
+									}
+								],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							},
+							{
+								"schemaVersion": 1,
+								"refs": {
+									"evidence": "8a0d2f5c71e4b93d06a7f2c18e5b4d90a3f6c27e",
+									"notes": "b6e19c4f0a2d87e53c1f9a6b0d4e72c85f3a1d9e"
+								},
+								"branches": [
+									{
+										"name": "feature/evidence-export",
+										"head": "a6f20c8d4e51b9e7a3c02d6f8b4e19c7a05e3d82"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "a6f20c8d4e51b9e7a3c02d6f8b4e19c7a05e3d82",
+										"tree": "0e9c3a7f18d2b64e5a097c1f8d3b6ea4902f5c1d",
+										"parents": ["d07c5b9e216a4f8e3c0db1975a2f6e8c3d0e4a71"],
+										"subject": "Export the evidence grid as CSV",
+										"author": "Morgan Ellis",
+										"authoredAt": "2026-11-14T16:30:12-05:00",
+										"committedAt": "2026-11-14T16:31:40-05:00",
+										"branches": ["feature/evidence-export"],
+										"retained": false,
+										"coverage": "invalid",
+										"gaps": ["record c04a71e9b263: record.json is not a record"],
+										"records": [
+											{
+												"id": "c04a71e9b263f8d0a5c7e1b94d2f6a8e07c3d5b19f2a6e40d87c5b1e3a09d6f2",
+												"status": "passed",
+												"profile": "unknown",
+												"finishedAt": "unknown",
+												"base": null,
+												"valid": false,
+												"problems": ["record.json is not a record"]
+											}
+										],
+										"reasons": 0,
+										"legacy": [],
+										"changes": {
+											"base": "d07c5b9e216a4f8e3c0db1975a2f6e8c3d0e4a71",
+											"direct": ["reports.component.evidence-export"],
+											"added": [],
+											"removed": []
+										},
+										"detail": "revisions/a6f20c8d4e51b9e7a3c02d6f8b4e19c7a05e3d82.json"
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": true,
+								"problems": ["record c04a71e9b263: record.json is not a record"]
+							}
+						]
 					},
 					{
 						"name": "CatalogIndexService.write.snapshots",
 						"type": "CatalogSnapshot[]",
-						"required": true
+						"required": true,
+						"description": "The array is forwarded unchanged to CatalogRepository.replace on the temporary database, alongside index. write does not check its length or read its elements, so an empty array is passed through as-is.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogIndexService.write",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "The method resolves to the path made by joining directory with catalog.sqlite, and only after the temporary database has been renamed onto that path and the temporary directory has been removed. The string is the database location, not the database contents.",
+						"examples": [
+							"/home/dev/app/.harness/catalog/catalog.sqlite",
+							"/var/lib/harness/catalog/catalog.sqlite"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects with a TypeError from path.join when directory is not a string, before any temporary directory is created; a value that matches the declared string type never triggers it."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects when mkdtemp cannot create the temporary directory whose name starts with .catalog- inside directory, for example when directory does not exist or is not writable; no catalog.sqlite is written or replaced in that case."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Any error thrown by openSqlite(path), by new CatalogRepository(db), by its replace(index, snapshots) call, or by db.close() propagates out of write unchanged because write has no catch around them; rename is never reached, and the finally block still removes the temporary directory."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects when chmod cannot set mode 0o600 on the temporary catalog.sqlite; rename is never reached, so any existing catalog.sqlite is left unchanged."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects when rename cannot move the temporary catalog.sqlite onto directory/catalog.sqlite; any existing catalog.sqlite is left unchanged, and the finally block still removes the temporary directory."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects when the final rm(temporary, { recursive: true, force: true }) fails for a reason other than a missing path; because rm runs in a finally block, that rejection replaces the resolved path or any earlier error."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
