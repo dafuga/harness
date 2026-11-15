@@ -12,16 +12,27 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Plain Error thrown when the tsc declaration build exits non-zero, when a public API or edge Bun.build call reports failure (the message then includes the build logs), or when a built edge bundle has a from clause naming a node: or bun specifier or contains a require() call. Uncaught filesystem rejections, such as a missing package.json or target/kernel/impact-kernel.wasm, also make the script fail, while a failed copy of specification/measurements/impact-kernel is ignored."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse at startup when package.json in the working directory is not valid JSON, before the --types-only check, so neither build mode runs."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown at startup when package.json is the JSON value null, and in the full build (not --types-only) when its dependencies key is missing or null, because Object.keys(dependencies) runs for the verification entry."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
