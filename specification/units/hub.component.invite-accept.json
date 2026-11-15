@@ -30,23 +30,26 @@
 				"name": "InviteAccept.projectId",
 				"type": "string",
 				"required": true,
-				"description": "Required project identifier sent with acceptance and used for the destination workspace."
+				"description": "The project identifier passed as the first argument to projects.accept and later used as the [projectId] parameter of the Pages destination (route /projects/[projectId]/harness/[...path] with path 'pages') after a successful accept. The component does not validate or change it, so any error from the accept call or the navigation step is caught and shown in the alert.",
+				"examples": ["prj_4k8m2v7q1x", "prj_9d3w6b0t5r"]
 			},
 			{
 				"name": "InviteAccept.invitationId",
 				"type": "string",
 				"required": true,
-				"description": "Required invitation identifier submitted alongside the trimmed code."
+				"description": "The invitation identifier passed as the second argument to projects.accept, alongside the trimmed code from the form. The component does not validate or change it and does not place it in the navigation URL.",
+				"examples": ["inv_2h7n5c9e4w", "inv_8q1r6j3t0y"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "InviteAccept",
 				"type": "markup",
-				"description": "Invitation-code form showing the session email. Blocks empty or concurrent submissions, calls acceptance, then performs document navigation to the project Pages catalog. Failure displays an alert and allows retry. The code is passed as an operation argument, not inserted into the destination URL."
+				"description": "The invitation-code section shows the signed-in account's email, and its 'Join project' button is disabled and submissions are ignored while the trimmed code is empty or a submission is in flight. A submit that goes ahead clears the previous alert, calls projects.accept with the trimmed code as an argument, and on success assigns the document to the project's Pages route, which is built only from the project id and the path 'pages'; on failure it shows the rejection's string form in an alert and re-enables the button for retry."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
