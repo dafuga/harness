@@ -18,12 +18,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The page markup for this route is a HarnessScreen titled Platforms with the ExplorerPlatforms component as its content. This file reads no route parameters and passes none to either component, so the [branch] and [...at] segments are not used here."
 			}
 		],
 		"errors": [],
