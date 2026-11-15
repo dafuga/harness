@@ -21,23 +21,54 @@
 				"name": "hubHistory.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "Provides the repository, commit, and source adapter used for the history read. The adapter must expose a historyPage function or the call fails with history-unavailable."
 			},
 			{
 				"name": "hubHistory.input",
 				"type": "{ branch?: string; paths: string[]; page?: number }",
 				"required": true,
-				"description": "Paths to inspect and optional page, default 1; branch is accepted but not used."
+				"description": "Supplies repository paths and an optional page number to the history adapter. The page defaults to 1, while branch is accepted but ignored.",
+				"examples": [
+					{
+						"branch": "main",
+						"paths": ["packages/hub/src/utils/git-source-history/hubHistory.ts"],
+						"page": 2
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubHistory",
 				"type": "Promise<HubHistoryPage>",
-				"description": "Up to the requested 20-entry page as commit events sorted by authored time, with complete and nextPage from the adapter."
+				"description": "Resolves to a page of commit events sorted by descending authored time; the adapter is asked for 20 commits per page. The complete and nextPage fields come from the adapter.",
+				"examples": [
+					{
+						"entries": [
+							{
+								"id": "a1b2c3d4e5f678901234567890abcdef12345678",
+								"at": "2026-11-14T12:30:00.000Z",
+								"kind": "commit",
+								"title": "Update hosted history reader",
+								"detail": "Committed change. Measurements and verification are recorded separately.",
+								"commit": "a1b2c3d4e5f678901234567890abcdef12345678",
+								"version": null
+							}
+						],
+						"complete": false,
+						"nextPage": 2
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "history-unavailable",
+				"type": "thrown",
+				"description": "Raised when the source adapter has no historyPage function. The history page cannot be read in that case."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubHistory",
@@ -46,24 +77,54 @@
 						"name": "hubHistory.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "Provides the repository, commit, and source adapter used for the history read. The adapter must expose a historyPage function or the call fails with history-unavailable."
 					},
 					{
 						"name": "hubHistory.input",
 						"type": "{ branch?: string; paths: string[]; page?: number }",
 						"required": true,
-						"description": "Paths to inspect and optional page, default 1; branch is accepted but not used."
+						"description": "Supplies repository paths and an optional page number to the history adapter. The page defaults to 1, while branch is accepted but ignored.",
+						"examples": [
+							{
+								"branch": "main",
+								"paths": ["packages/hub/src/utils/git-source-history/hubHistory.ts"],
+								"page": 2
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubHistory",
 						"type": "Promise<HubHistoryPage>",
-						"description": "Up to the requested 20-entry page as commit events sorted by authored time, with complete and nextPage from the adapter."
+						"description": "Resolves to a page of commit events sorted by descending authored time; the adapter is asked for 20 commits per page. The complete and nextPage fields come from the adapter.",
+						"examples": [
+							{
+								"entries": [
+									{
+										"id": "a1b2c3d4e5f678901234567890abcdef12345678",
+										"at": "2026-11-14T12:30:00.000Z",
+										"kind": "commit",
+										"title": "Update hosted history reader",
+										"detail": "Committed change. Measurements and verification are recorded separately.",
+										"commit": "a1b2c3d4e5f678901234567890abcdef12345678",
+										"version": null
+									}
+								],
+								"complete": false,
+								"nextPage": 2
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "history-unavailable",
+						"type": "thrown",
+						"description": "Raised when the source adapter has no historyPage function. The history page cannot be read in that case."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
