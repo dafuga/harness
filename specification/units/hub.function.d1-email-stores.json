@@ -22,28 +22,42 @@
 				"name": "d1EmailStores.db",
 				"type": "D1Like",
 				"required": true,
-				"description": "D1-compatible database handle; queries run only when the returned store methods are called."
+				"description": "A D1-compatible handle whose prepared statements support the bind, first, and run calls used by these stores. It is needed when a store method executes SQL."
 			},
 			{
 				"name": "d1EmailStores.records",
 				"type": "AuthRecordValidator",
 				"required": true,
-				"description": "Validator used to turn stored database rows into typed records."
+				"description": "Validator instance that converts rows read by proof lookups and verified-email lookups into typed records. Rows must satisfy the validator's field and value constraints or validation throws."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EMAIL_PURGES",
 				"type": "unknown",
-				"description": "SQL statements to remove expired proofs and verified addresses and send-ledger rows at least two days old; callers supply the current time and execute them."
+				"description": "An ordered array of SQL deletes for proofs and verified emails with expires_at <= the supplied cutoff, and send rows whose last_sent_at is at least 172800000 ms old. The caller must bind the cutoff and execute each statement.",
+				"examples": [
+					[
+						"DELETE FROM auth_email_proofs WHERE expires_at <= ?",
+						"DELETE FROM auth_email_verified WHERE expires_at <= ?",
+						"DELETE FROM auth_email_sends WHERE last_sent_at + 172800000 <= ?"
+					]
+				]
 			},
 			{
 				"name": "d1EmailStores",
 				"type": "D1EmailStores",
-				"description": "Proof store supports creation, lookup, live-code replacement, bounded attempts, single claimed-proof completion and removal. Ledger supports atomic interval/day-cap checks and verified-address lookup/replacement."
+				"description": "An object containing the D1-backed emailProofs and emailLedger stores, wired to this database handle and row validator. Proof issuance and attempts use live/unclaimed/time/attempt conditions, while send allowance checks the interval and day cap atomically; conditional methods return false or null when no row matches."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "When a database row passed to records.emailProof or records.verifiedEmail violates the validator's field or value constraints, AuthRecordValidator throws Error('Hub auth record corrupt') rather than coercing the row."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "d1EmailStores",
@@ -52,24 +66,24 @@
 						"name": "d1EmailStores.db",
 						"type": "D1Like",
 						"required": true,
-						"description": "D1-compatible database handle; queries run only when the returned store methods are called."
+						"description": "A D1-compatible handle whose prepared statements support the bind, first, and run calls used by these stores. It is needed when a store method executes SQL."
 					},
 					{
 						"name": "d1EmailStores.records",
 						"type": "AuthRecordValidator",
 						"required": true,
-						"description": "Validator used to turn stored database rows into typed records."
+						"description": "Validator instance that converts rows read by proof lookups and verified-email lookups into typed records. Rows must satisfy the validator's field and value constraints or validation throws."
 					}
 				],
 				"outputs": [
 					{
 						"name": "d1EmailStores",
 						"type": "D1EmailStores",
-						"description": "Proof store supports creation, lookup, live-code replacement, bounded attempts, single claimed-proof completion and removal. Ledger supports atomic interval/day-cap checks and verified-address lookup/replacement."
+						"description": "An object containing the D1-backed emailProofs and emailLedger stores, wired to this database handle and row validator. Proof issuance and attempts use live/unclaimed/time/attempt conditions, while send allowance checks the interval and day cap atomically; conditional methods return false or null when no row matches."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
