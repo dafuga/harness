@@ -1,6 +1,6 @@
 // @harness-uid u_twtpdov2rp
 import { untrack } from 'svelte';
-import type { Workspace } from '../../stores/workspace.svelte';
+import type { Workspace } from '../../stores/projects-sessions/workspace.svelte';
 import type {
 	DeploymentEnvironment,
 	DeploymentPlan,

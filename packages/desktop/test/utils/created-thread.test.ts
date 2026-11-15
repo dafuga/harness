@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { createdThread } from '../../src/components/explorer-ui/entity-view/createdThread';
 import { rememberCreatedThread } from '../../src/utils/project-agent-events/rememberCreatedThread';
-import type { Workspace } from '../../src/lib/stores/workspace.svelte';
+import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { EntityDetail } from '../../src/models/Desktop.types';
 
 const workspace = (projectId = 'project-a') => ({ context: { projectId } }) as Workspace;

@@ -1,4 +1,4 @@
-import { createWorkspaceStore } from '../../../../../desktop/src/lib/stores/workspace.svelte';
+import { createWorkspaceStore } from '../../../../../desktop/src/lib/stores/projects-sessions/workspace.svelte';
 import { createEntityEvidenceStore } from '../../../../../desktop/src/lib/stores/explorer-ui/entityEvidence.svelte';
 import { entityBehavior } from '../../../../src/utils/entityBehavior';
 import { galleryItems, screenOptions } from '../../../../src/utils/explorer-ui/entityScreens';

@@ -1,6 +1,6 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import { createRemotePhoneStore } from '../../src/lib/stores/networking-security/remotePhone.svelte';
-import type { Workspace } from '../../src/lib/stores/workspace.svelte';
+import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { RemoteMobileStatus } from '../../src/models/Environment.types';
 import { nameNotice, scanFailures, scanNotices } from '../../src/utils/scan-notice/scanNotice';
 

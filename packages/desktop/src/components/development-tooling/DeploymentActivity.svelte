@@ -5,7 +5,7 @@
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 
 	import { onMount, tick } from 'svelte';
-	import type { Workspace } from '../../lib/stores/workspace.svelte';
+	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import type { DeploymentActivity } from '../../models/development-tooling/Deployment.types';
 	import ChoiceDialog from '../shared-primitives/ChoiceDialog.svelte';
 	import DeploymentDetails from './DeploymentDetails.svelte';

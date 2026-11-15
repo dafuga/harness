@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { createDeploymentActivityStore } from '../../src/lib/development-tooling/stores/deploymentActivity.svelte';
-import type { Workspace } from '../../src/lib/stores/workspace.svelte';
+import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import { deploymentActivityFixture } from '../deployment-ui-fixture';
 
 test('late reads cannot erase new jobs and read failures retain last-known status', async () => {

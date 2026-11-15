@@ -1,6 +1,6 @@
 import type { Cache } from './cache-status.test.types';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
-import { createWorkspaceStore } from '../../src/lib/stores/workspace.svelte';
+import { createWorkspaceStore } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import { deniedNotice, offlineNotice } from '../../src/utils/cache-status/cacheStatus';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import type { EntityDetail, ProjectSnapshot } from '../../src/models/Desktop.types';

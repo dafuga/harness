@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { createProjectAgentStore } from '../../src/lib/stores/agents-providers/projectAgent.svelte';
-import type { Workspace } from '../../src/lib/stores/workspace.svelte';
+import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { DesktopBridge, RunEvent } from '../../src/models/DesktopBridge.types';
 
 function shown(change: object = {}) {

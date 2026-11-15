@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { createThreadRunStore } from '../../src/lib/stores/development-tooling/threadRun.svelte';
-import type { Workspace } from '../../src/lib/stores/workspace.svelte';
+import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { RunRequest } from '../../src/models/DesktopBridge.types';
 
 const request = {

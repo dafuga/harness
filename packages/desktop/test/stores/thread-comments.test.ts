@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { createThreadCommentsStore } from '../../src/lib/stores/development-tooling/threadComments.svelte';
-import type { Workspace } from '../../src/lib/stores/workspace.svelte';
+import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { HumanCommentDraft, HumanCommentResult } from '../../src/models/ProjectContext.types';
 
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/;

@@ -1,5 +1,5 @@
 // @harness-uid u_wk7qqpftxl
-import type { Workspace } from '../../stores/workspace.svelte';
+import type { Workspace } from '../../stores/projects-sessions/workspace.svelte';
 import type { DeploymentActivity } from '../../../models/development-tooling/Deployment.types';
 import { watchDeploymentActivities } from '../../../utils/projects-sessions/watchDeploymentActivities';
 /** All desktop deployments, independent of the project being browsed. */

@@ -1,7 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { afterEach, beforeEach, test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
-import type { Workspace } from '../../src/lib/stores/workspace.svelte';
+import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import { recordedPreview } from '../../src/components/shared-primitives/recorded-preview/recordedPreview';
 import { commits, data, evidenceBridge, ids, scopeOf } from '../evidence-fixture';
 

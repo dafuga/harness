@@ -2,7 +2,7 @@ import { render } from 'svelte/server';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import MessageList from '../src/components/shared-primitives/MessageList.svelte';
-import { createWorkspaceStore } from '../src/lib/stores/workspace.svelte';
+import { createWorkspaceStore } from '../src/lib/stores/projects-sessions/workspace.svelte';
 import type { CatalogEntity, ProjectSnapshot } from '../src/models/Desktop.types';
 import type { ThreadEntry } from '../src/utils/commentEntries';
 import { explorerName } from '../../reports/src/utils/explorer-ui/explorerName';

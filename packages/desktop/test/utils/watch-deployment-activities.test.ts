@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import type { Workspace } from '../../src/lib/stores/workspace.svelte';
+import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import { watchDeploymentActivities } from '../../src/utils/projects-sessions/watchDeploymentActivities';
 test('host activity survives project navigation but ignores old connectors and disposed reads', async () => {
 	vi.useFakeTimers();

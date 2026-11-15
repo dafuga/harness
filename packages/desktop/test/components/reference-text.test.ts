@@ -2,7 +2,7 @@ import { render } from 'svelte/server';
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import ReferenceText from '../../src/components/explorer-ui/reference-text/ReferenceText.svelte';
-import { createWorkspaceStore } from '../../src/lib/stores/workspace.svelte';
+import { createWorkspaceStore } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { CatalogEntity, ProjectSnapshot } from '../../src/models/Desktop.types';
 
 /**

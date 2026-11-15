@@ -1,6 +1,6 @@
 // @harness-uid u_y3zhqkah5v
 import type { Events } from './watchDeploymentActivities.types';
-import type { Workspace } from '../../lib/stores/workspace.svelte';
+import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 /** One host-wide read survives project navigation; stale connector replies never replace new jobs. */
 export function watchDeploymentActivities(workspace: Workspace, events: Events) {
 	let active = true,

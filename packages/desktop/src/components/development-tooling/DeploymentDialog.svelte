@@ -3,7 +3,7 @@
 <!-- @harness-uid u_k4lvak3h7p -->
 <script lang="ts">
 	import DetailList from '$shared/shared-primitives/DetailList.svelte';
-	import type { Workspace } from '../../lib/stores/workspace.svelte';
+	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import type {
 		DeploymentPlan,
 		DeploymentReceipt

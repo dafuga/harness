@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { createHostedConnectionStore } from '../../src/lib/stores/networking-security/hostedConnection.svelte';
-import type { Workspace } from '../../src/lib/stores/workspace.svelte';
+import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { NativeHostedStatus } from '../../src/models/ProjectContext.types';
 
 const signedOut: NativeHostedStatus = { configured: true, state: 'signed-out' };

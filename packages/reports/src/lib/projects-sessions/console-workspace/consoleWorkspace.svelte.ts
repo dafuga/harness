@@ -1,6 +1,6 @@
 // @harness-uid u_yrmepyd4oo
 import { explorerRoute, explorerRoutePath } from '../../../../../../src/utils/explorerRoute';
-import { createWorkspaceStore } from '../../../../../desktop/src/lib/stores/workspace.svelte';
+import { createWorkspaceStore } from '../../../../../desktop/src/lib/stores/projects-sessions/workspace.svelte';
 import { ConsoleBridgeAdapter } from './ConsoleBridgeAdapter';
 /** The standalone explorer hosts the same project conversation, without rewriting its URLs. */
 export function createConsoleWorkspaceStore(navigate: (path: string, replace: boolean) => void) {

@@ -4,7 +4,7 @@
 <script lang="ts">
 	import Select from '$shared/Select.svelte';
 	import { untrack, type Snippet } from 'svelte';
-	import type { Workspace } from '../../lib/stores/workspace.svelte';
+	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { deploymentEnvironments } from '../../models/development-tooling/Deployment.types';
 	/** Selects change scope without deploying; the shared summary names the selected context. */
 	let { workspace, children }: { workspace: Workspace; children?: Snippet } = $props();
