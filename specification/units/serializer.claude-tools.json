@@ -10,15 +10,13 @@
 	"owns": {
 		"source": [
 			"src/serializers/ClaudeToolsSerializer.ts",
-			"src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.ts",
-			"src/serializers/claude-tools-serializer/ClaudeToolsSerializer.ts"
+			"src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.ts"
 		],
 		"symbols": [
 			"ClaudeToolsSerializer",
 			"ClaudeToolsSerializer",
 			"ClaudeToolsSerializer.constructor",
-			"ClaudeToolsSerializer.server",
-			"ClaudeToolsSerializer"
+			"ClaudeToolsSerializer.server"
 		]
 	},
 	"contract": {
