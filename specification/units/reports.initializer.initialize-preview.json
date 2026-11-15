@@ -10,11 +10,10 @@
 	"documentation": "packages/reports/specification/features/planned/managed-preview-server.md",
 	"owns": {
 		"source": [
-			"packages/reports/src/initializers/initializePreview.ts",
 			"packages/reports/src/lib/development-tooling/initialize-preview/initializePreview.ts",
 			"packages/reports/src/lib/initialize-preview/initializePreview.ts"
 		],
-		"symbols": ["initializePreview", "initializePreview", "initializePreview"]
+		"symbols": ["initializePreview", "initializePreview"]
 	},
 	"contract": {
 		"origin": "declared",
