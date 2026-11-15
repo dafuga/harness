@@ -21,23 +21,77 @@
 				"name": "planAudit.proposal",
 				"type": "string",
 				"required": true,
-				"description": "Substantive Markdown proposal to inspect structurally without implementing its planned behavior."
+				"description": "The Markdown proposal inspected for recognized section headings, acceptance bullets, unfinished placeholders, performance measurements, and word overlap with the goal. Section checks require at least 12 trimmed body characters; these structural heuristics do not establish semantic fulfillment.",
+				"examples": [
+					"# Overview\nBuild a reporting dashboard for uploaded reports and explain its user-facing scope.\n## Acceptance\n- Users can filter reports by date and status.\n- The dashboard shows the matching report count.\n## Dependencies\nUse the existing report API and authenticated user session.\n## Verification\nVerify filters, empty states, and report counts with representative seeded records.\n## Performance\nMeasure a representative workload of 500 reports, recording response latency and peak memory usage."
+				]
 			},
 			{
 				"name": "planAudit.goal",
 				"type": "string",
 				"required": true,
-				"description": "User-facing task goal used for the committed contract and explicit word-overlap heuristic."
+				"description": "The stated task request used by the plan.request word-overlap heuristic. It must be nonempty; unless no relevant words remain after filtering, at least one remaining word must appear in the proposal, which is not proof of semantic fulfillment.",
+				"examples": ["Build a reporting dashboard for uploaded reports"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planAudit",
 				"type": "TaskCheck[]",
-				"description": "Individual structural heuristic checks; a passing result does not prove arbitrary semantic fulfillment."
+				"description": "Nine structural TaskCheck records covering the five recognized sections, acceptance bullets, placeholders, performance method, and request overlap. Passing indicates only the implemented heuristic checks and does not prove semantic fulfillment.",
+				"examples": [
+					[
+						{
+							"id": "plan.overview",
+							"passed": true,
+							"detail": "Provide a substantive overview section, including an explicit explanation when none applies."
+						},
+						{
+							"id": "plan.acceptance",
+							"passed": true,
+							"detail": "Provide a substantive acceptance section, including an explicit explanation when none applies."
+						},
+						{
+							"id": "plan.dependencies",
+							"passed": true,
+							"detail": "Provide a substantive dependencies section, including an explicit explanation when none applies."
+						},
+						{
+							"id": "plan.verification",
+							"passed": true,
+							"detail": "Provide a substantive verification section, including an explicit explanation when none applies."
+						},
+						{
+							"id": "plan.performance",
+							"passed": true,
+							"detail": "Provide a substantive performance section, including an explicit explanation when none applies."
+						},
+						{
+							"id": "plan.acceptance-items",
+							"passed": true,
+							"detail": "List individually assessable acceptance criteria."
+						},
+						{
+							"id": "plan.placeholders",
+							"passed": true,
+							"detail": "Replace unfinished template content before completing the plan."
+						},
+						{
+							"id": "plan.performance-method",
+							"passed": true,
+							"detail": "Name representative workloads, latency and memory measurements; do not invent runtime results for planned code."
+						},
+						{
+							"id": "plan.request",
+							"passed": true,
+							"detail": "The proposal must address the stated request; this word-overlap heuristic still needs human review."
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "planAudit",
@@ -46,24 +100,77 @@
 						"name": "planAudit.proposal",
 						"type": "string",
 						"required": true,
-						"description": "Substantive Markdown proposal to inspect structurally without implementing its planned behavior."
+						"description": "The Markdown proposal inspected for recognized section headings, acceptance bullets, unfinished placeholders, performance measurements, and word overlap with the goal. Section checks require at least 12 trimmed body characters; these structural heuristics do not establish semantic fulfillment.",
+						"examples": [
+							"# Overview\nBuild a reporting dashboard for uploaded reports and explain its user-facing scope.\n## Acceptance\n- Users can filter reports by date and status.\n- The dashboard shows the matching report count.\n## Dependencies\nUse the existing report API and authenticated user session.\n## Verification\nVerify filters, empty states, and report counts with representative seeded records.\n## Performance\nMeasure a representative workload of 500 reports, recording response latency and peak memory usage."
+						]
 					},
 					{
 						"name": "planAudit.goal",
 						"type": "string",
 						"required": true,
-						"description": "User-facing task goal used for the committed contract and explicit word-overlap heuristic."
+						"description": "The stated task request used by the plan.request word-overlap heuristic. It must be nonempty; unless no relevant words remain after filtering, at least one remaining word must appear in the proposal, which is not proof of semantic fulfillment.",
+						"examples": ["Build a reporting dashboard for uploaded reports"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planAudit",
 						"type": "TaskCheck[]",
-						"description": "Individual structural heuristic checks; a passing result does not prove arbitrary semantic fulfillment."
+						"description": "Nine structural TaskCheck records covering the five recognized sections, acceptance bullets, placeholders, performance method, and request overlap. Passing indicates only the implemented heuristic checks and does not prove semantic fulfillment.",
+						"examples": [
+							[
+								{
+									"id": "plan.overview",
+									"passed": true,
+									"detail": "Provide a substantive overview section, including an explicit explanation when none applies."
+								},
+								{
+									"id": "plan.acceptance",
+									"passed": true,
+									"detail": "Provide a substantive acceptance section, including an explicit explanation when none applies."
+								},
+								{
+									"id": "plan.dependencies",
+									"passed": true,
+									"detail": "Provide a substantive dependencies section, including an explicit explanation when none applies."
+								},
+								{
+									"id": "plan.verification",
+									"passed": true,
+									"detail": "Provide a substantive verification section, including an explicit explanation when none applies."
+								},
+								{
+									"id": "plan.performance",
+									"passed": true,
+									"detail": "Provide a substantive performance section, including an explicit explanation when none applies."
+								},
+								{
+									"id": "plan.acceptance-items",
+									"passed": true,
+									"detail": "List individually assessable acceptance criteria."
+								},
+								{
+									"id": "plan.placeholders",
+									"passed": true,
+									"detail": "Replace unfinished template content before completing the plan."
+								},
+								{
+									"id": "plan.performance-method",
+									"passed": true,
+									"detail": "Name representative workloads, latency and memory measurements; do not invent runtime results for planned code."
+								},
+								{
+									"id": "plan.request",
+									"passed": true,
+									"detail": "The proposal must address the stated request; this word-overlap heuristic still needs human review."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
