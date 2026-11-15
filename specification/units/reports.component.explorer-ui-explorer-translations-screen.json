@@ -60,87 +60,193 @@
 				"name": "ExplorerTranslationsScreen.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Project branches and revisions supplied to the shared explorer frame."
+				"description": "The project's branch and revision index is included in the host props forwarded to ExplorerFrame. This screen does not read it directly, so it does not determine the translation rows.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "a1b2c3d4e5f67890123456789abcdef012345678"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "a1b2c3d4e5f67890123456789abcdef012345678",
+								"parents": [],
+								"subject": "Record translations",
+								"author": "Developer",
+								"committedAt": "2026-11-15T12:00:00.000Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerTranslationsScreen.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Selected revision containing the translation catalog and entity registry."
+				"description": "The selected revision supplies the optional revision-bound translation catalog whose rows, locales, and source gaps this screen renders. When the catalog is absent, the screen shows its no-catalog empty state.",
+				"examples": [
+					{
+						"translations": {
+							"locales": ["en", "fr"],
+							"rows": [
+								{
+									"scope": "src/components/SaveButton.svelte",
+									"key": "common.save",
+									"values": {
+										"en": "Save",
+										"fr": "Enregistrer"
+									},
+									"sources": ["src/locales/en.json", "src/locales/fr.json"],
+									"usedBy": []
+								}
+							],
+							"gaps": []
+						},
+						"commit": "a1b2c3d4e5f67890123456789abcdef012345678",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerTranslationsScreen.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "Comparison revision supplied by the host, or null when none is available."
+				"description": "The first parent revision for the selected commit, forwarded with the host props to ExplorerFrame. It is null when there is no available parent, and this screen does not inspect it directly.",
+				"examples": [null]
 			},
 			{
 				"name": "ExplorerTranslationsScreen.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch and commit used by the shared explorer frame."
+				"description": "The resolved branch and commit context is forwarded to ExplorerFrame, and this screen observes `scope.commit` to reset its visible-row limit when the commit or search query changes. The translation rows themselves come from `head.translations`.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": "a1b2c3d4e5f67890123456789abcdef012345678",
+							"category": "pages",
+							"screen": "translations"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "a1b2c3d4e5f67890123456789abcdef012345678",
+						"commit": "a1b2c3d4e5f67890123456789abcdef012345678",
+						"atTip": true,
+						"parent": null,
+						"summary": {
+							"commit": "a1b2c3d4e5f67890123456789abcdef012345678",
+							"parents": [],
+							"subject": "Record translations",
+							"author": "Developer",
+							"committedAt": "2026-11-15T12:00:00.000Z",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "unverified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "ExplorerTranslationsScreen.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current Translations address, including the selected branch and optional commit."
+				"description": "The current explorer address is forwarded to ExplorerFrame and spread into consumer-link targets. For those links this screen clears `screen` and sets the target category and entity, while preserving the other address fields.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "a1b2c3d4e5f67890123456789abcdef012345678",
+						"category": "pages",
+						"screen": "translations"
+					}
+				]
 			},
 			{
 				"name": "ExplorerTranslationsScreen.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Revision-scoped entity catalog used to resolve recorded translation consumers."
+				"description": "Revision-scoped entities are searched by each row's `usedBy` IDs to build consumer links. A recorded consumer ID without a matching entity is rendered without a link.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerTranslationsScreen.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Host readers, including the URL builder for links to recorded consumers."
+				"description": "Host-provided relation, evidence, behavior, and history readers are included in the props forwarded to ExplorerFrame. This screen does not call `lens` directly."
 			},
 			{
 				"name": "ExplorerTranslationsScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Host revision loader accepted by the shared explorer screen interface."
+				"description": "The host's revision loader is forwarded to ExplorerFrame as part of the screen props. This screen does not call `client.revision` directly."
 			},
 			{
 				"name": "ExplorerTranslationsScreen.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Base URL from which the shared frame resolves recorded media."
+				"description": "The media base URL is forwarded to ExplorerFrame with the host props. This screen does not construct media URLs itself.",
+				"examples": ["https://reports.example.test/media"]
 			},
 			{
 				"name": "ExplorerTranslationsScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Requests navigation while preserving the selected explorer scope."
+				"description": "The host route callback is forwarded to ExplorerFrame. This component navigates consumer links through `nav.go(to)` and does not invoke `onroute` directly."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerTranslationsScreen",
 				"type": "markup",
-				"description": "Compares English with the selected language, with search, paging and links to recorded consumers."
+				"description": "Svelte markup renders the Translations section with English and one selected non-English locale, case-insensitive search, source gaps, consumer links, and empty states. It initially shows up to 50 matching rows, adds 50 with View More, resets that limit when search or commit changes, defaults to `fr` or the first available non-English locale, excludes English from choices, and keeps the table scrollable with a tighter fixed layout at widths up to 720px."
 			}
 		],
 		"errors": [
 			{
 				"name": "lens.href callback error",
 				"type": "thrown",
-				"description": "An error from the host URL reader propagates while rendering a recorded consumer link."
+				"description": "While rendering a resolved consumer link, this component calls the snippet-provided `nav.href(to)` and propagates any exception from that callback. It does not call `host.lens.href` directly."
 			},
 			{
 				"name": "onroute callback error",
 				"type": "thrown",
-				"description": "An error from the host navigation callback propagates when a consumer link is activated."
+				"description": "For a consumer-link click without modifier keys, the handler calls `nav.go(to)` and propagates any exception from that callback. This component does not invoke `host.onroute` directly."
 			},
 			{
 				"name": "each_key_duplicate",
 				"type": "thrown",
-				"description": "Duplicate formatted scope:key row identifiers throw when the list is mounted or updated."
+				"description": "Visible translation rows use `${row.scope}:${row.key}` as their keyed-each identity. Duplicate identities can make Svelte's keyed list throw during mount or update."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
