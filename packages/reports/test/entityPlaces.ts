@@ -3,7 +3,7 @@ import { explorerRoutePath } from '../../../src/utils/explorerRoute';
 import type { ExplorerLocation, ExplorerScope } from '../src/models/explorer-ui/Explorer.types';
 import type { HarnessIndex, HarnessRevision } from '../src/models/explorer-ui/Harness.types';
 import type { EntityLens, EntityNav } from '../src/utils/explorer-ui/entityLens';
-import { explorerBehavior } from '../src/utils/explorerBehavior';
+import { explorerBehavior } from '../src/utils/explorer-ui/explorerBehavior';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { explorerEvidence } from '../src/utils/explorerEvidence';
 import { explorerHistory } from '../src/utils/explorer-history/explorerHistory';

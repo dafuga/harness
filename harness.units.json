@@ -861,8 +861,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/explorer-ui/catalogUnit.ts",
-			"specifier": "$reports/utils/explorerCategory",
-			"to": "packages/reports/src/utils/explorerCategory.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerCategory",
+			"to": "packages/reports/src/utils/explorer-ui/explorerCategory.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -963,8 +963,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
-			"specifier": "$reports/utils/explorerBehavior",
-			"to": "packages/reports/src/utils/explorerBehavior.ts",
+			"specifier": "$reports/utils/explorer-ui/explorerBehavior",
+			"to": "packages/reports/src/utils/explorer-ui/explorerBehavior.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{

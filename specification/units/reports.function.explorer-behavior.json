@@ -8,18 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/explorer-ui/explorerBehavior.ts",
-			"packages/reports/src/utils/explorerBehavior.ts"
-		],
-		"symbols": [
-			"behaviorKinds",
-			"behaviorSummary",
-			"explorerBehavior",
-			"behaviorKinds",
-			"behaviorSummary",
-			"explorerBehavior"
-		]
+		"source": ["packages/reports/src/utils/explorer-ui/explorerBehavior.ts"],
+		"symbols": ["behaviorKinds", "behaviorSummary", "explorerBehavior"]
 	},
 	"contract": {
 		"origin": "declared",

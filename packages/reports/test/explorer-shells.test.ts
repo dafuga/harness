@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import type { HarnessRevision, HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 import { catalogUnits } from '../tests/e2e/support/component-previews/catalogUnits';
 import { entityUsage } from '../src/components/explorer-ui/entity-relations/entityUsage';
-import { explorerCategory, explorerRole } from '../src/utils/explorerCategory';
+import { explorerCategory, explorerRole } from '../src/utils/explorer-ui/explorerCategory';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { explorerRelations } from '../src/utils/explorer-ui/explorerRelations';
 import { categoryIcon } from '../src/utils/harnessIcons';

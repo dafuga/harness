@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { explorerEntityCategories as explorerCategories } from '../../../../src/utils/explorerRoute';
-import { explorerCategory, explorerRole } from '../../src/utils/explorerCategory';
+import { explorerCategory, explorerRole } from '../../src/utils/explorer-ui/explorerCategory';
 import { ownRegistry, sourceDeclaredModels } from '../ownRegistry';
 
 test("the policy holds for Harness's own registry", () => {

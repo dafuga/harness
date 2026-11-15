@@ -4,7 +4,7 @@ import type { ExplorerEntity, ExplorerLocation } from '../../../models/explorer-
 import type { HarnessRevision, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 import type { EntityLens } from '../../../utils/explorer-ui/entityLens';
 import { correctedLocation } from '../../../utils/development-tooling/correctedLocation';
-import { explorerBehavior } from '../../../utils/explorerBehavior';
+import { explorerBehavior } from '../../../utils/explorer-ui/explorerBehavior';
 import { explorerEvidence } from '../../../utils/explorerEvidence';
 import { explorerHistory } from '../../../utils/explorer-history/explorerHistory';
 import { explorerRelationsReader } from '../../../utils/explorer-ui/explorerRelations';

@@ -3,7 +3,10 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { afterEach, test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
 import type { ComponentManifest } from '../../../src/lib/contracts';
-import { explorerCategory, explorerRole } from '../../reports/src/utils/explorerCategory';
+import {
+	explorerCategory,
+	explorerRole
+} from '../../reports/src/utils/explorer-ui/explorerCategory';
 import { CatalogService } from '../src/services/projects-sessions/project-session-service/catalog-service/CatalogService';
 import { catalogUnit, planCatalog } from '../src/utils/explorer-ui/catalogUnit';
 import { manifest } from './catalog-listing-manifests';

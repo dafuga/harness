@@ -3,7 +3,7 @@ import { bound, bindingFields } from './ui-evidence-bindings';
 export { bindingFields, bindingKey } from './ui-evidence-bindings';
 import type { CacheIdentity } from '../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type { HarnessUnit } from '../../../reports/src/models/explorer-ui/Harness.types';
-import { explorerBehavior } from '../../../reports/src/utils/explorerBehavior';
+import { explorerBehavior } from '../../../reports/src/utils/explorer-ui/explorerBehavior';
 import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
 import { explorerScope } from '../../../reports/src/utils/explorer-ui/harness-page/explorerScope';
 import { index } from '../../../reports/test/entityFixture';

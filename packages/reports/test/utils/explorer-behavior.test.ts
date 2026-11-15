@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import type { ExplorerEvidence, ExplorerSide } from '../../src/models/explorer-ui/Explorer.types';
 import type { HarnessCapture } from '../../src/models/explorer-ui/Harness.types';
-import { explorerBehavior } from '../../src/utils/explorerBehavior';
+import { explorerBehavior } from '../../src/utils/explorer-ui/explorerBehavior';
 import { capture, declared, record, sha } from '../explorerFixture';
 
 const output = (hash: string, extra: Partial<HarnessCapture> = {}) =>

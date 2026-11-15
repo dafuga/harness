@@ -1,6 +1,6 @@
 // @harness-uid u_lkzrod2wrf
 import type { AnswerInput } from './recordedAnswer.types';
-import { explorerBehavior } from '$reports/utils/explorerBehavior';
+import { explorerBehavior } from '$reports/utils/explorer-ui/explorerBehavior';
 import { explorerEvidence } from '$reports/utils/explorerEvidence';
 import { remoteLimits } from '../../../../remote/src/index';
 import type { EntityEvidenceResult } from '../../models/verification-evidence/DesktopEvidence.types';

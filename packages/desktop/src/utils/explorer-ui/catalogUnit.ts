@@ -4,7 +4,7 @@ import { explorerName } from '$reports/utils/explorer-ui/explorerName';
 import type { ComponentManifest } from '../../../../../src/lib/contracts';
 import type { CatalogEntity, DesignVersion } from '../../models/development-tooling/Desktop.types';
 import type { PlanRecord } from '../../models/planning-collaboration/PlanningPort.types';
-import { explorerCategory } from '$reports/utils/explorerCategory';
+import { explorerCategory } from '$reports/utils/explorer-ui/explorerCategory';
 import { categoryOf } from '../shared-primitives/categoryOf';
 function ownsChange(paths: string[], changed: Set<string>) {
 	return paths.some((p) => [...changed].some((c) => c === p || c.startsWith(p + '/')));
