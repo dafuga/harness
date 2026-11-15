@@ -15,33 +15,83 @@
 		"symbols": ["PieceKind", "pieceFiles", "PieceContext", "PieceContext"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "pieceFiles.kind",
 				"type": "PieceKind",
-				"required": true
+				"required": true,
+				"description": "The scaffold kind, one of the values in scaffoldKinds, that selects the builder which plans the files. Any other string has no usable builder, so the call throws a TypeError instead of returning files.",
+				"examples": ["util", "test", "migration"]
 			},
 			{
 				"name": "pieceFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The text the piece is built from, such as 'invoice line' or 'InvoiceLine'. Nothing validates it: each builder splits it into words at any character other than an ASCII letter or digit and at each lowercase-or-digit-to-uppercase boundary, and the migration kind copies it unchanged into a SQL comment.",
+				"examples": ["invoice line", "order-status", "InvoiceLine"]
 			},
 			{
 				"name": "pieceFiles.context",
 				"type": "PieceContext",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional project facts beyond the name: dimension ('2d' or '3d') is read only by the game-view kind, which fails without it and writes it into its config. The level ('molecule' or 'organism') only sets the tier comment of .svelte files, where the layout kind always uses 'layout', the view and resource kinds always use 'page', and an omitted level means 'molecule'.",
+				"examples": [
+					{},
+					{
+						"level": "organism"
+					},
+					{
+						"dimension": "2d"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "pieceFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The files planned for the piece, each with a relative repository path and its full contents, and this function writes nothing to disk. A .ts file that mixes runtime code with interface or type declarations is split into the file and a sibling .types.ts file, and .svelte files get tier and atoms header comments.",
+				"examples": [
+					[
+						{
+							"path": "src/utils/invoiceLine.ts",
+							"contents": "export function invoiceLine(value: string): string {\n\treturn value.trim();\n}\n"
+						},
+						{
+							"path": "test/utils/invoice-line.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { invoiceLine } from '../../src/utils/invoiceLine';\n\ntest('invoiceLine trims values', () => {\n\texpect(invoiceLine(' value ')).toBe('value');\n});\n"
+						}
+					],
+					[
+						{
+							"path": "test/order-status.test.ts",
+							"contents": "import { expect, test } from 'vitest';\n\ntest('order-status', () => {\n\texpect(true).toBe(true);\n});\n"
+						}
+					],
+					[
+						{
+							"path": "db/migrations/add-invoice-status.sql",
+							"contents": "-- add invoice status\n-- Keep migrations small and reversible when the database supports it.\n"
+						}
+					]
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when kind is not one of the scaffoldKinds values, because the builder lookup returns no usable function and the call then fails; type-checked callers cannot pass such a value."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Thrown when kind is 'game-view' and context has no dimension, with the message 'A game view needs harness.dimension 2d or 3d in package.json.'; pieceFiles itself does not read package.json."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "pieceFiles",
@@ -49,28 +99,78 @@
 					{
 						"name": "pieceFiles.kind",
 						"type": "PieceKind",
-						"required": true
+						"required": true,
+						"description": "The scaffold kind, one of the values in scaffoldKinds, that selects the builder which plans the files. Any other string has no usable builder, so the call throws a TypeError instead of returning files.",
+						"examples": ["util", "test", "migration"]
 					},
 					{
 						"name": "pieceFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The text the piece is built from, such as 'invoice line' or 'InvoiceLine'. Nothing validates it: each builder splits it into words at any character other than an ASCII letter or digit and at each lowercase-or-digit-to-uppercase boundary, and the migration kind copies it unchanged into a SQL comment.",
+						"examples": ["invoice line", "order-status", "InvoiceLine"]
 					},
 					{
 						"name": "pieceFiles.context",
 						"type": "PieceContext",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional project facts beyond the name: dimension ('2d' or '3d') is read only by the game-view kind, which fails without it and writes it into its config. The level ('molecule' or 'organism') only sets the tier comment of .svelte files, where the layout kind always uses 'layout', the view and resource kinds always use 'page', and an omitted level means 'molecule'.",
+						"examples": [
+							{},
+							{
+								"level": "organism"
+							},
+							{
+								"dimension": "2d"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pieceFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The files planned for the piece, each with a relative repository path and its full contents, and this function writes nothing to disk. A .ts file that mixes runtime code with interface or type declarations is split into the file and a sibling .types.ts file, and .svelte files get tier and atoms header comments.",
+						"examples": [
+							[
+								{
+									"path": "src/utils/invoiceLine.ts",
+									"contents": "export function invoiceLine(value: string): string {\n\treturn value.trim();\n}\n"
+								},
+								{
+									"path": "test/utils/invoice-line.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { invoiceLine } from '../../src/utils/invoiceLine';\n\ntest('invoiceLine trims values', () => {\n\texpect(invoiceLine(' value ')).toBe('value');\n});\n"
+								}
+							],
+							[
+								{
+									"path": "test/order-status.test.ts",
+									"contents": "import { expect, test } from 'vitest';\n\ntest('order-status', () => {\n\texpect(true).toBe(true);\n});\n"
+								}
+							],
+							[
+								{
+									"path": "db/migrations/add-invoice-status.sql",
+									"contents": "-- add invoice status\n-- Keep migrations small and reversible when the database supports it.\n"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when kind is not one of the scaffoldKinds values, because the builder lookup returns no usable function and the call then fails; type-checked callers cannot pass such a value."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when kind is 'game-view' and context has no dimension, with the message 'A game view needs harness.dimension 2d or 3d in package.json.'; pieceFiles itself does not read package.json."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
