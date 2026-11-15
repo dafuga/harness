@@ -12,42 +12,72 @@
 		"symbols": ["apiRegistry"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "apiRegistry.client",
 				"type": "HarnessApiService",
-				"required": true
+				"required": true,
+				"description": "The API service used to read the selected revision's registry and, for a contracts lookup with an id, a saved entity. Its read calls may reject; saved-entity HTTP 404 and the exact entity-not-found HTTP 400 are treated as a miss."
 			},
 			{
 				"name": "apiRegistry.snapshot",
 				"type": "ApiSnapshot",
-				"required": true
+				"required": true,
+				"description": "Carries the project, selected revision, writable status, and entity list; this function reads only revision.branch and revision.commit from it. Those revision values scope registry and entity reads.",
+				"examples": [
+					{
+						"project": {
+							"id": "api-project"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true
+						},
+						"writable": true,
+						"entities": []
+					}
+				]
 			},
 			{
 				"name": "apiRegistry.resource",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Chooses the returned shape: registry yields registry data and units yields its unit list. With other values, id selects a unit contract or, when absent, the function returns id-and-contract summaries; contracts with an id first attempts a saved entity contract.",
+				"examples": ["registry", "units", "contracts"]
 			},
 			{
 				"name": "apiRegistry.id",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional id for saved-entity or backend-unit lookup. For contracts, it is sent as entityId; after a saved-plan miss (or for other resource values), it is matched exactly against backend unit ids, and a missing unit throws ExpectedCliError.",
+				"examples": ["reports.component.evidence-grid"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "apiRegistry",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "Resolves to registry data, a units array, an id-and-contract summary array, or a contract value depending on resource and id. A contracts lookup tries the saved entity contract first; if that misses, an unmatched backend unit id rejects with ExpectedCliError.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"units": []
+					},
+					[]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when a supplied id matches neither a saved entity contract for a contracts lookup nor a backend unit at the selected revision. Saved-entity HTTP 404 responses and the exact entity-not-found HTTP 400 response count as a miss before the backend unit lookup."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "apiRegistry",
@@ -55,37 +85,67 @@
 					{
 						"name": "apiRegistry.client",
 						"type": "HarnessApiService",
-						"required": true
+						"required": true,
+						"description": "The API service used to read the selected revision's registry and, for a contracts lookup with an id, a saved entity. Its read calls may reject; saved-entity HTTP 404 and the exact entity-not-found HTTP 400 are treated as a miss."
 					},
 					{
 						"name": "apiRegistry.snapshot",
 						"type": "ApiSnapshot",
-						"required": true
+						"required": true,
+						"description": "Carries the project, selected revision, writable status, and entity list; this function reads only revision.branch and revision.commit from it. Those revision values scope registry and entity reads.",
+						"examples": [
+							{
+								"project": {
+									"id": "api-project"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"atTip": true
+								},
+								"writable": true,
+								"entities": []
+							}
+						]
 					},
 					{
 						"name": "apiRegistry.resource",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Chooses the returned shape: registry yields registry data and units yields its unit list. With other values, id selects a unit contract or, when absent, the function returns id-and-contract summaries; contracts with an id first attempts a saved entity contract.",
+						"examples": ["registry", "units", "contracts"]
 					},
 					{
 						"name": "apiRegistry.id",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional id for saved-entity or backend-unit lookup. For contracts, it is sent as entityId; after a saved-plan miss (or for other resource values), it is matched exactly against backend unit ids, and a missing unit throws ExpectedCliError.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiRegistry",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "Resolves to registry data, a units array, an id-and-contract summary array, or a contract value depending on resource and id. A contracts lookup tries the saved entity contract first; if that misses, an unmatched backend unit id rejects with ExpectedCliError.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"units": []
+							},
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when a supplied id matches neither a saved entity contract for a contracts lookup nor a backend unit at the selected revision. Saved-entity HTTP 404 responses and the exact entity-not-found HTTP 400 response count as a miss before the backend unit lookup."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
