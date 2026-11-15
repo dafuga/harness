@@ -21,23 +21,35 @@
 				"name": "d1OneTimeStores.db",
 				"type": "D1Like",
 				"required": true,
-				"description": "D1-compatible database handle; queries run only when the returned store methods are called."
+				"description": "The D1-compatible database handle, which must provide prepare(query) and statements with bind, run and first. It is used only when a store method is called, never by d1OneTimeStores itself, and a database error reaches that method's caller unchanged."
 			},
 			{
 				"name": "d1OneTimeStores.records",
 				"type": "AuthRecordValidator",
 				"required": true,
-				"description": "Validator used to turn stored database rows into typed records."
+				"description": "The validator that turns each row returned by challenges.claim, githubStates.claim, exchanges.find or exchanges.claim into a typed record. A row that fails validation makes that call throw, and create and approve never use it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "d1OneTimeStores",
 				"type": "D1OneTimeStores",
-				"description": "Stores that create and atomically consume unexpired challenges/GitHub states, plus native exchanges that can be found, approved with the matching code while pending, and consumed once while approved and unexpired. Unmatched claims return null and unmatched approval returns false."
+				"description": "Three stores over the same handle: challenges and githubStates each offer create and claim, where claim atomically deletes and returns an unexpired row or null, and exchanges offers create, find (any status, expired or not), approve and claim. Approve moves a pending, unexpired native exchange with the given code hash to approved, sets its subject and parentHash, and returns false otherwise; claim moves an approved, unexpired native exchange to consumed and returns it to one caller, and every other claim returns null."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Hub auth record corrupt' by challenges.claim, githubStates.claim, exchanges.find and exchanges.claim when a row fails validation: the row is not an object, a required text column is not a non-empty string, a required integer column is not a safe integer, or an exchange's environment or status is not one of its allowed values."
+			},
+			{
+				"name": "database rejection",
+				"type": "thrown",
+				"description": "Any error from the D1Like handle's prepare, bind, run or first, which every store method leaves uncaught so that the caller receives the handle's own error unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "d1OneTimeStores",
@@ -46,24 +58,24 @@
 						"name": "d1OneTimeStores.db",
 						"type": "D1Like",
 						"required": true,
-						"description": "D1-compatible database handle; queries run only when the returned store methods are called."
+						"description": "The D1-compatible database handle, which must provide prepare(query) and statements with bind, run and first. It is used only when a store method is called, never by d1OneTimeStores itself, and a database error reaches that method's caller unchanged."
 					},
 					{
 						"name": "d1OneTimeStores.records",
 						"type": "AuthRecordValidator",
 						"required": true,
-						"description": "Validator used to turn stored database rows into typed records."
+						"description": "The validator that turns each row returned by challenges.claim, githubStates.claim, exchanges.find or exchanges.claim into a typed record. A row that fails validation makes that call throw, and create and approve never use it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "d1OneTimeStores",
 						"type": "D1OneTimeStores",
-						"description": "Stores that create and atomically consume unexpired challenges/GitHub states, plus native exchanges that can be found, approved with the matching code while pending, and consumed once while approved and unexpired. Unmatched claims return null and unmatched approval returns false."
+						"description": "Three stores over the same handle: challenges and githubStates each offer create and claim, where claim atomically deletes and returns an unexpired row or null, and exchanges offers create, find (any status, expired or not), approve and claim. Approve moves a pending, unexpired native exchange with the given code hash to approved, sets its subject and parentHash, and returns false otherwise; claim moves an approved, unexpired native exchange to consumed and returns it to one caller, and every other claim returns null."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
