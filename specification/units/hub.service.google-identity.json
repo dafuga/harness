@@ -35,40 +35,93 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GoogleIdentityService.constructor.options",
 				"type": "GoogleIdentityOptions",
-				"required": true
+				"required": true,
+				"description": "Verifier configuration: clientId is the audience that a credential's aud must equal exactly, and any azp it carries must equal it too; keys is the key resolver that checks RS256 signatures (production passes Google's remote key set); and now returns the current time in epoch milliseconds for expiry checks. The constructor stores it as given and performs no checks."
 			},
 			{
 				"name": "GoogleIdentityService.verify.credential",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The compact JWT issued by Google (three base64url segments joined by dots), which verify checks as RS256 against the configured keys. It must carry iss, aud, exp, sub and nonce claims, and its email must be an address of the form local@domain with email_verified set to true.",
+				"examples": [
+					"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJzdWIiOiIxMTAyNDg0OTU5MjEyMzg2OTk1ODMiLCJub25jZSI6IlZxM2tUOXhMdzJSejdIYzBkTm01cFllOHNHYTF1SmY0b0tpNnRXYjJRcjkifQ.Hk3xYt9Qw2LpRz7Vc0Nm5Bd8Sf1Ga6Je4Ui2Ko7Tp9Xr0Wq5Yz3Lb8Nc1Mv6Sd4Fg2Hj0Kl",
+					"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJzdWIiOiIxMDQ1NTgyMTM5MDcyMTY0ODMwMjUiLCJoZCI6ImFjbWUtY29ycC5jb20ifQ.Pd2Wq8Ls0Vn4Ty6Hk1Rb9Jx3Ma7Zc5Gu2Ef8Ic0Ot4Ya6Ng1Qs9Kh3Lp7Ro5Tw"
+				]
 			},
 			{
 				"name": "GoogleIdentityService.verify.nonce",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The nonce this server issued, which verify compares with the credential's nonce claim. verify rejects a credential unless that claim is a string equal to this value, compared in constant time for equal lengths.",
+				"examples": [
+					"Vq3kT9xLw2Rz7Hc0dNm5pYe8sGa1uJf4oKi6tWb2Qr9",
+					"c8Lr1ZxW0nQe5Yt7MbKd3Hs9Gf2Ua6Pj4Ti8Ro1Ev0Xy"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GOOGLE_JWKS_URL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Google's public JSON Web Key Set endpoint, exported as a constant. Nothing in this unit reads it: verify checks signatures only with the keys option passed to the constructor.",
+				"examples": ["https://www.googleapis.com/oauth2/v3/certs"]
 			},
 			{
 				"name": "GOOGLE_ISSUERS",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The two issuer values a Google credential may carry in its iss claim: the https form and the bare host name. verify passes this list to jwtVerify as the accepted issuers, so a credential with any other iss is rejected.",
+				"examples": [
+					["https://accounts.google.com", "accounts.google.com"]
+				]
 			},
 			{
 				"name": "GoogleIdentityService.verify",
-				"type": "Promise<GoogleIdentity>"
+				"type": "Promise<GoogleIdentity>",
+				"description": "The resolved verified identity: actor has id 'google-' followed by the credential's sub claim, the lowercased verified email, a display name from the name claim (trimmed, at most 200 characters) or else the email's local part, and emailVerified true. authoritative is true only for a @gmail.com address or a Workspace account (non-empty hd claim); for any other address the caller must prove the mailbox before treating the identity as an actor.",
+				"examples": [
+					{
+						"actor": {
+							"id": "google-110248495921238699583",
+							"email": "dana.lee@gmail.com",
+							"name": "Dana Lee",
+							"emailVerified": true
+						},
+						"authoritative": true
+					},
+					{
+						"actor": {
+							"id": "google-104558213907216483025",
+							"email": "ops.team@acme-corp.com",
+							"name": "Ops Team",
+							"emailVerified": true
+						},
+						"authoritative": true
+					},
+					{
+						"actor": {
+							"id": "google-117392046583102947561",
+							"email": "priya.n@example.org",
+							"name": "priya.n",
+							"emailVerified": true
+						},
+						"authoritative": false
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "verify rejects with an AuthFailure, thrown through authFail('credential-invalid'), whenever it refuses a credential: a failed signature, algorithm, issuer, audience, expiry (with 10 seconds of clock tolerance) or required-claim check, an aud or azp that does not match clientId, a nonce mismatch, a sub outside 1 to 128 letters, digits, dots, underscores or hyphens, or an email claim that is missing, not marked email_verified: true, or malformed. Its code is 'credential-invalid' and its status is 401."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GoogleIdentityService.verify",
@@ -76,22 +129,68 @@
 					{
 						"name": "GoogleIdentityService.verify.credential",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The compact JWT issued by Google (three base64url segments joined by dots), which verify checks as RS256 against the configured keys. It must carry iss, aud, exp, sub and nonce claims, and its email must be an address of the form local@domain with email_verified set to true.",
+						"examples": [
+							"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJzdWIiOiIxMTAyNDg0OTU5MjEyMzg2OTk1ODMiLCJub25jZSI6IlZxM2tUOXhMdzJSejdIYzBkTm01cFllOHNHYTF1SmY0b0tpNnRXYjJRcjkifQ.Hk3xYt9Qw2LpRz7Vc0Nm5Bd8Sf1Ga6Je4Ui2Ko7Tp9Xr0Wq5Yz3Lb8Nc1Mv6Sd4Fg2Hj0Kl",
+							"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJzdWIiOiIxMDQ1NTgyMTM5MDcyMTY0ODMwMjUiLCJoZCI6ImFjbWUtY29ycC5jb20ifQ.Pd2Wq8Ls0Vn4Ty6Hk1Rb9Jx3Ma7Zc5Gu2Ef8Ic0Ot4Ya6Ng1Qs9Kh3Lp7Ro5Tw"
+						]
 					},
 					{
 						"name": "GoogleIdentityService.verify.nonce",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The nonce this server issued, which verify compares with the credential's nonce claim. verify rejects a credential unless that claim is a string equal to this value, compared in constant time for equal lengths.",
+						"examples": [
+							"Vq3kT9xLw2Rz7Hc0dNm5pYe8sGa1uJf4oKi6tWb2Qr9",
+							"c8Lr1ZxW0nQe5Yt7MbKd3Hs9Gf2Ua6Pj4Ti8Ro1Ev0Xy"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GoogleIdentityService.verify",
-						"type": "Promise<GoogleIdentity>"
+						"type": "Promise<GoogleIdentity>",
+						"description": "The resolved verified identity: actor has id 'google-' followed by the credential's sub claim, the lowercased verified email, a display name from the name claim (trimmed, at most 200 characters) or else the email's local part, and emailVerified true. authoritative is true only for a @gmail.com address or a Workspace account (non-empty hd claim); for any other address the caller must prove the mailbox before treating the identity as an actor.",
+						"examples": [
+							{
+								"actor": {
+									"id": "google-110248495921238699583",
+									"email": "dana.lee@gmail.com",
+									"name": "Dana Lee",
+									"emailVerified": true
+								},
+								"authoritative": true
+							},
+							{
+								"actor": {
+									"id": "google-104558213907216483025",
+									"email": "ops.team@acme-corp.com",
+									"name": "Ops Team",
+									"emailVerified": true
+								},
+								"authoritative": true
+							},
+							{
+								"actor": {
+									"id": "google-117392046583102947561",
+									"email": "priya.n@example.org",
+									"name": "priya.n",
+									"emailVerified": true
+								},
+								"authoritative": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "verify rejects with an AuthFailure, thrown through authFail('credential-invalid'), whenever it refuses a credential: a failed signature, algorithm, issuer, audience, expiry (with 10 seconds of clock tolerance) or required-claim check, an aud or azp that does not match clientId, a nonce mismatch, a sub outside 1 to 128 letters, digits, dots, underscores or hyphens, or an email claim that is missing, not marked email_verified: true, or malformed. Its code is 'credential-invalid' and its status is 401."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -101,17 +200,19 @@
 					{
 						"name": "GoogleIdentityService.constructor.options",
 						"type": "GoogleIdentityOptions",
-						"required": true
+						"required": true,
+						"description": "Verifier configuration: clientId is the audience that a credential's aud must equal exactly, and any azp it carries must equal it too; keys is the key resolver that checks RS256 signatures (production passes Google's remote key set); and now returns the current time in epoch milliseconds for expiry checks. The constructor stores it as given and performs no checks."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GoogleIdentityService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new GoogleIdentityService instance, which keeps the options and exposes verify. The constructor only stores its argument, so it cannot fail."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
