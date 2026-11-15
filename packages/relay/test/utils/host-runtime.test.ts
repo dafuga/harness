@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { HostObjectController } from '../../src/controllers/HostObjectController';
+import { HostObjectController } from '../../src/lib/execution-runtimes/host-runtime/HostObjectController';
 import type { RelayEnv } from '../../src/models/RelayHost.types';
 import { PairingOfferService } from '../../src/lib/execution-runtimes/host-runtime/PairingOfferService';
 import { SocketFrameService } from '../../src/services/socket-frame-service/SocketFrameService';
