@@ -44,27 +44,69 @@
 				"name": "AudioEvidence.item",
 				"type": "Evidence",
 				"required": true,
-				"description": "Required audio evidence including file, title, status and optional duration, transcript, source, note and provenance. Missing flag, empty file or playback error yields unavailable/not-proven display. Valid recorded duration takes precedence over loaded metadata."
+				"description": "The recorded audio item: id, title, category, file and status are required, the card also reads the optional source, capturedAt, phase, standing, note, transcript, mimeType, durationSeconds and missing fields, and the whole item is passed to EvidenceProvenance. A missing flag, an empty file or a playback error shows the unavailable message with the not-proven badge, and a positive finite durationSeconds takes precedence over the duration the audio element loads.",
+				"examples": [
+					{
+						"id": "d3a7b1e9-0c4f-4b2d-a6e8-19f5c7d3b0a4",
+						"title": "Voicemail from the claims desk",
+						"category": "Uploaded audio",
+						"file": "a3f1c9e07b52d84f6e19a0c3b7d25f48e6c1a9b0d37f2e5c84b6a1d9f07e3c52.wav",
+						"status": "not-proven",
+						"source": "Manual audio upload · recording date not supplied",
+						"note": "Caller consent was read at the start of the recording.",
+						"mediaType": "audio",
+						"durationSeconds": 184,
+						"transcript": "Thanks for holding. Can you tell me when the notice arrived?"
+					},
+					{
+						"id": "5f0c8e2a-3b1d-4a6e-8f97-c2d4b6a8e0f1",
+						"title": "Intake call before the consent fix",
+						"category": "Uploaded audio",
+						"file": "e4b0c3a92f7d6815c0e4a7b3d9f2168e5c1a7d04b3f9e26c8a5d1f0b7e4c9a36.mp3",
+						"status": "passed",
+						"source": "Claims desk call recorder",
+						"capturedAt": "2026-11-12T09:41:27.318Z",
+						"phase": "before",
+						"comparison": "7e2a4c10-9b3f-4d5e-b8a1-6f0c2e9d4a73",
+						"mediaType": "audio",
+						"durationSeconds": 96.4,
+						"note": "Recorded before the consent statement was added."
+					},
+					{
+						"id": "0b9e4d7c-2a61-4f3e-9d08-8c5a1e7f2b96",
+						"title": "Intake call after the consent fix",
+						"category": "Uploaded audio",
+						"file": "9b74c1e2d0f8a36b5e1c7d92f4a08b6e3d5c1f7a9e2b4d6c8f0a1e3b5d7c9f21.m4a",
+						"status": "not-proven",
+						"comparison": "7e2a4c10-9b3f-4d5e-b8a1-6f0c2e9d4a73",
+						"phase": "after",
+						"missing": true,
+						"mediaType": "audio",
+						"note": "The stored file could not be found when the report was loaded."
+					}
+				]
 			},
 			{
 				"name": "AudioEvidence.assetBase",
 				"type": "string",
 				"required": true,
-				"description": "Required prefix concatenated directly with the recorded file to form playback/download URL."
+				"description": "Required URL prefix that the component joins to item.file with no separator added, forming both the audio src and the download href, so it must end with a slash because item.file is normally a bare file name. An empty string makes item.file the URL as written, which the browser resolves against the current document.",
+				"examples": ["/media/", "./media/"]
 			},
 			{
 				"name": "AudioEvidence.idPrefix",
 				"type": "string",
 				"required": false,
 				"default": "evidence-",
-				"description": "Optional HTML ID prefix, default evidence-. Additional copies can supply a distinct prefix to avoid duplicate card IDs."
+				"description": "Optional prefix for the card's HTML id, which is idPrefix followed by item.id, and it defaults to 'evidence-'. Give each extra copy on the same page its own prefix, because the title link always targets '#evidence-' plus item.id and ignores this value.",
+				"examples": ["overview-audio-", "audio-viewer-"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AudioEvidence",
 				"type": "markup",
-				"description": "Audio card with user-initiated controls and no preload. Playing pauses other document audio; destruction pauses its player. Missing audio exposes notes. Transcript disclosure starts open when text exists. Shows provenance/time and a sanitized download filename with phase and recognized extension. Playback metadata fills missing duration but does not change recorded status."
+				"description": "Audio card with native controls and preload set to none, so nothing is fetched until playback starts, a transcript disclosure that opens when text exists, and provenance with the capture time when recorded; starting one clip pauses other audio in the document, and destroying the card pauses its own player. When the clip is unavailable (missing flag, empty file or playback error), the player is replaced by an unavailable message and the card shows the not-proven badge and the note, while the download link, named from the sanitized title, phase and recognized extension, appears only when item.file is set and item.missing is false; loaded metadata fills a missing duration without changing the recorded status."
 			}
 		],
 		"errors": [],
