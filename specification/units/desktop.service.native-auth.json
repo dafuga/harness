@@ -23,35 +23,88 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NativeAuthService.constructor.options",
 				"type": "AuthOptions",
-				"required": true
+				"required": true,
+				"description": "The AuthOptions object the constructor stores as this.options; origin, http, store and open are required, and now, clearCache and onDisconnect are optional. origin is the expected origin of handoff verification URLs and of the stored credential, and now (used for handoff expiry and poll timing) defaults to Date.now() when omitted."
 			}
 		],
 		"outputs": [
 			{
 				"name": "NativeAuthService.connect",
-				"type": "Promise<NativeHostedStatus>"
+				"type": "Promise<NativeHostedStatus>",
+				"description": "The pending status that connect() resolves with once the handoff has started: configured is true, state is 'pending', and handoff holds userCode (at most 40 characters), verificationUrl, expiresAt and interval (seconds, 1 to 30), with the internal handoffId removed. The verification URL is passed to options.open before the promise resolves, and connect() never resolves with a signed-in status.",
+				"examples": [
+					{
+						"configured": true,
+						"state": "pending",
+						"handoff": {
+							"userCode": "WDJB-MJHT",
+							"verificationUrl": "https://hosted.example.test/native/9f3KqLx0TzWb",
+							"expiresAt": "2026-11-15T12:10:00.000Z",
+							"interval": 5
+						}
+					},
+					{
+						"configured": true,
+						"state": "pending",
+						"handoff": {
+							"userCode": "KTQN-2XRM",
+							"verificationUrl": "https://hosted.example.test/native/Hq2vR8mZa1Yc",
+							"expiresAt": "2026-11-15T12:20:00.000Z",
+							"interval": 2
+						}
+					}
+				]
 			},
 			{
 				"name": "NativeAuthService.status",
-				"type": "Promise<NativeHostedStatus>"
+				"type": "Promise<NativeHostedStatus>",
+				"description": "While a handoff is pending, status() resolves signed-out once it has expired, returns the cached pending status until the next poll is due, and resolves signed-in with the actor once an approved handoff is exchanged and its credential is saved. With no pending handoff and no stored credential it resolves signed-out, with configured true only when the public status (http.publicStatus) says configured: true; with a stored credential it resolves with the NativeAccountStatusService reading of that credential.",
+				"examples": [
+					{
+						"configured": true,
+						"state": "pending",
+						"handoff": {
+							"userCode": "WDJB-MJHT",
+							"verificationUrl": "https://hosted.example.test/native/9f3KqLx0TzWb",
+							"expiresAt": "2026-11-15T12:10:00.000Z",
+							"interval": 5
+						}
+					},
+					{
+						"configured": true,
+						"state": "signed-out"
+					},
+					{
+						"configured": false,
+						"state": "signed-out"
+					}
+				]
 			},
 			{
 				"name": "NativeAuthService.disconnect",
-				"type": "Promise<NativeHostedStatus>"
+				"type": "Promise<NativeHostedStatus>",
+				"description": "Resolves with { configured: true, state: 'signed-out' } after onDisconnect runs, the pending handoff is dropped, and a logout request is sent when a credential is stored. In a finally block the store is cleared and clearCache (when provided) runs, so both still run if the logout request rejects, and that rejection then reaches the caller instead of a resolved status.",
+				"examples": [
+					{
+						"configured": true,
+						"state": "signed-out"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Plain Error objects thrown by this unit: connect() rejects with 'OS encryption is required for hosted sessions.' when store.available() is false, and status() rejects with 'Native handoff expired or was refused.' when the polled handoff answers with a status other than 'pending' or 'approved'. Failures from the HTTP adapter, the session store, the validators and the open callback are not caught here and reach the caller unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "NativeAuthService.connect",
@@ -59,11 +112,40 @@
 				"outputs": [
 					{
 						"name": "NativeAuthService.connect",
-						"type": "Promise<NativeHostedStatus>"
+						"type": "Promise<NativeHostedStatus>",
+						"description": "The pending status that connect() resolves with once the handoff has started: configured is true, state is 'pending', and handoff holds userCode (at most 40 characters), verificationUrl, expiresAt and interval (seconds, 1 to 30), with the internal handoffId removed. The verification URL is passed to options.open before the promise resolves, and connect() never resolves with a signed-in status.",
+						"examples": [
+							{
+								"configured": true,
+								"state": "pending",
+								"handoff": {
+									"userCode": "WDJB-MJHT",
+									"verificationUrl": "https://hosted.example.test/native/9f3KqLx0TzWb",
+									"expiresAt": "2026-11-15T12:10:00.000Z",
+									"interval": 5
+								}
+							},
+							{
+								"configured": true,
+								"state": "pending",
+								"handoff": {
+									"userCode": "KTQN-2XRM",
+									"verificationUrl": "https://hosted.example.test/native/Hq2vR8mZa1Yc",
+									"expiresAt": "2026-11-15T12:20:00.000Z",
+									"interval": 2
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when store.available() is false, before any handoff request is sent, and connect() rejects with the message 'OS encryption is required for hosted sessions.'"
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "NativeAuthService.status",
@@ -71,11 +153,38 @@
 				"outputs": [
 					{
 						"name": "NativeAuthService.status",
-						"type": "Promise<NativeHostedStatus>"
+						"type": "Promise<NativeHostedStatus>",
+						"description": "While a handoff is pending, status() resolves signed-out once it has expired, returns the cached pending status until the next poll is due, and resolves signed-in with the actor once an approved handoff is exchanged and its credential is saved. With no pending handoff and no stored credential it resolves signed-out, with configured true only when the public status (http.publicStatus) says configured: true; with a stored credential it resolves with the NativeAccountStatusService reading of that credential.",
+						"examples": [
+							{
+								"configured": true,
+								"state": "pending",
+								"handoff": {
+									"userCode": "WDJB-MJHT",
+									"verificationUrl": "https://hosted.example.test/native/9f3KqLx0TzWb",
+									"expiresAt": "2026-11-15T12:10:00.000Z",
+									"interval": 5
+								}
+							},
+							{
+								"configured": true,
+								"state": "signed-out"
+							},
+							{
+								"configured": false,
+								"state": "signed-out"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the polled handoff answers with a status other than 'pending' or 'approved', after the pending handoff is cleared, and status() rejects with the message 'Native handoff expired or was refused.'"
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "NativeAuthService.disconnect",
@@ -83,11 +192,18 @@
 				"outputs": [
 					{
 						"name": "NativeAuthService.disconnect",
-						"type": "Promise<NativeHostedStatus>"
+						"type": "Promise<NativeHostedStatus>",
+						"description": "Resolves with { configured: true, state: 'signed-out' } after onDisconnect runs, the pending handoff is dropped, and a logout request is sent when a credential is stored. In a finally block the store is cleared and clearCache (when provided) runs, so both still run if the logout request rejects, and that rejection then reaches the caller instead of a resolved status.",
+						"examples": [
+							{
+								"configured": true,
+								"state": "signed-out"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -97,17 +213,19 @@
 					{
 						"name": "NativeAuthService.constructor.options",
 						"type": "AuthOptions",
-						"required": true
+						"required": true,
+						"description": "The AuthOptions object the constructor stores as this.options; origin, http, store and open are required, and now, clearCache and onDisconnect are optional. origin is the expected origin of handoff verification URLs and of the stored credential, and now (used for handoff expiry and poll timing) defaults to Date.now() when omitted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativeAuthService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The NativeAuthService instance created by new NativeAuthService(options), holding the options, a null pending handoff, a serial promise queue and a NativeHandoffValidator as private state."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
