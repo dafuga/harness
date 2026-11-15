@@ -28,39 +28,63 @@
 				"name": "EntityMissing.title",
 				"type": "string",
 				"required": true,
-				"description": "Required heading."
+				"description": "Heading text, always rendered as the content of the hx-h1 whose id is ex-missing-title, which is the id the Card receives as labelledby. It is rendered as given, with no validation or trimming.",
+				"examples": ["Entity not available", "Report not available at this revision"]
 			},
 			{
 				"name": "EntityMissing.message",
 				"type": "string",
 				"required": true,
-				"description": "Required explanation of the missing entity at this revision."
+				"description": "Explanation of why nothing is shown, always rendered as the lead paragraph (hx-p, class ex-lead) directly under the heading. It is rendered as given with no validation, and a fixed paragraph (hx-p, class ex-soft) follows it stating that nothing from another revision is shown in its place.",
+				"examples": [
+					"The entity does not exist at the selected revision.",
+					"This report has no entry at the selected revision, so there is nothing to show."
+				]
 			},
 			{
 				"name": "EntityMissing.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Required link/navigation context."
+				"description": "Navigation helper for the return link: nav.href(to) supplies the href passed to the HarnessAction, and nav.go(to) runs when that link is clicked. The component uses no other member of it and performs no check on it."
 			},
 			{
 				"name": "EntityMissing.to",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Required destination for recovery navigation."
+				"description": "Destination passed unchanged to nav.href(to), which supplies the link's href, and to nav.go(to), which runs on click. The component never reads its fields.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "4c1e9a07b3d2f58e61a0c4d9e72b3f0a58d6c1e7",
+						"category": "platforms"
+					},
+					{
+						"branch": "main",
+						"commit": "9e27d4a1f06c83b5e7d19a2c4f58b06e3a1d7c92",
+						"category": "components"
+					},
+					{
+						"branch": "main",
+						"commit": "d08b5f3e1a7c96420be4d8f1a3c57e09b2d6f418",
+						"category": "components",
+						"entity": "reports.component.explorer-ui-explorer-kit-card"
+					}
+				]
 			},
 			{
 				"name": "EntityMissing.action",
 				"type": "string",
 				"required": false,
 				"default": "Back to the collection",
-				"description": "Optional action text, default Back to the collection."
+				"description": "Text of the return link, passed as the HarnessAction's content. When omitted or undefined it is 'Back to the collection', and it is rendered as given with no validation.",
+				"examples": ["Back to the collection", "Back to the explorer"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityMissing",
 				"type": "markup",
-				"description": "Not shown verdict, supplied explanation, statement that another revision is not substituted, and return action. States: custom-action: The missing-entity notice uses the caller-supplied recovery-action text. long: A lengthy missing-entity explanation wraps while retaining the recovery link."
+				"description": "Renders a section Card (tone ex-missing, labelledby ex-missing-title) that holds the title as an hx-h1, the message as an hx-p with class ex-lead, the fixed sentence 'Nothing from another revision is shown in its place.' as an hx-p with class ex-soft, and a HarnessAction with the arrow-left lead. The HarnessAction's href is nav.href(to), its click runs nav.go(to), and its label is action."
 			}
 		],
 		"errors": [],
