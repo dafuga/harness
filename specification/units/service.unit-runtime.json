@@ -24,66 +24,167 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "UnitRuntimeService.constructor.root",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Filesystem root used to resolve relative target entries and to locate recorded measurements. Defaults to process.cwd().",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+				]
 			},
 			{
 				"name": "UnitRuntimeService.constructor.options",
 				"type": "RuntimeServiceOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Options passed to created adapters; timeoutMs controls adapter call deadlines, and env supplies kernel lookup variables instead of process.env when present. Defaults to an empty object.",
+				"examples": [
+					{},
+					{
+						"timeoutMs": 5000,
+						"env": {
+							"HARNESS_KERNEL_URL": "http://127.0.0.1:4100"
+						}
+					}
+				]
 			},
 			{
 				"name": "UnitRuntimeService.forTarget.target",
 				"type": "ExecutionTarget",
-				"required": true
+				"required": true,
+				"description": "Execution target whose kind selects the adapter and whose entry supplies its URL, file path, or process command. Module handlers default to invoke, and slash-containing process entries are resolved beneath root.",
+				"examples": [
+					{
+						"kind": "http",
+						"entry": "http://127.0.0.1:4100"
+					},
+					{
+						"kind": "wasm",
+						"entry": "target/kernel/impact-kernel.wasm"
+					},
+					{
+						"kind": "process",
+						"entry": "target/kernel/impact-kernel"
+					}
+				]
 			},
 			{
 				"name": "UnitRuntimeService.forUnit.manifest",
 				"type": "ComponentManifest",
-				"required": true
+				"required": true,
+				"description": "Component manifest whose runtime.targets are searched for the requested target kind. Its runtime.kind supplies the default kind, and its id is included in the missing-target error.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "service.unit-runtime",
+						"kind": "service",
+						"title": "UnitRuntimeService",
+						"responsibility": "Turns declared execution targets into working runtimes and selects the measured kernel default.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/services/execution-runtimes/UnitRuntimeService.ts"],
+							"symbols": ["UnitRuntimeService"]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/services/execution-runtimes/UnitRuntimeService.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/services/execution-runtimes/UnitRuntimeService.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "UnitRuntimeService.forUnit.kind",
 				"type": "RuntimeKind",
-				"required": false
+				"required": false,
+				"description": "Runtime kind to match against manifest.runtime.targets. Defaults to manifest.runtime.kind.",
+				"examples": ["module", "wasm", "http"]
 			},
 			{
 				"name": "UnitRuntimeService.kernel.kind",
 				"type": "RuntimeKind | 'default'",
 				"required": false,
-				"default": "default"
+				"default": "default",
+				"description": "Kernel runtime to construct, or default to resolve through kernelDefault(). Missing Wasm or native artifacts and an unset HTTP kernel URL cause ExpectedCliError.",
+				"examples": ["default", "wasm", "http"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "UnitRuntimeService.forTarget",
-				"type": "UnitRuntime"
+				"type": "UnitRuntime",
+				"description": "Adapter selected for the supplied target, implementing UnitRuntime.invoke and close. Relative Wasm/module entries and slash-containing process entries resolve beneath root; process names without a slash pass through, and HTTP entries are used directly."
 			},
 			{
 				"name": "UnitRuntimeService.forUnit",
-				"type": "UnitRuntime"
+				"type": "UnitRuntime",
+				"description": "Adapter for the first runtime target whose kind matches the requested or manifest default kind. ExpectedCliError is thrown when no matching target is declared."
 			},
 			{
 				"name": "UnitRuntimeService.kernelDefault",
-				"type": "RuntimeChoice"
+				"type": "RuntimeChoice",
+				"description": "RuntimeChoice for representativeWorkload (graph-1k) and the current machine profile, based on recorded measurements. chooseRuntime prefers the simpler runtime within 5% and falls back to unmeasured module when no usable candidate exists.",
+				"examples": [
+					{
+						"runtime": "module",
+						"basis": "unmeasured",
+						"workload": "graph-1k",
+						"profile": "7d4c658e11af7b7f",
+						"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen automatically.",
+						"candidates": [],
+						"excluded": [
+							{
+								"runtime": "module",
+								"reason": "No measurement for this workload and profile."
+							},
+							{
+								"runtime": "wasm",
+								"reason": "No measurement for this workload and profile."
+							},
+							{
+								"runtime": "process",
+								"reason": "No measurement for this workload and profile."
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "UnitRuntimeService.kernel",
-				"type": "UnitRuntime"
+				"type": "UnitRuntime",
+				"description": "UnitRuntime adapter for the selected kernel runtime; default resolves through kernelDefault(). Wasm and process require built artifacts, while HTTP requires HARNESS_KERNEL_URL."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when forUnit cannot find a target of the requested kind, when a requested Wasm or process kernel artifact is not built, or when an HTTP kernel URL is unset."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "UnitRuntimeService.forTarget",
@@ -91,17 +192,33 @@
 					{
 						"name": "UnitRuntimeService.forTarget.target",
 						"type": "ExecutionTarget",
-						"required": true
+						"required": true,
+						"description": "Execution target whose kind selects the adapter and whose entry supplies its URL, file path, or process command. Module handlers default to invoke, and slash-containing process entries are resolved beneath root.",
+						"examples": [
+							{
+								"kind": "http",
+								"entry": "http://127.0.0.1:4100"
+							},
+							{
+								"kind": "wasm",
+								"entry": "target/kernel/impact-kernel.wasm"
+							},
+							{
+								"kind": "process",
+								"entry": "target/kernel/impact-kernel"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRuntimeService.forTarget",
-						"type": "UnitRuntime"
+						"type": "UnitRuntime",
+						"description": "Adapter selected for the supplied target, implementing UnitRuntime.invoke and close. Relative Wasm/module entries and slash-containing process entries resolve beneath root; process names without a slash pass through, and HTTP entries are used directly."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "UnitRuntimeService.forUnit",
@@ -109,27 +226,70 @@
 					{
 						"name": "UnitRuntimeService.forUnit.manifest",
 						"type": "ComponentManifest",
-						"required": true
+						"required": true,
+						"description": "Component manifest whose runtime.targets are searched for the requested target kind. Its runtime.kind supplies the default kind, and its id is included in the missing-target error.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "service.unit-runtime",
+								"kind": "service",
+								"title": "UnitRuntimeService",
+								"responsibility": "Turns declared execution targets into working runtimes and selects the measured kernel default.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/services/execution-runtimes/UnitRuntimeService.ts"],
+									"symbols": ["UnitRuntimeService"]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/services/execution-runtimes/UnitRuntimeService.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/services/execution-runtimes/UnitRuntimeService.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "UnitRuntimeService.forUnit.kind",
 						"type": "RuntimeKind",
-						"required": false
+						"required": false,
+						"description": "Runtime kind to match against manifest.runtime.targets. Defaults to manifest.runtime.kind.",
+						"examples": ["module", "wasm", "http"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRuntimeService.forUnit",
-						"type": "UnitRuntime"
+						"type": "UnitRuntime",
+						"description": "Adapter for the first runtime target whose kind matches the requested or manifest default kind. ExpectedCliError is thrown when no matching target is declared."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when forUnit cannot find a target of the requested kind, when a requested Wasm or process kernel artifact is not built, or when an HTTP kernel URL is unset."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "UnitRuntimeService.kernelDefault",
@@ -137,11 +297,36 @@
 				"outputs": [
 					{
 						"name": "UnitRuntimeService.kernelDefault",
-						"type": "RuntimeChoice"
+						"type": "RuntimeChoice",
+						"description": "RuntimeChoice for representativeWorkload (graph-1k) and the current machine profile, based on recorded measurements. chooseRuntime prefers the simpler runtime within 5% and falls back to unmeasured module when no usable candidate exists.",
+						"examples": [
+							{
+								"runtime": "module",
+								"basis": "unmeasured",
+								"workload": "graph-1k",
+								"profile": "7d4c658e11af7b7f",
+								"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen automatically.",
+								"candidates": [],
+								"excluded": [
+									{
+										"runtime": "module",
+										"reason": "No measurement for this workload and profile."
+									},
+									{
+										"runtime": "wasm",
+										"reason": "No measurement for this workload and profile."
+									},
+									{
+										"runtime": "process",
+										"reason": "No measurement for this workload and profile."
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "UnitRuntimeService.kernel",
@@ -150,22 +335,26 @@
 						"name": "UnitRuntimeService.kernel.kind",
 						"type": "RuntimeKind | 'default'",
 						"required": false,
-						"default": "default"
+						"default": "default",
+						"description": "Kernel runtime to construct, or default to resolve through kernelDefault(). Missing Wasm or native artifacts and an unset HTTP kernel URL cause ExpectedCliError.",
+						"examples": ["default", "wasm", "http"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRuntimeService.kernel",
-						"type": "UnitRuntime"
+						"type": "UnitRuntime",
+						"description": "UnitRuntime adapter for the selected kernel runtime; default resolves through kernelDefault(). Wasm and process require built artifacts, while HTTP requires HARNESS_KERNEL_URL."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when forUnit cannot find a target of the requested kind, when a requested Wasm or process kernel artifact is not built, or when an HTTP kernel URL is unset."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -175,23 +364,38 @@
 					{
 						"name": "UnitRuntimeService.constructor.root",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Filesystem root used to resolve relative target entries and to locate recorded measurements. Defaults to process.cwd().",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						]
 					},
 					{
 						"name": "UnitRuntimeService.constructor.options",
 						"type": "RuntimeServiceOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Options passed to created adapters; timeoutMs controls adapter call deadlines, and env supplies kernel lookup variables instead of process.env when present. Defaults to an empty object.",
+						"examples": [
+							{},
+							{
+								"timeoutMs": 5000,
+								"env": {
+									"HARNESS_KERNEL_URL": "http://127.0.0.1:4100"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitRuntimeService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Initialized UnitRuntimeService instance using the supplied root and options. Omitted root uses process.cwd(), and omitted options.env uses process.env for kernel artifact lookup."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
