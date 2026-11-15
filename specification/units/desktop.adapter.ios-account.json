@@ -25,32 +25,59 @@
 			{
 				"name": "account status",
 				"type": "NativeHostedStatus",
-				"description": "Public account identity or a one-time approval code. Credentials, nonce and PKCE verifier remain native.",
+				"description": "The public status says whether this build is configured and whether the account is signed-out, pending approval, or signed-in. It includes only an actor's id, name and email or a pending handoff code, verification URL, expiry and 1–30 second poll interval; approval waits are limited to 15 minutes.",
 				"examples": [
 					{
 						"configured": true,
 						"state": "signed-out"
+					},
+					{
+						"configured": true,
+						"state": "signed-in",
+						"actor": {
+							"id": "109876543210987654321",
+							"name": "Alex Morgan",
+							"email": "alex.morgan@example.com"
+						}
+					},
+					{
+						"configured": true,
+						"state": "pending",
+						"handoff": {
+							"userCode": "K8M-2Q",
+							"verificationUrl": "https://hub.example.com/native/rD4mN8sQ2xK7vP5aL9cW3hT6yB1uF0gZ",
+							"expiresAt": "2026-11-15T18:07:30Z",
+							"interval": 5
+						}
 					}
 				]
 			},
 			{
 				"name": "project answer",
 				"type": "HubAccountReply",
-				"description": "Authorized project response with HTTP status, content type and bounded bytes encoded as base64."
+				"description": "The project API answer contains its HTTP status, response Content-Type (empty when absent), and response bytes encoded as base64. Response bodies are limited to 16,777,216 bytes; HTTP error statuses, including 401, are returned as answers, with 401 also clearing the local session.",
+				"examples": [
+					{
+						"status": 200,
+						"contentType": "application/json",
+						"data": "eyJvayI6dHJ1ZX0="
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "refused request",
-				"type": "HubAccountFailure",
-				"description": "Rejects unknown hosts or paths, redirects and oversized responses."
+				"type": "thrown",
+				"description": "Connection or project-request rejection for a missing Hub configuration (not-configured), missing session (session-required), disallowed call (request-refused), transport failure (offline), oversized response (too-large), Hub sign-in refusal (auth-disabled or rate-limited), or other failed, redirected, malformed, or unstored sign-in (failed)."
 			},
 			{
 				"name": "access ended",
-				"type": "HubAccountFailure",
-				"description": "A revoked or mismatched account invalidates old requests and removes the device credential."
+				"type": "thrown",
+				"description": "A stale project request rejects as superseded, an expired or refused native handoff rejects as handoff-expired, and confirmation of a different or unverified Google actor rejects as account-mismatch. A Hub 401 clears the local session but is returned as a status or project answer rather than one of these rejections."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
