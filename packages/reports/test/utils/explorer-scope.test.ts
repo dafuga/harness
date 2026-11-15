@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import { explorerScope } from '../../src/utils/harness-page/explorerScope';
+import { explorerScope } from '../../src/utils/explorer-ui/harness-page/explorerScope';
 import { history, sha, summary } from '../explorerFixture';
 
 const index = history({

@@ -5,7 +5,7 @@ import type { CacheIdentity } from '../../../collaboration/src/models/planning-c
 import type { HarnessUnit } from '../../../reports/src/models/Harness.types';
 import { explorerBehavior } from '../../../reports/src/utils/explorerBehavior';
 import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
-import { explorerScope } from '../../../reports/src/utils/harness-page/explorerScope';
+import { explorerScope } from '../../../reports/src/utils/explorer-ui/harness-page/explorerScope';
 import { index } from '../../../reports/test/entityFixture';
 import { commits, ids, units } from '../../../reports/test/entityUnits';
 import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
