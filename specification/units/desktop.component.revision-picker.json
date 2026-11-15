@@ -47,21 +47,21 @@
 				"name": "RevisionPicker.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace supplying snapshot, revision, branch/commit lists, pinned state and navigation. Values follow the displayed revision. Branch navigation supplies only branch; commit navigation includes both."
+				"description": "The Workspace instance supplies the current snapshot and revision, branch and commit choices, pinned state, deployment context, and the link/navigation methods used by this picker. It renders only while both a snapshot and its revision are present; choosing a branch navigates with a branch link, while choosing a commit includes both branch and commit."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RevisionPicker",
 				"type": "markup",
-				"description": "Readable branch/commit triggers and the selected branch, historical or pinned commit, or named deployment environment with its update time; a missing time reads Unknown. Expanded choices navigate and close their dialog. Go to tip exits history; Follow branch resumes a pinned tip. Renders nothing without a snapshot. Catalog states: default, branch-open and commit-open (expanded choice dialogs), environment, historical, pinned and unknown-time."
+				"description": "With both snapshot and revision present, the markup provides branch and commit choice dialogs, a summary using the deployment environment or viewed revision name, and its deployment, pinned-commit, or branch-tip update time. It renders nothing without either value and shows the tip-navigation button only outside deployments when the revision is historical or the workspace is pinned."
 			}
 		],
 		"errors": [
 			{
 				"name": "Workspace operation failure",
 				"type": "propagated",
-				"description": "Synchronous errors and rejected promises from the supplied workspace navigation or project operations are not caught by this component."
+				"description": "Calls to workspace.link and workspace.navigate are not caught; a synchronous throw from either call or a rejected navigate promise escapes the corresponding event handler. The component does not translate these failures into a named error."
 			}
 		],
 		"errorStatus": "declared",
