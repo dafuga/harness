@@ -15,22 +15,55 @@
 		"symbols": ["modelFiles", "AdapterName", "ModelInput", "AdapterName", "ModelInput"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "modelFiles.input",
 				"type": "ModelInput",
-				"required": true
+				"required": true,
+				"description": "ModelInput supplies the model name, its Field[] definitions, and the adapter used to generate scaffold files. The adapter is \"d1\", \"sqlite\", or \"postgres\"; the name is converted to class, table, and kebab-case file names.",
+				"examples": [
+					{
+						"name": "user",
+						"fields": [],
+						"adapter": "postgres"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "modelFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "This is the generated list of planned files for the model types, model class, selected adapter, SQL migration, and model test. Each planned file has a repository-relative path and generated text in contents.",
+				"examples": [
+					[
+						{
+							"path": "src/models/User.types.ts",
+							"contents": "export interface UserAttributes {\n\tid: number;\n\tcreatedAt: string;\n\tupdatedAt: string;\n}\n\nexport type UserCreateInput = Omit<UserAttributes, 'id' | 'createdAt' | 'updatedAt'>;\nexport type UserUpdateInput = Partial<UserCreateInput>;\n"
+						},
+						{
+							"path": "src/models/User.ts",
+							"contents": "import type { PersistenceAdapter } from './adapters/types';\nimport type { UserAttributes, UserCreateInput, UserUpdateInput } from './User.types';\n\nconst tableName = 'users';\n\nexport class User {\n\tstatic find(adapter: PersistenceAdapter, id: number): Promise<UserAttributes | null> {\n\t\treturn adapter.find(tableName, id);\n\t}\n\n\tstatic findBy(\n\t\tadapter: PersistenceAdapter,\n\t\tfields: Partial<UserAttributes>\n\t): Promise<UserAttributes[]> {\n\t\treturn adapter.findBy(tableName, fields);\n\t}\n\n\tstatic create(adapter: PersistenceAdapter, input: UserCreateInput): Promise<UserAttributes> {\n\t\treturn adapter.create(tableName, input);\n\t}\n\n\tstatic update(\n\t\tadapter: PersistenceAdapter,\n\t\tid: number,\n\t\tinput: UserUpdateInput\n\t): Promise<UserAttributes | null> {\n\t\treturn adapter.update(tableName, id, input);\n\t}\n\n\tstatic delete(adapter: PersistenceAdapter, id: number): Promise<boolean> {\n\t\treturn adapter.delete(tableName, id);\n\t}\n}\n"
+						},
+						{
+							"path": "src/models/adapters/postgres.ts",
+							"contents": "import type { PersistenceAdapter } from './types';\n\nexport function createPostgresAdapter(): PersistenceAdapter {\n\treturn {\n\t\tfind: async () => null,\n\t\tfindBy: async () => [],\n\t\tcreate: async () => {\n\t\t\tthrow new Error('Postgres create adapter is generated as a starting point.');\n\t\t},\n\t\tupdate: async () => null,\n\t\tdelete: async () => false\n\t};\n}\n"
+						},
+						{
+							"path": "db/migrations/create_users.sql",
+							"contents": "-- reversible: DROP TABLE IF EXISTS users;\nCREATE TABLE IF NOT EXISTS users (\n\tid INTEGER PRIMARY KEY,\n\tcreated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\tupdated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n"
+						},
+						{
+							"path": "test/models/user.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { User } from '../../src/models/User';\n\ntest('User exposes a small ActiveRecord-like API', () => {\n\texpect(User.find).toBeTypeOf('function');\n\texpect(User.create).toBeTypeOf('function');\n\texpect(User.update).toBeTypeOf('function');\n\texpect(User.delete).toBeTypeOf('function');\n});\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "modelFiles",
@@ -38,17 +71,50 @@
 					{
 						"name": "modelFiles.input",
 						"type": "ModelInput",
-						"required": true
+						"required": true,
+						"description": "ModelInput supplies the model name, its Field[] definitions, and the adapter used to generate scaffold files. The adapter is \"d1\", \"sqlite\", or \"postgres\"; the name is converted to class, table, and kebab-case file names.",
+						"examples": [
+							{
+								"name": "user",
+								"fields": [],
+								"adapter": "postgres"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "modelFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "This is the generated list of planned files for the model types, model class, selected adapter, SQL migration, and model test. Each planned file has a repository-relative path and generated text in contents.",
+						"examples": [
+							[
+								{
+									"path": "src/models/User.types.ts",
+									"contents": "export interface UserAttributes {\n\tid: number;\n\tcreatedAt: string;\n\tupdatedAt: string;\n}\n\nexport type UserCreateInput = Omit<UserAttributes, 'id' | 'createdAt' | 'updatedAt'>;\nexport type UserUpdateInput = Partial<UserCreateInput>;\n"
+								},
+								{
+									"path": "src/models/User.ts",
+									"contents": "import type { PersistenceAdapter } from './adapters/types';\nimport type { UserAttributes, UserCreateInput, UserUpdateInput } from './User.types';\n\nconst tableName = 'users';\n\nexport class User {\n\tstatic find(adapter: PersistenceAdapter, id: number): Promise<UserAttributes | null> {\n\t\treturn adapter.find(tableName, id);\n\t}\n\n\tstatic findBy(\n\t\tadapter: PersistenceAdapter,\n\t\tfields: Partial<UserAttributes>\n\t): Promise<UserAttributes[]> {\n\t\treturn adapter.findBy(tableName, fields);\n\t}\n\n\tstatic create(adapter: PersistenceAdapter, input: UserCreateInput): Promise<UserAttributes> {\n\t\treturn adapter.create(tableName, input);\n\t}\n\n\tstatic update(\n\t\tadapter: PersistenceAdapter,\n\t\tid: number,\n\t\tinput: UserUpdateInput\n\t): Promise<UserAttributes | null> {\n\t\treturn adapter.update(tableName, id, input);\n\t}\n\n\tstatic delete(adapter: PersistenceAdapter, id: number): Promise<boolean> {\n\t\treturn adapter.delete(tableName, id);\n\t}\n}\n"
+								},
+								{
+									"path": "src/models/adapters/postgres.ts",
+									"contents": "import type { PersistenceAdapter } from './types';\n\nexport function createPostgresAdapter(): PersistenceAdapter {\n\treturn {\n\t\tfind: async () => null,\n\t\tfindBy: async () => [],\n\t\tcreate: async () => {\n\t\t\tthrow new Error('Postgres create adapter is generated as a starting point.');\n\t\t},\n\t\tupdate: async () => null,\n\t\tdelete: async () => false\n\t};\n}\n"
+								},
+								{
+									"path": "db/migrations/create_users.sql",
+									"contents": "-- reversible: DROP TABLE IF EXISTS users;\nCREATE TABLE IF NOT EXISTS users (\n\tid INTEGER PRIMARY KEY,\n\tcreated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,\n\tupdated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n"
+								},
+								{
+									"path": "test/models/user.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { User } from '../../src/models/User';\n\ntest('User exposes a small ActiveRecord-like API', () => {\n\texpect(User.find).toBeTypeOf('function');\n\texpect(User.create).toBeTypeOf('function');\n\texpect(User.update).toBeTypeOf('function');\n\texpect(User.delete).toBeTypeOf('function');\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
