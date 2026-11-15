@@ -5,7 +5,7 @@ import { fail } from '../../../core/errors';
 import type { RegressionRecord } from '../../../core/regressionTypes';
 import type { ScenarioManifest } from '../../../core/unitTypes';
 import type { CaptureLine } from '../../../core/verifyTypes';
-import type { Gathered } from '../../../utils/gatherCaptures';
+import type { Gathered } from '../../../utils/verification-evidence/gatherCaptures';
 
 /** Retain inspected pixels and resolve canonical evidence slots through their scenario contract. */
 export async function focusedScreens(

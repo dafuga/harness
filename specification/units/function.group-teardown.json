@@ -9,15 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/groupTeardown.ts",
 			"src/utils/reports-media/groupTeardown.ts",
 			"src/utils/reports-media/groupTeardown.types.ts",
 			"src/utils/reports-media/run-isolated/groupTeardown.ts",
 			"src/utils/run-isolated/groupTeardown.ts"
 		],
 		"symbols": [
-			"groupTeardown",
-			"signalGroup",
 			"signalGroup",
 			"groupTeardown",
 			"GroupTiming",

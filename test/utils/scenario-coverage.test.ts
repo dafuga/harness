@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { scenarioManifestSchema } from '../../src/core/unitTypes';
-import type { Gathered } from '../../src/utils/gatherCaptures';
+import type { Gathered } from '../../src/utils/verification-evidence/gatherCaptures';
 import { scenarioCoverage } from '../../src/services/verification-service/scenarioCoverage';
 import { problem } from '../../src/utils/verification-evidence/scenarioCoverage';
 import { captureLineSchema } from '../../src/core/verification-evidence/verifyTypes';

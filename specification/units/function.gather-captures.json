@@ -10,13 +10,11 @@
 	"owns": {
 		"source": [
 			"src/services/check-run-service/gatherCaptures.ts",
-			"src/utils/gatherCaptures.ts",
 			"src/utils/verification-evidence/gatherCaptures.ts",
 			"src/workflows/run-verify/verification-service/check-run-service/gatherCaptures.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures.ts"
 		],
 		"symbols": [
-			"gatherCaptures",
 			"gatherCaptures",
 			"Gathered",
 			"GatherResult",
