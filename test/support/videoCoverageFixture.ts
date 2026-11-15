@@ -32,7 +32,7 @@ export function assertVideoCoverage(
 	served: (buildId: string) => object
 ) {
 	const declared = videoScenario(scenario);
-	const item = {
+	const item: Gathered = {
 		...gathered({
 			kind: 'video',
 			mediaType: 'video/mp4',
@@ -67,7 +67,7 @@ export function assertVideoCoverage(
 		/valid.*video|playable.*video/i
 	);
 	expect(
-		judge({ ...item, line: { ...item.line, kind: 'screenshot' } } as Gathered).join(' ')
+		judge({ ...item, line: { ...item.line, kind: 'screenshot' } }).join(' ')
 	).toMatch(/missing/i);
 	expect(
 		judge({
@@ -75,7 +75,7 @@ export function assertVideoCoverage(
 			line: { ...item.line, video: { ...video, states: [{ id: 'pages', atSeconds: 30 }] } }
 		} as Gathered).join(' ')
 	).toMatch(/timestamp|interval/i);
-	assertVideoGraphGate(declared, item as Gathered);
+	assertVideoGraphGate(declared, item);
 }
 
 export function videoLibraryFixture() {
