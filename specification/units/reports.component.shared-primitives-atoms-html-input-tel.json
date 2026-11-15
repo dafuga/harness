@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "An optional Svelte Snippet child prop. The implementation destructures it but neither renders it nor forwards it to the input."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputTel",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "The component renders one native <input> element, spreading all remaining props onto it and setting type to tel. It renders no wrapper or child content."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
