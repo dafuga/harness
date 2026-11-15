@@ -21,29 +21,128 @@
 				"name": "evidenceReading.bridge",
 				"type": "Pick<DesktopBridge, 'artifact'>",
 				"required": true,
-				"description": "The desktop connection’s optional artifact reader. Without it, requested artifacts remain unread."
+				"description": "The bridge object exposes the optional artifact reader used for a stored capture. If the reader is absent, the capture remains unread; individual reader rejections are caught and reported by hash.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "evidenceReading.result",
 				"type": "EntityEvidenceResult",
 				"required": true,
-				"description": "The evidence answer containing behavior rows and the captures listed on each side."
+				"description": "The evidence answer supplies the behavior rows, the captures listed on each side, and the pinned identity used for artifact requests. Only bindings that resolve to a stored capture on the requested side are read; the supplied scope is copied into requests without a consistency check.",
+				"examples": [
+					{
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": null,
+								"category": "functions",
+								"entity": "desktop.function.evidence-reading"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+							"commit": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+							"atTip": true,
+							"parent": null,
+							"summary": {
+								"commit": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+								"parents": [],
+								"subject": "Read and compare recorded results",
+								"author": "Harness",
+								"committedAt": "2026-11-15T12:00:00.000Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"identity": {
+							"principalId": "local-filesystem:current",
+							"projectId": "local-8e8dd498b7b5bf0b1e87776dac232646c9f59a4cc97370edaecc8cab7bd4b98d",
+							"repositoryId": 0,
+							"requestedRef": "main",
+							"sourceCommit": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+							"sourceTree": "89abcdef0123456789abcdef0123456789abcdef",
+							"notesRef": "refs/notes/harness",
+							"notesRevision": null,
+							"evidenceRef": "refs/heads/harness-evidence",
+							"evidenceRevision": null,
+							"historyIndexRevision": "a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4",
+							"artifactHash": null,
+							"profile": null
+						},
+						"evidence": {
+							"mode": "current",
+							"scenarios": [],
+							"after": {
+								"commit": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+								"detail": null,
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": null
+							},
+							"before": null,
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "current",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": null,
+							"scenarios": []
+						}
+					}
+				]
 			},
 			{
 				"name": "evidenceReading.scope",
 				"type": "EntityEvidenceQuery",
 				"required": true,
-				"description": "The entity, project and revision scope to carry into artifact requests. The caller must supply the scope corresponding to the evidence answer."
+				"description": "The entity query scope, including its optional project ID, branch, commit and current or commit mode, copied into artifact requests. The function does not validate it against the evidence result.",
+				"examples": [
+					{
+						"projectId": "local-8e8dd498b7b5bf0b1e87776dac232646c9f59a4cc97370edaecc8cab7bd4b98d",
+						"entityId": "desktop.function.evidence-reading",
+						"commit": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+						"branch": "main",
+						"mode": "current"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidenceReading",
 				"type": "Promise<EvidenceRead>",
-				"description": "A promise for the behavior after artifact reading and comparison, plus backend refusal messages keyed by capture hash. Captures are found on the after side first, then before. Refused or unavailable reads remain unread; damaged bytes do not become verified results. Unexpected comparison failures can still reject."
+				"description": "Resolves to the behavior after delegated artifact reads, hash checks and comparison, with caught bridge refusals keyed by SHA-256. Missing readers or unmatched captures remain unread; failures that escape delegated work reject the promise.",
+				"examples": [
+					{
+						"behavior": {
+							"mode": "current",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": null,
+							"scenarios": []
+						},
+						"refusals": {}
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "evidenceReading.rejection",
+				"type": "thrown",
+				"description": "The promise can reject when delegated artifact reading, SHA-256 verification or behavior comparison rejects. A rejection from bridge.artifact is caught and recorded by hash unless converting its message itself fails."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "evidenceReading",
@@ -52,30 +151,128 @@
 						"name": "evidenceReading.bridge",
 						"type": "Pick<DesktopBridge, 'artifact'>",
 						"required": true,
-						"description": "The desktop connection’s optional artifact reader. Without it, requested artifacts remain unread."
+						"description": "The bridge object exposes the optional artifact reader used for a stored capture. If the reader is absent, the capture remains unread; individual reader rejections are caught and reported by hash.",
+						"examples": [
+							{}
+						]
 					},
 					{
 						"name": "evidenceReading.result",
 						"type": "EntityEvidenceResult",
 						"required": true,
-						"description": "The evidence answer containing behavior rows and the captures listed on each side."
+						"description": "The evidence answer supplies the behavior rows, the captures listed on each side, and the pinned identity used for artifact requests. Only bindings that resolve to a stored capture on the requested side are read; the supplied scope is copied into requests without a consistency check.",
+						"examples": [
+							{
+								"scope": {
+									"location": {
+										"branch": "main",
+										"commit": null,
+										"category": "functions",
+										"entity": "desktop.function.evidence-reading"
+									},
+									"mode": "current",
+									"branch": "main",
+									"tip": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+									"commit": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+									"atTip": true,
+									"parent": null,
+									"summary": {
+										"commit": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+										"parents": [],
+										"subject": "Read and compare recorded results",
+										"author": "Harness",
+										"committedAt": "2026-11-15T12:00:00.000Z",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "unverified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								},
+								"identity": {
+									"principalId": "local-filesystem:current",
+									"projectId": "local-8e8dd498b7b5bf0b1e87776dac232646c9f59a4cc97370edaecc8cab7bd4b98d",
+									"repositoryId": 0,
+									"requestedRef": "main",
+									"sourceCommit": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+									"sourceTree": "89abcdef0123456789abcdef0123456789abcdef",
+									"notesRef": "refs/notes/harness",
+									"notesRevision": null,
+									"evidenceRef": "refs/heads/harness-evidence",
+									"evidenceRevision": null,
+									"historyIndexRevision": "a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4",
+									"artifactHash": null,
+									"profile": null
+								},
+								"evidence": {
+									"mode": "current",
+									"scenarios": [],
+									"after": {
+										"commit": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+										"detail": null,
+										"record": null,
+										"captures": [],
+										"coverage": [],
+										"gap": null
+									},
+									"before": null,
+									"initial": null,
+									"incomparable": []
+								},
+								"behavior": {
+									"mode": "current",
+									"rows": [],
+									"summary": "not-compared",
+									"reason": null,
+									"scenarios": []
+								}
+							}
+						]
 					},
 					{
 						"name": "evidenceReading.scope",
 						"type": "EntityEvidenceQuery",
 						"required": true,
-						"description": "The entity, project and revision scope to carry into artifact requests. The caller must supply the scope corresponding to the evidence answer."
+						"description": "The entity query scope, including its optional project ID, branch, commit and current or commit mode, copied into artifact requests. The function does not validate it against the evidence result.",
+						"examples": [
+							{
+								"projectId": "local-8e8dd498b7b5bf0b1e87776dac232646c9f59a4cc97370edaecc8cab7bd4b98d",
+								"entityId": "desktop.function.evidence-reading",
+								"commit": "64c5c4f3a1b2d3e4f5a6b7c8d9e0f123456789ab",
+								"branch": "main",
+								"mode": "current"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "evidenceReading",
 						"type": "Promise<EvidenceRead>",
-						"description": "A promise for the behavior after artifact reading and comparison, plus backend refusal messages keyed by capture hash. Captures are found on the after side first, then before. Refused or unavailable reads remain unread; damaged bytes do not become verified results. Unexpected comparison failures can still reject."
+						"description": "Resolves to the behavior after delegated artifact reads, hash checks and comparison, with caught bridge refusals keyed by SHA-256. Missing readers or unmatched captures remain unread; failures that escape delegated work reject the promise.",
+						"examples": [
+							{
+								"behavior": {
+									"mode": "current",
+									"rows": [],
+									"summary": "not-compared",
+									"reason": null,
+									"scenarios": []
+								},
+								"refusals": {}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "evidenceReading.rejection",
+						"type": "thrown",
+						"description": "The promise can reject when delegated artifact reading, SHA-256 verification or behavior comparison rejects. A rejection from bridge.artifact is caught and recorded by hash unless converting its message itself fails."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
