@@ -117,11 +117,14 @@ beforeAll(async () => {
 }, 120_000);
 afterAll(() => baseline?.dispose());
 
-async function entityRun(repo: VerifyRepo, env: Record<string, string> = {}) {
-	const result = await repo.run(
-		['verify', 'run', '--priority', 'agent-test', '--entity', 'page.titles', '--json'],
-		env
-	);
+const entityFlags = ['--priority', 'agent-test', '--entity'];
+
+async function entityRun(
+	repo: VerifyRepo,
+	env: Record<string, string> = {},
+	entity = 'page.titles'
+) {
+	const result = await repo.run(['verify', 'run', ...entityFlags, entity, '--json'], env);
 	return { ...result, ...JSON.parse(result.stdout) };
 }
 
@@ -159,14 +162,7 @@ test(
 							await readFile(join(result.directory, capture.path))
 						);
 					}
-				const text = await repo.run([
-					'verify',
-					'run',
-					'--priority',
-					'agent-test',
-					'--entity',
-					'page.titles'
-				]);
+				const text = await repo.run(['verify', 'run', ...entityFlags, 'page.titles']);
 				expect(text.stdout).toContain('page.titles');
 				expect(text.stdout).toContain('desktop, mobile, tablet');
 				expect(text.stdout).toContain(result.record.id);
@@ -187,6 +183,25 @@ test('repeating entity verification keeps one attached record for identical proo
 		expect(again.attachment).toMatchObject({ status: 'unchanged', record: first.record.id });
 		expect(await repo.git(['rev-parse', evidenceRef])).toBe(evidence);
 		expect(await noteLines(repo)).toEqual(notes);
+	} finally {
+		await repo.dispose();
+	}
+}, 120_000);
+
+test("a headless entity's complete evidence is attached with its record", async () => {
+	const repo = await cloneRepo(baseline);
+	try {
+		const result = await entityRun(repo, {}, 'service.clock');
+		expect(result.exitCode).toBe(0);
+		expect(result.attachment).toEqual({
+			status: 'attached',
+			entity: 'service.clock',
+			record: result.record.id,
+			states: ['default'],
+			viewports: []
+		});
+		const notes = (await noteLines(repo)).filter((line) => line.kind === 'verification');
+		expect(notes.map((note) => note.record)).toEqual([result.record.id]);
 	} finally {
 		await repo.dispose();
 	}

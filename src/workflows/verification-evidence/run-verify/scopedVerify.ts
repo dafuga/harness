@@ -38,16 +38,18 @@ async function attachEntity(
 	stored: StoredRecord
 ): Promise<VerifyResult> {
 	const shots = screenshots(stored);
+	const proof = shots.length > 0 ? shots : captures(stored);
 	const attachment: NonNullable<VerifyResult['attachment']> = {
 		status: 'skipped',
 		entity,
 		record: stored.record.id,
-		states: [...new Set(shots.map((shot) => shot.state))].sort(),
+		states: [...new Set(proof.map((item) => item.state))].sort(),
 		viewports: [...new Set(shots.map((shot) => shot.capture.viewport!))].sort()
 	};
 	if (!completeEntity(stored, entity)) {
+		const subject = shots.length > 0 ? 'No screenshots' : 'No evidence';
 		process.stderr.write(
-			`No screenshots attached for ${entity}: entity verification failed or is incomplete.\n`
+			`${subject} attached for ${entity}: entity verification failed or is incomplete.\n`
 		);
 		return { ...stored, attachment };
 	}
@@ -62,14 +64,17 @@ async function attachEntity(
 	return { ...stored, attachment };
 }
 
-function screenshots(stored: StoredRecord) {
+/** Every capture of every scenario state, of any kind. */
+function captures(stored: StoredRecord) {
 	return stored.record.scenarios.flatMap((scenario) =>
 		scenario.states.flatMap((state) =>
-			state.captures
-				.filter((capture) => capture.kind === 'screenshot')
-				.map((capture) => ({ scenario: scenario.id, state: state.id, capture }))
+			state.captures.map((capture) => ({ scenario: scenario.id, state: state.id, capture }))
 		)
 	);
+}
+
+function screenshots(stored: StoredRecord) {
+	return captures(stored).filter(({ capture }) => capture.kind === 'screenshot');
 }
 
 function completeEntity(stored: StoredRecord, entity: string): boolean {
@@ -80,11 +85,11 @@ function completeEntity(stored: StoredRecord, entity: string): boolean {
 		record.failures.every((failure) => failure === scopeFailure(entity)) &&
 		record.scenarios.length > 0 &&
 		record.scenarios.every((scenario) => scenario.status === 'passed') &&
-		screenshots(stored).length > 0
+		captures(stored).length > 0
 	);
 }
 
-/** Reuse only intact, already attached proof of the same entity, profile and screenshot slots. */
+/** Reuse only intact, already attached proof of the same entity, profile and proof slots. */
 async function identicalProof(root: string, entity: string, stored: StoredRecord) {
 	const { record } = stored;
 	const notes = await new HistoryNoteRepository(root).read(record.source.commit);
@@ -101,19 +106,35 @@ async function identicalProof(root: string, entity: string, stored: StoredRecord
 	return undefined;
 }
 
+/** The screenshot slots when there are screenshots; otherwise the slot of every capture. */
 function proofSlots(stored: StoredRecord): string {
+	const shots = screenshots(stored);
+	if (shots.length > 0)
+		return JSON.stringify(
+			shots
+				.map(({ scenario, state, capture }) => [
+					scenario,
+					state,
+					capture.evidence,
+					capture.viewport,
+					capture.sha256,
+					capture.bytes,
+					capture.mediaType,
+					capture.server?.revision,
+					capture.server?.buildId
+				])
+				.sort()
+		);
 	return JSON.stringify(
-		screenshots(stored)
+		captures(stored)
 			.map(({ scenario, state, capture }) => [
 				scenario,
 				state,
 				capture.evidence,
-				capture.viewport,
+				capture.kind,
 				capture.sha256,
 				capture.bytes,
-				capture.mediaType,
-				capture.server?.revision,
-				capture.server?.buildId
+				capture.mediaType
 			])
 			.sort()
 	);
@@ -122,6 +143,12 @@ function proofSlots(stored: StoredRecord): string {
 export function renderAttachment(attachment: VerifyResult['attachment']): string[] {
 	if (!attachment) return [];
 	const { status, entity, states, viewports, record } = attachment;
+	if (viewports.length === 0)
+		return [
+			status === 'skipped'
+				? `No evidence attached for ${entity}: failed or incomplete run.`
+				: `Evidence ${status} for ${entity}: states ${states.join(', ')}; record ${record}.`
+		];
 	if (status === 'skipped')
 		return [`No screenshots attached for ${entity}: failed or incomplete run.`];
 	return [
