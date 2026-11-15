@@ -85,7 +85,9 @@ test('the host of a screen names no renderer, not even to read the type of its p
 	expect(mounts(`${components}/explorer-ui/HarnessScreen.svelte`, false)).toEqual([
 		'HarnessConsole'
 	]);
-	expect(mounts(`${workspaceRoot}/src/models/ExplorerScreen.types.ts`, false)).toEqual([]);
+	expect(mounts(`${workspaceRoot}/src/models/explorer-ui/ExplorerScreen.types.ts`, false)).toEqual(
+		[]
+	);
 	expect(drawn(`${components}/explorer-ui/HarnessScreen.svelte`)).not.toContain('ExplorerContent');
 });
 
