@@ -34,54 +34,168 @@
 				"name": "GameGraph.checkpoints",
 				"type": "Checkpoint[]",
 				"required": true,
-				"description": "Authoritative checkpoint nodes and prerequisite relationships for this view."
+				"description": "The authoritative checkpoint list of this view: the canvas draws each entry as a node at its x and y, labelled by its title or else its id, and draws an edge from each id in its requires that is also in this list. The component never edits this array, so drags and connections reach the parent as a new array through change, and new checkpoints reach it through create.",
+				"examples": [
+					[
+						{
+							"id": "checkpoint-1",
+							"title": "Checkpoint 1",
+							"description": "",
+							"x": 80,
+							"y": 80,
+							"requires": [],
+							"conditions": [],
+							"actions": []
+						}
+					],
+					[
+						{
+							"id": "checkpoint-1",
+							"title": "Find the key",
+							"description": "The key lies under the crate.",
+							"x": 80,
+							"y": 80,
+							"requires": [],
+							"conditions": [],
+							"actions": [
+								{
+									"type": "set",
+									"target": "hasKey",
+									"value": true
+								},
+								{
+									"type": "emit",
+									"target": "key-found",
+									"value": true
+								}
+							]
+						},
+						{
+							"id": "checkpoint-2",
+							"title": "Open the door",
+							"description": "",
+							"x": 340,
+							"y": 80,
+							"requires": ["checkpoint-1"],
+							"conditions": [
+								{
+									"field": "hasKey",
+									"op": "eq",
+									"value": true
+								}
+							],
+							"actions": [
+								{
+									"type": "set",
+									"target": "doorOpen",
+									"value": true
+								}
+							]
+						},
+						{
+							"id": "checkpoint-3",
+							"title": "Checkpoint 3",
+							"description": "",
+							"x": 600,
+							"y": 80,
+							"requires": ["checkpoint-2"],
+							"conditions": [],
+							"actions": []
+						}
+					]
+				]
 			},
 			{
 				"name": "GameGraph.run",
 				"type": "GameRun",
 				"required": true,
-				"description": "Current deterministic tick, game state, completed checkpoints, events and execution trace."
+				"description": "The run snapshot whose completed list marks checkpoints as done in the header's count and on their nodes, and whose state and completed list, with each checkpoint's requires and conditions, decide which unfinished checkpoints are drawn as eligible. The component reads only completed and state from it, so tick, seed, events, trace and progress never change what it draws.",
+				"examples": [
+					{
+						"tick": 0,
+						"seed": 1,
+						"state": {
+							"x": 0,
+							"y": 0,
+							"hasKey": false,
+							"doorOpen": false,
+							"outcome": "",
+							"choice": ""
+						},
+						"completed": [],
+						"events": [],
+						"trace": []
+					},
+					{
+						"viewId": "view-mwh2io00",
+						"tick": 1,
+						"seed": 270369,
+						"state": {
+							"x": 0,
+							"y": 0,
+							"hasKey": true,
+							"doorOpen": false,
+							"outcome": "",
+							"choice": "",
+							"event:key-found": true,
+							"view": "view-mwh2io00"
+						},
+						"completed": ["checkpoint-1"],
+						"events": ["key-found"],
+						"trace": [
+							{
+								"viewId": "view-mwh2io00",
+								"tick": 1,
+								"checkpointId": "checkpoint-1",
+								"reason": "Prerequisites satisfied"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "GameGraph.selected",
 				"type": "string | null",
 				"required": true,
-				"description": "Identity of the checkpoint currently selected in the graph."
+				"description": "The id of the checkpoint the parent has selected, or null for none; the node with that id is drawn as selected, and an id matching no checkpoint draws nothing. The component never changes it: a click or Enter on a node calls select instead.",
+				"examples": [null, "checkpoint-1", "checkpoint-3"]
 			},
 			{
 				"name": "GameGraph.select",
 				"type": "(id: string) => void",
 				"required": true,
-				"description": "Callback selecting the requested view or checkpoint identity without saving the document."
+				"description": "Called with a checkpoint's id when its node is clicked, or when Enter is pressed while a node has focus, including in readonly views. The component passes only checkpoint ids and saves or changes no checkpoint when it calls this."
 			},
 			{
 				"name": "GameGraph.create",
 				"type": "(node: Checkpoint) => void",
 				"required": true,
-				"description": "Open the new checkpoint in the owning workspace modal."
+				"description": "Called by the Add checkpoint button, which is shown only when readonly is false, with a new checkpoint: id checkpoint-N for the first unused N at or above the list length plus one, title Checkpoint N, an empty description, and empty requires, conditions and actions. Its x is the last checkpoint's x plus 260 and its y is that checkpoint's y, or 80 and 80 for an empty list, and the component never adds it to the list itself."
 			},
 			{
 				"name": "GameGraph.change",
 				"type": "(nodes: Checkpoint[]) => void",
 				"required": true,
-				"description": "Callback publishing the edited checkpoint, view patch or graph node list to its owner."
+				"description": "Called with the complete new checkpoint array after a connection is accepted, where the target's requires gains the source, and after a drag ends, with each dragged checkpoint's x and y rounded to whole numbers. Connections are refused before this is called when the target is not in the list, the source is already a prerequisite, or the connection would make a checkpoint require itself, directly or through others."
 			},
 			{
 				"name": "GameGraph.readonly",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Disable editing and generation for historical or otherwise immutable views."
+				"description": "When true, the Add checkpoint button is hidden, nodes cannot be dragged or connected, and the header says view instead of edit, though selecting a checkpoint still calls select. When false, which is the default, the Add button is shown and nodes can be dragged and connected.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameGraph",
 				"type": "markup",
-				"description": "Display checkpoint dependencies and progress; edit connections and positions, and open checkpoint creation or inspection."
+				"description": "A section labelled Checkpoint graph whose header reads '<completed> of <total> checkpoints complete' with a hint to select a checkpoint to edit or view it, plus an Add checkpoint button unless readonly. Below it, a canvas draws one node per checkpoint and one edge per listed prerequisite, with a controls panel that includes GameGraphFit."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
