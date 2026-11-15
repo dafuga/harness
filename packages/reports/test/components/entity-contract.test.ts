@@ -1,5 +1,5 @@
 import { propContract, contractArrayAdmission, declaredTypeUnit } from './entity-contract.fixture';
-import { contractFields } from '../../src/utils/contractFields';
+import { contractFields } from '../../src/utils/explorer-ui/contractFields';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { content, words } from '../entityRender';

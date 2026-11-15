@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
-import { brandMark, brandTiles } from '../../src/utils/brandMark';
+import { brandMark, brandTiles } from '../../src/utils/development-tooling/brandMark';
 
 /**
  * The modular H: five equal square tiles on a 3 by 3 lattice, the four corners and the centre,

@@ -9,13 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/utils/captureProvenance.ts",
 			"packages/reports/src/utils/reports-media/captureProvenance.ts",
 			"packages/reports/src/utils/reports-media/captureProvenance.types.ts"
 		],
 		"symbols": [
-			"captureProvenance",
-			"scenarioOrigin",
 			"captureProvenance",
 			"scenarioOrigin",
 			"CaptureStanding",

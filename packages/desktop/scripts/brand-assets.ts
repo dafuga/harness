@@ -1,7 +1,7 @@
 // @harness-uid u_biluailgjl
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { brandMark } from '../../reports/src/utils/brandMark';
+import { brandMark } from '../../reports/src/utils/development-tooling/brandMark';
 import { brandIcon } from './mac-icon/brandIcon';
 
 /**

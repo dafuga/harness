@@ -8,20 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/brandMark.ts",
-			"packages/reports/src/utils/development-tooling/brandMark.ts"
-		],
-		"symbols": [
-			"brandGrid",
-			"brandTiles",
-			"brandColors",
-			"brandMark",
-			"brandGrid",
-			"brandTiles",
-			"brandColors",
-			"brandMark"
-		]
+		"source": ["packages/reports/src/utils/development-tooling/brandMark.ts"],
+		"symbols": ["brandGrid", "brandTiles", "brandColors", "brandMark"]
 	},
 	"contract": {
 		"origin": "declared",

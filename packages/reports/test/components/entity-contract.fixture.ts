@@ -1,5 +1,5 @@
 import { typeDeclarations } from '../entityClassFixtures';
-import { contractFields } from '../../src/utils/contractFields';
+import { contractFields } from '../../src/utils/explorer-ui/contractFields';
 import { unit as fixtureUnit } from '../explorerFixture';
 
 export const propContract = {
