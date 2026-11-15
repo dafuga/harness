@@ -22,12 +22,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The route's rendered markup: a document title of 'Harness', with ' · ' and workspace.snapshot.project.name appended once workspace.snapshot is set, and it renders WorkspaceShell when a snapshot is set or ProjectGate otherwise. Inside ProjectGate, HostedConnection and RemoteConnection render only while available is true (the environment has a bridge), and an hx-p with role alert shows workspace.error when it is set and no snapshot is set."
 			}
 		],
 		"errors": [],
