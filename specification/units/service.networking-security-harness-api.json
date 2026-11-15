@@ -24,66 +24,116 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessApiService.constructor.options",
 				"type": "HarnessApiOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional settings configure the API URL, project, mode, token environment name, snapshot branch and commit, and timeout; other declared option keys are not read by this service. The default object is {}; URL resolves from options.url, HARNESS_API_URL, then http://127.0.0.1:5690, project from options.project or HARNESS_API_PROJECT, tokenEnv defaults to HARNESS_API_TOKEN, timeout to 30000 ms, and omitted mode selects hosted when a project is set or the URL is non-loopback; tokenEnv must match /^[A-Z_][A-Z0-9_]*$/i and timeout must be a safe integer from 1 through 3600000.",
+				"examples": [
+					{
+						"mode": "local",
+						"url": "http://127.0.0.1:5690",
+						"branch": "main",
+						"timeout": "30000",
+						"tokenEnv": "HARNESS_API_TOKEN"
+					}
+				]
 			},
 			{
 				"name": "HarnessApiService.read.resource",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Names the resource to retrieve; local reads pass it as the agent method, hosted projects reads use /api/projects, and other hosted reads use the encoded selected-project resource route.",
+				"examples": ["snapshot"]
 			},
 			{
 				"name": "HarnessApiService.read.input",
 				"type": "Record<string, unknown>",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Record of query values for the requested resource, passed inside the local agent request or converted to hosted query parameters; hosted reads omit null and undefined values and stringify the rest. Defaults to {}.",
+				"examples": [
+					{
+						"branch": "main"
+					}
+				]
 			},
 			{
 				"name": "HarnessApiService.call.method",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Name of the agent operation to invoke. createPlan, startRun, approve, and openThread trigger a snapshot writable-tip check; other method strings are forwarded without that preflight.",
+				"examples": ["createPlan"]
 			},
 			{
 				"name": "HarnessApiService.call.input",
 				"type": "Record<string, unknown>",
-				"required": true
+				"required": true,
+				"description": "Record of parameters forwarded as the agent operation input. This service does not validate its keys; guarded write methods also require a writable branch tip.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "HarnessApiService.call.requestId",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional request identifier forwarded to the agent only when it is truthy; an empty string is omitted. Defaults to undefined.",
+				"examples": ["api-call-2026-11-15-001"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessApiService.connect",
-				"type": "Promise<{ connected: true; server: string }>"
+				"type": "Promise<{ connected: true; server: string }>",
+				"description": "Connection result returned after hosted mode successfully requests /api/projects or local mode creates and saves a session. On success connected is literal true and server is the HTTP adapter origin.",
+				"examples": [
+					{
+						"connected": true,
+						"server": "http://127.0.0.1:5690"
+					}
+				]
 			},
 			{
 				"name": "HarnessApiService.snapshot",
-				"type": "Promise<ApiSnapshot>"
+				"type": "Promise<ApiSnapshot>",
+				"description": "Project snapshot read with the configured branch and commit, each sent as null when absent. The resolved snapshot requires project, revision, writable, and entities; capabilities and project.id are optional.",
+				"examples": [
+					{
+						"project": {},
+						"revision": {
+							"branch": "main",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true
+						},
+						"writable": true,
+						"entities": []
+					}
+				]
 			},
 			{
 				"name": "HarnessApiService.read",
-				"type": "Promise<ApiResponse>"
+				"type": "Promise<ApiResponse>",
+				"description": "Resolves to the HTTP adapter response for the selected resource after local-agent or hosted-route dispatch, without reshaping it. ApiResponse is imported from the HTTP adapter and its fields are not defined in these implementation files, so a matching JSON example cannot be derived here."
 			},
 			{
 				"name": "HarnessApiService.call",
-				"type": "Promise<ApiResponse>"
+				"type": "Promise<ApiResponse>",
+				"description": "Resolves to the HTTP adapter response for the local or hosted agent request, without reshaping it. ApiResponse is imported from the HTTP adapter and its fields are not defined in these implementation files, so a matching JSON example cannot be derived here."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised when tokenEnv is not a valid environment-variable name, mode is not local or hosted, timeout is not a safe integer from 1 through 3600000 ms, or local mode uses a non-loopback URL. It is also raised when a local API response has no nonempty session token, a hosted route needs a project that was not selected, or a guarded agent write is not at the writable branch tip or is pinned to options.commit."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HarnessApiService.connect",
@@ -91,11 +141,24 @@
 				"outputs": [
 					{
 						"name": "HarnessApiService.connect",
-						"type": "Promise<{ connected: true; server: string }>"
+						"type": "Promise<{ connected: true; server: string }>",
+						"description": "Connection result returned after hosted mode successfully requests /api/projects or local mode creates and saves a session. On success connected is literal true and server is the HTTP adapter origin.",
+						"examples": [
+							{
+								"connected": true,
+								"server": "http://127.0.0.1:5690"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when local session creation receives no nonempty string token from the API."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HarnessApiService.snapshot",
@@ -103,11 +166,30 @@
 				"outputs": [
 					{
 						"name": "HarnessApiService.snapshot",
-						"type": "Promise<ApiSnapshot>"
+						"type": "Promise<ApiSnapshot>",
+						"description": "Project snapshot read with the configured branch and commit, each sent as null when absent. The resolved snapshot requires project, revision, writable, and entities; capabilities and project.id are optional.",
+						"examples": [
+							{
+								"project": {},
+								"revision": {
+									"branch": "main",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"atTip": true
+								},
+								"writable": true,
+								"entities": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when the hosted snapshot route has no selected project or local session creation receives no nonempty string token."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HarnessApiService.read",
@@ -115,23 +197,38 @@
 					{
 						"name": "HarnessApiService.read.resource",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Names the resource to retrieve; local reads pass it as the agent method, hosted projects reads use /api/projects, and other hosted reads use the encoded selected-project resource route.",
+						"examples": ["snapshot"]
 					},
 					{
 						"name": "HarnessApiService.read.input",
 						"type": "Record<string, unknown>",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Record of query values for the requested resource, passed inside the local agent request or converted to hosted query parameters; hosted reads omit null and undefined values and stringify the rest. Defaults to {}.",
+						"examples": [
+							{
+								"branch": "main"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HarnessApiService.read",
-						"type": "Promise<ApiResponse>"
+						"type": "Promise<ApiResponse>",
+						"description": "Resolves to the HTTP adapter response for the selected resource after local-agent or hosted-route dispatch, without reshaping it. ApiResponse is imported from the HTTP adapter and its fields are not defined in these implementation files, so a matching JSON example cannot be derived here."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when a hosted non-projects read has no selected project or local session creation receives no nonempty string token."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HarnessApiService.call",
@@ -139,32 +236,43 @@
 					{
 						"name": "HarnessApiService.call.method",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Name of the agent operation to invoke. createPlan, startRun, approve, and openThread trigger a snapshot writable-tip check; other method strings are forwarded without that preflight.",
+						"examples": ["createPlan"]
 					},
 					{
 						"name": "HarnessApiService.call.input",
 						"type": "Record<string, unknown>",
-						"required": true
+						"required": true,
+						"description": "Record of parameters forwarded as the agent operation input. This service does not validate its keys; guarded write methods also require a writable branch tip.",
+						"examples": [
+							{}
+						]
 					},
 					{
 						"name": "HarnessApiService.call.requestId",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional request identifier forwarded to the agent only when it is truthy; an empty string is omitted. Defaults to undefined.",
+						"examples": ["api-call-2026-11-15-001"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HarnessApiService.call",
-						"type": "Promise<ApiResponse>"
+						"type": "Promise<ApiResponse>",
+						"description": "Resolves to the HTTP adapter response for the local or hosted agent request, without reshaping it. ApiResponse is imported from the HTTP adapter and its fields are not defined in these implementation files, so a matching JSON example cannot be derived here."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised for createPlan, startRun, approve, or openThread when the snapshot is not writable, is not at its tip, or options.commit is set. Local session creation can also raise it when the API response has no nonempty token, and hosted agent routing requires a selected project."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -175,22 +283,34 @@
 						"name": "HarnessApiService.constructor.options",
 						"type": "HarnessApiOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional settings configure the API URL, project, mode, token environment name, snapshot branch and commit, and timeout; other declared option keys are not read by this service. The default object is {}; URL resolves from options.url, HARNESS_API_URL, then http://127.0.0.1:5690, project from options.project or HARNESS_API_PROJECT, tokenEnv defaults to HARNESS_API_TOKEN, timeout to 30000 ms, and omitted mode selects hosted when a project is set or the URL is non-loopback; tokenEnv must match /^[A-Z_][A-Z0-9_]*$/i and timeout must be a safe integer from 1 through 3600000.",
+						"examples": [
+							{
+								"mode": "local",
+								"url": "http://127.0.0.1:5690",
+								"branch": "main",
+								"timeout": "30000",
+								"tokenEnv": "HARNESS_API_TOKEN"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HarnessApiService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed HarnessApiService instance exposes its HTTP adapter, resolved project, and hosted-mode flag, and retains a session repository. This is a class instance."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when tokenEnv is not a valid environment-variable name, mode is not local or hosted, timeout is not a safe integer from 1 through 3600000 ms, or local mode uses a non-loopback URL."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
