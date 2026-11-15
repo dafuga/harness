@@ -21,17 +21,80 @@
 				"name": "authConfig.env",
 				"type": "AuthEnv",
 				"required": true,
-				"description": "Environment settings for Google sign-in, session secret, public origin, deployment environment and optional GitHub App."
+				"description": "The raw environment map authConfig reads: HARNESS_GOOGLE_CLIENT_ID, HARNESS_SESSION_SECRET (at least 32 characters), HARNESS_PUBLIC_ORIGIN and HARNESS_ENVIRONMENT (exactly local, staging or production) must all be valid or authConfig returns null, while the GitHub App values (HARNESS_GITHUB_APP_ID, HARNESS_GITHUB_PRIVATE_KEY, HARNESS_GITHUB_CLIENT_ID, HARNESS_GITHUB_CLIENT_SECRET) and collaboration IDs (HARNESS_COLLABORATION_REPOSITORY_ID, HARNESS_COLLABORATION_INSTALLATION_ID) are optional: missing or invalid GitHub values make github null, and missing or invalid collaboration IDs make only collaboration null. HARNESS_EMAIL_API_KEY and HARNESS_EMAIL_FROM are declared on AuthEnv but not read here.",
+				"examples": [
+					{
+						"HARNESS_GOOGLE_CLIENT_ID": "123456789012-7d2k1q9x0m3n8b5c.apps.googleusercontent.com",
+						"HARNESS_SESSION_SECRET": "3f9a1c7e5b2d8f0a6c4e9b1d7a3f5c8e2b6d0a4f9c1e7b3d5a8f2c6e0b4d9a17",
+						"HARNESS_PUBLIC_ORIGIN": "https://hub.example.com",
+						"HARNESS_ENVIRONMENT": "production",
+						"HARNESS_GITHUB_APP_ID": "512345",
+						"HARNESS_GITHUB_PRIVATE_KEY": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA7kq2bV0xR9sT3mLd\n-----END RSA PRIVATE KEY-----",
+						"HARNESS_GITHUB_CLIENT_ID": "Iv1.8a61f9b3a7aba766",
+						"HARNESS_GITHUB_CLIENT_SECRET": "9f3a7c1e5b2d8a6f0c4e9b1d7a3f5c8e2b6d0a4f",
+						"HARNESS_COLLABORATION_REPOSITORY_ID": "582931046",
+						"HARNESS_COLLABORATION_INSTALLATION_ID": "47126385"
+					},
+					{
+						"HARNESS_GOOGLE_CLIENT_ID": "987654321098-q8w2e4r6t1y3u5i0.apps.googleusercontent.com",
+						"HARNESS_SESSION_SECRET": "c0d5e8a1f4b7932e6a0c5d8f1b4e7a2c9d3f6b0e8a5c1d4f7b2e9a6c3d0f8b15",
+						"HARNESS_PUBLIC_ORIGIN": "https://staging.hub.example.com",
+						"HARNESS_ENVIRONMENT": "staging",
+						"HARNESS_GITHUB_APP_ID": "698104",
+						"HARNESS_GITHUB_PRIVATE_KEY": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAu3Lq8ZfK2hVx0nRc\n-----END RSA PRIVATE KEY-----",
+						"HARNESS_GITHUB_CLIENT_ID": "Iv1.3c9e0d7b2f4a6815",
+						"HARNESS_GITHUB_CLIENT_SECRET": "e51d7a0c3b9f48266d2e8a1c5f7b0d3e9a4c6f21"
+					},
+					{
+						"HARNESS_GOOGLE_CLIENT_ID": "123456789012-7d2k1q9x0m3n8b5c.apps.googleusercontent.com",
+						"HARNESS_SESSION_SECRET": "0c6e1a9d4b7f2835e0a3c8d6f1b4e7a92d5c0f8b3e6a1d4c7f9b2e5a8d0c3f61",
+						"HARNESS_PUBLIC_ORIGIN": "http://localhost:3000",
+						"HARNESS_ENVIRONMENT": "local"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "authConfig",
 				"type": "AuthConfig | null",
-				"description": "Configuration when client ID is valid, secret has at least 32 characters and environment is local, staging or production; otherwise null. Origin must be HTTPS, or loopback HTTP in local mode, without credentials, path, query or fragment. GitHub and collaboration settings are independently nullable."
+				"description": "The sign-in settings (clientId, secret, origin, environment, github), or null, which disables sign-in entirely: clientId, the Google client ID, is 1 to 200 characters of letters, digits, '.', '_' or '-'; secret, the session secret, is at least 32 characters; environment is exactly local, staging or production; and origin must be HTTPS, or HTTP for localhost, 127.0.0.1 or [::1] in local mode only, with no credentials, no path beyond '/' and no non-empty query or fragment, and is returned in normalized URL.origin form. github is null unless the GitHub App ID (a positive integer of up to 16 digits without leading zeros) and GitHub client ID (1 to 100 characters of letters, digits, '.', '_' or '-') are valid and the private key and client secret are non-empty, and its collaboration is null unless both collaboration IDs are positive integers of up to 16 digits without leading zeros.",
+				"examples": [
+					{
+						"clientId": "123456789012-7d2k1q9x0m3n8b5c.apps.googleusercontent.com",
+						"secret": "3f9a1c7e5b2d8f0a6c4e9b1d7a3f5c8e2b6d0a4f9c1e7b3d5a8f2c6e0b4d9a17",
+						"origin": "https://hub.example.com",
+						"environment": "production",
+						"github": {
+							"appId": "512345",
+							"privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA7kq2bV0xR9sT3mLd\n-----END RSA PRIVATE KEY-----",
+							"clientId": "Iv1.8a61f9b3a7aba766",
+							"clientSecret": "9f3a7c1e5b2d8a6f0c4e9b1d7a3f5c8e2b6d0a4f",
+							"collaboration": {
+								"repositoryId": 582931046,
+								"installationId": 47126385
+							}
+						}
+					},
+					{
+						"clientId": "987654321098-q8w2e4r6t1y3u5i0.apps.googleusercontent.com",
+						"secret": "c0d5e8a1f4b7932e6a0c5d8f1b4e7a2c9d3f6b0e8a5c1d4f7b2e9a6c3d0f8b15",
+						"origin": "https://staging.hub.example.com",
+						"environment": "staging",
+						"github": {
+							"appId": "698104",
+							"privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAu3Lq8ZfK2hVx0nRc\n-----END RSA PRIVATE KEY-----",
+							"clientId": "Iv1.3c9e0d7b2f4a6815",
+							"clientSecret": "e51d7a0c3b9f48266d2e8a1c5f7b0d3e9a4c6f21",
+							"collaboration": null
+						}
+					},
+					null
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "authConfig",
@@ -40,18 +103,80 @@
 						"name": "authConfig.env",
 						"type": "AuthEnv",
 						"required": true,
-						"description": "Environment settings for Google sign-in, session secret, public origin, deployment environment and optional GitHub App."
+						"description": "The raw environment map authConfig reads: HARNESS_GOOGLE_CLIENT_ID, HARNESS_SESSION_SECRET (at least 32 characters), HARNESS_PUBLIC_ORIGIN and HARNESS_ENVIRONMENT (exactly local, staging or production) must all be valid or authConfig returns null, while the GitHub App values (HARNESS_GITHUB_APP_ID, HARNESS_GITHUB_PRIVATE_KEY, HARNESS_GITHUB_CLIENT_ID, HARNESS_GITHUB_CLIENT_SECRET) and collaboration IDs (HARNESS_COLLABORATION_REPOSITORY_ID, HARNESS_COLLABORATION_INSTALLATION_ID) are optional: missing or invalid GitHub values make github null, and missing or invalid collaboration IDs make only collaboration null. HARNESS_EMAIL_API_KEY and HARNESS_EMAIL_FROM are declared on AuthEnv but not read here.",
+						"examples": [
+							{
+								"HARNESS_GOOGLE_CLIENT_ID": "123456789012-7d2k1q9x0m3n8b5c.apps.googleusercontent.com",
+								"HARNESS_SESSION_SECRET": "3f9a1c7e5b2d8f0a6c4e9b1d7a3f5c8e2b6d0a4f9c1e7b3d5a8f2c6e0b4d9a17",
+								"HARNESS_PUBLIC_ORIGIN": "https://hub.example.com",
+								"HARNESS_ENVIRONMENT": "production",
+								"HARNESS_GITHUB_APP_ID": "512345",
+								"HARNESS_GITHUB_PRIVATE_KEY": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA7kq2bV0xR9sT3mLd\n-----END RSA PRIVATE KEY-----",
+								"HARNESS_GITHUB_CLIENT_ID": "Iv1.8a61f9b3a7aba766",
+								"HARNESS_GITHUB_CLIENT_SECRET": "9f3a7c1e5b2d8a6f0c4e9b1d7a3f5c8e2b6d0a4f",
+								"HARNESS_COLLABORATION_REPOSITORY_ID": "582931046",
+								"HARNESS_COLLABORATION_INSTALLATION_ID": "47126385"
+							},
+							{
+								"HARNESS_GOOGLE_CLIENT_ID": "987654321098-q8w2e4r6t1y3u5i0.apps.googleusercontent.com",
+								"HARNESS_SESSION_SECRET": "c0d5e8a1f4b7932e6a0c5d8f1b4e7a2c9d3f6b0e8a5c1d4f7b2e9a6c3d0f8b15",
+								"HARNESS_PUBLIC_ORIGIN": "https://staging.hub.example.com",
+								"HARNESS_ENVIRONMENT": "staging",
+								"HARNESS_GITHUB_APP_ID": "698104",
+								"HARNESS_GITHUB_PRIVATE_KEY": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAu3Lq8ZfK2hVx0nRc\n-----END RSA PRIVATE KEY-----",
+								"HARNESS_GITHUB_CLIENT_ID": "Iv1.3c9e0d7b2f4a6815",
+								"HARNESS_GITHUB_CLIENT_SECRET": "e51d7a0c3b9f48266d2e8a1c5f7b0d3e9a4c6f21"
+							},
+							{
+								"HARNESS_GOOGLE_CLIENT_ID": "123456789012-7d2k1q9x0m3n8b5c.apps.googleusercontent.com",
+								"HARNESS_SESSION_SECRET": "0c6e1a9d4b7f2835e0a3c8d6f1b4e7a92d5c0f8b3e6a1d4c7f9b2e5a8d0c3f61",
+								"HARNESS_PUBLIC_ORIGIN": "http://localhost:3000",
+								"HARNESS_ENVIRONMENT": "local"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "authConfig",
 						"type": "AuthConfig | null",
-						"description": "Configuration when client ID is valid, secret has at least 32 characters and environment is local, staging or production; otherwise null. Origin must be HTTPS, or loopback HTTP in local mode, without credentials, path, query or fragment. GitHub and collaboration settings are independently nullable."
+						"description": "The sign-in settings (clientId, secret, origin, environment, github), or null, which disables sign-in entirely: clientId, the Google client ID, is 1 to 200 characters of letters, digits, '.', '_' or '-'; secret, the session secret, is at least 32 characters; environment is exactly local, staging or production; and origin must be HTTPS, or HTTP for localhost, 127.0.0.1 or [::1] in local mode only, with no credentials, no path beyond '/' and no non-empty query or fragment, and is returned in normalized URL.origin form. github is null unless the GitHub App ID (a positive integer of up to 16 digits without leading zeros) and GitHub client ID (1 to 100 characters of letters, digits, '.', '_' or '-') are valid and the private key and client secret are non-empty, and its collaboration is null unless both collaboration IDs are positive integers of up to 16 digits without leading zeros.",
+						"examples": [
+							{
+								"clientId": "123456789012-7d2k1q9x0m3n8b5c.apps.googleusercontent.com",
+								"secret": "3f9a1c7e5b2d8f0a6c4e9b1d7a3f5c8e2b6d0a4f9c1e7b3d5a8f2c6e0b4d9a17",
+								"origin": "https://hub.example.com",
+								"environment": "production",
+								"github": {
+									"appId": "512345",
+									"privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA7kq2bV0xR9sT3mLd\n-----END RSA PRIVATE KEY-----",
+									"clientId": "Iv1.8a61f9b3a7aba766",
+									"clientSecret": "9f3a7c1e5b2d8a6f0c4e9b1d7a3f5c8e2b6d0a4f",
+									"collaboration": {
+										"repositoryId": 582931046,
+										"installationId": 47126385
+									}
+								}
+							},
+							{
+								"clientId": "987654321098-q8w2e4r6t1y3u5i0.apps.googleusercontent.com",
+								"secret": "c0d5e8a1f4b7932e6a0c5d8f1b4e7a2c9d3f6b0e8a5c1d4f7b2e9a6c3d0f8b15",
+								"origin": "https://staging.hub.example.com",
+								"environment": "staging",
+								"github": {
+									"appId": "698104",
+									"privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAu3Lq8ZfK2hVx0nRc\n-----END RSA PRIVATE KEY-----",
+									"clientId": "Iv1.3c9e0d7b2f4a6815",
+									"clientSecret": "e51d7a0c3b9f48266d2e8a1c5f7b0d3e9a4c6f21",
+									"collaboration": null
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
