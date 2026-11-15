@@ -21,17 +21,44 @@
 				"name": "rendererPath.path",
 				"type": "string",
 				"required": true,
-				"description": "Path beginning with /harness/branch to parse; other paths use the default route."
+				"description": "Slash-delimited path to inspect. The parser reads it only when the first two nonempty segments are `harness` and `branch`; every other path returns the default route.",
+				"examples": [
+					"/harness/branch/main",
+					"/harness/branch/feature%2Fexport/commit/0123456789abcdef0123456789abcdef01234567/pages/item-1"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "rendererPath",
 				"type": "RendererRoute",
-				"description": "Parsed route; defaults are pages and null branch, commit, entity and tab. Branch/entity are URI-decoded; unknown categories become pages."
+				"description": "A `RendererRoute` value with branch, commit, category, entity ID, and tab fields. For matching paths, branch is URI-decoded (empty if omitted), a `commit` segment provides the next raw segment, entity ID is URI-decoded, category defaults to `pages` unless the segment is recognized, and tab is the following raw segment; nonmatching paths return `pages` with the other fields null.",
+				"examples": [
+					{
+						"branch": null,
+						"commit": null,
+						"category": "pages",
+						"entityId": null,
+						"tab": null
+					},
+					{
+						"branch": "feature/export",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"category": "pages",
+						"entityId": "item-1",
+						"tab": null
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "URIError",
+				"type": "thrown",
+				"description": "Thrown when `decodeURIComponent` receives malformed percent-encoding in the branch or entity ID segment of a matching route."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "rendererPath",
@@ -40,18 +67,44 @@
 						"name": "rendererPath.path",
 						"type": "string",
 						"required": true,
-						"description": "Path beginning with /harness/branch to parse; other paths use the default route."
+						"description": "Slash-delimited path to inspect. The parser reads it only when the first two nonempty segments are `harness` and `branch`; every other path returns the default route.",
+						"examples": [
+							"/harness/branch/main",
+							"/harness/branch/feature%2Fexport/commit/0123456789abcdef0123456789abcdef01234567/pages/item-1"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "rendererPath",
 						"type": "RendererRoute",
-						"description": "Parsed route; defaults are pages and null branch, commit, entity and tab. Branch/entity are URI-decoded; unknown categories become pages."
+						"description": "A `RendererRoute` value with branch, commit, category, entity ID, and tab fields. For matching paths, branch is URI-decoded (empty if omitted), a `commit` segment provides the next raw segment, entity ID is URI-decoded, category defaults to `pages` unless the segment is recognized, and tab is the following raw segment; nonmatching paths return `pages` with the other fields null.",
+						"examples": [
+							{
+								"branch": null,
+								"commit": null,
+								"category": "pages",
+								"entityId": null,
+								"tab": null
+							},
+							{
+								"branch": "feature/export",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"category": "pages",
+								"entityId": "item-1",
+								"tab": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "Thrown when `decodeURIComponent` receives malformed percent-encoding in the branch or entity ID segment of a matching route."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
