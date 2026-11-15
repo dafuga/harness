@@ -58,71 +58,79 @@
 				"name": "ExplorerDependenciesScreen.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Project and branch history supplied by the Explorer host."
+				"description": "Project and branch context supplied to the shared Explorer frame; this component does not read index fields when building the dependency inventory."
 			},
 			{
 				"name": "ExplorerDependenciesScreen.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Selected immutable revision; its dependency inventory is rendered without borrowing another revision."
+				"description": "The selected revision passed to the shared Explorer frame. This screen reads dependencies only from head.projectDependencies; when that record is absent it shows the pre-index empty state and does not borrow data from the working copy."
 			},
 			{
 				"name": "ExplorerDependenciesScreen.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "First parent used by the shared Explorer frame; null at a branch tip or first commit."
+				"description": "Parent revision context, or null, passed to the shared Explorer frame. Dependency rows are read from the selected head record rather than derived from the parent.",
+				"examples": [
+					[null]
+				]
 			},
 			{
 				"name": "ExplorerDependenciesScreen.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch, commit and availability context used by the shared frame."
+				"description": "Selected explorer scope passed through to the shared Explorer frame; this component does not use it to select or filter dependency declarations."
 			},
 			{
 				"name": "ExplorerDependenciesScreen.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current Dependencies screen address, including selected branch and optional commit."
+				"description": "Current Explorer location passed through to the shared frame for navigation. This component does not parse route fields to build the dependency inventory."
 			},
 			{
 				"name": "ExplorerDependenciesScreen.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Revision-scoped entity catalog supplied to the shared Explorer frame."
+				"description": "Revision-scoped entity catalog passed to the shared Explorer frame. Dependency declarations on this screen come from head.projectDependencies, not from the entity catalog.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerDependenciesScreen.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Host readers for entity contracts, measurements and captured evidence."
+				"description": "Host readers for entity contracts, measurements, and captured evidence passed to the shared frame. This component does not call them to build dependency rows."
 			},
 			{
 				"name": "ExplorerDependenciesScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Revision loader used by the shared Explorer frame for historical navigation."
+				"description": "The revision-loading capability passed to the shared frame for shared revision navigation; this component does not load revisions itself."
 			},
 			{
 				"name": "ExplorerDependenciesScreen.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Base URL from which the shared frame resolves captured media."
+				"description": "Base URL passed to the shared frame for captured media; this component does not resolve media URLs itself.",
+				"examples": ["/"]
 			},
 			{
 				"name": "ExplorerDependenciesScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Requests navigation while preserving the selected explorer scope."
+				"description": "Navigation callback passed to the shared frame. The dependency search does not invoke it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerDependenciesScreen",
 				"type": "markup",
-				"description": "Searchable direct package declarations grouped by ecosystem, with version requirements, dependency types, declaring workspaces and explicit unavailable-data messages."
+				"description": "Searchable direct declarations from head.projectDependencies are grouped by ecosystem, package name, manifest version, and dependency kind; each row lists its workspace label, falling back to source, that declares it. Search is trimmed and case-insensitive over names, versions, kinds, workspace labels, and manifest sources or conditions; versions are manifest requirements rather than resolved installs, and missing records or unreadable manifests are reported without borrowing data from the working copy."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
