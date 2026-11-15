@@ -21,22 +21,36 @@
 				"name": "ownedBySite.project",
 				"type": "{ path: string }",
 				"required": true,
-				"description": "Project path whose ownership should be checked."
+				"description": "Checkout path to check for ownership by this report site. The implementation compares it with the cached site root using repository identity, so a worktree or fresh clone of the same application can match while a same-named directory from another repository does not.",
+				"examples": [
+					{
+						"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportSite",
 				"type": "ReportSite",
-				"description": "Cached site root, primary-checkout directory name and repository identity. On first call uses trimmed HARNESS_SITE_ROOT or the current directory, resolves the Git root when available, and falls back to the requested directory."
+				"description": "Module-cached description of the application site, computed on its first call from the resolved, trimmed HARNESS_SITE_ROOT or the current working directory. It uses the Git top-level when available and otherwise the requested directory; the name is the primary checkout basename when available and otherwise the root basename, and the repository identity is null outside a Git repository.",
+				"examples": [
+					{
+						"root": "/workspace/acme-web",
+						"name": "acme-web",
+						"identity": null
+					}
+				]
 			},
 			{
 				"name": "ownedBySite",
 				"type": "boolean",
-				"description": "Result of comparing the configured site root with the supplied project path through the shared same-site helper."
+				"description": "Whether the project path belongs to the repository identified by the cached site root. A worktree or fresh clone of the same application can match; matching directory names alone do not establish ownership.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "reportSite",
@@ -45,11 +59,18 @@
 					{
 						"name": "reportSite",
 						"type": "ReportSite",
-						"description": "Cached site root, primary-checkout directory name and repository identity. On first call uses trimmed HARNESS_SITE_ROOT or the current directory, resolves the Git root when available, and falls back to the requested directory."
+						"description": "Module-cached description of the application site, computed on its first call from the resolved, trimmed HARNESS_SITE_ROOT or the current working directory. It uses the Git top-level when available and otherwise the requested directory; the name is the primary checkout basename when available and otherwise the root basename, and the repository identity is null outside a Git repository.",
+						"examples": [
+							{
+								"root": "/workspace/acme-web",
+								"name": "acme-web",
+								"identity": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ownedBySite",
@@ -58,18 +79,24 @@
 						"name": "ownedBySite.project",
 						"type": "{ path: string }",
 						"required": true,
-						"description": "Project path whose ownership should be checked."
+						"description": "Checkout path to check for ownership by this report site. The implementation compares it with the cached site root using repository identity, so a worktree or fresh clone of the same application can match while a same-named directory from another repository does not.",
+						"examples": [
+							{
+								"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-19"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ownedBySite",
 						"type": "boolean",
-						"description": "Result of comparing the configured site root with the supplied project path through the shared same-site helper."
+						"description": "Whether the project path belongs to the repository identified by the cached site root. A worktree or fresh clone of the same application can match; matching directory names alone do not establish ownership.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
