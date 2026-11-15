@@ -19,7 +19,10 @@ import { hash } from '../../support/frameFlagFixture';
 import { readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { measureWorkload } from '../../support/measureWorkload';
-import { rejectVideoOriginStandings } from '../../support/videoReferenceChecks';
+import {
+	rejectVideoOriginStandings,
+	verifyMissingMediaDiscovery
+} from '../../support/videoReferenceChecks';
 import { scopeFailure } from '../../../src/workflows/verification-evidence/run-verify/verification-service/entityScope';
 
 test('VideoReferenceService runs', () => {
@@ -66,24 +69,7 @@ test('fresh archive captures attach without copied media and restore verified vi
 		await rm(join(root, '.cache/harness/verifications'), { recursive: true, force: true });
 		expect((await new EvidenceRestoreService(root).restore()).restored).toContain(f.record.id);
 		expect(hash(await readFile(join(f.stored.directory, f.capture.path)))).toBe(f.capture.sha256);
-		await rm(await new LfsAdapter(root).path(f.capture.sha256));
-		const proposals = await new VideoReferenceService(root).candidates({
-			unit: f.capture.video!.unit,
-			clipId: f.capture.video!.clipId,
-			viewport: f.capture.viewport!,
-			inputHash: f.input.video.inputHash
-		});
-		expect(proposals[0].capture.videoReference).toMatchObject({
-			record: f.record.id,
-			revision: f.record.source.commit
-		});
-		await expect(
-			new VideoReferenceService(root).resolve({
-				source: f.record.source,
-				capture: proposals[0].capture,
-				batches: proposals[0].batches
-			})
-		).rejects.toThrow(/missing|integrity/i);
+		await verifyMissingMediaDiscovery(root, f.record, attached.evidence);
 	});
 }, 30_000);
 
