@@ -40,31 +40,25 @@
 				"name": "NavBar.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace supplying category links, project and revision pickers, search context and navigation. Settings is offered only when agent capability is enabled and includes the current workspace path as its return location. Search navigation uses only entries accepted by the current search context."
+				"description": "Required Workspace value passed to the project, environment, revision and category navigation components. Its path(), category, capabilities.agents, local, optional bridge.deploymentActivities and navigate() values determine the settings link, active category, optional game views and deployment activity, while search opens only a path accepted by the current workspace search context."
 			},
 			{
 				"name": "NavBar.account",
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content supplied by the host for account controls, such as the signed-in identity. When omitted, no account container is rendered; this component does not supply sign-in or sign-out behavior itself. Defaults to JavaScript undefined (omitted), not the literal string. An explicit null is treated the same as omitted."
+				"description": "Optional host-supplied Svelte snippet rendered in the account area; when truthy, the header uses account layout and renders available local deployment activity alongside it. Defaults to JavaScript undefined when omitted."
 			}
 		],
 		"outputs": [
 			{
 				"name": "NavBar",
 				"type": "markup",
-				"description": "Top bar with project, search and optional account controls; one grouped environment and revision rail; a complete category row on desktop and tablet; and evenly filled mobile category cells with icons, including Game Views. Search uses the current workspace context. Catalog states: default (no account), account (host account content beside the project), readonly (agent capability off, so Settings is absent) and game (Game Views in the category row). States: readonly: The project navigation remains visible with agent and comment capabilities unavailable."
+				"description": "Renders a top bar containing the workspace brand link, project switcher, environment and revision controls, workspace-scoped search, an agent-gated Settings link, category links and an optional Game Views link; a supplied account snippet and local deployment activity appear only when their conditions are met. Category links use eight equal columns on wider layouts and four columns at widths up to 760px, while Game Views changes those counts to nine and three; at widths up to 560px, the context rail becomes a compact grid and its search controls shrink."
 			}
 		],
-		"errors": [
-			{
-				"name": "Caller callback or content error",
-				"type": "propagated",
-				"description": "Errors from supplied account callbacks or snippets propagate when invoked; this component does not provide an error boundary."
-			}
-		],
-		"errorStatus": "declared",
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
