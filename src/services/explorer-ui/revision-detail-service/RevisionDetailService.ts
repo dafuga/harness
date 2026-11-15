@@ -6,7 +6,7 @@ import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailServ
 import { BudgetLedgerRepository } from '../../../repositories/BudgetLedgerRepository';
 import { BudgetService } from '../../budget-service/BudgetService';
 import { CommitTreeAdapter } from '../../../adapters/CommitTreeAdapter';
-import { GitAdapter } from '../../../adapters/GitAdapter';
+import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import type { VerificationRecord } from '../../../core/verificationTypes';
 import { ScenarioRepository } from '../../../repositories/ScenarioRepository';
 import { UnitRegistryRepository } from '../../../repositories/UnitRegistryRepository';

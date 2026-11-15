@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { HandlerRuntimeAdapter } from '../../src/adapters/HandlerRuntimeAdapter';
+import { HandlerRuntimeAdapter } from '../../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
 import { runtimeReply } from '../../src/utils/runtimeReply';
 
 let calls = 0;

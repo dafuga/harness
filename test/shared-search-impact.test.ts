@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { posix } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
-import { HandlerRuntimeAdapter } from '../src/adapters/HandlerRuntimeAdapter';
+import { HandlerRuntimeAdapter } from '../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
 import { WorkingTreeAdapter } from '../src/adapters/WorkingTreeAdapter';
 import type { ImpactReport, ImpactSide } from '../src/core/impactTypes';
 import { ImpactService } from '../src/services/impact-service/ImpactService';

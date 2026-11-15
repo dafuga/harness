@@ -1,6 +1,6 @@
 import { measureWorkload } from '../support/measureWorkload';
 import { expect, test } from 'vitest';
-import { HandlerRuntimeAdapter } from '../../src/adapters/HandlerRuntimeAdapter';
+import { HandlerRuntimeAdapter } from '../../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
 import { ModuleRuntimeAdapter } from '../../src/adapters/ModuleRuntimeAdapter';
 import type { RuntimeHandler } from '../../src/core/runtimeTypes';
 

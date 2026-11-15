@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../support/measureWorkload';
 import { CommitTreeAdapter } from '../../src/adapters/CommitTreeAdapter';
-import { GitAdapter } from '../../src/adapters/GitAdapter';
+import { GitAdapter } from '../../src/adapters/git-source-history/GitAdapter';
 import type { SourceTree } from '../../src/core/development-tooling/sourceTypes';
 import { readPlatformCatalog } from '../../src/services/explorer-ui/revision-detail-service/platformCatalog';
 import { HistoryIndexService } from '../../src/cli/program/history-index-service/HistoryIndexService';

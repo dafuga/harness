@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { expect } from 'vitest';
 import { runCommand, runHarness } from './cli';
 import { HistoryNoteRepository } from '../../src/repositories/history-note-repository/HistoryNoteRepository';
-import { EvidenceTreeAdapter } from '../../src/adapters/EvidenceTreeAdapter';
+import { EvidenceTreeAdapter } from '../../src/adapters/verification-evidence/EvidenceTreeAdapter';
 import { readRegression } from '../../src/utils/regressionHistory';
 
 export async function prepareRepair(root: string, template: string): Promise<void> {

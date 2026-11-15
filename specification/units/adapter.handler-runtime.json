@@ -9,15 +9,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter.ts",
-			"src/adapters/HandlerRuntimeAdapter.ts"
+			"packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter.ts"
 		],
 		"symbols": [
 			"HandlerRuntimeAdapter",
 			"HandlerRuntimeAdapter.constructor",
 			"HandlerRuntimeAdapter.invoke",
-			"HandlerRuntimeAdapter.close",
-			"HandlerRuntimeAdapter"
+			"HandlerRuntimeAdapter.close"
 		]
 	},
 	"contract": {

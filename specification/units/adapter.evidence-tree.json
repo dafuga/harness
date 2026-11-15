@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/adapters/EvidenceTreeAdapter.ts",
 			"src/adapters/verification-evidence/EvidenceTreeAdapter.ts",
 			"src/adapters/verification-evidence/EvidenceTreeAdapter.types.ts"
 		],
 		"symbols": [
-			"EvidenceTreeAdapter",
 			"EvidenceTreeAdapter",
 			"EvidenceTreeAdapter.constructor",
 			"EvidenceTreeAdapter.tip",

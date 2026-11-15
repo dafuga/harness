@@ -3,7 +3,7 @@ import { measureWorkload } from '../../support/measureWorkload';
 import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { GitAdapter } from '../../../src/adapters/GitAdapter';
+import { GitAdapter } from '../../../src/adapters/git-source-history/GitAdapter';
 import { RevisionDetailService } from '../../../src/services/explorer-ui/revision-detail-service/RevisionDetailService';
 import { HistoryStatusService } from '../../../src/services/verification-evidence/history-status-service/HistoryStatusService';
 

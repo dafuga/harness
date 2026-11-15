@@ -9,13 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/adapters/GitAdapter.ts",
 			"src/adapters/git-source-history/GitAdapter.ts",
 			"src/adapters/git-source-history/GitAdapter.types.ts",
 			"src/adapters/git-source-history/git-adapter/gitDeadline.ts"
 		],
 		"symbols": [
-			"GitAdapter",
 			"GitAdapter",
 			"GitAdapter.constructor",
 			"GitAdapter.run",

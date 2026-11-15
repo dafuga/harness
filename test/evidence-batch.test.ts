@@ -2,7 +2,7 @@ import { afterEach, test, vi } from 'vitest';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { EvidenceTreeAdapter } from '../src/adapters/EvidenceTreeAdapter';
+import { EvidenceTreeAdapter } from '../src/adapters/verification-evidence/EvidenceTreeAdapter';
 import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { expect } from './verificationExpect';
 

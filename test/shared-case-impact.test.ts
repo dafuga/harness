@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { beforeAll, expect, test } from 'vitest';
-import { HandlerRuntimeAdapter } from '../src/adapters/HandlerRuntimeAdapter';
+import { HandlerRuntimeAdapter } from '../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
 import type { ImpactSide } from '../src/core/impactTypes';
 import { ImpactService } from '../src/services/impact-service/ImpactService';
 import { SourceGraphService } from '../src/services/SourceGraphService';
