@@ -18,63 +18,120 @@
 				"name": "hubRaw.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "Source context read by hubRaw: it supplies metadata (which may be absent), identity, cache, source, repository and commit. hubRaw reads metadata.get(entry.path) first, then the cache, then source.raw(repository, { commit, path }), and the code performs no authorization check of its own."
 			},
 			{
 				"name": "hubRaw.entry",
 				"type": "SourceEntry",
 				"required": true,
-				"description": "Tree entry naming the path and expected Git blob hash."
+				"description": "Tree entry for the blob to read: hubRaw uses path for the metadata key, cache profile and source read, and sha for the blob check and cache profile. The sha must equal the lowercase hex Git blob SHA-1 exactly, and type, mode and size are never read.",
+				"examples": [
+					{
+						"path": "packages/hub/src/utils/hubRaw.ts",
+						"sha": "7c4a8d09ca3762af61e59520943dc26494f8941b",
+						"type": "blob",
+						"mode": "100644",
+						"size": 1482
+					},
+					{
+						"path": "README.md",
+						"sha": "3b18e512dba79e4c8300dd08aeb37f8e728b8dad",
+						"type": "blob",
+						"mode": "100644"
+					}
+				]
 			},
 			{
 				"name": "hubMaterializedHash.raw",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Raw Git blob bytes, possibly containing a Git LFS pointer."
+				"description": "Raw Git blob bytes, either ordinary content or a Git LFS pointer; the bytes are decoded as UTF-8 with replacement characters to test for the prefix 'version https://git-lfs.github.com/spec/'. Bytes without that prefix are hashed in full with SHA-256, and no size limit applies to them."
 			},
 			{
 				"name": "hubMaterializedHash.expected",
 				"type": "string | null",
 				"required": true,
-				"description": "Optional expected SHA-256; null skips that comparison."
+				"description": "Expected lowercase hex SHA-256: ordinary bytes are compared with hubHash(raw), and an LFS pointer is compared with its oid. Null or an empty string skips the comparison, and a mismatch makes the call reject.",
+				"examples": [
+					null,
+					"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+					"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+				]
 			},
 			{
 				"name": "hubBlobProfile.kind",
 				"type": "string",
 				"required": true,
-				"description": "Caller-supplied profile kind."
+				"description": "Profile kind copied unchanged into the first part of the returned string, with no validation or escaping. hubRaw passes 'raw' and uses the returned string as the cache identity's profile.",
+				"examples": ["raw"]
 			},
 			{
 				"name": "hubBlobProfile.path",
 				"type": "string",
 				"required": true,
-				"description": "File path to hash into the profile name."
+				"description": "Repository path whose UTF-8 bytes are hashed with SHA-256, so only the lowercase hex digest enters the returned string. The path is not normalized, so different spellings of the same file give different profiles.",
+				"examples": [
+					"packages/hub/src/utils/development-tooling/hubRaw.ts",
+					"packages/hub/src/utils/hubRaw.ts"
+				]
 			},
 			{
 				"name": "hubBlobProfile.sha",
 				"type": "string",
 				"required": true,
-				"description": "Git blob identity to append to the profile name."
+				"description": "Git blob identity copied unchanged as the last part of the returned string. hubRaw passes entry.sha, and this function does not check that the value is a valid hash.",
+				"examples": [
+					"3b18e512dba79e4c8300dd08aeb37f8e728b8dad",
+					"e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubRaw",
 				"type": "Promise<Uint8Array>",
-				"description": "Verified raw bytes from prefetched metadata, cache or source; compares the Git SHA-1 blob hash before returning."
+				"description": "Resolved verified blob bytes: prefetched bytes are returned as a new Uint8Array copy once their SHA-1 blob hash matches entry.sha, and cache or source bytes are returned only after a match. A cache entry that does not match is skipped, and source bytes are written to the cache only after they verify."
 			},
 			{
 				"name": "hubMaterializedHash",
 				"type": "unknown",
-				"description": "Content SHA-256, byte size and lfs flag. Ordinary bytes are hashed directly; LFS requires the exact supported pointer format and a safe integer size no greater than 50000000."
+				"description": "Resolved object with hash, size and lfs: for ordinary bytes, hash is the lowercase SHA-256 of the bytes, size is their length and lfs is false; for a Git LFS pointer, hash is its oid, size is its declared size and lfs is true. A pointer must match the exact v1 three-line format, with an optional final newline, and declare a size that is a safe integer no greater than 50000000; no LFS content is fetched.",
+				"examples": [
+					{
+						"hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+						"size": 0,
+						"lfs": false
+					},
+					{
+						"hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+						"size": 4,
+						"lfs": false
+					},
+					{
+						"hash": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+						"size": 5,
+						"lfs": true
+					}
+				]
 			},
 			{
 				"name": "hubBlobProfile",
 				"type": "unknown",
-				"description": "Profile string combining kind, SHA-256 of path and supplied blob ID."
+				"description": "Resolved string kind:sha256(path):sha built from the three inputs, where the middle part is the lowercase hex SHA-256 of the UTF-8 path and kind and sha are copied unchanged.",
+				"examples": [
+					"raw:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08:3b18e512dba79e4c8300dd08aeb37f8e728b8dad",
+					"raw:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08:e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Error thrown by hubFail() inside an async function, so the call rejects with message 'Harness artifact unavailable' and code 'artifact-corrupt' when prefetched or source bytes fail the blob SHA-1 check, or when hubMaterializedHash finds an expected SHA-256 mismatch, a malformed Git LFS pointer, or a pointer size that is not a safe integer or is above 50000000. A cache entry that fails the check is skipped instead, and errors from context.source.raw, readCache, writeCache or crypto.subtle.digest propagate unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubRaw",
@@ -83,24 +140,45 @@
 						"name": "hubRaw.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "Source context read by hubRaw: it supplies metadata (which may be absent), identity, cache, source, repository and commit. hubRaw reads metadata.get(entry.path) first, then the cache, then source.raw(repository, { commit, path }), and the code performs no authorization check of its own."
 					},
 					{
 						"name": "hubRaw.entry",
 						"type": "SourceEntry",
 						"required": true,
-						"description": "Tree entry naming the path and expected Git blob hash."
+						"description": "Tree entry for the blob to read: hubRaw uses path for the metadata key, cache profile and source read, and sha for the blob check and cache profile. The sha must equal the lowercase hex Git blob SHA-1 exactly, and type, mode and size are never read.",
+						"examples": [
+							{
+								"path": "packages/hub/src/utils/hubRaw.ts",
+								"sha": "7c4a8d09ca3762af61e59520943dc26494f8941b",
+								"type": "blob",
+								"mode": "100644",
+								"size": 1482
+							},
+							{
+								"path": "README.md",
+								"sha": "3b18e512dba79e4c8300dd08aeb37f8e728b8dad",
+								"type": "blob",
+								"mode": "100644"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubRaw",
 						"type": "Promise<Uint8Array>",
-						"description": "Verified raw bytes from prefetched metadata, cache or source; compares the Git SHA-1 blob hash before returning."
+						"description": "Resolved verified blob bytes: prefetched bytes are returned as a new Uint8Array copy once their SHA-1 blob hash matches entry.sha, and cache or source bytes are returned only after a match. A cache entry that does not match is skipped, and source bytes are written to the cache only after they verify."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Error thrown by hubFail() inside an async function, so the call rejects with message 'Harness artifact unavailable' and code 'artifact-corrupt' when prefetched bytes, or bytes read from context.source.raw, do not match entry.sha. A cache entry that does not match is skipped instead, and errors from context.source.raw, readCache, writeCache or crypto.subtle.digest propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubMaterializedHash",
@@ -109,24 +187,52 @@
 						"name": "hubMaterializedHash.raw",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Raw Git blob bytes, possibly containing a Git LFS pointer."
+						"description": "Raw Git blob bytes, either ordinary content or a Git LFS pointer; the bytes are decoded as UTF-8 with replacement characters to test for the prefix 'version https://git-lfs.github.com/spec/'. Bytes without that prefix are hashed in full with SHA-256, and no size limit applies to them."
 					},
 					{
 						"name": "hubMaterializedHash.expected",
 						"type": "string | null",
 						"required": true,
-						"description": "Optional expected SHA-256; null skips that comparison."
+						"description": "Expected lowercase hex SHA-256: ordinary bytes are compared with hubHash(raw), and an LFS pointer is compared with its oid. Null or an empty string skips the comparison, and a mismatch makes the call reject.",
+						"examples": [
+							null,
+							"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+							"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubMaterializedHash",
 						"type": "unknown",
-						"description": "Content SHA-256, byte size and lfs flag. Ordinary bytes are hashed directly; LFS requires the exact supported pointer format and a safe integer size no greater than 50000000."
+						"description": "Resolved object with hash, size and lfs: for ordinary bytes, hash is the lowercase SHA-256 of the bytes, size is their length and lfs is false; for a Git LFS pointer, hash is its oid, size is its declared size and lfs is true. A pointer must match the exact v1 three-line format, with an optional final newline, and declare a size that is a safe integer no greater than 50000000; no LFS content is fetched.",
+						"examples": [
+							{
+								"hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+								"size": 0,
+								"lfs": false
+							},
+							{
+								"hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+								"size": 4,
+								"lfs": false
+							},
+							{
+								"hash": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+								"size": 5,
+								"lfs": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Error thrown by hubFail() inside an async function, so the call rejects with message 'Harness artifact unavailable' and code 'artifact-corrupt' when an expected SHA-256 does not match, when text starting with 'version https://git-lfs.github.com/spec/' is not an exact v1 pointer, or when its declared size is not a safe integer or is above 50000000. Errors from crypto.subtle.digest propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubBlobProfile",
@@ -135,30 +241,43 @@
 						"name": "hubBlobProfile.kind",
 						"type": "string",
 						"required": true,
-						"description": "Caller-supplied profile kind."
+						"description": "Profile kind copied unchanged into the first part of the returned string, with no validation or escaping. hubRaw passes 'raw' and uses the returned string as the cache identity's profile.",
+						"examples": ["raw"]
 					},
 					{
 						"name": "hubBlobProfile.path",
 						"type": "string",
 						"required": true,
-						"description": "File path to hash into the profile name."
+						"description": "Repository path whose UTF-8 bytes are hashed with SHA-256, so only the lowercase hex digest enters the returned string. The path is not normalized, so different spellings of the same file give different profiles.",
+						"examples": [
+							"packages/hub/src/utils/development-tooling/hubRaw.ts",
+							"packages/hub/src/utils/hubRaw.ts"
+						]
 					},
 					{
 						"name": "hubBlobProfile.sha",
 						"type": "string",
 						"required": true,
-						"description": "Git blob identity to append to the profile name."
+						"description": "Git blob identity copied unchanged as the last part of the returned string. hubRaw passes entry.sha, and this function does not check that the value is a valid hash.",
+						"examples": [
+							"3b18e512dba79e4c8300dd08aeb37f8e728b8dad",
+							"e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubBlobProfile",
 						"type": "unknown",
-						"description": "Profile string combining kind, SHA-256 of path and supplied blob ID."
+						"description": "Resolved string kind:sha256(path):sha built from the three inputs, where the middle part is the lowercase hex SHA-256 of the UTF-8 path and kind and sha are copied unchanged.",
+						"examples": [
+							"raw:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08:3b18e512dba79e4c8300dd08aeb37f8e728b8dad",
+							"raw:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08:e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
