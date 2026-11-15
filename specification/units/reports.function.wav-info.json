@@ -18,23 +18,35 @@
 				"name": "wavInfo.bytes",
 				"type": "Buffer",
 				"required": true,
-				"description": "Complete RIFF/WAVE bytes, at least 44 bytes long, with format and nonempty audio chunks."
+				"description": "The complete WAV file as a Buffer, at least 44 bytes long, with the ASCII tag 'RIFF' at offset 0 and 'WAVE' at offset 8. Its little-endian RIFF size field at offset 4 must equal the buffer length minus 8, its chunks after the 12-byte header must end exactly at the buffer end (odd-sized chunks need their pad byte), and it must contain a 'fmt ' chunk of at least 16 bytes and a nonempty 'data' chunk."
 			}
 		],
 		"outputs": [
 			{
 				"name": "wavInfo",
 				"type": "unknown",
-				"description": "Duration in seconds from data length divided by the validated byte rate. Accepts PCM with 8/16/24/32-bit samples or 32-bit IEEE float, one to eight channels and sample rates from 4,000 through 384,000 Hz."
+				"description": "The result is returned only after all validation passes; it holds durationSeconds, the data chunk length divided by the validated byte rate (sample rate times block align), as an unrounded JavaScript number. Accepted audio is PCM (format tag 1) with 8, 16, 24 or 32-bit samples or IEEE float (format tag 3) with 32-bit samples, 1 to 8 channels and sample rates from 4000 through 384000 Hz.",
+				"examples": [
+					{
+						"durationSeconds": 1
+					},
+					{
+						"durationSeconds": 0.5
+					},
+					{
+						"durationSeconds": 2.5
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects invalid RIFF length, truncated or misaligned chunks, missing format/data, unsupported encoding/channel/rate, inconsistent sample alignment/byte rate and data lengths not divisible by sample alignment."
+				"description": "Thrown synchronously as a plain Error when validation fails, with a message that names the failed check: 'Invalid WAV audio' for fewer than 44 bytes or missing RIFF/WAVE tags, 'Invalid WAV container length' for a RIFF size field that is not the buffer length minus 8, 'Truncated WAV chunk' for a chunk that runs past the container, 'Invalid WAV chunk boundary' for chunks that do not end exactly at the container end, 'WAV format and audio data are required' for a missing 'fmt ' or 'data' chunk or empty data, 'Invalid WAV format' for a 'fmt ' chunk under 16 bytes, 'Unsupported WAV audio format' for an encoding other than PCM or IEEE float with 32 bits, channels outside 1 to 8, or a sample rate outside 4000 through 384000 Hz, 'Invalid WAV sample format' for bits outside 8, 16, 24 or 32, or a block align or byte rate that does not match channels, bits and sample rate, and 'Invalid WAV audio data length' for a data length not divisible by block align."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "wavInfo",
@@ -43,23 +55,35 @@
 						"name": "wavInfo.bytes",
 						"type": "Buffer",
 						"required": true,
-						"description": "Complete RIFF/WAVE bytes, at least 44 bytes long, with format and nonempty audio chunks."
+						"description": "The complete WAV file as a Buffer, at least 44 bytes long, with the ASCII tag 'RIFF' at offset 0 and 'WAVE' at offset 8. Its little-endian RIFF size field at offset 4 must equal the buffer length minus 8, its chunks after the 12-byte header must end exactly at the buffer end (odd-sized chunks need their pad byte), and it must contain a 'fmt ' chunk of at least 16 bytes and a nonempty 'data' chunk."
 					}
 				],
 				"outputs": [
 					{
 						"name": "wavInfo",
 						"type": "unknown",
-						"description": "Duration in seconds from data length divided by the validated byte rate. Accepts PCM with 8/16/24/32-bit samples or 32-bit IEEE float, one to eight channels and sample rates from 4,000 through 384,000 Hz."
+						"description": "The result is returned only after all validation passes; it holds durationSeconds, the data chunk length divided by the validated byte rate (sample rate times block align), as an unrounded JavaScript number. Accepted audio is PCM (format tag 1) with 8, 16, 24 or 32-bit samples or IEEE float (format tag 3) with 32-bit samples, 1 to 8 channels and sample rates from 4000 through 384000 Hz.",
+						"examples": [
+							{
+								"durationSeconds": 1
+							},
+							{
+								"durationSeconds": 0.5
+							},
+							{
+								"durationSeconds": 2.5
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown synchronously as a plain Error when validation fails, with a message that names the failed check: 'Invalid WAV audio' for fewer than 44 bytes or missing RIFF/WAVE tags, 'Invalid WAV container length' for a RIFF size field that is not the buffer length minus 8, 'Truncated WAV chunk' for a chunk that runs past the container, 'Invalid WAV chunk boundary' for chunks that do not end exactly at the container end, 'WAV format and audio data are required' for a missing 'fmt ' or 'data' chunk or empty data, 'Invalid WAV format' for a 'fmt ' chunk under 16 bytes, 'Unsupported WAV audio format' for an encoding other than PCM or IEEE float with 32 bits, channels outside 1 to 8, or a sample rate outside 4000 through 384000 Hz, 'Invalid WAV sample format' for bits outside 8, 16, 24 or 32, or a block align or byte rate that does not match channels, bits and sample rate, and 'Invalid WAV audio data length' for a data length not divisible by block align."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
