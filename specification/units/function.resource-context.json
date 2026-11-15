@@ -18,35 +18,98 @@
 				"name": "resourceContext.id",
 				"type": "string",
 				"required": true,
-				"description": "Lease UUID whose job or heartbeat is read or updated."
+				"description": "Lease id that ResourceQueueService.enqueue creates with randomUUID() and also uses as the queue job id. It is written to HARNESS_RESOURCE_LEASE and is the key that track() patches; this function does not check its format, but ResourceQueueRepository.all() fails on any stored job whose id is not a UUID.",
+				"examples": [
+					"3f9b2c1e-8a47-4d6e-9b15-0c7e2a4d8f61",
+					"c0a8e5d2-47b1-4f93-a6e0-19d2b7c4e853",
+					"7d2e4f6a-1b3c-4e5d-8f70-9a1b2c3d4e5f"
+				]
 			},
 			{
 				"name": "resourceContext.request",
 				"type": "ResourceRequest",
 				"required": true,
-				"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
+				"description": "Requested priority, cpus and memoryMiB, which become the HARNESS_RESOURCE_PRIORITY, HARNESS_RESOURCE_CPUS and HARNESS_RESOURCE_MEMORY_MIB env values; label is not read here. No capacity check happens in this function, and ResourceQueueService.run parses the request with resourceRequestSchema (a known priority, positive finite cpus and memoryMiB) before calling it.",
+				"examples": [
+					{
+						"priority": "coding",
+						"cpus": 2,
+						"memoryMiB": 4096,
+						"label": "Managed work"
+					},
+					{
+						"priority": "agent-test",
+						"cpus": 1,
+						"memoryMiB": 2048,
+						"label": "Scoped verification"
+					},
+					{
+						"priority": "environment",
+						"cpus": 4,
+						"memoryMiB": 8192,
+						"label": "Managed work"
+					}
+				]
 			},
 			{
 				"name": "resourceContext.env",
 				"type": "Record<string, string | undefined>",
 				"required": true,
-				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+				"description": "Caller environment: every key is copied into the returned env without filtering, so secrets in it are returned too. HARNESS_RESOURCE_LEASE, HARNESS_RESOURCE_CPUS, HARNESS_RESOURCE_MEMORY_MIB and HARNESS_RESOURCE_PRIORITY overwrite same-named keys, and when the lease CPU count is positive, CARGO_BUILD_JOBS, RAYON_NUM_THREADS, GOMAXPROCS and OMP_NUM_THREADS are set to that count rounded down to at least 1, or to a lower caller value of at least 1 rounded down.",
+				"examples": [
+					{
+						"PATH": "/usr/local/bin:/usr/bin:/bin",
+						"OMP_NUM_THREADS": "8",
+						"RAYON_NUM_THREADS": "4"
+					},
+					{
+						"HARNESS_RESOURCES_HOME": "/var/lib/harness/resources",
+						"CARGO_BUILD_JOBS": "16",
+						"LANG": "en_US.UTF-8"
+					},
+					{
+						"HOME": "/home/ci",
+						"GOMAXPROCS": "2"
+					}
+				]
 			},
 			{
 				"name": "resourceContext.queue",
 				"type": "ResourceQueueRepository",
 				"required": true,
-				"description": "Shared queue used to track child PID and process start identity under this lease."
+				"description": "Shared ResourceQueueRepository whose patch() sets workerPid and workerStarted on the job with this lease id. Only track() uses it, and track() skips it when the PID is reported absent; patch() does nothing when no job has this lease id."
 			}
 		],
 		"outputs": [
 			{
 				"name": "resourceContext",
 				"type": "ResourceContext",
-				"description": "Lease environment with bounded native threads and a callback recording child identity."
+				"description": "Lease context with the id, the child env (caller env plus HARNESS_RESOURCE_* values and thread caps) and track(pid). track(pid) writes nothing when the system reports the PID absent; otherwise, including when the system could not be asked, it sets workerPid and sets workerStarted to the process start time, or clears it when that time is unavailable."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by resourceContext when request is null or undefined, because request.cpus is read while building the env; track(pid) throws it for a null or undefined queue when the PID is not reported absent."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by track(pid) when any stored job fails resourceJobSchema validation, because patch() parses every job through ResourceQueueRepository.all() before it updates the matching one."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by track(pid) when any stored job record is not valid JSON, because ResourceQueueRepository.all() parses every record before patch() updates the matching one."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by track(pid) when the SQLite driver (bun:sqlite under Bun, node:sqlite under Node) fails on BEGIN IMMEDIATE, a read, a write or COMMIT; errors after BEGIN are rolled back and rethrown unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "resourceContext",
@@ -55,36 +118,98 @@
 						"name": "resourceContext.id",
 						"type": "string",
 						"required": true,
-						"description": "Lease UUID whose job or heartbeat is read or updated."
+						"description": "Lease id that ResourceQueueService.enqueue creates with randomUUID() and also uses as the queue job id. It is written to HARNESS_RESOURCE_LEASE and is the key that track() patches; this function does not check its format, but ResourceQueueRepository.all() fails on any stored job whose id is not a UUID.",
+						"examples": [
+							"3f9b2c1e-8a47-4d6e-9b15-0c7e2a4d8f61",
+							"c0a8e5d2-47b1-4f93-a6e0-19d2b7c4e853",
+							"7d2e4f6a-1b3c-4e5d-8f70-9a1b2c3d4e5f"
+						]
 					},
 					{
 						"name": "resourceContext.request",
 						"type": "ResourceRequest",
 						"required": true,
-						"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
+						"description": "Requested priority, cpus and memoryMiB, which become the HARNESS_RESOURCE_PRIORITY, HARNESS_RESOURCE_CPUS and HARNESS_RESOURCE_MEMORY_MIB env values; label is not read here. No capacity check happens in this function, and ResourceQueueService.run parses the request with resourceRequestSchema (a known priority, positive finite cpus and memoryMiB) before calling it.",
+						"examples": [
+							{
+								"priority": "coding",
+								"cpus": 2,
+								"memoryMiB": 4096,
+								"label": "Managed work"
+							},
+							{
+								"priority": "agent-test",
+								"cpus": 1,
+								"memoryMiB": 2048,
+								"label": "Scoped verification"
+							},
+							{
+								"priority": "environment",
+								"cpus": 4,
+								"memoryMiB": 8192,
+								"label": "Managed work"
+							}
+						]
 					},
 					{
 						"name": "resourceContext.env",
 						"type": "Record<string, string | undefined>",
 						"required": true,
-						"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+						"description": "Caller environment: every key is copied into the returned env without filtering, so secrets in it are returned too. HARNESS_RESOURCE_LEASE, HARNESS_RESOURCE_CPUS, HARNESS_RESOURCE_MEMORY_MIB and HARNESS_RESOURCE_PRIORITY overwrite same-named keys, and when the lease CPU count is positive, CARGO_BUILD_JOBS, RAYON_NUM_THREADS, GOMAXPROCS and OMP_NUM_THREADS are set to that count rounded down to at least 1, or to a lower caller value of at least 1 rounded down.",
+						"examples": [
+							{
+								"PATH": "/usr/local/bin:/usr/bin:/bin",
+								"OMP_NUM_THREADS": "8",
+								"RAYON_NUM_THREADS": "4"
+							},
+							{
+								"HARNESS_RESOURCES_HOME": "/var/lib/harness/resources",
+								"CARGO_BUILD_JOBS": "16",
+								"LANG": "en_US.UTF-8"
+							},
+							{
+								"HOME": "/home/ci",
+								"GOMAXPROCS": "2"
+							}
+						]
 					},
 					{
 						"name": "resourceContext.queue",
 						"type": "ResourceQueueRepository",
 						"required": true,
-						"description": "Shared queue used to track child PID and process start identity under this lease."
+						"description": "Shared ResourceQueueRepository whose patch() sets workerPid and workerStarted on the job with this lease id. Only track() uses it, and track() skips it when the PID is reported absent; patch() does nothing when no job has this lease id."
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceContext",
 						"type": "ResourceContext",
-						"description": "Lease environment with bounded native threads and a callback recording child identity."
+						"description": "Lease context with the id, the child env (caller env plus HARNESS_RESOURCE_* values and thread caps) and track(pid). track(pid) writes nothing when the system reports the PID absent; otherwise, including when the system could not be asked, it sets workerPid and sets workerStarted to the process start time, or clears it when that time is unavailable."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by resourceContext when request is null or undefined, because request.cpus is read while building the env; track(pid) throws it for a null or undefined queue when the PID is not reported absent."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by track(pid) when any stored job fails resourceJobSchema validation, because patch() parses every job through ResourceQueueRepository.all() before it updates the matching one."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by track(pid) when any stored job record is not valid JSON, because ResourceQueueRepository.all() parses every record before patch() updates the matching one."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by track(pid) when the SQLite driver (bun:sqlite under Bun, node:sqlite under Node) fails on BEGIN IMMEDIATE, a read, a write or COMMIT; errors after BEGIN are rolled back and rethrown unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
