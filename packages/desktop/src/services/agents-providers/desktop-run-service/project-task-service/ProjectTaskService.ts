@@ -8,7 +8,7 @@ import { changedUnits } from '../../../../utils/git-source-history/changedUnits'
 import { hostChanges } from '../../../../utils/git-source-history/hostChanges';
 import { taskUnits } from './proposalUnits';
 import { referencePrompt } from '../../../../utils/agents-providers/referencePrompt';
-import { unitOwners } from '../../../../../../../src/utils/unitOwners';
+import { unitOwners } from '../../../../../../../src/utils/development-tooling/unitOwners';
 import { bugRepairPolicy } from '../../../../../../../src/utils/development-tooling/bugRepairPolicy';
 
 /** Executes an explicit project request and reports the registered owners of observed writes. */

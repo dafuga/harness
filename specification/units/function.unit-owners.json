@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/utils/development-tooling/unitOwners.ts",
-			"src/utils/development-tooling/unitOwners.types.ts",
-			"src/utils/unitOwners.ts"
+			"src/utils/development-tooling/unitOwners.types.ts"
 		],
-		"symbols": ["unitOwners", "OwnedSource", "OwnedSource", "unitOwners"]
+		"symbols": ["unitOwners", "OwnedSource", "OwnedSource"]
 	},
 	"contract": {
 		"origin": "declared",

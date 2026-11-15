@@ -9,12 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/verification-service/verifyPlan.ts",
 			"src/utils/verification-evidence/verifyPlan.ts",
-			"src/utils/verifyPlan.ts",
 			"src/workflows/run-verify/verification-service/verifyPlan.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts"
 		],
-		"symbols": ["PlannedCheck", "PlanInput", "verifyPlan", "verifyPlan", "verifyPlan", "verifyPlan"]
+		"symbols": ["verifyPlan", "PlannedCheck", "PlanInput", "verifyPlan", "verifyPlan", "verifyPlan"]
 	},
 	"contract": {
 		"origin": "declared",

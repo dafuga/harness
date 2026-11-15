@@ -1,5 +1,5 @@
 import type { HarnessUnit } from '../src/models/explorer-ui/Harness.types';
-import type { ModelDefinition } from '../../../src/utils/unitMetadata';
+import type { ModelDefinition } from '../../../src/utils/explorer-ui/unitMetadata';
 import type { Reads } from './entityClassFixtures.types';
 import type { ExplorerEntity } from '../src/models/explorer-ui/Explorer.types';
 import type { entityCatalog } from '../src/utils/entityCatalog';

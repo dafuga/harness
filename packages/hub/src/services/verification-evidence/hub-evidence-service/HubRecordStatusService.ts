@@ -1,6 +1,6 @@
 // @harness-uid u_kdcxpa2qb2
 import type { Context, VerificationNote } from './HubRecordStatusService.types';
-import { verificationNoteIdentity } from '../../../../../../src/utils/verificationNoteIdentity';
+import { verificationNoteIdentity } from '../../../../../../src/utils/verification-evidence/verificationNoteIdentity';
 import type { VerificationRecord } from '../../../../../../src/core/verificationTypes';
 import type { ReadNote } from '../../../../../../src/utils/note-lines/noteCommit';
 import { recordLineage } from '../../../../../../src/utils/development-tooling/recordLineage';

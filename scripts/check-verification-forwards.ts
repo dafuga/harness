@@ -13,7 +13,6 @@ import type {
 const registryPath = 'scripts/verification-forward-registry.json';
 const compatibilityRoots = [
 	'src/workflows/run-verify',
-	'src/utils/verifyPlan.ts',
 	'src/utils/verification-evidence/verifyPlan.ts'
 ];
 

@@ -1,7 +1,7 @@
 // @harness-uid u_j7snr2no65
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { unitOwners } from '../../../../../../../src/utils/unitOwners';
+import { unitOwners } from '../../../../../../../src/utils/development-tooling/unitOwners';
 import type { RunContext } from '../../../../models/development-tooling/RunContext.types';
 import { RunCancelled } from '../../../../models/agents-providers/AgentRunner.types';
 import { changedUnits } from '../../../../utils/git-source-history/changedUnits';

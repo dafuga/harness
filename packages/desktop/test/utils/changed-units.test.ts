@@ -1,6 +1,6 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
-import { unitOwners } from '../../../../src/utils/unitOwners';
+import { unitOwners } from '../../../../src/utils/development-tooling/unitOwners';
 import { changedUnits } from '../../src/utils/git-source-history/changedUnits';
 
 /**

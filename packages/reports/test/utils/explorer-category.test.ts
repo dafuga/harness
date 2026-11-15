@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import type { ModelDefinition } from '../../../../src/utils/unitMetadata';
+import type { ModelDefinition } from '../../../../src/utils/explorer-ui/unitMetadata';
 import { explorerEntityCategories as explorerCategories } from '../../../../src/utils/explorerRoute';
 import { explorerCategory, explorerRole } from '../../src/utils/explorer-ui/explorerCategory';
 import { modelDefinition } from '../entityClassFixtures';

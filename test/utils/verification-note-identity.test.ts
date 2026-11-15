@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { verificationNoteIdentity } from '../../src/utils/verificationNoteIdentity';
+import { verificationNoteIdentity } from '../../src/utils/verification-evidence/verificationNoteIdentity';
 import { verificationSample } from '../support/verificationSample';
 import type { HistoryNote } from '../../src/core/historyTypes';
 
