@@ -18,35 +18,68 @@
 				"name": "reportProcess.command",
 				"type": "string",
 				"required": true,
-				"description": "Executable to spawn directly without a shell."
+				"description": "Executable name or path passed directly to Node's spawn function. It starts without a shell, so shell parsing and expansion are not performed.",
+				"examples": ["node"]
 			},
 			{
 				"name": "reportProcess.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Arguments passed separately to the executable."
+				"description": "Strings passed as separate argument entries to the executable. An empty array supplies no arguments.",
+				"examples": [
+					["--version"]
+				]
 			},
 			{
 				"name": "reportProcess.cwd",
 				"type": "string",
 				"required": false,
-				"description": "Optional working directory; otherwise the process inherits its current directory."
+				"default": "undefined",
+				"description": "Optional working directory for the child process. When omitted, the code passes no cwd override and spawn uses the current working directory.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+				]
 			},
 			{
 				"name": "reportProcess.environment",
 				"type": "NodeJS.ProcessEnv",
 				"required": false,
-				"description": "Optional environment map replacing the child environment; defaults to process.env."
+				"description": "Optional environment-variable map supplied to the child process. Defaults to process.env when omitted; a supplied map replaces the inherited environment.",
+				"examples": [
+					{
+						"NODE_ENV": "test",
+						"REPORT_OUTPUT_FORMAT": "json"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportProcess",
 				"type": "unknown",
-				"description": "Promise resolving to exit code, combined stdout/stderr and duration in milliseconds. Keeps the last two million string characters; a null exit code becomes -1. Nonzero exit status is returned rather than thrown."
+				"description": "The resolved object reports the process exit code, combined stdout and stderr, and elapsed milliseconds for completion and diagnostics. Only the last 2,000,000 JavaScript string code units are retained; a null close code becomes -1, and nonzero codes resolve normally.",
+				"examples": [
+					{
+						"code": 0,
+						"output": "Report completed\n",
+						"durationMs": 24
+					},
+					{
+						"code": 1,
+						"output": "Invalid report configuration\n",
+						"durationMs": 9
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A spawn failure delivered through the child's error event rejects the returned Promise with that error. A nonzero exit code is returned in the result and does not reject."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportProcess",
@@ -55,36 +88,68 @@
 						"name": "reportProcess.command",
 						"type": "string",
 						"required": true,
-						"description": "Executable to spawn directly without a shell."
+						"description": "Executable name or path passed directly to Node's spawn function. It starts without a shell, so shell parsing and expansion are not performed.",
+						"examples": ["node"]
 					},
 					{
 						"name": "reportProcess.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Arguments passed separately to the executable."
+						"description": "Strings passed as separate argument entries to the executable. An empty array supplies no arguments.",
+						"examples": [
+							["--version"]
+						]
 					},
 					{
 						"name": "reportProcess.cwd",
 						"type": "string",
 						"required": false,
-						"description": "Optional working directory; otherwise the process inherits its current directory."
+						"default": "undefined",
+						"description": "Optional working directory for the child process. When omitted, the code passes no cwd override and spawn uses the current working directory.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+						]
 					},
 					{
 						"name": "reportProcess.environment",
 						"type": "NodeJS.ProcessEnv",
 						"required": false,
-						"description": "Optional environment map replacing the child environment; defaults to process.env."
+						"description": "Optional environment-variable map supplied to the child process. Defaults to process.env when omitted; a supplied map replaces the inherited environment.",
+						"examples": [
+							{
+								"NODE_ENV": "test",
+								"REPORT_OUTPUT_FORMAT": "json"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportProcess",
 						"type": "unknown",
-						"description": "Promise resolving to exit code, combined stdout/stderr and duration in milliseconds. Keeps the last two million string characters; a null exit code becomes -1. Nonzero exit status is returned rather than thrown."
+						"description": "The resolved object reports the process exit code, combined stdout and stderr, and elapsed milliseconds for completion and diagnostics. Only the last 2,000,000 JavaScript string code units are retained; a null close code becomes -1, and nonzero codes resolve normally.",
+						"examples": [
+							{
+								"code": 0,
+								"output": "Report completed\n",
+								"durationMs": 24
+							},
+							{
+								"code": 1,
+								"output": "Invalid report configuration\n",
+								"durationMs": 9
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A spawn failure delivered through the child's error event rejects the returned Promise with that error. A nonzero exit code is returned in the result and does not reject."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
