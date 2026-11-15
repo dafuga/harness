@@ -28,28 +28,50 @@
 				"name": "entityReferences.value",
 				"type": "string",
 				"required": true,
-				"description": "The text to divide into plain-text pieces and complete [[unit:identity]] markers. Invalid or unfinished markers remain ordinary text."
+				"description": "The original agent text to scan for complete [[unit:<id>]] markers. Only markers whose IDs match the lower-case dotted unit-ID grammar (maximum 200 characters) become references; invalid or unfinished markers remain text.",
+				"examples": ["Read [[unit:reports.component.evidence-grid]] now."]
 			},
 			{
 				"name": "isUnitId.value",
 				"type": "string",
 				"required": true,
-				"description": "The identity to check for lower-case dotted segments, each starting with a letter and otherwise containing letters, digits or hyphens, with at least two segments and at most 200 characters."
+				"description": "The candidate registry unit ID to validate. It must contain at least two lower-case dotted segments, each starting with a letter and continuing with letters, digits, or hyphens, and may be at most 200 characters; registration is not checked.",
+				"examples": ["reports.component.evidence-grid"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "isUnitId",
 				"type": "boolean",
-				"description": "True when the identity matches the reference grammar; it does not check whether that unit is actually registered."
+				"description": "Whether the candidate matches the unit-ID grammar. A true result does not establish that the unit is registered.",
+				"examples": [true, false]
 			},
 			{
 				"name": "entityReferences",
 				"type": "ReferencePart[]",
-				"description": "Ordered text and reference pieces whose text joins back to the original exactly. Reference pieces include the parsed identity and original marker. Empty input produces an empty list."
+				"description": "The ordered text and reference parts produced from the input; concatenating each part's text reproduces the input exactly. A reference carries the validated unit ID and its complete original marker; input with no valid marker yields only text parts (or an empty array for empty input).",
+				"examples": [
+					[
+						{
+							"kind": "text",
+							"text": "Read "
+						},
+						{
+							"kind": "reference",
+							"id": "reports.component.evidence-grid",
+							"text": "[[unit:reports.component.evidence-grid]]"
+						},
+						{
+							"kind": "text",
+							"text": " now."
+						}
+					],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "entityReferences",
@@ -58,18 +80,37 @@
 						"name": "entityReferences.value",
 						"type": "string",
 						"required": true,
-						"description": "The text to divide into plain-text pieces and complete [[unit:identity]] markers. Invalid or unfinished markers remain ordinary text."
+						"description": "The original agent text to scan for complete [[unit:<id>]] markers. Only markers whose IDs match the lower-case dotted unit-ID grammar (maximum 200 characters) become references; invalid or unfinished markers remain text.",
+						"examples": ["Read [[unit:reports.component.evidence-grid]] now."]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityReferences",
 						"type": "ReferencePart[]",
-						"description": "Ordered text and reference pieces whose text joins back to the original exactly. Reference pieces include the parsed identity and original marker. Empty input produces an empty list."
+						"description": "The ordered text and reference parts produced from the input; concatenating each part's text reproduces the input exactly. A reference carries the validated unit ID and its complete original marker; input with no valid marker yields only text parts (or an empty array for empty input).",
+						"examples": [
+							[
+								{
+									"kind": "text",
+									"text": "Read "
+								},
+								{
+									"kind": "reference",
+									"id": "reports.component.evidence-grid",
+									"text": "[[unit:reports.component.evidence-grid]]"
+								},
+								{
+									"kind": "text",
+									"text": " now."
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "isUnitId",
@@ -78,18 +119,20 @@
 						"name": "isUnitId.value",
 						"type": "string",
 						"required": true,
-						"description": "The identity to check for lower-case dotted segments, each starting with a letter and otherwise containing letters, digits or hyphens, with at least two segments and at most 200 characters."
+						"description": "The candidate registry unit ID to validate. It must contain at least two lower-case dotted segments, each starting with a letter and continuing with letters, digits, or hyphens, and may be at most 200 characters; registration is not checked.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isUnitId",
 						"type": "boolean",
-						"description": "True when the identity matches the reference grammar; it does not check whether that unit is actually registered."
+						"description": "Whether the candidate matches the unit-ID grammar. A true result does not establish that the unit is registered.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
