@@ -21,16 +21,39 @@
 			{
 				"name": "reportsEnvironment",
 				"type": "typeof process.env",
-				"description": "Copied process environment with PROJECT_REPORTS_CONFIG_FILE and PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME filled from settings only when not already set. Reads HARNESS_REPORTS_SETTINGS_FILE or the default user report-settings.json; missing file is allowed."
+				"description": "A new object copied from process.env in which PROJECT_REPORTS_CONFIG_FILE and PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME take the settings-file value only when the variable is undefined (an empty string still counts as set). Settings come from HARNESS_REPORTS_SETTINGS_FILE when that is set, otherwise from <os.homedir()>/.codex/harness/report-settings.json; a missing file (ENOENT) yields no settings, a report key that neither source sets is still present with value undefined, and parsed values are copied without type checks.",
+				"examples": [
+					{
+						"PATH": "/usr/local/bin:/usr/bin:/bin",
+						"HOME": "/Users/example",
+						"PROJECT_REPORTS_CONFIG_FILE": "reports/report.config.json",
+						"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/Users/example/.config/cloudflare"
+					},
+					{
+						"PATH": "/usr/bin:/bin",
+						"PROJECT_REPORTS_CONFIG_FILE": "/ci/workspace/reports/report.config.json",
+						"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/home/ci/.config/cloudflare"
+					},
+					{
+						"PATH": "/usr/bin:/bin",
+						"HOME": "/home/ci"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Thrown with Invalid Harness report settings file for a non-ENOENT read failure or JSON parse failure."
+				"description": "Thrown with the message 'Invalid Harness report settings file.' when the settings file read fails with anything other than an ENOENT error, or when its content is not valid JSON."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown as a TypeError when the settings file contains the JSON value null and PROJECT_REPORTS_CONFIG_FILE or PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME is undefined in process.env; that property read happens outside the try block, so it is not the Invalid Harness report settings file Error."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportsEnvironment",
@@ -39,16 +62,39 @@
 					{
 						"name": "reportsEnvironment",
 						"type": "typeof process.env",
-						"description": "Copied process environment with PROJECT_REPORTS_CONFIG_FILE and PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME filled from settings only when not already set. Reads HARNESS_REPORTS_SETTINGS_FILE or the default user report-settings.json; missing file is allowed."
+						"description": "A new object copied from process.env in which PROJECT_REPORTS_CONFIG_FILE and PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME take the settings-file value only when the variable is undefined (an empty string still counts as set). Settings come from HARNESS_REPORTS_SETTINGS_FILE when that is set, otherwise from <os.homedir()>/.codex/harness/report-settings.json; a missing file (ENOENT) yields no settings, a report key that neither source sets is still present with value undefined, and parsed values are copied without type checks.",
+						"examples": [
+							{
+								"PATH": "/usr/local/bin:/usr/bin:/bin",
+								"HOME": "/Users/example",
+								"PROJECT_REPORTS_CONFIG_FILE": "reports/report.config.json",
+								"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/Users/example/.config/cloudflare"
+							},
+							{
+								"PATH": "/usr/bin:/bin",
+								"PROJECT_REPORTS_CONFIG_FILE": "/ci/workspace/reports/report.config.json",
+								"PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME": "/home/ci/.config/cloudflare"
+							},
+							{
+								"PATH": "/usr/bin:/bin",
+								"HOME": "/home/ci"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid Harness report settings file.' when the settings file read fails with anything other than an ENOENT error, or when its content is not valid JSON."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown as a TypeError when the settings file contains the JSON value null and PROJECT_REPORTS_CONFIG_FILE or PROJECT_REPORTS_CLOUDFLARE_CONFIG_HOME is undefined in process.env; that property read happens outside the try block, so it is not the Invalid Harness report settings file Error."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
