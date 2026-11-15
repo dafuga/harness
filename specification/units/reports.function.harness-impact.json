@@ -30,52 +30,235 @@
 				"name": "harnessImpact.base",
 				"type": "HarnessRevision | undefined",
 				"required": true,
-				"description": "Earlier revision, or undefined when no base is selected."
+				"description": "Earlier revision the change is measured from, or undefined when no base is selected. A record or source impact applies only when it names this revision's commit; with undefined neither applies, and every active unit of head is then listed as added.",
+				"examples": [
+					{
+						"commit": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": null,
+						"side": null,
+						"records": [],
+						"explanations": []
+					},
+					{
+						"commit": "a7d3e915c0b84f26d9e1a3b7c5f08d2e4a6b9c13",
+						"registry": {
+							"available": false,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": null,
+						"side": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "harnessImpact.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Later revision containing recorded comparison and source impact."
+				"description": "Later revision the change is measured to; its comparison record applies only when it names base's commit, and so does its source impact unless a matching compared argument replaces it. Its registry is compared with base's registry when neither applies, and its commit must equal compared's head for compared to be used.",
+				"examples": [
+					{
+						"commit": "c41f09ab7d2e6358f1a0b9c4d7e2f3a86b5d1c90",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": null,
+						"side": null,
+						"records": [],
+						"explanations": []
+					},
+					{
+						"commit": "0b9e5f27a4c1d83e6f0a72b5c9d41e08f3a6d2b7",
+						"registry": {
+							"available": false,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": null,
+						"side": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "harnessImpact.compared",
 				"type": "ComparedSides | null",
 				"required": false,
-				"description": "Optional precomputed source-side comparison, used only when its commit pair matches."
+				"default": "undefined",
+				"description": "Optional comparedSides result for the same two revisions, where null or undefined means none was precomputed. Its impact replaces head's source impact only when its base and head commits equal base's and head's commits, and otherwise head's source impact is used.",
+				"examples": [
+					null,
+					{
+						"base": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+						"head": "c41f09ab7d2e6358f1a0b9c4d7e2f3a86b5d1c90",
+						"impact": {
+							"base": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+							"expanded": false,
+							"units": {
+								"direct": [],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"scenarios": [],
+							"uncertain": [],
+							"changed": []
+						}
+					}
+				]
 			},
 			{
 				"name": "comparedSides.client",
 				"type": "HarnessClient",
 				"required": true,
-				"description": "Client able to load stored source sides."
+				"description": "The client whose side(path) call loads a stored side; comparedSides calls it for base's and head's side in parallel, so a rejected load rejects the result. It is not called when either side reference is absent."
 			},
 			{
 				"name": "comparedSides.base",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Earlier revision naming its stored side."
+				"description": "Earlier revision whose stored side is loaded; when its side is undefined, null or empty, comparedSides returns undefined without loading anything. Otherwise its commit becomes the base of the returned pair.",
+				"examples": [
+					{
+						"commit": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": null,
+						"side": null,
+						"records": [],
+						"explanations": []
+					},
+					{
+						"commit": "a7d3e915c0b84f26d9e1a3b7c5f08d2e4a6b9c13",
+						"registry": {
+							"available": false,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": null,
+						"side": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "comparedSides.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Later revision naming its stored side."
+				"description": "Later revision whose stored side is loaded, under the same absent-side rule as base. Otherwise its commit becomes the head of the returned pair.",
+				"examples": [
+					{
+						"commit": "c41f09ab7d2e6358f1a0b9c4d7e2f3a86b5d1c90",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": null,
+						"side": null,
+						"records": [],
+						"explanations": []
+					},
+					{
+						"commit": "0b9e5f27a4c1d83e6f0a72b5c9d41e08f3a6d2b7",
+						"registry": {
+							"available": false,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": null,
+						"side": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessImpact",
 				"type": "HarnessImpact",
-				"description": "Impact groups, scenarios, uncertainty and marks. Prefers a record comparing the exact base, then matching source impact, then version changes and transitive consumers across both active registries. Marks prioritize removed over added, direct and indirect."
+				"description": "The impact of the change from base to head, tried in order: a record comparing exactly base (source 'recorded'), the source impact that names base (source 'source'), then the added, removed, version-changed and transitively affected units of both active registries (source 'computed'). Groups are sorted with a unit listed as added never also direct, marks rank removed over added over direct over indirect, and computed impacts always have an empty uncertain list."
 			},
 			{
 				"name": "comparedSides",
 				"type": "Promise<ComparedSides | undefined>",
-				"description": "Loads both stored sides and delegates their comparison, returning the commit pair and impact; undefined if either side reference is absent."
+				"description": "Resolves to the base and head commits with the source impact of their two stored sides, or to undefined when either side reference is absent. It rejects when a stored side fails to load, and a rejection from the impact analysis passes through unchanged.",
+				"examples": [
+					{
+						"base": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+						"head": "c41f09ab7d2e6358f1a0b9c4d7e2f3a86b5d1c90",
+						"impact": {
+							"base": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+							"expanded": false,
+							"units": {
+								"direct": [],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"scenarios": [],
+							"uncertain": [],
+							"changed": []
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by the harness client's side loader, and so rejected by comparedSides, when a stored side's response is not ok: '<path> could not be loaded (<status>)'. A network or JSON parse rejection inside that loader, and any rejection from sideImpact, pass through unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "harnessImpact",
@@ -84,30 +267,119 @@
 						"name": "harnessImpact.base",
 						"type": "HarnessRevision | undefined",
 						"required": true,
-						"description": "Earlier revision, or undefined when no base is selected."
+						"description": "Earlier revision the change is measured from, or undefined when no base is selected. A record or source impact applies only when it names this revision's commit; with undefined neither applies, and every active unit of head is then listed as added.",
+						"examples": [
+							{
+								"commit": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": null,
+								"side": null,
+								"records": [],
+								"explanations": []
+							},
+							{
+								"commit": "a7d3e915c0b84f26d9e1a3b7c5f08d2e4a6b9c13",
+								"registry": {
+									"available": false,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": null,
+								"side": null,
+								"records": [],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "harnessImpact.head",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Later revision containing recorded comparison and source impact."
+						"description": "Later revision the change is measured to; its comparison record applies only when it names base's commit, and so does its source impact unless a matching compared argument replaces it. Its registry is compared with base's registry when neither applies, and its commit must equal compared's head for compared to be used.",
+						"examples": [
+							{
+								"commit": "c41f09ab7d2e6358f1a0b9c4d7e2f3a86b5d1c90",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": null,
+								"side": null,
+								"records": [],
+								"explanations": []
+							},
+							{
+								"commit": "0b9e5f27a4c1d83e6f0a72b5c9d41e08f3a6d2b7",
+								"registry": {
+									"available": false,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": null,
+								"side": null,
+								"records": [],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "harnessImpact.compared",
 						"type": "ComparedSides | null",
 						"required": false,
-						"description": "Optional precomputed source-side comparison, used only when its commit pair matches."
+						"default": "undefined",
+						"description": "Optional comparedSides result for the same two revisions, where null or undefined means none was precomputed. Its impact replaces head's source impact only when its base and head commits equal base's and head's commits, and otherwise head's source impact is used.",
+						"examples": [
+							null,
+							{
+								"base": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+								"head": "c41f09ab7d2e6358f1a0b9c4d7e2f3a86b5d1c90",
+								"impact": {
+									"base": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+									"expanded": false,
+									"units": {
+										"direct": [],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"scenarios": [],
+									"uncertain": [],
+									"changed": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessImpact",
 						"type": "HarnessImpact",
-						"description": "Impact groups, scenarios, uncertainty and marks. Prefers a record comparing the exact base, then matching source impact, then version changes and transitive consumers across both active registries. Marks prioritize removed over added, direct and indirect."
+						"description": "The impact of the change from base to head, tried in order: a record comparing exactly base (source 'recorded'), the source impact that names base (source 'source'), then the added, removed, version-changed and transitively affected units of both active registries (source 'computed'). Groups are sorted with a unit listed as added never also direct, marks rank removed over added over direct over indirect, and computed impacts always have an empty uncertain list."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "comparedSides",
@@ -116,30 +388,123 @@
 						"name": "comparedSides.client",
 						"type": "HarnessClient",
 						"required": true,
-						"description": "Client able to load stored source sides."
+						"description": "The client whose side(path) call loads a stored side; comparedSides calls it for base's and head's side in parallel, so a rejected load rejects the result. It is not called when either side reference is absent."
 					},
 					{
 						"name": "comparedSides.base",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Earlier revision naming its stored side."
+						"description": "Earlier revision whose stored side is loaded; when its side is undefined, null or empty, comparedSides returns undefined without loading anything. Otherwise its commit becomes the base of the returned pair.",
+						"examples": [
+							{
+								"commit": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": null,
+								"side": null,
+								"records": [],
+								"explanations": []
+							},
+							{
+								"commit": "a7d3e915c0b84f26d9e1a3b7c5f08d2e4a6b9c13",
+								"registry": {
+									"available": false,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": null,
+								"side": null,
+								"records": [],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "comparedSides.head",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Later revision naming its stored side."
+						"description": "Later revision whose stored side is loaded, under the same absent-side rule as base. Otherwise its commit becomes the head of the returned pair.",
+						"examples": [
+							{
+								"commit": "c41f09ab7d2e6358f1a0b9c4d7e2f3a86b5d1c90",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": null,
+								"side": null,
+								"records": [],
+								"explanations": []
+							},
+							{
+								"commit": "0b9e5f27a4c1d83e6f0a72b5c9d41e08f3a6d2b7",
+								"registry": {
+									"available": false,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": null,
+								"side": null,
+								"records": [],
+								"explanations": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "comparedSides",
 						"type": "Promise<ComparedSides | undefined>",
-						"description": "Loads both stored sides and delegates their comparison, returning the commit pair and impact; undefined if either side reference is absent."
+						"description": "Resolves to the base and head commits with the source impact of their two stored sides, or to undefined when either side reference is absent. It rejects when a stored side fails to load, and a rejection from the impact analysis passes through unchanged.",
+						"examples": [
+							{
+								"base": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+								"head": "c41f09ab7d2e6358f1a0b9c4d7e2f3a86b5d1c90",
+								"impact": {
+									"base": "5e0c7a1d9b3f4e2a8c6d0f1b9e7a3c5d2f8b4e61",
+									"expanded": false,
+									"units": {
+										"direct": [],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"scenarios": [],
+									"uncertain": [],
+									"changed": []
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by the harness client's side loader, and so rejected by comparedSides, when a stored side's response is not ok: '<path> could not be loaded (<status>)'. A network or JSON parse rejection inside that loader, and any rejection from sideImpact, pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
