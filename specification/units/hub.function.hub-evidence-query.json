@@ -29,40 +29,88 @@
 				"name": "hubEvidenceQuery.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request URL containing evidence query parameters."
+				"description": "A Request whose URL query string supplies the evidence-read fields; invalid query fields throw an invalid-input error, while paths, URLs, and caller-supplied project IDs are ignored."
 			},
 			{
 				"name": "hubEvidenceQuery.projectId",
 				"type": "string",
 				"required": true,
-				"description": "Authorized route project ID to use."
+				"description": "The route-authorized project ID copied into the result; a projectId supplied in the query string is discarded.",
+				"examples": ["project-alpha"]
 			},
 			{
 				"name": "hubArtifactQuery.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request URL containing artifact query parameters."
+				"description": "A Request whose URL query string supplies the artifact binding fields; absent viewport and pinned revision parameters become null, while paths, URLs, and caller-supplied project IDs are ignored."
 			},
 			{
 				"name": "hubArtifactQuery.projectId",
 				"type": "string",
 				"required": true,
-				"description": "Authorized route project ID to use."
+				"description": "The route-authorized project ID copied into the result; a projectId supplied in the query string is discarded.",
+				"examples": ["project-alpha"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEvidenceQuery",
 				"type": "EntityEvidenceQuery",
-				"description": "Validated public entity-evidence query with the route project ID."
+				"description": "The parsed entity-evidence query binds the route projectId after reconstructing the query fields, so query-supplied project IDs, paths, and URLs are dropped. entityId is a lowercase dotted/dashed ID up to 120 characters, commit is 40 lowercase hexadecimal characters, branch is nonempty and at most 255 characters, and mode is current (branch tip) or commit (compared with its first parent).",
+				"examples": [
+					{
+						"projectId": "project-alpha",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"mode": "current"
+					},
+					{
+						"projectId": "project-alpha",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "abcdef0123456789abcdef0123456789abcdef01",
+						"branch": "feature/evidence-capture",
+						"mode": "commit"
+					}
+				]
 			},
 			{
 				"name": "hubArtifactQuery",
 				"type": "EvidenceArtifactQuery",
-				"description": "Validated public artifact query with the route project ID and absent viewport/notes/evidence revisions supplied as null."
+				"description": "The result identifies one artifact capture using the route projectId and the evidence and artifact binding fields; absent viewport and pinned revisions become null, and paths, URLs, addresses, and other unapproved fields are dropped. entityId, scenarioId, state, and evidenceId are lowercase dotted/dashed IDs up to 120 characters, viewport uses that pattern up to 300 characters, commit and non-null revisions are 40 lowercase hexadecimal characters, recordId and sha256 are 64 lowercase hexadecimal characters, branch is nonempty and at most 255 characters, mode is current or commit, and side is before or after.",
+				"examples": [
+					{
+						"projectId": "project-alpha",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"mode": "commit",
+						"side": "before",
+						"recordId": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"scenarioId": "keyboard-navigation",
+						"state": "signed-out",
+						"evidenceId": "screenshot-before",
+						"viewport": null,
+						"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+						"notesRevision": null,
+						"evidenceRevision": null
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with code invalid-input when evidencePayload rejects a query field; the field-validation exception is caught before hubFail creates this error."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown before payload validation if new URL(request.url) cannot parse the request URL."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubEvidenceQuery",
@@ -71,24 +119,52 @@
 						"name": "hubEvidenceQuery.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request URL containing evidence query parameters."
+						"description": "A Request whose URL query string supplies the evidence-read fields; invalid query fields throw an invalid-input error, while paths, URLs, and caller-supplied project IDs are ignored."
 					},
 					{
 						"name": "hubEvidenceQuery.projectId",
 						"type": "string",
 						"required": true,
-						"description": "Authorized route project ID to use."
+						"description": "The route-authorized project ID copied into the result; a projectId supplied in the query string is discarded.",
+						"examples": ["project-alpha"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEvidenceQuery",
 						"type": "EntityEvidenceQuery",
-						"description": "Validated public entity-evidence query with the route project ID."
+						"description": "The parsed entity-evidence query binds the route projectId after reconstructing the query fields, so query-supplied project IDs, paths, and URLs are dropped. entityId is a lowercase dotted/dashed ID up to 120 characters, commit is 40 lowercase hexadecimal characters, branch is nonempty and at most 255 characters, and mode is current (branch tip) or commit (compared with its first parent).",
+						"examples": [
+							{
+								"projectId": "project-alpha",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"mode": "current"
+							},
+							{
+								"projectId": "project-alpha",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "abcdef0123456789abcdef0123456789abcdef01",
+								"branch": "feature/evidence-capture",
+								"mode": "commit"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with code invalid-input when evidencePayload rejects a query field; the field-validation exception is caught before hubFail creates this error."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown before payload validation if new URL(request.url) cannot parse the request URL."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubArtifactQuery",
@@ -97,24 +173,54 @@
 						"name": "hubArtifactQuery.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request URL containing artifact query parameters."
+						"description": "A Request whose URL query string supplies the artifact binding fields; absent viewport and pinned revision parameters become null, while paths, URLs, and caller-supplied project IDs are ignored."
 					},
 					{
 						"name": "hubArtifactQuery.projectId",
 						"type": "string",
 						"required": true,
-						"description": "Authorized route project ID to use."
+						"description": "The route-authorized project ID copied into the result; a projectId supplied in the query string is discarded.",
+						"examples": ["project-alpha"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubArtifactQuery",
 						"type": "EvidenceArtifactQuery",
-						"description": "Validated public artifact query with the route project ID and absent viewport/notes/evidence revisions supplied as null."
+						"description": "The result identifies one artifact capture using the route projectId and the evidence and artifact binding fields; absent viewport and pinned revisions become null, and paths, URLs, addresses, and other unapproved fields are dropped. entityId, scenarioId, state, and evidenceId are lowercase dotted/dashed IDs up to 120 characters, viewport uses that pattern up to 300 characters, commit and non-null revisions are 40 lowercase hexadecimal characters, recordId and sha256 are 64 lowercase hexadecimal characters, branch is nonempty and at most 255 characters, mode is current or commit, and side is before or after.",
+						"examples": [
+							{
+								"projectId": "project-alpha",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"mode": "commit",
+								"side": "before",
+								"recordId": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"scenarioId": "keyboard-navigation",
+								"state": "signed-out",
+								"evidenceId": "screenshot-before",
+								"viewport": null,
+								"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+								"notesRevision": null,
+								"evidenceRevision": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with code invalid-input when evidencePayload rejects a query field; the field-validation exception is caught before hubFail creates this error."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown before payload validation if new URL(request.url) cannot parse the request URL."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
