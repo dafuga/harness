@@ -105,7 +105,7 @@
 				"type": "ComponentManifest['contract']['errorStatus']",
 				"required": true,
 				"description": "Declared contract error outcome, used to distinguish declared absence, unknown indirect errors and statically found or not-found errors.",
-				"examples": ["declared", "none-found", "found", "unknown"]
+				"examples": ["declared", "none-found", "unknown"]
 			},
 			{
 				"name": "operationRows.operations",
@@ -523,7 +523,7 @@
 						"type": "ComponentManifest['contract']['errorStatus']",
 						"required": true,
 						"description": "Declared contract error outcome, used to distinguish declared absence, unknown indirect errors and statically found or not-found errors.",
-						"examples": ["declared", "none-found", "found", "unknown"]
+						"examples": ["declared", "none-found", "unknown"]
 					}
 				],
 				"outputs": [
