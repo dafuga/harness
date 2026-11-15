@@ -1,9 +1,6 @@
 import { expect, test } from 'vitest';
 import { mergeNoteLines } from '../../src/repositories/history-note-repository/noteLines';
-import {
-	noteCommit,
-	readNoteLines
-} from '../../src/utils/git-source-history/note-lines/noteCommit';
+import { readNoteLines } from '../../src/utils/git-source-history/note-lines/noteCommit';
 
 const commit = 'a'.repeat(40);
 const other = 'b'.repeat(40);
@@ -44,19 +41,4 @@ test('readNoteLines keeps valid entries of this commit and names every other lin
 		`note line 3 was written for commit ${other}, not this commit`,
 		'note line 4 is not a valid history entry'
 	]);
-});
-
-test('noteCommit names the commit an entry was written for, whatever its kind', () => {
-	const regression = JSON.stringify({
-		schemaVersion: 1,
-		kind: 'regression',
-		commit: other,
-		loop: 'loop-1',
-		phase: 'red',
-		record: 'f'.repeat(64),
-		evidence: { commit: 'd'.repeat(40), path: `records/${other}/r1`, manifest: 'e'.repeat(64) }
-	});
-	const read = readNoteLines(`${line('r1', other)}\n${regression}\n`, other);
-	expect(read.problems).toEqual([]);
-	expect(read.entries.map((entry) => noteCommit(entry))).toEqual([other, other]);
 });

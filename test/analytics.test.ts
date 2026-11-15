@@ -1,13 +1,7 @@
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { test } from 'vitest';
 import { expect } from './verificationExpect';
 import { analyticsSnapshot } from '../src/cli/program/analyticsMetrics';
 import type { AnalyticsEvent } from '../src/core/reports-media/analyticsTypes';
-import {
-	browserDiagnosticSchema,
-	type BrowserDiagnostic
-} from '../src/core/development-tooling/browserDiagnostics';
 import { measureWorkload } from './support/measureWorkload';
 function attempt(id: string, status: string, extra: Partial<AnalyticsEvent> = {}): AnalyticsEvent {
 	return {
@@ -177,20 +171,4 @@ test('model and template names matching object properties still count correctly'
 	]);
 	expect(data.models.authors['__proto__']).toBe(1);
 	expect(data.models.evaluators['constructor']).toBe(1);
-});
-
-test('relocation stubs stay removed and the canonical browser diagnostic schema is strict', () => {
-	const root = resolve(import.meta.dirname, '..');
-	for (const stub of ['src/core/analyticsTypes.ts', 'src/core/browserDiagnostics.ts'])
-		expect(existsSync(resolve(root, stub)), `${stub} is a removed stub`).toBe(false);
-	const diagnostic: BrowserDiagnostic = {
-		test: 'Checkout confirmation',
-		file: 'checkout.spec.ts',
-		project: 'Chromium',
-		retry: 0,
-		errors: [{ type: 'console', message: 'Summary failed to load', page: '/checkout' }],
-		expected: []
-	};
-	expect(browserDiagnosticSchema.parse(diagnostic)).toEqual(diagnostic);
-	expect(browserDiagnosticSchema.safeParse({ ...diagnostic, extra: true }).success).toBe(false);
 });

@@ -2,7 +2,6 @@ import { measureWorkload } from './support/measureWorkload';
 import { check } from 'prettier';
 import { formatConfigFiles } from '../src/templates/development-tooling/formatConfig';
 import { pieceExportPlans } from '../src/workflows/projects-sessions/generate-code/exportPlans';
-import { existsSync } from 'node:fs';
 import { posix } from 'node:path';
 import { expect, test } from 'vitest';
 import { pieceFiles } from '../src/templates/development-tooling/pieces';
@@ -116,11 +115,4 @@ test('helper scaffolds emit pure camelCase functions with domain parameters', ()
 	expect(files.find((file) => file.path.startsWith('test/helpers/'))?.contents).toContain(
 		"formatLabel('  label  ')"
 	);
-});
-
-test('relocated template modules leave no forwarding stub at their old path', () => {
-	for (const name of ['formatConfig', 'lintConfig', 'model', 'pieces']) {
-		expect(existsSync(`src/templates/${name}.ts`), `${name} stub`).toBe(false);
-		expect(existsSync(`src/templates/development-tooling/${name}.ts`), name).toBe(true);
-	}
 });

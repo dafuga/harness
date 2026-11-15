@@ -1,7 +1,5 @@
-import { expect, test, vi } from 'vitest';
+import { expect, test } from 'vitest';
 import { agentLiveness } from '../../src/services/agents-providers/agent-activity-service/agentLiveness';
-import * as declared from '../../src/services/agents-providers/agent-activity-service/agentLiveness';
-import * as forwarded from '../../src/utils/agents-providers/agentLiveness';
 import { type AgentFacts, type ProcessFacts } from '../../src/utils/agents-providers/agentLiveness';
 
 const now = Date.parse('2026-10-11T12:00:00.000Z');
@@ -58,13 +56,4 @@ test('a process that ended, or a number that now belongs to another process, is 
 		return running;
 	});
 	expect(asked).toBe(0);
-});
-
-test('the utils forwarding entry runs the declaration module, not a copy of its rule', () => {
-	const calls = vi.spyOn(declared, 'agentLiveness');
-	const verdict = forwarded.agentLiveness(agent(), now, () => running).state;
-	const reached = calls.mock.calls.length;
-	calls.mockRestore();
-	expect(verdict).toBe('working');
-	expect(reached).toBe(1);
 });

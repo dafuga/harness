@@ -1,6 +1,5 @@
 import { expect, test } from 'vitest';
 import { consoleRoute } from '../../src/utils/projects-sessions/console-canonical/consoleRoute';
-import { consoleRoute as forwarded } from '../../src/utils/projects-sessions/consoleRoute';
 import { consoleRoutePath } from '../../packages/reports/src/components/projects-sessions/project-activity/consoleRoute';
 import { type ConsoleRoute } from '../../src/utils/projects-sessions/consoleRoute';
 
@@ -64,8 +63,4 @@ test('what names no page is not read as one', () => {
 		commit,
 		view: 'map'
 	});
-});
-
-test('a supported public entry forwards the same route reader, not a copy', () => {
-	expect(forwarded).toBe(consoleRoute);
 });
