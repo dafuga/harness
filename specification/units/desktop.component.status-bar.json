@@ -27,17 +27,18 @@
 				"name": "StatusBar.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace providing busy/snapshot, revision, source/comment capabilities, pinned/offline state, cache and connection context. It supplies the facts; the view does not verify publication or connectivity."
+				"description": "The workspace whose busy flag, snapshot (writable, revision and cache provenance), capabilities (source and comments), pinned flag and offline view the footer reads, and which it also passes to the hosted and remote connection components. The footer's own text derives from these values only, reads capabilities and the snapshot revision without null checks, and does not verify publication or connectivity; a busy workspace or one without a snapshot shows the loading label."
 			}
 		],
 		"outputs": [
 			{
 				"name": "StatusBar",
 				"type": "markup",
-				"description": "Footer with loading, offline, local/shared, historical and access-limited status. Offline copies are read-only and not server-checked, with save time when available; local unpublished revisions are named accordingly. Includes compact hosted/remote controls and seven-character commit."
+				"description": "A footer element (`hx-footer.status-bar`) whose state span reads 'Loading project…' while busy or without a snapshot, 'Offline cached view' for an offline view, the project label ('Shared project · GitHub' or 'Local project') for a writable snapshot, and otherwise 'Historical commit' (when pinned or not at the tip) or the project label, each followed by ' · ' and the access limit ('comments only' or 'read-only'); it also holds an optional cache-state span, the compact hosted and remote connection components (each renders only when its own conditions are met), and the first seven characters of the revision commit, empty without a snapshot. The cache-state span appears only for an offline view ('Read-only · saved <time> · not checked with the server', with the saved part only when the offline view's cachedAt is set), for a snapshot whose cache status is offline ('Offline · showing the cached copy'), or for an unpublished local revision ('Local revision · not published'), and is omitted otherwise."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
