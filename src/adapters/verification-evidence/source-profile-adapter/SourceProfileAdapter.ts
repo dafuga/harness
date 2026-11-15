@@ -37,6 +37,7 @@ function eligibleUnit(unit: ComponentManifest): boolean {
 			'adapter.source-profile',
 			'service.performance-profile',
 			'function.unit-types',
+			'function.verification-evidence-video-clip-schema',
 			'function.verify-types',
 			'function.comparison-types'
 		].includes(unit.id) &&
