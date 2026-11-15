@@ -49,94 +49,133 @@
 				"name": "requestDigest.request",
 				"type": "WireRequest",
 				"required": true,
-				"description": "Wire request whose method and deterministically serialized input identify its operation."
+				"description": "A WireRequest has type: \"request\", a string id, a method from remoteMethods and an input record; requestDigest reads only method and input, so type and id do not affect the digest.",
+				"examples": [
+					{
+						"type": "request",
+						"id": "00000000-0000-4000-8000-000000000001",
+						"method": "listProjects",
+						"input": {}
+					}
+				]
 			},
 			{
 				"name": "remoteIdentity.publicKey",
 				"type": "Uint8Array | string",
 				"required": true,
-				"description": "65-byte uncompressed P-256 public point as bytes or unpadded base64url."
+				"description": "This is the public key whose bytes are hashed into a host or device ID; it accepts a byte array or base64url text. After decoding, it must be exactly 65 bytes and begin with 0x04; the function checks this uncompressed-point shape but does not validate the curve point.",
+				"examples": [
+					"BGsX0fLhLEJH-Lzm5WOkQPJ3A32BLeszoPShOUXYmMKWT-NC4v4af5uO5-tKfA-eFivOM1drMV7Oy7ZAaDe_UfU"
+				]
 			},
 			{
 				"name": "credentialHash.binding",
 				"type": "CredentialBinding",
 				"required": true,
-				"description": "Host or device role, host ID, optional device ID and credential text to bind together."
+				"description": "Binds a host or device role, host ID, optional device ID and credential into one digest; an omitted device ID is treated as an empty string. The type does not validate identifier or credential formats.",
+				"examples": [
+					{
+						"role": "host",
+						"hostId": "698bea63dc44a344663ff1429aea10842df27b6b",
+						"credential": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+					},
+					{
+						"role": "device",
+						"hostId": "698bea63dc44a344663ff1429aea10842df27b6b",
+						"deviceId": "a9f300eb5960e89133af7362011a1e26f0e2ea2e",
+						"credential": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+					}
+				]
 			},
 			{
 				"name": "pkceChallenge.verifier",
 				"type": "string",
 				"required": true,
-				"description": "PKCE verifier text to hash with the S256 transform."
+				"description": "Verifier text is UTF-8 encoded and hashed with SHA-256 for the S256 challenge. This function does not validate RFC 7636 verifier length or characters.",
+				"examples": ["dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"]
 			},
 			{
 				"name": "randomId.bytes",
 				"type": "number",
 				"required": false,
 				"default": 16,
-				"description": "Number of random bytes to encode; defaults to 16."
+				"description": "Byte count passed directly to randomBytes; omission uses 16, and this function does not clamp or validate the count.",
+				"examples": [16, 4]
 			},
 			{
 				"name": "normalizeCode.value",
 				"type": "string",
 				"required": true,
-				"description": "Human-entered code to uppercase and strip of nonalphanumeric characters."
+				"description": "The input string is uppercased, then all characters outside ASCII A–Z and 0–9 are removed. The result length is not checked.",
+				"examples": ["abcd-2345", "invite: xY_91"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "remotePatterns",
 				"type": "unknown",
-				"description": "Regular expressions describing protocol IDs, public keys, credentials, codes and other encoded wire values."
+				"description": "Maps host/device IDs (40 lowercase hex), pairing/connection/epoch IDs (32 lowercase hex), request IDs (8-4-4-4-12 lowercase hex), keys, nonces, credentials, challenges, hashes, sealed envelopes, pairing codes and local project IDs to their format regexes. Key, nonce, credential/challenge and sealed patterns allow 87, 22, 43 and 22–8192 base64url characters respectively; hashes are 64 lowercase hex, codes use eight characters from ABCDEFGHJKLMNPQRSTUVWXYZ23456789, and local project IDs are local- followed by 64 lowercase hex characters."
 			},
 			{
 				"name": "remoteIdentity",
 				"type": "Promise<string>",
-				"description": "First 40 lowercase hex characters of the public-key SHA-256 digest."
+				"description": "Resolves to the first 40 lowercase hex characters of SHA-256 over the accepted public-key bytes, for use as a self-certifying host or device ID.",
+				"examples": ["698bea63dc44a344663ff1429aea10842df27b6b"]
 			},
 			{
 				"name": "credentialHash",
 				"type": "Promise<string>",
-				"description": "SHA-256 hex digest bound to role, host, device and credential using a protocol-specific prefix."
+				"description": "Resolves to lowercase SHA-256 hex of the newline-separated protocol prefix, role, host ID, device ID and credential encoded as UTF-8. The device ID component is an empty string when omitted, and the hash function does not validate the field formats.",
+				"examples": [
+					"f0ea17747548fd926e11320886e9ff60aa8ab0a07e331dc46475afdf0664df3f",
+					"02c7b62d8c84b74af691e5ab5c5096877f735aab44c8c83640ba27af7b78cd1b"
+				]
 			},
 			{
 				"name": "pkceChallenge",
 				"type": "Promise<string>",
-				"description": "Unpadded base64url SHA-256 digest of the UTF-8 verifier."
+				"description": "Resolves to the unpadded base64url encoding of the verifier's 32-byte SHA-256 digest, yielding 43 characters.",
+				"examples": ["E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"]
 			},
 			{
 				"name": "randomId",
 				"type": "string",
-				"description": "Random lowercase hexadecimal identifier with two characters per requested byte."
+				"description": "Returns lowercase hexadecimal encoding of the random bytes, with two characters per byte; the default 16-byte request produces 32 characters.",
+				"examples": ["f47ac10b58cc4372a5670e02b2c3d479", "a4f2c810"]
 			},
 			{
 				"name": "randomCredential",
 				"type": "string",
-				"description": "43-character base64url credential generated from 32 random bytes."
+				"description": "Returns unpadded base64url encoding of 32 random bytes, which is 43 characters.",
+				"examples": ["AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"]
 			},
 			{
 				"name": "pairingCode",
 				"type": "string",
-				"description": "Random pairing code displayed as two groups of four characters separated by a hyphen."
+				"description": "Returns eight random characters from the code alphabet, formatted as four characters, a hyphen, then four characters; the alphabet omits I, O, 0 and 1.",
+				"examples": ["ABCD-2345", "WXYZ-6789"]
 			},
 			{
 				"name": "normalizeCode",
 				"type": "string",
-				"description": "Uppercase alphanumeric code with punctuation and other characters removed."
+				"description": "Returns the input uppercased with every character except ASCII A–Z and 0–9 removed; an empty result is allowed.",
+				"examples": ["ABCD2345", "INVITEXY91", ""]
 			},
 			{
 				"name": "requestDigest",
 				"type": "Promise<string>",
-				"description": "SHA-256 hex digest of the method and stable input JSON; excludes the request ID."
+				"description": "Resolves to lowercase 64-character SHA-256 hex of the method, a newline, and stable JSON for input. Object keys are sorted recursively, and the request ID is excluded.",
+				"examples": ["6cd78a165252b1b2ea6f14da1e90af87fca0feb71f2f9d8c8c48038a384dd889"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects malformed public-key encodings or a point without the required 65-byte uncompressed shape; byte, hash and serialization failures may propagate."
+				"description": "Thrown when base64url public-key text is malformed or the decoded/provided key is not exactly 65 bytes beginning with 0x04."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "pairingCode",
@@ -145,11 +184,12 @@
 					{
 						"name": "pairingCode",
 						"type": "string",
-						"description": "Random pairing code displayed as two groups of four characters separated by a hyphen."
+						"description": "Returns eight random characters from the code alphabet, formatted as four characters, a hyphen, then four characters; the alphabet omits I, O, 0 and 1.",
+						"examples": ["ABCD-2345", "WXYZ-6789"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "requestDigest",
@@ -158,18 +198,27 @@
 						"name": "requestDigest.request",
 						"type": "WireRequest",
 						"required": true,
-						"description": "Wire request whose method and deterministically serialized input identify its operation."
+						"description": "A WireRequest has type: \"request\", a string id, a method from remoteMethods and an input record; requestDigest reads only method and input, so type and id do not affect the digest.",
+						"examples": [
+							{
+								"type": "request",
+								"id": "00000000-0000-4000-8000-000000000001",
+								"method": "listProjects",
+								"input": {}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "requestDigest",
 						"type": "Promise<string>",
-						"description": "SHA-256 hex digest of the method and stable input JSON; excludes the request ID."
+						"description": "Resolves to lowercase 64-character SHA-256 hex of the method, a newline, and stable JSON for input. Object keys are sorted recursively, and the request ID is excluded.",
+						"examples": ["6cd78a165252b1b2ea6f14da1e90af87fca0feb71f2f9d8c8c48038a384dd889"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "remoteIdentity",
@@ -178,23 +227,28 @@
 						"name": "remoteIdentity.publicKey",
 						"type": "Uint8Array | string",
 						"required": true,
-						"description": "65-byte uncompressed P-256 public point as bytes or unpadded base64url."
+						"description": "This is the public key whose bytes are hashed into a host or device ID; it accepts a byte array or base64url text. After decoding, it must be exactly 65 bytes and begin with 0x04; the function checks this uncompressed-point shape but does not validate the curve point.",
+						"examples": [
+							"BGsX0fLhLEJH-Lzm5WOkQPJ3A32BLeszoPShOUXYmMKWT-NC4v4af5uO5-tKfA-eFivOM1drMV7Oy7ZAaDe_UfU"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "remoteIdentity",
 						"type": "Promise<string>",
-						"description": "First 40 lowercase hex characters of the public-key SHA-256 digest."
+						"description": "Resolves to the first 40 lowercase hex characters of SHA-256 over the accepted public-key bytes, for use as a self-certifying host or device ID.",
+						"examples": ["698bea63dc44a344663ff1429aea10842df27b6b"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when base64url public-key text is malformed or the decoded/provided key is not exactly 65 bytes beginning with 0x04."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "credentialHash",
@@ -203,18 +257,35 @@
 						"name": "credentialHash.binding",
 						"type": "CredentialBinding",
 						"required": true,
-						"description": "Host or device role, host ID, optional device ID and credential text to bind together."
+						"description": "Binds a host or device role, host ID, optional device ID and credential into one digest; an omitted device ID is treated as an empty string. The type does not validate identifier or credential formats.",
+						"examples": [
+							{
+								"role": "host",
+								"hostId": "698bea63dc44a344663ff1429aea10842df27b6b",
+								"credential": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+							},
+							{
+								"role": "device",
+								"hostId": "698bea63dc44a344663ff1429aea10842df27b6b",
+								"deviceId": "a9f300eb5960e89133af7362011a1e26f0e2ea2e",
+								"credential": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "credentialHash",
 						"type": "Promise<string>",
-						"description": "SHA-256 hex digest bound to role, host, device and credential using a protocol-specific prefix."
+						"description": "Resolves to lowercase SHA-256 hex of the newline-separated protocol prefix, role, host ID, device ID and credential encoded as UTF-8. The device ID component is an empty string when omitted, and the hash function does not validate the field formats.",
+						"examples": [
+							"f0ea17747548fd926e11320886e9ff60aa8ab0a07e331dc46475afdf0664df3f",
+							"02c7b62d8c84b74af691e5ab5c5096877f735aab44c8c83640ba27af7b78cd1b"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "pkceChallenge",
@@ -223,18 +294,20 @@
 						"name": "pkceChallenge.verifier",
 						"type": "string",
 						"required": true,
-						"description": "PKCE verifier text to hash with the S256 transform."
+						"description": "Verifier text is UTF-8 encoded and hashed with SHA-256 for the S256 challenge. This function does not validate RFC 7636 verifier length or characters.",
+						"examples": ["dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pkceChallenge",
 						"type": "Promise<string>",
-						"description": "Unpadded base64url SHA-256 digest of the UTF-8 verifier."
+						"description": "Resolves to the unpadded base64url encoding of the verifier's 32-byte SHA-256 digest, yielding 43 characters.",
+						"examples": ["E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "randomId",
@@ -244,18 +317,20 @@
 						"type": "number",
 						"required": false,
 						"default": 16,
-						"description": "Number of random bytes to encode; defaults to 16."
+						"description": "Byte count passed directly to randomBytes; omission uses 16, and this function does not clamp or validate the count.",
+						"examples": [16, 4]
 					}
 				],
 				"outputs": [
 					{
 						"name": "randomId",
 						"type": "string",
-						"description": "Random lowercase hexadecimal identifier with two characters per requested byte."
+						"description": "Returns lowercase hexadecimal encoding of the random bytes, with two characters per byte; the default 16-byte request produces 32 characters.",
+						"examples": ["f47ac10b58cc4372a5670e02b2c3d479", "a4f2c810"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "randomCredential",
@@ -264,11 +339,12 @@
 					{
 						"name": "randomCredential",
 						"type": "string",
-						"description": "43-character base64url credential generated from 32 random bytes."
+						"description": "Returns unpadded base64url encoding of 32 random bytes, which is 43 characters.",
+						"examples": ["AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "normalizeCode",
@@ -277,18 +353,20 @@
 						"name": "normalizeCode.value",
 						"type": "string",
 						"required": true,
-						"description": "Human-entered code to uppercase and strip of nonalphanumeric characters."
+						"description": "The input string is uppercased, then all characters outside ASCII A–Z and 0–9 are removed. The result length is not checked.",
+						"examples": ["abcd-2345", "invite: xY_91"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "normalizeCode",
 						"type": "string",
-						"description": "Uppercase alphanumeric code with punctuation and other characters removed."
+						"description": "Returns the input uppercased with every character except ASCII A–Z and 0–9 removed; an empty result is allowed.",
+						"examples": ["ABCD2345", "INVITEXY91", ""]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
