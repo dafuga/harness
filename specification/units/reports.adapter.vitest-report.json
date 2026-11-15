@@ -21,32 +21,74 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "VitestReportAdapter.ingest.store",
 				"type": "ReportRepository",
-				"required": true
+				"required": true,
+				"description": "Repository that receives the records: ingest calls store.record(id, entry) once per assertion result with kind 'check', or once for the summary check (data.id 'vitest-summary') when there are no assertion results. The adapter does not validate it, and an error thrown or rejected by store.record is not caught, so ingest rejects with that same error."
 			},
 			{
 				"name": "VitestReportAdapter.ingest.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Identifier passed unchanged as the first argument of every store.record call, both for each check and for the summary. The adapter does not check it, so an empty string is forwarded as-is.",
+				"examples": ["report-20261115-0042", "report-20261110-0193", "report-20261114-0007"]
 			},
 			{
 				"name": "VitestReportAdapter.ingest.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path of a Vitest JSON report, read as UTF-8 with readFile (a relative path resolves against the process working directory) and parsed with JSON.parse. The parsed object is not validated; only the fields typed by VitestData, VitestFile and VitestCase are read.",
+				"examples": [
+					"packages/reports/test-results/vitest.json",
+					"reports/vitest/results.json",
+					"packages/reports/artifacts/vitest-run.json"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "VitestReportAdapter.ingest",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The promise resolves to { checks: number }, where checks counts the assertion results recorded as check entries. It is 0 when no assertion results exist, and the summary check is recorded instead.",
+				"examples": [
+					{
+						"checks": 12
+					},
+					{
+						"checks": 1
+					},
+					{
+						"checks": 0
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejection from readFile when the file cannot be read, for example ENOENT for a missing path or EISDIR for a directory; the Node.js error is propagated unchanged."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when the file content is not valid JSON; the parsed value is then cast to VitestData without any further check."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when the parsed value has a shape the adapter does not guard against: a null root, a truthy testResults or assertionResults that is not iterable, or a null entry in either list, because the parsed value is not validated."
+			},
+			{
+				"name": "ReportRepository.record rejection",
+				"type": "thrown",
+				"description": "Any error thrown or rejected by store.record propagates out of ingest unchanged, because the adapter neither catches nor wraps it and stops at the first failure."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "VitestReportAdapter.ingest",
@@ -54,27 +96,69 @@
 					{
 						"name": "VitestReportAdapter.ingest.store",
 						"type": "ReportRepository",
-						"required": true
+						"required": true,
+						"description": "Repository that receives the records: ingest calls store.record(id, entry) once per assertion result with kind 'check', or once for the summary check (data.id 'vitest-summary') when there are no assertion results. The adapter does not validate it, and an error thrown or rejected by store.record is not caught, so ingest rejects with that same error."
 					},
 					{
 						"name": "VitestReportAdapter.ingest.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Identifier passed unchanged as the first argument of every store.record call, both for each check and for the summary. The adapter does not check it, so an empty string is forwarded as-is.",
+						"examples": ["report-20261115-0042", "report-20261110-0193", "report-20261114-0007"]
 					},
 					{
 						"name": "VitestReportAdapter.ingest.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path of a Vitest JSON report, read as UTF-8 with readFile (a relative path resolves against the process working directory) and parsed with JSON.parse. The parsed object is not validated; only the fields typed by VitestData, VitestFile and VitestCase are read.",
+						"examples": [
+							"packages/reports/test-results/vitest.json",
+							"reports/vitest/results.json",
+							"packages/reports/artifacts/vitest-run.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "VitestReportAdapter.ingest",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The promise resolves to { checks: number }, where checks counts the assertion results recorded as check entries. It is 0 when no assertion results exist, and the summary check is recorded instead.",
+						"examples": [
+							{
+								"checks": 12
+							},
+							{
+								"checks": 1
+							},
+							{
+								"checks": 0
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejection from readFile when the file cannot be read, for example ENOENT for a missing path or EISDIR for a directory; the Node.js error is propagated unchanged."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when the file content is not valid JSON; the parsed value is then cast to VitestData without any further check."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when the parsed value has a shape the adapter does not guard against: a null root, a truthy testResults or assertionResults that is not iterable, or a null entry in either list, because the parsed value is not validated."
+					},
+					{
+						"name": "ReportRepository.record rejection",
+						"type": "thrown",
+						"description": "Any error thrown or rejected by store.record propagates out of ingest unchanged, because the adapter neither catches nor wraps it and stops at the first failure."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
