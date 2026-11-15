@@ -38,7 +38,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The path of the project's Git repository root, passed unchanged to every service and repository this adapter creates, so that all of its reads are made in that repository. The constructor does not check the path.",
-				"examples": ["/srv/git/harness-app", "/home/ci/work/harness-app"]
+				"examples": ["/srv/git/harness-app", "/workspace/project"]
 			},
 			{
 				"name": "PinnedHistoryAdapter.facts.commit",
@@ -491,7 +491,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The path of the project's Git repository root, passed unchanged to every service and repository this adapter creates, so that all of its reads are made in that repository. The constructor does not check the path.",
-						"examples": ["/srv/git/harness-app", "/home/ci/work/harness-app"]
+						"examples": ["/srv/git/harness-app", "/workspace/project"]
 					}
 				],
 				"outputs": [

@@ -46,9 +46,7 @@
 				"type": "AnalyticsContext",
 				"required": true,
 				"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "recordResponse.durationMs",
@@ -103,9 +101,7 @@
 				"type": "AnalyticsContext",
 				"required": true,
 				"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "recordCleanCode.timing",
@@ -114,7 +110,7 @@
 				"description": "Project root used by analytics recording to identify the repository, plus clean-code elapsed duration in milliseconds. The root is passed to project identity lookup and the duration is copied without a range check.",
 				"examples": [
 					{
-						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+						"root": "/workspace/project",
 						"durationMs": 2350
 					}
 				]
@@ -170,9 +166,7 @@
 						"type": "AnalyticsContext",
 						"required": true,
 						"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					},
 					{
 						"name": "recordResponse.durationMs",
@@ -241,9 +235,7 @@
 						"type": "AnalyticsContext",
 						"required": true,
 						"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					},
 					{
 						"name": "recordCleanCode.timing",
@@ -252,7 +244,7 @@
 						"description": "Project root used by analytics recording to identify the repository, plus clean-code elapsed duration in milliseconds. The root is passed to project identity lookup and the duration is copied without a range check.",
 						"examples": [
 							{
-								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+								"root": "/workspace/project",
 								"durationMs": 2350
 							}
 						]

@@ -22,7 +22,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project directory that realpath() resolves before any planning, so it must exist; a relative value is resolved from the process working directory. Symlinks in the root are followed, and each planned file is then checked for symlinks beneath the resolved directory.",
-				"examples": ["/workspace/luna-pyramid", "/home/builder/luna-pyramid"]
+				"examples": ["/workspace/luna-pyramid", "/workspace/project"]
 			},
 			{
 				"name": "writeModuleFiles.files",
@@ -54,11 +54,7 @@
 				"required": false,
 				"default": [],
 				"description": "Planned output paths, matched exactly, that may be overwritten when the file already exists with different contents. Entries are not validated, and an entry that matches no planned path has no effect.",
-				"examples": [
-					[],
-					["harness.modules.json"],
-					["package.json", "harness.groups.json"]
-				]
+				"examples": [[], ["harness.modules.json"], ["package.json", "harness.groups.json"]]
 			},
 			{
 				"name": "writeModuleFiles.allowIdentical",
@@ -119,7 +115,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project directory that realpath() resolves before any planning, so it must exist; a relative value is resolved from the process working directory. Symlinks in the root are followed, and each planned file is then checked for symlinks beneath the resolved directory.",
-						"examples": ["/workspace/luna-pyramid", "/home/builder/luna-pyramid"]
+						"examples": ["/workspace/luna-pyramid", "/workspace/project"]
 					},
 					{
 						"name": "writeModuleFiles.files",
@@ -151,11 +147,7 @@
 						"required": false,
 						"default": [],
 						"description": "Planned output paths, matched exactly, that may be overwritten when the file already exists with different contents. Entries are not validated, and an entry that matches no planned path has no effect.",
-						"examples": [
-							[],
-							["harness.modules.json"],
-							["package.json", "harness.groups.json"]
-						]
+						"examples": [[], ["harness.modules.json"], ["package.json", "harness.groups.json"]]
 					},
 					{
 						"name": "writeModuleFiles.allowIdentical",

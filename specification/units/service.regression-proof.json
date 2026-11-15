@@ -32,7 +32,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root that run() snapshots the input commit from, reads scenario manifests from and saves regression records into. The constructor stores it without checking, so an invalid root is only detected when run() first reads from it.",
-				"examples": ["/home/ci/checkouts/app", "/Users/builder/src/app"]
+				"examples": ["/workspace/project/checkouts/app", "/workspace/project/src/app"]
 			},
 			{
 				"name": "RegressionProofService.run.input",
@@ -76,7 +76,7 @@
 					},
 					{
 						"LANG": "en_US.UTF-8",
-						"HOME": "/home/ci",
+						"HOME": "/workspace/home",
 						"TERM": "xterm-256color"
 					}
 				]
@@ -135,8 +135,8 @@
 				"required": true,
 				"description": "The evidence directory the run wrote, which run() creates as a temporary directory and passes as HARNESS_EVIDENCE_DIR. Each retained screenshot's bytes are read from it by the file name in its CaptureLine, and a file missing there makes that read throw.",
 				"examples": [
-					"/tmp/harness-regression-d3Wv9A",
-					"/var/folders/k9/x3vq7d4n2t1b8w0c5m6r9f7h0000gn/T/harness-regression-Q8sK2d"
+					"/workspace/tmp/harness-regression-d3Wv9A",
+					"/workspace/tmp/harness-regression-Q8sK2d"
 				]
 			},
 			{
@@ -492,7 +492,7 @@
 							},
 							{
 								"LANG": "en_US.UTF-8",
-								"HOME": "/home/ci",
+								"HOME": "/workspace/home",
 								"TERM": "xterm-256color"
 							}
 						]
@@ -569,8 +569,8 @@
 						"required": true,
 						"description": "The evidence directory the run wrote, which run() creates as a temporary directory and passes as HARNESS_EVIDENCE_DIR. Each retained screenshot's bytes are read from it by the file name in its CaptureLine, and a file missing there makes that read throw.",
 						"examples": [
-							"/tmp/harness-regression-d3Wv9A",
-							"/var/folders/k9/x3vq7d4n2t1b8w0c5m6r9f7h0000gn/T/harness-regression-Q8sK2d"
+							"/workspace/tmp/harness-regression-d3Wv9A",
+							"/workspace/tmp/harness-regression-Q8sK2d"
 						]
 					},
 					{
@@ -654,7 +654,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root that run() snapshots the input commit from, reads scenario manifests from and saves regression records into. The constructor stores it without checking, so an invalid root is only detected when run() first reads from it.",
-						"examples": ["/home/ci/checkouts/app", "/Users/builder/src/app"]
+						"examples": ["/workspace/project/checkouts/app", "/workspace/project/src/app"]
 					}
 				],
 				"outputs": [

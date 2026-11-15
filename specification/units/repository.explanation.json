@@ -25,7 +25,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root: git runs here to read the history notes, and the scratch file path is joined onto it. Outside a repository, all() returns only the scratch-file reasons, without an error.",
-				"examples": ["/home/dev/shop-api", "/srv/git/payments-service"]
+				"examples": ["/workspace/project", "/workspace/payments-service"]
 			},
 			{
 				"name": "ExplanationRepository.constructor.file",
@@ -471,7 +471,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root: git runs here to read the history notes, and the scratch file path is joined onto it. Outside a repository, all() returns only the scratch-file reasons, without an error.",
-						"examples": ["/home/dev/shop-api", "/srv/git/payments-service"]
+						"examples": ["/workspace/project", "/workspace/payments-service"]
 					},
 					{
 						"name": "ExplanationRepository.constructor.file",

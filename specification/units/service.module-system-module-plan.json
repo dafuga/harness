@@ -23,9 +23,9 @@
 				"required": true,
 				"description": "Project directory: modulePackagePlan reads join(root, 'package.json') without checking the path and never writes it. A missing package.json rejects the call with the read error, and one that is not valid JSON rejects it with a SyntaxError.",
 				"examples": [
-					"/Users/example/projects/harness-app",
-					"/home/dev/workspace/billing-portal",
-					"/srv/apps/reports-dashboard"
+					"/workspace/projects/harness-app",
+					"/workspace/projects/billing-portal",
+					"/workspace/projects/reports-dashboard"
 				]
 			},
 			{
@@ -106,9 +106,9 @@
 				"required": true,
 				"description": "Project directory: moduleGroupPlan reads join(root, 'harness.groups.json') without checking the path and never writes it. A missing file starts from an empty taxonomy, while other read errors and invalid JSON reject the call.",
 				"examples": [
-					"/Users/example/projects/harness-app",
-					"/home/dev/workspace/billing-portal",
-					"/srv/apps/reports-dashboard"
+					"/workspace/projects/harness-app",
+					"/workspace/projects/billing-portal",
+					"/workspace/projects/reports-dashboard"
 				]
 			},
 			{
@@ -207,9 +207,9 @@
 						"required": true,
 						"description": "Project directory: modulePackagePlan reads join(root, 'package.json') without checking the path and never writes it. A missing package.json rejects the call with the read error, and one that is not valid JSON rejects it with a SyntaxError.",
 						"examples": [
-							"/Users/example/projects/harness-app",
-							"/home/dev/workspace/billing-portal",
-							"/srv/apps/reports-dashboard"
+							"/workspace/projects/harness-app",
+							"/workspace/projects/billing-portal",
+							"/workspace/projects/reports-dashboard"
 						]
 					},
 					{
@@ -340,9 +340,9 @@
 						"required": true,
 						"description": "Project directory: moduleGroupPlan reads join(root, 'harness.groups.json') without checking the path and never writes it. A missing file starts from an empty taxonomy, while other read errors and invalid JSON reject the call.",
 						"examples": [
-							"/Users/example/projects/harness-app",
-							"/home/dev/workspace/billing-portal",
-							"/srv/apps/reports-dashboard"
+							"/workspace/projects/harness-app",
+							"/workspace/projects/billing-portal",
+							"/workspace/projects/reports-dashboard"
 						]
 					},
 					{

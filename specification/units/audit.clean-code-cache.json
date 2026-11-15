@@ -73,9 +73,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root used to resolve .cache/harness/clean-code for lookup. The read requires resolvable real paths and returns undefined if directory resolution or any later read step fails.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "readReviewCache.key",
@@ -89,9 +87,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root used to resolve .cache/harness/clean-code for cache creation. The write checks the nearest existing cache ancestor against the project root, and any failure is swallowed.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "writeReviewCache.key",
@@ -246,9 +242,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root used to resolve .cache/harness/clean-code for lookup. The read requires resolvable real paths and returns undefined if directory resolution or any later read step fails.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "readReviewCache.key",
@@ -300,9 +294,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root used to resolve .cache/harness/clean-code for cache creation. The write checks the nearest existing cache ancestor against the project root, and any failure is swallowed.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "writeReviewCache.key",

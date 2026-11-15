@@ -22,7 +22,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project directory passed to the catalog, module tree, group plan, scaffold and write steps, and also to the package plan for dependency resources and to the install for testing modules. Dependency resources read package.json from it, and the module state file harness.modules.json is written there.",
-				"examples": ["/workspace/acme-web", "/home/build/repos/acme-web"]
+				"examples": ["/workspace/acme-web", "/workspace/project/repos/acme-web"]
 			},
 			{
 				"name": "ModuleResourceService.generate.module",
@@ -101,7 +101,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project directory passed to the catalog, module tree, group plan, scaffold and write steps, and also to the package plan for dependency resources and to the install for testing modules. Dependency resources read package.json from it, and the module state file harness.modules.json is written there.",
-						"examples": ["/workspace/acme-web", "/home/build/repos/acme-web"]
+						"examples": ["/workspace/acme-web", "/workspace/project/repos/acme-web"]
 					},
 					{
 						"name": "ModuleResourceService.generate.module",

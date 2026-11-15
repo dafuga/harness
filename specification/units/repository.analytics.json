@@ -29,7 +29,7 @@
 				"type": "string",
 				"required": false,
 				"description": "Directory that holds analytics.sqlite, created recursively (mode 0700) if missing. Defaults to process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'): the variable's value when it is set (even if empty), otherwise the .codex/harness directory under the home directory.",
-				"examples": ["/Users/dev/.codex/harness", "/Users/dev/analytics/sandbox"]
+				"examples": ["/workspace/project/.codex/harness", "/workspace/project/analytics/sandbox"]
 			},
 			{
 				"name": "AnalyticsRepository.constructor.options",
@@ -52,21 +52,21 @@
 				"type": "string",
 				"required": false,
 				"description": "Directory that holds analytics.sqlite, created recursively (mode 0700) if missing. Defaults to process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'): the variable's value when it is set (even if empty), otherwise the .codex/harness directory under the home directory.",
-				"examples": ["/Users/dev/.codex/harness", "/Users/dev/analytics/sandbox"]
+				"examples": ["/workspace/project/.codex/harness", "/workspace/project/analytics/sandbox"]
 			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical.root",
 				"type": "string",
 				"required": true,
 				"description": "Directory whose canonical path is computed with realpath(), so a missing directory rejects with that filesystem error. The canonical path is compared with project; when they differ, historical rows whose stored project equals the canonical path are deleted.",
-				"examples": ["/Users/dev/projects/harness-app-feature", "/Users/dev/projects/harness-app"]
+				"examples": ["/workspace/projects/harness-app-feature", "/workspace/projects/harness-app"]
 			},
 			{
 				"name": "AnalyticsRepository.reconcileHistorical.project",
 				"type": "string",
 				"required": true,
 				"description": "Project identity compared with the canonical path of root; when they are equal, the call leaves the database untouched. When they differ, the deletion targets rows stored under the canonical path, so historical rows stored under this value are not removed by this call.",
-				"examples": ["/Users/dev/projects/harness-app", "/Users/dev/projects/inventory-service"]
+				"examples": ["/workspace/projects/harness-app", "/workspace/projects/inventory-service"]
 			},
 			{
 				"name": "AnalyticsRepository.record.event",
@@ -77,14 +77,14 @@
 					{
 						"id": "3b9f6c2a-1d4e-4f8a-9b27-5c0e7d1a6f43",
 						"timestamp": "2026-11-14T09:30:12.345Z",
-						"project": "/Users/dev/projects/harness-app",
+						"project": "/workspace/projects/harness-app",
 						"kind": "loop",
 						"action": "created"
 					},
 					{
 						"id": "d41e8b07-6c3a-4a92-8f15-0b7e2d9c4a61",
 						"timestamp": "2026-11-14T10:05:47.910Z",
-						"project": "/Users/dev/projects/harness-app",
+						"project": "/workspace/projects/harness-app",
 						"kind": "step",
 						"action": "completed",
 						"durationMs": 2214
@@ -100,7 +100,7 @@
 					{
 						"id": "5e0a7c31b9d24f68a1c3e7f0d5b2964a8c1e3f7d0b5a92c64e8f1d3a7b0c295e",
 						"timestamp": "2026-11-12T18:04:55.602Z",
-						"project": "/Users/dev/projects/harness-app",
+						"project": "/workspace/projects/harness-app",
 						"kind": "loop",
 						"action": "created",
 						"historical": true
@@ -108,7 +108,7 @@
 					{
 						"id": "c04f9e2b71a6d385e0f4b92c7a1d6e53f8b20c9a4d7e1f6b3a52c08d9e4f7b16",
 						"timestamp": "2026-11-13T16:42:03.118Z",
-						"project": "/Users/dev/projects/harness-app",
+						"project": "/workspace/projects/harness-app",
 						"kind": "evaluation",
 						"action": "evaluated",
 						"checkType": "response",
@@ -162,7 +162,7 @@
 						{
 							"id": "3b9f6c2a-1d4e-4f8a-9b27-5c0e7d1a6f43",
 							"timestamp": "2026-11-14T09:30:12.345Z",
-							"project": "/Users/dev/projects/harness-app",
+							"project": "/workspace/projects/harness-app",
 							"kind": "loop",
 							"action": "created"
 						}
@@ -171,7 +171,7 @@
 						{
 							"id": "c04f9e2b71a6d385e0f4b92c7a1d6e53f8b20c9a4d7e1f6b3a52c08d9e4f7b16",
 							"timestamp": "2026-11-13T16:42:03.118Z",
-							"project": "/Users/dev/projects/harness-app",
+							"project": "/workspace/projects/harness-app",
 							"kind": "evaluation",
 							"action": "evaluated",
 							"checkType": "response",
@@ -180,7 +180,7 @@
 						{
 							"id": "d41e8b07-6c3a-4a92-8f15-0b7e2d9c4a61",
 							"timestamp": "2026-11-14T10:05:47.910Z",
-							"project": "/Users/dev/projects/harness-app",
+							"project": "/workspace/projects/harness-app",
 							"kind": "step",
 							"action": "completed",
 							"durationMs": 2214
@@ -253,7 +253,10 @@
 						"type": "string",
 						"required": false,
 						"description": "Directory that holds analytics.sqlite, created recursively (mode 0700) if missing. Defaults to process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'): the variable's value when it is set (even if empty), otherwise the .codex/harness directory under the home directory.",
-						"examples": ["/Users/dev/.codex/harness", "/Users/dev/analytics/sandbox"]
+						"examples": [
+							"/workspace/project/.codex/harness",
+							"/workspace/project/analytics/sandbox"
+						]
 					}
 				],
 				"outputs": [
@@ -293,8 +296,8 @@
 						"required": true,
 						"description": "Directory whose canonical path is computed with realpath(), so a missing directory rejects with that filesystem error. The canonical path is compared with project; when they differ, historical rows whose stored project equals the canonical path are deleted.",
 						"examples": [
-							"/Users/dev/projects/harness-app-feature",
-							"/Users/dev/projects/harness-app"
+							"/workspace/projects/harness-app-feature",
+							"/workspace/projects/harness-app"
 						]
 					},
 					{
@@ -302,7 +305,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project identity compared with the canonical path of root; when they are equal, the call leaves the database untouched. When they differ, the deletion targets rows stored under the canonical path, so historical rows stored under this value are not removed by this call.",
-						"examples": ["/Users/dev/projects/harness-app", "/Users/dev/projects/inventory-service"]
+						"examples": ["/workspace/projects/harness-app", "/workspace/projects/inventory-service"]
 					}
 				],
 				"outputs": [
@@ -333,14 +336,14 @@
 							{
 								"id": "3b9f6c2a-1d4e-4f8a-9b27-5c0e7d1a6f43",
 								"timestamp": "2026-11-14T09:30:12.345Z",
-								"project": "/Users/dev/projects/harness-app",
+								"project": "/workspace/projects/harness-app",
 								"kind": "loop",
 								"action": "created"
 							},
 							{
 								"id": "d41e8b07-6c3a-4a92-8f15-0b7e2d9c4a61",
 								"timestamp": "2026-11-14T10:05:47.910Z",
-								"project": "/Users/dev/projects/harness-app",
+								"project": "/workspace/projects/harness-app",
 								"kind": "step",
 								"action": "completed",
 								"durationMs": 2214
@@ -376,7 +379,7 @@
 							{
 								"id": "5e0a7c31b9d24f68a1c3e7f0d5b2964a8c1e3f7d0b5a92c64e8f1d3a7b0c295e",
 								"timestamp": "2026-11-12T18:04:55.602Z",
-								"project": "/Users/dev/projects/harness-app",
+								"project": "/workspace/projects/harness-app",
 								"kind": "loop",
 								"action": "created",
 								"historical": true
@@ -384,7 +387,7 @@
 							{
 								"id": "c04f9e2b71a6d385e0f4b92c7a1d6e53f8b20c9a4d7e1f6b3a52c08d9e4f7b16",
 								"timestamp": "2026-11-13T16:42:03.118Z",
-								"project": "/Users/dev/projects/harness-app",
+								"project": "/workspace/projects/harness-app",
 								"kind": "evaluation",
 								"action": "evaluated",
 								"checkType": "response",
@@ -422,7 +425,7 @@
 								{
 									"id": "3b9f6c2a-1d4e-4f8a-9b27-5c0e7d1a6f43",
 									"timestamp": "2026-11-14T09:30:12.345Z",
-									"project": "/Users/dev/projects/harness-app",
+									"project": "/workspace/projects/harness-app",
 									"kind": "loop",
 									"action": "created"
 								}
@@ -431,7 +434,7 @@
 								{
 									"id": "c04f9e2b71a6d385e0f4b92c7a1d6e53f8b20c9a4d7e1f6b3a52c08d9e4f7b16",
 									"timestamp": "2026-11-13T16:42:03.118Z",
-									"project": "/Users/dev/projects/harness-app",
+									"project": "/workspace/projects/harness-app",
 									"kind": "evaluation",
 									"action": "evaluated",
 									"checkType": "response",
@@ -440,7 +443,7 @@
 								{
 									"id": "d41e8b07-6c3a-4a92-8f15-0b7e2d9c4a61",
 									"timestamp": "2026-11-14T10:05:47.910Z",
-									"project": "/Users/dev/projects/harness-app",
+									"project": "/workspace/projects/harness-app",
 									"kind": "step",
 									"action": "completed",
 									"durationMs": 2214
@@ -547,7 +550,10 @@
 						"type": "string",
 						"required": false,
 						"description": "Directory that holds analytics.sqlite, created recursively (mode 0700) if missing. Defaults to process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'): the variable's value when it is set (even if empty), otherwise the .codex/harness directory under the home directory.",
-						"examples": ["/Users/dev/.codex/harness", "/Users/dev/analytics/sandbox"]
+						"examples": [
+							"/workspace/project/.codex/harness",
+							"/workspace/project/analytics/sandbox"
+						]
 					},
 					{
 						"name": "AnalyticsRepository.constructor.options",

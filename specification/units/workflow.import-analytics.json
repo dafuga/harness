@@ -19,9 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Path to the repository tree to scan; it is passed through resolve and used to look for specification/loops at each project while recursing into child directories. Traversal skips hidden directories and node_modules, dist, build, and analytics.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "importAnalytics.historical",
@@ -57,9 +55,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Path to the repository tree to scan; it is passed through resolve and used to look for specification/loops at each project while recursing into child directories. Traversal skips hidden directories and node_modules, dist, build, and analytics.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "importAnalytics.historical",

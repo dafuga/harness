@@ -24,9 +24,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root path passed to moduleTree(root) for reading harness.modules.json and listing specification/modules. This method does not validate that the path is absolute.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ModuleCatalogService.at.tree",
@@ -46,9 +44,7 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Optional array where recoverable installation-state read or parse problems are appended. When omitted, invalid state and non-missing read failures reject instead.",
-				"examples": [
-					["Invalid module installation state."]
-				]
+				"examples": [["Invalid module installation state."]]
 			}
 		],
 		"outputs": [
@@ -221,9 +217,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root path passed to moduleTree(root) for reading harness.modules.json and listing specification/modules. This method does not validate that the path is absolute.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
@@ -371,9 +365,7 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Optional array where recoverable installation-state read or parse problems are appended. When omitted, invalid state and non-missing read failures reject instead.",
-						"examples": [
-							["Invalid module installation state."]
-						]
+						"examples": [["Invalid module installation state."]]
 					}
 				],
 				"outputs": [

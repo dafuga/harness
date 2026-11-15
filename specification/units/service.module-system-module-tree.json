@@ -22,9 +22,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Directory used as the base for read(path) and list(); list() scans its specification/modules child. The implementation does not validate that it is absolute or that a package manifest exists.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-				]
+				"examples": ["/workspace/project"]
 			}
 		],
 		"outputs": [
@@ -51,9 +49,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Directory used as the base for read(path) and list(); list() scans its specification/modules child. The implementation does not validate that it is absolute or that a package manifest exists.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

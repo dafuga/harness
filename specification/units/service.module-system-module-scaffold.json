@@ -22,9 +22,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Project directory passed to the selected scaffold workflow as its root for project detection and file generation. The service forwards this string unchanged.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "ModuleScaffoldService.generate.resource",
@@ -67,9 +65,7 @@
 				"name": "ModuleScaffoldService.generate",
 				"type": "Promise<string[]>",
 				"description": "Resolves to the path strings from the delegated workflow’s write results, in workflow order. The returned array includes skipped paths and omits write status, file contents, and export-update metadata.",
-				"examples": [
-					["test/invoice.test.ts"]
-				]
+				"examples": [["test/invoice.test.ts"]]
 			}
 		],
 		"errors": [
@@ -94,9 +90,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Project directory passed to the selected scaffold workflow as its root for project detection and file generation. The service forwards this string unchanged.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "ModuleScaffoldService.generate.resource",
@@ -139,9 +133,7 @@
 						"name": "ModuleScaffoldService.generate",
 						"type": "Promise<string[]>",
 						"description": "Resolves to the path strings from the delegated workflow’s write results, in workflow order. The returned array includes skipped paths and omits write status, file contents, and export-update metadata.",
-						"examples": [
-							["test/invoice.test.ts"]
-						]
+						"examples": [["test/invoice.test.ts"]]
 					}
 				],
 				"errors": [

@@ -34,9 +34,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root used to derive the verification scratch-store path under .cache/harness/verifications. The constructor joins this string with that relative directory but does not create or validate the path.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "VerificationStoreRepository.directoryFor.commit",
@@ -61,7 +59,7 @@
 					{
 						"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
 						"schemaVersion": 1,
-						"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+						"repository": "/workspace/project",
 						"source": {
 							"commit": "89abcdef0123456789abcdef0123456789abcdef",
 							"tree": "0123456789abcdef0123456789abcdef01234567",
@@ -113,7 +111,7 @@
 				"required": true,
 				"description": "Directory in which save creates record.json. It creates the directory recursively and uses the supplied path without requiring it to be inside the scratch store.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+					"/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 				]
 			},
 			{
@@ -123,7 +121,7 @@
 				"description": "A stored record ID or a path to a record file; a resolved existing file is read before any ID search. An invalid file or an unmatched ID returns undefined.",
 				"examples": [
 					"2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
+					"/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
 				]
 			},
 			{
@@ -139,7 +137,7 @@
 				"required": true,
 				"description": "File-system path to one record JSON file. Missing, unreadable, malformed, or schema-invalid content returns undefined.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
+					"/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
 				]
 			}
 		],
@@ -149,7 +147,7 @@
 				"type": "string",
 				"description": "Store directory path formed from the repository root, .cache/harness/verifications, the commit string, and the sanitized timestamp. The timestamp component contains at most 17 digits, and this method creates no directories.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+					"/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 				]
 			},
 			{
@@ -166,7 +164,7 @@
 						"record": {
 							"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
 							"schemaVersion": 1,
-							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+							"repository": "/workspace/project",
 							"source": {
 								"commit": "89abcdef0123456789abcdef0123456789abcdef",
 								"tree": "0123456789abcdef0123456789abcdef01234567",
@@ -210,7 +208,7 @@
 							},
 							"failures": []
 						},
-						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+						"directory": "/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 					}
 				]
 			},
@@ -223,7 +221,7 @@
 						"record": {
 							"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
 							"schemaVersion": 1,
-							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+							"repository": "/workspace/project",
 							"source": {
 								"commit": "89abcdef0123456789abcdef0123456789abcdef",
 								"tree": "0123456789abcdef0123456789abcdef01234567",
@@ -267,7 +265,7 @@
 							},
 							"failures": []
 						},
-						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+						"directory": "/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 					}
 				]
 			},
@@ -282,7 +280,7 @@
 							"record": {
 								"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
 								"schemaVersion": 1,
-								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+								"repository": "/workspace/project",
 								"source": {
 									"commit": "89abcdef0123456789abcdef0123456789abcdef",
 									"tree": "0123456789abcdef0123456789abcdef01234567",
@@ -326,7 +324,7 @@
 								},
 								"failures": []
 							},
-							"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+							"directory": "/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 						}
 					]
 				]
@@ -345,7 +343,7 @@
 						"record": {
 							"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
 							"schemaVersion": 1,
-							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+							"repository": "/workspace/project",
 							"source": {
 								"commit": "89abcdef0123456789abcdef0123456789abcdef",
 								"tree": "0123456789abcdef0123456789abcdef01234567",
@@ -389,7 +387,7 @@
 							},
 							"failures": []
 						},
-						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+						"directory": "/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 					}
 				]
 			}
@@ -427,7 +425,7 @@
 						"type": "string",
 						"description": "Store directory path formed from the repository root, .cache/harness/verifications, the commit string, and the sanitized timestamp. The timestamp component contains at most 17 digits, and this method creates no directories.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+							"/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 						]
 					}
 				],
@@ -446,7 +444,7 @@
 							{
 								"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
 								"schemaVersion": 1,
-								"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+								"repository": "/workspace/project",
 								"source": {
 									"commit": "89abcdef0123456789abcdef0123456789abcdef",
 									"tree": "0123456789abcdef0123456789abcdef01234567",
@@ -498,7 +496,7 @@
 						"required": true,
 						"description": "Directory in which save creates record.json. It creates the directory recursively and uses the supplied path without requiring it to be inside the scratch store.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+							"/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 						]
 					}
 				],
@@ -528,7 +526,7 @@
 						"description": "A stored record ID or a path to a record file; a resolved existing file is read before any ID search. An invalid file or an unmatched ID returns undefined.",
 						"examples": [
 							"2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
+							"/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
 						]
 					}
 				],
@@ -542,7 +540,7 @@
 								"record": {
 									"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
 									"schemaVersion": 1,
-									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+									"repository": "/workspace/project",
 									"source": {
 										"commit": "89abcdef0123456789abcdef0123456789abcdef",
 										"tree": "0123456789abcdef0123456789abcdef01234567",
@@ -586,7 +584,7 @@
 									},
 									"failures": []
 								},
-								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+								"directory": "/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 							}
 						]
 					}
@@ -621,7 +619,7 @@
 								"record": {
 									"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
 									"schemaVersion": 1,
-									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+									"repository": "/workspace/project",
 									"source": {
 										"commit": "89abcdef0123456789abcdef0123456789abcdef",
 										"tree": "0123456789abcdef0123456789abcdef01234567",
@@ -665,7 +663,7 @@
 									},
 									"failures": []
 								},
-								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+								"directory": "/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 							}
 						]
 					}
@@ -694,7 +692,7 @@
 									"record": {
 										"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
 										"schemaVersion": 1,
-										"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+										"repository": "/workspace/project",
 										"source": {
 											"commit": "89abcdef0123456789abcdef0123456789abcdef",
 											"tree": "0123456789abcdef0123456789abcdef01234567",
@@ -738,7 +736,7 @@
 										},
 										"failures": []
 									},
-									"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+									"directory": "/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 								}
 							]
 						]
@@ -781,7 +779,7 @@
 						"required": true,
 						"description": "File-system path to one record JSON file. Missing, unreadable, malformed, or schema-invalid content returns undefined.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
+							"/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123/record.json"
 						]
 					}
 				],
@@ -795,7 +793,7 @@
 								"record": {
 									"id": "2b6b11bc30c3cd561673f630f74094e70182590b10c12f74838198b70b5d4783",
 									"schemaVersion": 1,
-									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9",
+									"repository": "/workspace/project",
 									"source": {
 										"commit": "89abcdef0123456789abcdef0123456789abcdef",
 										"tree": "0123456789abcdef0123456789abcdef01234567",
@@ -839,7 +837,7 @@
 									},
 									"failures": []
 								},
-								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
+								"directory": "/workspace/project/.cache/harness/verifications/89abcdef0123456789abcdef0123456789abcdef/20261114090807123"
 							}
 						]
 					}
@@ -857,9 +855,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root used to derive the verification scratch-store path under .cache/harness/verifications. The constructor joins this string with that relative directory but does not create or validate the path.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

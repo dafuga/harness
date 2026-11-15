@@ -33,8 +33,8 @@
 				"required": true,
 				"description": "Path of the file that stores the encrypted hosted session, which read, save and clear all use; the constructor does not validate it. save creates the parent directory, writes a temporary sibling named <file>.<uuid>.tmp and renames it over this path.",
 				"examples": [
-					"/Users/example/Library/Application Support/Harness/hosted-session.bin",
-					"/home/example/.config/Harness/hosted-session.bin"
+					"/workspace/state/hosted-session.bin",
+					"/workspace/state/remote/hosted-session.bin"
 				]
 			},
 			{
@@ -236,8 +236,8 @@
 						"required": true,
 						"description": "Path of the file that stores the encrypted hosted session, which read, save and clear all use; the constructor does not validate it. save creates the parent directory, writes a temporary sibling named <file>.<uuid>.tmp and renames it over this path.",
 						"examples": [
-							"/Users/example/Library/Application Support/Harness/hosted-session.bin",
-							"/home/example/.config/Harness/hosted-session.bin"
+							"/workspace/state/hosted-session.bin",
+							"/workspace/state/remote/hosted-session.bin"
 						]
 					},
 					{
