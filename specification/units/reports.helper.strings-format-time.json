@@ -18,49 +18,57 @@
 				"name": "formatTime.instant",
 				"type": "string | null",
 				"required": true,
-				"description": "Recorded instant to format; null uses the fallback."
+				"description": "String instant to format, or `null` when unavailable; a falsy value or non-finite `Date.parse` result returns the fallback.",
+				"examples": ["2025-03-04T09:30:00Z", null, "not-a-date"]
 			},
 			{
 				"name": "formatTime.fallback",
 				"type": "string",
 				"required": false,
-				"description": "Text for missing or invalid instants. Defaults to the original instant or Unknown when null."
+				"description": "Fallback text returned for a falsy or unparseable instant; when omitted, it defaults to `instant ?? 'Unknown'` (the original instant when non-null, otherwise `Unknown`).",
+				"examples": ["Unknown", "Not available"]
 			},
 			{
 				"name": "formatTime.style",
 				"type": "'compact' | 'full'",
 				"required": false,
 				"default": "compact",
-				"description": "Optional format: compact medium date/short time, the default, or full platform date/time."
+				"description": "`compact` formats valid instants with a medium date and short time, while `full` uses the runtime default date/time options. Style affects only valid instants because missing or invalid values return the fallback.",
+				"examples": ["compact", "full"]
 			},
 			{
 				"name": "timeLabel.recorded",
 				"type": "string",
 				"required": true,
-				"description": "Recorded timestamp, calendar label or date-only text."
+				"description": "Recorded date, calendar label, or timestamp text; only strings beginning with the `YYYY-MM-DDTHH:mm` digit pattern are passed to `formatTime`. Other text is returned unchanged, and invalid matching timestamps remain unchanged because the wrapper supplies the recorded text as fallback.",
+				"examples": ["2025-03-04T09:30:00Z", "2025-03-04", "Release window"]
 			},
 			{
 				"name": "displayTime.instant",
 				"type": "string | null",
 				"required": true,
-				"description": "Recorded revision instant, or null when unavailable."
+				"description": "Instant for revision details, or `null` when unavailable. The wrapper uses `Unknown` for falsy or unparseable values and the default compact style for valid instants.",
+				"examples": ["2025-03-04T09:30:00Z", null, "not-a-date"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "formatTime",
 				"type": "string",
-				"description": "Localized instant or the supplied fallback."
+				"description": "Localized date/time for a truthy instant accepted by `Date.parse`, or the fallback for a falsy or unparseable instant. Formatting uses the runtime default locale and time zone; `compact` selects medium date and short time, while `full` uses default `toLocaleString` options.",
+				"examples": ["Mar 4, 2025, 9:30 AM", "Unknown"]
 			},
 			{
 				"name": "timeLabel",
 				"type": "string",
-				"description": "Localized timestamp; other text and invalid timestamps stay unchanged."
+				"description": "Localized date/time when the recorded text matches the timestamp prefix and parses to a finite date; otherwise, the original text. Timestamp formatting uses the runtime default locale and time zone.",
+				"examples": ["Mar 4, 2025, 9:30 AM", "2025-03-04", "Release window"]
 			},
 			{
 				"name": "displayTime",
 				"type": "string",
-				"description": "Localized revision instant, or Unknown when missing or invalid."
+				"description": "Localized compact date/time for a valid instant, or `Unknown` for a falsy or unparseable instant. Formatting uses the runtime default locale and time zone.",
+				"examples": ["Mar 4, 2025, 9:30 AM", "Unknown"]
 			}
 		],
 		"errors": [],
@@ -73,31 +81,35 @@
 						"name": "formatTime.instant",
 						"type": "string | null",
 						"required": true,
-						"description": "Recorded instant to format; null uses the fallback."
+						"description": "String instant to format, or `null` when unavailable; a falsy value or non-finite `Date.parse` result returns the fallback.",
+						"examples": ["2025-03-04T09:30:00Z", null, "not-a-date"]
 					},
 					{
 						"name": "formatTime.fallback",
 						"type": "string",
 						"required": false,
-						"description": "Text for missing or invalid instants. Defaults to the original instant or Unknown when null."
+						"description": "Fallback text returned for a falsy or unparseable instant; when omitted, it defaults to `instant ?? 'Unknown'` (the original instant when non-null, otherwise `Unknown`).",
+						"examples": ["Unknown", "Not available"]
 					},
 					{
 						"name": "formatTime.style",
 						"type": "'compact' | 'full'",
 						"required": false,
 						"default": "compact",
-						"description": "Optional format: compact medium date/short time, the default, or full platform date/time."
+						"description": "`compact` formats valid instants with a medium date and short time, while `full` uses the runtime default date/time options. Style affects only valid instants because missing or invalid values return the fallback.",
+						"examples": ["compact", "full"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "formatTime",
 						"type": "string",
-						"description": "Localized instant or the supplied fallback."
+						"description": "Localized date/time for a truthy instant accepted by `Date.parse`, or the fallback for a falsy or unparseable instant. Formatting uses the runtime default locale and time zone; `compact` selects medium date and short time, while `full` uses default `toLocaleString` options.",
+						"examples": ["Mar 4, 2025, 9:30 AM", "Unknown"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "timeLabel",
@@ -106,18 +118,20 @@
 						"name": "timeLabel.recorded",
 						"type": "string",
 						"required": true,
-						"description": "Recorded timestamp, calendar label or date-only text."
+						"description": "Recorded date, calendar label, or timestamp text; only strings beginning with the `YYYY-MM-DDTHH:mm` digit pattern are passed to `formatTime`. Other text is returned unchanged, and invalid matching timestamps remain unchanged because the wrapper supplies the recorded text as fallback.",
+						"examples": ["2025-03-04T09:30:00Z", "2025-03-04", "Release window"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "timeLabel",
 						"type": "string",
-						"description": "Localized timestamp; other text and invalid timestamps stay unchanged."
+						"description": "Localized date/time when the recorded text matches the timestamp prefix and parses to a finite date; otherwise, the original text. Timestamp formatting uses the runtime default locale and time zone.",
+						"examples": ["Mar 4, 2025, 9:30 AM", "2025-03-04", "Release window"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "displayTime",
@@ -126,18 +140,20 @@
 						"name": "displayTime.instant",
 						"type": "string | null",
 						"required": true,
-						"description": "Recorded revision instant, or null when unavailable."
+						"description": "Instant for revision details, or `null` when unavailable. The wrapper uses `Unknown` for falsy or unparseable values and the default compact style for valid instants.",
+						"examples": ["2025-03-04T09:30:00Z", null, "not-a-date"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "displayTime",
 						"type": "string",
-						"description": "Localized revision instant, or Unknown when missing or invalid."
+						"description": "Localized compact date/time for a valid instant, or `Unknown` for a falsy or unparseable instant. Formatting uses the runtime default locale and time zone.",
+						"examples": ["Mar 4, 2025, 9:30 AM", "Unknown"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
