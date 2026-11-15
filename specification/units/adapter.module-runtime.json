@@ -15,29 +15,45 @@
 		"symbols": ["ModuleRuntimeAdapter", "ModuleRuntimeAdapter", "ModuleRuntimeAdapter.load"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleRuntimeAdapter.load.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The module file to import, converted with `pathToFileURL` and imported on the first `invoke` that reaches the handler, not inside `load`. The import result is cached, so a missing or unloadable file makes every call that reaches the handler return a `runtime-unavailable` response, and the import is never retried.",
+				"examples": ["src/utils/execution-runtimes/impact-kernel/impactKernel.ts"]
 			},
 			{
 				"name": "ModuleRuntimeAdapter.load.handlerName",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name of the module export that is called with each request; it is looked up when the module is first imported and must be a function. If the module has no function export with this name, every call that reaches the handler returns a `runtime-unavailable` response whose message names the label and this handler name.",
+				"examples": ["invoke", "impactKernel", "impactKernelPortable"]
 			},
 			{
 				"name": "ModuleRuntimeAdapter.load.options",
 				"type": "RuntimeOptions & { label?: string }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional runtime settings, defaulting to `{}`: `timeoutMs` caps each call (default `defaultRuntimeTimeoutMs`, 30000 ms) and `label` names the module in `runtime-unavailable` messages (default `file`). A handler that blocks the calling thread cannot be interrupted, so its late response is replaced by `runtime-timeout` only after it returns.",
+				"examples": [
+					{},
+					{
+						"timeoutMs": 5000
+					},
+					{
+						"label": "src/utils/execution-runtimes/impact-kernel/impactKernel.ts",
+						"timeoutMs": 30000
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleRuntimeAdapter.load",
-				"type": "ModuleRuntimeAdapter"
+				"type": "ModuleRuntimeAdapter",
+				"description": "The new `ModuleRuntimeAdapter`, a `HandlerRuntimeAdapter` subclass with `kind` `'module'`, that imports its handler on the first `invoke` that reaches it and keeps that result for the life of the instance. A failed import or lookup is never thrown: each `invoke` that reaches the handler returns a `runtime-unavailable` response."
 			}
 		],
 		"errors": [],
@@ -49,28 +65,44 @@
 					{
 						"name": "ModuleRuntimeAdapter.load.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The module file to import, converted with `pathToFileURL` and imported on the first `invoke` that reaches the handler, not inside `load`. The import result is cached, so a missing or unloadable file makes every call that reaches the handler return a `runtime-unavailable` response, and the import is never retried.",
+						"examples": ["src/utils/execution-runtimes/impact-kernel/impactKernel.ts"]
 					},
 					{
 						"name": "ModuleRuntimeAdapter.load.handlerName",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name of the module export that is called with each request; it is looked up when the module is first imported and must be a function. If the module has no function export with this name, every call that reaches the handler returns a `runtime-unavailable` response whose message names the label and this handler name.",
+						"examples": ["invoke", "impactKernel", "impactKernelPortable"]
 					},
 					{
 						"name": "ModuleRuntimeAdapter.load.options",
 						"type": "RuntimeOptions & { label?: string }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional runtime settings, defaulting to `{}`: `timeoutMs` caps each call (default `defaultRuntimeTimeoutMs`, 30000 ms) and `label` names the module in `runtime-unavailable` messages (default `file`). A handler that blocks the calling thread cannot be interrupted, so its late response is replaced by `runtime-timeout` only after it returns.",
+						"examples": [
+							{},
+							{
+								"timeoutMs": 5000
+							},
+							{
+								"label": "src/utils/execution-runtimes/impact-kernel/impactKernel.ts",
+								"timeoutMs": 30000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleRuntimeAdapter.load",
-						"type": "ModuleRuntimeAdapter"
+						"type": "ModuleRuntimeAdapter",
+						"description": "The new `ModuleRuntimeAdapter`, a `HandlerRuntimeAdapter` subclass with `kind` `'module'`, that imports its handler on the first `invoke` that reaches it and keeps that result for the life of the instance. A failed import or lookup is never thrown: each `invoke` that reaches the handler returns a `runtime-unavailable` response."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
