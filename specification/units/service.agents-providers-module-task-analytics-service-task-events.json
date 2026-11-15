@@ -12,27 +12,373 @@
 		"symbols": ["taskEvents"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "taskEvents.tasks",
 				"type": "ModuleTask[]",
-				"required": true
+				"required": true,
+				"description": "The stored module tasks to convert, each in the ModuleTask shape: for each task, in array order, the function reads its attempts, its result when present and its reviews, and a task with none of them yields no events. Nothing here validates or filters the array.",
+				"examples": [
+					[
+						{
+							"id": "service.module-task-analytics-events",
+							"title": "Map stored module tasks to analytics events",
+							"moduleGoal": "Keep analytics event ids and ordering stable for module tasks.",
+							"instructions": "Implement taskEvents so each attempt, result and review becomes one analytics event, as the wanted contract describes.",
+							"wantedContract": {
+								"responsibility": "Turns stored module tasks into analytics events.",
+								"inputs": [
+									{
+										"name": "taskEvents.tasks",
+										"type": "ModuleTask[]",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "taskEvents",
+										"type": "AnalyticsEvent[]"
+									}
+								],
+								"errors": []
+							},
+							"model": "auto",
+							"feature": {
+								"id": "feature.agents-providers-analytics",
+								"goal": "Record how agent work on module tasks ran, was submitted and was reviewed.",
+								"tldr": "Module tasks become analytics events."
+							},
+							"module": {
+								"id": "module.task-analytics-service",
+								"goal": "Build analytics events from stored module tasks.",
+								"files": [
+									"src/services/agents-providers/module-task-analytics-service/taskEvents.ts",
+									"src/services/agents-providers/module-task-analytics-service/taskPricing.ts"
+								]
+							},
+							"sourceCommit": "0b7e52c9a4d1f83e6c02b9a7d5e4f13c8a6b2d90",
+							"contractHash": "9d4f0a6c3b58e217f9a0d6c4b1e83f5a2c7d09e6b4a13f8c5d2e07a9b6c4f1e8",
+							"status": "accepted",
+							"reviews": [
+								{
+									"attempt": "8a61d0c4-2e95-4b7f-a3d8-19c5e6f07b42",
+									"verdict": "accepted",
+									"reviewer": "unattributed",
+									"feedback": "",
+									"at": "2026-11-13T09:20:44.000Z",
+									"provider": "claude",
+									"model": "claude-sonnet-5-5",
+									"intelligence": "high",
+									"reportedModel": "claude-sonnet-5-5"
+								}
+							],
+							"createdAt": "2026-11-12T08:55:10.000Z",
+							"claimHistory": [],
+							"attempts": [
+								{
+									"provider": "claude",
+									"model": "claude-sonnet-5-5",
+									"intelligence": "high",
+									"reportedModel": "claude-sonnet-5-5",
+									"text": "Stopped after the first test run because the agent CLI exited.",
+									"worktree": "harness-task-3f2c9a1e",
+									"changedFiles": [
+										"src/services/agents-providers/module-task-analytics-service/taskEvents.ts"
+									],
+									"error": "Agent CLI exited with code 1 before submitting.",
+									"fallback": false,
+									"finishedAt": "2026-11-12T10:41:09.000Z",
+									"attempt": "3f2c9a1e-7b4d-4e8a-9c21-5d6e0f1a2b3c",
+									"executions": [
+										{
+											"provider": "claude",
+											"model": "claude-sonnet-5-5",
+											"intelligence": "high",
+											"reportedModel": "claude-sonnet-5-5",
+											"usage": {
+												"inputTokens": 31000,
+												"outputTokens": 1200,
+												"cacheReadTokens": null,
+												"cacheWriteTokens": null,
+												"reportedCostUsd": null
+											},
+											"apiCost": {
+												"usd": null,
+												"minimumUsd": 0.0151,
+												"maximumUsd": 0.136,
+												"basis": "standard-api-estimate",
+												"rateCard": "standard-global-2026-10-25",
+												"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+												"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+											},
+											"status": "failed",
+											"startedAt": "2026-11-12T10:33:02.000Z",
+											"finishedAt": "2026-11-12T10:41:09.000Z"
+										}
+									]
+								}
+							],
+							"result": {
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5",
+								"text": "Implemented taskEvents and checked the execution, submission and review events.",
+								"worktree": "harness-task-8a61d0c4",
+								"changedFiles": [
+									"src/services/agents-providers/module-task-analytics-service/taskEvents.ts"
+								],
+								"fallback": false,
+								"finishedAt": "2026-11-12T11:58:37.000Z",
+								"attempt": "8a61d0c4-2e95-4b7f-a3d8-19c5e6f07b42",
+								"sourceCommit": "0b7e52c9a4d1f83e6c02b9a7d5e4f13c8a6b2d90",
+								"checkpointCommit": "5c81e0f7a29d4b63e1f0c8d27a9b5e3f60d14c2a",
+								"usage": {
+									"inputTokens": 52000,
+									"outputTokens": 3100,
+									"cacheReadTokens": null,
+									"cacheWriteTokens": null,
+									"reportedCostUsd": null
+								},
+								"executions": []
+							}
+						}
+					],
+					[
+						{
+							"id": "service.module-task-analytics-backfill",
+							"title": "Backfill analytics for legacy module task results",
+							"instructions": "Read each stored result and emit its analytics events without changing the stored data.",
+							"wantedContract": {
+								"responsibility": "Emits analytics for stored results that have no attempt id.",
+								"inputs": [
+									{
+										"name": "taskEvents.tasks",
+										"type": "ModuleTask[]",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "taskEvents",
+										"type": "AnalyticsEvent[]"
+									}
+								],
+								"errors": []
+							},
+							"model": "auto",
+							"feature": {
+								"id": "feature.agents-providers-analytics",
+								"goal": "Record how agent work on module tasks ran, was submitted and was reviewed.",
+								"tldr": "Module tasks become analytics events."
+							},
+							"module": {
+								"id": "module.task-analytics-service",
+								"goal": "Build analytics events from stored module tasks.",
+								"files": [
+									"src/services/agents-providers/module-task-analytics-service/taskEvents.ts"
+								]
+							},
+							"sourceCommit": "2e4b9d07c1a86f35e0b2d4c9a7f13e8d5b60c2a1",
+							"contractHash": "1a6e83c0f47d25b9e0c3a718d4f2b6e95c0a1d7f8e3b26c49d5a0f71e2c8b3d6",
+							"status": "failed",
+							"reviews": [],
+							"createdAt": "2026-10-29T14:10:02.000Z",
+							"claimHistory": [],
+							"attempts": [],
+							"result": {
+								"provider": "codex",
+								"model": "gpt-6.1-sol",
+								"intelligence": "high",
+								"reportedModel": null,
+								"text": "",
+								"worktree": "harness-backfill-7",
+								"changedFiles": [],
+								"error": "Codex CLI timed out after 900 seconds.",
+								"fallback": false,
+								"finishedAt": "2026-10-30T18:02:15.000Z",
+								"usage": {
+									"inputTokens": null,
+									"outputTokens": null,
+									"cacheReadTokens": null,
+									"cacheWriteTokens": null,
+									"reportedCostUsd": null
+								},
+								"executions": []
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "taskEvents.project",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The project identifier written unchanged to each event's project field and hashed into every event id, so the same tasks under a different project produce different ids. The function does not validate or normalize it.",
+				"examples": ["/home/dev/code/harness", "/srv/git/billing-api"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "taskEvents",
-				"type": "AnalyticsEvent[]"
+				"type": "AnalyticsEvent[]",
+				"description": "Analytics events for the input tasks in input order: for each attempt and then the result, one event with action 'executed' per execution (one built from the result when none is recorded) and one with action 'submitted' unless that result has an error, then one event per review whose action is its verdict. Each event sets task to the task id and requestedModel to the task's model, and its moduleTask names the attempt (a result without an attempt id is named legacy-<index>-<finishedAt>, index being its position among the attempts and result), the feature, the module, the provider, model, intelligence and reportedModel; executed events also carry apiCost and, when present, usage.",
+				"examples": [
+					[
+						{
+							"id": "e3a7c19f0d52b84a6c9e1f37d08b2a54c6f1e9d03b7a82c5e4f60d19b3a7c25e",
+							"timestamp": "2026-11-12T10:41:09.000Z",
+							"project": "/home/dev/code/harness",
+							"kind": "task",
+							"task": "service.module-task-analytics-events",
+							"action": "executed",
+							"status": "failed",
+							"agentModel": "claude-sonnet-5-5",
+							"requestedModel": "auto",
+							"moduleTask": {
+								"attempt": "3f2c9a1e-7b4d-4e8a-9c21-5d6e0f1a2b3c",
+								"feature": "feature.agents-providers-analytics",
+								"module": "module.task-analytics-service",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5",
+								"usage": {
+									"inputTokens": 31000,
+									"outputTokens": 1200,
+									"cacheReadTokens": null,
+									"cacheWriteTokens": null,
+									"reportedCostUsd": null
+								},
+								"apiCost": {
+									"usd": null,
+									"minimumUsd": 0.0151,
+									"maximumUsd": 0.136,
+									"basis": "standard-api-estimate",
+									"rateCard": "standard-global-2026-10-25",
+									"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+									"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+								}
+							}
+						},
+						{
+							"id": "5b0f8e2c9a64d1f7e3b85c0a2d9f47e16b3c8a05d2e9f1b74c6a3d80e5f29b17",
+							"timestamp": "2026-11-12T11:58:37.000Z",
+							"project": "/home/dev/code/harness",
+							"kind": "task",
+							"task": "service.module-task-analytics-events",
+							"action": "executed",
+							"status": "succeeded",
+							"agentModel": "claude-sonnet-5-5",
+							"requestedModel": "auto",
+							"moduleTask": {
+								"attempt": "8a61d0c4-2e95-4b7f-a3d8-19c5e6f07b42",
+								"feature": "feature.agents-providers-analytics",
+								"module": "module.task-analytics-service",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5",
+								"usage": {
+									"inputTokens": 52000,
+									"outputTokens": 3100,
+									"cacheReadTokens": null,
+									"cacheWriteTokens": null,
+									"reportedCostUsd": null
+								},
+								"apiCost": {
+									"usd": null,
+									"minimumUsd": 0.0362,
+									"maximumUsd": 0.239,
+									"basis": "standard-api-estimate",
+									"rateCard": "standard-global-2026-10-25",
+									"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+									"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+								}
+							}
+						},
+						{
+							"id": "a0c4e7b19d3f5286c1e8a4d07b9f3c52e6d1a8f04c7b2e95d3a6f1c08b4e7d29",
+							"timestamp": "2026-11-12T11:58:37.000Z",
+							"project": "/home/dev/code/harness",
+							"kind": "task",
+							"task": "service.module-task-analytics-events",
+							"action": "submitted",
+							"agentModel": "claude-sonnet-5-5",
+							"requestedModel": "auto",
+							"moduleTask": {
+								"attempt": "8a61d0c4-2e95-4b7f-a3d8-19c5e6f07b42",
+								"feature": "feature.agents-providers-analytics",
+								"module": "module.task-analytics-service",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5"
+							}
+						},
+						{
+							"id": "7d2e91c4b8a05f36e0d7c2b19a4f8e63d5b0c7a21e9f4d86b3c1a50e7f2d9b48",
+							"timestamp": "2026-11-13T09:20:44.000Z",
+							"project": "/home/dev/code/harness",
+							"kind": "task",
+							"task": "service.module-task-analytics-events",
+							"action": "accepted",
+							"agentModel": "claude-sonnet-5-5",
+							"requestedModel": "auto",
+							"moduleTask": {
+								"attempt": "8a61d0c4-2e95-4b7f-a3d8-19c5e6f07b42",
+								"feature": "feature.agents-providers-analytics",
+								"module": "module.task-analytics-service",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5"
+							}
+						}
+					],
+					[
+						{
+							"id": "c9e1a04f7b286d3e5a9c0f1d2b84e7a6395d0c1f8b2e4a7d96c3051e8f4b2a7d",
+							"timestamp": "2026-10-30T18:02:15.000Z",
+							"project": "/home/dev/code/harness",
+							"kind": "task",
+							"task": "service.module-task-analytics-backfill",
+							"action": "executed",
+							"status": "failed",
+							"requestedModel": "auto",
+							"moduleTask": {
+								"attempt": "legacy-0-2026-10-30T18:02:15.000Z",
+								"feature": "feature.agents-providers-analytics",
+								"module": "module.task-analytics-service",
+								"provider": "codex",
+								"model": "gpt-6.1-sol",
+								"intelligence": "high",
+								"reportedModel": null,
+								"usage": {
+									"inputTokens": null,
+									"outputTokens": null,
+									"cacheReadTokens": null,
+									"cacheWriteTokens": null,
+									"reportedCostUsd": null
+								},
+								"apiCost": {
+									"usd": null,
+									"minimumUsd": null,
+									"maximumUsd": null,
+									"basis": "unavailable",
+									"rateCard": "standard-global-2026-10-25",
+									"source": "https://developers.openai.com/api/docs/pricing",
+									"note": "CLI token usage is incomplete."
+								}
+							}
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "taskEvents",
@@ -40,22 +386,368 @@
 					{
 						"name": "taskEvents.tasks",
 						"type": "ModuleTask[]",
-						"required": true
+						"required": true,
+						"description": "The stored module tasks to convert, each in the ModuleTask shape: for each task, in array order, the function reads its attempts, its result when present and its reviews, and a task with none of them yields no events. Nothing here validates or filters the array.",
+						"examples": [
+							[
+								{
+									"id": "service.module-task-analytics-events",
+									"title": "Map stored module tasks to analytics events",
+									"moduleGoal": "Keep analytics event ids and ordering stable for module tasks.",
+									"instructions": "Implement taskEvents so each attempt, result and review becomes one analytics event, as the wanted contract describes.",
+									"wantedContract": {
+										"responsibility": "Turns stored module tasks into analytics events.",
+										"inputs": [
+											{
+												"name": "taskEvents.tasks",
+												"type": "ModuleTask[]",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "taskEvents",
+												"type": "AnalyticsEvent[]"
+											}
+										],
+										"errors": []
+									},
+									"model": "auto",
+									"feature": {
+										"id": "feature.agents-providers-analytics",
+										"goal": "Record how agent work on module tasks ran, was submitted and was reviewed.",
+										"tldr": "Module tasks become analytics events."
+									},
+									"module": {
+										"id": "module.task-analytics-service",
+										"goal": "Build analytics events from stored module tasks.",
+										"files": [
+											"src/services/agents-providers/module-task-analytics-service/taskEvents.ts",
+											"src/services/agents-providers/module-task-analytics-service/taskPricing.ts"
+										]
+									},
+									"sourceCommit": "0b7e52c9a4d1f83e6c02b9a7d5e4f13c8a6b2d90",
+									"contractHash": "9d4f0a6c3b58e217f9a0d6c4b1e83f5a2c7d09e6b4a13f8c5d2e07a9b6c4f1e8",
+									"status": "accepted",
+									"reviews": [
+										{
+											"attempt": "8a61d0c4-2e95-4b7f-a3d8-19c5e6f07b42",
+											"verdict": "accepted",
+											"reviewer": "unattributed",
+											"feedback": "",
+											"at": "2026-11-13T09:20:44.000Z",
+											"provider": "claude",
+											"model": "claude-sonnet-5-5",
+											"intelligence": "high",
+											"reportedModel": "claude-sonnet-5-5"
+										}
+									],
+									"createdAt": "2026-11-12T08:55:10.000Z",
+									"claimHistory": [],
+									"attempts": [
+										{
+											"provider": "claude",
+											"model": "claude-sonnet-5-5",
+											"intelligence": "high",
+											"reportedModel": "claude-sonnet-5-5",
+											"text": "Stopped after the first test run because the agent CLI exited.",
+											"worktree": "harness-task-3f2c9a1e",
+											"changedFiles": [
+												"src/services/agents-providers/module-task-analytics-service/taskEvents.ts"
+											],
+											"error": "Agent CLI exited with code 1 before submitting.",
+											"fallback": false,
+											"finishedAt": "2026-11-12T10:41:09.000Z",
+											"attempt": "3f2c9a1e-7b4d-4e8a-9c21-5d6e0f1a2b3c",
+											"executions": [
+												{
+													"provider": "claude",
+													"model": "claude-sonnet-5-5",
+													"intelligence": "high",
+													"reportedModel": "claude-sonnet-5-5",
+													"usage": {
+														"inputTokens": 31000,
+														"outputTokens": 1200,
+														"cacheReadTokens": null,
+														"cacheWriteTokens": null,
+														"reportedCostUsd": null
+													},
+													"apiCost": {
+														"usd": null,
+														"minimumUsd": 0.0151,
+														"maximumUsd": 0.136,
+														"basis": "standard-api-estimate",
+														"rateCard": "standard-global-2026-10-25",
+														"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+														"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+													},
+													"status": "failed",
+													"startedAt": "2026-11-12T10:33:02.000Z",
+													"finishedAt": "2026-11-12T10:41:09.000Z"
+												}
+											]
+										}
+									],
+									"result": {
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5",
+										"text": "Implemented taskEvents and checked the execution, submission and review events.",
+										"worktree": "harness-task-8a61d0c4",
+										"changedFiles": [
+											"src/services/agents-providers/module-task-analytics-service/taskEvents.ts"
+										],
+										"fallback": false,
+										"finishedAt": "2026-11-12T11:58:37.000Z",
+										"attempt": "8a61d0c4-2e95-4b7f-a3d8-19c5e6f07b42",
+										"sourceCommit": "0b7e52c9a4d1f83e6c02b9a7d5e4f13c8a6b2d90",
+										"checkpointCommit": "5c81e0f7a29d4b63e1f0c8d27a9b5e3f60d14c2a",
+										"usage": {
+											"inputTokens": 52000,
+											"outputTokens": 3100,
+											"cacheReadTokens": null,
+											"cacheWriteTokens": null,
+											"reportedCostUsd": null
+										},
+										"executions": []
+									}
+								}
+							],
+							[
+								{
+									"id": "service.module-task-analytics-backfill",
+									"title": "Backfill analytics for legacy module task results",
+									"instructions": "Read each stored result and emit its analytics events without changing the stored data.",
+									"wantedContract": {
+										"responsibility": "Emits analytics for stored results that have no attempt id.",
+										"inputs": [
+											{
+												"name": "taskEvents.tasks",
+												"type": "ModuleTask[]",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "taskEvents",
+												"type": "AnalyticsEvent[]"
+											}
+										],
+										"errors": []
+									},
+									"model": "auto",
+									"feature": {
+										"id": "feature.agents-providers-analytics",
+										"goal": "Record how agent work on module tasks ran, was submitted and was reviewed.",
+										"tldr": "Module tasks become analytics events."
+									},
+									"module": {
+										"id": "module.task-analytics-service",
+										"goal": "Build analytics events from stored module tasks.",
+										"files": [
+											"src/services/agents-providers/module-task-analytics-service/taskEvents.ts"
+										]
+									},
+									"sourceCommit": "2e4b9d07c1a86f35e0b2d4c9a7f13e8d5b60c2a1",
+									"contractHash": "1a6e83c0f47d25b9e0c3a718d4f2b6e95c0a1d7f8e3b26c49d5a0f71e2c8b3d6",
+									"status": "failed",
+									"reviews": [],
+									"createdAt": "2026-10-29T14:10:02.000Z",
+									"claimHistory": [],
+									"attempts": [],
+									"result": {
+										"provider": "codex",
+										"model": "gpt-6.1-sol",
+										"intelligence": "high",
+										"reportedModel": null,
+										"text": "",
+										"worktree": "harness-backfill-7",
+										"changedFiles": [],
+										"error": "Codex CLI timed out after 900 seconds.",
+										"fallback": false,
+										"finishedAt": "2026-10-30T18:02:15.000Z",
+										"usage": {
+											"inputTokens": null,
+											"outputTokens": null,
+											"cacheReadTokens": null,
+											"cacheWriteTokens": null,
+											"reportedCostUsd": null
+										},
+										"executions": []
+									}
+								}
+							]
+						]
 					},
 					{
 						"name": "taskEvents.project",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The project identifier written unchanged to each event's project field and hashed into every event id, so the same tasks under a different project produce different ids. The function does not validate or normalize it.",
+						"examples": ["/home/dev/code/harness", "/srv/git/billing-api"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskEvents",
-						"type": "AnalyticsEvent[]"
+						"type": "AnalyticsEvent[]",
+						"description": "Analytics events for the input tasks in input order: for each attempt and then the result, one event with action 'executed' per execution (one built from the result when none is recorded) and one with action 'submitted' unless that result has an error, then one event per review whose action is its verdict. Each event sets task to the task id and requestedModel to the task's model, and its moduleTask names the attempt (a result without an attempt id is named legacy-<index>-<finishedAt>, index being its position among the attempts and result), the feature, the module, the provider, model, intelligence and reportedModel; executed events also carry apiCost and, when present, usage.",
+						"examples": [
+							[
+								{
+									"id": "e3a7c19f0d52b84a6c9e1f37d08b2a54c6f1e9d03b7a82c5e4f60d19b3a7c25e",
+									"timestamp": "2026-11-12T10:41:09.000Z",
+									"project": "/home/dev/code/harness",
+									"kind": "task",
+									"task": "service.module-task-analytics-events",
+									"action": "executed",
+									"status": "failed",
+									"agentModel": "claude-sonnet-5-5",
+									"requestedModel": "auto",
+									"moduleTask": {
+										"attempt": "3f2c9a1e-7b4d-4e8a-9c21-5d6e0f1a2b3c",
+										"feature": "feature.agents-providers-analytics",
+										"module": "module.task-analytics-service",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5",
+										"usage": {
+											"inputTokens": 31000,
+											"outputTokens": 1200,
+											"cacheReadTokens": null,
+											"cacheWriteTokens": null,
+											"reportedCostUsd": null
+										},
+										"apiCost": {
+											"usd": null,
+											"minimumUsd": 0.0151,
+											"maximumUsd": 0.136,
+											"basis": "standard-api-estimate",
+											"rateCard": "standard-global-2026-10-25",
+											"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+											"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+										}
+									}
+								},
+								{
+									"id": "5b0f8e2c9a64d1f7e3b85c0a2d9f47e16b3c8a05d2e9f1b74c6a3d80e5f29b17",
+									"timestamp": "2026-11-12T11:58:37.000Z",
+									"project": "/home/dev/code/harness",
+									"kind": "task",
+									"task": "service.module-task-analytics-events",
+									"action": "executed",
+									"status": "succeeded",
+									"agentModel": "claude-sonnet-5-5",
+									"requestedModel": "auto",
+									"moduleTask": {
+										"attempt": "8a61d0c4-2e95-4b7f-a3d8-19c5e6f07b42",
+										"feature": "feature.agents-providers-analytics",
+										"module": "module.task-analytics-service",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5",
+										"usage": {
+											"inputTokens": 52000,
+											"outputTokens": 3100,
+											"cacheReadTokens": null,
+											"cacheWriteTokens": null,
+											"reportedCostUsd": null
+										},
+										"apiCost": {
+											"usd": null,
+											"minimumUsd": 0.0362,
+											"maximumUsd": 0.239,
+											"basis": "standard-api-estimate",
+											"rateCard": "standard-global-2026-10-25",
+											"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+											"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+										}
+									}
+								},
+								{
+									"id": "a0c4e7b19d3f5286c1e8a4d07b9f3c52e6d1a8f04c7b2e95d3a6f1c08b4e7d29",
+									"timestamp": "2026-11-12T11:58:37.000Z",
+									"project": "/home/dev/code/harness",
+									"kind": "task",
+									"task": "service.module-task-analytics-events",
+									"action": "submitted",
+									"agentModel": "claude-sonnet-5-5",
+									"requestedModel": "auto",
+									"moduleTask": {
+										"attempt": "8a61d0c4-2e95-4b7f-a3d8-19c5e6f07b42",
+										"feature": "feature.agents-providers-analytics",
+										"module": "module.task-analytics-service",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5"
+									}
+								},
+								{
+									"id": "7d2e91c4b8a05f36e0d7c2b19a4f8e63d5b0c7a21e9f4d86b3c1a50e7f2d9b48",
+									"timestamp": "2026-11-13T09:20:44.000Z",
+									"project": "/home/dev/code/harness",
+									"kind": "task",
+									"task": "service.module-task-analytics-events",
+									"action": "accepted",
+									"agentModel": "claude-sonnet-5-5",
+									"requestedModel": "auto",
+									"moduleTask": {
+										"attempt": "8a61d0c4-2e95-4b7f-a3d8-19c5e6f07b42",
+										"feature": "feature.agents-providers-analytics",
+										"module": "module.task-analytics-service",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5"
+									}
+								}
+							],
+							[
+								{
+									"id": "c9e1a04f7b286d3e5a9c0f1d2b84e7a6395d0c1f8b2e4a7d96c3051e8f4b2a7d",
+									"timestamp": "2026-10-30T18:02:15.000Z",
+									"project": "/home/dev/code/harness",
+									"kind": "task",
+									"task": "service.module-task-analytics-backfill",
+									"action": "executed",
+									"status": "failed",
+									"requestedModel": "auto",
+									"moduleTask": {
+										"attempt": "legacy-0-2026-10-30T18:02:15.000Z",
+										"feature": "feature.agents-providers-analytics",
+										"module": "module.task-analytics-service",
+										"provider": "codex",
+										"model": "gpt-6.1-sol",
+										"intelligence": "high",
+										"reportedModel": null,
+										"usage": {
+											"inputTokens": null,
+											"outputTokens": null,
+											"cacheReadTokens": null,
+											"cacheWriteTokens": null,
+											"reportedCostUsd": null
+										},
+										"apiCost": {
+											"usd": null,
+											"minimumUsd": null,
+											"maximumUsd": null,
+											"basis": "unavailable",
+											"rateCard": "standard-global-2026-10-25",
+											"source": "https://developers.openai.com/api/docs/pricing",
+											"note": "CLI token usage is incomplete."
+										}
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
