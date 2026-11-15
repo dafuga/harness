@@ -20,47 +20,79 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReportImportService.constructor.repository",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Optional repository instance used for imported records and passed to the selected adapter. Defaults to `new ReportRepository()`."
 			},
 			{
 				"name": "ReportImportService.ingest.format",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Selects the import path: `playwright`, `vitest`, and `mira` use their adapters; `manual` and `command` use JSON handling. Other values are rejected as unsupported after the file is read and parsed.",
+				"examples": ["playwright", "manual", "command"]
 			},
 			{
 				"name": "ReportImportService.ingest.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Identifier passed to the selected adapter or as the report argument to `repository.record`; this service does not validate or transform it.",
+				"examples": ["report-1"]
 			},
 			{
 				"name": "ReportImportService.ingest.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Import file path passed to an adapter or read as UTF-8 JSON. For manual evidence records, relative `data.path` values are resolved against this file's directory.",
+				"examples": [
+					"packages/reports/src/services/reports-media/report-command-service/ReportImportService.ts"
+				]
 			},
 			{
 				"name": "ReportImportService.ingest.findings",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional string passed through to the Mira adapter; other formats do not use it. Defaults to `undefined`.",
+				"examples": ["Two checks failed during the import."]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportImportService.ingest",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the selected adapter's result, `{records: number}` for a manual import, or `{checks: 1}` for a command import. This service does not define the adapters' result shapes.",
+				"examples": [
+					{
+						"records": 1
+					},
+					{
+						"checks": 1
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown for unsupported formats, manual imports without a records array, command arrays, or when the numeric conversion of command `exitCode` is not an integer. File, adapter, and repository failures also propagate."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by `JSON.parse` when a non-adapter import file does not contain valid JSON."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Can be thrown by unchecked property access when parsed data or a manual record is null, or when an evidence record has a missing or null data object."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ReportImportService.ingest",
@@ -68,37 +100,68 @@
 					{
 						"name": "ReportImportService.ingest.format",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Selects the import path: `playwright`, `vitest`, and `mira` use their adapters; `manual` and `command` use JSON handling. Other values are rejected as unsupported after the file is read and parsed.",
+						"examples": ["playwright", "manual", "command"]
 					},
 					{
 						"name": "ReportImportService.ingest.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Identifier passed to the selected adapter or as the report argument to `repository.record`; this service does not validate or transform it.",
+						"examples": ["report-1"]
 					},
 					{
 						"name": "ReportImportService.ingest.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Import file path passed to an adapter or read as UTF-8 JSON. For manual evidence records, relative `data.path` values are resolved against this file's directory.",
+						"examples": [
+							"packages/reports/src/services/reports-media/report-command-service/ReportImportService.ts"
+						]
 					},
 					{
 						"name": "ReportImportService.ingest.findings",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional string passed through to the Mira adapter; other formats do not use it. Defaults to `undefined`.",
+						"examples": ["Two checks failed during the import."]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportImportService.ingest",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the selected adapter's result, `{records: number}` for a manual import, or `{checks: 1}` for a command import. This service does not define the adapters' result shapes.",
+						"examples": [
+							{
+								"records": 1
+							},
+							{
+								"checks": 1
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown for unsupported formats, manual imports without a records array, command arrays, or when the numeric conversion of command `exitCode` is not an integer. File, adapter, and repository failures also propagate."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by `JSON.parse` when a non-adapter import file does not contain valid JSON."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Can be thrown by unchecked property access when parsed data or a manual record is null, or when an evidence record has a missing or null data object."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -108,17 +171,19 @@
 					{
 						"name": "ReportImportService.constructor.repository",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Optional repository instance used for imported records and passed to the selected adapter. Defaults to `new ReportRepository()`."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportImportService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The newly constructed `ReportImportService` instance holding the supplied repository or its default repository."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
