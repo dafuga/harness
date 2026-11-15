@@ -28,24 +28,37 @@
 				"name": "checkVerificationForwards.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository root containing the forward registry, compatibility modules, and canonical target files."
+				"description": "Repository root directory that every registered path and target is resolved against: the check reads scripts/verification-forward-registry.json under it, reads each registered source and target file, and scans its compatibility roots for discovered forwards. A root whose registry is absent, unreadable or not valid JSON, or a non-string root, makes the check return the single issue 'scripts/verification-forward-registry.json is missing or invalid' instead of throwing.",
+				"examples": ["/home/ci/build/app-repo", "/workspaces/app", "/srv/checkouts/app-main"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "checkVerificationForwards",
 				"type": "string[]",
-				"description": "List of human-readable registry, target, UID, resolution, or discovery issues; an empty list means all discovered forwards satisfy these checks."
+				"description": "Human-readable issue strings in registry order, followed by one issue for each discovered compatibility forward that no registry entry lists; an empty array means every registered entry passes and every discovered forward is registered. A missing, invalid or unsupported-shape registry returns a one-element array containing only that registry issue.",
+				"examples": [
+					[],
+					["scripts/verification-forward-registry.json is missing or invalid"],
+					[
+						"src/utils/verifyPlan.ts is a compatibility forward missing from scripts/verification-forward-registry.json"
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Verification forward inspection failure",
 				"type": "thrown",
-				"description": "Unexpected filesystem failures during source or target inspection can throw; missing/invalid registry data is returned as issue text."
+				"description": "Thrown when a registered source or target path, or a module reached by following relative export declarations, exists but cannot be read, for example because it is a directory or is unreadable. Missing registered source or target files and an invalid or unsupported registry are reported as issue text instead."
+			},
+			{
+				"name": "Malformed verification forward entry",
+				"type": "thrown",
+				"description": "Thrown when a forward registry entry is null, or when its path or target is not a string, because the check reads each entry's target and joins its path and target into file paths."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "checkVerificationForwards",
@@ -54,21 +67,34 @@
 						"name": "checkVerificationForwards.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository root containing the forward registry, compatibility modules, and canonical target files."
+						"description": "Repository root directory that every registered path and target is resolved against: the check reads scripts/verification-forward-registry.json under it, reads each registered source and target file, and scans its compatibility roots for discovered forwards. A root whose registry is absent, unreadable or not valid JSON, or a non-string root, makes the check return the single issue 'scripts/verification-forward-registry.json is missing or invalid' instead of throwing.",
+						"examples": ["/home/ci/build/app-repo", "/workspaces/app", "/srv/checkouts/app-main"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkVerificationForwards",
 						"type": "string[]",
-						"description": "List of human-readable registry, target, UID, resolution, or discovery issues; an empty list means all discovered forwards satisfy these checks."
+						"description": "Human-readable issue strings in registry order, followed by one issue for each discovered compatibility forward that no registry entry lists; an empty array means every registered entry passes and every discovered forward is registered. A missing, invalid or unsupported-shape registry returns a one-element array containing only that registry issue.",
+						"examples": [
+							[],
+							["scripts/verification-forward-registry.json is missing or invalid"],
+							[
+								"src/utils/verifyPlan.ts is a compatibility forward missing from scripts/verification-forward-registry.json"
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Verification forward inspection failure",
 						"type": "thrown",
-						"description": "Unexpected filesystem failures during source or target inspection can throw; missing/invalid registry data is returned as issue text."
+						"description": "Thrown when a registered source or target path, or a module reached by following relative export declarations, exists but cannot be read, for example because it is a directory or is unreadable. Missing registered source or target files and an invalid or unsupported registry are reported as issue text instead."
+					},
+					{
+						"name": "Malformed verification forward entry",
+						"type": "thrown",
+						"description": "Thrown when a forward registry entry is null, or when its path or target is not a string, because the check reads each entry's target and joins its path and target into file paths."
 					}
 				],
 				"errorStatus": "declared"
