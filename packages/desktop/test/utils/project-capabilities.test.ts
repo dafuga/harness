@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { closedCapabilities } from '../../src/utils/projectCapabilities';
+import { closedCapabilities } from '../../src/utils/projects-sessions/projectCapabilities';
 import { projectCapabilities } from '../../src/utils/load-workspace/projectCapabilities';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../src/models/development-tooling/Desktop.types';

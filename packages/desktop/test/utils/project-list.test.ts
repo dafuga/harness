@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { listedProjects } from '../../src/utils/projectList';
+import { listedProjects } from '../../src/utils/projects-sessions/projectList';
 import { projectList } from '../../src/components/projects-sessions/project-switcher/projectList';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../src/models/development-tooling/Desktop.types';
