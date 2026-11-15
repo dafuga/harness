@@ -29,36 +29,48 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "D1AuthStoreAdapter.constructor.db",
 				"type": "D1Like",
-				"required": true
+				"required": true,
+				"description": "The minimal database surface consumed by this adapter: prepare(query) returns a statement with bind, first, and run. Supply it when constructing the adapter or calling the factory; those methods are the required interface."
 			},
 			{
 				"name": "D1AuthStoreAdapter.purge.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The numeric cutoff passed to each configured cleanup statement when purge runs. The adapter binds it unchanged and does not validate or convert its unit.",
+				"examples": [1760000000000]
 			},
 			{
 				"name": "createD1AuthStore.db",
 				"type": "D1Like",
-				"required": true
+				"required": true,
+				"description": "The minimal database surface consumed by this adapter: prepare(query) returns a statement with bind, first, and run. Supply it when constructing the adapter or calling the factory; those methods are the required interface."
 			}
 		],
 		"outputs": [
 			{
 				"name": "D1AuthStoreAdapter.purge",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "A promise that resolves after the configured cleanup DELETE statements finish sequentially. It resolves with void and can reject if a D1 call fails."
 			},
 			{
 				"name": "createD1AuthStore",
-				"type": "AuthStore"
+				"type": "AuthStore",
+				"description": "The AuthStore interface backed by the supplied D1 binding, returned as a new D1AuthStoreAdapter. It exposes challenge, GitHub-state, exchange, session, grant, email-proof, email-ledger, and purge operations."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Unspecified D1 error",
+				"type": "thrown",
+				"description": "A synchronous exception from prepare or bind, or a rejection from run, escapes purge unchanged. D1Like does not specify the concrete error class or name."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "D1AuthStoreAdapter.purge",
@@ -66,17 +78,26 @@
 					{
 						"name": "D1AuthStoreAdapter.purge.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The numeric cutoff passed to each configured cleanup statement when purge runs. The adapter binds it unchanged and does not validate or convert its unit.",
+						"examples": [1760000000000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "D1AuthStoreAdapter.purge",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "A promise that resolves after the configured cleanup DELETE statements finish sequentially. It resolves with void and can reject if a D1 call fails."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Unspecified D1 error",
+						"type": "thrown",
+						"description": "A synchronous exception from prepare or bind, or a rejection from run, escapes purge unchanged. D1Like does not specify the concrete error class or name."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "createD1AuthStore",
@@ -84,17 +105,19 @@
 					{
 						"name": "createD1AuthStore.db",
 						"type": "D1Like",
-						"required": true
+						"required": true,
+						"description": "The minimal database surface consumed by this adapter: prepare(query) returns a statement with bind, first, and run. Supply it when constructing the adapter or calling the factory; those methods are the required interface."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createD1AuthStore",
-						"type": "AuthStore"
+						"type": "AuthStore",
+						"description": "The AuthStore interface backed by the supplied D1 binding, returned as a new D1AuthStoreAdapter. It exposes challenge, GitHub-state, exchange, session, grant, email-proof, email-ledger, and purge operations."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -104,17 +127,19 @@
 					{
 						"name": "D1AuthStoreAdapter.constructor.db",
 						"type": "D1Like",
-						"required": true
+						"required": true,
+						"description": "The minimal database surface consumed by this adapter: prepare(query) returns a statement with bind, first, and run. Supply it when constructing the adapter or calling the factory; those methods are the required interface."
 					}
 				],
 				"outputs": [
 					{
 						"name": "D1AuthStoreAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The newly initialized D1AuthStoreAdapter instance, with its D1-backed auth stores wired from the supplied database. The result is a class instance."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
