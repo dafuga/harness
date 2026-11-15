@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts",
+			"src/adapters/cpu-process-adapter/CpuProcessAdapter.ts",
 			"src/services/development-tooling/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts"
 		],
 		"symbols": ["CpuProcessAdapter", "CpuProcessAdapter", "CpuProcessAdapter.sample"]
