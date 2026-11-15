@@ -12,31 +12,179 @@
 		"symbols": ["renderAudit", "renderAuditCoverage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "renderAudit.findings",
 				"type": "AuditFinding[]",
-				"required": true
+				"required": true,
+				"description": "The findings to print, in the order given, with no sorting, filtering or field validation; each is written as `path [rule]` with its message on an indented line below. An empty array is valid and makes the function return the fixed passed message instead of a list.",
+				"examples": [
+					[],
+					[
+						{
+							"path": "src/components/profileCard.tsx",
+							"rule": "react-component-name",
+							"message": "TSX/JSX component files should use PascalCase names."
+						}
+					],
+					[
+						{
+							"path": "src/services/OrderService.ts",
+							"rule": "small-file",
+							"message": "File has 512 lines. Limit is 220. Split it by responsibility."
+						},
+						{
+							"path": "scripts/clean.sh",
+							"rule": "shell-unsafe-rm",
+							"message": "Avoid broad rm -rf patterns."
+						}
+					]
+				]
 			},
 			{
 				"name": "renderAuditCoverage.result",
 				"type": "AuditResult",
-				"required": true
+				"required": true,
+				"description": "The complete audit result that the coverage report is built from: `findings` is printed first, then `coverage.profile`, each `coverage.adapters` entry (its `id`, the number of `files`, its `extensions` and its `optionalTools`; `label` is not printed), the count of `coverage.ignoredFindings`, and the lists `coverage.unknownFiles` and `coverage.ignoredPaths`. Only these fields are read, so `cleanCode` and `coverage.coveredFiles` never change the output.",
+				"examples": [
+					{
+						"findings": [],
+						"coverage": {
+							"profile": "app",
+							"adapters": [
+								{
+									"id": "typescript",
+									"label": "TypeScript and JavaScript",
+									"files": ["src/lib/format.ts", "src/lib/money.ts"],
+									"extensions": [".ts", ".tsx", ".js", ".jsx"],
+									"optionalTools": ["eslint"]
+								},
+								{
+									"id": "svelte",
+									"label": "Svelte",
+									"files": ["src/routes/+page.svelte", "src/lib/Nav.svelte"],
+									"extensions": [".svelte"],
+									"optionalTools": ["svelte-check", "eslint"]
+								},
+								{
+									"id": "sql",
+									"label": "SQL",
+									"files": [],
+									"extensions": [".sql"],
+									"optionalTools": ["sqlfluff"]
+								},
+								{
+									"id": "shell",
+									"label": "Shell",
+									"files": ["scripts/clean.sh", "scripts/deploy.sh"],
+									"extensions": [".sh"],
+									"optionalTools": ["shellcheck"]
+								}
+							],
+							"coveredFiles": [
+								"src/lib/format.ts",
+								"src/lib/money.ts",
+								"src/routes/+page.svelte",
+								"src/lib/Nav.svelte",
+								"scripts/clean.sh",
+								"scripts/deploy.sh"
+							],
+							"ignoredPaths": [".svelte-kit/", "node_modules/"],
+							"ignoredFindings": [],
+							"unknownFiles": []
+						}
+					},
+					{
+						"findings": [
+							{
+								"path": "src/services/OrderService.ts",
+								"rule": "small-file",
+								"message": "File has 512 lines. Limit is 220. Split it by responsibility."
+							},
+							{
+								"path": "scripts/clean.sh",
+								"rule": "shell-unsafe-rm",
+								"message": "Avoid broad rm -rf patterns."
+							}
+						],
+						"coverage": {
+							"profile": "app",
+							"adapters": [
+								{
+									"id": "typescript",
+									"label": "TypeScript and JavaScript",
+									"files": ["src/services/OrderService.ts", "src/components/profileCard.tsx"],
+									"extensions": [".ts", ".tsx", ".js", ".jsx"],
+									"optionalTools": ["eslint"]
+								},
+								{
+									"id": "svelte",
+									"label": "Svelte",
+									"files": ["src/routes/+page.svelte", "src/lib/Nav.svelte"],
+									"extensions": [".svelte"],
+									"optionalTools": ["svelte-check", "eslint"]
+								},
+								{
+									"id": "sql",
+									"label": "SQL",
+									"files": [],
+									"extensions": [".sql"],
+									"optionalTools": ["sqlfluff"]
+								},
+								{
+									"id": "shell",
+									"label": "Shell",
+									"files": ["scripts/clean.sh", "scripts/deploy.sh"],
+									"extensions": [".sh"],
+									"optionalTools": ["shellcheck"]
+								}
+							],
+							"coveredFiles": [
+								"src/services/OrderService.ts",
+								"src/components/profileCard.tsx",
+								"src/routes/+page.svelte",
+								"src/lib/Nav.svelte",
+								"scripts/clean.sh",
+								"scripts/deploy.sh"
+							],
+							"ignoredPaths": ["node_modules/"],
+							"ignoredFindings": [
+								{
+									"path": "src/components/profileCard.tsx",
+									"rule": "react-component-name",
+									"message": "TSX/JSX component files should use PascalCase names."
+								}
+							],
+							"unknownFiles": ["tools/release.py"]
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "renderAudit",
-				"type": "string"
+				"type": "string",
+				"description": "The findings text: the fixed line 'Harness audit passed. Files and functions are staying small.' when there are no findings, otherwise one `path [rule]` line and an indented message line per finding, with findings separated by one blank line. It never ends with a newline, and renderAuditCoverage begins its text with it.",
+				"examples": [
+					"Harness audit passed. Files and functions are staying small.",
+					"src/components/profileCard.tsx [react-component-name]\n  TSX/JSX component files should use PascalCase names.",
+					"src/services/OrderService.ts [small-file]\n  File has 512 lines. Limit is 220. Split it by responsibility.\n\nscripts/clean.sh [shell-unsafe-rm]\n  Avoid broad rm -rf patterns."
+				]
 			},
 			{
 				"name": "renderAuditCoverage",
-				"type": "string"
+				"type": "string",
+				"description": "The renderAudit text followed by a 'Harness audit coverage' header that names the profile, then the covered adapters, the ignored-findings count, the unknown files and the ignored paths; the ignored-findings line, the unknown files list and the ignored paths list print 'none' when empty. The header follows the findings text directly, with no blank line between them.",
+				"examples": [
+					"Harness audit passed. Files and functions are staying small.\nHarness audit coverage (app profile)\nCovered adapters:\n- typescript: 2 files (.ts, .tsx, .js, .jsx) tools: eslint\n- svelte: 2 files (.svelte) tools: svelte-check, eslint\n- sql: 0 files (.sql) tools: sqlfluff\n- shell: 2 files (.sh) tools: shellcheck\nIgnored findings: none\nUnknown files: none\nIgnored paths:\n- .svelte-kit/\n- node_modules/",
+					"src/services/OrderService.ts [small-file]\n  File has 512 lines. Limit is 220. Split it by responsibility.\n\nscripts/clean.sh [shell-unsafe-rm]\n  Avoid broad rm -rf patterns.\nHarness audit coverage (app profile)\nCovered adapters:\n- typescript: 2 files (.ts, .tsx, .js, .jsx) tools: eslint\n- svelte: 2 files (.svelte) tools: svelte-check, eslint\n- sql: 0 files (.sql) tools: sqlfluff\n- shell: 2 files (.sh) tools: shellcheck\nIgnored findings: 1\nUnknown files:\n- tools/release.py\nIgnored paths:\n- node_modules/"
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "renderAudit",
@@ -44,17 +192,46 @@
 					{
 						"name": "renderAudit.findings",
 						"type": "AuditFinding[]",
-						"required": true
+						"required": true,
+						"description": "The findings to print, in the order given, with no sorting, filtering or field validation; each is written as `path [rule]` with its message on an indented line below. An empty array is valid and makes the function return the fixed passed message instead of a list.",
+						"examples": [
+							[],
+							[
+								{
+									"path": "src/components/profileCard.tsx",
+									"rule": "react-component-name",
+									"message": "TSX/JSX component files should use PascalCase names."
+								}
+							],
+							[
+								{
+									"path": "src/services/OrderService.ts",
+									"rule": "small-file",
+									"message": "File has 512 lines. Limit is 220. Split it by responsibility."
+								},
+								{
+									"path": "scripts/clean.sh",
+									"rule": "shell-unsafe-rm",
+									"message": "Avoid broad rm -rf patterns."
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderAudit",
-						"type": "string"
+						"type": "string",
+						"description": "The findings text: the fixed line 'Harness audit passed. Files and functions are staying small.' when there are no findings, otherwise one `path [rule]` line and an indented message line per finding, with findings separated by one blank line. It never ends with a newline, and renderAuditCoverage begins its text with it.",
+						"examples": [
+							"Harness audit passed. Files and functions are staying small.",
+							"src/components/profileCard.tsx [react-component-name]\n  TSX/JSX component files should use PascalCase names.",
+							"src/services/OrderService.ts [small-file]\n  File has 512 lines. Limit is 220. Split it by responsibility.\n\nscripts/clean.sh [shell-unsafe-rm]\n  Avoid broad rm -rf patterns."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderAuditCoverage",
@@ -62,17 +239,136 @@
 					{
 						"name": "renderAuditCoverage.result",
 						"type": "AuditResult",
-						"required": true
+						"required": true,
+						"description": "The complete audit result that the coverage report is built from: `findings` is printed first, then `coverage.profile`, each `coverage.adapters` entry (its `id`, the number of `files`, its `extensions` and its `optionalTools`; `label` is not printed), the count of `coverage.ignoredFindings`, and the lists `coverage.unknownFiles` and `coverage.ignoredPaths`. Only these fields are read, so `cleanCode` and `coverage.coveredFiles` never change the output.",
+						"examples": [
+							{
+								"findings": [],
+								"coverage": {
+									"profile": "app",
+									"adapters": [
+										{
+											"id": "typescript",
+											"label": "TypeScript and JavaScript",
+											"files": ["src/lib/format.ts", "src/lib/money.ts"],
+											"extensions": [".ts", ".tsx", ".js", ".jsx"],
+											"optionalTools": ["eslint"]
+										},
+										{
+											"id": "svelte",
+											"label": "Svelte",
+											"files": ["src/routes/+page.svelte", "src/lib/Nav.svelte"],
+											"extensions": [".svelte"],
+											"optionalTools": ["svelte-check", "eslint"]
+										},
+										{
+											"id": "sql",
+											"label": "SQL",
+											"files": [],
+											"extensions": [".sql"],
+											"optionalTools": ["sqlfluff"]
+										},
+										{
+											"id": "shell",
+											"label": "Shell",
+											"files": ["scripts/clean.sh", "scripts/deploy.sh"],
+											"extensions": [".sh"],
+											"optionalTools": ["shellcheck"]
+										}
+									],
+									"coveredFiles": [
+										"src/lib/format.ts",
+										"src/lib/money.ts",
+										"src/routes/+page.svelte",
+										"src/lib/Nav.svelte",
+										"scripts/clean.sh",
+										"scripts/deploy.sh"
+									],
+									"ignoredPaths": [".svelte-kit/", "node_modules/"],
+									"ignoredFindings": [],
+									"unknownFiles": []
+								}
+							},
+							{
+								"findings": [
+									{
+										"path": "src/services/OrderService.ts",
+										"rule": "small-file",
+										"message": "File has 512 lines. Limit is 220. Split it by responsibility."
+									},
+									{
+										"path": "scripts/clean.sh",
+										"rule": "shell-unsafe-rm",
+										"message": "Avoid broad rm -rf patterns."
+									}
+								],
+								"coverage": {
+									"profile": "app",
+									"adapters": [
+										{
+											"id": "typescript",
+											"label": "TypeScript and JavaScript",
+											"files": ["src/services/OrderService.ts", "src/components/profileCard.tsx"],
+											"extensions": [".ts", ".tsx", ".js", ".jsx"],
+											"optionalTools": ["eslint"]
+										},
+										{
+											"id": "svelte",
+											"label": "Svelte",
+											"files": ["src/routes/+page.svelte", "src/lib/Nav.svelte"],
+											"extensions": [".svelte"],
+											"optionalTools": ["svelte-check", "eslint"]
+										},
+										{
+											"id": "sql",
+											"label": "SQL",
+											"files": [],
+											"extensions": [".sql"],
+											"optionalTools": ["sqlfluff"]
+										},
+										{
+											"id": "shell",
+											"label": "Shell",
+											"files": ["scripts/clean.sh", "scripts/deploy.sh"],
+											"extensions": [".sh"],
+											"optionalTools": ["shellcheck"]
+										}
+									],
+									"coveredFiles": [
+										"src/services/OrderService.ts",
+										"src/components/profileCard.tsx",
+										"src/routes/+page.svelte",
+										"src/lib/Nav.svelte",
+										"scripts/clean.sh",
+										"scripts/deploy.sh"
+									],
+									"ignoredPaths": ["node_modules/"],
+									"ignoredFindings": [
+										{
+											"path": "src/components/profileCard.tsx",
+											"rule": "react-component-name",
+											"message": "TSX/JSX component files should use PascalCase names."
+										}
+									],
+									"unknownFiles": ["tools/release.py"]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderAuditCoverage",
-						"type": "string"
+						"type": "string",
+						"description": "The renderAudit text followed by a 'Harness audit coverage' header that names the profile, then the covered adapters, the ignored-findings count, the unknown files and the ignored paths; the ignored-findings line, the unknown files list and the ignored paths list print 'none' when empty. The header follows the findings text directly, with no blank line between them.",
+						"examples": [
+							"Harness audit passed. Files and functions are staying small.\nHarness audit coverage (app profile)\nCovered adapters:\n- typescript: 2 files (.ts, .tsx, .js, .jsx) tools: eslint\n- svelte: 2 files (.svelte) tools: svelte-check, eslint\n- sql: 0 files (.sql) tools: sqlfluff\n- shell: 2 files (.sh) tools: shellcheck\nIgnored findings: none\nUnknown files: none\nIgnored paths:\n- .svelte-kit/\n- node_modules/",
+							"src/services/OrderService.ts [small-file]\n  File has 512 lines. Limit is 220. Split it by responsibility.\n\nscripts/clean.sh [shell-unsafe-rm]\n  Avoid broad rm -rf patterns.\nHarness audit coverage (app profile)\nCovered adapters:\n- typescript: 2 files (.ts, .tsx, .js, .jsx) tools: eslint\n- svelte: 2 files (.svelte) tools: svelte-check, eslint\n- sql: 0 files (.sql) tools: sqlfluff\n- shell: 2 files (.sh) tools: shellcheck\nIgnored findings: 1\nUnknown files:\n- tools/release.py\nIgnored paths:\n- node_modules/"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
