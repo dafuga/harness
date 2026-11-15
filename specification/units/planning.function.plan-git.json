@@ -35,151 +35,169 @@
 				"name": "planGit.root",
 				"type": "string",
 				"required": true,
-				"description": "Exact repository root; a nested directory is refused."
+				"description": "Filesystem path canonicalized before Git is queried. It must resolve to the repository root itself; a nested directory raises not-a-repository.",
+				"examples": ["/Users/daniel/projects/planning-repo"]
 			},
 			{
 				"name": "containing.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Git handle whose run callback executes commands for the selected repository. The handle also supplies the repository root and Git directory; its runner may reject when a Git command fails."
 			},
 			{
 				"name": "containing.rev",
 				"type": "string",
 				"required": true,
-				"description": "Revision at which to inspect path history."
+				"description": "Revision passed to git log to search for the path's creation. Git determines whether the revision is valid.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "containing.path",
 				"type": "string",
 				"required": true,
-				"description": "Artifact path whose first creation commit is needed."
+				"description": "Pathspec passed to git log after --; the function returns the oldest commit in that history that added the path. It raises artifact-tampered when no creation commit is found.",
+				"examples": ["packages/planning/src/utils/planning-collaboration/planGit.ts"]
 			},
 			{
 				"name": "revision.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Git handle whose run callback executes commands for the selected repository. The handle also supplies the repository root and Git directory; its runner may reject when a Git command fails."
 			},
 			{
 				"name": "revision.value",
 				"type": "string",
 				"required": false,
 				"default": "HEAD",
-				"description": "Branch, tag or commit; defaults to HEAD and rejects empty, option-like or newline-containing values."
+				"description": "Revision name resolved as a commit by git rev-parse; defaults to HEAD. Empty, leading-hyphen, NUL, CR, and LF values are rejected, as are names Git cannot resolve to a commit.",
+				"examples": ["HEAD", "main", "0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "paths.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Git handle whose run callback executes commands for the selected repository. The handle also supplies the repository root and Git directory; its runner may reject when a Git command fails."
 			},
 			{
 				"name": "paths.rev",
 				"type": "string",
 				"required": true,
-				"description": "Revision whose tree is listed."
+				"description": "Revision whose tree is passed to git ls-tree. Git determines whether the revision is valid.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "paths.path",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional repository path filter; defaults to the whole tree."
+				"description": "Pathspec passed to git ls-tree; the empty-string default is converted to . to list the whole tree. Git applies the pathspec matching rules.",
+				"examples": ["", "packages/planning/src"]
 			},
 			{
 				"name": "blob.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Git handle whose run callback executes commands for the selected repository. The handle also supplies the repository root and Git directory; its runner may reject when a Git command fails."
 			},
 			{
 				"name": "blob.rev",
 				"type": "string",
 				"required": true,
-				"description": "Revision containing the artifact."
+				"description": "Revision used to locate and read the artifact from the Git tree. Git determines whether the revision is valid.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "blob.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative artifact path."
+				"description": "Repository path used for the tree lookup and git show. It must identify an existing regular-file entry with mode 100644 or 100755, or the call raises an artifact error.",
+				"examples": ["packages/planning/src/utils/planning-collaboration/planGit.ts"]
 			},
 			{
 				"name": "imageBlob.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Git handle whose run callback executes commands for the selected repository. The handle also supplies the repository root and Git directory; its runner may reject when a Git command fails."
 			},
 			{
 				"name": "imageBlob.rev",
 				"type": "string",
 				"required": true,
-				"description": "Revision containing the PNG pointer."
+				"description": "Revision used to locate the Git LFS pointer for the image content. Git determines whether the revision is valid.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "imageBlob.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative PNG path."
+				"description": "Repository path whose regular-file blob is expected to contain a Git LFS pointer. The pointer must match the supported version, SHA-256 object ID, and size format.",
+				"examples": ["artifacts/screenshots/review.png"]
 			},
 			{
 				"name": "safePath.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Git handle supplying the root beneath which path components are checked. The function uses the root field and does not run a Git command."
 			},
 			{
 				"name": "safePath.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative path to check for unsafe segments or existing symbolic links."
+				"description": "Slash-separated path traversed beneath git.root. Empty, . or .. segments and existing symbolic-link components raise unsafe-path; missing components are allowed.",
+				"examples": ["packages/planning/src/utils/planGit.ts"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planGit",
 				"type": "Promise<Git>",
-				"description": "Repository handle using the canonical root, Git directory and known object format, with a command runner."
+				"description": "Git handle rooted at the canonical repository path, with its absolute Git directory and a runner that executes Git in that root. objectFormat is included only when Git reports sha1 or sha256; the runner callback cannot be represented in JSON."
 			},
 			{
 				"name": "revision",
 				"type": "Promise<string>",
-				"description": "Resolved full commit ID."
+				"description": "Full commit object ID returned by git rev-parse --verify. Its length follows the repository object format.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "paths",
 				"type": "Promise<string[]>",
-				"description": "Matching paths from the revision tree."
+				"description": "Repository paths emitted by git ls-tree for the selected revision and pathspec; the array may be empty.",
+				"examples": [
+					["packages/planning/src/utils/planning-collaboration/planGit.ts"],
+					[]
+				]
 			},
 			{
 				"name": "blob",
 				"type": "Promise<Buffer>",
-				"description": "Blob bytes for an existing regular-file entry."
+				"description": "Raw Buffer bytes returned by git show for an existing tree entry with regular-file mode 100644 or 100755. Other entry modes are rejected."
 			},
 			{
 				"name": "imageBlob",
 				"type": "Promise<Buffer>",
-				"description": "Local Git LFS content after pointer, length and SHA-256 verification."
+				"description": "Raw local Git LFS object bytes returned after validating the pointer and checking the object's SHA-256 and declared size. Missing or malformed pointers and missing or mismatched content are rejected."
 			},
 			{
 				"name": "safePath",
 				"type": "Promise<void>",
-				"description": "Returns nothing when the path has safe segments and no existing symbolic-link component."
+				"description": "Resolves with undefined after checking each path component beneath git.root. It rejects unsafe segments and existing symbolic links, and tolerates components that do not exist."
 			},
 			{
 				"name": "containing",
 				"type": "Promise<string>",
-				"description": "Oldest creation commit found for the path within the selected history."
+				"description": "Full commit object ID of the oldest commit returned by git log that added the requested path. It raises artifact-tampered if no creation commit is present in the searched history.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Reports invalid repositories or revisions, missing/tampered artifacts, unsafe paths and failed Git commands."
+				"description": "ExpectedCliError is raised for the domain failures emitted through fail: a non-root repository selection, a missing creation commit, an invalid or unknown revision, a missing or non-regular artifact, a malformed or corrupt LFS pointer, a missing or tampered LFS object, or an unsafe path."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planGit",
@@ -188,23 +206,25 @@
 						"name": "planGit.root",
 						"type": "string",
 						"required": true,
-						"description": "Exact repository root; a nested directory is refused."
+						"description": "Filesystem path canonicalized before Git is queried. It must resolve to the repository root itself; a nested directory raises not-a-repository.",
+						"examples": ["/Users/daniel/projects/planning-repo"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planGit",
 						"type": "Promise<Git>",
-						"description": "Repository handle using the canonical root, Git directory and known object format, with a command runner."
+						"description": "Git handle rooted at the canonical repository path, with its absolute Git directory and a runner that executes Git in that root. objectFormat is included only when Git reports sha1 or sha256; the runner callback cannot be represented in JSON."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised as not-a-repository when the canonical selected path differs from Git's reported top level."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "containing",
@@ -213,35 +233,39 @@
 						"name": "containing.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Git handle whose run callback executes commands for the selected repository. The handle also supplies the repository root and Git directory; its runner may reject when a Git command fails."
 					},
 					{
 						"name": "containing.rev",
 						"type": "string",
 						"required": true,
-						"description": "Revision at which to inspect path history."
+						"description": "Revision passed to git log to search for the path's creation. Git determines whether the revision is valid.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "containing.path",
 						"type": "string",
 						"required": true,
-						"description": "Artifact path whose first creation commit is needed."
+						"description": "Pathspec passed to git log after --; the function returns the oldest commit in that history that added the path. It raises artifact-tampered when no creation commit is found.",
+						"examples": ["packages/planning/src/utils/planning-collaboration/planGit.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "containing",
 						"type": "Promise<string>",
-						"description": "Oldest creation commit found for the path within the selected history."
+						"description": "Full commit object ID of the oldest commit returned by git log that added the requested path. It raises artifact-tampered if no creation commit is present in the searched history.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised as artifact-tampered when git log returns no commit that added the requested path."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "revision",
@@ -250,30 +274,33 @@
 						"name": "revision.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Git handle whose run callback executes commands for the selected repository. The handle also supplies the repository root and Git directory; its runner may reject when a Git command fails."
 					},
 					{
 						"name": "revision.value",
 						"type": "string",
 						"required": false,
 						"default": "HEAD",
-						"description": "Branch, tag or commit; defaults to HEAD and rejects empty, option-like or newline-containing values."
+						"description": "Revision name resolved as a commit by git rev-parse; defaults to HEAD. Empty, leading-hyphen, NUL, CR, and LF values are rejected, as are names Git cannot resolve to a commit.",
+						"examples": ["HEAD", "main", "0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "revision",
 						"type": "Promise<string>",
-						"description": "Resolved full commit ID."
+						"description": "Full commit object ID returned by git rev-parse --verify. Its length follows the repository object format.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised as unknown-revision for rejected revision text or when Git cannot resolve the value to a commit."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "paths",
@@ -282,31 +309,37 @@
 						"name": "paths.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Git handle whose run callback executes commands for the selected repository. The handle also supplies the repository root and Git directory; its runner may reject when a Git command fails."
 					},
 					{
 						"name": "paths.rev",
 						"type": "string",
 						"required": true,
-						"description": "Revision whose tree is listed."
+						"description": "Revision whose tree is passed to git ls-tree. Git determines whether the revision is valid.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "paths.path",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Optional repository path filter; defaults to the whole tree."
+						"description": "Pathspec passed to git ls-tree; the empty-string default is converted to . to list the whole tree. Git applies the pathspec matching rules.",
+						"examples": ["", "packages/planning/src"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "paths",
 						"type": "Promise<string[]>",
-						"description": "Matching paths from the revision tree."
+						"description": "Repository paths emitted by git ls-tree for the selected revision and pathspec; the array may be empty.",
+						"examples": [
+							["packages/planning/src/utils/planning-collaboration/planGit.ts"],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "blob",
@@ -315,35 +348,38 @@
 						"name": "blob.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Git handle whose run callback executes commands for the selected repository. The handle also supplies the repository root and Git directory; its runner may reject when a Git command fails."
 					},
 					{
 						"name": "blob.rev",
 						"type": "string",
 						"required": true,
-						"description": "Revision containing the artifact."
+						"description": "Revision used to locate and read the artifact from the Git tree. Git determines whether the revision is valid.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "blob.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative artifact path."
+						"description": "Repository path used for the tree lookup and git show. It must identify an existing regular-file entry with mode 100644 or 100755, or the call raises an artifact error.",
+						"examples": ["packages/planning/src/utils/planning-collaboration/planGit.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "blob",
 						"type": "Promise<Buffer>",
-						"description": "Blob bytes for an existing regular-file entry."
+						"description": "Raw Buffer bytes returned by git show for an existing tree entry with regular-file mode 100644 or 100755. Other entry modes are rejected."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised as artifact-missing when the tree lookup is empty, or unsafe-path when the tree entry is not a regular file."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "imageBlob",
@@ -352,35 +388,38 @@
 						"name": "imageBlob.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Git handle whose run callback executes commands for the selected repository. The handle also supplies the repository root and Git directory; its runner may reject when a Git command fails."
 					},
 					{
 						"name": "imageBlob.rev",
 						"type": "string",
 						"required": true,
-						"description": "Revision containing the PNG pointer."
+						"description": "Revision used to locate the Git LFS pointer for the image content. Git determines whether the revision is valid.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "imageBlob.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative PNG path."
+						"description": "Repository path whose regular-file blob is expected to contain a Git LFS pointer. The pointer must match the supported version, SHA-256 object ID, and size format.",
+						"examples": ["artifacts/screenshots/review.png"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "imageBlob",
 						"type": "Promise<Buffer>",
-						"description": "Local Git LFS content after pointer, length and SHA-256 verification."
+						"description": "Raw local Git LFS object bytes returned after validating the pointer and checking the object's SHA-256 and declared size. Missing or malformed pointers and missing or mismatched content are rejected."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised for a missing or non-regular pointer entry, a non-LFS or malformed pointer, missing LFS content, or an LFS object's hash or size mismatch."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "safePath",
@@ -389,29 +428,31 @@
 						"name": "safePath.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Git handle supplying the root beneath which path components are checked. The function uses the root field and does not run a Git command."
 					},
 					{
 						"name": "safePath.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative path to check for unsafe segments or existing symbolic links."
+						"description": "Slash-separated path traversed beneath git.root. Empty, . or .. segments and existing symbolic-link components raise unsafe-path; missing components are allowed.",
+						"examples": ["packages/planning/src/utils/planGit.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "safePath",
 						"type": "Promise<void>",
-						"description": "Returns nothing when the path has safe segments and no existing symbolic-link component."
+						"description": "Resolves with undefined after checking each path component beneath git.root. It rejects unsafe segments and existing symbolic links, and tolerates components that do not exist."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised as unsafe-path when the path has an empty, . or .. segment or an existing component is a symbolic link."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
