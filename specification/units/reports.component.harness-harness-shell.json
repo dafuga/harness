@@ -25,24 +25,38 @@
 				"name": "HarnessShell.base",
 				"type": "string",
 				"required": true,
-				"description": "Required explorer URL prefix, removed from the current browser path to initialize the relative route and added back for navigation."
+				"description": "Required URL path prefix that is removed from `location.pathname` when the relative route is initialized and prepended to a route during navigation. The component does not validate or normalize the prefix, so it must match the beginning of the browser pathname for route extraction to work.",
+				"examples": ["/reports"]
 			},
 			{
 				"name": "HarnessShell.links",
 				"type": "Array<{ label: string; href: string }>",
 				"required": false,
 				"default": [],
-				"description": "Optional compatibility links, defaulting to an empty list. Forwarded to the console, which currently does not render them."
+				"description": "Optional links with a string label and href, defaulting to an empty list, that the shell forwards to `HarnessConsole`. The shell does not inspect or transform the links.",
+				"examples": [
+					[
+						{
+							"label": "Overview",
+							"href": "/reports"
+						},
+						{
+							"label": "Usage",
+							"href": "/reports/usage"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessShell",
 				"type": "markup",
-				"description": "The generic explorer screen inside the console. Browser back and forward update the relative path; console navigation pushes or replaces browser history."
+				"description": "The rendered shell supplies `HarnessConsole` with `base`, the current relative `path`, `navigate`, `links`, and `ExplorerContent` as `content`. The path starts as `location.pathname.slice(base.length) + location.search`, changes after push or replace navigation, and is refreshed on `popstate`; the component does not validate or normalize `base`."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
