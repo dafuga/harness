@@ -34,89 +34,405 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteHostService.constructor.options",
 				"type": "RemoteHostOptions",
-				"required": true
+				"required": true,
+				"description": "The dependencies the service is built from: the record store, the register function, the socket opener, the shared device-session options, and the optional name, link-tuning and locked-screen options. The constructor reads store, register and shared.registry at once; the other fields are read when the host runs or reports its status."
 			},
 			{
 				"name": "RemoteHostService.onStatus.listener",
 				"type": "(status: RemoteHostStatus) => void",
-				"required": true
+				"required": true,
+				"description": "The function called with each published RemoteHostStatus. It is kept in a Set, so adding the same function twice still gives one listener."
 			},
 			{
 				"name": "RemoteHostService.screen.locked",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether the screen is locked (true) or unlocked (false). It is sent to connected phones as the host connection state and changes nothing else; with no running host, nothing is sent.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteHostService.enabled",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether remote access is on according to the stored record: true only when the record exists and its enabled flag is true. It reads only the record, so it can be true while no runtime is running.",
+				"examples": [true, false]
 			},
 			{
 				"name": "RemoteHostService.name",
-				"type": "string"
+				"type": "string",
+				"description": "The name of this computer shown in the host status and given to the runtime: the result of the name option, or the operating system hostname when no option is given. It is read on every call, so a changed option shows from the next call.",
+				"examples": ["studio-mac.local", "build-box"]
 			},
 			{
 				"name": "RemoteHostService.onStatus",
-				"type": "()"
+				"type": "()",
+				"description": "The unsubscribe function returned by onStatus. Calling it removes that listener, so it gets no further statuses."
 			},
 			{
 				"name": "RemoteHostService.start",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves when the launch step through the switch has finished. At launch an enabled host goes back online from the stored record, and nothing is registered."
 			},
 			{
 				"name": "RemoteHostService.enable",
-				"type": "Promise<RemoteHostStatus>"
+				"type": "Promise<RemoteHostStatus>",
+				"description": "Resolves with the published status after the switch turns remote access on, or with the current status and nothing turned on when the record service reports it is unavailable. The switch keeps a late answer from undoing the change.",
+				"examples": [
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "online",
+						"reason": null,
+						"host": {
+							"id": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+							"name": "studio-mac.local"
+						},
+						"origin": "https://relay.example.com",
+						"pairing": {
+							"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+							"hostId": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+							"origin": "https://relay.example.com",
+							"code": "K7QM-4TBH",
+							"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794744600;host=9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e;pairing=5c7e21a9f04b68d3e1a75c09b2f4d86e;code=K7QM4TBH;origin=https://relay.example.com",
+							"expiresAt": "2026-11-15T12:10:00.000Z"
+						},
+						"requests": [
+							{
+								"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+								"deviceId": "4b8a1f6d3e0c97a25d1b8e4f6c0a3d7b92e5f418",
+								"deviceName": "Work iPhone",
+								"platform": "ios",
+								"requestedAt": "2026-11-15T12:02:31.482Z",
+								"expiresAt": "2026-11-15T12:10:00.000Z"
+							}
+						],
+						"devices": [
+							{
+								"deviceId": "e27f0a4c8b19d63a5f7e2c08b4d1a9f36e5c0b72",
+								"name": "iPhone 16",
+								"platform": "ios",
+								"projectIds": [
+									"local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7"
+								],
+								"comments": true,
+								"agents": false,
+								"approvedAt": "2026-11-10T09:30:00.000Z",
+								"lastSeenAt": "2026-11-15T11:58:12.000Z",
+								"online": true
+							}
+						],
+						"projects": [
+							{
+								"id": "local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7",
+								"name": "harness-app"
+							}
+						]
+					},
+					{
+						"supported": false,
+						"enabled": false,
+						"state": "unavailable",
+						"reason": "OS encryption is required for remote access.",
+						"host": null,
+						"origin": null,
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": []
+					}
+				]
 			},
 			{
 				"name": "RemoteHostService.disable",
-				"type": "Promise<RemoteHostStatus>"
+				"type": "Promise<RemoteHostStatus>",
+				"description": "Resolves with the published status after the switch turns remote access off. The switch keeps a late answer from undoing the change.",
+				"examples": [
+					{
+						"supported": true,
+						"enabled": false,
+						"state": "disabled",
+						"reason": null,
+						"host": null,
+						"origin": null,
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": [
+							{
+								"id": "local-3c8e05b19a7d2f46e0b5c3a98d1f7e24b6a0d9c3e5f8b1a74d2c6e09f3b7a10d",
+								"name": "docs-site"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "RemoteHostService.screen",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing. It announces the screen state to connected phones through the running host, and does nothing when no host is running."
 			},
 			{
 				"name": "RemoteHostService.suspend",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing. It takes the running host offline until resume while keeping sessions and runs, and does nothing when no host is running."
 			},
 			{
 				"name": "RemoteHostService.resume",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing. It brings a suspended host back online, and does nothing when no runtime exists."
 			},
 			{
 				"name": "RemoteHostService.stop",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after the switch has quit the host and the published status has been passed to the listeners. Quit closes the socket and cancels the phones' runs, and the approvals stay stored."
 			},
 			{
 				"name": "RemoteHostService.status",
-				"type": "Promise<RemoteHostStatus>"
+				"type": "Promise<RemoteHostStatus>",
+				"description": "Resolves with this computer's public status: support, enabled state, host, pairing offer, requests, devices and projects, with no key or credential. A failed project listing is caught and gives an empty projects list.",
+				"examples": [
+					{
+						"supported": true,
+						"enabled": false,
+						"state": "disabled",
+						"reason": null,
+						"host": null,
+						"origin": null,
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": [
+							{
+								"id": "local-3c8e05b19a7d2f46e0b5c3a98d1f7e24b6a0d9c3e5f8b1a74d2c6e09f3b7a10d",
+								"name": "docs-site"
+							}
+						]
+					},
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "online",
+						"reason": null,
+						"host": {
+							"id": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+							"name": "studio-mac.local"
+						},
+						"origin": "https://relay.example.com",
+						"pairing": {
+							"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+							"hostId": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+							"origin": "https://relay.example.com",
+							"code": "K7QM-4TBH",
+							"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794744600;host=9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e;pairing=5c7e21a9f04b68d3e1a75c09b2f4d86e;code=K7QM4TBH;origin=https://relay.example.com",
+							"expiresAt": "2026-11-15T12:10:00.000Z"
+						},
+						"requests": [
+							{
+								"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+								"deviceId": "4b8a1f6d3e0c97a25d1b8e4f6c0a3d7b92e5f418",
+								"deviceName": "Work iPhone",
+								"platform": "ios",
+								"requestedAt": "2026-11-15T12:02:31.482Z",
+								"expiresAt": "2026-11-15T12:10:00.000Z"
+							}
+						],
+						"devices": [
+							{
+								"deviceId": "e27f0a4c8b19d63a5f7e2c08b4d1a9f36e5c0b72",
+								"name": "iPhone 16",
+								"platform": "ios",
+								"projectIds": [
+									"local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7"
+								],
+								"comments": true,
+								"agents": false,
+								"approvedAt": "2026-11-10T09:30:00.000Z",
+								"lastSeenAt": "2026-11-15T11:58:12.000Z",
+								"online": true
+							}
+						],
+						"projects": [
+							{
+								"id": "local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7",
+								"name": "harness-app"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "RemoteHostService.current",
-				"type": "{ state: RemoteHostState; runtime: RemoteHostRuntimeService }"
+				"type": "{ state: RemoteHostState; runtime: RemoteHostRuntimeService }",
+				"description": "The stored record and the running runtime, returned only when remote access is enabled and a runtime exists. Otherwise it throws an Error whose message is 'Turn remote access on first.'"
 			},
 			{
 				"name": "RemoteHostService.published",
-				"type": "Promise<RemoteHostStatus>"
+				"type": "Promise<RemoteHostStatus>",
+				"description": "Resolves with the current status after passing it to every status listener, in the order they were added. A listener that throws stops the remaining listeners and rejects this promise.",
+				"examples": [
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "online",
+						"reason": null,
+						"host": {
+							"id": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+							"name": "studio-mac.local"
+						},
+						"origin": "https://relay.example.com",
+						"pairing": {
+							"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+							"hostId": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+							"origin": "https://relay.example.com",
+							"code": "K7QM-4TBH",
+							"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794744600;host=9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e;pairing=5c7e21a9f04b68d3e1a75c09b2f4d86e;code=K7QM4TBH;origin=https://relay.example.com",
+							"expiresAt": "2026-11-15T12:10:00.000Z"
+						},
+						"requests": [
+							{
+								"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+								"deviceId": "4b8a1f6d3e0c97a25d1b8e4f6c0a3d7b92e5f418",
+								"deviceName": "Work iPhone",
+								"platform": "ios",
+								"requestedAt": "2026-11-15T12:02:31.482Z",
+								"expiresAt": "2026-11-15T12:10:00.000Z"
+							}
+						],
+						"devices": [
+							{
+								"deviceId": "e27f0a4c8b19d63a5f7e2c08b4d1a9f36e5c0b72",
+								"name": "iPhone 16",
+								"platform": "ios",
+								"projectIds": [
+									"local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7"
+								],
+								"comments": true,
+								"agents": false,
+								"approvedAt": "2026-11-10T09:30:00.000Z",
+								"lastSeenAt": "2026-11-15T11:58:12.000Z",
+								"online": true
+							}
+						],
+						"projects": [
+							{
+								"id": "local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7",
+								"name": "harness-app"
+							}
+						]
+					},
+					{
+						"supported": true,
+						"enabled": false,
+						"state": "disabled",
+						"reason": null,
+						"host": null,
+						"origin": null,
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": [
+							{
+								"id": "local-3c8e05b19a7d2f46e0b5c3a98d1f7e24b6a0d9c3e5f8b1a74d2c6e09f3b7a10d",
+								"name": "docs-site"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "RemoteHostService.saved",
-				"type": "Promise<RemoteHostStatus>"
+				"type": "Promise<RemoteHostStatus>",
+				"description": "Resolves with the published status after the stored record has been written, which happens after every change asked before it. A failed write rejects the promise.",
+				"examples": [
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "online",
+						"reason": null,
+						"host": {
+							"id": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+							"name": "studio-mac.local"
+						},
+						"origin": "https://relay.example.com",
+						"pairing": {
+							"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+							"hostId": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+							"origin": "https://relay.example.com",
+							"code": "K7QM-4TBH",
+							"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794744600;host=9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e;pairing=5c7e21a9f04b68d3e1a75c09b2f4d86e;code=K7QM4TBH;origin=https://relay.example.com",
+							"expiresAt": "2026-11-15T12:10:00.000Z"
+						},
+						"requests": [
+							{
+								"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+								"deviceId": "4b8a1f6d3e0c97a25d1b8e4f6c0a3d7b92e5f418",
+								"deviceName": "Work iPhone",
+								"platform": "ios",
+								"requestedAt": "2026-11-15T12:02:31.482Z",
+								"expiresAt": "2026-11-15T12:10:00.000Z"
+							}
+						],
+						"devices": [
+							{
+								"deviceId": "e27f0a4c8b19d63a5f7e2c08b4d1a9f36e5c0b72",
+								"name": "iPhone 16",
+								"platform": "ios",
+								"projectIds": [
+									"local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7"
+								],
+								"comments": true,
+								"agents": false,
+								"approvedAt": "2026-11-10T09:30:00.000Z",
+								"lastSeenAt": "2026-11-15T11:58:12.000Z",
+								"online": true
+							}
+						],
+						"projects": [
+							{
+								"id": "local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7",
+								"name": "harness-app"
+							}
+						]
+					},
+					{
+						"supported": true,
+						"enabled": false,
+						"state": "disabled",
+						"reason": null,
+						"host": null,
+						"origin": null,
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": [
+							{
+								"id": "local-3c8e05b19a7d2f46e0b5c3a98d1f7e24b6a0d9c3e5f8b1a74d2c6e09f3b7a10d",
+								"name": "docs-site"
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by current() with the message 'Turn remote access on first.' when the stored record is missing or disabled, or when no runtime is running."
+			},
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "Rejections of the awaited switch, record save and publish steps, and exceptions from a status listener, passed through unchanged by start, enable, disable, stop, saved and published."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RemoteHostService.enabled",
@@ -124,11 +440,13 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.enabled",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether remote access is on according to the stored record: true only when the record exists and its enabled flag is true. It reads only the record, so it can be true while no runtime is running.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.name",
@@ -136,11 +454,13 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.name",
-						"type": "string"
+						"type": "string",
+						"description": "The name of this computer shown in the host status and given to the runtime: the result of the name option, or the operating system hostname when no option is given. It is read on every call, so a changed option shows from the next call.",
+						"examples": ["studio-mac.local", "build-box"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.onStatus",
@@ -148,17 +468,19 @@
 					{
 						"name": "RemoteHostService.onStatus.listener",
 						"type": "(status: RemoteHostStatus) => void",
-						"required": true
+						"required": true,
+						"description": "The function called with each published RemoteHostStatus. It is kept in a Set, so adding the same function twice still gives one listener."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostService.onStatus",
-						"type": "()"
+						"type": "()",
+						"description": "The unsubscribe function returned by onStatus. Calling it removes that listener, so it gets no further statuses."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.start",
@@ -166,11 +488,18 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.start",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves when the launch step through the switch has finished. At launch an enabled host goes back online from the stored record, and nothing is registered."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Rejection of the awaited switch launch step, passed through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.enable",
@@ -178,11 +507,82 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.enable",
-						"type": "Promise<RemoteHostStatus>"
+						"type": "Promise<RemoteHostStatus>",
+						"description": "Resolves with the published status after the switch turns remote access on, or with the current status and nothing turned on when the record service reports it is unavailable. The switch keeps a late answer from undoing the change.",
+						"examples": [
+							{
+								"supported": true,
+								"enabled": true,
+								"state": "online",
+								"reason": null,
+								"host": {
+									"id": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+									"name": "studio-mac.local"
+								},
+								"origin": "https://relay.example.com",
+								"pairing": {
+									"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+									"hostId": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+									"origin": "https://relay.example.com",
+									"code": "K7QM-4TBH",
+									"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794744600;host=9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e;pairing=5c7e21a9f04b68d3e1a75c09b2f4d86e;code=K7QM4TBH;origin=https://relay.example.com",
+									"expiresAt": "2026-11-15T12:10:00.000Z"
+								},
+								"requests": [
+									{
+										"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+										"deviceId": "4b8a1f6d3e0c97a25d1b8e4f6c0a3d7b92e5f418",
+										"deviceName": "Work iPhone",
+										"platform": "ios",
+										"requestedAt": "2026-11-15T12:02:31.482Z",
+										"expiresAt": "2026-11-15T12:10:00.000Z"
+									}
+								],
+								"devices": [
+									{
+										"deviceId": "e27f0a4c8b19d63a5f7e2c08b4d1a9f36e5c0b72",
+										"name": "iPhone 16",
+										"platform": "ios",
+										"projectIds": [
+											"local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7"
+										],
+										"comments": true,
+										"agents": false,
+										"approvedAt": "2026-11-10T09:30:00.000Z",
+										"lastSeenAt": "2026-11-15T11:58:12.000Z",
+										"online": true
+									}
+								],
+								"projects": [
+									{
+										"id": "local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7",
+										"name": "harness-app"
+									}
+								]
+							},
+							{
+								"supported": false,
+								"enabled": false,
+								"state": "unavailable",
+								"reason": "OS encryption is required for remote access.",
+								"host": null,
+								"origin": null,
+								"pairing": null,
+								"requests": [],
+								"devices": [],
+								"projects": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Rejection of the awaited switch enable step, or of the status or publish step after it, passed through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.disable",
@@ -190,11 +590,37 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.disable",
-						"type": "Promise<RemoteHostStatus>"
+						"type": "Promise<RemoteHostStatus>",
+						"description": "Resolves with the published status after the switch turns remote access off. The switch keeps a late answer from undoing the change.",
+						"examples": [
+							{
+								"supported": true,
+								"enabled": false,
+								"state": "disabled",
+								"reason": null,
+								"host": null,
+								"origin": null,
+								"pairing": null,
+								"requests": [],
+								"devices": [],
+								"projects": [
+									{
+										"id": "local-3c8e05b19a7d2f46e0b5c3a98d1f7e24b6a0d9c3e5f8b1a74d2c6e09f3b7a10d",
+										"name": "docs-site"
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Rejection of the awaited switch disable step, or of the publish step after it, passed through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.screen",
@@ -202,17 +628,20 @@
 					{
 						"name": "RemoteHostService.screen.locked",
 						"type": "boolean",
-						"required": true
+						"required": true,
+						"description": "Whether the screen is locked (true) or unlocked (false). It is sent to connected phones as the host connection state and changes nothing else; with no running host, nothing is sent.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostService.screen",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing. It announces the screen state to connected phones through the running host, and does nothing when no host is running."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.suspend",
@@ -220,11 +649,12 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.suspend",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing. It takes the running host offline until resume while keeping sessions and runs, and does nothing when no host is running."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.resume",
@@ -232,11 +662,12 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.resume",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing. It brings a suspended host back online, and does nothing when no runtime exists."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.stop",
@@ -244,11 +675,18 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.stop",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after the switch has quit the host and the published status has been passed to the listeners. Quit closes the socket and cancels the phones' runs, and the approvals stay stored."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Rejection of the awaited switch stop step, or of the publish step after it, passed through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.status",
@@ -256,11 +694,81 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.status",
-						"type": "Promise<RemoteHostStatus>"
+						"type": "Promise<RemoteHostStatus>",
+						"description": "Resolves with this computer's public status: support, enabled state, host, pairing offer, requests, devices and projects, with no key or credential. A failed project listing is caught and gives an empty projects list.",
+						"examples": [
+							{
+								"supported": true,
+								"enabled": false,
+								"state": "disabled",
+								"reason": null,
+								"host": null,
+								"origin": null,
+								"pairing": null,
+								"requests": [],
+								"devices": [],
+								"projects": [
+									{
+										"id": "local-3c8e05b19a7d2f46e0b5c3a98d1f7e24b6a0d9c3e5f8b1a74d2c6e09f3b7a10d",
+										"name": "docs-site"
+									}
+								]
+							},
+							{
+								"supported": true,
+								"enabled": true,
+								"state": "online",
+								"reason": null,
+								"host": {
+									"id": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+									"name": "studio-mac.local"
+								},
+								"origin": "https://relay.example.com",
+								"pairing": {
+									"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+									"hostId": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+									"origin": "https://relay.example.com",
+									"code": "K7QM-4TBH",
+									"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794744600;host=9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e;pairing=5c7e21a9f04b68d3e1a75c09b2f4d86e;code=K7QM4TBH;origin=https://relay.example.com",
+									"expiresAt": "2026-11-15T12:10:00.000Z"
+								},
+								"requests": [
+									{
+										"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+										"deviceId": "4b8a1f6d3e0c97a25d1b8e4f6c0a3d7b92e5f418",
+										"deviceName": "Work iPhone",
+										"platform": "ios",
+										"requestedAt": "2026-11-15T12:02:31.482Z",
+										"expiresAt": "2026-11-15T12:10:00.000Z"
+									}
+								],
+								"devices": [
+									{
+										"deviceId": "e27f0a4c8b19d63a5f7e2c08b4d1a9f36e5c0b72",
+										"name": "iPhone 16",
+										"platform": "ios",
+										"projectIds": [
+											"local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7"
+										],
+										"comments": true,
+										"agents": false,
+										"approvedAt": "2026-11-10T09:30:00.000Z",
+										"lastSeenAt": "2026-11-15T11:58:12.000Z",
+										"online": true
+									}
+								],
+								"projects": [
+									{
+										"id": "local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7",
+										"name": "harness-app"
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.current",
@@ -268,16 +776,18 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.current",
-						"type": "{ state: RemoteHostState; runtime: RemoteHostRuntimeService }"
+						"type": "{ state: RemoteHostState; runtime: RemoteHostRuntimeService }",
+						"description": "The stored record and the running runtime, returned only when remote access is enabled and a runtime exists. Otherwise it throws an Error whose message is 'Turn remote access on first.'"
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'Turn remote access on first.' when the stored record is missing or disabled, or when no runtime is running."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.published",
@@ -285,11 +795,87 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.published",
-						"type": "Promise<RemoteHostStatus>"
+						"type": "Promise<RemoteHostStatus>",
+						"description": "Resolves with the current status after passing it to every status listener, in the order they were added. A listener that throws stops the remaining listeners and rejects this promise.",
+						"examples": [
+							{
+								"supported": true,
+								"enabled": true,
+								"state": "online",
+								"reason": null,
+								"host": {
+									"id": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+									"name": "studio-mac.local"
+								},
+								"origin": "https://relay.example.com",
+								"pairing": {
+									"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+									"hostId": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+									"origin": "https://relay.example.com",
+									"code": "K7QM-4TBH",
+									"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794744600;host=9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e;pairing=5c7e21a9f04b68d3e1a75c09b2f4d86e;code=K7QM4TBH;origin=https://relay.example.com",
+									"expiresAt": "2026-11-15T12:10:00.000Z"
+								},
+								"requests": [
+									{
+										"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+										"deviceId": "4b8a1f6d3e0c97a25d1b8e4f6c0a3d7b92e5f418",
+										"deviceName": "Work iPhone",
+										"platform": "ios",
+										"requestedAt": "2026-11-15T12:02:31.482Z",
+										"expiresAt": "2026-11-15T12:10:00.000Z"
+									}
+								],
+								"devices": [
+									{
+										"deviceId": "e27f0a4c8b19d63a5f7e2c08b4d1a9f36e5c0b72",
+										"name": "iPhone 16",
+										"platform": "ios",
+										"projectIds": [
+											"local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7"
+										],
+										"comments": true,
+										"agents": false,
+										"approvedAt": "2026-11-10T09:30:00.000Z",
+										"lastSeenAt": "2026-11-15T11:58:12.000Z",
+										"online": true
+									}
+								],
+								"projects": [
+									{
+										"id": "local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7",
+										"name": "harness-app"
+									}
+								]
+							},
+							{
+								"supported": true,
+								"enabled": false,
+								"state": "disabled",
+								"reason": null,
+								"host": null,
+								"origin": null,
+								"pairing": null,
+								"requests": [],
+								"devices": [],
+								"projects": [
+									{
+										"id": "local-3c8e05b19a7d2f46e0b5c3a98d1f7e24b6a0d9c3e5f8b1a74d2c6e09f3b7a10d",
+										"name": "docs-site"
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Exception from a status listener, which stops the remaining listeners and passes through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostService.saved",
@@ -297,11 +883,87 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.saved",
-						"type": "Promise<RemoteHostStatus>"
+						"type": "Promise<RemoteHostStatus>",
+						"description": "Resolves with the published status after the stored record has been written, which happens after every change asked before it. A failed write rejects the promise.",
+						"examples": [
+							{
+								"supported": true,
+								"enabled": true,
+								"state": "online",
+								"reason": null,
+								"host": {
+									"id": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+									"name": "studio-mac.local"
+								},
+								"origin": "https://relay.example.com",
+								"pairing": {
+									"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+									"hostId": "9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e",
+									"origin": "https://relay.example.com",
+									"code": "K7QM-4TBH",
+									"scan": "harness-pair:v1;aud=harness-phone;env=production;exp=1794744600;host=9d4c2e7a51b3f08e6a2d94c17e5b0f83a6c1d27e;pairing=5c7e21a9f04b68d3e1a75c09b2f4d86e;code=K7QM4TBH;origin=https://relay.example.com",
+									"expiresAt": "2026-11-15T12:10:00.000Z"
+								},
+								"requests": [
+									{
+										"pairingId": "5c7e21a9f04b68d3e1a75c09b2f4d86e",
+										"deviceId": "4b8a1f6d3e0c97a25d1b8e4f6c0a3d7b92e5f418",
+										"deviceName": "Work iPhone",
+										"platform": "ios",
+										"requestedAt": "2026-11-15T12:02:31.482Z",
+										"expiresAt": "2026-11-15T12:10:00.000Z"
+									}
+								],
+								"devices": [
+									{
+										"deviceId": "e27f0a4c8b19d63a5f7e2c08b4d1a9f36e5c0b72",
+										"name": "iPhone 16",
+										"platform": "ios",
+										"projectIds": [
+											"local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7"
+										],
+										"comments": true,
+										"agents": false,
+										"approvedAt": "2026-11-10T09:30:00.000Z",
+										"lastSeenAt": "2026-11-15T11:58:12.000Z",
+										"online": true
+									}
+								],
+								"projects": [
+									{
+										"id": "local-a41f9c02d7e83b5604c19f2e8d7b3a6c05e91f4d2b8a7c3e6f1d0950b4a2e8c7",
+										"name": "harness-app"
+									}
+								]
+							},
+							{
+								"supported": true,
+								"enabled": false,
+								"state": "disabled",
+								"reason": null,
+								"host": null,
+								"origin": null,
+								"pairing": null,
+								"requests": [],
+								"devices": [],
+								"projects": [
+									{
+										"id": "local-3c8e05b19a7d2f46e0b5c3a98d1f7e24b6a0d9c3e5f8b1a74d2c6e09f3b7a10d",
+										"name": "docs-site"
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Rejection of the awaited record save, or of the publish step after it, passed through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -311,17 +973,19 @@
 					{
 						"name": "RemoteHostService.constructor.options",
 						"type": "RemoteHostOptions",
-						"required": true
+						"required": true,
+						"description": "The dependencies the service is built from: the record store, the register function, the socket opener, the shared device-session options, and the optional name, link-tuning and locked-screen options. The constructor reads store, register and shared.registry at once; the other fields are read when the host runs or reports its status."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new RemoteHostService. It has no runtime yet: the runtime is set only when the switch runs the host."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
