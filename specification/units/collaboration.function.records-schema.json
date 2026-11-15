@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/collaboration/src/utils/development-tooling/recordsSchema.ts",
-			"packages/collaboration/src/utils/recordsSchema.ts"
-		],
-		"symbols": ["projectSchema", "recordsSchema", "projectSchema", "recordsSchema"]
+		"source": ["packages/collaboration/src/utils/development-tooling/recordsSchema.ts"],
+		"symbols": ["projectSchema", "recordsSchema"]
 	},
 	"contract": {
 		"origin": "declared",
