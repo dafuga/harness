@@ -31,28 +31,38 @@
 				"name": "hubAttachedRecord.result",
 				"type": "HubAttachedRecord",
 				"required": true,
-				"description": "Attached result with manifest, retained record.json bytes, validated file facts and existing problems."
+				"description": "The attached evidence result carries its pointer, optional manifest and record, retained file bytes, immutable file facts, and accumulated problems; this check reads record.json and appends its findings to problems. A present manifest is assumed when record.json validates, so a missing manifest can throw a TypeError."
 			},
 			{
 				"name": "hubRecordJson.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Bytes expected to contain strict UTF-8 JSON."
+				"description": "The bytes passed to fatal UTF-8 decoding and JSON.parse; invalid UTF-8 or JSON syntax produces undefined rather than an exception."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubRecordJson",
 				"type": "unknown",
-				"description": "Parsed JSON value, or undefined for invalid encoding/JSON."
+				"description": "The parsed JSON value without schema validation, or undefined if UTF-8 decoding or JSON parsing fails.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "hubAttachedRecord",
 				"type": "HubAttachedRecord",
-				"description": "Copied result with validated record when available and accumulated problems for invalid record structure, seal mismatch, identity mismatch or undeclared/mismatched files."
+				"description": "Returns a shallow copy, replacing record with the validated parsed value when one is yielded and appending validator errors. If no record is yielded, it appends record.json is not a record; otherwise it also reports seal or manifest identity mismatches and declared files whose path, SHA-256, byte count, or media type does not match, while excluding captures of referenced scenarios."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when record.json validates but the optional manifest is absent, because the implementation dereferences the manifest for identity and file checks."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubAttachedRecord",
@@ -61,18 +71,24 @@
 						"name": "hubAttachedRecord.result",
 						"type": "HubAttachedRecord",
 						"required": true,
-						"description": "Attached result with manifest, retained record.json bytes, validated file facts and existing problems."
+						"description": "The attached evidence result carries its pointer, optional manifest and record, retained file bytes, immutable file facts, and accumulated problems; this check reads record.json and appends its findings to problems. A present manifest is assumed when record.json validates, so a missing manifest can throw a TypeError."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubAttachedRecord",
 						"type": "HubAttachedRecord",
-						"description": "Copied result with validated record when available and accumulated problems for invalid record structure, seal mismatch, identity mismatch or undeclared/mismatched files."
+						"description": "Returns a shallow copy, replacing record with the validated parsed value when one is yielded and appending validator errors. If no record is yielded, it appends record.json is not a record; otherwise it also reports seal or manifest identity mismatches and declared files whose path, SHA-256, byte count, or media type does not match, while excluding captures of referenced scenarios."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when record.json validates but the optional manifest is absent, because the implementation dereferences the manifest for identity and file checks."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubRecordJson",
@@ -81,18 +97,21 @@
 						"name": "hubRecordJson.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Bytes expected to contain strict UTF-8 JSON."
+						"description": "The bytes passed to fatal UTF-8 decoding and JSON.parse; invalid UTF-8 or JSON syntax produces undefined rather than an exception."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubRecordJson",
 						"type": "unknown",
-						"description": "Parsed JSON value, or undefined for invalid encoding/JSON."
+						"description": "The parsed JSON value without schema validation, or undefined if UTF-8 decoding or JSON parsing fails.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
