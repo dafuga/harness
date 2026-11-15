@@ -16,37 +16,43 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProviderSwitchApplyService.constructor.store",
 				"type": "SwitchStore",
-				"required": true
+				"required": true,
+				"description": "Provides get and revision-checked put access to switch requests keyed by session ID; apply uses them to claim a pending request and record its outcome. The interface also exposes list, which this service does not call."
 			},
 			{
 				"name": "ProviderSwitchApplyService.constructor.control",
 				"type": "SessionControl",
-				"required": true
+				"required": true,
+				"description": "Provides inspect and resume for the named session; apply changes settings only after an observation is idle, has zero clients, and is fresh. Fresh observations are younger than 30 seconds and no more than one second in the future."
 			},
 			{
 				"name": "ProviderSwitchApplyService.apply.sessionId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Explicit Codex session ID used for the pending-request lookup and session-control calls. It must match /^[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}$/; other values throw an Error.",
+				"examples": ["codex-session_7"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProviderSwitchApplyService.apply",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after skipping a non-pending or unready request, completing an application, or recording a failed application outcome; it may reject on input validation, uncaught store/control failures, or a failed status write. Applying requires fresh observations showing an idle session with zero clients and verifies provider, model, and effort after resume."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Invalid IDs throw Error('A valid explicit Codex session ID is required.'); a post-resume selection mismatch creates Error('Settings mismatch'), which is caught to trigger rollback. A failed revision-checked status write throws Error('Switch ownership changed; settings require manual verification.'), and uncaught store/control failures can also reject apply."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProviderSwitchApplyService.apply",
@@ -54,22 +60,26 @@
 					{
 						"name": "ProviderSwitchApplyService.apply.sessionId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Explicit Codex session ID used for the pending-request lookup and session-control calls. It must match /^[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}$/; other values throw an Error.",
+						"examples": ["codex-session_7"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitchApplyService.apply",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after skipping a non-pending or unready request, completing an application, or recording a failed application outcome; it may reject on input validation, uncaught store/control failures, or a failed status write. Applying requires fresh observations showing an idle session with zero clients and verifies provider, model, and effort after resume."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Invalid IDs throw Error('A valid explicit Codex session ID is required.'); a post-resume selection mismatch creates Error('Settings mismatch'), which is caught to trigger rollback. A failed revision-checked status write throws Error('Switch ownership changed; settings require manual verification.'), and uncaught store/control failures can also reject apply."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -79,22 +89,25 @@
 					{
 						"name": "ProviderSwitchApplyService.constructor.store",
 						"type": "SwitchStore",
-						"required": true
+						"required": true,
+						"description": "Provides get and revision-checked put access to switch requests keyed by session ID; apply uses them to claim a pending request and record its outcome. The interface also exposes list, which this service does not call."
 					},
 					{
 						"name": "ProviderSwitchApplyService.constructor.control",
 						"type": "SessionControl",
-						"required": true
+						"required": true,
+						"description": "Provides inspect and resume for the named session; apply changes settings only after an observation is idle, has zero clients, and is fresh. Fresh observations are younger than 30 seconds and no more than one second in the future."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitchApplyService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Constructs a ProviderSwitchApplyService instance that retains the supplied SwitchStore and SessionControl for apply calls. The constructor performs no validation or I/O."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
