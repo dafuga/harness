@@ -40,52 +40,58 @@
 				"type": "unknown",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional. Defaults to JavaScript undefined, producing an explicit missing-result message when examples are also omitted."
+				"description": "Optional recorded document passed with unit to artifactCases when examples is undefined, to produce observed rows or a gap. In the non-gap recorded view, it appears in the expandable full-values disclosure.",
+				"examples": [null]
 			},
 			{
 				"name": "EntityCases.examples",
 				"type": "UsageExample[]",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional. Defaults to JavaScript undefined and reads document instead. An explicit empty array shows the no-documented-examples message."
+				"description": "Optional array of UsageExample values; defining it selects documented mode, and an empty array shows the no-documented-examples message. It takes precedence over document and its entries provide expected rows.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "EntityCases.unit",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional. Defaults to JavaScript undefined, leaving recorded invocation rows unrestricted by unit identifier."
+				"description": "Optional unit identifier passed with document to artifactCases only when examples is undefined. It defaults to undefined (omitted), so examples mode does not use it.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "EntityCases.callable",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Optional flag, true by default. Controls wording distinguishing observed end-to-end behavior from a direct function call; false is suitable for noncallable entities."
+				"description": "Controls whether the observed note says the result was not a direct call of the function. Defaults to true and matters only for recorded cases whose source is not invocations.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityCases",
 				"type": "markup",
-				"description": "Readable input and output rows. Authored examples show expected outcomes; test records show observed outcomes. Full values remain available in a disclosure."
+				"description": "Renders documented examples as expected outcomes, recorded artifact cases as observed results, or a gap message when the source reports a gap; failed cases are marked as errors. Outside the gap state, an expandable disclosure shows the full selected examples or document, while the component presents recorded values rather than invoking the represented function."
 			}
 		],
 		"errors": [
 			{
 				"name": "TypeError",
 				"type": "thrown",
-				"description": "Expanding full values cannot serialize BigInt or circular input."
+				"description": "Expanding the full-values disclosure calls JSON.stringify, which throws for BigInt values or circular structures."
 			},
 			{
 				"name": "RangeError",
 				"type": "thrown",
-				"description": "Expanding deeply nested full values can exceed the JSON serializer stack."
+				"description": "Expanding the full-values disclosure can raise a range error when deeply nested values exhaust the JSON serializer recursion stack."
 			},
 			{
 				"name": "Value access or serialization callback error",
 				"type": "thrown",
-				"description": "A supplied getter, proxy or toJSON method can throw while a document or example value is read or serialized."
+				"description": "Reading row values or serializing the selected document or examples can invoke supplied getters, proxy traps, or toJSON methods; their thrown errors propagate."
 			}
 		],
 		"errorStatus": "declared",
