@@ -27,54 +27,70 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "WireSessionService.constructor.options",
 				"type": "WireSessionOptions",
-				"required": true
+				"required": true,
+				"description": "Carries the session role, method supplier, attachment description, request handler, optional error formatter, limits, epoch, and authority flag. Method availability is queried per request, supplied limits override the remote defaults, and authority is enabled only when exactly true."
 			},
 			{
 				"name": "WireSessionService.connect.send",
 				"type": "(text: string) => void",
-				"required": true
+				"required": true,
+				"description": "Receives JSON-serialized wire-message text when the connection is open and the session has not ended. The service does not call it for closed connections or ended sessions."
 			},
 			{
 				"name": "WireSessionService.connect.violation",
 				"type": "() => void",
-				"required": false
+				"required": false,
+				"description": "Signals a frame that cannot be answered because its failure has no request ID, allowing the transport to close. Defaults to () => undefined, which does nothing when no callback is supplied."
 			},
 			{
 				"name": "WireSessionService.emit.channel",
 				"type": "WireChannel",
-				"required": true
+				"required": true,
+				"description": "Selects which event stream records the value; this matters when appending and delivering the event. The accepted literals are run, cache, and connection.",
+				"examples": ["run", "cache", "connection"]
 			},
 			{
 				"name": "WireSessionService.emit.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Provides the payload stored in the event log and included in the wire event. Its type is unconstrained (unknown), so this service does not define a per-channel payload shape.",
+				"examples": [
+					{
+						"status": "running"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "WireSessionService.ended",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Reports whether the session has ended. It starts false and becomes true when end() is called; the service exposes no reset path.",
+				"examples": [false, true]
 			},
 			{
 				"name": "WireSessionService.connect",
-				"type": "WireLink"
+				"type": "WireLink",
+				"description": "Creates a connection link whose receive method forwards text frames into this session and whose close method releases the connection. The new connection is open but remains unattached until an attach request is processed."
 			},
 			{
 				"name": "WireSessionService.emit",
-				"type": "void"
+				"type": "void",
+				"description": "Records the event and sends it to the current open connection while the session is active. Calls after the session ends are ignored."
 			},
 			{
 				"name": "WireSessionService.end",
-				"type": "void"
+				"type": "void",
+				"description": "Ends the session and releases its current connection, so late answers and later events are dropped. Repeated calls leave the session ended."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "WireSessionService.ended",
@@ -82,11 +98,13 @@
 				"outputs": [
 					{
 						"name": "WireSessionService.ended",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Reports whether the session has ended. It starts false and becomes true when end() is called; the service exposes no reset path.",
+						"examples": [false, true]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WireSessionService.connect",
@@ -94,22 +112,25 @@
 					{
 						"name": "WireSessionService.connect.send",
 						"type": "(text: string) => void",
-						"required": true
+						"required": true,
+						"description": "Receives JSON-serialized wire-message text when the connection is open and the session has not ended. The service does not call it for closed connections or ended sessions."
 					},
 					{
 						"name": "WireSessionService.connect.violation",
 						"type": "() => void",
-						"required": false
+						"required": false,
+						"description": "Signals a frame that cannot be answered because its failure has no request ID, allowing the transport to close. Defaults to () => undefined, which does nothing when no callback is supplied."
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireSessionService.connect",
-						"type": "WireLink"
+						"type": "WireLink",
+						"description": "Creates a connection link whose receive method forwards text frames into this session and whose close method releases the connection. The new connection is open but remains unattached until an attach request is processed."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WireSessionService.emit",
@@ -117,22 +138,31 @@
 					{
 						"name": "WireSessionService.emit.channel",
 						"type": "WireChannel",
-						"required": true
+						"required": true,
+						"description": "Selects which event stream records the value; this matters when appending and delivering the event. The accepted literals are run, cache, and connection.",
+						"examples": ["run", "cache", "connection"]
 					},
 					{
 						"name": "WireSessionService.emit.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Provides the payload stored in the event log and included in the wire event. Its type is unconstrained (unknown), so this service does not define a per-channel payload shape.",
+						"examples": [
+							{
+								"status": "running"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireSessionService.emit",
-						"type": "void"
+						"type": "void",
+						"description": "Records the event and sends it to the current open connection while the session is active. Calls after the session ends are ignored."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WireSessionService.end",
@@ -140,11 +170,12 @@
 				"outputs": [
 					{
 						"name": "WireSessionService.end",
-						"type": "void"
+						"type": "void",
+						"description": "Ends the session and releases its current connection, so late answers and later events are dropped. Repeated calls leave the session ended."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -154,17 +185,19 @@
 					{
 						"name": "WireSessionService.constructor.options",
 						"type": "WireSessionOptions",
-						"required": true
+						"required": true,
+						"description": "Carries the session role, method supplier, attachment description, request handler, optional error formatter, limits, epoch, and authority flag. Method availability is queried per request, supplied limits override the remote defaults, and authority is enabled only when exactly true."
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireSessionService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a service with a client event log, response ledger, validators, no current connection, and an active session state. Event-log capacity and ledger capacity and TTL use the merged limits, while the event log receives the supplied epoch."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
