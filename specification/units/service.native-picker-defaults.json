@@ -19,56 +19,91 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "NativePickerDefaultsService.constructor.rpc",
 				"type": "PickerRpc",
-				"required": true
+				"required": true,
+				"description": "The PickerRpc callback used for config/read and config/batchWrite requests. It is retained by the instance and its result or rejection is forwarded by the async methods."
 			},
 			{
 				"name": "NativePickerDefaultsService.constructor.catalogPath",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional path value assigned to model_catalog_json when the current model provider is harness-claude. It is not validated or synthesized; if omitted, it remains undefined.",
+				"examples": ["/workspace/project/model-catalog.json"]
 			},
 			{
 				"name": "NativePickerDefaultsService.write.params",
 				"type": "PickerData",
-				"required": true
+				"required": true,
+				"description": "Data passed to write; edits must be an array or the method throws Error with message “Invalid configuration edits”. Model and model_reasoning_effort key paths are kept as copy-local edits, while other edits are sent to config/batchWrite.",
+				"examples": [
+					{
+						"edits": []
+					}
+				]
 			},
 			{
 				"name": "NativePickerDefaultsService.write.options",
 				"type": "PickerData",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional RPC options passed through to config/batchWrite. If omitted, undefined is forwarded.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "NativePickerDefaultsService.read.params",
 				"type": "PickerData",
-				"required": true
+				"required": true,
+				"description": "Parameters passed through to config/read. The returned config is cloned before saved copy-local edits are overlaid.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "NativePickerDefaultsService.read.options",
 				"type": "PickerData",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional RPC options passed through to config/read. If omitted, undefined is forwarded.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "NativePickerDefaultsService.write",
-				"type": "Promise<PickerData>"
+				"type": "Promise<PickerData>",
+				"description": "A promise resolving to the PickerData returned by config/batchWrite after non-model edits are submitted; intercepted model edits are saved locally after that RPC succeeds.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "NativePickerDefaultsService.read",
-				"type": "Promise<PickerData>"
+				"type": "Promise<PickerData>",
+				"description": "A promise resolving to the config/read response with config cloned and saved model edits overlaid; a saved model also sets its provider, and the harness-claude provider adds reasoning effort, catalog path, and disabled web search.",
+				"examples": [
+					{
+						"config": {}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by write when params.edits is not an array; the message is “Invalid configuration edits”."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "NativePickerDefaultsService.write",
@@ -76,27 +111,43 @@
 					{
 						"name": "NativePickerDefaultsService.write.params",
 						"type": "PickerData",
-						"required": true
+						"required": true,
+						"description": "Data passed to write; edits must be an array or the method throws Error with message “Invalid configuration edits”. Model and model_reasoning_effort key paths are kept as copy-local edits, while other edits are sent to config/batchWrite.",
+						"examples": [
+							{
+								"edits": []
+							}
+						]
 					},
 					{
 						"name": "NativePickerDefaultsService.write.options",
 						"type": "PickerData",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional RPC options passed through to config/batchWrite. If omitted, undefined is forwarded.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativePickerDefaultsService.write",
-						"type": "Promise<PickerData>"
+						"type": "Promise<PickerData>",
+						"description": "A promise resolving to the PickerData returned by config/batchWrite after non-model edits are submitted; intercepted model edits are saved locally after that RPC succeeds.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by write when params.edits is not an array; the message is “Invalid configuration edits”."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "NativePickerDefaultsService.read",
@@ -104,22 +155,37 @@
 					{
 						"name": "NativePickerDefaultsService.read.params",
 						"type": "PickerData",
-						"required": true
+						"required": true,
+						"description": "Parameters passed through to config/read. The returned config is cloned before saved copy-local edits are overlaid.",
+						"examples": [
+							{}
+						]
 					},
 					{
 						"name": "NativePickerDefaultsService.read.options",
 						"type": "PickerData",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional RPC options passed through to config/read. If omitted, undefined is forwarded.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativePickerDefaultsService.read",
-						"type": "Promise<PickerData>"
+						"type": "Promise<PickerData>",
+						"description": "A promise resolving to the config/read response with config cloned and saved model edits overlaid; a saved model also sets its provider, and the harness-claude provider adds reasoning effort, catalog path, and disabled web search.",
+						"examples": [
+							{
+								"config": {}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -129,22 +195,27 @@
 					{
 						"name": "NativePickerDefaultsService.constructor.rpc",
 						"type": "PickerRpc",
-						"required": true
+						"required": true,
+						"description": "The PickerRpc callback used for config/read and config/batchWrite requests. It is retained by the instance and its result or rejection is forwarded by the async methods."
 					},
 					{
 						"name": "NativePickerDefaultsService.constructor.catalogPath",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional path value assigned to model_catalog_json when the current model provider is harness-claude. It is not validated or synthesized; if omitted, it remains undefined.",
+						"examples": ["/workspace/project/model-catalog.json"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "NativePickerDefaultsService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed NativePickerDefaultsService instance, initialized with the supplied RPC callback and optional catalog path and an empty in-memory edits map."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
