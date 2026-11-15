@@ -36,26 +36,180 @@
 				"name": "HistoryPanel.entity",
 				"type": "EntityDetail",
 				"required": true,
-				"description": "Initial history and optional coverage metadata. Without metadata, history is treated as complete. Changes of view or coverage reset additionally loaded pages."
+				"description": "The entity whose history the panel shows: entity.history is listed first, pages read later are appended after it, and historyCoverage (when present) gives the complete flag and nextPage, while an entity without it is treated as complete with no next page. Changing the project, entity id or revision commit, or replacing historyCoverage, discards the pages read so far and any error, and a page that answers for an earlier view is dropped when it arrives.",
+				"examples": [
+					{
+						"id": "desktop.component.history-panel",
+						"category": "components",
+						"kind": "component",
+						"title": "HistoryPanel",
+						"summary": "Displays entity history and retrieves earlier pages without mixing different project or revision views.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"historyCoverage": {
+							"complete": false,
+							"nextPage": 2,
+							"loadedPages": 1
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "HistoryPanel.entity",
+									"type": "EntityDetail",
+									"required": true
+								},
+								{
+									"name": "HistoryPanel.workspace",
+									"type": "Workspace",
+									"required": true
+								},
+								{
+									"name": "HistoryPanel.evidence",
+									"type": "EntityEvidence",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "HistoryPanel",
+									"type": "markup"
+								}
+							],
+							"errors": [],
+							"hash": "3f9a1c0e7b52d84a6e0c19f2b7d4a85e1c63f0b9d2a7e4c51f8b03d6a9e2c7b4"
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [
+							{
+								"id": "e27d9c4f1a06b385d2e7f94c0b1a6d3e58f2c7a9",
+								"at": "2026-11-13T18:05:12+01:00",
+								"kind": "commit",
+								"title": "Label not-loaded history explicitly",
+								"detail": "Committed change. Measurements and verification are recorded separately.",
+								"commit": "e27d9c4f1a06b385d2e7f94c0b1a6d3e58f2c7a9",
+								"version": null
+							},
+							{
+								"id": "9c4e2a7f01bd58e3c6a1d94f0e7b2c8a5d3f6e10",
+								"at": "2026-11-12T16:20:41+01:00",
+								"kind": "commit",
+								"title": "Keep history pages scoped to one revision",
+								"detail": "Committed change. Measurements and verification are recorded separately.",
+								"commit": "9c4e2a7f01bd58e3c6a1d94f0e7b2c8a5d3f6e10",
+								"version": null
+							}
+						],
+						"sources": [
+							"packages/desktop/src/components/git-source-history/history-panel/HistoryPanel.svelte"
+						],
+						"size": {
+							"available": true,
+							"text": "4.6 KB"
+						},
+						"performance": {
+							"available": false,
+							"text": "Not measured"
+						}
+					},
+					{
+						"id": "desktop.component.history-panel",
+						"category": "components",
+						"kind": "component",
+						"title": "HistoryPanel",
+						"summary": "Displays entity history and retrieves earlier pages without mixing different project or revision views.",
+						"changed": true,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [
+								{
+									"name": "HistoryPanel.entity",
+									"type": "EntityDetail",
+									"required": true
+								},
+								{
+									"name": "HistoryPanel.workspace",
+									"type": "Workspace",
+									"required": true
+								},
+								{
+									"name": "HistoryPanel.evidence",
+									"type": "EntityEvidence",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "HistoryPanel",
+									"type": "markup"
+								}
+							],
+							"errors": [],
+							"hash": "3f9a1c0e7b52d84a6e0c19f2b7d4a85e1c63f0b9d2a7e4c51f8b03d6a9e2c7b4"
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [
+							{
+								"id": "5ab1f03e8d27c94b6e0a13d8f5c72e9b4d60a8c2",
+								"at": "2026-11-10T09:14:07+01:00",
+								"kind": "commit",
+								"title": "Show evidence proofs in the history panel",
+								"detail": "Source changed. Verification is recorded separately.",
+								"commit": "5ab1f03e8d27c94b6e0a13d8f5c72e9b4d60a8c2",
+								"version": null
+							}
+						],
+						"sources": [
+							"packages/desktop/src/components/git-source-history/history-panel/HistoryPanel.svelte"
+						],
+						"size": {
+							"available": true,
+							"text": "4.6 KB"
+						},
+						"performance": {
+							"available": false,
+							"text": "Not measured"
+						}
+					}
+				]
 			},
 			{
 				"name": "HistoryPanel.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace supplying project/revision identity, known commits, navigation and an optional history bridge. Only event commits present in the snapshot’s commit list become links."
+				"description": "The workspace the panel is shown in: it supplies the project id, the snapshot's revision (commit and branch) and commit list, the link and navigate actions, and the optional bridge history used to read earlier pages. Only an event commit that appears in the snapshot's commit list becomes a WorkspaceLink, and any other event commit is shown as its seven-character short SHA in plain text."
 			},
 			{
 				"name": "HistoryPanel.evidence",
 				"type": "EntityEvidence",
 				"required": true,
-				"description": "Loading state and recorded evidence for the selected entity, including retained regression proofs."
+				"description": "The recorded runtime evidence state of the selected entity: the panel shows its regression proofs, read from result.evidence.after.detail.regressions, only while status is 'ready', and none otherwise. A status such as 'loading' or 'failed' therefore shows no proofs, and the history timeline does not depend on the evidence."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HistoryPanel",
 				"type": "markup",
-				"description": "Timeline with names, formatted dates, details and commit references, or an empty-history message. Load more requires incomplete history, a next page and bridge support and is disabled during loading. Discards responses for another view; displays current-view errors as alerts. Incomplete history without a usable next-page operation is explicitly labeled not loaded. A shared inline loading indicator and label identify pending page reads; the history region reports aria-busy. States: ready: The loaded entity history is shown with its recorded change and evidence details. empty: The panel explains that no entity history is available. error: A failed earlier-history read displays a retryable error while retaining loaded entries. long: Long change notes remain readable within their history entries."
+				"description": "The 'Entity history' section shows the regression proofs and one article per distinct event, with its title, formatted time, commit (a WorkspaceLink only when the snapshot lists that commit, otherwise its seven-character short SHA) and detail, or 'No history recorded for this entity.' when there are none. Below the entries, a 'Load more history' button appears when history is incomplete, a next page is known and the bridge can read it, and it is disabled while a page is read; a loading label and aria-busy on the section mark a pending read; 'Earlier history is not loaded here.' shows when history is incomplete without such a read; and a failed read shows its failure text in a role=alert paragraph."
 			}
 		],
 		"errors": [],
