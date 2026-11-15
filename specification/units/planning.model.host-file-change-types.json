@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/models/HostFileChange.types.ts",
-			"packages/planning/src/models/planning-collaboration/HostFileChange.types.ts"
-		],
+		"source": ["packages/planning/src/models/planning-collaboration/HostFileChange.types.ts"],
 		"symbols": ["HostFileChange", "ChangeTarget", "ChangeRecord"]
 	},
 	"contract": {

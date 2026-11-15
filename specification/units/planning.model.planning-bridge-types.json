@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/models/PlanningBridge.types.ts",
-			"packages/planning/src/models/planning-collaboration/PlanningBridge.types.ts"
-		],
+		"source": ["packages/planning/src/models/planning-collaboration/PlanningBridge.types.ts"],
 		"symbols": [
 			"RevisionInput",
 			"ListCommitsInput",

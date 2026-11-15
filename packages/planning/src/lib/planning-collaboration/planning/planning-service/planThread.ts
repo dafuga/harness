@@ -2,14 +2,21 @@
 import { planIdentity } from '../../../../utils/planIdentity';
 import { randomUUID } from 'node:crypto';
 import { isAbsolute } from 'node:path';
-import type { OpenThreadInput, MessageDraft } from '../../../../models/PlanningBridge.types';
-import type { AppendMessageInput } from '../../../../models/PlanningBridge.types';
-import type { PlanDetail, PlanThread, ThreadMessage } from '../../../../models/Planning.types';
+import type {
+	OpenThreadInput,
+	MessageDraft
+} from '../../../../models/planning-collaboration/PlanningBridge.types';
+import type { AppendMessageInput } from '../../../../models/planning-collaboration/PlanningBridge.types';
+import type {
+	PlanDetail,
+	PlanThread,
+	ThreadMessage
+} from '../../../../models/planning-collaboration/Planning.types';
 import type {
 	ThreadAnchor,
 	ApprovalRecord,
 	HostFileChange
-} from '../../../../models/Planning.types';
+} from '../../../../models/planning-collaboration/Planning.types';
 import type { Git } from '../../../../utils/planGit';
 import { blob, revision } from '../../../../utils/planGit';
 import { planRead } from '../../../../utils/planning-collaboration/plan-read/planRead';

@@ -1,7 +1,10 @@
 import { PNG } from 'pngjs';
 import { expect, test } from 'vitest';
-import type { CreatePlanInput, DesignImageInput } from '../src/models/PlanningBridge.types';
-import type { PlanCategory } from '../src/models/Planning.types';
+import type {
+	CreatePlanInput,
+	DesignImageInput
+} from '../src/models/planning-collaboration/PlanningBridge.types';
+import type { PlanCategory } from '../src/models/planning-collaboration/Planning.types';
 import { author, contract, fixture } from './planFixture';
 
 /**

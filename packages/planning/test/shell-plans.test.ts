@@ -1,7 +1,7 @@
 import { measureWorkload } from '../../../test/support/measureWorkload';
 import { PNG } from 'pngjs';
 import { expect, test } from 'vitest';
-import type { CreatePlanInput } from '../src/models/PlanningBridge.types';
+import type { CreatePlanInput } from '../src/models/planning-collaboration/PlanningBridge.types';
 import { author, contract, fixture } from './planFixture';
 
 /**

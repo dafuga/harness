@@ -2,8 +2,14 @@ import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
-import type { AddDesignInput, DesignImageInput } from '../../src/models/PlanningBridge.types';
-import type { DesignImage, DesignVersion } from '../../src/models/Planning.types';
+import type {
+	AddDesignInput,
+	DesignImageInput
+} from '../../src/models/planning-collaboration/PlanningBridge.types';
+import type {
+	DesignImage,
+	DesignVersion
+} from '../../src/models/planning-collaboration/Planning.types';
 import { hash } from '../../src/utils/planData';
 import { approvable, optionOf, type WriteImages } from '../../src/utils/planOptions';
 import { checkOptions } from '../../src/utils/planning-collaboration/plan-read/checkOptions';

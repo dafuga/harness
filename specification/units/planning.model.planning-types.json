@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/models/Planning.types.ts",
-			"packages/planning/src/models/planning-collaboration/Planning.types.ts"
-		],
+		"source": ["packages/planning/src/models/planning-collaboration/Planning.types.ts"],
 		"symbols": [
 			"HostFileChange",
 			"ChangeTarget",
