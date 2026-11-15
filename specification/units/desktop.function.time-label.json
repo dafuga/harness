@@ -18,14 +18,16 @@
 				"name": "timeLabel.value",
 				"type": "string",
 				"required": true,
-				"description": "Text beginning with a date and hour/minute timestamp to try formatting."
+				"description": "Recorded label text passed to timeLabel. Only a value beginning with the YYYY-MM-DDTHH:mm digit pattern and accepted by Date.parse is formatted; other values are returned unchanged.",
+				"examples": ["2026-11-15T13:45:00Z", "2026-11-15", "Yesterday at noon"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "timeLabel",
 				"type": "string",
-				"description": "Localized medium date and short time when parsing succeeds; original text otherwise."
+				"description": "For parseable timestamp-prefixed input, the result uses the reader’s locale with medium date and short time; the input is returned unchanged when the prefix does not match or parsing fails.",
+				"examples": ["Nov 15, 2026, 1:45 PM", "2026-11-15", "Yesterday at noon"]
 			}
 		],
 		"errors": [],
@@ -38,18 +40,20 @@
 						"name": "timeLabel.value",
 						"type": "string",
 						"required": true,
-						"description": "Text beginning with a date and hour/minute timestamp to try formatting."
+						"description": "Recorded label text passed to timeLabel. Only a value beginning with the YYYY-MM-DDTHH:mm digit pattern and accepted by Date.parse is formatted; other values are returned unchanged.",
+						"examples": ["2026-11-15T13:45:00Z", "2026-11-15", "Yesterday at noon"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "timeLabel",
 						"type": "string",
-						"description": "Localized medium date and short time when parsing succeeds; original text otherwise."
+						"description": "For parseable timestamp-prefixed input, the result uses the reader’s locale with medium date and short time; the input is returned unchanged when the prefix does not match or parsing fails.",
+						"examples": ["Nov 15, 2026, 1:45 PM", "2026-11-15", "Yesterday at noon"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
