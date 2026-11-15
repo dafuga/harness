@@ -40,7 +40,7 @@
 		"outputs": [
 			{
 				"name": "timeAgo",
-				"type": "unknown",
+				"type": "string",
 				"description": "English relative-age text for a parseable timestamp and finite elapsed time. Elapsed times below 60,000 milliseconds, including future timestamps, return \"just now\"; larger ages use the first matching threshold (365 days per year, 30 days per month, then week, day, hour, or minute) with whole units.",
 				"examples": ["last week", "just now", ""]
 			}
@@ -77,7 +77,7 @@
 				"outputs": [
 					{
 						"name": "timeAgo",
-						"type": "unknown",
+						"type": "string",
 						"description": "English relative-age text for a parseable timestamp and finite elapsed time. Elapsed times below 60,000 milliseconds, including future timestamps, return \"just now\"; larger ages use the first matching threshold (365 days per year, 30 days per month, then week, day, hour, or minute) with whole units.",
 						"examples": ["last week", "just now", ""]
 					}

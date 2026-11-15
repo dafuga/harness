@@ -42,7 +42,7 @@
 		"outputs": [
 			{
 				"name": "apiResources",
-				"type": "unknown",
+				"type": "{ resources: string[]; reads: string[]; agents: string[]; request: string; permissions: string; }",
 				"description": "The exported constant object, not a function, that lists the resource names (resources), read names (reads), agent operation names (agents), and the request and permissions rule strings. Its resources list also ends with the explorerCategories values and 'styles', appended when the module loads, and reading it makes no server request.",
 				"examples": [
 					{

@@ -135,7 +135,7 @@
 		"outputs": [
 			{
 				"name": "HANDOFF_TTL",
-				"type": "unknown",
+				"type": "number",
 				"description": "Lifetime of a native handoff in milliseconds, 5 * 60 * 1000 (300000). start sets the handoff's expiry to now plus this value, and poll reports the handoff as expired from that expiry time on.",
 				"examples": [300000]
 			},

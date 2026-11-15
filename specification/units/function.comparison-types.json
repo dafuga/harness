@@ -46,7 +46,7 @@
 			},
 			{
 				"name": "measurementBoundaries",
-				"type": "unknown",
+				"type": "readonly [\"public-invocation\", \"fixture\"]",
 				"description": "The two allowed measurement boundaries: 'public-invocation' times the whole call, and 'fixture' is a value a test fixture declares. comparisonSchema's boundary field accepts only these two values.",
 				"examples": [["public-invocation", "fixture"]]
 			},
@@ -66,7 +66,7 @@
 			},
 			{
 				"name": "comparisonSchema",
-				"type": "unknown",
+				"type": "typeof comparisonSchema",
 				"description": "Strict Zod object (z.strictObject) holding the context that must be identical before two measurements may be compared: request, a 64-character lowercase SHA-256 hex digest of the canonical request (its operation and complete input); boundary, one of measurementBoundaries; protocol, a string that is non-empty after trimming; and sampling, a strict object with a nonnegative integer warmup and integer rounds and iterations of at least 1. Unknown keys are rejected at the top level and inside sampling, and a workload name alone identifies none of these fields."
 			}
 		],

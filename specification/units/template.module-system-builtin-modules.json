@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "builtinModules",
-				"type": "unknown",
+				"type": "typeof builtinModules",
 				"description": "builtinModules is the array of bundled capability definitions in this order: all of standardCodeModules, all of testingPlugins, then emailModule, offlineModule, rustWasmModule and rustBackendModule, each replaced by its moduleDefinitionSchema.parse result, which is the same admission contract project modules use. It is computed once at module evaluation, and a definition that fails parsing makes that evaluation throw, so importers never receive a partial array."
 			}
 		],

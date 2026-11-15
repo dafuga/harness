@@ -31,7 +31,7 @@
 		"outputs": [
 			{
 				"name": "audioAsset",
-				"type": "unknown",
+				"type": "{ name: string; mimeType: string; mediaType: 'audio'; durationSeconds?: number }",
 				"description": "The object returned on success: name is the lowercase hex SHA-256 digest of the bytes followed by the lowercase extension, mimeType is audio/wav, audio/mpeg, audio/mp4 or audio/ogg for .wav, .mp3, .m4a or .ogg respectively, and mediaType is always 'audio'. Only .wav results add durationSeconds, the data chunk length divided by the fmt chunk's byte rate, and nothing is written to disk.",
 				"examples": [
 					{
@@ -97,7 +97,7 @@
 				"outputs": [
 					{
 						"name": "audioAsset",
-						"type": "unknown",
+						"type": "{ name: string; mimeType: string; mediaType: 'audio'; durationSeconds?: number }",
 						"description": "The object returned on success: name is the lowercase hex SHA-256 digest of the bytes followed by the lowercase extension, mimeType is audio/wav, audio/mpeg, audio/mp4 or audio/ogg for .wav, .mp3, .m4a or .ogg respectively, and mediaType is always 'audio'. Only .wav results add durationSeconds, the data chunk length divided by the fmt chunk's byte rate, and nothing is written to disk.",
 						"examples": [
 							{

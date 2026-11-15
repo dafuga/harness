@@ -140,7 +140,7 @@
 			},
 			{
 				"name": "interrupted",
-				"type": "unknown",
+				"type": "boolean",
 				"description": "A boolean indicating whether a report outside the finalized state has an updatedAt time more than 15 minutes before the current clock. A finalized report returns false, and an invalid timestamp also fails the age comparison.",
 				"examples": [true, false]
 			}
@@ -304,7 +304,7 @@
 				"outputs": [
 					{
 						"name": "interrupted",
-						"type": "unknown",
+						"type": "boolean",
 						"description": "A boolean indicating whether a report outside the finalized state has an updatedAt time more than 15 minutes before the current clock. A finalized report returns false, and an invalid timestamp also fails the age comparison.",
 						"examples": [true, false]
 					}

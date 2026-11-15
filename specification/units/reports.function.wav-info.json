@@ -24,7 +24,7 @@
 		"outputs": [
 			{
 				"name": "wavInfo",
-				"type": "unknown",
+				"type": "{ durationSeconds: number; }",
 				"description": "The result is returned only after all validation passes; it holds durationSeconds, the data chunk length divided by the validated byte rate (sample rate times block align), as an unrounded JavaScript number. Accepted audio is PCM (format tag 1) with 8, 16, 24 or 32-bit samples or IEEE float (format tag 3) with 32-bit samples, 1 to 8 channels and sample rates from 4000 through 384000 Hz.",
 				"examples": [
 					{
@@ -61,7 +61,7 @@
 				"outputs": [
 					{
 						"name": "wavInfo",
-						"type": "unknown",
+						"type": "{ durationSeconds: number; }",
 						"description": "The result is returned only after all validation passes; it holds durationSeconds, the data chunk length divided by the validated byte rate (sample rate times block align), as an unrounded JavaScript number. Accepted audio is PCM (format tag 1) with 8, 16, 24 or 32-bit samples or IEEE float (format tag 3) with 32-bit samples, 1 to 8 channels and sample rates from 4000 through 384000 Hz.",
 						"examples": [
 							{

@@ -48,7 +48,7 @@
 		"outputs": [
 			{
 				"name": "reportLocalCleanup",
-				"type": "unknown",
+				"type": "Promise<number>",
 				"description": "Promise resolving to the number of eligible non-directory entries removed, or counted during a dry run. Reserved and dot-prefixed root entries are skipped, known run names are preserved, symlinks found during recursive purge contribute zero, and empty old directories are removed only outside dry runs.",
 				"examples": [0, 2]
 			}
@@ -97,7 +97,7 @@
 				"outputs": [
 					{
 						"name": "reportLocalCleanup",
-						"type": "unknown",
+						"type": "Promise<number>",
 						"description": "Promise resolving to the number of eligible non-directory entries removed, or counted during a dry run. Reserved and dot-prefixed root entries are skipped, known run names are preserved, symlinks found during recursive purge contribute zero, and empty old directories are removed only outside dry runs.",
 						"examples": [0, 2]
 					}

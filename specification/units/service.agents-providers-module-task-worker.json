@@ -637,7 +637,7 @@
 			},
 			{
 				"name": "finishTask",
-				"type": "unknown",
+				"type": "void",
 				"description": "Returns nothing: it sets the matching stored task's status and result in place, and throws when the claim or definition no longer matches."
 			},
 			{
@@ -1225,7 +1225,7 @@
 				"outputs": [
 					{
 						"name": "finishTask",
-						"type": "unknown",
+						"type": "void",
 						"description": "Returns nothing: it sets the matching stored task's status and result in place, and throws when the claim or definition no longer matches."
 					}
 				],

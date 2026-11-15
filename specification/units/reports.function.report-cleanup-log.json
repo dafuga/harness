@@ -43,7 +43,7 @@
 		"outputs": [
 			{
 				"name": "reportCleanupLog",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Promise that resolves to undefined once retention-history.jsonl has been rewritten; the rewrite keeps lines whose JSON parses and whose executedAt is later than the cutoff Date.now() - reportLifetimeMs, appends one new line with executedAt set to the current time and the result, and keeps only the last 300 lines, so the new line is always kept. A missing file is treated as empty, and any readFile error whose code is not 'ENOENT' or any write error makes the promise reject instead."
 			}
 		],
@@ -96,7 +96,7 @@
 				"outputs": [
 					{
 						"name": "reportCleanupLog",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Promise that resolves to undefined once retention-history.jsonl has been rewritten; the rewrite keeps lines whose JSON parses and whose executedAt is later than the cutoff Date.now() - reportLifetimeMs, appends one new line with executedAt set to the current time and the result, and keeps only the last 300 lines, so the new line is always kept. A missing file is treated as empty, and any readFile error whose code is not 'ENOENT' or any write error makes the promise reject instead."
 					}
 				],

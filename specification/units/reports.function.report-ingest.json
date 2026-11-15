@@ -126,7 +126,7 @@
 		"outputs": [
 			{
 				"name": "reportIngest",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Promise that resolves to the same report object passed in, mutated in place, with updatedAt set to the current time as an ISO string. For evidence, the file is imported from the unsanitized record.data.path, path and storage are dropped, the generated file, mediaType, mimeType and (for WAV) durationSeconds overwrite same-named caller fields, and category and status default to 'Evidence' and 'not-proven' when falsy.",
 				"examples": [
 					{
@@ -389,7 +389,7 @@
 				"outputs": [
 					{
 						"name": "reportIngest",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Promise that resolves to the same report object passed in, mutated in place, with updatedAt set to the current time as an ISO string. For evidence, the file is imported from the unsanitized record.data.path, path and storage are dropped, the generated file, mediaType, mimeType and (for WAV) durationSeconds overwrite same-named caller fields, and category and status default to 'Evidence' and 'not-proven' when falsy.",
 						"examples": [
 							{

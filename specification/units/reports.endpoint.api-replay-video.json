@@ -30,7 +30,7 @@
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "The value returned by mediaResponse for the report named by the run parameter. The endpoint passes it the bytes from service.create(id), the content type 'video/mp4', the request's Range header value, and an attachment Content-Disposition whose filename is gameplay-replay-<id>.mp4."
 			}
 		],
@@ -67,7 +67,7 @@
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "unknown",
+						"type": "Promise<Response>",
 						"description": "The value returned by mediaResponse for the report named by the run parameter. The endpoint passes it the bytes from service.create(id), the content type 'video/mp4', the request's Range header value, and an attachment Content-Disposition whose filename is gameplay-replay-<id>.mp4."
 					}
 				],

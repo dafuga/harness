@@ -604,7 +604,7 @@
 			},
 			{
 				"name": "HubProjectionService.source",
-				"type": "unknown",
+				"type": "Promise<{ path: string; text: string; }>",
 				"description": "Resolves to the requested owned repository path and the UTF-8 text read from its committed blob. The path is accepted only when it belongs to the selected unit and names a regular blob.",
 				"examples": [
 					{
@@ -615,7 +615,7 @@
 			},
 			{
 				"name": "HubProjectionService.image",
-				"type": "unknown",
+				"type": "Promise<Uint8Array<ArrayBufferLike>>",
 				"description": "Resolves to binary PNG bytes for the requested plan version and image digest after the stored byte length, PNG structure, and dimensions are checked. The decoded scanline limit is 32 MiB, and the binary bytes have no JSON example."
 			},
 			{
@@ -1372,7 +1372,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.source",
-						"type": "unknown",
+						"type": "Promise<{ path: string; text: string; }>",
 						"description": "Resolves to the requested owned repository path and the UTF-8 text read from its committed blob. The path is accepted only when it belongs to the selected unit and names a regular blob.",
 						"examples": [
 							{
@@ -1443,7 +1443,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.image",
-						"type": "unknown",
+						"type": "Promise<Uint8Array<ArrayBufferLike>>",
 						"description": "Resolves to binary PNG bytes for the requested plan version and image digest after the stored byte length, PNG structure, and dimensions are checked. The decoded scanline limit is 32 MiB, and the binary bytes have no JSON example."
 					}
 				],

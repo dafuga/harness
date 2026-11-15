@@ -73,7 +73,7 @@
 		"outputs": [
 			{
 				"name": "caseForm",
-				"type": "unknown",
+				"type": "{ readonly version: 1; readonly kind: \"function-invocations\"; readonly most: 64; readonly name: 160; }",
 				"description": "The reader's recorded-call format constants. They set schema version 1, kind `function-invocations`, a 64-case maximum, and a 160-character case-name maximum.",
 				"examples": [
 					{

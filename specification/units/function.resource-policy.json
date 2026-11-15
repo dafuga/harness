@@ -113,7 +113,7 @@
 			},
 			{
 				"name": "resourcePolicy",
-				"type": "unknown",
+				"type": "{ granted: string[]; reason: string | null; }",
 				"description": "IDs admitted by priority and bounded parent pools, plus the public waiting reason."
 			}
 		],
@@ -240,7 +240,7 @@
 				"outputs": [
 					{
 						"name": "resourcePolicy",
-						"type": "unknown",
+						"type": "{ granted: string[]; reason: string | null; }",
 						"description": "IDs admitted by priority and bounded parent pools, plus the public waiting reason."
 					}
 				],

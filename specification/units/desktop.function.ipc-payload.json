@@ -145,7 +145,7 @@
 		"outputs": [
 			{
 				"name": "approvalPayload",
-				"type": "unknown",
+				"type": "{ option?: undefined; version: string; imageHashes: string[]; contractHash: string; } | { option: string; version: string; imageHashes: string[]; contractHash: string; }",
 				"description": "Returns version, imageHashes, and contractHash, adding option only when it was supplied. Returned version and hash values have passed their imported validators.",
 				"examples": [
 					{
@@ -191,7 +191,7 @@
 			},
 			{
 				"name": "creationPayload",
-				"type": "unknown",
+				"type": "{ designOptions?: undefined; intent: \"create\"; projectId: string; category: \"components\" | \"pages\" | \"apis\" | \"layouts\" | \"functions\" | \"configs\" | \"services\" | \"models\"; mode: \"plan\"; provider: \"claude\" | \"codex\"; model: string; effort: string | null; text: string; } | { designOptions: number; intent: \"create\"; projectId: string; category: \"components\" | \"pages\" | \"apis\" | \"layouts\" | \"functions\" | \"configs\" | \"services\" | \"models\"; mode: \"plan\"; provider: \"claude\" | \"codex\"; model: string; effort: string | null; text: string; }",
 				"description": "Returns intent, projectId, category, mode, provider, model, effort, and text, adding designOptions only when supplied. designOptions must be an integer from 1 to 10 and text is limited to 20,000 characters.",
 				"examples": [
 					{
@@ -272,7 +272,7 @@
 				"outputs": [
 					{
 						"name": "approvalPayload",
-						"type": "unknown",
+						"type": "{ option?: undefined; version: string; imageHashes: string[]; contractHash: string; } | { option: string; version: string; imageHashes: string[]; contractHash: string; }",
 						"description": "Returns version, imageHashes, and contractHash, adding option only when it was supplied. Returned version and hash values have passed their imported validators.",
 						"examples": [
 							{
@@ -417,7 +417,7 @@
 				"outputs": [
 					{
 						"name": "creationPayload",
-						"type": "unknown",
+						"type": "{ designOptions?: undefined; intent: \"create\"; projectId: string; category: \"components\" | \"pages\" | \"apis\" | \"layouts\" | \"functions\" | \"configs\" | \"services\" | \"models\"; mode: \"plan\"; provider: \"claude\" | \"codex\"; model: string; effort: string | null; text: string; } | { designOptions: number; intent: \"create\"; projectId: string; category: \"components\" | \"pages\" | \"apis\" | \"layouts\" | \"functions\" | \"configs\" | \"services\" | \"models\"; mode: \"plan\"; provider: \"claude\" | \"codex\"; model: string; effort: string | null; text: string; }",
 						"description": "Returns intent, projectId, category, mode, provider, model, effort, and text, adding designOptions only when supplied. designOptions must be an integer from 1 to 10 and text is limited to 20,000 characters.",
 						"examples": [
 							{

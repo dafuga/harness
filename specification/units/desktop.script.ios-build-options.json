@@ -65,7 +65,7 @@
 			},
 			{
 				"name": "simulatorEntitlements",
-				"type": "unknown",
+				"type": "string",
 				"description": "The absolute path of packages/desktop/ios/App/Simulator.entitlements, computed from this module's own location with import.meta.url. simulatorSigning puts this path into CODE_SIGN_ENTITLEMENTS, and the module does not check that the file exists.",
 				"examples": [
 					"/repo/packages/desktop/ios/App/Simulator.entitlements",
@@ -74,7 +74,7 @@
 			},
 			{
 				"name": "simulatorSigning",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "The Xcode build settings, as NAME=value strings, that give every simulator product ad hoc signing with no team, account, certificate or provisioning profile named or used, and that point CODE_SIGN_ENTITLEMENTS at simulatorEntitlements. A device build needs a team, an account, a certificate and a provisioning profile, and it is not made here.",
 				"examples": [
 					[

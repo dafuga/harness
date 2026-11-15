@@ -129,7 +129,7 @@
 			},
 			{
 				"name": "hubEvidencePins",
-				"type": "unknown",
+				"type": "Promise<undefined>",
 				"description": "Resolves to undefined after checking both requested revisions. Changed pins must be present and reachable from their current pins; on success, base.identity is replaced with the requested revisions."
 			},
 			{
@@ -256,7 +256,7 @@
 				"outputs": [
 					{
 						"name": "hubEvidencePins",
-						"type": "unknown",
+						"type": "Promise<undefined>",
 						"description": "Resolves to undefined after checking both requested revisions. Changed pins must be present and reachable from their current pins; on success, base.identity is replaced with the requested revisions."
 					}
 				],

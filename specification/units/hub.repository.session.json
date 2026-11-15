@@ -106,13 +106,13 @@
 		"outputs": [
 			{
 				"name": "BROWSER_TTL",
-				"type": "unknown",
+				"type": "number",
 				"description": "Browser-session lifetime in milliseconds, selected for every issued grant whose kind is not native. Its value is seven days.",
 				"examples": [604800000]
 			},
 			{
 				"name": "NATIVE_TTL",
-				"type": "unknown",
+				"type": "number",
 				"description": "Native-session lifetime in milliseconds, selected when an issued grant has kind native. Its value is thirty days.",
 				"examples": [2592000000]
 			},

@@ -44,7 +44,7 @@
 		"outputs": [
 			{
 				"name": "ReportRecordValidator.validate",
-				"type": "unknown",
+				"type": "void",
 				"description": "The method has no result payload and returns undefined after the record passes validation."
 			}
 		],
@@ -90,7 +90,7 @@
 				"outputs": [
 					{
 						"name": "ReportRecordValidator.validate",
-						"type": "unknown",
+						"type": "void",
 						"description": "The method has no result payload and returns undefined after the record passes validation."
 					}
 				],

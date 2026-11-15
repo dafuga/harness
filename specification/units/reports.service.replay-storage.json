@@ -33,7 +33,7 @@
 						"id": "378413ad-29d3-4b7c-be71-828250cf0123",
 						"project": {
 							"id": "357f144b4cee261e",
-							"name": "slot-8",
+							"name": "project",
 							"path": "/workspace/project"
 						},
 						"title": "Replay storage verification",
@@ -80,7 +80,7 @@
 						"id": "378413ad-29d3-4b7c-be71-828250cf0123",
 						"project": {
 							"id": "357f144b4cee261e",
-							"name": "slot-8",
+							"name": "project",
 							"path": "/workspace/project"
 						},
 						"title": "Replay storage verification",
@@ -120,13 +120,13 @@
 		"outputs": [
 			{
 				"name": "ReplayStorageService.store",
-				"type": "unknown",
+				"type": "Promise<boolean>",
 				"description": "Resolves to true after uploading the replay and writing its SHA-256 receipt. Resolves to false when R2 is unconfigured or a receipt already exists.",
 				"examples": [true, false]
 			},
 			{
 				"name": "ReplayStorageService.restore",
-				"type": "unknown",
+				"type": "Promise<Buffer<ArrayBuffer> | undefined>",
 				"description": "Resolves to replay Buffer bytes after a receipt-backed R2 fetch with a matching SHA-256 digest, or undefined when no receipt exists or R2 is unconfigured. The bytes are written to the report directory before resolution."
 			}
 		],
@@ -153,7 +153,7 @@
 								"id": "378413ad-29d3-4b7c-be71-828250cf0123",
 								"project": {
 									"id": "357f144b4cee261e",
-									"name": "slot-8",
+									"name": "project",
 									"path": "/workspace/project"
 								},
 								"title": "Replay storage verification",
@@ -193,7 +193,7 @@
 				"outputs": [
 					{
 						"name": "ReplayStorageService.store",
-						"type": "unknown",
+						"type": "Promise<boolean>",
 						"description": "Resolves to true after uploading the replay and writing its SHA-256 receipt. Resolves to false when R2 is unconfigured or a receipt already exists.",
 						"examples": [true, false]
 					}
@@ -221,7 +221,7 @@
 								"id": "378413ad-29d3-4b7c-be71-828250cf0123",
 								"project": {
 									"id": "357f144b4cee261e",
-									"name": "slot-8",
+									"name": "project",
 									"path": "/workspace/project"
 								},
 								"title": "Replay storage verification",
@@ -261,7 +261,7 @@
 				"outputs": [
 					{
 						"name": "ReplayStorageService.restore",
-						"type": "unknown",
+						"type": "Promise<Buffer<ArrayBuffer> | undefined>",
 						"description": "Resolves to replay Buffer bytes after a receipt-backed R2 fetch with a matching SHA-256 digest, or undefined when no receipt exists or R2 is unconfigured. The bytes are written to the report directory before resolution."
 					}
 				],

@@ -34,7 +34,7 @@
 		"outputs": [
 			{
 				"name": "ScreenshotRetentionService.run",
-				"type": "unknown",
+				"type": "Promise<{ expired: number; reports: number; }>",
 				"description": "The resolved summary of one cleanup pass: expired counts the evidence items newly marked missing across all reports, and reports counts how many reports had at least one such item. Both are 0 when no R2-stored evidence item that is not already missing has a capture time at or before the 30-day cutoff.",
 				"examples": [
 					{
@@ -74,7 +74,7 @@
 				"outputs": [
 					{
 						"name": "ScreenshotRetentionService.run",
-						"type": "unknown",
+						"type": "Promise<{ expired: number; reports: number; }>",
 						"description": "The resolved summary of one cleanup pass: expired counts the evidence items newly marked missing across all reports, and reports counts how many reports had at least one such item. Both are 0 when no R2-stored evidence item that is not already missing has a capture time at or before the 30-day cutoff.",
 						"examples": [
 							{

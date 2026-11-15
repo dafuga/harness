@@ -76,7 +76,7 @@
 			},
 			{
 				"name": "resourceCpu",
-				"type": "unknown",
+				"type": "{ logicalCores: number; usableCores: number; cpuUsedPercent: number; cpuAvailableCores: number; }",
 				"description": "An interval summary with the logical core count, usable core count, host CPU use percentage, and available cores. Usable cores are bounded by logical cores, affinity, and any core limit; available cores are clamped at zero and bounded by observed idle capacity and, when quota use is reported, measured quota availability.",
 				"examples": [
 					{
@@ -168,7 +168,7 @@
 				"outputs": [
 					{
 						"name": "resourceCpu",
-						"type": "unknown",
+						"type": "{ logicalCores: number; usableCores: number; cpuUsedPercent: number; cpuAvailableCores: number; }",
 						"description": "An interval summary with the logical core count, usable core count, host CPU use percentage, and available cores. Usable cores are bounded by logical cores, affinity, and any core limit; available cores are clamped at zero and bounded by observed idle capacity and, when quota use is reported, measured quota availability.",
 						"examples": [
 							{

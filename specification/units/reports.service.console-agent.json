@@ -76,18 +76,18 @@
 			},
 			{
 				"name": "ConsoleAgentService.close",
-				"type": "unknown",
+				"type": "void",
 				"description": "Cancels the active run through DesktopRunService.cancelActive. The method returns undefined."
 			},
 			{
 				"name": "ConsoleAgentService.busy",
-				"type": "unknown",
+				"type": "boolean",
 				"description": "Reports whether the project session is busy running work. It directly reflects ProjectSessionService.busy.",
 				"examples": [false, true]
 			},
 			{
 				"name": "ConsoleAgentService.expired",
-				"type": "unknown",
+				"type": "boolean",
 				"description": "Reports whether the session has been untouched for more than one hour while not busy. A busy session is never reported expired.",
 				"examples": [false, true]
 			},
@@ -145,7 +145,7 @@
 				"outputs": [
 					{
 						"name": "ConsoleAgentService.close",
-						"type": "unknown",
+						"type": "void",
 						"description": "Cancels the active run through DesktopRunService.cancelActive. The method returns undefined."
 					}
 				],
@@ -158,7 +158,7 @@
 				"outputs": [
 					{
 						"name": "ConsoleAgentService.busy",
-						"type": "unknown",
+						"type": "boolean",
 						"description": "Reports whether the project session is busy running work. It directly reflects ProjectSessionService.busy.",
 						"examples": [false, true]
 					}
@@ -172,7 +172,7 @@
 				"outputs": [
 					{
 						"name": "ConsoleAgentService.expired",
-						"type": "unknown",
+						"type": "boolean",
 						"description": "Reports whether the session has been untouched for more than one hour while not busy. A busy session is never reported expired.",
 						"examples": [false, true]
 					}

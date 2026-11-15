@@ -135,7 +135,7 @@
 		"outputs": [
 			{
 				"name": "nodeSize",
-				"type": "unknown",
+				"type": "{ width: number; height: number; gapX: number; gapY: number; }",
 				"description": "The node box and spacing constant used for every unit: width 176, height 34, gapX 16 between columns and gapY 46 between rows. harnessLayout computes every node position and the map's width and height from these four values.",
 				"examples": [
 					{

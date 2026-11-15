@@ -51,7 +51,7 @@
 		"outputs": [
 			{
 				"name": "CHALLENGE_TTL",
-				"type": "unknown",
+				"type": "number",
 				"description": "Challenge lifetime in milliseconds; fixed at five minutes (5 * 60 * 1000). issue adds this duration to now() for the stored record's expiresAt.",
 				"examples": [300000]
 			},

@@ -223,7 +223,7 @@
 		"outputs": [
 			{
 				"name": "hubApproval",
-				"type": "unknown",
+				"type": "Promise<{ id: string; unitId: string; version: string; images: { file: string; sha256: string; }[]; notesSha256: string | null; contractHash: string; approvedAt: string; option?: string | undefined; } | undefined>",
 				"description": "The matching approval record with the greatest approvedAt under localeCompare, or undefined when none matches; on equal approvedAt the record listed last in context.entries wins. A record matches when its unitId equals plan.unitId, its version, contractHash and notesSha256 equal those of value (notesSha256 is null when value has no notes), and its images match, by file and sha256, the images of the option it names or, when value has no options, the images of value.",
 				"examples": [
 					{
@@ -493,7 +493,7 @@
 				"outputs": [
 					{
 						"name": "hubApproval",
-						"type": "unknown",
+						"type": "Promise<{ id: string; unitId: string; version: string; images: { file: string; sha256: string; }[]; notesSha256: string | null; contractHash: string; approvedAt: string; option?: string | undefined; } | undefined>",
 						"description": "The matching approval record with the greatest approvedAt under localeCompare, or undefined when none matches; on equal approvedAt the record listed last in context.entries wins. A record matches when its unitId equals plan.unitId, its version, contractHash and notesSha256 equal those of value (notesSha256 is null when value has no notes), and its images match, by file and sha256, the images of the option it names or, when value has no options, the images of value.",
 						"examples": [
 							{

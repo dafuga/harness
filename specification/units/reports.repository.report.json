@@ -119,13 +119,13 @@
 		"outputs": [
 			{
 				"name": "ReportRepository.directory",
-				"type": "unknown",
+				"type": "string",
 				"description": "Returns the filesystem path join(root, 'runs', safeId(id)) for the requested report.",
 				"examples": ["/tmp/project-reports/runs/550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "ReportRepository.begin",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the new Report created by reportState after its run directory and manifest are written.",
 				"examples": [
 					{
@@ -187,7 +187,7 @@
 			},
 			{
 				"name": "ReportRepository.list",
-				"type": "unknown",
+				"type": "Promise<Report[]>",
 				"description": "Resolves to directory-backed reports sorted by startedAt descending; unreadable runs directories and individual manifests are skipped.",
 				"examples": [
 					[
@@ -220,7 +220,7 @@
 			},
 			{
 				"name": "ReportRepository.record",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the updated active Report after record ingestion, evidence storage for evidence records, and manifest writing.",
 				"examples": [
 					{
@@ -251,7 +251,7 @@
 			},
 			{
 				"name": "ReportRepository.mutateActive",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the active Report after the callback, evidence storage, and manifest writing complete.",
 				"examples": [
 					{
@@ -282,7 +282,7 @@
 			},
 			{
 				"name": "ReportRepository.seal",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the Report in finalizing state with resultStatus applied; evidence unavailable during finalization is marked missing and not-proven.",
 				"examples": [
 					{
@@ -313,7 +313,7 @@
 			},
 			{
 				"name": "ReportRepository.finish",
-				"type": "unknown",
+				"type": "Promise<Report>",
 				"description": "Resolves to the Report in finalized state after updating updatedAt and writing the manifest.",
 				"examples": [
 					{
@@ -376,7 +376,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.directory",
-						"type": "unknown",
+						"type": "string",
 						"description": "Returns the filesystem path join(root, 'runs', safeId(id)) for the requested report.",
 						"examples": ["/tmp/project-reports/runs/550e8400-e29b-41d4-a716-446655440000"]
 					}
@@ -415,7 +415,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.begin",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Resolves to the new Report created by reportState after its run directory and manifest are written.",
 						"examples": [
 							{
@@ -518,7 +518,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.list",
-						"type": "unknown",
+						"type": "Promise<Report[]>",
 						"description": "Resolves to directory-backed reports sorted by startedAt descending; unreadable runs directories and individual manifests are skipped.",
 						"examples": [
 							[
@@ -587,7 +587,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.record",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Resolves to the updated active Report after record ingestion, evidence storage for evidence records, and manifest writing.",
 						"examples": [
 							{
@@ -651,7 +651,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.mutateActive",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Resolves to the active Report after the callback, evidence storage, and manifest writing complete.",
 						"examples": [
 							{
@@ -709,7 +709,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.seal",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Resolves to the Report in finalizing state with resultStatus applied; evidence unavailable during finalization is marked missing and not-proven.",
 						"examples": [
 							{
@@ -767,7 +767,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.finish",
-						"type": "unknown",
+						"type": "Promise<Report>",
 						"description": "Resolves to the Report in finalized state after updating updatedAt and writing the manifest.",
 						"examples": [
 							{

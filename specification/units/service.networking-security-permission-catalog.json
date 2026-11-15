@@ -45,7 +45,7 @@
 		"outputs": [
 			{
 				"name": "profileSchema",
-				"type": "unknown",
+				"type": "typeof profileSchema",
 				"description": "Strict Zod schema used to parse permission-profile JSON: `schemaVersion` must be 1, `id` must match the lowercase hyphenated pattern, text values must be nonempty after trimming, and grants must use the declared API, page, or data shape. It rejects unknown keys and enforces the action and nonempty-array constraints; the schema instance cannot be represented as a JSON value."
 			},
 			{

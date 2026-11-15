@@ -39,7 +39,7 @@
 		"outputs": [
 			{
 				"name": "scaffoldKinds",
-				"type": "unknown",
+				"type": "typeof scaffoldKinds",
 				"description": "The readonly tuple of the 36 scaffold kind names in declaration order, from which PieceKind is derived. The readonly typing exists only at compile time: the code does not freeze the array, so it stays mutable at runtime.",
 				"examples": [
 					[

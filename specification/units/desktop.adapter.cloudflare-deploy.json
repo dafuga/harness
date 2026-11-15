@@ -133,7 +133,7 @@
 			},
 			{
 				"name": "CloudflareDeployAdapter.deploy",
-				"type": "unknown",
+				"type": "Promise<{ deploymentId: string; url: string; }>",
 				"description": "Resolved result of deploy: url is the first *.pages.dev or *.workers.dev URL printed by the command, or the target's healthUrl when a Workers command prints none. deploymentId is the leading label of that URL for Pages, or the printed Workers Version ID UUID for Workers.",
 				"examples": [
 					{
@@ -296,7 +296,7 @@
 				"outputs": [
 					{
 						"name": "CloudflareDeployAdapter.deploy",
-						"type": "unknown",
+						"type": "Promise<{ deploymentId: string; url: string; }>",
 						"description": "Resolved result of deploy: url is the first *.pages.dev or *.workers.dev URL printed by the command, or the target's healthUrl when a Workers command prints none. deploymentId is the leading label of that URL for Pages, or the printed Workers Version ID UUID for Workers.",
 						"examples": [
 							{

@@ -172,7 +172,7 @@
 				"outputs": [
 					{
 						"name": "requireRegressionProof",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with undefined after required proof checks pass; steps outside red, implement, green, guard, and verify are ignored."
 					}
 				],
@@ -225,7 +225,7 @@
 				"outputs": [
 					{
 						"name": "enforceRegressionStep",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with undefined when enforcement is not due or the required proof passes; after a successful starting red check it sets state.regressionCommits to 1."
 					}
 				],

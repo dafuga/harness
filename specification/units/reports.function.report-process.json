@@ -52,7 +52,7 @@
 		"outputs": [
 			{
 				"name": "reportProcess",
-				"type": "unknown",
+				"type": "Promise<{ code: number; output: string; durationMs: number; }>",
 				"description": "The resolved object reports the process exit code, combined stdout and stderr, and elapsed milliseconds for completion and diagnostics. Only the last 2,000,000 JavaScript string code units are retained; a null close code becomes -1, and nonzero codes resolve normally.",
 				"examples": [
 					{
@@ -118,7 +118,7 @@
 				"outputs": [
 					{
 						"name": "reportProcess",
-						"type": "unknown",
+						"type": "Promise<{ code: number; output: string; durationMs: number; }>",
 						"description": "The resolved object reports the process exit code, combined stdout and stderr, and elapsed milliseconds for completion and diagnostics. Only the last 2,000,000 JavaScript string code units are retained; a null close code becomes -1, and nonzero codes resolve normally.",
 						"examples": [
 							{

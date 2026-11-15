@@ -79,12 +79,12 @@
 		"outputs": [
 			{
 				"name": "hubHttp",
-				"type": "unknown",
+				"type": "Response",
 				"description": "A Fetch Response containing the JSON encoding of value with the supplied HTTP status. It sets Cache-Control: no-store, Referrer-Policy: no-referrer and X-Content-Type-Options: nosniff."
 			},
 			{
 				"name": "hubQuery",
-				"type": "unknown",
+				"type": "{ entityId: string; commit: string; branch: string; path: string; version: string; sha256: string; threadId: string; }",
 				"description": "An object with entityId, commit, branch, path, version, sha256 and threadId when the required identifiers pass validation. Missing query fields are returned as empty strings; invalid entityId or commit invokes hubFail('invalid-input').",
 				"examples": [
 					{
@@ -113,7 +113,7 @@
 			},
 			{
 				"name": "hubHttpFailure",
-				"type": "unknown",
+				"type": "Response",
 				"description": "A Fetch Response with a JSON error code and the mapped status for a recognized public code. Missing, non-string or unrecognized codes become unavailable with status 503."
 			}
 		],
@@ -149,7 +149,7 @@
 				"outputs": [
 					{
 						"name": "hubQuery",
-						"type": "unknown",
+						"type": "{ entityId: string; commit: string; branch: string; path: string; version: string; sha256: string; threadId: string; }",
 						"description": "An object with entityId, commit, branch, path, version, sha256 and threadId when the required identifiers pass validation. Missing query fields are returned as empty strings; invalid entityId or commit invokes hubFail('invalid-input').",
 						"examples": [
 							{
@@ -194,7 +194,7 @@
 				"outputs": [
 					{
 						"name": "hubHttpFailure",
-						"type": "unknown",
+						"type": "Response",
 						"description": "A Fetch Response with a JSON error code and the mapped status for a recognized public code. Missing, non-string or unrecognized codes become unavailable with status 503."
 					}
 				],
@@ -230,7 +230,7 @@
 				"outputs": [
 					{
 						"name": "hubHttp",
-						"type": "unknown",
+						"type": "Response",
 						"description": "A Fetch Response containing the JSON encoding of value with the supplied HTTP status. It sets Cache-Control: no-store, Referrer-Policy: no-referrer and X-Content-Type-Options: nosniff."
 					}
 				],

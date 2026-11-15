@@ -219,7 +219,7 @@
 			},
 			{
 				"name": "gameStep",
-				"type": "unknown",
+				"type": "GameRun",
 				"description": "Alias of stepGame; calling it uses the same tick update and validation behavior."
 			},
 			{

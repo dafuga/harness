@@ -423,7 +423,7 @@
 				"outputs": [
 					{
 						"name": "componentSnippets",
-						"type": "unknown",
+						"type": "Array<{ name: string; kind: 'snippet'; inputs: ContractItem[]; output: 'markup' }>",
 						"description": "Markup-level snippet declarations become symbols with owner-qualified names, parsed inputs, and markup output; HTML comments and script blocks are stripped first so they cannot create snippet entries.",
 						"examples": [
 							[

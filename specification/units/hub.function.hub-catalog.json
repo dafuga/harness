@@ -553,7 +553,7 @@
 			},
 			{
 				"name": "hubAttestPlan",
-				"type": "unknown",
+				"type": "undefined",
 				"description": "Returns undefined when a registered unit kind matches the plan category or an unregistered plan id equals category.slug. Otherwise it throws an artifact-corrupt error."
 			},
 			{
@@ -575,11 +575,9 @@
 			},
 			{
 				"name": "hubOwnedPaths",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "Repository-relative paths for blob entries equal to or nested beneath a declared source root, in source-tree order. Non-blob entries are omitted and duplicates are preserved.",
-				"examples": [
-					["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]
-				]
+				"examples": [["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]]
 			}
 		],
 		"errors": [
@@ -1042,7 +1040,7 @@
 				"outputs": [
 					{
 						"name": "hubAttestPlan",
-						"type": "unknown",
+						"type": "undefined",
 						"description": "Returns undefined when a registered unit kind matches the plan category or an unregistered plan id equals category.slug. Otherwise it throws an artifact-corrupt error."
 					}
 				],
@@ -1177,11 +1175,9 @@
 				"outputs": [
 					{
 						"name": "hubOwnedPaths",
-						"type": "unknown",
+						"type": "string[]",
 						"description": "Repository-relative paths for blob entries equal to or nested beneath a declared source root, in source-tree order. Non-blob entries are omitted and duplicates are preserved.",
-						"examples": [
-							["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]
-						]
+						"examples": [["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]]
 					}
 				],
 				"errors": [],

@@ -25,9 +25,7 @@
 				"type": "unknown",
 				"required": true,
 				"description": "An object subtree or array of subtrees that the walker inspects. Falsy and non-object values are ignored; traversal skips keys parent, metadata, expression, and attributes, and it has no general cycle guard.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "walkAtomicMarkup.callback",
@@ -39,12 +37,12 @@
 		"outputs": [
 			{
 				"name": "atomicSyntax",
-				"type": "unknown",
+				"type": "{ tree: import('svelte/compiler').AST.Root; directory?: string; tier?: string; element?: string; atoms: Array<{ node: import('svelte/compiler').AST.RegularElement; definition?: { name: string; tag: string; type?: string } }> }",
 				"description": "An object containing the Svelte parse tree, the first matching top-level @harness-atoms, valid @harness-tier, and @harness-element values, and atoms entries for hx- regular elements. Header values are undefined when no matching top-level comment exists, and an atom entry's definition is undefined when no native definition matches."
 			},
 			{
 				"name": "walkAtomicMarkup",
-				"type": "unknown",
+				"type": "void",
 				"description": "The function has no return statement and therefore completes with undefined after traversal. Exceptions raised during traversal propagate to the caller."
 			}
 		],
@@ -80,7 +78,7 @@
 				"outputs": [
 					{
 						"name": "atomicSyntax",
-						"type": "unknown",
+						"type": "{ tree: import('svelte/compiler').AST.Root; directory?: string; tier?: string; element?: string; atoms: Array<{ node: import('svelte/compiler').AST.RegularElement; definition?: { name: string; tag: string; type?: string } }> }",
 						"description": "An object containing the Svelte parse tree, the first matching top-level @harness-atoms, valid @harness-tier, and @harness-element values, and atoms entries for hx- regular elements. Header values are undefined when no matching top-level comment exists, and an atom entry's definition is undefined when no native definition matches."
 					}
 				],
@@ -101,9 +99,7 @@
 						"type": "unknown",
 						"required": true,
 						"description": "An object subtree or array of subtrees that the walker inspects. Falsy and non-object values are ignored; traversal skips keys parent, metadata, expression, and attributes, and it has no general cycle guard.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					},
 					{
 						"name": "walkAtomicMarkup.callback",
@@ -115,7 +111,7 @@
 				"outputs": [
 					{
 						"name": "walkAtomicMarkup",
-						"type": "unknown",
+						"type": "void",
 						"description": "The function has no return statement and therefore completes with undefined after traversal. Exceptions raised during traversal propagate to the caller."
 					}
 				],

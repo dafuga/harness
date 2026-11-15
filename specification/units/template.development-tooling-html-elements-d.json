@@ -63,7 +63,7 @@
 		"outputs": [
 			{
 				"name": "htmlElements",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "The exported const htmlElements, declared as string[] in htmlElements.d.ts, so importers receive an array of strings. The declaration gives only the type, not the list contents, so the examples show the declared shape rather than the actual list.",
 				"examples": [
 					["a", "abbr", "div"],
@@ -72,7 +72,7 @@
 			},
 			{
 				"name": "svgElements",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "The exported const svgElements, declared as string[] in htmlElements.d.ts, so importers receive an array of strings. The declaration gives only the type, not the list contents, so the examples show the declared shape rather than the actual list.",
 				"examples": [
 					["circle", "path", "rect"],
@@ -81,7 +81,7 @@
 			},
 			{
 				"name": "inputTypes",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "The exported const inputTypes, declared as string[] in htmlElements.d.ts, so importers receive an array of strings. The declaration gives only the type, not the list contents, so the examples show the declared shape rather than the actual list.",
 				"examples": [
 					["checkbox", "email", "text"],
@@ -90,7 +90,7 @@
 			},
 			{
 				"name": "voidElements",
-				"type": "unknown",
+				"type": "Set<string>",
 				"description": "The exported const voidElements, declared as Set<string> in htmlElements.d.ts, so importers receive a Set rather than an array. The declaration gives no contents, and JSON cannot express a Set, so no examples are given."
 			},
 			{
@@ -101,7 +101,7 @@
 			},
 			{
 				"name": "nativeAtoms",
-				"type": "unknown",
+				"type": "Array<{ name: string; tag: string; type?: string }>",
 				"description": "The exported const nativeAtoms, declared in htmlElements.d.ts as an array of objects, each with a string name, a string tag, and an optional string type. The declaration shows no entries, so the examples show the declared shape rather than the actual list.",
 				"examples": [
 					[

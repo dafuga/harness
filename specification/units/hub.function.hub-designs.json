@@ -173,15 +173,13 @@
 		"outputs": [
 			{
 				"name": "hubDesigns",
-				"type": "unknown",
+				"type": "Promise<DesignVersion[]>",
 				"description": "Returns the committed design versions in numeric version order and requires a gapless sequence starting at v001. Each version includes the decoded prompt, optional notes, image, approval, option and revision data; commit is null, and only an approval for the newest version is marked current.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "hubDesignImage",
-				"type": "unknown",
+				"type": "Promise<Uint8Array<ArrayBufferLike>>",
 				"description": "Returns the original PNG bytes for the image selected by the SHA-256 digest after content hash, stored byte length and decoded dimensions are verified. Missing design/image records fail with not-found, while mismatched image length or dimensions fail with artifact-corrupt."
 			}
 		],
@@ -256,7 +254,7 @@
 				"outputs": [
 					{
 						"name": "hubDesignImage",
-						"type": "unknown",
+						"type": "Promise<Uint8Array<ArrayBufferLike>>",
 						"description": "Returns the original PNG bytes for the image selected by the SHA-256 digest after content hash, stored byte length and decoded dimensions are verified. Missing design/image records fail with not-found, while mismatched image length or dimensions fail with artifact-corrupt."
 					}
 				],
@@ -319,11 +317,9 @@
 				"outputs": [
 					{
 						"name": "hubDesigns",
-						"type": "unknown",
+						"type": "Promise<DesignVersion[]>",
 						"description": "Returns the committed design versions in numeric version order and requires a gapless sequence starting at v001. Each version includes the decoded prompt, optional notes, image, approval, option and revision data; commit is null, and only an approval for the newest version is marked current.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"errors": [

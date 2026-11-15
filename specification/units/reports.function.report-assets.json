@@ -89,7 +89,7 @@
 		"outputs": [
 			{
 				"name": "imageAsset",
-				"type": "unknown",
+				"type": "{ name: string; mime: string; }",
 				"description": "Object containing the SHA-256 digest of the bytes plus their detected extension and the corresponding MIME type. Detection checks PNG, JPEG, and WebP signatures without fully decoding the image.",
 				"examples": [
 					{
@@ -100,12 +100,12 @@
 			},
 			{
 				"name": "writeImageAsset",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Promise resolving to undefined after creating the assets directory recursively with mode 0700 and writing the supplied bytes with creation mode 0600."
 			},
 			{
 				"name": "reportAssets",
-				"type": "unknown",
+				"type": "Promise<{ name: string; mimeType: string; mediaType: 'audio'; durationSeconds?: number } | { name: string; mediaType: 'image'; mimeType: string }>",
 				"description": "Promise resolving to metadata for the stored audio or image asset after source checks and a content-addressed write under directory/assets. The image branch returns name, mediaType, and mimeType; audio metadata comes from audioAsset.",
 				"examples": [
 					{
@@ -117,7 +117,7 @@
 			},
 			{
 				"name": "registeredAsset",
-				"type": "unknown",
+				"type": "Promise<string>",
 				"description": "Promise resolving to the canonical-base path for the requested registered file after confirming it is a regular non-symlink file whose real path remains inside the base directory.",
 				"examples": [
 					"/workspace/project/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"
@@ -154,7 +154,7 @@
 				"outputs": [
 					{
 						"name": "reportAssets",
-						"type": "unknown",
+						"type": "Promise<{ name: string; mimeType: string; mediaType: 'audio'; durationSeconds?: number } | { name: string; mediaType: 'image'; mimeType: string }>",
 						"description": "Promise resolving to metadata for the stored audio or image asset after source checks and a content-addressed write under directory/assets. The image branch returns name, mediaType, and mimeType; audio metadata comes from audioAsset.",
 						"examples": [
 							{
@@ -194,7 +194,7 @@
 				"outputs": [
 					{
 						"name": "imageAsset",
-						"type": "unknown",
+						"type": "{ name: string; mime: string; }",
 						"description": "Object containing the SHA-256 digest of the bytes plus their detected extension and the corresponding MIME type. Detection checks PNG, JPEG, and WebP signatures without fully decoding the image.",
 						"examples": [
 							{
@@ -240,7 +240,7 @@
 				"outputs": [
 					{
 						"name": "writeImageAsset",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Promise resolving to undefined after creating the assets directory recursively with mode 0700 and writing the supplied bytes with creation mode 0600."
 					}
 				],
@@ -281,7 +281,7 @@
 				"outputs": [
 					{
 						"name": "registeredAsset",
-						"type": "unknown",
+						"type": "Promise<string>",
 						"description": "Promise resolving to the canonical-base path for the requested registered file after confirming it is a regular non-symlink file whose real path remains inside the base directory.",
 						"examples": [
 							"/workspace/project/packages/reports/assets/9be1c9a04db42fdda6656fcf79583719548b342bfb1ae79343d82d89d3ea994b.png"

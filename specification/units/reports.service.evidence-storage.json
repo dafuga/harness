@@ -117,7 +117,7 @@
 		"outputs": [
 			{
 				"name": "EvidenceStorageService.store",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "On success store resolves to undefined: it returns early when no evidence is pending or no R2 evidence store is configured, and otherwise returns only after setting storage on every pending item of the report it was given."
 			}
 		],
@@ -266,7 +266,7 @@
 				"outputs": [
 					{
 						"name": "EvidenceStorageService.store",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "On success store resolves to undefined: it returns early when no evidence is pending or no R2 evidence store is configured, and otherwise returns only after setting storage on every pending item of the report it was given."
 					}
 				],

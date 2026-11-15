@@ -32,7 +32,7 @@
 		"outputs": [
 			{
 				"name": "atomicComponents",
-				"type": "unknown",
+				"type": "import('svelte/compiler').PreprocessorGroup",
 				"description": "The factory returns a Svelte markup preprocessor object named `harness-atomic-components`; its callback inlines recognized native atoms before Svelte validation and returns transformed code, a source map, and dependency paths. The callback returns `undefined` when there is no filename or the content contains neither `/atoms/` nor `<hx-`."
 			}
 		],
@@ -66,7 +66,7 @@
 				"outputs": [
 					{
 						"name": "atomicComponents",
-						"type": "unknown",
+						"type": "import('svelte/compiler').PreprocessorGroup",
 						"description": "The factory returns a Svelte markup preprocessor object named `harness-atomic-components`; its callback inlines recognized native atoms before Svelte validation and returns transformed code, a source map, and dependency paths. The callback returns `undefined` when there is no filename or the content contains neither `/atoms/` nor `<hx-`."
 					}
 				],

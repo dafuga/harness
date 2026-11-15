@@ -196,7 +196,7 @@
 			},
 			{
 				"name": "snapshotTaskWork",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves with undefined after replacing result.changedFiles and result.checkpointCommit in place."
 			}
 		],
@@ -413,7 +413,7 @@
 				"outputs": [
 					{
 						"name": "snapshotTaskWork",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with undefined after replacing result.changedFiles and result.checkpointCommit in place."
 					}
 				],

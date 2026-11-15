@@ -71,13 +71,13 @@
 		"outputs": [
 			{
 				"name": "reportFiles",
-				"type": "unknown",
+				"type": "string",
 				"description": "Returns a string root path. A truthy root wins, then PROJECT_REPORTS_HOME, otherwise the result is join(homedir(), '.codex', 'project-reports'); an empty root does not override either fallback.",
 				"examples": ["/srv/project-reports", "/workspace/project/.codex/project-reports"]
 			},
 			{
 				"name": "safeId",
-				"type": "unknown",
+				"type": "string",
 				"description": "Returns the input string unchanged when it matches the accepted identifier pattern. Values outside that pattern throw Error with message Invalid report or asset ID.",
 				"examples": ["report-2026-11-15", "asset_01"]
 			},
@@ -99,7 +99,7 @@
 			},
 			{
 				"name": "atomicJson",
-				"type": "unknown",
+				"type": "Promise<void>",
 				"description": "Resolves with undefined after it creates parent directories recursively with mode 0700, writes two-space-formatted JSON to a UUID-suffixed temporary file with mode 0600, and renames that file over the destination."
 			}
 		],
@@ -137,7 +137,7 @@
 				"outputs": [
 					{
 						"name": "reportFiles",
-						"type": "unknown",
+						"type": "string",
 						"description": "Returns a string root path. A truthy root wins, then PROJECT_REPORTS_HOME, otherwise the result is join(homedir(), '.codex', 'project-reports'); an empty root does not override either fallback.",
 						"examples": ["/srv/project-reports", "/workspace/project/.codex/project-reports"]
 					}
@@ -159,7 +159,7 @@
 				"outputs": [
 					{
 						"name": "safeId",
-						"type": "unknown",
+						"type": "string",
 						"description": "Returns the input string unchanged when it matches the accepted identifier pattern. Values outside that pattern throw Error with message Invalid report or asset ID.",
 						"examples": ["report-2026-11-15", "asset_01"]
 					}
@@ -251,7 +251,7 @@
 				"outputs": [
 					{
 						"name": "atomicJson",
-						"type": "unknown",
+						"type": "Promise<void>",
 						"description": "Resolves with undefined after it creates parent directories recursively with mode 0700, writes two-space-formatted JSON to a UUID-suffixed temporary file with mode 0600, and renames that file over the destination."
 					}
 				],

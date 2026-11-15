@@ -60,7 +60,7 @@
 			},
 			{
 				"name": "reportHttp",
-				"type": "unknown",
+				"type": "Response",
 				"description": "SvelteKit json() Response whose JSON body has app 'project-reports', version 1, buildId from reportBuildIdentity(), revision from HARNESS_VERIFY_REVISION (null when unset) and root, a 64-character lowercase SHA-256 hex digest of repository.root. The source comment says only a server started for a verification run knows its revision, so other servers report null, and root is a digest rather than the path itself.",
 				"examples": [
 					{
@@ -81,7 +81,7 @@
 			},
 			{
 				"name": "reportFile",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "Promise resolving to the mediaResponse result: bytes read with readFile from a path returned by registeredAsset, or fetched from R2 for remote evidence, passed with mediaMime(file), the range and the fourth argument 'inline'. The file is served only when at least one evidence entry with that name is not missing; otherwise the promise rejects with HTTP 410 or 404 instead."
 			}
 		],
@@ -110,7 +110,7 @@
 				"outputs": [
 					{
 						"name": "reportHttp",
-						"type": "unknown",
+						"type": "Response",
 						"description": "SvelteKit json() Response whose JSON body has app 'project-reports', version 1, buildId from reportBuildIdentity(), revision from HARNESS_VERIFY_REVISION (null when unset) and root, a 64-character lowercase SHA-256 hex digest of repository.root. The source comment says only a server started for a verification run knows its revision, so other servers report null, and root is a digest rather than the path itself.",
 						"examples": [
 							{
@@ -173,7 +173,7 @@
 				"outputs": [
 					{
 						"name": "reportFile",
-						"type": "unknown",
+						"type": "Promise<Response>",
 						"description": "Promise resolving to the mediaResponse result: bytes read with readFile from a path returned by registeredAsset, or fetched from R2 for remote evidence, passed with mediaMime(file), the range and the fourth argument 'inline'. The file is served only when at least one evidence entry with that name is not missing; otherwise the promise rejects with HTTP 410 or 404 instead."
 					}
 				],

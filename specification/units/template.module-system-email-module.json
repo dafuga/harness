@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "emailModule",
-				"type": "unknown",
+				"type": "typeof emailModule",
 				"description": "Defines the email module (version 1.0.0) with server-only Resend delivery setup and a reusable mailer resource that renders content without sending it. EmailService.send returns { status: \"disabled\" } only when DISABLE_EMAILS is \"true\" and otherwise enforces a 100-send, one-hour limit per service instance.",
 				"examples": [
 					{

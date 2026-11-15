@@ -228,7 +228,7 @@
 		"outputs": [
 			{
 				"name": "PlanningFacadeAdapter.open",
-				"type": "unknown",
+				"type": "Promise<PlanningFacadeAdapter>",
 				"description": "Opened PlanningFacadeAdapter instance holding the repository root and initialized PlanningApi; it exists only after the root is accepted as a Git repository."
 			},
 			{
@@ -392,12 +392,12 @@
 			},
 			{
 				"name": "PlanningFacadeAdapter.image",
-				"type": "unknown",
+				"type": "Promise<Uint8Array<ArrayBufferLike>>",
 				"description": "Uint8Array containing the selected image bytes; the planning API enforces the optional design-option constraint."
 			},
 			{
 				"name": "PlanningFacadeAdapter.history",
-				"type": "unknown",
+				"type": "Promise<{ id: string; at: string; kind: \"commit\"; title: string; detail: string; commit: string; version: null; }[]>",
 				"description": "HistoryEvent array mapped from entity history; each event is represented as a commit with comma-joined event kinds and a null version.",
 				"examples": [
 					[
@@ -437,7 +437,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.open",
-						"type": "unknown",
+						"type": "Promise<PlanningFacadeAdapter>",
 						"description": "Opened PlanningFacadeAdapter instance holding the repository root and initialized PlanningApi; it exists only after the root is accepted as a Git repository."
 					}
 				],
@@ -908,7 +908,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.image",
-						"type": "unknown",
+						"type": "Promise<Uint8Array<ArrayBufferLike>>",
 						"description": "Uint8Array containing the selected image bytes; the planning API enforces the optional design-option constraint."
 					}
 				],
@@ -942,7 +942,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.history",
-						"type": "unknown",
+						"type": "Promise<{ id: string; at: string; kind: \"commit\"; title: string; detail: string; commit: string; version: null; }[]>",
 						"description": "HistoryEvent array mapped from entity history; each event is represented as a commit with comma-joined event kinds and a null version.",
 						"examples": [
 							[

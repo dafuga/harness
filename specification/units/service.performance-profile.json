@@ -186,12 +186,12 @@
 		"outputs": [
 			{
 				"name": "profileInput",
-				"type": "unknown",
+				"type": "typeof profileInput",
 				"description": "The zod strictObject schema, a schema object rather than parsed data, that validates ProfileInput for measure and capture: unit and workload must match unitIdPattern, callable is an optional non-empty string, rounds is an integer from 1 to 50 (default 5), iterations an integer from 1 to 100000 (default 1000) and warmups an integer from 0 to 100000 (default 3)."
 			},
 			{
 				"name": "observationInput",
-				"type": "unknown",
+				"type": "typeof observationInput",
 				"description": "The zod schema made by picking unit, workload and callable from profileInput, so it stays strict: beginScope, observe and observeAsync reject rounds, iterations, warmups and any other key."
 			},
 			{

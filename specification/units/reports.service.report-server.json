@@ -92,7 +92,7 @@
 			},
 			{
 				"name": "ReportServerService.serve",
-				"type": "unknown",
+				"type": "Promise<{ port: number; reused: boolean; url: string; pid: number | undefined; }>",
 				"description": "Resolves to an object with port, reused, url, and pid; url is the loopback HTTP address and reused indicates whether a matching server was already running. pid is the recorded pid on reuse, or the spawned pid (falling back to -1) on start, and can be undefined when a reused record has no pid.",
 				"examples": [
 					{
@@ -210,7 +210,7 @@
 				"outputs": [
 					{
 						"name": "ReportServerService.serve",
-						"type": "unknown",
+						"type": "Promise<{ port: number; reused: boolean; url: string; pid: number | undefined; }>",
 						"description": "Resolves to an object with port, reused, url, and pid; url is the loopback HTTP address and reused indicates whether a matching server was already running. pid is the recorded pid on reuse, or the spawned pid (falling back to -1) on start, and can be undefined when a reused record has no pid.",
 						"examples": [
 							{

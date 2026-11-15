@@ -86,7 +86,7 @@
 		"outputs": [
 			{
 				"name": "revisionSources",
-				"type": "unknown",
+				"type": "{ source: sourceImpact.SourceImpactService; registries: Map<string, Stored>; }",
 				"description": "Shared source context containing a SourceImpactService and an initially empty Map of stored revision registries. The map is reused by tree hash when available and by commit string when the tree cannot be resolved."
 			},
 			{
@@ -189,7 +189,7 @@
 				"outputs": [
 					{
 						"name": "revisionSources",
-						"type": "unknown",
+						"type": "{ source: sourceImpact.SourceImpactService; registries: Map<string, Stored>; }",
 						"description": "Shared source context containing a SourceImpactService and an initially empty Map of stored revision registries. The map is reused by tree hash when available and by commit string when the tree cannot be resolved."
 					}
 				],

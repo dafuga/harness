@@ -333,12 +333,12 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.onRunEvent",
-				"type": "unknown",
+				"type": "() => boolean",
 				"description": "Returns an unsubscribe callback; invoking it removes the listener and returns whether the listener was present. The callback itself cannot be represented in JSON."
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.available",
-				"type": "unknown",
+				"type": "Promise<boolean>",
 				"description": "Resolves to whether the credentials provider returned a credential value; it does not verify the session with the hosted service.",
 				"examples": [true, false]
 			},
@@ -436,7 +436,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.source",
-				"type": "unknown",
+				"type": "Promise<{ path: string; text: string; }>",
 				"description": "Returns the requested repository-relative path and its hosted text after checking the path matches and text is a string.",
 				"examples": [
 					{
@@ -447,7 +447,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.image",
-				"type": "unknown",
+				"type": "Promise<Uint8Array<ArrayBufferLike>>",
 				"description": "Returns decoded image bytes only after the entity contains the requested version/SHA-256 anchor and the bytes match that hash. Images larger than 25,000,000 bytes are rejected; Uint8Array bytes cannot be represented exactly in JSON."
 			},
 			{
@@ -771,7 +771,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.onRunEvent",
-						"type": "unknown",
+						"type": "() => boolean",
 						"description": "Returns an unsubscribe callback; invoking it removes the listener and returns whether the listener was present. The callback itself cannot be represented in JSON."
 					}
 				],
@@ -784,7 +784,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.available",
-						"type": "unknown",
+						"type": "Promise<boolean>",
 						"description": "Resolves to whether the credentials provider returned a credential value; it does not verify the session with the hosted service.",
 						"examples": [true, false]
 					}
@@ -975,7 +975,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.source",
-						"type": "unknown",
+						"type": "Promise<{ path: string; text: string; }>",
 						"description": "Returns the requested repository-relative path and its hosted text after checking the path matches and text is a string.",
 						"examples": [
 							{
@@ -1016,7 +1016,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.image",
-						"type": "unknown",
+						"type": "Promise<Uint8Array<ArrayBufferLike>>",
 						"description": "Returns decoded image bytes only after the entity contains the requested version/SHA-256 anchor and the bytes match that hash. Images larger than 25,000,000 bytes are rejected; Uint8Array bytes cannot be represented exactly in JSON."
 					}
 				],

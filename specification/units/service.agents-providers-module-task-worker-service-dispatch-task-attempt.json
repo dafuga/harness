@@ -31,9 +31,7 @@
 				"type": "TaskExecution[]",
 				"required": true,
 				"description": "The mutable TaskExecution list supplied by the caller. The function appends a success record or attempts a failure record when an error reaches its catch block.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"outputs": [
@@ -81,9 +79,7 @@
 						"type": "TaskExecution[]",
 						"required": true,
 						"description": "The mutable TaskExecution list supplied by the caller. The function appends a success record or attempts a failure record when an error reaches its catch block.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [

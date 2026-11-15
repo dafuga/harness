@@ -22,15 +22,13 @@
 				"type": "Evidence[]",
 				"required": true,
 				"description": "The evidence records supplied for comparison. A record participates only if `evidenceMedia(item)` is `audio`, `comparison?.trim()` is nonempty, and `phase` is exactly `before` or `after`; grouping retains the original comparison string and uses `viewport || \"\"`.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			}
 		],
 		"outputs": [
 			{
 				"name": "audioPairs",
-				"type": "unknown",
+				"type": "Map<string, Evidence>",
 				"description": "A `Map<string, Evidence>` from each eligible group's after-record `id` to its before record. An entry is made only when the `[comparison, viewport || \"\"]` group contains exactly one before and exactly one after record; incomplete or duplicate groups are omitted."
 			}
 		],
@@ -45,15 +43,13 @@
 						"type": "Evidence[]",
 						"required": true,
 						"description": "The evidence records supplied for comparison. A record participates only if `evidenceMedia(item)` is `audio`, `comparison?.trim()` is nonempty, and `phase` is exactly `before` or `after`; grouping retains the original comparison string and uses `viewport || \"\"`.",
-						"examples": [
-							[]
-						]
+						"examples": [[]]
 					}
 				],
 				"outputs": [
 					{
 						"name": "audioPairs",
-						"type": "unknown",
+						"type": "Map<string, Evidence>",
 						"description": "A `Map<string, Evidence>` from each eligible group's after-record `id` to its before record. An entry is made only when the `[comparison, viewport || \"\"]` group contains exactly one before and exactly one after record; incomplete or duplicate groups are omitted."
 					}
 				],

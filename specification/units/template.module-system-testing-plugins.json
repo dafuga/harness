@@ -20,7 +20,7 @@
 		"outputs": [
 			{
 				"name": "testingPlugins",
-				"type": "unknown",
+				"type": "typeof testingPlugins",
 				"description": "Exports the default Playwright browser testing plugin and the headless audio testing plugin as definitions consumed by template generation. Their setup files, scripts, dependencies and generated resources define what each plugin installs and runs; Playwright is included by default, while audio tests do not establish microphone, speaker, provider or human speech behavior."
 			}
 		],

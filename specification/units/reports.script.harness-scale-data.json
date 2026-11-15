@@ -53,7 +53,7 @@
 			},
 			{
 				"name": "generatedFailures",
-				"type": "unknown",
+				"type": "string[]",
 				"description": "An exported array of 480 synthetic failure strings, one for each generated unit, stating that no baseline is established and a reviewer must establish one. Its generated IDs run from `function.generated-000` through `function.generated-479`; these are fixture data, not descriptions of real source.",
 				"examples": [
 					["function.generated-000: no baseline is established; a reviewer must establish one"]

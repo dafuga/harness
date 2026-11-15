@@ -266,12 +266,12 @@
 			},
 			{
 				"name": "AgentHttpAdapter.shown",
-				"type": "unknown",
+				"type": "void",
 				"description": "shown records or removes the project's branch-tip view and returns nothing, so the value is always undefined."
 			},
 			{
 				"name": "AgentHttpAdapter.listen",
-				"type": "unknown",
+				"type": "() => boolean",
 				"description": "The unsubscribe function for this listener; calling it removes the listener and returns true if it was still registered, or false if it had already been removed."
 			},
 			{
@@ -525,7 +525,7 @@
 				"outputs": [
 					{
 						"name": "AgentHttpAdapter.shown",
-						"type": "unknown",
+						"type": "void",
 						"description": "shown records or removes the project's branch-tip view and returns nothing, so the value is always undefined."
 					}
 				],
@@ -545,7 +545,7 @@
 				"outputs": [
 					{
 						"name": "AgentHttpAdapter.listen",
-						"type": "unknown",
+						"type": "() => boolean",
 						"description": "The unsubscribe function for this listener; calling it removes the listener and returns true if it was still registered, or false if it had already been removed."
 					}
 				],

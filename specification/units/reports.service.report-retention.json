@@ -38,7 +38,7 @@
 		"outputs": [
 			{
 				"name": "ReportRetentionService.run",
-				"type": "unknown",
+				"type": "Promise<{ plannedReports: string[]; deletedReports: string[]; cloudObjects: number; pages: number; localFiles: number; errors: string[]; dryRun: boolean; }>",
 				"description": "The resolved object contains planned report IDs, expiry paths reported complete outside dry-run mode, cloud and page cleanup counts, the local cleanup count, collected error messages, and the effective dryRun flag. When run selects one report, orphan cleanup is skipped; failures can reject before an object is returned.",
 				"examples": [
 					{
@@ -77,7 +77,7 @@
 				"outputs": [
 					{
 						"name": "ReportRetentionService.run",
-						"type": "unknown",
+						"type": "Promise<{ plannedReports: string[]; deletedReports: string[]; cloudObjects: number; pages: number; localFiles: number; errors: string[]; dryRun: boolean; }>",
 						"description": "The resolved object contains planned report IDs, expiry paths reported complete outside dry-run mode, cloud and page cleanup counts, the local cleanup count, collected error messages, and the effective dryRun flag. When run selects one report, orphan cleanup is skipped; failures can reject before an object is returned.",
 						"examples": [
 							{

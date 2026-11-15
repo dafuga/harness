@@ -111,7 +111,7 @@
 			},
 			{
 				"name": "required",
-				"type": "unknown",
+				"type": "string",
 				"description": "The original string at `flags[name]` when it is nonblank. Surrounding whitespace is retained.",
 				"examples": ["reports", "  release  "]
 			}
@@ -259,7 +259,7 @@
 				"outputs": [
 					{
 						"name": "required",
-						"type": "unknown",
+						"type": "string",
 						"description": "The original string at `flags[name]` when it is nonblank. Surrounding whitespace is retained.",
 						"examples": ["reports", "  release  "]
 					}

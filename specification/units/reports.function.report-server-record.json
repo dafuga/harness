@@ -72,7 +72,7 @@
 			},
 			{
 				"name": "reportServerRecord",
-				"type": "unknown",
+				"type": "{ file: string; read(): Promise<ServerRecord | undefined>; write(record: ServerRecord): Promise<void>; remove: () => Promise<void>; }",
 				"description": "Returns a handle whose `file` is `<root>/servers/<port>.json` and whose methods read, write and remove that file. `read()` returns parsed JSON or `undefined` for read errors or empty content but rejects malformed JSON; `write()` creates parent directories and writes pretty JSON plus a newline, while `remove()` force-removes the file."
 			},
 			{
@@ -213,7 +213,7 @@
 				"outputs": [
 					{
 						"name": "reportServerRecord",
-						"type": "unknown",
+						"type": "{ file: string; read(): Promise<ServerRecord | undefined>; write(record: ServerRecord): Promise<void>; remove: () => Promise<void>; }",
 						"description": "Returns a handle whose `file` is `<root>/servers/<port>.json` and whose methods read, write and remove that file. `read()` returns parsed JSON or `undefined` for read errors or empty content but rejects malformed JSON; `write()` creates parent directories and writes pretty JSON plus a newline, while `remove()` force-removes the file."
 					}
 				],

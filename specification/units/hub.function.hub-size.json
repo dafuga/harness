@@ -38,7 +38,7 @@
 		"outputs": [
 			{
 				"name": "hubSize",
-				"type": "unknown",
+				"type": "{ available: boolean; text: string; }",
 				"description": "Returns an object with available and text. For a non-empty path list, available is true only if every first exact-path match has a safe-integer size; the text reports the repeated sum divided by 1024 to one decimal KB, or Not measured: source size unavailable, while an empty list returns Not measured: design only.",
 				"examples": [
 					{
@@ -86,7 +86,7 @@
 				"outputs": [
 					{
 						"name": "hubSize",
-						"type": "unknown",
+						"type": "{ available: boolean; text: string; }",
 						"description": "Returns an object with available and text. For a non-empty path list, available is true only if every first exact-path match has a safe-integer size; the text reports the repeated sum divided by 1024 to one decimal KB, or Not measured: source size unavailable, while an empty list returns Not measured: design only.",
 						"examples": [
 							{
