@@ -539,7 +539,7 @@
 		"outputs": [
 			{
 				"name": "hubCatalog",
-				"type": "unknown",
+				"type": "Promise<{ items: CatalogEntity[]; listed: CatalogEntity[]; units: ComponentManifest[]; plans: HubPlan[]; records: PlanRecord[] }>",
 				"description": "Object containing title-sorted catalog items, listed entries, manifests, plans, and generated plan records. Listed entries also follow catalog rules that omit route loaders and functions without listed helper contracts.",
 				"examples": [
 					{
@@ -877,7 +877,7 @@
 				"outputs": [
 					{
 						"name": "hubCatalog",
-						"type": "unknown",
+						"type": "Promise<{ items: CatalogEntity[]; listed: CatalogEntity[]; units: ComponentManifest[]; plans: HubPlan[]; records: PlanRecord[] }>",
 						"description": "Object containing title-sorted catalog items, listed entries, manifests, plans, and generated plan records. Listed entries also follow catalog rules that omit route loaders and functions without listed helper contracts.",
 						"examples": [
 							{

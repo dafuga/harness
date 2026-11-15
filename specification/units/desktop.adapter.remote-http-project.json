@@ -238,7 +238,7 @@
 		"outputs": [
 			{
 				"name": "RemoteHttpProjectAdapter.evidence",
-				"type": "unknown",
+				"type": "Promise<EntityEvidenceResult>",
 				"description": "Returns the validated hosted evidence answer, including its requested scope, source/cache identity, evidence sides, and behavior summary. The adapter checks the answer's schema and query bindings; sealed-record validation remains the server's responsibility.",
 				"examples": [
 					{
@@ -311,12 +311,12 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.artifact",
-				"type": "unknown",
+				"type": "Promise<EvidenceArtifactResult>",
 				"description": "Returns the checked capture bytes, media type, and SHA-256 from the hosted artifact cache path. The hosted artifact path is capped at 11 MiB, and its Uint8Array bytes cannot be represented exactly in JSON."
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.agent",
-				"type": "unknown",
+				"type": "Promise<unknown>",
 				"description": "Returns the hosted endpoint's JSON response without a general response schema. For startRun, the adapter reads its runId and uses it to poll and dispatch run events.",
 				"examples": [
 					{
@@ -344,7 +344,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.listProjects",
-				"type": "unknown",
+				"type": "Promise<DesktopProject[]>",
 				"description": "Returns the authenticated principal's hosted projects as shared project summaries. Each returned item contains only id, name, and kind.",
 				"examples": [
 					[
@@ -570,7 +570,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.evidence",
-						"type": "unknown",
+						"type": "Promise<EntityEvidenceResult>",
 						"description": "Returns the validated hosted evidence answer, including its requested scope, source/cache identity, evidence sides, and behavior summary. The adapter checks the answer's schema and query bindings; sealed-record validation remains the server's responsibility.",
 						"examples": [
 							{
@@ -682,7 +682,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.artifact",
-						"type": "unknown",
+						"type": "Promise<EvidenceArtifactResult>",
 						"description": "Returns the checked capture bytes, media type, and SHA-256 from the hosted artifact cache path. The bytes are a Uint8Array and are bounded by the hosted artifact reader, so JSON cannot represent this value exactly."
 					}
 				],
@@ -733,7 +733,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.agent",
-						"type": "unknown",
+						"type": "Promise<unknown>",
 						"description": "Returns the hosted endpoint's JSON response without a general response schema. For startRun, the adapter reads its runId and uses it to poll and dispatch run events.",
 						"examples": [
 							{
@@ -798,7 +798,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.listProjects",
-						"type": "unknown",
+						"type": "Promise<DesktopProject[]>",
 						"description": "Returns the authenticated principal's hosted projects as shared project summaries. Each returned item contains only id, name, and kind.",
 						"examples": [
 							[

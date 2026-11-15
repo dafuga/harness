@@ -509,7 +509,7 @@
 			},
 			{
 				"name": "HubProjectionService.registry",
-				"type": "unknown",
+				"type": "Promise<{ commit: string; units: ComponentManifest[] }>",
 				"description": "Resolves to the source commit and the unit records parsed from that committed tree. Invalid or duplicate unit records are rejected.",
 				"examples": [
 					{
@@ -520,7 +520,7 @@
 			},
 			{
 				"name": "HubProjectionService.entity",
-				"type": "unknown",
+				"type": "Promise<EntityDetail>",
 				"description": "Resolves to the catalog entity detail for a unit or plan, with its contract, documentation, owned source paths, relationships, design versions, threads, and one-page history. Shared thread count is calculated from the collaboration API response for the same entity and commit.",
 				"examples": [
 					{
@@ -1109,7 +1109,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.registry",
-						"type": "unknown",
+						"type": "Promise<{ commit: string; units: ComponentManifest[] }>",
 						"description": "Resolves to the source commit and the unit records parsed from that committed tree. Invalid or duplicate unit records are rejected.",
 						"examples": [
 							{
@@ -1169,7 +1169,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.entity",
-						"type": "unknown",
+						"type": "Promise<EntityDetail>",
 						"description": "Resolves to the catalog entity detail for a unit or plan, with its contract, documentation, owned source paths, relationships, design versions, threads, and one-page history. Shared thread count is calculated from the collaboration API response for the same entity and commit.",
 						"examples": [
 							{

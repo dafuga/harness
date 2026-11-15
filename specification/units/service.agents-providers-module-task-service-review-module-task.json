@@ -54,7 +54,7 @@
 		"outputs": [
 			{
 				"name": "reviewModuleTask",
-				"type": "unknown",
+				"type": "Promise<{ commit: string | undefined; task: ModuleTask }>",
 				"description": "Resolves to an object containing the commit returned by repository.update and the task returned by its update callback. The task reflects the appended review and the resulting accepted or queued state; its remaining fields are supplied by the repository task value.",
 				"examples": [
 					{
@@ -119,7 +119,7 @@
 				"outputs": [
 					{
 						"name": "reviewModuleTask",
-						"type": "unknown",
+						"type": "Promise<{ commit: string | undefined; task: ModuleTask }>",
 						"description": "Resolves to an object containing the commit returned by repository.update and the task returned by its update callback. The task reflects the appended review and the resulting accepted or queued state; its remaining fields are supplied by the repository task value.",
 						"examples": [
 							{

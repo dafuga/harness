@@ -489,7 +489,7 @@
 			},
 			{
 				"name": "ModuleTaskService.schema",
-				"type": "unknown",
+				"type": "Record<string, unknown>",
 				"description": "JSON Schema document produced from taskInputSchema for callers that need the accepted task-input shape. It reflects the current Zod task schema.",
 				"examples": [
 					{
@@ -1074,7 +1074,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskService.schema",
-						"type": "unknown",
+						"type": "Record<string, unknown>",
 						"description": "JSON Schema document produced from taskInputSchema for callers that need the accepted task-input shape. It reflects the current Zod task schema.",
 						"examples": [
 							{
