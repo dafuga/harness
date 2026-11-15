@@ -28,131 +28,259 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "evidenceObjectKey.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The report ID that names the run folder in the evidence key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value throws 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+				"examples": ["5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a", "e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"]
 			},
 			{
 				"name": "evidenceObjectKey.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The evidence file name, which must be 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg; any other value throws 'Invalid R2 evidence name'. reportAssets names image assets by the SHA-256 of their bytes plus the detected extension.",
+				"examples": [
+					"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png",
+					"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.webp",
+					"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.m4a"
+				]
 			},
 			{
 				"name": "replayObjectKey.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The report ID that names the run folder in the replay key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value throws 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+				"examples": ["5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a", "e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"]
 			},
 			{
 				"name": "replayObjectKey.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The replay file name, which must be 64 lowercase hex characters followed by .mp4; any other value throws 'Invalid R2 replay name'. Replay files are named by replayVideoKey, a SHA-256 hex digest, plus .mp4.",
+				"examples": [
+					"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4",
+					"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.mp4"
+				]
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.constructor.config",
 				"type": "R2ScreenshotStoreAdapterConfig",
-				"required": true
+				"required": true,
+				"description": "The R2 settings: accountId, bucket, accessKeyId and secretAccessKey, plus an optional endpoint that replaces https://{accountId}.r2.cloudflarestorage.com when set. The constructor does not validate them, and fromEnvironment throws for a set endpoint that is not exactly http://127.0.0.1:<port>.",
+				"examples": [
+					{
+						"accountId": "local-account",
+						"bucket": "local-bucket",
+						"accessKeyId": "local-access",
+						"secretAccessKey": "local-secret"
+					},
+					{
+						"accountId": "fake",
+						"bucket": "project-reports-test",
+						"accessKeyId": "test",
+						"secretAccessKey": "test",
+						"endpoint": "http://127.0.0.1:9000"
+					}
+				]
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.constructor.client",
 				"type": "S3Client",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "An optional S3Client the adapter uses as given; when it is omitted the constructor creates one with region auto, path-style addressing, and the endpoint and credentials from config."
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.put.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The report ID that names the run folder in the evidence key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value makes put reject with 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+				"examples": ["5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a", "e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"]
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.put.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The evidence file name, which must be 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg; any other value makes put reject with 'Invalid R2 evidence name'. reportAssets names image assets by the SHA-256 of their bytes plus the detected extension.",
+				"examples": [
+					"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png",
+					"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.webp",
+					"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.m4a"
+				]
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.put.bytes",
 				"type": "Buffer",
-				"required": true
+				"required": true,
+				"description": "The file contents, written unchanged as the PutObject Body with no size check."
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.put.mime",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The MIME type sent as the object's ContentType; the adapter does not check it against the file extension, and EvidenceStorageService passes mediaMime(file).",
+				"examples": ["image/png", "image/jpeg", "audio/mpeg"]
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.get.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The report ID that names the run folder in the evidence key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value makes get reject with 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+				"examples": ["5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a", "e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"]
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.get.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The evidence file name to read, which must be 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg; any other value makes get reject with 'Invalid R2 evidence name'.",
+				"examples": [
+					"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png",
+					"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.webp",
+					"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.m4a"
+				]
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.putReplay.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The report ID that names the run folder in the replay key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value makes putReplay reject with 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+				"examples": ["5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a", "e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"]
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.putReplay.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The replay file name, which must be 64 lowercase hex characters followed by .mp4; any other value makes putReplay reject with 'Invalid R2 replay name'. Replay files are named by replayVideoKey, a SHA-256 hex digest, plus .mp4.",
+				"examples": [
+					"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4",
+					"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.mp4"
+				]
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.putReplay.bytes",
 				"type": "Buffer",
-				"required": true
+				"required": true,
+				"description": "The replay bytes, written unchanged as the PutObject Body; putReplay always sends ContentType video/mp4."
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.getReplay.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The report ID that names the run folder in the replay key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value makes getReplay reject with 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+				"examples": ["5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a", "e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"]
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.getReplay.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The replay file name to read, which must be 64 lowercase hex characters followed by .mp4; any other value makes getReplay reject with 'Invalid R2 replay name'.",
+				"examples": [
+					"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4",
+					"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.mp4"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidenceObjectKey",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The R2 object key for an evidence file, built as report-evidence/runs/{reportId}/assets/{file} from the checked reportId and file.",
+				"examples": [
+					"report-evidence/runs/5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a/assets/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png",
+					"report-evidence/runs/e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40/assets/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.webp"
+				]
 			},
 			{
 				"name": "replayObjectKey",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The R2 object key for a replay file, built as report-evidence/runs/{reportId}/replays/{file} from the checked reportId and file.",
+				"examples": [
+					"report-evidence/runs/5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a/replays/ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4",
+					"report-evidence/runs/e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40/replays/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.mp4"
+				]
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.fromEnvironment",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A new R2EvidenceStoreAdapter built from the R2 settings, or undefined when r2EvidenceConfig returns undefined, which happens only inside an isolated test store (PROJECT_REPORTS_HOME under tmpdir(), /tmp or /private/tmp) when PROJECT_REPORTS_ASSET_STORAGE is local or all four R2 settings are empty."
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.put",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves with no value after the PutObject call succeeds; it rejects instead when the key check or the S3 call fails."
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.get",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves with the object's bytes as a Buffer copied from the response body; it rejects when the key check fails, the S3 call fails, or the response has no Body."
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.putReplay",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves with no value after the PutObject call succeeds with ContentType video/mp4; it rejects instead when the key check or the S3 call fails."
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.getReplay",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves with the replay bytes as a Buffer copied from the response body; it rejects when the key check fails, the S3 call fails, or the response has no Body."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by evidenceObjectKey, with the message 'Invalid R2 evidence name', when file is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg. put and get reject with the same error because they build the key inside async methods."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by replayObjectKey, with the message 'Invalid R2 replay name', when file is not 64 lowercase hex characters followed by .mp4. putReplay and getReplay reject with the same error."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by safeId, with the message 'Invalid report or asset ID', when reportId is not 1 to 100 letters, digits, underscores or hyphens. evidenceObjectKey and replayObjectKey reach it after their file check, so put, get, putReplay and getReplay reject with it too."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by read, with the message 'R2 evidence has no body', when the GetObjectCommand response has no Body. get and getReplay reject with it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by r2EvidenceConfig, and so by fromEnvironment, with the message 'Local-only storage is restricted to temporary test stores; real report media requires Cloudflare R2', when PROJECT_REPORTS_ASSET_STORAGE is local and PROJECT_REPORTS_HOME is not under tmpdir(), /tmp or /private/tmp."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by r2EvidenceConfig, and so by fromEnvironment, with the message 'Cloudflare R2 evidence storage is partially configured; real reports require all four R2 settings', when any of accountId, bucket, accessKeyId or secretAccessKey is empty, unless all four are empty inside an isolated test store."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by r2EvidenceConfig, and so by fromEnvironment, with the message 'R2 endpoint override must be a local test server', when PROJECT_REPORTS_R2_ENDPOINT is non-empty and is not exactly http://127.0.0.1 followed by a port."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "When PROJECT_REPORTS_ASSET_STORAGE is not local, NODE_ENV is not test and PROJECT_REPORTS_CONFIG_FILE is set, a file-system error other than ENOENT (such as EACCES) raised while reading that file is rethrown unchanged by readLocalR2Config and reaches fromEnvironment through r2EvidenceConfig."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Failures from the S3 client, such as network or service errors from send or from reading the response body, are not caught by the adapter, so callers receive them unchanged."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown as a TypeError when config is null or undefined and client is null or undefined, because the constructor reads config.endpoint while building the S3Client options; when client is set, config is not read and this error cannot occur."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "evidenceObjectKey",
@@ -160,27 +288,49 @@
 					{
 						"name": "evidenceObjectKey.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The report ID that names the run folder in the evidence key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value throws 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+						"examples": [
+							"5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a",
+							"e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"
+						]
 					},
 					{
 						"name": "evidenceObjectKey.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The evidence file name, which must be 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg; any other value throws 'Invalid R2 evidence name'. reportAssets names image assets by the SHA-256 of their bytes plus the detected extension.",
+						"examples": [
+							"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png",
+							"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.webp",
+							"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.m4a"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "evidenceObjectKey",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The R2 object key for an evidence file, built as report-evidence/runs/{reportId}/assets/{file} from the checked reportId and file.",
+						"examples": [
+							"report-evidence/runs/5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a/assets/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png",
+							"report-evidence/runs/e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40/assets/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.webp"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown synchronously with the message 'Invalid R2 evidence name' when file is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown synchronously by safeId with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens; the file check runs first."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "replayObjectKey",
@@ -188,27 +338,48 @@
 					{
 						"name": "replayObjectKey.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The report ID that names the run folder in the replay key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value throws 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+						"examples": [
+							"5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a",
+							"e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"
+						]
 					},
 					{
 						"name": "replayObjectKey.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The replay file name, which must be 64 lowercase hex characters followed by .mp4; any other value throws 'Invalid R2 replay name'. Replay files are named by replayVideoKey, a SHA-256 hex digest, plus .mp4.",
+						"examples": [
+							"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4",
+							"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.mp4"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "replayObjectKey",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The R2 object key for a replay file, built as report-evidence/runs/{reportId}/replays/{file} from the checked reportId and file.",
+						"examples": [
+							"report-evidence/runs/5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a/replays/ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4",
+							"report-evidence/runs/e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40/replays/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.mp4"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown synchronously with the message 'Invalid R2 replay name' when file is not 64 lowercase hex characters followed by .mp4."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown synchronously by safeId with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens; the file check runs first."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.fromEnvironment",
@@ -216,11 +387,33 @@
 				"outputs": [
 					{
 						"name": "R2EvidenceStoreAdapter.fromEnvironment",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A new R2EvidenceStoreAdapter built from the R2 settings, or undefined when r2EvidenceConfig returns undefined, which happens only inside an isolated test store (PROJECT_REPORTS_HOME under tmpdir(), /tmp or /private/tmp) when PROJECT_REPORTS_ASSET_STORAGE is local or all four R2 settings are empty."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown synchronously by r2EvidenceConfig with the message 'Local-only storage is restricted to temporary test stores; real report media requires Cloudflare R2' when PROJECT_REPORTS_ASSET_STORAGE is local and PROJECT_REPORTS_HOME is not under tmpdir(), /tmp or /private/tmp."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown synchronously by r2EvidenceConfig with the message 'Cloudflare R2 evidence storage is partially configured; real reports require all four R2 settings' when any of accountId, bucket, accessKeyId or secretAccessKey is empty, unless all four are empty inside an isolated test store."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown synchronously by r2EvidenceConfig with the message 'R2 endpoint override must be a local test server' when PROJECT_REPORTS_R2_ENDPOINT is non-empty and is not exactly http://127.0.0.1 followed by a port."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "When PROJECT_REPORTS_ASSET_STORAGE is not local, NODE_ENV is not test and PROJECT_REPORTS_CONFIG_FILE is set, a file-system error other than ENOENT (such as EACCES) raised while reading that file is rethrown unchanged by readLocalR2Config."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.put",
@@ -228,32 +421,63 @@
 					{
 						"name": "R2EvidenceStoreAdapter.put.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The report ID that names the run folder in the evidence key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value makes put reject with 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+						"examples": [
+							"5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a",
+							"e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"
+						]
 					},
 					{
 						"name": "R2EvidenceStoreAdapter.put.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The evidence file name, which must be 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg; any other value makes put reject with 'Invalid R2 evidence name'. reportAssets names image assets by the SHA-256 of their bytes plus the detected extension.",
+						"examples": [
+							"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png",
+							"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.webp",
+							"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.m4a"
+						]
 					},
 					{
 						"name": "R2EvidenceStoreAdapter.put.bytes",
 						"type": "Buffer",
-						"required": true
+						"required": true,
+						"description": "The file contents, written unchanged as the PutObject Body with no size check."
 					},
 					{
 						"name": "R2EvidenceStoreAdapter.put.mime",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The MIME type sent as the object's ContentType; the adapter does not check it against the file extension, and EvidenceStorageService passes mediaMime(file).",
+						"examples": ["image/png", "image/jpeg", "audio/mpeg"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "R2EvidenceStoreAdapter.put",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves with no value after the PutObject call succeeds; it rejects instead when the key check or the S3 call fails."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by evidenceObjectKey inside put, so put rejects with the message 'Invalid R2 evidence name' when file is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by safeId inside put, so put rejects with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Failures from the S3 client's send call with PutObjectCommand are not caught, so put rejects with them unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.get",
@@ -261,22 +485,55 @@
 					{
 						"name": "R2EvidenceStoreAdapter.get.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The report ID that names the run folder in the evidence key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value makes get reject with 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+						"examples": [
+							"5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a",
+							"e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"
+						]
 					},
 					{
 						"name": "R2EvidenceStoreAdapter.get.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The evidence file name to read, which must be 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg; any other value makes get reject with 'Invalid R2 evidence name'.",
+						"examples": [
+							"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png",
+							"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.webp",
+							"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.m4a"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "R2EvidenceStoreAdapter.get",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves with the object's bytes as a Buffer copied from the response body; it rejects when the key check fails, the S3 call fails, or the response has no Body."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by evidenceObjectKey inside get, so get rejects with the message 'Invalid R2 evidence name' when file is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by safeId inside get, so get rejects with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by read when the GetObjectCommand response has no Body, so get rejects with the message 'R2 evidence has no body'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Failures from the S3 client's send call with GetObjectCommand, or from reading the response body, are not caught, so get rejects with them unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.putReplay",
@@ -284,27 +541,55 @@
 					{
 						"name": "R2EvidenceStoreAdapter.putReplay.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The report ID that names the run folder in the replay key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value makes putReplay reject with 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+						"examples": [
+							"5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a",
+							"e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"
+						]
 					},
 					{
 						"name": "R2EvidenceStoreAdapter.putReplay.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The replay file name, which must be 64 lowercase hex characters followed by .mp4; any other value makes putReplay reject with 'Invalid R2 replay name'. Replay files are named by replayVideoKey, a SHA-256 hex digest, plus .mp4.",
+						"examples": [
+							"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4",
+							"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.mp4"
+						]
 					},
 					{
 						"name": "R2EvidenceStoreAdapter.putReplay.bytes",
 						"type": "Buffer",
-						"required": true
+						"required": true,
+						"description": "The replay bytes, written unchanged as the PutObject Body; putReplay always sends ContentType video/mp4."
 					}
 				],
 				"outputs": [
 					{
 						"name": "R2EvidenceStoreAdapter.putReplay",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves with no value after the PutObject call succeeds with ContentType video/mp4; it rejects instead when the key check or the S3 call fails."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by replayObjectKey inside putReplay, so putReplay rejects with the message 'Invalid R2 replay name' when file is not 64 lowercase hex characters followed by .mp4."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by safeId inside putReplay, so putReplay rejects with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Failures from the S3 client's send call with PutObjectCommand are not caught, so putReplay rejects with them unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.getReplay",
@@ -312,22 +597,54 @@
 					{
 						"name": "R2EvidenceStoreAdapter.getReplay.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The report ID that names the run folder in the replay key; it must be 1 to 100 letters, digits, underscores or hyphens, and any other value makes getReplay reject with 'Invalid report or asset ID'. Report IDs are created by reportState with randomUUID().",
+						"examples": [
+							"5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a",
+							"e2a7d4f1-3b6c-4d9e-a0f8-1c5b7e9d2f40"
+						]
 					},
 					{
 						"name": "R2EvidenceStoreAdapter.getReplay.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The replay file name to read, which must be 64 lowercase hex characters followed by .mp4; any other value makes getReplay reject with 'Invalid R2 replay name'.",
+						"examples": [
+							"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad.mp4",
+							"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.mp4"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "R2EvidenceStoreAdapter.getReplay",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves with the replay bytes as a Buffer copied from the response body; it rejects when the key check fails, the S3 call fails, or the response has no Body."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by replayObjectKey inside getReplay, so getReplay rejects with the message 'Invalid R2 replay name' when file is not 64 lowercase hex characters followed by .mp4."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by safeId inside getReplay, so getReplay rejects with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by read when the GetObjectCommand response has no Body, so getReplay rejects with the message 'R2 evidence has no body'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Failures from the S3 client's send call with GetObjectCommand, or from reading the response body, are not caught, so getReplay rejects with them unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -337,22 +654,47 @@
 					{
 						"name": "R2EvidenceStoreAdapter.constructor.config",
 						"type": "R2ScreenshotStoreAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "The R2 settings: accountId, bucket, accessKeyId and secretAccessKey, plus an optional endpoint that replaces https://{accountId}.r2.cloudflarestorage.com when set. The constructor does not validate them, and fromEnvironment throws for a set endpoint that is not exactly http://127.0.0.1:<port>.",
+						"examples": [
+							{
+								"accountId": "local-account",
+								"bucket": "local-bucket",
+								"accessKeyId": "local-access",
+								"secretAccessKey": "local-secret"
+							},
+							{
+								"accountId": "fake",
+								"bucket": "project-reports-test",
+								"accessKeyId": "test",
+								"secretAccessKey": "test",
+								"endpoint": "http://127.0.0.1:9000"
+							}
+						]
 					},
 					{
 						"name": "R2EvidenceStoreAdapter.constructor.client",
 						"type": "S3Client",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "An optional S3Client the adapter uses as given; when it is omitted the constructor creates one with region auto, path-style addressing, and the endpoint and credentials from config."
 					}
 				],
 				"outputs": [
 					{
 						"name": "R2EvidenceStoreAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new R2EvidenceStoreAdapter, which keeps the config and the S3 client it was given or built."
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown as a TypeError when config is null or undefined and client is null or undefined, because the constructor reads config.endpoint while building the S3Client options; when client is set, config is not read and this error cannot occur."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
