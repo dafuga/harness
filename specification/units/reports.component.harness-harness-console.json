@@ -38,46 +38,56 @@
 				"name": "HarnessConsole.base",
 				"type": "string",
 				"required": true,
-				"description": "Required URL prefix used for the history data client, media and selected screen addresses."
+				"description": "URL prefix supplied to harnessClient and reused for generated explorer addresses and the screen media base. The value is concatenated with route paths and `/media/`.",
+				"examples": ["/harness"]
 			},
 			{
 				"name": "HarnessConsole.path",
 				"type": "string",
 				"required": true,
-				"description": "Required address within the base, including any query string. Determines the selected branch, revision and screen."
+				"description": "Address after base, including its query string. Its pathname and search select the current page and route scope.",
+				"examples": ["/?branch=main&commit=0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "HarnessConsole.navigate",
 				"type": "(path: string, replace: boolean) => void",
 				"required": true,
-				"description": "Required host callback receiving the next relative address and whether to replace browser history. Corrections replace history; user navigation normally adds an entry."
+				"description": "Host callback receiving a relative explorer address and a replace flag. It is called for user navigation, redirects, and canonical address corrections."
 			},
 			{
 				"name": "HarnessConsole.links",
 				"type": "Array<{ label: string; href: string }>",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional compatibility input. Defaults to JavaScript undefined. It is neither read nor rendered."
+				"description": "Optional compatibility prop that is not destructured or rendered by this component. It defaults to undefined.",
+				"examples": [
+					[
+						{
+							"label": "Home",
+							"href": "/harness"
+						}
+					]
+				]
 			},
 			{
 				"name": "HarnessConsole.content",
 				"type": "ExplorerScreen",
 				"required": true,
-				"description": "Required screen component rendered once its selected revision and parent context are ready."
+				"description": "Svelte screen component rendered after the index, selected revision, parent read, relationships, and answer cache are ready. It receives the selected route context, entities, lens, client, media base, and navigation callback."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessConsole",
 				"type": "markup",
-				"description": "Explorer header and selected screen, with loading and unavailable-address notices. Repository identity loads independently of history. The selected screen owns its missing-registry notice. Index/revision failures show refresh guidance; unavailable parent data becomes null. States: loading-history: The frame displays Loading history while its index request is pending. loading-revision: The frame displays Loading this revision while selected source data is pending. index-error: An alert explains that history could not be loaded and suggests refreshing. revision-error: An alert explains that the revision could not be loaded and suggests refreshing. unindexed: The loaded revision displays its missing-registry notice."
+				"description": "Rendered markup containing ExplorerLayout and, when the selected scope is ready, the supplied screen. While index or revision reads are pending it shows loading states; handled index and revision failures become refresh notices."
 			}
 		],
 		"errors": [
 			{
 				"name": "Host navigation or screen error",
-				"type": "propagated",
-				"description": "Errors from navigate or the supplied content component propagate. Index/revision fetch failures become notices; missing parent/activity data falls back to null."
+				"type": "thrown",
+				"description": "Exceptions from the host-provided navigate callback or supplied screen component are not caught by this component. Index and revision request failures are converted to notices, while activity and parent failures fall back to null."
 			}
 		],
 		"errorStatus": "declared",
@@ -89,14 +99,24 @@
 						"name": "consoleContentKey.location",
 						"type": "ExplorerLocation | undefined",
 						"required": true,
-						"description": "Required argument; undefined represents a screen not ready to render. The key includes branch, commit, category, screen, entity, helper and section, preserving content across tab changes."
+						"description": "Required route argument, which may be undefined while no screen is ready. Only branch, commit, category, screen, entity, helper, and section contribute to the key.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"category": "pages"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleContentKey",
 						"type": "string",
-						"description": "JSON key of the selected route identity. Tab changes preserve it; undefined locations serialize as seven null entries."
+						"description": "JSON string containing branch, commit, category, screen, entity, helper, and section in that order. Missing fields serialize as null, and all other location data is ignored.",
+						"examples": [
+							"[\"main\",\"0123456789abcdef0123456789abcdef01234567\",null,null,null,null,null]"
+						]
 					}
 				],
 				"errors": [],
@@ -109,26 +129,46 @@
 						"name": "consoleRelations.detail",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Required selected revision whose registered units use their own dependency and consumer relationships."
+						"description": "Selected revision used for relationship lookup. Unit ids present in detail.registry.units use this revision's relationship reader.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "consoleRelations.before",
 						"type": "HarnessRevision | null",
 						"required": true,
-						"description": "Required parent revision or null; removed units use parent relationships when available."
+						"description": "Parent revision used for ids absent from the selected revision. Null means the selected revision's reader is used for both present and absent ids.",
+						"examples": [null]
 					},
 					{
 						"name": "consoleRelations.listed",
 						"type": "ExplorerEntity[]",
 						"required": true,
-						"description": "Required selected-revision entities used to resolve runtime owners and relationships."
+						"description": "Entities passed with the selected revision to its relationship reader. The list is used when resolving relationships for the selected revision.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleRelations",
 						"type": "EntityLens['relations']",
-						"description": "Resolver returning dependencies and consumers from the current revision, or the parent for a removed unit. Unknown ids retain the reader's explicit empty relationships."
+						"description": "Returns a relationship callback that uses the selected revision for ids in detail.registry.units and otherwise uses the parent reader. If before is null, the selected revision reader is used for either case."
 					}
 				],
 				"errors": [],
@@ -141,50 +181,144 @@
 						"name": "consoleView.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Required selected history index used for revision-bound history lookup."
+						"description": "Loaded history index retained by the returned lens for revision-bound history lookup. It is passed to explorerHistory when that lens method is called.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "0123456789abcdef0123456789abcdef01234567"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"parents": ["abcdef0123456789abcdef0123456789abcdef01"],
+										"subject": "Update explorer console",
+										"author": "Repository contributor",
+										"committedAt": "2025-01-15T12:00:00.000Z",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "unverified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "consoleView.scope",
 						"type": "ExplorerScope",
 						"required": true,
-						"description": "Required route scope, canonicalized to the selected entity category and helper."
+						"description": "Selected route scope whose location is corrected against the supplied entities before the returned view is built. Its mode, commit, and parent also identify the revision context.",
+						"examples": [
+							{
+								"location": {
+									"branch": "main",
+									"commit": null,
+									"category": "pages"
+								},
+								"mode": "current",
+								"branch": "main",
+								"tip": "0123456789abcdef0123456789abcdef01234567",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"atTip": true,
+								"parent": "abcdef0123456789abcdef0123456789abcdef01",
+								"summary": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"parents": ["abcdef0123456789abcdef0123456789abcdef01"],
+									"subject": "Update explorer console",
+									"author": "Repository contributor",
+									"committedAt": "2025-01-15T12:00:00.000Z",
+									"branches": ["main"],
+									"retained": true,
+									"coverage": "unverified",
+									"gaps": [],
+									"records": [],
+									"legacy": []
+								}
+							}
+						]
 					},
 					{
 						"name": "consoleView.loaded",
 						"type": "{ head: HarnessRevision; parent: HarnessRevision | null }",
 						"required": true,
-						"description": "Required matching head revision and its parent revision or null."
+						"description": "The selected head revision and its parent, or null when no parent is available. These revisions are used to derive per-unit evidence for the returned lens.",
+						"examples": [
+							{
+								"head": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"registry": {
+										"available": true,
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"parent": {
+									"commit": "abcdef0123456789abcdef0123456789abcdef01",
+									"registry": {
+										"available": true,
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								}
+							}
+						]
 					},
 					{
 						"name": "consoleView.entities",
 						"type": "ExplorerEntity[]",
 						"required": true,
-						"description": "Required entities belonging to those loaded revisions."
+						"description": "Entities belonging to the selected revision context. They are used to correct the scope location before returning the view.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "consoleView.relations",
 						"type": "EntityLens['relations']",
 						"required": true,
-						"description": "Required revision-scoped relationship resolver retained by the returned lens."
+						"description": "Relationship callback retained by the returned entity lens. The lens exposes it to consumers without invoking it during view construction."
 					},
 					{
 						"name": "consoleView.answers",
 						"type": "Map<string, ConsoleAnswer>",
 						"required": true,
-						"description": "Required caller-owned answer cache; missing evidence/behavior entries are populated lazily by the returned lens."
+						"description": "Caller-owned Map keyed by unit id. A cached answer is reused; otherwise evidence and behavior are computed and stored when the lens first reads that unit."
 					},
 					{
 						"name": "consoleView.href",
 						"type": "(to: ExplorerLocation) => string",
 						"required": true,
-						"description": "Required address callback retained by the returned lens; called later by its consumers."
+						"description": "Address callback retained by the returned entity lens. It is invoked later by lens consumers when they need an explorer address."
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleView",
 						"type": "{ index: HarnessIndex; scope: ExplorerScope; head: HarnessRevision; parent: HarnessRevision | null; lens: EntityLens }",
-						"description": "Canonical revision view and lazy evidence, behavior, relationships, address and history lens. Evidence/behavior share answers cached by unit id; callbacks retain their caller behavior."
+						"description": "Returns the history index, corrected scope, selected head and parent, and an EntityLens. The lens lazily computes and caches evidence and behavior by unit id, and retains the supplied relationship, address, and history behavior."
 					}
 				],
 				"errors": [],
