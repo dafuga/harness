@@ -17,9 +17,22 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
-		"errors": [],
-		"errorStatus": "none-found",
+		"outputs": [
+			{
+				"name": "default",
+				"type": "UserConfigFnPromise",
+				"required": true,
+				"description": "The default Vite configuration, a function that resolves the config when Vite loads it, for the one shell fixture page that SHELL_FIXTURE_PAGE names (navbar when unset). It builds tests/e2e/support/shell/<page>Entry.ts to SHELL_FIXTURE_OUT or output/shell-fixture/<page> as one iife script named ShellFixture with the file name page, CSS code splitting off, no public directory, warn-level logging and process.env.NODE_ENV defined as 'production'. The components and catalog pages alias the SvelteKit $app modules and the $desktop, $shared and $reports paths to fixture and package sources. The catalog page also gets its preview data by running buildData with Bun, defines it as __COMPONENT_PREVIEW_DATA__, emits it as preview-data.json, and blanks the app style sheets that the catalog host installs itself. The plugins contain hooks that JSON cannot express."
+			}
+		],
+		"errors": [
+			{
+				"name": "execFile rejection",
+				"type": "propagated",
+				"description": "For the catalog page only, the config function rejects with the execFile error when the bun -e run of buildData fails or its output exceeds 16 MiB."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
