@@ -2,6 +2,8 @@ import { execFileSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import type { Route } from '@playwright/test';
+import { mediaResponse } from '../../../../src/utils/development-tooling/mediaResponse';
 
 let retained: { mediaType: string; data: number[] } | undefined;
 
@@ -43,4 +45,19 @@ export function videoPlayerFixture(file: string) {
 		}
 	}
 	return retained;
+}
+
+/** Serve the player's bytes with the application's real range-response behavior. */
+export async function serveVideoPlayerFixture(route: Route) {
+	const fixture = videoPlayerFixture('video-player-fixture.mp4')!;
+	const response = mediaResponse(
+		Buffer.from(fixture.data),
+		fixture.mediaType,
+		route.request().headers().range
+	);
+	return route.fulfill({
+		status: response.status,
+		headers: Object.fromEntries(response.headers),
+		body: Buffer.from(await response.arrayBuffer())
+	});
 }

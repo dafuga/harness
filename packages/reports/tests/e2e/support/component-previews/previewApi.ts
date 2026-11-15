@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { catalogFixtureMedia } from './catalogFixtureMedia';
 import { shellMedia } from './shellArtworkImages';
-import { videoPlayerFixture } from './videoPlayerFixture';
+import { serveVideoPlayerFixture } from './videoPlayerFixture';
 import { shellActivity } from './shellCatalogRoutes';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
@@ -158,6 +158,7 @@ function historyOf(route: Route, url: URL) {
 async function media(route: Route, path: string, home: string) {
 	const all = catalogFixtureMedia(home);
 	const file = path.split('/').pop()!;
+	if (file === 'video-player-fixture.mp4') return serveVideoPlayerFixture(route);
 	const artifact = artifactByName(all, file);
 	if (artifact)
 		return route.fulfill({ contentType: artifact.mediaType, body: Buffer.from(artifact.data) });
@@ -198,7 +199,6 @@ async function media(route: Route, path: string, home: string) {
 function storedMedia(all: ReturnType<typeof catalogFixtureMedia>, file: string) {
 	const svg = shellMedia(file);
 	return (
-		videoPlayerFixture(file) ??
 		all.bytes[file.replace(/\.[^.]+$/, '')] ??
 		(svg ? { mediaType: 'image/svg+xml', data: [...Buffer.from(svg)] } : undefined)
 	);
