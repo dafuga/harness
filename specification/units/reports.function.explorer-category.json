@@ -21,28 +21,49 @@
 				"name": "explorerCategory.unit",
 				"type": "Classified",
 				"required": true,
-				"description": "Unit kind, owned source files and selected-revision declaration proof to classify or label."
+				"description": "A Classified view of a unit: kind, owned source and symbol lists, and optional helper, catalog, and model-definition metadata. Category overrides read owned source paths and these optional fields; owned symbols themselves are not inspected.",
+				"examples": [
+					{
+						"kind": "function",
+						"owns": {
+							"source": ["packages/reports/src/utils/explorer-ui/explorerCategory.ts"],
+							"symbols": ["explorerCategory", "explorerRole"]
+						}
+					}
+				]
 			},
 			{
 				"name": "explorerRole.unit",
 				"type": "Classified",
 				"required": true,
-				"description": "Unit kind, owned source files and selected-revision declaration proof to classify or label."
+				"description": "A Classified view of a unit: kind, owned source and symbol lists, and optional helper, catalog, and model-definition metadata. Role overrides inspect the kind, owned source paths, and model declarations; helper and catalog metadata do not affect the returned role.",
+				"examples": [
+					{
+						"kind": "function",
+						"owns": {
+							"source": ["packages/reports/src/utils/explorer-ui/explorerCategory.ts"],
+							"symbols": ["explorerCategory", "explorerRole"]
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerCategory",
 				"type": "ExplorerCategory | null",
-				"description": "Rendering routes are Pages. Source-declared persisted data wrappers are Models; existing shared interface and alias modules are Types. Helpers require purity and two distinct runtime consumers. Unproven or internal modules have no collection."
+				"description": "Returns one explorer category or null. Internal units and nonvisual layouts are excluded first; otherwise the implementation checks compatibility route paths, rendered addresses, layout configuration modules, owned model declarations, and mapped kind, with function/module categories requiring a helper accepted by helperContract.",
+				"examples": ["pages", "models", null]
 			},
 			{
 				"name": "explorerRole",
 				"type": "string",
-				"description": "Page for rendering routes, Route loader for non-rendering route kinds, otherwise a known friendly role or words derived from the kind."
+				"description": "Returns a reader-facing role label. It prioritizes type definitions, route configuration, route aliases, rendered pages, and route-loader kinds, then uses a known kind mapping or capitalized words from the kind.",
+				"examples": ["Page", "Type definitions", "Route alias"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "explorerCategory",
@@ -51,18 +72,28 @@
 						"name": "explorerCategory.unit",
 						"type": "Classified",
 						"required": true,
-						"description": "Unit kind, owned source files and selected-revision declaration proof to classify or label."
+						"description": "A Classified view of a unit: kind, owned source and symbol lists, and optional helper, catalog, and model-definition metadata. Category overrides read owned source paths and these optional fields; owned symbols themselves are not inspected.",
+						"examples": [
+							{
+								"kind": "function",
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/explorerCategory.ts"],
+									"symbols": ["explorerCategory", "explorerRole"]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerCategory",
 						"type": "ExplorerCategory | null",
-						"description": "Rendering routes are Pages. Source-declared persisted data wrappers are Models; existing shared interface and alias modules are Types. Helpers require purity and two distinct runtime consumers. Unproven or internal modules have no collection."
+						"description": "Returns one explorer category or null. Internal units and nonvisual layouts are excluded first; otherwise the implementation checks compatibility route paths, rendered addresses, layout configuration modules, owned model declarations, and mapped kind, with function/module categories requiring a helper accepted by helperContract.",
+						"examples": ["pages", "models", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerRole",
@@ -71,18 +102,28 @@
 						"name": "explorerRole.unit",
 						"type": "Classified",
 						"required": true,
-						"description": "Unit kind, owned source files and selected-revision declaration proof to classify or label."
+						"description": "A Classified view of a unit: kind, owned source and symbol lists, and optional helper, catalog, and model-definition metadata. Role overrides inspect the kind, owned source paths, and model declarations; helper and catalog metadata do not affect the returned role.",
+						"examples": [
+							{
+								"kind": "function",
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/explorerCategory.ts"],
+									"symbols": ["explorerCategory", "explorerRole"]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerRole",
 						"type": "string",
-						"description": "Page for rendering routes, Route loader for non-rendering route kinds, otherwise a known friendly role or words derived from the kind."
+						"description": "Returns a reader-facing role label. It prioritizes type definitions, route configuration, route aliases, rendered pages, and route-loader kinds, then uses a known kind mapping or capitalized words from the kind.",
+						"examples": ["Page", "Type definitions", "Route alias"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
