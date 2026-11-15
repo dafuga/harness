@@ -1,4 +1,5 @@
 import {
+	assertEqualFrameReplay,
 	assertForgedFrameResolution,
 	assertRetainedFrameReadBounds
 } from '../../support/frameFlagReplayChecks';
@@ -156,14 +157,16 @@ test('replacement recordings must address pending flags and resolve them append-
 		const flag = await service.flag({ clip: f.reference, atSeconds: 0.2 });
 		await expect(service.address(f.replacementRef)).rejects.toThrow(/address|pending/i);
 		f.address([flag.id]);
-		const older = new FrameFlagService(root, async (reference) => ({
-			...(await f.reader(reference)),
-			capturedAt: '2000-01-01T00:00:00.000Z'
-		}));
-		await expect(
-			older.address(f.replacementRef),
-			'a replacement predating its flag cannot resolve feedback'
-		).rejects.toThrow(/older|before|predat/i);
+		for (const capturedAt of ['2000-01-01T00:00:00.000Z', flag.createdAt]) {
+			const older = new FrameFlagService(root, async (reference) => ({
+				...(await f.reader(reference)),
+				capturedAt
+			}));
+			await expect(
+				older.address(f.replacementRef),
+				'a replacement must be strictly newer than its flag'
+			).rejects.toThrow(/older|before|predat|newer/i);
+		}
 		await service.address(f.replacementRef);
 		expect((await service.list('component.player'))[0]).toMatchObject({
 			id: flag.id,
@@ -178,6 +181,7 @@ test('replacement recordings must address pending flags and resolve them append-
 			flags: []
 		});
 	});
+	await assertEqualFrameReplay();
 	await measureWorkload(
 		'service.evidence-attach',
 		'resolve-addressed-attached-video-flags',

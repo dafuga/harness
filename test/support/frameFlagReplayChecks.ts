@@ -5,7 +5,9 @@ import { LfsAdapter } from '../../src/adapters/git-source-history/LfsAdapter';
 import { EvidenceBranchRepository } from '../../src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
 import { FrameFlagService } from '../../src/services/verification-evidence/FrameFlagService';
 import type { FrameFlag } from '../../src/services/verification-evidence/FrameFlagService.types';
-import { hash } from './frameFlagFixture';
+import { hash, frameFlagFixture } from './frameFlagFixture';
+import { withTempRepo } from './temporary';
+import { storeFrameResolution } from '../../src/services/verification-evidence/frame-flag-service/flagStore';
 
 /** Even an intact event path cannot stand in for an attached, verified replacement. */
 export async function assertForgedFrameResolution(root: string, flag: FrameFlag) {
@@ -63,4 +65,25 @@ export async function assertRetainedFrameReadBounds(
 	} finally {
 		reads.mockRestore();
 	}
+}
+
+/** A stored replay follows the same strict chronology rule as the public writer and attachment. */
+export async function assertEqualFrameReplay() {
+	await withTempRepo(async ({ root, git }) => {
+		const fixture = await frameFlagFixture(root, git);
+		const flag = await new FrameFlagService(root, fixture.reader).flag({
+			clip: fixture.reference,
+			frameNumber: 2
+		});
+		fixture.address([flag.id]);
+		const reader = async (reference: typeof fixture.reference) => ({
+			...(await fixture.reader(reference)),
+			capturedAt: flag.createdAt
+		});
+		await storeFrameResolution(root, flag, await reader(fixture.replacementRef));
+		await expect(
+			new FrameFlagService(root, reader).list(flag.clip.unit),
+			'resolution replay must require a strictly newer capture'
+		).rejects.toThrow(/newer|predat|older/i);
+	});
 }
