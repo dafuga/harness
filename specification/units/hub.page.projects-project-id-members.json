@@ -21,12 +21,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "Page markup for the Members route, wrapped in HubFrame and titled “Harness · Members”; when session.actor is truthy, it renders MembersPanel keyed by projectId, and otherwise it renders the Members heading with LoginPanel reason “Sign in to see who is in this project.” projectId is page.params.projectId, falling back to an empty string when missing."
 			}
 		],
 		"errors": [],
