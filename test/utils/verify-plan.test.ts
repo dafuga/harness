@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { unitsConfigSchema } from '../../src/core/unitsConfig';
 import { defaultVerifyConfig, verifyConfigSchema } from '../../src/core/verifyTypes';
-import { verifyPlan } from '../../src/services/verification-service/verifyPlan';
+import { verifyPlan } from '../../src/workflows/verification-evidence/run-verify/verification-service/verifyPlan';
 
 const unitsConfig = unitsConfigSchema.parse({
 	schemaVersion: 1,

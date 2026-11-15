@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import { scenarioManifestSchema } from '../src/core/unitTypes';
 import { scenarioRequirements } from '../src/utils/verification-evidence/scenarioRequirements';
-import { verifyPlan } from '../src/services/verification-service/verifyPlan';
+import { verifyPlan } from '../src/workflows/verification-evidence/run-verify/verification-service/verifyPlan';
 import { defaultVerifyConfig } from '../src/core/verifyTypes';
 import { defaultUnitsConfig } from '../src/core/unitsConfig';
 import { verificationTarget } from './verification-targets';

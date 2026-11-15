@@ -7,9 +7,9 @@ import { scenarioManifestSchema } from '../src/core/unitTypes';
 import { defaultUnitsConfig } from '../src/core/unitsConfig';
 import { captureIndex, defaultVerifyConfig } from '../src/core/verifyTypes';
 import { gatherCaptures } from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures';
-import { scenarioCoverage } from '../src/services/verification-service/scenarioCoverage';
+import { scenarioCoverage } from '../src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage';
 import { scenarioRequirements } from '../src/utils/verification-evidence/scenarioRequirements';
-import { verifyPlan } from '../src/services/verification-service/verifyPlan';
+import { verifyPlan } from '../src/workflows/verification-evidence/run-verify/verification-service/verifyPlan';
 import { syntheticPng as png } from './support/syntheticPng';
 import { verificationTarget } from './verification-targets';
 

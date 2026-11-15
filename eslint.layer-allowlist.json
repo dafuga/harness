@@ -77,16 +77,6 @@
 			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
 		},
 		{
-			"from": "src/services/verification-service/scenarioCoverage.ts",
-			"to": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage",
-			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
-		},
-		{
-			"from": "src/services/verification-service/verifyPlan.ts",
-			"to": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan",
-			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/VerificationGates.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates",
 			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."

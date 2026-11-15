@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { unitsConfigFile, unitsConfigSchema } from '../src/core/unitsConfig';
 import { verifyConfigFile, verifyConfigSchema } from '../src/core/verifyTypes';
-import { verifyPlan } from '../src/services/verification-service/verifyPlan';
+import { verifyPlan } from '../src/workflows/verification-evidence/run-verify/verification-service/verifyPlan';
 
 /**
  * The search specs of the explorer bar run on the shell fixture, outside the reports server, so

@@ -7,7 +7,7 @@ import { loadConfigFromFile } from 'vite';
 import { measureWorkload } from './support/measureWorkload';
 import { unitsConfigFile, unitsConfigSchema } from '../src/core/unitsConfig';
 import { verifyConfigFile, verifyConfigSchema } from '../src/core/verifyTypes';
-import { verifyPlan } from '../src/services/verification-service/verifyPlan';
+import { verifyPlan } from '../src/workflows/verification-evidence/run-verify/verification-service/verifyPlan';
 
 /**
  * The checks verification plans for this repository's own declared configuration: an entity

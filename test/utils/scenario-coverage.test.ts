@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { scenarioManifestSchema } from '../../src/core/unitTypes';
 import type { Gathered } from '../../src/utils/verification-evidence/gatherCaptures';
-import { scenarioCoverage } from '../../src/services/verification-service/scenarioCoverage';
+import { scenarioCoverage } from '../../src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage';
 import { problem } from '../../src/utils/verification-evidence/scenarioCoverage';
 import { captureLineSchema } from '../../src/core/verification-evidence/verifyTypes';
 import { captureSchema } from '../../src/core/verification-evidence/verificationTypes';
@@ -87,7 +87,7 @@ test('a result that claims no running software is judged as before', () =>
 			[
 				'src/utils/scenarioCoverage.ts',
 				'src/utils/verification-evidence/scenarioCoverage.ts',
-				'src/services/verification-service/scenarioCoverage.ts',
+				'src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts',
 				'src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts'
 			].map((entry) => ({
 				entry,
