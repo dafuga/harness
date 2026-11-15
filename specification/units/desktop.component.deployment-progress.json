@@ -31,17 +31,140 @@
 				"name": "DeploymentProgress.deployment",
 				"type": "DeploymentActivity",
 				"required": true,
-				"description": "Deployment job or route whose source, destination and recorded progress are displayed."
+				"description": "The DeploymentActivity to draw: the component reads only its phase, detail, error, step and steps fields, where phase sets the colour of the live status line, detail is the status text, and a non-empty error is shown beneath it as an alert. The steps are drawn in the order of steps: those before the one whose id matches step are done, that one is running (or failed when phase is failed), and the rest are not started; a queued phase, a null step or a step missing from steps leaves every step not started, and a complete phase marks every step done.",
+				"examples": [
+					{
+						"phase": "queued",
+						"detail": "Queued for preprod",
+						"sourceEnvironment": "stage",
+						"id": "5c1e8a2f-7d3b-4e9a-b6c4-2f8d1a0e9b73",
+						"projectId": "local-9a4c1e7f0b3d6a2e8c5f1b9d4e7a0c3f6b8d2e5a1c9f4b7e0d3a6c8f2b5e1d94",
+						"projectName": "storefront-web",
+						"environment": "preprod",
+						"commit": "3f9c2a7b1e4d58c0a9f6b2d7e1c48a09b5d3e702",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": null,
+						"error": null,
+						"receipt": null,
+						"createdAt": "2026-11-15T09:12:44.318Z",
+						"startedAt": null,
+						"updatedAt": "2026-11-15T09:12:44.318Z",
+						"finishedAt": null
+					},
+					{
+						"phase": "building",
+						"detail": "Building source commit",
+						"sourceEnvironment": "dev",
+						"id": "e3a07c95-2b6f-4d18-9c3e-7f5a0b2d4e61",
+						"projectId": "local-9a4c1e7f0b3d6a2e8c5f1b9d4e7a0c3f6b8d2e5a1c9f4b7e0d3a6c8f2b5e1d94",
+						"projectName": "storefront-web",
+						"environment": "stage",
+						"commit": "b07e3c9d5a18f4e2c6d0a7b93e15f8c2d4a6e0b1",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": "building",
+						"error": null,
+						"receipt": null,
+						"createdAt": "2026-11-15T09:20:03.771Z",
+						"startedAt": "2026-11-15T09:20:04.402Z",
+						"updatedAt": "2026-11-15T09:21:37.126Z",
+						"finishedAt": null
+					},
+					{
+						"phase": "failed",
+						"detail": "Deployment failed",
+						"sourceEnvironment": null,
+						"id": "a8f42d6e-1c9b-4e05-8d7a-3b6c2f9e1a48",
+						"projectId": "local-9a4c1e7f0b3d6a2e8c5f1b9d4e7a0c3f6b8d2e5a1c9f4b7e0d3a6c8f2b5e1d94",
+						"projectName": "storefront-web",
+						"environment": "dev",
+						"commit": "c4a19e7d2b6f083a5e9c1d7b4f2a6e8c03d5b917",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": "uploading",
+						"error": "Deploy to Cloudflare failed. Check the project configuration and retry.",
+						"receipt": null,
+						"createdAt": "2026-11-14T16:40:01.205Z",
+						"startedAt": "2026-11-14T16:40:02.774Z",
+						"updatedAt": "2026-11-14T16:43:51.380Z",
+						"finishedAt": "2026-11-14T16:43:51.380Z"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeploymentProgress",
 				"type": "markup",
-				"description": "Renders ordered deployment steps with completed, active, pending and failure states."
+				"description": "Markup for an hx-div with data-phase set to the deployment's phase, containing an hx-div.now that holds a live hx-p (role status) showing detail and, when error is a non-empty string, an hx-p (role alert) showing error; then an hx-ol with the accessible name 'Deployment steps' and one hx-li per step. Each hx-li carries the class done, running, failed or waiting, aria-current 'step' on the current step, and its step title followed by a visually hidden state word: 'done', 'in progress', 'failed' or 'not started'."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
