@@ -26,50 +26,122 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HistorySyncService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The root path given to the constructor and passed unchanged to the EvidenceTreeAdapter, LfsAdapter and HistoryNoteRepository it creates; the constructor does not check it. Every fetch, push and sync call uses the EvidenceTreeAdapter built from it.",
+				"examples": ["/home/dev/harness-app", "/srv/git/billing-service", "/workspace/monorepo"]
 			},
 			{
 				"name": "HistorySyncService.fetch.remote",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The git remote that fetch lists with ls-remote and fetches from. It also forms the remote-tracking ref names (remoteTrackingPrefix, this name, then /evidence or /notes) and appears in any media problem message.",
+				"examples": ["origin", "backup", "upstream"]
 			},
 			{
 				"name": "HistorySyncService.push.remote",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The git remote that push lists with ls-remote, compares its evidence and notes refs against, and pushes to. When push refuses, the remote appears in the message, which tells the user to run harness history sync with that remote.",
+				"examples": ["origin", "backup", "upstream"]
 			},
 			{
 				"name": "HistorySyncService.sync.remote",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The git remote that sync fetches from and then pushes to, passing the same value to both fetch and push.",
+				"examples": ["origin", "upstream", "backup"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HistorySyncService.fetch",
-				"type": "Promise<Synced>"
+				"type": "Promise<Synced>",
+				"description": "Resolves to the Synced result of fetch: pushed is always false, and evidence and notes give the local outcome (absent, unchanged, created, fast-forwarded or merged). problems is set only when media could not be fetched from the remote, and then it holds one message.",
+				"examples": [
+					{
+						"remote": "origin",
+						"evidence": "created",
+						"notes": "created",
+						"pushed": false
+					},
+					{
+						"remote": "origin",
+						"evidence": "merged",
+						"notes": "fast-forwarded",
+						"pushed": false
+					},
+					{
+						"remote": "backup",
+						"evidence": "unchanged",
+						"notes": "absent",
+						"pushed": false
+					}
+				]
 			},
 			{
 				"name": "HistorySyncService.push",
-				"type": "Promise<Synced>"
+				"type": "Promise<Synced>",
+				"description": "Resolves to the Synced result of push, where evidence and notes describe the remote (absent, unchanged, created or fast-forwarded) and pushed is true when at least one git ref was sent. A remote that has records this clone lacks makes push throw instead, and push never returns problems.",
+				"examples": [
+					{
+						"remote": "origin",
+						"evidence": "fast-forwarded",
+						"notes": "created",
+						"pushed": true
+					},
+					{
+						"remote": "origin",
+						"evidence": "unchanged",
+						"notes": "unchanged",
+						"pushed": false
+					},
+					{
+						"remote": "backup",
+						"evidence": "absent",
+						"notes": "absent",
+						"pushed": false
+					}
+				]
 			},
 			{
 				"name": "HistorySyncService.sync",
-				"type": "Promise<Synced>"
+				"type": "Promise<Synced>",
+				"description": "Resolves to fetch's Synced result with pushed taken from push, so evidence and notes describe the local merge from fetch rather than what push sent. problems, when present, is the one fetch set.",
+				"examples": [
+					{
+						"remote": "origin",
+						"evidence": "merged",
+						"notes": "unchanged",
+						"pushed": true
+					},
+					{
+						"remote": "origin",
+						"evidence": "unchanged",
+						"notes": "unchanged",
+						"pushed": false
+					},
+					{
+						"remote": "backup",
+						"evidence": "created",
+						"notes": "absent",
+						"pushed": false
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown through fail(...) by push when the remote has evidence or notes this clone lacks, and by fetch when the evidence branch moved during its merge or, for diverged histories, a path containing '/' exists on both sides with different content. sync can throw it from either step, and a push refusal sends nothing to the remote."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HistorySyncService.fetch",
@@ -77,17 +149,46 @@
 					{
 						"name": "HistorySyncService.fetch.remote",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The git remote that fetch lists with ls-remote and fetches from. It also forms the remote-tracking ref names (remoteTrackingPrefix, this name, then /evidence or /notes) and appears in any media problem message.",
+						"examples": ["origin", "backup", "upstream"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HistorySyncService.fetch",
-						"type": "Promise<Synced>"
+						"type": "Promise<Synced>",
+						"description": "Resolves to the Synced result of fetch: pushed is always false, and evidence and notes give the local outcome (absent, unchanged, created, fast-forwarded or merged). problems is set only when media could not be fetched from the remote, and then it holds one message.",
+						"examples": [
+							{
+								"remote": "origin",
+								"evidence": "created",
+								"notes": "created",
+								"pushed": false
+							},
+							{
+								"remote": "origin",
+								"evidence": "merged",
+								"notes": "fast-forwarded",
+								"pushed": false
+							},
+							{
+								"remote": "backup",
+								"evidence": "unchanged",
+								"notes": "absent",
+								"pushed": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown through fail(...) when fetch's evidence merge finds the evidence branch moved during the merge or, for diverged histories, a path containing '/' exists on both sides with different content. fetch then stops before it merges notes."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HistorySyncService.push",
@@ -95,17 +196,46 @@
 					{
 						"name": "HistorySyncService.push.remote",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The git remote that push lists with ls-remote, compares its evidence and notes refs against, and pushes to. When push refuses, the remote appears in the message, which tells the user to run harness history sync with that remote.",
+						"examples": ["origin", "backup", "upstream"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HistorySyncService.push",
-						"type": "Promise<Synced>"
+						"type": "Promise<Synced>",
+						"description": "Resolves to the Synced result of push, where evidence and notes describe the remote (absent, unchanged, created or fast-forwarded) and pushed is true when at least one git ref was sent. A remote that has records this clone lacks makes push throw instead, and push never returns problems.",
+						"examples": [
+							{
+								"remote": "origin",
+								"evidence": "fast-forwarded",
+								"notes": "created",
+								"pushed": true
+							},
+							{
+								"remote": "origin",
+								"evidence": "unchanged",
+								"notes": "unchanged",
+								"pushed": false
+							},
+							{
+								"remote": "backup",
+								"evidence": "absent",
+								"notes": "absent",
+								"pushed": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown through fail(...) when the remote has evidence or notes this clone lacks; this is checked against the remote's refs before anything is sent. The message names the remote and tells the user to run harness history sync with that remote."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HistorySyncService.sync",
@@ -113,17 +243,46 @@
 					{
 						"name": "HistorySyncService.sync.remote",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The git remote that sync fetches from and then pushes to, passing the same value to both fetch and push.",
+						"examples": ["origin", "upstream", "backup"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HistorySyncService.sync",
-						"type": "Promise<Synced>"
+						"type": "Promise<Synced>",
+						"description": "Resolves to fetch's Synced result with pushed taken from push, so evidence and notes describe the local merge from fetch rather than what push sent. problems, when present, is the one fetch set.",
+						"examples": [
+							{
+								"remote": "origin",
+								"evidence": "merged",
+								"notes": "unchanged",
+								"pushed": true
+							},
+							{
+								"remote": "origin",
+								"evidence": "unchanged",
+								"notes": "unchanged",
+								"pushed": false
+							},
+							{
+								"remote": "backup",
+								"evidence": "created",
+								"notes": "absent",
+								"pushed": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown through fail(...) by fetch's evidence merge, or by push's refusal when the remote has evidence or notes this clone lacks. A push refusal happens after fetch has already completed its local merge, and nothing is sent to the remote."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -133,17 +292,20 @@
 					{
 						"name": "HistorySyncService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The root path given to the constructor and passed unchanged to the EvidenceTreeAdapter, LfsAdapter and HistoryNoteRepository it creates; the constructor does not check it. Every fetch, push and sync call uses the EvidenceTreeAdapter built from it.",
+						"examples": ["/home/dev/harness-app", "/srv/git/billing-service", "/workspace/monorepo"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HistorySyncService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new HistorySyncService instance, which keeps the EvidenceTreeAdapter, LfsAdapter and HistoryNoteRepository built from root in private readonly fields."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
