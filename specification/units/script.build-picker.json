@@ -12,16 +12,17 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when Bun.build reports an unsuccessful bundle for src/cli/picker.ts; the error message is Picker MCP bundle failed."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
