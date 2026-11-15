@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/cleanupDeadline.ts",
 			"src/utils/development-tooling/cleanupDeadline.ts",
 			"src/utils/development-tooling/cleanupDeadline.types.ts"
 		],
-		"symbols": ["cleanupDeadline", "cleanupDeadline", "CleanupDeadline", "CleanupDeadline"]
+		"symbols": ["cleanupDeadline", "CleanupDeadline", "CleanupDeadline"]
 	},
 	"contract": {
 		"origin": "declared",

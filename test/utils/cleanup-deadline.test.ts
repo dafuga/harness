@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { cleanupDeadline } from '../../src/utils/cleanupDeadline';
+import { cleanupDeadline } from '../../src/utils/development-tooling/cleanupDeadline';
 
 test('work that answers in time is passed on; late or failing work gives the fallback', async () => {
 	const deadline = cleanupDeadline(200);

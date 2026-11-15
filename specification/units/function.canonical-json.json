@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/canonicalJson.ts", "src/utils/development-tooling/canonicalJson.ts"],
-		"symbols": ["canonicalJson", "canonicalJson"]
+		"source": ["src/utils/development-tooling/canonicalJson.ts"],
+		"symbols": ["canonicalJson"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -4,7 +4,7 @@ import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { canonicalJson } from '../src/utils/canonicalJson';
+import { canonicalJson } from '../src/utils/development-tooling/canonicalJson';
 import {
 	explorerCategories,
 	explorerKindCategory,

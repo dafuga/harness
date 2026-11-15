@@ -10,17 +10,9 @@
 	"owns": {
 		"source": [
 			"src/utils/accounts-access/buildIdentity.ts",
-			"src/utils/accounts-access/buildIdentity.types.ts",
-			"src/utils/buildIdentity.ts"
+			"src/utils/accounts-access/buildIdentity.types.ts"
 		],
-		"symbols": [
-			"buildIdentity",
-			"builtFileHash",
-			"BuiltFile",
-			"BuiltFile",
-			"buildIdentity",
-			"builtFileHash"
-		]
+		"symbols": ["buildIdentity", "builtFileHash", "BuiltFile", "BuiltFile"]
 	},
 	"contract": {
 		"origin": "declared",

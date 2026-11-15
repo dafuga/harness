@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { canonicalJson } from '../../src/utils/canonicalJson';
+import { canonicalJson } from '../../src/utils/development-tooling/canonicalJson';
 
 test('canonicalJson sorts keys at every depth and keeps array order', () => {
 	const left = { b: [{ y: 1, x: 2 }, 3], a: { d: null, c: 'text' } };

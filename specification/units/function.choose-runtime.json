@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/chooseRuntime.ts",
 			"src/utils/execution-runtimes/chooseRuntime.ts",
 			"src/utils/execution-runtimes/chooseRuntime.types.ts"
 		],
 		"symbols": [
-			"chooseRuntime",
 			"chooseRuntime",
 			"RuntimeChoiceInput",
 			"RuntimeChoice",

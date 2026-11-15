@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { afterAll, beforeAll, test } from 'vitest';
 import { SeedAttacher } from '../packages/reports/scripts/harness-seed-attacher';
 import { VerificationStoreRepository } from '../src/repositories/verification-evidence/VerificationStoreRepository';
-import { canonicalJson } from '../src/utils/canonicalJson';
+import { canonicalJson } from '../src/utils/development-tooling/canonicalJson';
 import { attach, evidenceRef, noteLines, notesRef } from './support/historyRepo';
 import { baselineRepo, cloneRepo, type VerifyOutcome, type VerifyRepo } from './support/verifyRepo';
 

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { buildIdentity } from '../../src/utils/buildIdentity';
+import { buildIdentity } from '../../src/utils/accounts-access/buildIdentity';
 
 const app = { path: 'assets/app.js', sha256: 'a'.repeat(64) };
 const page = { path: 'index.html', sha256: 'b'.repeat(64) };

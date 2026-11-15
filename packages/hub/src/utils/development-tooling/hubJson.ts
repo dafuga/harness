@@ -1,5 +1,5 @@
 // @harness-uid u_ocykouvtlq
-import { canonicalJson } from '../../../../../src/utils/canonicalJson';
+import { canonicalJson } from '../../../../../src/utils/development-tooling/canonicalJson';
 export function hubJson(bytes: Uint8Array): unknown {
 	try {
 		return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)) as unknown;

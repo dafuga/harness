@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { Measurement } from '../../src/core/verificationTypes';
-import { chooseRuntime } from '../../src/utils/chooseRuntime';
+import { chooseRuntime } from '../../src/utils/execution-runtimes/chooseRuntime';
 
 const commit = 'a'.repeat(40);
 

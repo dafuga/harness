@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { auditHarnessStructure } from '../src/audit/development-tooling/structure-rules/structureRules';
 import { auditPath } from '../src/audit/development-tooling/audit';
-import { canonicalJson } from '../src/utils/canonicalJson';
+import { canonicalJson } from '../src/utils/development-tooling/canonicalJson';
 const roots: string[] = [];
 afterEach(async () => {
 	await Promise.all(roots.map((root) => rm(root, { recursive: true, force: true })));

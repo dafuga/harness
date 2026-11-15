@@ -2,7 +2,10 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildIdentity, builtFileHash } from '../../../../../src/utils/buildIdentity';
+import {
+	buildIdentity,
+	builtFileHash
+} from '../../../../../src/utils/accounts-access/buildIdentity';
 
 const development = 'harness-reports-development';
 const known = new Map<string, string>();
