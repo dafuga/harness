@@ -73,7 +73,12 @@ export class FrameFlagService {
 	async list(unit: string, current: FrameCurrentClip[] = []): Promise<FrameFlag[]> {
 		parseFlagValue(ownerSchema, unit);
 		const slots = parseFlagValue(currentSchema, current);
-		return (await readFrameFlags(this.root))
+		return (
+			await readFrameFlags(
+				this.root,
+				this.reader === defaultAttachedReader ? undefined : this.reader
+			)
+		)
 			.filter((flag) => flag.clip.unit === unit)
 			.map((flag) => {
 				const changed = slots.some(

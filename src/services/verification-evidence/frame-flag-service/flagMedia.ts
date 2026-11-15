@@ -2,7 +2,8 @@
 import { spawnSync } from 'node:child_process';
 import { lstat, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { LfsAdapter } from '../../../adapters/git-source-history/LfsAdapter';
+import { readFlagFrame } from './readFlagFrame';
+import type { PinnedHistory } from '../history-status-service/HistoryStatusService.types';
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { notesRef } from '../../../core/git-source-history/historyTypes';
 import { EvidenceBranchRepository } from '../../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
@@ -21,13 +22,17 @@ import type {
 /** Follow only a verification note on the requested source, within the current evidence history. */
 export async function defaultAttachedReader(
 	reference: FrameClipReference,
-	root: string = process.cwd()
+	root: string = process.cwd(),
+	pinned?: PinnedHistory
 ): Promise<FrameClip> {
 	const evidence = new EvidenceBranchRepository(root);
-	const history = new HistoryStatusService(root, {
-		evidence: (await evidence.tip()) ?? null,
-		notes: (await evidence.tree.tip(notesRef)) ?? null
-	});
+	const history = new HistoryStatusService(
+		root,
+		pinned ?? {
+			evidence: (await evidence.tip()) ?? null,
+			notes: (await evidence.tree.tip(notesRef)) ?? null
+		}
+	);
 	const loaded = await attachedFrameRecord(history, reference);
 	const capture = owningFrameCapture(loaded.record!, reference);
 	const bytes = loaded.files.get(capture.path);
@@ -176,7 +181,7 @@ export async function materializeFlagFrame(
 
 /** Serve and attach only the exact retained, hash-verified PNG. */
 export async function retainedFlagFrame(root: string, flag: FrameFlag): Promise<Buffer> {
-	const bytes = await new LfsAdapter(root).read(flag.frame.sha256);
+	const bytes = await readFlagFrame(root, flag);
 	if (bytes?.length !== flag.frame.bytes || frameHash(bytes) !== flag.frame.sha256)
 		throw new ExpectedCliError('Retained frame hash/integrity is corrupt or unavailable.');
 	inspectFlagPng(bytes);

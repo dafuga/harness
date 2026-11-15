@@ -1,9 +1,13 @@
 // @harness-uid u_zhz7hjx43x
+import { defaultAttachedReader, inspectFrameClip } from './flagMedia';
+import type { ResolutionClip, ResolutionReader } from './flagStore.types';
+import { notesRef } from '../../../core/git-source-history/historyTypes';
 import { LfsAdapter } from '../../../adapters/git-source-history/LfsAdapter';
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { EvidenceBranchRepository } from '../../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
 import { lfsPointer, parseLfsPointer } from '../../../utils/verification-evidence/lfsPointer';
 import {
+	boundClip,
 	frameHash,
 	parseFlagJson,
 	parseFlagValue,
@@ -13,6 +17,7 @@ import {
 } from './flagSchema';
 import type {
 	FrameClip,
+	FrameClipReader,
 	FrameFlag,
 	FrameResolution,
 	StoredFrameFlag
@@ -41,20 +46,44 @@ export async function storeFrameFlag(
 }
 
 /** Reconstruct flags and resolution standing solely from one immutable evidence snapshot. */
-export async function readFrameFlags(root: string): Promise<FrameFlag[]> {
+export async function readFrameFlags(root: string, reader?: FrameClipReader): Promise<FrameFlag[]> {
 	const repository = new EvidenceBranchRepository(root),
 		tip = await repository.tip();
 	if (!tip) return [];
 	const paths = [...(await repository.tree.list(tip)).keys()].filter((path) =>
 		path.startsWith('video-feedback/')
 	);
+	const pinned = { evidence: tip, notes: (await repository.tree.tip(notesRef)) ?? null };
+	const clips = new Map<string, Promise<ResolutionClip>>();
+	const load: ResolutionReader = (reference) => {
+		const key = JSON.stringify(reference);
+		let found = clips.get(key);
+		if (!found) {
+			found = (async () => {
+				const clip = boundClip(
+					reference,
+					reader ? await reader(reference) : await defaultAttachedReader(reference, root, pinned)
+				);
+				inspectFrameClip(clip);
+				return {
+					sha256: clip.sha256,
+					inputHash: clip.inputHash,
+					capturedAt: clip.capturedAt,
+					addressedFlags: clip.addressedFlags
+				};
+			})();
+			if (clips.size >= 64) clips.delete(clips.keys().next().value!);
+			clips.set(key, found);
+		}
+		return found;
+	};
 	const flags: FrameFlag[] = [];
 	for (const path of paths.filter((path) => path.endsWith('/flag.json')))
 		flags.push(await readFlag(repository, tip, path));
 	if (new Set(flags.map((flag) => flag.id)).size !== flags.length)
 		throw new ExpectedCliError('Duplicate frame flag identities in retained evidence.');
 	for (const path of paths.filter((path) => path.endsWith('/resolution.json')))
-		await applyResolution(repository, tip, path, flags);
+		await applyResolution(repository, tip, path, { flags, load });
 	for (const path of paths) validateEvidencePath(path, flags);
 	return flags;
 }
@@ -92,8 +121,9 @@ async function applyResolution(
 	repository: EvidenceBranchRepository,
 	tip: string,
 	path: string,
-	flags: FrameFlag[]
+	context: { flags: FrameFlag[]; load: ResolutionReader }
 ): Promise<void> {
+	const { flags, load } = context;
 	const event = parseFlagValue(
 		resolutionSchema,
 		parseFlagJson(await repository.tree.read(tip, path))
@@ -107,12 +137,30 @@ async function applyResolution(
 		flag.clip.record === event.replacement.record
 	)
 		throw new ExpectedCliError('Frame resolution does not explicitly address its owning flag.');
+	const clip = await load(event.replacement);
+	validateReplacement(clip, event, flags);
+	flag.status = 'resolved';
+}
+
+function validateReplacement(
+	clip: ResolutionClip,
+	event: FrameResolution,
+	flags: FrameFlag[]
+): void {
+	if (
+		clip.sha256 !== event.replacement.sha256 ||
+		clip.inputHash !== event.replacement.inputHash ||
+		JSON.stringify([...clip.addressedFlags].sort()) !==
+			JSON.stringify([...event.addressedFlags].sort())
+	)
+		throw new ExpectedCliError('Frame resolution differs from its verified attached replacement.');
 	for (const id of event.addressedFlags) {
 		const addressed = flags.find((candidate) => candidate.id === id);
 		if (!addressed || !sameFrameSlot(addressed.clip, event.replacement))
 			throw new ExpectedCliError('Frame resolution cites unknown or wrong-owner flags.');
+		if (Date.parse(clip.capturedAt) < Date.parse(addressed.createdAt))
+			throw new ExpectedCliError('Frame resolution replacement predates its flag.');
 	}
-	flag.status = 'resolved';
 }
 
 function validateEvidencePath(path: string, flags: FrameFlag[]): void {

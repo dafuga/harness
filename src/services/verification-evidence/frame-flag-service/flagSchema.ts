@@ -153,6 +153,8 @@ export function addressedFlags(clip: FrameClip, flags: FrameFlag[]): FrameFlag[]
 		const flag = flags.find((item) => item.id === id);
 		if (!flag || !sameFrameSlot(flag.clip, clip) || flag.clip.record === clip.record)
 			throw new ExpectedCliError(`Replacement addresses unknown or wrong-owner flag ${id}.`);
+		if (Date.parse(clip.capturedAt) < Date.parse(flag.createdAt))
+			throw new ExpectedCliError('Replacement recording predates its frame flag.');
 		return flag;
 	});
 	const pending = flags.filter(
