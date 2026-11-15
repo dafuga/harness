@@ -15,45 +15,63 @@
 		"symbols": ["shellsBranch", "shellUnit", "seedShells", "ShellsSeed", "ShellsSeed"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "seedShells.repo",
 				"type": "VerifyRepo",
-				"required": true
+				"required": true,
+				"description": "The repository facade used to create and index the synthetic history and move Git refs. It must support the repository operations called during seeding."
 			},
 			{
 				"name": "seedShells.verified",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "A callback run after each commit stage to verify repository state. The first resolved outcome supplies the record id used to establish the initial budget."
 			},
 			{
 				"name": "seedShells.explain",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "A callback invoked after indexing the frame and after declaring it a layout to explain each behavior. Its resolved value is ignored."
 			},
 			{
 				"name": "seedShells.from",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git revision passed unchanged as the starting point when the script creates feature/shells. It must be a revision accepted by the checkout operation.",
+				"examples": ["abcdef0123456789abcdef0123456789abcdef01"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "shellsBranch",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Name of the branch on which the frame, baseline, and shell declaration commits are made. It contains a slash.",
+				"examples": ["feature/shells"]
 			},
 			{
 				"name": "shellUnit",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Unit identifier of the title frame, used to establish the budget and locate its unit manifest. The identifier stays component.title-frame while the manifest kind changes to layout.",
+				"examples": ["component.title-frame"]
 			},
 			{
 				"name": "seedShells",
-				"type": "Promise<Record<'framed' | 'framedBaseline' | 'shelled' | 'shellRetained', string>>"
+				"type": "Promise<Record<'framed' | 'framedBaseline' | 'shelled' | 'shellRetained', string>>",
+				"description": "Resolves to the commit identifiers for the frame, its baseline, its shell declaration, and the later title change. The title change's branch is deleted before the function resolves, and main is checked out.",
+				"examples": [
+					{
+						"framed": "0123456789abcdef0123456789abcdef01234567",
+						"framedBaseline": "1123456789abcdef1123456789abcdef11234567",
+						"shelled": "2123456789abcdef2123456789abcdef21234567",
+						"shellRetained": "3123456789abcdef3123456789abcdef31234567"
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "seedShells",
@@ -61,32 +79,46 @@
 					{
 						"name": "seedShells.repo",
 						"type": "VerifyRepo",
-						"required": true
+						"required": true,
+						"description": "The repository facade used to create and index the synthetic history and move Git refs. It must support the repository operations called during seeding."
 					},
 					{
 						"name": "seedShells.verified",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "A callback run after each commit stage to verify repository state. The first resolved outcome supplies the record id used to establish the initial budget."
 					},
 					{
 						"name": "seedShells.explain",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "A callback invoked after indexing the frame and after declaring it a layout to explain each behavior. Its resolved value is ignored."
 					},
 					{
 						"name": "seedShells.from",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git revision passed unchanged as the starting point when the script creates feature/shells. It must be a revision accepted by the checkout operation.",
+						"examples": ["abcdef0123456789abcdef0123456789abcdef01"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "seedShells",
-						"type": "Promise<Record<'framed' | 'framedBaseline' | 'shelled' | 'shellRetained', string>>"
+						"type": "Promise<Record<'framed' | 'framedBaseline' | 'shelled' | 'shellRetained', string>>",
+						"description": "Resolves to the commit identifiers for the frame, its baseline, its shell declaration, and the later title change. The title change's branch is deleted before the function resolves, and main is checked out.",
+						"examples": [
+							{
+								"framed": "0123456789abcdef0123456789abcdef01234567",
+								"framedBaseline": "1123456789abcdef1123456789abcdef11234567",
+								"shelled": "2123456789abcdef2123456789abcdef21234567",
+								"shellRetained": "3123456789abcdef3123456789abcdef31234567"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
