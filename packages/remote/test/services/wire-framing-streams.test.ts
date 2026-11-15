@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import type { WirePart } from '../../src/models/networking-security/RemoteLocal.types';
-import { WireFramingService } from '../../src/services/WireFramingService';
-import type { WireFramingOptions } from '../../src/services/WireFramingService';
+import { WireFramingService } from '../../src/services/networking-security/WireFramingService';
+import type { WireFramingOptions } from '../../src/services/networking-security/WireFramingService';
 
 const part = (frame: string) => JSON.parse(frame) as WirePart;
 const code = (run: () => unknown) => {

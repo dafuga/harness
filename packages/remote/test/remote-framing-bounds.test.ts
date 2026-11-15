@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { WireFramingService } from '../src/services/WireFramingService';
+import { WireFramingService } from '../src/services/networking-security/WireFramingService';
 
 test('nine multipart responses can finish without exceeding the receive stream bound', () => {
 	const steps: (() => void)[] = [];

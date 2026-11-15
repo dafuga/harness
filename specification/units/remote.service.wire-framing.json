@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/remote/src/services/WireFramingService.ts",
 			"packages/remote/src/services/networking-security/WireFramingService.ts",
 			"packages/remote/src/services/networking-security/WireFramingService.types.ts"
 		],
 		"symbols": [
-			"WireFramingService",
 			"WireFramingService",
 			"WireFramingService.constructor",
 			"WireFramingService.send",
