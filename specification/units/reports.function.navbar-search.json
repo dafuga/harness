@@ -21,23 +21,29 @@
 				"name": "navbarSearch.scope",
 				"type": "ExplorerScope | null",
 				"required": true,
-				"description": "Resolved explorer scope, or null while unavailable."
+				"description": "The currently displayed explorer scope, or null when no scope is available. Its commit is compared with candidate entry commits, and its location supplies the destination branch and commit.",
+				"examples": [null]
 			},
 			{
 				"name": "navbarSearch.given",
 				"type": "SearchEntry[] | null | undefined",
 				"required": true,
-				"description": "Entries for the displayed revision, null/undefined while loading."
+				"description": "Candidate search entries, or null/undefined while unavailable. Entries are usable only when a location exists and every entry's commit equals scope?.commit; one mismatch rejects the whole set.",
+				"examples": [
+					[],
+					null
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "navbarSearch",
 				"type": "NavbarSearch",
-				"description": "Accepted entries only when a location exists and every entry matches its commit, plus a scope label and destination resolver. Destinations require matching commit, category and identifier in the accepted set, and preserve the displayed branch/revision mode."
+				"description": "Returns the supplied entries only when a location exists and every entry's commit equals scope?.commit; otherwise entries is null. Its label indicates history, a pinned short commit, or the tip of scope.branch (falling back to “the retained commits”), while at resolves only entries with a matching commit/category/id key to the current location's branch and commit."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "navbarSearch",
@@ -46,24 +52,29 @@
 						"name": "navbarSearch.scope",
 						"type": "ExplorerScope | null",
 						"required": true,
-						"description": "Resolved explorer scope, or null while unavailable."
+						"description": "The currently displayed explorer scope, or null when no scope is available. Its commit is compared with candidate entry commits, and its location supplies the destination branch and commit.",
+						"examples": [null]
 					},
 					{
 						"name": "navbarSearch.given",
 						"type": "SearchEntry[] | null | undefined",
 						"required": true,
-						"description": "Entries for the displayed revision, null/undefined while loading."
+						"description": "Candidate search entries, or null/undefined while unavailable. Entries are usable only when a location exists and every entry's commit equals scope?.commit; one mismatch rejects the whole set.",
+						"examples": [
+							[],
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "navbarSearch",
 						"type": "NavbarSearch",
-						"description": "Accepted entries only when a location exists and every entry matches its commit, plus a scope label and destination resolver. Destinations require matching commit, category and identifier in the accepted set, and preserve the displayed branch/revision mode."
+						"description": "Returns the supplied entries only when a location exists and every entry's commit equals scope?.commit; otherwise entries is null. Its label indicates history, a pinned short commit, or the tip of scope.branch (falling back to “the retained commits”), while at resolves only entries with a matching commit/category/id key to the current location's branch and commit."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
