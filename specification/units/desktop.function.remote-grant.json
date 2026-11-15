@@ -20,17 +20,91 @@
 				"name": "remoteGrant.status",
 				"type": "RemoteNativeStatus | null",
 				"required": true,
-				"description": "Native status or null; a grant and connecting, online or offline state are required."
+				"description": "The phone's native status (RemoteNativeStatus), or null when there is none; `locked` and `fixture` are never read here. Only a non-null `grant` with a `state` of 'connecting', 'online' or 'offline' offers any method; when `methods` is an array it alone decides, otherwise the grant's `agents` and `comments` flags decide.",
+				"examples": [
+					{
+						"state": "online",
+						"origin": "https://relay.example.com",
+						"host": {
+							"id": "5c1e8a3f0d7b94e2a6c10f8e3b59d7a42c6e0f1b",
+							"name": "Studio Mac"
+						},
+						"device": {
+							"id": "a81e04c7d2f9b36e5041c8a2d7f3e9b0c6d54a12",
+							"name": "Work iPhone"
+						},
+						"grant": {
+							"projects": [
+								{
+									"id": "local-3a7f0c219e5b4d68c0d2a7f418e6b93cf7a20d5e6b9c31a8d4e07f2b5c8a9e10",
+									"name": "Trail Guide"
+								}
+							],
+							"agents": true,
+							"comments": true
+						},
+						"reason": null,
+						"lastOnlineAt": "2026-11-15T08:12:40Z",
+						"methods": [
+							"listProjects",
+							"snapshot",
+							"entity",
+							"evidence",
+							"artifact",
+							"messages",
+							"addComment",
+							"openThread",
+							"createPlan",
+							"approve"
+						],
+						"locked": false
+					},
+					{
+						"state": "offline",
+						"origin": "https://relay.example.com",
+						"host": {
+							"id": "5c1e8a3f0d7b94e2a6c10f8e3b59d7a42c6e0f1b",
+							"name": "Studio Mac"
+						},
+						"device": {
+							"id": "a81e04c7d2f9b36e5041c8a2d7f3e9b0c6d54a12",
+							"name": "Work iPhone"
+						},
+						"grant": {
+							"projects": [
+								{
+									"id": "local-3a7f0c219e5b4d68c0d2a7f418e6b93cf7a20d5e6b9c31a8d4e07f2b5c8a9e10",
+									"name": "Trail Guide"
+								}
+							],
+							"agents": false,
+							"comments": false
+						},
+						"reason": "The computer is asleep or has no network.",
+						"lastOnlineAt": "2026-11-15T07:40:05Z"
+					},
+					{
+						"state": "unpaired",
+						"origin": null,
+						"host": null,
+						"device": null,
+						"grant": null,
+						"reason": null,
+						"lastOnlineAt": null,
+						"methods": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "remoteGrant",
 				"type": "Set<string>",
-				"description": "Set of allowed attached methods, or grant-derived read/comment methods and optional agent methods when no explicit list exists; otherwise an empty set."
+				"description": "The allowed method names as a Set: when `methods` is an array, the attached methods that are read, comment or agent methods (so `evidence` and `artifact` only when attached); otherwise the read and comment methods except `evidence` and `artifact`, plus the agent methods when `grant.agents` is true, with the comment methods removed when `grant.comments` is false. It is empty when the status is null, has no grant, or its state is not 'connecting', 'online' or 'offline'."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "remoteGrant",
@@ -39,18 +113,91 @@
 						"name": "remoteGrant.status",
 						"type": "RemoteNativeStatus | null",
 						"required": true,
-						"description": "Native status or null; a grant and connecting, online or offline state are required."
+						"description": "The phone's native status (RemoteNativeStatus), or null when there is none; `locked` and `fixture` are never read here. Only a non-null `grant` with a `state` of 'connecting', 'online' or 'offline' offers any method; when `methods` is an array it alone decides, otherwise the grant's `agents` and `comments` flags decide.",
+						"examples": [
+							{
+								"state": "online",
+								"origin": "https://relay.example.com",
+								"host": {
+									"id": "5c1e8a3f0d7b94e2a6c10f8e3b59d7a42c6e0f1b",
+									"name": "Studio Mac"
+								},
+								"device": {
+									"id": "a81e04c7d2f9b36e5041c8a2d7f3e9b0c6d54a12",
+									"name": "Work iPhone"
+								},
+								"grant": {
+									"projects": [
+										{
+											"id": "local-3a7f0c219e5b4d68c0d2a7f418e6b93cf7a20d5e6b9c31a8d4e07f2b5c8a9e10",
+											"name": "Trail Guide"
+										}
+									],
+									"agents": true,
+									"comments": true
+								},
+								"reason": null,
+								"lastOnlineAt": "2026-11-15T08:12:40Z",
+								"methods": [
+									"listProjects",
+									"snapshot",
+									"entity",
+									"evidence",
+									"artifact",
+									"messages",
+									"addComment",
+									"openThread",
+									"createPlan",
+									"approve"
+								],
+								"locked": false
+							},
+							{
+								"state": "offline",
+								"origin": "https://relay.example.com",
+								"host": {
+									"id": "5c1e8a3f0d7b94e2a6c10f8e3b59d7a42c6e0f1b",
+									"name": "Studio Mac"
+								},
+								"device": {
+									"id": "a81e04c7d2f9b36e5041c8a2d7f3e9b0c6d54a12",
+									"name": "Work iPhone"
+								},
+								"grant": {
+									"projects": [
+										{
+											"id": "local-3a7f0c219e5b4d68c0d2a7f418e6b93cf7a20d5e6b9c31a8d4e07f2b5c8a9e10",
+											"name": "Trail Guide"
+										}
+									],
+									"agents": false,
+									"comments": false
+								},
+								"reason": "The computer is asleep or has no network.",
+								"lastOnlineAt": "2026-11-15T07:40:05Z"
+							},
+							{
+								"state": "unpaired",
+								"origin": null,
+								"host": null,
+								"device": null,
+								"grant": null,
+								"reason": null,
+								"lastOnlineAt": null,
+								"methods": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "remoteGrant",
 						"type": "Set<string>",
-						"description": "Set of allowed attached methods, or grant-derived read/comment methods and optional agent methods when no explicit list exists; otherwise an empty set."
+						"description": "The allowed method names as a Set: when `methods` is an array, the attached methods that are read, comment or agent methods (so `evidence` and `artifact` only when attached); otherwise the read and comment methods except `evidence` and `artifact`, plus the agent methods when `grant.agents` is true, with the comment methods removed when `grant.comments` is false. It is empty when the status is null, has no grant, or its state is not 'connecting', 'online' or 'offline'."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
