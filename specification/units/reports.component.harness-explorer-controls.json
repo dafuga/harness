@@ -27,24 +27,48 @@
 				"name": "ExplorerControls.noun",
 				"type": "string",
 				"required": true,
-				"description": "Required lowercase plural entity name used in search labels and placeholder."
+				"description": "Name of the entities being searched, documented in the code as plural and lowercase (for example pages or components), interpolated unchanged into the search container's aria-label `Find {noun}`, the input's aria-label `Search {noun}` and its placeholder `Search {noun}…`. The component does not validate or normalize it, so a value in another letter case or grammatical number is rendered exactly as passed.",
+				"examples": ["pages", "components"]
 			},
 			{
 				"name": "ExplorerControls.filter",
 				"type": "CatalogFilter",
 				"required": true,
-				"description": "Defaults to JavaScript undefined at runtime through $bindable(). The declared prop type requires a caller-supplied binding. No fallback object is created; the search control reads and edits filter.search."
+				"description": "The CatalogFilter object whose `search` string this control reads and writes through `bind:value`; the control never reads or changes `changedOnly` or `order`. The prop is declared without a `?` marker and `$bindable()` gives it no fallback, so when a parent passes no value, `filter` is undefined and rendering throws a TypeError.",
+				"examples": [
+					{
+						"search": "",
+						"changedOnly": false,
+						"order": "name"
+					},
+					{
+						"search": "evidence",
+						"changedOnly": true,
+						"order": "changed"
+					},
+					{
+						"search": "grid",
+						"changedOnly": false,
+						"order": "failed"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerControls",
 				"type": "markup",
-				"description": "A full-width local search field above the catalog. States: long: The search field retains a long entered query. focused: The search field displays keyboard focus."
+				"description": "Markup for an hx-div with role `search`, class `ex-controls` and aria-label `Find {noun}`, holding an hx-label (class `ex-search`) that wraps a search HarnessIcon at size 18 and an hx-input of type `search` with placeholder `Search {noun}…`, aria-label `Search {noun}` and value bound to `filter.search`. The component performs no filtering itself, and its flex layout applies only inside an ancestor with class `ex-content`, where the `ex-search` label grows to fill the row."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown while the component renders when no filter value is passed (filter is undefined), because the search input's binding reads filter.search without a guard."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
