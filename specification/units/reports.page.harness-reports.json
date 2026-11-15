@@ -12,16 +12,23 @@
 		"symbols": ["load"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "load",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported server load handler for /harness/reports. On every invocation it redirects to /harness and does not return report data."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Redirect 308",
+				"type": "thrown",
+				"description": "SvelteKit's redirect throws this redirect response on every load invocation. It uses status 308 and location '/harness'."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "load",
@@ -29,16 +36,18 @@
 				"outputs": [
 					{
 						"name": "load",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The exported server load handler for /harness/reports. On every invocation it redirects to /harness and does not return report data."
 					}
 				],
 				"errors": [
 					{
 						"name": "Redirect 308",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "SvelteKit's redirect throws this redirect response on every load invocation. It uses status 308 and location '/harness'."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
