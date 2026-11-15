@@ -23,37 +23,69 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReasonPathService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root that the history walk passes to a new GitAdapter. The constructor stores it unchanged, and the walk uses it only when the direct check has failures.",
+				"examples": [
+					"/Users/dev/code/shop-app",
+					"/home/runner/work/shop-app/shop-app",
+					"/srv/checkouts/ledger-service"
+				]
 			},
 			{
 				"name": "ReasonPathService.constructor.load",
 				"type": "SideLoader",
-				"required": true
+				"required": true,
+				"description": "Reads one commit as a side of a comparison, and the history walk calls it for each step commit, oldest first, only when the direct check has failures. A rejection is not caught, so `report` rejects with the same value."
 			},
 			{
 				"name": "ReasonPathService.report.range",
 				"type": "ReasonRange",
-				"required": true
+				"required": true,
+				"description": "The comparison to explain: its base and head sides, plus `baseCommit` and `headCommit`, which name the ends of the walk. A null `baseCommit` leaves the walk without a lower bound, a null `headCommit` (working tree) makes HEAD one more step, and only the 200 commits nearest the head are tried as steps."
 			},
 			{
 				"name": "ReasonPathService.report.known",
 				"type": "Explanation[]",
-				"required": true
+				"required": true,
+				"description": "Explanations the caller already holds; the direct check and every step check are each made against this same list, which the service passes on unchanged.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReasonPathService.report",
-				"type": "Promise<ReasonReport>"
+				"type": "Promise<ReasonReport>",
+				"description": "Resolves to the direct report when the direct check has no failures or the history walk finds no chain of fully explained steps, so any failures remain in it. Otherwise it resolves to a report whose required statuses are all set to 'explained', with the walk's entries and empty overlong and failures lists.",
+				"examples": [
+					{
+						"required": [],
+						"entries": [],
+						"overlong": [],
+						"failures": []
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "SideLoader rejection",
+				"type": "thrown",
+				"description": "Rejection value of the SideLoader passed to the constructor. The history walk awaits it for each step commit without a try/catch, so `report` rejects with that same value whenever the walk runs."
+			},
+			{
+				"name": "BoundedCommandFailure",
+				"type": "thrown",
+				"description": "A git run in the history walk, made through `GitAdapter.attempt`, rejects with a BoundedCommandFailure when git cannot start, passes its deadline or writes more output than its bound. The walk does not catch it, so `report` rejects with that failure when the direct check has failures and a git run in the walk fails that way."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ReasonPathService.report",
@@ -61,22 +93,47 @@
 					{
 						"name": "ReasonPathService.report.range",
 						"type": "ReasonRange",
-						"required": true
+						"required": true,
+						"description": "The comparison to explain: its base and head sides, plus `baseCommit` and `headCommit`, which name the ends of the walk. A null `baseCommit` leaves the walk without a lower bound, a null `headCommit` (working tree) makes HEAD one more step, and only the 200 commits nearest the head are tried as steps."
 					},
 					{
 						"name": "ReasonPathService.report.known",
 						"type": "Explanation[]",
-						"required": true
+						"required": true,
+						"description": "Explanations the caller already holds; the direct check and every step check are each made against this same list, which the service passes on unchanged.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReasonPathService.report",
-						"type": "Promise<ReasonReport>"
+						"type": "Promise<ReasonReport>",
+						"description": "Resolves to the direct report when the direct check has no failures or the history walk finds no chain of fully explained steps, so any failures remain in it. Otherwise it resolves to a report whose required statuses are all set to 'explained', with the walk's entries and empty overlong and failures lists.",
+						"examples": [
+							{
+								"required": [],
+								"entries": [],
+								"overlong": [],
+								"failures": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SideLoader rejection",
+						"type": "thrown",
+						"description": "Rejection value of the SideLoader passed to the constructor. The history walk awaits it for each step commit without a try/catch, so `report` rejects with that same value whenever the walk runs."
+					},
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "A git run in the history walk, made through `GitAdapter.attempt`, rejects with a BoundedCommandFailure when git cannot start, passes its deadline or writes more output than its bound. The walk does not catch it, so `report` rejects with that failure when the direct check has failures and a git run in the walk fails that way."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -86,22 +143,30 @@
 					{
 						"name": "ReasonPathService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root that the history walk passes to a new GitAdapter. The constructor stores it unchanged, and the walk uses it only when the direct check has failures.",
+						"examples": [
+							"/Users/dev/code/shop-app",
+							"/home/runner/work/shop-app/shop-app",
+							"/srv/checkouts/ledger-service"
+						]
 					},
 					{
 						"name": "ReasonPathService.constructor.load",
 						"type": "SideLoader",
-						"required": true
+						"required": true,
+						"description": "Reads one commit as a side of a comparison, and the history walk calls it for each step commit, oldest first, only when the direct check has failures. A rejection is not caught, so `report` rejects with the same value."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReasonPathService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ReasonPathService instance, which keeps the root and load values and holds a new ExplanationService."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
