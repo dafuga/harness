@@ -21,29 +21,37 @@
 				"name": "hostedArtifact.media",
 				"type": "{ bytes: Uint8Array; mediaType: string }",
 				"required": true,
-				"description": "The received bytes and declared media type. Supported types are PNG, JPEG, WAV, MPEG audio, MP4 audio, Ogg, JSON and plain text; this helper lowercases the base type and discards parameters before checking."
+				"description": "The hosted artifact bytes and server-declared media type used to choose the capture kind. The base type is trimmed, lowercased and stripped of parameters before matching image/png, image/jpeg, audio/wav, audio/mpeg, audio/mp4, audio/ogg, application/json or text/plain; its bytes must pass the corresponding content check, match the requested SHA-256 and stay at or below 11 MiB.",
+				"examples": [
+					{
+						"bytes": [123, 125],
+						"mediaType": "application/json; charset=utf-8"
+					}
+				]
 			},
 			{
 				"name": "hostedArtifact.sha256",
 				"type": "string",
 				"required": true,
-				"description": "The expected SHA-256 hash of the requested file."
+				"description": "The expected lowercase hexadecimal SHA-256 of the requested bytes, compared exactly with the digest computed from the stored bytes. A mismatch rejects the artifact.",
+				"examples": ["44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostedArtifact",
 				"type": "Promise<EvidenceArtifactResult>",
-				"description": "A promise for the checked bytes, hash and serving type. Bytes must be at most 11 MiB, match the hash, and identify the declared base media type. Plain text is returned with UTF-8 charset."
+				"description": "The resolved result has exactly bytes, mediaType and sha256: the verified stored bytes, the media type inferred from their contents and the digest that passed comparison. It is returned only after kind-specific content checks and the 11 MiB limit; valid JSON declared as application/json stays application/json, while supported text may be served as text/plain; charset=utf-8."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unsupported or mismatched media, a different hash or excessive size. Hash errors explain that the file differs from the requested recording; unsupported content receives the shared unsupported-kind message."
+				"description": "Unsupported base media types, content that cannot be served under the declared type (including invalid UTF-8 or invalid JSON declared as JSON), SHA-256 mismatches and artifacts over 11 MiB reject the promise. Digest failures use the recorded-file message, oversize failures preserve the size error, and other content/type failures use the unsupported-kind message."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hostedArtifact",
@@ -52,29 +60,37 @@
 						"name": "hostedArtifact.media",
 						"type": "{ bytes: Uint8Array; mediaType: string }",
 						"required": true,
-						"description": "The received bytes and declared media type. Supported types are PNG, JPEG, WAV, MPEG audio, MP4 audio, Ogg, JSON and plain text; this helper lowercases the base type and discards parameters before checking."
+						"description": "The hosted artifact bytes and server-declared media type used to choose the capture kind. The base type is trimmed, lowercased and stripped of parameters before matching image/png, image/jpeg, audio/wav, audio/mpeg, audio/mp4, audio/ogg, application/json or text/plain; its bytes must pass the corresponding content check, match the requested SHA-256 and stay at or below 11 MiB.",
+						"examples": [
+							{
+								"bytes": [123, 125],
+								"mediaType": "application/json; charset=utf-8"
+							}
+						]
 					},
 					{
 						"name": "hostedArtifact.sha256",
 						"type": "string",
 						"required": true,
-						"description": "The expected SHA-256 hash of the requested file."
+						"description": "The expected lowercase hexadecimal SHA-256 of the requested bytes, compared exactly with the digest computed from the stored bytes. A mismatch rejects the artifact.",
+						"examples": ["44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostedArtifact",
 						"type": "Promise<EvidenceArtifactResult>",
-						"description": "A promise for the checked bytes, hash and serving type. Bytes must be at most 11 MiB, match the hash, and identify the declared base media type. Plain text is returned with UTF-8 charset."
+						"description": "The resolved result has exactly bytes, mediaType and sha256: the verified stored bytes, the media type inferred from their contents and the digest that passed comparison. It is returned only after kind-specific content checks and the 11 MiB limit; valid JSON declared as application/json stays application/json, while supported text may be served as text/plain; charset=utf-8."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Unsupported base media types, content that cannot be served under the declared type (including invalid UTF-8 or invalid JSON declared as JSON), SHA-256 mismatches and artifacts over 11 MiB reject the promise. Digest failures use the recorded-file message, oversize failures preserve the size error, and other content/type failures use the unsupported-kind message."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
