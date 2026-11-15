@@ -44,80 +44,473 @@
 				"name": "commentEntries.thread",
 				"type": "CommittedThread",
 				"required": true,
-				"description": "The committed thread whose comments should be shown, including author names, timestamps and its design-image anchor."
+				"description": "The committed thread whose comments are shown; each entry copies its comment's id, creation time, actor name and text, and the thread's anchor version and image hash. Entries keep the stored comment order, and a thread with no comments yields an empty list.",
+				"examples": [
+					{
+						"id": "8d2f4e1a-6b3c-4f70-9a51-2c7e9d0b4f36",
+						"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+						"anchor": {
+							"branch": "main",
+							"commit": "9c1e4a7b2d8f03e5a6b1c9d7e2f4a8b0c3d5e6f7",
+							"entityId": "desktop.function.comment-entries",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null
+						},
+						"comments": [
+							{
+								"id": "c41e7b90-2a5d-4e3f-8b16-7d9a0c3e5f21",
+								"requestId": "3b9d6f02-7e1a-4c85-a4f3-0d8e2b6c9a17",
+								"actor": {
+									"id": "google-1048275619304857261",
+									"email": "sam.rivera@example.com",
+									"name": "Sam Rivera",
+									"emailVerified": true
+								},
+								"text": "Should the pending note keep the thread number too?",
+								"createdAt": "2026-11-14T09:12:40.118Z"
+							},
+							{
+								"id": "6e0b3d7a-f19c-4a28-9d54-3b8e1c7f2a90",
+								"requestId": "b5e2a9c4-03d7-4f6e-8a1b-9c4d7e0f2b38",
+								"actor": {
+									"id": "google-2930847165029384715",
+									"email": "lee.okafor@example.com",
+									"name": "Lee Okafor",
+									"emailVerified": true
+								},
+								"text": "Yes, keep it to the pin number only.",
+								"createdAt": "2026-11-14T10:47:03.906Z"
+							}
+						],
+						"collaborationCommit": "5a7d0e2c9b41f8e63d2a07c5b9e1f4d8a3c6b02e"
+					}
+				]
 			},
 			{
 				"name": "threadInfo.thread",
 				"type": "CommittedThread",
 				"required": true,
-				"description": "The committed thread to summarize as a numbered pin, with its image anchor and comments."
+				"description": "The committed thread to summarize as a pin: its id, anchor version, image hash, state, viewport and region are copied as stored, and messageCount is its number of comments. ThreadPanel uses it for a just-saved thread that is not yet in the entity's thread list.",
+				"examples": [
+					{
+						"id": "f3c0a6d9-2e8b-4d17-b4c5-7a9e1f6d3b02",
+						"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+						"anchor": {
+							"branch": "main",
+							"commit": "9c1e4a7b2d8f03e5a6b1c9d7e2f4a8b0c3d5e6f7",
+							"entityId": "reports.component.evidence-grid",
+							"version": "v003",
+							"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+							"state": "default",
+							"viewport": "desktop",
+							"region": {
+								"x": 0.12,
+								"y": 0.4,
+								"width": 0.5,
+								"height": 0.3
+							}
+						},
+						"comments": [
+							{
+								"id": "1f8a4d62-7c0e-4b95-8e3d-5a2c9f7b1e46",
+								"requestId": "e2d90b47-5a1f-4c3e-9f68-0b7d4a2e8c15",
+								"actor": {
+									"id": "google-1048275619304857261",
+									"email": "sam.rivera@example.com",
+									"name": "Sam Rivera",
+									"emailVerified": true
+								},
+								"text": "The header wraps on tablet widths.",
+								"createdAt": "2026-11-13T15:26:18.533Z"
+							}
+						],
+						"collaborationCommit": "5a7d0e2c9b41f8e63d2a07c5b9e1f4d8a3c6b02e"
+					}
+				]
 			},
 			{
 				"name": "threadInfo.pin",
 				"type": "number",
 				"required": true,
-				"description": "The pin number to copy into the thread summary; this helper does not allocate or validate pin numbers."
+				"description": "The pin number copied into the summary exactly as given; this helper neither allocates nor validates it. ThreadPanel passes the entity's thread count plus one when the just-saved thread is not yet listed.",
+				"examples": [1, 2]
 			},
 			{
 				"name": "pendingEntries.results",
 				"type": "HumanCommentResult[]",
 				"required": true,
-				"description": "The shared or pending comment results to inspect. Only pending drafts are included."
+				"description": "The shared or pending comment results to inspect; only items whose kind is 'pending' become entries, and shared results are skipped.",
+				"examples": [
+					[
+						{
+							"kind": "pending",
+							"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+							"draftId": "e7a1c5d3-94f0-4b2e-8c6d-1a3f7b9e0d58",
+							"savedAt": "2026-11-15T08:03:55.402Z",
+							"input": {
+								"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+								"requestId": "1d7c4e90-b2a6-4f38-8e05-a6d3c9f1b27e",
+								"threadId": "8d2f4e1a-6b3c-4f70-9a51-2c7e9d0b4f36",
+								"anchor": {
+									"branch": "main",
+									"commit": "9c1e4a7b2d8f03e5a6b1c9d7e2f4a8b0c3d5e6f7",
+									"entityId": "desktop.function.comment-entries",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"text": "Should the pending note say which thread this reply belongs to?"
+							},
+							"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+						}
+					],
+					[
+						{
+							"kind": "pending",
+							"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+							"draftId": "f0a6d2b8-5c31-4e97-9b4a-2d8f6e1c0a73",
+							"savedAt": "2026-11-15T08:20:11.067Z",
+							"input": {
+								"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+								"requestId": "7a3e5c19-d4f8-4b60-a2e7-93c1f5b8d046",
+								"anchor": {
+									"branch": "main",
+									"commit": "9c1e4a7b2d8f03e5a6b1c9d7e2f4a8b0c3d5e6f7",
+									"entityId": "reports.component.evidence-grid",
+									"version": "v003",
+									"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+									"state": "default",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.2,
+										"y": 0.1,
+										"width": 0.3,
+										"height": 0.2
+									}
+								},
+								"text": "Should this header stay sticky on tablet?"
+							},
+							"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+						},
+						{
+							"kind": "shared",
+							"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+							"thread": {
+								"id": "f3c0a6d9-2e8b-4d17-b4c5-7a9e1f6d3b02",
+								"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+								"anchor": {
+									"branch": "main",
+									"commit": "9c1e4a7b2d8f03e5a6b1c9d7e2f4a8b0c3d5e6f7",
+									"entityId": "reports.component.evidence-grid",
+									"version": "v003",
+									"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+									"state": "default",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.12,
+										"y": 0.4,
+										"width": 0.5,
+										"height": 0.3
+									}
+								},
+								"comments": [
+									{
+										"id": "1f8a4d62-7c0e-4b95-8e3d-5a2c9f7b1e46",
+										"requestId": "e2d90b47-5a1f-4c3e-9f68-0b7d4a2e8c15",
+										"actor": {
+											"id": "google-1048275619304857261",
+											"email": "sam.rivera@example.com",
+											"name": "Sam Rivera",
+											"emailVerified": true
+										},
+										"text": "The header wraps on tablet widths.",
+										"createdAt": "2026-11-13T15:26:18.533Z"
+									}
+								],
+								"collaborationCommit": "5a7d0e2c9b41f8e63d2a07c5b9e1f4d8a3c6b02e"
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "pendingEntries.entityId",
 				"type": "string",
 				"required": true,
-				"description": "The exact entity identity whose pending drafts should be shown. This filter does not additionally compare project identity."
+				"description": "The exact entity identity whose drafts are shown, compared as a string with each draft's input.anchor.entityId; no project identity is compared, so matching drafts from any project pass the filter.",
+				"examples": ["desktop.function.comment-entries", "reports.component.evidence-grid"]
 			},
 			{
 				"name": "pendingEntries.threads",
 				"type": "ThreadInfo[]",
 				"required": true,
-				"description": "Thread summaries used to add a thread number to a pending draft when its thread identity is found."
+				"description": "Thread summaries searched by id for each draft's input.threadId; a match adds ' · Thread #<pin>' to the note, while a draft with no threadId or no matching summary keeps only the pending note.",
+				"examples": [
+					[
+						{
+							"id": "8d2f4e1a-6b3c-4f70-9a51-2c7e9d0b4f36",
+							"pin": 1,
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null,
+							"messageCount": 2
+						}
+					],
+					[
+						{
+							"id": "8d2f4e1a-6b3c-4f70-9a51-2c7e9d0b4f36",
+							"pin": 1,
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null,
+							"messageCount": 2
+						},
+						{
+							"id": "f3c0a6d9-2e8b-4d17-b4c5-7a9e1f6d3b02",
+							"pin": 2,
+							"version": "v003",
+							"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+							"state": "default",
+							"viewport": "desktop",
+							"region": {
+								"x": 0.12,
+								"y": 0.4,
+								"width": 0.5,
+								"height": 0.3
+							},
+							"messageCount": 1
+						}
+					]
+				]
 			},
 			{
 				"name": "requestEntry.runId",
 				"type": "string",
 				"required": true,
-				"description": "The run identity to use for the temporary displayed request entry."
+				"description": "The run identity copied unchanged into the entry's id; the function does not check its format or whether the run exists.",
+				"examples": ["a2c8e41f-5d7b-4a06-9f3e-b8d2c7e1f094", "5c9f1e27-08ab-4d3e-a6f4-e2b7c0d19a58"]
 			},
 			{
 				"name": "requestEntry.request",
 				"type": "RunDraft",
 				"required": true,
-				"description": "The request text, mode, provider and model to display as a user message."
+				"description": "The submitted request: its text, provider and model are copied, and its mode is copied except that 'ask' becomes null. Its effort and designOptions are not shown on the entry.",
+				"examples": [
+					{
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"effort": "xhigh",
+						"text": "Keep the thread number in the pending note when the thread is listed.",
+						"mode": "change"
+					},
+					{
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"effort": "xhigh",
+						"text": "Plan three layouts for the evidence grid header on tablet.",
+						"mode": "plan",
+						"designOptions": 3
+					},
+					{
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"effort": "medium",
+						"text": "Why is the thread number missing from the note on this draft?",
+						"mode": "ask"
+					}
+				]
 			},
 			{
 				"name": "requestEntry.design",
 				"type": "DesignVersion | undefined",
 				"required": true,
-				"description": "The associated design version, or undefined. Its version and first image hash are included when present."
+				"description": "The design version the request is attached to, or undefined when there is none; its version and the sha256 of its first image are copied, and a missing version or image gives null.",
+				"examples": [
+					{
+						"version": "v002",
+						"createdAt": "2026-11-14T16:30:08.214Z",
+						"commit": "e04b7c19a3f6d2805c1e9b4a7d3f0e6c8b2a5d19",
+						"generator": "claude · claude-opus-5-5",
+						"prompt": "Describe how comment entries are built for the thread panel.",
+						"notes": "Entries follow the stored comment order; pending drafts are labelled and never shown as saved.",
+						"baseRevision": "c7f2a0d4e9b13856f0a2c8e7d4b9f1a6e3d0c582",
+						"images": [],
+						"approval": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "commentEntries",
 				"type": "ThreadEntry[]",
-				"description": "User entries in comment order, retaining comment identity, time, author name, text and thread image anchor; agent mode, provider and model are null."
+				"description": "User entries for the thread's comments, in stored order, each with the comment id, creation time, actor name and text, and the thread's anchor version and image hash; mode, provider and model are null.",
+				"examples": [
+					[
+						{
+							"id": "c41e7b90-2a5d-4e3f-8b16-7d9a0c3e5f21",
+							"at": "2026-11-14T09:12:40.118Z",
+							"author": "user",
+							"authorName": "Sam Rivera",
+							"text": "Should the pending note keep the thread number too?",
+							"mode": null,
+							"provider": null,
+							"model": null,
+							"version": null,
+							"imageSha256": null
+						},
+						{
+							"id": "6e0b3d7a-f19c-4a28-9d54-3b8e1c7f2a90",
+							"at": "2026-11-14T10:47:03.906Z",
+							"author": "user",
+							"authorName": "Lee Okafor",
+							"text": "Yes, keep it to the pin number only.",
+							"mode": null,
+							"provider": null,
+							"model": null,
+							"version": null,
+							"imageSha256": null
+						}
+					],
+					[
+						{
+							"id": "1f8a4d62-7c0e-4b95-8e3d-5a2c9f7b1e46",
+							"at": "2026-11-13T15:26:18.533Z",
+							"author": "user",
+							"authorName": "Sam Rivera",
+							"text": "The header wraps on tablet widths.",
+							"mode": null,
+							"provider": null,
+							"model": null,
+							"version": "v003",
+							"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05"
+						}
+					]
+				]
 			},
 			{
 				"name": "threadInfo",
 				"type": "ThreadInfo",
-				"description": "A thread summary with the supplied pin, the thread’s image anchor and the number of comments."
+				"description": "A thread summary with the thread id, the supplied pin, the anchor version, image hash, state, viewport and region, and a messageCount equal to the thread's comment count.",
+				"examples": [
+					{
+						"id": "8d2f4e1a-6b3c-4f70-9a51-2c7e9d0b4f36",
+						"pin": 1,
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null,
+						"messageCount": 2
+					},
+					{
+						"id": "f3c0a6d9-2e8b-4d17-b4c5-7a9e1f6d3b02",
+						"pin": 2,
+						"version": "v003",
+						"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+						"state": "default",
+						"viewport": "desktop",
+						"region": {
+							"x": 0.12,
+							"y": 0.4,
+							"width": 0.5,
+							"height": 0.3
+						},
+						"messageCount": 1
+					}
+				]
 			},
 			{
 				"name": "pendingEntries",
 				"type": "ThreadEntry[]",
-				"description": "Pending entries for the requested entity, in input order, labelled as remaining on this device and not shared. Each retains the local draft identity, saved time and backend reason, plus the thread number when known."
+				"description": "Pending entries for the requested entity, in input order, each marked pending with the note 'Pending on this device · not shared' plus ' · Thread #<pin>' when its thread is listed; each keeps its draft id, saved time, text, anchor version and image hash, and copies the draft's reason as detail.",
+				"examples": [
+					[
+						{
+							"id": "e7a1c5d3-94f0-4b2e-8c6d-1a3f7b9e0d58",
+							"at": "2026-11-15T08:03:55.402Z",
+							"author": "user",
+							"text": "Should the pending note say which thread this reply belongs to?",
+							"mode": null,
+							"provider": null,
+							"model": null,
+							"version": null,
+							"imageSha256": null,
+							"pending": true,
+							"note": "Pending on this device · not shared · Thread #1",
+							"detail": "Saved locally; not synced. Connect a verified shared project to publish."
+						}
+					],
+					[
+						{
+							"id": "f0a6d2b8-5c31-4e97-9b4a-2d8f6e1c0a73",
+							"at": "2026-11-15T08:20:11.067Z",
+							"author": "user",
+							"text": "Should this header stay sticky on tablet?",
+							"mode": null,
+							"provider": null,
+							"model": null,
+							"version": "v003",
+							"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+							"pending": true,
+							"note": "Pending on this device · not shared",
+							"detail": "Saved locally; not synced. Connect a verified shared project to publish."
+						}
+					]
+				]
 			},
 			{
 				"name": "requestEntry",
 				"type": "ThreadEntry",
-				"description": "A temporary user entry with the run identity, current ISO timestamp, submitted text and agent choices, plus the optional design anchor. It does not save or send the request."
+				"description": "A temporary user entry whose id is the run identity and whose time is the current ISO timestamp, with the request text, mode (null for 'ask'), provider and model, and the design's version and first image hash when present. Nothing is saved or sent.",
+				"examples": [
+					{
+						"id": "a2c8e41f-5d7b-4a06-9f3e-b8d2c7e1f094",
+						"at": "2026-11-15T08:10:02.775Z",
+						"author": "user",
+						"text": "Keep the thread number in the pending note when the thread is listed.",
+						"mode": "change",
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"version": "v002",
+						"imageSha256": null
+					},
+					{
+						"id": "5c9f1e27-08ab-4d3e-a6f4-e2b7c0d19a58",
+						"at": "2026-11-15T08:14:30.019Z",
+						"author": "user",
+						"text": "Plan three layouts for the evidence grid header on tablet.",
+						"mode": "plan",
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"version": "v003",
+						"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05"
+					},
+					{
+						"id": "d4b82e09-6f1c-4a53-b0e7-3c95a8d21f6e",
+						"at": "2026-11-15T08:16:47.250Z",
+						"author": "user",
+						"text": "Why is the thread number missing from the note on this draft?",
+						"mode": null,
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"version": null,
+						"imageSha256": null
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "commentEntries",
@@ -126,18 +519,103 @@
 						"name": "commentEntries.thread",
 						"type": "CommittedThread",
 						"required": true,
-						"description": "The committed thread whose comments should be shown, including author names, timestamps and its design-image anchor."
+						"description": "The committed thread whose comments are shown; each entry copies its comment's id, creation time, actor name and text, and the thread's anchor version and image hash. Entries keep the stored comment order, and a thread with no comments yields an empty list.",
+						"examples": [
+							{
+								"id": "8d2f4e1a-6b3c-4f70-9a51-2c7e9d0b4f36",
+								"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+								"anchor": {
+									"branch": "main",
+									"commit": "9c1e4a7b2d8f03e5a6b1c9d7e2f4a8b0c3d5e6f7",
+									"entityId": "desktop.function.comment-entries",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"comments": [
+									{
+										"id": "c41e7b90-2a5d-4e3f-8b16-7d9a0c3e5f21",
+										"requestId": "3b9d6f02-7e1a-4c85-a4f3-0d8e2b6c9a17",
+										"actor": {
+											"id": "google-1048275619304857261",
+											"email": "sam.rivera@example.com",
+											"name": "Sam Rivera",
+											"emailVerified": true
+										},
+										"text": "Should the pending note keep the thread number too?",
+										"createdAt": "2026-11-14T09:12:40.118Z"
+									},
+									{
+										"id": "6e0b3d7a-f19c-4a28-9d54-3b8e1c7f2a90",
+										"requestId": "b5e2a9c4-03d7-4f6e-8a1b-9c4d7e0f2b38",
+										"actor": {
+											"id": "google-2930847165029384715",
+											"email": "lee.okafor@example.com",
+											"name": "Lee Okafor",
+											"emailVerified": true
+										},
+										"text": "Yes, keep it to the pin number only.",
+										"createdAt": "2026-11-14T10:47:03.906Z"
+									}
+								],
+								"collaborationCommit": "5a7d0e2c9b41f8e63d2a07c5b9e1f4d8a3c6b02e"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commentEntries",
 						"type": "ThreadEntry[]",
-						"description": "User entries in comment order, retaining comment identity, time, author name, text and thread image anchor; agent mode, provider and model are null."
+						"description": "User entries for the thread's comments, in stored order, each with the comment id, creation time, actor name and text, and the thread's anchor version and image hash; mode, provider and model are null.",
+						"examples": [
+							[
+								{
+									"id": "c41e7b90-2a5d-4e3f-8b16-7d9a0c3e5f21",
+									"at": "2026-11-14T09:12:40.118Z",
+									"author": "user",
+									"authorName": "Sam Rivera",
+									"text": "Should the pending note keep the thread number too?",
+									"mode": null,
+									"provider": null,
+									"model": null,
+									"version": null,
+									"imageSha256": null
+								},
+								{
+									"id": "6e0b3d7a-f19c-4a28-9d54-3b8e1c7f2a90",
+									"at": "2026-11-14T10:47:03.906Z",
+									"author": "user",
+									"authorName": "Lee Okafor",
+									"text": "Yes, keep it to the pin number only.",
+									"mode": null,
+									"provider": null,
+									"model": null,
+									"version": null,
+									"imageSha256": null
+								}
+							],
+							[
+								{
+									"id": "1f8a4d62-7c0e-4b95-8e3d-5a2c9f7b1e46",
+									"at": "2026-11-13T15:26:18.533Z",
+									"author": "user",
+									"authorName": "Sam Rivera",
+									"text": "The header wraps on tablet widths.",
+									"mode": null,
+									"provider": null,
+									"model": null,
+									"version": "v003",
+									"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "threadInfo",
@@ -146,24 +624,88 @@
 						"name": "threadInfo.thread",
 						"type": "CommittedThread",
 						"required": true,
-						"description": "The committed thread to summarize as a numbered pin, with its image anchor and comments."
+						"description": "The committed thread to summarize as a pin: its id, anchor version, image hash, state, viewport and region are copied as stored, and messageCount is its number of comments. ThreadPanel uses it for a just-saved thread that is not yet in the entity's thread list.",
+						"examples": [
+							{
+								"id": "f3c0a6d9-2e8b-4d17-b4c5-7a9e1f6d3b02",
+								"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+								"anchor": {
+									"branch": "main",
+									"commit": "9c1e4a7b2d8f03e5a6b1c9d7e2f4a8b0c3d5e6f7",
+									"entityId": "reports.component.evidence-grid",
+									"version": "v003",
+									"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+									"state": "default",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.12,
+										"y": 0.4,
+										"width": 0.5,
+										"height": 0.3
+									}
+								},
+								"comments": [
+									{
+										"id": "1f8a4d62-7c0e-4b95-8e3d-5a2c9f7b1e46",
+										"requestId": "e2d90b47-5a1f-4c3e-9f68-0b7d4a2e8c15",
+										"actor": {
+											"id": "google-1048275619304857261",
+											"email": "sam.rivera@example.com",
+											"name": "Sam Rivera",
+											"emailVerified": true
+										},
+										"text": "The header wraps on tablet widths.",
+										"createdAt": "2026-11-13T15:26:18.533Z"
+									}
+								],
+								"collaborationCommit": "5a7d0e2c9b41f8e63d2a07c5b9e1f4d8a3c6b02e"
+							}
+						]
 					},
 					{
 						"name": "threadInfo.pin",
 						"type": "number",
 						"required": true,
-						"description": "The pin number to copy into the thread summary; this helper does not allocate or validate pin numbers."
+						"description": "The pin number copied into the summary exactly as given; this helper neither allocates nor validates it. ThreadPanel passes the entity's thread count plus one when the just-saved thread is not yet listed.",
+						"examples": [1, 2]
 					}
 				],
 				"outputs": [
 					{
 						"name": "threadInfo",
 						"type": "ThreadInfo",
-						"description": "A thread summary with the supplied pin, the thread’s image anchor and the number of comments."
+						"description": "A thread summary with the thread id, the supplied pin, the anchor version, image hash, state, viewport and region, and a messageCount equal to the thread's comment count.",
+						"examples": [
+							{
+								"id": "8d2f4e1a-6b3c-4f70-9a51-2c7e9d0b4f36",
+								"pin": 1,
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null,
+								"messageCount": 2
+							},
+							{
+								"id": "f3c0a6d9-2e8b-4d17-b4c5-7a9e1f6d3b02",
+								"pin": 2,
+								"version": "v003",
+								"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+								"state": "default",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.12,
+									"y": 0.4,
+									"width": 0.5,
+									"height": 0.3
+								},
+								"messageCount": 1
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "pendingEntries",
@@ -172,30 +714,200 @@
 						"name": "pendingEntries.results",
 						"type": "HumanCommentResult[]",
 						"required": true,
-						"description": "The shared or pending comment results to inspect. Only pending drafts are included."
+						"description": "The shared or pending comment results to inspect; only items whose kind is 'pending' become entries, and shared results are skipped.",
+						"examples": [
+							[
+								{
+									"kind": "pending",
+									"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+									"draftId": "e7a1c5d3-94f0-4b2e-8c6d-1a3f7b9e0d58",
+									"savedAt": "2026-11-15T08:03:55.402Z",
+									"input": {
+										"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+										"requestId": "1d7c4e90-b2a6-4f38-8e05-a6d3c9f1b27e",
+										"threadId": "8d2f4e1a-6b3c-4f70-9a51-2c7e9d0b4f36",
+										"anchor": {
+											"branch": "main",
+											"commit": "9c1e4a7b2d8f03e5a6b1c9d7e2f4a8b0c3d5e6f7",
+											"entityId": "desktop.function.comment-entries",
+											"version": null,
+											"imageSha256": null,
+											"state": null,
+											"viewport": null,
+											"region": null
+										},
+										"text": "Should the pending note say which thread this reply belongs to?"
+									},
+									"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+								}
+							],
+							[
+								{
+									"kind": "pending",
+									"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+									"draftId": "f0a6d2b8-5c31-4e97-9b4a-2d8f6e1c0a73",
+									"savedAt": "2026-11-15T08:20:11.067Z",
+									"input": {
+										"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+										"requestId": "7a3e5c19-d4f8-4b60-a2e7-93c1f5b8d046",
+										"anchor": {
+											"branch": "main",
+											"commit": "9c1e4a7b2d8f03e5a6b1c9d7e2f4a8b0c3d5e6f7",
+											"entityId": "reports.component.evidence-grid",
+											"version": "v003",
+											"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+											"state": "default",
+											"viewport": "desktop",
+											"region": {
+												"x": 0.2,
+												"y": 0.1,
+												"width": 0.3,
+												"height": 0.2
+											}
+										},
+										"text": "Should this header stay sticky on tablet?"
+									},
+									"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+								},
+								{
+									"kind": "shared",
+									"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+									"thread": {
+										"id": "f3c0a6d9-2e8b-4d17-b4c5-7a9e1f6d3b02",
+										"projectId": "0f6a3c8e-d2b4-4e91-b7a5-5c1f9e8d2a64",
+										"anchor": {
+											"branch": "main",
+											"commit": "9c1e4a7b2d8f03e5a6b1c9d7e2f4a8b0c3d5e6f7",
+											"entityId": "reports.component.evidence-grid",
+											"version": "v003",
+											"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+											"state": "default",
+											"viewport": "desktop",
+											"region": {
+												"x": 0.12,
+												"y": 0.4,
+												"width": 0.5,
+												"height": 0.3
+											}
+										},
+										"comments": [
+											{
+												"id": "1f8a4d62-7c0e-4b95-8e3d-5a2c9f7b1e46",
+												"requestId": "e2d90b47-5a1f-4c3e-9f68-0b7d4a2e8c15",
+												"actor": {
+													"id": "google-1048275619304857261",
+													"email": "sam.rivera@example.com",
+													"name": "Sam Rivera",
+													"emailVerified": true
+												},
+												"text": "The header wraps on tablet widths.",
+												"createdAt": "2026-11-13T15:26:18.533Z"
+											}
+										],
+										"collaborationCommit": "5a7d0e2c9b41f8e63d2a07c5b9e1f4d8a3c6b02e"
+									}
+								}
+							]
+						]
 					},
 					{
 						"name": "pendingEntries.entityId",
 						"type": "string",
 						"required": true,
-						"description": "The exact entity identity whose pending drafts should be shown. This filter does not additionally compare project identity."
+						"description": "The exact entity identity whose drafts are shown, compared as a string with each draft's input.anchor.entityId; no project identity is compared, so matching drafts from any project pass the filter.",
+						"examples": ["desktop.function.comment-entries", "reports.component.evidence-grid"]
 					},
 					{
 						"name": "pendingEntries.threads",
 						"type": "ThreadInfo[]",
 						"required": true,
-						"description": "Thread summaries used to add a thread number to a pending draft when its thread identity is found."
+						"description": "Thread summaries searched by id for each draft's input.threadId; a match adds ' · Thread #<pin>' to the note, while a draft with no threadId or no matching summary keeps only the pending note.",
+						"examples": [
+							[
+								{
+									"id": "8d2f4e1a-6b3c-4f70-9a51-2c7e9d0b4f36",
+									"pin": 1,
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null,
+									"messageCount": 2
+								}
+							],
+							[
+								{
+									"id": "8d2f4e1a-6b3c-4f70-9a51-2c7e9d0b4f36",
+									"pin": 1,
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null,
+									"messageCount": 2
+								},
+								{
+									"id": "f3c0a6d9-2e8b-4d17-b4c5-7a9e1f6d3b02",
+									"pin": 2,
+									"version": "v003",
+									"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+									"state": "default",
+									"viewport": "desktop",
+									"region": {
+										"x": 0.12,
+										"y": 0.4,
+										"width": 0.5,
+										"height": 0.3
+									},
+									"messageCount": 1
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pendingEntries",
 						"type": "ThreadEntry[]",
-						"description": "Pending entries for the requested entity, in input order, labelled as remaining on this device and not shared. Each retains the local draft identity, saved time and backend reason, plus the thread number when known."
+						"description": "Pending entries for the requested entity, in input order, each marked pending with the note 'Pending on this device · not shared' plus ' · Thread #<pin>' when its thread is listed; each keeps its draft id, saved time, text, anchor version and image hash, and copies the draft's reason as detail.",
+						"examples": [
+							[
+								{
+									"id": "e7a1c5d3-94f0-4b2e-8c6d-1a3f7b9e0d58",
+									"at": "2026-11-15T08:03:55.402Z",
+									"author": "user",
+									"text": "Should the pending note say which thread this reply belongs to?",
+									"mode": null,
+									"provider": null,
+									"model": null,
+									"version": null,
+									"imageSha256": null,
+									"pending": true,
+									"note": "Pending on this device · not shared · Thread #1",
+									"detail": "Saved locally; not synced. Connect a verified shared project to publish."
+								}
+							],
+							[
+								{
+									"id": "f0a6d2b8-5c31-4e97-9b4a-2d8f6e1c0a73",
+									"at": "2026-11-15T08:20:11.067Z",
+									"author": "user",
+									"text": "Should this header stay sticky on tablet?",
+									"mode": null,
+									"provider": null,
+									"model": null,
+									"version": "v003",
+									"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05",
+									"pending": true,
+									"note": "Pending on this device · not shared",
+									"detail": "Saved locally; not synced. Connect a verified shared project to publish."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "requestEntry",
@@ -204,30 +916,106 @@
 						"name": "requestEntry.runId",
 						"type": "string",
 						"required": true,
-						"description": "The run identity to use for the temporary displayed request entry."
+						"description": "The run identity copied unchanged into the entry's id; the function does not check its format or whether the run exists.",
+						"examples": [
+							"a2c8e41f-5d7b-4a06-9f3e-b8d2c7e1f094",
+							"5c9f1e27-08ab-4d3e-a6f4-e2b7c0d19a58"
+						]
 					},
 					{
 						"name": "requestEntry.request",
 						"type": "RunDraft",
 						"required": true,
-						"description": "The request text, mode, provider and model to display as a user message."
+						"description": "The submitted request: its text, provider and model are copied, and its mode is copied except that 'ask' becomes null. Its effort and designOptions are not shown on the entry.",
+						"examples": [
+							{
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"effort": "xhigh",
+								"text": "Keep the thread number in the pending note when the thread is listed.",
+								"mode": "change"
+							},
+							{
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"effort": "xhigh",
+								"text": "Plan three layouts for the evidence grid header on tablet.",
+								"mode": "plan",
+								"designOptions": 3
+							},
+							{
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"effort": "medium",
+								"text": "Why is the thread number missing from the note on this draft?",
+								"mode": "ask"
+							}
+						]
 					},
 					{
 						"name": "requestEntry.design",
 						"type": "DesignVersion | undefined",
 						"required": true,
-						"description": "The associated design version, or undefined. Its version and first image hash are included when present."
+						"description": "The design version the request is attached to, or undefined when there is none; its version and the sha256 of its first image are copied, and a missing version or image gives null.",
+						"examples": [
+							{
+								"version": "v002",
+								"createdAt": "2026-11-14T16:30:08.214Z",
+								"commit": "e04b7c19a3f6d2805c1e9b4a7d3f0e6c8b2a5d19",
+								"generator": "claude · claude-opus-5-5",
+								"prompt": "Describe how comment entries are built for the thread panel.",
+								"notes": "Entries follow the stored comment order; pending drafts are labelled and never shown as saved.",
+								"baseRevision": "c7f2a0d4e9b13856f0a2c8e7d4b9f1a6e3d0c582",
+								"images": [],
+								"approval": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "requestEntry",
 						"type": "ThreadEntry",
-						"description": "A temporary user entry with the run identity, current ISO timestamp, submitted text and agent choices, plus the optional design anchor. It does not save or send the request."
+						"description": "A temporary user entry whose id is the run identity and whose time is the current ISO timestamp, with the request text, mode (null for 'ask'), provider and model, and the design's version and first image hash when present. Nothing is saved or sent.",
+						"examples": [
+							{
+								"id": "a2c8e41f-5d7b-4a06-9f3e-b8d2c7e1f094",
+								"at": "2026-11-15T08:10:02.775Z",
+								"author": "user",
+								"text": "Keep the thread number in the pending note when the thread is listed.",
+								"mode": "change",
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"version": "v002",
+								"imageSha256": null
+							},
+							{
+								"id": "5c9f1e27-08ab-4d3e-a6f4-e2b7c0d19a58",
+								"at": "2026-11-15T08:14:30.019Z",
+								"author": "user",
+								"text": "Plan three layouts for the evidence grid header on tablet.",
+								"mode": "plan",
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"version": "v003",
+								"imageSha256": "3f9a1c7e5b2d8046a1e9c3f7b5d2e8a04c6f1b9e7d3a5c8f2e4b6d1a9c7e3f05"
+							},
+							{
+								"id": "d4b82e09-6f1c-4a53-b0e7-3c95a8d21f6e",
+								"at": "2026-11-15T08:16:47.250Z",
+								"author": "user",
+								"text": "Why is the thread number missing from the note on this draft?",
+								"mode": null,
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"version": null,
+								"imageSha256": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
