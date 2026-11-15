@@ -20,29 +20,70 @@
 				"name": "planningMessage.context",
 				"type": "PlanningContext",
 				"required": true,
-				"description": "The project planning API and repository context used to read the current plan and append the message."
+				"description": "Provides the repository root and PlanningApi used to read the current plan and append the message."
 			},
 			{
 				"name": "planningMessage.draft",
 				"type": "MessageDraft",
 				"required": true,
-				"description": "The message’s entity, thread, author, text, mode, provider/model and optional version, image hash and Change outcome. Null mode defaults to plan. User messages use Local reviewer; other authors use the provider name or Harness."
+				"description": "Contains the unit and thread IDs, author, text, nullable mode/provider/model/version/image hash, and optional Change details. Null mode is stored as plan; user authors map to Local reviewer and other authors to a provider-named agent or Harness, while the agent reference is included only when both provider and model are present. Change mode requires a current approval for the draft version and defaults an omitted status to requested; artifact references require a matching version/hash image or image-free function, service, or config notes with a null image hash.",
+				"examples": [
+					{
+						"entityId": "desktop.function.planning-message",
+						"threadId": "550e8400-e29b-41d4-a716-446655440000",
+						"author": "user",
+						"text": "The spacing now matches the approved direction.",
+						"mode": "plan",
+						"provider": null,
+						"model": null,
+						"version": "v003",
+						"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+					},
+					{
+						"entityId": "desktop.function.planning-message",
+						"threadId": "123e4567-e89b-42d3-a456-426614174000",
+						"author": "agent",
+						"text": "Apply the approved wording change.",
+						"mode": "change",
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"version": "v003",
+						"imageSha256": null,
+						"change": {
+							"status": "requested"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planningMessage",
 				"type": "unknown",
-				"description": "A promise for the saved display message. A matching image becomes an image reference; a notes-only function, service or config version can become a notes reference. Otherwise no artifact reference is added. Change messages retain the current approval target and default to requested status."
+				"description": "Resolves to the display message created from the appended record, with its generated UUID, timestamp, and normalized author/provider fields. Its version comes from a matched image or notes reference or the Change target, and its image hash is set only for an image reference.",
+				"examples": [
+					{
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"at": "2026-11-15T09:30:00.000Z",
+						"author": "user",
+						"text": "The spacing now matches the approved direction.",
+						"mode": "plan",
+						"provider": null,
+						"model": null,
+						"version": "v003",
+						"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects a Change message without a current plan approval or whose version differs from that approval. Planning read/write errors also propagate."
+				"description": "A Change draft throws if the plan has no current approval or its approval version differs from the draft version; rejections from readPlan and appendMessage also propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planningMessage",
@@ -51,24 +92,70 @@
 						"name": "planningMessage.context",
 						"type": "PlanningContext",
 						"required": true,
-						"description": "The project planning API and repository context used to read the current plan and append the message."
+						"description": "Provides the repository root and PlanningApi used to read the current plan and append the message."
 					},
 					{
 						"name": "planningMessage.draft",
 						"type": "MessageDraft",
 						"required": true,
-						"description": "The message’s entity, thread, author, text, mode, provider/model and optional version, image hash and Change outcome. Null mode defaults to plan. User messages use Local reviewer; other authors use the provider name or Harness."
+						"description": "Contains the unit and thread IDs, author, text, nullable mode/provider/model/version/image hash, and optional Change details. Null mode is stored as plan; user authors map to Local reviewer and other authors to a provider-named agent or Harness, while the agent reference is included only when both provider and model are present. Change mode requires a current approval for the draft version and defaults an omitted status to requested; artifact references require a matching version/hash image or image-free function, service, or config notes with a null image hash.",
+						"examples": [
+							{
+								"entityId": "desktop.function.planning-message",
+								"threadId": "550e8400-e29b-41d4-a716-446655440000",
+								"author": "user",
+								"text": "The spacing now matches the approved direction.",
+								"mode": "plan",
+								"provider": null,
+								"model": null,
+								"version": "v003",
+								"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+							},
+							{
+								"entityId": "desktop.function.planning-message",
+								"threadId": "123e4567-e89b-42d3-a456-426614174000",
+								"author": "agent",
+								"text": "Apply the approved wording change.",
+								"mode": "change",
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"version": "v003",
+								"imageSha256": null,
+								"change": {
+									"status": "requested"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planningMessage",
 						"type": "unknown",
-						"description": "A promise for the saved display message. A matching image becomes an image reference; a notes-only function, service or config version can become a notes reference. Otherwise no artifact reference is added. Change messages retain the current approval target and default to requested status."
+						"description": "Resolves to the display message created from the appended record, with its generated UUID, timestamp, and normalized author/provider fields. Its version comes from a matched image or notes reference or the Change target, and its image hash is set only for an image reference.",
+						"examples": [
+							{
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"at": "2026-11-15T09:30:00.000Z",
+								"author": "user",
+								"text": "The spacing now matches the approved direction.",
+								"mode": "plan",
+								"provider": null,
+								"model": null,
+								"version": "v003",
+								"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A Change draft throws if the plan has no current approval or its approval version differs from the draft version; rejections from readPlan and appendMessage also propagate."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
