@@ -31,75 +31,78 @@
 				"name": "ExplorerCatalogScreen.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Prepared history index for the selected repository and its recorded revisions."
+				"description": "The index prop remains in the host object passed to ExplorerFrame; this component does not read it directly."
 			},
 			{
 				"name": "ExplorerCatalogScreen.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Exact selected source revision supplying every displayed contract, measurement and capture."
+				"description": "The selected revision is passed as revision to entityCatalog while rows are derived for the current category.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "ExplorerCatalogScreen.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "First parent of the selected commit, or null at a branch tip or first commit."
+				"description": "The parent revision remains in the host object passed to ExplorerFrame; this component does not read it directly.",
+				"examples": [null, "0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "ExplorerCatalogScreen.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch, commit and comparison scope shared by the explorer host."
+				"description": "Only scope.commit is read here; it is serialized with route.branch and passed to ExplorerIndex as its scope prop."
 			},
 			{
 				"name": "ExplorerCatalogScreen.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current explorer location, including category, entity, section and tab."
+				"description": "The current route supplies category to entityCatalog, ExplorerIndex and ExplorerCatalogItems, and supplies branch to the JSON scope passed to ExplorerIndex."
 			},
 			{
 				"name": "ExplorerCatalogScreen.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Units projected from the selected revision, including entities removed by the shown commit."
+				"description": "entityCatalog computes rows from host.entities for the current category, using host.lens.relations and host.head."
 			},
 			{
 				"name": "ExplorerCatalogScreen.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Host-provided readers for entity relationships, history and selected-revision details."
+				"description": "lens.relations is read by entityCatalog, and the full lens is passed to ExplorerCatalogItems; this component does not read other lens members directly."
 			},
 			{
 				"name": "ExplorerCatalogScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Revision reader used only for commits the displayed history requests."
+				"description": "The revision client remains in the host object passed to ExplorerFrame; this component does not access it directly."
 			},
 			{
 				"name": "ExplorerCatalogScreen.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Base URL for retained recorded evidence media."
+				"description": "The media base string is forwarded unchanged to ExplorerCatalogItems.",
+				"examples": ["https://example.com/evidence/"]
 			},
 			{
 				"name": "ExplorerCatalogScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Receives the requested explorer destination for host-controlled navigation."
+				"description": "The host navigation callback remains in the host object passed to ExplorerFrame; this component does not invoke it directly."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerCatalogScreen.collection",
 				"type": "markup",
-				"description": "Responsive grids show component screenshots, helper calls and service names with usage links. Search, filters and navigation preserve branch and commit. Shells, configs and models use tables. States: empty: The selected collection contains no registered entities. unindexed: The selected revision has no registry and the screen explains the gap. no-matches: A search with no results displays the no-matching-entities message. functions: The collection displays callable entries with their selected-revision identities. layouts: The collection displays layout cards and their child-content previews."
+				"description": "Returns an hx-div marker with data-harness-component=\"harness-explorer-catalog-screen\" around ExplorerFrame. Its child markup supplies ExplorerIndex the category, derived rows and JSON scope made from route.branch and scope.commit, then supplies ExplorerCatalogItems the listed rows, navigation, lens and mediaBase."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExplorerCatalogScreen.callerError",
-				"type": "unknown",
-				"description": "Caller-provided snippets, navigation and synchronous reader callbacks may throw; those errors propagate. This component defines no additional error type."
+				"type": "thrown",
+				"description": "Exceptions raised by entityCatalog or by forwarded child content and callbacks are not caught or translated here, so they propagate through rendering."
 			}
 		],
 		"errorStatus": "declared",
