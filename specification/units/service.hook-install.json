@@ -36,9 +36,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository or worktree path passed to `GitAdapter` when the service is constructed. It is used for later Git path lookups; the constructor does not resolve or validate it here.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "HookInstallService.install.command",
@@ -58,7 +56,7 @@
 						"installed": false,
 						"enabled": false,
 						"stage": "pre-push",
-						"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+						"hooksDirectory": "/workspace/project/.git/hooks",
 						"chained": false,
 						"stages": [
 							{
@@ -94,7 +92,7 @@
 						"installed": true,
 						"enabled": true,
 						"stage": "pre-push",
-						"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+						"hooksDirectory": "/workspace/project/.git/hooks",
 						"chained": false,
 						"stages": [
 							{
@@ -130,7 +128,7 @@
 						"installed": false,
 						"enabled": false,
 						"stage": "pre-push",
-						"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+						"hooksDirectory": "/workspace/project/.git/hooks",
 						"chained": false,
 						"stages": [
 							{
@@ -180,7 +178,7 @@
 								"installed": false,
 								"enabled": false,
 								"stage": "pre-push",
-								"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+								"hooksDirectory": "/workspace/project/.git/hooks",
 								"chained": false,
 								"stages": [
 									{
@@ -238,7 +236,7 @@
 								"installed": true,
 								"enabled": true,
 								"stage": "pre-push",
-								"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+								"hooksDirectory": "/workspace/project/.git/hooks",
 								"chained": false,
 								"stages": [
 									{
@@ -288,7 +286,7 @@
 								"installed": false,
 								"enabled": false,
 								"stage": "pre-push",
-								"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+								"hooksDirectory": "/workspace/project/.git/hooks",
 								"chained": false,
 								"stages": [
 									{
@@ -335,9 +333,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository or worktree path passed to `GitAdapter` when the service is constructed. It is used for later Git path lookups; the constructor does not resolve or validate it here.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

@@ -28,9 +28,7 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Filesystem root used to read the selected loop state and resolve committed task evidence and audit storage. If omitted, the constructor uses process.cwd().",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "TaskCommand.run.flags",
@@ -292,9 +290,7 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Filesystem root used to read the selected loop state and resolve committed task evidence and audit storage. If omitted, the constructor uses process.cwd().",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

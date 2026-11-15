@@ -28,9 +28,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root used by verification and history calls. The constructor stores the string as-is and does not normalize or validate the path.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "HookRunService.prePush.input",
@@ -119,9 +117,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root used by verification and history calls. The constructor stores the string as-is and does not normalize or validate the path.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

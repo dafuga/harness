@@ -20,9 +20,9 @@
 				"required": true,
 				"description": "Path passed to lstat and readdir for inventory; it may identify a file or directory and may be relative or absolute. Symlinks are reported without traversal, and discovered file paths are relative to this root.",
 				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a/slot-10/src/cli/program/history-prune",
+					"/workspace/project/src/cli/program/history-prune",
 					"src/cli/program/history-prune",
-					"/tmp/history-prune-cache"
+					"/workspace/cache/history-prune-cache"
 				]
 			}
 		],
@@ -61,9 +61,9 @@
 						"required": true,
 						"description": "Path passed to lstat and readdir for inventory; it may identify a file or directory and may be relative or absolute. Symlinks are reported without traversal, and discovered file paths are relative to this root.",
 						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a/slot-10/src/cli/program/history-prune",
+							"/workspace/project/src/cli/program/history-prune",
 							"src/cli/program/history-prune",
-							"/tmp/history-prune-cache"
+							"/workspace/cache/history-prune-cache"
 						]
 					}
 				],

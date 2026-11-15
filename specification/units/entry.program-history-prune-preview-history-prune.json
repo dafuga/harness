@@ -31,7 +31,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Pass the repository root; the function resolves it for the verification-cache scan and Git HEAD lookup.",
-				"examples": ["/Users/danielfugere/projects/example-repo"]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "previewHistoryPrune.keepLast",
@@ -138,7 +138,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Pass the repository root; the function resolves it for the verification-cache scan and Git HEAD lookup.",
-						"examples": ["/Users/danielfugere/projects/example-repo"]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "previewHistoryPrune.keepLast",

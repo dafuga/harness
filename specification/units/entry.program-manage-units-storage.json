@@ -19,9 +19,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Repository root beneath which the function resolves specification/units and specification/budgets/ledger.ndjson. Only regular .json files found under the unit directory are counted; unreadable directories and failed file stats are treated as empty or zero, while a ledger stream error can reject the report.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-				]
+				"examples": ["/workspace/project"]
 			}
 		],
 		"outputs": [
@@ -83,9 +81,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Repository root beneath which the function resolves specification/units and specification/budgets/ledger.ndjson. Only regular .json files found under the unit directory are counted; unreadable directories and failed file stats are treated as empty or zero, while a ledger stream error can reject the report.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [
