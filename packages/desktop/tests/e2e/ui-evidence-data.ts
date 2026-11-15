@@ -10,7 +10,7 @@ import { index } from '../../../reports/test/entityFixture';
 import { commits, ids, units } from '../../../reports/test/entityUnits';
 import type { EntityEvidenceResult } from '../../src/models/verification-evidence/DesktopEvidence.types';
 import type { CatalogEntity } from '../../src/models/development-tooling/Desktop.types';
-import { catalogListed } from '../../src/utils/catalogUnit';
+import { catalogListed } from '../../src/utils/explorer-ui/catalogUnit';
 import { evidenceEntity } from './ui-evidence-entity';
 import { nativeImageFixture } from './native-image-fixture';
 import { cardScenario, observedHistory, type Example } from './ui-evidence-history';

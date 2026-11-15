@@ -8,18 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/catalogUnit.ts",
-			"packages/desktop/src/utils/explorer-ui/catalogUnit.ts"
-		],
-		"symbols": [
-			"catalogUnit",
-			"catalogListed",
-			"planCatalog",
-			"catalogUnit",
-			"catalogListed",
-			"planCatalog"
-		]
+		"source": ["packages/desktop/src/utils/explorer-ui/catalogUnit.ts"],
+		"symbols": ["catalogUnit", "catalogListed", "planCatalog"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -3,7 +3,7 @@ import {
 	catalogListed,
 	catalogUnit,
 	planCatalog
-} from '../../../../../desktop/src/utils/catalogUnit';
+} from '../../../../../desktop/src/utils/explorer-ui/catalogUnit';
 import type { ComponentManifest } from '../../../../../../src/core/unitTypes';
 import type { CatalogEntity } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 import type { HubSourceContext } from '../../development-tooling/hubSource';
