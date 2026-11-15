@@ -12,61 +12,105 @@
 		"symbols": ["apiAgent", "apiEventCursor", "apiEvents"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "apiAgent.client",
 				"type": "HarnessApiService",
-				"required": true
+				"required": true,
+				"description": "Configured HarnessApiService instance used by apiAgent to read options.input and options.requestId and dispatch API calls through call. The instance is not a JSON value."
 			},
 			{
 				"name": "apiAgent.operation",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Selects the request branch: define sends createPlan, call invokes the supplied method, and every other string starts an agent run. Only define requires input.contract; the agent-run branch requires a string provider and a nonempty string model.",
+				"examples": ["define", "call", "run"]
 			},
 			{
 				"name": "apiAgent.method",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "API method name passed to client.call when operation is call; other branches ignore it. There is no runtime check, so omission passes undefined to client.call despite the TypeScript non-null assertion.",
+				"examples": ["createPlan", "events", "startRun"]
 			},
 			{
 				"name": "apiEventCursor.text",
 				"type": "string",
 				"required": false,
-				"default": "0"
+				"default": "0",
+				"description": "Text converted with Number to the event cursor used when fetching run events, and the result must be a nonnegative safe integer. Defaults to 0; JavaScript numeric coercion applies before validation.",
+				"examples": ["0", "12"]
 			},
 			{
 				"name": "apiEvents.client",
 				"type": "HarnessApiService",
-				"required": true
+				"required": true,
+				"description": "Configured HarnessApiService instance used to read options.after and call the events endpoint. The instance is not a JSON value."
 			},
 			{
 				"name": "apiEvents.runId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Run identifier forwarded to the events call and used to keep only events whose value.runId matches, plus the same-key replay entry. Its format is not validated here.",
+				"examples": ["run-123"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "apiAgent",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "Resolves to the createPlan API result for define, the selected API call result for call, or an object formed from startRun data with requestId added for every other operation. The first two branches impose no response shape.",
+				"examples": [
+					{
+						"requestId": "550e8400-e29b-41d4-a716-446655440000"
+					}
+				]
 			},
 			{
 				"name": "apiEventCursor",
-				"type": "number"
+				"type": "number",
+				"description": "The numeric event cursor parsed from the input text. It is always a nonnegative safe integer.",
+				"examples": [0, 12]
 			},
 			{
 				"name": "apiEvents",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "Resolves to the API response with events filtered to entries whose value.runId equals the requested runId. When replay is truthy it is reduced to that runId's own entry, or to an empty object if there is no own entry; a non-array events field causes failure.",
+				"examples": [
+					{
+						"events": [
+							{
+								"value": {
+									"runId": "run-123"
+								}
+							}
+						]
+					},
+					{
+						"events": [
+							{
+								"value": {
+									"runId": "run-123"
+								}
+							}
+						],
+						"replay": {
+							"run-123": {}
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised by fail() for a define request without input.contract, an agent-run request without string provider or a nonempty string model, an invalid request UUID, an invalid event cursor, or an API response without an events array. Rejections from apiInput and client.call otherwise propagate."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "apiAgent",
@@ -74,32 +118,45 @@
 					{
 						"name": "apiAgent.client",
 						"type": "HarnessApiService",
-						"required": true
+						"required": true,
+						"description": "Configured HarnessApiService instance used by apiAgent to read options.input and options.requestId and dispatch API calls through call. The instance is not a JSON value."
 					},
 					{
 						"name": "apiAgent.operation",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Selects the request branch: define sends createPlan, call invokes the supplied method, and every other string starts an agent run. Only define requires input.contract; the agent-run branch requires a string provider and a nonempty string model.",
+						"examples": ["define", "call", "run"]
 					},
 					{
 						"name": "apiAgent.method",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "API method name passed to client.call when operation is call; other branches ignore it. There is no runtime check, so omission passes undefined to client.call despite the TypeScript non-null assertion.",
+						"examples": ["createPlan", "events", "startRun"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiAgent",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "Resolves to the createPlan API result for define, the selected API call result for call, or an object formed from startRun data with requestId added for every other operation. The first two branches impose no response shape.",
+						"examples": [
+							{
+								"requestId": "550e8400-e29b-41d4-a716-446655440000"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised by fail() when define input has no contract, agent-run input lacks a string provider or nonempty string model, or the supplied request ID fails UUID validation. Rejections from apiInput and client.call propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "apiEventCursor",
@@ -108,22 +165,27 @@
 						"name": "apiEventCursor.text",
 						"type": "string",
 						"required": false,
-						"default": "0"
+						"default": "0",
+						"description": "Text converted with Number to the event cursor used when fetching run events, and the result must be a nonnegative safe integer. Defaults to 0; JavaScript numeric coercion applies before validation.",
+						"examples": ["0", "12"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiEventCursor",
-						"type": "number"
+						"type": "number",
+						"description": "The numeric event cursor parsed from the input text. It is always a nonnegative safe integer.",
+						"examples": [0, 12]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised by fail() when Number(text) is not a nonnegative safe integer."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "apiEvents",
@@ -131,27 +193,55 @@
 					{
 						"name": "apiEvents.client",
 						"type": "HarnessApiService",
-						"required": true
+						"required": true,
+						"description": "Configured HarnessApiService instance used to read options.after and call the events endpoint. The instance is not a JSON value."
 					},
 					{
 						"name": "apiEvents.runId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Run identifier forwarded to the events call and used to keep only events whose value.runId matches, plus the same-key replay entry. Its format is not validated here.",
+						"examples": ["run-123"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiEvents",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "Resolves to the API response with events filtered to entries whose value.runId equals the requested runId. When replay is truthy it is reduced to that runId's own entry, or to an empty object if there is no own entry; a non-array events field causes failure.",
+						"examples": [
+							{
+								"events": [
+									{
+										"value": {
+											"runId": "run-123"
+										}
+									}
+								]
+							},
+							{
+								"events": [
+									{
+										"value": {
+											"runId": "run-123"
+										}
+									}
+								],
+								"replay": {
+									"run-123": {}
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised by fail() when the API response events field is not an array; rejections from client.call propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
