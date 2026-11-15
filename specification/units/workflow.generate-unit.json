@@ -12,27 +12,73 @@
 		"symbols": ["generateUnit", "GenerateUnitInput", "GenerateUnitInput"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "generateUnit.input",
 				"type": "GenerateUnitInput",
-				"required": true
+				"required": true,
+				"description": "The unit request: name is required and must be a code name of letters, numbers, spaces, dashes or underscores that starts with a letter or number, while kind (default 'function'), force (overwrites existing files whose contents differ), root (default the working directory), group (a lowercase kebab-case category) and level (molecule or organism, only for the component kind) are optional. A non-empty responsibility is trimmed and recorded as the unit's declared responsibility, and the options are passed to generatePiece.",
+				"examples": [
+					{
+						"name": "format-row-count",
+						"kind": "function",
+						"responsibility": "Trims and normalizes row labels for the evidence grid."
+					},
+					{
+						"name": "evidence grid",
+						"kind": "component",
+						"level": "molecule",
+						"group": "reporting"
+					},
+					{
+						"name": "report-title",
+						"kind": "page",
+						"root": "/workspace/harness-app",
+						"force": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "generateUnit",
-				"type": "Promise<GenerateResult>"
+				"type": "Promise<GenerateResult>",
+				"description": "The resolved result for the new unit: kind is 'unit' and name is the validated name. writes lists each piece file from generatePiece, then the unit manifest at specification/units/<id>.json, each with a status of 'created', 'overwritten' or 'skipped' (skipped when its content already matched), and exportsUpdated is true only in a library project whose exports were updated.",
+				"examples": [
+					{
+						"kind": "unit",
+						"name": "format-row-count",
+						"writes": [
+							{
+								"path": "src/utils/formatRowCount.ts",
+								"contents": "// @harness-uid u_k3r7wd2qz5\nexport function formatRowCount(value: string): string {\n\treturn value.trim();\n}\n",
+								"status": "created"
+							},
+							{
+								"path": "test/utils/format-row-count.test.ts",
+								"contents": "import { expect, test } from 'vitest';\nimport { formatRowCount } from '../../src/utils/formatRowCount';\n\ntest('formatRowCount trims values', () => {\n\texpect(formatRowCount(' value ')).toBe('value');\n});\n",
+								"status": "created"
+							},
+							{
+								"path": "specification/units/function.format-row-count.json",
+								"contents": "{\n\t\"schemaVersion\": 1,\n\t\"id\": \"function.format-row-count\",\n\t\"uid\": \"u_k3r7wd2qz5\",\n\t\"kind\": \"function\",\n\t\"responsibility\": \"Trims and normalizes row labels for the evidence grid.\",\n\t\"responsibilityOrigin\": \"declared\",\n\t\"status\": \"active\",\n\t\"owns\": {\n\t\t\"source\": [\"src/utils/formatRowCount.ts\"],\n\t\t\"symbols\": [\"formatRowCount\"]\n\t}\n}\n",
+								"status": "created"
+							}
+						],
+						"exportsUpdated": false
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown through fail() for an unsupported kind (the message lists the usable kinds), when no active unit in the reconciled registry owns the generated source files, and for expected validation failures from generatePiece and loadUnits, such as an invalid name, a level on a non-component kind, or an existing file without force. Other rejections from those calls, such as file-system errors, propagate unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "generateUnit",
@@ -40,22 +86,68 @@
 					{
 						"name": "generateUnit.input",
 						"type": "GenerateUnitInput",
-						"required": true
+						"required": true,
+						"description": "The unit request: name is required and must be a code name of letters, numbers, spaces, dashes or underscores that starts with a letter or number, while kind (default 'function'), force (overwrites existing files whose contents differ), root (default the working directory), group (a lowercase kebab-case category) and level (molecule or organism, only for the component kind) are optional. A non-empty responsibility is trimmed and recorded as the unit's declared responsibility, and the options are passed to generatePiece.",
+						"examples": [
+							{
+								"name": "format-row-count",
+								"kind": "function",
+								"responsibility": "Trims and normalizes row labels for the evidence grid."
+							},
+							{
+								"name": "evidence grid",
+								"kind": "component",
+								"level": "molecule",
+								"group": "reporting"
+							},
+							{
+								"name": "report-title",
+								"kind": "page",
+								"root": "/workspace/harness-app",
+								"force": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "generateUnit",
-						"type": "Promise<GenerateResult>"
+						"type": "Promise<GenerateResult>",
+						"description": "The resolved result for the new unit: kind is 'unit' and name is the validated name. writes lists each piece file from generatePiece, then the unit manifest at specification/units/<id>.json, each with a status of 'created', 'overwritten' or 'skipped' (skipped when its content already matched), and exportsUpdated is true only in a library project whose exports were updated.",
+						"examples": [
+							{
+								"kind": "unit",
+								"name": "format-row-count",
+								"writes": [
+									{
+										"path": "src/utils/formatRowCount.ts",
+										"contents": "// @harness-uid u_k3r7wd2qz5\nexport function formatRowCount(value: string): string {\n\treturn value.trim();\n}\n",
+										"status": "created"
+									},
+									{
+										"path": "test/utils/format-row-count.test.ts",
+										"contents": "import { expect, test } from 'vitest';\nimport { formatRowCount } from '../../src/utils/formatRowCount';\n\ntest('formatRowCount trims values', () => {\n\texpect(formatRowCount(' value ')).toBe('value');\n});\n",
+										"status": "created"
+									},
+									{
+										"path": "specification/units/function.format-row-count.json",
+										"contents": "{\n\t\"schemaVersion\": 1,\n\t\"id\": \"function.format-row-count\",\n\t\"uid\": \"u_k3r7wd2qz5\",\n\t\"kind\": \"function\",\n\t\"responsibility\": \"Trims and normalizes row labels for the evidence grid.\",\n\t\"responsibilityOrigin\": \"declared\",\n\t\"status\": \"active\",\n\t\"owns\": {\n\t\t\"source\": [\"src/utils/formatRowCount.ts\"],\n\t\t\"symbols\": [\"formatRowCount\"]\n\t}\n}\n",
+										"status": "created"
+									}
+								],
+								"exportsUpdated": false
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through fail() for an unsupported kind (the message lists the usable kinds), when no active unit in the reconciled registry owns the generated source files, and for expected validation failures from generatePiece and loadUnits, such as an invalid name, a level on a non-component kind, or an existing file without force. Other rejections from those calls, such as file-system errors, propagate unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
