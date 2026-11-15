@@ -34,34 +34,321 @@
 				"name": "entityBehavior.behavior",
 				"type": "ExplorerBehavior",
 				"required": true,
-				"description": "Host-derived behavior comparison, rows, scenario statuses and uncertainty explanation."
+				"description": "The host's behavior comparison for the shown unit: its rows of recorded results with the change of each, each scenario's status on both sides, and the summary and reason the host gave. With no earlier side, at a branch tip or a first commit, nothing is compared, and entityBehavior labels the summary it was given without deciding whether the behavior changed.",
+				"examples": [
+					{
+						"mode": "commit",
+						"rows": [
+							{
+								"scenario": "package-api",
+								"state": "packed",
+								"evidence": "consumer-output",
+								"kind": "output",
+								"before": {
+									"evidence": "consumer-output",
+									"kind": "output",
+									"state": "packed",
+									"status": "passed",
+									"path": "evidence/3a9e6c0f5b1d8e2a4c7f9b0d3e6a1c8f5b2d4e7a/package-api/packed-consumer/consumer-output.json",
+									"sha256": "5f2b8d4a0e7c19f36b0d2a8e5c4f1b7d9a3e6c0f8b2d5a1e4c7f9b3d6a0e2c85",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-12T10:41:07.936Z",
+									"media": "media/5f2b8d4a0e7c19f36b0d2a8e5c4f1b7d9a3e6c0f8b2d5a1e4c7f9b3d6a0e2c85.json"
+								},
+								"after": {
+									"evidence": "consumer-output",
+									"kind": "output",
+									"state": "packed",
+									"status": "passed",
+									"path": "evidence/7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92/package-api/packed-consumer/consumer-output.json",
+									"sha256": "c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-14T16:02:48.122Z",
+									"media": "media/c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29.json"
+								},
+								"change": "changed",
+								"differences": ["output.exports[3]"]
+							}
+						],
+						"summary": "changed",
+						"reason": null,
+						"scenarios": [
+							{
+								"id": "package-api",
+								"title": "Typed public API imported from the packed package",
+								"before": "passed",
+								"after": "passed"
+							}
+						]
+					},
+					{
+						"mode": "commit",
+						"rows": [
+							{
+								"scenario": "package-api",
+								"state": "packed",
+								"evidence": "consumer-output",
+								"kind": "output",
+								"before": null,
+								"after": {
+									"evidence": "consumer-output",
+									"kind": "output",
+									"state": "packed",
+									"status": "passed",
+									"path": "evidence/7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92/package-api/packed-consumer/consumer-output.json",
+									"sha256": "c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-14T16:02:48.122Z",
+									"media": "media/c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29.json"
+								},
+								"change": "unknown",
+								"differences": []
+							}
+						],
+						"summary": "unknown",
+						"reason": "A result of one side is rejected, stale or not stored, so it cannot be compared.",
+						"scenarios": [
+							{
+								"id": "package-api",
+								"title": "Typed public API imported from the packed package",
+								"before": "passed",
+								"after": "passed"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "behaviorDuration.record",
 				"type": "HarnessRecord | null",
 				"required": true,
-				"description": "Verification record to inspect, or null."
+				"description": "The verification record whose `tests` are read, or null when there is none. Only a test of kind `e2e` whose id is a listed scenario identifier followed by a colon adds to the duration, so a null record or one without such a test gives null.",
+				"examples": [
+					{
+						"id": "b6f1d0c3a8e52794f0b3c6d1e8a2f57c9d4b0e63a7f1c8d2e5b9a0f3c6d4e718",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92",
+							"base": "3a9e6c0f5b1d8e2a4c7f9b0d3e6a1c8f5b2d4e7a"
+						},
+						"profile": "8e3d21c0a7f95b46",
+						"startedAt": "2026-11-14T15:58:12.410Z",
+						"finishedAt": "2026-11-14T16:03:05.977Z",
+						"failures": [],
+						"tests": [
+							{
+								"id": "package-api:packed-consumer",
+								"kind": "e2e",
+								"target": "test/packaged-api.e2e.test.ts",
+								"status": "passed",
+								"durationMs": 37412
+							},
+							{
+								"id": "packages/reports/test/utils/entity-behavior.test.ts",
+								"kind": "unit",
+								"target": "packages/reports/test/utils/entity-behavior.test.ts",
+								"status": "passed",
+								"durationMs": 1184
+							}
+						],
+						"scenarios": [
+							{
+								"id": "package-api",
+								"status": "passed",
+								"testedRevision": "7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92",
+								"inherited": false,
+								"origin": {
+									"record": "b6f1d0c3a8e52794f0b3c6d1e8a2f57c9d4b0e63a7f1c8d2e5b9a0f3c6d4e718",
+									"commit": "7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92"
+								},
+								"states": [
+									{
+										"id": "packed",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "consumer-output",
+												"kind": "output",
+												"state": "packed",
+												"status": "passed",
+												"path": "evidence/7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92/package-api/packed-consumer/consumer-output.json",
+												"sha256": "c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29",
+												"mediaType": "application/json",
+												"capturedAt": "2026-11-14T16:02:48.122Z",
+												"media": "media/c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29.json"
+											}
+										]
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "behaviorDuration.scenarios",
 				"type": "string[]",
 				"required": true,
-				"description": "Scenario identifiers whose end-to-end job durations should be summed."
+				"description": "Scenario identifiers whose end-to-end jobs are summed: an `e2e` test counts when its id starts with one of them followed by a colon, as in `package-api:packed-consumer`. An empty list matches no test, so the duration is null.",
+				"examples": [
+					["package-api"],
+					["explorer-shell"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityBehavior",
 				"type": "EntityBehavior",
-				"description": "Grouped before/after result cells, label and reasons. A current result passes only when something was recorded, every shown group passed and all scenario after-statuses passed. Missing results and unknown or byte-only differences remain uncertain."
+				"description": "The display model for the unit: `groups` holds one entry per scenario and state, each with the outcome of its before and after sides (`passed`, `failed`, or `missing` when no line on that side recorded a result) and its lines; `label` is the wording of the host's summary, or 'Current behavior' in current mode, or 'No end-to-end result is recorded' when a current revision recorded none; and `reasons` gives the host's reason and, outside current mode, one sentence for each changed, added or removed row. `passed` is true only when some result was recorded and every scenario's after status and every group's after outcome passed, and `unknown` is true when the summary is unknown or differs or nothing was recorded.",
+				"examples": [
+					{
+						"mode": "commit",
+						"label": "Behavior changed",
+						"recorded": true,
+						"passed": true,
+						"unknown": false,
+						"groups": [
+							{
+								"scenario": "package-api",
+								"state": "packed",
+								"before": "passed",
+								"after": "passed",
+								"lines": [
+									{
+										"kind": "output",
+										"evidence": "consumer-output",
+										"change": "changed",
+										"differences": ["output.exports[3]"],
+										"before": {
+											"outcome": "passed",
+											"capture": {
+												"evidence": "consumer-output",
+												"kind": "output",
+												"state": "packed",
+												"status": "passed",
+												"path": "evidence/3a9e6c0f5b1d8e2a4c7f9b0d3e6a1c8f5b2d4e7a/package-api/packed-consumer/consumer-output.json",
+												"sha256": "5f2b8d4a0e7c19f36b0d2a8e5c4f1b7d9a3e6c0f8b2d5a1e4c7f9b3d6a0e2c85",
+												"mediaType": "application/json",
+												"capturedAt": "2026-11-12T10:41:07.936Z",
+												"media": "media/5f2b8d4a0e7c19f36b0d2a8e5c4f1b7d9a3e6c0f8b2d5a1e4c7f9b3d6a0e2c85.json"
+											}
+										},
+										"after": {
+											"outcome": "passed",
+											"capture": {
+												"evidence": "consumer-output",
+												"kind": "output",
+												"state": "packed",
+												"status": "passed",
+												"path": "evidence/7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92/package-api/packed-consumer/consumer-output.json",
+												"sha256": "c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29",
+												"mediaType": "application/json",
+												"capturedAt": "2026-11-14T16:02:48.122Z",
+												"media": "media/c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29.json"
+											}
+										}
+									}
+								]
+							}
+						],
+						"reasons": ["packed: the recorded output changed at output.exports[3]"],
+						"scenarios": [
+							{
+								"id": "package-api",
+								"title": "Typed public API imported from the packed package",
+								"before": "passed",
+								"after": "passed"
+							}
+						]
+					},
+					{
+						"mode": "commit",
+						"label": "Behavior unknown",
+						"recorded": true,
+						"passed": true,
+						"unknown": true,
+						"groups": [
+							{
+								"scenario": "package-api",
+								"state": "packed",
+								"before": "missing",
+								"after": "passed",
+								"lines": [
+									{
+										"kind": "output",
+										"evidence": "consumer-output",
+										"change": "unknown",
+										"differences": [],
+										"before": {
+											"outcome": "missing",
+											"capture": null
+										},
+										"after": {
+											"outcome": "passed",
+											"capture": {
+												"evidence": "consumer-output",
+												"kind": "output",
+												"state": "packed",
+												"status": "passed",
+												"path": "evidence/7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92/package-api/packed-consumer/consumer-output.json",
+												"sha256": "c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29",
+												"mediaType": "application/json",
+												"capturedAt": "2026-11-14T16:02:48.122Z",
+												"media": "media/c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29.json"
+											}
+										}
+									}
+								]
+							}
+						],
+						"reasons": [
+							"A result of one side is rejected, stale or not stored, so it cannot be compared."
+						],
+						"scenarios": [
+							{
+								"id": "package-api",
+								"title": "Typed public API imported from the packed package",
+								"before": "passed",
+								"after": "passed"
+							}
+						]
+					},
+					{
+						"mode": "current",
+						"label": "No end-to-end result is recorded",
+						"recorded": false,
+						"passed": false,
+						"unknown": true,
+						"groups": [],
+						"reasons": [],
+						"scenarios": [
+							{
+								"id": "package-api",
+								"title": "Typed public API imported from the packed package",
+								"before": null,
+								"after": null
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "behaviorDuration",
 				"type": "string | null",
-				"description": "Sum of durations for end-to-end jobs named with one of the scenario identifiers followed by a colon, rendered in milliseconds; null when no such jobs exist."
+				"description": "The sum of the `durationMs` of the end-to-end tests that match the listed scenarios, written as the number followed by ` ms`. It is null when no such test exists, including when the record is null.",
+				"examples": ["37412 ms", null]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "entityBehavior",
@@ -70,18 +357,231 @@
 						"name": "entityBehavior.behavior",
 						"type": "ExplorerBehavior",
 						"required": true,
-						"description": "Host-derived behavior comparison, rows, scenario statuses and uncertainty explanation."
+						"description": "The host's behavior comparison for the shown unit: its rows of recorded results with the change of each, each scenario's status on both sides, and the summary and reason the host gave. With no earlier side, at a branch tip or a first commit, nothing is compared, and entityBehavior labels the summary it was given without deciding whether the behavior changed.",
+						"examples": [
+							{
+								"mode": "commit",
+								"rows": [
+									{
+										"scenario": "package-api",
+										"state": "packed",
+										"evidence": "consumer-output",
+										"kind": "output",
+										"before": {
+											"evidence": "consumer-output",
+											"kind": "output",
+											"state": "packed",
+											"status": "passed",
+											"path": "evidence/3a9e6c0f5b1d8e2a4c7f9b0d3e6a1c8f5b2d4e7a/package-api/packed-consumer/consumer-output.json",
+											"sha256": "5f2b8d4a0e7c19f36b0d2a8e5c4f1b7d9a3e6c0f8b2d5a1e4c7f9b3d6a0e2c85",
+											"mediaType": "application/json",
+											"capturedAt": "2026-11-12T10:41:07.936Z",
+											"media": "media/5f2b8d4a0e7c19f36b0d2a8e5c4f1b7d9a3e6c0f8b2d5a1e4c7f9b3d6a0e2c85.json"
+										},
+										"after": {
+											"evidence": "consumer-output",
+											"kind": "output",
+											"state": "packed",
+											"status": "passed",
+											"path": "evidence/7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92/package-api/packed-consumer/consumer-output.json",
+											"sha256": "c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29",
+											"mediaType": "application/json",
+											"capturedAt": "2026-11-14T16:02:48.122Z",
+											"media": "media/c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29.json"
+										},
+										"change": "changed",
+										"differences": ["output.exports[3]"]
+									}
+								],
+								"summary": "changed",
+								"reason": null,
+								"scenarios": [
+									{
+										"id": "package-api",
+										"title": "Typed public API imported from the packed package",
+										"before": "passed",
+										"after": "passed"
+									}
+								]
+							},
+							{
+								"mode": "commit",
+								"rows": [
+									{
+										"scenario": "package-api",
+										"state": "packed",
+										"evidence": "consumer-output",
+										"kind": "output",
+										"before": null,
+										"after": {
+											"evidence": "consumer-output",
+											"kind": "output",
+											"state": "packed",
+											"status": "passed",
+											"path": "evidence/7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92/package-api/packed-consumer/consumer-output.json",
+											"sha256": "c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29",
+											"mediaType": "application/json",
+											"capturedAt": "2026-11-14T16:02:48.122Z",
+											"media": "media/c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29.json"
+										},
+										"change": "unknown",
+										"differences": []
+									}
+								],
+								"summary": "unknown",
+								"reason": "A result of one side is rejected, stale or not stored, so it cannot be compared.",
+								"scenarios": [
+									{
+										"id": "package-api",
+										"title": "Typed public API imported from the packed package",
+										"before": "passed",
+										"after": "passed"
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityBehavior",
 						"type": "EntityBehavior",
-						"description": "Grouped before/after result cells, label and reasons. A current result passes only when something was recorded, every shown group passed and all scenario after-statuses passed. Missing results and unknown or byte-only differences remain uncertain."
+						"description": "The display model for the unit: `groups` holds one entry per scenario and state, each with the outcome of its before and after sides (`passed`, `failed`, or `missing` when no line on that side recorded a result) and its lines; `label` is the wording of the host's summary, or 'Current behavior' in current mode, or 'No end-to-end result is recorded' when a current revision recorded none; and `reasons` gives the host's reason and, outside current mode, one sentence for each changed, added or removed row. `passed` is true only when some result was recorded and every scenario's after status and every group's after outcome passed, and `unknown` is true when the summary is unknown or differs or nothing was recorded.",
+						"examples": [
+							{
+								"mode": "commit",
+								"label": "Behavior changed",
+								"recorded": true,
+								"passed": true,
+								"unknown": false,
+								"groups": [
+									{
+										"scenario": "package-api",
+										"state": "packed",
+										"before": "passed",
+										"after": "passed",
+										"lines": [
+											{
+												"kind": "output",
+												"evidence": "consumer-output",
+												"change": "changed",
+												"differences": ["output.exports[3]"],
+												"before": {
+													"outcome": "passed",
+													"capture": {
+														"evidence": "consumer-output",
+														"kind": "output",
+														"state": "packed",
+														"status": "passed",
+														"path": "evidence/3a9e6c0f5b1d8e2a4c7f9b0d3e6a1c8f5b2d4e7a/package-api/packed-consumer/consumer-output.json",
+														"sha256": "5f2b8d4a0e7c19f36b0d2a8e5c4f1b7d9a3e6c0f8b2d5a1e4c7f9b3d6a0e2c85",
+														"mediaType": "application/json",
+														"capturedAt": "2026-11-12T10:41:07.936Z",
+														"media": "media/5f2b8d4a0e7c19f36b0d2a8e5c4f1b7d9a3e6c0f8b2d5a1e4c7f9b3d6a0e2c85.json"
+													}
+												},
+												"after": {
+													"outcome": "passed",
+													"capture": {
+														"evidence": "consumer-output",
+														"kind": "output",
+														"state": "packed",
+														"status": "passed",
+														"path": "evidence/7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92/package-api/packed-consumer/consumer-output.json",
+														"sha256": "c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29",
+														"mediaType": "application/json",
+														"capturedAt": "2026-11-14T16:02:48.122Z",
+														"media": "media/c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29.json"
+													}
+												}
+											}
+										]
+									}
+								],
+								"reasons": ["packed: the recorded output changed at output.exports[3]"],
+								"scenarios": [
+									{
+										"id": "package-api",
+										"title": "Typed public API imported from the packed package",
+										"before": "passed",
+										"after": "passed"
+									}
+								]
+							},
+							{
+								"mode": "commit",
+								"label": "Behavior unknown",
+								"recorded": true,
+								"passed": true,
+								"unknown": true,
+								"groups": [
+									{
+										"scenario": "package-api",
+										"state": "packed",
+										"before": "missing",
+										"after": "passed",
+										"lines": [
+											{
+												"kind": "output",
+												"evidence": "consumer-output",
+												"change": "unknown",
+												"differences": [],
+												"before": {
+													"outcome": "missing",
+													"capture": null
+												},
+												"after": {
+													"outcome": "passed",
+													"capture": {
+														"evidence": "consumer-output",
+														"kind": "output",
+														"state": "packed",
+														"status": "passed",
+														"path": "evidence/7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92/package-api/packed-consumer/consumer-output.json",
+														"sha256": "c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29",
+														"mediaType": "application/json",
+														"capturedAt": "2026-11-14T16:02:48.122Z",
+														"media": "media/c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29.json"
+													}
+												}
+											}
+										]
+									}
+								],
+								"reasons": [
+									"A result of one side is rejected, stale or not stored, so it cannot be compared."
+								],
+								"scenarios": [
+									{
+										"id": "package-api",
+										"title": "Typed public API imported from the packed package",
+										"before": "passed",
+										"after": "passed"
+									}
+								]
+							},
+							{
+								"mode": "current",
+								"label": "No end-to-end result is recorded",
+								"recorded": false,
+								"passed": false,
+								"unknown": true,
+								"groups": [],
+								"reasons": [],
+								"scenarios": [
+									{
+										"id": "package-api",
+										"title": "Typed public API imported from the packed package",
+										"before": null,
+										"after": null
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "behaviorDuration",
@@ -90,24 +590,97 @@
 						"name": "behaviorDuration.record",
 						"type": "HarnessRecord | null",
 						"required": true,
-						"description": "Verification record to inspect, or null."
+						"description": "The verification record whose `tests` are read, or null when there is none. Only a test of kind `e2e` whose id is a listed scenario identifier followed by a colon adds to the duration, so a null record or one without such a test gives null.",
+						"examples": [
+							{
+								"id": "b6f1d0c3a8e52794f0b3c6d1e8a2f57c9d4b0e63a7f1c8d2e5b9a0f3c6d4e718",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92",
+									"base": "3a9e6c0f5b1d8e2a4c7f9b0d3e6a1c8f5b2d4e7a"
+								},
+								"profile": "8e3d21c0a7f95b46",
+								"startedAt": "2026-11-14T15:58:12.410Z",
+								"finishedAt": "2026-11-14T16:03:05.977Z",
+								"failures": [],
+								"tests": [
+									{
+										"id": "package-api:packed-consumer",
+										"kind": "e2e",
+										"target": "test/packaged-api.e2e.test.ts",
+										"status": "passed",
+										"durationMs": 37412
+									},
+									{
+										"id": "packages/reports/test/utils/entity-behavior.test.ts",
+										"kind": "unit",
+										"target": "packages/reports/test/utils/entity-behavior.test.ts",
+										"status": "passed",
+										"durationMs": 1184
+									}
+								],
+								"scenarios": [
+									{
+										"id": "package-api",
+										"status": "passed",
+										"testedRevision": "7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92",
+										"inherited": false,
+										"origin": {
+											"record": "b6f1d0c3a8e52794f0b3c6d1e8a2f57c9d4b0e63a7f1c8d2e5b9a0f3c6d4e718",
+											"commit": "7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92"
+										},
+										"states": [
+											{
+												"id": "packed",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "consumer-output",
+														"kind": "output",
+														"state": "packed",
+														"status": "passed",
+														"path": "evidence/7d4f2a9c1e8b35f60a2d9c4e7b1f8a3c5d6e0b92/package-api/packed-consumer/consumer-output.json",
+														"sha256": "c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29",
+														"mediaType": "application/json",
+														"capturedAt": "2026-11-14T16:02:48.122Z",
+														"media": "media/c09a1e7d4b26f83d15a0e9c7b2d6f4a18e3c5b0d9f7a2e6c4b8d1f0a3e5c7b29.json"
+													}
+												]
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							},
+							null
+						]
 					},
 					{
 						"name": "behaviorDuration.scenarios",
 						"type": "string[]",
 						"required": true,
-						"description": "Scenario identifiers whose end-to-end job durations should be summed."
+						"description": "Scenario identifiers whose end-to-end jobs are summed: an `e2e` test counts when its id starts with one of them followed by a colon, as in `package-api:packed-consumer`. An empty list matches no test, so the duration is null.",
+						"examples": [
+							["package-api"],
+							["explorer-shell"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "behaviorDuration",
 						"type": "string | null",
-						"description": "Sum of durations for end-to-end jobs named with one of the scenario identifiers followed by a colon, rendered in milliseconds; null when no such jobs exist."
+						"description": "The sum of the `durationMs` of the end-to-end tests that match the listed scenarios, written as the number followed by ` ms`. It is null when no such test exists, including when the record is null.",
+						"examples": ["37412 ms", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
