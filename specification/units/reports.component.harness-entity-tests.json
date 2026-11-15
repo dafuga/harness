@@ -49,47 +49,266 @@
 				"name": "EntityTests.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "Required entity with name, identifier, category and supplied verdict."
+				"description": "The entity whose verification the panel shows: `name` labels the panel, `id` is the unit given to the regression proof (and to the behavior panel when `category` is `functions`), and `verdict` feeds the status badge and the list of `reasons`. The component reads no other field of the entity directly and does not check that `verdict.reasons` is an array.",
+				"examples": [
+					{
+						"id": "reports.component.harness-entity-tests",
+						"category": "components",
+						"role": "Component",
+						"name": "Entity tests",
+						"purpose": "Explains recorded coverage, test outcomes and media for one entity revision.",
+						"unit": {
+							"id": "reports.component.harness-entity-tests",
+							"kind": "component",
+							"status": "active",
+							"title": "Entity verification details",
+							"responsibility": "Explains recorded coverage, test outcomes and media for one entity revision.",
+							"dependencies": [
+								{
+									"unit": "reports.component.browser-errors",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.evidence-grid",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-lens",
+									"via": "import"
+								}
+							],
+							"scenarios": ["browser-error-evidence"],
+							"owns": {
+								"source": [
+									"packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte",
+									"packages/reports/src/components/explorer-ui/entity-tests/coverageLabels.ts"
+								],
+								"symbols": [
+									"EntityTests",
+									"EntityTests.header",
+									"EntityTests.children",
+									"coverageLabels"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "EntityTests.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "EntityTests.scope",
+										"type": "ExplorerScope",
+										"required": true
+									},
+									{
+										"name": "EntityTests.evidence",
+										"type": "ExplorerEvidence",
+										"required": true
+									},
+									{
+										"name": "EntityTests.behavior",
+										"type": "ExplorerBehavior",
+										"required": true
+									},
+									{
+										"name": "EntityTests.nav",
+										"type": "EntityNav",
+										"required": true
+									},
+									{
+										"name": "EntityTests.mediaBase",
+										"type": "string",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "EntityTests",
+										"type": "markup"
+									}
+								],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "1.0.0"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Evidence missing",
+							"reasons": ["No usable verification record judges this revision."]
+						},
+						"change": null,
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "EntityTests.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Required displayed commit/parent context."
+				"description": "The commit the panel is bound to and its first parent: `commit` is shortened into the verification and removed-declarations headings and, with the entity id, keys the behavior panel. `parent` is shortened only in the removed-declarations text, where a null parent is replaced by an empty string.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": "7a4f0c93e1d25b68f0a7c4e9d13b5f2a8c6e0d17",
+							"category": "components",
+							"entity": "reports.component.harness-entity-tests"
+						},
+						"mode": "current",
+						"branch": "main",
+						"tip": "7a4f0c93e1d25b68f0a7c4e9d13b5f2a8c6e0d17",
+						"commit": "7a4f0c93e1d25b68f0a7c4e9d13b5f2a8c6e0d17",
+						"atTip": true,
+						"parent": "b13e92d0f47a58c6e21d9b0a4f7c3e85d6a1f290",
+						"summary": {
+							"commit": "7a4f0c93e1d25b68f0a7c4e9d13b5f2a8c6e0d17",
+							"parents": ["b13e92d0f47a58c6e21d9b0a4f7c3e85d6a1f290"],
+							"subject": "Show removed declarations in entity tests",
+							"author": "Sam Ortiz",
+							"committedAt": "2026-11-12T16:40:00Z",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "unverified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					},
+					{
+						"location": {
+							"branch": null,
+							"commit": "0d5e8a31c7b49f2e6a0d18c3b75e9f4a2c1d6b08",
+							"category": "components",
+							"entity": "reports.component.harness-entity-tests"
+						},
+						"mode": "commit",
+						"branch": null,
+						"tip": null,
+						"commit": "0d5e8a31c7b49f2e6a0d18c3b75e9f4a2c1d6b08",
+						"atTip": false,
+						"parent": "e4c2b97a0f1d836c5b2e7a9f0d4c18b6e3a5f7d2",
+						"summary": {
+							"commit": "0d5e8a31c7b49f2e6a0d18c3b75e9f4a2c1d6b08",
+							"parents": ["e4c2b97a0f1d836c5b2e7a9f0d4c18b6e3a5f7d2"],
+							"subject": "Label inherited scenario results",
+							"author": "Sam Ortiz",
+							"committedAt": "2026-11-09T08:12:31Z",
+							"branches": [],
+							"retained": true,
+							"coverage": "unverified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "EntityTests.evidence",
 				"type": "ExplorerEvidence",
 				"required": true,
-				"description": "Required coverage, scenarios, records and media. After-side coverage judges the displayed revision; removed declarations are listed separately. Coverage tests may carry diagnostics from their own run or the origin of an inherited result."
+				"description": "The judged evidence for the entity: the component reads `after.coverage` for each scenario, its states and its check statuses, `after.record` for check kinds and durations and for the notice shown when it is null, `after.detail?.regressions` for the regression proof, and `scenarios` for each state's declared reason. It passes the whole value to the media and removed-declarations helpers and never reads `before` directly.",
+				"examples": [
+					{
+						"mode": "current",
+						"scenarios": [],
+						"after": {
+							"commit": "7a4f0c93e1d25b68f0a7c4e9d13b5f2a8c6e0d17",
+							"detail": null,
+							"record": null,
+							"captures": [],
+							"coverage": [],
+							"gap": "No usable verification record judges this revision."
+						},
+						"before": null,
+						"initial": null,
+						"incomparable": []
+					},
+					{
+						"mode": "commit",
+						"scenarios": [],
+						"after": {
+							"commit": "0d5e8a31c7b49f2e6a0d18c3b75e9f4a2c1d6b08",
+							"detail": null,
+							"record": null,
+							"captures": [],
+							"coverage": [],
+							"gap": "No usable verification record judges this revision."
+						},
+						"before": {
+							"commit": "e4c2b97a0f1d836c5b2e7a9f0d4c18b6e3a5f7d2",
+							"detail": null,
+							"record": null,
+							"captures": [],
+							"coverage": [],
+							"gap": "No usable verification record judges this revision."
+						},
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			},
 			{
 				"name": "EntityTests.behavior",
 				"type": "ExplorerBehavior",
 				"required": true,
-				"description": "Required behavior results; nonempty rows render a behavior panel keyed to entity and commit."
+				"description": "Behavior results for the entity: the panel is rendered only when `rows` is non-empty, keyed to the entity id and the commit, and it receives the whole value along with `scope`, `mediaBase` and `nav`. The component checks only `rows.length` itself.",
+				"examples": [
+					{
+						"mode": "current",
+						"rows": [],
+						"summary": "not-compared",
+						"reason": null,
+						"scenarios": []
+					},
+					{
+						"mode": "commit",
+						"rows": [],
+						"summary": "unknown",
+						"reason": "The before side holds no recorded behavior, so the two sides cannot be compared.",
+						"scenarios": []
+					}
+				]
 			},
 			{
 				"name": "EntityTests.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Required context for behavior-panel navigation."
+				"description": "Navigation context: the regression proof's `href` and `follow` callbacks build a location with `testLocation(nav.route, entity, commit)` and pass it to `nav.href` or `nav.go`, and the whole value also goes to the behavior panel when there are rows. Because `nav.href` and `nav.go` are functions, the value holds callbacks and cannot be written as JSON."
 			},
 			{
 				"name": "EntityTests.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Required base for recorded artifacts and media gallery."
+				"description": "The base for recorded artifacts and media: it is passed unchanged as `assetBase` to the evidence grid, which renders only when there is media, and as `mediaBase` to the behavior panel, which renders only when there are rows. This component neither validates nor normalizes it, so it must already be in the form those components expect.",
+				"examples": ["/artifacts", "/media/artifacts"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityTests",
 				"type": "markup",
-				"description": "Verdict and reasons, scenario/state coverage and underlying check outcomes/durations, removed declarations, behavior and media. Missing records/scenarios remain explicit. Required declarations wrap between words; inapplicable states retain their full reason. Repeated slot reasons are suppressed when the state already says them. Each check with recorded browser diagnostics shows expandable expected, unexpected and missing-expected errors with test-attempt context."
+				"description": "The rendered verification panel for one entity revision: verdict and reasons, each scenario with its state table and check statuses (durations where the record holds them), and the removed-declarations card, behavior panel and media grid, each shown only when it has content. Missing evidence or a missing record shows an explicit notice, required states carry their declared reason, slot reasons a state already gives are omitted, and checks with recorded browser diagnostics render them through BrowserErrors."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
