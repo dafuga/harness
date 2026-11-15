@@ -24,10 +24,11 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "Dependencies screen inside the shared Harness frame, retaining branch and commit selection."
+				"description": "The markup the route /harness/branch/[branch]/[...at]/dependencies renders: a HarnessScreen titled 'Dependencies' (document title 'Dependencies · Harness') with ExplorerDependenciesScreen as its content. The page takes no props and reads no route params itself; the selected branch and commit stay in the URL path that HarnessScreen passes to HarnessConsole."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
