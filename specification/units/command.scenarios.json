@@ -18,18 +18,24 @@
 				"name": "registerScenariosCommand.program",
 				"type": "Command",
 				"required": true,
-				"description": "Commander program that receives the scenarios command tree."
+				"description": "The Commander `Command` that the `scenarios` command group is added to: the function calls `.command('scenarios')` on it right away and adds `list`, `show <id>`, and `check` subcommands under `scenarios` before it returns. The function does not validate this object or check whether a `scenarios` command already exists on it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerScenariosCommand",
 				"type": "void",
-				"description": "Registers list, show, and check actions; check reports coverage diagnostics and fails on contract or unit-reference errors."
+				"description": "No value is returned; the call attaches `scenarios` with `list`, `show <id>`, and `check` subcommands to the `program` argument before it returns. The actions run later, when the CLI dispatches them, and `check` fails when `checkScenarios` reports any errors, while its coverage diagnostics do not cause a failure."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "`ExpectedCliError` is the `Error` subclass (its `name` is `'ExpectedCliError'`) that `fail` throws for expected CLI failures: `check` rejects with it, carrying the `checkScenarios` error messages joined by newlines, when there is at least one error, and `show <id>` rejects with it, with the message `Unknown scenario \"<id>\".`, when no scenario has that id. Other rejections, such as failures while the scenario or unit repositories are read, are not caught by these actions and propagate out of them unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerScenariosCommand",
@@ -38,14 +44,14 @@
 						"name": "registerScenariosCommand.program",
 						"type": "Command",
 						"required": true,
-						"description": "Commander program that receives the scenarios command tree."
+						"description": "The Commander `Command` that the `scenarios` command group is added to: the function calls `.command('scenarios')` on it right away and adds `list`, `show <id>`, and `check` subcommands under `scenarios` before it returns. The function does not validate this object or check whether a `scenarios` command already exists on it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerScenariosCommand",
 						"type": "void",
-						"description": "Registers list, show, and check actions; check reports coverage diagnostics and fails on contract or unit-reference errors."
+						"description": "No value is returned; the call attaches `scenarios` with `list`, `show <id>`, and `check` subcommands to the `program` argument before it returns. The actions run later, when the CLI dispatches them, and `check` fails when `checkScenarios` reports any errors, while its coverage diagnostics do not cause a failure."
 					}
 				],
 				"errors": [],
