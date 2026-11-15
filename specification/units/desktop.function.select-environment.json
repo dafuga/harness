@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/select-environment/selectEnvironment.ts",
-			"packages/desktop/src/lib/verification-evidence/select-environment/selectEnvironment.ts",
-			"packages/desktop/src/utils/selectEnvironment.ts"
+			"packages/desktop/src/lib/verification-evidence/select-environment/selectEnvironment.ts"
 		],
-		"symbols": ["selectEnvironment", "selectEnvironment", "selectEnvironment"]
+		"symbols": ["selectEnvironment", "selectEnvironment"]
 	},
 	"contract": {
 		"origin": "declared",

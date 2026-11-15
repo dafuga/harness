@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/git-source-history/sourceChanges.ts",
-			"packages/desktop/src/utils/sourceChanges.ts"
-		],
-		"symbols": ["sourceChanges", "sourceChanges"]
+		"source": ["packages/desktop/src/utils/git-source-history/sourceChanges.ts"],
+		"symbols": ["sourceChanges"]
 	},
 	"contract": {
 		"origin": "declared",

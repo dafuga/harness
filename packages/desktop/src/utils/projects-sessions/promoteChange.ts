@@ -8,7 +8,7 @@ import { deploymentConfig } from './deploymentConfig';
 import { deploymentCommand } from './deploymentCommand';
 import { gitRead } from './gitRead';
 import { sourceSnapshot, type SourceSnapshot } from '../sourceSnapshot';
-import { sourceChanges } from '../sourceChanges';
+import { sourceChanges } from '../git-source-history/sourceChanges';
 /** A scoped change cannot quietly become a local-only change or deploy an unverified mapping. */
 export async function prepareChangeEnvironment(
 	session: ProjectSessionService,

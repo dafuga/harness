@@ -2,7 +2,7 @@ import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import type { RunContext } from '../src/models/development-tooling/RunContext.types';
 import { proposalPrompt } from '../src/services/project-run-service/projectProposal';
-import { runContext } from '../src/utils/runContext';
+import { runContext } from '../src/utils/projects-sessions/runContext';
 
 /**
  * The prompts an agent is actually given ask it to name units by their registered ids as
