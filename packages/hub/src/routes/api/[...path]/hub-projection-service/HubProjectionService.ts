@@ -4,7 +4,7 @@ import { HubEvidenceService } from './hub-evidence-service/HubEvidenceService';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
-} from '../../../../../../desktop/src/models/DesktopEvidence.types';
+} from '../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
 import { hubHistory } from '../../../../utils/git-source-history/hubHistory';
 import type { Actor } from 'collaboration';
 import type { ThreadMessage } from '../../../../../../desktop/src/models/development-tooling/Desktop.types';

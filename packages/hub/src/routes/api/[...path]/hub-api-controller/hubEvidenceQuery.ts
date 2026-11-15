@@ -2,7 +2,7 @@
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
-} from '../../../../../../desktop/src/models/DesktopEvidence.types';
+} from '../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
 import { evidencePayload } from '../../../../../../desktop/src/utils/verification-evidence/evidencePayload';
 import { hubFail } from '../../../../utils/development-tooling/hubJson';
 

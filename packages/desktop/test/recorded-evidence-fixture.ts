@@ -8,7 +8,7 @@ import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
-} from '../src/models/DesktopEvidence.types';
+} from '../src/models/verification-evidence/DesktopEvidence.types';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 import { desktopBridge } from '../src/utils/desktopBridge';
 

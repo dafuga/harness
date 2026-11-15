@@ -5,7 +5,7 @@ import type { Actor } from 'collaboration';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
-} from '../../../../../../../desktop/src/models/DesktopEvidence.types';
+} from '../../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
 import { recordedScope } from '../../../../../../../desktop/src/utils/reports-media/recordedScope';
 import {
 	hubSource,

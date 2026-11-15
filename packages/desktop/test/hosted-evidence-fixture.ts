@@ -8,7 +8,7 @@ import { RemoteHttpProjectAdapter } from '../src/adapters/remote-http-project-ad
 import type {
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
-} from '../src/models/DesktopEvidence.types';
+} from '../src/models/verification-evidence/DesktopEvidence.types';
 import type { CacheStatus } from '../src/models/ProjectContext.types';
 import { ProjectionCacheService } from '../src/services/projection-cache-service/ProjectionCacheService';
 import { recordedAnswer } from '../src/utils/recorded-answer/recordedAnswer';

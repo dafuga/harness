@@ -12,7 +12,7 @@ import type { ComponentManifest } from '../../../../src/lib/contracts';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
-} from '../../src/models/DesktopEvidence.types';
+} from '../../src/models/verification-evidence/DesktopEvidence.types';
 import { commits, evidenceData, ids, soundScenario, type EvidenceData } from './ui-evidence-data';
 export * from './ui-evidence-data';
 function installState(settings: Settings) {

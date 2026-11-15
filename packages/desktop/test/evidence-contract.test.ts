@@ -9,7 +9,7 @@ import { channels } from '../src/models/DesktopBridge.types';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
-} from '../src/models/DesktopEvidence.types';
+} from '../src/models/verification-evidence/DesktopEvidence.types';
 import { binaryAnswer } from '../src/utils/binaryAnswer';
 import { IpcRequestValidator } from '../src/validators/development-tooling/IpcRequestValidator';
 

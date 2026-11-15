@@ -1,4 +1,4 @@
-import type { EntityEvidenceQuery } from '../../../desktop/src/models/DesktopEvidence.types';
+import type { EntityEvidenceQuery } from '../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
 import type { evidenceFixture } from './evidenceFixture';
 
 export type EvidenceFixture = ReturnType<typeof evidenceFixture>;

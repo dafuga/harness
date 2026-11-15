@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
-import type { EvidenceArtifactQuery } from '../../src/models/DesktopEvidence.types';
+import type { EvidenceArtifactQuery } from '../../src/models/verification-evidence/DesktopEvidence.types';
 import { artifactBytes } from '../../src/components/shared-primitives/recorded-preview/artifactBytes';
 import {
 	artifactBytes as relocatedArtifactBytes,

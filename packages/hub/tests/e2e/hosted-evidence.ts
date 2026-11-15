@@ -1,4 +1,4 @@
-import type { EntityEvidenceResult } from '../../../desktop/src/models/DesktopEvidence.types';
+import type { EntityEvidenceResult } from '../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
 import { explorerBehavior } from '../../../reports/src/utils/explorerBehavior';
 import type { HostedCall } from './hosted-fixture';
 import { ada, tip, type HostedProject } from './hosted-data';

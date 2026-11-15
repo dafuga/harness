@@ -7,7 +7,7 @@ import type { ProjectSessionService } from '../../src/services/ProjectSessionSer
 import type {
 	EntityEvidenceResult,
 	EvidenceArtifactResult
-} from '../../src/models/DesktopEvidence.types';
+} from '../../src/models/verification-evidence/DesktopEvidence.types';
 
 const io = vi.hoisted(() => ({
 	reads: [] as string[],

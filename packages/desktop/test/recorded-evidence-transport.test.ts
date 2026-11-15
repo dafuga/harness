@@ -3,7 +3,7 @@ import { expect } from '../../../test/verificationExpect';
 import { afterAll, beforeAll, test } from 'vitest';
 import type { RemoteBinary } from '../../remote/src/index';
 import type { ProjectSnapshot } from '../src/models/development-tooling/Desktop.types';
-import type { EntityEvidenceResult } from '../src/models/DesktopEvidence.types';
+import type { EntityEvidenceResult } from '../src/models/verification-evidence/DesktopEvidence.types';
 import { remoteBinary } from '../src/utils/remoteBinary';
 import { localFixture } from './local-transport-fixture';
 import { remoteFixture } from './remote-fixture';

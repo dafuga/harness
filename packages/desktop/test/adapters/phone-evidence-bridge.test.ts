@@ -5,7 +5,7 @@ import { CapacitorBridgeAdapter } from '../../src/lib/verification-evidence/sele
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
-} from '../../src/models/DesktopEvidence.types';
+} from '../../src/models/verification-evidence/DesktopEvidence.types';
 import type {
 	RemoteMethod,
 	RemoteNativePlugin,

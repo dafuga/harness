@@ -8,7 +8,7 @@ import { explorerEvidence } from '../../../reports/src/utils/explorerEvidence';
 import { explorerScope } from '../../../reports/src/utils/explorer-ui/harness-page/explorerScope';
 import { index } from '../../../reports/test/entityFixture';
 import { commits, ids, units } from '../../../reports/test/entityUnits';
-import type { EntityEvidenceResult } from '../../src/models/DesktopEvidence.types';
+import type { EntityEvidenceResult } from '../../src/models/verification-evidence/DesktopEvidence.types';
 import type { CatalogEntity } from '../../src/models/development-tooling/Desktop.types';
 import { catalogListed } from '../../src/utils/catalogUnit';
 import { evidenceEntity } from './ui-evidence-entity';

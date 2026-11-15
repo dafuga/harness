@@ -4,7 +4,7 @@ import { createCollaboration } from 'collaboration';
 import type {
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
-} from '../../../desktop/src/models/DesktopEvidence.types';
+} from '../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
 import { artifactQuery, type EvidenceSide } from '../../../desktop/src/utils/artifactQuery';
 import { mediaFile } from '../../../reports/src/utils/harnessEvidence';
 import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';

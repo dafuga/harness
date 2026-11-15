@@ -1,7 +1,7 @@
 import type { Fields } from './hub-evidence-controller.test.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
-import type { EntityEvidenceResult } from '../../../desktop/src/models/DesktopEvidence.types';
+import type { EntityEvidenceResult } from '../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
 import { artifactLimit } from '../../../desktop/src/utils/reports-media/artifactMedia';
 import {
 	asked,
