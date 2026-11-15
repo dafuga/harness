@@ -29,51 +29,111 @@
 				"name": "reportCli.argv",
 				"type": "string[]",
 				"required": true,
-				"description": "Arguments beginning with the operation, followed by flags and positionals."
+				"description": "The first argument is the operation; remaining arguments are parsed as flags and positionals. Parsing is permissive, allows positionals, and recognizes the declared string and boolean options.",
+				"examples": [
+					["create", "--project", "reports", "--dry-run"],
+					["show", "--format", "json", "report.json"]
+				]
 			},
 			{
 				"name": "inputData.flags",
 				"type": "Record<string, string | boolean>",
 				"required": true,
-				"description": "Parsed flags; a truthy file takes precedence over inline data."
+				"description": "Flags supplying JSON through `file` or `data`; a truthy `file` is read as UTF-8 and takes precedence over `data`. If the selected content is falsy, the function throws.",
+				"examples": [
+					{
+						"data": "{\"title\":\"Release report\"}"
+					},
+					{
+						"file": "reports/input.json",
+						"data": "{\"title\":\"Ignored when file is truthy\"}"
+					}
+				]
 			},
 			{
 				"name": "required.flags",
 				"type": "Record<string, string | boolean>",
 				"required": true,
-				"description": "Flags to inspect for a required string."
+				"description": "Flags to inspect at the supplied name. The selected value must be a nonblank string; whitespace is checked with `trim()` but preserved in the returned value.",
+				"examples": [
+					{
+						"project": "reports"
+					},
+					{
+						"project": "  reports  "
+					}
+				]
 			},
 			{
 				"name": "required.name",
 				"type": "string",
 				"required": true,
-				"description": "Required flag name without leading dashes."
+				"description": "The key in `flags` whose value is required to be a nonblank string. The function uses this name in the missing-value error message with a `--` prefix.",
+				"examples": ["project", "title"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportCli",
 				"type": "CliOptions",
-				"description": "Operation or empty string, parsed flags and remaining positionals. Uses permissive argument parsing with declared string and boolean options."
+				"description": "An object containing the first argument as `operation` (or an empty string), parsed option values as `flags`, and remaining positional arguments. The parser permits unknown options and positionals, with declared string and boolean options.",
+				"examples": [
+					{
+						"operation": "create",
+						"flags": {
+							"project": "reports",
+							"dry-run": true
+						},
+						"positionals": []
+					},
+					{
+						"operation": "show",
+						"flags": {
+							"format": "json"
+						},
+						"positionals": ["report.json"]
+					}
+				]
 			},
 			{
 				"name": "inputData",
 				"type": "unknown",
-				"description": "Promise resolving to parsed file or inline JSON. The result is cast as an object without checking its shape."
+				"description": "Resolves to the JSON value parsed from the truthy `file` contents or, when no truthy file is supplied, from `data`. The value is cast to a record without runtime shape validation.",
+				"examples": [
+					{
+						"title": "Release report"
+					},
+					{
+						"findings": [],
+						"summary": "No findings"
+					}
+				]
 			},
 			{
 				"name": "required",
 				"type": "unknown",
-				"description": "Original nonblank string value, retaining its surrounding whitespace."
+				"description": "The original string at `flags[name]` when it is nonblank. Surrounding whitespace is retained.",
+				"examples": ["reports", "  release  "]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws when JSON input is absent or a required option is missing/non-string/blank. Argument-parser, file-read and JSON errors also propagate."
+				"description": "`inputData` throws this when neither selected JSON source is truthy, and `required` throws it when the selected value is not a nonblank string. File-read errors propagate unchanged."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Propagates from `JSON.parse` when the selected file contents or inline data are not valid JSON."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Propagates from `parseArgs` when an argument violates the declared option type, such as supplying a value to a boolean option."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportCli",
@@ -82,18 +142,45 @@
 						"name": "reportCli.argv",
 						"type": "string[]",
 						"required": true,
-						"description": "Arguments beginning with the operation, followed by flags and positionals."
+						"description": "The first argument is the operation; remaining arguments are parsed as flags and positionals. Parsing is permissive, allows positionals, and recognizes the declared string and boolean options.",
+						"examples": [
+							["create", "--project", "reports", "--dry-run"],
+							["show", "--format", "json", "report.json"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportCli",
 						"type": "CliOptions",
-						"description": "Operation or empty string, parsed flags and remaining positionals. Uses permissive argument parsing with declared string and boolean options."
+						"description": "An object containing the first argument as `operation` (or an empty string), parsed option values as `flags`, and remaining positional arguments. The parser permits unknown options and positionals, with declared string and boolean options.",
+						"examples": [
+							{
+								"operation": "create",
+								"flags": {
+									"project": "reports",
+									"dry-run": true
+								},
+								"positionals": []
+							},
+							{
+								"operation": "show",
+								"flags": {
+									"format": "json"
+								},
+								"positionals": ["report.json"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Propagates from `parseArgs` when an argument violates the declared option type, such as supplying a value to a boolean option."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "inputData",
@@ -102,23 +189,47 @@
 						"name": "inputData.flags",
 						"type": "Record<string, string | boolean>",
 						"required": true,
-						"description": "Parsed flags; a truthy file takes precedence over inline data."
+						"description": "Flags supplying JSON through `file` or `data`; a truthy `file` is read as UTF-8 and takes precedence over `data`. If the selected content is falsy, the function throws.",
+						"examples": [
+							{
+								"data": "{\"title\":\"Release report\"}"
+							},
+							{
+								"file": "reports/input.json",
+								"data": "{\"title\":\"Ignored when file is truthy\"}"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "inputData",
 						"type": "unknown",
-						"description": "Promise resolving to parsed file or inline JSON. The result is cast as an object without checking its shape."
+						"description": "Resolves to the JSON value parsed from the truthy `file` contents or, when no truthy file is supplied, from `data`. The value is cast to a record without runtime shape validation.",
+						"examples": [
+							{
+								"title": "Release report"
+							},
+							{
+								"findings": [],
+								"summary": "No findings"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when neither the truthy `file` source nor inline `data` provides content; file-read errors also reject this promise."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Propagates when `JSON.parse` cannot parse the selected file contents or inline data."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "required",
@@ -127,29 +238,40 @@
 						"name": "required.flags",
 						"type": "Record<string, string | boolean>",
 						"required": true,
-						"description": "Flags to inspect for a required string."
+						"description": "Flags to inspect at the supplied name. The selected value must be a nonblank string; whitespace is checked with `trim()` but preserved in the returned value.",
+						"examples": [
+							{
+								"project": "reports"
+							},
+							{
+								"project": "  reports  "
+							}
+						]
 					},
 					{
 						"name": "required.name",
 						"type": "string",
 						"required": true,
-						"description": "Required flag name without leading dashes."
+						"description": "The key in `flags` whose value is required to be a nonblank string. The function uses this name in the missing-value error message with a `--` prefix.",
+						"examples": ["project", "title"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "required",
 						"type": "unknown",
-						"description": "Original nonblank string value, retaining its surrounding whitespace."
+						"description": "The original string at `flags[name]` when it is nonblank. Surrounding whitespace is retained.",
+						"examples": ["reports", "  release  "]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the value at `flags[name]` is not a string or is empty after trimming whitespace."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
