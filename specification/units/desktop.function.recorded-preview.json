@@ -28,35 +28,68 @@
 				"name": "recordedPreview.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace providing the project, selected revision and authorized screenshot reader."
+				"description": "Supplies the project and commit context plus the bridge used to read evidence and artifact bytes. Without an evidence-capable bridge, the preview is reported as missing."
 			},
 			{
 				"name": "recordedPreview.entityId",
 				"type": "string",
 				"required": true,
-				"description": "Registered entity whose recorded screenshot is requested."
+				"description": "Identifies the entity whose after-state screenshot is selected and is checked against the returned evidence scope. Evidence for another entity or commit is reported as an error.",
+				"examples": ["desktop.function.recorded-preview"]
 			},
 			{
 				"name": "recordedPreview.thumbnail",
 				"type": "RecordedThumbnail",
 				"required": true,
-				"description": "Selected screenshot metadata, including its revision and media identity."
+				"description": "Carries recorded preview metadata; if any of scenario, state, or viewport is set, all three must be set. With none set, the implementation searches the evidence registry for a required state covering the entity and an associated screenshot viewport.",
+				"examples": [
+					{
+						"source": "recorded"
+					}
+				]
 			},
 			{
 				"name": "recordedPreview.apply",
 				"type": "(state: PreviewState) => void",
 				"required": true,
-				"description": "Receives loading, loaded or unavailable preview state until cleanup releases the image."
+				"description": "Receives a PreviewState immediately with status loading, followed by ready, missing, or error when a live result is available. Cleanup suppresses later updates."
 			}
 		],
 		"outputs": [
 			{
 				"name": "stop",
 				"type": "() => void",
-				"description": "A cleanup function to call when the preview is replaced or removed. It ignores late results and releases any image URL already created; it does not cancel the underlying request."
+				"description": "Call this cleanup function to mark the preview disposed and revoke any object URL already created. It does not cancel an in-flight evidence or artifact request."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown when the evidence result names a different entity or commit than the requested scope. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown when the requested project differs from the project in the evidence identity. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown when the evidence identity source commit differs from the requested commit. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown when a recorded thumbnail supplies only some of scenario, state, and viewport. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown when the fetched artifact media type is neither image/png nor image/jpeg. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "recordedPreview",
@@ -65,35 +98,68 @@
 						"name": "recordedPreview.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "Workspace providing the project, selected revision and authorized screenshot reader."
+						"description": "Supplies the project and commit context plus the bridge used to read evidence and artifact bytes. Without an evidence-capable bridge, the preview is reported as missing."
 					},
 					{
 						"name": "recordedPreview.entityId",
 						"type": "string",
 						"required": true,
-						"description": "Registered entity whose recorded screenshot is requested."
+						"description": "Identifies the entity whose after-state screenshot is selected and is checked against the returned evidence scope. Evidence for another entity or commit is reported as an error.",
+						"examples": ["desktop.function.recorded-preview"]
 					},
 					{
 						"name": "recordedPreview.thumbnail",
 						"type": "RecordedThumbnail",
 						"required": true,
-						"description": "Selected screenshot metadata, including its revision and media identity."
+						"description": "Carries recorded preview metadata; if any of scenario, state, or viewport is set, all three must be set. With none set, the implementation searches the evidence registry for a required state covering the entity and an associated screenshot viewport.",
+						"examples": [
+							{
+								"source": "recorded"
+							}
+						]
 					},
 					{
 						"name": "recordedPreview.apply",
 						"type": "(state: PreviewState) => void",
 						"required": true,
-						"description": "Receives loading, loaded or unavailable preview state until cleanup releases the image."
+						"description": "Receives a PreviewState immediately with status loading, followed by ready, missing, or error when a live result is available. Cleanup suppresses later updates."
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordedPreview",
-						"type": "()"
+						"type": "()",
+						"description": "Returns the cleanup callback that marks the preview disposed and revokes any object URL already created. It does not cancel an in-flight evidence or artifact request."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the evidence result names a different entity or commit than the requested scope. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the requested project differs from the project in the evidence identity. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the evidence identity source commit differs from the requested commit. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a recorded thumbnail supplies only some of scenario, state, and viewport. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the fetched artifact media type is neither image/png nor image/jpeg. The asynchronous handler catches it and reports an error state through apply unless cleanup has run."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
