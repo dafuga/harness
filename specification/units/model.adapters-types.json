@@ -6,7 +6,7 @@
 	"title": "types",
 	"responsibility": "Preserves the generated-model PersistenceAdapter type import address; declares no persisted model or runtime operations.",
 	"responsibilityOrigin": "declared",
-	"status": "active",
+	"status": "retired",
 	"owns": {
 		"source": ["src/models/adapters/types.ts"],
 		"symbols": ["PersistenceAdapter"]
@@ -42,5 +42,9 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
+	},
+	"retired": {
+		"reason": "Every file it owned was removed in p2-stubs-a: re-export-only relocation stubs whose importers now use the module that defines the code.",
+		"at": "2026-11-15T06:41:05.955Z"
 	}
 }
