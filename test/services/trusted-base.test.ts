@@ -4,7 +4,7 @@ import { join, resolve } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
 import { VerificationStoreRepository } from '../../src/repositories/VerificationStoreRepository';
-import { TrustedBaseService } from '../../src/services/TrustedBaseService';
+import { TrustedBaseService } from '../../src/workflows/verification-evidence/run-verify/TrustedBaseService';
 import { sealRecord } from '../../src/utils/sealRecord';
 import { runCommand } from '../support/cli';
 import { measureProcess } from '../support/cli-measurement/measureProcess';

@@ -162,21 +162,6 @@
 			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
 		},
 		{
-			"from": "src/services/RuntimeServerService.ts",
-			"to": "src/cli/program/run-kernel/RuntimeServerService",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/services/SourceArchiveService.ts",
-			"to": "src/cli/program/history-index-service/SourceArchiveService",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/services/TrustedBaseService.ts",
-			"to": "src/workflows/verification-evidence/run-verify/TrustedBaseService",
-			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/unit-index-service/UnitIndexService.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService",
 			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."

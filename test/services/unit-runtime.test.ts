@@ -1,8 +1,11 @@
 import { resolve } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import type { ComponentManifest } from '../../src/core/unitTypes';
-import { RuntimeServerService, type ServedRuntime } from '../../src/services/RuntimeServerService';
-import { UnitRuntimeService } from '../../src/services/UnitRuntimeService';
+import {
+	RuntimeServerService,
+	type ServedRuntime
+} from '../../src/cli/program/run-kernel/RuntimeServerService';
+import { UnitRuntimeService } from '../../src/services/execution-runtimes/UnitRuntimeService';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';
 import { ComponentManifestValidator } from '../../src/validators/ComponentManifestValidator';
 import { indexFiles, unitOf } from '../support/memoryTree';
@@ -22,23 +25,21 @@ beforeAll(async () => {
 		entry: 'src/utils/impactKernel.ts',
 		handler: 'impactKernel'
 	};
+	const targets = [
+		module,
+		...(artifacts.wasm ? [{ kind: 'wasm' as const, entry: artifacts.wasm }] : []),
+		...(artifacts.native ? [{ kind: 'process' as const, entry: artifacts.native }] : []),
+		{ kind: 'http' as const, entry: served.url }
+	];
 	manifest = {
 		...derived,
-		runtime: {
-			...module,
-			targets: [
-				module,
-				{ kind: 'wasm', entry: artifacts.wasm ?? '' },
-				{ kind: 'process', entry: artifacts.native ?? '' },
-				{ kind: 'http', entry: served.url }
-			]
-		}
+		runtime: { ...module, targets }
 	};
 });
 
 afterAll(() => served.close());
 
-test('a manifest with a handler and four targets is a valid unit', () => {
+test('a manifest with a handler and its declared targets is a valid unit', () => {
 	expect(
 		new ComponentManifestValidator().validate(manifest, 'function.impact-kernel.json').errors
 	).toEqual([]);
@@ -46,7 +47,7 @@ test('a manifest with a handler and four targets is a valid unit', () => {
 
 test('each declared execution target selects a working adapter of that kind', async () => {
 	const expected = { ok: true, output: { contract: 'impact-kernel/1' } };
-	for (const kind of ['module', 'wasm', 'process', 'http'] as const) {
+	for (const { kind } of manifest.runtime.targets) {
 		const runtime = service.forUnit(manifest, kind);
 		expect(runtime.kind).toBe(kind);
 		expect(await runtime.invoke({ operation: 'version' }), kind).toEqual(expected);

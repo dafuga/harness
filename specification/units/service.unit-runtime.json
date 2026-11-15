@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/UnitRuntimeService.ts",
 			"src/services/execution-runtimes/UnitRuntimeService.ts",
 			"src/services/execution-runtimes/UnitRuntimeService.types.ts"
 		],
 		"symbols": [
-			"UnitRuntimeService",
 			"UnitRuntimeService",
 			"UnitRuntimeService.constructor",
 			"UnitRuntimeService.forTarget",

@@ -10,17 +10,13 @@
 	"owns": {
 		"source": [
 			"src/cli/program/run-kernel/RuntimeServerService.ts",
-			"src/cli/program/run-kernel/RuntimeServerService.types.ts",
-			"src/services/RuntimeServerService.ts"
+			"src/cli/program/run-kernel/RuntimeServerService.types.ts"
 		],
 		"symbols": [
 			"RuntimeServerService",
 			"RuntimeServerService.serve",
 			"ServedRuntime",
 			"ServeOptions",
-			"ServedRuntime",
-			"ServeOptions",
-			"RuntimeServerService",
 			"ServedRuntime",
 			"ServeOptions"
 		]

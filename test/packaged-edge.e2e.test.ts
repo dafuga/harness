@@ -4,7 +4,10 @@ import { join, resolve } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { HttpRuntimeAdapter } from '../src/adapters/HttpRuntimeAdapter';
 import { ModuleRuntimeAdapter } from '../src/adapters/ModuleRuntimeAdapter';
-import { RuntimeServerService, type ServedRuntime } from '../src/services/RuntimeServerService';
+import {
+	RuntimeServerService,
+	type ServedRuntime
+} from '../src/cli/program/run-kernel/RuntimeServerService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { runCommand } from './support/cli';
 import { kernelVectors } from './support/kernelVectors';

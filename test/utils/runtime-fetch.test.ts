@@ -1,7 +1,10 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { HandlerRuntimeAdapter } from '../../packages/reports/src/components/explorer-ui/harness-compare/HandlerRuntimeAdapter';
 import { HttpRuntimeAdapter } from '../../src/adapters/HttpRuntimeAdapter';
-import { RuntimeServerService, type ServedRuntime } from '../../src/services/RuntimeServerService';
+import {
+	RuntimeServerService,
+	type ServedRuntime
+} from '../../src/cli/program/run-kernel/RuntimeServerService';
 import { runtimeFetch } from '../../src/utils/runtimeFetch';
 
 const runtime = new HandlerRuntimeAdapter((request) =>

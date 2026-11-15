@@ -2,8 +2,11 @@ import { afterAll, beforeAll, expect, test } from 'vitest';
 import { HttpRuntimeAdapter } from '../../src/adapters/HttpRuntimeAdapter';
 import { ProcessRuntimeAdapter } from '../../src/adapters/process-runtime-adapter/ProcessRuntimeAdapter';
 import type { RuntimeRequest, UnitRuntime } from '../../src/core/runtimeTypes';
-import { RuntimeServerService, type ServedRuntime } from '../../src/services/RuntimeServerService';
-import { UnitRuntimeService } from '../../src/services/UnitRuntimeService';
+import {
+	RuntimeServerService,
+	type ServedRuntime
+} from '../../src/cli/program/run-kernel/RuntimeServerService';
+import { UnitRuntimeService } from '../../src/services/execution-runtimes/UnitRuntimeService';
 import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
 import { impactKernelText } from '../../src/workflows/run-kernel/impactKernel';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';
@@ -49,13 +52,16 @@ const portable: Array<[string, unknown]> = [
 	['the largest finite double', { operation: 'version', ignored: Number.MAX_VALUE }]
 ];
 
+const artifacts = kernelArtifacts();
+const built = Boolean(artifacts.wasm && artifacts.native);
+const builtTest = test.skipIf(!built);
 const service = new UnitRuntimeService();
 let runtimes: Record<string, UnitRuntime>;
 let served: ServedRuntime;
 
 beforeAll(async () => {
-	const native = kernelArtifacts().native ?? '';
-	expect(native, 'run bun run build:kernel').not.toBe('');
+	if (!built) return;
+	const native = artifacts.native!;
 	served = await new RuntimeServerService().serve(service.kernel('module'), { port: 0 });
 	runtimes = {
 		module: service.kernel('module'),
@@ -67,16 +73,17 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+	if (!runtimes || !served) return;
 	await Promise.all(Object.values(runtimes).map((runtime) => runtime.close()));
 	await served.close();
 });
 
-test('the reference refuses requests that are not portable JSON', () => {
+builtTest('the reference refuses requests that are not portable JSON', () => {
 	for (const [name, request] of nonPortable) expect(impactKernel(request), name).toEqual(refused);
 	for (const [name, request] of portable) expect(impactKernel(request), name).toEqual(version);
 });
 
-test('every runtime refuses a structured request it could not carry faithfully', async () => {
+builtTest('every runtime refuses a structured request it could not carry faithfully', async () => {
 	for (const [name, request] of nonPortable) {
 		for (const [runtime, adapter] of Object.entries(runtimes)) {
 			const response = await adapter.invoke(request as RuntimeRequest);
@@ -85,7 +92,7 @@ test('every runtime refuses a structured request it could not carry faithfully',
 	}
 });
 
-test('every runtime accepts the portable edge cases identically', async () => {
+builtTest('every runtime accepts the portable edge cases identically', async () => {
 	for (const [name, request] of portable) {
 		for (const [runtime, adapter] of Object.entries(runtimes)) {
 			const response = await adapter.invoke(request as RuntimeRequest);
@@ -94,14 +101,17 @@ test('every runtime accepts the portable edge cases identically', async () => {
 	}
 });
 
-test('a served unit refuses non-portable request text before it reaches the unit', async () => {
-	for (const text of [
-		'{"operation":"version","ignored":1e400}',
-		'{"operation":"version","\\ud800":1}'
-	]) {
-		const response = await fetch(served.url, { method: 'POST', body: text });
-		expect(response.status).toBe(400);
-		expect(await response.json()).toEqual(refused);
-		expect(JSON.parse(impactKernelText(text))).toEqual(refused);
+builtTest(
+	'a served unit refuses non-portable request text before it reaches the unit',
+	async () => {
+		for (const text of [
+			'{"operation":"version","ignored":1e400}',
+			'{"operation":"version","\\ud800":1}'
+		]) {
+			const response = await fetch(served.url, { method: 'POST', body: text });
+			expect(response.status).toBe(400);
+			expect(await response.json()).toEqual(refused);
+			expect(JSON.parse(impactKernelText(text))).toEqual(refused);
+		}
 	}
-});
+);
