@@ -175,7 +175,7 @@
 		"outputs": [
 			{
 				"name": "taskWorkspace",
-				"type": "unknown",
+				"type": "Promise<NonNullable<ModuleTask['result']> & { attempt: string; sourceCommit: string }>",
 				"description": "Pending task result populated from selection and the resolved worktree, with the claim token as attempt and repairCommit ?? sourceCommit as sourceCommit.",
 				"examples": [
 					{
@@ -291,7 +291,7 @@
 				"outputs": [
 					{
 						"name": "taskWorkspace",
-						"type": "unknown",
+						"type": "Promise<NonNullable<ModuleTask['result']> & { attempt: string; sourceCommit: string }>",
 						"description": "Pending task result populated from selection and the resolved worktree, with the claim token as attempt and repairCommit ?? sourceCommit as sourceCommit.",
 						"examples": [
 							{

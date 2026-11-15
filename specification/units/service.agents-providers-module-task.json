@@ -392,7 +392,7 @@
 			},
 			{
 				"name": "ModuleTaskService.add",
-				"type": "unknown",
+				"type": "Promise<{ task: ModuleTask; commit: string | undefined }>",
 				"description": "Admission result containing the queued task and the commit that records it on the task queue ref.",
 				"examples": [
 					{
@@ -436,7 +436,7 @@
 			},
 			{
 				"name": "ModuleTaskService.list",
-				"type": "unknown",
+				"type": "Promise<{ features: TaskFeature[]; tasks: ModuleTask[]; commit: string | undefined }>",
 				"description": "Snapshot of shared feature and task records with the queue commit. Commit is null when the task queue ref has not been created.",
 				"examples": [
 					{
@@ -565,7 +565,7 @@
 			},
 			{
 				"name": "ModuleTaskService.show",
-				"type": "unknown",
+				"type": "Promise<{ task: ModuleTask; commit: string | undefined }>",
 				"description": "Object containing the matching stored task and the queue snapshot commit. The task is selected by its id from list().",
 				"examples": [
 					{
@@ -617,7 +617,7 @@
 			},
 			{
 				"name": "ModuleTaskService.prepare",
-				"type": "unknown",
+				"type": "{ prompt: string; selection: { provider: 'claude' | 'codex'; model: string; intelligence: string } }",
 				"description": "Prepared worker request containing the generated prompt and resolved provider, model and intelligence selection. The prompt is bound to the supplied task and commit.",
 				"examples": [
 					{
@@ -632,7 +632,7 @@
 			},
 			{
 				"name": "ModuleTaskService.retry",
-				"type": "unknown",
+				"type": "Promise<{ value: ModuleTask; commit: string | undefined }>",
 				"description": "Repository update result containing the reset task and resulting queue commit. The task is queued again after its result and active claim are moved to history and cleared.",
 				"examples": [
 					{
@@ -676,7 +676,7 @@
 			},
 			{
 				"name": "ModuleTaskService.review",
-				"type": "unknown",
+				"type": "Promise<{ commit: string | undefined; task: ModuleTask }>",
 				"description": "Review result containing the updated task and queue commit. An accepted verdict stores review metadata and marks the task accepted.",
 				"examples": [
 					{
@@ -929,7 +929,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskService.add",
-						"type": "unknown",
+						"type": "Promise<{ task: ModuleTask; commit: string | undefined }>",
 						"description": "Admission result containing the queued task and the commit that records it on the task queue ref.",
 						"examples": [
 							{
@@ -997,7 +997,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskService.list",
-						"type": "unknown",
+						"type": "Promise<{ features: TaskFeature[]; tasks: ModuleTask[]; commit: string | undefined }>",
 						"description": "Snapshot of shared feature and task records with the queue commit. Commit is null when the task queue ref has not been created.",
 						"examples": [
 							{
@@ -1166,7 +1166,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskService.show",
-						"type": "unknown",
+						"type": "Promise<{ task: ModuleTask; commit: string | undefined }>",
 						"description": "Object containing the matching stored task and the queue snapshot commit. The task is selected by its id from list().",
 						"examples": [
 							{
@@ -1324,7 +1324,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskService.prepare",
-						"type": "unknown",
+						"type": "{ prompt: string; selection: { provider: 'claude' | 'codex'; model: string; intelligence: string } }",
 						"description": "Prepared worker request containing the generated prompt and resolved provider, model and intelligence selection. The prompt is bound to the supplied task and commit.",
 						"examples": [
 							{
@@ -1361,7 +1361,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskService.retry",
-						"type": "unknown",
+						"type": "Promise<{ value: ModuleTask; commit: string | undefined }>",
 						"description": "Repository update result containing the reset task and resulting queue commit. The task is queued again after its result and active claim are moved to history and cleared.",
 						"examples": [
 							{
@@ -1451,7 +1451,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskService.review",
-						"type": "unknown",
+						"type": "Promise<{ commit: string | undefined; task: ModuleTask }>",
 						"description": "Review result containing the updated task and queue commit. An accepted verdict stores review metadata and marks the task accepted.",
 						"examples": [
 							{

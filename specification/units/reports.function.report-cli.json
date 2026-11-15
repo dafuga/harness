@@ -97,7 +97,7 @@
 			},
 			{
 				"name": "inputData",
-				"type": "unknown",
+				"type": "Promise<Record<string, unknown>>",
 				"description": "Resolves to the JSON value parsed from the truthy `file` contents or, when no truthy file is supplied, from `data`. The value is cast to a record without runtime shape validation.",
 				"examples": [
 					{
@@ -204,7 +204,7 @@
 				"outputs": [
 					{
 						"name": "inputData",
-						"type": "unknown",
+						"type": "Promise<Record<string, unknown>>",
 						"description": "Resolves to the JSON value parsed from the truthy `file` contents or, when no truthy file is supplied, from `data`. The value is cast to a record without runtime shape validation.",
 						"examples": [
 							{

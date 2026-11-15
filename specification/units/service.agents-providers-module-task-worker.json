@@ -488,7 +488,7 @@
 		"outputs": [
 			{
 				"name": "ModuleTaskWorkerService.once",
-				"type": "unknown",
+				"type": "Promise<{ status: 'idle' } | { status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']> }>",
 				"description": "Result of one claim attempt: { status: 'idle' } when no eligible task was claimed; otherwise { status, task, result }, where status is 'failed' if result.error is set and 'review' if not, task is the claimed task's id and result is the final result.",
 				"examples": [
 					{
@@ -571,7 +571,7 @@
 			},
 			{
 				"name": "claimedTask",
-				"type": "unknown",
+				"type": "ModuleTask | null",
 				"description": "The claimed ModuleTask, mutated in place to status running with a new claim, or null when no queued task matches the worker, the modules list and the rule that a module with a running task is skipped.",
 				"examples": [
 					null,
@@ -694,7 +694,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskWorkerService.once",
-						"type": "unknown",
+						"type": "Promise<{ status: 'idle' } | { status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']> }>",
 						"description": "Result of one claim attempt: { status: 'idle' } when no eligible task was claimed; otherwise { status, task, result }, where status is 'failed' if result.error is set and 'review' if not, task is the claimed task's id and result is the final result.",
 						"examples": [
 							{
@@ -933,7 +933,7 @@
 				"outputs": [
 					{
 						"name": "claimedTask",
-						"type": "unknown",
+						"type": "ModuleTask | null",
 						"description": "The claimed ModuleTask, mutated in place to status running with a new claim, or null when no queued task matches the worker, the modules list and the rule that a module with a running task is skipped.",
 						"examples": [
 							null,
