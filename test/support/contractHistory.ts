@@ -98,3 +98,31 @@ export async function assertOrderedHistoryExamples(
 		'examples[1].values[0]'
 	);
 }
+
+export async function assertTombstoneHistoryRename(root: string): Promise<void> {
+	const original = { ...contractUnit('service.alpha', 'src/Alpha.ts'), uid: 'u_abcdefghij' };
+	await writeContract(root, 'a-original.json', original);
+	commitHistory(root, 'feat: named unit before rename');
+	await writeContract(root, 'a-original.json', {
+		...original,
+		uid: undefined,
+		status: 'retired',
+		owns: { source: [], symbols: [] },
+		retired: { reason: 'Renamed to service.zeta.' }
+	});
+	await writeContract(root, 'z-renamed.json', {
+		...original,
+		id: 'service.zeta',
+		lineage: { predecessors: [original.id] }
+	});
+	const diff = JSON.parse(await runHistory(root, 'diff', '--unit', original.id, '--json'));
+	expect(diff.changes).toMatchObject([
+		{ id: original.id, kind: 'added' },
+		{
+			id: 'service.zeta',
+			previousId: original.id,
+			kind: 'moved',
+			previousContractPath: 'specification/units/a-original.json'
+		}
+	]);
+}

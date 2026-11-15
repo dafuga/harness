@@ -14,6 +14,7 @@ import {
 	commitHistory,
 	assertHistoryRefBoundaries,
 	assertOrderedHistoryExamples,
+	assertTombstoneHistoryRename,
 	historyFixture,
 	historyGit,
 	reformatHistory,
@@ -132,6 +133,7 @@ test('ContractsCommand diff preserves moves duplicate relations filters and summ
 		});
 		expect(selected.changes[0].fields).toHaveLength(3);
 		expect(await runHistory(root, 'diff', '--summary')).toContain('moved');
+		await assertTombstoneHistoryRename(root);
 	}));
 
 test('ContractsCommand log and last follow unit identity and skip nonmaterial commits', () =>
