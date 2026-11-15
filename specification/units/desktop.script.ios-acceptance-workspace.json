@@ -12,40 +12,52 @@
 		"symbols": ["workspace", "savedCopies", "reconnection"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "workspace.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The acceptance run used to exercise the shared iOS workspace through the paired computer. The flow reads its record, page, and project and passes the run to restart, design, control, and layout helpers."
 			},
 			{
 				"name": "savedCopies.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The acceptance run used to check saved workspace copies while the computer is suspended. The flow reads its record and page and passes the run to control, restart, design, and scrolled-layout helpers."
 			},
 			{
 				"name": "reconnection.run",
 				"type": "Acceptance",
-				"required": true
+				"required": true,
+				"description": "The acceptance run used to check reconnection and revocation of the phone's workspace access. The flow reads its record and project and uses the run's simulator id for the Keychain check."
 			}
 		],
 		"outputs": [
 			{
 				"name": "workspace",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after checking the shared workspace address and design, conversation modes and models, and computer lock and unlock state."
 			},
 			{
 				"name": "savedCopies",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after checking the saved cached design while the computer is away, including its read-only and comment-disabled state and scrolled layout."
 			},
 			{
 				"name": "reconnection",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after checking automatic reconnection and the current view, device online status, access revocation, unpairing after restart, and empty simulator Keychain groups."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "error",
+				"type": "thrown",
+				"description": "An awaited page or run action can reject the async flow; when seen catches a failed page.until check, it records a failed check and rethrows the same error."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "workspace",
@@ -53,17 +65,25 @@
 					{
 						"name": "workspace.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The acceptance run used to exercise the shared iOS workspace through the paired computer. The flow reads its record, page, and project and passes the run to restart, design, control, and layout helpers."
 					}
 				],
 				"outputs": [
 					{
 						"name": "workspace",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after checking the shared workspace address and design, conversation modes and models, and computer lock and unlock state."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "error",
+						"type": "thrown",
+						"description": "An awaited page or run action can reject the async flow; when seen catches a failed page.until check, it records a failed check and rethrows the same error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "savedCopies",
@@ -71,17 +91,25 @@
 					{
 						"name": "savedCopies.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The acceptance run used to check saved workspace copies while the computer is suspended. The flow reads its record and page and passes the run to control, restart, design, and scrolled-layout helpers."
 					}
 				],
 				"outputs": [
 					{
 						"name": "savedCopies",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after checking the saved cached design while the computer is away, including its read-only and comment-disabled state and scrolled layout."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "error",
+						"type": "thrown",
+						"description": "An awaited page or run action can reject the async flow; when seen catches a failed page.until check, it records a failed check and rethrows the same error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "reconnection",
@@ -89,17 +117,25 @@
 					{
 						"name": "reconnection.run",
 						"type": "Acceptance",
-						"required": true
+						"required": true,
+						"description": "The acceptance run used to check reconnection and revocation of the phone's workspace access. The flow reads its record and project and uses the run's simulator id for the Keychain check."
 					}
 				],
 				"outputs": [
 					{
 						"name": "reconnection",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after checking automatic reconnection and the current view, device online status, access revocation, unpairing after restart, and empty simulator Keychain groups."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "error",
+						"type": "thrown",
+						"description": "An awaited page or run action can reject the async flow; when seen catches a failed page.until check, it records a failed check and rethrows the same error."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
