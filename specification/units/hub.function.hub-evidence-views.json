@@ -21,40 +21,54 @@
 				"name": "hubEvidenceViews.history",
 				"type": "HubRecordStatusService",
 				"required": true,
-				"description": "Pinned record history service."
+				"description": "History service used to load each status attachment and query verification lines for referenced records. A referenced origin is used only when its loaded record ID matches the reference."
 			},
 			{
 				"name": "hubEvidenceViews.items",
 				"type": "RecordStatus[]",
 				"required": true,
-				"description": "Record statuses, including validity and problems, to project."
+				"description": "Array of record statuses to project; each status supplies an attachment reference, validity flag, and problem list. Statuses whose loaded attachment has no parsed record are omitted from the result.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "hubEvidenceOrigin.history",
 				"type": "HubRecordStatusService",
 				"required": true,
-				"description": "Pinned record history service."
+				"description": "History service used to find the verification line for the requested record and load its attachment. Only an attachment whose parsed record ID equals the requested ID is returned."
 			},
 			{
 				"name": "hubEvidenceOrigin.id",
 				"type": "string",
 				"required": true,
-				"description": "Original record ID to locate."
+				"description": "Opaque record ID string matched exactly against verification-line and loaded-record IDs. The implementation does not parse or validate an ID format.",
+				"examples": ["record-7f3a2c"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEvidenceOrigin",
 				"type": "unknown",
-				"description": "Loaded attachment when a verification line resolves to the requested record ID, otherwise undefined."
+				"description": "Loaded attachment for the first verification line whose record ID equals id, but only when the parsed attached record has that same ID. Returns undefined when no such line exists or the loaded record does not match."
 			},
 			{
 				"name": "hubEvidenceViews",
 				"type": "unknown",
-				"description": "Projected record views, retaining invalid-record problems and missing-capture gaps; attachments with no parsed record are omitted. Media references require matching validated hash and length."
+				"description": "Array of non-null projected record views for statuses whose loaded attachments contain a record; statuses without one are filtered out. It carries status validity and problems, and resolves capture media only when the originating record has the same path, SHA-256, and byte count; unresolved captures retain a gap.",
+				"examples": [
+					[]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "The asynchronous functions propagate failures from verification-history queries, attached-record loads, and record-view construction without catching or translating them; the rejection reason is not constrained by this implementation."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubEvidenceViews",
@@ -63,24 +77,36 @@
 						"name": "hubEvidenceViews.history",
 						"type": "HubRecordStatusService",
 						"required": true,
-						"description": "Pinned record history service."
+						"description": "History service used to load each status attachment and query verification lines for referenced records. A referenced origin is used only when its loaded record ID matches the reference."
 					},
 					{
 						"name": "hubEvidenceViews.items",
 						"type": "RecordStatus[]",
 						"required": true,
-						"description": "Record statuses, including validity and problems, to project."
+						"description": "Array of record statuses to project; each status supplies an attachment reference, validity flag, and problem list. Statuses whose loaded attachment has no parsed record are omitted from the result.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEvidenceViews",
 						"type": "unknown",
-						"description": "Projected record views, retaining invalid-record problems and missing-capture gaps; attachments with no parsed record are omitted. Media references require matching validated hash and length."
+						"description": "Array of non-null projected record views for statuses whose loaded attachments contain a record; statuses without one are filtered out. It carries status validity and problems, and resolves capture media only when the originating record has the same path, SHA-256, and byte count; unresolved captures retain a gap.",
+						"examples": [
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Rejects with a failure from attached-record loading, referenced-origin lookup, or recordView; Promise.all propagates any item rejection without translation."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubEvidenceOrigin",
@@ -89,24 +115,31 @@
 						"name": "hubEvidenceOrigin.history",
 						"type": "HubRecordStatusService",
 						"required": true,
-						"description": "Pinned record history service."
+						"description": "History service used to find the verification line for the requested record and load its attachment. Only an attachment whose parsed record ID equals the requested ID is returned."
 					},
 					{
 						"name": "hubEvidenceOrigin.id",
 						"type": "string",
 						"required": true,
-						"description": "Original record ID to locate."
+						"description": "Opaque record ID string matched exactly against verification-line and loaded-record IDs. The implementation does not parse or validate an ID format.",
+						"examples": ["record-7f3a2c"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEvidenceOrigin",
 						"type": "unknown",
-						"description": "Loaded attachment when a verification line resolves to the requested record ID, otherwise undefined."
+						"description": "Loaded attachment for the first verification line whose record ID equals id, but only when the parsed attached record has that same ID. Returns undefined when no such line exists or the loaded record does not match."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Rejects if history.verifications() or the selected history.attached.load() call rejects; the implementation does not catch or translate the rejection."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
