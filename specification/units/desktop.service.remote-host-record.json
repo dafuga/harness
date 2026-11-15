@@ -26,57 +26,118 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteHostRecordService.constructor.store",
 				"type": "RemoteHostStoreAdapter",
-				"required": true
+				"required": true,
+				"description": "The backing store instance retained by the service and called for availability checks, reads, and writes. Construction does not load or validate a record."
 			},
 			{
 				"name": "RemoteHostRecordService.enrol.state",
 				"type": "RemoteHostState",
-				"required": true
+				"required": true,
+				"description": "The mutable record enrolment uses if its queued turn is still wanted. It is retained by reference, and enrolment changes only enabled, origin, and generation.",
+				"examples": [
+					{
+						"enabled": false,
+						"origin": null,
+						"hostId": "82e46ba75b60c48047e3346598f1c15eb0b2bcac",
+						"keys": {
+							"d": "-Dd9cJ1VPPwxCad8-m3HoF2qsLxzyihsV1zkofs2BVc",
+							"publicKey": "BAcAYFfwZRv7DZel5szuy0DFrGhw903EJQrWbQj6ankCBmyjb8Gh-QXmHLRSTmLIJOpjURrLplLLShIwVETNfPY"
+						},
+						"credential": "bkkDe31iUaI8oUZ4a0sF_60U-n1awKCjOUP7pmQLiL8",
+						"generation": 0,
+						"devices": [],
+						"revoked": []
+					}
+				]
 			},
 			{
 				"name": "RemoteHostRecordService.enrol.registered",
 				"type": "RemoteHostEnrolment",
-				"required": true
+				"required": true,
+				"description": "The registration values copied onto state when wanted() is true in enrol's turn. It contains only enabled, origin, and generation, leaving the other record fields intact.",
+				"examples": [
+					{
+						"enabled": true,
+						"origin": "https://relay.example.com",
+						"generation": 1
+					},
+					{
+						"enabled": false,
+						"origin": null,
+						"generation": 0
+					}
+				]
 			},
 			{
 				"name": "RemoteHostRecordService.enrol.wanted",
 				"type": "() => boolean",
-				"required": true
+				"required": true,
+				"description": "A synchronous predicate evaluated when enrol reaches its turn. Returning false skips the mutation and write."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteHostRecordService.available",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the injected store currently reports itself available. The service returns the store's boolean directly.",
+				"examples": [true, false]
 			},
 			{
 				"name": "RemoteHostRecordService.load",
-				"type": "Promise<RemoteHostState | null>"
+				"type": "Promise<RemoteHostState | null>",
+				"description": "The in-memory record when present, otherwise the shared read from the store; null means no record was found. A failed read rejects and clears the shared read so a later call can retry.",
+				"examples": [
+					null,
+					{
+						"enabled": false,
+						"origin": null,
+						"hostId": "82e46ba75b60c48047e3346598f1c15eb0b2bcac",
+						"keys": {
+							"d": "-Dd9cJ1VPPwxCad8-m3HoF2qsLxzyihsV1zkofs2BVc",
+							"publicKey": "BAcAYFfwZRv7DZel5szuy0DFrGhw903EJQrWbQj6ankCBmyjb8Gh-QXmHLRSTmLIJOpjURrLplLLShIwVETNfPY"
+						},
+						"credential": "bkkDe31iUaI8oUZ4a0sF_60U-n1awKCjOUP7pmQLiL8",
+						"generation": 0,
+						"devices": [],
+						"revoked": []
+					}
+				]
 			},
 			{
 				"name": "RemoteHostRecordService.save",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "A promise for completion of this queued write. It writes the in-memory record at its turn and does nothing if the record is null."
 			},
 			{
 				"name": "RemoteHostRecordService.off",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "A promise for the queued disable and write. It disables a known record immediately; if none is known, it tries a load and writes the disabled record when one is found. Read failures are swallowed, while save failures reject."
 			},
 			{
 				"name": "RemoteHostRecordService.enrol",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Whether the registration was applied in its queued turn; false means wanted() was false at that time. State is updated in place on success, while a failed save restores the prior service value and does not turn access back on if state was disabled meanwhile.",
+				"examples": [true, false]
 			},
 			{
 				"name": "RemoteHostRecordService.settled",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after every change queued before the call has ended, whether its work resolved or rejected. It does not wait for changes queued afterward."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "The original value thrown or rejected by a store method or the wanted callback is propagated. off() swallows read failures but still propagates a save failure."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RemoteHostRecordService.available",
@@ -84,11 +145,19 @@
 				"outputs": [
 					{
 						"name": "RemoteHostRecordService.available",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether the injected store currently reports itself available. The service returns the store's boolean directly.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "If store.available() throws, available() propagates that value synchronously."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostRecordService.load",
@@ -96,11 +165,34 @@
 				"outputs": [
 					{
 						"name": "RemoteHostRecordService.load",
-						"type": "Promise<RemoteHostState | null>"
+						"type": "Promise<RemoteHostState | null>",
+						"description": "The in-memory record when present, otherwise the shared read from the store; null means no record was found. A failed read rejects and clears the shared read so a later call can retry.",
+						"examples": [
+							null,
+							{
+								"enabled": false,
+								"origin": null,
+								"hostId": "82e46ba75b60c48047e3346598f1c15eb0b2bcac",
+								"keys": {
+									"d": "-Dd9cJ1VPPwxCad8-m3HoF2qsLxzyihsV1zkofs2BVc",
+									"publicKey": "BAcAYFfwZRv7DZel5szuy0DFrGhw903EJQrWbQj6ankCBmyjb8Gh-QXmHLRSTmLIJOpjURrLplLLShIwVETNfPY"
+								},
+								"credential": "bkkDe31iUaI8oUZ4a0sF_60U-n1awKCjOUP7pmQLiL8",
+								"generation": 0,
+								"devices": [],
+								"revoked": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "A rejection from store.read() is rethrown unchanged; the failed shared read is cleared so a later call can retry."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostRecordService.save",
@@ -108,11 +200,18 @@
 				"outputs": [
 					{
 						"name": "RemoteHostRecordService.save",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "A promise for completion of this queued write. It writes the in-memory record at its turn and does nothing if the record is null."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "A rejection from store.save() propagates when a record is present in memory."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostRecordService.off",
@@ -120,11 +219,18 @@
 				"outputs": [
 					{
 						"name": "RemoteHostRecordService.off",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "A promise for the queued disable and write. It disables a known record immediately; if none is known, it tries a load and writes the disabled record when one is found. Read failures are swallowed, while save failures reject."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "A store.read() failure is swallowed by off(), but a rejection from store.save() propagates."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostRecordService.enrol",
@@ -132,27 +238,65 @@
 					{
 						"name": "RemoteHostRecordService.enrol.state",
 						"type": "RemoteHostState",
-						"required": true
+						"required": true,
+						"description": "The mutable record enrolment uses if its queued turn is still wanted. It is retained by reference, and enrolment changes only enabled, origin, and generation.",
+						"examples": [
+							{
+								"enabled": false,
+								"origin": null,
+								"hostId": "82e46ba75b60c48047e3346598f1c15eb0b2bcac",
+								"keys": {
+									"d": "-Dd9cJ1VPPwxCad8-m3HoF2qsLxzyihsV1zkofs2BVc",
+									"publicKey": "BAcAYFfwZRv7DZel5szuy0DFrGhw903EJQrWbQj6ankCBmyjb8Gh-QXmHLRSTmLIJOpjURrLplLLShIwVETNfPY"
+								},
+								"credential": "bkkDe31iUaI8oUZ4a0sF_60U-n1awKCjOUP7pmQLiL8",
+								"generation": 0,
+								"devices": [],
+								"revoked": []
+							}
+						]
 					},
 					{
 						"name": "RemoteHostRecordService.enrol.registered",
 						"type": "RemoteHostEnrolment",
-						"required": true
+						"required": true,
+						"description": "The registration values copied onto state when wanted() is true in enrol's turn. It contains only enabled, origin, and generation, leaving the other record fields intact.",
+						"examples": [
+							{
+								"enabled": true,
+								"origin": "https://relay.example.com",
+								"generation": 1
+							},
+							{
+								"enabled": false,
+								"origin": null,
+								"generation": 0
+							}
+						]
 					},
 					{
 						"name": "RemoteHostRecordService.enrol.wanted",
 						"type": "() => boolean",
-						"required": true
+						"required": true,
+						"description": "A synchronous predicate evaluated when enrol reaches its turn. Returning false skips the mutation and write."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostRecordService.enrol",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Whether the registration was applied in its queued turn; false means wanted() was false at that time. State is updated in place on success, while a failed save restores the prior service value and does not turn access back on if state was disabled meanwhile.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "A throw from wanted() or a rejection from store.save() rejects enrol(); a failed save is rethrown after rollback."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteHostRecordService.settled",
@@ -160,11 +304,12 @@
 				"outputs": [
 					{
 						"name": "RemoteHostRecordService.settled",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after every change queued before the call has ended, whether its work resolved or rejected. It does not wait for changes queued afterward."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -174,17 +319,19 @@
 					{
 						"name": "RemoteHostRecordService.constructor.store",
 						"type": "RemoteHostStoreAdapter",
-						"required": true
+						"required": true,
+						"description": "The backing store instance retained by the service and called for availability checks, reads, and writes. Construction does not load or validate a record."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteHostRecordService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed service instance with value initialized to null and its change queue resolved."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
