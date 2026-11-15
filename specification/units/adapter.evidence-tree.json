@@ -32,148 +32,307 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EvidenceTreeAdapter.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Root value handed to GitAdapter, which the adapter's methods use through this.git for their Git commands. The constructor only assigns the new GitAdapter to this.git and does not validate the value.",
+				"examples": ["/srv/harness/evidence-repo", "/var/lib/harness/evidence-tree"]
 			},
 			{
 				"name": "EvidenceTreeAdapter.tip.ref",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Ref or revision that tip resolves with rev-parse, such as refs/heads/main. tip appends ^{commit} to it, so the value must name an object that peels to a commit.",
+				"examples": ["refs/heads/main", "refs/heads/evidence"]
 			},
 			{
 				"name": "EvidenceTreeAdapter.contains.descendant",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Commit whose history is checked for ancestor. contains returns true only when ancestor is descendant itself or one of its ancestors, and both commits are present.",
+				"examples": [
+					"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e",
+					"9f1c2a7b4d3e5f60718293a4b5c6d7e8f9a0b1c2"
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.contains.ancestor",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Commit that contains looks for in the history of descendant, where descendant itself also counts as a match. A value that is not a present commit makes contains return false.",
+				"examples": [
+					"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+					"3d5e7f9a1b2c4d6e8f0a1b2c3d4e5f6a7b8c9d0e"
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.exists.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Object name to test, which counts as a commit only when it peels to one in this repository. An unknown name or any failed check makes exists return false.",
+				"examples": [
+					"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+					"9f1c2a7b4d3e5f60718293a4b5c6d7e8f9a0b1c2"
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.read.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Commit whose tree holds the file, used as commit:path in the Git lookup. read returns undefined when the commit or the path is absent.",
+				"examples": [
+					"9f1c2a7b4d3e5f60718293a4b5c6d7e8f9a0b1c2",
+					"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701"
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.read.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository path of the file inside that commit's tree, which read appends to the commit as commit:path, so it is not a disk path. A path with no file at that location in the commit makes read return undefined.",
+				"examples": [
+					"evidence/desktop-recorded/manifest.json",
+					"evidence/desktop-recorded/frames/0001.png"
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.readMany.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Commit whose tree supplies the requested paths. readMany lists the whole tree of this commit once and then reads only the blobs for the requested paths.",
+				"examples": [
+					"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+					"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e"
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.readMany.paths",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Exact repository paths to read from the commit, and a path missing from the listing is left out of the result. An empty array returns an empty Map before the commit is listed.",
+				"examples": [
+					["evidence/desktop-recorded/manifest.json", "evidence/desktop-recorded/frames/0001.png"],
+					["evidence/desktop-recorded/run-log.txt"]
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.list.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Commit whose complete tree is listed, including files in every subdirectory. Only blob entries are kept, so submodules and other non-blob entries are skipped, and each blob's size is recorded for later readMany batches.",
+				"examples": [
+					"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e",
+					"3d5e7f9a1b2c4d6e8f0a1b2c3d4e5f6a7b8c9d0e"
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.commit.input",
 				"type": "TreeCommit",
-				"required": true
+				"required": true,
+				"description": "Commit to create: a parent list, the files to add on top of the first parent's tree, and a message; with no parents the tree starts empty. The commit is created without moving any ref, so advance is the separate call that moves one.",
+				"examples": [
+					{
+						"parents": [],
+						"files": [
+							{
+								"path": "evidence/desktop-recorded/manifest.json",
+								"content": {
+									"file": "/srv/harness/staging/manifest.json"
+								}
+							}
+						],
+						"message": "Start desktop evidence"
+					},
+					{
+						"parents": ["5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701"],
+						"files": [
+							{
+								"path": "evidence/desktop-recorded/run-log.txt",
+								"content": {
+									"bytes": "run 1 passed\n"
+								}
+							},
+							{
+								"path": "evidence/desktop-recorded/frames/0001.png",
+								"content": {
+									"blob": "b1d3f5a7c9e0d2b4f6a8c0e2d4b6f8a0c2e4d6b8"
+								}
+							}
+						],
+						"message": "Add run 1 evidence"
+					},
+					{
+						"parents": [
+							"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+							"3d5e7f9a1b2c4d6e8f0a1b2c3d4e5f6a7b8c9d0e"
+						],
+						"files": [
+							{
+								"path": "evidence/desktop-recorded/manifest.json",
+								"content": {
+									"blob": "0d4f9a2c6e8b1d3f5a7c9e2b4d6f8a0c1e3b5d7f"
+								}
+							}
+						],
+						"message": "Merge evidence batch 2"
+					}
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.advance.ref",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Ref that advance moves, such as refs/heads/evidence. The move happens only if the ref still holds expected.",
+				"examples": ["refs/heads/evidence", "refs/heads/main"]
 			},
 			{
 				"name": "EvidenceTreeAdapter.advance.next",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Commit id that the ref is set to when the move succeeds. advance passes it to update-ref without checking it first.",
+				"examples": [
+					"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e",
+					"e4b1c7d9a3f5e8b2d6c0a4f7e1b9d3c5a8f2e6b0"
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.advance.expected",
 				"type": "string | undefined",
-				"required": true
+				"required": true,
+				"description": "Commit id the ref must still hold for the move to happen. undefined is sent as the all-zero id, which asks update-ref to move the ref only when it does not exist yet.",
+				"examples": [
+					"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+					"3d5e7f9a1b2c4d6e8f0a1b2c3d4e5f6a7b8c9d0e"
+				]
 			},
 			{
 				"name": "batchBufferBytes.sizes",
 				"type": "number[]",
-				"required": true
+				"required": true,
+				"description": "Byte size of each blob in one batch read. The result adds 128 bytes of room per blob for its header line and trailing newline, and an empty list gives 1.",
+				"examples": [
+					[1024, 65536, 2048],
+					[268435456],
+					[0]
+				]
 			},
 			{
 				"name": "batchGroups.hashes",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Blob ids to split into groups, kept in the order given. Each id's size comes from sizes, and an id with no entry there counts as 0 bytes.",
+				"examples": [
+					[
+						"b1d3f5a7c9e0d2b4f6a8c0e2d4b6f8a0c2e4d6b8",
+						"0d4f9a2c6e8b1d3f5a7c9e2b4d6f8a0c1e3b5d7f",
+						"a6f0c3e9b2d7a1f4c8e5b0d3a9f6c2e7b4d1a8f5"
+					],
+					["0d4f9a2c6e8b1d3f5a7c9e2b4d6f8a0c1e3b5d7f"]
+				]
 			},
 			{
 				"name": "batchGroups.sizes",
 				"type": "Map<string, number>",
-				"required": true
+				"required": true,
+				"description": "Map from blob id to byte size, the sizes that list records for readMany's batch reads. A hash with no entry counts as 0 bytes."
 			},
 			{
 				"name": "batchGroups.ceiling",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Largest output buffer size in bytes that one group may need, as measured by batchBufferBytes. A hash that would push its group past the ceiling starts a new group, and a single hash always forms a group even when it alone is larger.",
+				"examples": [2000000000, 1048576]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceTreeAdapter.tip",
-				"type": "Promise<string | undefined>"
+				"type": "Promise<string | undefined>",
+				"description": "Full commit id that the ref resolves to, or undefined when the ref names no commit.",
+				"examples": [
+					"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+					"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e"
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.contains",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "True when ancestor is descendant itself or one of its ancestors and both are present; false otherwise, including when the Git check exits with a non-zero code.",
+				"examples": [true, false]
 			},
 			{
 				"name": "EvidenceTreeAdapter.exists",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "True when the name peels to a commit in this repository; false when the cat-file check exits with a non-zero code.",
+				"examples": [true, false]
 			},
 			{
 				"name": "EvidenceTreeAdapter.read",
-				"type": "Promise<Buffer | undefined>"
+				"type": "Promise<Buffer | undefined>",
+				"description": "Raw bytes of the file at the requested commit and path, returned as a Buffer, or undefined when the commit or the path is absent. The output limit is sized from the file's reported size, so a large file is not cut off by the adapter's default output cap."
 			},
 			{
 				"name": "EvidenceTreeAdapter.readMany",
-				"type": "Promise<Map<string, Buffer>>"
+				"type": "Promise<Map<string, Buffer>>",
+				"description": "Map from each requested path that the commit contains to a copy of its raw bytes as a Buffer. Missing paths are left out, and a blob shared by several paths is read only once."
 			},
 			{
 				"name": "EvidenceTreeAdapter.list",
-				"type": "Promise<Map<string, string>>"
+				"type": "Promise<Map<string, string>>",
+				"description": "Map from every file path in the commit's tree, at any depth, to its blob id. Only blob entries are included, so submodules and other non-blob entries are absent."
 			},
 			{
 				"name": "EvidenceTreeAdapter.commit",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Object id of the new commit that commit-tree created. commit itself moves no ref.",
+				"examples": [
+					"e4b1c7d9a3f5e8b2d6c0a4f7e1b9d3c5a8f2e6b0",
+					"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e"
+				]
 			},
 			{
 				"name": "EvidenceTreeAdapter.advance",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "True when the ref was moved to next; false when update-ref exits with a non-zero code, which the adapter documents as someone else having moved the ref first.",
+				"examples": [true, false]
 			},
 			{
 				"name": "batchBufferBytes",
-				"type": "number"
+				"type": "number",
+				"description": "Output buffer size in bytes for one batch read: the sum of each size plus 128 bytes, and never less than 1.",
+				"examples": [68992, 268435584, 128]
 			},
 			{
 				"name": "batchGroups",
-				"type": "string[][]"
+				"type": "string[][]",
+				"description": "Groups of the input hashes in the order given, each cut so that its batch output stays within the ceiling unless a single hash is larger on its own. An empty input gives an empty array.",
+				"examples": [
+					[
+						[
+							"b1d3f5a7c9e0d2b4f6a8c0e2d4b6f8a0c2e4d6b8",
+							"0d4f9a2c6e8b1d3f5a7c9e2b4d6f8a0c1e3b5d7f",
+							"a6f0c3e9b2d7a1f4c8e5b0d3a9f6c2e7b4d1a8f5"
+						]
+					],
+					[
+						["b1d3f5a7c9e0d2b4f6a8c0e2d4b6f8a0c2e4d6b8"],
+						["0d4f9a2c6e8b1d3f5a7c9e2b4d6f8a0c1e3b5d7f", "a6f0c3e9b2d7a1f4c8e5b0d3a9f6c2e7b4d1a8f5"]
+					],
+					[]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown as 'Invalid Git batch response' by readMany when its cat-file --batch output is malformed; errors from the Git, temporary-directory and commitIdentity calls in list, readMany and commit reach the caller unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "EvidenceTreeAdapter.tip",
@@ -181,17 +340,24 @@
 					{
 						"name": "EvidenceTreeAdapter.tip.ref",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Ref or revision that tip resolves with rev-parse, such as refs/heads/main. tip appends ^{commit} to it, so the value must name an object that peels to a commit.",
+						"examples": ["refs/heads/main", "refs/heads/evidence"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceTreeAdapter.tip",
-						"type": "Promise<string | undefined>"
+						"type": "Promise<string | undefined>",
+						"description": "Full commit id that the ref resolves to, or undefined when the ref names no commit.",
+						"examples": [
+							"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+							"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EvidenceTreeAdapter.contains",
@@ -199,22 +365,34 @@
 					{
 						"name": "EvidenceTreeAdapter.contains.descendant",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Commit whose history is checked for ancestor. contains returns true only when ancestor is descendant itself or one of its ancestors, and both commits are present.",
+						"examples": [
+							"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e",
+							"9f1c2a7b4d3e5f60718293a4b5c6d7e8f9a0b1c2"
+						]
 					},
 					{
 						"name": "EvidenceTreeAdapter.contains.ancestor",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Commit that contains looks for in the history of descendant, where descendant itself also counts as a match. A value that is not a present commit makes contains return false.",
+						"examples": [
+							"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+							"3d5e7f9a1b2c4d6e8f0a1b2c3d4e5f6a7b8c9d0e"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceTreeAdapter.contains",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "True when ancestor is descendant itself or one of its ancestors and both are present; false otherwise, including when the Git check exits with a non-zero code.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EvidenceTreeAdapter.exists",
@@ -222,17 +400,24 @@
 					{
 						"name": "EvidenceTreeAdapter.exists.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Object name to test, which counts as a commit only when it peels to one in this repository. An unknown name or any failed check makes exists return false.",
+						"examples": [
+							"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+							"9f1c2a7b4d3e5f60718293a4b5c6d7e8f9a0b1c2"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceTreeAdapter.exists",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "True when the name peels to a commit in this repository; false when the cat-file check exits with a non-zero code.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EvidenceTreeAdapter.read",
@@ -240,22 +425,33 @@
 					{
 						"name": "EvidenceTreeAdapter.read.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Commit whose tree holds the file, used as commit:path in the Git lookup. read returns undefined when the commit or the path is absent.",
+						"examples": [
+							"9f1c2a7b4d3e5f60718293a4b5c6d7e8f9a0b1c2",
+							"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701"
+						]
 					},
 					{
 						"name": "EvidenceTreeAdapter.read.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository path of the file inside that commit's tree, which read appends to the commit as commit:path, so it is not a disk path. A path with no file at that location in the commit makes read return undefined.",
+						"examples": [
+							"evidence/desktop-recorded/manifest.json",
+							"evidence/desktop-recorded/frames/0001.png"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceTreeAdapter.read",
-						"type": "Promise<Buffer | undefined>"
+						"type": "Promise<Buffer | undefined>",
+						"description": "Raw bytes of the file at the requested commit and path, returned as a Buffer, or undefined when the commit or the path is absent. The output limit is sized from the file's reported size, so a large file is not cut off by the adapter's default output cap."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EvidenceTreeAdapter.readMany",
@@ -263,22 +459,42 @@
 					{
 						"name": "EvidenceTreeAdapter.readMany.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Commit whose tree supplies the requested paths. readMany lists the whole tree of this commit once and then reads only the blobs for the requested paths.",
+						"examples": [
+							"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+							"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e"
+						]
 					},
 					{
 						"name": "EvidenceTreeAdapter.readMany.paths",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Exact repository paths to read from the commit, and a path missing from the listing is left out of the result. An empty array returns an empty Map before the commit is listed.",
+						"examples": [
+							[
+								"evidence/desktop-recorded/manifest.json",
+								"evidence/desktop-recorded/frames/0001.png"
+							],
+							["evidence/desktop-recorded/run-log.txt"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceTreeAdapter.readMany",
-						"type": "Promise<Map<string, Buffer>>"
+						"type": "Promise<Map<string, Buffer>>",
+						"description": "Map from each requested path that the commit contains to a copy of its raw bytes as a Buffer. Missing paths are left out, and a blob shared by several paths is read only once."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as 'Invalid Git batch response' when the cat-file --batch output is malformed, meaning a header that is not a valid blob header for the expected blob, a blob body without a trailing newline, or bytes left after the last blob; errors from the list call and the this.git.bytes call reach the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EvidenceTreeAdapter.list",
@@ -286,17 +502,29 @@
 					{
 						"name": "EvidenceTreeAdapter.list.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Commit whose complete tree is listed, including files in every subdirectory. Only blob entries are kept, so submodules and other non-blob entries are skipped, and each blob's size is recorded for later readMany batches.",
+						"examples": [
+							"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e",
+							"3d5e7f9a1b2c4d6e8f0a1b2c3d4e5f6a7b8c9d0e"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceTreeAdapter.list",
-						"type": "Promise<Map<string, string>>"
+						"type": "Promise<Map<string, string>>",
+						"description": "Map from every file path in the commit's tree, at any depth, to its blob id. Only blob entries are included, so submodules and other non-blob entries are absent."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Errors from the git ls-tree call made through this.git.run reach the caller unchanged, and parsing its output does not throw."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EvidenceTreeAdapter.commit",
@@ -304,17 +532,76 @@
 					{
 						"name": "EvidenceTreeAdapter.commit.input",
 						"type": "TreeCommit",
-						"required": true
+						"required": true,
+						"description": "Commit to create: a parent list, the files to add on top of the first parent's tree, and a message; with no parents the tree starts empty. The commit is created without moving any ref, so advance is the separate call that moves one.",
+						"examples": [
+							{
+								"parents": [],
+								"files": [
+									{
+										"path": "evidence/desktop-recorded/manifest.json",
+										"content": {
+											"file": "/srv/harness/staging/manifest.json"
+										}
+									}
+								],
+								"message": "Start desktop evidence"
+							},
+							{
+								"parents": ["5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701"],
+								"files": [
+									{
+										"path": "evidence/desktop-recorded/run-log.txt",
+										"content": {
+											"bytes": "run 1 passed\n"
+										}
+									},
+									{
+										"path": "evidence/desktop-recorded/frames/0001.png",
+										"content": {
+											"blob": "b1d3f5a7c9e0d2b4f6a8c0e2d4b6f8a0c2e4d6b8"
+										}
+									}
+								],
+								"message": "Add run 1 evidence"
+							},
+							{
+								"parents": [
+									"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+									"3d5e7f9a1b2c4d6e8f0a1b2c3d4e5f6a7b8c9d0e"
+								],
+								"files": [
+									{
+										"path": "evidence/desktop-recorded/manifest.json",
+										"content": {
+											"blob": "0d4f9a2c6e8b1d3f5a7c9e2b4d6f8a0c1e3b5d7f"
+										}
+									}
+								],
+								"message": "Merge evidence batch 2"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceTreeAdapter.commit",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Object id of the new commit that commit-tree created. commit itself moves no ref.",
+						"examples": [
+							"e4b1c7d9a3f5e8b2d6c0a4f7e1b9d3c5a8f2e6b0",
+							"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Errors from mkdtemp, from the Git calls made through this.git.run, from commitIdentity and from rm reach the caller unchanged; rm runs in a finally block, so the scratch directory is removed even when the work fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EvidenceTreeAdapter.advance",
@@ -322,27 +609,41 @@
 					{
 						"name": "EvidenceTreeAdapter.advance.ref",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Ref that advance moves, such as refs/heads/evidence. The move happens only if the ref still holds expected.",
+						"examples": ["refs/heads/evidence", "refs/heads/main"]
 					},
 					{
 						"name": "EvidenceTreeAdapter.advance.next",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Commit id that the ref is set to when the move succeeds. advance passes it to update-ref without checking it first.",
+						"examples": [
+							"7a2d4e6f8b0c1d3e5f7a9b2c4d6e8f0a1b3c5d7e",
+							"e4b1c7d9a3f5e8b2d6c0a4f7e1b9d3c5a8f2e6b0"
+						]
 					},
 					{
 						"name": "EvidenceTreeAdapter.advance.expected",
 						"type": "string | undefined",
-						"required": true
+						"required": true,
+						"description": "Commit id the ref must still hold for the move to happen. undefined is sent as the all-zero id, which asks update-ref to move the ref only when it does not exist yet.",
+						"examples": [
+							"5e8a1d0c4b7f3e92a6d1c08f47b2e9d3a5c6f701",
+							"3d5e7f9a1b2c4d6e8f0a1b2c3d4e5f6a7b8c9d0e"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceTreeAdapter.advance",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "True when the ref was moved to next; false when update-ref exits with a non-zero code, which the adapter documents as someone else having moved the ref first.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "batchBufferBytes",
@@ -350,17 +651,25 @@
 					{
 						"name": "batchBufferBytes.sizes",
 						"type": "number[]",
-						"required": true
+						"required": true,
+						"description": "Byte size of each blob in one batch read. The result adds 128 bytes of room per blob for its header line and trailing newline, and an empty list gives 1.",
+						"examples": [
+							[1024, 65536, 2048],
+							[268435456],
+							[0]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "batchBufferBytes",
-						"type": "number"
+						"type": "number",
+						"description": "Output buffer size in bytes for one batch read: the sum of each size plus 128 bytes, and never less than 1.",
+						"examples": [68992, 268435584, 128]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "batchGroups",
@@ -368,27 +677,57 @@
 					{
 						"name": "batchGroups.hashes",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Blob ids to split into groups, kept in the order given. Each id's size comes from sizes, and an id with no entry there counts as 0 bytes.",
+						"examples": [
+							[
+								"b1d3f5a7c9e0d2b4f6a8c0e2d4b6f8a0c2e4d6b8",
+								"0d4f9a2c6e8b1d3f5a7c9e2b4d6f8a0c1e3b5d7f",
+								"a6f0c3e9b2d7a1f4c8e5b0d3a9f6c2e7b4d1a8f5"
+							],
+							["0d4f9a2c6e8b1d3f5a7c9e2b4d6f8a0c1e3b5d7f"]
+						]
 					},
 					{
 						"name": "batchGroups.sizes",
 						"type": "Map<string, number>",
-						"required": true
+						"required": true,
+						"description": "Map from blob id to byte size, the sizes that list records for readMany's batch reads. A hash with no entry counts as 0 bytes."
 					},
 					{
 						"name": "batchGroups.ceiling",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Largest output buffer size in bytes that one group may need, as measured by batchBufferBytes. A hash that would push its group past the ceiling starts a new group, and a single hash always forms a group even when it alone is larger.",
+						"examples": [2000000000, 1048576]
 					}
 				],
 				"outputs": [
 					{
 						"name": "batchGroups",
-						"type": "string[][]"
+						"type": "string[][]",
+						"description": "Groups of the input hashes in the order given, each cut so that its batch output stays within the ceiling unless a single hash is larger on its own. An empty input gives an empty array.",
+						"examples": [
+							[
+								[
+									"b1d3f5a7c9e0d2b4f6a8c0e2d4b6f8a0c2e4d6b8",
+									"0d4f9a2c6e8b1d3f5a7c9e2b4d6f8a0c1e3b5d7f",
+									"a6f0c3e9b2d7a1f4c8e5b0d3a9f6c2e7b4d1a8f5"
+								]
+							],
+							[
+								["b1d3f5a7c9e0d2b4f6a8c0e2d4b6f8a0c2e4d6b8"],
+								[
+									"0d4f9a2c6e8b1d3f5a7c9e2b4d6f8a0c1e3b5d7f",
+									"a6f0c3e9b2d7a1f4c8e5b0d3a9f6c2e7b4d1a8f5"
+								]
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -398,17 +737,20 @@
 					{
 						"name": "EvidenceTreeAdapter.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Root value handed to GitAdapter, which the adapter's methods use through this.git for their Git commands. The constructor only assigns the new GitAdapter to this.git and does not validate the value.",
+						"examples": ["/srv/harness/evidence-repo", "/var/lib/harness/evidence-tree"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceTreeAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new adapter instance, whose git property holds the GitAdapter built from root."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
