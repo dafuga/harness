@@ -27,10 +27,11 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The translation comparison catalog under the selected branch and revision."
+				"description": "The page markup renders a HarnessScreen titled “Translations” and supplies ExplorerTranslationsScreen as its content. It is the route output when this page renders; this file adds no other page markup."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
