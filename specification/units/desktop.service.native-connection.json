@@ -10,14 +10,12 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.types.ts",
-			"packages/desktop/src/services/NativeConnectionService.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.types.ts"
 		],
 		"symbols": [
 			"NativeConnectionService",
 			"NativeConnectionService.create",
-			"NativeConnectionOptions",
-			"NativeConnectionService"
+			"NativeConnectionOptions"
 		]
 	},
 	"contract": {

@@ -14,7 +14,7 @@ import {
 import type { HostPairingOffer, RemoteKeyPair } from '../../remote/src/index';
 import { RemotePairingControlService } from '../src/services/RemotePairingControlService';
 import type { RemoteHostAccess } from '../src/services/RemotePairingControlService';
-import type { ProjectRegistryService } from '../src/services/ProjectRegistryService';
+import type { ProjectRegistryService } from '../src/services/projects-sessions/ProjectRegistryService';
 import { deferred } from './remote-fixture';
 
 afterEach(() => vi.restoreAllMocks());

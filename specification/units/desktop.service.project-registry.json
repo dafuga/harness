@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/ProjectRegistryService.ts",
-			"packages/desktop/src/services/projects-sessions/ProjectRegistryService.ts"
-		],
+		"source": ["packages/desktop/src/services/projects-sessions/ProjectRegistryService.ts"],
 		"symbols": [
-			"ProjectRegistryService",
 			"ProjectRegistryService",
 			"ProjectRegistryService.constructor",
 			"ProjectRegistryService.register",

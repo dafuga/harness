@@ -2,7 +2,7 @@ import type { Command, Held } from './remote-pairing-create-race.test.types';
 import { expect, test } from 'vitest';
 import { HostPairingService, remoteIdentity, remoteKeys } from '../../remote/src/index';
 import type { RemoteHostStatus } from '../../remote/src/index';
-import type { ProjectRegistryService } from '../src/services/ProjectRegistryService';
+import type { ProjectRegistryService } from '../src/services/projects-sessions/ProjectRegistryService';
 import { RemotePairingControlService } from '../src/services/RemotePairingControlService';
 import type { RemoteHostAccess } from '../src/services/RemotePairingControlService';
 

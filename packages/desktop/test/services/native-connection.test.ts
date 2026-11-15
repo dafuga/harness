@@ -2,7 +2,7 @@ import { mkdtemp, rm, writeFile, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
-import { NativeConnectionService } from '../../src/services/NativeConnectionService';
+import { NativeConnectionService } from '../../src/lib/development-tooling/desktop-initialization/NativeConnectionService';
 import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
 test('unconfigured native hosting exposes no transport or login authority', () => {
 	const open = vi.fn(),

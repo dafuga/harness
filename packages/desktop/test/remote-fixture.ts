@@ -5,7 +5,7 @@ import type { RunEvent } from '../src/models/DesktopBridge.types';
 import { CommentOutboxService } from '../src/services/projects-sessions/CommentOutboxService';
 import { DesktopRunService } from '../src/services/desktop-run-service/DesktopRunService';
 import { DeviceSessionService } from '../src/services/device-session-service/DeviceSessionService';
-import { ProjectRegistryService } from '../src/services/ProjectRegistryService';
+import { ProjectRegistryService } from '../src/services/projects-sessions/ProjectRegistryService';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 import { ProviderDiscoveryService } from '../src/services/provider-discovery-service/ProviderDiscoveryService';
 import { RepositoryArbiterService } from '../src/services/RepositoryArbiterService';

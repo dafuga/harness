@@ -2,7 +2,7 @@ import { test, expect } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ProjectRegistryService } from '../../src/services/ProjectRegistryService';
+import { ProjectRegistryService } from '../../src/services/projects-sessions/ProjectRegistryService';
 import { fixture } from '../project-fixture';
 test('registered local projects persist distinct IDs and unknown IDs cannot select another root', async () => {
 	const directory = await mkdtemp(join(tmpdir(), 'harness-registry-'));
