@@ -21,17 +21,29 @@
 				"name": "consoleBundle.modules",
 				"type": "ConsoleModules",
 				"required": true,
-				"description": "Maps of JSON and media module loaders. JSON modules default-export text; media modules default-export base64 and export a MIME type string. Loader paths end in the requested filename plus .ts."
+				"description": "Two maps of loader functions, json and media, keyed by module path; both must be present because nothing checks for them. When json(path) or media(name) is called, the first key ending in `/<name>.ts` for that name is used and only that loader runs; a JSON module must default-export its text, and a media module must default-export base64 data plus a `type` export holding its MIME type."
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleBundle",
 				"type": "ConsoleData",
-				"description": "Data reader with async json and media methods. Missing loaders or wrong export types yield undefined; media is decoded into original bytes with its MIME type. No module loads until requested."
+				"description": "A reader with async json(path) and media(name) methods: json resolves to the module's default-export text unparsed, and media resolves to { bytes, type }, where bytes is a Uint8Array of the base64-decoded data and type is the module's `type` export. Either method resolves to undefined when no loader matches or when an export it reads is not a string, and a loader runs only when its method is called."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "InvalidCharacterError",
+				"type": "thrown",
+				"description": "Thrown by atob inside media() when it cannot decode a media module's default export, such as one with a character outside the base64 alphabet, so media() rejects with it. json() never decodes, so it never throws this."
+			},
+			{
+				"name": "loader error",
+				"type": "thrown",
+				"description": "A loader may throw or reject with any value. json() and media() do not catch it, so they reject with that same value."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "consoleBundle",
@@ -40,18 +52,18 @@
 						"name": "consoleBundle.modules",
 						"type": "ConsoleModules",
 						"required": true,
-						"description": "Maps of JSON and media module loaders. JSON modules default-export text; media modules default-export base64 and export a MIME type string. Loader paths end in the requested filename plus .ts."
+						"description": "Two maps of loader functions, json and media, keyed by module path; both must be present because nothing checks for them. When json(path) or media(name) is called, the first key ending in `/<name>.ts` for that name is used and only that loader runs; a JSON module must default-export its text, and a media module must default-export base64 data plus a `type` export holding its MIME type."
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleBundle",
 						"type": "ConsoleData",
-						"description": "Data reader with async json and media methods. Missing loaders or wrong export types yield undefined; media is decoded into original bytes with its MIME type. No module loads until requested."
+						"description": "A reader with async json(path) and media(name) methods: json resolves to the module's default-export text unparsed, and media resolves to { bytes, type }, where bytes is a Uint8Array of the base64-decoded data and type is the module's `type` export. Either method resolves to undefined when no loader matches or when an export it reads is not a string, and a loader runs only when its method is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
