@@ -198,6 +198,11 @@ export const scenarioManifestSchema = z.strictObject({
 			})
 		)
 		.min(1),
+	/**
+	 * The declared builds this scenario's checks use; an empty list means they use none; when present
+	 * it replaces the inference from evidence.
+	 */
+	builds: z.array(identifier).optional(),
 	evidence: z.array(
 		z.strictObject({
 			id: identifier,

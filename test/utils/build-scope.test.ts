@@ -8,7 +8,7 @@ import {
 } from '../../src/workflows/verification-evidence/run-verify/verification-service/buildScope';
 
 /** A scenario with the given evidence; an item that names no build may use any build. */
-function scenario(id: string, evidence: { id: string; build?: string }[]) {
+function scenario(id: string, evidence: { id: string; build?: string }[], builds?: string[]) {
 	return scenarioManifestSchema.parse({
 		schemaVersion: 1,
 		id,
@@ -18,6 +18,7 @@ function scenario(id: string, evidence: { id: string; build?: string }[]) {
 		states: [{ id: 'shown', title: 'Shown', coverage: 'required' }],
 		viewports: [{ id: 'desktop', width: 920, height: 700 }],
 		tests: [{ id: 'previews', kind: 'e2e', runner: 'command', target: 'previews.spec.ts' }],
+		builds,
 		evidence: evidence.map((item) => ({
 			kind: 'screenshot',
 			states: ['shown'],
@@ -58,8 +59,24 @@ test('evidence without a build, or no evidence at all, needs every build', () =>
 	expect(neededBuilds([scenario('empty', [])])).toBe('all');
 	const partial = scenario('partial', [{ id: 'x', build: 'one' }, { id: 'y' }]);
 	expect(neededBuilds([partial])).toBe('all');
-	const tagged = scenario('tagged', [{ id: 'x', build: 'one' }]);
-	expect(neededBuilds([tagged, scenario('loose', [{ id: 'y' }])])).toBe('all');
+	const declared = scenario('declared', [{ id: 'x' }], ['one']);
+	expect(neededBuilds([declared, scenario('loose', [{ id: 'y' }])])).toBe('all');
+});
+
+test('an empty declared build list needs no build and keeps only unscoped setup steps', () => {
+	const needed = neededBuilds([scenario('headless', [{ id: 'output' }], [])]);
+	expect(needed).toEqual(new Set());
+	expect(commandsFor(needed)).toEqual([
+		'bun install --frozen-lockfile',
+		'bun run generate-types',
+		'bun run codegen'
+	]);
+});
+
+test('declared builds replace inference from evidence without a build', () => {
+	expect(neededBuilds([scenario('reports', [{ id: 'output' }], ['reports'])])).toEqual(
+		new Set(['reports'])
+	);
 });
 
 test('a setup step that names no build always runs', () => {

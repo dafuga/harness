@@ -3,12 +3,16 @@ import type { ScenarioManifest } from '../../../../core/development-tooling/unit
 import type { VerifyConfig } from '../../../../core/verification-evidence/verifyTypes';
 
 /**
- * The build ids the scenarios' evidence names, or `'all'` when some scenario may use any build:
- * it has no evidence, or one of its evidence items names no build.
+ * Declared scenario builds take precedence; otherwise uses evidence build ids, or `'all'` when a
+ * scenario has no evidence or some evidence item names no build.
  */
 export function neededBuilds(scenarios: ScenarioManifest[]): Set<string> | 'all' {
 	const builds = new Set<string>();
 	for (const scenario of scenarios) {
+		if (scenario.builds !== undefined) {
+			for (const build of scenario.builds) builds.add(build);
+			continue;
+		}
 		const evidence = scenario.evidence ?? [];
 		if (evidence.length === 0) return 'all';
 		for (const item of evidence) {
