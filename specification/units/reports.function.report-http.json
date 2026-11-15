@@ -22,56 +22,87 @@
 				"name": "reportFile.id",
 				"type": "string",
 				"required": true,
-				"description": "Report identifier loaded through the site repository."
+				"description": "Report identifier that selects the report: it is passed to repository.get(id), used for the report directory of local files, and passed to the R2 get calls for remote files. The handler does not validate its format, so repository.get decides how an unknown id fails.",
+				"examples": [
+					"3f6c9a2e-8b1d-4e7a-9c05-2d4b6f1a8e90",
+					"b71e0d4c-52a9-4f3e-8d6b-9a0c3e7f1d24",
+					"0c8d5f2a-6e4b-47c1-a9f3-5b2e7d9c1f60"
+				]
 			},
 			{
 				"name": "reportFile.type",
 				"type": "string",
 				"required": true,
-				"description": "Requested file group; only assets and exports are supported."
+				"description": "Must equal 'assets' exactly: reportFile raises HTTP 404 'Not found' for any other value, including 'exports'. When it is 'assets', it is joined onto the report directory to locate local files.",
+				"examples": ["assets"]
 			},
 			{
 				"name": "reportFile.file",
 				"type": "string",
 				"required": true,
-				"description": "Requested registered evidence or export filename."
+				"description": "Filename matched by exact equality against each evidence entry's file field, and also passed to mediaMime and, for local files, to registeredAsset. A name with no evidence entry raises HTTP 404, and a name whose entries are all missing raises HTTP 410.",
+				"examples": ["homepage.png", "login-screen.png", "checkout-error.png"]
 			},
 			{
 				"name": "reportFile.range",
 				"type": "string | null",
 				"required": false,
-				"description": "Optional HTTP byte range."
+				"default": "undefined",
+				"description": "Optional HTTP byte range forwarded unchanged as the third argument of mediaResponse; this file does not parse it. The code declares no default, so it is undefined when a caller omits it, and null is forwarded as-is.",
+				"examples": ["bytes=0-1023", "bytes=2048-", null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "repository",
 				"type": "ReportRepository",
-				"description": "Site-scoped report repository shared by these handlers."
+				"description": "Module-level ReportRepository created once with new SiteReportRepository() and shared by both handlers: reportHttp reads its root, and reportFile calls get and directory on it. The source comment says everything this server serves or changes comes through it, limited to its own site."
 			},
 			{
 				"name": "reportHttp",
 				"type": "unknown",
-				"description": "JSON identity response with app/version, actual build identity, optional verification revision and a hash of the repository root."
+				"description": "SvelteKit json() Response whose JSON body has app 'project-reports', version 1, buildId from reportBuildIdentity(), revision from HARNESS_VERIFY_REVISION (null when unset) and root, a 64-character lowercase SHA-256 hex digest of repository.root. The source comment says only a server started for a verification run knows its revision, so other servers report null, and root is a digest rather than the path itself.",
+				"examples": [
+					{
+						"app": "project-reports",
+						"version": 1,
+						"buildId": "20261114.1",
+						"revision": "4c1e7a9d2b5f8036e1a4c7d9b2f5083e6a1c4d7b",
+						"root": "9f2c4b7e1d8a3f06b5c2e9d4a7f1083b6e5d2c9a4f7b0e3d8c1a6f5b2e9d4c70"
+					},
+					{
+						"app": "project-reports",
+						"version": 1,
+						"buildId": "20261115.2",
+						"revision": null,
+						"root": "5a0e8d3c7b1f94e26d0a5c8b3e7f2d19a4c6b0e8f3d5a7c2e1b9f6d4a8c0e325"
+					}
+				]
 			},
 			{
 				"name": "reportFile",
 				"type": "unknown",
-				"description": "Promise resolving to local or remote file bytes through the range-response helper. Assets render inline; exports use attachment disposition. Missing evidence remains unavailable rather than being served as present."
+				"description": "Promise resolving to the mediaResponse result: bytes read with readFile from a path returned by registeredAsset, or fetched from R2 for remote evidence, passed with mediaMime(file), the range and the fourth argument 'inline'. The file is served only when at least one evidence entry with that name is not missing; otherwise the promise rejects with HTTP 410 or 404 instead."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Missing R2 evidence configuration throws; repository, storage and filesystem errors may also reject."
+				"description": "Thrown with the message 'Cloudflare R2 evidence storage is not configured' when a file is remote with storage 'r2-evidence' and R2EvidenceStoreAdapter.fromEnvironment() returns no adapter. Rejections from repository.get, the R2 get calls, readFile and registeredAsset also propagate, because these files contain no catch."
 			},
 			{
 				"name": "HttpError 404",
 				"type": "thrown",
-				"description": "Throws HTTP 404 for an unsupported group, unregistered export or unknown evidence. Registered evidence with no available instance instead throws HTTP 410."
+				"description": "Raised by error(404) with 'Not found' when type is not exactly 'assets', and with 'Evidence expired or unavailable' when no evidence entry has the requested file name. Both cases are raised before any file is read."
+			},
+			{
+				"name": "HttpError 410",
+				"type": "thrown",
+				"description": "Raised by error(410) with 'Evidence expired or unavailable' when evidence entries with the requested file name exist but every one of them is marked missing."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportHttp",
@@ -80,11 +111,27 @@
 					{
 						"name": "reportHttp",
 						"type": "unknown",
-						"description": "JSON identity response with app/version, actual build identity, optional verification revision and a hash of the repository root."
+						"description": "SvelteKit json() Response whose JSON body has app 'project-reports', version 1, buildId from reportBuildIdentity(), revision from HARNESS_VERIFY_REVISION (null when unset) and root, a 64-character lowercase SHA-256 hex digest of repository.root. The source comment says only a server started for a verification run knows its revision, so other servers report null, and root is a digest rather than the path itself.",
+						"examples": [
+							{
+								"app": "project-reports",
+								"version": 1,
+								"buildId": "20261114.1",
+								"revision": "4c1e7a9d2b5f8036e1a4c7d9b2f5083e6a1c4d7b",
+								"root": "9f2c4b7e1d8a3f06b5c2e9d4a7f1083b6e5d2c9a4f7b0e3d8c1a6f5b2e9d4c70"
+							},
+							{
+								"app": "project-reports",
+								"version": 1,
+								"buildId": "20261115.2",
+								"revision": null,
+								"root": "5a0e8d3c7b1f94e26d0a5c8b3e7f2d19a4c6b0e8f3d5a7c2e1b9f6d4a8c0e325"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "reportFile",
@@ -93,41 +140,61 @@
 						"name": "reportFile.id",
 						"type": "string",
 						"required": true,
-						"description": "Report identifier loaded through the site repository."
+						"description": "Report identifier that selects the report: it is passed to repository.get(id), used for the report directory of local files, and passed to the R2 get calls for remote files. The handler does not validate its format, so repository.get decides how an unknown id fails.",
+						"examples": [
+							"3f6c9a2e-8b1d-4e7a-9c05-2d4b6f1a8e90",
+							"b71e0d4c-52a9-4f3e-8d6b-9a0c3e7f1d24",
+							"0c8d5f2a-6e4b-47c1-a9f3-5b2e7d9c1f60"
+						]
 					},
 					{
 						"name": "reportFile.type",
 						"type": "string",
 						"required": true,
-						"description": "Requested file group; only assets and exports are supported."
+						"description": "Must equal 'assets' exactly: reportFile raises HTTP 404 'Not found' for any other value, including 'exports'. When it is 'assets', it is joined onto the report directory to locate local files.",
+						"examples": ["assets"]
 					},
 					{
 						"name": "reportFile.file",
 						"type": "string",
 						"required": true,
-						"description": "Requested registered evidence or export filename."
+						"description": "Filename matched by exact equality against each evidence entry's file field, and also passed to mediaMime and, for local files, to registeredAsset. A name with no evidence entry raises HTTP 404, and a name whose entries are all missing raises HTTP 410.",
+						"examples": ["homepage.png", "login-screen.png", "checkout-error.png"]
 					},
 					{
 						"name": "reportFile.range",
 						"type": "string | null",
 						"required": false,
-						"description": "Optional HTTP byte range."
+						"default": "undefined",
+						"description": "Optional HTTP byte range forwarded unchanged as the third argument of mediaResponse; this file does not parse it. The code declares no default, so it is undefined when a caller omits it, and null is forwarded as-is.",
+						"examples": ["bytes=0-1023", "bytes=2048-", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportFile",
 						"type": "unknown",
-						"description": "Promise resolving to local or remote file bytes through the range-response helper. Assets render inline; exports use attachment disposition. Missing evidence remains unavailable rather than being served as present."
+						"description": "Promise resolving to the mediaResponse result: bytes read with readFile from a path returned by registeredAsset, or fetched from R2 for remote evidence, passed with mediaMime(file), the range and the fourth argument 'inline'. The file is served only when at least one evidence entry with that name is not missing; otherwise the promise rejects with HTTP 410 or 404 instead."
 					}
 				],
 				"errors": [
 					{
 						"name": "HttpError 404",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised by error(404) with 'Not found' when type is not exactly 'assets', and with 'Evidence expired or unavailable' when no evidence entry has the requested file name. Both cases are raised before any file is read."
+					},
+					{
+						"name": "HttpError 410",
+						"type": "thrown",
+						"description": "Raised by error(410) with 'Evidence expired or unavailable' when evidence entries with the requested file name exist but every one of them is marked missing."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Cloudflare R2 evidence storage is not configured' when a file is remote with storage 'r2-evidence' and R2EvidenceStoreAdapter.fromEnvironment() returns no adapter. Rejections from repository.get, the R2 get calls, readFile and registeredAsset also propagate, because these files contain no catch."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
