@@ -3,7 +3,7 @@ import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterEach, test } from 'vitest';
 import { VerificationStoreRepository } from '../src/repositories/VerificationStoreRepository';
-import { VerificationCheckService } from '../src/services/VerificationCheckService';
+import { VerificationCheckService } from '../src/services/verification-evidence/VerificationCheckService';
 import { sealRecord } from '../src/utils/sealRecord';
 import { verificationSample } from './support/verificationSample';
 import legacy from './fixtures/verification-v1.json';
