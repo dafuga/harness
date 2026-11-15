@@ -24,72 +24,418 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectSessionService.constructor.options",
 				"type": "{ registry?: ProjectRegistryService; outbox?: CommentOutboxService; cache?: ProjectionCacheService; remote?: RemoteProjectPort; auth?: NativeAuthService; arbiter?: RepositoryArbiterService; }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional collaborators for this session. A registry, outbox or arbiter that is left out gets a new default instance, a cache, remote or auth that is left out stays undefined, and every supplied value is stored as given when the session is constructed.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "ProjectSessionService.assertProject.projectId",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "The project id the caller expects to be selected. When it is left out (undefined) no check runs, so the call succeeds even with no project open; when given, it must equal the selected project's id exactly, so any value throws while no project is open.",
+				"examples": [
+					"local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63",
+					"local-9e2b7d04c1f8a6e35b0d9c72f4a1e8d6b3c5f0a9e7d2b4c6f1a8e3d5b9c0f7a2"
+				]
 			},
 			{
 				"name": "ProjectSessionService.open.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Any directory inside a Git work tree; the session uses that work tree's top-level directory, resolved with realpath, as the project root. A directory outside any work tree makes git fail, and the returned promise rejects with that error.",
+				"examples": [
+					"/Users/dev/projects/harness-app",
+					"/Users/dev/projects/harness-game/packages/desktop"
+				]
 			},
 			{
 				"name": "ProjectSessionService.snapshot.query",
 				"type": "RevisionQuery",
-				"required": true
+				"required": true,
+				"description": "The revision to read: a null branch means the checked-out branch, and a null commit means that branch's tip. A non-null commit must be the branch tip or one of its ancestors and makes writable false, and a projectId, when given, must match the selected project.",
+				"examples": [
+					{
+						"projectId": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63",
+						"branch": "main",
+						"commit": null
+					},
+					{
+						"projectId": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63",
+						"branch": "main",
+						"commit": "7d3a9e1f0c5b2a8d6e4f1c9b3a7d5e2f0c8b6a41"
+					},
+					{
+						"branch": null,
+						"commit": null
+					}
+				]
 			},
 			{
 				"name": "ProjectSessionService.atBranch.branch",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The branch name that must be checked out right now, compared exactly with the current branch's name. With a detached HEAD no branch is checked out, so the call throws for every name.",
+				"examples": ["main", "feature/project-session-service"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectSessionService.assertProject",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Always undefined: the method returns nothing, and a projectId that does not match the selected project is reported only by throwing."
 			},
 			{
 				"name": "ProjectSessionService.selecting",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True only while an open() call is in progress and false again once that call settles, whether it succeeded or failed; it does not say whether a project is selected.",
+				"examples": [true, false]
 			},
 			{
 				"name": "ProjectSessionService.open",
-				"type": "Promise<ProjectSnapshot>"
+				"type": "Promise<ProjectSnapshot>",
+				"description": "The resolved snapshot of the opened project at the checked-out branch's tip, built the same way as snapshot(). If the snapshot step fails the promise rejects, but the project stays selected because open() sets the session fields before it reads the snapshot.",
+				"examples": [
+					{
+						"project": {
+							"name": "harness-app",
+							"root": "/Users/dev/projects/harness-app",
+							"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": true,
+							"planning": true,
+							"approval": true,
+							"source": "local",
+							"reason": "Comments are saved as local pending drafts until connected."
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+							"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+								"current": true
+							},
+							{
+								"name": "feature/project-session-service",
+								"tip": "f6c2a0d8b41e9735c0a2d8f16b4e9c7a3d5f0e21",
+								"current": false
+							}
+						],
+						"commits": [
+							{
+								"hash": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+								"subject": "Add evidence grid layout",
+								"authoredAt": "2026-11-12T16:20:41+01:00",
+								"committedAt": "2026-11-12T16:22:03+01:00"
+							},
+							{
+								"hash": "7d3a9e1f0c5b2a8d6e4f1c9b3a7d5e2f0c8b6a41",
+								"subject": "Record the approved contract hash",
+								"authoredAt": "2026-11-10T09:14:07+01:00",
+								"committedAt": "2026-11-10T09:14:07+01:00"
+							}
+						],
+						"entities": [
+							{
+								"id": "reports.component.evidence-grid",
+								"category": "components",
+								"kind": "component",
+								"title": "Evidence grid",
+								"summary": "Lays out recorded evidence artifacts in a responsive grid.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "unknown",
+								"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null
+							}
+						],
+						"writable": true
+					},
+					{
+						"project": {
+							"name": "harness-game",
+							"root": "/Users/dev/projects/harness-game",
+							"id": "local-9e2b7d04c1f8a6e35b0d9c72f4a1e8d6b3c5f0a9e7d2b4c6f1a8e3d5b9c0f7a2",
+							"kind": "game",
+							"dimension": "2d"
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": true,
+							"planning": true,
+							"approval": true,
+							"source": "local",
+							"reason": "Comments are saved as local pending drafts until connected."
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "0e9d4b7a2c61f8e35d0a9b7c4e2f1a68d3b5c09e",
+							"tip": "0e9d4b7a2c61f8e35d0a9b7c4e2f1a68d3b5c09e",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "0e9d4b7a2c61f8e35d0a9b7c4e2f1a68d3b5c09e",
+								"current": true
+							}
+						],
+						"commits": [
+							{
+								"hash": "0e9d4b7a2c61f8e35d0a9b7c4e2f1a68d3b5c09e",
+								"subject": "Add inventory store",
+								"authoredAt": "2026-11-13T18:05:12+01:00",
+								"committedAt": "2026-11-13T18:05:12+01:00"
+							}
+						],
+						"entities": [
+							{
+								"id": "game.service.inventory-store",
+								"category": "services",
+								"kind": "service",
+								"title": "Inventory store",
+								"summary": "Keeps the player's carried items and their stack counts.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "unknown",
+								"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null
+							}
+						],
+						"writable": true
+					}
+				]
 			},
 			{
 				"name": "ProjectSessionService.snapshot",
-				"type": "Promise<ProjectSnapshot>"
+				"type": "Promise<ProjectSnapshot>",
+				"description": "The resolved snapshot of the requested revision: project identity (with kind and dimension only for a game), capabilities, the resolved revision, branches, up to 200 commits from the branch tip, catalog entities, and writable. Writable is true only when no commit was requested, the resolved branch is the checked-out one, the revision is that branch's tip, and the branch is not harness-evidence.",
+				"examples": [
+					{
+						"project": {
+							"name": "harness-app",
+							"root": "/Users/dev/projects/harness-app",
+							"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": true,
+							"planning": true,
+							"approval": true,
+							"source": "local",
+							"reason": "Comments are saved as local pending drafts until connected."
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+							"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+								"current": true
+							},
+							{
+								"name": "feature/project-session-service",
+								"tip": "f6c2a0d8b41e9735c0a2d8f16b4e9c7a3d5f0e21",
+								"current": false
+							}
+						],
+						"commits": [
+							{
+								"hash": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+								"subject": "Add evidence grid layout",
+								"authoredAt": "2026-11-12T16:20:41+01:00",
+								"committedAt": "2026-11-12T16:22:03+01:00"
+							},
+							{
+								"hash": "7d3a9e1f0c5b2a8d6e4f1c9b3a7d5e2f0c8b6a41",
+								"subject": "Record the approved contract hash",
+								"authoredAt": "2026-11-10T09:14:07+01:00",
+								"committedAt": "2026-11-10T09:14:07+01:00"
+							}
+						],
+						"entities": [
+							{
+								"id": "reports.component.evidence-grid",
+								"category": "components",
+								"kind": "component",
+								"title": "Evidence grid",
+								"summary": "Lays out recorded evidence artifacts in a responsive grid.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "unknown",
+								"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null
+							}
+						],
+						"writable": true
+					},
+					{
+						"project": {
+							"name": "harness-app",
+							"root": "/Users/dev/projects/harness-app",
+							"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": true,
+							"planning": true,
+							"approval": true,
+							"source": "local",
+							"reason": "Comments are saved as local pending drafts until connected."
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "7d3a9e1f0c5b2a8d6e4f1c9b3a7d5e2f0c8b6a41",
+							"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+							"atTip": false
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+								"current": true
+							},
+							{
+								"name": "feature/project-session-service",
+								"tip": "f6c2a0d8b41e9735c0a2d8f16b4e9c7a3d5f0e21",
+								"current": false
+							}
+						],
+						"commits": [
+							{
+								"hash": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+								"subject": "Add evidence grid layout",
+								"authoredAt": "2026-11-12T16:20:41+01:00",
+								"committedAt": "2026-11-12T16:22:03+01:00"
+							},
+							{
+								"hash": "7d3a9e1f0c5b2a8d6e4f1c9b3a7d5e2f0c8b6a41",
+								"subject": "Record the approved contract hash",
+								"authoredAt": "2026-11-10T09:14:07+01:00",
+								"committedAt": "2026-11-10T09:14:07+01:00"
+							}
+						],
+						"entities": [
+							{
+								"id": "reports.component.evidence-grid",
+								"category": "components",
+								"kind": "component",
+								"title": "Evidence grid",
+								"summary": "Lays out recorded evidence artifacts in a responsive grid.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "unknown",
+								"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null
+							}
+						],
+						"writable": false
+					}
+				]
 			},
 			{
 				"name": "ProjectSessionService.requireProject",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The open project's root, source, planning and catalog in one new object. It is returned only when all four are set, and open() sets them before it reads the snapshot."
 			},
 			{
 				"name": "ProjectSessionService.mutable",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The object requireProject returns plus the revision for the stored query, which the last open() or snapshot() call set. It is returned only when that query names no commit, its branch is the checked-out one, the revision is at that branch's tip, and the branch is not harness-evidence."
 			},
 			{
 				"name": "ProjectSessionService.atBranch",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The same value requireProject returns, returned only when the checked-out branch's name equals the branch given."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by assertProject when a projectId is given and differs from the selected project's id, and by snapshot through the query's projectId, with the message 'The requested project is not selected.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by open while a run is busy or pending or another open() is still in progress, with the message 'Cancel or finish the current run before switching projects.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by requireProject when root, source, planning or catalog is unset, and by snapshot, mutable and atBranch through it, with the message 'Open a project first.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by mutable when the stored query names a commit, its branch is not the checked-out one, its revision is not at the branch tip, or the branch is harness-evidence, with the message 'Historical views and other branches are read-only. View the checked-out branch tip to make changes.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by atBranch when the checked-out branch's name differs from the branch given, which includes a detached HEAD, with the message 'The checked-out branch changed during this run.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by GitSourceAdapter.revision, and so by open, snapshot and mutable, when the requested branch is not a local branch or no branch is given and HEAD is detached, with the message 'Select a local branch. Detached HEAD is read-only and must have a named branch.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by GitSourceAdapter.revision, and so by snapshot and mutable, when a requested commit is neither the branch tip nor one of its ancestors, with the message 'This commit is outside the selected branch ancestry.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by gitRevision, and so by snapshot, when a requested commit is longer than 300 characters or contains a NUL character, with the message 'Invalid revision.'"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Failures of the Git, project registry, planning and catalog calls made by open, snapshot, mutable and atBranch reach the caller unchanged, except a failed package.json read, which only means the project is not reported as a game."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProjectSessionService.assertProject",
@@ -97,22 +443,30 @@
 					{
 						"name": "ProjectSessionService.assertProject.projectId",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "The project id the caller expects to be selected. When it is left out (undefined) no check runs, so the call succeeds even with no project open; when given, it must equal the selected project's id exactly, so any value throws while no project is open.",
+						"examples": [
+							"local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63",
+							"local-9e2b7d04c1f8a6e35b0d9c72f4a1e8d6b3c5f0a9e7d2b4c6f1a8e3d5b9c0f7a2"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectSessionService.assertProject",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Always undefined: the method returns nothing, and a projectId that does not match the selected project is reported only by throwing."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when a projectId is given and differs from the selected project's id, with the message 'The requested project is not selected.'"
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectSessionService.selecting",
@@ -120,11 +474,13 @@
 				"outputs": [
 					{
 						"name": "ProjectSessionService.selecting",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True only while an open() call is in progress and false again once that call settles, whether it succeeded or failed; it does not say whether a project is selected.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectSessionService.open",
@@ -132,22 +488,166 @@
 					{
 						"name": "ProjectSessionService.open.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Any directory inside a Git work tree; the session uses that work tree's top-level directory, resolved with realpath, as the project root. A directory outside any work tree makes git fail, and the returned promise rejects with that error.",
+						"examples": [
+							"/Users/dev/projects/harness-app",
+							"/Users/dev/projects/harness-game/packages/desktop"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectSessionService.open",
-						"type": "Promise<ProjectSnapshot>"
+						"type": "Promise<ProjectSnapshot>",
+						"description": "The resolved snapshot of the opened project at the checked-out branch's tip, built the same way as snapshot(). If the snapshot step fails the promise rejects, but the project stays selected because open() sets the session fields before it reads the snapshot.",
+						"examples": [
+							{
+								"project": {
+									"name": "harness-app",
+									"root": "/Users/dev/projects/harness-app",
+									"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": true,
+									"planning": true,
+									"approval": true,
+									"source": "local",
+									"reason": "Comments are saved as local pending drafts until connected."
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+									"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+										"current": true
+									},
+									{
+										"name": "feature/project-session-service",
+										"tip": "f6c2a0d8b41e9735c0a2d8f16b4e9c7a3d5f0e21",
+										"current": false
+									}
+								],
+								"commits": [
+									{
+										"hash": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+										"subject": "Add evidence grid layout",
+										"authoredAt": "2026-11-12T16:20:41+01:00",
+										"committedAt": "2026-11-12T16:22:03+01:00"
+									},
+									{
+										"hash": "7d3a9e1f0c5b2a8d6e4f1c9b3a7d5e2f0c8b6a41",
+										"subject": "Record the approved contract hash",
+										"authoredAt": "2026-11-10T09:14:07+01:00",
+										"committedAt": "2026-11-10T09:14:07+01:00"
+									}
+								],
+								"entities": [
+									{
+										"id": "reports.component.evidence-grid",
+										"category": "components",
+										"kind": "component",
+										"title": "Evidence grid",
+										"summary": "Lays out recorded evidence artifacts in a responsive grid.",
+										"changed": false,
+										"planned": false,
+										"hasPlan": false,
+										"lifecycle": null,
+										"verification": "unknown",
+										"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+										"latestVersion": null,
+										"approvedVersion": null,
+										"threadCount": 0,
+										"thumbnail": null
+									}
+								],
+								"writable": true
+							},
+							{
+								"project": {
+									"name": "harness-game",
+									"root": "/Users/dev/projects/harness-game",
+									"id": "local-9e2b7d04c1f8a6e35b0d9c72f4a1e8d6b3c5f0a9e7d2b4c6f1a8e3d5b9c0f7a2",
+									"kind": "game",
+									"dimension": "2d"
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": true,
+									"planning": true,
+									"approval": true,
+									"source": "local",
+									"reason": "Comments are saved as local pending drafts until connected."
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "0e9d4b7a2c61f8e35d0a9b7c4e2f1a68d3b5c09e",
+									"tip": "0e9d4b7a2c61f8e35d0a9b7c4e2f1a68d3b5c09e",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "0e9d4b7a2c61f8e35d0a9b7c4e2f1a68d3b5c09e",
+										"current": true
+									}
+								],
+								"commits": [
+									{
+										"hash": "0e9d4b7a2c61f8e35d0a9b7c4e2f1a68d3b5c09e",
+										"subject": "Add inventory store",
+										"authoredAt": "2026-11-13T18:05:12+01:00",
+										"committedAt": "2026-11-13T18:05:12+01:00"
+									}
+								],
+								"entities": [
+									{
+										"id": "game.service.inventory-store",
+										"category": "services",
+										"kind": "service",
+										"title": "Inventory store",
+										"summary": "Keeps the player's carried items and their stack counts.",
+										"changed": false,
+										"planned": false,
+										"hasPlan": false,
+										"lifecycle": null,
+										"verification": "unknown",
+										"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+										"latestVersion": null,
+										"approvedVersion": null,
+										"threadCount": 0,
+										"thumbnail": null
+									}
+								],
+								"writable": true
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by open while a run is busy or pending or another open() is still in progress, with the message 'Cancel or finish the current run before switching projects.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown through snapshot when HEAD is detached, because open() reads the checked-out branch, with the message 'Select a local branch. Detached HEAD is read-only and must have a named branch.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Git, registry and planning failures, such as a directory outside any Git work tree, are not caught here and reach the caller unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectSessionService.snapshot",
@@ -155,17 +655,202 @@
 					{
 						"name": "ProjectSessionService.snapshot.query",
 						"type": "RevisionQuery",
-						"required": true
+						"required": true,
+						"description": "The revision to read: a null branch means the checked-out branch, and a null commit means that branch's tip. A non-null commit must be the branch tip or one of its ancestors and makes writable false, and a projectId, when given, must match the selected project.",
+						"examples": [
+							{
+								"projectId": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63",
+								"branch": "main",
+								"commit": null
+							},
+							{
+								"projectId": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63",
+								"branch": "main",
+								"commit": "7d3a9e1f0c5b2a8d6e4f1c9b3a7d5e2f0c8b6a41"
+							},
+							{
+								"branch": null,
+								"commit": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectSessionService.snapshot",
-						"type": "Promise<ProjectSnapshot>"
+						"type": "Promise<ProjectSnapshot>",
+						"description": "The resolved snapshot of the requested revision: project identity (with kind and dimension only for a game), capabilities, the resolved revision, branches, up to 200 commits from the branch tip, catalog entities, and writable. Writable is true only when no commit was requested, the resolved branch is the checked-out one, the revision is that branch's tip, and the branch is not harness-evidence.",
+						"examples": [
+							{
+								"project": {
+									"name": "harness-app",
+									"root": "/Users/dev/projects/harness-app",
+									"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": true,
+									"planning": true,
+									"approval": true,
+									"source": "local",
+									"reason": "Comments are saved as local pending drafts until connected."
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+									"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+										"current": true
+									},
+									{
+										"name": "feature/project-session-service",
+										"tip": "f6c2a0d8b41e9735c0a2d8f16b4e9c7a3d5f0e21",
+										"current": false
+									}
+								],
+								"commits": [
+									{
+										"hash": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+										"subject": "Add evidence grid layout",
+										"authoredAt": "2026-11-12T16:20:41+01:00",
+										"committedAt": "2026-11-12T16:22:03+01:00"
+									},
+									{
+										"hash": "7d3a9e1f0c5b2a8d6e4f1c9b3a7d5e2f0c8b6a41",
+										"subject": "Record the approved contract hash",
+										"authoredAt": "2026-11-10T09:14:07+01:00",
+										"committedAt": "2026-11-10T09:14:07+01:00"
+									}
+								],
+								"entities": [
+									{
+										"id": "reports.component.evidence-grid",
+										"category": "components",
+										"kind": "component",
+										"title": "Evidence grid",
+										"summary": "Lays out recorded evidence artifacts in a responsive grid.",
+										"changed": false,
+										"planned": false,
+										"hasPlan": false,
+										"lifecycle": null,
+										"verification": "unknown",
+										"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+										"latestVersion": null,
+										"approvedVersion": null,
+										"threadCount": 0,
+										"thumbnail": null
+									}
+								],
+								"writable": true
+							},
+							{
+								"project": {
+									"name": "harness-app",
+									"root": "/Users/dev/projects/harness-app",
+									"id": "local-4c1e8a2f6b9d03e7a5c2f18d4b6e9a0c3f7d1b5e8a2c6f9d0b4e7a1c5f8d2b63"
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": true,
+									"planning": true,
+									"approval": true,
+									"source": "local",
+									"reason": "Comments are saved as local pending drafts until connected."
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "7d3a9e1f0c5b2a8d6e4f1c9b3a7d5e2f0c8b6a41",
+									"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+									"atTip": false
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+										"current": true
+									},
+									{
+										"name": "feature/project-session-service",
+										"tip": "f6c2a0d8b41e9735c0a2d8f16b4e9c7a3d5f0e21",
+										"current": false
+									}
+								],
+								"commits": [
+									{
+										"hash": "a41f9c2e7b08d3f56e1a9c4b2d7f0e83c5a6b192",
+										"subject": "Add evidence grid layout",
+										"authoredAt": "2026-11-12T16:20:41+01:00",
+										"committedAt": "2026-11-12T16:22:03+01:00"
+									},
+									{
+										"hash": "7d3a9e1f0c5b2a8d6e4f1c9b3a7d5e2f0c8b6a41",
+										"subject": "Record the approved contract hash",
+										"authoredAt": "2026-11-10T09:14:07+01:00",
+										"committedAt": "2026-11-10T09:14:07+01:00"
+									}
+								],
+								"entities": [
+									{
+										"id": "reports.component.evidence-grid",
+										"category": "components",
+										"kind": "component",
+										"title": "Evidence grid",
+										"summary": "Lays out recorded evidence artifacts in a responsive grid.",
+										"changed": false,
+										"planned": false,
+										"hasPlan": false,
+										"lifecycle": null,
+										"verification": "unknown",
+										"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+										"latestVersion": null,
+										"approvedVersion": null,
+										"threadCount": 0,
+										"thumbnail": null
+									}
+								],
+								"writable": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown through assertProject when the query's projectId is given and differs from the selected project's id, with the message 'The requested project is not selected.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown through requireProject when no project is open, with the message 'Open a project first.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by GitSourceAdapter.revision when the requested branch is not a local branch, or when no branch is given and HEAD is detached, with the message 'Select a local branch. Detached HEAD is read-only and must have a named branch.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by GitSourceAdapter.revision when the requested commit is neither the branch tip nor one of its ancestors, with the message 'This commit is outside the selected branch ancestry.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by gitRevision when the requested commit is longer than 300 characters or contains a NUL character, with the message 'Invalid revision.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Git failures from the revision, branch and commit reads, and catalog failures such as an invalid component manifest, reach the caller unchanged; a failed package.json read is caught and the project is reported without kind or dimension."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectSessionService.requireProject",
@@ -173,16 +858,18 @@
 				"outputs": [
 					{
 						"name": "ProjectSessionService.requireProject",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The open project's root, source, planning and catalog in one new object. It is returned only when all four are set, and open() sets them before it reads the snapshot."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when root, source, planning or catalog is unset, as it is before open() sets them, with the message 'Open a project first.'"
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectSessionService.mutable",
@@ -190,16 +877,38 @@
 				"outputs": [
 					{
 						"name": "ProjectSessionService.mutable",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The object requireProject returns plus the revision for the stored query, which the last open() or snapshot() call set. It is returned only when that query names no commit, its branch is the checked-out one, the revision is at that branch's tip, and the branch is not harness-evidence."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through requireProject when no project is open, with the message 'Open a project first.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by GitSourceAdapter.revision when the stored branch is no longer a local branch, or when none is stored and HEAD is detached, with the message 'Select a local branch. Detached HEAD is read-only and must have a named branch.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by GitSourceAdapter.revision when the stored commit is no longer the branch tip or one of its ancestors, with the message 'This commit is outside the selected branch ancestry.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the stored query names a commit, its branch is not the checked-out one, its revision is not at the branch tip, or the branch is harness-evidence, with the message 'Historical views and other branches are read-only. View the checked-out branch tip to make changes.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Git failures from the revision and branch reads are not caught here and reach the caller unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectSessionService.atBranch",
@@ -207,22 +916,36 @@
 					{
 						"name": "ProjectSessionService.atBranch.branch",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The branch name that must be checked out right now, compared exactly with the current branch's name. With a detached HEAD no branch is checked out, so the call throws for every name.",
+						"examples": ["main", "feature/project-session-service"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectSessionService.atBranch",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The same value requireProject returns, returned only when the checked-out branch's name equals the branch given."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through requireProject when no project is open, with the message 'Open a project first.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the checked-out branch's name differs from the branch given, which includes a detached HEAD, with the message 'The checked-out branch changed during this run.'"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Git failures from listing the branches are not caught here and reach the caller unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -233,17 +956,22 @@
 						"name": "ProjectSessionService.constructor.options",
 						"type": "{ registry?: ProjectRegistryService; outbox?: CommentOutboxService; cache?: ProjectionCacheService; remote?: RemoteProjectPort; auth?: NativeAuthService; arbiter?: RepositoryArbiterService; }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional collaborators for this session. A registry, outbox or arbiter that is left out gets a new default instance, a cache, remote or auth that is left out stays undefined, and every supplied value is stored as given when the session is constructed.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectSessionService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new session with no project open: root, projectId, source, planning and catalog are null, pending is 0, and busy is false."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
