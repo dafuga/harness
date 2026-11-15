@@ -18,40 +18,49 @@
 				"name": "relayOrigin.value",
 				"type": "string | undefined",
 				"required": true,
-				"description": "Optional URL limited to HTTPS, or HTTP on localhost, 127.0.0.1 or ::1, with no credentials, nonroot path, query or fragment."
+				"description": "A relay URL passed to relayOrigin; undefined is treated as an empty string and returns null. The parsed URL must use HTTPS or loopback HTTP (localhost, 127.0.0.1, or [::1]) and have no credentials, nonroot path, query, or fragment; there is no fallback address.",
+				"examples": ["https://relay.example.com", "http://localhost:8787", "http://[::1]:8787"]
 			},
 			{
 				"name": "relaySocketUrl.origin",
 				"type": "string",
 				"required": true,
-				"description": "Relay origin accepted by relayOrigin."
+				"description": "A relay URL passed through relayOrigin before endpoint construction; it must satisfy the same HTTPS or loopback HTTP and bare-origin restrictions.",
+				"examples": ["https://relay.example.com", "http://127.0.0.1:8787"]
 			},
 			{
 				"name": "relaySocketUrl.hostId",
 				"type": "string",
 				"required": true,
-				"description": "Host ID containing exactly 40 lowercase hex characters."
+				"description": "Host identifier inserted literally in the socket path; it must match /^[a-f0-9]{40}$/ and is the first 40 hexadecimal characters of the public-key SHA-256 identity.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "relayOrigin",
 				"type": "string | null",
-				"description": "Normalized URL origin, or null when the supplied address is missing or invalid."
+				"description": "Returns the URL origin (scheme, host, and any nondefault port) for an accepted address, or null when parsing or validation fails.",
+				"examples": ["https://relay.example.com", "http://localhost:8787", null]
 			},
 			{
 				"name": "relaySocketUrl",
 				"type": "string",
-				"description": "Matching ws or wss URL ending in /v1/hosts/{hostId}/connect, without credentials."
+				"description": "Returns a WebSocket endpoint with https changed to wss or http changed to ws and the host ID inserted in the connection path. Credentials are not included; invalid origins or host IDs throw Error(\"Invalid relay address.\").",
+				"examples": [
+					"wss://relay.example.com/v1/hosts/0123456789abcdef0123456789abcdef01234567/connect",
+					"ws://127.0.0.1:8787/v1/hosts/0123456789abcdef0123456789abcdef01234567/connect"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws Invalid relay address when the origin or host ID is invalid."
+				"description": "relaySocketUrl throws this Error when relayOrigin(origin) returns null or the host ID fails the 40-character lowercase hexadecimal pattern; its message is Invalid relay address."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "relayOrigin",
@@ -60,18 +69,20 @@
 						"name": "relayOrigin.value",
 						"type": "string | undefined",
 						"required": true,
-						"description": "Optional URL limited to HTTPS, or HTTP on localhost, 127.0.0.1 or ::1, with no credentials, nonroot path, query or fragment."
+						"description": "A relay URL passed to relayOrigin; undefined is treated as an empty string and returns null. The parsed URL must use HTTPS or loopback HTTP (localhost, 127.0.0.1, or [::1]) and have no credentials, nonroot path, query, or fragment; there is no fallback address.",
+						"examples": ["https://relay.example.com", "http://localhost:8787", "http://[::1]:8787"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "relayOrigin",
 						"type": "string | null",
-						"description": "Normalized URL origin, or null when the supplied address is missing or invalid."
+						"description": "Returns the URL origin (scheme, host, and any nondefault port) for an accepted address, or null when parsing or validation fails.",
+						"examples": ["https://relay.example.com", "http://localhost:8787", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "relaySocketUrl",
@@ -80,29 +91,36 @@
 						"name": "relaySocketUrl.origin",
 						"type": "string",
 						"required": true,
-						"description": "Relay origin accepted by relayOrigin."
+						"description": "A relay URL passed through relayOrigin before endpoint construction; it must satisfy the same HTTPS or loopback HTTP and bare-origin restrictions.",
+						"examples": ["https://relay.example.com", "http://127.0.0.1:8787"]
 					},
 					{
 						"name": "relaySocketUrl.hostId",
 						"type": "string",
 						"required": true,
-						"description": "Host ID containing exactly 40 lowercase hex characters."
+						"description": "Host identifier inserted literally in the socket path; it must match /^[a-f0-9]{40}$/ and is the first 40 hexadecimal characters of the public-key SHA-256 identity.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "relaySocketUrl",
 						"type": "string",
-						"description": "Matching ws or wss URL ending in /v1/hosts/{hostId}/connect, without credentials."
+						"description": "Returns a WebSocket endpoint with https changed to wss or http changed to ws and the host ID inserted in the connection path. Credentials are not included; invalid origins or host IDs throw Error(\"Invalid relay address.\").",
+						"examples": [
+							"wss://relay.example.com/v1/hosts/0123456789abcdef0123456789abcdef01234567/connect",
+							"ws://127.0.0.1:8787/v1/hosts/0123456789abcdef0123456789abcdef01234567/connect"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "relaySocketUrl throws this Error when relayOrigin(origin) returns null or the host ID fails the 40-character lowercase hexadecimal pattern; its message is Invalid relay address."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
