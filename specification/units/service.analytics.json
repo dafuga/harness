@@ -18,41 +18,80 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AnalyticsService.execute.operation",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The action to run: 'import' runs importAnalytics on options.root and prints a JSON line with scannedEvents and duplicatesIgnored, 'export' writes analyticsHtml of the snapshot to options.output, 'events' prints the whole snapshot, and 'summary', 'loops', 'jev', 'models', 'tasks' or 'benchmarks' print that one section. Matching is exact, and any other string is not rejected but prints an empty object.",
+				"examples": ["summary", "export", "import"]
 			},
 			{
 				"name": "AnalyticsService.execute.options",
 				"type": "AnalyticsOptions",
-				"required": true
+				"required": true,
+				"description": "The flags for this run: root is required for 'import' and output for 'export' (a missing or empty value throws), json drops the upper-cased header line from the printed result of every other operation, and site limits everything to events recorded in checkouts of the repository at that path. For every operation except 'import', the filter fields go through normalizeFilter and ModuleTaskAnalyticsService.sync is called with site, else project, else the current directory, before the snapshot is built.",
+				"examples": [
+					{
+						"site": "/home/dev/src/harness",
+						"since": "2026-11-01",
+						"until": "2026-11-15",
+						"json": true
+					},
+					{
+						"root": "/home/dev/analytics-inbox"
+					},
+					{
+						"output": "/home/dev/reports/analytics-2026-11.html",
+						"site": "/home/dev/src/harness"
+					}
+				]
 			},
 			{
 				"name": "normalizeFilter.options",
 				"type": "AnalyticsFilter",
-				"required": true
+				"required": true,
+				"description": "The raw filter to normalize: only truthy project, loop, task, model, since and until values are copied, and keys outside that list are ignored. A non-empty since or until must parse to a valid date or normalizeFilter throws, and project is replaced with the value projectIdentity returns.",
+				"examples": [
+					{
+						"since": "2026-11-01",
+						"until": "2026-11-15"
+					},
+					{
+						"project": "/home/dev/src/harness",
+						"since": "2026-11-01T09:00:00Z"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AnalyticsService.execute",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value once the work is done: 'import' prints one compact JSON line, 'export' writes the file and prints a JSON line with its absolute output path and event count, and other operations print their section to stdout. Any failure rejects the promise instead."
 			},
 			{
 				"name": "normalizeFilter",
-				"type": "Promise<AnalyticsFilter>"
+				"type": "Promise<AnalyticsFilter>",
+				"description": "Resolves to a new filter holding only the truthy project, loop, task, model, since and until values, with project replaced by the projectIdentity result and since and until converted to UTC ISO-8601 strings. A date-only until (YYYY-MM-DD) is moved to 23:59:59.999 UTC on that day.",
+				"examples": [
+					{
+						"since": "2026-11-01T00:00:00.000Z",
+						"until": "2026-11-15T23:59:59.999Z"
+					},
+					{}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown for a missing or empty root on 'import' ('--root is required.'), a missing or empty output on 'export' ('--output is required.') and a non-empty since or until value that does not parse to a valid date ('Invalid --since date.' or 'Invalid --until date.'). Errors from the other steps (for example importAnalytics, projectIdentity, ModuleTaskAnalyticsService.sync, the repository calls, analyticsSnapshot, analyticsHtml, file writes and stdout writes) are not caught and reach the caller."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "AnalyticsService.execute",
@@ -60,27 +99,47 @@
 					{
 						"name": "AnalyticsService.execute.operation",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The action to run: 'import' runs importAnalytics on options.root and prints a JSON line with scannedEvents and duplicatesIgnored, 'export' writes analyticsHtml of the snapshot to options.output, 'events' prints the whole snapshot, and 'summary', 'loops', 'jev', 'models', 'tasks' or 'benchmarks' print that one section. Matching is exact, and any other string is not rejected but prints an empty object.",
+						"examples": ["summary", "export", "import"]
 					},
 					{
 						"name": "AnalyticsService.execute.options",
 						"type": "AnalyticsOptions",
-						"required": true
+						"required": true,
+						"description": "The flags for this run: root is required for 'import' and output for 'export' (a missing or empty value throws), json drops the upper-cased header line from the printed result of every other operation, and site limits everything to events recorded in checkouts of the repository at that path. For every operation except 'import', the filter fields go through normalizeFilter and ModuleTaskAnalyticsService.sync is called with site, else project, else the current directory, before the snapshot is built.",
+						"examples": [
+							{
+								"site": "/home/dev/src/harness",
+								"since": "2026-11-01",
+								"until": "2026-11-15",
+								"json": true
+							},
+							{
+								"root": "/home/dev/analytics-inbox"
+							},
+							{
+								"output": "/home/dev/reports/analytics-2026-11.html",
+								"site": "/home/dev/src/harness"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsService.execute",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value once the work is done: 'import' prints one compact JSON line, 'export' writes the file and prints a JSON line with its absolute output path and event count, and other operations print their section to stdout. Any failure rejects the promise instead."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown for a missing or empty root on 'import' ('--root is required.'), a missing or empty output on 'export' ('--output is required.') and a non-empty since or until value that does not parse to a valid date ('Invalid --since date.' or 'Invalid --until date.'). Errors from the other steps (for example importAnalytics, projectIdentity, ModuleTaskAnalyticsService.sync, the repository calls, analyticsSnapshot, analyticsHtml, file writes and stdout writes) are not caught and reach the caller."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "normalizeFilter",
@@ -88,22 +147,42 @@
 					{
 						"name": "normalizeFilter.options",
 						"type": "AnalyticsFilter",
-						"required": true
+						"required": true,
+						"description": "The raw filter to normalize: only truthy project, loop, task, model, since and until values are copied, and keys outside that list are ignored. A non-empty since or until must parse to a valid date or normalizeFilter throws, and project is replaced with the value projectIdentity returns.",
+						"examples": [
+							{
+								"since": "2026-11-01",
+								"until": "2026-11-15"
+							},
+							{
+								"project": "/home/dev/src/harness",
+								"since": "2026-11-01T09:00:00Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "normalizeFilter",
-						"type": "Promise<AnalyticsFilter>"
+						"type": "Promise<AnalyticsFilter>",
+						"description": "Resolves to a new filter holding only the truthy project, loop, task, model, since and until values, with project replaced by the projectIdentity result and since and until converted to UTC ISO-8601 strings. A date-only until (YYYY-MM-DD) is moved to 23:59:59.999 UTC on that day.",
+						"examples": [
+							{
+								"since": "2026-11-01T00:00:00.000Z",
+								"until": "2026-11-15T23:59:59.999Z"
+							},
+							{}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown for a non-empty since or until value that does not parse to a valid date ('Invalid --since date.' or 'Invalid --until date.'). A rejection from projectIdentity is not caught and reaches the caller."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
