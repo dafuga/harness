@@ -23,35 +23,109 @@
 				"name": "proposalUnits.listed",
 				"type": "CatalogEntity[]",
 				"required": true,
-				"description": "The catalog entries available to the proposal. Planned-only entries are excluded."
+				"description": "Catalog entries supplied for the ordering. Entries marked planned are excluded, and remaining ids feed the ordering.",
+				"examples": [
+					[
+						{
+							"id": "desktop.function.proposal-units",
+							"category": "functions",
+							"kind": "function",
+							"title": "Order units for a proposal",
+							"summary": "Prioritizes existing unit references for a new-unit proposal prompt.",
+							"changed": false,
+							"planned": false,
+							"hasPlan": false,
+							"lifecycle": null,
+							"verification": "unknown",
+							"verificationNote": "",
+							"latestVersion": null,
+							"approvedVersion": null,
+							"threadCount": 0,
+							"thumbnail": null
+						}
+					]
+				]
 			},
 			{
 				"name": "proposalUnits.request",
 				"type": "Pick<ProjectRunRequest, 'category' | 'text'>",
 				"required": true,
-				"description": "The request text and category hint. Recognized registered identities mentioned in the text receive priority."
+				"description": "The requested catalog category and text. The category is a hint for category ordering, while only text identifiers matching a registered, non-planned id receive name priority.",
+				"examples": [
+					{
+						"category": "functions",
+						"text": "Create a proposal that reuses desktop.function.proposal-units."
+					}
+				]
 			},
 			{
 				"name": "taskUnits.units",
 				"type": "ComponentManifest[]",
 				"required": true,
-				"description": "Registered units eligible to be referenced in the proposed task."
+				"description": "Manifest list to rank for the task prompt. Every supplied id is returned, including duplicates; title and responsibility supply token scores unless the text contains the id as a case-sensitive substring.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "desktop.function.proposal-units",
+							"kind": "function",
+							"title": "Order units for a proposal",
+							"responsibility": "Prioritizes existing unit references for a new-unit proposal prompt.",
+							"responsibilityOrigin": "declared",
+							"status": "active",
+							"owns": {
+								"source": [
+									"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/proposalUnits.ts"
+								],
+								"symbols": ["proposalUnits"]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"dependencies": [],
+							"runtime": {
+								"kind": "module",
+								"entry": "packages/desktop/src/utils/proposalUnits.ts",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/desktop/src/utils/proposalUnits.ts"
+									}
+								]
+							},
+							"scenarios": ["agent-references"],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "taskUnits.text",
 				"type": "string",
 				"required": true,
-				"description": "Task wording used to rank relevant existing unit references."
+				"description": "Task wording used to rank manifests. It is lowercased and tokenized after chat is rewritten as conversation; tokens shorter than three characters and a fixed stop-word list are ignored for title and responsibility scoring. A case-sensitive id substring receives a score of 10,000.",
+				"examples": ["Update desktop.function.proposal-units ordering."]
 			}
 		],
 		"outputs": [
 			{
 				"name": "proposalUnits",
 				"type": "string[]",
-				"description": "Distinct existing unit identities, ordered first by mentions in the request, then by the requested category, then the remaining catalog categories. Each category otherwise keeps input order. No maximum list length is imposed here."
+				"description": "Distinct ids from non-planned entries, with recognized ids mentioned in the request first, then the request category, then other categories in categories order. Input order is kept within each category and no result cap is applied.",
+				"examples": [
+					["desktop.function.proposal-units"]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "proposalUnits",
@@ -60,24 +134,54 @@
 						"name": "proposalUnits.listed",
 						"type": "CatalogEntity[]",
 						"required": true,
-						"description": "The catalog entries available to the proposal. Planned-only entries are excluded."
+						"description": "Catalog entries supplied for the ordering. Entries marked planned are excluded, and remaining ids feed the ordering.",
+						"examples": [
+							[
+								{
+									"id": "desktop.function.proposal-units",
+									"category": "functions",
+									"kind": "function",
+									"title": "Order units for a proposal",
+									"summary": "Prioritizes existing unit references for a new-unit proposal prompt.",
+									"changed": false,
+									"planned": false,
+									"hasPlan": false,
+									"lifecycle": null,
+									"verification": "unknown",
+									"verificationNote": "",
+									"latestVersion": null,
+									"approvedVersion": null,
+									"threadCount": 0,
+									"thumbnail": null
+								}
+							]
+						]
 					},
 					{
 						"name": "proposalUnits.request",
 						"type": "Pick<ProjectRunRequest, 'category' | 'text'>",
 						"required": true,
-						"description": "The request text and category hint. Recognized registered identities mentioned in the text receive priority."
+						"description": "The requested catalog category and text. The category is a hint for category ordering, while only text identifiers matching a registered, non-planned id receive name priority.",
+						"examples": [
+							{
+								"category": "functions",
+								"text": "Create a proposal that reuses desktop.function.proposal-units."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "proposalUnits",
 						"type": "string[]",
-						"description": "Distinct existing unit identities, ordered first by mentions in the request, then by the requested category, then the remaining catalog categories. Each category otherwise keeps input order. No maximum list length is imposed here."
+						"description": "Distinct ids from non-planned entries, with recognized ids mentioned in the request first, then the request category, then other categories in categories order. Input order is kept within each category and no result cap is applied.",
+						"examples": [
+							["desktop.function.proposal-units"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "taskUnits",
@@ -86,23 +190,70 @@
 						"name": "taskUnits.units",
 						"type": "ComponentManifest[]",
 						"required": true,
-						"description": "Registered units eligible to be referenced in the proposed task."
+						"description": "Manifest list to rank for the task prompt. Every supplied id is returned, including duplicates; title and responsibility supply token scores unless the text contains the id as a case-sensitive substring.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "desktop.function.proposal-units",
+									"kind": "function",
+									"title": "Order units for a proposal",
+									"responsibility": "Prioritizes existing unit references for a new-unit proposal prompt.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"owns": {
+										"source": [
+											"packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/proposalUnits.ts"
+										],
+										"symbols": ["proposalUnits"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"dependencies": [],
+									"runtime": {
+										"kind": "module",
+										"entry": "packages/desktop/src/utils/proposalUnits.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/desktop/src/utils/proposalUnits.ts"
+											}
+										]
+									},
+									"scenarios": ["agent-references"],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								}
+							]
+						]
 					},
 					{
 						"name": "taskUnits.text",
 						"type": "string",
 						"required": true,
-						"description": "Task wording used to rank relevant existing unit references."
+						"description": "Task wording used to rank manifests. It is lowercased and tokenized after chat is rewritten as conversation; tokens shorter than three characters and a fixed stop-word list are ignored for title and responsibility scoring. A case-sensitive id substring receives a score of 10,000.",
+						"examples": ["Update desktop.function.proposal-units ordering."]
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskUnits",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "All supplied manifest ids sorted by descending score, with equal scores ordered by localeCompare on id; duplicate ids remain. A case-sensitive id substring scores 10,000; otherwise each overlapping title token scores 8 and each responsibility token scores 1.",
+						"examples": [
+							["desktop.function.proposal-units"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
