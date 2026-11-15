@@ -1,6 +1,7 @@
+import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { hubHttpFailure } from '../../src/controllers/hub-api-controller/hubHttp';
-import { hubBody } from '../../src/utils/hub-http/hubHttp';
+import { hubBody } from '../../src/utils/networking-security/hub-http/hubHttp';
 test('unknown provider detail and status never enter public errors', async () => {
 	for (const error of [
 		{ code: 'synthetic-private-provider-detail', status: 418 },
@@ -50,4 +51,10 @@ test('chunked bodies stop consuming once the byte limit is exceeded', async () =
 	await expect(hubBody(request)).rejects.toThrow();
 	expect(cancelled).toBe(true);
 	expect(pulls).toBeLessThan(6);
+});
+
+test('hub-http is read from its owning module, with no stub left at the old paths', () => {
+	const oldPath = (file: string) => new URL(`../../src/utils/hub-http/${file}.ts`, import.meta.url);
+	expect(existsSync(oldPath('hubBodyBytes'))).toBe(false);
+	expect(existsSync(oldPath('hubHttp'))).toBe(false);
 });
