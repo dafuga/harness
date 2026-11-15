@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/development-tooling/gatewayToolDefinitions.ts",
-			"src/utils/gatewayToolDefinitions.ts"
-		],
-		"symbols": ["gatewayToolDefinitions", "gatewayToolDefinitions"]
+		"source": ["src/utils/development-tooling/gatewayToolDefinitions.ts"],
+		"symbols": ["gatewayToolDefinitions"]
 	},
 	"contract": {
 		"origin": "declared",

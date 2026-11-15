@@ -307,21 +307,6 @@
 			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
 		},
 		{
-			"from": "src/utils/gatewayPrompt.ts",
-			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayPrompt",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/utils/gatewayReplay.ts",
-			"to": "src/cli/program/codex-gateway-service/gatewayReplay",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/utils/gatewayStream.ts",
-			"to": "src/cli/program/codex-gateway-service/gatewayStream",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/utils/git-source-history/commitMessage.ts",
 			"to": "src/services/git-source-history/commit-message-service/commitMessage",
 			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
