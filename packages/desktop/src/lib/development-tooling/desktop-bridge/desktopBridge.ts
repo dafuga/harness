@@ -1,5 +1,5 @@
 // @harness-uid u_n566twzfi3
-import { AgentActivityService } from '../../../../../../src/services/agent-activity-service/AgentActivityService';
+import { AgentActivityService } from '../../../../../../src/services/agents-providers/agent-activity-service/AgentActivityService';
 import { ProjectWorkRepository } from '../../../../../../src/repositories/projects-sessions/ProjectWorkRepository';
 import { GameLevelService } from './GameLevelService';
 import type { BridgeContext } from './desktopBridge.types';

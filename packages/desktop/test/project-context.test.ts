@@ -1,5 +1,5 @@
 import { desktopBridge } from '../src/lib/development-tooling/desktop-bridge/desktopBridge';
-import { AgentActivityService } from '../../../src/services/agent-activity-service/AgentActivityService';
+import { AgentActivityService } from '../../../src/services/agents-providers/agent-activity-service/AgentActivityService';
 import { ProjectWorkRepository } from '../../../src/repositories/projects-sessions/ProjectWorkRepository';
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';

@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/agent-activity-service/ProcessIdentityAdapter.ts",
-			"src/services/agents-providers/agent-activity-service/ProcessIdentityAdapter.ts"
-		],
-		"symbols": ["ProcessIdentityAdapter", "ProcessIdentityAdapter", "ProcessIdentityAdapter.find"]
+		"source": ["src/services/agents-providers/agent-activity-service/ProcessIdentityAdapter.ts"],
+		"symbols": ["ProcessIdentityAdapter", "ProcessIdentityAdapter.find"]
 	},
 	"contract": {
 		"origin": "declared",

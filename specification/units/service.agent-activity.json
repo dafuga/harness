@@ -10,12 +10,10 @@
 	"documentation": "specification/examples/service.agent-activity.md",
 	"owns": {
 		"source": [
-			"src/services/agent-activity-service/AgentActivityService.ts",
 			"src/services/agents-providers/agent-activity-service/AgentActivityService.ts",
 			"src/services/agents-providers/agent-activity-service/AgentActivityService.types.ts"
 		],
 		"symbols": [
-			"AgentActivityService",
 			"AgentActivityService",
 			"AgentActivityService.constructor",
 			"AgentActivityService.register",
