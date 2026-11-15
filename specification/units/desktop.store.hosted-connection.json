@@ -20,18 +20,20 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createHostedConnectionStore.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "The Workspace instance whose bridge, project-loading, invalidation, and cache state this store uses. The factory requires it and provides no default."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createHostedConnectionStore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "An instance of HostedConnectionState bound to the supplied Workspace, with status, error, busy, availability, address and expiry state plus load, connect, disconnect and dispose methods. Its bridge requests are skipped when the required bridge operations are unavailable, another request is busy, or the instance has been disposed."
 			}
 		],
 		"errors": [],
@@ -43,17 +45,19 @@
 					{
 						"name": "createHostedConnectionStore.workspace",
 						"type": "Workspace",
-						"required": true
+						"required": true,
+						"description": "The Workspace instance whose bridge, project-loading, invalidation, and cache state this store uses. The factory requires it and provides no default."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createHostedConnectionStore",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "An instance of HostedConnectionState bound to the supplied Workspace, with status, error, busy, availability, address and expiry state plus load, connect, disconnect and dispose methods. Its bridge requests are skipped when the required bridge operations are unavailable, another request is busy, or the instance has been disposed."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
