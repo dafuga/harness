@@ -1,6 +1,6 @@
 import { beforeAll, expect, test } from 'vitest';
 import { randomCredential } from '../../../remote/src/index';
-import { PairingBodyValidator } from '../../src/validators/PairingBodyValidator';
+import { PairingBodyValidator } from '../../src/validators/networking-security/PairingBodyValidator';
 import { newRequest } from '../support/relayActors';
 
 const validator = new PairingBodyValidator();

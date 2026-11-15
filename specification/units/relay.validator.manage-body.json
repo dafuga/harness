@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/validators/ManageBodyValidator.ts",
-			"packages/relay/src/validators/development-tooling/ManageBodyValidator.ts"
-		],
+		"source": ["packages/relay/src/validators/development-tooling/ManageBodyValidator.ts"],
 		"symbols": [
-			"ManageBodyValidator",
 			"ManageBodyValidator",
 			"ManageBodyValidator.owner",
 			"ManageBodyValidator.register",

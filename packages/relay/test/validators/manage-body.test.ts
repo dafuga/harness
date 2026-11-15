@@ -1,5 +1,5 @@
 import { beforeAll, expect, test } from 'vitest';
-import { ManageBodyValidator } from '../../src/validators/ManageBodyValidator';
+import { ManageBodyValidator } from '../../src/validators/development-tooling/ManageBodyValidator';
 import { newHost, registration } from '../support/relayActors';
 
 const validator = new ManageBodyValidator();

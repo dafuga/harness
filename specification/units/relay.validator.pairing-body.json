@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/relay/src/validators/PairingBodyValidator.ts",
-			"packages/relay/src/validators/networking-security/PairingBodyValidator.ts"
-		],
+		"source": ["packages/relay/src/validators/networking-security/PairingBodyValidator.ts"],
 		"symbols": [
-			"PairingBodyValidator",
 			"PairingBodyValidator",
 			"PairingBodyValidator.request",
 			"PairingBodyValidator.verifier"

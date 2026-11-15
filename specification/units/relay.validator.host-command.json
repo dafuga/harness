@@ -9,16 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/relay/src/validators/HostCommandValidator.ts",
 			"packages/relay/src/validators/development-tooling/HostCommandValidator.ts",
 			"packages/relay/src/validators/development-tooling/HostCommandValidator.types.ts"
 		],
-		"symbols": [
-			"HostCommandValidator",
-			"HostCommandValidator",
-			"HostCommandValidator.command",
-			"Check"
-		]
+		"symbols": ["HostCommandValidator", "HostCommandValidator.command", "Check"]
 	},
 	"contract": {
 		"origin": "derived",

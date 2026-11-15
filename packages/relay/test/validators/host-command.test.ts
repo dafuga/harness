@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { HostCommandValidator } from '../../src/validators/HostCommandValidator';
+import { HostCommandValidator } from '../../src/validators/development-tooling/HostCommandValidator';
 import { sealedText } from '../support/relayActors';
 import { acceptPacket, helloPacket, sealedPacket } from '../support/relayPackets';
 
