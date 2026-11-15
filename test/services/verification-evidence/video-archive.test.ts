@@ -5,7 +5,8 @@ import {
 	videoArchiveFixture,
 	videoArchiveBudgetExamples,
 	invalidVideoArchiveInputs,
-	videoArchiveRemote
+	videoArchiveRemote,
+	seedUnrelatedArchiveMedia
 } from '../../support/videoArchiveFixture';
 import { EvidenceBranchRepository } from '../../../src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
 import { LfsAdapter } from '../../../src/adapters/git-source-history/LfsAdapter';
@@ -178,6 +179,7 @@ test('archive reads never fetch and explicit fetch verifies the received evidenc
 	await withTempRepo(async ({ root, git }) => {
 		const input = await videoArchiveFixture(root, git),
 			service = new VideoArchiveService(root);
+		const unrelated = await seedUnrelatedArchiveMedia(root);
 		const [pointer] = await service.write([input]),
 			remote = await videoArchiveRemote(root, input);
 		await withTempRepo(async (client) => {
@@ -191,6 +193,7 @@ test('archive reads never fetch and explicit fetch verifies the received evidenc
 				expect(run.mock.calls.filter(([args]) => args[0] === 'fetch')).toEqual([]);
 				const fetched = await consumer.fetch(pointer, 'archive-fixture');
 				expect(fetched.batch.clips[0].original).toEqual(input.original);
+				expect(await new LfsAdapter(client.root).read(unrelated)).toBeUndefined();
 				const ref = sourceArchiveRef(input.original.revision);
 				expect(run).toHaveBeenCalledWith(['fetch', '--no-tags', '--', 'archive-fixture', ref]);
 				expect(client.git('rev-parse', ref)).toBe(input.original.revision);

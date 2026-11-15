@@ -6,6 +6,8 @@ import { GitAdapter } from '../../src/adapters/git-source-history/GitAdapter';
 import { LfsAdapter } from '../../src/adapters/git-source-history/LfsAdapter';
 import { evidenceRef } from '../../src/core/git-source-history/historyTypes';
 import { sourceArchiveRef } from '../../src/utils/git-source-history/historyRefs';
+import { EvidenceBranchRepository } from '../../src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
+import { lfsPointer } from '../../src/utils/verification-evidence/lfsPointer';
 import type {
 	VideoArchiveInput,
 	VideoArchiveClip
@@ -168,5 +170,19 @@ export async function videoArchiveRemote(root: string, input: VideoArchiveInput)
 	const lfs = new LfsAdapter(remote);
 	await lfs.store(input.videoBytes);
 	await lfs.store(input.posterBytes);
+	await lfs.store(unrelatedMedia);
 	return remote;
+}
+
+const unrelatedMedia = Buffer.from('Unrelated archive fixture object');
+
+export async function seedUnrelatedArchiveMedia(root: string): Promise<string> {
+	const object = await new LfsAdapter(root).store(unrelatedMedia);
+	await new EvidenceBranchRepository(root).add(
+		'unrelated',
+		[{ path: 'unused.png', content: { bytes: lfsPointer(object) } }],
+		'feat: seed unrelated disposable LFS object',
+		'unused.png'
+	);
+	return object.sha256;
 }
