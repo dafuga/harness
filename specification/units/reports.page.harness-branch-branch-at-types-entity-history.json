@@ -18,12 +18,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "Renders the route page through HarnessScreen with the title \"Type history\" and EntityHistoryScreen as its content. The page declares no inputs or route data of its own."
 			}
 		],
 		"errors": [],
