@@ -36,104 +36,243 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "controllerFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name is converted to PascalCase for the controller class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+				"examples": ["user"]
 			},
 			{
 				"name": "classFiles.folder",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The folder value is inserted directly into the src/ and test/ paths without transformation. This function applies no additional validation.",
+				"examples": ["services"]
 			},
 			{
 				"name": "classFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name is converted to PascalCase for the class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+				"examples": ["user"]
 			},
 			{
 				"name": "classFiles.suffix",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The suffix is appended directly to the PascalCase name to form the generated class name. It does not affect the kebab-case file name, and this function applies no additional validation.",
+				"examples": ["Service"]
 			},
 			{
 				"name": "repositoryFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name is converted to PascalCase for the repository class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+				"examples": ["user"]
 			},
 			{
 				"name": "adapterFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name is converted to PascalCase for the adapter class and kebab-case for the generated file and fallback connection name. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+				"examples": ["user"]
 			},
 			{
 				"name": "validatorFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name is converted to PascalCase for the validator class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+				"examples": ["user"]
 			},
 			{
 				"name": "serializerFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name is converted to PascalCase for the serializer class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+				"examples": ["user"]
 			},
 			{
 				"name": "policyFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name is converted to PascalCase for the policy class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+				"examples": ["user"]
 			},
 			{
 				"name": "seederFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name is converted to PascalCase for the seed function and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+				"examples": ["user"]
 			},
 			{
 				"name": "utilFiles.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The name is converted to camelCase for the utility function and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+				"examples": ["user"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "controllerFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns the controller source and its Vitest test as path/content records. The records are plans only; this function does not write either file.",
+				"examples": [
+					[
+						{
+							"path": "src/controllers/UserController.ts",
+							"contents": "export class UserController {\n\tasync index(): Promise<Response> {\n\t\treturn Response.json({ ok: true });\n\t}\n}\n"
+						},
+						{
+							"path": "test/controllers/user-controller.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { UserController } from '../../src/controllers/UserController';\n\ntest('UserController index returns ok', async () => {\n\tconst response = await new UserController().index();\n\texpect(await response.json()).toEqual({ ok: true });\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "classFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns a class source file and its Vitest instance test as path/content records under the supplied folder. The generated run method returns the kebab-case name; the records are plans only and are not written.",
+				"examples": [
+					[
+						{
+							"path": "src/services/UserService.ts",
+							"contents": "export class UserService {\n\trun(): string {\n\t\treturn 'user';\n\t}\n}\n"
+						},
+						{
+							"path": "test/services/user.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { UserService } from '../../src/services/UserService';\n\ntest('UserService runs', () => {\n\texpect(new UserService().run()).toBe('user');\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "repositoryFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns a generic repository source file and its Vitest instance test as path/content records. The generated repository keeps records in a Map keyed by numeric id and provides find and save; this function does not persist files or records.",
+				"examples": [
+					[
+						{
+							"path": "src/repositories/UserRepository.ts",
+							"contents": "export interface RepositoryRecord {\n\tid: number;\n}\n\nexport class UserRepository<T extends RepositoryRecord> {\n\tprivate readonly records = new Map<number, T>();\n\n\tfind(id: number): T | undefined {\n\t\treturn this.records.get(id);\n\t}\n\n\tsave(record: T): T {\n\t\tthis.records.set(record.id, record);\n\t\treturn record;\n\t}\n}\n"
+						},
+						{
+							"path": "test/repositories/user.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { UserRepository } from '../../src/repositories/UserRepository';\n\ntest('UserRepository saves records', () => {\n\texpect(new UserRepository()).toBeInstanceOf(UserRepository);\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "adapterFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns an adapter source file and its Vitest instance test as path/content records. The generated connect method uses config.name when present and otherwise the kebab-case input name; the records are plans only.",
+				"examples": [
+					[
+						{
+							"path": "src/adapters/UserAdapter.ts",
+							"contents": "export interface UserAdapterConfig {\n\tname?: string;\n}\n\nexport class UserAdapter {\n\tconstructor(private readonly config: UserAdapterConfig = {}) {}\n\n\tconnect(): string {\n\t\treturn this.config.name ?? 'user';\n\t}\n}\n"
+						},
+						{
+							"path": "test/adapters/user.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { UserAdapter } from '../../src/adapters/UserAdapter';\n\ntest('UserAdapter connects', () => {\n\texpect(new UserAdapter()).toBeInstanceOf(UserAdapter);\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "validatorFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns a validator source file and its Vitest instance test as path/content records. The generated validator reports an error only when the input has no own enumerable keys; it does not validate field contents.",
+				"examples": [
+					[
+						{
+							"path": "src/validators/UserValidator.ts",
+							"contents": "export interface UserValidatorResult {\n\tvalid: boolean;\n\terrors: string[];\n}\n\nexport class UserValidator {\n\tvalidate(input: Record<string, unknown>): UserValidatorResult {\n\t\tconst errors = Object.keys(input).length === 0 ? ['input is empty'] : [];\n\t\treturn { valid: errors.length === 0, errors };\n\t}\n}\n"
+						},
+						{
+							"path": "test/validators/user.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { UserValidator } from '../../src/validators/UserValidator';\n\ntest('UserValidator validates input', () => {\n\texpect(new UserValidator()).toBeInstanceOf(UserValidator);\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "serializerFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns a serializer source file and its Vitest instance test as path/content records. The generated serialize method returns a shallow copy of the input object, so nested values are not copied.",
+				"examples": [
+					[
+						{
+							"path": "src/serializers/UserSerializer.ts",
+							"contents": "export class UserSerializer {\n\tserialize(input: Record<string, unknown>): Record<string, unknown> {\n\t\treturn { ...input };\n\t}\n}\n"
+						},
+						{
+							"path": "test/serializers/user.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { UserSerializer } from '../../src/serializers/UserSerializer';\n\ntest('UserSerializer serializes input', () => {\n\texpect(new UserSerializer()).toBeInstanceOf(UserSerializer);\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "policyFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns a policy source file and its Vitest instance test as path/content records. The generated canRead method returns true only when actor.role is exactly admin.",
+				"examples": [
+					[
+						{
+							"path": "src/policies/UserPolicy.ts",
+							"contents": "export interface UserPolicyActor {\n\trole?: string;\n}\n\nexport class UserPolicy {\n\tcanRead(actor: UserPolicyActor): boolean {\n\t\treturn actor.role === 'admin';\n\t}\n}\n"
+						},
+						{
+							"path": "test/policies/user.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { UserPolicy } from '../../src/policies/UserPolicy';\n\ntest('UserPolicy checks access', () => {\n\texpect(new UserPolicy()).toBeInstanceOf(UserPolicy);\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "seederFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns a seed-data source file and its Vitest test as path/content records. The generated async function resolves to an object containing the kebab-case name as seeded metadata; it does not seed a database.",
+				"examples": [
+					[
+						{
+							"path": "db/seed-data/user.ts",
+							"contents": "export async function seedUser(): Promise<{ seeded: string }> {\n\treturn { seeded: 'user' };\n}\n"
+						},
+						{
+							"path": "test/seeders/user.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { seedUser } from '../../db/seed-data/user';\n\ntest('seedUser returns seed metadata', async () => {\n\texpect(await seedUser()).toEqual({ seeded: 'user' });\n});\n"
+						}
+					]
+				]
 			},
 			{
 				"name": "utilFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Returns a utility source file and its Vitest test as path/content records. The generated function applies String.trim, which removes surrounding whitespace but leaves internal whitespace unchanged.",
+				"examples": [
+					[
+						{
+							"path": "src/utils/user.ts",
+							"contents": "export function user(value: string): string {\n\treturn value.trim();\n}\n"
+						},
+						{
+							"path": "test/utils/user.test.ts",
+							"contents": "import { expect, test } from 'vitest';\nimport { user } from '../../src/utils/user';\n\ntest('user trims values', () => {\n\texpect(user(' value ')).toBe('value');\n});\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "controllerFiles",
@@ -141,17 +280,32 @@
 					{
 						"name": "controllerFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name is converted to PascalCase for the controller class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+						"examples": ["user"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "controllerFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns the controller source and its Vitest test as path/content records. The records are plans only; this function does not write either file.",
+						"examples": [
+							[
+								{
+									"path": "src/controllers/UserController.ts",
+									"contents": "export class UserController {\n\tasync index(): Promise<Response> {\n\t\treturn Response.json({ ok: true });\n\t}\n}\n"
+								},
+								{
+									"path": "test/controllers/user-controller.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { UserController } from '../../src/controllers/UserController';\n\ntest('UserController index returns ok', async () => {\n\tconst response = await new UserController().index();\n\texpect(await response.json()).toEqual({ ok: true });\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "classFiles",
@@ -159,27 +313,46 @@
 					{
 						"name": "classFiles.folder",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The folder value is inserted directly into the src/ and test/ paths without transformation. This function applies no additional validation.",
+						"examples": ["services"]
 					},
 					{
 						"name": "classFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name is converted to PascalCase for the class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+						"examples": ["user"]
 					},
 					{
 						"name": "classFiles.suffix",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The suffix is appended directly to the PascalCase name to form the generated class name. It does not affect the kebab-case file name, and this function applies no additional validation.",
+						"examples": ["Service"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "classFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns a class source file and its Vitest instance test as path/content records under the supplied folder. The generated run method returns the kebab-case name; the records are plans only and are not written.",
+						"examples": [
+							[
+								{
+									"path": "src/services/UserService.ts",
+									"contents": "export class UserService {\n\trun(): string {\n\t\treturn 'user';\n\t}\n}\n"
+								},
+								{
+									"path": "test/services/user.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { UserService } from '../../src/services/UserService';\n\ntest('UserService runs', () => {\n\texpect(new UserService().run()).toBe('user');\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "repositoryFiles",
@@ -187,17 +360,32 @@
 					{
 						"name": "repositoryFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name is converted to PascalCase for the repository class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+						"examples": ["user"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "repositoryFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns a generic repository source file and its Vitest instance test as path/content records. The generated repository keeps records in a Map keyed by numeric id and provides find and save; this function does not persist files or records.",
+						"examples": [
+							[
+								{
+									"path": "src/repositories/UserRepository.ts",
+									"contents": "export interface RepositoryRecord {\n\tid: number;\n}\n\nexport class UserRepository<T extends RepositoryRecord> {\n\tprivate readonly records = new Map<number, T>();\n\n\tfind(id: number): T | undefined {\n\t\treturn this.records.get(id);\n\t}\n\n\tsave(record: T): T {\n\t\tthis.records.set(record.id, record);\n\t\treturn record;\n\t}\n}\n"
+								},
+								{
+									"path": "test/repositories/user.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { UserRepository } from '../../src/repositories/UserRepository';\n\ntest('UserRepository saves records', () => {\n\texpect(new UserRepository()).toBeInstanceOf(UserRepository);\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "adapterFiles",
@@ -205,17 +393,32 @@
 					{
 						"name": "adapterFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name is converted to PascalCase for the adapter class and kebab-case for the generated file and fallback connection name. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+						"examples": ["user"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "adapterFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns an adapter source file and its Vitest instance test as path/content records. The generated connect method uses config.name when present and otherwise the kebab-case input name; the records are plans only.",
+						"examples": [
+							[
+								{
+									"path": "src/adapters/UserAdapter.ts",
+									"contents": "export interface UserAdapterConfig {\n\tname?: string;\n}\n\nexport class UserAdapter {\n\tconstructor(private readonly config: UserAdapterConfig = {}) {}\n\n\tconnect(): string {\n\t\treturn this.config.name ?? 'user';\n\t}\n}\n"
+								},
+								{
+									"path": "test/adapters/user.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { UserAdapter } from '../../src/adapters/UserAdapter';\n\ntest('UserAdapter connects', () => {\n\texpect(new UserAdapter()).toBeInstanceOf(UserAdapter);\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "validatorFiles",
@@ -223,17 +426,32 @@
 					{
 						"name": "validatorFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name is converted to PascalCase for the validator class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+						"examples": ["user"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validatorFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns a validator source file and its Vitest instance test as path/content records. The generated validator reports an error only when the input has no own enumerable keys; it does not validate field contents.",
+						"examples": [
+							[
+								{
+									"path": "src/validators/UserValidator.ts",
+									"contents": "export interface UserValidatorResult {\n\tvalid: boolean;\n\terrors: string[];\n}\n\nexport class UserValidator {\n\tvalidate(input: Record<string, unknown>): UserValidatorResult {\n\t\tconst errors = Object.keys(input).length === 0 ? ['input is empty'] : [];\n\t\treturn { valid: errors.length === 0, errors };\n\t}\n}\n"
+								},
+								{
+									"path": "test/validators/user.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { UserValidator } from '../../src/validators/UserValidator';\n\ntest('UserValidator validates input', () => {\n\texpect(new UserValidator()).toBeInstanceOf(UserValidator);\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "serializerFiles",
@@ -241,17 +459,32 @@
 					{
 						"name": "serializerFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name is converted to PascalCase for the serializer class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+						"examples": ["user"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "serializerFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns a serializer source file and its Vitest instance test as path/content records. The generated serialize method returns a shallow copy of the input object, so nested values are not copied.",
+						"examples": [
+							[
+								{
+									"path": "src/serializers/UserSerializer.ts",
+									"contents": "export class UserSerializer {\n\tserialize(input: Record<string, unknown>): Record<string, unknown> {\n\t\treturn { ...input };\n\t}\n}\n"
+								},
+								{
+									"path": "test/serializers/user.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { UserSerializer } from '../../src/serializers/UserSerializer';\n\ntest('UserSerializer serializes input', () => {\n\texpect(new UserSerializer()).toBeInstanceOf(UserSerializer);\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "policyFiles",
@@ -259,17 +492,32 @@
 					{
 						"name": "policyFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name is converted to PascalCase for the policy class and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+						"examples": ["user"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "policyFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns a policy source file and its Vitest instance test as path/content records. The generated canRead method returns true only when actor.role is exactly admin.",
+						"examples": [
+							[
+								{
+									"path": "src/policies/UserPolicy.ts",
+									"contents": "export interface UserPolicyActor {\n\trole?: string;\n}\n\nexport class UserPolicy {\n\tcanRead(actor: UserPolicyActor): boolean {\n\t\treturn actor.role === 'admin';\n\t}\n}\n"
+								},
+								{
+									"path": "test/policies/user.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { UserPolicy } from '../../src/policies/UserPolicy';\n\ntest('UserPolicy checks access', () => {\n\texpect(new UserPolicy()).toBeInstanceOf(UserPolicy);\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "seederFiles",
@@ -277,17 +525,32 @@
 					{
 						"name": "seederFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name is converted to PascalCase for the seed function and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+						"examples": ["user"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "seederFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns a seed-data source file and its Vitest test as path/content records. The generated async function resolves to an object containing the kebab-case name as seeded metadata; it does not seed a database.",
+						"examples": [
+							[
+								{
+									"path": "db/seed-data/user.ts",
+									"contents": "export async function seedUser(): Promise<{ seeded: string }> {\n\treturn { seeded: 'user' };\n}\n"
+								},
+								{
+									"path": "test/seeders/user.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { seedUser } from '../../db/seed-data/user';\n\ntest('seedUser returns seed metadata', async () => {\n\texpect(await seedUser()).toEqual({ seeded: 'user' });\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "utilFiles",
@@ -295,17 +558,32 @@
 					{
 						"name": "utilFiles.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The name is converted to camelCase for the utility function and kebab-case for the generated file and test names. Those derived values are embedded in returned paths and source text; this function applies no additional validation.",
+						"examples": ["user"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "utilFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Returns a utility source file and its Vitest test as path/content records. The generated function applies String.trim, which removes surrounding whitespace but leaves internal whitespace unchanged.",
+						"examples": [
+							[
+								{
+									"path": "src/utils/user.ts",
+									"contents": "export function user(value: string): string {\n\treturn value.trim();\n}\n"
+								},
+								{
+									"path": "test/utils/user.test.ts",
+									"contents": "import { expect, test } from 'vitest';\nimport { user } from '../../src/utils/user';\n\ntest('user trims values', () => {\n\texpect(user(' value ')).toBe('value');\n});\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
