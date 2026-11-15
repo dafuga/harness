@@ -26,23 +26,29 @@
 				"name": "AgentEffortPicker.efforts",
 				"type": "string[]",
 				"required": true,
-				"description": "Required effort names in display order. An empty list disables the picker and labels it as using the model default."
+				"description": "The list contains the model-supported effort names in display order, and each string becomes one button. An empty list disables the dialog and changes its title to \"Reasoning effort: model default\"; values are rendered as supplied with no validation.",
+				"examples": [
+					["low", "medium", "high"],
+					[]
+				]
 			},
 			{
 				"name": "AgentEffortPicker.effort",
 				"type": "string",
 				"required": true,
-				"description": "Required bindable current effort. Choosing an offered effort replaces this value and closes the dialog. No fallback is selected for an invalid value."
+				"description": "The bindable current effort string appears in the title when efforts is nonempty and marks matching buttons with active and aria-pressed. Choosing a listed string assigns it and calls close; an unmatched value is not rejected and marks no button active.",
+				"examples": ["medium"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AgentEffortPicker",
 				"type": "markup",
-				"description": "Reasoning icon opening a list of effort buttons with the current choice marked. Its tooltip names the effort or model default when no efforts are listed."
+				"description": "The markup is a ChoiceDialog labeled \"Reasoning effort\" with a reasoning icon and one button per effort; a matching value is active and aria-pressed. It disables the dialog for an empty list, titles it with the current effort or \"Reasoning effort: model default\", and sets width 220, maxHeight 420, and gap 6."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
