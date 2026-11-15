@@ -169,11 +169,11 @@ export const scenarioManifestSchema = z.strictObject({
 				id: identifier,
 				title: text,
 				coverage: z.enum(['required', 'missing', 'inapplicable']),
+				/** Required only when the scenario explicitly enrolls video. */
+				motion: z.enum(['required', 'none']).optional(),
+				motionReason: text.optional(),
 				reason: z.string().optional(),
-				/**
-				 * The units this state shows. A unit that some state names is covered only by the
-				 * states that name it; a unit no state names is covered by every state.
-				 */
+				/** Units shown by this state; omission retains historical scenario attribution. */
 				units: z.array(identifier).min(1).optional()
 			})
 		)

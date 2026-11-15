@@ -55,11 +55,14 @@ export interface RevisionRegistry {
 		title: string;
 		kind: string;
 		units: string[];
+		video?: ScenarioManifest['video'];
 		/** `units` names what a state shows, when the scenario says so for that state. */
 		states: Array<{
 			id: string;
 			title?: string;
 			coverage: string;
+			motion?: ScenarioManifest['states'][number]['motion'];
+			motionReason?: string;
 			reason?: string;
 			units?: string[];
 		}>;

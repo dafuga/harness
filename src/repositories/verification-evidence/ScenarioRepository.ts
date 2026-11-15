@@ -7,6 +7,10 @@ import type { ScenarioManifest } from '../../core/development-tooling/unitTypes'
 import { scenariosDirectory } from '../../core/development-tooling/unitsConfig';
 import { stableJson } from '../../utils/development-tooling/stableJson';
 import { readTreeTexts } from '../../utils/development-tooling/readTreeTexts';
+import {
+	videoScenarioSourceContext,
+	videoScenarioSources
+} from '../../validators/verification-evidence/scenario-manifest-validator/videoScenarioSources';
 import { ScenarioManifestValidator } from '../../validators/verification-evidence/ScenarioManifestValidator';
 
 /** Stores scenario contracts as one canonical JSON file per scenario. */
@@ -16,7 +20,8 @@ export class ScenarioRepository {
 	constructor(private readonly root: string) {}
 
 	async read(tree: SourceTree): Promise<ScenarioRead> {
-		const paths = (await tree.list())
+		const listed = await tree.list();
+		const paths = listed
 			.map((entry) => entry.path)
 			.filter((path) => path.startsWith(`${scenariosDirectory}/`) && path.endsWith('.json'));
 		const result: ScenarioRead = { manifests: [], errors: [] };
@@ -25,6 +30,15 @@ export class ScenarioRepository {
 			const checked = this.validator.validate(parse(texts[index]), path);
 			result.errors.push(...checked.errors);
 			if (checked.value) result.manifests.push(checked.value);
+		}
+		if (result.manifests.some((scenario) => scenario.video)) {
+			const context = await videoScenarioSourceContext(
+				tree,
+				this.root,
+				listed.map((entry) => entry.path)
+			);
+			for (const scenario of result.manifests)
+				result.errors.push(...(await videoScenarioSources(context, scenario)));
 		}
 		return result;
 	}

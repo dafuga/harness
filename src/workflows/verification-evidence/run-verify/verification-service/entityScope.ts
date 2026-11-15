@@ -23,13 +23,18 @@ export function scopedScenarios(scenarios: ScenarioManifest[], entity: string): 
 			? scenario.states.filter((state) => (state.units ?? []).includes(entity))
 			: scenario.states.filter((state) => !state.units?.length);
 		const shown = new Set(states.map((state) => state.id));
+		const video = scenario.video ? scopedVideo(scenario.video, entity, shown) : undefined;
+		const videoStates = new Set(video?.clips.map((clip) => clip.state));
 		return {
 			...scenario,
 			units: [entity],
 			states,
+			...(video ? { video } : {}),
 			evidence: (scenario.evidence ?? []).map((item) => ({
 				...item,
-				states: item.states.filter((state) => shown.has(state))
+				states: item.states.filter(
+					(state) => shown.has(state) && (item.kind !== 'video' || !video || videoStates.has(state))
+				)
 			}))
 		};
 	});
@@ -44,4 +49,23 @@ export function scopedCheck(check: PlannedCheck, entity: string): PlannedCheck {
 	if (check.scenario !== 'component-catalog-previews' || !playwright || selected) return check;
 	const grep = `(^| )${escaped(entity)}(:[^ ]+)? at `;
 	return { ...check, command: `${check.command} --grep '${grep}'` };
+}
+
+function scopedVideo(
+	video: NonNullable<ScenarioManifest['video']>,
+	entity: string,
+	shown: Set<string>
+) {
+	const clips = video.clips.filter((clip) => clip.unit === entity && shown.has(clip.state));
+	const selected = new Set(clips.map((clip) => clip.id));
+	return {
+		...video,
+		clips,
+		graphs: video.graphs
+			.filter((graph) => graph.unit === entity && graph.clips.some((id) => selected.has(id)))
+			.map((graph) => ({ ...graph, clips: graph.clips.filter((id) => selected.has(id)) })),
+		playlists: video.playlists
+			.map((playlist) => ({ ...playlist, clips: playlist.clips.filter((id) => selected.has(id)) }))
+			.filter((playlist) => playlist.clips.length)
+	};
 }

@@ -1,4 +1,5 @@
 // @harness-uid u_hfud4vng54
+import { videoScenarioRules } from './scenario-manifest-validator/videoScenarioRules';
 import {
 	scenarioManifestSchema,
 	type ScenarioManifest
@@ -28,7 +29,8 @@ export class ScenarioManifestValidator {
 			...this.stateCoverage(scenario),
 			...this.stateUnits(scenario),
 			...this.evidenceReferences(scenario),
-			...this.viewportRules(scenario)
+			...this.viewportRules(scenario),
+			...videoScenarioRules(scenario)
 		];
 		return { value: scenario, errors };
 	}
