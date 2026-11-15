@@ -7,7 +7,7 @@ import process from 'node:process';
 import { test } from 'vitest';
 import { ResourceQueueRepository } from '../../../src/services/execution-runtimes/resource-queue-service/ResourceQueueRepository';
 import { expect } from '../../../test/verificationExpect';
-import { CodexAppServerAdapter } from '../src/adapters/codex-app-server-adapter/CodexAppServerAdapter';
+import { CodexAppServerAdapter } from '../src/adapters/agents-providers/codex-app-server-adapter/CodexAppServerAdapter';
 import { alive, fixture, pids, png, resourceTelemetry, turn } from './cli-fixture';
 test('Codex initializes subscription RPC, discovers models and confines public turn events', async () => {
 	const f = await fixture('codex-text');

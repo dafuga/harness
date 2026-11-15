@@ -9,7 +9,7 @@ import { afterEach, onTestFinished, vi } from 'vitest';
 import { ResourceQueueService } from '../../../src/services/execution-runtimes/ResourceQueueService';
 import { observeResources, snapshot } from '../../../test/support/resourceFixture';
 import { ClaudeCliAdapter } from '../src/adapters/claude-cli-adapter/ClaudeCliAdapter';
-import { CodexAppServerAdapter } from '../src/adapters/codex-app-server-adapter/CodexAppServerAdapter';
+import { CodexAppServerAdapter } from '../src/adapters/agents-providers/codex-app-server-adapter/CodexAppServerAdapter';
 import type { AgentTurn } from '../src/models/AgentRunner.types';
 export const resourceTelemetry = { pressure: false };
 const queues: ResourceQueueService[] = [];
