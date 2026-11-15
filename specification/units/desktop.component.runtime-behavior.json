@@ -42,27 +42,96 @@
 				"name": "RuntimeBehavior.result",
 				"type": "EntityEvidenceResult",
 				"required": true,
-				"description": "Required behavior rows, scenarios, scope and after-side record. Comparison has two sides only for commit mode with a parent."
+				"description": "Recorded entity evidence supplying behavior rows, commit scope, and the after-side record used for duration facts. A parent side is shown only when the derived mode is commit and the scope parent is non-null.",
+				"examples": [
+					{
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": null,
+								"category": "components",
+								"entity": "desktop.component.runtime-behavior"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "0123456789abcdef0123456789abcdef01234567",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true,
+							"parent": "89abcdef0123456789abcdef0123456789abcdef",
+							"summary": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+								"subject": "Record runtime behavior evidence",
+								"author": "Harness",
+								"committedAt": "2026-11-14T10:00:00Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": ["No end-to-end result is recorded."],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"identity": {
+							"principalId": "principal:runtime-example",
+							"projectId": "project:runtime-example",
+							"repositoryId": 123456,
+							"requestedRef": "main",
+							"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+							"sourceTree": "abcdef0123456789abcdef0123456789abcdef01",
+							"notesRef": null,
+							"notesRevision": null,
+							"evidenceRef": null,
+							"evidenceRevision": null,
+							"historyIndexRevision": null,
+							"artifactHash": null,
+							"profile": null
+						},
+						"evidence": {
+							"mode": "current",
+							"scenarios": [],
+							"after": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"detail": null,
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": "No end-to-end result is recorded."
+							},
+							"before": null,
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "current",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": null,
+							"scenarios": []
+						}
+					}
+				]
 			},
 			{
 				"name": "RuntimeBehavior.evidence",
 				"type": "EntityEvidence",
 				"required": true,
-				"description": "Read state: undefined is pending, null is failure, populated data supplies comparison input. Refusal messages are forwarded to run panels."
+				"description": "Evidence read state: undefined means results are still being read, null means the read failed, and a value supplies the read behavior. Refusal messages are forwarded to each run panel, and a failed read is shown as unknown."
 			},
 			{
 				"name": "RuntimeBehavior.unit",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional function identifier forwarded to result rows on both sides. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional unit identifier forwarded to both run panels. Defaults to JavaScript undefined (omitted), not the literal string.",
+				"examples": ["reports.component.evidence-grid"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimeBehavior",
 				"type": "markup",
-				"description": "Current or compared behavior with verdict/reasons, result groups, recorded duration and scenario outcomes. Pending reads show a reading verdict unless already fixed as not-compared or unknown with a reason. Failed reads say Behavior unknown. Missing groups or duration are explicitly marked absent. States: paired: The selected commit and its parent appear in before/after behavior panes. loading: Recorded behavior is still being read and the waiting state is shown. unreadable: The behavior read is unavailable and the panel explains the evidence gap. empty: No recorded behavior rows or scenarios exist and the panel shows its empty state."
+				"description": "Markup showing the recorded behavior verdict and reason, comparison panes, and scenario and duration facts; an empty group list shows an empty state. Two panes appear only for derived commit mode with a non-null parent; unresolved reads show the reading label unless behavior is fixed as not-compared or unknown with a reason, and failed reads show Behavior unknown."
 			}
 		],
 		"errors": [],
