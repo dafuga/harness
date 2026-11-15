@@ -22,39 +22,67 @@
 				"name": "hubEvidenceFile.base",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "A pinned source context supplies the repository, commit, tree entries, and source adapter used to locate and read the file. Its adapter may release cached bytes for the joined path after the check finishes."
 			},
 			{
 				"name": "hubEvidenceFile.input",
 				"type": "Input",
 				"required": true,
-				"description": "Evidence pointer path and file declaration with path, storage, hash and byte length."
+				"description": "Contains an evidence pointer (commit, path, and manifest SHA-256) and a file declaration (path, SHA-256, byte count, storage, and optional media type). The function joins the paths and checks one file against its declaration.",
+				"examples": [
+					{
+						"pointer": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"path": "records/verification-2026-11-15",
+							"manifest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+						},
+						"file": {
+							"path": "clips/doorbell.mp4",
+							"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"bytes": 1200000,
+							"storage": "lfs",
+							"mediaType": "video/mp4"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidenceFileLimit",
 				"type": "unknown",
-				"description": "Maximum file size: 50000000 bytes."
+				"description": "The maximum accepted file size is 50,000,000 bytes, for both Git LFS objects and ordinary stored files. The function rejects declared, stored, or raw file content above this ceiling.",
+				"examples": [50000000]
 			},
 			{
 				"name": "hubEvidenceFile",
 				"type": "unknown",
-				"description": "Bytes and an immutable file fact when intact, or explicit problem text for missing/mismatched declarations. A fact includes the verified storage blob ID."
+				"description": "Returns a problem when the file is missing or its stored LFS pointer does not match the declaration. Otherwise returns the bytes and problems, with a frozen fact containing the Git blob SHA only when the bytes match the declared size and SHA-256.",
+				"examples": [
+					{
+						"problems": ["doorbell.mp4 is missing from the evidence branch"]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "evidence-file-too-large",
-				"type": "refused",
-				"description": "Declared, stored or returned raw file exceeds the 50000000-byte ceiling."
+				"type": "thrown",
+				"description": "Thrown when the declared file size, Git tree entry size, or raw file size exceeds the 50,000,000-byte limit."
 			},
 			{
 				"name": "cache-hash-mismatch",
-				"type": "refused",
-				"description": "Materialized Git LFS bytes do not match the pointer’s declared content."
+				"type": "thrown",
+				"description": "Thrown when materialized Git LFS bytes differ in size or SHA-256 from the declared file after the stored LFS pointer matches it."
+			},
+			{
+				"name": "artifact-corrupt",
+				"type": "thrown",
+				"description": "Thrown when the raw Git blob SHA-1 does not match the blob ID in its tree entry."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubEvidenceFile",
@@ -63,24 +91,61 @@
 						"name": "hubEvidenceFile.base",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "A pinned source context supplies the repository, commit, tree entries, and source adapter used to locate and read the file. Its adapter may release cached bytes for the joined path after the check finishes."
 					},
 					{
 						"name": "hubEvidenceFile.input",
 						"type": "Input",
 						"required": true,
-						"description": "Evidence pointer path and file declaration with path, storage, hash and byte length."
+						"description": "Contains an evidence pointer (commit, path, and manifest SHA-256) and a file declaration (path, SHA-256, byte count, storage, and optional media type). The function joins the paths and checks one file against its declaration.",
+						"examples": [
+							{
+								"pointer": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"path": "records/verification-2026-11-15",
+									"manifest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+								},
+								"file": {
+									"path": "clips/doorbell.mp4",
+									"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"bytes": 1200000,
+									"storage": "lfs",
+									"mediaType": "video/mp4"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEvidenceFile",
 						"type": "unknown",
-						"description": "Bytes and an immutable file fact when intact, or explicit problem text for missing/mismatched declarations. A fact includes the verified storage blob ID."
+						"description": "Returns a problem when the file is missing or its stored LFS pointer does not match the declaration. Otherwise returns the bytes and problems, with a frozen fact containing the Git blob SHA only when the bytes match the declared size and SHA-256.",
+						"examples": [
+							{
+								"problems": ["doorbell.mp4 is missing from the evidence branch"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "evidence-file-too-large",
+						"type": "thrown",
+						"description": "Thrown when the declared file size, Git tree entry size, or raw file size exceeds the 50,000,000-byte limit."
+					},
+					{
+						"name": "cache-hash-mismatch",
+						"type": "thrown",
+						"description": "Thrown when materialized Git LFS bytes differ in size or SHA-256 from the declared file after the stored LFS pointer matches it."
+					},
+					{
+						"name": "artifact-corrupt",
+						"type": "thrown",
+						"description": "Thrown when the raw Git blob SHA-1 does not match the blob ID in its tree entry."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
