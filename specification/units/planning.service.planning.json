@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/planning/src/lib/planning-collaboration/planning/planning-service/PlanningService.ts",
-			"packages/planning/src/lib/planning/planning-service/PlanningService.ts",
 			"packages/planning/src/services/planning-service/PlanningService.ts"
 		],
-		"symbols": ["planningService", "planningService", "planningService"]
+		"symbols": ["planningService", "planningService"]
 	},
 	"contract": {
 		"origin": "derived",
