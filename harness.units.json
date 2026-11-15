@@ -261,8 +261,8 @@
 		},
 		{
 			"from": "packages/hub/src/routes/+page.svelte",
-			"specifier": "$desktop/services/ProjectSyncService",
-			"to": "packages/desktop/src/services/ProjectSyncService.ts",
+			"specifier": "$desktop/services/projects-sessions/ProjectSyncService",
+			"to": "packages/desktop/src/services/projects-sessions/ProjectSyncService.ts",
 			"reason": "The Hub build resolves $desktop to the shared desktop source, so account refresh and access cleanup use the same implementation on every platform."
 		},
 		{

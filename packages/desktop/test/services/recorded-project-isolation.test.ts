@@ -1,7 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { createHash } from 'node:crypto';
-import { RecordedEvidenceService } from '../../src/services/RecordedEvidenceService';
+import { RecordedEvidenceService } from '../../src/lib/development-tooling/desktop-bridge/RecordedEvidenceService';
 import { sampleDetail, sampleScope, head, feed } from '../recorded-sample';
 import type { ProjectSessionService } from '../../src/services/ProjectSessionService';
 import type {

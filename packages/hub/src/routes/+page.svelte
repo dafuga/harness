@@ -4,7 +4,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import type { ProjectSummary } from 'collaboration';
-	import { ProjectSyncService } from '$desktop/services/ProjectSyncService';
+	import { ProjectSyncService } from '$desktop/services/projects-sessions/ProjectSyncService';
 	import HubFrame from '../components/shared-primitives/HubFrame.svelte';
 	import LoginPanel from '../components/accounts-access/login-panel/LoginPanel.svelte';
 	import ProjectCreate from '../components/projects-sessions/ProjectCreate.svelte';

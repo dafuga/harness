@@ -7,7 +7,7 @@ import type { CacheIdentity } from '../../../collaboration/src/models/planning-c
 import type { EvidenceArtifactQuery } from '../../src/models/DesktopEvidence.types';
 import { HostedReadService } from '../../src/services/HostedReadService';
 import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
-import { RemoteArtifactCacheService } from '../../src/services/RemoteArtifactCacheService';
+import { RemoteArtifactCacheService } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService';
 import { HostedFailureValidator } from '../../src/validators/HostedFailureValidator';
 
 const origin = 'https://hub.example.invalid';
