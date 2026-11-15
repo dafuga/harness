@@ -21,51 +21,69 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DesktopExperimentService.plan.sources",
 				"type": "Map<string, string>",
-				"required": true
+				"required": true,
+				"description": "A map from source asset paths to their source text. plan checks each configured asset path and requires a non-empty source whose SHA-256 hash matches the configured hash."
 			},
 			{
 				"name": "DesktopExperimentService.plan.options",
 				"type": "{ dataPath: string; catalogPath: string }",
-				"required": true
+				"required": true,
+				"description": "Carries filesystem paths used by the patch: dataPath is JSON-stringified into CODEX_ELECTRON_USER_DATA_PATH, and catalogPath is passed to HarnessPickerBridge. Neither value is validated.",
+				"examples": [
+					{
+						"dataPath": "/tmp/codex-harness/desktop-experiment/user-data",
+						"catalogPath": "/tmp/codex-harness/desktop-experiment/catalog.json"
+					}
+				]
 			},
 			{
 				"name": "replaceOnce.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The source text searched and rewritten by replaceOnce. It must produce exactly two parts when split on anchor or the function throws.",
+				"examples": ["p.app.setName(r.Rt(Q9))"]
 			},
 			{
 				"name": "replaceOnce.anchor",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The exact substring used to split source before replacement. The split must produce exactly two parts or replaceOnce throws.",
+				"examples": ["p.app.setName(r.Rt(Q9))"]
 			},
 			{
 				"name": "replaceOnce.replacement",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The text substituted between the parts returned by splitting source on anchor. It is inserted verbatim.",
+				"examples": ["p.app.setName(\"Codex Harness Experimental\")"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "DesktopExperimentService.plan",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"description": "A new Map copied from sources with configured desktop asset source strings patched. The patches set environment overrides, change the app name and thread unload delay, add picker-bridge routing, and adjust model-filter and remote-control behavior."
 			},
 			{
 				"name": "replaceOnce",
-				"type": "string"
+				"type": "string",
+				"description": "The source string with replacement inserted between the two parts produced by splitting on anchor. The function throws unless that split produces exactly two parts.",
+				"examples": ["p.app.setName(\"Codex Harness Experimental\")"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The implementation throws Error when a configured asset source is absent, empty, or has a SHA-256 hash different from its configured hash, or when source.split(anchor).length is not exactly 2."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DesktopExperimentService.plan",
@@ -73,22 +91,37 @@
 					{
 						"name": "DesktopExperimentService.plan.sources",
 						"type": "Map<string, string>",
-						"required": true
+						"required": true,
+						"description": "A map from source asset paths to their source text. plan checks each configured asset path and requires a non-empty source whose SHA-256 hash matches the configured hash."
 					},
 					{
 						"name": "DesktopExperimentService.plan.options",
 						"type": "{ dataPath: string; catalogPath: string }",
-						"required": true
+						"required": true,
+						"description": "Carries filesystem paths used by the patch: dataPath is JSON-stringified into CODEX_ELECTRON_USER_DATA_PATH, and catalogPath is passed to HarnessPickerBridge. Neither value is validated.",
+						"examples": [
+							{
+								"dataPath": "/tmp/codex-harness/desktop-experiment/user-data",
+								"catalogPath": "/tmp/codex-harness/desktop-experiment/catalog.json"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "DesktopExperimentService.plan",
-						"type": "Map<string, string>"
+						"type": "Map<string, string>",
+						"description": "A new Map copied from sources with configured desktop asset source strings patched. The patches set environment overrides, change the app name and thread unload delay, add picker-bridge routing, and adjust model-filter and remote-control behavior."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "plan throws Error(\"Unsupported desktop build: <path>\") when a configured asset source is absent, empty, or its SHA-256 differs from the configured hash. Its patching helpers also throw Error(\"Desktop patch anchor must appear exactly once\") when source.split(anchor).length is not exactly 2."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "replaceOnce",
@@ -96,32 +129,41 @@
 					{
 						"name": "replaceOnce.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The source text searched and rewritten by replaceOnce. It must produce exactly two parts when split on anchor or the function throws.",
+						"examples": ["p.app.setName(r.Rt(Q9))"]
 					},
 					{
 						"name": "replaceOnce.anchor",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The exact substring used to split source before replacement. The split must produce exactly two parts or replaceOnce throws.",
+						"examples": ["p.app.setName(r.Rt(Q9))"]
 					},
 					{
 						"name": "replaceOnce.replacement",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The text substituted between the parts returned by splitting source on anchor. It is inserted verbatim.",
+						"examples": ["p.app.setName(\"Codex Harness Experimental\")"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "replaceOnce",
-						"type": "string"
+						"type": "string",
+						"description": "The source string with replacement inserted between the two parts produced by splitting on anchor. The function throws unless that split produces exactly two parts.",
+						"examples": ["p.app.setName(\"Codex Harness Experimental\")"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "replaceOnce throws Error(\"Desktop patch anchor must appear exactly once\") when source.split(anchor).length is not exactly 2."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
