@@ -21,23 +21,24 @@
 				"name": "watchDeploymentActivities.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
+				"description": "The workspace state used to decide whether polling is allowed and whether a reply still belongs to the active bridge. Polling requires a local workspace with a deploymentActivities method, and a reply is accepted only while the workspace remains local and keeps the same bridge."
 			},
 			{
 				"name": "watchDeploymentActivities.events",
 				"type": "Events",
 				"required": true,
-				"description": "Versioned callbacks that receive fresh jobs or a recoverable status-read failure."
+				"description": "Callbacks used to tag each poll with a numeric version and deliver its activities or report an unavailable-status message. A result or failure is delivered only while the same local workspace bridge that started the poll remains current."
 			}
 		],
 		"outputs": [
 			{
 				"name": "watchDeploymentActivities",
 				"type": "unknown",
-				"description": "Cleanup callback that stops polling and discards later replies."
+				"description": "The cleanup callback deactivates this watcher and clears its 500 ms interval. It does not cancel an in-flight bridge request, but such a reply is ignored after cleanup."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "watchDeploymentActivities",
@@ -46,24 +47,24 @@
 						"name": "watchDeploymentActivities.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
+						"description": "The workspace state used to decide whether polling is allowed and whether a reply still belongs to the active bridge. Polling requires a local workspace with a deploymentActivities method, and a reply is accepted only while the workspace remains local and keeps the same bridge."
 					},
 					{
 						"name": "watchDeploymentActivities.events",
 						"type": "Events",
 						"required": true,
-						"description": "Versioned callbacks that receive fresh jobs or a recoverable status-read failure."
+						"description": "Callbacks used to tag each poll with a numeric version and deliver its activities or report an unavailable-status message. A result or failure is delivered only while the same local workspace bridge that started the poll remains current."
 					}
 				],
 				"outputs": [
 					{
 						"name": "watchDeploymentActivities",
 						"type": "unknown",
-						"description": "Cleanup callback that stops polling and discards later replies."
+						"description": "The cleanup callback deactivates this watcher and clears its 500 ms interval. It does not cancel an in-flight bridge request, but such a reply is ignored after cleanup."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
