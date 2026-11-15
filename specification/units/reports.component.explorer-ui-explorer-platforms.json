@@ -64,61 +64,73 @@
 				"name": "ExplorerPlatforms.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Project and branch history supplied by the Explorer host."
+				"description": "The index value accepted by ExplorerScreenProps and provided to ExplorerFrame within host. ExplorerPlatforms does not read it directly."
 			},
 			{
 				"name": "ExplorerPlatforms.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Selected immutable revision; its platforms field supplies every displayed deployment declaration."
+				"description": "The selected revision supplies head.platforms, whose entries and gap drive the platform cards and notice. If no catalog is present, the component uses the unrecorded gap and still builds cards from platformViews."
 			},
 			{
 				"name": "ExplorerPlatforms.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "Optional comparison revision accepted by the shared screen interface; it never supplies missing platform settings."
+				"description": "An optional comparison revision accepted by ExplorerScreenProps and provided to ExplorerFrame within host. ExplorerPlatforms does not use it to build platform statuses or details.",
+				"examples": [null]
 			},
 			{
 				"name": "ExplorerPlatforms.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch, commit and availability context used by the shared frame."
+				"description": "The ExplorerScope value accepted by ExplorerScreenProps and provided to ExplorerFrame within host. ExplorerPlatforms does not inspect its fields."
 			},
 			{
 				"name": "ExplorerPlatforms.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current Platforms list or target detail address, including the selected branch and commit."
+				"description": "The current location selects the detail view when route.entity is truthy; otherwise the component displays the catalog. Platform links use its branch and commit and set category to platforms.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"category": "platforms"
+					}
+				]
 			},
 			{
 				"name": "ExplorerPlatforms.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Source-unit context accepted by the shared Explorer screen interface."
+				"description": "The entity array accepted by ExplorerScreenProps and provided to child screens within host. ExplorerPlatforms does not read its entries directly.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerPlatforms.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Revision-bound entity information accepted by the shared screen interface."
+				"description": "The EntityLens value accepted by ExplorerScreenProps and provided to child screens within host. ExplorerPlatforms does not read its fields directly."
 			},
 			{
 				"name": "ExplorerPlatforms.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Host revision loader accepted by the shared Explorer screen interface."
+				"description": "The revision member of HarnessClient accepted by ExplorerScreenProps and provided to ExplorerFrame within host. ExplorerPlatforms does not call it directly."
 			},
 			{
 				"name": "ExplorerPlatforms.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Host media prefix accepted by the common screen interface."
+				"description": "The media-base string accepted by ExplorerScreenProps and provided to ExplorerFrame within host. ExplorerPlatforms does not read it directly.",
+				"examples": ["/media/"]
 			},
 			{
 				"name": "ExplorerPlatforms.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Client navigation callback used by links while preserving branch and commit context."
+				"description": "The navigation callback accepted by ExplorerScreenProps and provided to child screens within host. Platform links are given a destination based on the current branch and commit."
 			}
 		],
 		"outputs": [
@@ -145,6 +157,7 @@
 				"description": "A recorded source path with an unpaired UTF-16 surrogate cannot be encoded as a GitHub URL in platform details."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
