@@ -22,35 +22,154 @@
 				"name": "recordedValue.value",
 				"type": "unknown",
 				"required": true,
-				"description": "A value already parsed from a verified JSON recording."
+				"description": "The already-parsed value to present, of any JSON shape (undefined is shown as 'Not recorded'). It is only read, never rewritten, and the result keeps at most four levels, twelve items per collection and 120 values in total, with scalar text over 240 characters cut and marked shortened.",
+				"examples": [
+					"passed",
+					{
+						"name": "checkout",
+						"status": "passed",
+						"amount": 42.5
+					},
+					[
+						{
+							"name": "checkout",
+							"status": "passed"
+						},
+						{
+							"name": "refund",
+							"status": "failed"
+						}
+					]
+				]
 			},
 			{
 				"name": "read.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Recorded JSON value to present without mutating the original."
+				"description": "The already-parsed value at this position, of any JSON shape (undefined is shown as 'Not recorded'). It is only read, never rewritten, and objects or arrays are expanded only while the depth and budget limits allow.",
+				"examples": [
+					null,
+					"passed",
+					{
+						"name": "checkout",
+						"status": "passed",
+						"amount": 42.5
+					}
+				]
 			},
 			{
 				"name": "read.depth",
 				"type": "number",
 				"required": true,
-				"description": "Current nesting depth used to truncate deeply nested presentation."
+				"description": "The nesting level of this value: recordedValue starts at 0, and each field, list item or table cell is read one level deeper than the node that holds it. Non-scalar values at depth 4 or more become the 'Open Full recorded values to see more.' notice, while scalars at that depth are still shown.",
+				"examples": [0, 1, 3]
 			},
 			{
 				"name": "read.budget",
 				"type": "{ left: number }",
 				"required": true,
-				"description": "Shared remaining-node budget, decremented while building the bounded presentation."
+				"description": "The counter of values still allowed, held in one object that every call for the same result shares and decrements. A call that starts with left at 0 or less returns the 'Open Full recorded values to see more.' notice, and recordedValue creates it as { left: 120 }.",
+				"examples": [
+					{
+						"left": 120
+					},
+					{
+						"left": 48
+					},
+					{
+						"left": 0
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordedValue",
 				"type": "RecordedNode",
-				"description": "Typed fields, list items or table cells, limited to four levels and twelve items per collection."
+				"description": "The bounded presentation of the whole value as one of five node kinds: notice, scalar, fields, list or table. Collections show their first twelve entries and count the rest in remaining, nesting stops at four levels, and an array becomes a table only when its first twelve items are all non-array objects with scalar values and between one and eight distinct keys in total.",
+				"examples": [
+					{
+						"kind": "fields",
+						"fields": [
+							{
+								"name": "name",
+								"node": {
+									"kind": "scalar",
+									"type": "Text",
+									"text": "checkout"
+								}
+							},
+							{
+								"name": "status",
+								"node": {
+									"kind": "scalar",
+									"type": "Text",
+									"text": "passed"
+								}
+							},
+							{
+								"name": "amount",
+								"node": {
+									"kind": "scalar",
+									"type": "Number",
+									"text": "42.5"
+								}
+							}
+						],
+						"remaining": 0
+					},
+					{
+						"kind": "table",
+						"columns": ["name", "status"],
+						"rows": [
+							[
+								{
+									"kind": "scalar",
+									"type": "Text",
+									"text": "checkout"
+								},
+								{
+									"kind": "scalar",
+									"type": "Text",
+									"text": "passed"
+								}
+							],
+							[
+								{
+									"kind": "scalar",
+									"type": "Text",
+									"text": "refund"
+								},
+								{
+									"kind": "scalar",
+									"type": "Text",
+									"text": "failed"
+								}
+							]
+						],
+						"remaining": 0
+					},
+					{
+						"kind": "list",
+						"items": [
+							{
+								"kind": "scalar",
+								"type": "Text",
+								"text": "passed"
+							},
+							{
+								"kind": "scalar",
+								"type": "Text",
+								"text": "failed"
+							}
+						],
+						"remaining": 0
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "recordedValue",
@@ -59,18 +178,115 @@
 						"name": "recordedValue.value",
 						"type": "unknown",
 						"required": true,
-						"description": "A value already parsed from a verified JSON recording."
+						"description": "The already-parsed value to present, of any JSON shape (undefined is shown as 'Not recorded'). It is only read, never rewritten, and the result keeps at most four levels, twelve items per collection and 120 values in total, with scalar text over 240 characters cut and marked shortened.",
+						"examples": [
+							"passed",
+							{
+								"name": "checkout",
+								"status": "passed",
+								"amount": 42.5
+							},
+							[
+								{
+									"name": "checkout",
+									"status": "passed"
+								},
+								{
+									"name": "refund",
+									"status": "failed"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordedValue",
 						"type": "RecordedNode",
-						"description": "Typed fields, list items or table cells, limited to four levels and twelve items per collection."
+						"description": "The bounded presentation of the whole value as one of five node kinds: notice, scalar, fields, list or table. Collections show their first twelve entries and count the rest in remaining, nesting stops at four levels, and an array becomes a table only when its first twelve items are all non-array objects with scalar values and between one and eight distinct keys in total.",
+						"examples": [
+							{
+								"kind": "fields",
+								"fields": [
+									{
+										"name": "name",
+										"node": {
+											"kind": "scalar",
+											"type": "Text",
+											"text": "checkout"
+										}
+									},
+									{
+										"name": "status",
+										"node": {
+											"kind": "scalar",
+											"type": "Text",
+											"text": "passed"
+										}
+									},
+									{
+										"name": "amount",
+										"node": {
+											"kind": "scalar",
+											"type": "Number",
+											"text": "42.5"
+										}
+									}
+								],
+								"remaining": 0
+							},
+							{
+								"kind": "table",
+								"columns": ["name", "status"],
+								"rows": [
+									[
+										{
+											"kind": "scalar",
+											"type": "Text",
+											"text": "checkout"
+										},
+										{
+											"kind": "scalar",
+											"type": "Text",
+											"text": "passed"
+										}
+									],
+									[
+										{
+											"kind": "scalar",
+											"type": "Text",
+											"text": "refund"
+										},
+										{
+											"kind": "scalar",
+											"type": "Text",
+											"text": "failed"
+										}
+									]
+								],
+								"remaining": 0
+							},
+							{
+								"kind": "list",
+								"items": [
+									{
+										"kind": "scalar",
+										"type": "Text",
+										"text": "passed"
+									},
+									{
+										"kind": "scalar",
+										"type": "Text",
+										"text": "failed"
+									}
+								],
+								"remaining": 0
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "read",
@@ -79,29 +295,66 @@
 						"name": "read.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Recorded JSON value to present without mutating the original."
+						"description": "The already-parsed value at this position, of any JSON shape (undefined is shown as 'Not recorded'). It is only read, never rewritten, and objects or arrays are expanded only while the depth and budget limits allow.",
+						"examples": [
+							null,
+							"passed",
+							{
+								"name": "checkout",
+								"status": "passed",
+								"amount": 42.5
+							}
+						]
 					},
 					{
 						"name": "read.depth",
 						"type": "number",
 						"required": true,
-						"description": "Current nesting depth used to truncate deeply nested presentation."
+						"description": "The nesting level of this value: recordedValue starts at 0, and each field, list item or table cell is read one level deeper than the node that holds it. Non-scalar values at depth 4 or more become the 'Open Full recorded values to see more.' notice, while scalars at that depth are still shown.",
+						"examples": [0, 1, 3]
 					},
 					{
 						"name": "read.budget",
 						"type": "{ left: number }",
 						"required": true,
-						"description": "Shared remaining-node budget, decremented while building the bounded presentation."
+						"description": "The counter of values still allowed, held in one object that every call for the same result shares and decrements. A call that starts with left at 0 or less returns the 'Open Full recorded values to see more.' notice, and recordedValue creates it as { left: 120 }.",
+						"examples": [
+							{
+								"left": 120
+							},
+							{
+								"left": 48
+							},
+							{
+								"left": 0
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "read",
-						"type": "RecordedNode"
+						"type": "RecordedNode",
+						"description": "The node for this one value at the given depth, using the same five node kinds as recordedValue. Anything nested under it is read one level deeper from the same budget, and a non-scalar at depth 4 or more, or any value once the budget is spent, becomes the 'Open Full recorded values to see more.' notice.",
+						"examples": [
+							{
+								"kind": "scalar",
+								"type": "Number",
+								"text": "42.5"
+							},
+							{
+								"kind": "notice",
+								"text": "Empty object"
+							},
+							{
+								"kind": "notice",
+								"text": "Open Full recorded values to see more."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
