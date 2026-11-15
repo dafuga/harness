@@ -37,23 +37,88 @@
 				"name": "EntityMeasures.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Required unit with budgets, limits and identity. Supplies performance workloads and frozen-policy declarations."
+				"description": "A required unit descriptor. Its id selects this unit's measurements and budget findings, while its budgets, optional limits, and declared performance budgets supply the frozen-limit and tolerance rows.",
+				"examples": [
+					{
+						"id": "reports.component.harness-entity-measures",
+						"kind": "component",
+						"status": "active",
+						"title": "Entity measurements",
+						"responsibility": "Shows recorded measurements beside frozen limits and declared performance tolerances.",
+						"dependencies": [
+							{
+								"unit": "reports.component.explorer-ui-explorer-kit-card",
+								"via": "import"
+							},
+							{
+								"unit": "reports.component.shared-primitives-data-table",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"packages/reports/src/components/explorer-ui/EntityMeasures.svelte",
+								"packages/reports/src/components/explorer-ui/EntityMeasures.types.ts"
+							],
+							"symbols": [
+								"EntityMeasures",
+								"EntityMeasures.header",
+								"EntityMeasures.children",
+								"Line"
+							]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "EntityMeasures.unit",
+									"type": "HarnessUnit",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "EntityMeasures",
+									"type": "markup"
+								}
+							],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/components/explorer-ui/EntityMeasures.svelte"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "1.0.0"
+					}
+				]
 			},
 			{
 				"name": "EntityMeasures.record",
 				"type": "HarnessRecord | null",
 				"required": true,
-				"description": "Required record or null. Measurements and findings are filtered to the unit; unprofiled values supply source/complexity/dependency metrics."
+				"description": "The verification record for this revision, or null when no record is available. When present, its measurements and budget findings are filtered to the selected unit; null triggers the no-record notice and contributes no record measurements or findings.",
+				"examples": [null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityMeasures",
 				"type": "markup",
-				"description": "Measurement table including source bytes, complexity, dependencies, emitted size and declared performance budgets. Distinguishes policy from numeric limits. Missing record/performance budgets are explicit; helper-formatted values and notes remain visible without estimating data."
+				"description": "Renders a section with a four-column table for metric, measured value, limit, and note, including source-byte, complexity, dependency, emitted-size, and declared performance-budget rows. It shows a notice when no record is supplied and when no performance budget is declared; measurement values and notes are formatted from the component's helpers and reason text."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
