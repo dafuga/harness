@@ -27,56 +27,257 @@
 			{
 				"name": "RecordedEvidenceService.constructor.session",
 				"type": "ProjectSessionService",
-				"required": true
+				"required": true,
+				"description": "The project session every read goes through: it supplies the open project's root, its Git source and the selected project's id. The service never opens, selects or changes a project itself."
 			},
 			{
 				"name": "RecordedEvidenceService.evidence.query",
 				"type": "EntityEvidenceQuery",
-				"required": true
+				"required": true,
+				"description": "The read to answer: the unit id of the entity, the local branch and commit it is pinned to, and the mode. In current mode the commit must be the branch tip, while in commit mode it is compared with its exact first parent, also when it is the tip; a projectId, when given, must be the open project.",
+				"examples": [
+					{
+						"projectId": "local-4d1f9c2a7e8b3056c1f4a9d2e7b8c03a5f6e1d2c9b8a7f6e5d4c3b2a1f0e9d8c",
+						"entityId": "desktop.service.recorded-evidence",
+						"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+						"branch": "main",
+						"mode": "current"
+					},
+					{
+						"entityId": "desktop.service.recorded-evidence",
+						"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+						"branch": "main",
+						"mode": "commit"
+					}
+				]
 			},
 			{
 				"name": "RecordedEvidenceService.artifact.query",
 				"type": "EvidenceArtifactQuery",
-				"required": true
+				"required": true,
+				"description": "One capture named by an earlier evidence answer: its side, record id, scenario, state, evidence id, viewport, SHA-256 and the notes and evidence revisions that answer was read at. Only that capture is read, and no path or address is taken from the request; a null viewport means the capture has none, and a null revision means the repository has no such ref.",
+				"examples": [
+					{
+						"projectId": "local-4d1f9c2a7e8b3056c1f4a9d2e7b8c03a5f6e1d2c9b8a7f6e5d4c3b2a1f0e9d8c",
+						"entityId": "desktop.service.recorded-evidence",
+						"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+						"branch": "main",
+						"mode": "current",
+						"side": "after",
+						"recordId": "2b7f0d94e3a61c58f2d0b9e47a13c6d5e8f2a0b4c71d6e93f5a8b2c0d4e7f1a6",
+						"scenarioId": "desktop-recorded-evidence",
+						"state": "artifact-binding",
+						"evidenceId": "desktop-recorded-evidence-output",
+						"viewport": null,
+						"sha256": "c41e8a07b9d25f3e6a0c18d7f4b29e61a3d5c80f7b2e94d16a8c3f5e0b7d2a94",
+						"notesRevision": "e5b07d3a9c12f48e6d0b7a3c95f2e18d4a6c7b30",
+						"evidenceRevision": "b06f2e8d4a1c7395e0d2b8f64a3c1e97d5f0a8c2"
+					},
+					{
+						"entityId": "desktop.service.recorded-evidence",
+						"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+						"branch": "main",
+						"mode": "commit",
+						"side": "before",
+						"recordId": "7d0a3f5c18e6b294a0c7d3f1e58b26a9c4d0e71f3b8a5c62d9e04f7a1b3c8e25",
+						"scenarioId": "desktop-recorded-evidence",
+						"state": "first-parent",
+						"evidenceId": "desktop-recorded-evidence-assertions",
+						"viewport": null,
+						"sha256": "5e27b9d0c4a1f836e2b75d09a4c3f1e8b6d20a7c9f5e13b8d4a062c7e9f1b5d3",
+						"notesRevision": "e5b07d3a9c12f48e6d0b7a3c95f2e18d4a6c7b30",
+						"evidenceRevision": "b06f2e8d4a1c7395e0d2b8f64a3c1e97d5f0a8c2"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RecordedEvidenceService.evidence",
-				"type": "Promise<EntityEvidenceResult>"
+				"type": "Promise<EntityEvidenceResult>",
+				"description": "The resolved answer: the scope of the read (location, mode, branch, tip, commit, first parent and summary), the identity it was read at, the entity's evidence (its commit's side, plus the first parent's side in commit mode) and its behavior. Nothing is written, and an answer too large for one transport message is refused rather than cut short.",
+				"examples": [
+					{
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": null,
+								"category": "services",
+								"entity": "desktop.service.recorded-evidence"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+							"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+							"atTip": true,
+							"parent": "a81e4d6b2f09c3e7d15a8b64f0e2c9d7b3a16f58",
+							"summary": {
+								"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+								"parents": ["a81e4d6b2f09c3e7d15a8b64f0e2c9d7b3a16f58"],
+								"subject": "Read recorded evidence of the service",
+								"author": "Sam Rivera",
+								"committedAt": "2026-11-14T18:22:07+00:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": ["no verification record is attached to this commit"],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"identity": {
+							"principalId": "local-filesystem:501",
+							"projectId": "local-4d1f9c2a7e8b3056c1f4a9d2e7b8c03a5f6e1d2c9b8a7f6e5d4c3b2a1f0e9d8c",
+							"repositoryId": 0,
+							"requestedRef": "main",
+							"sourceCommit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+							"sourceTree": "7c2e0b91f5a4d83e6b1c09f2a7d5e48b3c6f1a02",
+							"notesRef": "refs/notes/harness",
+							"notesRevision": "e5b07d3a9c12f48e6d0b7a3c95f2e18d4a6c7b30",
+							"evidenceRef": "refs/heads/harness-evidence",
+							"evidenceRevision": "b06f2e8d4a1c7395e0d2b8f64a3c1e97d5f0a8c2",
+							"historyIndexRevision": "9a3d6f10c7e24b58d1f0a6e93c7b2d4f8e5a1c0b6d9f3e72a4c8b1d05f6e7a39",
+							"artifactHash": null,
+							"profile": null
+						},
+						"evidence": {
+							"mode": "current",
+							"scenarios": [],
+							"after": {
+								"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+								"detail": {
+									"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+									"registry": {
+										"available": true,
+										"units": [
+											{
+												"id": "desktop.service.recorded-evidence",
+												"kind": "service",
+												"status": "active",
+												"title": "RecordedEvidenceService",
+												"responsibility": "Owns the RecordedEvidenceService service workflow.",
+												"dependencies": [
+													{
+														"unit": "desktop.service.project-session",
+														"via": "import"
+													}
+												],
+												"scenarios": [],
+												"owns": {
+													"source": [
+														"packages/desktop/src/lib/desktop-bridge/RecordedEvidenceService.ts"
+													],
+													"symbols": ["RecordedEvidenceService"]
+												},
+												"contract": {
+													"inputs": [],
+													"outputs": [],
+													"errors": []
+												},
+												"runtime": {
+													"kind": "module",
+													"targets": [
+														{
+															"kind": "module",
+															"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts"
+														}
+													]
+												},
+												"budgets": {
+													"size": "frozen",
+													"complexity": "frozen",
+													"performance": []
+												},
+												"version": "7e41a0c9d3b56f28"
+											}
+										],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": "No verification record is attached to this commit."
+							},
+							"before": null,
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "current",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": null,
+							"scenarios": []
+						}
+					}
+				]
 			},
 			{
 				"name": "RecordedEvidenceService.artifact",
-				"type": "Promise<EvidenceArtifactResult>"
+				"type": "Promise<EvidenceArtifactResult>",
+				"description": "The resolved bytes of one listed capture: the bytes as a Uint8Array, the media type they are served as, decided from the capture's kind, its recorded media type and its bytes, and the SHA-256 the capture states, which the bytes were checked against."
 			}
 		],
 		"errors": [
 			{
 				"name": "project-required",
-				"type": "refused",
-				"description": "No registered project is open for the read, or no branch is named."
+				"type": "thrown",
+				"description": "Thrown when no project is open, when a projectId is given that is not the open project, when the open project has no registered id, or when no branch is named."
 			},
 			{
 				"name": "stale-or-foreign-commit",
-				"type": "refused",
-				"description": "Current mode needs the branch tip; a commit must be on the branch."
+				"type": "thrown",
+				"description": "Thrown when the commit is not on the selected branch, meaning neither its tip nor one of its ancestors, and, in current mode, when the commit is not the tip itself."
 			},
 			{
 				"name": "pin-not-held",
-				"type": "refused",
-				"description": "A repeated notes or evidence revision that its ref never held."
+				"type": "thrown",
+				"description": "Thrown by artifact reads when a repeated notes or evidence revision is neither its ref's current commit nor one of that commit's ancestors; a null revision passes only where the ref does not exist."
 			},
 			{
 				"name": "capture-unlisted",
-				"type": "refused",
-				"description": "The binding is not a capture of this entity, record, side, state and hash."
+				"type": "thrown",
+				"description": "Thrown by artifact reads when the binding (its side, scenario, state, evidence id, viewport, SHA-256 and record id) matches no capture that the entity's evidence at those revisions lists."
 			},
 			{
 				"name": "bytes-refused",
-				"type": "refused",
-				"description": "Bytes over 11 MiB, of another SHA-256, or of a media type that is not attested."
+				"type": "thrown",
+				"description": "Thrown by artifact reads when the capture has no stored bytes, when they are over 11 MiB (11,534,336 bytes), or when they do not hash to the recorded SHA-256. A capture is also refused when its kind or bytes do not allow it to be served: a screenshot must be a PNG or JPEG, audio must be a known audio type whose signature the bytes carry, a result must be text, and any other kind is never served."
+			},
+			{
+				"name": "branch-not-local",
+				"type": "thrown",
+				"description": "Thrown when the named branch is not one of the open project's local branches, so the read has no branch tip to pin to."
+			},
+			{
+				"name": "entity-unregistered",
+				"type": "thrown",
+				"description": "Thrown when the commit's registry has no unit with the query's entity id, or when that unit's kind is not one of the kinds the evidence reads."
+			},
+			{
+				"name": "answer-too-large",
+				"type": "thrown",
+				"description": "Thrown by evidence reads when the answer serialized as JSON is more than 16,776,192 bytes, which is 16 MiB less a 1024-byte transport envelope, so the answer is refused rather than cut short."
+			},
+			{
+				"name": "commit-not-in-repository",
+				"type": "thrown",
+				"description": "Thrown when the source history holds no entry for the commit a read asks for; a commit that Git has just resolved for the read is normally found."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown as a plain Error with the message 'Open a registered project first.' when the open project has no registered id, and with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RecordedEvidenceService.evidence",
@@ -84,17 +285,192 @@
 					{
 						"name": "RecordedEvidenceService.evidence.query",
 						"type": "EntityEvidenceQuery",
-						"required": true
+						"required": true,
+						"description": "The read to answer: the unit id of the entity, the local branch and commit it is pinned to, and the mode. In current mode the commit must be the branch tip, while in commit mode it is compared with its exact first parent, also when it is the tip; a projectId, when given, must be the open project.",
+						"examples": [
+							{
+								"projectId": "local-4d1f9c2a7e8b3056c1f4a9d2e7b8c03a5f6e1d2c9b8a7f6e5d4c3b2a1f0e9d8c",
+								"entityId": "desktop.service.recorded-evidence",
+								"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+								"branch": "main",
+								"mode": "current"
+							},
+							{
+								"entityId": "desktop.service.recorded-evidence",
+								"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+								"branch": "main",
+								"mode": "commit"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RecordedEvidenceService.evidence",
-						"type": "Promise<EntityEvidenceResult>"
+						"type": "Promise<EntityEvidenceResult>",
+						"description": "The resolved answer: the scope of the read (location, mode, branch, tip, commit, first parent and summary), the identity it was read at, the entity's evidence (its commit's side, plus the first parent's side in commit mode) and its behavior. Nothing is written, and an answer too large for one transport message is refused rather than cut short.",
+						"examples": [
+							{
+								"scope": {
+									"location": {
+										"branch": "main",
+										"commit": null,
+										"category": "services",
+										"entity": "desktop.service.recorded-evidence"
+									},
+									"mode": "current",
+									"branch": "main",
+									"tip": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+									"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+									"atTip": true,
+									"parent": "a81e4d6b2f09c3e7d15a8b64f0e2c9d7b3a16f58",
+									"summary": {
+										"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+										"parents": ["a81e4d6b2f09c3e7d15a8b64f0e2c9d7b3a16f58"],
+										"subject": "Read recorded evidence of the service",
+										"author": "Sam Rivera",
+										"committedAt": "2026-11-14T18:22:07+00:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "unverified",
+										"gaps": ["no verification record is attached to this commit"],
+										"records": [],
+										"legacy": []
+									}
+								},
+								"identity": {
+									"principalId": "local-filesystem:501",
+									"projectId": "local-4d1f9c2a7e8b3056c1f4a9d2e7b8c03a5f6e1d2c9b8a7f6e5d4c3b2a1f0e9d8c",
+									"repositoryId": 0,
+									"requestedRef": "main",
+									"sourceCommit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+									"sourceTree": "7c2e0b91f5a4d83e6b1c09f2a7d5e48b3c6f1a02",
+									"notesRef": "refs/notes/harness",
+									"notesRevision": "e5b07d3a9c12f48e6d0b7a3c95f2e18d4a6c7b30",
+									"evidenceRef": "refs/heads/harness-evidence",
+									"evidenceRevision": "b06f2e8d4a1c7395e0d2b8f64a3c1e97d5f0a8c2",
+									"historyIndexRevision": "9a3d6f10c7e24b58d1f0a6e93c7b2d4f8e5a1c0b6d9f3e72a4c8b1d05f6e7a39",
+									"artifactHash": null,
+									"profile": null
+								},
+								"evidence": {
+									"mode": "current",
+									"scenarios": [],
+									"after": {
+										"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+										"detail": {
+											"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+											"registry": {
+												"available": true,
+												"units": [
+													{
+														"id": "desktop.service.recorded-evidence",
+														"kind": "service",
+														"status": "active",
+														"title": "RecordedEvidenceService",
+														"responsibility": "Owns the RecordedEvidenceService service workflow.",
+														"dependencies": [
+															{
+																"unit": "desktop.service.project-session",
+																"via": "import"
+															}
+														],
+														"scenarios": [],
+														"owns": {
+															"source": [
+																"packages/desktop/src/lib/desktop-bridge/RecordedEvidenceService.ts"
+															],
+															"symbols": ["RecordedEvidenceService"]
+														},
+														"contract": {
+															"inputs": [],
+															"outputs": [],
+															"errors": []
+														},
+														"runtime": {
+															"kind": "module",
+															"targets": [
+																{
+																	"kind": "module",
+																	"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/RecordedEvidenceService.ts"
+																}
+															]
+														},
+														"budgets": {
+															"size": "frozen",
+															"complexity": "frozen",
+															"performance": []
+														},
+														"version": "7e41a0c9d3b56f28"
+													}
+												],
+												"scenarios": [],
+												"graph": {
+													"edges": []
+												}
+											},
+											"comparison": null,
+											"records": [],
+											"explanations": []
+										},
+										"record": null,
+										"captures": [],
+										"coverage": [],
+										"gap": "No verification record is attached to this commit."
+									},
+									"before": null,
+									"initial": null,
+									"incomparable": []
+								},
+								"behavior": {
+									"mode": "current",
+									"rows": [],
+									"summary": "not-compared",
+									"reason": null,
+									"scenarios": []
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "project-required",
+						"type": "thrown",
+						"description": "Thrown when no project is open, when a projectId is given that is not the open project, when the open project has no registered id, or when no branch is named."
+					},
+					{
+						"name": "stale-or-foreign-commit",
+						"type": "thrown",
+						"description": "Thrown when the commit is not on the selected branch, meaning neither its tip nor one of its ancestors, and, in current mode, when the commit is not the tip itself."
+					},
+					{
+						"name": "branch-not-local",
+						"type": "thrown",
+						"description": "Thrown when the named branch is not one of the open project's local branches, so the read has no branch tip to pin to."
+					},
+					{
+						"name": "entity-unregistered",
+						"type": "thrown",
+						"description": "Thrown when the commit's registry has no unit with the query's entity id, or when that unit's kind is not one of the kinds the evidence reads."
+					},
+					{
+						"name": "answer-too-large",
+						"type": "thrown",
+						"description": "Thrown by evidence reads when the answer serialized as JSON is more than 16,776,192 bytes, which is 16 MiB less a 1024-byte transport envelope, so the answer is refused rather than cut short."
+					},
+					{
+						"name": "commit-not-in-repository",
+						"type": "thrown",
+						"description": "Thrown when the source history holds no entry for the commit a read asks for; a commit that Git has just resolved for the read is normally found."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as a plain Error with the message 'Open a registered project first.' when the open project has no registered id, and with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RecordedEvidenceService.artifact",
@@ -102,17 +478,98 @@
 					{
 						"name": "RecordedEvidenceService.artifact.query",
 						"type": "EvidenceArtifactQuery",
-						"required": true
+						"required": true,
+						"description": "One capture named by an earlier evidence answer: its side, record id, scenario, state, evidence id, viewport, SHA-256 and the notes and evidence revisions that answer was read at. Only that capture is read, and no path or address is taken from the request; a null viewport means the capture has none, and a null revision means the repository has no such ref.",
+						"examples": [
+							{
+								"projectId": "local-4d1f9c2a7e8b3056c1f4a9d2e7b8c03a5f6e1d2c9b8a7f6e5d4c3b2a1f0e9d8c",
+								"entityId": "desktop.service.recorded-evidence",
+								"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+								"branch": "main",
+								"mode": "current",
+								"side": "after",
+								"recordId": "2b7f0d94e3a61c58f2d0b9e47a13c6d5e8f2a0b4c71d6e93f5a8b2c0d4e7f1a6",
+								"scenarioId": "desktop-recorded-evidence",
+								"state": "artifact-binding",
+								"evidenceId": "desktop-recorded-evidence-output",
+								"viewport": null,
+								"sha256": "c41e8a07b9d25f3e6a0c18d7f4b29e61a3d5c80f7b2e94d16a8c3f5e0b7d2a94",
+								"notesRevision": "e5b07d3a9c12f48e6d0b7a3c95f2e18d4a6c7b30",
+								"evidenceRevision": "b06f2e8d4a1c7395e0d2b8f64a3c1e97d5f0a8c2"
+							},
+							{
+								"entityId": "desktop.service.recorded-evidence",
+								"commit": "3f9a1c07d2b84e6f5a0c91d7e2b6f48a0c3d5e19",
+								"branch": "main",
+								"mode": "commit",
+								"side": "before",
+								"recordId": "7d0a3f5c18e6b294a0c7d3f1e58b26a9c4d0e71f3b8a5c62d9e04f7a1b3c8e25",
+								"scenarioId": "desktop-recorded-evidence",
+								"state": "first-parent",
+								"evidenceId": "desktop-recorded-evidence-assertions",
+								"viewport": null,
+								"sha256": "5e27b9d0c4a1f836e2b75d09a4c3f1e8b6d20a7c9f5e13b8d4a062c7e9f1b5d3",
+								"notesRevision": "e5b07d3a9c12f48e6d0b7a3c95f2e18d4a6c7b30",
+								"evidenceRevision": "b06f2e8d4a1c7395e0d2b8f64a3c1e97d5f0a8c2"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RecordedEvidenceService.artifact",
-						"type": "Promise<EvidenceArtifactResult>"
+						"type": "Promise<EvidenceArtifactResult>",
+						"description": "The resolved bytes of one listed capture: the bytes as a Uint8Array, the media type they are served as, decided from the capture's kind, its recorded media type and its bytes, and the SHA-256 the capture states, which the bytes were checked against."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "project-required",
+						"type": "thrown",
+						"description": "Thrown when no project is open, when a projectId is given that is not the open project, when the open project has no registered id, or when no branch is named."
+					},
+					{
+						"name": "stale-or-foreign-commit",
+						"type": "thrown",
+						"description": "Thrown when the commit is not on the selected branch, meaning neither its tip nor one of its ancestors, and, in current mode, when the commit is not the tip itself."
+					},
+					{
+						"name": "pin-not-held",
+						"type": "thrown",
+						"description": "Thrown by artifact reads when a repeated notes or evidence revision is neither its ref's current commit nor one of that commit's ancestors; a null revision passes only where the ref does not exist."
+					},
+					{
+						"name": "capture-unlisted",
+						"type": "thrown",
+						"description": "Thrown by artifact reads when the binding (its side, scenario, state, evidence id, viewport, SHA-256 and record id) matches no capture that the entity's evidence at those revisions lists."
+					},
+					{
+						"name": "bytes-refused",
+						"type": "thrown",
+						"description": "Thrown by artifact reads when the capture has no stored bytes, when they are over 11 MiB (11,534,336 bytes), or when they do not hash to the recorded SHA-256. A capture is also refused when its kind or bytes do not allow it to be served: a screenshot must be a PNG or JPEG, audio must be a known audio type whose signature the bytes carry, a result must be text, and any other kind is never served."
+					},
+					{
+						"name": "branch-not-local",
+						"type": "thrown",
+						"description": "Thrown when the named branch is not one of the open project's local branches, so the read has no branch tip to pin to."
+					},
+					{
+						"name": "entity-unregistered",
+						"type": "thrown",
+						"description": "Thrown when the commit's registry has no unit with the query's entity id, or when that unit's kind is not one of the kinds the evidence reads."
+					},
+					{
+						"name": "commit-not-in-repository",
+						"type": "thrown",
+						"description": "Thrown when the source history holds no entry for the commit a read asks for; a commit that Git has just resolved for the read is normally found."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown as a plain Error with the message 'Open a registered project first.' when the open project has no registered id, and with the message 'Select a local branch to read recorded evidence on.' when no branch is named."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -122,17 +579,19 @@
 					{
 						"name": "RecordedEvidenceService.constructor.session",
 						"type": "ProjectSessionService",
-						"required": true
+						"required": true,
+						"description": "The project session every read goes through: it supplies the open project's root, its Git source and the selected project's id. The service never opens, selects or changes a project itself."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RecordedEvidenceService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new RecordedEvidenceService instance: it keeps the session it was given and holds no repository reader until its first read."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
