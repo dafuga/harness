@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/validators/NativeHandoffValidator.ts",
-			"packages/desktop/src/validators/development-tooling/NativeHandoffValidator.ts"
-		],
+		"source": ["packages/desktop/src/validators/development-tooling/NativeHandoffValidator.ts"],
 		"symbols": [
-			"NativeHandoffValidator",
 			"NativeHandoffValidator",
 			"NativeHandoffValidator.start",
 			"NativeHandoffValidator.exchange"

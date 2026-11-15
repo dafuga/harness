@@ -1,6 +1,6 @@
 // @harness-uid u_pxp6bdo5z4
 import type { Context } from './HubAgentController.types';
-import { IpcRequestValidator } from '../../../../../../desktop/src/validators/IpcRequestValidator';
+import { IpcRequestValidator } from '../../../../../../desktop/src/validators/development-tooling/IpcRequestValidator';
 import { channels } from '../../../../../../desktop/src/models/DesktopBridge.types';
 import { hubBody, hubHttp } from '../../../../utils/networking-security/hub-http/hubHttp';
 import { hubFail } from '../../../../utils/development-tooling/hubJson';

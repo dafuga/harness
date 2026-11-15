@@ -7,7 +7,7 @@ import { ProviderDiscoveryService } from '../../../../../desktop/src/services/pr
 import { CodexAppServerAdapter } from '../../../../../desktop/src/adapters/agents-providers/codex-app-server-adapter/CodexAppServerAdapter';
 import { ClaudeCliAdapter } from '../../../../../desktop/src/adapters/claude-cli-adapter/ClaudeCliAdapter';
 import { RepositoryArbiterService } from '../../../../../desktop/src/services/RepositoryArbiterService';
-import { IpcRequestValidator } from '../../../../../desktop/src/validators/IpcRequestValidator';
+import { IpcRequestValidator } from '../../../../../desktop/src/validators/development-tooling/IpcRequestValidator';
 import { channels, type RunEvent } from '../../../../../desktop/src/models/DesktopBridge.types';
 import type { RevisionQuery } from '../../../../../desktop/src/models/DesktopBridge.types';
 import { join } from 'node:path';

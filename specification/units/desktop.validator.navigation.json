@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/validators/NavigationValidator.ts",
-			"packages/desktop/src/validators/explorer-ui/NavigationValidator.ts"
-		],
-		"symbols": ["NavigationValidator", "NavigationValidator", "NavigationValidator.validate"]
+		"source": ["packages/desktop/src/validators/explorer-ui/NavigationValidator.ts"],
+		"symbols": ["NavigationValidator", "NavigationValidator.validate"]
 	},
 	"contract": {
 		"origin": "derived",

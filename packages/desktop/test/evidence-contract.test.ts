@@ -11,7 +11,7 @@ import type {
 	EvidenceArtifactQuery
 } from '../src/models/DesktopEvidence.types';
 import { binaryAnswer } from '../src/utils/binaryAnswer';
-import { IpcRequestValidator } from '../src/validators/IpcRequestValidator';
+import { IpcRequestValidator } from '../src/validators/development-tooling/IpcRequestValidator';
 
 const commit = 'a'.repeat(40);
 const sha256 = 'b'.repeat(64);

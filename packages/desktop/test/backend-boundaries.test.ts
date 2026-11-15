@@ -2,8 +2,8 @@ import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { readdirSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { IpcRequestValidator } from '../src/validators/IpcRequestValidator';
-import { NavigationValidator } from '../src/validators/NavigationValidator';
+import { IpcRequestValidator } from '../src/validators/development-tooling/IpcRequestValidator';
+import { NavigationValidator } from '../src/validators/explorer-ui/NavigationValidator';
 import { scrubEnvironment } from '../src/utils/cli-environment/scrubEnvironment';
 import { publicCliEvents } from '../src/adapters/claude-cli-adapter/publicCliEvents';
 

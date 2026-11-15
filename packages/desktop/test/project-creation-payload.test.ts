@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { IpcRequestValidator } from '../src/validators/IpcRequestValidator';
+import { IpcRequestValidator } from '../src/validators/development-tooling/IpcRequestValidator';
 
 const request = {
 	intent: 'create',

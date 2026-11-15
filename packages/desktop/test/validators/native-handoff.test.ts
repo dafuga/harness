@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { NativeHandoffValidator } from '../../src/validators/NativeHandoffValidator';
+import { NativeHandoffValidator } from '../../src/validators/development-tooling/NativeHandoffValidator';
 test('native approval URLs cannot carry credentials or redirect approval to another origin', () => {
 	const validator = new NativeHandoffValidator(),
 		origin = 'https://harness.example.invalid';
