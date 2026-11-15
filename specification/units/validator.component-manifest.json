@@ -29,74 +29,393 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ComponentManifestValidator.validate.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The candidate unit manifest, typed unknown because it is not checked yet; it is parsed with componentManifestSchema before any other rule runs. When that parse fails, the value is returned as the result's value only if every issue has one of the codes too_small, too_big or invalid_format.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "validator.component-manifest",
+						"uid": "u_amgyfn4sxl",
+						"kind": "validator",
+						"title": "ComponentManifestValidator",
+						"responsibility": "Checks one stored unit manifest against the schema and its own file name.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/validators/development-tooling/ComponentManifestValidator.ts"],
+							"symbols": ["ComponentManifestValidator", "wellFormed", "schemaErrors"]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "ComponentManifestValidator.validate.file",
+									"type": "string",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "wellFormed",
+									"type": "boolean"
+								}
+							],
+							"errors": [],
+							"errorStatus": "none-found"
+						},
+						"dependencies": [
+							{
+								"unit": "function.derived-responsibility",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-types",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/validators/development-tooling/ComponentManifestValidator.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/validators/development-tooling/ComponentManifestValidator.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					},
+					{
+						"schemaVersion": 1,
+						"id": "reports.component.evidence-grid"
+					}
+				]
 			},
 			{
 				"name": "ComponentManifestValidator.validate.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The stored file path of the manifest; only the text after its last slash is used, with a trailing .json removed, and that label starts the schema, manifest-rule and runtime-target messages. A parsed manifest whose id differs from this label gets an id error.",
+				"examples": ["validator.component-manifest.json", "reports.component.evidence-grid.json"]
 			},
 			{
 				"name": "ComponentManifestValidator.validate.options",
 				"type": "{ contractQuality?: boolean }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional settings for the check; only contractQuality is read, and only the exact value false skips contractFindings. The default is {}, so contract findings run unless contractQuality is false.",
+				"examples": [
+					{},
+					{
+						"contractQuality": false
+					},
+					{
+						"contractQuality": true
+					}
+				]
 			},
 			{
 				"name": "wellFormed.error",
 				"type": "z.ZodError",
-				"required": true
+				"required": true,
+				"description": "The ZodError from a failed componentManifestSchema parse; wellFormed reads only each issue's code, so an error with no issues counts as well formed."
 			},
 			{
 				"name": "schemaErrors.error",
 				"type": "z.ZodError",
-				"required": true
+				"required": true,
+				"description": "The ZodError from a failed componentManifestSchema parse, where each issue becomes one message. Only each issue's path and message are used, so its code never appears in the output."
 			},
 			{
 				"name": "schemaErrors.label",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The manifest label, the file name without its .json extension, that starts each message. For a manifest to pass the id check, this label must equal its id.",
+				"examples": ["validator.component-manifest", "reports.component.evidence-grid"]
 			},
 			{
 				"name": "contractFindings.unit",
 				"type": "ComponentManifest",
-				"required": true
+				"required": true,
+				"description": "The parsed manifest whose contract is checked; a unit whose status is not active returns no findings. The checks read the contract's own inputs and errors, plus the inputs and errors of every operation, initialization and snippet entry.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "validator.component-manifest",
+						"uid": "u_amgyfn4sxl",
+						"kind": "validator",
+						"title": "ComponentManifestValidator",
+						"responsibility": "Checks one stored unit manifest against the schema and its own file name.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/validators/development-tooling/ComponentManifestValidator.ts"],
+							"symbols": ["ComponentManifestValidator", "wellFormed", "schemaErrors"]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "ComponentManifestValidator.validate.file",
+									"type": "string",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "wellFormed",
+									"type": "boolean"
+								}
+							],
+							"errors": [],
+							"errorStatus": "none-found"
+						},
+						"dependencies": [
+							{
+								"unit": "function.derived-responsibility",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-types",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/validators/development-tooling/ComponentManifestValidator.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/validators/development-tooling/ComponentManifestValidator.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "contractFailureCounts.units",
 				"type": "ComponentManifest[]",
-				"required": true
+				"required": true,
+				"description": "The manifests to summarize, each checked with contractFindings; a unit with no findings adds nothing to any count.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "validator.component-manifest",
+							"uid": "u_amgyfn4sxl",
+							"kind": "validator",
+							"title": "ComponentManifestValidator",
+							"responsibility": "Checks one stored unit manifest against the schema and its own file name.",
+							"responsibilityOrigin": "declared",
+							"status": "active",
+							"owns": {
+								"source": ["src/validators/development-tooling/ComponentManifestValidator.ts"],
+								"symbols": ["ComponentManifestValidator", "wellFormed", "schemaErrors"]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [
+									{
+										"name": "ComponentManifestValidator.validate.file",
+										"type": "string",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "wellFormed",
+										"type": "boolean"
+									}
+								],
+								"errors": [],
+								"errorStatus": "none-found"
+							},
+							"dependencies": [
+								{
+									"unit": "function.derived-responsibility",
+									"via": "import",
+									"origin": "derived"
+								},
+								{
+									"unit": "function.unit-types",
+									"via": "import",
+									"origin": "derived"
+								}
+							],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/validators/development-tooling/ComponentManifestValidator.ts",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/validators/development-tooling/ComponentManifestValidator.ts"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						}
+					],
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ComponentManifestValidator.validate",
-				"type": "ManifestValidation<ComponentManifest>"
+				"type": "ManifestValidation<ComponentManifest>",
+				"description": "The validation result: errors lists each problem found and is empty when no check finds one, and value is absent only when the parse fails with an issue whose code is not too_small, too_big or invalid_format. After a successful parse, errors combines the manifest, contract (unless contractQuality is false), runtime target, label and preview checks; after a failed parse it holds only the schema messages.",
+				"examples": [
+					{
+						"value": {
+							"schemaVersion": 1,
+							"id": "validator.component-manifest",
+							"uid": "u_amgyfn4sxl",
+							"kind": "validator",
+							"title": "ComponentManifestValidator",
+							"responsibility": "Checks one stored unit manifest against the schema and its own file name.",
+							"responsibilityOrigin": "declared",
+							"status": "active",
+							"owns": {
+								"source": ["src/validators/development-tooling/ComponentManifestValidator.ts"],
+								"symbols": ["ComponentManifestValidator", "wellFormed", "schemaErrors"]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [
+									{
+										"name": "ComponentManifestValidator.validate.file",
+										"type": "string",
+										"required": true
+									}
+								],
+								"outputs": [
+									{
+										"name": "wellFormed",
+										"type": "boolean"
+									}
+								],
+								"errors": [],
+								"errorStatus": "none-found"
+							},
+							"dependencies": [
+								{
+									"unit": "function.derived-responsibility",
+									"via": "import",
+									"origin": "derived"
+								},
+								{
+									"unit": "function.unit-types",
+									"via": "import",
+									"origin": "derived"
+								}
+							],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/validators/development-tooling/ComponentManifestValidator.ts",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/validators/development-tooling/ComponentManifestValidator.ts"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						},
+						"errors": []
+					},
+					{
+						"errors": [
+							"reports.component.evidence-grid: responsibility Invalid input: expected string, received undefined"
+						]
+					}
+				]
 			},
 			{
 				"name": "wellFormed",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when every issue in the error has the code too_small, too_big or invalid_format, so only field contents are wrong; false when any issue has another code. validate returns the raw value after a failed parse only when this is true.",
+				"examples": [true, false]
 			},
 			{
 				"name": "schemaErrors",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "One message per issue in the error, shaped as the label and a colon, then the dotted issue path (or manifest when the path is empty), then zod's message for that issue. The list is empty only when the error has no issues.",
+				"examples": [
+					["validator.component-manifest: title must not be empty"],
+					[
+						"reports.component.evidence-grid: responsibility Invalid input: expected string, received undefined"
+					]
+				]
 			},
 			{
 				"name": "contractFindings",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "One message for each contract problem: an input whose type contains the word unknown, an input whose name ends in .props and whose type is an empty object literal, an input with no required flag, and an error named Error or typed Error. The list is empty for a unit whose status is not active.",
+				"examples": [
+					[],
+					[
+						"reports.component.evidence-grid: contract input EvidenceGrid.props is an empty props blob",
+						"reports.component.evidence-grid: contract input EvidenceGrid.state has unknown type"
+					]
+				]
 			},
 			{
 				"name": "contractFailureCounts",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "An object of six counts over the given units: entities counts units with at least one finding and issues sums all findings. unknownTypes, emptyProps, missingRequired and bareErrors each count the units with at least one finding of that kind.",
+				"examples": [
+					{
+						"entities": 2,
+						"issues": 3,
+						"unknownTypes": 1,
+						"emptyProps": 1,
+						"missingRequired": 1,
+						"bareErrors": 0
+					},
+					{
+						"entities": 0,
+						"issues": 0,
+						"unknownTypes": 0,
+						"emptyProps": 0,
+						"missingRequired": 0,
+						"bareErrors": 0
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ComponentManifestValidator.validate",
@@ -104,28 +423,181 @@
 					{
 						"name": "ComponentManifestValidator.validate.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The candidate unit manifest, typed unknown because it is not checked yet; it is parsed with componentManifestSchema before any other rule runs. When that parse fails, the value is returned as the result's value only if every issue has one of the codes too_small, too_big or invalid_format.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "validator.component-manifest",
+								"uid": "u_amgyfn4sxl",
+								"kind": "validator",
+								"title": "ComponentManifestValidator",
+								"responsibility": "Checks one stored unit manifest against the schema and its own file name.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/validators/development-tooling/ComponentManifestValidator.ts"],
+									"symbols": ["ComponentManifestValidator", "wellFormed", "schemaErrors"]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "ComponentManifestValidator.validate.file",
+											"type": "string",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "wellFormed",
+											"type": "boolean"
+										}
+									],
+									"errors": [],
+									"errorStatus": "none-found"
+								},
+								"dependencies": [
+									{
+										"unit": "function.derived-responsibility",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-types",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/validators/development-tooling/ComponentManifestValidator.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/validators/development-tooling/ComponentManifestValidator.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							},
+							{
+								"schemaVersion": 1,
+								"id": "reports.component.evidence-grid"
+							}
+						]
 					},
 					{
 						"name": "ComponentManifestValidator.validate.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The stored file path of the manifest; only the text after its last slash is used, with a trailing .json removed, and that label starts the schema, manifest-rule and runtime-target messages. A parsed manifest whose id differs from this label gets an id error.",
+						"examples": [
+							"validator.component-manifest.json",
+							"reports.component.evidence-grid.json"
+						]
 					},
 					{
 						"name": "ComponentManifestValidator.validate.options",
 						"type": "{ contractQuality?: boolean }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional settings for the check; only contractQuality is read, and only the exact value false skips contractFindings. The default is {}, so contract findings run unless contractQuality is false.",
+						"examples": [
+							{},
+							{
+								"contractQuality": false
+							},
+							{
+								"contractQuality": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ComponentManifestValidator.validate",
-						"type": "ManifestValidation<ComponentManifest>"
+						"type": "ManifestValidation<ComponentManifest>",
+						"description": "The validation result: errors lists each problem found and is empty when no check finds one, and value is absent only when the parse fails with an issue whose code is not too_small, too_big or invalid_format. After a successful parse, errors combines the manifest, contract (unless contractQuality is false), runtime target, label and preview checks; after a failed parse it holds only the schema messages.",
+						"examples": [
+							{
+								"value": {
+									"schemaVersion": 1,
+									"id": "validator.component-manifest",
+									"uid": "u_amgyfn4sxl",
+									"kind": "validator",
+									"title": "ComponentManifestValidator",
+									"responsibility": "Checks one stored unit manifest against the schema and its own file name.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"owns": {
+										"source": ["src/validators/development-tooling/ComponentManifestValidator.ts"],
+										"symbols": ["ComponentManifestValidator", "wellFormed", "schemaErrors"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [
+											{
+												"name": "ComponentManifestValidator.validate.file",
+												"type": "string",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "wellFormed",
+												"type": "boolean"
+											}
+										],
+										"errors": [],
+										"errorStatus": "none-found"
+									},
+									"dependencies": [
+										{
+											"unit": "function.derived-responsibility",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "function.unit-types",
+											"via": "import",
+											"origin": "derived"
+										}
+									],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/validators/development-tooling/ComponentManifestValidator.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/validators/development-tooling/ComponentManifestValidator.ts"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								},
+								"errors": []
+							},
+							{
+								"errors": [
+									"reports.component.evidence-grid: responsibility Invalid input: expected string, received undefined"
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "wellFormed",
@@ -133,17 +605,20 @@
 					{
 						"name": "wellFormed.error",
 						"type": "z.ZodError",
-						"required": true
+						"required": true,
+						"description": "The ZodError from a failed componentManifestSchema parse; wellFormed reads only each issue's code, so an error with no issues counts as well formed."
 					}
 				],
 				"outputs": [
 					{
 						"name": "wellFormed",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when every issue in the error has the code too_small, too_big or invalid_format, so only field contents are wrong; false when any issue has another code. validate returns the raw value after a failed parse only when this is true.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "schemaErrors",
@@ -151,22 +626,32 @@
 					{
 						"name": "schemaErrors.error",
 						"type": "z.ZodError",
-						"required": true
+						"required": true,
+						"description": "The ZodError from a failed componentManifestSchema parse, where each issue becomes one message. Only each issue's path and message are used, so its code never appears in the output."
 					},
 					{
 						"name": "schemaErrors.label",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The manifest label, the file name without its .json extension, that starts each message. For a manifest to pass the id check, this label must equal its id.",
+						"examples": ["validator.component-manifest", "reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "schemaErrors",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "One message per issue in the error, shaped as the label and a colon, then the dotted issue path (or manifest when the path is empty), then zod's message for that issue. The list is empty only when the error has no issues.",
+						"examples": [
+							["validator.component-manifest: title must not be empty"],
+							[
+								"reports.component.evidence-grid: responsibility Invalid input: expected string, received undefined"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "contractFindings",
@@ -174,17 +659,88 @@
 					{
 						"name": "contractFindings.unit",
 						"type": "ComponentManifest",
-						"required": true
+						"required": true,
+						"description": "The parsed manifest whose contract is checked; a unit whose status is not active returns no findings. The checks read the contract's own inputs and errors, plus the inputs and errors of every operation, initialization and snippet entry.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "validator.component-manifest",
+								"uid": "u_amgyfn4sxl",
+								"kind": "validator",
+								"title": "ComponentManifestValidator",
+								"responsibility": "Checks one stored unit manifest against the schema and its own file name.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/validators/development-tooling/ComponentManifestValidator.ts"],
+									"symbols": ["ComponentManifestValidator", "wellFormed", "schemaErrors"]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "ComponentManifestValidator.validate.file",
+											"type": "string",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "wellFormed",
+											"type": "boolean"
+										}
+									],
+									"errors": [],
+									"errorStatus": "none-found"
+								},
+								"dependencies": [
+									{
+										"unit": "function.derived-responsibility",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-types",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/validators/development-tooling/ComponentManifestValidator.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/validators/development-tooling/ComponentManifestValidator.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "contractFindings",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "One message for each contract problem: an input whose type contains the word unknown, an input whose name ends in .props and whose type is an empty object literal, an input with no required flag, and an error named Error or typed Error. The list is empty for a unit whose status is not active.",
+						"examples": [
+							[],
+							[
+								"reports.component.evidence-grid: contract input EvidenceGrid.props is an empty props blob",
+								"reports.component.evidence-grid: contract input EvidenceGrid.state has unknown type"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "contractFailureCounts",
@@ -192,17 +748,102 @@
 					{
 						"name": "contractFailureCounts.units",
 						"type": "ComponentManifest[]",
-						"required": true
+						"required": true,
+						"description": "The manifests to summarize, each checked with contractFindings; a unit with no findings adds nothing to any count.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "validator.component-manifest",
+									"uid": "u_amgyfn4sxl",
+									"kind": "validator",
+									"title": "ComponentManifestValidator",
+									"responsibility": "Checks one stored unit manifest against the schema and its own file name.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"owns": {
+										"source": ["src/validators/development-tooling/ComponentManifestValidator.ts"],
+										"symbols": ["ComponentManifestValidator", "wellFormed", "schemaErrors"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [
+											{
+												"name": "ComponentManifestValidator.validate.file",
+												"type": "string",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "wellFormed",
+												"type": "boolean"
+											}
+										],
+										"errors": [],
+										"errorStatus": "none-found"
+									},
+									"dependencies": [
+										{
+											"unit": "function.derived-responsibility",
+											"via": "import",
+											"origin": "derived"
+										},
+										{
+											"unit": "function.unit-types",
+											"via": "import",
+											"origin": "derived"
+										}
+									],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/validators/development-tooling/ComponentManifestValidator.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/validators/development-tooling/ComponentManifestValidator.ts"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								}
+							],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "contractFailureCounts",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "An object of six counts over the given units: entities counts units with at least one finding and issues sums all findings. unknownTypes, emptyProps, missingRequired and bareErrors each count the units with at least one finding of that kind.",
+						"examples": [
+							{
+								"entities": 2,
+								"issues": 3,
+								"unknownTypes": 1,
+								"emptyProps": 1,
+								"missingRequired": 1,
+								"bareErrors": 0
+							},
+							{
+								"entities": 0,
+								"issues": 0,
+								"unknownTypes": 0,
+								"emptyProps": 0,
+								"missingRequired": 0,
+								"bareErrors": 0
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
