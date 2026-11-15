@@ -17,18 +17,8 @@
 			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
 		},
 		{
-			"from": "src/services/check-run-service/gatherCaptures.ts",
-			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures",
-			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/check-run-service/mediaFacts.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/mediaFacts",
-			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
-		},
-		{
-			"from": "src/services/check-run-service/readBrowserDiagnostics.ts",
-			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readBrowserDiagnostics",
 			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
 		},
 		{

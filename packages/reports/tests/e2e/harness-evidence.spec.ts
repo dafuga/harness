@@ -1,7 +1,7 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { readdirSync, readFileSync, rmSync } from 'node:fs';
 import { scenarioManifestSchema } from '../../../../src/core/unitTypes';
-import { gatherCaptures } from '../../../../src/services/check-run-service/gatherCaptures';
+import { gatherCaptures } from '../../../../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures';
 import { focusedScreens } from '../../../../src/workflows/verification-evidence/record-regression/focusedScreens';
 import { scenarioCoverage } from '../../../../src/services/verification-service/scenarioCoverage';
 import type { Gathered } from '../../../../src/utils/verification-evidence/gatherCaptures';

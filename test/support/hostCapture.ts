@@ -4,7 +4,7 @@ import { browserErrorCollector } from './browserTest';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { ScenarioManifest } from '../../src/core/unitTypes';
-import { gatherCaptures } from '../../src/services/check-run-service/gatherCaptures';
+import { gatherCaptures } from '../../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures';
 import { recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { scenarioCoverage } from '../../src/services/verification-service/scenarioCoverage';
 import { sessions } from './consoleHost';

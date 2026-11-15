@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/check-run-service/readBrowserDiagnostics.ts",
+			"src/utils/readBrowserDiagnostics.ts",
 			"src/workflows/run-verify/verification-service/check-run-service/readBrowserDiagnostics.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readBrowserDiagnostics.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readBrowserDiagnostics.types.ts"
@@ -72,11 +72,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/check-run-service/readBrowserDiagnostics.ts",
+		"entry": "src/utils/readBrowserDiagnostics.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/check-run-service/readBrowserDiagnostics.ts"
+				"entry": "src/utils/readBrowserDiagnostics.ts"
 			}
 		]
 	},

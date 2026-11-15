@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
 import { withTempDir } from './support/temporary';
 import { captureIndex, defaultVerifyConfig, verifyConfigSchema } from '../src/core/verifyTypes';
-import { gatherCaptures } from '../src/services/check-run-service/gatherCaptures';
+import { gatherCaptures } from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures';
 import { digestFile } from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
 import * as captureFiles from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
 import { syntheticPng } from './support/syntheticPng';

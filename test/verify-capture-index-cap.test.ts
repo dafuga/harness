@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
 import { withTempDir } from './support/temporary';
 import { captureIndex } from '../src/core/verifyTypes';
-import { gatherCaptures } from '../src/services/check-run-service/gatherCaptures';
+import { gatherCaptures } from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures';
 import * as captureFiles from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/captureLimits';
 import type { ResourceContext } from '../src/core/execution-runtimes/resourceTypes';
 import type { IsolatedResult } from '../src/utils/run-isolated/runIsolated';

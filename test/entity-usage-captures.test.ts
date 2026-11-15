@@ -6,7 +6,7 @@ import { afterAll, expect, test } from 'vitest';
 import { scenarioManifestSchema } from '../src/core/unitTypes';
 import { defaultUnitsConfig } from '../src/core/unitsConfig';
 import { captureIndex, defaultVerifyConfig } from '../src/core/verifyTypes';
-import { gatherCaptures } from '../src/services/check-run-service/gatherCaptures';
+import { gatherCaptures } from '../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures';
 import { scenarioCoverage } from '../src/services/verification-service/scenarioCoverage';
 import { scenarioRequirements } from '../src/utils/verification-evidence/scenarioRequirements';
 import { verifyPlan } from '../src/services/verification-service/verifyPlan';
