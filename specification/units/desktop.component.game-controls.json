@@ -31,35 +31,316 @@
 				"name": "GameControls.view",
 				"type": "GameView",
 				"required": true,
-				"description": "Current generated level or legacy key-door view."
+				"description": "The level or legacy key-door view being played; this component reads only its `world`. When `world` is set (a built level) it shows the four directional buttons and hides the key and door chips and the Garden and Vault buttons; without it, it shows the left and right buttons, the key and door chips, and the Garden and Vault buttons.",
+				"examples": [
+					{
+						"id": "courtyard",
+						"title": "The courtyard",
+						"dimension": "2d",
+						"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+						"checkpoints": [
+							{
+								"id": "key",
+								"title": "Collect the key",
+								"description": "When the player reaches the key, add it to inventory.",
+								"x": 0,
+								"y": 80,
+								"requires": [],
+								"conditions": [
+									{
+										"field": "x",
+										"op": "gte",
+										"value": 2
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "hasKey",
+										"value": true
+									},
+									{
+										"type": "emit",
+										"target": "key-collected",
+										"value": true
+									}
+								]
+							},
+							{
+								"id": "door",
+								"title": "Unlock the door",
+								"description": "The key unlocks the door. Reveal two possible destinations.",
+								"x": 270,
+								"y": 80,
+								"requires": ["key"],
+								"conditions": [
+									{
+										"field": "x",
+										"op": "gte",
+										"value": 4
+									},
+									{
+										"field": "hasKey",
+										"op": "eq",
+										"value": true
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "doorOpen",
+										"value": true
+									}
+								]
+							},
+							{
+								"id": "garden",
+								"title": "Enter the garden",
+								"description": "Choosing the garden ends the journey in the sunlight.",
+								"x": 540,
+								"y": 0,
+								"requires": ["door"],
+								"conditions": [
+									{
+										"field": "choice",
+										"op": "eq",
+										"value": "garden"
+									},
+									{
+										"field": "outcome",
+										"op": "eq",
+										"value": ""
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "outcome",
+										"value": "garden"
+									}
+								]
+							},
+							{
+								"id": "vault",
+								"title": "Explore the vault",
+								"description": "Choosing the vault reveals the hidden treasure.",
+								"x": 540,
+								"y": 180,
+								"requires": ["door"],
+								"conditions": [
+									{
+										"field": "choice",
+										"op": "eq",
+										"value": "vault"
+									},
+									{
+										"field": "outcome",
+										"op": "eq",
+										"value": ""
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "outcome",
+										"value": "vault"
+									}
+								]
+							}
+						]
+					},
+					{
+						"id": "view-mwhs8lc0",
+						"title": "Cloister walk",
+						"dimension": "2d",
+						"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+						"checkpoints": [],
+						"planning": {
+							"concept": "A walled cloister with one exit",
+							"description": "Start on the west side and reach the exit on the east side, passing the central pillar.",
+							"proposal": {
+								"id": "5c1e9a72bd04f6e3a8170c4d92e5b3f06d1a8c27e4f09b5d3a7c2e16f8d0b94a",
+								"concept": "A walled cloister with one exit",
+								"description": "Start on the west side and reach the exit on the east side, passing the central pillar.",
+								"dimension": "2d",
+								"provider": "claude",
+								"model": "claude-opus-5-5",
+								"summary": "A walled cloister, 12 by 8 units: long north and south walls, one central pillar, and the exit on the east side.",
+								"layout": {
+									"width": 12,
+									"depth": 8,
+									"spawn": {
+										"x": 1.5,
+										"z": 4
+									},
+									"objects": [
+										{
+											"id": "wall-north",
+											"kind": "wall",
+											"label": "North wall",
+											"x": 6,
+											"z": 0.5,
+											"width": 12,
+											"depth": 1,
+											"height": 3
+										},
+										{
+											"id": "wall-south",
+											"kind": "wall",
+											"label": "South wall",
+											"x": 6,
+											"z": 7.5,
+											"width": 12,
+											"depth": 1,
+											"height": 3
+										},
+										{
+											"id": "pillar-centre",
+											"kind": "prop",
+											"label": "Stone pillar",
+											"x": 6,
+											"z": 4,
+											"width": 1,
+											"depth": 1,
+											"height": 2.5
+										},
+										{
+											"id": "goal-exit",
+											"kind": "goal",
+											"label": "Exit",
+											"x": 10.5,
+											"z": 4,
+											"width": 1,
+											"depth": 1,
+											"height": 1
+										}
+									]
+								}
+							},
+							"approved": "5c1e9a72bd04f6e3a8170c4d92e5b3f06d1a8c27e4f09b5d3a7c2e16f8d0b94a",
+							"built": "5c1e9a72bd04f6e3a8170c4d92e5b3f06d1a8c27e4f09b5d3a7c2e16f8d0b94a"
+						},
+						"world": {
+							"width": 12,
+							"depth": 8,
+							"spawn": {
+								"x": 1.5,
+								"z": 4
+							},
+							"objects": [
+								{
+									"id": "wall-north",
+									"kind": "wall",
+									"label": "North wall",
+									"x": 6,
+									"z": 0.5,
+									"width": 12,
+									"depth": 1,
+									"height": 3
+								},
+								{
+									"id": "wall-south",
+									"kind": "wall",
+									"label": "South wall",
+									"x": 6,
+									"z": 7.5,
+									"width": 12,
+									"depth": 1,
+									"height": 3
+								},
+								{
+									"id": "pillar-centre",
+									"kind": "prop",
+									"label": "Stone pillar",
+									"x": 6,
+									"z": 4,
+									"width": 1,
+									"depth": 1,
+									"height": 2.5
+								},
+								{
+									"id": "goal-exit",
+									"kind": "goal",
+									"label": "Exit",
+									"x": 10.5,
+									"z": 4,
+									"width": 1,
+									"depth": 1,
+									"height": 1
+								}
+							]
+						}
+					}
+				]
 			},
 			{
 				"name": "GameControls.run",
 				"type": "GameRun",
 				"required": true,
-				"description": "Current player position and mechanics state."
+				"description": "The current run: this component reads `state.x` and `state.y` (shown to two decimals), `state.outcome` (shown when truthy), and, outside a built level, `state.hasKey` and `state.doorOpen` for the key and door chips and to enable the Garden and Vault buttons. Any `x` or `y` that `Number()` reads as NaN, including a missing one, displays as NaN, and no other run field is read.",
+				"examples": [
+					{
+						"viewId": "view-mwhs8lc0",
+						"tick": 0,
+						"seed": 1,
+						"state": {
+							"x": 1.5,
+							"y": 4,
+							"hasKey": false,
+							"doorOpen": false,
+							"outcome": "",
+							"choice": "",
+							"level": "view-mwhs8lc0:5c1e9a72bd04f6e3a8170c4d92e5b3f06d1a8c27e4f09b5d3a7c2e16f8d0b94a",
+							"view": "view-mwhs8lc0"
+						},
+						"completed": [],
+						"events": [],
+						"trace": []
+					},
+					{
+						"viewId": "courtyard",
+						"progress": {
+							"courtyard": []
+						},
+						"tick": 1,
+						"seed": 270369,
+						"state": {
+							"x": 1,
+							"y": 0,
+							"hasKey": false,
+							"doorOpen": false,
+							"outcome": "",
+							"choice": "",
+							"view": "courtyard"
+						},
+						"completed": [],
+						"events": [],
+						"trace": []
+					}
+				]
 			},
 			{
 				"name": "GameControls.step",
 				"type": "(input: GameInput) => void",
 				"required": true,
-				"description": "Advance the game using the requested direction or legacy branch."
+				"description": "Called once per button click with a GameInput: a direction button sends `{ x, y }` with one axis at -1 or 1 and the other at 0 (up is y -1, down is y 1, left is x -1, right is x 1), and the Garden and Vault buttons send `{ x: 0, y: 0, choice }` with choice 'garden' or 'vault', but only while enabled, which means `state.doorOpen` is truthy. The component does not catch errors the callback throws."
 			},
 			{
 				"name": "GameControls.reset",
 				"type": "() => void",
 				"required": true,
-				"description": "Reset the current level to its initial player state."
+				"description": "Starts the run again where the view begins, as the types file documents; the component calls it only as the Reset button's click handler, so it is called with the click event. The Reset button is shown in every mode, including a built level."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameControls",
 				"type": "markup",
-				"description": "Player coordinates and touch movement controls appropriate to the current level."
+				"description": "The component's markup: an x and y chip (two decimals), Key and Door chips outside a built level, a Reached chip when the outcome is set, then the movement buttons (four in a built level, left and right otherwise), the Garden and Vault buttons outside a built level, and Reset. The arrow-key hint is static text, since the component attaches no keyboard listeners."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
