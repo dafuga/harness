@@ -41,80 +41,236 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GithubGrantService.constructor.options",
 				"type": "GithubGrantOptions",
-				"required": true
+				"required": true,
+				"description": "The collaborators and clock the service runs on: the GitHub app config, the GitHub API adapter, the `githubStates` and `grants` stores, the secrets helper, the public `origin` that the callback URL is built from as `${origin}/api/github/callback`, and `now`, which returns epoch milliseconds. The constructor keeps them as given and checks none of them."
 			},
 			{
 				"name": "GithubGrantService.begin.session",
 				"type": "SessionRecord",
-				"required": true
+				"required": true,
+				"description": "The signed-in session that starts the flow. `begin` records its `idHash`, its `actor.id` and the actor's current grant generation with the new state, and it does not check the session's expiry or revocation.",
+				"examples": [
+					{
+						"idHash": "5e8a1c4f7b2d9e03a6c1f8b4d2e7a9c05f3b6d1e8a2c4f7b9d0e3a5c6f1b8d24",
+						"kind": "browser",
+						"parentHash": null,
+						"actor": {
+							"id": "google-103947562018374650912",
+							"email": "maria.rivera@example.com",
+							"name": "Maria Rivera",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"createdAt": 1794735000000,
+						"expiresAt": 1795339800000,
+						"revokedAt": null
+					},
+					{
+						"idHash": "0b7e4d2a9c1f5e83d6a0b4c7f2e9d1a5c8b3f6e0d4a7c9b2f1e5d8a3c6b0f947",
+						"kind": "browser",
+						"parentHash": "a3d7f1c9e5b2084f6d1a9c3e7b5f2d80c4a6e1b9f3d7c2a5e8b0f4d6c1a9e372",
+						"actor": {
+							"id": "google-118236491075628390174",
+							"email": "jun.park@example.org",
+							"name": "Jun Park",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"createdAt": 1794746400000,
+						"expiresAt": 1795351200000,
+						"revokedAt": null
+					}
+				]
 			},
 			{
 				"name": "GithubGrantService.complete.session",
 				"type": "SessionRecord",
-				"required": true
+				"required": true,
+				"description": "The session that completes the flow, which must be the one `begin` recorded: its `idHash` and `actor.id` have to equal the stored state's. `complete` does not check the session's expiry or revocation.",
+				"examples": [
+					{
+						"idHash": "5e8a1c4f7b2d9e03a6c1f8b4d2e7a9c05f3b6d1e8a2c4f7b9d0e3a5c6f1b8d24",
+						"kind": "browser",
+						"parentHash": null,
+						"actor": {
+							"id": "google-103947562018374650912",
+							"email": "maria.rivera@example.com",
+							"name": "Maria Rivera",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"createdAt": 1794735000000,
+						"expiresAt": 1795339800000,
+						"revokedAt": null
+					},
+					{
+						"idHash": "0b7e4d2a9c1f5e83d6a0b4c7f2e9d1a5c8b3f6e0d4a7c9b2f1e5d8a3c6b0f947",
+						"kind": "browser",
+						"parentHash": "a3d7f1c9e5b2084f6d1a9c3e7b5f2d80c4a6e1b9f3d7c2a5e8b0f4d6c1a9e372",
+						"actor": {
+							"id": "google-118236491075628390174",
+							"email": "jun.park@example.org",
+							"name": "Jun Park",
+							"emailVerified": true
+						},
+						"resource": "projects",
+						"createdAt": 1794746400000,
+						"expiresAt": 1795351200000,
+						"revokedAt": null
+					}
+				]
 			},
 			{
 				"name": "GithubGrantService.complete.input",
 				"type": "{ code: string; state: string }",
-				"required": true
+				"required": true,
+				"description": "The `code` and `state` values GitHub returned to the callback. `state` is hashed and claimed once, so an unknown, expired or already used state is refused, and `code` is exchanged together with the PKCE verifier stored for that state.",
+				"examples": [
+					{
+						"code": "7f3a9c2e1b8d4f60a5c7",
+						"state": "k3Jx9QwVb2LzT7rNcE5hGyP0mD8sFaU1oRi6WtYvBnA"
+					},
+					{
+						"code": "c41e08d9b26a7f3e5d10",
+						"state": "Vq0Lr8TzN3xHc6MbW1pY9kEoJ4dSfA7gUiQ2eRtXb5C"
+					}
+				]
 			},
 			{
 				"name": "GithubGrantService.status.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The signed-in actor whose GitHub status is read. Only `actor.id` is used, to look up that actor's stored grant, and an expired grant counts as no grant.",
+				"examples": [
+					{
+						"id": "google-103947562018374650912",
+						"email": "maria.rivera@example.com",
+						"name": "Maria Rivera",
+						"emailVerified": true
+					},
+					{
+						"id": "google-118236491075628390174",
+						"email": "jun.park@example.org",
+						"name": "Jun Park",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "GithubGrantService.disconnect.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The actor whose GitHub connection is removed. Only `actor.id` is used: the stored tokens are erased and a tombstone is left, so a connection or rotation still in flight cannot write back.",
+				"examples": [
+					{
+						"id": "google-103947562018374650912",
+						"email": "maria.rivera@example.com",
+						"name": "Maria Rivera",
+						"emailVerified": true
+					},
+					{
+						"id": "google-118236491075628390174",
+						"email": "jun.park@example.org",
+						"name": "Jun Park",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "GithubGrantService.userToken.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The actor whose GitHub user token is requested. Only `actor.id` is used, to find the stored grant and to open its sealed token, which is bound to that id and opens for no other actor.",
+				"examples": [
+					{
+						"id": "google-103947562018374650912",
+						"email": "maria.rivera@example.com",
+						"name": "Maria Rivera",
+						"emailVerified": true
+					},
+					{
+						"id": "google-118236491075628390174",
+						"email": "jun.park@example.org",
+						"name": "Jun Park",
+						"emailVerified": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "STATE_TTL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The lifetime of a GitHub authorization state: 10 minutes, as `10 * 60 * 1000` milliseconds. `begin` stores each state with an expiry of the current time plus this value, and `complete` claims a state only while it is unexpired.",
+				"examples": [600000]
 			},
 			{
 				"name": "GRANT_TTL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The lifetime of a connected GitHub grant: 30 days, as `30 * 24 * 60 * 60 * 1000` milliseconds. `complete` sets a new grant's `expiresAt` to its creation time plus this value, rotation keeps that expiry, and the service treats a grant past it as no grant.",
+				"examples": [2592000000]
 			},
 			{
 				"name": "REFRESH_LEASE",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "How long one caller may hold the right to rotate a grant's tokens: 30 seconds, as `30 * 1000` milliseconds. `refresh` requests a lease until the current time plus this value, and rotated tokens are stored only for the holder of that lease.",
+				"examples": [30000]
 			},
 			{
 				"name": "GithubGrantService.begin",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "The GitHub authorize URL for the browser to open. It carries the app's client id, the callback `redirect_uri`, a new random `state` and the S256 `code_challenge`; the PKCE verifier stays on the server, sealed for the session, and only a keyed hash of the state is stored.",
+				"examples": [
+					"https://github.com/login/oauth/authorize?client_id=Iv1.8a61f9b3a7aba766&redirect_uri=https%3A%2F%2Fhub.example.com%2Fapi%2Fgithub%2Fcallback&state=k3Jx9QwVb2LzT7rNcE5hGyP0mD8sFaU1oRi6WtYvBnA&code_challenge=E9sQ2mVx7LpWz4TcRb0NhYk1JdGo8UaF3iS6lKqXw5M&code_challenge_method=S256"
+				]
 			},
 			{
 				"name": "GithubGrantService.complete",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value once the grant is stored for the session's actor, which requires the generation that `begin` recorded to still be current. A refused connection rejects with an `AuthFailure` instead."
 			},
 			{
 				"name": "GithubGrantService.status",
-				"type": "Promise<GithubStatus>"
+				"type": "Promise<GithubStatus>",
+				"description": "The actor's GitHub status. `configured` is always true for this service, `connected` is true only while a live grant exists, and `login` is that grant's GitHub login, or null when there is none.",
+				"examples": [
+					{
+						"configured": true,
+						"connected": true,
+						"login": "octo-cat"
+					},
+					{
+						"configured": true,
+						"connected": false,
+						"login": null
+					}
+				]
 			},
 			{
 				"name": "GithubGrantService.disconnect",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value once the actor's grant is revoked and tombstoned. The revocation is unconditional, so the result does not say whether a grant existed."
 			},
 			{
 				"name": "GithubGrantService.userToken",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "The actor's GitHub user access token: the stored one while its expiry is more than a minute away or unknown, otherwise a token this call rotated or, after a lost rotation race, the token now in force. A rejection means no token was returned.",
+				"examples": ["ghu_Hk2Vd8Qm1RxT5pZ0wLbN7cYs3JfA9uGe4oKi"]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Thrown with code `github-not-connected` when the state is unknown, expired, already claimed or bound to another session or actor, when GitHub's token or user response is refused or invalid, when the generation has moved, or when the actor has no usable grant. Thrown with code `github-unavailable` when a GitHub API call hits an outage, rate limit, redirect, network failure or unreadable body, or when a lost rotation race leaves a grant whose token has expired or is within a minute of expiring."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GithubGrantService.begin",
@@ -122,17 +278,54 @@
 					{
 						"name": "GithubGrantService.begin.session",
 						"type": "SessionRecord",
-						"required": true
+						"required": true,
+						"description": "The signed-in session that starts the flow. `begin` records its `idHash`, its `actor.id` and the actor's current grant generation with the new state, and it does not check the session's expiry or revocation.",
+						"examples": [
+							{
+								"idHash": "5e8a1c4f7b2d9e03a6c1f8b4d2e7a9c05f3b6d1e8a2c4f7b9d0e3a5c6f1b8d24",
+								"kind": "browser",
+								"parentHash": null,
+								"actor": {
+									"id": "google-103947562018374650912",
+									"email": "maria.rivera@example.com",
+									"name": "Maria Rivera",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"createdAt": 1794735000000,
+								"expiresAt": 1795339800000,
+								"revokedAt": null
+							},
+							{
+								"idHash": "0b7e4d2a9c1f5e83d6a0b4c7f2e9d1a5c8b3f6e0d4a7c9b2f1e5d8a3c6b0f947",
+								"kind": "browser",
+								"parentHash": "a3d7f1c9e5b2084f6d1a9c3e7b5f2d80c4a6e1b9f3d7c2a5e8b0f4d6c1a9e372",
+								"actor": {
+									"id": "google-118236491075628390174",
+									"email": "jun.park@example.org",
+									"name": "Jun Park",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"createdAt": 1794746400000,
+								"expiresAt": 1795351200000,
+								"revokedAt": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubGrantService.begin",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "The GitHub authorize URL for the browser to open. It carries the app's client id, the callback `redirect_uri`, a new random `state` and the S256 `code_challenge`; the PKCE verifier stays on the server, sealed for the session, and only a keyed hash of the state is stored.",
+						"examples": [
+							"https://github.com/login/oauth/authorize?client_id=Iv1.8a61f9b3a7aba766&redirect_uri=https%3A%2F%2Fhub.example.com%2Fapi%2Fgithub%2Fcallback&state=k3Jx9QwVb2LzT7rNcE5hGyP0mD8sFaU1oRi6WtYvBnA&code_challenge=E9sQ2mVx7LpWz4TcRb0NhYk1JdGo8UaF3iS6lKqXw5M&code_challenge_method=S256"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubGrantService.complete",
@@ -140,22 +333,73 @@
 					{
 						"name": "GithubGrantService.complete.session",
 						"type": "SessionRecord",
-						"required": true
+						"required": true,
+						"description": "The session that completes the flow, which must be the one `begin` recorded: its `idHash` and `actor.id` have to equal the stored state's. `complete` does not check the session's expiry or revocation.",
+						"examples": [
+							{
+								"idHash": "5e8a1c4f7b2d9e03a6c1f8b4d2e7a9c05f3b6d1e8a2c4f7b9d0e3a5c6f1b8d24",
+								"kind": "browser",
+								"parentHash": null,
+								"actor": {
+									"id": "google-103947562018374650912",
+									"email": "maria.rivera@example.com",
+									"name": "Maria Rivera",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"createdAt": 1794735000000,
+								"expiresAt": 1795339800000,
+								"revokedAt": null
+							},
+							{
+								"idHash": "0b7e4d2a9c1f5e83d6a0b4c7f2e9d1a5c8b3f6e0d4a7c9b2f1e5d8a3c6b0f947",
+								"kind": "browser",
+								"parentHash": "a3d7f1c9e5b2084f6d1a9c3e7b5f2d80c4a6e1b9f3d7c2a5e8b0f4d6c1a9e372",
+								"actor": {
+									"id": "google-118236491075628390174",
+									"email": "jun.park@example.org",
+									"name": "Jun Park",
+									"emailVerified": true
+								},
+								"resource": "projects",
+								"createdAt": 1794746400000,
+								"expiresAt": 1795351200000,
+								"revokedAt": null
+							}
+						]
 					},
 					{
 						"name": "GithubGrantService.complete.input",
 						"type": "{ code: string; state: string }",
-						"required": true
+						"required": true,
+						"description": "The `code` and `state` values GitHub returned to the callback. `state` is hashed and claimed once, so an unknown, expired or already used state is refused, and `code` is exchanged together with the PKCE verifier stored for that state.",
+						"examples": [
+							{
+								"code": "7f3a9c2e1b8d4f60a5c7",
+								"state": "k3Jx9QwVb2LzT7rNcE5hGyP0mD8sFaU1oRi6WtYvBnA"
+							},
+							{
+								"code": "c41e08d9b26a7f3e5d10",
+								"state": "Vq0Lr8TzN3xHc6MbW1pY9kEoJ4dSfA7gUiQ2eRtXb5C"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubGrantService.complete",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value once the grant is stored for the session's actor, which requires the generation that `begin` recorded to still be current. A refused connection rejects with an `AuthFailure` instead."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown with code `github-not-connected` when the state is unknown, expired, already claimed or bound to another session or actor, when the stored verifier cannot be opened, when GitHub's token or user response is refused or invalid, or when the generation has moved. Thrown with code `github-unavailable` when the GitHub API adapter sees an outage, rate limit, redirect, network failure or unreadable body during the code exchange."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubGrantService.status",
@@ -163,17 +407,45 @@
 					{
 						"name": "GithubGrantService.status.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The signed-in actor whose GitHub status is read. Only `actor.id` is used, to look up that actor's stored grant, and an expired grant counts as no grant.",
+						"examples": [
+							{
+								"id": "google-103947562018374650912",
+								"email": "maria.rivera@example.com",
+								"name": "Maria Rivera",
+								"emailVerified": true
+							},
+							{
+								"id": "google-118236491075628390174",
+								"email": "jun.park@example.org",
+								"name": "Jun Park",
+								"emailVerified": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubGrantService.status",
-						"type": "Promise<GithubStatus>"
+						"type": "Promise<GithubStatus>",
+						"description": "The actor's GitHub status. `configured` is always true for this service, `connected` is true only while a live grant exists, and `login` is that grant's GitHub login, or null when there is none.",
+						"examples": [
+							{
+								"configured": true,
+								"connected": true,
+								"login": "octo-cat"
+							},
+							{
+								"configured": true,
+								"connected": false,
+								"login": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubGrantService.disconnect",
@@ -181,17 +453,33 @@
 					{
 						"name": "GithubGrantService.disconnect.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The actor whose GitHub connection is removed. Only `actor.id` is used: the stored tokens are erased and a tombstone is left, so a connection or rotation still in flight cannot write back.",
+						"examples": [
+							{
+								"id": "google-103947562018374650912",
+								"email": "maria.rivera@example.com",
+								"name": "Maria Rivera",
+								"emailVerified": true
+							},
+							{
+								"id": "google-118236491075628390174",
+								"email": "jun.park@example.org",
+								"name": "Jun Park",
+								"emailVerified": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubGrantService.disconnect",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value once the actor's grant is revoked and tombstoned. The revocation is unconditional, so the result does not say whether a grant existed."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubGrantService.userToken",
@@ -199,17 +487,40 @@
 					{
 						"name": "GithubGrantService.userToken.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The actor whose GitHub user token is requested. Only `actor.id` is used, to find the stored grant and to open its sealed token, which is bound to that id and opens for no other actor.",
+						"examples": [
+							{
+								"id": "google-103947562018374650912",
+								"email": "maria.rivera@example.com",
+								"name": "Maria Rivera",
+								"emailVerified": true
+							},
+							{
+								"id": "google-118236491075628390174",
+								"email": "jun.park@example.org",
+								"name": "Jun Park",
+								"emailVerified": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubGrantService.userToken",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "The actor's GitHub user access token: the stored one while its expiry is more than a minute away or unknown, otherwise a token this call rotated or, after a lost rotation race, the token now in force. A rejection means no token was returned.",
+						"examples": ["ghu_Hk2Vd8Qm1RxT5pZ0wLbN7cYs3JfA9uGe4oKi"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown with code `github-not-connected` when the actor has no live grant, when the sealed token cannot be opened for that actor, or when GitHub refuses the refresh token or answers for another GitHub user and this caller, holding the lease, revokes the grant. Thrown with code `github-unavailable` when a token rotation call to GitHub hits an outage, rate limit, redirect, network failure or unreadable body, or when a lost rotation race leaves a grant whose token has expired or is within a minute of expiring."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -219,17 +530,19 @@
 					{
 						"name": "GithubGrantService.constructor.options",
 						"type": "GithubGrantOptions",
-						"required": true
+						"required": true,
+						"description": "The collaborators and clock the service runs on: the GitHub app config, the GitHub API adapter, the `githubStates` and `grants` stores, the secrets helper, the public `origin` that the callback URL is built from as `${origin}/api/github/callback`, and `now`, which returns epoch milliseconds. The constructor keeps them as given and checks none of them."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubGrantService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new `GithubGrantService` instance, which keeps the options and performs no I/O during construction."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
