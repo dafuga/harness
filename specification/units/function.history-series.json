@@ -21,41 +21,57 @@
 				"name": "unitGrowth.records",
 				"type": "VerificationRecord[]",
 				"required": true,
-				"description": "Verification records in the order growth points should first appear."
+				"description": "Verification records scanned in supplied order for unit measurements and emitted sizes. Repeated measurements for one unit and tested commit merge into one point whose record id is from the first occurrence.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "unitGrowth.reviews",
 				"type": "Map<string, BudgetReview[]>",
 				"required": false,
-				"description": "Optional map of reviewed budget histories by unit; defaults to an empty map."
+				"description": "A map from unit ids to their budget review histories, attached to matching growth entries when present. Defaults to new Map(), so omitted reviews produce no review entries."
 			},
 			{
 				"name": "historySeries.records",
 				"type": "Array<Pick<VerificationRecord, 'id' | 'measurements'>>",
 				"required": true,
-				"description": "Verification records containing benchmark measurements to group."
+				"description": "Verification record projections containing ids and measurements to group into benchmark series. Only numeric measurements with a workload and profile participate.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "historySeries.focused",
 				"type": "RegressionView[]",
 				"required": false,
 				"default": [],
-				"description": "Optional retained focused regression runs supplying measurements alongside full verification records; defaults to an empty list."
+				"description": "Focused regression views that may contribute red and green point measurements when the view is not a gap and the point has an id. Only measurements tested at the point's commit are retained; defaults to an empty list.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitGrowth",
 				"type": "Growth",
-				"description": "Units sorted by id, each with one growth point per tested commit, measured source metrics and target sizes, unavailable/partial notes and any supplied reviews. Benchmark-specific size measurements are excluded."
+				"description": "A list of units sorted by id, with one growth point per tested commit and reviews from a matching supplied map entry when present. Frozen own measurements and emitted target sizes are included; missing metrics are notes rather than zeroes, and benchmark-reported sizes are excluded.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "historySeries",
 				"type": "BenchmarkSeries[]",
-				"description": "Benchmark groups by unit, workload, metric and target, with separate lines for different profiles, units, methods or comparison contexts. Only numeric values with workload and profile participate; multiple lines mark a group incompatible."
+				"description": "A list of benchmark groups sorted by group key, each containing its unit, workload, metric, target, incompatibility flag, and measurement lines. Only non-null numeric measurements with a workload and profile are included; differences in profile, unit of measure, method, or comparison context form separate lines.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "unitGrowth",
@@ -64,24 +80,30 @@
 						"name": "unitGrowth.records",
 						"type": "VerificationRecord[]",
 						"required": true,
-						"description": "Verification records in the order growth points should first appear."
+						"description": "Verification records scanned in supplied order for unit measurements and emitted sizes. Repeated measurements for one unit and tested commit merge into one point whose record id is from the first occurrence.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "unitGrowth.reviews",
 						"type": "Map<string, BudgetReview[]>",
 						"required": false,
-						"description": "Optional map of reviewed budget histories by unit; defaults to an empty map."
+						"description": "A map from unit ids to their budget review histories, attached to matching growth entries when present. Defaults to new Map(), so omitted reviews produce no review entries."
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitGrowth",
 						"type": "Growth",
-						"description": "Units sorted by id, each with one growth point per tested commit, measured source metrics and target sizes, unavailable/partial notes and any supplied reviews. Benchmark-specific size measurements are excluded."
+						"description": "A list of units sorted by id, with one growth point per tested commit and reviews from a matching supplied map entry when present. Frozen own measurements and emitted target sizes are included; missing metrics are notes rather than zeroes, and benchmark-reported sizes are excluded.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "historySeries",
@@ -90,25 +112,34 @@
 						"name": "historySeries.records",
 						"type": "Array<Pick<VerificationRecord, 'id' | 'measurements'>>",
 						"required": true,
-						"description": "Verification records containing benchmark measurements to group."
+						"description": "Verification record projections containing ids and measurements to group into benchmark series. Only numeric measurements with a workload and profile participate.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "historySeries.focused",
 						"type": "RegressionView[]",
 						"required": false,
 						"default": [],
-						"description": "Optional retained focused regression runs supplying measurements alongside full verification records; defaults to an empty list."
+						"description": "Focused regression views that may contribute red and green point measurements when the view is not a gap and the point has an id. Only measurements tested at the point's commit are retained; defaults to an empty list.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "historySeries",
 						"type": "BenchmarkSeries[]",
-						"description": "Benchmark groups by unit, workload, metric and target, with separate lines for different profiles, units, methods or comparison contexts. Only numeric values with workload and profile participate; multiple lines mark a group incompatible."
+						"description": "A list of benchmark groups sorted by group key, each containing its unit, workload, metric, target, incompatibility flag, and measurement lines. Only non-null numeric measurements with a workload and profile are included; differences in profile, unit of measure, method, or comparison context form separate lines.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
