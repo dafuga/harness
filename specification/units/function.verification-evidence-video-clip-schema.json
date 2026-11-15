@@ -8,44 +8,133 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/verification-evidence/videoClipSchema.ts"],
-		"symbols": ["videoClipSchema"]
+		"source": [
+			"src/utils/verification-evidence/video-clip-schema/videoBindings.ts",
+			"src/utils/verification-evidence/videoClipSchema.ts",
+			"src/utils/verification-evidence/videoClipSchema.types.ts"
+		],
+		"symbols": [
+			"videoBindings",
+			"videoManifestBaseSchema",
+			"videoManifestSchema",
+			"videoCaptureSchema",
+			"videoClipSchema",
+			"VideoManifest",
+			"VideoCapture",
+			"VideoClip",
+			"VideoGraph",
+			"VideoDeclaration"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
+				"name": "videoBindings.manifest",
+				"type": "VideoManifest",
+				"required": true,
+				"description": "Finite clip, viewport and graph declarations whose references must be consistent."
+			},
+			{
+				"name": "videoBindings.context",
+				"type": "RefinementCtx",
+				"required": true,
+				"description": "Zod refinement context that receives diagnostics for invalid graph and clip bindings."
+			},
+			{
 				"name": "videoClipSchema.value",
-				"type": "string",
-				"required": true
+				"type": "VideoDeclaration",
+				"required": true,
+				"description": "JSON declaration to validate against the versioned video manifest and reference rules."
 			}
 		],
 		"outputs": [
 			{
+				"name": "videoBindings",
+				"type": "void",
+				"description": "No return value; invalid references add validation issues to the supplied context."
+			},
+			{
+				"name": "videoManifestBaseSchema",
+				"type": "unknown",
+				"description": "Strict version-one schema for video declaration fields before cross-reference checks."
+			},
+			{
+				"name": "videoManifestSchema",
+				"type": "unknown",
+				"description": "Version-one declaration schema with graph reachability and clip/checkpoint reference checks."
+			},
+			{
+				"name": "videoCaptureSchema",
+				"type": "unknown",
+				"description": "Version-one schema for clip provenance, timed assertions, recording facts and poster references."
+			},
+			{
 				"name": "videoClipSchema",
-				"type": "string"
+				"type": "VideoManifest",
+				"description": "Validated finite video declaration retaining its authored clips, graphs, viewports and playlists."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "The JSON declaration is malformed or has invalid graph, clip, viewport or checkpoint references."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "videoBindings",
+				"inputs": [
+					{
+						"name": "videoBindings.manifest",
+						"type": "VideoManifest",
+						"required": true,
+						"description": "Finite clip, viewport and graph declarations whose references must be consistent."
+					},
+					{
+						"name": "videoBindings.context",
+						"type": "RefinementCtx",
+						"required": true,
+						"description": "Zod refinement context that receives diagnostics for invalid graph and clip bindings."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoBindings",
+						"type": "void",
+						"description": "No return value; invalid references add validation issues to the supplied context."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
 			{
 				"name": "videoClipSchema",
 				"inputs": [
 					{
 						"name": "videoClipSchema.value",
-						"type": "string",
-						"required": true
+						"type": "VideoDeclaration",
+						"required": true,
+						"description": "JSON declaration to validate against the versioned video manifest and reference rules."
 					}
 				],
 				"outputs": [
 					{
 						"name": "videoClipSchema",
-						"type": "string"
+						"type": "VideoManifest",
+						"description": "Validated finite video declaration retaining its authored clips, graphs, viewports and playlists."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "The JSON declaration is malformed or has invalid graph, clip, viewport or checkpoint references."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

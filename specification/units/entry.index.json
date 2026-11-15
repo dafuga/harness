@@ -169,7 +169,9 @@
 			"BoundedCommandAdapter",
 			"staleBuild",
 			"scenarioHealth",
-			"ContractsCommand"
+			"ContractsCommand",
+			"VideoEvidenceService",
+			"videoClipSchema"
 		]
 	},
 	"contract": {
@@ -483,6 +485,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.verification-note-identity",
 			"via": "reexport",
 			"origin": "derived"
@@ -754,6 +761,11 @@
 		},
 		{
 			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-evidence",
 			"via": "reexport",
 			"origin": "derived"
 		},

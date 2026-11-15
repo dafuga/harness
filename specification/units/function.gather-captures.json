@@ -11,9 +11,18 @@
 		"source": [
 			"src/utils/verification-evidence/gatherCaptures.ts",
 			"src/workflows/run-verify/verification-service/check-run-service/gatherCaptures.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/videoPoster.ts"
 		],
-		"symbols": ["Gathered", "GatherResult", "gatherCaptures", "gatherCaptures", "gatherCaptures"]
+		"symbols": [
+			"Gathered",
+			"GatherResult",
+			"gatherCaptures",
+			"gatherCaptures",
+			"gatherCaptures",
+			"posterBudget",
+			"inspectVideoPoster"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -68,6 +77,42 @@
 						"root": ".cache/harness/verifications/9b1f0c6e4a2d7835f1c0e9b6a4d2f7c81e3a5b90/20261114093012345"
 					}
 				]
+			},
+			{
+				"name": "posterBudget.line",
+				"type": "CaptureLine",
+				"required": true,
+				"description": "Video capture declaration containing its required poster filename, size and hash."
+			},
+			{
+				"name": "posterBudget.file",
+				"type": "string",
+				"required": true,
+				"description": "Path of the regular video file whose poster is stored in the same evidence directory."
+			},
+			{
+				"name": "posterBudget.scope",
+				"type": "{ budget: RecordBudget; limits: CaptureLimits; videoBytes: number }",
+				"required": true,
+				"description": "Shared record budget, per-capture byte limits and admitted video byte count for atomic pair admission."
+			},
+			{
+				"name": "inspectVideoPoster.line",
+				"type": "CaptureLine",
+				"required": true,
+				"description": "Video capture metadata naming the poster and its representative video timestamp."
+			},
+			{
+				"name": "inspectVideoPoster.file",
+				"type": "string",
+				"required": true,
+				"description": "Admitted video file used to extract the actual representative frame for pixel comparison."
+			},
+			{
+				"name": "inspectVideoPoster.facts",
+				"type": "MediaFacts | undefined",
+				"required": true,
+				"description": "Decoded media facts; undefined or non-video facts are rejected."
 			}
 		],
 		"outputs": [
@@ -157,9 +202,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown inside this unit when lstat does not report a capture as a regular file, when a media or benchmark capture's read returns no contents, and when the capture directory or index is not a regular directory or regular file. gatherLine and indexLines catch every such throw and report it as a failure string, so gatherCaptures never throws it."
+				"description": "Video inputs, recording tools, poster media or evidence limits cannot satisfy the declared recording contract."
 			}
 		],
 		"errorStatus": "declared",
@@ -312,11 +357,92 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "posterBudget",
+				"inputs": [
+					{
+						"name": "posterBudget.line",
+						"type": "CaptureLine",
+						"required": true,
+						"description": "Video capture declaration containing its required poster filename, size and hash."
+					},
+					{
+						"name": "posterBudget.file",
+						"type": "string",
+						"required": true,
+						"description": "Path of the regular video file whose poster is stored in the same evidence directory."
+					},
+					{
+						"name": "posterBudget.scope",
+						"type": "{ budget: RecordBudget; limits: CaptureLimits; videoBytes: number }",
+						"required": true,
+						"description": "Shared record budget, per-capture byte limits and admitted video byte count for atomic pair admission."
+					}
+				],
+				"outputs": [
+					{
+						"name": "posterBudget",
+						"type": "number",
+						"description": "Poster byte count after checking the combined video/poster record budget without consuming it."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Video inputs, recording tools, poster media or evidence limits cannot satisfy the declared recording contract."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "inspectVideoPoster",
+				"inputs": [
+					{
+						"name": "inspectVideoPoster.line",
+						"type": "CaptureLine",
+						"required": true,
+						"description": "Video capture metadata naming the poster and its representative video timestamp."
+					},
+					{
+						"name": "inspectVideoPoster.file",
+						"type": "string",
+						"required": true,
+						"description": "Admitted video file used to extract the actual representative frame for pixel comparison."
+					},
+					{
+						"name": "inspectVideoPoster.facts",
+						"type": "MediaFacts | undefined",
+						"required": true,
+						"description": "Decoded media facts; undefined or non-video facts are rejected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "inspectVideoPoster",
+						"type": "void",
+						"description": "No return value when poster hash, dimensions, decoding and exact video-frame pixels are valid."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Video inputs, recording tools, poster media or evidence limits cannot satisfy the declared recording contract."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.media-facts",
 			"via": "import",

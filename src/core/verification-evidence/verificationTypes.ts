@@ -1,5 +1,6 @@
 // @harness-uid u_d27vkdvynl
 import { z } from 'zod';
+import { videoCaptureSchema } from '../../utils/verification-evidence/videoClipSchema';
 import { browserDiagnosticSchema } from '../development-tooling/browserDiagnostics';
 import { comparisonSchema } from '../development-tooling/comparisonTypes';
 import { explanationSchema } from '../development-tooling/explanationTypes';
@@ -20,8 +21,9 @@ export const captureRegionSchema = z.strictObject({
 });
 
 export const captureSchema = z.strictObject({
+	video: videoCaptureSchema.optional(),
 	evidence: identifier,
-	kind: z.enum(['screenshot', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
+	kind: z.enum(['screenshot', 'video', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
 	state: identifier,
 	viewport: identifier.optional(),
 	clip: captureRegionSchema.optional(),

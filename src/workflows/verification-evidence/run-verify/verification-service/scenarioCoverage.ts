@@ -42,10 +42,13 @@ export function scenarioCoverage(input: CoverageInput): CoverageResult {
 
 function matches(
 	item: Gathered,
-	need: { evidence: string; state: string; viewport?: string }
+	need: { evidence: string; kind: string; state: string; viewport?: string }
 ): boolean {
 	const { line } = item;
 	return (
-		line.evidence === need.evidence && line.state === need.state && line.viewport === need.viewport
+		line.kind === need.kind &&
+		line.evidence === need.evidence &&
+		line.state === need.state &&
+		line.viewport === need.viewport
 	);
 }

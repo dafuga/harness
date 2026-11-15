@@ -17,6 +17,7 @@ export /** The first thing wrong with one capture, if anything. */
 function problem(input: CoverageInput, item: Gathered): string | undefined {
 	const evidence = input.scenario.evidence.find((entry) => entry.id === item.line.evidence);
 	if (item.line.kind === 'screenshot') return imageProblem(input, item, evidence);
+	if (item.line.kind === 'video') return videoProblem(input, item, evidence);
 	if (item.line.kind === 'audio') return audioProblem(input, item, evidence);
 	if (item.line.kind === 'benchmark') return benchmarkProblem(item);
 	// An output, assertions or a trace that says it was captured from running software is bound
@@ -24,6 +25,49 @@ function problem(input: CoverageInput, item: Gathered): string | undefined {
 	return item.line.provenance === 'actual-capture'
 		? stampProblem(input, item, evidence)
 		: undefined;
+}
+
+/** Retained video timestamps and decoded facts must describe the same viewport and interval. */
+function videoProblem(
+	input: CoverageInput,
+	item: Gathered,
+	evidence?: Evidence
+): string | undefined {
+	const { facts, line } = item;
+	if (!facts || !('kind' in facts) || facts.kind !== 'video')
+		return `capture ${line.file} is not playable video: ${factsError(facts, 'not video')}`;
+	const video = line.video;
+	if (!video) return `capture ${line.file} has no video provenance`;
+	const viewport = input.scenario.viewports.find((entry) => entry.id === line.viewport);
+	if (facts.width !== viewport?.width || facts.height !== viewport.height)
+		return `capture ${line.file} video dimensions do not match its viewport`;
+	const detail = videoMetadataProblem(video, facts, line);
+	if (detail) return `capture ${line.file} ${detail}`;
+	return stampProblem(input, item, evidence);
+}
+
+function videoMetadataProblem(
+	video: NonNullable<Gathered['line']['video']>,
+	facts: Extract<MediaFacts, { kind: 'video' }>,
+	line: Gathered['line']
+): string | undefined {
+	const pairs = [
+		[video.width, facts.width],
+		[video.height, facts.height],
+		[video.frameCount, facts.frameCount],
+		[video.frameRate, facts.frameRate],
+		[line.durationSeconds ?? 0, facts.durationSeconds]
+	];
+	if (!pairs.every(([declared, actual]) => Math.abs(declared - actual) <= 0.05))
+		return 'video facts do not match decoded media';
+	const times = [...video.states, ...video.edges]
+		.map((visit) => visit.atSeconds)
+		.concat(video.poster.timeSeconds);
+	if (!times.every((time) => time >= 0 && time <= facts.durationSeconds))
+		return 'has a timestamp outside the retained video interval';
+	if (!video.states.some((visit) => visit.id === line.state))
+		return `does not visibly assert state ${line.state}`;
+	return undefined;
 }
 
 /** A benchmark capture must be measurements Harness can read, each context valid if stated. */

@@ -15,6 +15,7 @@ import type { CaptureLimits } from './captureLimits.types';
 import { digestFile, oversizeCapture, RecordBudget } from './captureLimits';
 import { evidenceDirectoryFailure } from './evidenceDirectoryFailure';
 import { mediaFacts } from './mediaFacts';
+import { posterBudget, inspectVideoPoster } from './videoPoster';
 import { type MediaFacts } from '../../../../../utils/verification-evidence/mediaFacts';
 
 const hex = /^[0-9a-f]{40}$/;
@@ -71,15 +72,19 @@ function inspectBudgeted(
 ): Gathered | string {
 	const stat = lstatSync(file);
 	if (!stat.isFile()) throw new Error('Capture must be a regular file, not a symlink.');
+	checkVideoBytes(line, stat.size);
 	const refused =
 		oversizeCapture(line.file, stat.size, limits) ??
 		budget.refusal(`${recordPath}/${line.file}`, stat.size);
 	if (refused) return refused;
 	const cap = Math.min(limits.maxCaptureBytes ?? Infinity, budget.remaining() ?? Infinity);
+	const posterBytes =
+		line.kind === 'video' ? posterBudget(line, file, { budget, limits, videoBytes: stat.size }) : 0;
 	const item = inspect(line, file, recordPath, {
 		maxCaptureBytes: Number.isFinite(cap) ? cap : undefined
 	});
-	budget.retain(item.capture.bytes);
+	if (line.kind === 'video') inspectVideoPoster(line, file, item.facts);
+	budget.retain(item.capture.bytes + posterBytes);
 	return item;
 }
 
@@ -111,7 +116,7 @@ function load(
 	source: string,
 	limits: CaptureLimits
 ): { sha256: string; bytes: number; facts?: MediaFacts; benchmark?: unknown } {
-	const media = line.kind === 'screenshot' || line.kind === 'audio';
+	const media = ['screenshot', 'audio', 'video'].includes(line.kind);
 	if (!media && line.kind !== 'benchmark') return digestFile(source, limits.maxCaptureBytes);
 	const { contents: decoded, ...digest } = digestFile(source, limits.maxCaptureBytes, true);
 	if (!decoded) throw new Error('Capture bytes were not read.');
@@ -124,7 +129,12 @@ function load(
 
 /** The duration the audio really has, which replaces whatever the check declared. */
 function actualDuration(facts: MediaFacts | undefined): number | undefined {
-	return facts && 'kind' in facts && facts.kind === 'audio' ? facts.durationSeconds : undefined;
+	return facts &&
+		'kind' in facts &&
+		['audio', 'video'].includes(facts.kind) &&
+		'durationSeconds' in facts
+		? facts.durationSeconds
+		: undefined;
 }
 
 /**
@@ -164,4 +174,9 @@ function parseJson(text: string): unknown {
 	} catch {
 		return undefined;
 	}
+}
+
+function checkVideoBytes(line: CaptureLine, bytes: number): void {
+	if (line.kind === 'video' && bytes > 8 * 1024 * 1024)
+		throw new Error('Video exceeds the fixed 8 MiB clip cap.');
 }

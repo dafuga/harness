@@ -1,5 +1,6 @@
 // @harness-uid u_6shfrcvyqy
 import { z } from 'zod';
+import { videoManifestSchema } from '../../utils/verification-evidence/videoClipSchema';
 import { compositionSchema } from './composition';
 import { sourceContractSchema } from './contractSchemas';
 
@@ -156,6 +157,7 @@ export const componentManifestSchema = z.strictObject({
 });
 
 export const scenarioManifestSchema = z.strictObject({
+	video: videoManifestSchema.optional(),
 	schemaVersion: z.literal(1),
 	id: identifier,
 	title: text,
@@ -206,7 +208,7 @@ export const scenarioManifestSchema = z.strictObject({
 	evidence: z.array(
 		z.strictObject({
 			id: identifier,
-			kind: z.enum(['screenshot', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
+			kind: z.enum(['screenshot', 'video', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
 			states: z.array(identifier),
 			viewports: z.array(identifier),
 			provenance: z.enum(['fixture', 'actual-capture']).optional(),

@@ -94,8 +94,10 @@ export class ScenarioManifestValidator {
 	}
 
 	private viewportRules(scenario: ScenarioManifest): string[] {
-		const needsViewports = scenario.evidence.some((evidence) => evidence.kind === 'screenshot');
+		const needsViewports = scenario.evidence.some((evidence) =>
+			['screenshot', 'video'].includes(evidence.kind)
+		);
 		if (!needsViewports || scenario.viewports.length > 0) return [];
-		return [`${scenario.id}: screenshot evidence requires at least one viewport`];
+		return [`${scenario.id}: visual evidence requires at least one viewport`];
 	}
 }

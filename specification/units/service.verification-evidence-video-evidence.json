@@ -1,0 +1,355 @@
+{
+	"schemaVersion": 1,
+	"id": "service.verification-evidence-video-evidence",
+	"uid": "u_nfctcgnv7g",
+	"kind": "service",
+	"title": "VideoEvidenceService",
+	"responsibility": "Plans stale video slots and measures finite graph coverage from admitted clip observations.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": [
+			"src/services/verification-evidence/VideoEvidenceService.ts",
+			"src/services/verification-evidence/VideoEvidenceService.types.ts",
+			"src/services/verification-evidence/video-evidence-service/clipInputs.ts",
+			"src/services/verification-evidence/video-evidence-service/clipInputs.types.ts",
+			"src/services/verification-evidence/video-evidence-service/graphCoverage.ts"
+		],
+		"symbols": [
+			"VideoEvidenceService",
+			"VideoEvidenceService.constructor",
+			"VideoEvidenceService.run",
+			"VideoEvidenceService.plan",
+			"VideoEvidenceService.coverage",
+			"VideoSlot",
+			"VideoObservation",
+			"VideoPlan",
+			"VideoGraphCoverage",
+			"clipInputHash",
+			"VideoOwner",
+			"graphCoverage"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "VideoEvidenceService.constructor.root",
+				"type": "string",
+				"required": false,
+				"default": "undefined",
+				"description": "Source snapshot directory. Omission passes undefined and uses process.cwd() when constructing the service."
+			},
+			{
+				"name": "VideoEvidenceService.plan.declaration",
+				"type": "VideoDeclaration",
+				"required": true,
+				"description": "JSON video declaration containing the required clips, graph bindings and viewport matrix."
+			},
+			{
+				"name": "VideoEvidenceService.plan.previous",
+				"type": "VideoSlot[]",
+				"required": false,
+				"default": [],
+				"description": "Previously validated slot candidates; defaults to an empty list. Matching candidates retain their original provenance."
+			},
+			{
+				"name": "VideoEvidenceService.coverage.declaration",
+				"type": "VideoDeclaration",
+				"required": true,
+				"description": "Finite graph declaration whose required state, edge and clip slots are measured."
+			},
+			{
+				"name": "VideoEvidenceService.coverage.observations",
+				"type": "VideoObservation[]",
+				"required": true,
+				"description": "Already admitted clip observations with visible assertion timestamps and freshness supplied by the evidence caller."
+			},
+			{
+				"name": "clipInputHash.root",
+				"type": "string",
+				"required": true,
+				"description": "Root directory containing the source snapshot and registered unit manifests."
+			},
+			{
+				"name": "clipInputHash.manifest",
+				"type": "VideoManifest",
+				"required": true,
+				"description": "Video library supplying the selected viewport and relevant graph predicate slices."
+			},
+			{
+				"name": "clipInputHash.clip",
+				"type": "VideoManifest['clips'][number]",
+				"required": true,
+				"description": "One independently authored clip descriptor with source, script, fixture and checkpoint bindings."
+			},
+			{
+				"name": "clipInputHash.viewport",
+				"type": "string",
+				"required": true,
+				"description": "Declared viewport identity included in this independent recording slot."
+			},
+			{
+				"name": "graphCoverage.manifest",
+				"type": "VideoManifest",
+				"required": true,
+				"description": "Validated finite graph and clip declaration."
+			},
+			{
+				"name": "graphCoverage.observations",
+				"type": "VideoObservation[]",
+				"required": true,
+				"description": "Timestamped state and transition assertions from clips admitted by the evidence caller."
+			}
+		],
+		"outputs": [
+			{
+				"name": "VideoEvidenceService.run",
+				"type": "string",
+				"description": "Stable video-evidence capability identifier."
+			},
+			{
+				"name": "VideoEvidenceService.plan",
+				"type": "VideoPlan",
+				"description": "Slots requiring recording and matching reusable candidates; no recorder is started by planning."
+			},
+			{
+				"name": "VideoEvidenceService.coverage",
+				"type": "VideoGraphCoverage[]",
+				"description": "Coverage fractions and missing state, edge and clip slots for each finite graph."
+			},
+			{
+				"name": "clipInputHash",
+				"type": "string",
+				"description": "SHA-256 over the clip, viewport, owner/dependency sources, contracts, lockfiles and recording toolchain recipe."
+			},
+			{
+				"name": "graphCoverage",
+				"type": "VideoGraphCoverage[]",
+				"description": "Per-graph state/edge coverage and explicit missing slots; empty viewport coverage is incomplete."
+			}
+		],
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "The JSON declaration is malformed or has invalid graph, clip, viewport or checkpoint references."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Video inputs, recording tools, poster media or evidence limits cannot satisfy the declared recording contract."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "VideoEvidenceService.run",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "VideoEvidenceService.run",
+						"type": "string",
+						"description": "Stable video-evidence capability identifier."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoEvidenceService.plan",
+				"inputs": [
+					{
+						"name": "VideoEvidenceService.plan.declaration",
+						"type": "VideoDeclaration",
+						"required": true,
+						"description": "JSON video declaration containing the required clips, graph bindings and viewport matrix."
+					},
+					{
+						"name": "VideoEvidenceService.plan.previous",
+						"type": "VideoSlot[]",
+						"required": false,
+						"default": [],
+						"description": "Previously validated slot candidates; defaults to an empty list. Matching candidates retain their original provenance."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoEvidenceService.plan",
+						"type": "VideoPlan",
+						"description": "Slots requiring recording and matching reusable candidates; no recorder is started by planning."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Video inputs, recording tools, poster media or evidence limits cannot satisfy the declared recording contract."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VideoEvidenceService.coverage",
+				"inputs": [
+					{
+						"name": "VideoEvidenceService.coverage.declaration",
+						"type": "VideoDeclaration",
+						"required": true,
+						"description": "Finite graph declaration whose required state, edge and clip slots are measured."
+					},
+					{
+						"name": "VideoEvidenceService.coverage.observations",
+						"type": "VideoObservation[]",
+						"required": true,
+						"description": "Already admitted clip observations with visible assertion timestamps and freshness supplied by the evidence caller."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoEvidenceService.coverage",
+						"type": "VideoGraphCoverage[]",
+						"description": "Coverage fractions and missing state, edge and clip slots for each finite graph."
+					}
+				],
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "The JSON declaration is malformed or has invalid graph, clip, viewport or checkpoint references."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "clipInputHash",
+				"inputs": [
+					{
+						"name": "clipInputHash.root",
+						"type": "string",
+						"required": true,
+						"description": "Root directory containing the source snapshot and registered unit manifests."
+					},
+					{
+						"name": "clipInputHash.manifest",
+						"type": "VideoManifest",
+						"required": true,
+						"description": "Video library supplying the selected viewport and relevant graph predicate slices."
+					},
+					{
+						"name": "clipInputHash.clip",
+						"type": "VideoManifest['clips'][number]",
+						"required": true,
+						"description": "One independently authored clip descriptor with source, script, fixture and checkpoint bindings."
+					},
+					{
+						"name": "clipInputHash.viewport",
+						"type": "string",
+						"required": true,
+						"description": "Declared viewport identity included in this independent recording slot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipInputHash",
+						"type": "string",
+						"description": "SHA-256 over the clip, viewport, owner/dependency sources, contracts, lockfiles and recording toolchain recipe."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Video inputs, recording tools, poster media or evidence limits cannot satisfy the declared recording contract."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "graphCoverage",
+				"inputs": [
+					{
+						"name": "graphCoverage.manifest",
+						"type": "VideoManifest",
+						"required": true,
+						"description": "Validated finite graph and clip declaration."
+					},
+					{
+						"name": "graphCoverage.observations",
+						"type": "VideoObservation[]",
+						"required": true,
+						"description": "Timestamped state and transition assertions from clips admitted by the evidence caller."
+					}
+				],
+				"outputs": [
+					{
+						"name": "graphCoverage",
+						"type": "VideoGraphCoverage[]",
+						"description": "Per-graph state/edge coverage and explicit missing slots; empty viewport coverage is incomplete."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "VideoEvidenceService.constructor",
+				"inputs": [
+					{
+						"name": "VideoEvidenceService.constructor.root",
+						"type": "string",
+						"required": false,
+						"default": "undefined",
+						"description": "Source snapshot directory. Omission passes undefined and uses process.cwd() when constructing the service."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoEvidenceService.constructor",
+						"type": "unknown",
+						"description": "Service bound to the supplied source root or current working directory."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/VideoEvidenceService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/VideoEvidenceService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
