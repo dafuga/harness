@@ -12,22 +12,30 @@
 		"symbols": ["VerificationRecordValidator", "VerificationRecordValidator.validate"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "VerificationRecordValidator.validate.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The untrusted value supplied to validate for schema parsing. The parameter accepts any runtime value; only values accepted by verificationRecordSchema receive measurement and recorded-unit checks.",
+				"examples": [null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "VerificationRecordValidator.validate",
-				"type": "ManifestValidation<VerificationRecord>"
+				"type": "ManifestValidation<VerificationRecord>",
+				"description": "The ManifestValidation<VerificationRecord> result produced by validate. Schema failures return errors without value; parsed records return value plus findings for measurement inconsistencies or units lacking recorded component versions.",
+				"examples": [
+					{
+						"errors": ["record: source.commit must be a full commit or tree hash"]
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "VerificationRecordValidator.validate",
@@ -35,17 +43,25 @@
 					{
 						"name": "VerificationRecordValidator.validate.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The untrusted value supplied to validate for schema parsing. The parameter accepts any runtime value; only values accepted by verificationRecordSchema receive measurement and recorded-unit checks.",
+						"examples": [null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationRecordValidator.validate",
-						"type": "ManifestValidation<VerificationRecord>"
+						"type": "ManifestValidation<VerificationRecord>",
+						"description": "The ManifestValidation<VerificationRecord> result produced by validate. Schema failures return errors without value; parsed records return value plus findings for measurement inconsistencies or units lacking recorded component versions.",
+						"examples": [
+							{
+								"errors": ["record: source.commit must be a full commit or tree hash"]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
