@@ -79,75 +79,282 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteFailure.constructor.code",
 				"type": "RemoteErrorCode",
-				"required": true
+				"required": true,
+				"description": "A key in remoteErrorMessages that identifies the wire failure. It is stored as the failure code and selects the default display message.",
+				"examples": ["invalid-message", "project-required", "failed"]
 			},
 			{
 				"name": "RemoteFailure.constructor.message",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Optional display text for the failure. If omitted or nullish at runtime, the constructor uses remoteErrorMessages[code].",
+				"examples": [
+					"The request was not understood.",
+					"The branch moved. Reload it and try again."
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "REMOTE_PROTOCOL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The wire protocol version used by this remote model. A host answers no other protocol number.",
+				"examples": [1]
 			},
 			{
 				"name": "remoteLimits",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The numeric bounds for the wire protocol, covering message sizes, request and event capacity, deadlines, connection timing, and pairing. A host also returns these limits from session.attach.",
+				"examples": [
+					{
+						"frameBytes": 262144,
+						"chunkBytes": 131072,
+						"requestBytes": 65536,
+						"messageBytes": 16777216,
+						"pendingRequests": 32,
+						"ledgerEntries": 256,
+						"ledgerTtlMs": 900000,
+						"eventLog": 512,
+						"requestDeadlineMs": 30000,
+						"mutationDeadlineMs": 120000,
+						"handshakeDeadlineMs": 10000,
+						"pingMs": 25000,
+						"idleMs": 90000,
+						"pairingTtlMs": 300000,
+						"pairingAttempts": 5
+					}
+				]
 			},
 			{
 				"name": "attachMethod",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The method name for attaching a remote session. It is included in the projectless method set.",
+				"examples": ["session.attach"]
 			},
 			{
 				"name": "readMethods",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Names the methods for reads of a granted project. The list contains listProjects, capabilities, snapshot, entity, history, source, image, evidence, artifact, messages, pendingComments, and providers.",
+				"examples": [
+					[
+						"listProjects",
+						"capabilities",
+						"snapshot",
+						"entity",
+						"history",
+						"source",
+						"image",
+						"evidence",
+						"artifact",
+						"messages",
+						"pendingComments",
+						"providers"
+					]
+				]
 			},
 			{
 				"name": "commentMethods",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Names a person’s own comment operation and the thread it needs. These methods do not include planning, approval, or a run.",
+				"examples": [
+					["addComment", "openThread"]
+				]
 			},
 			{
 				"name": "agentMethods",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Names planning writes and agent runs. These methods require the agents permission of a grant.",
+				"examples": [
+					["createPlan", "approve", "startRun", "cancelRun"]
+				]
 			},
 			{
 				"name": "localMethods",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Names operations that are never available to a remote device. Folders and hosted credentials stay on the computer.",
+				"examples": [
+					[
+						"gameCreate",
+						"gameRead",
+						"gameImageRead",
+						"gameSave",
+						"gameRender",
+						"gameImageGenerate",
+						"gameLevelGenerate",
+						"deploymentStatus",
+						"deploymentActivities",
+						"startDeployment",
+						"deploymentProgress",
+						"planDeployment",
+						"deploy",
+						"agentActivity",
+						"openProject",
+						"selectProject",
+						"hostedStatus",
+						"connectHosted",
+						"disconnectHosted"
+					]
+				]
 			},
 			{
 				"name": "controlMethods",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Names the methods on the desktop control port, which is local connection only.",
+				"examples": [
+					[
+						"remote.status",
+						"remote.enable",
+						"remote.disable",
+						"remote.createPairing",
+						"remote.closePairing",
+						"remote.approvePairing",
+						"remote.denyPairing",
+						"remote.revokeDevice"
+					]
+				]
 			},
 			{
 				"name": "remoteMethods",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The complete set of RemoteMethod names, assembled from attach, read, comment, agent, local, and control methods. Some listed methods are local-only and are never available to a remote device.",
+				"examples": [
+					[
+						"session.attach",
+						"listProjects",
+						"capabilities",
+						"snapshot",
+						"entity",
+						"history",
+						"source",
+						"image",
+						"evidence",
+						"artifact",
+						"messages",
+						"pendingComments",
+						"providers",
+						"addComment",
+						"openThread",
+						"createPlan",
+						"approve",
+						"startRun",
+						"cancelRun",
+						"gameCreate",
+						"gameRead",
+						"gameImageRead",
+						"gameSave",
+						"gameRender",
+						"gameImageGenerate",
+						"gameLevelGenerate",
+						"deploymentStatus",
+						"deploymentActivities",
+						"startDeployment",
+						"deploymentProgress",
+						"planDeployment",
+						"deploy",
+						"agentActivity",
+						"openProject",
+						"selectProject",
+						"hostedStatus",
+						"connectHosted",
+						"disconnectHosted",
+						"remote.status",
+						"remote.enable",
+						"remote.disable",
+						"remote.createPairing",
+						"remote.closePairing",
+						"remote.approvePairing",
+						"remote.denyPairing",
+						"remote.revokeDevice"
+					]
+				]
 			},
 			{
 				"name": "revisionMethods",
-				"type": "readonly RemoteMethod[]"
+				"type": "readonly RemoteMethod[]",
+				"description": "Methods for which a device needs an explicit checked-out revision. The list is limited to createPlan, openThread, approve, and startRun.",
+				"examples": [
+					["createPlan", "openThread", "approve", "startRun"]
+				]
 			},
 			{
 				"name": "projectlessMethods",
-				"type": "readonly RemoteMethod[]"
+				"type": "readonly RemoteMethod[]",
+				"description": "The methods classified as projectless: session attachment, project listing, deployment activities, and providers.",
+				"examples": [
+					["session.attach", "listProjects", "deploymentActivities", "providers"]
+				]
 			},
 			{
 				"name": "mutationMethods",
-				"type": "readonly RemoteMethod[]"
+				"type": "readonly RemoteMethod[]",
+				"description": "Names operations whose answers are remembered by request id. Re-sending one of these methods does not run it twice.",
+				"examples": [
+					[
+						"addComment",
+						"openThread",
+						"createPlan",
+						"approve",
+						"startRun",
+						"cancelRun",
+						"gameCreate",
+						"gameSave",
+						"gameRender",
+						"gameImageGenerate",
+						"gameLevelGenerate",
+						"deploy",
+						"planDeployment",
+						"startDeployment",
+						"openProject",
+						"selectProject",
+						"connectHosted",
+						"disconnectHosted",
+						"remote.enable",
+						"remote.disable",
+						"remote.createPairing",
+						"remote.closePairing",
+						"remote.approvePairing",
+						"remote.denyPairing",
+						"remote.revokeDevice"
+					]
+				]
 			},
 			{
 				"name": "remoteErrorMessages",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Maps each RemoteErrorCode to its default display message. RemoteFailure uses the matching entry when no custom message is supplied; wire failure messages are display text without paths or secrets.",
+				"examples": [
+					{
+						"invalid-message": "The request was not understood.",
+						"unknown-method": "This operation does not exist.",
+						"method-denied": "This operation is not available on this connection.",
+						"not-attached": "The connection has not been attached.",
+						"protocol-unsupported": "This app and the computer use different protocol versions.",
+						"project-required": "Name the project for this request.",
+						"project-denied": "This device has no access to that project.",
+						"revision-required": "Name the branch and commit this change applies to.",
+						"revision-mismatch": "The branch moved. Reload it and try again.",
+						"read-only": "Historical views and other branches are read-only. View the checked-out branch tip to make changes.",
+						"agents-denied": "This device may read and comment, but not plan or change.",
+						"busy": "Another run or change is active in this project.",
+						"request-conflict": "This request id was already used for something else.",
+						"request-expired": "This change may already have been made. Reload before trying again.",
+						"too-large": "The message is too large.",
+						"too-many-requests": "Too many requests are waiting.",
+						"deadline": "The computer did not answer in time.",
+						"revoked": "This device is no longer approved.",
+						"offline": "The computer is not connected.",
+						"failed": "The computer could not complete this request."
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [
 			{
@@ -156,22 +363,30 @@
 					{
 						"name": "RemoteFailure.constructor.code",
 						"type": "RemoteErrorCode",
-						"required": true
+						"required": true,
+						"description": "A key in remoteErrorMessages that identifies the wire failure. It is stored as the failure code and selects the default display message.",
+						"examples": ["invalid-message", "project-required", "failed"]
 					},
 					{
 						"name": "RemoteFailure.constructor.message",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "Optional display text for the failure. If omitted or nullish at runtime, the constructor uses remoteErrorMessages[code].",
+						"examples": [
+							"The request was not understood.",
+							"The branch moved. Reload it and try again."
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteFailure.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "An Error subclass named RemoteFailure with the selected code and display message. Its optional requestId is not set by the constructor and can identify the failing request when that id is known."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
