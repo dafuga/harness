@@ -12,36 +12,60 @@
 		"symbols": ["atomicSyntax", "walkAtomicMarkup"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "atomicSyntax.content",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Svelte source text passed to parse with { modern: true }. The function does not catch parse failures."
 			},
 			{
 				"name": "walkAtomicMarkup.node",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "An object subtree or array of subtrees that the walker inspects. Falsy and non-object values are ignored; traversal skips keys parent, metadata, expression, and attributes, and it has no general cycle guard.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "walkAtomicMarkup.callback",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "A synchronous function called with each visited object whose type property is truthy. It is not called for untyped values, and any exception it throws propagates."
 			}
 		],
 		"outputs": [
 			{
 				"name": "atomicSyntax",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "An object containing the Svelte parse tree, the first matching top-level @harness-atoms, valid @harness-tier, and @harness-element values, and atoms entries for hx- regular elements. Header values are undefined when no matching top-level comment exists, and an atom entry's definition is undefined when no native definition matches."
 			},
 			{
 				"name": "walkAtomicMarkup",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The function has no return statement and therefore completes with undefined after traversal. Exceptions raised during traversal propagate to the caller."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "parser exception",
+				"type": "thrown",
+				"description": "The imported Svelte parser's exception passes through if parse(content, { modern: true }) fails. atomicSyntax does not catch or transform it."
+			},
+			{
+				"name": "callback exception",
+				"type": "thrown",
+				"description": "An exception thrown by callback while visiting a node passes through unchanged. The walker does not catch or transform it."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Calling a non-callable callback on a visited node raises a TypeError. This occurs only if traversal reaches an object with a truthy type property."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "atomicSyntax",
@@ -49,17 +73,25 @@
 					{
 						"name": "atomicSyntax.content",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Svelte source text passed to parse with { modern: true }. The function does not catch parse failures."
 					}
 				],
 				"outputs": [
 					{
 						"name": "atomicSyntax",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "An object containing the Svelte parse tree, the first matching top-level @harness-atoms, valid @harness-tier, and @harness-element values, and atoms entries for hx- regular elements. Header values are undefined when no matching top-level comment exists, and an atom entry's definition is undefined when no native definition matches."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "parser exception",
+						"type": "thrown",
+						"description": "The imported Svelte parser's exception passes through if parse(content, { modern: true }) fails. atomicSyntax does not catch or transform it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "walkAtomicMarkup",
@@ -67,22 +99,39 @@
 					{
 						"name": "walkAtomicMarkup.node",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "An object subtree or array of subtrees that the walker inspects. Falsy and non-object values are ignored; traversal skips keys parent, metadata, expression, and attributes, and it has no general cycle guard.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "walkAtomicMarkup.callback",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "A synchronous function called with each visited object whose type property is truthy. It is not called for untyped values, and any exception it throws propagates."
 					}
 				],
 				"outputs": [
 					{
 						"name": "walkAtomicMarkup",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The function has no return statement and therefore completes with undefined after traversal. Exceptions raised during traversal propagate to the caller."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "callback exception",
+						"type": "thrown",
+						"description": "An exception thrown by callback while visiting a node passes through unchanged. The walker does not catch or transform it."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Calling a non-callable callback on a visited node raises a TypeError. This occurs only if traversal reaches an object with a truthy type property."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
