@@ -302,6 +302,7 @@
 		"reports.component.usage-examples-usage-examples",
 		"reports.component.verification-evidence-audio-icon",
 		"reports.component.verification-evidence-video-evidence",
+		"reports.component.verification-evidence-video-graph-navigation",
 		"reports.layout.explorer-layout",
 		"reports.page.harness-branch-branch-at-apis",
 		"reports.page.harness-branch-branch-at-apis-entity",
@@ -7856,6 +7857,12 @@
 			"units": ["reports.component.verification-evidence-video-evidence"]
 		},
 		{
+			"id": "reports-component-verification-evidence-video-graph-navigation",
+			"title": "VideoGraphNavigation: modular paths and declared coverage",
+			"coverage": "required",
+			"units": ["reports.component.verification-evidence-video-graph-navigation"]
+		},
+		{
 			"id": "reports-layout-explorer-layout",
 			"coverage": "required",
 			"units": ["reports.layout.explorer-layout"],
@@ -9319,6 +9326,7 @@
 				"reports-component-usage-examples-usage-examples-empty",
 				"reports-component-verification-evidence-audio-icon",
 				"reports-component-verification-evidence-video-evidence",
+				"reports-component-verification-evidence-video-graph-navigation",
 				"reports-layout-explorer-layout",
 				"reports-page-harness-branch-branch-at-apis",
 				"reports-page-harness-branch-branch-at-apis-entity",
