@@ -32,86 +32,153 @@
 				"name": "Composer.modes",
 				"type": "ComposeMode[]",
 				"required": true,
-				"description": "Ordered modes allowed in this context: comment, ask, plan or change. Uses the first mode initially and whenever the previously chosen mode is no longer offered. An empty list disables entry and submission. Shows mode buttons only when more than one mode is offered."
+				"description": "Ordered list of the modes this context allows (comment, ask, plan, change): the first is used until the person picks a mode, and falls back to the first whenever the chosen mode is no longer offered. An empty list disables the message box and submission, and the mode buttons appear only when more than one mode is offered.",
+				"examples": [
+					["comment", "ask", "plan", "change"],
+					["comment", "plan"],
+					[]
+				]
 			},
 			{
 				"name": "Composer.providers",
 				"type": "ProviderState[]",
 				"required": true,
-				"description": "Provider choices passed to the agent controls for Ask, Plan and Change. Submission of an agent request requires a non-null agent choice; comments do not use these providers."
+				"description": "Provider states passed to the agent controls that appear for Ask, Plan and Change; comments do not use them. An agent request cannot be submitted until those controls set a non-null agent choice.",
+				"examples": [
+					[
+						{
+							"id": "claude",
+							"label": "Claude CLI",
+							"available": true,
+							"reason": null,
+							"version": "2.1.0",
+							"imageGeneration": false,
+							"models": [
+								{
+									"id": "claude-opus-5-5",
+									"label": "Claude Opus 5.5",
+									"efforts": ["low", "medium", "high", "xhigh", "max"],
+									"defaultEffort": "xhigh",
+									"isDefault": true
+								}
+							]
+						},
+						{
+							"id": "codex",
+							"label": "Codex CLI",
+							"available": false,
+							"reason": "Sign in to Codex CLI with a ChatGPT subscription.",
+							"version": "0.9.3",
+							"imageGeneration": false,
+							"models": []
+						}
+					],
+					[
+						{
+							"id": "claude",
+							"label": "Claude CLI",
+							"available": false,
+							"reason": "Sign in to Claude CLI with a subscription.",
+							"version": "2.1.0",
+							"imageGeneration": false,
+							"models": []
+						},
+						{
+							"id": "codex",
+							"label": "Codex CLI",
+							"available": false,
+							"reason": "Sign in to Codex CLI with a ChatGPT subscription.",
+							"version": "0.9.3",
+							"imageGeneration": false,
+							"models": []
+						}
+					]
+				]
 			},
 			{
 				"name": "Composer.approved",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether Change is permitted for the current design. False disables its mode button and blocks Change submission, even when Change is the only offered mode. Does not block Plan or Comment."
+				"description": "Whether Change is approved for the current design: when false, the Change mode button (when shown) is disabled, a Notice asks for approval, and Change submission is blocked even when Change is the only offered mode. It has no effect on Ask, Plan or Comment.",
+				"examples": [true, false]
 			},
 			{
 				"name": "Composer.running",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether work is already running. True disables the message box and submission in every mode; it does not itself disable mode or provider selection."
+				"description": "Whether work is already running: when true, the message box and submission are disabled in every mode. It does not disable the mode buttons or the provider selection.",
+				"examples": [false, true]
 			},
 			{
 				"name": "Composer.notice",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional hint shown in the non-agent layout, empty by default. A nonempty value replaces the ordinary comment hint. It is not displayed while Ask, Plan or Change is selected."
+				"description": "Optional hint shown in the non-agent layout; a nonempty value replaces the default comment hint. It is hidden while Ask, Plan or Change is selected.",
+				"examples": ["", "Only comments are open while this design is in review."]
 			},
 			{
 				"name": "Composer.failureReported",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "True when the parent already displays the current send failure. Hides the generic retry alert to avoid duplicate error messages. Defaults to false."
+				"description": "True when the parent already displays the current send failure, which hides this component’s “Couldn’t send” alert that otherwise appears after a false callback result.",
+				"examples": [false, true]
 			},
 			{
 				"name": "Composer.placeholder",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional message-box prompt for Plan and Change, empty by default. Empty uses “Describe the next design…”. Comment uses “Leave a comment…” regardless of this value."
+				"description": "Message-box prompt for Plan and Change; an empty value shows “Describe the next design…”. Ask always shows “Ask a question…” and Comment always shows “Leave a comment…”, whatever this value is.",
+				"examples": ["", "Describe the sidebar change…"]
 			},
 			{
 				"name": "Composer.visual",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional flag, false by default. A visual Plan includes the device setting for the number of design options in its request. Ask, Change and Comment never include that count."
+				"description": "Whether a Plan is visual: when true, a Plan request includes the device’s design-option count (agentSettings.designOptions) as designOptions, and a caption shows that count. Ask, Change and Comment never include the count, so the flag has no effect on them.",
+				"examples": [false, true]
 			},
 			{
 				"name": "Composer.compact",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional flag, false by default, enabling the compact composer styling and compact agent pickers."
+				"description": "Turns on the compact composer styling and, passed to the agent controls, makes the agent choices icons that open pickers.",
+				"examples": [false, true]
 			},
 			{
 				"name": "Composer.comment",
 				"type": "(text: string) => Promise<boolean>",
 				"required": true,
-				"description": "Required asynchronous callback for submitting trimmed comment text. A true result clears the text; false leaves it available for retry. The component does not catch a rejected promise or display a callback error."
+				"description": "Required asynchronous callback for Comment mode, called with the trimmed text: a true result clears the text, while a false result keeps it and shows the retry alert unless failureReported is true. A rejected promise is not caught here, so the text is kept and the call sets no failure state."
 			},
 			{
 				"name": "Composer.send",
 				"type": "(request: RunDraft) => Promise<boolean>",
 				"required": true,
-				"description": "Required asynchronous callback for Plan and Change. Receives trimmed text, request mode, provider, model and effort, plus the design-option count for a visual Plan. A true result clears the text; false preserves it. Rejected promises are not caught here."
+				"description": "Required asynchronous callback for Ask, Plan and Change, called only when an agent choice is set, with a RunDraft holding the trimmed text, the mode (ask, plan or change), the provider, model and effort (effort may be null), and designOptions for a visual Plan. A true result clears the text, a false result keeps it, and a rejected promise is not caught here."
 			}
 		],
 		"outputs": [
 			{
 				"name": "Composer",
 				"type": "markup",
-				"description": "Message form with permitted mode choices, agent controls for Ask, Plan and Change, and a send button. Blocks submission without a mode, with blank text, while running, without an agent choice for a request, or for an unapproved Change. Loads device agent settings on mount. Comments use the comment callback and never start an agent through this component. False callback results retain the message and show a retry notice unless the parent reports the failure. Visual plans show the device option count. Visual-plan captions occupy a separate line below the message field. Unapproved Change requests display the shared Notice explaining that the current exact design needs approval. States: no-modes: No permitted request mode is available, so the composer cannot start a request. no-provider: The selected agent mode has no available provider and sending is blocked. long: A long contextual notice wraps above the request controls."
+				"description": "Form with a message box, Request-mode buttons when more than one mode is offered, agent controls for Ask, Plan and Change, a send button, and a retry alert after a false result from either callback unless failureReported is true. Submission is blocked without a mode, with blank text, while running, without an agent choice for a request, or for an unapproved Change, and comments go to the comment callback without starting an agent."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback or content error",
-				"type": "propagated",
-				"description": "Errors from supplied comment, send callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"type": "thrown",
+				"description": "Rejections from the comment or send callback are not caught, because submit awaits them with no try block. The form starts submit with void, so no handler in this component receives the rejection, and the message text is kept."
+			},
+			{
+				"name": "Device agent settings load on mount",
+				"type": "thrown",
+				"description": "An error thrown by agentSettings.load(), which runs on mount, is not caught by this component."
 			}
 		],
 		"errorStatus": "declared",
