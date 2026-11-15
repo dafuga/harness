@@ -5,6 +5,7 @@ import { VideoCaptureService } from '../../../src/services/verification-evidence
 import { withTempRepo } from '../../support/temporary';
 import { videoCaptureFixture, captureDeclaration } from '../../support/videoCaptureFixture';
 import { assertCaptureLifecycle } from '../../support/videoCaptureLifecycle';
+import { VideoEvidenceService } from '../../../src/services/verification-evidence/VideoEvidenceService';
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -106,7 +107,20 @@ test('capture orchestration re-records a corrupt sibling and bypasses old native
 		f.commit();
 		const unknown = await f.service.record(f.options());
 		f.publish(unknown);
-		const again = await f.service.record(f.options());
+		const options = f.options();
+		const slots = new VideoEvidenceService(repo.root)
+			.plan(captureDeclaration)
+			.record.map((slot) => ({
+				...slot,
+				reasons: ['recording required: unresolved dynamic input']
+			}));
+		options.env!.HARNESS_VIDEO_CAPTURE_CONTEXT = JSON.stringify({
+			schemaVersion: 1,
+			snapshot: repo.root,
+			source: options.source,
+			slots
+		});
+		const again = await f.service.record(options);
 		expect(again.recorded).toHaveLength(2);
 		expect(new Set(f.native.cacheRoots).size).toBe(f.native.cacheRoots.length);
 	});
