@@ -47,17 +47,18 @@
 				"name": "DeploymentDialog.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Current project, revision, bridge capabilities and shared deployment stores shown by the app."
+				"description": "The current desktop Workspace instance supplies the project identity, readiness, and deployments used to render and act on this dialog. A promotion can start only for a prod plan with no blockers, no deployment pending, and a plan id different from the last one promoted from this project; an existing pending promotion may still be followed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeploymentDialog",
 				"type": "markup",
-				"description": "Previews the verified preprod-to-production commit gap and starts promotion only after one explicit action."
+				"description": "The markup renders the Deploy dialog with the available preprod/production comparison, blockers, and followed deployment details. Its Promote to production button is enabled only when the current plan targets prod, has no blockers, no deployment is pending, and its id differs from the last plan promoted from this project."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
