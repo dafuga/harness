@@ -24,41 +24,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The commits that changed the function, newest first, each against its first parent, with reasons, sizes and reviews. A commit whose change is unknown says so."
+				"description": "For this route, the page renders HarnessScreen with EntityHistoryScreen as its content component. This file does not define the history details itself."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Function history · Harness"
+				"description": "The fixed title passed to HarnessScreen when the page renders. It does not vary with route data in this file.",
+				"examples": ["Function history"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-at-revision",
-				"type": "notice",
-				"description": "A function the shown revision does not hold is said, with the way back to the collection."
-			},
-			{
-				"name": "other-category",
-				"type": "redirect",
-				"description": "A unit that is not a function at this revision is led to the address of its own category."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
