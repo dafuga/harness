@@ -1,10 +1,15 @@
-import { expect, test } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
+import * as files from 'node:fs';
+import * as processes from 'node:child_process';
 import { VideoEvidenceService } from '../../../src/services/verification-evidence/VideoEvidenceService';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
 
+afterEach(() => vi.restoreAllMocks());
+vi.mock('node:fs', { spy: true });
+vi.mock('node:child_process', { spy: true });
 const manifest = {
 	schemaVersion: 1,
 	viewports: [
@@ -59,15 +64,24 @@ test('clip planning reuses unchanged inputs and invalidates only actual consumer
 	await withTempDir('harness-video-', async (root) => {
 		await fixture(root);
 		const service = new VideoEvidenceService(root);
+		await writeFile(join(root, 'src/first.ts'), "import './private.ts';");
+		await writeFile(join(root, 'src/private.ts'), 'export const answer = 1;');
+		const reads = vi.spyOn(files, 'readFileSync'),
+			tools = vi.spyOn(processes, 'spawnSync');
 		const first = service.plan(manifest);
 		expect(first.record).toHaveLength(4);
 		expect(first.reuse).toEqual([]);
+		expect(tools.mock.calls.filter(([command]) => command === 'ffmpeg')).toHaveLength(1);
+		const inputReads = reads.mock.calls.map(([path]) => String(path));
+		expect(inputReads.filter((path) => path.includes('specification/units/'))).toHaveLength(2);
+		expect(new Set(inputReads).size).toBe(inputReads.length);
 		const previous = first.record.map((slot) => ({ ...slot, testedRevision: 'a'.repeat(40) }));
 		await writeFile(join(root, 'src/unrelated.ts'), 'unrelated change');
 		const warm = service.plan(manifest, previous);
 		expect(warm.record).toEqual([]);
 		expect(warm.reuse).toEqual(previous);
-		await writeFile(join(root, 'src/first.ts'), 'changed');
+		expect(warm.reuse[0]).toBe(previous[0]);
+		await writeFile(join(root, 'src/private.ts'), 'export const answer = 2;');
 		expect(service.plan(manifest, previous).record.map((slot) => slot.clipId)).toEqual([
 			'first',
 			'first'
@@ -77,13 +91,33 @@ test('clip planning reuses unchanged inputs and invalidates only actual consumer
 			'second',
 			'second'
 		]);
+		await writeFile(join(root, 'src/private.ts'), 'export const answer = 1;');
+		await writeFile(join(root, 'src/second.ts'), 'changed independent source');
+		expect(service.plan(manifest, previous).record.map((slot) => slot.clipId)).toEqual([
+			'second',
+			'second'
+		]);
+		await writeFile(join(root, 'src/first.ts'), 'import(target);');
+		const uncertain = service.plan(manifest).record;
+		expect(uncertain[0]).toMatchObject({ reasons: [expect.stringMatching(/dynamic|non-literal/)] });
+		await writeFile(join(root, 'src/unrelated.ts'), 'changed dynamic candidate');
+		expect(service.plan(manifest, uncertain).record.map((slot) => slot.clipId)).toEqual([
+			'first',
+			'first'
+		]);
 	});
 });
 
 test('clip planning follows shared dependencies and rejects missing source bindings', async () => {
 	await withTempDir('harness-video-', async (root) => {
 		await fixture(root);
-		await writeFile(join(root, 'src/shared.css'), 'button { opacity: .8 }');
+		await mkdir(join(root, 'static'));
+		await mkdir(join(root, 'src/routes/demo'), { recursive: true });
+		await writeFile(join(root, 'static/font.woff2'), 'font version one');
+		await writeFile(join(root, 'src/shared.css'), "@font-face { src: url('/font.woff2') }");
+		await writeFile(join(root, 'src/first.ts'), "import './routes/demo/+page.svelte';");
+		await writeFile(join(root, 'src/routes/demo/+page.svelte'), '<p>Page</p>');
+		await writeFile(join(root, 'src/routes/+layout.svelte'), '<main>Layout</main>');
 		await writeFile(
 			join(root, 'specification/units/style.shared.json'),
 			JSON.stringify({
@@ -105,8 +139,19 @@ test('clip planning follows shared dependencies and rejects missing source bindi
 			);
 		const service = new VideoEvidenceService(root),
 			previous = service.plan(manifest).record;
-		await writeFile(join(root, 'src/shared.css'), 'button { opacity: 1 }');
+		await writeFile(join(root, 'static/font.woff2'), 'font version two');
 		expect(service.plan(manifest, previous).record).toHaveLength(4);
+		await writeFile(join(root, 'static/font.woff2'), 'font version one');
+		await writeFile(join(root, 'src/routes/+layout.svelte'), '<main>Changed parent</main>');
+		expect(service.plan(manifest, previous).record.map((slot) => slot.clipId)).toEqual([
+			'first',
+			'first'
+		]);
+		await writeFile(join(root, 'src/first.ts'), "import './missing.ts';");
+		expect(() => service.plan(manifest)).toThrow(/missing|unresolved/i);
+		await symlink('/etc/hosts', join(root, 'src/escape.ts'));
+		await writeFile(join(root, 'src/first.ts'), "import './escape.ts';");
+		expect(() => service.plan(manifest)).toThrow(/escapes/i);
 		expect(() =>
 			service.plan({
 				...manifest,
