@@ -21,23 +21,150 @@
 				"name": "evidenceQuery.view",
 				"type": "EvidenceView",
 				"required": true,
-				"description": "The displayed snapshot, whether the address pins a commit, and the optional project identity. Pinning remains true even when the selected commit happens to be the branch tip."
+				"description": "`snapshot` supplies the revision the request reads, and a null snapshot or a missing revision makes `evidenceQuery` return null. `pinned` is true while the address names a commit, also when that commit is the tip, and `context.projectId` is optional and is spread into the request when present.",
+				"examples": [
+					{
+						"snapshot": {
+							"project": {
+								"name": "harness-app",
+								"root": "/work/harness-app"
+							},
+							"revision": {
+								"branch": "main",
+								"commit": "9a4c71e0d2b85f36c1e7a09d4b2f8e6c5a13d7f0",
+								"tip": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+								"atTip": false
+							},
+							"branches": [
+								{
+									"name": "main",
+									"tip": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+									"current": true
+								}
+							],
+							"commits": [
+								{
+									"hash": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+									"subject": "Show evidence for the pinned commit",
+									"authoredAt": "2026-11-14T16:42:08+00:00",
+									"committedAt": "2026-11-14T16:42:08+00:00"
+								},
+								{
+									"hash": "9a4c71e0d2b85f36c1e7a09d4b2f8e6c5a13d7f0",
+									"subject": "Pin evidence queries to the selected commit",
+									"authoredAt": "2026-11-12T09:15:40+00:00",
+									"committedAt": "2026-11-12T09:15:40+00:00"
+								}
+							],
+							"entities": [],
+							"writable": false
+						},
+						"pinned": true,
+						"context": {
+							"projectId": "local-5e0c9a21d7b44f83a6c10e2f9b57d3c84a1f06be9d2c75e83f0b6a19c4d27e5f"
+						}
+					},
+					{
+						"snapshot": {
+							"project": {
+								"name": "harness-app",
+								"root": "/work/harness-app"
+							},
+							"revision": {
+								"branch": "main",
+								"commit": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+								"tip": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+								"atTip": true
+							},
+							"branches": [
+								{
+									"name": "main",
+									"tip": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+									"current": true
+								}
+							],
+							"commits": [
+								{
+									"hash": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+									"subject": "Show evidence for the pinned commit",
+									"authoredAt": "2026-11-14T16:42:08+00:00",
+									"committedAt": "2026-11-14T16:42:08+00:00"
+								}
+							],
+							"entities": [],
+							"writable": true
+						},
+						"pinned": true,
+						"context": {}
+					},
+					{
+						"snapshot": {
+							"project": {
+								"name": "harness-app",
+								"root": "/work/harness-app"
+							},
+							"revision": {
+								"branch": "feature/evidence-grid",
+								"commit": "e71b4c9a0d26f8537b1e4a9c06d2f83b5e7a1c04",
+								"tip": "e71b4c9a0d26f8537b1e4a9c06d2f83b5e7a1c04",
+								"atTip": true
+							},
+							"branches": [
+								{
+									"name": "feature/evidence-grid",
+									"tip": "e71b4c9a0d26f8537b1e4a9c06d2f83b5e7a1c04",
+									"current": true
+								}
+							],
+							"commits": [
+								{
+									"hash": "e71b4c9a0d26f8537b1e4a9c06d2f83b5e7a1c04",
+									"subject": "Draft evidence grid states",
+									"authoredAt": "2026-11-13T11:03:27+00:00",
+									"committedAt": "2026-11-13T11:03:27+00:00"
+								}
+							],
+							"entities": [],
+							"writable": true
+						},
+						"pinned": false,
+						"context": {}
+					}
+				]
 			},
 			{
 				"name": "evidenceQuery.entityId",
 				"type": "string",
 				"required": true,
-				"description": "The entity identity to include unchanged in the request."
+				"description": "The identity of the entity as the catalog holds it: a unit's id for a unit, or a plan's id for a planned entity. It is copied unchanged into the request's `entityId` only when the view has a snapshot revision, and `evidenceQuery` does not check its format.",
+				"examples": ["reports.component.evidence-grid", "desktop.function.evidence-query"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidenceQuery",
 				"type": "EntityEvidenceQuery | null",
-				"description": "A request with the entity, displayed commit and branch, and project context; null when no snapshot revision is available. A pinned view uses commit mode, which asks for comparison with the first parent. An unpinned view uses current mode for the shown branch view."
+				"description": "The evidence request for the entity: `entityId` as given, the `commit` and `branch` of the snapshot revision, `mode`, and any `projectId` from the view context; it is null when the view has no snapshot revision. A pinned view gives mode `commit`, which compares the named commit with its exact first parent, and an unpinned view gives mode `current`, which is the branch tip alone.",
+				"examples": [
+					{
+						"entityId": "reports.component.evidence-grid",
+						"commit": "9a4c71e0d2b85f36c1e7a09d4b2f8e6c5a13d7f0",
+						"branch": "main",
+						"mode": "commit",
+						"projectId": "local-5e0c9a21d7b44f83a6c10e2f9b57d3c84a1f06be9d2c75e83f0b6a19c4d27e5f"
+					},
+					{
+						"entityId": "desktop.function.evidence-query",
+						"commit": "e71b4c9a0d26f8537b1e4a9c06d2f83b5e7a1c04",
+						"branch": "feature/evidence-grid",
+						"mode": "current"
+					},
+					null
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "evidenceQuery",
@@ -46,24 +173,150 @@
 						"name": "evidenceQuery.view",
 						"type": "EvidenceView",
 						"required": true,
-						"description": "The displayed snapshot, whether the address pins a commit, and the optional project identity. Pinning remains true even when the selected commit happens to be the branch tip."
+						"description": "`snapshot` supplies the revision the request reads, and a null snapshot or a missing revision makes `evidenceQuery` return null. `pinned` is true while the address names a commit, also when that commit is the tip, and `context.projectId` is optional and is spread into the request when present.",
+						"examples": [
+							{
+								"snapshot": {
+									"project": {
+										"name": "harness-app",
+										"root": "/work/harness-app"
+									},
+									"revision": {
+										"branch": "main",
+										"commit": "9a4c71e0d2b85f36c1e7a09d4b2f8e6c5a13d7f0",
+										"tip": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+										"atTip": false
+									},
+									"branches": [
+										{
+											"name": "main",
+											"tip": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+											"current": true
+										}
+									],
+									"commits": [
+										{
+											"hash": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+											"subject": "Show evidence for the pinned commit",
+											"authoredAt": "2026-11-14T16:42:08+00:00",
+											"committedAt": "2026-11-14T16:42:08+00:00"
+										},
+										{
+											"hash": "9a4c71e0d2b85f36c1e7a09d4b2f8e6c5a13d7f0",
+											"subject": "Pin evidence queries to the selected commit",
+											"authoredAt": "2026-11-12T09:15:40+00:00",
+											"committedAt": "2026-11-12T09:15:40+00:00"
+										}
+									],
+									"entities": [],
+									"writable": false
+								},
+								"pinned": true,
+								"context": {
+									"projectId": "local-5e0c9a21d7b44f83a6c10e2f9b57d3c84a1f06be9d2c75e83f0b6a19c4d27e5f"
+								}
+							},
+							{
+								"snapshot": {
+									"project": {
+										"name": "harness-app",
+										"root": "/work/harness-app"
+									},
+									"revision": {
+										"branch": "main",
+										"commit": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+										"tip": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+										"atTip": true
+									},
+									"branches": [
+										{
+											"name": "main",
+											"tip": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+											"current": true
+										}
+									],
+									"commits": [
+										{
+											"hash": "c2d07a5f8e61b94d3a0f7c2e95b18d46e0a3f7c9",
+											"subject": "Show evidence for the pinned commit",
+											"authoredAt": "2026-11-14T16:42:08+00:00",
+											"committedAt": "2026-11-14T16:42:08+00:00"
+										}
+									],
+									"entities": [],
+									"writable": true
+								},
+								"pinned": true,
+								"context": {}
+							},
+							{
+								"snapshot": {
+									"project": {
+										"name": "harness-app",
+										"root": "/work/harness-app"
+									},
+									"revision": {
+										"branch": "feature/evidence-grid",
+										"commit": "e71b4c9a0d26f8537b1e4a9c06d2f83b5e7a1c04",
+										"tip": "e71b4c9a0d26f8537b1e4a9c06d2f83b5e7a1c04",
+										"atTip": true
+									},
+									"branches": [
+										{
+											"name": "feature/evidence-grid",
+											"tip": "e71b4c9a0d26f8537b1e4a9c06d2f83b5e7a1c04",
+											"current": true
+										}
+									],
+									"commits": [
+										{
+											"hash": "e71b4c9a0d26f8537b1e4a9c06d2f83b5e7a1c04",
+											"subject": "Draft evidence grid states",
+											"authoredAt": "2026-11-13T11:03:27+00:00",
+											"committedAt": "2026-11-13T11:03:27+00:00"
+										}
+									],
+									"entities": [],
+									"writable": true
+								},
+								"pinned": false,
+								"context": {}
+							}
+						]
 					},
 					{
 						"name": "evidenceQuery.entityId",
 						"type": "string",
 						"required": true,
-						"description": "The entity identity to include unchanged in the request."
+						"description": "The identity of the entity as the catalog holds it: a unit's id for a unit, or a plan's id for a planned entity. It is copied unchanged into the request's `entityId` only when the view has a snapshot revision, and `evidenceQuery` does not check its format.",
+						"examples": ["reports.component.evidence-grid", "desktop.function.evidence-query"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "evidenceQuery",
 						"type": "EntityEvidenceQuery | null",
-						"description": "A request with the entity, displayed commit and branch, and project context; null when no snapshot revision is available. A pinned view uses commit mode, which asks for comparison with the first parent. An unpinned view uses current mode for the shown branch view."
+						"description": "The evidence request for the entity: `entityId` as given, the `commit` and `branch` of the snapshot revision, `mode`, and any `projectId` from the view context; it is null when the view has no snapshot revision. A pinned view gives mode `commit`, which compares the named commit with its exact first parent, and an unpinned view gives mode `current`, which is the branch tip alone.",
+						"examples": [
+							{
+								"entityId": "reports.component.evidence-grid",
+								"commit": "9a4c71e0d2b85f36c1e7a09d4b2f8e6c5a13d7f0",
+								"branch": "main",
+								"mode": "commit",
+								"projectId": "local-5e0c9a21d7b44f83a6c10e2f9b57d3c84a1f06be9d2c75e83f0b6a19c4d27e5f"
+							},
+							{
+								"entityId": "desktop.function.evidence-query",
+								"commit": "e71b4c9a0d26f8537b1e4a9c06d2f83b5e7a1c04",
+								"branch": "feature/evidence-grid",
+								"mode": "current"
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
