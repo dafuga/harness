@@ -33,9 +33,11 @@ export interface VideoArchiveInput {
 	videoBytes: Buffer;
 	posterBytes: Buffer;
 }
-export interface VideoArchiveRead {
+export interface VideoArchiveDescriptor {
 	pointer: VideoBatchPointer;
 	batch: VideoArchiveBatch;
+}
+export interface VideoArchiveRead extends VideoArchiveDescriptor {
 	files: Map<string, Buffer>;
 }
 export interface VideoArchiveCurrent {

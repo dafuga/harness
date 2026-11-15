@@ -15,6 +15,7 @@
 			"src/services/verification-evidence/VideoArchiveService.ts",
 			"src/services/verification-evidence/VideoArchiveService.types.ts",
 			"src/services/verification-evidence/video-archive-service/batch.ts",
+			"src/services/verification-evidence/video-archive-service/fetch.ts",
 			"src/services/verification-evidence/video-archive-service/media.ts",
 			"src/services/verification-evidence/video-archive-service/read.ts",
 			"src/services/verification-evidence/video-archive-service/restore.ts",
@@ -46,6 +47,7 @@
 			"ArchiveVideoFacts",
 			"VideoArchiveSealedValue",
 			"VideoArchiveInput",
+			"VideoArchiveDescriptor",
 			"VideoArchiveRead",
 			"VideoArchiveCurrent",
 			"AdmittedVideo",
@@ -57,9 +59,11 @@
 			"validateBatch",
 			"validateClip",
 			"batchManifest",
+			"fetchVideoBatch",
 			"retainedMedia",
 			"inspectMedia",
 			"readVideoBatch",
+			"readVideoBatchDescriptor",
 			"restoreVideoBatch",
 			"mediaLimit",
 			"batchLimit",
@@ -71,6 +75,7 @@
 			"manifestSchema",
 			"sourceBinding",
 			"retainSource",
+			"fetchArchiveSources",
 			"writeVideoBatches"
 		]
 	},
@@ -188,6 +193,21 @@
 				"required": true
 			},
 			{
+				"name": "fetchVideoBatch.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "fetchVideoBatch.input",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "fetchVideoBatch.remote",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "retainedMedia.lfs",
 				"type": "LfsAdapter",
 				"required": true
@@ -219,6 +239,21 @@
 			},
 			{
 				"name": "readVideoBatch.within",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "readVideoBatchDescriptor.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readVideoBatchDescriptor.input",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "readVideoBatchDescriptor.within",
 				"type": "string",
 				"required": false
 			},
@@ -255,6 +290,21 @@
 			{
 				"name": "retainSource.revision",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "fetchArchiveSources.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "fetchArchiveSources.remote",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "fetchArchiveSources.clips",
+				"type": "VideoArchiveClip[]",
 				"required": true
 			},
 			{
@@ -326,6 +376,10 @@
 				"type": "VideoArchiveManifest"
 			},
 			{
+				"name": "fetchVideoBatch",
+				"type": "Promise<VideoArchiveRead>"
+			},
+			{
 				"name": "retainedMedia",
 				"type": "Promise<Buffer>"
 			},
@@ -336,6 +390,10 @@
 			{
 				"name": "readVideoBatch",
 				"type": "Promise<VideoArchiveRead>"
+			},
+			{
+				"name": "readVideoBatchDescriptor",
+				"type": "Promise<VideoArchiveDescriptor>"
 			},
 			{
 				"name": "restoreVideoBatch",
@@ -379,6 +437,10 @@
 			},
 			{
 				"name": "retainSource",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "fetchArchiveSources",
 				"type": "Promise<void>"
 			},
 			{
@@ -528,12 +590,7 @@
 						"type": "Promise<VideoArchiveRead>"
 					}
 				],
-				"errors": [
-					{
-						"name": "ExpectedCliError",
-						"type": "thrown"
-					}
-				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
@@ -706,6 +763,39 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "fetchVideoBatch",
+				"inputs": [
+					{
+						"name": "fetchVideoBatch.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "fetchVideoBatch.input",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "fetchVideoBatch.remote",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fetchVideoBatch",
+						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "retainedMedia",
 				"inputs": [
 					{
@@ -784,6 +874,34 @@
 					{
 						"name": "readVideoBatch",
 						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readVideoBatchDescriptor",
+				"inputs": [
+					{
+						"name": "readVideoBatchDescriptor.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readVideoBatchDescriptor.input",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "readVideoBatchDescriptor.within",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readVideoBatchDescriptor",
+						"type": "Promise<VideoArchiveDescriptor>"
 					}
 				],
 				"errors": [
@@ -872,6 +990,39 @@
 				"outputs": [
 					{
 						"name": "retainSource",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fetchArchiveSources",
+				"inputs": [
+					{
+						"name": "fetchArchiveSources.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "fetchArchiveSources.remote",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "fetchArchiveSources.clips",
+						"type": "VideoArchiveClip[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fetchArchiveSources",
 						"type": "Promise<void>"
 					}
 				],

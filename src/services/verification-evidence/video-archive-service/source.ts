@@ -9,6 +9,8 @@ import type { VideoArchiveClip } from '../VideoArchiveService.types';
 export async function sourceBinding(root: string, clip: VideoArchiveClip): Promise<void> {
 	const git = new GitAdapter(root),
 		{ revision, tree } = clip.original;
+	if ((await git.attempt(['rev-parse', '--verify', `${revision}^{commit}`])) !== revision)
+		throw new ExpectedCliError('Original video source is not the exact immutable commit.');
 	if ((await git.attempt(['rev-parse', '--verify', `${revision}^{tree}`])) !== tree)
 		throw new ExpectedCliError('Original video source revision/tree is missing or mismatched.');
 	const path = `${revision}:specification/units/${clip.slot.unit}.json`;
@@ -28,4 +30,29 @@ export async function retainSource(root: string, revision: string): Promise<void
 	if (existing || !(await tree.advance(ref, revision, undefined)))
 		if ((await tree.tip(ref)) !== revision)
 			throw new ExpectedCliError('Original source archive ref conflicts.');
+}
+
+/** Fetch only referenced immutable source refs; a conflicting local ref is never rewritten. */
+export async function fetchArchiveSources(
+	root: string,
+	remote: string,
+	clips: VideoArchiveClip[]
+): Promise<void> {
+	const tree = new EvidenceTreeAdapter(root);
+	for (const revision of new Set(clips.map((clip) => clip.original.revision))) {
+		const ref = sourceArchiveRef(revision),
+			existing = await tree.tip(ref);
+		if (existing && existing !== revision)
+			throw new ExpectedCliError('Original source archive ref conflicts.');
+		if (!existing) {
+			await tree.git.run(['fetch', '--no-tags', '--refmap=', '--', remote, ref]);
+			if ((await tree.git.run(['rev-parse', 'FETCH_HEAD^{commit}'])) !== revision)
+				throw new ExpectedCliError(
+					'Fetched source archive ref does not match the original revision.'
+				);
+		}
+		for (const clip of clips.filter((item) => item.original.revision === revision))
+			await sourceBinding(root, clip);
+		await retainSource(root, revision);
+	}
 }

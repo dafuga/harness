@@ -8,13 +8,28 @@ import { batchManifest, digest, mediaObjects, sealedBytes, validateBatch } from 
 import { batchSchema, manifestSchema, pointerSchema } from './schema';
 import { inspectMedia, retainedMedia } from './media';
 import { sourceBinding } from './source';
-import type { VideoArchiveRead, VideoBatchPointer } from '../VideoArchiveService.types';
+import type {
+	VideoArchiveDescriptor,
+	VideoArchiveRead,
+	VideoBatchPointer
+} from '../VideoArchiveService.types';
 
 export async function readVideoBatch(
 	root: string,
 	input: VideoBatchPointer,
 	within?: string
 ): Promise<VideoArchiveRead> {
+	const descriptor = await readVideoBatchDescriptor(root, input, within);
+	const files = await loadMedia(root, new EvidenceBranchRepository(root), descriptor);
+	return { ...descriptor, files };
+}
+
+/** Sealed descriptors can be checked before explicitly fetching their missing source and media. */
+export async function readVideoBatchDescriptor(
+	root: string,
+	input: VideoBatchPointer,
+	within?: string
+): Promise<VideoArchiveDescriptor> {
 	const pointer = pointerSchema.parse(input),
 		repository = new EvidenceBranchRepository(root);
 	await archiveSnapshot(repository, pointer, within);
@@ -44,8 +59,7 @@ export async function readVideoBatch(
 		actual.some((file) => !expected.has(file.slice(path.length + 1)))
 	)
 		throw new ExpectedCliError('Video batch has missing or unexpected files.');
-	const files = await loadMedia(root, repository, { pointer, batch, files: new Map() });
-	return { pointer, batch, files };
+	return { pointer, batch };
 }
 
 async function archiveSnapshot(
@@ -55,6 +69,10 @@ async function archiveSnapshot(
 ): Promise<void> {
 	const tip = within ?? (await repository.tip()),
 		{ commit, path } = pointer.evidence;
+	if (
+		(await repository.tree.git.attempt(['rev-parse', '--verify', `${commit}^{commit}`])) !== commit
+	)
+		throw new ExpectedCliError('Video evidence ancestry does not name the exact immutable commit.');
 	if (!tip || !/^[a-f0-9]{40}$/.test(tip) || !(await repository.tree.contains(tip, commit)))
 		throw new ExpectedCliError('Video batch is outside the requested evidence ancestry.');
 	if (path !== `video-batches/${pointer.batch}`)
@@ -67,7 +85,7 @@ async function archiveSnapshot(
 async function loadMedia(
 	root: string,
 	repository: EvidenceBranchRepository,
-	read: VideoArchiveRead
+	read: VideoArchiveDescriptor
 ): Promise<Map<string, Buffer>> {
 	const { pointer, batch } = read,
 		files = new Map<string, Buffer>(),

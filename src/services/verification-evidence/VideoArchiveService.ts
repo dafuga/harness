@@ -1,12 +1,9 @@
 // @harness-uid u_qfigvyo5j5
-import { ExpectedCliError } from '../../core/development-tooling/errors';
-import { EvidenceBranchRepository } from '../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
-import { LfsAdapter } from '../../adapters/git-source-history/LfsAdapter';
-import { evidenceRef } from '../../core/git-source-history/historyTypes';
 import { writeVideoBatches } from './video-archive-service/write';
 import { readVideoBatch } from './video-archive-service/read';
 import { restoreVideoBatch } from './video-archive-service/restore';
-import { hashSchema, pointerSchema, slotSchema } from './video-archive-service/schema';
+import { fetchVideoBatch } from './video-archive-service/fetch';
+import { hashSchema, slotSchema } from './video-archive-service/schema';
 import { slotKey } from './video-archive-service/batch';
 import type {
 	VideoArchiveCurrent,
@@ -68,18 +65,8 @@ export class VideoArchiveService {
 	}
 
 	/** Explicit transport only; ordinary readers never contact a remote or advance the evidence branch. */
-	async fetch(input: VideoBatchPointer, remote: string): Promise<VideoArchiveRead> {
-		const pointer = pointerSchema.parse(input),
-			tree = new EvidenceBranchRepository(this.root).tree;
-		if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(remote))
-			throw new ExpectedCliError('Use a configured Git remote name.');
-		await tree.git.run(['fetch', '--no-tags', '--', remote, evidenceRef]);
-		const tip = await tree.git.run(['rev-parse', 'FETCH_HEAD^{commit}']);
-		if (!(await tree.contains(tip, pointer.evidence.commit)))
-			throw new ExpectedCliError('Fetched evidence ancestry does not contain the video batch.');
-		const error = await new LfsAdapter(this.root).fetch(remote, pointer.evidence.commit);
-		if (error) throw new ExpectedCliError(`Video archive LFS fetch failed: ${error}`);
-		return this.read(pointer, tip);
+	fetch(input: VideoBatchPointer, remote: string): Promise<VideoArchiveRead> {
+		return fetchVideoBatch(this.root, input, remote);
 	}
 }
 
