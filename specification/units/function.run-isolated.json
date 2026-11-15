@@ -37,17 +37,90 @@
 				"name": "runIsolated.run",
 				"type": "IsolatedRun",
 				"required": true,
-				"description": "Executable, arguments, working directory, environment, timeout, log path and output-byte cap, with optional process-observation hooks and cleanup bound for tests."
+				"description": "Provides the command and arguments, working directory and environment, hard timeout, log destination, and captured-output byte cap. Optional `stdio` can be `'inherit'`; `signal` aborts, `onSpawn` receives the child PID, and `platform` supplies process-cleanup hooks.",
+				"examples": [
+					{
+						"command": "/usr/bin/true",
+						"args": [],
+						"cwd": "/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/function.run-isolated",
+						"env": {
+							"CI": "true"
+						},
+						"timeoutMs": 30000,
+						"log": "artifacts/isolated/true.log",
+						"maxLogBytes": 1048576
+					},
+					{
+						"command": "/usr/bin/env",
+						"args": ["node", "--version"],
+						"cwd": "/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/function.run-isolated",
+						"env": {
+							"CI": "true",
+							"PATH": "/usr/local/bin:/usr/bin:/bin"
+						},
+						"timeoutMs": 60000,
+						"log": "artifacts/isolated/node-version.log",
+						"maxLogBytes": 2097152,
+						"stdio": "inherit",
+						"platform": {
+							"cleanupMs": 1000
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "runIsolated",
 				"type": "Promise<IsolatedResult>",
-				"description": "Result with passed/failed/timeout status, exit code, duration, descendant settlement and log path/size/SHA-256. Writes the merged output log; passing requires exit zero, no counted survivors and known cleanup. macOS signals only judged private processes; other platforms clean the process group."
+				"description": "Resolves to status, exit code and timeout flag, elapsed milliseconds, descendant survivors and cleanup counts, and the captured log's path, byte count, and SHA-256; it creates the log directory and writes the log before returning. `passed` requires exit code 0, no survivors, and known descendant state; on macOS it judges processes individually, while elsewhere it signals the command's process group.",
+				"examples": [
+					{
+						"status": "passed",
+						"exitCode": 0,
+						"timedOut": false,
+						"durationMs": 12.4,
+						"log": {
+							"path": "artifacts/isolated/true.log",
+							"bytes": 0,
+							"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+						},
+						"survivors": [],
+						"stopped": 0,
+						"resisted": 0,
+						"unknown": false
+					},
+					{
+						"status": "timeout",
+						"exitCode": null,
+						"timedOut": true,
+						"durationMs": 30015.1,
+						"log": {
+							"path": "artifacts/isolated/slow-check.log",
+							"bytes": 0,
+							"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+						},
+						"survivors": [],
+						"stopped": 0,
+						"resisted": 0,
+						"unknown": false
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "AbortError",
+				"type": "thrown",
+				"description": "When `signal` is already aborted at entry, `throwIfAborted()` throws its reason unchanged; the default reason is a DOMException named `AbortError`."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Recursive creation of the parent directory for `run.log` and writing the captured bytes can reject with the filesystem error, so a command result is not returned if either operation fails."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runIsolated",
@@ -56,18 +129,90 @@
 						"name": "runIsolated.run",
 						"type": "IsolatedRun",
 						"required": true,
-						"description": "Executable, arguments, working directory, environment, timeout, log path and output-byte cap, with optional process-observation hooks and cleanup bound for tests."
+						"description": "Provides the command and arguments, working directory and environment, hard timeout, log destination, and captured-output byte cap. Optional `stdio` can be `'inherit'`; `signal` aborts, `onSpawn` receives the child PID, and `platform` supplies process-cleanup hooks.",
+						"examples": [
+							{
+								"command": "/usr/bin/true",
+								"args": [],
+								"cwd": "/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/function.run-isolated",
+								"env": {
+									"CI": "true"
+								},
+								"timeoutMs": 30000,
+								"log": "artifacts/isolated/true.log",
+								"maxLogBytes": 1048576
+							},
+							{
+								"command": "/usr/bin/env",
+								"args": ["node", "--version"],
+								"cwd": "/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/function.run-isolated",
+								"env": {
+									"CI": "true",
+									"PATH": "/usr/local/bin:/usr/bin:/bin"
+								},
+								"timeoutMs": 60000,
+								"log": "artifacts/isolated/node-version.log",
+								"maxLogBytes": 2097152,
+								"stdio": "inherit",
+								"platform": {
+									"cleanupMs": 1000
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runIsolated",
 						"type": "Promise<IsolatedResult>",
-						"description": "Result with passed/failed/timeout status, exit code, duration, descendant settlement and log path/size/SHA-256. Writes the merged output log; passing requires exit zero, no counted survivors and known cleanup. macOS signals only judged private processes; other platforms clean the process group."
+						"description": "Resolves to status, exit code and timeout flag, elapsed milliseconds, descendant survivors and cleanup counts, and the captured log's path, byte count, and SHA-256; it creates the log directory and writes the log before returning. `passed` requires exit code 0, no survivors, and known descendant state; on macOS it judges processes individually, while elsewhere it signals the command's process group.",
+						"examples": [
+							{
+								"status": "passed",
+								"exitCode": 0,
+								"timedOut": false,
+								"durationMs": 12.4,
+								"log": {
+									"path": "artifacts/isolated/true.log",
+									"bytes": 0,
+									"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+								},
+								"survivors": [],
+								"stopped": 0,
+								"resisted": 0,
+								"unknown": false
+							},
+							{
+								"status": "timeout",
+								"exitCode": null,
+								"timedOut": true,
+								"durationMs": 30015.1,
+								"log": {
+									"path": "artifacts/isolated/slow-check.log",
+									"bytes": 0,
+									"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+								},
+								"survivors": [],
+								"stopped": 0,
+								"resisted": 0,
+								"unknown": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AbortError",
+						"type": "thrown",
+						"description": "When `signal` is already aborted at entry, `throwIfAborted()` throws its reason unchanged; the default reason is a DOMException named `AbortError`."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Recursive creation of the parent directory for `run.log` and writing the captured bytes can reject with the filesystem error, so a command result is not returned if either operation fails."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
