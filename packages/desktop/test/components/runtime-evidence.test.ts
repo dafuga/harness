@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import RuntimeEvidence from '../../src/components/verification-evidence/RuntimeEvidence.svelte';
-import { createEntityEvidenceStore } from '../../src/lib/stores/entityEvidence.svelte';
+import { createEntityEvidenceStore } from '../../src/lib/stores/explorer-ui/entityEvidence.svelte';
 import { createWorkspaceStore } from '../../src/lib/stores/workspace.svelte';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import { unavailableEvidence } from '../../src/utils/evidenceNotice';

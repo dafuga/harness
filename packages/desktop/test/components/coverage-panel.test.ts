@@ -1,7 +1,7 @@
 import { record } from '../../../reports/test/entityFixture';
 import { expect, test } from 'vitest';
 import CoveragePanel from '../../src/components/shared-primitives/CoveragePanel.svelte';
-import { createEntityEvidenceStore } from '../../src/lib/stores/entityEvidence.svelte';
+import { createEntityEvidenceStore } from '../../src/lib/stores/explorer-ui/entityEvidence.svelte';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import { unavailableEvidence } from '../../src/utils/evidenceNotice';
 import { commits, drawn, entityOf, ids, scopeOf, shownEvidence } from '../evidence-fixture';

@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import RuntimeBehavior from '../../src/components/execution-runtimes/RuntimeBehavior.svelte';
-import { createEntityEvidenceStore } from '../../src/lib/stores/entityEvidence.svelte';
+import { createEntityEvidenceStore } from '../../src/lib/stores/explorer-ui/entityEvidence.svelte';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import { commits, drawn, evidenceBridge, ids, scopeOf, shownEvidence } from '../evidence-fixture';
 

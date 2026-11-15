@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/lib/development-tooling/stores/deployments.svelte.ts",
-			"packages/desktop/src/lib/stores/deployments.svelte.ts"
-		],
-		"symbols": ["createDeploymentsStore", "createDeploymentsStore"]
+		"source": ["packages/desktop/src/lib/development-tooling/stores/deployments.svelte.ts"],
+		"symbols": ["createDeploymentsStore"]
 	},
 	"contract": {
 		"origin": "derived",

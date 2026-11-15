@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { createDeploymentActivityStore } from '../../src/lib/stores/deploymentActivity.svelte';
+import { createDeploymentActivityStore } from '../../src/lib/development-tooling/stores/deploymentActivity.svelte';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 import { deploymentActivityFixture } from '../deployment-ui-fixture';
 

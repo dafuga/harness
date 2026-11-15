@@ -4,7 +4,7 @@ import { mediaFile } from '../../../reports/src/utils/harnessEvidence';
 import {
 	createEntityEvidenceStore,
 	type EntityEvidence
-} from '../../src/lib/stores/entityEvidence.svelte';
+} from '../../src/lib/stores/explorer-ui/entityEvidence.svelte';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
 import { damagedArtifact } from '../../src/utils/artifactBytes';
 import {

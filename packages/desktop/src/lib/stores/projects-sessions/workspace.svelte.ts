@@ -1,7 +1,7 @@
 // @harness-uid u_jxgvjzp27i
 import type { Workspace } from './workspace.svelte.types';
-import { createDeploymentActivityStore } from '../deploymentActivity.svelte';
-import { createDeploymentsStore } from '../deployments.svelte';
+import { createDeploymentActivityStore } from '../../development-tooling/stores/deploymentActivity.svelte';
+import { createDeploymentsStore } from '../../development-tooling/stores/deployments.svelte';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type {
 	Category,
