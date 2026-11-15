@@ -61,198 +61,711 @@
 				"name": "versionOption.versions",
 				"type": "DesignVersion[]",
 				"required": true,
-				"description": "Available design versions."
+				"description": "Versions searched by an exact `version` match; only the first matching version is used, and no match is passed to the selector as undefined.",
+				"examples": [
+					[
+						{
+							"version": "v12",
+							"createdAt": "2026-11-15T12:00:00.000Z",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"generator": "image-generator",
+							"prompt": "Design a compact dashboard header.",
+							"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+							"images": [
+								{
+									"state": "approved",
+									"viewport": "desktop",
+									"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+									"bytes": 184320,
+									"option": "o1"
+								},
+								{
+									"state": "approved",
+									"viewport": "mobile",
+									"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+									"bytes": 131072,
+									"option": "o2"
+								}
+							],
+							"approval": {
+								"id": "approval-7",
+								"version": "v12",
+								"imageHashes": ["0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"],
+								"contractHash": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"approvedAt": "2026-11-15T12:30:00.000Z",
+								"current": true,
+								"option": "o1"
+							},
+							"options": [
+								{
+									"id": "o1",
+									"direction": "Compact layout",
+									"prompt": null,
+									"revisedPrompt": null,
+									"generator": "image-generator",
+									"imageHashes": [
+										"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+									]
+								},
+								{
+									"id": "o2",
+									"direction": "Wide layout",
+									"prompt": "Use a wide header.",
+									"revisedPrompt": null,
+									"generator": "image-generator",
+									"imageHashes": [
+										"fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+									]
+								}
+							]
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "versionOption.version",
 				"type": "string",
 				"required": true,
-				"description": "Version ID to find."
+				"description": "Version identifier matched exactly against each candidate's `version`; with no match, the selector receives no design.",
+				"examples": ["v12"]
 			},
 			{
 				"name": "versionOption.wanted",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Preferred option ID for that version."
+				"description": "Preferred option identifier passed to the matching version's selector; it wins only when that version contains it. Defaults to the empty string.",
+				"examples": ["o1", ""]
 			},
 			{
 				"name": "sameImage.left",
 				"type": "ThreadTarget | null",
 				"required": true,
-				"description": "First target to compare."
+				"description": "Left target in the comparison; a true result requires its nonempty image hash and version to match the right target.",
+				"examples": [
+					null,
+					{
+						"version": "v12",
+						"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"state": "approved",
+						"viewport": "desktop",
+						"region": {
+							"x": 0.1,
+							"y": 0.2,
+							"width": 0.5,
+							"height": 0.4
+						},
+						"option": "o1"
+					}
+				]
 			},
 			{
 				"name": "sameImage.right",
 				"type": "ThreadTarget",
 				"required": true,
-				"description": "Second target to compare."
+				"description": "Right target compared with the left; a matching image hash is insufficient unless the versions also match.",
+				"examples": [
+					{
+						"version": "v12",
+						"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"state": "approved",
+						"viewport": "desktop",
+						"region": {
+							"x": 0.1,
+							"y": 0.2,
+							"width": 0.5,
+							"height": 0.4
+						},
+						"option": "o1"
+					}
+				]
 			},
 			{
 				"name": "shownApproval.design",
 				"type": "DesignVersion | undefined",
 				"required": true,
-				"description": "Design and approval to inspect."
+				"description": "Design version whose current approval is checked; an undefined design cannot be approved by this comparison.",
+				"examples": [
+					{
+						"version": "v12",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o1"
+							},
+							{
+								"state": "approved",
+								"viewport": "mobile",
+								"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"bytes": 131072,
+								"option": "o2"
+							}
+						],
+						"approval": {
+							"id": "approval-7",
+							"version": "v12",
+							"imageHashes": ["0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"],
+							"contractHash": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+							"approvedAt": "2026-11-15T12:30:00.000Z",
+							"current": true,
+							"option": "o1"
+						},
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Compact layout",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": ["0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"]
+							},
+							{
+								"id": "o2",
+								"direction": "Wide layout",
+								"prompt": "Use a wide header.",
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": ["fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "shownApproval.latest",
 				"type": "string | null",
 				"required": true,
-				"description": "Latest version ID against which approval is checked."
+				"description": "Latest version identifier that must equal the design's version; null cannot match a string version.",
+				"examples": ["v12", null]
 			},
 			{
 				"name": "shownApproval.option",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Displayed option ID; defaults to empty."
+				"description": "Displayed option identifier used to select images and compare the approval's option; matching is exact. Defaults to the empty string.",
+				"examples": ["o1", ""]
 			},
 			{
 				"name": "otherOption.item",
 				"type": "ThreadTarget | null",
 				"required": true,
-				"description": "Optional target with version and option."
+				"description": "Thread target to classify, or null; only a nonempty target option on the displayed version can count as another option.",
+				"examples": [
+					{
+						"version": "v12",
+						"imageSha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+						"state": "approved",
+						"viewport": "mobile",
+						"region": null,
+						"option": "o2"
+					},
+					null
+				]
 			},
 			{
 				"name": "otherOption.version",
 				"type": "string",
 				"required": true,
-				"description": "Version currently shown."
+				"description": "Currently displayed version identifier that the target must share.",
+				"examples": ["v12"]
 			},
 			{
 				"name": "otherOption.option",
 				"type": "string",
 				"required": true,
-				"description": "Option currently shown."
+				"description": "Currently displayed option identifier; a target with this same option is not another option.",
+				"examples": ["o1"]
 			},
 			{
 				"name": "designTarget.design",
 				"type": "DesignVersion | undefined",
 				"required": true,
-				"description": "Design version from which to select a target."
+				"description": "Design version supplying the selected image; an undefined design or a design with no selected image returns the entity-wide target.",
+				"examples": [
+					{
+						"version": "v12",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o1"
+							},
+							{
+								"state": "approved",
+								"viewport": "mobile",
+								"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"bytes": 131072,
+								"option": "o2"
+							}
+						],
+						"approval": {
+							"id": "approval-7",
+							"version": "v12",
+							"imageHashes": ["0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"],
+							"contractHash": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+							"approvedAt": "2026-11-15T12:30:00.000Z",
+							"current": true,
+							"option": "o1"
+						},
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Compact layout",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": ["0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"]
+							},
+							{
+								"id": "o2",
+								"direction": "Wide layout",
+								"prompt": "Use a wide header.",
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": ["fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"]
+							}
+						]
+					},
+					{
+						"version": "v10",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"commit": null,
+						"generator": "image-generator",
+						"prompt": "Design a profile card.",
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"images": [
+							{
+								"state": "draft",
+								"viewport": "desktop",
+								"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"bytes": 65536
+							}
+						],
+						"approval": null
+					}
+				]
 			},
 			{
 				"name": "designTarget.option",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Option whose first image should be selected."
+				"description": "Option whose images are considered when the design has options; this value is ignored when it has no options. Defaults to the empty string.",
+				"examples": ["o1", ""]
 			},
 			{
 				"name": "threadAnchor.revision",
 				"type": "Revision",
 				"required": true,
-				"description": "Viewed branch and commit."
+				"description": "Viewed source revision copied as branch and commit; the helper keeps a historical commit instead of substituting the tip.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"tip": "89abcdef0123456789abcdef0123456789abcdef",
+						"atTip": false
+					},
+					{
+						"branch": "main",
+						"commit": "89abcdef0123456789abcdef0123456789abcdef",
+						"tip": "89abcdef0123456789abcdef0123456789abcdef",
+						"atTip": true
+					}
+				]
 			},
 			{
 				"name": "threadAnchor.entityId",
 				"type": "string",
 				"required": true,
-				"description": "Entity receiving the comment."
+				"description": "Identifier of the entity receiving the comment; copied unchanged into the anchor.",
+				"examples": ["entity-42"]
 			},
 			{
 				"name": "threadAnchor.target",
 				"type": "ThreadTarget",
 				"required": true,
-				"description": "Selected version, image hash, state, viewport and region."
+				"description": "Entity or image location copied into the anchor; an optional target option is not included in the returned anchor.",
+				"examples": [
+					{
+						"version": "v12",
+						"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"state": "approved",
+						"viewport": "desktop",
+						"region": {
+							"x": 0.1,
+							"y": 0.2,
+							"width": 0.5,
+							"height": 0.4
+						},
+						"option": "o1"
+					},
+					{
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null
+					}
+				]
 			},
 			{
 				"name": "imageTarget.version",
 				"type": "string",
 				"required": true,
-				"description": "Design version containing the selected image."
+				"description": "Version string associated with the selected image and stored on the resulting target.",
+				"examples": ["v12"]
 			},
 			{
 				"name": "imageTarget.image",
 				"type": "DesignImage",
 				"required": true,
-				"description": "Selected image metadata."
+				"description": "Image metadata supplying the target's hash, state, viewport, and optional option; the byte count is not copied.",
+				"examples": [
+					{
+						"state": "approved",
+						"viewport": "desktop",
+						"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"bytes": 184320,
+						"option": "o1"
+					}
+				]
 			},
 			{
 				"name": "imageTarget.region",
 				"type": "ThreadTarget['region']",
 				"required": true,
-				"description": "Selected image rectangle, or null."
+				"description": "Normalized image rectangle, or null when no region is selected; stored without transformation.",
+				"examples": [
+					{
+						"x": 0.1,
+						"y": 0.2,
+						"width": 0.5,
+						"height": 0.4
+					},
+					null
+				]
 			},
 			{
 				"name": "optionImages.design",
 				"type": "DesignVersion | undefined",
 				"required": true,
-				"description": "Design version to inspect, or undefined."
+				"description": "Design whose images are read; all images are returned without options, and an undefined design yields an empty array.",
+				"examples": [
+					{
+						"version": "v12",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o1"
+							},
+							{
+								"state": "approved",
+								"viewport": "mobile",
+								"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"bytes": 131072,
+								"option": "o2"
+							}
+						],
+						"approval": {
+							"id": "approval-7",
+							"version": "v12",
+							"imageHashes": ["0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"],
+							"contractHash": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+							"approvedAt": "2026-11-15T12:30:00.000Z",
+							"current": true,
+							"option": "o1"
+						},
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Compact layout",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": ["0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"]
+							},
+							{
+								"id": "o2",
+								"direction": "Wide layout",
+								"prompt": "Use a wide header.",
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": ["fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"]
+							}
+						]
+					},
+					{
+						"version": "v10",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"commit": null,
+						"generator": "image-generator",
+						"prompt": "Design a profile card.",
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"images": [
+							{
+								"state": "draft",
+								"viewport": "desktop",
+								"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"bytes": 65536
+							}
+						],
+						"approval": null
+					}
+				]
 			},
 			{
 				"name": "optionImages.option",
 				"type": "string",
 				"required": true,
-				"description": "Option ID whose images are requested."
+				"description": "Exact option identifier used to filter images when the design has options; no image from another option is substituted.",
+				"examples": ["o1", ""]
 			},
 			{
 				"name": "designOption.design",
 				"type": "DesignVersion | undefined",
 				"required": true,
-				"description": "Design version whose option is selected."
+				"description": "Design whose option ids and current approval are considered; no design or a design without options resolves to the empty string.",
+				"examples": [
+					{
+						"version": "v12",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "image-generator",
+						"prompt": "Design a compact dashboard header.",
+						"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+						"images": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o1"
+							},
+							{
+								"state": "approved",
+								"viewport": "mobile",
+								"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"bytes": 131072,
+								"option": "o2"
+							}
+						],
+						"approval": {
+							"id": "approval-7",
+							"version": "v12",
+							"imageHashes": ["0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"],
+							"contractHash": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+							"approvedAt": "2026-11-15T12:30:00.000Z",
+							"current": true,
+							"option": "o1"
+						},
+						"options": [
+							{
+								"id": "o1",
+								"direction": "Compact layout",
+								"prompt": null,
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": ["0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"]
+							},
+							{
+								"id": "o2",
+								"direction": "Wide layout",
+								"prompt": "Use a wide header.",
+								"revisedPrompt": null,
+								"generator": "image-generator",
+								"imageHashes": ["fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"]
+							}
+						]
+					},
+					{
+						"version": "v10",
+						"createdAt": "2026-11-10T09:00:00.000Z",
+						"commit": null,
+						"generator": "image-generator",
+						"prompt": "Design a profile card.",
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"images": [
+							{
+								"state": "draft",
+								"viewport": "desktop",
+								"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"bytes": 65536
+							}
+						],
+						"approval": null
+					}
+				]
 			},
 			{
 				"name": "designOption.wanted",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Preferred option ID; defaults to empty."
+				"description": "Preferred option id; it wins only when present, otherwise a valid current approval is used before the first option. Defaults to the empty string.",
+				"examples": ["o1", ""]
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityTarget",
 				"type": "ThreadTarget",
-				"description": "Entity-wide target with null version, image, state, viewport and region."
+				"description": "Entity-wide target with null version, image hash, state, viewport, and region; it has no option.",
+				"examples": [
+					{
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null
+					}
+				]
 			},
 			{
 				"name": "imageTarget",
 				"type": "ThreadTarget",
-				"description": "Image target with version, hash, state, viewport, region and option when present."
+				"description": "Target containing the supplied version, image metadata, and region; option is included only when the image option is truthy.",
+				"examples": [
+					{
+						"version": "v12",
+						"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"state": "approved",
+						"viewport": "desktop",
+						"region": {
+							"x": 0.1,
+							"y": 0.2,
+							"width": 0.5,
+							"height": 0.4
+						},
+						"option": "o1"
+					},
+					{
+						"version": "v12",
+						"imageSha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+						"state": "draft",
+						"viewport": "desktop",
+						"region": null
+					}
+				]
 			},
 			{
 				"name": "optionImages",
 				"type": "DesignImage[]",
-				"description": "All images for a single design, matching option images for an optioned design, or an empty list without a design."
+				"description": "All images for a design without options, or only exact matches for an optioned design; an absent design yields an empty array.",
+				"examples": [
+					[
+						{
+							"state": "approved",
+							"viewport": "desktop",
+							"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+							"bytes": 184320,
+							"option": "o1"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "designOption",
 				"type": "string",
-				"description": "Valid preferred option, otherwise the current approved option when valid, otherwise the first option; empty for a single design."
+				"description": "Wanted id when present, otherwise a valid option from the current approval, otherwise the first id; no options resolve to the empty string.",
+				"examples": ["o1", ""]
 			},
 			{
 				"name": "shownApproval",
 				"type": "boolean",
-				"description": "Whether the current approval names the latest version and, for options, matches the shown option and image hashes."
+				"description": "True only when the design has a current approval and is the latest version; optioned versions also require the shown option and exact image hash set to match.",
+				"examples": [true, false]
 			},
 			{
 				"name": "versionOption",
 				"type": "string",
-				"description": "Resolved option for the requested version."
+				"description": "Resolved option of the first exact version match, or the empty string when there is no match or that version has no options.",
+				"examples": ["o1", ""]
 			},
 			{
 				"name": "otherOption",
 				"type": "unknown",
-				"description": "Whether the item belongs to the same version but a different nonempty option."
+				"description": "Boolean indicating that the item has a nonempty option on the displayed version and that option differs from the one shown.",
+				"examples": [true, false]
 			},
 			{
 				"name": "designTarget",
 				"type": "ThreadTarget",
-				"description": "First image target of the selected option, or an entity-wide target when there is no image."
+				"description": "Target for the first image selected by the requested option; without a design or selected image it returns the entity-wide target.",
+				"examples": [
+					{
+						"version": "v12",
+						"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"state": "approved",
+						"viewport": "desktop",
+						"region": null,
+						"option": "o1"
+					},
+					{
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null
+					}
+				]
 			},
 			{
 				"name": "threadAnchor",
 				"type": "CommentAnchor",
-				"description": "Comment anchor combining revision, entity and target fields."
+				"description": "Anchor copying revision branch and commit, entity id, and target version, image hash, state, viewport, and region; it omits target.option.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"entityId": "entity-42",
+						"version": "v12",
+						"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"state": "approved",
+						"viewport": "desktop",
+						"region": {
+							"x": 0.1,
+							"y": 0.2,
+							"width": 0.5,
+							"height": 0.4
+						}
+					}
+				]
 			},
 			{
 				"name": "sameImage",
 				"type": "boolean",
-				"description": "True when both targets share a nonempty image hash and version."
+				"description": "True only when both targets have the same nonempty image hash and version; all other pairs return false.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "versionOption",
@@ -261,31 +774,96 @@
 						"name": "versionOption.versions",
 						"type": "DesignVersion[]",
 						"required": true,
-						"description": "Available design versions."
+						"description": "Versions searched by an exact `version` match; only the first matching version is used, and no match is passed to the selector as undefined.",
+						"examples": [
+							[
+								{
+									"version": "v12",
+									"createdAt": "2026-11-15T12:00:00.000Z",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"generator": "image-generator",
+									"prompt": "Design a compact dashboard header.",
+									"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+									"images": [
+										{
+											"state": "approved",
+											"viewport": "desktop",
+											"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+											"bytes": 184320,
+											"option": "o1"
+										},
+										{
+											"state": "approved",
+											"viewport": "mobile",
+											"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+											"bytes": 131072,
+											"option": "o2"
+										}
+									],
+									"approval": {
+										"id": "approval-7",
+										"version": "v12",
+										"imageHashes": [
+											"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+										],
+										"contractHash": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+										"approvedAt": "2026-11-15T12:30:00.000Z",
+										"current": true,
+										"option": "o1"
+									},
+									"options": [
+										{
+											"id": "o1",
+											"direction": "Compact layout",
+											"prompt": null,
+											"revisedPrompt": null,
+											"generator": "image-generator",
+											"imageHashes": [
+												"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+											]
+										},
+										{
+											"id": "o2",
+											"direction": "Wide layout",
+											"prompt": "Use a wide header.",
+											"revisedPrompt": null,
+											"generator": "image-generator",
+											"imageHashes": [
+												"fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+											]
+										}
+									]
+								}
+							],
+							[]
+						]
 					},
 					{
 						"name": "versionOption.version",
 						"type": "string",
 						"required": true,
-						"description": "Version ID to find."
+						"description": "Version identifier matched exactly against each candidate's `version`; with no match, the selector receives no design.",
+						"examples": ["v12"]
 					},
 					{
 						"name": "versionOption.wanted",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Preferred option ID for that version."
+						"description": "Preferred option identifier passed to the matching version's selector; it wins only when that version contains it. Defaults to the empty string.",
+						"examples": ["o1", ""]
 					}
 				],
 				"outputs": [
 					{
 						"name": "versionOption",
 						"type": "string",
-						"description": "Resolved option for the requested version."
+						"description": "Resolved option of the first exact version match, or the empty string when there is no match or that version has no options.",
+						"examples": ["o1", ""]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sameImage",
@@ -294,24 +872,56 @@
 						"name": "sameImage.left",
 						"type": "ThreadTarget | null",
 						"required": true,
-						"description": "First target to compare."
+						"description": "Left target in the comparison; a true result requires its nonempty image hash and version to match the right target.",
+						"examples": [
+							null,
+							{
+								"version": "v12",
+								"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"state": "approved",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.1,
+									"y": 0.2,
+									"width": 0.5,
+									"height": 0.4
+								},
+								"option": "o1"
+							}
+						]
 					},
 					{
 						"name": "sameImage.right",
 						"type": "ThreadTarget",
 						"required": true,
-						"description": "Second target to compare."
+						"description": "Right target compared with the left; a matching image hash is insufficient unless the versions also match.",
+						"examples": [
+							{
+								"version": "v12",
+								"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"state": "approved",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.1,
+									"y": 0.2,
+									"width": 0.5,
+									"height": 0.4
+								},
+								"option": "o1"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sameImage",
 						"type": "boolean",
-						"description": "True when both targets share a nonempty image hash and version."
+						"description": "True only when both targets have the same nonempty image hash and version; all other pairs return false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "shownApproval",
@@ -320,31 +930,93 @@
 						"name": "shownApproval.design",
 						"type": "DesignVersion | undefined",
 						"required": true,
-						"description": "Design and approval to inspect."
+						"description": "Design version whose current approval is checked; an undefined design cannot be approved by this comparison.",
+						"examples": [
+							{
+								"version": "v12",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"generator": "image-generator",
+								"prompt": "Design a compact dashboard header.",
+								"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+								"images": [
+									{
+										"state": "approved",
+										"viewport": "desktop",
+										"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+										"bytes": 184320,
+										"option": "o1"
+									},
+									{
+										"state": "approved",
+										"viewport": "mobile",
+										"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+										"bytes": 131072,
+										"option": "o2"
+									}
+								],
+								"approval": {
+									"id": "approval-7",
+									"version": "v12",
+									"imageHashes": [
+										"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+									],
+									"contractHash": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+									"approvedAt": "2026-11-15T12:30:00.000Z",
+									"current": true,
+									"option": "o1"
+								},
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Compact layout",
+										"prompt": null,
+										"revisedPrompt": null,
+										"generator": "image-generator",
+										"imageHashes": [
+											"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Wide layout",
+										"prompt": "Use a wide header.",
+										"revisedPrompt": null,
+										"generator": "image-generator",
+										"imageHashes": [
+											"fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+										]
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "shownApproval.latest",
 						"type": "string | null",
 						"required": true,
-						"description": "Latest version ID against which approval is checked."
+						"description": "Latest version identifier that must equal the design's version; null cannot match a string version.",
+						"examples": ["v12", null]
 					},
 					{
 						"name": "shownApproval.option",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Displayed option ID; defaults to empty."
+						"description": "Displayed option identifier used to select images and compare the approval's option; matching is exact. Defaults to the empty string.",
+						"examples": ["o1", ""]
 					}
 				],
 				"outputs": [
 					{
 						"name": "shownApproval",
 						"type": "boolean",
-						"description": "Whether the current approval names the latest version and, for options, matches the shown option and image hashes."
+						"description": "True only when the design has a current approval and is the latest version; optioned versions also require the shown option and exact image hash set to match.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "otherOption",
@@ -353,30 +1025,44 @@
 						"name": "otherOption.item",
 						"type": "ThreadTarget | null",
 						"required": true,
-						"description": "Optional target with version and option."
+						"description": "Thread target to classify, or null; only a nonempty target option on the displayed version can count as another option.",
+						"examples": [
+							{
+								"version": "v12",
+								"imageSha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"state": "approved",
+								"viewport": "mobile",
+								"region": null,
+								"option": "o2"
+							},
+							null
+						]
 					},
 					{
 						"name": "otherOption.version",
 						"type": "string",
 						"required": true,
-						"description": "Version currently shown."
+						"description": "Currently displayed version identifier that the target must share.",
+						"examples": ["v12"]
 					},
 					{
 						"name": "otherOption.option",
 						"type": "string",
 						"required": true,
-						"description": "Option currently shown."
+						"description": "Currently displayed option identifier; a target with this same option is not another option.",
+						"examples": ["o1"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "otherOption",
 						"type": "unknown",
-						"description": "Whether the item belongs to the same version but a different nonempty option."
+						"description": "Boolean indicating that the item has a nonempty option on the displayed version and that option differs from the one shown.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "designTarget",
@@ -385,25 +1071,119 @@
 						"name": "designTarget.design",
 						"type": "DesignVersion | undefined",
 						"required": true,
-						"description": "Design version from which to select a target."
+						"description": "Design version supplying the selected image; an undefined design or a design with no selected image returns the entity-wide target.",
+						"examples": [
+							{
+								"version": "v12",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"generator": "image-generator",
+								"prompt": "Design a compact dashboard header.",
+								"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+								"images": [
+									{
+										"state": "approved",
+										"viewport": "desktop",
+										"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+										"bytes": 184320,
+										"option": "o1"
+									},
+									{
+										"state": "approved",
+										"viewport": "mobile",
+										"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+										"bytes": 131072,
+										"option": "o2"
+									}
+								],
+								"approval": {
+									"id": "approval-7",
+									"version": "v12",
+									"imageHashes": [
+										"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+									],
+									"contractHash": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+									"approvedAt": "2026-11-15T12:30:00.000Z",
+									"current": true,
+									"option": "o1"
+								},
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Compact layout",
+										"prompt": null,
+										"revisedPrompt": null,
+										"generator": "image-generator",
+										"imageHashes": [
+											"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Wide layout",
+										"prompt": "Use a wide header.",
+										"revisedPrompt": null,
+										"generator": "image-generator",
+										"imageHashes": [
+											"fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+										]
+									}
+								]
+							},
+							{
+								"version": "v10",
+								"createdAt": "2026-11-10T09:00:00.000Z",
+								"commit": null,
+								"generator": "image-generator",
+								"prompt": "Design a profile card.",
+								"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+								"images": [
+									{
+										"state": "draft",
+										"viewport": "desktop",
+										"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+										"bytes": 65536
+									}
+								],
+								"approval": null
+							}
+						]
 					},
 					{
 						"name": "designTarget.option",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Option whose first image should be selected."
+						"description": "Option whose images are considered when the design has options; this value is ignored when it has no options. Defaults to the empty string.",
+						"examples": ["o1", ""]
 					}
 				],
 				"outputs": [
 					{
 						"name": "designTarget",
 						"type": "ThreadTarget",
-						"description": "First image target of the selected option, or an entity-wide target when there is no image."
+						"description": "Target for the first image selected by the requested option; without a design or selected image it returns the entity-wide target.",
+						"examples": [
+							{
+								"version": "v12",
+								"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"state": "approved",
+								"viewport": "desktop",
+								"region": null,
+								"option": "o1"
+							},
+							{
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "threadAnchor",
@@ -412,30 +1192,84 @@
 						"name": "threadAnchor.revision",
 						"type": "Revision",
 						"required": true,
-						"description": "Viewed branch and commit."
+						"description": "Viewed source revision copied as branch and commit; the helper keeps a historical commit instead of substituting the tip.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"tip": "89abcdef0123456789abcdef0123456789abcdef",
+								"atTip": false
+							},
+							{
+								"branch": "main",
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"tip": "89abcdef0123456789abcdef0123456789abcdef",
+								"atTip": true
+							}
+						]
 					},
 					{
 						"name": "threadAnchor.entityId",
 						"type": "string",
 						"required": true,
-						"description": "Entity receiving the comment."
+						"description": "Identifier of the entity receiving the comment; copied unchanged into the anchor.",
+						"examples": ["entity-42"]
 					},
 					{
 						"name": "threadAnchor.target",
 						"type": "ThreadTarget",
 						"required": true,
-						"description": "Selected version, image hash, state, viewport and region."
+						"description": "Entity or image location copied into the anchor; an optional target option is not included in the returned anchor.",
+						"examples": [
+							{
+								"version": "v12",
+								"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"state": "approved",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.1,
+									"y": 0.2,
+									"width": 0.5,
+									"height": 0.4
+								},
+								"option": "o1"
+							},
+							{
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "threadAnchor",
 						"type": "CommentAnchor",
-						"description": "Comment anchor combining revision, entity and target fields."
+						"description": "Anchor copying revision branch and commit, entity id, and target version, image hash, state, viewport, and region; it omits target.option.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"entityId": "entity-42",
+								"version": "v12",
+								"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"state": "approved",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.1,
+									"y": 0.2,
+									"width": 0.5,
+									"height": 0.4
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "imageTarget",
@@ -444,30 +1278,71 @@
 						"name": "imageTarget.version",
 						"type": "string",
 						"required": true,
-						"description": "Design version containing the selected image."
+						"description": "Version string associated with the selected image and stored on the resulting target.",
+						"examples": ["v12"]
 					},
 					{
 						"name": "imageTarget.image",
 						"type": "DesignImage",
 						"required": true,
-						"description": "Selected image metadata."
+						"description": "Image metadata supplying the target's hash, state, viewport, and optional option; the byte count is not copied.",
+						"examples": [
+							{
+								"state": "approved",
+								"viewport": "desktop",
+								"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"bytes": 184320,
+								"option": "o1"
+							}
+						]
 					},
 					{
 						"name": "imageTarget.region",
 						"type": "ThreadTarget['region']",
 						"required": true,
-						"description": "Selected image rectangle, or null."
+						"description": "Normalized image rectangle, or null when no region is selected; stored without transformation.",
+						"examples": [
+							{
+								"x": 0.1,
+								"y": 0.2,
+								"width": 0.5,
+								"height": 0.4
+							},
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "imageTarget",
 						"type": "ThreadTarget",
-						"description": "Image target with version, hash, state, viewport, region and option when present."
+						"description": "Target containing the supplied version, image metadata, and region; option is included only when the image option is truthy.",
+						"examples": [
+							{
+								"version": "v12",
+								"imageSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"state": "approved",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.1,
+									"y": 0.2,
+									"width": 0.5,
+									"height": 0.4
+								},
+								"option": "o1"
+							},
+							{
+								"version": "v12",
+								"imageSha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+								"state": "draft",
+								"viewport": "desktop",
+								"region": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "optionImages",
@@ -476,24 +1351,113 @@
 						"name": "optionImages.design",
 						"type": "DesignVersion | undefined",
 						"required": true,
-						"description": "Design version to inspect, or undefined."
+						"description": "Design whose images are read; all images are returned without options, and an undefined design yields an empty array.",
+						"examples": [
+							{
+								"version": "v12",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"generator": "image-generator",
+								"prompt": "Design a compact dashboard header.",
+								"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+								"images": [
+									{
+										"state": "approved",
+										"viewport": "desktop",
+										"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+										"bytes": 184320,
+										"option": "o1"
+									},
+									{
+										"state": "approved",
+										"viewport": "mobile",
+										"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+										"bytes": 131072,
+										"option": "o2"
+									}
+								],
+								"approval": {
+									"id": "approval-7",
+									"version": "v12",
+									"imageHashes": [
+										"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+									],
+									"contractHash": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+									"approvedAt": "2026-11-15T12:30:00.000Z",
+									"current": true,
+									"option": "o1"
+								},
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Compact layout",
+										"prompt": null,
+										"revisedPrompt": null,
+										"generator": "image-generator",
+										"imageHashes": [
+											"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Wide layout",
+										"prompt": "Use a wide header.",
+										"revisedPrompt": null,
+										"generator": "image-generator",
+										"imageHashes": [
+											"fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+										]
+									}
+								]
+							},
+							{
+								"version": "v10",
+								"createdAt": "2026-11-10T09:00:00.000Z",
+								"commit": null,
+								"generator": "image-generator",
+								"prompt": "Design a profile card.",
+								"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+								"images": [
+									{
+										"state": "draft",
+										"viewport": "desktop",
+										"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+										"bytes": 65536
+									}
+								],
+								"approval": null
+							}
+						]
 					},
 					{
 						"name": "optionImages.option",
 						"type": "string",
 						"required": true,
-						"description": "Option ID whose images are requested."
+						"description": "Exact option identifier used to filter images when the design has options; no image from another option is substituted.",
+						"examples": ["o1", ""]
 					}
 				],
 				"outputs": [
 					{
 						"name": "optionImages",
 						"type": "DesignImage[]",
-						"description": "All images for a single design, matching option images for an optioned design, or an empty list without a design."
+						"description": "All images for a design without options, or only exact matches for an optioned design; an absent design yields an empty array.",
+						"examples": [
+							[
+								{
+									"state": "approved",
+									"viewport": "desktop",
+									"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+									"bytes": 184320,
+									"option": "o1"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "designOption",
@@ -502,25 +1466,103 @@
 						"name": "designOption.design",
 						"type": "DesignVersion | undefined",
 						"required": true,
-						"description": "Design version whose option is selected."
+						"description": "Design whose option ids and current approval are considered; no design or a design without options resolves to the empty string.",
+						"examples": [
+							{
+								"version": "v12",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"generator": "image-generator",
+								"prompt": "Design a compact dashboard header.",
+								"baseRevision": "89abcdef0123456789abcdef0123456789abcdef",
+								"images": [
+									{
+										"state": "approved",
+										"viewport": "desktop",
+										"sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+										"bytes": 184320,
+										"option": "o1"
+									},
+									{
+										"state": "approved",
+										"viewport": "mobile",
+										"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+										"bytes": 131072,
+										"option": "o2"
+									}
+								],
+								"approval": {
+									"id": "approval-7",
+									"version": "v12",
+									"imageHashes": [
+										"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+									],
+									"contractHash": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+									"approvedAt": "2026-11-15T12:30:00.000Z",
+									"current": true,
+									"option": "o1"
+								},
+								"options": [
+									{
+										"id": "o1",
+										"direction": "Compact layout",
+										"prompt": null,
+										"revisedPrompt": null,
+										"generator": "image-generator",
+										"imageHashes": [
+											"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+										]
+									},
+									{
+										"id": "o2",
+										"direction": "Wide layout",
+										"prompt": "Use a wide header.",
+										"revisedPrompt": null,
+										"generator": "image-generator",
+										"imageHashes": [
+											"fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+										]
+									}
+								]
+							},
+							{
+								"version": "v10",
+								"createdAt": "2026-11-10T09:00:00.000Z",
+								"commit": null,
+								"generator": "image-generator",
+								"prompt": "Design a profile card.",
+								"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+								"images": [
+									{
+										"state": "draft",
+										"viewport": "desktop",
+										"sha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+										"bytes": 65536
+									}
+								],
+								"approval": null
+							}
+						]
 					},
 					{
 						"name": "designOption.wanted",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Preferred option ID; defaults to empty."
+						"description": "Preferred option id; it wins only when present, otherwise a valid current approval is used before the first option. Defaults to the empty string.",
+						"examples": ["o1", ""]
 					}
 				],
 				"outputs": [
 					{
 						"name": "designOption",
 						"type": "string",
-						"description": "Valid preferred option, otherwise the current approved option when valid, otherwise the first option; empty for a single design."
+						"description": "Wanted id when present, otherwise a valid option from the current approval, otherwise the first id; no options resolve to the empty string.",
+						"examples": ["o1", ""]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
