@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native fieldset element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered inside the native fieldset when provided. When omitted, no child content is rendered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlFieldset",
 				"type": "markup",
-				"description": "The actual native fieldset element, with forwarded attributes and content and no additional wrapper."
+				"description": "The component produces a native fieldset element with no additional wrapper. Rest props are spread onto it, and the optional children snippet is rendered inside it when present."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
