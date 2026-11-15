@@ -34,7 +34,7 @@ test('what the reports package generates is not formatted, and none of its sourc
 		expect([generated, await ignored(generated)]).toEqual([generated, true]);
 	// Everything a person writes in the package is still checked, also a folder that only sounds alike.
 	for (const source of [
-		'packages/reports/src/lib/console.ts',
+		'packages/reports/src/lib/development-tooling/console.ts',
 		'packages/reports/src/lib/styles/explorer.css',
 		'packages/reports/tests/e2e/explorer-shell.spec.ts',
 		'packages/reports/test/components/harness-navbar.test.ts',
