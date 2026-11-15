@@ -22,23 +22,173 @@
 				"name": "recordedAnswer.input",
 				"type": "AnswerInput",
 				"required": true,
-				"description": "The history scope naming the entity, the identity of the read, and already-read and validated current/parent revision details. This helper assumes those inputs belong together."
+				"description": "Location in history and identity for the evidence read, plus the stored revision of the shown commit and its first parent when a comparison is made. The revisions must already have been read and validated in full.",
+				"examples": [
+					{
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": null,
+								"category": "components",
+								"entity": "reports.component.evidence-grid"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "0123456789abcdef0123456789abcdef01234567",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true,
+							"parent": null,
+							"summary": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": [],
+								"subject": "Keep the evidence grid focused",
+								"author": "Daniel Fugere",
+								"committedAt": "2026-11-14T09:30:00.000Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"identity": {
+							"principalId": "actor-7",
+							"projectId": "project-7",
+							"repositoryId": 123456789,
+							"requestedRef": "main",
+							"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+							"sourceTree": "89abcdef0123456789abcdef0123456789abcdef",
+							"notesRef": null,
+							"notesRevision": null,
+							"evidenceRef": null,
+							"evidenceRevision": null,
+							"historyIndexRevision": null,
+							"artifactHash": null,
+							"profile": null
+						},
+						"revisions": {
+							"head": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							},
+							"parent": null
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordedAnswer",
 				"type": "EntityEvidenceResult",
-				"description": "The supplied scope and identity with projected evidence for the named entity and behavior derived from the original evidence. Current mode yields no before comparison. The answer is serialized for size checking and is never truncated to fit."
+				"description": "Carries the input scope and identity with entity-specific projected evidence and explorer-derived behavior. The serialized JSON answer must fit within remoteLimits.messageBytes - 1024 UTF-8 bytes; oversized answers are thrown instead of truncated.",
+				"examples": [
+					{
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": null,
+								"category": "components",
+								"entity": "reports.component.evidence-grid"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "0123456789abcdef0123456789abcdef01234567",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true,
+							"parent": null,
+							"summary": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": [],
+								"subject": "Keep the evidence grid focused",
+								"author": "Daniel Fugere",
+								"committedAt": "2026-11-14T09:30:00.000Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"identity": {
+							"principalId": "actor-7",
+							"projectId": "project-7",
+							"repositoryId": 123456789,
+							"requestedRef": "main",
+							"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+							"sourceTree": "89abcdef0123456789abcdef0123456789abcdef",
+							"notesRef": null,
+							"notesRevision": null,
+							"evidenceRef": null,
+							"evidenceRevision": null,
+							"historyIndexRevision": null,
+							"artifactHash": null,
+							"profile": null
+						},
+						"evidence": {
+							"mode": "current",
+							"scenarios": [],
+							"after": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"detail": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"registry": {
+										"available": true,
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": "No verification record is attached to this commit."
+							},
+							"before": null,
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "current",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": null,
+							"scenarios": []
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "answer-too-large",
-				"type": "refused",
-				"description": "Throws when the serialized answer exceeds the transport message limit minus 1,024 bytes reserved for its wrapper, approximately 16 MiB."
+				"type": "thrown",
+				"description": "Throws Error with the message \"The recorded evidence of this entity is larger than one answer may be (16 MiB).\" when the serialized JSON answer exceeds remoteLimits.messageBytes - 1024 UTF-8 bytes; the answer is not truncated."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The function throws a native Error with the message \"The recorded evidence of this entity is larger than one answer may be (16 MiB).\" when the serialized JSON answer exceeds remoteLimits.messageBytes - 1024 UTF-8 bytes."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "recordedAnswer",
@@ -47,23 +197,168 @@
 						"name": "recordedAnswer.input",
 						"type": "AnswerInput",
 						"required": true,
-						"description": "The history scope naming the entity, the identity of the read, and already-read and validated current/parent revision details. This helper assumes those inputs belong together."
+						"description": "Location in history and identity for the evidence read, plus the stored revision of the shown commit and its first parent when a comparison is made. The revisions must already have been read and validated in full.",
+						"examples": [
+							{
+								"scope": {
+									"location": {
+										"branch": "main",
+										"commit": null,
+										"category": "components",
+										"entity": "reports.component.evidence-grid"
+									},
+									"mode": "current",
+									"branch": "main",
+									"tip": "0123456789abcdef0123456789abcdef01234567",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"atTip": true,
+									"parent": null,
+									"summary": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"parents": [],
+										"subject": "Keep the evidence grid focused",
+										"author": "Daniel Fugere",
+										"committedAt": "2026-11-14T09:30:00.000Z",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								},
+								"identity": {
+									"principalId": "actor-7",
+									"projectId": "project-7",
+									"repositoryId": 123456789,
+									"requestedRef": "main",
+									"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+									"sourceTree": "89abcdef0123456789abcdef0123456789abcdef",
+									"notesRef": null,
+									"notesRevision": null,
+									"evidenceRef": null,
+									"evidenceRevision": null,
+									"historyIndexRevision": null,
+									"artifactHash": null,
+									"profile": null
+								},
+								"revisions": {
+									"head": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"registry": {
+											"available": true,
+											"units": [],
+											"scenarios": [],
+											"graph": {
+												"edges": []
+											}
+										},
+										"comparison": null,
+										"records": [],
+										"explanations": []
+									},
+									"parent": null
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordedAnswer",
 						"type": "EntityEvidenceResult",
-						"description": "The supplied scope and identity with projected evidence for the named entity and behavior derived from the original evidence. Current mode yields no before comparison. The answer is serialized for size checking and is never truncated to fit."
+						"description": "Carries the input scope and identity with entity-specific projected evidence and explorer-derived behavior. The serialized JSON answer must fit within remoteLimits.messageBytes - 1024 UTF-8 bytes; oversized answers are thrown instead of truncated.",
+						"examples": [
+							{
+								"scope": {
+									"location": {
+										"branch": "main",
+										"commit": null,
+										"category": "components",
+										"entity": "reports.component.evidence-grid"
+									},
+									"mode": "current",
+									"branch": "main",
+									"tip": "0123456789abcdef0123456789abcdef01234567",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"atTip": true,
+									"parent": null,
+									"summary": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"parents": [],
+										"subject": "Keep the evidence grid focused",
+										"author": "Daniel Fugere",
+										"committedAt": "2026-11-14T09:30:00.000Z",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								},
+								"identity": {
+									"principalId": "actor-7",
+									"projectId": "project-7",
+									"repositoryId": 123456789,
+									"requestedRef": "main",
+									"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+									"sourceTree": "89abcdef0123456789abcdef0123456789abcdef",
+									"notesRef": null,
+									"notesRevision": null,
+									"evidenceRef": null,
+									"evidenceRevision": null,
+									"historyIndexRevision": null,
+									"artifactHash": null,
+									"profile": null
+								},
+								"evidence": {
+									"mode": "current",
+									"scenarios": [],
+									"after": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"detail": {
+											"commit": "0123456789abcdef0123456789abcdef01234567",
+											"registry": {
+												"available": true,
+												"units": [],
+												"scenarios": [],
+												"graph": {
+													"edges": []
+												}
+											},
+											"comparison": null,
+											"records": [],
+											"explanations": []
+										},
+										"record": null,
+										"captures": [],
+										"coverage": [],
+										"gap": "No verification record is attached to this commit."
+									},
+									"before": null,
+									"initial": null,
+									"incomparable": []
+								},
+								"behavior": {
+									"mode": "current",
+									"rows": [],
+									"summary": "not-compared",
+									"reason": null,
+									"scenarios": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error with the message \"The recorded evidence of this entity is larger than one answer may be (16 MiB).\" when the serialized JSON answer exceeds remoteLimits.messageBytes - 1024 UTF-8 bytes; the answer is not truncated."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
