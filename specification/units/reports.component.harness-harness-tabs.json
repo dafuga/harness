@@ -27,46 +27,70 @@
 				"name": "HarnessTabs.view",
 				"type": "View",
 				"required": true,
-				"description": "Required selected section value."
+				"description": "The selected tab id; it is compared with each item.id to set aria-selected and reveal the selected item. View is a string subtype, and the component does not validate that it matches an available tab.",
+				"examples": ["map", "compare"]
 			},
 			{
 				"name": "HarnessTabs.onview",
 				"type": "(view: View) => void",
 				"required": true,
-				"description": "Required callback receiving the chosen section after a plain link click or enabled button click."
+				"description": "Called with the tab id when a button tab is activated or a link tab receives a plain click. The component does not call it for other link clicks."
 			},
 			{
 				"name": "HarnessTabs.tabs",
 				"type": "Array<HarnessTab<View>>",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional tab definitions, defaulting to JavaScript undefined (omitted). Omission uses map, compare, history, growth and activity; an explicitly empty list renders no tabs. Definitions may provide destinations and disabled state. Tab identifiers must be distinct."
+				"description": "When omitted, the component uses the built-in map, compare, history, growth, and activity tabs; an empty array renders no tabs. Each item.id is the keyed-list key, and an item with a truthy href is rendered as a link only when it is not disabled; all other items render as buttons.",
+				"examples": [
+					[
+						{
+							"id": "map",
+							"label": "Component map"
+						},
+						{
+							"id": "compare",
+							"label": "Compare"
+						}
+					],
+					[
+						{
+							"id": "history",
+							"label": "History"
+						},
+						{
+							"id": "growth",
+							"label": "Growth"
+						}
+					]
+				]
 			},
 			{
 				"name": "HarnessTabs.label",
 				"type": "string",
 				"required": false,
 				"default": "Views",
-				"description": "Optional accessible navigation label, defaulting to Views."
+				"description": "Accessible name passed to the tablist aria-label attribute without transformation. It defaults to the literal string Views.",
+				"examples": ["Views", "Explorer sections"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessTabs",
 				"type": "markup",
-				"description": "Links for enabled tabs with destinations and buttons otherwise. Keeps the selected tab visible within the scrolling strip without moving focus or scrolling the page. Overflow retains a painted horizontal scrollbar and persistent text explaining horizontal scrolling. The cue updates when the strip or tab widths change."
+				"description": "Renders a tablist with one tab per configured or built-in item: enabled items with a truthy href are links, and all others are buttons; selection is determined by view === item.id. Effects update overflow state and adjust only the strip scroll position to reveal the selected tab; a horizontal-scroll note appears when scrollWidth exceeds clientWidth by more than 1px."
 			}
 		],
 		"errors": [
 			{
 				"name": "Duplicate tab key",
-				"type": "Svelte keyed-each error",
-				"description": "Duplicate tab identifiers are rejected by Svelte keyed-list updates."
+				"type": "thrown",
+				"description": "The keyed each block uses item.id as its key, so duplicate tab ids cause a keyed-list error during rendering or updating."
 			},
 			{
 				"name": "Caller callback error",
-				"type": "propagated",
-				"description": "Errors thrown by the supplied onview callback propagate from an enabled button or plain link click."
+				"type": "thrown",
+				"description": "An error thrown by onview during a button activation or plain link click propagates from the event handler."
 			}
 		],
 		"errorStatus": "declared",
