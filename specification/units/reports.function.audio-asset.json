@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/utils/audio-asset/audioAsset.ts",
 			"packages/reports/src/utils/audioAsset.ts",
 			"packages/reports/src/utils/reports-media/audio-asset/audioAsset.ts"
 		],
-		"symbols": ["audioAsset", "audioAsset", "audioAsset"]
+		"symbols": ["audioAsset", "audioAsset"]
 	},
 	"contract": {
 		"origin": "declared",
