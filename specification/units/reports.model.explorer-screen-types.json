@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/models/ExplorerScreen.types.ts",
-			"packages/reports/src/models/explorer-ui/ExplorerScreen.types.ts"
-		],
+		"source": ["packages/reports/src/models/explorer-ui/ExplorerScreen.types.ts"],
 		"symbols": ["ExplorerScreenProps", "ExplorerScreen"]
 	},
 	"contract": {

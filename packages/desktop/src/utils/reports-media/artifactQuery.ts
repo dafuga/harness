@@ -1,7 +1,7 @@
 // @harness-uid u_4q7okdsutp
 import type { EvidenceSide } from './artifactQuery.types';
 import { mediaFile } from '$reports/utils/harnessEvidence';
-import type { ExplorerCapture } from '$reports/models/ExplorerEvidence.types';
+import type { ExplorerCapture } from '$reports/models/explorer-ui/ExplorerEvidence.types';
 import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,

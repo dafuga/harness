@@ -5,7 +5,7 @@
 	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
 	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import EntityCases from '$shared/explorer-ui/entity-cases/EntityCases.svelte';
-	import type { ExplorerArtifactBehavior } from '$reports/models/ExplorerEvidence.types';
+	import type { ExplorerArtifactBehavior } from '$reports/models/explorer-ui/ExplorerEvidence.types';
 	import type { BehaviorCell } from '$reports/utils/entityBehavior';
 	import { artifactText } from '$reports/utils/explorerArtifact';
 	import Status from '$shared/shared-primitives/status/Status.svelte';

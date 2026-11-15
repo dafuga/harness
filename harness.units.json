@@ -615,8 +615,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte",
-			"specifier": "$reports/models/ExplorerEvidence.types",
-			"to": "packages/reports/src/models/ExplorerEvidence.types.ts",
+			"specifier": "$reports/models/explorer-ui/ExplorerEvidence.types",
+			"to": "packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -801,8 +801,8 @@
 		},
 		{
 			"from": "packages/desktop/src/models/verification-evidence/DesktopEvidence.types.ts",
-			"specifier": "$reports/models/ExplorerEvidence.types",
-			"to": "packages/reports/src/models/ExplorerEvidence.types.ts",
+			"specifier": "$reports/models/explorer-ui/ExplorerEvidence.types",
+			"to": "packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -891,8 +891,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/reports-media/artifactQuery.ts",
-			"specifier": "$reports/models/ExplorerEvidence.types",
-			"to": "packages/reports/src/models/ExplorerEvidence.types.ts",
+			"specifier": "$reports/models/explorer-ui/ExplorerEvidence.types",
+			"to": "packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{

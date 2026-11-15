@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/models/ExplorerEvidence.types.ts",
-			"packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts"
-		],
+		"source": ["packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts"],
 		"symbols": [
 			"CoverageStanding",
 			"ExplorerSlotCoverage",
