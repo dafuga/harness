@@ -35,7 +35,7 @@ function isolatedTools(folder: string): string {
 
 function selectedEnvironment(folder: string): Record<string, string | undefined> {
 	const code = `
-		import { pinnedToolchain } from './src/utils/pinnedToolchain';
+		import { pinnedToolchain } from './src/utils/development-tooling/pinnedToolchain';
 		const folder = process.argv[1];
 		const answer = { status: 0, failed: false, stderr: '', stdout: folder + '/bin/cargo' };
 		const env = { PATH: '/usr/bin', HOME: folder,

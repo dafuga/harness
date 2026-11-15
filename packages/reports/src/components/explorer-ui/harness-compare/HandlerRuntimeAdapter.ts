@@ -9,7 +9,10 @@ import {
 	type RuntimeResponse,
 	type UnitRuntime
 } from '../../../../../../src/core/runtimeTypes';
-import { notPortable, portableJson } from '../../../../../../src/utils/portableJson';
+import {
+	notPortable,
+	portableJson
+} from '../../../../../../src/utils/development-tooling/portableJson';
 import { runtimeDeadline, runtimeResponse } from '../../../../../../src/utils/runtimeResponse';
 
 /**

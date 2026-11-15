@@ -8,15 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/portableJson.ts", "src/utils/portableJson.ts"],
-		"symbols": [
-			"maxJsonDepth",
-			"portableJson",
-			"notPortable",
-			"maxJsonDepth",
-			"portableJson",
-			"notPortable"
-		]
+		"source": ["src/utils/development-tooling/portableJson.ts"],
+		"symbols": ["maxJsonDepth", "portableJson", "notPortable"]
 	},
 	"contract": {
 		"origin": "declared",

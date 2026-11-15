@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"scripts/build-kernel/pinnedToolchain.ts",
-			"src/utils/development-tooling/pinnedToolchain.ts",
-			"src/utils/pinnedToolchain.ts"
+			"src/utils/development-tooling/pinnedToolchain.ts"
 		],
 		"symbols": [
 			"pinnedToolchain",
@@ -19,7 +18,6 @@
 			"ToolAnswer",
 			"ToolRun",
 			"PinnedOptions",
-			"pinnedToolchain",
 			"pinnedToolchain"
 		]
 	},

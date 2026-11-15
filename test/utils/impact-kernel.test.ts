@@ -4,7 +4,7 @@ import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
 import { impactKernelText } from '../../src/workflows/run-kernel/impactKernel';
 import { kernelRequest } from '../../src/utils/impact-kernel/kernelRequest';
 import { kernelWorkload } from '../../src/utils/kernelWorkload';
-import { portableJson } from '../../src/utils/portableJson';
+import { portableJson } from '../../src/utils/development-tooling/portableJson';
 import { kernelVectors, vectorText } from '../support/kernelVectors';
 
 test('the TypeScript reference satisfies every shared vector', () => {
