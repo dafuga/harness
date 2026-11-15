@@ -33,40 +33,64 @@
 				"name": "writtenMessage.file",
 				"type": "string",
 				"required": true,
-				"description": "Message-file contents supplied to a commit-msg hook, not a filesystem path."
+				"description": "The complete text Git gives to a commit-msg hook. The function treats it as message text and never reads a filesystem path.",
+				"examples": [
+					"feat: add retries\n\nRetry transient errors.\n# Please enter the commit message\n"
+				]
 			},
 			{
 				"name": "writtenMessage.options",
 				"type": "MessageCleanup",
 				"required": false,
 				"default": {},
-				"description": "Optional Git cleanup mode and comment marker; defaults to strip and #. Verbatim preserves internal text; whitespace and scissors keep comment lines."
+				"description": "Cleanup mode and comment marker for writtenMessage; omitted fields default to cleanup = 'strip' and comment = '#'. Verbatim trims only the ends, while every other mode cuts at scissors and whitespace or scissors mode keeps comment lines.",
+				"examples": [
+					{},
+					{
+						"cleanup": "verbatim",
+						"comment": ";"
+					},
+					{
+						"cleanup": "scissors",
+						"comment": "#"
+					}
+				]
 			},
 			{
 				"name": "commitMessage.message",
 				"type": "string",
 				"required": true,
-				"description": "Commit message as stored, whose first line is the subject and remaining text is the body including trailers."
+				"description": "The stored commit message text, split into a first subject line and the remaining body lines. CRLF and lone CR line endings become LF, and the joined body is trimmed before validation.",
+				"examples": ["fix: handle missing values\n\nReject empty input.", "update the changelog"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "commitPrefixes",
 				"type": "unknown",
-				"description": "The allowed subject prefixes feat:, fix:, chore: and cleanup:."
+				"description": "The four allowed subject prefix tokens: feat:, fix:, chore:, and cleanup:. The list contains the tokens only; a valid nonempty subject must also have a space and a nonspace character after one of them.",
+				"examples": [
+					["feat:", "fix:", "chore:", "cleanup:"]
+				]
 			},
 			{
 				"name": "writtenMessage",
 				"type": "string",
-				"description": "Cleaned message text: trimmed ends, configured comment and whitespace cleanup, and scissors removal in non-verbatim modes. No file is read or written."
+				"description": "The hook message after cleanup: non-verbatim modes cut at a line beginning with the configured comment marker and scissors marker, remove comment lines except in whitespace and scissors modes, remove matched trailing spaces, tabs or carriage returns, collapse runs of three or more LF newlines to two, and trim the ends. Verbatim returns file.trim() and preserves internal text.",
+				"examples": ["feat: add retries\n\nRetry transient errors.", "fix: handle missing values"]
 			},
 			{
 				"name": "commitMessage",
 				"type": "string[]",
-				"description": "Problem messages for an empty subject, a subject over 72 characters, a missing allowed prefix followed by a space and content, or a body over 60 words or 400 characters. An empty array means all checks pass; counts trim ends and normalize line endings."
+				"description": "Returns the subject and body length problems produced by writingProblems using writingLimits.subject and writingLimits.body, plus a missing-prefix problem for a nonempty subject unless it starts with one of the four allowed prefixes, a colon and space, and a following nonspace character. An empty subject is reported through the subject length checks; the body is checked only when its joined, trimmed text is nonempty, and an empty result means no problems were reported.",
+				"examples": [
+					[],
+					["subject does not start with feat:, fix:, chore: or cleanup:."]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "writtenMessage",
@@ -75,25 +99,43 @@
 						"name": "writtenMessage.file",
 						"type": "string",
 						"required": true,
-						"description": "Message-file contents supplied to a commit-msg hook, not a filesystem path."
+						"description": "The complete text Git gives to a commit-msg hook. The function treats it as message text and never reads a filesystem path.",
+						"examples": [
+							"feat: add retries\n\nRetry transient errors.\n# Please enter the commit message\n"
+						]
 					},
 					{
 						"name": "writtenMessage.options",
 						"type": "MessageCleanup",
 						"required": false,
 						"default": {},
-						"description": "Optional Git cleanup mode and comment marker; defaults to strip and #. Verbatim preserves internal text; whitespace and scissors keep comment lines."
+						"description": "Cleanup mode and comment marker for writtenMessage; omitted fields default to cleanup = 'strip' and comment = '#'. Verbatim trims only the ends, while every other mode cuts at scissors and whitespace or scissors mode keeps comment lines.",
+						"examples": [
+							{},
+							{
+								"cleanup": "verbatim",
+								"comment": ";"
+							},
+							{
+								"cleanup": "scissors",
+								"comment": "#"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writtenMessage",
 						"type": "string",
-						"description": "Cleaned message text: trimmed ends, configured comment and whitespace cleanup, and scissors removal in non-verbatim modes. No file is read or written."
+						"description": "The hook message after cleanup: non-verbatim modes cut at a line beginning with the configured comment marker and scissors marker, remove comment lines except in whitespace and scissors modes, remove matched trailing spaces, tabs or carriage returns, collapse runs of three or more LF newlines to two, and trim the ends. Verbatim returns file.trim() and preserves internal text.",
+						"examples": [
+							"feat: add retries\n\nRetry transient errors.",
+							"fix: handle missing values"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "commitMessage",
@@ -102,18 +144,26 @@
 						"name": "commitMessage.message",
 						"type": "string",
 						"required": true,
-						"description": "Commit message as stored, whose first line is the subject and remaining text is the body including trailers."
+						"description": "The stored commit message text, split into a first subject line and the remaining body lines. CRLF and lone CR line endings become LF, and the joined body is trimmed before validation.",
+						"examples": [
+							"fix: handle missing values\n\nReject empty input.",
+							"update the changelog"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commitMessage",
 						"type": "string[]",
-						"description": "Problem messages for an empty subject, a subject over 72 characters, a missing allowed prefix followed by a space and content, or a body over 60 words or 400 characters. An empty array means all checks pass; counts trim ends and normalize line endings."
+						"description": "Returns the subject and body length problems produced by writingProblems using writingLimits.subject and writingLimits.body, plus a missing-prefix problem for a nonempty subject unless it starts with one of the four allowed prefixes, a colon and space, and a following nonspace character. An empty subject is reported through the subject length checks; the body is checked only when its joined, trimmed text is nonempty, and an empty result means no problems were reported.",
+						"examples": [
+							[],
+							["subject does not start with feat:, fix:, chore: or cleanup:."]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
