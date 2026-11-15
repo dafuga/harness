@@ -34,45 +34,286 @@
 				"name": "sizeMeasurements.context",
 				"type": "MeasureContext",
 				"required": true,
-				"description": "Machine profile and tested commit to attach to every size entry."
+				"description": "Machine profile and nullable commit copied onto each emitted size measurement. A null commit remains null as `testedRevision`.",
+				"examples": [
+					{
+						"profile": "linux-x64",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					},
+					{
+						"profile": "linux-x64",
+						"commit": null
+					}
+				]
 			},
 			{
 				"name": "sizeMeasurements.build",
 				"type": "KernelBuild",
 				"required": true,
-				"description": "Kernel build record containing Wasm and native artifact sizes and hashes, plus reference and crate source sizes and files."
+				"description": "Kernel build records supplying Wasm and native byte counts and SHA-256 values, plus reference and crate source byte counts and file lists. The function forwards those recorded values and files; it does not calculate them.",
+				"examples": [
+					{
+						"wasm": {
+							"bytes": 65536,
+							"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"native": {
+							"bytes": 131072,
+							"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+						},
+						"sources": {
+							"reference": {
+								"bytes": 2048,
+								"files": [
+									{
+										"path": "src/utils/verification-evidence/benchMeasurement.ts",
+										"bytes": 2048,
+										"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+									}
+								]
+							},
+							"crate": {
+								"bytes": 4096,
+								"files": [
+									{
+										"path": "src/cli/program/run-kernel-bench/benchMeasurement.ts",
+										"bytes": 4096,
+										"sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+									}
+								]
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "benchMeasurement.context",
 				"type": "MeasureContext",
 				"required": true,
-				"description": "Machine profile and tested commit, or null when the run cannot be attributed to a clean revision."
+				"description": "Machine profile and nullable commit copied onto the generated measurement. A null commit remains null as `testedRevision`.",
+				"examples": [
+					{
+						"profile": "linux-x64",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					},
+					{
+						"profile": "linux-x64",
+						"commit": null
+					}
+				]
 			},
 			{
 				"name": "benchMeasurement.entry",
 				"type": "Entry",
 				"required": true,
-				"description": "Target, metric, unit, method and either a numeric value or an unavailable reason; optionally workload, sample count and artifact identities."
+				"description": "One measurement's target, metric, unit, method and numeric value or `{ unavailable: string }` reason. A missing workload becomes null, missing artifacts become `[]`, and samples are included only when truthy.",
+				"examples": [
+					{
+						"target": "wasm",
+						"metric": "artifact-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 65536,
+						"method": "Byte size recorded by the kernel build.",
+						"artifacts": [
+							{
+								"path": "impact-kernel.wasm",
+								"bytes": 65536,
+								"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							}
+						]
+					},
+					{
+						"target": "module",
+						"metric": "artifact-bytes",
+						"unitOfMeasure": "bytes",
+						"value": {
+							"unavailable": "The reference ships inside the CLI bundle and has no separate artifact."
+						},
+						"method": "Byte size recorded by the kernel build."
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "kernelUnits",
 				"type": "Record<RuntimeKind, string>",
-				"description": "Maps module and HTTP targets to function.impact-kernel, and Wasm and process targets to kernel.impact-kernel."
+				"description": "Maps the four runtime targets used by the benchmark record to unit ids. `module` and `http` map to `function.impact-kernel`; `wasm` and `process` map to `kernel.impact-kernel`.",
+				"examples": [
+					{
+						"module": "function.impact-kernel",
+						"http": "function.impact-kernel",
+						"wasm": "kernel.impact-kernel",
+						"process": "kernel.impact-kernel"
+					}
+				]
 			},
 			{
 				"name": "benchMeasurement",
 				"type": "BenchMeasurement",
-				"description": "Benchmark entry with the target owner, profile and revision; absent workload becomes null and absent artifacts become an empty array. An unavailable value becomes null with its reason."
+				"description": "One benchmark record copies the metric, unit, method, target, profile and tested revision, deriving its unit from `kernelUnits`. Numeric values remain numeric; unavailable values become null with their reason, missing workload and artifacts become null and `[]`, and samples are included only when truthy.",
+				"examples": [
+					{
+						"unit": "kernel.impact-kernel",
+						"metric": "artifact-bytes",
+						"unitOfMeasure": "bytes",
+						"value": 65536,
+						"method": "Byte size recorded by the kernel build.",
+						"workload": null,
+						"profile": "linux-x64",
+						"target": "wasm",
+						"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+						"artifacts": [
+							{
+								"path": "impact-kernel.wasm",
+								"bytes": 65536,
+								"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							}
+						]
+					},
+					{
+						"unit": "function.impact-kernel",
+						"metric": "artifact-bytes",
+						"unitOfMeasure": "bytes",
+						"value": null,
+						"unavailable": "The reference ships inside the CLI bundle and has no separate artifact.",
+						"method": "Byte size recorded by the kernel build.",
+						"workload": null,
+						"profile": "linux-x64",
+						"target": "module",
+						"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+						"artifacts": []
+					}
+				]
 			},
 			{
 				"name": "sizeMeasurements",
 				"type": "BenchMeasurement[]",
-				"description": "Seven byte measurements: unavailable module and HTTP artifact sizes, measured Wasm and process artifacts, and module, Wasm and process source sizes. Values come from the supplied build record."
+				"description": "Exactly seven byte measurements: unavailable module and HTTP artifact sizes, measured Wasm and process artifact sizes, and module, Wasm and process source sizes. Byte counts, artifact hashes and source file lists come from the supplied build record; the two unavailable reasons are fixed by the implementation.",
+				"examples": [
+					[
+						{
+							"unit": "function.impact-kernel",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": null,
+							"unavailable": "The reference ships inside the CLI bundle and has no separate artifact.",
+							"method": "Byte size recorded by the kernel build.",
+							"workload": null,
+							"profile": "linux-x64",
+							"target": "module",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": []
+						},
+						{
+							"unit": "function.impact-kernel",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": null,
+							"unavailable": "HTTP is a transport in front of a served unit; it emits no artifact.",
+							"method": "Byte size recorded by the kernel build.",
+							"workload": null,
+							"profile": "linux-x64",
+							"target": "http",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": []
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 65536,
+							"method": "Byte size recorded by the kernel build.",
+							"workload": null,
+							"profile": "linux-x64",
+							"target": "wasm",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [
+								{
+									"path": "impact-kernel.wasm",
+									"bytes": 65536,
+									"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+								}
+							]
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 131072,
+							"method": "Byte size recorded by the kernel build.",
+							"workload": null,
+							"profile": "linux-x64",
+							"target": "process",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [
+								{
+									"path": "impact-kernel",
+									"bytes": 131072,
+									"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+								}
+							]
+						},
+						{
+							"unit": "function.impact-kernel",
+							"metric": "source-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 2048,
+							"method": "Byte size recorded by the kernel build.",
+							"workload": null,
+							"profile": "linux-x64",
+							"target": "module",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [
+								{
+									"path": "src/utils/verification-evidence/benchMeasurement.ts",
+									"bytes": 2048,
+									"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+								}
+							]
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "source-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 4096,
+							"method": "Byte size recorded by the kernel build.",
+							"workload": null,
+							"profile": "linux-x64",
+							"target": "wasm",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [
+								{
+									"path": "src/cli/program/run-kernel-bench/benchMeasurement.ts",
+									"bytes": 4096,
+									"sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+								}
+							]
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "source-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 4096,
+							"method": "Byte size recorded by the kernel build.",
+							"workload": null,
+							"profile": "linux-x64",
+							"target": "process",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [
+								{
+									"path": "src/cli/program/run-kernel-bench/benchMeasurement.ts",
+									"bytes": 4096,
+									"sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+								}
+							]
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "sizeMeasurements",
@@ -81,24 +322,188 @@
 						"name": "sizeMeasurements.context",
 						"type": "MeasureContext",
 						"required": true,
-						"description": "Machine profile and tested commit to attach to every size entry."
+						"description": "Machine profile and nullable commit copied onto each emitted size measurement. A null commit remains null as `testedRevision`.",
+						"examples": [
+							{
+								"profile": "linux-x64",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"profile": "linux-x64",
+								"commit": null
+							}
+						]
 					},
 					{
 						"name": "sizeMeasurements.build",
 						"type": "KernelBuild",
 						"required": true,
-						"description": "Kernel build record containing Wasm and native artifact sizes and hashes, plus reference and crate source sizes and files."
+						"description": "Kernel build records supplying Wasm and native byte counts and SHA-256 values, plus reference and crate source byte counts and file lists. The function forwards those recorded values and files; it does not calculate them.",
+						"examples": [
+							{
+								"wasm": {
+									"bytes": 65536,
+									"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+								},
+								"native": {
+									"bytes": 131072,
+									"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+								},
+								"sources": {
+									"reference": {
+										"bytes": 2048,
+										"files": [
+											{
+												"path": "src/utils/verification-evidence/benchMeasurement.ts",
+												"bytes": 2048,
+												"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+											}
+										]
+									},
+									"crate": {
+										"bytes": 4096,
+										"files": [
+											{
+												"path": "src/cli/program/run-kernel-bench/benchMeasurement.ts",
+												"bytes": 4096,
+												"sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+											}
+										]
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sizeMeasurements",
 						"type": "BenchMeasurement[]",
-						"description": "Seven byte measurements: unavailable module and HTTP artifact sizes, measured Wasm and process artifacts, and module, Wasm and process source sizes. Values come from the supplied build record."
+						"description": "Exactly seven byte measurements: unavailable module and HTTP artifact sizes, measured Wasm and process artifact sizes, and module, Wasm and process source sizes. Byte counts, artifact hashes and source file lists come from the supplied build record; the two unavailable reasons are fixed by the implementation.",
+						"examples": [
+							[
+								{
+									"unit": "function.impact-kernel",
+									"metric": "artifact-bytes",
+									"unitOfMeasure": "bytes",
+									"value": null,
+									"unavailable": "The reference ships inside the CLI bundle and has no separate artifact.",
+									"method": "Byte size recorded by the kernel build.",
+									"workload": null,
+									"profile": "linux-x64",
+									"target": "module",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": []
+								},
+								{
+									"unit": "function.impact-kernel",
+									"metric": "artifact-bytes",
+									"unitOfMeasure": "bytes",
+									"value": null,
+									"unavailable": "HTTP is a transport in front of a served unit; it emits no artifact.",
+									"method": "Byte size recorded by the kernel build.",
+									"workload": null,
+									"profile": "linux-x64",
+									"target": "http",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": []
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "artifact-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 65536,
+									"method": "Byte size recorded by the kernel build.",
+									"workload": null,
+									"profile": "linux-x64",
+									"target": "wasm",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [
+										{
+											"path": "impact-kernel.wasm",
+											"bytes": 65536,
+											"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+										}
+									]
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "artifact-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 131072,
+									"method": "Byte size recorded by the kernel build.",
+									"workload": null,
+									"profile": "linux-x64",
+									"target": "process",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [
+										{
+											"path": "impact-kernel",
+											"bytes": 131072,
+											"sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+										}
+									]
+								},
+								{
+									"unit": "function.impact-kernel",
+									"metric": "source-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 2048,
+									"method": "Byte size recorded by the kernel build.",
+									"workload": null,
+									"profile": "linux-x64",
+									"target": "module",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [
+										{
+											"path": "src/utils/verification-evidence/benchMeasurement.ts",
+											"bytes": 2048,
+											"sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+										}
+									]
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "source-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 4096,
+									"method": "Byte size recorded by the kernel build.",
+									"workload": null,
+									"profile": "linux-x64",
+									"target": "wasm",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [
+										{
+											"path": "src/cli/program/run-kernel-bench/benchMeasurement.ts",
+											"bytes": 4096,
+											"sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+										}
+									]
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "source-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 4096,
+									"method": "Byte size recorded by the kernel build.",
+									"workload": null,
+									"profile": "linux-x64",
+									"target": "process",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [
+										{
+											"path": "src/cli/program/run-kernel-bench/benchMeasurement.ts",
+											"bytes": 4096,
+											"sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "benchMeasurement",
@@ -107,24 +512,92 @@
 						"name": "benchMeasurement.context",
 						"type": "MeasureContext",
 						"required": true,
-						"description": "Machine profile and tested commit, or null when the run cannot be attributed to a clean revision."
+						"description": "Machine profile and nullable commit copied onto the generated measurement. A null commit remains null as `testedRevision`.",
+						"examples": [
+							{
+								"profile": "linux-x64",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"profile": "linux-x64",
+								"commit": null
+							}
+						]
 					},
 					{
 						"name": "benchMeasurement.entry",
 						"type": "Entry",
 						"required": true,
-						"description": "Target, metric, unit, method and either a numeric value or an unavailable reason; optionally workload, sample count and artifact identities."
+						"description": "One measurement's target, metric, unit, method and numeric value or `{ unavailable: string }` reason. A missing workload becomes null, missing artifacts become `[]`, and samples are included only when truthy.",
+						"examples": [
+							{
+								"target": "wasm",
+								"metric": "artifact-bytes",
+								"unitOfMeasure": "bytes",
+								"value": 65536,
+								"method": "Byte size recorded by the kernel build.",
+								"artifacts": [
+									{
+										"path": "impact-kernel.wasm",
+										"bytes": 65536,
+										"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+									}
+								]
+							},
+							{
+								"target": "module",
+								"metric": "artifact-bytes",
+								"unitOfMeasure": "bytes",
+								"value": {
+									"unavailable": "The reference ships inside the CLI bundle and has no separate artifact."
+								},
+								"method": "Byte size recorded by the kernel build."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchMeasurement",
 						"type": "BenchMeasurement",
-						"description": "Benchmark entry with the target owner, profile and revision; absent workload becomes null and absent artifacts become an empty array. An unavailable value becomes null with its reason."
+						"description": "One benchmark record copies the metric, unit, method, target, profile and tested revision, deriving its unit from `kernelUnits`. Numeric values remain numeric; unavailable values become null with their reason, missing workload and artifacts become null and `[]`, and samples are included only when truthy.",
+						"examples": [
+							{
+								"unit": "kernel.impact-kernel",
+								"metric": "artifact-bytes",
+								"unitOfMeasure": "bytes",
+								"value": 65536,
+								"method": "Byte size recorded by the kernel build.",
+								"workload": null,
+								"profile": "linux-x64",
+								"target": "wasm",
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": [
+									{
+										"path": "impact-kernel.wasm",
+										"bytes": 65536,
+										"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+									}
+								]
+							},
+							{
+								"unit": "function.impact-kernel",
+								"metric": "artifact-bytes",
+								"unitOfMeasure": "bytes",
+								"value": null,
+								"unavailable": "The reference ships inside the CLI bundle and has no separate artifact.",
+								"method": "Byte size recorded by the kernel build.",
+								"workload": null,
+								"profile": "linux-x64",
+								"target": "module",
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"artifacts": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
