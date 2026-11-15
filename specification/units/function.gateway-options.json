@@ -18,17 +18,60 @@
 				"name": "gatewayOptions.session",
 				"type": "GatewaySession",
 				"required": true,
-				"description": "Session whose abort controller should control the SDK request."
+				"description": "The GatewaySession whose controller becomes the abortController of the SDK request, so aborting session.controller aborts that request. Only session.controller is read, and session is not checked for null or undefined."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gatewayOptions",
 				"type": "Options",
-				"description": "SDK options using a copied environment with Anthropic and Claude provider overrides removed, no built-in tools or setting sources, no persistent session, Opus 5.5 with xhigh effort, dontAsk mode and /tmp working directory. The executable comes from HARNESS_CLAUDE_EXECUTABLE or the home-local Claude binary."
+				"description": "Isolated SDK options for a local Claude gateway session: tools and settingSources are empty arrays, persistSession is false, includePartialMessages is true, model is claude-opus-5-5, effort is xhigh, permissionMode is dontAsk, cwd is /tmp, extraArgs sets strict-mcp-config and no-chrome to null, and abortController is session.controller. The env is a shallow copy of process.env without variables whose names start with ANTHROPIC_ or CLAUDE_CODE_USE_ and without CLAUDE_CODE_OAUTH_TOKEN; pathToClaudeCodeExecutable is HARNESS_CLAUDE_EXECUTABLE when that is not null or undefined, otherwise $HOME/.local/bin/claude, and neither HOME nor the executable path is validated; abortController is omitted from the examples because JSON cannot carry an AbortController.",
+				"examples": [
+					{
+						"env": {
+							"HOME": "/Users/example",
+							"PATH": "/usr/local/bin:/usr/bin:/bin",
+							"SHELL": "/bin/zsh"
+						},
+						"tools": [],
+						"settingSources": [],
+						"persistSession": false,
+						"includePartialMessages": true,
+						"model": "claude-opus-5-5",
+						"effort": "xhigh",
+						"permissionMode": "dontAsk",
+						"cwd": "/tmp",
+						"pathToClaudeCodeExecutable": "/Users/example/.local/bin/claude",
+						"extraArgs": {
+							"strict-mcp-config": null,
+							"no-chrome": null
+						}
+					},
+					{
+						"env": {
+							"HOME": "/home/builder",
+							"PATH": "/usr/bin:/bin",
+							"HARNESS_CLAUDE_EXECUTABLE": "/opt/claude/bin/claude"
+						},
+						"tools": [],
+						"settingSources": [],
+						"persistSession": false,
+						"includePartialMessages": true,
+						"model": "claude-opus-5-5",
+						"effort": "xhigh",
+						"permissionMode": "dontAsk",
+						"cwd": "/tmp",
+						"pathToClaudeCodeExecutable": "/opt/claude/bin/claude",
+						"extraArgs": {
+							"strict-mcp-config": null,
+							"no-chrome": null
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "gatewayOptions",
@@ -37,18 +80,60 @@
 						"name": "gatewayOptions.session",
 						"type": "GatewaySession",
 						"required": true,
-						"description": "Session whose abort controller should control the SDK request."
+						"description": "The GatewaySession whose controller becomes the abortController of the SDK request, so aborting session.controller aborts that request. Only session.controller is read, and session is not checked for null or undefined."
 					}
 				],
 				"outputs": [
 					{
 						"name": "gatewayOptions",
 						"type": "Options",
-						"description": "SDK options using a copied environment with Anthropic and Claude provider overrides removed, no built-in tools or setting sources, no persistent session, Opus 5.5 with xhigh effort, dontAsk mode and /tmp working directory. The executable comes from HARNESS_CLAUDE_EXECUTABLE or the home-local Claude binary."
+						"description": "Isolated SDK options for a local Claude gateway session: tools and settingSources are empty arrays, persistSession is false, includePartialMessages is true, model is claude-opus-5-5, effort is xhigh, permissionMode is dontAsk, cwd is /tmp, extraArgs sets strict-mcp-config and no-chrome to null, and abortController is session.controller. The env is a shallow copy of process.env without variables whose names start with ANTHROPIC_ or CLAUDE_CODE_USE_ and without CLAUDE_CODE_OAUTH_TOKEN; pathToClaudeCodeExecutable is HARNESS_CLAUDE_EXECUTABLE when that is not null or undefined, otherwise $HOME/.local/bin/claude, and neither HOME nor the executable path is validated; abortController is omitted from the examples because JSON cannot carry an AbortController.",
+						"examples": [
+							{
+								"env": {
+									"HOME": "/Users/example",
+									"PATH": "/usr/local/bin:/usr/bin:/bin",
+									"SHELL": "/bin/zsh"
+								},
+								"tools": [],
+								"settingSources": [],
+								"persistSession": false,
+								"includePartialMessages": true,
+								"model": "claude-opus-5-5",
+								"effort": "xhigh",
+								"permissionMode": "dontAsk",
+								"cwd": "/tmp",
+								"pathToClaudeCodeExecutable": "/Users/example/.local/bin/claude",
+								"extraArgs": {
+									"strict-mcp-config": null,
+									"no-chrome": null
+								}
+							},
+							{
+								"env": {
+									"HOME": "/home/builder",
+									"PATH": "/usr/bin:/bin",
+									"HARNESS_CLAUDE_EXECUTABLE": "/opt/claude/bin/claude"
+								},
+								"tools": [],
+								"settingSources": [],
+								"persistSession": false,
+								"includePartialMessages": true,
+								"model": "claude-opus-5-5",
+								"effort": "xhigh",
+								"permissionMode": "dontAsk",
+								"cwd": "/tmp",
+								"pathToClaudeCodeExecutable": "/opt/claude/bin/claude",
+								"extraArgs": {
+									"strict-mcp-config": null,
+									"no-chrome": null
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
