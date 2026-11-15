@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/validators/RemoteHostValidator.ts",
 			"packages/hub/src/validators/networking-security/RemoteHostValidator.ts",
 			"packages/hub/src/validators/networking-security/RemoteHostValidator.types.ts"
 		],
 		"symbols": [
-			"RemoteHostValidator",
 			"RemoteHostValidator",
 			"RemoteHostValidator.registration",
 			"RemoteHostValidator.hostId",

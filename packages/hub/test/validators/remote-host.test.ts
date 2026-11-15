@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { RemoteHostValidator } from '../../src/validators/RemoteHostValidator';
+import { RemoteHostValidator } from '../../src/validators/networking-security/RemoteHostValidator';
 import { DEVICE_ID, hostIdentity, registration } from '../support/remoteFixture';
 
 const validator = new RemoteHostValidator();
