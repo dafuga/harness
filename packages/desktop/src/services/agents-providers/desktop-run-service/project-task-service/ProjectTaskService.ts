@@ -9,7 +9,7 @@ import { hostChanges } from '../../../../utils/git-source-history/hostChanges';
 import { taskUnits } from './proposalUnits';
 import { referencePrompt } from '../../../../utils/agents-providers/referencePrompt';
 import { unitOwners } from '../../../../../../../src/utils/unitOwners';
-import { bugRepairPolicy } from '../../../../../../../src/utils/bugRepairPolicy';
+import { bugRepairPolicy } from '../../../../../../../src/utils/development-tooling/bugRepairPolicy';
 
 /** Executes an explicit project request and reports the registered owners of observed writes. */
 export class ProjectTaskService {

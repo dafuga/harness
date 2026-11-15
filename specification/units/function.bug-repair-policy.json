@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/bugRepairPolicy.ts", "src/utils/development-tooling/bugRepairPolicy.ts"],
-		"symbols": ["bugRepairPolicy", "bugRepairPolicy"]
+		"source": ["src/utils/development-tooling/bugRepairPolicy.ts"],
+		"symbols": ["bugRepairPolicy"]
 	},
 	"contract": {
 		"origin": "declared",

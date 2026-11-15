@@ -10,19 +10,10 @@
 	"owns": {
 		"source": [
 			"src/utils/block-spans/blockSpans.ts",
-			"src/utils/blockSpans.ts",
 			"src/utils/development-tooling/block-spans/blockSpans.ts",
 			"src/utils/development-tooling/block-spans/blockSpans.types.ts"
 		],
-		"symbols": [
-			"blockSpans",
-			"BlockSpan",
-			"blockSpans",
-			"blockSpans",
-			"BlockSpan",
-			"BlockSpan",
-			"Scope"
-		]
+		"symbols": ["blockSpans", "blockSpans", "BlockSpan", "BlockSpan", "Scope"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -75,11 +66,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/blockSpans.ts",
+		"entry": "src/utils/block-spans/blockSpans.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/blockSpans.ts"
+				"entry": "src/utils/block-spans/blockSpans.ts"
 			}
 		]
 	},

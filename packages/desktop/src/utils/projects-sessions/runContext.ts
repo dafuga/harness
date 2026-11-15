@@ -1,7 +1,7 @@
 // @harness-uid u_nd4mdnvxt5
 import type { RunContext } from '../../models/development-tooling/RunContext.types';
 import { referencePrompt } from '../agents-providers/referencePrompt';
-import { bugRepairPolicy } from '../../../../../src/utils/bugRepairPolicy';
+import { bugRepairPolicy } from '../../../../../src/utils/development-tooling/bugRepairPolicy';
 export async function runContext(context: RunContext): Promise<string> {
 	const { entity, request, planning, revision } = context;
 	const messages = await planning.messages(entity.id, request.threadId, revision.commit);
