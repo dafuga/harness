@@ -1,3 +1,4 @@
+// @harness-uid u_znmol3vpyb
 import { createReadStream, readdirSync, statSync } from 'node:fs';
 import { createInterface } from 'node:readline';
 import { join } from 'node:path';

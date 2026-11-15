@@ -1,3 +1,4 @@
+// @harness-uid u_kfhycvgnnp
 import type { ScenarioManifest } from '../../../../core/development-tooling/unitTypes';
 import type { VerifyConfig } from '../../../../core/verification-evidence/verifyTypes';
 

@@ -1,3 +1,4 @@
+// @harness-uid u_v3agbaubpa
 /** Chooses the commit that the shrink-only debt ratchets compare the working tree against. */
 
 import type { GitRead, RatchetBase } from './debt-ratchet-base.types';

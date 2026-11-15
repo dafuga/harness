@@ -1,3 +1,4 @@
+// @harness-uid u_ty3of47ntv
 /** Cheap standing guard: relative links in the checked documents must lead somewhere. */
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, normalize } from 'node:path';

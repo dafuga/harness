@@ -1,3 +1,4 @@
+// @harness-uid u_v3agbaubpa
 /** Runs one read-only git command and returns its output; throws when git fails. */
 export type GitRead = (args: readonly string[]) => string;
 
