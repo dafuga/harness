@@ -18,35 +18,37 @@
 				"name": "managedAgentTurn.turn",
 				"type": "AgentTurn",
 				"required": true,
-				"description": "Requested provider turn with model, access, status callback and cancellation signal."
+				"description": "Provider turn whose signal is passed as the signal option to queue.run or resourceWork and is checked for abort in the catch block, and whose onStatus callback receives 'Waiting for resources: ' plus the wait reason while admission waits for resources. No other field of the turn is read here."
 			},
 			{
 				"name": "managedAgentTurn.action",
 				"type": "(context: ResourceContext) => Promise<T>",
 				"required": true,
-				"description": "Asynchronous work executed only after admission; receives the bounded resource context."
+				"description": "Asynchronous work this function never calls directly: it is passed to queue.run or resourceWork, which call it with a ResourceContext. This function returns its resolved value unchanged, and a rejection reaches the catch block, where an aborted turn replaces it with RunCancelled."
 			},
 			{
 				"name": "managedAgentTurn.queue",
 				"type": "ResourceQueueService",
 				"required": false,
-				"description": "Shared queue used to track child PID and process start identity under this lease."
+				"default": "undefined",
+				"description": "Shared ResourceQueueService whose run method is called with the coding request (priority 'coding', memoryMiB 2048, label 'Desktop coding task') plus cpus: 1 in place of resourceWork. When it is omitted (default undefined), resourceWork is called instead with the same request without cpus and with process.env as the third argument."
 			}
 		],
 		"outputs": [
 			{
 				"name": "managedAgentTurn",
 				"type": "Promise<T>",
-				"description": "Result of the admitted provider operation; queued cancellation launches no provider."
+				"description": "Resolves with the value that queue.run or resourceWork resolves with, returned unchanged; it is typed T, the same type the action resolves with. Rejections are listed under errors instead."
 			}
 		],
 		"errors": [
 			{
 				"name": "RunCancelled",
 				"type": "thrown",
-				"description": "Maps queued cancellation to the provider cancellation contract and preserves genuine provider failures."
+				"description": "Thrown in place of any error caught from queue.run, resourceWork or action when turn.signal is aborted by the time the catch block runs; any other caught error is rethrown unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "managedAgentTurn",
@@ -55,35 +57,37 @@
 						"name": "managedAgentTurn.turn",
 						"type": "AgentTurn",
 						"required": true,
-						"description": "Requested provider turn with model, access, status callback and cancellation signal."
+						"description": "Provider turn whose signal is passed as the signal option to queue.run or resourceWork and is checked for abort in the catch block, and whose onStatus callback receives 'Waiting for resources: ' plus the wait reason while admission waits for resources. No other field of the turn is read here."
 					},
 					{
 						"name": "managedAgentTurn.action",
 						"type": "(context: ResourceContext) => Promise<T>",
 						"required": true,
-						"description": "Asynchronous work executed only after admission; receives the bounded resource context."
+						"description": "Asynchronous work this function never calls directly: it is passed to queue.run or resourceWork, which call it with a ResourceContext. This function returns its resolved value unchanged, and a rejection reaches the catch block, where an aborted turn replaces it with RunCancelled."
 					},
 					{
 						"name": "managedAgentTurn.queue",
 						"type": "ResourceQueueService",
 						"required": false,
-						"description": "Shared queue used to track child PID and process start identity under this lease."
+						"default": "undefined",
+						"description": "Shared ResourceQueueService whose run method is called with the coding request (priority 'coding', memoryMiB 2048, label 'Desktop coding task') plus cpus: 1 in place of resourceWork. When it is omitted (default undefined), resourceWork is called instead with the same request without cpus and with process.env as the third argument."
 					}
 				],
 				"outputs": [
 					{
 						"name": "managedAgentTurn",
 						"type": "Promise<T>",
-						"description": "Result of the admitted provider operation; queued cancellation launches no provider."
+						"description": "Resolves with the value that queue.run or resourceWork resolves with, returned unchanged; it is typed T, the same type the action resolves with. Rejections are listed under errors instead."
 					}
 				],
 				"errors": [
 					{
 						"name": "RunCancelled",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown in place of any error caught from queue.run, resourceWork or action when turn.signal is aborted by the time the catch block runs; any other caught error is rethrown unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
