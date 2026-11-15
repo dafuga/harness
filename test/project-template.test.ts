@@ -5,6 +5,7 @@ import { projectFiles } from '../src/templates/projects-sessions/project';
 import { measureWorkload } from './support/measureWorkload';
 import { assertFoundationLint } from './support/project-template/foundations';
 import { assertAtomCompiler } from './support/project-template/atoms';
+import { assertHarnessCliGuidance } from './support/harnessCliGuidance';
 
 test(
 	'generated element atoms preserve native compilation and emitted runtime source',
@@ -160,6 +161,7 @@ function expectResourceGuidance(files: ReturnType<typeof projectFiles>): void {
 
 function expectContractAndRenameGuidance(files: Parameters<typeof fileContents>[0]): void {
 	expectRenameGuidance(files);
+	assertHarnessCliGuidance(files);
 	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md'])
 		for (const command of ['map', 'search', 'show'])
 			expect(fileContents(files, path)).toContain(`harness contracts ${command}`);
