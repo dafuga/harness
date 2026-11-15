@@ -17,26 +17,38 @@
 			{
 				"name": "agentRules.projectType",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project type text inserted verbatim into the AGENTS.md opening sentence 'This is a Harness <projectType>.', which is the only place the project type appears in the output. The function neither validates nor trims it, so the value must read as a noun phrase in that sentence.",
+				"examples": ["project", "repository"]
 			},
 			{
 				"name": "skillRules.projectType",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project type text inserted verbatim into the skill's opening sentence after 'in this Harness', which is the only place the project type appears in the output. The function neither validates nor trims it, so the value must read as a noun phrase in that position.",
+				"examples": ["project", "repository"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "agentRules",
-				"type": "string"
+				"type": "string",
+				"description": "The AGENTS.md Markdown string returned by agentRules, covering the Harness workflow, machine resources, clean-code review, regression loops, naming, screenshot evidence and code rules, which agents read before changing code. The function applies no truncation or length limit of its own, although some of its rule text is supplied by imported helper functions.",
+				"examples": [
+					"# AGENTS.md\n\nThis is a Harness project. Treat Harness as the operating contract for every code change in this project.\n\n## Required Harness Workflow\n\n- Read this file and the `.codex/skills/harness/SKILL.md` skill before changing code.\n- Use Harness generators for supported code shapes instead of hand-rolling new structure.\n- Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.\n- For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.\n- Add or update a feature spec before implementation.\n- Keep files small, focused, and aligned with `harness.audit.json` limits.\n- Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`."
+				]
 			},
 			{
 				"name": "skillRules",
 				"type": "string",
-				"description": "Project skill with mandatory selected-commit static measurements, representative runtime observations for changed executable units, and explicit measurement blockers."
+				"description": "The Harness Project Discipline skill Markdown string returned by skillRules, including measurement evidence rules that require source bytes, source lines, complexity and dependency counts for each added or directly changed unit, representative runtime timing and memory observations for changed executable units, and explicit blockers when a measurement cannot be collected. It matters whenever an agent plans, implements, reviews or verifies code in the project, and the function applies no truncation or length limit of its own.",
+				"examples": [
+					"# Harness Project Discipline\n\nUse this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness project.\n\n## Operating Rules\n\n1. Treat `harness info`, Harness generators, and `harness audit` as mandatory project controls.\n2. Run `harness info <topic>` or `harness info scaffolds --json` before creating unfamiliar code shapes.\n3. For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.\n4. Prefer `harness generate <kind> <name>` for supported scaffolds, then adapt the generated file within Harness limits.\n5. Add or update the feature spec first so the intended behavior is explicit before implementation.\n6. Keep generated and hand-edited files inside the configured Harness rule limits.\n7. Use `harness info clean-code` for optional Jev review; preview coverage before enabling it, use a project-owned credential, and assess advisory results before gating.\n8. Verify with `bun run check` before handing work back."
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "agentRules",
@@ -44,17 +56,23 @@
 					{
 						"name": "agentRules.projectType",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project type text inserted verbatim into the AGENTS.md opening sentence 'This is a Harness <projectType>.', which is the only place the project type appears in the output. The function neither validates nor trims it, so the value must read as a noun phrase in that sentence.",
+						"examples": ["project", "repository"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "agentRules",
-						"type": "string"
+						"type": "string",
+						"description": "The AGENTS.md Markdown string returned by agentRules, covering the Harness workflow, machine resources, clean-code review, regression loops, naming, screenshot evidence and code rules, which agents read before changing code. The function applies no truncation or length limit of its own, although some of its rule text is supplied by imported helper functions.",
+						"examples": [
+							"# AGENTS.md\n\nThis is a Harness project. Treat Harness as the operating contract for every code change in this project.\n\n## Required Harness Workflow\n\n- Read this file and the `.codex/skills/harness/SKILL.md` skill before changing code.\n- Use Harness generators for supported code shapes instead of hand-rolling new structure.\n- Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.\n- For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.\n- Add or update a feature spec before implementation.\n- Keep files small, focused, and aligned with `harness.audit.json` limits.\n- Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "skillRules",
@@ -62,18 +80,23 @@
 					{
 						"name": "skillRules.projectType",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project type text inserted verbatim into the skill's opening sentence after 'in this Harness', which is the only place the project type appears in the output. The function neither validates nor trims it, so the value must read as a noun phrase in that position.",
+						"examples": ["project", "repository"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "skillRules",
 						"type": "string",
-						"description": "Project skill with mandatory selected-commit static measurements, representative runtime observations for changed executable units, and explicit measurement blockers."
+						"description": "The Harness Project Discipline skill Markdown string returned by skillRules, including measurement evidence rules that require source bytes, source lines, complexity and dependency counts for each added or directly changed unit, representative runtime timing and memory observations for changed executable units, and explicit blockers when a measurement cannot be collected. It matters whenever an agent plans, implements, reviews or verifies code in the project, and the function applies no truncation or length limit of its own.",
+						"examples": [
+							"# Harness Project Discipline\n\nUse this skill whenever you are planning, implementing, reviewing, or verifying code in this Harness project.\n\n## Operating Rules\n\n1. Treat `harness info`, Harness generators, and `harness audit` as mandatory project controls.\n2. Run `harness info <topic>` or `harness info scaffolds --json` before creating unfamiliar code shapes.\n3. For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.\n4. Prefer `harness generate <kind> <name>` for supported scaffolds, then adapt the generated file within Harness limits.\n5. Add or update the feature spec first so the intended behavior is explicit before implementation.\n6. Keep generated and hand-edited files inside the configured Harness rule limits.\n7. Use `harness info clean-code` for optional Jev review; preview coverage before enabling it, use a project-owned credential, and assess advisory results before gating.\n8. Verify with `bun run check` before handing work back."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
