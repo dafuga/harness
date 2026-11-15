@@ -1,3 +1,6 @@
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { expect } from 'vitest';
 import { assertColdEntries } from '../support/coldEntries';
 import { measureWorkload } from '../support/measureWorkload';
 import { defaultUnitsConfig } from '../../src/core/unitsConfig';
@@ -33,7 +36,6 @@ export async function assertIdentityEntries(): Promise<void> {
 		'src/utils/unitIdentity.ts',
 		'src/utils/accounts-access/unitIdentity.ts',
 		'src/utils/classify-path/unitIdentity.ts',
-		'src/utils/accounts-access/classify-path/unitIdentity.ts',
 		'src/utils/development-tooling/classify-path/unitIdentity.ts'
 	];
 	assertColdEntries(
@@ -43,4 +45,10 @@ export async function assertIdentityEntries(): Promise<void> {
 		})),
 		{ id: 'desktop.service.billing', kind: 'service', name: 'billing' }
 	);
+	// The classify-path forwards removed by this change must not return.
+	for (const removed of [
+		'src/utils/accounts-access/classify-path/classifyPath.types.ts',
+		'src/utils/accounts-access/classify-path/unitIdentity.ts'
+	])
+		expect(existsSync(resolve(import.meta.dirname, '../..', removed)), removed).toBe(false);
 }
