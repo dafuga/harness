@@ -11,11 +11,8 @@
 		"visibility": "internal"
 	},
 	"owns": {
-		"source": [
-			"src/configs/desktopPatchConfig.ts",
-			"src/configs/development-tooling/desktopPatchConfig.ts"
-		],
-		"symbols": ["desktopPatchConfig", "desktopPatchConfig"]
+		"source": ["src/configs/development-tooling/desktopPatchConfig.ts"],
+		"symbols": ["desktopPatchConfig"]
 	},
 	"contract": {
 		"origin": "derived",
