@@ -35,48 +35,117 @@
 				"name": "ContractTable.group",
 				"type": "ContractGroup",
 				"required": true,
-				"description": "Named parameter, return or component fields with types and authored or illustrative examples."
+				"description": "The field group to draw, with its title, fields and none text. Each row shows the field's name (omitted when hideNames is set), its type and, when it has one, only its first example, clipped to one line; the none text replaces the table when there are no fields unless keepEmpty is set, and input groups (id 'inputs' or inputMetadata true) also show Requirement and Default columns.",
+				"examples": [
+					{
+						"id": "inputs",
+						"title": "Parameters",
+						"none": "No parameters.",
+						"keepEmpty": true,
+						"fields": [
+							{
+								"name": "type",
+								"type": "string",
+								"required": true,
+								"source": "declared",
+								"examples": [
+									{
+										"form": "literal",
+										"value": "Promise<ContractGroup[]>",
+										"text": "\"Promise<ContractGroup[]>\""
+									}
+								]
+							}
+						]
+					},
+					{
+						"id": "errors",
+						"title": "Throws",
+						"none": "No errors declared.",
+						"hideNames": true,
+						"fields": [
+							{
+								"name": "Type error",
+								"type": "thrown",
+								"description": "defaultText's JSON.stringify throws a TypeError when a literal default holds BigInt or circular data.",
+								"source": "missing",
+								"examples": []
+							}
+						]
+					},
+					{
+						"id": "type-0",
+						"title": "ContractExample",
+						"none": "No fields declared.",
+						"keepEmpty": true,
+						"inputMetadata": true,
+						"fields": [
+							{
+								"name": "form",
+								"type": "'literal' | 'markup' | 'structure'",
+								"required": true,
+								"source": "missing",
+								"examples": []
+							},
+							{
+								"name": "value",
+								"type": "unknown",
+								"required": true,
+								"source": "missing",
+								"examples": []
+							},
+							{
+								"name": "text",
+								"type": "string",
+								"required": true,
+								"source": "missing",
+								"examples": []
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "ContractTable.plain",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional compact labels beneath a callable heading."
+				"description": "When true, the group title is a plain label rather than a heading, for a table placed under a section heading of its own; the label is shown only when the group has fields or keepEmpty is set. Defaults to false.",
+				"examples": [false, true]
 			},
 			{
 				"name": "ContractTable.onexample",
 				"type": "(field: ContractField, opener: HTMLButtonElement) => void",
 				"required": true,
-				"description": "Open the existing example modal and retain its focus return target."
+				"description": "Called with the field and its info button when that field's example button is clicked, so focus can return to the button; an error the callback throws is not caught and propagates out of the click handler."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ContractTable",
 				"type": "markup",
-				"description": "A typed table with input Requirement and Default columns. Provenance labels stay readable while long example data is clipped; tablet and mobile stack cells and retain keyboard-accessible detail controls. Catalog states: default, plain (compact labels under a callable heading), empty, empty-kept (empty group that keeps its heading), plain-empty, hide-names (Returns without field names), illustrative, missing (example not recorded), long, multiple, focused and hovered (the example control)."
+				"description": "The group as markup: a heading (or, when plain is set, a label shown only if the group has fields or keepEmpty is set) above either its none text or a table of Name (omitted when hideNames is set), Type, Requirement and Default (input groups only) and Example columns. Each Example cell shows the field's first example, when it has one, clipped to one line, labelled Illustrative or Example not recorded when its source is not declared; each row has an info button labelled 'View example for' the field's name that calls onexample."
 			}
 		],
 		"errors": [
 			{
 				"name": "onexample callback error",
 				"type": "thrown",
-				"description": "An error from the example callback propagates when a field's example button is activated."
+				"description": "An error thrown by onexample propagates out of the info button's click handler, since the table does not catch it."
 			},
 			{
 				"name": "TypeError",
 				"type": "thrown",
-				"description": "A literal default contains BigInt or circular data that JSON cannot serialize."
+				"description": "defaultText's JSON.stringify throws a TypeError when a literal default holds BigInt or circular data."
 			},
 			{
 				"name": "RangeError",
 				"type": "thrown",
-				"description": "Deeply nested literal defaults exceed the JSON serializer stack."
+				"description": "defaultText's JSON.stringify throws a RangeError when a literal default is nested too deeply for the serializer's stack."
 			},
 			{
 				"name": "Getter, proxy or conversion error",
-				"type": "propagated",
+				"type": "thrown",
 				"description": "Errors from supplied field/default/example getters, proxy traps or JSON conversion methods propagate."
 			}
 		],
