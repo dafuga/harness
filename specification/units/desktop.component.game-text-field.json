@@ -22,44 +22,49 @@
 				"name": "GameTextField.value",
 				"type": "string",
 				"required": true,
-				"description": "Committed display value used when the field is not focused."
+				"description": "The committed value the game holds; the field displays it whenever no input event has occurred since mount or the last blur. While typed text is held, which lasts until the field blurs, changes to value are not displayed.",
+				"examples": ["-2.5", "Dungeon door", ""]
 			},
 			{
 				"name": "GameTextField.change",
 				"type": "(text: string) => void",
 				"required": true,
-				"description": "Receives each raw text edit immediately, before blur or normalization."
+				"description": "Called with the current text of the hx-input element on every input event, passed raw with no normalization. The component never calls it on blur or when value changes, and it does not catch exceptions raised by the callback."
 			},
 			{
 				"name": "GameTextField.label",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional explicit accessible label; surrounding label content is otherwise used."
+				"description": "Text passed as aria-label to the hx-input element when provided, unchanged and unvalidated. The component sets no default, so it is undefined when omitted.",
+				"examples": ["Door width", "Room name"]
 			},
 			{
 				"name": "GameTextField.placeholder",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Hint shown when the input has no text."
+				"description": "Hint text passed unchanged as the placeholder of the hx-input element. It defaults to an empty string, so the element gets an empty placeholder when omitted.",
+				"examples": ["e.g. 2.5", "Enter a name"]
 			},
 			{
 				"name": "GameTextField.readonly",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Prevent editing for immutable historical authoring views."
+				"description": "Forwarded unchanged as the readonly flag of the hx-input element, and defaults to false when omitted. The component does not check it in its input handler, which calls change on every input event.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameTextField",
 				"type": "markup",
-				"description": "An accessible themed text input that preserves partial typed values until blur and reports edits immediately."
+				"description": "The hx-input element the component renders, receiving value, placeholder, readonly and label. It shows the latest typed text until the field blurs and the value prop otherwise."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
