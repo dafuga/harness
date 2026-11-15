@@ -5,7 +5,7 @@ import { translationCatalog } from './translationCatalog';
 import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailService.types';
 import { BudgetLedgerRepository } from '../../../repositories/BudgetLedgerRepository';
 import { BudgetService } from '../../budget-service/BudgetService';
-import { CommitTreeAdapter } from '../../../adapters/CommitTreeAdapter';
+import { CommitTreeAdapter } from '../../../adapters/git-source-history/CommitTreeAdapter';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import type { VerificationRecord } from '../../../core/verificationTypes';
 import { ScenarioRepository } from '../../../repositories/verification-evidence/ScenarioRepository';

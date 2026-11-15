@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { ClaudeGatewayAdapter } from '../../src/adapters/ClaudeGatewayAdapter';
+import { ClaudeGatewayAdapter } from '../../src/cli/program/codex-gateway-service/ClaudeGatewayAdapter';
 import { CodexSessionRepository } from '../../src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository';
 test('incomplete continuation cannot unblock pending tool execution', async () => {
 	const repository = new CodexSessionRepository();

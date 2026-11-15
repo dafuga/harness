@@ -8,15 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts",
-			"src/adapters/DesktopIntegrityAdapter.ts"
-		],
-		"symbols": [
-			"DesktopIntegrityAdapter",
-			"DesktopIntegrityAdapter.update",
-			"DesktopIntegrityAdapter"
-		]
+		"source": ["scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts"],
+		"symbols": ["DesktopIntegrityAdapter", "DesktopIntegrityAdapter.update"]
 	},
 	"contract": {
 		"origin": "derived",

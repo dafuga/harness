@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { GatewayContentSerializer } from '../../src/serializers/GatewayContentSerializer';
-import { ClaudeGatewayAdapter } from '../../src/adapters/ClaudeGatewayAdapter';
+import { ClaudeGatewayAdapter } from '../../src/cli/program/codex-gateway-service/ClaudeGatewayAdapter';
 import { CodexSessionRepository } from '../../src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository';
 
 const png =

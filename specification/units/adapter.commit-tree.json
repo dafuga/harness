@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/adapters/CommitTreeAdapter.ts",
-			"src/adapters/git-source-history/CommitTreeAdapter.ts"
-		],
+		"source": ["src/adapters/git-source-history/CommitTreeAdapter.ts"],
 		"symbols": [
-			"CommitTreeAdapter",
 			"CommitTreeAdapter",
 			"CommitTreeAdapter.open",
 			"CommitTreeAdapter.list",

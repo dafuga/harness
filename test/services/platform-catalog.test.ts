@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../support/measureWorkload';
-import { CommitTreeAdapter } from '../../src/adapters/CommitTreeAdapter';
+import { CommitTreeAdapter } from '../../src/adapters/git-source-history/CommitTreeAdapter';
 import { GitAdapter } from '../../src/adapters/git-source-history/GitAdapter';
 import type { SourceTree } from '../../src/core/development-tooling/sourceTypes';
 import { readPlatformCatalog } from '../../src/services/explorer-ui/revision-detail-service/platformCatalog';

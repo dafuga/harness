@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { DesktopIntegrityAdapter } from '../../src/adapters/DesktopIntegrityAdapter';
+import { DesktopIntegrityAdapter } from '../../scripts/prepare-desktop-experiment/DesktopIntegrityAdapter';
 import { mkdir, mkdtemp, writeFile, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';

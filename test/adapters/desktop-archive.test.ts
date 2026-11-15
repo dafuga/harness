@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { DesktopArchiveAdapter } from '../../src/adapters/DesktopArchiveAdapter';
+import { DesktopArchiveAdapter } from '../../scripts/prepare-desktop-experiment/DesktopArchiveAdapter';
 import { mkdtemp, mkdir, writeFile, symlink, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';

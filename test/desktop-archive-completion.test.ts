@@ -8,7 +8,7 @@ import { Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
 import { setImmediate } from 'node:timers';
 import { setImmediate as nextTurn } from 'node:timers/promises';
-import { DesktopArchiveAdapter } from '../src/adapters/DesktopArchiveAdapter';
+import { DesktopArchiveAdapter } from '../scripts/prepare-desktop-experiment/DesktopArchiveAdapter';
 
 vi.mock('@electron/asar', async (original) => ({
 	...(await original<typeof asar>()),

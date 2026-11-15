@@ -8,15 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts",
-			"src/adapters/DesktopArchiveAdapter.ts"
-		],
+		"source": ["scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts"],
 		"symbols": [
 			"DesktopArchiveAdapter",
 			"DesktopArchiveAdapter.read",
-			"DesktopArchiveAdapter.patch",
-			"DesktopArchiveAdapter"
+			"DesktopArchiveAdapter.patch"
 		]
 	},
 	"contract": {
