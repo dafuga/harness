@@ -37,21 +37,153 @@
 				"name": "DeploymentDetails.deployment",
 				"type": "DeploymentActivity",
 				"required": true,
-				"description": "Deployment job or route whose source, destination and recorded progress are displayed. Its phase is one of queued, preparing, checking, building, uploading, verifying, complete or failed; a complete deployment with a receipt shows the verified receipt, and a failed one shows its error text."
+				"description": "The deployment activity to show: its sourceEnvironment (or branch when that is null) and environment form the route, its phase, detail, steps, step and error drive the progress, and its projectName, branch, commit and timestamps form the identity rows. A verified receipt shows only when phase is complete and receipt is set, error text shows whenever error is a non-empty string, and the object is read as given with no validation.",
+				"examples": [
+					{
+						"id": "c41d9a72-30be-4e15-b6f8-93a0d52e7c61",
+						"phase": "uploading",
+						"detail": "Deploying to Cloudflare",
+						"sourceEnvironment": "dev",
+						"projectId": "local-7d2a91c4e0b35f8a6c1d94e27b0f5a38d6e19c2b4f7a0d83e5c1b92f6a4d70e8",
+						"projectName": "field-notes",
+						"environment": "stage",
+						"commit": "a3f81c0d6e2b957f14c8e0a9d37b52f6c1e84d09",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": "uploading",
+						"error": null,
+						"receipt": null,
+						"createdAt": "2026-11-15T09:12:40.102Z",
+						"startedAt": "2026-11-15T09:12:41.377Z",
+						"updatedAt": "2026-11-15T09:13:55.910Z",
+						"finishedAt": null
+					},
+					{
+						"id": "e83a2f10-6c57-4b9d-8d1e-0f4a7c25b913",
+						"phase": "complete",
+						"detail": "Deployed to prod",
+						"sourceEnvironment": "preprod",
+						"projectId": "local-7d2a91c4e0b35f8a6c1d94e27b0f5a38d6e19c2b4f7a0d83e5c1b92f6a4d70e8",
+						"projectName": "field-notes",
+						"environment": "prod",
+						"commit": "0b9e4d27f1a6c8359d0e72bc4a8f15e63c7d90b1",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": "verifying",
+						"error": null,
+						"receipt": {
+							"environment": "prod",
+							"commit": "0b9e4d27f1a6c8359d0e72bc4a8f15e63c7d90b1",
+							"branch": "main",
+							"updatedAt": "2026-11-15T10:03:27.519Z",
+							"adapter": "cloudflare",
+							"deploymentId": "3f9c1d2a",
+							"configuration": "3e9a0f72b4d15c8e60a7f3d92c1e84b59f07d6ea1b3c52f8d40e9a677c2b1f0e",
+							"url": "https://3f9c1d2a.field-notes.pages.dev"
+						},
+						"createdAt": "2026-11-15T10:01:12.004Z",
+						"startedAt": "2026-11-15T10:01:13.260Z",
+						"updatedAt": "2026-11-15T10:03:27.534Z",
+						"finishedAt": "2026-11-15T10:03:27.534Z"
+					},
+					{
+						"id": "2d7b58e0-9a13-4f6c-a0e4-6b81c3d5f297",
+						"phase": "failed",
+						"detail": "Deployment failed",
+						"sourceEnvironment": null,
+						"projectId": "local-7d2a91c4e0b35f8a6c1d94e27b0f5a38d6e19c2b4f7a0d83e5c1b92f6a4d70e8",
+						"projectName": "field-notes",
+						"environment": "dev",
+						"commit": "58d2e0c7a91b64f3e7c02d8a1f56b9e40d3a7c28",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": "building",
+						"error": "Build source failed. Check the project configuration and retry.",
+						"receipt": null,
+						"createdAt": "2026-11-15T08:41:03.611Z",
+						"startedAt": "2026-11-15T08:41:04.870Z",
+						"updatedAt": "2026-11-15T08:42:31.205Z",
+						"finishedAt": "2026-11-15T08:42:31.205Z"
+					}
+				]
 			},
 			{
 				"name": "DeploymentDetails.showIdentity",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Whether to include the project, branch, commit and start time alongside progress. Defaults to true; the no-identity catalog state hides these rows and the environment heading."
+				"description": "Whether the environment heading and the identity rows (Project, Branch, Commit, Started or Queued, and Finished when set) appear above the progress. When false, only the route, progress and any verified receipt render; the prop defaults to true when it is undefined.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeploymentDetails",
 				"type": "markup",
-				"description": "Presents deployment identity, source-to-destination route, current status and shared progress steps. Catalog states: default (in progress), failed (the build error notice), succeeded (the verified receipt) and no-identity (showIdentity false)."
+				"description": "Markup for one deployment: a deployment-details block with the route and progress, which always render, plus the environment heading and identity rows only when showIdentity is true. A Verified receipt section with its Deployment, Address and Verified rows follows the progress only when phase is complete and receipt is set."
 			}
 		],
 		"errors": [],
