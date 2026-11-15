@@ -5,7 +5,7 @@ description: Present implementation work and requested full test suites in the l
 
 # Project work presentation
 
-Use the Project Reports workspace at `/Users/danielfugere/projects/harness/packages/reports`. Its CLI is `harness report` or `bun /Users/danielfugere/projects/harness/src/index.ts report`. Reports and copied evidence live under `~/.codex/project-reports`, outside application worktrees.
+Use the `packages/reports` workspace in the intended primary Harness checkout. Its CLI is `harness report`, available from any directory. Reports and copied evidence live under `~/.codex/project-reports`, outside application worktrees.
 
 Begin a new **feature** report when implementation starts, or a **suite** report when Daniel requests a full test run. Record the project path, task, actual environment, and tested revision when known. A feature report covers affected flows, before/after evidence, acceptance criteria, regression results, and relevant downstream screens. Do not expand it into an unrelated full-site run. A full-suite report inventories workflows and checks desktop at 1440px, tablet at 920px, and mobile at 390px, with native device evidence when applicable. Mark untested, skipped, failed, and blocked cases explicitly.
 

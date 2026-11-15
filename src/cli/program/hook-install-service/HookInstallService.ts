@@ -60,7 +60,7 @@ export class HookInstallService {
 	}
 
 	/**
-	 * `command` is how this worktree starts Harness, for example `harness` or `bun run dev --`.
+	 * `command` is how this worktree starts Harness, using the installed `harness` command.
 	 * It is recorded for each stage in a file of that stage, so only this worktree, and only
 	 * the Harness that offers the stage, is ever started for it.
 	 */

@@ -102,7 +102,7 @@ const hooksGuide: Guide = {
 		'Do not install it in a checkout you do not own.'
 	],
 	exampleCommands: [
-		'harness hooks install --command "bun run dev --"',
+		'harness hooks install --command harness',
 		'harness hooks status',
 		'harness hooks uninstall'
 	]
