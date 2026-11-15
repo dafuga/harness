@@ -24,50 +24,210 @@
 				"name": "LevelValidator.layout.input",
 				"type": "unknown",
 				"required": true,
-				"description": "Validate finite floor bounds, objects and clear player spawn."
+				"description": "An unknown value is accepted as LevelLayout data only when floor width and depth are finite values from 1 to 40, spawn and object centers are finite and at least 0.25 units inside each floor edge, and objects is an array of at most 80 entries. Each object needs a unique 1-to-80-character lowercase slug id, an allowed kind, a nonblank label of at most 4,000 characters, and finite width, depth and height from 1 to 40 with its footprint inside the floor; the spawn must clear every wall under the validator’s 0.2-unit overlap check.",
+				"examples": [
+					{
+						"width": 12,
+						"depth": 10,
+						"spawn": {
+							"x": 1,
+							"z": 1
+						},
+						"objects": [
+							{
+								"id": "goal-east",
+								"kind": "goal",
+								"label": "Exit",
+								"x": 10,
+								"z": 8,
+								"width": 1,
+								"depth": 1,
+								"height": 1
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "LevelValidator.planning.input",
 				"type": "unknown",
 				"required": true,
-				"description": "Validate saved brief, bounded proposal and approval identifiers."
+				"description": "An unknown value is a LevelPlanning record whose concept and description are strings up to 4,000 characters; optional approved and built values, when supplied, must each be 64 lowercase hexadecimal characters. A supplied proposal must have a 64-character lowercase hexadecimal id, concept, description and summary strings up to 4,000 characters, dimension 2d or 3d, provider codex or claude, a nonempty model string up to 200 characters, and a layout accepted by layout().",
+				"examples": [
+					{
+						"concept": "A short platforming course",
+						"description": "Cross the yard and reach the goal.",
+						"proposal": {
+							"id": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+							"concept": "A short platforming course",
+							"description": "Cross the yard and reach the goal.",
+							"dimension": "3d",
+							"provider": "codex",
+							"model": "gpt-6-luna",
+							"summary": "A compact route across a training yard.",
+							"layout": {
+								"width": 12,
+								"depth": 10,
+								"spawn": {
+									"x": 1,
+									"z": 1
+								},
+								"objects": [
+									{
+										"id": "goal-east",
+										"kind": "goal",
+										"label": "Exit",
+										"x": 10,
+										"z": 8,
+										"width": 1,
+										"depth": 1,
+										"height": 1
+									}
+								]
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "LevelValidator.isCurrent.view",
 				"type": "GameView",
 				"required": true,
-				"description": "Compare generated proposal inputs with the current brief and dimension."
+				"description": "The GameView’s optional planning proposal is compared with the planning brief and the view dimension. It is current only when a proposal exists and its concept, description and dimension equal planning.concept, planning.description and view.dimension.",
+				"examples": [
+					{
+						"id": "view-training-yard",
+						"title": "Training Yard",
+						"dimension": "3d",
+						"style": "blockout",
+						"checkpoints": [],
+						"planning": {
+							"concept": "A short platforming course",
+							"description": "Cross the yard and reach the goal.",
+							"proposal": {
+								"id": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+								"concept": "A short platforming course",
+								"description": "Cross the yard and reach the goal.",
+								"dimension": "3d",
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"summary": "A compact route across a training yard.",
+								"layout": {
+									"width": 12,
+									"depth": 10,
+									"spawn": {
+										"x": 1,
+										"z": 1
+									},
+									"objects": [
+										{
+											"id": "goal-east",
+											"kind": "goal",
+											"label": "Exit",
+											"x": 10,
+											"z": 8,
+											"width": 1,
+											"depth": 1,
+											"height": 1
+										}
+									]
+								}
+							}
+						}
+					},
+					{
+						"id": "view-training-yard",
+						"title": "Training Yard",
+						"dimension": "3d",
+						"style": "blockout",
+						"checkpoints": []
+					}
+				]
 			},
 			{
 				"name": "LevelValidator.isReady.view",
 				"type": "GameView",
 				"required": true,
-				"description": "Allow legacy views or an explicitly approved and built current layout."
+				"description": "The input is a GameView with required id, title, dimension, style and checkpoints fields, where dimension is 2d or 3d and planning and world are optional. Readiness is true without planning; otherwise the proposal must be current, approved and built must equal its id, and JSON.stringify(view.world) must equal JSON.stringify(proposal.layout).",
+				"examples": [
+					{
+						"id": "view-training-yard",
+						"title": "Training Yard",
+						"dimension": "3d",
+						"style": "blockout",
+						"checkpoints": []
+					},
+					{
+						"id": "view-training-yard",
+						"title": "Training Yard",
+						"dimension": "3d",
+						"style": "blockout",
+						"checkpoints": [],
+						"planning": {
+							"concept": "A short platforming course",
+							"description": "Cross the yard and reach the goal.",
+							"proposal": {
+								"id": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+								"concept": "A short platforming course",
+								"description": "Cross the yard and reach the goal.",
+								"dimension": "3d",
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"summary": "A compact route across a training yard.",
+								"layout": {
+									"width": 12,
+									"depth": 10,
+									"spawn": {
+										"x": 1,
+										"z": 1
+									},
+									"objects": [
+										{
+											"id": "goal-east",
+											"kind": "goal",
+											"label": "Exit",
+											"x": 10,
+											"z": 8,
+											"width": 1,
+											"depth": 1,
+											"height": 1
+										}
+									]
+								}
+							}
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "LevelValidator.layout",
 				"type": "input is LevelLayout",
-				"description": "Validate finite floor bounds, objects and clear player spawn."
+				"description": "layout(input) returns a boolean type guard and narrows the input to LevelLayout when true. It returns false when the floor bounds, spawn, object count, object identities or extents, floor fit, or wall clearance fail validation.",
+				"examples": [true, false]
 			},
 			{
 				"name": "LevelValidator.planning",
 				"type": "input is LevelPlanning",
-				"description": "Validate saved brief, bounded proposal and approval identifiers."
+				"description": "planning(input) returns a boolean type guard and narrows the input to LevelPlanning when true. It returns false for an invalid brief, optional hash, proposal field, or proposal layout.",
+				"examples": [true, false]
 			},
 			{
 				"name": "LevelValidator.isCurrent",
 				"type": "boolean",
-				"description": "Compare generated proposal inputs with the current brief and dimension."
+				"description": "isCurrent(view) returns true only when planning and a proposal exist and the proposal’s concept, description and dimension equal the planning brief and view dimension. It does not require approval, built state or world-layout equality.",
+				"examples": [true, false]
 			},
 			{
 				"name": "LevelValidator.isReady",
 				"type": "boolean",
-				"description": "Allow legacy views or an explicitly approved and built current layout."
+				"description": "isReady(view) returns true when planning is absent, or when the proposal is current, approved and built both equal the proposal id, and JSON.stringify(view.world) equals JSON.stringify(proposal.layout). JSON serialization comparison is order-sensitive, so different key or array ordering can make equal-shaped layouts return false.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "LevelValidator.layout",
@@ -76,18 +236,41 @@
 						"name": "LevelValidator.layout.input",
 						"type": "unknown",
 						"required": true,
-						"description": "Validate finite floor bounds, objects and clear player spawn."
+						"description": "An unknown value is accepted as LevelLayout data only when floor width and depth are finite values from 1 to 40, spawn and object centers are finite and at least 0.25 units inside each floor edge, and objects is an array of at most 80 entries. Each object needs a unique 1-to-80-character lowercase slug id, an allowed kind, a nonblank label of at most 4,000 characters, and finite width, depth and height from 1 to 40 with its footprint inside the floor; the spawn must clear every wall under the validator’s 0.2-unit overlap check.",
+						"examples": [
+							{
+								"width": 12,
+								"depth": 10,
+								"spawn": {
+									"x": 1,
+									"z": 1
+								},
+								"objects": [
+									{
+										"id": "goal-east",
+										"kind": "goal",
+										"label": "Exit",
+										"x": 10,
+										"z": 8,
+										"width": 1,
+										"depth": 1,
+										"height": 1
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LevelValidator.layout",
 						"type": "input is LevelLayout",
-						"description": "Validate finite floor bounds, objects and clear player spawn."
+						"description": "layout(input) returns a boolean type guard and narrows the input to LevelLayout when true. It returns false when the floor bounds, spawn, object count, object identities or extents, floor fit, or wall clearance fail validation.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LevelValidator.planning",
@@ -96,18 +279,54 @@
 						"name": "LevelValidator.planning.input",
 						"type": "unknown",
 						"required": true,
-						"description": "Validate saved brief, bounded proposal and approval identifiers."
+						"description": "An unknown value is a LevelPlanning record whose concept and description are strings up to 4,000 characters; optional approved and built values, when supplied, must each be 64 lowercase hexadecimal characters. A supplied proposal must have a 64-character lowercase hexadecimal id, concept, description and summary strings up to 4,000 characters, dimension 2d or 3d, provider codex or claude, a nonempty model string up to 200 characters, and a layout accepted by layout().",
+						"examples": [
+							{
+								"concept": "A short platforming course",
+								"description": "Cross the yard and reach the goal.",
+								"proposal": {
+									"id": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+									"concept": "A short platforming course",
+									"description": "Cross the yard and reach the goal.",
+									"dimension": "3d",
+									"provider": "codex",
+									"model": "gpt-6-luna",
+									"summary": "A compact route across a training yard.",
+									"layout": {
+										"width": 12,
+										"depth": 10,
+										"spawn": {
+											"x": 1,
+											"z": 1
+										},
+										"objects": [
+											{
+												"id": "goal-east",
+												"kind": "goal",
+												"label": "Exit",
+												"x": 10,
+												"z": 8,
+												"width": 1,
+												"depth": 1,
+												"height": 1
+											}
+										]
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LevelValidator.planning",
 						"type": "input is LevelPlanning",
-						"description": "Validate saved brief, bounded proposal and approval identifiers."
+						"description": "planning(input) returns a boolean type guard and narrows the input to LevelPlanning when true. It returns false for an invalid brief, optional hash, proposal field, or proposal layout.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LevelValidator.isCurrent",
@@ -116,18 +335,68 @@
 						"name": "LevelValidator.isCurrent.view",
 						"type": "GameView",
 						"required": true,
-						"description": "Compare generated proposal inputs with the current brief and dimension."
+						"description": "The GameView’s optional planning proposal is compared with the planning brief and the view dimension. It is current only when a proposal exists and its concept, description and dimension equal planning.concept, planning.description and view.dimension.",
+						"examples": [
+							{
+								"id": "view-training-yard",
+								"title": "Training Yard",
+								"dimension": "3d",
+								"style": "blockout",
+								"checkpoints": [],
+								"planning": {
+									"concept": "A short platforming course",
+									"description": "Cross the yard and reach the goal.",
+									"proposal": {
+										"id": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+										"concept": "A short platforming course",
+										"description": "Cross the yard and reach the goal.",
+										"dimension": "3d",
+										"provider": "codex",
+										"model": "gpt-6-luna",
+										"summary": "A compact route across a training yard.",
+										"layout": {
+											"width": 12,
+											"depth": 10,
+											"spawn": {
+												"x": 1,
+												"z": 1
+											},
+											"objects": [
+												{
+													"id": "goal-east",
+													"kind": "goal",
+													"label": "Exit",
+													"x": 10,
+													"z": 8,
+													"width": 1,
+													"depth": 1,
+													"height": 1
+												}
+											]
+										}
+									}
+								}
+							},
+							{
+								"id": "view-training-yard",
+								"title": "Training Yard",
+								"dimension": "3d",
+								"style": "blockout",
+								"checkpoints": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LevelValidator.isCurrent",
 						"type": "boolean",
-						"description": "Compare generated proposal inputs with the current brief and dimension."
+						"description": "isCurrent(view) returns true only when planning and a proposal exist and the proposal’s concept, description and dimension equal the planning brief and view dimension. It does not require approval, built state or world-layout equality.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LevelValidator.isReady",
@@ -136,18 +405,68 @@
 						"name": "LevelValidator.isReady.view",
 						"type": "GameView",
 						"required": true,
-						"description": "Allow legacy views or an explicitly approved and built current layout."
+						"description": "The input is a GameView with required id, title, dimension, style and checkpoints fields, where dimension is 2d or 3d and planning and world are optional. Readiness is true without planning; otherwise the proposal must be current, approved and built must equal its id, and JSON.stringify(view.world) must equal JSON.stringify(proposal.layout).",
+						"examples": [
+							{
+								"id": "view-training-yard",
+								"title": "Training Yard",
+								"dimension": "3d",
+								"style": "blockout",
+								"checkpoints": []
+							},
+							{
+								"id": "view-training-yard",
+								"title": "Training Yard",
+								"dimension": "3d",
+								"style": "blockout",
+								"checkpoints": [],
+								"planning": {
+									"concept": "A short platforming course",
+									"description": "Cross the yard and reach the goal.",
+									"proposal": {
+										"id": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+										"concept": "A short platforming course",
+										"description": "Cross the yard and reach the goal.",
+										"dimension": "3d",
+										"provider": "codex",
+										"model": "gpt-6-luna",
+										"summary": "A compact route across a training yard.",
+										"layout": {
+											"width": 12,
+											"depth": 10,
+											"spawn": {
+												"x": 1,
+												"z": 1
+											},
+											"objects": [
+												{
+													"id": "goal-east",
+													"kind": "goal",
+													"label": "Exit",
+													"x": 10,
+													"z": 8,
+													"width": 1,
+													"depth": 1,
+													"height": 1
+												}
+											]
+										}
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LevelValidator.isReady",
 						"type": "boolean",
-						"description": "Allow legacy views or an explicitly approved and built current layout."
+						"description": "isReady(view) returns true when planning is absent, or when the proposal is current, approved and built both equal the proposal id, and JSON.stringify(view.world) equals JSON.stringify(proposal.layout). JSON serialization comparison is order-sensitive, so different key or array ordering can make equal-shaped layouts return false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
