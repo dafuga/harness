@@ -22,27 +22,45 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RuntimeServerService.serve.runtime",
 				"type": "UnitRuntime",
-				"required": true
+				"required": true,
+				"description": "The unit runtime passed to runtimeReply for each request handled by this server. This service passes it directly to the request adapter."
 			},
 			{
 				"name": "RuntimeServerService.serve.options",
 				"type": "ServeOptions",
-				"required": true
+				"required": true,
+				"description": "The listening port and optional host supplied to Node's HTTP server. When host is omitted it defaults to 127.0.0.1; the service does not add authentication.",
+				"examples": [
+					{
+						"port": 4310
+					},
+					{
+						"port": 8080,
+						"host": "127.0.0.1"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimeServerService.serve",
-				"type": "Promise<ServedRuntime>"
+				"type": "Promise<ServedRuntime>",
+				"description": "Resolves after the HTTP listener starts with the bound URL and a close() function. The URL uses the selected host and actual bound port; close() terminates active connections before closing the server."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The Node server error is propagated if binding fails while serve is listening."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RuntimeServerService.serve",
@@ -50,22 +68,40 @@
 					{
 						"name": "RuntimeServerService.serve.runtime",
 						"type": "UnitRuntime",
-						"required": true
+						"required": true,
+						"description": "The unit runtime passed to runtimeReply for each request handled by this server. This service passes it directly to the request adapter."
 					},
 					{
 						"name": "RuntimeServerService.serve.options",
 						"type": "ServeOptions",
-						"required": true
+						"required": true,
+						"description": "The listening port and optional host supplied to Node's HTTP server. When host is omitted it defaults to 127.0.0.1; the service does not add authentication.",
+						"examples": [
+							{
+								"port": 4310
+							},
+							{
+								"port": 8080,
+								"host": "127.0.0.1"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RuntimeServerService.serve",
-						"type": "Promise<ServedRuntime>"
+						"type": "Promise<ServedRuntime>",
+						"description": "Resolves after the HTTP listener starts with the bound URL and a close() function. The URL uses the selected host and actual bound port; close() terminates active connections before closing the server."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The Node server error is propagated if binding fails while serve is listening."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
