@@ -2842,13 +2842,13 @@
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
+			"definition": "a8f2b11c13e2390046b897cb32be52bd0f9c954b13be1e96f6eee179f7b7942e",
 			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
 			"review": {
-				"commit": "b29d2f723b940748d5ec7b0f64f0fdabd6156be6",
+				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-				"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
-				"reason": "Retain the reviewed change: entity-scoped verify computes the needed builds; skipped builds are not 'not produced' failures."
+				"definition": "a8f2b11c13e2390046b897cb32be52bd0f9c954b13be1e96f6eee179f7b7942e",
+				"reason": "Select and rerun declared video scenarios with pending frame feedback."
 			},
 			"previousReviews": [
 				{
@@ -2874,6 +2874,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
 					"definition": "c9aa478ccf7e7e02411860996eb13858665fa60f1b48cbc491581a6734c4f1dc",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "b29d2f723b940748d5ec7b0f64f0fdabd6156be6",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "95c001160c34bf95bcf7242ecb31190f2f9624511ad8afe02fc69fb5031e3622",
+					"reason": "Retain the reviewed change: entity-scoped verify computes the needed builds; skipped builds are not 'not produced' failures."
 				}
 			]
 		},
@@ -2881,7 +2887,14 @@
 			"unit": "function.scenario-coverage",
 			"from": "src/services/verification-service/scenarioCoverage.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
-			"definition": "7c6fde05df18fa70a2c12eae9a58acdd175271911693f14df619e73bd8938ffe"
+			"definition": "22d95fdf68fc2c01a4bc7a9848a46ce8c5dfd11d7026ebc6f111b1ae5cce3a63",
+			"relocationDefinition": "7c6fde05df18fa70a2c12eae9a58acdd175271911693f14df619e73bd8938ffe",
+			"review": {
+				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
+				"definition": "22d95fdf68fc2c01a4bc7a9848a46ce8c5dfd11d7026ebc6f111b1ae5cce3a63",
+				"reason": "Judge modular clip graph coverage and active reviewer flags with scenario evidence."
+			}
 		},
 		{
 			"unit": "function.seal-record",
@@ -2899,13 +2912,13 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
+			"definition": "948149be5e55d9bef494242c498b06500ff32bc1fc85c38c17087059dfebac3a",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "ecf3fe78354597ca168b43168d96ff4bc1ce5ab0",
+				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
-				"reason": "Retain the reviewed change: record assembly writes skippedBuilds from the snapshot run."
+				"definition": "948149be5e55d9bef494242c498b06500ff32bc1fc85c38c17087059dfebac3a",
+				"reason": "Retain validated video batch pointers in sealed verification records."
 			},
 			"previousReviews": [
 				{
@@ -2937,6 +2950,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 					"definition": "e14baa2aef4dfe2844469c25187534f635897ea8b60bcba78c5bfdc94c4dee4b",
 					"reason": "Mark newly assembled component identities as source-contract schema 2 for explicit historical verification."
+				},
+				{
+					"commit": "ecf3fe78354597ca168b43168d96ff4bc1ce5ab0",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "d2c41ff73865a9c2c9c3a94e5de16153c26ef52ee57ce2c04ccc3a70e6dd2e7c",
+					"reason": "Retain the reviewed change: record assembly writes skippedBuilds from the snapshot run."
 				}
 			]
 		},
@@ -3807,26 +3826,34 @@
 			"unit": "service.history-status",
 			"from": "src/services/HistoryStatusService.ts",
 			"to": "src/services/verification-evidence/history-status-service/HistoryStatusService.ts",
-			"definition": "d9d32c85757cfe89afd35cd74f3874e274c64965396b94c8220afc13ed6d8b29",
+			"definition": "894267c8068b161eb2fb2e5df4775eca8b85c361d6ffb557d43e85669c5305a4",
 			"relocationDefinition": "87c7256a47a4123f12fe84b1fcbe545919c9f68d9d8bf8af12ce2bb4e5cddb0a",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
 				"path": "src/services/verification-evidence/history-status-service/HistoryStatusService.ts",
-				"definition": "d9d32c85757cfe89afd35cd74f3874e274c64965396b94c8220afc13ed6d8b29",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "894267c8068b161eb2fb2e5df4775eca8b85c361d6ffb557d43e85669c5305a4",
+				"reason": "Resolve selected clip origin proof independently of unrelated parent media."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/services/verification-evidence/history-status-service/HistoryStatusService.ts",
+					"definition": "d9d32c85757cfe89afd35cd74f3874e274c64965396b94c8220afc13ed6d8b29",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "service.attached-record",
 			"from": "src/services/attached-record-service/AttachedRecordService.ts",
 			"to": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
-			"definition": "f5ad5e8f6027526142594cf95f2e52080a0adf6fb955897a12fe89c6b74ebccb",
+			"definition": "1ff49ce64dcad8a01aff84faf167be3995dede19508edef3d5a406f6a2536b9c",
 			"relocationDefinition": "b8757575d793690dcd6f3daf521c33ca6d67b2a6d3d63ee7c1f22a002400b992",
 			"review": {
-				"commit": "8c5579bf296da31b542d7c7a5dbf5c3e91637e98",
+				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
 				"path": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
-				"definition": "f5ad5e8f6027526142594cf95f2e52080a0adf6fb955897a12fe89c6b74ebccb",
-				"reason": "Use seven-character commit labels while retaining distinct record and content identities."
+				"definition": "1ff49ce64dcad8a01aff84faf167be3995dede19508edef3d5a406f6a2536b9c",
+				"reason": "Validate selected clip references while retaining strict whole-record checks."
 			},
 			"previousReviews": [
 				{
@@ -3834,6 +3861,12 @@
 					"path": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
 					"definition": "260fbc51111da3bf82b8403add414ae027b472363a637401ca923b5974304cbe",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "8c5579bf296da31b542d7c7a5dbf5c3e91637e98",
+					"path": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
+					"definition": "f5ad5e8f6027526142594cf95f2e52080a0adf6fb955897a12fe89c6b74ebccb",
+					"reason": "Use seven-character commit labels while retaining distinct record and content identities."
 				}
 			]
 		},
@@ -3990,13 +4023,13 @@
 			"unit": "service.snapshot-run",
 			"from": "src/services/SnapshotRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-			"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
+			"definition": "4f0d5a024af9e69a5b33d01b5700e4c1a65806502f8983d9e8ff342d49765fe0",
 			"relocationDefinition": "6c3ff0bd50e6e2875d27738b036a234a6c7ee208b4687d4a4b94f53319e3e740",
 			"review": {
-				"commit": "4d13df49eba238879e7c326676162a68df3fb85a",
+				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
-				"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
-				"reason": "Retain the reviewed change: snapshot run: skip setup steps and builds a scoped run does not need."
+				"definition": "4f0d5a024af9e69a5b33d01b5700e4c1a65806502f8983d9e8ff342d49765fe0",
+				"reason": "Freeze source clip hashes and pinned references before snapshot execution."
 			},
 			"previousReviews": [
 				{
@@ -4010,6 +4043,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
 					"definition": "5b0ec5ba4312b32ffdec01e7fe07b875c29d81bf3cf17d17d12bda29ce34f864",
 					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				},
+				{
+					"commit": "4d13df49eba238879e7c326676162a68df3fb85a",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+					"definition": "c0083e8dd28bf5e0abc9724719de679fdb12b452e2586e14443630668a638656",
+					"reason": "Retain the reviewed change: snapshot run: skip setup steps and builds a scoped run does not need."
 				}
 			]
 		},
@@ -4023,13 +4062,13 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "673199522b2f06180d8ba2b6d078005fc88f4e11ae827b920e38f1ade36f1dec",
+			"definition": "b051c5fda5af2659e2deec284175f259fe2b81b7d88b657510d3e8097c5524f7",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "5885a5eedf04c2cdd0f598e4e52bdd22c51d6294",
+				"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "673199522b2f06180d8ba2b6d078005fc88f4e11ae827b920e38f1ade36f1dec",
-				"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
+				"definition": "b051c5fda5af2659e2deec284175f259fe2b81b7d88b657510d3e8097c5524f7",
+				"reason": "Carry frozen video context and admit authenticated reused clip captures."
 			},
 			"previousReviews": [
 				{
@@ -4055,6 +4094,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
 					"definition": "1063715061bcde25b7974396646e41b64b11ce223c65017ec6479f2a2288a05b",
 					"reason": "Record main’s scoped verification resource label while preserving the admitted execution context."
+				},
+				{
+					"commit": "5885a5eedf04c2cdd0f598e4e52bdd22c51d6294",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "673199522b2f06180d8ba2b6d078005fc88f4e11ae827b920e38f1ade36f1dec",
+					"reason": "Retain intentional local command bounds, safe environments and scoped scenario diagnostics."
 				}
 			]
 		},

@@ -5855,6 +5855,20 @@
 			"commit": "7a2e13ba28bf8ccf067589ff5c93c1f1b3f7eed9",
 			"reason": "Retain the reviewed change: verification record: optional skippedBuilds next to builds.",
 			"definition": "4d7b575accd81204242458a749178423430b0bf3b26a9ebf0d7f7f08fa04ebc9"
+		},
+		{
+			"unit": "function.media-facts",
+			"name": "mediaFacts",
+			"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+			"reason": "Validate bounded silent MP4 facts for retained motion evidence.",
+			"definition": "44857788b4c069c6a3e23a49c809598789a781e237a65ddff3309b15c2f69cd2"
+		},
+		{
+			"unit": "function.scenario-coverage",
+			"name": "scenarioCoverage",
+			"commit": "f7cf4f97d88a64cf7afb00fcbea501a9a22adac1",
+			"reason": "Include modular video graph and frame-feedback admission in scenario evidence.",
+			"definition": "a53ff40023b48442fc20aa5111d5ac0b328c855ad9bcd4287e938a700214a29a"
 		}
 	],
 	"retiredOwners": [
