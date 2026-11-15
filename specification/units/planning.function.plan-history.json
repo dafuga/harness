@@ -21,76 +21,245 @@
 				"name": "planHistory.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle whose run(args) method executes a Git command from an argument array and returns its output. planHistory uses it for the revision lookup, plan identity, commit listing and a diff-tree call for each listed commit."
 			},
 			{
 				"name": "planHistory.input",
 				"type": "{ unitId: string; revision?: string; limit?: number }",
 				"required": true,
-				"description": "Unit ID, optional revision and limit from 1 to 500; history limit defaults to 100."
+				"description": "Object holding unitId, which planIdentity maps to the plan folder at the resolved commit, an optional revision that revisionInfo resolves (omitted means HEAD) and an optional limit. A missing limit uses 100; any other limit must be an integer from 1 to 500, or the call rejects.",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid"
+					},
+					{
+						"unitId": "reports.component.evidence-grid",
+						"revision": "v1.4.0",
+						"limit": 20
+					},
+					{
+						"unitId": "planning.function.plan-history",
+						"revision": "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71",
+						"limit": 100
+					}
+				]
 			},
 			{
 				"name": "commits.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle whose run(args) method executes a Git command from an argument array and returns its output. commits uses it for one git log call built from the limit, the fixed format and the optional path."
 			},
 			{
 				"name": "commits.rev",
 				"type": "string",
 				"required": true,
-				"description": "Revision from which to list history."
+				"description": "Revision that git log starts listing from; planHistory and revisionInfo pass a commit identifier from revision resolution, unchanged. Commits reachable from this revision are listed.",
+				"examples": [
+					"9f2c4e1a7b3d5f6e8a0c2b4d6f8e1a3c5b7d9f0e",
+					"3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+					"c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"
+				]
 			},
 			{
 				"name": "commits.limit",
 				"type": "number",
 				"required": false,
 				"default": 50,
-				"description": "Integer from 1 to 500; defaults to 50."
+				"description": "Maximum number of commits, sent to git log as -<limit>; it must be an integer from 1 to 500, and any other value rejects with an invalid-input failure. Defaults to 50 when omitted.",
+				"examples": [10, 25, 50]
 			},
 			{
 				"name": "commits.path",
 				"type": "string",
 				"required": false,
-				"description": "Optional repository path filter."
+				"default": "undefined",
+				"description": "Optional repository path passed to git log after '--', so only commits touching it are listed. An empty string or an omitted value applies no path filter.",
+				"examples": [
+					"plans/reports.component.evidence-grid",
+					"plans/planning.function.plan-history"
+				]
 			},
 			{
 				"name": "revisionInfo.git",
 				"type": "Git",
 				"required": true,
-				"description": "Repository handle with root, Git directory and command runner."
+				"description": "Repository handle whose run(args) method executes a Git command from an argument array and returns its output. revisionInfo passes it to revision and commits, and uses it for the symbolic-ref lookup of the current branch."
 			},
 			{
 				"name": "revisionInfo.requested",
 				"type": "string",
 				"required": false,
-				"description": "Requested branch, tag or commit; omitted means HEAD."
+				"default": "undefined",
+				"description": "Branch, tag or commit to resolve; omitted means HEAD. A provided value is returned unchanged in the requested field, and an omitted value appears there as null.",
+				"examples": ["main", "v1.4.0", "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "commits",
 				"type": "Promise<CommitInfo[]>",
-				"description": "Commit records with parents, author, commit time and subject."
+				"description": "Commit records from git log in newest-first order, each with the full commit SHA, parent SHAs (an empty array for a root commit), author name, committer time as UTC ISO 8601 with milliseconds, and subject line. The array is empty when git log prints no commits.",
+				"examples": [
+					[
+						{
+							"commit": "9f2c4e1a7b3d5f6e8a0c2b4d6f8e1a3c5b7d9f0e",
+							"parents": ["3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c"],
+							"author": "Priya Raman",
+							"committedAt": "2026-11-12T09:30:00.000Z",
+							"subject": "Record design v2 approval"
+						},
+						{
+							"commit": "3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+							"parents": ["c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"],
+							"author": "Alex Morgan",
+							"committedAt": "2026-11-10T16:04:27.000Z",
+							"subject": "Add design v2"
+						}
+					],
+					[
+						{
+							"commit": "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71",
+							"parents": [],
+							"author": "Alex Morgan",
+							"committedAt": "2026-11-02T14:15:08.000Z",
+							"subject": "Create evidence grid plan"
+						}
+					]
+				]
 			},
 			{
 				"name": "revisionInfo",
 				"type": "Promise<RevisionInfo>",
-				"description": "Resolved commit and metadata, original request, whether it equals HEAD and current branch when applicable."
+				"description": "Object with the resolved commit identifier, requested (the input value, or null when none was given), head (true when the commit equals HEAD) and branch (the short name of HEAD's branch only when head is true and HEAD is on a branch, otherwise null). committedAt is the commit's committer time as UTC ISO 8601 and subject is its subject line.",
+				"examples": [
+					{
+						"requested": null,
+						"commit": "9f2c4e1a7b3d5f6e8a0c2b4d6f8e1a3c5b7d9f0e",
+						"head": true,
+						"branch": "main",
+						"committedAt": "2026-11-12T09:30:00.000Z",
+						"subject": "Record design v2 approval"
+					},
+					{
+						"requested": "v1.4.0",
+						"commit": "3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+						"head": false,
+						"branch": null,
+						"committedAt": "2026-11-10T16:04:27.000Z",
+						"subject": "Add design v2"
+					}
+				]
 			},
 			{
 				"name": "planHistory",
 				"type": "unknown",
-				"description": "Unit ID, resolved revision and newest-first history entries with classified plan, design, approval, thread and message events."
+				"description": "Object with unitId (the input unit ID), revision (the RevisionInfo of the resolved revision) and entries: up to the requested limit of commits that touched the plan folder, newest first, each with the CommitInfo fields and events. Each event has a kind of plan-created, design-added (with version), design-approved (with approvalId), thread-opened or message-appended (with threadId), or other (with path relative to the plan folder).",
+				"examples": [
+					{
+						"unitId": "reports.component.evidence-grid",
+						"revision": {
+							"requested": null,
+							"commit": "9f2c4e1a7b3d5f6e8a0c2b4d6f8e1a3c5b7d9f0e",
+							"head": true,
+							"branch": "main",
+							"committedAt": "2026-11-12T09:30:00.000Z",
+							"subject": "Record design v2 approval"
+						},
+						"entries": [
+							{
+								"commit": "9f2c4e1a7b3d5f6e8a0c2b4d6f8e1a3c5b7d9f0e",
+								"parents": ["3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c"],
+								"author": "Priya Raman",
+								"committedAt": "2026-11-12T09:30:00.000Z",
+								"subject": "Record design v2 approval",
+								"events": [
+									{
+										"kind": "design-approved",
+										"approvalId": "v2-approval"
+									}
+								]
+							},
+							{
+								"commit": "3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+								"parents": ["c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"],
+								"author": "Alex Morgan",
+								"committedAt": "2026-11-10T16:04:27.000Z",
+								"subject": "Add design v2",
+								"events": [
+									{
+										"kind": "design-added",
+										"version": "v2"
+									},
+									{
+										"kind": "other",
+										"path": "notes/review-checklist.md"
+									}
+								]
+							},
+							{
+								"commit": "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71",
+								"parents": [],
+								"author": "Alex Morgan",
+								"committedAt": "2026-11-02T14:15:08.000Z",
+								"subject": "Create evidence grid plan",
+								"events": [
+									{
+										"kind": "plan-created"
+									}
+								]
+							}
+						]
+					},
+					{
+						"unitId": "reports.component.evidence-grid",
+						"revision": {
+							"requested": "v1.4.0",
+							"commit": "3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+							"head": false,
+							"branch": null,
+							"committedAt": "2026-11-10T16:04:27.000Z",
+							"subject": "Add design v2"
+						},
+						"entries": [
+							{
+								"commit": "3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+								"parents": ["c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"],
+								"author": "Alex Morgan",
+								"committedAt": "2026-11-10T16:04:27.000Z",
+								"subject": "Add design v2",
+								"events": [
+									{
+										"kind": "design-added",
+										"version": "v2"
+									}
+								]
+							},
+							{
+								"commit": "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71",
+								"parents": [],
+								"author": "Alex Morgan",
+								"committedAt": "2026-11-02T14:15:08.000Z",
+								"subject": "Create evidence grid plan",
+								"events": [
+									{
+										"kind": "plan-created"
+									}
+								]
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid limits, unresolved revisions and unavailable plans; underlying Git and artifact errors propagate."
+				"description": "Raised by commits through fail('invalid-input', 'Invalid history limit') when limit is not an integer from 1 to 500, so planHistory rejects the same way for an invalid limit. Errors from revision, planIdentity and Git command calls propagate unchanged, except that a failed symbolic-ref lookup is ignored."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planHistory",
@@ -99,24 +268,140 @@
 						"name": "planHistory.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle whose run(args) method executes a Git command from an argument array and returns its output. planHistory uses it for the revision lookup, plan identity, commit listing and a diff-tree call for each listed commit."
 					},
 					{
 						"name": "planHistory.input",
 						"type": "{ unitId: string; revision?: string; limit?: number }",
 						"required": true,
-						"description": "Unit ID, optional revision and limit from 1 to 500; history limit defaults to 100."
+						"description": "Object holding unitId, which planIdentity maps to the plan folder at the resolved commit, an optional revision that revisionInfo resolves (omitted means HEAD) and an optional limit. A missing limit uses 100; any other limit must be an integer from 1 to 500, or the call rejects.",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid"
+							},
+							{
+								"unitId": "reports.component.evidence-grid",
+								"revision": "v1.4.0",
+								"limit": 20
+							},
+							{
+								"unitId": "planning.function.plan-history",
+								"revision": "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71",
+								"limit": 100
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planHistory",
 						"type": "unknown",
-						"description": "Unit ID, resolved revision and newest-first history entries with classified plan, design, approval, thread and message events."
+						"description": "Object with unitId (the input unit ID), revision (the RevisionInfo of the resolved revision) and entries: up to the requested limit of commits that touched the plan folder, newest first, each with the CommitInfo fields and events. Each event has a kind of plan-created, design-added (with version), design-approved (with approvalId), thread-opened or message-appended (with threadId), or other (with path relative to the plan folder).",
+						"examples": [
+							{
+								"unitId": "reports.component.evidence-grid",
+								"revision": {
+									"requested": null,
+									"commit": "9f2c4e1a7b3d5f6e8a0c2b4d6f8e1a3c5b7d9f0e",
+									"head": true,
+									"branch": "main",
+									"committedAt": "2026-11-12T09:30:00.000Z",
+									"subject": "Record design v2 approval"
+								},
+								"entries": [
+									{
+										"commit": "9f2c4e1a7b3d5f6e8a0c2b4d6f8e1a3c5b7d9f0e",
+										"parents": ["3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c"],
+										"author": "Priya Raman",
+										"committedAt": "2026-11-12T09:30:00.000Z",
+										"subject": "Record design v2 approval",
+										"events": [
+											{
+												"kind": "design-approved",
+												"approvalId": "v2-approval"
+											}
+										]
+									},
+									{
+										"commit": "3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+										"parents": ["c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"],
+										"author": "Alex Morgan",
+										"committedAt": "2026-11-10T16:04:27.000Z",
+										"subject": "Add design v2",
+										"events": [
+											{
+												"kind": "design-added",
+												"version": "v2"
+											},
+											{
+												"kind": "other",
+												"path": "notes/review-checklist.md"
+											}
+										]
+									},
+									{
+										"commit": "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71",
+										"parents": [],
+										"author": "Alex Morgan",
+										"committedAt": "2026-11-02T14:15:08.000Z",
+										"subject": "Create evidence grid plan",
+										"events": [
+											{
+												"kind": "plan-created"
+											}
+										]
+									}
+								]
+							},
+							{
+								"unitId": "reports.component.evidence-grid",
+								"revision": {
+									"requested": "v1.4.0",
+									"commit": "3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+									"head": false,
+									"branch": null,
+									"committedAt": "2026-11-10T16:04:27.000Z",
+									"subject": "Add design v2"
+								},
+								"entries": [
+									{
+										"commit": "3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+										"parents": ["c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"],
+										"author": "Alex Morgan",
+										"committedAt": "2026-11-10T16:04:27.000Z",
+										"subject": "Add design v2",
+										"events": [
+											{
+												"kind": "design-added",
+												"version": "v2"
+											}
+										]
+									},
+									{
+										"commit": "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71",
+										"parents": [],
+										"author": "Alex Morgan",
+										"committedAt": "2026-11-02T14:15:08.000Z",
+										"subject": "Create evidence grid plan",
+										"events": [
+											{
+												"kind": "plan-created"
+											}
+										]
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects with the invalid-input failure from commits when limit is not an integer from 1 to 500. Errors from revisionInfo, planIdentity and the diff-tree Git calls propagate unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "commits",
@@ -125,42 +410,81 @@
 						"name": "commits.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle whose run(args) method executes a Git command from an argument array and returns its output. commits uses it for one git log call built from the limit, the fixed format and the optional path."
 					},
 					{
 						"name": "commits.rev",
 						"type": "string",
 						"required": true,
-						"description": "Revision from which to list history."
+						"description": "Revision that git log starts listing from; planHistory and revisionInfo pass a commit identifier from revision resolution, unchanged. Commits reachable from this revision are listed.",
+						"examples": [
+							"9f2c4e1a7b3d5f6e8a0c2b4d6f8e1a3c5b7d9f0e",
+							"3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+							"c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"
+						]
 					},
 					{
 						"name": "commits.limit",
 						"type": "number",
 						"required": false,
 						"default": 50,
-						"description": "Integer from 1 to 500; defaults to 50."
+						"description": "Maximum number of commits, sent to git log as -<limit>; it must be an integer from 1 to 500, and any other value rejects with an invalid-input failure. Defaults to 50 when omitted.",
+						"examples": [10, 25, 50]
 					},
 					{
 						"name": "commits.path",
 						"type": "string",
 						"required": false,
-						"description": "Optional repository path filter."
+						"default": "undefined",
+						"description": "Optional repository path passed to git log after '--', so only commits touching it are listed. An empty string or an omitted value applies no path filter.",
+						"examples": [
+							"plans/reports.component.evidence-grid",
+							"plans/planning.function.plan-history"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commits",
 						"type": "Promise<CommitInfo[]>",
-						"description": "Commit records with parents, author, commit time and subject."
+						"description": "Commit records from git log in newest-first order, each with the full commit SHA, parent SHAs (an empty array for a root commit), author name, committer time as UTC ISO 8601 with milliseconds, and subject line. The array is empty when git log prints no commits.",
+						"examples": [
+							[
+								{
+									"commit": "9f2c4e1a7b3d5f6e8a0c2b4d6f8e1a3c5b7d9f0e",
+									"parents": ["3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c"],
+									"author": "Priya Raman",
+									"committedAt": "2026-11-12T09:30:00.000Z",
+									"subject": "Record design v2 approval"
+								},
+								{
+									"commit": "3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+									"parents": ["c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"],
+									"author": "Alex Morgan",
+									"committedAt": "2026-11-10T16:04:27.000Z",
+									"subject": "Add design v2"
+								}
+							],
+							[
+								{
+									"commit": "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71",
+									"parents": [],
+									"author": "Alex Morgan",
+									"committedAt": "2026-11-02T14:15:08.000Z",
+									"subject": "Create evidence grid plan"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised through fail('invalid-input', 'Invalid history limit') when limit is not an integer from 1 to 500. Git command errors from run propagate unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "revisionInfo",
@@ -169,24 +493,44 @@
 						"name": "revisionInfo.git",
 						"type": "Git",
 						"required": true,
-						"description": "Repository handle with root, Git directory and command runner."
+						"description": "Repository handle whose run(args) method executes a Git command from an argument array and returns its output. revisionInfo passes it to revision and commits, and uses it for the symbolic-ref lookup of the current branch."
 					},
 					{
 						"name": "revisionInfo.requested",
 						"type": "string",
 						"required": false,
-						"description": "Requested branch, tag or commit; omitted means HEAD."
+						"default": "undefined",
+						"description": "Branch, tag or commit to resolve; omitted means HEAD. A provided value is returned unchanged in the requested field, and an omitted value appears there as null.",
+						"examples": ["main", "v1.4.0", "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "revisionInfo",
 						"type": "Promise<RevisionInfo>",
-						"description": "Resolved commit and metadata, original request, whether it equals HEAD and current branch when applicable."
+						"description": "Object with the resolved commit identifier, requested (the input value, or null when none was given), head (true when the commit equals HEAD) and branch (the short name of HEAD's branch only when head is true and HEAD is on a branch, otherwise null). committedAt is the commit's committer time as UTC ISO 8601 and subject is its subject line.",
+						"examples": [
+							{
+								"requested": null,
+								"commit": "9f2c4e1a7b3d5f6e8a0c2b4d6f8e1a3c5b7d9f0e",
+								"head": true,
+								"branch": "main",
+								"committedAt": "2026-11-12T09:30:00.000Z",
+								"subject": "Record design v2 approval"
+							},
+							{
+								"requested": "v1.4.0",
+								"commit": "3a7d1c9e5b2f4a6c8e0d1b3f5a7c9e2d4b6f8a0c",
+								"head": false,
+								"branch": null,
+								"committedAt": "2026-11-10T16:04:27.000Z",
+								"subject": "Add design v2"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
