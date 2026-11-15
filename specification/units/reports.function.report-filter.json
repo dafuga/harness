@@ -106,6 +106,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportFilter",
@@ -137,7 +138,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "screenSize",
@@ -157,7 +158,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "galleryEvidence",
@@ -183,7 +184,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "projectFilter",
@@ -215,7 +216,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

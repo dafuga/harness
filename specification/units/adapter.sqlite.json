@@ -391,8 +391,19 @@
 						"description": "The requested row mapped from the SQLite result, or null when no row matches the supplied primary-key value."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
+					},
+					{
+						"name": "SqliteDatabase error",
+						"type": "propagated",
+						"description": "Errors from the injected SqliteDatabase driver, such as SQL syntax errors or constraint violations, pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteAdapter.findBy",
@@ -427,8 +438,19 @@
 						"description": "The rows matching the supplied declared-field filters, mapped to application properties. An empty filter map returns all rows."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
+					},
+					{
+						"name": "SqliteDatabase error",
+						"type": "propagated",
+						"description": "Errors from the injected SqliteDatabase driver, such as SQL syntax errors or constraint violations, pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteAdapter.create",
@@ -464,8 +486,19 @@
 						"description": "The inserted row returned by the table adapter after SQLite INSERT ... RETURNING * and row mapping."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
+					},
+					{
+						"name": "SqliteDatabase error",
+						"type": "propagated",
+						"description": "Errors from the injected SqliteDatabase driver, such as SQL syntax errors or constraint violations, pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteAdapter.update",
@@ -507,8 +540,24 @@
 						"description": "The updated row returned by SQLite and mapped to application properties, or null when no row is returned. An empty input map instead returns the current result of find."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by SqliteTableAdapter.update with the message A SQLite primary key cannot be updated when input has its own property named after the primary key."
+					},
+					{
+						"name": "SqliteDatabase error",
+						"type": "propagated",
+						"description": "Errors from the injected SqliteDatabase driver, such as SQL syntax errors or constraint violations, pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteAdapter.delete",
@@ -536,8 +585,19 @@
 						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
+					},
+					{
+						"name": "SqliteDatabase error",
+						"type": "propagated",
+						"description": "Errors from the injected SqliteDatabase driver, such as SQL syntax errors or constraint violations, pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteAdapter.insert",
@@ -573,8 +633,19 @@
 						"description": "The inserted row returned by SQLite INSERT ... RETURNING * and row mapping. This call is synchronous and can run inside transaction."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message No SQLite model for table: <table> when table has no registered model."
+					},
+					{
+						"name": "SqliteDatabase error",
+						"type": "propagated",
+						"description": "Errors from the injected SqliteDatabase driver, such as SQL syntax errors or constraint violations, pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteAdapter.query",
@@ -614,8 +685,14 @@
 						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SqliteDatabase error",
+						"type": "propagated",
+						"description": "Errors from the injected SqliteDatabase driver, such as SQL syntax errors or constraint violations, pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteAdapter.execute",
@@ -657,8 +734,14 @@
 						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SqliteDatabase error",
+						"type": "propagated",
+						"description": "Errors from the injected SqliteDatabase driver, such as SQL syntax errors or constraint violations, pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteAdapter.createTables",
@@ -670,8 +753,14 @@
 						"description": "No value. Executes CREATE TABLE IF NOT EXISTS for every registered model on the supplied database."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SqliteDatabase error",
+						"type": "propagated",
+						"description": "Errors from the injected SqliteDatabase driver, such as SQL syntax errors or constraint violations, pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteAdapter.transaction",
@@ -768,8 +857,14 @@
 						"description": "A SqliteAdapter bound to the supplied database and validated model declarations; the factory does not open a database."
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "propagated",
+						"description": "The SqliteAdapter constructor's Error, raised when a model declaration fails SQLite table validation (a missing primary-key field, duplicate declared columns, an unsupported field type or an invalid table or column identifier) or two models declare the same table."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [

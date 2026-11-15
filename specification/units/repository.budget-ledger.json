@@ -83,8 +83,19 @@
 				"description": "Resolves after creating the ledger's parent directory and appending the events as JSON lines; filesystem failures reject the promise."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "SourceTree rejection",
+				"type": "propagated",
+				"description": "Rejections from tree.list() or tree.read() pass through unchanged. A malformed ledger line is reported in errors, not thrown."
+			},
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "propagated",
+				"description": "File-system errors from creating the ledger directory or appending to the ledger, such as EACCES or ENOSPC, pass through unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "BudgetLedgerRepository.read",
@@ -110,8 +121,14 @@
 						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SourceTree rejection",
+						"type": "propagated",
+						"description": "Rejections from tree.list() or tree.read() pass through unchanged. A malformed ledger line is reported in errors, not thrown."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "BudgetLedgerRepository.append",
@@ -150,8 +167,14 @@
 						"description": "Resolves after creating the ledger's parent directory and appending the events as JSON lines; filesystem failures reject the promise."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "propagated",
+						"description": "File-system errors from creating the ledger directory or appending to the ledger, such as EACCES or ENOSPC, pass through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -174,7 +197,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},

@@ -118,6 +118,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "resourcePressure",
@@ -149,7 +150,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "memoryReserve",
@@ -175,7 +176,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "impossibleRequest",
@@ -207,7 +208,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resourcePolicy",
@@ -245,7 +246,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

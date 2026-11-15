@@ -163,8 +163,14 @@
 				"description": "No return value. The adapter marks an existing attachment closed, then calls WebSocket.close with reason `closed`; socket errors are ignored."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Workers runtime error",
+				"type": "propagated",
+				"description": "open does not catch errors from the runtime's acceptWebSocket and serializeAttachment calls, for example an attachment over the runtime's attachment size limit. send and close catch every error."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostSocketsAdapter.open",
@@ -195,8 +201,14 @@
 						"description": "The pair for a newly accepted connection: the client endpoint and server endpoint registered with the Durable Object, tagged and attached for later lookup."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Workers runtime error",
+						"type": "propagated",
+						"description": "open does not catch errors from the runtime's acceptWebSocket and serializeAttachment calls, for example an attachment over the runtime's attachment size limit. send and close catch every error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.attachment",
@@ -228,7 +240,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.host",
@@ -241,7 +253,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.devices",
@@ -254,7 +266,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.device",
@@ -275,7 +287,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.connection",
@@ -296,7 +308,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.all",
@@ -309,7 +321,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.send",
@@ -343,7 +355,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostSocketsAdapter.close",
@@ -370,7 +382,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -392,7 +404,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},

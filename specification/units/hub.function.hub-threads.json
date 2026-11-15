@@ -50,6 +50,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubMessages",
@@ -69,7 +70,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubThreads",
@@ -96,7 +97,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

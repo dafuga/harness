@@ -129,8 +129,14 @@
 				"description": "Resolves with no value after deleting records expired by at least the configured sweep delay, then schedules an alarm for the next offer to expire or clears it when none remain."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "HostStorageAdapter error",
+				"type": "propagated",
+				"description": "Errors from the storage adapter pass through uncaught: a SyntaxError when a stored pairing is not valid JSON, and any failure of the Durable Object storage or alarm calls. Expected refusals are returned as RelayErrorCode values, not thrown."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PairingOfferService.live",
@@ -161,8 +167,14 @@
 						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "HostStorageAdapter error",
+						"type": "propagated",
+						"description": "Errors from the storage adapter pass through uncaught: a SyntaxError when a stored pairing is not valid JSON, and any failure of the Durable Object storage or alarm calls. Expected refusals are returned as RelayErrorCode values, not thrown."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PairingOfferService.open",
@@ -190,8 +202,14 @@
 						"examples": ["invalid-input", "pairing-unavailable", "rate-limited"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "HostStorageAdapter error",
+						"type": "propagated",
+						"description": "Errors from the storage adapter pass through uncaught: a SyntaxError when a stored pairing is not valid JSON, and any failure of the Durable Object storage or alarm calls. Expected refusals are returned as RelayErrorCode values, not thrown."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PairingOfferService.approve",
@@ -219,8 +237,14 @@
 						"examples": ["not-found", "pairing-unavailable"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "HostStorageAdapter error",
+						"type": "propagated",
+						"description": "Errors from the storage adapter pass through uncaught: a SyntaxError when a stored pairing is not valid JSON, and any failure of the Durable Object storage or alarm calls. Expected refusals are returned as RelayErrorCode values, not thrown."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PairingOfferService.deny",
@@ -241,8 +265,14 @@
 						"examples": ["not-found", "pairing-unavailable"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "HostStorageAdapter error",
+						"type": "propagated",
+						"description": "Errors from the storage adapter pass through uncaught: a SyntaxError when a stored pairing is not valid JSON, and any failure of the Durable Object storage or alarm calls. Expected refusals are returned as RelayErrorCode values, not thrown."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PairingOfferService.close",
@@ -262,8 +292,14 @@
 						"description": "Resolves with no value after removing the record for the supplied id and scheduling the next expiry alarm, or clearing the alarm when no offers remain."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "HostStorageAdapter error",
+						"type": "propagated",
+						"description": "Errors from the storage adapter pass through uncaught: a SyntaxError when a stored pairing is not valid JSON, and any failure of the Durable Object storage or alarm calls. Expected refusals are returned as RelayErrorCode values, not thrown."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PairingOfferService.sweep",
@@ -275,8 +311,14 @@
 						"description": "Resolves with no value after deleting records expired by at least the configured sweep delay, then schedules an alarm for the next offer to expire or clears it when none remain."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "HostStorageAdapter error",
+						"type": "propagated",
+						"description": "Errors from the storage adapter pass through uncaught: a SyntaxError when a stored pairing is not valid JSON, and any failure of the Durable Object storage or alarm calls. Expected refusals are returned as RelayErrorCode values, not thrown."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -298,7 +340,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},

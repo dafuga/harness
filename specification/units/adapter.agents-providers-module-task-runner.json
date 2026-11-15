@@ -155,9 +155,34 @@
 				"name": "ModuleTaskRunError",
 				"type": "thrown",
 				"description": "Signals a failed provider run, quota rejection, denied tool permission or a CLI model different from the requested selection."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by run when a non-empty line of the CLI's stdout is not JSON. It is raised before the result is read, so it carries no usage or reportedModel."
+			},
+			{
+				"name": "TaskOutputOverflowError",
+				"type": "thrown",
+				"description": "Rejected with the message 'Task CLI output exceeded its bound.' when the CLI's stdout passes 8,000,000 characters; the process group is killed first."
+			},
+			{
+				"name": "AbortSignal.reason",
+				"type": "propagated",
+				"description": "input.signal's reason (a DOMException named AbortError unless abort() was given another reason) when the signal is aborted before the CLI starts or while it runs; an abort kills the CLI's process group first."
+			},
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "propagated",
+				"description": "The spawn error when the CLI cannot be started, for example ENOENT when claude or codex is not on PATH."
+			},
+			{
+				"name": "resourceWork rejection",
+				"type": "propagated",
+				"description": "Rejections from resourceWork while it reserves the 2048 MiB coding slot pass through, for example 'Resource queue is full', a wait timeout, 'Resource request exceeds usable capacity after reserves', or a SyntaxError from an invalid queue config.json."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleTaskRunnerAdapter.command",
@@ -203,7 +228,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.run",
@@ -231,8 +256,24 @@
 						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ModuleTaskRunError",
+						"type": "thrown",
+						"description": "Thrown, with usage and reportedModel attached, when the CLI exits non-zero, reports no result or an error event, Claude's quota was rejected (quotaRejected is then true), Claude was denied a required tool, or the CLI ran a model other than input.model. Any other Error raised while reading the result is rethrown with the same two fields."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by run when a non-empty line of the CLI's stdout is not JSON. It is raised before the result is read, so it carries no usage or reportedModel."
+					},
+					{
+						"name": "Executor rejection",
+						"type": "propagated",
+						"description": "Rejections of the injected executor pass through unchanged; with the default taskProcess these are the abort reason, TaskOutputOverflowError, the spawn error and resourceWork rejections."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "taskProcess",
@@ -282,8 +323,29 @@
 						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AbortSignal.reason",
+						"type": "propagated",
+						"description": "input.signal's reason (a DOMException named AbortError unless abort() was given another reason) when the signal is aborted before the CLI starts or while it runs; an abort kills the CLI's process group first."
+					},
+					{
+						"name": "TaskOutputOverflowError",
+						"type": "thrown",
+						"description": "Rejected with the message 'Task CLI output exceeded its bound.' when the CLI's stdout passes 8,000,000 characters; the process group is killed first."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "propagated",
+						"description": "The spawn error when the CLI cannot be started, for example ENOENT when claude or codex is not on PATH."
+					},
+					{
+						"name": "resourceWork rejection",
+						"type": "propagated",
+						"description": "Rejections from resourceWork while it reserves the 2048 MiB coding slot pass through, for example 'Resource queue is full', a wait timeout, 'Resource request exceeds usable capacity after reserves', or a SyntaxError from an invalid queue config.json."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -305,7 +367,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
