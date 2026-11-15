@@ -12,22 +12,60 @@
 		"symbols": ["auditAtomicComposition"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "auditAtomicComposition.file",
 				"type": "AuditFile",
-				"required": true
+				"required": true,
+				"description": "The source file record passed to the atomic syntax parser. It matters only for paths under src/components/ or src/routes/; parser failures are converted to no findings.",
+				"examples": [
+					{
+						"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5/src/components/Button.svelte",
+						"relativePath": "src/components/Button.svelte",
+						"extension": ".svelte",
+						"contents": "<div>Save</div>",
+						"lines": ["<div>Save</div>"],
+						"structuralLines": ["<div>Save</div>"],
+						"limits": {
+							"maxFileLines": 220,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						},
+						"size": 15
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "auditAtomicComposition",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "The collected audit findings for a file after the syntax parser succeeds. Findings carry the relative path, a rule ID emitted by this implementation, and its message; out-of-scope paths or parser failures produce an empty list.",
+				"examples": [
+					[],
+					[
+						{
+							"path": "src/components/Button.svelte",
+							"rule": "atomic-tier-required",
+							"message": "Declare the component composition level with @harness-tier."
+						},
+						{
+							"path": "src/components/Button.svelte",
+							"rule": "atomic-native-element",
+							"message": "Use the shared atom for div."
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "auditAtomicComposition",
@@ -35,17 +73,55 @@
 					{
 						"name": "auditAtomicComposition.file",
 						"type": "AuditFile",
-						"required": true
+						"required": true,
+						"description": "The source file record passed to the atomic syntax parser. It matters only for paths under src/components/ or src/routes/; parser failures are converted to no findings.",
+						"examples": [
+							{
+								"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5/src/components/Button.svelte",
+								"relativePath": "src/components/Button.svelte",
+								"extension": ".svelte",
+								"contents": "<div>Save</div>",
+								"lines": ["<div>Save</div>"],
+								"structuralLines": ["<div>Save</div>"],
+								"limits": {
+									"maxFileLines": 220,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								},
+								"size": 15
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditAtomicComposition",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "The collected audit findings for a file after the syntax parser succeeds. Findings carry the relative path, a rule ID emitted by this implementation, and its message; out-of-scope paths or parser failures produce an empty list.",
+						"examples": [
+							[],
+							[
+								{
+									"path": "src/components/Button.svelte",
+									"rule": "atomic-tier-required",
+									"message": "Declare the component composition level with @harness-tier."
+								},
+								{
+									"path": "src/components/Button.svelte",
+									"rule": "atomic-native-element",
+									"message": "Use the shared atom for div."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
