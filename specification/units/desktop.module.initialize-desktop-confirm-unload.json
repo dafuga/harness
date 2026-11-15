@@ -14,27 +14,30 @@
 		"symbols": ["confirmUnload"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "confirmUnload.window",
 				"type": "BrowserWindow",
-				"required": true
+				"required": true,
+				"description": "The Electron BrowserWindow hosting the page: its webContents gets the 'will-prevent-unload' listener, and the window is also the parent of the confirmation dialog. The listener runs only when the page refuses to unload, and the function reads window.webContents without checking that it exists."
 			},
 			{
 				"name": "confirmUnload.dialog",
 				"type": "Pick<Dialog, 'showMessageBoxSync'>",
-				"required": true
+				"required": true,
+				"description": "The object whose showMessageBoxSync shows a warning asking whether to discard unsaved changes, with the buttons Stay (index 0, also the default and cancel button) and Discard (index 1). Only showMessageBoxSync is read from it, and only a returned index of exactly 1 lets the unload go on, so any other index keeps the page open."
 			}
 		],
 		"outputs": [
 			{
 				"name": "confirmUnload",
-				"type": "void"
+				"type": "void",
+				"description": "Nothing is returned: the only effect is that each call adds one 'will-prevent-unload' listener to window.webContents, and the function never removes it. That listener shows the Stay/Discard warning whenever the page refuses to unload."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "confirmUnload",
@@ -42,22 +45,25 @@
 					{
 						"name": "confirmUnload.window",
 						"type": "BrowserWindow",
-						"required": true
+						"required": true,
+						"description": "The Electron BrowserWindow hosting the page: its webContents gets the 'will-prevent-unload' listener, and the window is also the parent of the confirmation dialog. The listener runs only when the page refuses to unload, and the function reads window.webContents without checking that it exists."
 					},
 					{
 						"name": "confirmUnload.dialog",
 						"type": "Pick<Dialog, 'showMessageBoxSync'>",
-						"required": true
+						"required": true,
+						"description": "The object whose showMessageBoxSync shows a warning asking whether to discard unsaved changes, with the buttons Stay (index 0, also the default and cancel button) and Discard (index 1). Only showMessageBoxSync is read from it, and only a returned index of exactly 1 lets the unload go on, so any other index keeps the page open."
 					}
 				],
 				"outputs": [
 					{
 						"name": "confirmUnload",
-						"type": "void"
+						"type": "void",
+						"description": "Nothing is returned: the only effect is that each call adds one 'will-prevent-unload' listener to window.webContents, and the function never removes it. That listener shows the Stay/Discard warning whenever the page refuses to unload."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
