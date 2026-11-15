@@ -18,23 +18,30 @@
 				"name": "changeEnvironment.environment",
 				"type": "DeploymentEnvironment",
 				"required": true,
-				"description": "Selected environment; automatic promotion is limited to dev, stage and preprod."
+				"description": "The selected deployment environment. The function accepts dev, stage, preprod, and prod; any other value throws an Error.",
+				"examples": ["dev", "stage", "prod"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "changeEnvironment",
 				"type": "DeploymentEnvironment[]",
-				"description": "Ordered lower destinations; prod selection returns dev, stage and preprod."
+				"description": "Automatic destinations in promotion order. dev returns [\"dev\"], stage returns [\"dev\", \"stage\"], and preprod or prod returns [\"dev\", \"stage\", \"preprod\"].",
+				"examples": [
+					["dev"],
+					["dev", "stage"],
+					["dev", "stage", "preprod"]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
+				"description": "Thrown when the argument is not dev, stage, preprod, or prod; the message is \"Unknown deployment environment.\"."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "changeEnvironment",
@@ -43,23 +50,30 @@
 						"name": "changeEnvironment.environment",
 						"type": "DeploymentEnvironment",
 						"required": true,
-						"description": "Selected environment; automatic promotion is limited to dev, stage and preprod."
+						"description": "The selected deployment environment. The function accepts dev, stage, preprod, and prod; any other value throws an Error.",
+						"examples": ["dev", "stage", "prod"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "changeEnvironment",
 						"type": "DeploymentEnvironment[]",
-						"description": "Ordered lower destinations; prod selection returns dev, stage and preprod."
+						"description": "Automatic destinations in promotion order. dev returns [\"dev\"], stage returns [\"dev\", \"stage\"], and preprod or prod returns [\"dev\", \"stage\", \"preprod\"].",
+						"examples": [
+							["dev"],
+							["dev", "stage"],
+							["dev", "stage", "preprod"]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the argument is not dev, stage, preprod, or prod; the message is \"Unknown deployment environment.\"."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
