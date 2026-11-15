@@ -33,9 +33,9 @@ export const videoReferenceSchema = z
 export const videoCoverageSchema = z.array(
 	z.strictObject({
 		graph: id,
-		states: z.number().int().nonnegative(),
-		edges: z.number().int().nonnegative(),
-		clips: z.number().int().nonnegative().optional(),
+		states: z.number().finite().min(0).max(1),
+		edges: z.number().finite().min(0).max(1),
+		clips: z.number().finite().min(0).max(1).optional(),
 		complete: z.boolean(),
 		missing: z.array(z.string().min(1))
 	})
