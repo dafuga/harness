@@ -1,13 +1,14 @@
 import type { Helper, HelperCall } from './unit-documentation.test.types';
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { readdir, readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import {
 	unitDocumentation,
 	readUnitDocumentation
 } from '../../src/utils/unit-documentation/unitDocumentation';
-import { hydrateUnitDocumentation } from '../../src/services/revision-detail-service/unitDocumentation';
+import { hydrateUnitDocumentation } from '../../src/services/explorer-ui/revision-detail-service/unitDocumentation';
 import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { indexFiles, memoryTree, unitOf } from '../support/memoryTree';
 
@@ -116,6 +117,16 @@ test('every committed public helper example executes against its real implementa
 	}
 	expect(total).toBeGreaterThan(0);
 });
+
+test('src/services/revision-detail-service relocation stubs stay deleted', () => {
+	for (const stub of [
+		'src/services/revision-detail-service/serviceClasses.ts',
+		'src/services/revision-detail-service/unitDocumentation.ts',
+		'src/services/revision-detail-service/unitMetadata.ts'
+	])
+		expect(existsSync(resolve(import.meta.dirname, '../..', stub)), stub).toBe(false);
+});
+
 /** Normal helper documentation checks also retain direct, feature-based workloads. */
 function recordHelperWorkload(unit: string, helper: Helper, call: HelperCall) {
 	if (!evidenceRequested()) return;

@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { configValues } from '../../../src/services/explorer-ui/revision-detail-service/configValues';
 import { measureWorkload } from '../../support/measureWorkload';
-import { unitMetadata } from '../../../src/services/revision-detail-service/unitMetadata';
+import { unitMetadata } from '../../../src/services/explorer-ui/revision-detail-service/unitMetadata';
 import { revisionRegistry } from '../../../src/utils/revision-registry/revisionRegistry';
 import { indexFiles, memoryTree } from '../../support/memoryTree';
 test.each([

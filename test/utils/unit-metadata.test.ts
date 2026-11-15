@@ -1,6 +1,6 @@
 import { measureWorkload } from '../support/measureWorkload';
 import { expect, test } from 'vitest';
-import { unitMetadata } from '../../src/services/revision-detail-service/unitMetadata';
+import { unitMetadata } from '../../src/services/explorer-ui/revision-detail-service/unitMetadata';
 import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { indexFiles, memoryTree } from '../support/memoryTree';
 import { assertCanonicalCategory } from './canonicalCategory';

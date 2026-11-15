@@ -13,8 +13,9 @@
 			"src/services/explorer-ui/revision-detail-service/helperConsumers.types.ts",
 			"src/services/explorer-ui/revision-detail-service/serviceClasses.ts",
 			"src/services/explorer-ui/revision-detail-service/serviceClasses.types.ts",
-			"src/services/revision-detail-service/serviceClasses.ts",
-			"src/utils/explorer-ui/helperConsumers.ts"
+			"src/services/revision-detail-service/helperConsumers.ts",
+			"src/utils/explorer-ui/helperConsumers.ts",
+			"src/utils/helperConsumers.ts"
 		],
 		"symbols": [
 			"helperConsumers",
@@ -26,9 +27,10 @@
 			"Definition",
 			"Lookup",
 			"ProofContext",
-			"serviceClasses",
+			"helperConsumers",
 			"HelperTree",
 			"HelperConsumer",
+			"helperConsumers",
 			"helperConsumers"
 		]
 	},
