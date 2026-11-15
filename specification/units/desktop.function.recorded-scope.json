@@ -21,51 +21,218 @@
 				"name": "recordedTip.query",
 				"type": "Asked",
 				"required": true,
-				"description": "Entity ID, branch, commit and current-or-commit viewing mode to check."
+				"description": "The entity ID, branch, commit and viewing mode of the evidence read being checked. Only mode 'current' is compared with tip; a 'commit' read is never refused by recordedTip.",
+				"examples": [
+					{
+						"entityId": "desktop.function.recorded-scope",
+						"commit": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+						"branch": "main",
+						"mode": "current"
+					},
+					{
+						"entityId": "desktop.function.recorded-scope",
+						"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+						"branch": "feature/recorded-scope",
+						"mode": "commit"
+					}
+				]
 			},
 			{
 				"name": "recordedTip.tip",
 				"type": "string",
 				"required": true,
-				"description": "Actual tip commit of the selected branch."
+				"description": "The actual tip commit of the selected branch, as the caller supplies it. A current-mode commit is accepted only when it is strictly equal to this string.",
+				"examples": [
+					"3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+					"c41f7a9e02d8b3965a1e7c4f0b8d2a6e93f5c710"
+				]
 			},
 			{
 				"name": "recordedScope.query",
 				"type": "Asked",
 				"required": true,
-				"description": "Entity ID, branch, commit and viewing mode to describe."
+				"description": "The entity ID, branch, commit and viewing mode to describe. Mode 'commit' places this commit in the scope's location, while mode 'current' leaves location.commit null and requires this commit to equal tip.",
+				"examples": [
+					{
+						"entityId": "desktop.function.recorded-scope",
+						"commit": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+						"branch": "main",
+						"mode": "current"
+					},
+					{
+						"entityId": "desktop.function.recorded-scope",
+						"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+						"branch": "feature/recorded-scope",
+						"mode": "commit"
+					}
+				]
 			},
 			{
 				"name": "recordedScope.facts",
 				"type": "ScopeFacts",
 				"required": true,
-				"description": "Branch tip, registered kind, commit metadata, judged evidence and legacy record IDs."
+				"description": "What the backend knows of the commit before any evidence is read: the branch tip, the registered kind of the unit at that commit (undefined when none is), Git's metadata for the commit, its judged records and coverage, and its legacy report IDs. The scope takes parents, subject, author and committedAt from revision but not revision.commit, which is never compared with the query commit.",
+				"examples": [
+					{
+						"tip": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+						"kind": "function",
+						"revision": {
+							"commit": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+							"parents": ["5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f"],
+							"subject": "Refuse stale recorded evidence reads",
+							"author": "Priya Raman",
+							"committedAt": "2026-11-09T14:32:07+01:00"
+						},
+						"judged": {
+							"coverage": "verified",
+							"gaps": [],
+							"records": [
+								{
+									"id": "4a7d19c2e8f05b3a6c1d92e8c4b7f0a16d5e3b9c0f7b2e84d6c39a1d5f6eb8e4",
+									"status": "passed",
+									"profile": "a3f81c09d27e46b5",
+									"finishedAt": "2026-11-09T14:33:52.418Z",
+									"base": "5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f",
+									"valid": true,
+									"problems": []
+								}
+							]
+						},
+						"legacy": []
+					},
+					{
+						"tip": "c41f7a9e02d8b3965a1e7c4f0b8d2a6e93f5c710",
+						"kind": "function",
+						"revision": {
+							"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+							"parents": ["5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f"],
+							"subject": "Scope recorded evidence to the selected branch",
+							"author": "Marco Lindqvist",
+							"committedAt": "2026-11-10T09:12:44+01:00"
+						},
+						"judged": {
+							"coverage": "unverified",
+							"gaps": ["no verification record is attached to this commit"],
+							"records": []
+						},
+						"legacy": []
+					},
+					{
+						"tip": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+						"kind": "function",
+						"revision": {
+							"commit": "5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f",
+							"parents": ["e27b0d4c9a6f1385b2e7d0c4a9f6b1e38d5a72c0"],
+							"subject": "Record the first parent of each evidence read",
+							"author": "Priya Raman",
+							"committedAt": "2026-11-08T17:05:41+01:00"
+						},
+						"judged": {
+							"coverage": "invalid",
+							"gaps": ["record 7c0e5a91d3b6: record.json is not a record"],
+							"records": [
+								{
+									"id": "7c0e5a91d3b64f28e6a0c7d15b9e3f42a8d6c0e1b7f35a92d4e8c1f0a6b37d59",
+									"status": "passed",
+									"profile": "unknown",
+									"finishedAt": "unknown",
+									"base": null,
+									"valid": false,
+									"problems": ["record.json is not a record"]
+								}
+							]
+						},
+						"legacy": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordedTip",
 				"type": "void",
-				"description": "Returns nothing when the requested current commit is still the branch tip; otherwise throws."
+				"description": "Nothing: the function returns no value (undefined) and completes only when the query mode is 'commit' or its commit equals tip; otherwise it throws."
 			},
 			{
 				"name": "recordedScope",
 				"type": "ExplorerScope",
-				"description": "Scope containing the selected location, tip comparison, first parent or null and supplied evidence summary."
+				"description": "The scope of the entity at one revision: its location, mode, branch, tip, commit, whether the commit is the tip, its first parent or null, and a summary of that one commit that lists only the selected branch and sets retained to false.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": null,
+							"category": "functions",
+							"entity": "desktop.function.recorded-scope"
+						},
+						"mode": "current",
+						"branch": "main",
+						"tip": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+						"commit": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+						"atTip": true,
+						"parent": "5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f",
+						"summary": {
+							"commit": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+							"parents": ["5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f"],
+							"subject": "Refuse stale recorded evidence reads",
+							"author": "Priya Raman",
+							"committedAt": "2026-11-09T14:32:07+01:00",
+							"branches": ["main"],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [
+								{
+									"id": "4a7d19c2e8f05b3a6c1d92e8c4b7f0a16d5e3b9c0f7b2e84d6c39a1d5f6eb8e4",
+									"status": "passed",
+									"profile": "a3f81c09d27e46b5",
+									"finishedAt": "2026-11-09T14:33:52.418Z",
+									"base": "5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f",
+									"valid": true,
+									"problems": []
+								}
+							],
+							"legacy": []
+						}
+					},
+					{
+						"location": {
+							"branch": "feature/recorded-scope",
+							"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+							"category": "functions",
+							"entity": "desktop.function.recorded-scope"
+						},
+						"mode": "commit",
+						"branch": "feature/recorded-scope",
+						"tip": "c41f7a9e02d8b3965a1e7c4f0b8d2a6e93f5c710",
+						"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+						"atTip": false,
+						"parent": "5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f",
+						"summary": {
+							"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+							"parents": ["5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f"],
+							"subject": "Scope recorded evidence to the selected branch",
+							"author": "Marco Lindqvist",
+							"committedAt": "2026-11-10T09:12:44+01:00",
+							"branches": ["feature/recorded-scope"],
+							"retained": false,
+							"coverage": "unverified",
+							"gaps": ["no verification record is attached to this commit"],
+							"records": [],
+							"legacy": []
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
-				"name": "stale-tip",
-				"type": "refused",
-				"description": "The current-mode commit no longer equals the supplied branch tip."
-			},
-			{
-				"name": "entity-unregistered",
-				"type": "refused",
-				"description": "The supplied entity kind is absent or has no supported explorer category."
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by recordedTip, and so by recordedScope, when the query mode is 'current' and its commit is not strictly equal to the tip; the message is 'Commit <first seven characters of the commit> is no longer the tip of branch <branch>.' Thrown by recordedScope when facts.kind is undefined or categoryOf returns null for it; the message is 'This entity is not registered at this commit.'"
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "recordedTip",
@@ -74,29 +241,48 @@
 						"name": "recordedTip.query",
 						"type": "Asked",
 						"required": true,
-						"description": "Entity ID, branch, commit and current-or-commit viewing mode to check."
+						"description": "The entity ID, branch, commit and viewing mode of the evidence read being checked. Only mode 'current' is compared with tip; a 'commit' read is never refused by recordedTip.",
+						"examples": [
+							{
+								"entityId": "desktop.function.recorded-scope",
+								"commit": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+								"branch": "main",
+								"mode": "current"
+							},
+							{
+								"entityId": "desktop.function.recorded-scope",
+								"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+								"branch": "feature/recorded-scope",
+								"mode": "commit"
+							}
+						]
 					},
 					{
 						"name": "recordedTip.tip",
 						"type": "string",
 						"required": true,
-						"description": "Actual tip commit of the selected branch."
+						"description": "The actual tip commit of the selected branch, as the caller supplies it. A current-mode commit is accepted only when it is strictly equal to this string.",
+						"examples": [
+							"3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+							"c41f7a9e02d8b3965a1e7c4f0b8d2a6e93f5c710"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordedTip",
 						"type": "void",
-						"description": "Returns nothing when the requested current commit is still the branch tip; otherwise throws."
+						"description": "Nothing: the function returns no value (undefined) and completes only when the query mode is 'commit' or its commit equals tip; otherwise it throws."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the query mode is 'current' and its commit is not the supplied tip; the message is 'Commit <first seven characters of the commit> is no longer the tip of branch <branch>.'"
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordedScope",
@@ -105,29 +291,183 @@
 						"name": "recordedScope.query",
 						"type": "Asked",
 						"required": true,
-						"description": "Entity ID, branch, commit and viewing mode to describe."
+						"description": "The entity ID, branch, commit and viewing mode to describe. Mode 'commit' places this commit in the scope's location, while mode 'current' leaves location.commit null and requires this commit to equal tip.",
+						"examples": [
+							{
+								"entityId": "desktop.function.recorded-scope",
+								"commit": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+								"branch": "main",
+								"mode": "current"
+							},
+							{
+								"entityId": "desktop.function.recorded-scope",
+								"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+								"branch": "feature/recorded-scope",
+								"mode": "commit"
+							}
+						]
 					},
 					{
 						"name": "recordedScope.facts",
 						"type": "ScopeFacts",
 						"required": true,
-						"description": "Branch tip, registered kind, commit metadata, judged evidence and legacy record IDs."
+						"description": "What the backend knows of the commit before any evidence is read: the branch tip, the registered kind of the unit at that commit (undefined when none is), Git's metadata for the commit, its judged records and coverage, and its legacy report IDs. The scope takes parents, subject, author and committedAt from revision but not revision.commit, which is never compared with the query commit.",
+						"examples": [
+							{
+								"tip": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+								"kind": "function",
+								"revision": {
+									"commit": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+									"parents": ["5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f"],
+									"subject": "Refuse stale recorded evidence reads",
+									"author": "Priya Raman",
+									"committedAt": "2026-11-09T14:32:07+01:00"
+								},
+								"judged": {
+									"coverage": "verified",
+									"gaps": [],
+									"records": [
+										{
+											"id": "4a7d19c2e8f05b3a6c1d92e8c4b7f0a16d5e3b9c0f7b2e84d6c39a1d5f6eb8e4",
+											"status": "passed",
+											"profile": "a3f81c09d27e46b5",
+											"finishedAt": "2026-11-09T14:33:52.418Z",
+											"base": "5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f",
+											"valid": true,
+											"problems": []
+										}
+									]
+								},
+								"legacy": []
+							},
+							{
+								"tip": "c41f7a9e02d8b3965a1e7c4f0b8d2a6e93f5c710",
+								"kind": "function",
+								"revision": {
+									"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+									"parents": ["5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f"],
+									"subject": "Scope recorded evidence to the selected branch",
+									"author": "Marco Lindqvist",
+									"committedAt": "2026-11-10T09:12:44+01:00"
+								},
+								"judged": {
+									"coverage": "unverified",
+									"gaps": ["no verification record is attached to this commit"],
+									"records": []
+								},
+								"legacy": []
+							},
+							{
+								"tip": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+								"kind": "function",
+								"revision": {
+									"commit": "5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f",
+									"parents": ["e27b0d4c9a6f1385b2e7d0c4a9f6b1e38d5a72c0"],
+									"subject": "Record the first parent of each evidence read",
+									"author": "Priya Raman",
+									"committedAt": "2026-11-08T17:05:41+01:00"
+								},
+								"judged": {
+									"coverage": "invalid",
+									"gaps": ["record 7c0e5a91d3b6: record.json is not a record"],
+									"records": [
+										{
+											"id": "7c0e5a91d3b64f28e6a0c7d15b9e3f42a8d6c0e1b7f35a92d4e8c1f0a6b37d59",
+											"status": "passed",
+											"profile": "unknown",
+											"finishedAt": "unknown",
+											"base": null,
+											"valid": false,
+											"problems": ["record.json is not a record"]
+										}
+									]
+								},
+								"legacy": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordedScope",
 						"type": "ExplorerScope",
-						"description": "Scope containing the selected location, tip comparison, first parent or null and supplied evidence summary."
+						"description": "The scope of the entity at one revision: its location, mode, branch, tip, commit, whether the commit is the tip, its first parent or null, and a summary of that one commit that lists only the selected branch and sets retained to false.",
+						"examples": [
+							{
+								"location": {
+									"branch": "main",
+									"commit": null,
+									"category": "functions",
+									"entity": "desktop.function.recorded-scope"
+								},
+								"mode": "current",
+								"branch": "main",
+								"tip": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+								"commit": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+								"atTip": true,
+								"parent": "5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f",
+								"summary": {
+									"commit": "3f9c1a7e5b2d84f06c1e9a3b7d5f0e2c8a4b6d19",
+									"parents": ["5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f"],
+									"subject": "Refuse stale recorded evidence reads",
+									"author": "Priya Raman",
+									"committedAt": "2026-11-09T14:32:07+01:00",
+									"branches": ["main"],
+									"retained": false,
+									"coverage": "verified",
+									"gaps": [],
+									"records": [
+										{
+											"id": "4a7d19c2e8f05b3a6c1d92e8c4b7f0a16d5e3b9c0f7b2e84d6c39a1d5f6eb8e4",
+											"status": "passed",
+											"profile": "a3f81c09d27e46b5",
+											"finishedAt": "2026-11-09T14:33:52.418Z",
+											"base": "5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f",
+											"valid": true,
+											"problems": []
+										}
+									],
+									"legacy": []
+								}
+							},
+							{
+								"location": {
+									"branch": "feature/recorded-scope",
+									"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+									"category": "functions",
+									"entity": "desktop.function.recorded-scope"
+								},
+								"mode": "commit",
+								"branch": "feature/recorded-scope",
+								"tip": "c41f7a9e02d8b3965a1e7c4f0b8d2a6e93f5c710",
+								"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+								"atTip": false,
+								"parent": "5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f",
+								"summary": {
+									"commit": "8d2e6b0f4a9c1753e8b2d6f0a4c9e1b7d3f5a286",
+									"parents": ["5e0a7c2d9b1f6b84d3e9a2c5f0e7b3d94e1a8c6f"],
+									"subject": "Scope recorded evidence to the selected branch",
+									"author": "Marco Lindqvist",
+									"committedAt": "2026-11-10T09:12:44+01:00",
+									"branches": ["feature/recorded-scope"],
+									"retained": false,
+									"coverage": "unverified",
+									"gaps": ["no verification record is attached to this commit"],
+									"records": [],
+									"legacy": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the query mode is 'current' and its commit is not facts.tip, with the message 'Commit <first seven characters of the commit> is no longer the tip of branch <branch>.' Thrown when facts.kind is undefined or categoryOf returns null for it, with the message 'This entity is not registered at this commit.'"
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
