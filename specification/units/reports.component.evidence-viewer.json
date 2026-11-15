@@ -42,63 +42,136 @@
 				"name": "EvidenceViewer.items",
 				"type": "Evidence[]",
 				"required": true,
-				"description": "Required full screenshot evidence list, used to find comparison partners and available screen sizes. Partners match comparison identity and viewport with before/after phases."
+				"description": "Required evidence records used to find before/after partners and viewport candidates. A pair requires the same truthy comparison id and viewport, with before and after phases.",
+				"examples": [
+					[
+						{
+							"id": "a7e3c2d1-5b8f-4a60-9c73-2d4f6b8a102e-before",
+							"title": "Checkout flow before",
+							"category": "Uploaded comparison",
+							"file": "a6f2b03609e2acfeb6f860ae0544c77fdc619c428a93fafd943d9e846666ab79.png",
+							"status": "not-proven",
+							"source": "Manual upload · Cloudflare R2",
+							"capturedAt": "2026-11-15T12:00:00.000Z",
+							"viewport": "390px mobile",
+							"phase": "before",
+							"comparison": "a7e3c2d1-5b8f-4a60-9c73-2d4f6b8a102e",
+							"storage": "r2"
+						},
+						{
+							"id": "a7e3c2d1-5b8f-4a60-9c73-2d4f6b8a102e-after",
+							"title": "Checkout flow after",
+							"category": "Uploaded comparison",
+							"file": "e61e91619a84ab065171c246903711097699a5d6e5823dc395e59d86191f7054.png",
+							"status": "not-proven",
+							"source": "Manual upload · Cloudflare R2",
+							"capturedAt": "2026-11-15T12:00:00.000Z",
+							"viewport": "390px mobile",
+							"phase": "after",
+							"comparison": "a7e3c2d1-5b8f-4a60-9c73-2d4f6b8a102e",
+							"storage": "r2"
+						}
+					]
+				]
 			},
 			{
 				"name": "EvidenceViewer.navigableItems",
 				"type": "Evidence[]",
 				"required": true,
-				"description": "Required ordered subset for previous/next and arrow-key navigation. Without an item different from selected, both arrows are disabled and visibly muted, movement is ignored and the navigation hint is hidden."
+				"description": "Required ordered list used by previous/next buttons and arrow keys. Navigation is enabled only when selected is non-null and this list contains an id different from selected; the viewer wraps the supplied order without sorting or filtering it.",
+				"examples": [
+					[
+						{
+							"id": "b14d9c6f-27a3-4e81-b6d5-0f8a2c4e7193-after",
+							"title": "Checkout flow after",
+							"category": "Uploaded comparison",
+							"file": "6aa92cd873c0411521714b5a3689d066d10015e7f89a7331c6a5a47360042249.png",
+							"status": "not-proven",
+							"source": "Manual upload · Cloudflare R2",
+							"capturedAt": "2026-11-15T12:00:00.000Z",
+							"viewport": "390px mobile",
+							"phase": "after",
+							"comparison": "b14d9c6f-27a3-4e81-b6d5-0f8a2c4e7193",
+							"storage": "r2"
+						},
+						{
+							"id": "c92f6a10-3d7b-4f28-8a5c-1e6b9d3f7042-after",
+							"title": "Profile menu after",
+							"category": "Uploaded comparison",
+							"file": "700cec91631e7f343468070707a11986ff4c108360c74d4bc4cd1178d13f7199.png",
+							"status": "not-proven",
+							"source": "Manual upload · Cloudflare R2",
+							"capturedAt": "2026-11-15T12:00:00.000Z",
+							"viewport": "1440px desktop",
+							"phase": "after",
+							"comparison": "c92f6a10-3d7b-4f28-8a5c-1e6b9d3f7042",
+							"storage": "r2"
+						}
+					]
+				]
 			},
 			{
 				"name": "EvidenceViewer.selected",
 				"type": "Evidence | null",
 				"required": true,
-				"description": "Required selected screenshot or null. Non-null opens the modal; null shows the unselected message."
+				"description": "Required selected evidence record, or null; a record opens the modal and null shows the unselected message. The view starts at after and resets to after on close and after navigation.",
+				"examples": [
+					null,
+					{
+						"id": "a7e3c2d1-5b8f-4a60-9c73-2d4f6b8a102e-after",
+						"title": "Checkout flow after",
+						"category": "Uploaded comparison",
+						"file": "e61e91619a84ab065171c246903711097699a5d6e5823dc395e59d86191f7054.png",
+						"status": "not-proven",
+						"source": "Manual upload · Cloudflare R2",
+						"capturedAt": "2026-11-15T12:00:00.000Z",
+						"viewport": "390px mobile",
+						"phase": "after",
+						"comparison": "a7e3c2d1-5b8f-4a60-9c73-2d4f6b8a102e",
+						"storage": "r2"
+					}
+				]
 			},
 			{
 				"name": "EvidenceViewer.assetBase",
 				"type": "string",
 				"required": true,
-				"description": "Required prefix concatenated with image files for zoom and download links."
+				"description": "Required URL or path prefix prepended directly to each file for the image source and download link. The component does not normalize or join paths, so include any needed separator.",
+				"examples": ["/assets/"]
 			},
 			{
 				"name": "EvidenceViewer.onclose",
 				"type": "() => void",
 				"required": true,
-				"description": "Required close callback; closing also resets view to after."
+				"description": "Required callback invoked when the modal closes; the viewer resets its view to after before calling it."
 			},
 			{
 				"name": "EvidenceViewer.onselect",
 				"type": "(item: Evidence, updateViewport?: boolean) => void",
 				"required": true,
-				"description": "Required callback receiving a navigated item. Viewport switches pass true as the second argument so the host can update filters; ordinary previous/next omit it."
+				"description": "Required callback invoked when navigation or viewport switching selects an item. Previous/next passes only the item, while viewport switching passes true as the optional second argument."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceViewer",
 				"type": "markup",
-				"description": "An unselected message or a screenshot lightbox initially showing after, with before/compare choices when a partner exists. Previous/next wraps through available neighbours and resets to after. Without neighbours, arrows are disabled and visibly muted, and the navigation hint is hidden. Viewport switching prefers comparison, then category/title, category, then first candidate. Title and top provenance describe the displayed side; comparison uses after metadata and each image retains its own caption and note. Changing image/view recreates zoom state."
+				"description": "Renders the lightbox when selected is non-null and the unselected message otherwise; after is the default view, and before/after/compare controls appear only when a matching before item exists. It shows a missing note instead of an image for missing records, includes available provenance and per-side captions, lays out comparisons in two panes, and remounts image zoom when the view changes."
 			}
 		],
 		"errors": [
 			{
 				"name": "onclose callback error",
 				"type": "thrown",
-				"description": "An error thrown by onclose propagates when the viewer closes."
+				"description": "An exception thrown synchronously by onclose propagates when the modal closes; the view resets to after before the callback runs."
 			},
 			{
 				"name": "onselect callback error",
 				"type": "thrown",
-				"description": "An error thrown by onselect propagates when navigation or viewport switching selects evidence."
-			},
-			{
-				"name": "each_key_duplicate",
-				"type": "thrown",
-				"description": "Svelte rejects a comparison whose before and after evidence share the same id."
+				"description": "An exception thrown synchronously by onselect propagates when navigation or viewport switching invokes it; only viewport switching passes true as the optional second argument."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
