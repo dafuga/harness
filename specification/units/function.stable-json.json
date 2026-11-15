@@ -21,17 +21,48 @@
 				"name": "stableJson.value",
 				"type": "unknown",
 				"required": true,
-				"description": "JSON-shaped value to render; undefined object fields are omitted, while nullish values elsewhere become null."
+				"description": "The JSON-shaped value to render, which can be any JSON value including nested arrays and plain objects, and the output depends only on it. It matters when the data contains undefined fields, nullish array items, or non-JSON values: undefined object fields are omitted, nullish array items and top-level values become null, BigInt values and circular references throw, and functions or symbols have no JSON form and produce invalid text.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "function.stable-json",
+						"status": "active",
+						"scenarios": []
+					},
+					["stableJson", "Position"],
+					[
+						"src/utils/development-tooling/stableJson.ts",
+						"src/utils/development-tooling/stableJson.types.ts",
+						"src/utils/stableJson.ts"
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "stableJson",
 				"type": "string",
-				"description": "Formatted text with a trailing newline. Objects retain entry order; primitive arrays stay inline when they fit the 100-column layout calculation, otherwise values expand with tabs."
+				"description": "The formatted JSON text with tab indentation, object keys in Object.entries order, undefined object fields removed and exactly one trailing newline, so generated files pass format checks. Objects with at least one defined field always expand to one line per field, arrays that contain an object or array expand to one line per item, and non-empty primitive arrays stay on one line only when the full line fits in 100 columns (each indent level counts as 2 columns, plus any key label and trailing comma); functions or symbols in the input can make the output invalid JSON.",
+				"examples": [
+					"{\n\t\"schemaVersion\": 1,\n\t\"id\": \"function.stable-json\",\n\t\"status\": \"active\",\n\t\"scenarios\": []\n}\n",
+					"[\"stableJson\", \"Position\"]\n",
+					"[\n\t\"src/utils/development-tooling/stableJson.ts\",\n\t\"src/utils/development-tooling/stableJson.types.ts\",\n\t\"src/utils/stableJson.ts\"\n]\n"
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when a BigInt value is rendered, because JSON.stringify cannot serialize it, or when an array item contains a circular reference, because each array measures its items with JSON.stringify before rendering them. The implementation does not catch it, so it reaches the caller."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Thrown when nesting overflows the call stack, as happens for a circular reference made only of object fields (renderObject tracks no visited objects) and for very deep nesting. The implementation does not catch it, so it reaches the caller."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "stableJson",
@@ -40,18 +71,48 @@
 						"name": "stableJson.value",
 						"type": "unknown",
 						"required": true,
-						"description": "JSON-shaped value to render; undefined object fields are omitted, while nullish values elsewhere become null."
+						"description": "The JSON-shaped value to render, which can be any JSON value including nested arrays and plain objects, and the output depends only on it. It matters when the data contains undefined fields, nullish array items, or non-JSON values: undefined object fields are omitted, nullish array items and top-level values become null, BigInt values and circular references throw, and functions or symbols have no JSON form and produce invalid text.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "function.stable-json",
+								"status": "active",
+								"scenarios": []
+							},
+							["stableJson", "Position"],
+							[
+								"src/utils/development-tooling/stableJson.ts",
+								"src/utils/development-tooling/stableJson.types.ts",
+								"src/utils/stableJson.ts"
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "stableJson",
 						"type": "string",
-						"description": "Formatted text with a trailing newline. Objects retain entry order; primitive arrays stay inline when they fit the 100-column layout calculation, otherwise values expand with tabs."
+						"description": "The formatted JSON text with tab indentation, object keys in Object.entries order, undefined object fields removed and exactly one trailing newline, so generated files pass format checks. Objects with at least one defined field always expand to one line per field, arrays that contain an object or array expand to one line per item, and non-empty primitive arrays stay on one line only when the full line fits in 100 columns (each indent level counts as 2 columns, plus any key label and trailing comma); functions or symbols in the input can make the output invalid JSON.",
+						"examples": [
+							"{\n\t\"schemaVersion\": 1,\n\t\"id\": \"function.stable-json\",\n\t\"status\": \"active\",\n\t\"scenarios\": []\n}\n",
+							"[\"stableJson\", \"Position\"]\n",
+							"[\n\t\"src/utils/development-tooling/stableJson.ts\",\n\t\"src/utils/development-tooling/stableJson.types.ts\",\n\t\"src/utils/stableJson.ts\"\n]\n"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when a BigInt value is rendered, because JSON.stringify cannot serialize it, or when an array item contains a circular reference, because each array measures its items with JSON.stringify before rendering them. The implementation does not catch it, so it reaches the caller."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown when nesting overflows the call stack, as happens for a circular reference made only of object fields (renderObject tracks no visited objects) and for very deep nesting. The implementation does not catch it, so it reaches the caller."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
