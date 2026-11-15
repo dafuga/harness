@@ -27,52 +27,85 @@
 				"type": "Dependencies",
 				"required": false,
 				"default": {},
-				"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+				"description": "The constructor reads env from options.env or process.env, resolves home from options.home or resourceHome(env), and passes options.monitor to ResourceMonitorService. These options configure the service's environment, home path, and monitor adapter.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "ResourceQueueService.run.input",
 				"type": "ResourceRequest",
 				"required": true,
-				"description": "Requested priority, CPU cores, memory in MiB and public label for the operation."
+				"description": "The request is parsed with resourceRequestSchema before it is enqueued. For inherited leases, its cpus and memoryMiB values must not exceed the running parent reservation.",
+				"examples": [
+					{
+						"priority": "coding",
+						"cpus": 2,
+						"memoryMiB": 4096,
+						"label": "Unit test worker"
+					}
+				]
 			},
 			{
 				"name": "ResourceQueueService.run.action",
 				"type": "(context: ResourceContext) => Promise<T>",
 				"required": true,
-				"description": "Asynchronous work executed only after admission; receives the bounded resource context."
+				"description": "The callback runs after monitor.wait completes and the post-wait abort check passes. It receives a ResourceContext, and its resolved value is returned by run."
 			},
 			{
 				"name": "ResourceQueueService.run.options",
 				"type": "RunOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+				"description": "The options are passed to monitor.wait, with env overriding the service environment and signal checked before enqueue and after waiting. If supplied, waitTimeoutMs must be finite and greater than zero.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ResourceQueueService.snapshot",
 				"type": "Promise<ResourceSnapshot>",
-				"description": "Latest timestamped host observation, absent before the first sample."
+				"description": "Each call resolves with the value returned by the owned ResourceMonitorService.snapshot() method. This service does not transform or cache that value.",
+				"examples": [
+					{
+						"status": "available",
+						"sampledAt": 1794744000000,
+						"logicalCores": 16,
+						"usableCores": 8,
+						"cpuUsedPercent": 25,
+						"cpuAvailableCores": 5.25,
+						"memoryTotalBytes": 8589934592,
+						"memoryAvailableBytes": 6442450944,
+						"memoryPressure": "normal"
+					}
+				]
 			},
 			{
 				"name": "ResourceQueueService.run",
 				"type": "Promise<T>",
-				"description": "Result of the admitted action, always releasing its reservation afterward."
+				"description": "Resolves with the value returned by action after the queue wait and post-wait abort check succeed. Once enqueued, the request is removed in finally after either waiting or action execution.",
+				"examples": [
+					{
+						"status": "done"
+					}
+				]
 			},
 			{
 				"name": "ResourceQueueService.close",
 				"type": "void",
-				"description": "Closes the owned SQLite connection."
+				"description": "Calls close() on the service's owned ResourceQueueRepository."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid requests, unproven owners, invalid parent leases, oversize nested work and queue overflow reject."
+				"description": "This Error is thrown for an invalid wait timeout, an owner without startedAt, a full queue of 512 records, an invalid inherited lease, or nested CPU or memory above the parent reservation. Request parsing, abort checks, monitor waits, action execution, snapshot reads, and queue closing can also propagate their underlying failures."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ResourceQueueService.snapshot",
@@ -81,11 +114,24 @@
 					{
 						"name": "ResourceQueueService.snapshot",
 						"type": "Promise<ResourceSnapshot>",
-						"description": "Latest timestamped host observation, absent before the first sample."
+						"description": "Each call resolves with the value returned by the owned ResourceMonitorService.snapshot() method. This service does not transform or cache that value.",
+						"examples": [
+							{
+								"status": "available",
+								"sampledAt": 1794744000000,
+								"logicalCores": 16,
+								"usableCores": 8,
+								"cpuUsedPercent": 25,
+								"cpuAvailableCores": 5.25,
+								"memoryTotalBytes": 8589934592,
+								"memoryAvailableBytes": 6442450944,
+								"memoryPressure": "normal"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceQueueService.run",
@@ -94,36 +140,53 @@
 						"name": "ResourceQueueService.run.input",
 						"type": "ResourceRequest",
 						"required": true,
-						"description": "Requested priority, CPU cores, memory in MiB and public label for the operation."
+						"description": "The request is parsed with resourceRequestSchema before it is enqueued. For inherited leases, its cpus and memoryMiB values must not exceed the running parent reservation.",
+						"examples": [
+							{
+								"priority": "coding",
+								"cpus": 2,
+								"memoryMiB": 4096,
+								"label": "Unit test worker"
+							}
+						]
 					},
 					{
 						"name": "ResourceQueueService.run.action",
 						"type": "(context: ResourceContext) => Promise<T>",
 						"required": true,
-						"description": "Asynchronous work executed only after admission; receives the bounded resource context."
+						"description": "The callback runs after monitor.wait completes and the post-wait abort check passes. It receives a ResourceContext, and its resolved value is returned by run."
 					},
 					{
 						"name": "ResourceQueueService.run.options",
 						"type": "RunOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+						"description": "The options are passed to monitor.wait, with env overriding the service environment and signal checked before enqueue and after waiting. If supplied, waitTimeoutMs must be finite and greater than zero.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResourceQueueService.run",
 						"type": "Promise<T>",
-						"description": "Result of the admitted action, always releasing its reservation afterward."
+						"description": "Resolves with the value returned by action after the queue wait and post-wait abort check succeed. Once enqueued, the request is removed in finally after either waiting or action execution.",
+						"examples": [
+							{
+								"status": "done"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "This Error is thrown for an invalid wait timeout, an owner without startedAt, a full queue of 512 records, an invalid inherited lease, or nested CPU or memory above the parent reservation. Request parsing, abort checks, monitor waits, action execution, snapshot reads, and queue closing can also propagate their underlying failures."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceQueueService.close",
@@ -132,11 +195,11 @@
 					{
 						"name": "ResourceQueueService.close",
 						"type": "void",
-						"description": "Closes the owned SQLite connection."
+						"description": "Calls close() on the service's owned ResourceQueueRepository."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -148,17 +211,21 @@
 						"type": "Dependencies",
 						"required": false,
 						"default": {},
-						"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+						"description": "The constructor reads env from options.env or process.env, resolves home from options.home or resourceHome(env), and passes options.monitor to ResourceMonitorService. These options configure the service's environment, home path, and monitor adapter.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResourceQueueService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed ResourceQueueService instance owns its resolved home path, queue repository, and resource monitor."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
