@@ -1,5 +1,5 @@
 // @harness-uid u_2q2hev2p3p
-import { RepositoryArbiterService } from '../../services/RepositoryArbiterService';
+import { RepositoryArbiterService } from '../../services/projects-sessions/RepositoryArbiterService';
 import type {
 	DeploymentPlugin,
 	DeploymentConfig

@@ -12,8 +12,8 @@ import {
 	toBase64Url
 } from '../../remote/src/index';
 import type { HostPairingOffer, RemoteKeyPair } from '../../remote/src/index';
-import { RemotePairingControlService } from '../src/services/RemotePairingControlService';
-import type { RemoteHostAccess } from '../src/services/RemotePairingControlService';
+import { RemotePairingControlService } from '../src/services/networking-security/remote-host-service/RemotePairingControlService';
+import type { RemoteHostAccess } from '../src/services/networking-security/remote-host-service/RemotePairingControlService';
 import type { ProjectRegistryService } from '../src/services/projects-sessions/ProjectRegistryService';
 import { deferred } from './remote-fixture';
 

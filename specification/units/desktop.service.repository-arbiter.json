@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/services/RepositoryArbiterService.ts",
-			"packages/desktop/src/services/projects-sessions/RepositoryArbiterService.ts"
-		],
+		"source": ["packages/desktop/src/services/projects-sessions/RepositoryArbiterService.ts"],
 		"symbols": [
-			"RepositoryArbiterService",
 			"RepositoryArbiterService",
 			"RepositoryArbiterService.hold",
 			"RepositoryArbiterService.release",

@@ -8,7 +8,7 @@ import { DeviceSessionService } from '../src/services/device-session-service/Dev
 import { ProjectRegistryService } from '../src/services/projects-sessions/ProjectRegistryService';
 import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { ProviderDiscoveryService } from '../src/services/provider-discovery-service/ProviderDiscoveryService';
-import { RepositoryArbiterService } from '../src/services/RepositoryArbiterService';
+import { RepositoryArbiterService } from '../src/services/projects-sessions/RepositoryArbiterService';
 import { desktopBridge } from '../src/utils/desktopBridge';
 import { PNG } from 'pngjs';
 import { vi } from 'vitest';

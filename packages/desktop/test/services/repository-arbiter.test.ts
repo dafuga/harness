@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { RepositoryArbiterService } from '../../src/services/RepositoryArbiterService';
+import { RepositoryArbiterService } from '../../src/services/projects-sessions/RepositoryArbiterService';
 
 test('one owner holds the run lock of a repository at a time', () => {
 	const arbiter = new RepositoryArbiterService(),

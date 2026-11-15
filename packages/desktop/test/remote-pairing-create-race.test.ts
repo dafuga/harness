@@ -3,8 +3,8 @@ import { expect, test } from 'vitest';
 import { HostPairingService, remoteIdentity, remoteKeys } from '../../remote/src/index';
 import type { RemoteHostStatus } from '../../remote/src/index';
 import type { ProjectRegistryService } from '../src/services/projects-sessions/ProjectRegistryService';
-import { RemotePairingControlService } from '../src/services/RemotePairingControlService';
-import type { RemoteHostAccess } from '../src/services/RemotePairingControlService';
+import { RemotePairingControlService } from '../src/services/networking-security/remote-host-service/RemotePairingControlService';
+import type { RemoteHostAccess } from '../src/services/networking-security/remote-host-service/RemotePairingControlService';
 
 async function control() {
 	const keys = await remoteKeys(),

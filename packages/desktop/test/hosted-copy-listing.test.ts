@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
 import { RemoteHttpProjectAdapter } from '../src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter';
-import { RemoteProjectionService } from '../src/services/RemoteProjectionService';
+import { RemoteProjectionService } from '../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteProjectionService';
 import { analytics, former } from './catalog-listing-manifests';
 import { remoteCacheFixture } from './remote-cache-fixture';
 const tip = { projectId: 'p', branch: 'main', commit: null };
