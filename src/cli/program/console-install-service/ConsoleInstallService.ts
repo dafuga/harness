@@ -19,7 +19,10 @@ import {
 } from '../../../utils/consoleManifest';
 import { indexFiles } from '../../../utils/indexFiles';
 import { hostWarnings, installableHost } from './installableHost';
-import { ConsoleChangeService, type FileState } from '../../../services/ConsoleChangeService';
+import {
+	ConsoleChangeService,
+	type FileState
+} from '../../../services/projects-sessions/ConsoleChangeService';
 
 /** Installs the console into a SvelteKit host and records exactly what it wrote and changed. */
 export class ConsoleInstallService {

@@ -12,7 +12,7 @@ import {
 	EvidenceAttachService,
 	type Attached
 } from '../../../src/services/verification-evidence/evidence-attach-service/EvidenceAttachService';
-import { EvidenceRestoreService } from '../../../src/services/EvidenceRestoreService';
+import { EvidenceRestoreService } from '../../../src/services/verification-evidence/EvidenceRestoreService';
 import { sourceCommit } from '../../../src/workflows/runHistory';
 
 /** Repositories that have had an attacher in this process; none of them ever gets another. */

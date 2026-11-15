@@ -5,7 +5,7 @@ import type {
 	VerificationProfile
 } from '../../../../../core/verification-evidence/verificationTypes';
 import type { VerificationStoreRepository } from '../../../../../repositories/verification-evidence/VerificationStoreRepository';
-import type { ReasonReport } from '../../../../../services/ExplanationService';
+import type { ReasonReport } from '../../../../../services/development-tooling/ExplanationService';
 import type { RevisionSide } from '../../../../loadRevisions';
 import type { Executed } from '../SnapshotRunService';
 import type { VerificationSourceHashes } from './sealRecord.types';

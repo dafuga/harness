@@ -11,7 +11,7 @@ import {
 } from '../../src/core/explanationTypes';
 import { ExplanationRepository } from '../../src/repositories/verification-evidence/ExplanationRepository';
 import { HistoryNoteRepository } from '../../src/repositories/git-source-history/history-note-repository/HistoryNoteRepository';
-import { ExplanationService } from '../../src/services/ExplanationService';
+import { ExplanationService } from '../../src/services/development-tooling/ExplanationService';
 import { HistoryStatusService } from '../../src/services/history-status-service/HistoryStatusService';
 import { noteHistoryFixture, noteHistoryMemory } from '../support/noteHistoryFixture';
 

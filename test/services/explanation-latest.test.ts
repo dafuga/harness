@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { Explanation, RequiredReason } from '../../src/core/explanationTypes';
-import { ExplanationService } from '../../src/services/ExplanationService';
+import { ExplanationService } from '../../src/services/development-tooling/ExplanationService';
 
 const words = (count: number) => Array.from({ length: count }, () => 'word').join(' ');
 /** A change of one function from a1 to a2, written in two steps through m. */

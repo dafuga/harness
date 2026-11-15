@@ -9,13 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/ExplanationService.ts",
 			"src/services/development-tooling/ExplanationService.ts",
 			"src/services/development-tooling/ExplanationService.types.ts"
 		],
 		"symbols": [
-			"ExplanationService",
-			"describe",
 			"ExplanationService",
 			"ExplanationService.report",
 			"describe",
