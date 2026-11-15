@@ -12,22 +12,45 @@
 		"symbols": ["load"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "load.params",
 				"type": "{ id: string }",
-				"required": true
+				"required": true,
+				"description": "The route id is passed to repository.get and, when that lookup rejects, used as the id in reportDestination’s fallback report object. This loader accepts it as a string without validating its format.",
+				"examples": [
+					{
+						"id": "legacy-report-42"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "load",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The async load handler has no normal resolved value: after its data-loading and parsing steps, it calls redirect(307, ...) and throws the redirect control-flow result. The redirect target is /harness followed by reportDestination’s result for the loaded index and report, or the route id fallback when report lookup rejects."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "consoleData.json rejection",
+				"type": "thrown",
+				"description": "A rejection from consoleData.json('index.json') propagates through Promise.all because this loader does not catch that promise. The rejection can occur before the redirect is reached."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "JSON.parse(stored) throws SyntaxError when the stored index value is truthy but is not valid JSON. Falsy stored values skip parsing."
+			},
+			{
+				"name": "Redirect 307",
+				"type": "thrown",
+				"description": "After Promise.all resolves and any truthy stored index parses, redirect(307, ...) throws the 307 redirect to /harness plus the destination returned by reportDestination. A rejection from repository.get is caught and converted to null before this step."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "load",
@@ -35,22 +58,40 @@
 					{
 						"name": "load.params",
 						"type": "{ id: string }",
-						"required": true
+						"required": true,
+						"description": "The route id is passed to repository.get and, when that lookup rejects, used as the id in reportDestination’s fallback report object. This loader accepts it as a string without validating its format.",
+						"examples": [
+							{
+								"id": "legacy-report-42"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "load",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The async load handler has no normal resolved value: after its data-loading and parsing steps, it calls redirect(307, ...) and throws the redirect control-flow result. The redirect target is /harness followed by reportDestination’s result for the loaded index and report, or the route id fallback when report lookup rejects."
 					}
 				],
 				"errors": [
 					{
+						"name": "consoleData.json rejection",
+						"type": "thrown",
+						"description": "A rejection from consoleData.json('index.json') propagates through Promise.all because this loader does not catch that promise. The rejection can occur before the redirect is reached."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse(stored) throws SyntaxError when the stored index value is truthy but is not valid JSON. Falsy stored values skip parsing."
+					},
+					{
 						"name": "Redirect 307",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "After Promise.all resolves and any truthy stored index parses, redirect(307, ...) throws the 307 redirect to /harness plus the destination returned by reportDestination. A rejection from repository.get is caught and converted to null before this step."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
