@@ -32,33 +32,125 @@
 				"name": "PermissionCatalogService.load.root",
 				"type": "string",
 				"required": true,
-				"description": "Project directory containing profile declarations."
+				"description": "Filesystem root passed to path joining before the service enumerates `specification/permissions`. It matters to `load`; a missing permissions directory yields an empty catalog, while other directory-listing errors reject.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
+				]
 			},
 			{
 				"name": "PermissionCatalogService.at.tree",
 				"type": "PermissionSourceTree",
 				"required": true,
-				"description": "Selected source tree providing JSON profile files."
+				"description": "Source adapter used by `at`: `list()` supplies candidate paths and `read(path)` supplies their text. Only paths matching `specification/permissions/<id>.json` are read; other paths are skipped."
 			}
 		],
 		"outputs": [
 			{
 				"name": "profileSchema",
 				"type": "unknown",
-				"description": "Strict source-declared profile schema with API methods, page grants and scoped data fields."
+				"description": "Strict Zod schema used to parse permission-profile JSON: `schemaVersion` must be 1, `id` must match the lowercase hyphenated pattern, text values must be nonempty after trimming, and grants must use the declared API, page, or data shape. It rejects unknown keys and enforces the action and nonempty-array constraints; the schema instance cannot be represented as a JSON value."
 			},
 			{
 				"name": "PermissionCatalogService.load",
 				"type": "Promise<PermissionCatalog>",
-				"description": "Profiles with source paths and explicit gaps for invalid or unreadable declarations."
+				"description": "The resolved catalog contains successfully parsed profiles whose ids match their `specification/permissions/<id>.json` filenames, each tagged with its source path; profiles are sorted by id and invalid matching entries become gap strings. A missing permissions directory resolves to empty arrays, while other directory-listing failures reject.",
+				"examples": [
+					{
+						"profiles": [
+							{
+								"schemaVersion": 1,
+								"id": "read-only-audit",
+								"title": "Read-only audit",
+								"description": "Read access for audit reporting.",
+								"grants": [
+									{
+										"kind": "api",
+										"resource": "reports",
+										"actions": ["GET"],
+										"data": [
+											{
+												"resource": "reports",
+												"actions": ["read"],
+												"fields": ["id", "status"],
+												"scope": "tenant"
+											}
+										]
+									},
+									{
+										"kind": "page",
+										"resource": "audit",
+										"actions": ["view"]
+									},
+									{
+										"kind": "data",
+										"resource": "users",
+										"actions": ["read"],
+										"fields": ["id", "email"],
+										"scope": "tenant"
+									}
+								],
+								"source": "specification/permissions/read-only-audit.json"
+							}
+						],
+						"gaps": ["Invalid permission profile: specification/permissions/legacy.json"]
+					}
+				]
 			},
 			{
 				"name": "PermissionCatalogService.at",
 				"type": "Promise<PermissionCatalog>",
-				"description": "Profiles with source paths and explicit gaps for invalid or unreadable declarations."
+				"description": "The resolved catalog contains successfully parsed profiles from paths matching `specification/permissions/<id>.json`, tagged with their source paths and sorted by id; nonmatching paths are skipped. Per-path read, JSON, schema, identity, and duplicate failures become gap strings, while a rejected `tree.list()` rejects the operation.",
+				"examples": [
+					{
+						"profiles": [
+							{
+								"schemaVersion": 1,
+								"id": "read-only-audit",
+								"title": "Read-only audit",
+								"description": "Read access for audit reporting.",
+								"grants": [
+									{
+										"kind": "api",
+										"resource": "reports",
+										"actions": ["GET"],
+										"data": [
+											{
+												"resource": "reports",
+												"actions": ["read"],
+												"fields": ["id", "status"],
+												"scope": "tenant"
+											}
+										]
+									},
+									{
+										"kind": "page",
+										"resource": "audit",
+										"actions": ["view"]
+									},
+									{
+										"kind": "data",
+										"resource": "users",
+										"actions": ["read"],
+										"fields": ["id", "email"],
+										"scope": "tenant"
+									}
+								],
+								"source": "specification/permissions/read-only-audit.json"
+							}
+						],
+						"gaps": ["Invalid permission profile: specification/permissions/legacy.json"]
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A listing failure can escape when `load` cannot enumerate the permissions directory for a reason other than `ENOENT`, or when `at` receives a rejected `tree.list()`; that failure is passed through. Per-path read and validation failures are caught and recorded as gap strings."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PermissionCatalogService.load",
@@ -67,18 +159,68 @@
 						"name": "PermissionCatalogService.load.root",
 						"type": "string",
 						"required": true,
-						"description": "Project directory containing profile declarations."
+						"description": "Filesystem root passed to path joining before the service enumerates `specification/permissions`. It matters to `load`; a missing permissions directory yields an empty catalog, while other directory-listing errors reject.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PermissionCatalogService.load",
 						"type": "Promise<PermissionCatalog>",
-						"description": "Profiles with source paths and explicit gaps for invalid or unreadable declarations."
+						"description": "The resolved catalog contains successfully parsed profiles whose ids match their `specification/permissions/<id>.json` filenames, each tagged with its source path; profiles are sorted by id and invalid matching entries become gap strings. A missing permissions directory resolves to empty arrays, while other directory-listing failures reject.",
+						"examples": [
+							{
+								"profiles": [
+									{
+										"schemaVersion": 1,
+										"id": "read-only-audit",
+										"title": "Read-only audit",
+										"description": "Read access for audit reporting.",
+										"grants": [
+											{
+												"kind": "api",
+												"resource": "reports",
+												"actions": ["GET"],
+												"data": [
+													{
+														"resource": "reports",
+														"actions": ["read"],
+														"fields": ["id", "status"],
+														"scope": "tenant"
+													}
+												]
+											},
+											{
+												"kind": "page",
+												"resource": "audit",
+												"actions": ["view"]
+											},
+											{
+												"kind": "data",
+												"resource": "users",
+												"actions": ["read"],
+												"fields": ["id", "email"],
+												"scope": "tenant"
+											}
+										],
+										"source": "specification/permissions/read-only-audit.json"
+									}
+								],
+								"gaps": ["Invalid permission profile: specification/permissions/legacy.json"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A permissions-directory listing failure other than `ENOENT` rejects `load` and is passed through. Failures reading individual matching files are caught by `at` and recorded as gap strings."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PermissionCatalogService.at",
@@ -87,23 +229,65 @@
 						"name": "PermissionCatalogService.at.tree",
 						"type": "PermissionSourceTree",
 						"required": true,
-						"description": "Selected source tree providing JSON profile files."
+						"description": "Source adapter used by `at`: `list()` supplies candidate paths and `read(path)` supplies their text. Only paths matching `specification/permissions/<id>.json` are read; other paths are skipped."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PermissionCatalogService.at",
 						"type": "Promise<PermissionCatalog>",
-						"description": "Profiles with source paths and explicit gaps for invalid or unreadable declarations."
+						"description": "The resolved catalog contains successfully parsed profiles from paths matching `specification/permissions/<id>.json`, tagged with their source paths and sorted by id; nonmatching paths are skipped. Per-path read, JSON, schema, identity, and duplicate failures become gap strings, while a rejected `tree.list()` rejects the operation.",
+						"examples": [
+							{
+								"profiles": [
+									{
+										"schemaVersion": 1,
+										"id": "read-only-audit",
+										"title": "Read-only audit",
+										"description": "Read access for audit reporting.",
+										"grants": [
+											{
+												"kind": "api",
+												"resource": "reports",
+												"actions": ["GET"],
+												"data": [
+													{
+														"resource": "reports",
+														"actions": ["read"],
+														"fields": ["id", "status"],
+														"scope": "tenant"
+													}
+												]
+											},
+											{
+												"kind": "page",
+												"resource": "audit",
+												"actions": ["view"]
+											},
+											{
+												"kind": "data",
+												"resource": "users",
+												"actions": ["read"],
+												"fields": ["id", "email"],
+												"scope": "tenant"
+											}
+										],
+										"source": "specification/permissions/read-only-audit.json"
+									}
+								],
+								"gaps": ["Invalid permission profile: specification/permissions/legacy.json"]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "A rejected `tree.list()` escapes unchanged. Per-path read, JSON, schema, identity, and duplicate failures are caught and recorded as gap strings."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
