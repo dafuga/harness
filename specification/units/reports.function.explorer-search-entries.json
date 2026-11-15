@@ -18,23 +18,204 @@
 				"name": "explorerSearchEntries.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Explorer entities from the displayed revision. Removed entities are omitted."
+				"description": "The explorer entities of the displayed revision, as the explorer lists them, each carrying its unit. Entities whose change is removed are dropped; the others keep their order, and each must have a unit.contract with inputs, outputs and errors arrays, which the function reads without a check.",
+				"examples": [
+					[
+						{
+							"id": "reports.function.explorer-search-entries",
+							"category": "functions",
+							"role": "Function",
+							"name": "explorerSearchEntries",
+							"purpose": "Builds searchable entity summaries bound to the displayed commit.",
+							"unit": {
+								"id": "reports.function.explorer-search-entries",
+								"kind": "function",
+								"status": "active",
+								"title": "Revision search entries",
+								"responsibility": "Builds searchable entity summaries bound to the displayed commit.",
+								"dependencies": [
+									{
+										"unit": "reports.function.entity-search",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.explorer-types",
+										"via": "import"
+									}
+								],
+								"scenarios": ["harness-console"],
+								"owns": {
+									"source": [
+										"packages/reports/src/utils/explorer-ui/explorerSearchEntries.ts",
+										"packages/reports/src/utils/explorerSearchEntries.ts"
+									],
+									"symbols": ["explorerSearchEntries", "explorerSearchEntries"]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "explorerSearchEntries.entities",
+											"type": "ExplorerEntity[]",
+											"required": true
+										},
+										{
+											"name": "explorerSearchEntries.commit",
+											"type": "string",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "explorerSearchEntries",
+											"type": "SearchEntry[]"
+										}
+									],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/explorerSearchEntries.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "9e4b20d7c18a53f6"
+							},
+							"verdict": {
+								"passed": true,
+								"label": "Full coverage passed",
+								"reasons": []
+							},
+							"change": "direct",
+							"appRoute": null
+						}
+					],
+					[
+						{
+							"id": "reports.function.explorer-search-entries",
+							"category": "functions",
+							"role": "Function",
+							"name": "explorerSearchEntries",
+							"purpose": "Builds searchable entity summaries bound to the displayed commit.",
+							"unit": {
+								"id": "reports.function.explorer-search-entries",
+								"kind": "function",
+								"status": "active",
+								"title": "Revision search entries",
+								"responsibility": "Builds searchable entity summaries bound to the displayed commit.",
+								"dependencies": [
+									{
+										"unit": "reports.function.entity-search",
+										"via": "import"
+									},
+									{
+										"unit": "reports.model.explorer-types",
+										"via": "import"
+									}
+								],
+								"scenarios": ["harness-console"],
+								"owns": {
+									"source": [
+										"packages/reports/src/utils/explorer-ui/explorerSearchEntries.ts",
+										"packages/reports/src/utils/explorerSearchEntries.ts"
+									],
+									"symbols": ["explorerSearchEntries", "explorerSearchEntries"]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "explorerSearchEntries.entities",
+											"type": "ExplorerEntity[]",
+											"required": true
+										},
+										{
+											"name": "explorerSearchEntries.commit",
+											"type": "string",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "explorerSearchEntries",
+											"type": "SearchEntry[]"
+										}
+									],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/explorerSearchEntries.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "5a7d0e3b92c41f68"
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Removed at this commit",
+								"reasons": [
+									"This commit removed it; its contract is shown as it last was, at a3f09d6."
+								]
+							},
+							"change": "removed",
+							"appRoute": null,
+							"lastAt": "a3f09d6e2c1b87450e9d3f6a2b8c1d7e4f05a963"
+						}
+					]
+				]
 			},
 			{
 				"name": "explorerSearchEntries.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit identifier attached to every search entry."
+				"description": "The full commit identifier the displayed revision was read at, copied unchanged onto each returned entry. The function does not check its format or whether it matches the entities, so the caller must pass the commit those entities were read at.",
+				"examples": [
+					"7c4e1a9d2b58f36e0a71c94d8b2f5e6a3d10b8c7",
+					"e91b5f0c6a3d27e84f19b0c5d6a72e3f8b41d9c2"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerSearchEntries",
 				"type": "SearchEntry[]",
-				"description": "Search entries containing identifier, category, display name, purpose and contract field names, with the supplied commit. No owned source paths are added."
+				"description": "One SearchEntry per entity that is not removed, in input order, holding its id, category, name, purpose, the given commit, and terms: the names of its unit's contract inputs, outputs and errors, in that order. No source path is part of an entry, and an empty array means every entity was removed or none was given.",
+				"examples": [
+					[
+						{
+							"id": "reports.function.explorer-search-entries",
+							"category": "functions",
+							"name": "explorerSearchEntries",
+							"purpose": "Builds searchable entity summaries bound to the displayed commit.",
+							"terms": [
+								"explorerSearchEntries.entities",
+								"explorerSearchEntries.commit",
+								"explorerSearchEntries"
+							],
+							"commit": "7c4e1a9d2b58f36e0a71c94d8b2f5e6a3d10b8c7"
+						}
+					],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "explorerSearchEntries",
@@ -43,24 +224,204 @@
 						"name": "explorerSearchEntries.entities",
 						"type": "ExplorerEntity[]",
 						"required": true,
-						"description": "Explorer entities from the displayed revision. Removed entities are omitted."
+						"description": "The explorer entities of the displayed revision, as the explorer lists them, each carrying its unit. Entities whose change is removed are dropped; the others keep their order, and each must have a unit.contract with inputs, outputs and errors arrays, which the function reads without a check.",
+						"examples": [
+							[
+								{
+									"id": "reports.function.explorer-search-entries",
+									"category": "functions",
+									"role": "Function",
+									"name": "explorerSearchEntries",
+									"purpose": "Builds searchable entity summaries bound to the displayed commit.",
+									"unit": {
+										"id": "reports.function.explorer-search-entries",
+										"kind": "function",
+										"status": "active",
+										"title": "Revision search entries",
+										"responsibility": "Builds searchable entity summaries bound to the displayed commit.",
+										"dependencies": [
+											{
+												"unit": "reports.function.entity-search",
+												"via": "import"
+											},
+											{
+												"unit": "reports.model.explorer-types",
+												"via": "import"
+											}
+										],
+										"scenarios": ["harness-console"],
+										"owns": {
+											"source": [
+												"packages/reports/src/utils/explorer-ui/explorerSearchEntries.ts",
+												"packages/reports/src/utils/explorerSearchEntries.ts"
+											],
+											"symbols": ["explorerSearchEntries", "explorerSearchEntries"]
+										},
+										"contract": {
+											"inputs": [
+												{
+													"name": "explorerSearchEntries.entities",
+													"type": "ExplorerEntity[]",
+													"required": true
+												},
+												{
+													"name": "explorerSearchEntries.commit",
+													"type": "string",
+													"required": true
+												}
+											],
+											"outputs": [
+												{
+													"name": "explorerSearchEntries",
+													"type": "SearchEntry[]"
+												}
+											],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/utils/explorer-ui/explorerSearchEntries.ts"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "9e4b20d7c18a53f6"
+									},
+									"verdict": {
+										"passed": true,
+										"label": "Full coverage passed",
+										"reasons": []
+									},
+									"change": "direct",
+									"appRoute": null
+								}
+							],
+							[
+								{
+									"id": "reports.function.explorer-search-entries",
+									"category": "functions",
+									"role": "Function",
+									"name": "explorerSearchEntries",
+									"purpose": "Builds searchable entity summaries bound to the displayed commit.",
+									"unit": {
+										"id": "reports.function.explorer-search-entries",
+										"kind": "function",
+										"status": "active",
+										"title": "Revision search entries",
+										"responsibility": "Builds searchable entity summaries bound to the displayed commit.",
+										"dependencies": [
+											{
+												"unit": "reports.function.entity-search",
+												"via": "import"
+											},
+											{
+												"unit": "reports.model.explorer-types",
+												"via": "import"
+											}
+										],
+										"scenarios": ["harness-console"],
+										"owns": {
+											"source": [
+												"packages/reports/src/utils/explorer-ui/explorerSearchEntries.ts",
+												"packages/reports/src/utils/explorerSearchEntries.ts"
+											],
+											"symbols": ["explorerSearchEntries", "explorerSearchEntries"]
+										},
+										"contract": {
+											"inputs": [
+												{
+													"name": "explorerSearchEntries.entities",
+													"type": "ExplorerEntity[]",
+													"required": true
+												},
+												{
+													"name": "explorerSearchEntries.commit",
+													"type": "string",
+													"required": true
+												}
+											],
+											"outputs": [
+												{
+													"name": "explorerSearchEntries",
+													"type": "SearchEntry[]"
+												}
+											],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/utils/explorer-ui/explorerSearchEntries.ts"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "5a7d0e3b92c41f68"
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Removed at this commit",
+										"reasons": [
+											"This commit removed it; its contract is shown as it last was, at a3f09d6."
+										]
+									},
+									"change": "removed",
+									"appRoute": null,
+									"lastAt": "a3f09d6e2c1b87450e9d3f6a2b8c1d7e4f05a963"
+								}
+							]
+						]
 					},
 					{
 						"name": "explorerSearchEntries.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit identifier attached to every search entry."
+						"description": "The full commit identifier the displayed revision was read at, copied unchanged onto each returned entry. The function does not check its format or whether it matches the entities, so the caller must pass the commit those entities were read at.",
+						"examples": [
+							"7c4e1a9d2b58f36e0a71c94d8b2f5e6a3d10b8c7",
+							"e91b5f0c6a3d27e84f19b0c5d6a72e3f8b41d9c2"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerSearchEntries",
 						"type": "SearchEntry[]",
-						"description": "Search entries containing identifier, category, display name, purpose and contract field names, with the supplied commit. No owned source paths are added."
+						"description": "One SearchEntry per entity that is not removed, in input order, holding its id, category, name, purpose, the given commit, and terms: the names of its unit's contract inputs, outputs and errors, in that order. No source path is part of an entry, and an empty array means every entity was removed or none was given.",
+						"examples": [
+							[
+								{
+									"id": "reports.function.explorer-search-entries",
+									"category": "functions",
+									"name": "explorerSearchEntries",
+									"purpose": "Builds searchable entity summaries bound to the displayed commit.",
+									"terms": [
+										"explorerSearchEntries.entities",
+										"explorerSearchEntries.commit",
+										"explorerSearchEntries"
+									],
+									"commit": "7c4e1a9d2b58f36e0a71c94d8b2f5e6a3d10b8c7"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
