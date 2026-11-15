@@ -3,7 +3,7 @@ import { test } from 'vitest';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
-import { RunCancelled } from '../src/models/AgentRunner.types';
+import { RunCancelled } from '../src/models/agents-providers/AgentRunner.types';
 import { fixture, git } from './run-fixture';
 
 const contract = {

@@ -6,7 +6,7 @@ import { exampleDocument } from '../../game/src/utils/game-authoring/keyDoor';
 import type { GameDocument } from '../../game/src/models/game-authoring/Game.types';
 import { WebSocket as SocketClient } from 'ws';
 import type { RemoteHostStatus } from '../../remote/src/index';
-import type { AgentTurn } from '../src/models/AgentRunner.types';
+import type { AgentTurn } from '../src/models/agents-providers/AgentRunner.types';
 import { CommentOutboxService } from '../src/services/projects-sessions/CommentOutboxService';
 import { LocalClientService } from '../src/services/LocalClientService';
 import type { LocalClientOptions } from '../src/services/LocalClientService';

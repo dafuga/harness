@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/models/AgentRunner.types.ts",
 			"packages/desktop/src/models/agents-providers/AgentRunner.types.ts",
 			"packages/desktop/src/models/agents-providers/AgentRunnerValues.ts"
 		],
 		"symbols": [
-			"RunCancelled",
 			"CliCommand",
 			"AgentTurn",
 			"AgentResult",

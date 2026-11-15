@@ -3,7 +3,7 @@ import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { RunCancelled } from '../src/models/AgentRunner.types';
+import { RunCancelled } from '../src/models/agents-providers/AgentRunner.types';
 import { approve, fixture, git, settled } from './run-fixture';
 async function notice(f: Fixture) {
 	const head = git(f.root, 'rev-parse', 'HEAD');

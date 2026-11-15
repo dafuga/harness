@@ -8,7 +8,11 @@ import { PNG } from 'pngjs';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 import { DesktopRunService } from '../src/services/agents-providers/desktop-run-service/DesktopRunService';
 import { ProviderDiscoveryService } from '../src/services/provider-discovery-service/ProviderDiscoveryService';
-import type { AgentRunner, AgentTurn, ImageGenerator } from '../src/models/AgentRunner.types';
+import type {
+	AgentRunner,
+	AgentTurn,
+	ImageGenerator
+} from '../src/models/agents-providers/AgentRunner.types';
 import type { RunEvent, RunRequest } from '../src/models/DesktopBridge.types';
 import { createPlanning } from '../../planning/src/lib/planning/index';
 const roots: string[] = [];

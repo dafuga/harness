@@ -10,7 +10,7 @@ import { ResourceQueueService } from '../../../src/services/execution-runtimes/R
 import { observeResources, snapshot } from '../../../test/support/resourceFixture';
 import { ClaudeCliAdapter } from '../src/adapters/agents-providers/claude-cli-adapter/ClaudeCliAdapter';
 import { CodexAppServerAdapter } from '../src/adapters/agents-providers/codex-app-server-adapter/CodexAppServerAdapter';
-import type { AgentTurn } from '../src/models/AgentRunner.types';
+import type { AgentTurn } from '../src/models/agents-providers/AgentRunner.types';
 export const resourceTelemetry = { pressure: false };
 const queues: ResourceQueueService[] = [];
 const roots: string[] = [],

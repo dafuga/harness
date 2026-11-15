@@ -1,6 +1,6 @@
 import { WireClientService } from '../../remote/src/index';
 import type { RemoteGrant } from '../../remote/src/index';
-import type { AgentTurn } from '../src/models/AgentRunner.types';
+import type { AgentTurn } from '../src/models/agents-providers/AgentRunner.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
 import { CommentOutboxService } from '../src/services/projects-sessions/CommentOutboxService';
 import { DesktopRunService } from '../src/services/agents-providers/desktop-run-service/DesktopRunService';

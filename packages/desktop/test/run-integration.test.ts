@@ -3,7 +3,7 @@ import { test, vi } from 'vitest';
 import { writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { RunCancelled } from '../src/models/AgentRunner.types';
+import { RunCancelled } from '../src/models/agents-providers/AgentRunner.types';
 import { fixture, settled, approve, records, git, bytes } from './run-fixture';
 test('Plan uses read-only CLI and saves a committed immutable version without claiming verification', async () => {
 	const f = await fixture();
