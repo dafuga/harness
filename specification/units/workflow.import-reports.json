@@ -12,37 +12,157 @@
 		"symbols": ["importReports", "renderImport", "ImportOptions", "ImportOptions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "importReports.options",
 				"type": "ImportOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "The options of one import: `root` is the repository to import into (the current working directory when absent), `from` is the legacy report store to read and never change (must be given), and `project` is a project id or name that selects runs by project, including runs made in another directory (without it, only runs made in this repository's working trees are imported). An import fails before reading any report when `from` is missing, when the store path does not exist, or when `root` is not a Git repository.",
+				"examples": [
+					{
+						"root": "/srv/checkout-web",
+						"from": "/srv/legacy-reports"
+					},
+					{
+						"from": "/backup/harness-reports-2025",
+						"project": "checkout-web"
+					},
+					{
+						"root": "/home/dev/checkout-web",
+						"from": "/srv/legacy-reports",
+						"project": "Checkout web"
+					}
+				]
 			},
 			{
 				"name": "renderImport.result",
 				"type": "LegacyImport",
-				"required": true
+				"required": true,
+				"description": "The LegacyImport that renderImport formats, normally the value importReports resolves to. renderImport reads its `imported` and `skipped` arrays without checking them.",
+				"examples": [
+					{
+						"imported": [
+							{
+								"id": "run-20261002-091453",
+								"status": "passed",
+								"startedAt": "2026-10-02T09:14:53.000Z",
+								"revision": "3f9c2ab",
+								"linked": "3f9c2ab71d0e4b5c8a6f1e2d3c4b5a6978695a4b",
+								"media": 2,
+								"created": true
+							}
+						],
+						"skipped": [
+							{
+								"id": "run-20260928-100044",
+								"reason": "is not a report manifest"
+							},
+							{
+								"id": "run-20260930-081200",
+								"reason": "belongs to another project"
+							}
+						]
+					},
+					{
+						"imported": [
+							{
+								"id": "run-20261003-112007",
+								"status": "running",
+								"startedAt": "2026-10-03T11:20:07.000Z",
+								"revision": null,
+								"linked": null,
+								"media": 0,
+								"created": false
+							},
+							{
+								"id": "run-20261004-150531",
+								"status": "failed",
+								"startedAt": "2026-10-04T15:05:31.000Z",
+								"revision": "9d41e07",
+								"linked": null,
+								"media": 1,
+								"created": true
+							}
+						],
+						"skipped": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "importReports",
-				"type": "Promise<LegacyImport>"
+				"type": "Promise<LegacyImport>",
+				"description": "The import result, resolved once every selected run is stored: `imported` lists each report with its id, status, start time, recorded revision, linked commit (the full commit hash, or null when the revision is missing, is not 7 to 40 lowercase hex characters, or does not resolve to a commit here), media count (files the old store still had) and `created` flag (false when already imported), and `skipped` lists each run that was not imported with its id and reason. The promise rejects with the ExpectedCliError declared in this contract when a precondition fails, instead of resolving.",
+				"examples": [
+					{
+						"imported": [
+							{
+								"id": "run-20261002-091453",
+								"status": "passed",
+								"startedAt": "2026-10-02T09:14:53.000Z",
+								"revision": "3f9c2ab",
+								"linked": "3f9c2ab71d0e4b5c8a6f1e2d3c4b5a6978695a4b",
+								"media": 2,
+								"created": true
+							}
+						],
+						"skipped": [
+							{
+								"id": "run-20260928-100044",
+								"reason": "is not a report manifest"
+							},
+							{
+								"id": "run-20260930-081200",
+								"reason": "belongs to another project"
+							}
+						]
+					},
+					{
+						"imported": [
+							{
+								"id": "run-20261003-112007",
+								"status": "running",
+								"startedAt": "2026-10-03T11:20:07.000Z",
+								"revision": null,
+								"linked": null,
+								"media": 0,
+								"created": false
+							},
+							{
+								"id": "run-20261004-150531",
+								"status": "failed",
+								"startedAt": "2026-10-04T15:05:31.000Z",
+								"revision": "9d41e07",
+								"linked": null,
+								"media": 1,
+								"created": true
+							}
+						],
+						"skipped": []
+					}
+				]
 			},
 			{
 				"name": "renderImport",
-				"type": "string"
+				"type": "string",
+				"description": "The text that renderImport returns, with lines joined by newlines: a header with the number of imported reports, one indented line per imported report (id, status, start time, first 12 characters of the linked commit or `unlinked`, media count, and `imported` or `already imported`), then one indented line per skipped run (id and reason). The header counts only the imported reports, so skipped runs are not counted.",
+				"examples": [
+					"1 legacy reports of this repository:\n  run-20261002-091453: passed, 2026-10-02T09:14:53.000Z, linked to 3f9c2ab71d0e, 2 media, imported\n  run-20260928-100044: skipped, is not a report manifest\n  run-20260930-081200: skipped, belongs to another project",
+					"2 legacy reports of this repository:\n  run-20261003-112007: running, 2026-10-03T11:20:07.000Z, unlinked, 0 media, already imported\n  run-20261004-150531: failed, 2026-10-04T15:05:31.000Z, unlinked, 1 media, imported"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown through the fail() helper inside importReports when the import cannot start: `root` is not a Git repository, `from` is missing, or the resolved `from` path does not exist. The async importReports promise rejects with it, and its message names the failed requirement."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "importReports",
@@ -51,22 +171,88 @@
 						"name": "importReports.options",
 						"type": "ImportOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "The options of one import: `root` is the repository to import into (the current working directory when absent), `from` is the legacy report store to read and never change (must be given), and `project` is a project id or name that selects runs by project, including runs made in another directory (without it, only runs made in this repository's working trees are imported). An import fails before reading any report when `from` is missing, when the store path does not exist, or when `root` is not a Git repository.",
+						"examples": [
+							{
+								"root": "/srv/checkout-web",
+								"from": "/srv/legacy-reports"
+							},
+							{
+								"from": "/backup/harness-reports-2025",
+								"project": "checkout-web"
+							},
+							{
+								"root": "/home/dev/checkout-web",
+								"from": "/srv/legacy-reports",
+								"project": "Checkout web"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "importReports",
-						"type": "Promise<LegacyImport>"
+						"type": "Promise<LegacyImport>",
+						"description": "The import result, resolved once every selected run is stored: `imported` lists each report with its id, status, start time, recorded revision, linked commit (the full commit hash, or null when the revision is missing, is not 7 to 40 lowercase hex characters, or does not resolve to a commit here), media count (files the old store still had) and `created` flag (false when already imported), and `skipped` lists each run that was not imported with its id and reason. The promise rejects with the ExpectedCliError declared in this contract when a precondition fails, instead of resolving.",
+						"examples": [
+							{
+								"imported": [
+									{
+										"id": "run-20261002-091453",
+										"status": "passed",
+										"startedAt": "2026-10-02T09:14:53.000Z",
+										"revision": "3f9c2ab",
+										"linked": "3f9c2ab71d0e4b5c8a6f1e2d3c4b5a6978695a4b",
+										"media": 2,
+										"created": true
+									}
+								],
+								"skipped": [
+									{
+										"id": "run-20260928-100044",
+										"reason": "is not a report manifest"
+									},
+									{
+										"id": "run-20260930-081200",
+										"reason": "belongs to another project"
+									}
+								]
+							},
+							{
+								"imported": [
+									{
+										"id": "run-20261003-112007",
+										"status": "running",
+										"startedAt": "2026-10-03T11:20:07.000Z",
+										"revision": null,
+										"linked": null,
+										"media": 0,
+										"created": false
+									},
+									{
+										"id": "run-20261004-150531",
+										"status": "failed",
+										"startedAt": "2026-10-04T15:05:31.000Z",
+										"revision": "9d41e07",
+										"linked": null,
+										"media": 1,
+										"created": true
+									}
+								],
+								"skipped": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through the fail() helper inside importReports when the import cannot start: `root` is not a Git repository, `from` is missing, or the resolved `from` path does not exist. The async importReports promise rejects with it, and its message names the failed requirement."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderImport",
@@ -74,17 +260,71 @@
 					{
 						"name": "renderImport.result",
 						"type": "LegacyImport",
-						"required": true
+						"required": true,
+						"description": "The LegacyImport that renderImport formats, normally the value importReports resolves to. renderImport reads its `imported` and `skipped` arrays without checking them.",
+						"examples": [
+							{
+								"imported": [
+									{
+										"id": "run-20261002-091453",
+										"status": "passed",
+										"startedAt": "2026-10-02T09:14:53.000Z",
+										"revision": "3f9c2ab",
+										"linked": "3f9c2ab71d0e4b5c8a6f1e2d3c4b5a6978695a4b",
+										"media": 2,
+										"created": true
+									}
+								],
+								"skipped": [
+									{
+										"id": "run-20260928-100044",
+										"reason": "is not a report manifest"
+									},
+									{
+										"id": "run-20260930-081200",
+										"reason": "belongs to another project"
+									}
+								]
+							},
+							{
+								"imported": [
+									{
+										"id": "run-20261003-112007",
+										"status": "running",
+										"startedAt": "2026-10-03T11:20:07.000Z",
+										"revision": null,
+										"linked": null,
+										"media": 0,
+										"created": false
+									},
+									{
+										"id": "run-20261004-150531",
+										"status": "failed",
+										"startedAt": "2026-10-04T15:05:31.000Z",
+										"revision": "9d41e07",
+										"linked": null,
+										"media": 1,
+										"created": true
+									}
+								],
+								"skipped": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderImport",
-						"type": "string"
+						"type": "string",
+						"description": "The text that renderImport returns, with lines joined by newlines: a header with the number of imported reports, one indented line per imported report (id, status, start time, first 12 characters of the linked commit or `unlinked`, media count, and `imported` or `already imported`), then one indented line per skipped run (id and reason). The header counts only the imported reports, so skipped runs are not counted.",
+						"examples": [
+							"1 legacy reports of this repository:\n  run-20261002-091453: passed, 2026-10-02T09:14:53.000Z, linked to 3f9c2ab71d0e, 2 media, imported\n  run-20260928-100044: skipped, is not a report manifest\n  run-20260930-081200: skipped, belongs to another project",
+							"2 legacy reports of this repository:\n  run-20261003-112007: running, 2026-10-03T11:20:07.000Z, unlinked, 0 media, already imported\n  run-20261004-150531: failed, 2026-10-04T15:05:31.000Z, unlinked, 1 media, imported"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
