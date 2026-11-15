@@ -31,40 +31,113 @@
 				"name": "createdThread.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "The workspace from which to consume the remembered selection, using its current project identity."
+				"description": "The Workspace instance used as the WeakMap key for a pending selection. A different workspace instance has separate pending state."
 			},
 			{
 				"name": "createdThread.entity",
 				"type": "EntityDetail",
 				"required": true,
-				"description": "The displayed entity and its threads, used to find the remembered thread after matching project and entity."
+				"description": "The entity record whose thread list is searched after the remembered project and entity IDs match. Its id and each thread id are compared with the stored selection; if no listed thread matches, the result is null.",
+				"examples": [
+					{
+						"id": "desktop.function.created-thread",
+						"category": "functions",
+						"kind": "function",
+						"title": "Remember the newly created thread",
+						"summary": "Remembers a newly created thread for its entity.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 1,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": null
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [
+							{
+								"id": "thread-42",
+								"pin": 1,
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null,
+								"messageCount": 0
+							}
+						],
+						"history": [],
+						"sources": [],
+						"size": {
+							"available": true,
+							"text": "0 bytes"
+						},
+						"performance": {
+							"available": false,
+							"text": ""
+						}
+					}
+				]
 			},
 			{
 				"name": "rememberCreatedThread.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "The workspace whose current project identity should be attached to the remembered selection."
+				"description": "The Workspace instance used as the WeakMap key for pending state. Its current context.projectId is stored only when created.threadId is truthy."
 			},
 			{
 				"name": "rememberCreatedThread.created",
 				"type": "Omit<Aim, 'projectId'>",
 				"required": true,
-				"description": "The created entity identity and thread identity, or null when there is no thread. A truthy thread identity is remembered; a null one makes no change."
+				"description": "The created entity ID and thread ID, with threadId allowed to be null. The function stores it only when threadId is truthy; an empty string also leaves pending state unchanged.",
+				"examples": [
+					{
+						"entityId": "desktop.function.created-thread",
+						"threadId": "thread-42"
+					},
+					{
+						"entityId": "desktop.function.created-thread",
+						"threadId": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "rememberCreatedThread",
 				"type": "unknown",
-				"description": "No return value. Stores the entity, thread and current project in workspace-local memory without changing the URL."
+				"description": "Returns undefined; when created.threadId is truthy, stores entityId, threadId and the workspace's current project ID for that workspace. When threadId is null or empty, it leaves the current entry unchanged."
 			},
 			{
 				"name": "createdThread",
 				"type": "ThreadInfo | null",
-				"description": "The matching thread, or null if none is remembered, the project or entity differs, or the thread is absent. The remembered selection is consumed even when no match is found."
+				"description": "Returns the matching ThreadInfo, or null if no selection exists, the current project or entity ID differs, or the remembered thread is absent. It deletes the workspace's pending selection before checking these conditions, so the selection is consumed either way.",
+				"examples": [
+					{
+						"id": "thread-42",
+						"pin": 1,
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null,
+						"messageCount": 0
+					},
+					null
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "createdThread",
@@ -73,24 +146,86 @@
 						"name": "createdThread.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "The workspace from which to consume the remembered selection, using its current project identity."
+						"description": "The Workspace instance used as the WeakMap key for a pending selection. A different workspace instance has separate pending state."
 					},
 					{
 						"name": "createdThread.entity",
 						"type": "EntityDetail",
 						"required": true,
-						"description": "The displayed entity and its threads, used to find the remembered thread after matching project and entity."
+						"description": "The entity record whose thread list is searched after the remembered project and entity IDs match. Its id and each thread id are compared with the stored selection; if no listed thread matches, the result is null.",
+						"examples": [
+							{
+								"id": "desktop.function.created-thread",
+								"category": "functions",
+								"kind": "function",
+								"title": "Remember the newly created thread",
+								"summary": "Remembers a newly created thread for its entity.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "unknown",
+								"verificationNote": "",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 1,
+								"thumbnail": null,
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": null
+								},
+								"relationships": [],
+								"versions": [],
+								"threads": [
+									{
+										"id": "thread-42",
+										"pin": 1,
+										"version": null,
+										"imageSha256": null,
+										"state": null,
+										"viewport": null,
+										"region": null,
+										"messageCount": 0
+									}
+								],
+								"history": [],
+								"sources": [],
+								"size": {
+									"available": true,
+									"text": "0 bytes"
+								},
+								"performance": {
+									"available": false,
+									"text": ""
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "createdThread",
 						"type": "ThreadInfo | null",
-						"description": "The matching thread, or null if none is remembered, the project or entity differs, or the thread is absent. The remembered selection is consumed even when no match is found."
+						"description": "Returns the matching ThreadInfo, or null if no selection exists, the current project or entity ID differs, or the remembered thread is absent. It deletes the workspace's pending selection before checking these conditions, so the selection is consumed either way.",
+						"examples": [
+							{
+								"id": "thread-42",
+								"pin": 1,
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null,
+								"messageCount": 0
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "rememberCreatedThread",
@@ -99,24 +234,34 @@
 						"name": "rememberCreatedThread.workspace",
 						"type": "Workspace",
 						"required": true,
-						"description": "The workspace whose current project identity should be attached to the remembered selection."
+						"description": "The Workspace instance used as the WeakMap key for pending state. Its current context.projectId is stored only when created.threadId is truthy."
 					},
 					{
 						"name": "rememberCreatedThread.created",
 						"type": "Omit<Aim, 'projectId'>",
 						"required": true,
-						"description": "The created entity identity and thread identity, or null when there is no thread. A truthy thread identity is remembered; a null one makes no change."
+						"description": "The created entity ID and thread ID, with threadId allowed to be null. The function stores it only when threadId is truthy; an empty string also leaves pending state unchanged.",
+						"examples": [
+							{
+								"entityId": "desktop.function.created-thread",
+								"threadId": "thread-42"
+							},
+							{
+								"entityId": "desktop.function.created-thread",
+								"threadId": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "rememberCreatedThread",
 						"type": "unknown",
-						"description": "No return value. Stores the entity, thread and current project in workspace-local memory without changing the URL."
+						"description": "Returns undefined; when created.threadId is truthy, stores entityId, threadId and the workspace's current project ID for that workspace. When threadId is null or empty, it leaves the current entry unchanged."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
