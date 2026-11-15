@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import type { Evidence } from '../../src/models/reports-media/Report.types';
 import { audioPairs } from '../../src/utils/audioPairs';
 import { galleryEvidence } from '../../src/utils/reportFilter';
-import { reportFilter } from '../../src/components/evidence-grid/reportFilter';
+import { reportFilter } from '../../src/components/verification-evidence/evidence-grid/reportFilter';
 const before: Evidence = {
 	id: 'before',
 	title: 'Early recording',

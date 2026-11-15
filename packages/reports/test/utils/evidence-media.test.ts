@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import * as media from '../../src/utils/evidenceMedia';
 const { evidenceMedia, mediaMime } = media;
-import { reportFilter } from '../../src/components/evidence-grid/reportFilter';
+import { reportFilter } from '../../src/components/verification-evidence/evidence-grid/reportFilter';
 test('legacy image manifests and portable audio keep their media kind', () => {
 	expect(evidenceMedia({ file: 'hash.png' })).toBe('image');
 	expect(evidenceMedia({ file: 'hash.wav' })).toBe('audio');
