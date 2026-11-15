@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { CpuUsageService } from '../src/services/cpu-usage-service/CpuUsageService';
-import { cpuProcesses } from '../src/adapters/cpu-process-adapter/cpuProcesses';
+import { cpuProcesses } from '../src/services/development-tooling/cpu-usage-service/cpu-process-adapter/cpuProcesses';
 import { cpuMetrics } from '../src/services/cpu-usage-service/cpuMetrics';
 const rows = `10 1 0:01.00 /Applications/Codex.app/Contents/MacOS/Codex
 11 10 0:02.00 /Applications/Codex.app/Contents/Resources/codex app-server
