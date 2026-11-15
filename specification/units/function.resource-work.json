@@ -18,36 +18,159 @@
 				"name": "resourceWork.request",
 				"type": "Partial<ResourceRequest>",
 				"required": true,
-				"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
+				"description": "The admission request object: priority ('agent-test', 'coding' or 'environment'), cpus and memoryMiB (finite positive numbers) and label (1 to 100 characters), parsed by the strict resourceRequestSchema so unknown keys fail; omitted priority, memoryMiB and label take 'coding', 512 and 'Managed work'. An omitted cpus becomes 1, or min(1, HARNESS_RESOURCE_CPUS) when HARNESS_RESOURCE_LEASE is set; admission rejects a cpus above usableCores after the cpuReservePercent share or a memoryMiB above memoryTotalBytes after the memory reserve (when telemetry is available), rejects a nested request above its parent lease's cpus or memoryMiB, and leaves any other request waiting in the queue.",
+				"examples": [
+					{
+						"priority": "environment",
+						"cpus": 2,
+						"memoryMiB": 4096,
+						"label": "Scoped verification"
+					},
+					{
+						"priority": "coding",
+						"memoryMiB": 2048,
+						"label": "Module task CLI"
+					},
+					{
+						"priority": "agent-test",
+						"label": "Managed work"
+					}
+				]
 			},
 			{
 				"name": "resourceWork.action",
 				"type": "(context: ResourceContext) => Promise<T>",
 				"required": true,
-				"description": "Asynchronous work executed only after admission; receives the bounded resource context."
+				"description": "Asynchronous work called at most once, and only after the queue has marked the request running, with a ResourceContext whose id is the admitted job id, whose env sets HARNESS_RESOURCE_LEASE to that id together with the admitted cpus, memory and priority values, and whose track(pid) records a worker process on the job. Its resolved value becomes the output, and a rejection is re-raised unchanged after the queue entry is removed and the queue connection is closed."
 			},
 			{
 				"name": "resourceWork.env",
 				"type": "Record<string, string | undefined>",
 				"required": false,
-				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+				"description": "The caller environment, merged over whichever of the nine keys that resourceEnvironment() copies from process.env are set (it is called without arguments, so it always reads process.env); HARNESS_RESOURCES_HOME selects the queue home, HARNESS_RESOURCE_LEASE nests the request under that running job, and every merged key reaches the action's context env. Defaults to process.env, so the whole process environment, including any credentials, is merged in.",
+				"examples": [
+					{
+						"HARNESS_RESOURCES_HOME": "/var/lib/harness/resources"
+					},
+					{
+						"HARNESS_RESOURCE_LEASE": "3f9c2a7e-6b1d-4c8e-9a51-2d7e0b4f8c16",
+						"HARNESS_RESOURCE_CPUS": "2",
+						"HARNESS_RESOURCE_MEMORY_MIB": "4096",
+						"HARNESS_RESOURCE_PRIORITY": "coding"
+					},
+					{
+						"CARGO_BUILD_JOBS": "4",
+						"GOMAXPROCS": "4"
+					}
+				]
 			},
 			{
 				"name": "resourceWork.options",
 				"type": "Omit<RunOptions, 'env'>",
 				"required": false,
 				"default": {},
-				"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+				"description": "Admission options: signal cancels admission or waiting before the action starts (a running action does not receive it), waitTimeoutMs bounds the queue wait (1800000 ms when omitted, and when set it must be a finite number above 0), and onWaiting receives the queue's reason text each time it changes while the request is queued. Defaults to {}, which keeps the 1800000 ms wait bound and sets no signal or callback.",
+				"examples": [
+					{},
+					{
+						"waitTimeoutMs": 60000
+					},
+					{
+						"waitTimeoutMs": 900000
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "resourceWork",
 				"type": "Promise<T>",
-				"description": "Admitted operation result, with reservation and connection released after success or failure."
+				"description": "The value action resolves with (T is chosen by the caller; the module task runner resolves with TaskProcessResult), returned once the queue entry is removed and the queue connection is closed. An admission or action failure rejects with the same error after that cleanup.",
+				"examples": [
+					{
+						"code": 0,
+						"stdout": "done\n"
+					},
+					{
+						"code": 1,
+						"stdout": ""
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by resourceRequestSchema.parse for an unknown key, a priority outside its three values, a cpus or memoryMiB that is not a finite positive number (including a lease-derived cpus from a non-numeric HARNESS_RESOURCE_CPUS), or a label outside 1 to 100 characters; the same error type is also thrown when an existing config.json fails resourceConfigSchema or a stored queue row fails resourceJobSchema."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Unsupported resource queue schema' while the service is constructed, when the queue database's user_version is neither 0 nor 1; the database is closed first."
+			},
+			{
+				"name": "AbortError",
+				"type": "thrown",
+				"description": "Thrown with options.signal's abort reason (a DOMException named AbortError unless abort() was given another reason) by throwIfAborted before enqueue, while waiting, and before the action starts; a pending wait timer also rejects with an AbortError when the signal aborts."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid resource queue wait timeout' before enqueue when options.waitTimeoutMs is set but is not a finite number above 0."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Cannot establish resource request owner' before the queue entry is added, when the start time of the current process cannot be read."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Resource queue is full' before the queue entry is added, when the queue already holds 512 or more jobs."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid inherited resource lease' before the queue entry is added, when HARNESS_RESOURCE_LEASE is non-empty but names no running job or that job's identity check (resourceIdentity) fails."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Nested work exceeds its parent resource reservation' before the queue entry is added, when a request under HARNESS_RESOURCE_LEASE asks for more cpus or memoryMiB than its parent job reserves."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown while waiting once the deadline passes (waitTimeoutMs, or 1800000 ms when omitted), with a message that starts 'Resource queue wait timed out' and adds the last reason, the sampled capacity and the running reservations."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Resource request exceeds usable capacity after reserves' while waiting when impossibleRequest is true (cpus above usableCores after the cpuReservePercent share, or memoryMiB above memoryTotalBytes after the memory reserve, with telemetry available)."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Resource request disappeared' while waiting when the queued job is missing from the queue as it is scheduled."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Parent resource reservation ended' while waiting when the request's parent job is no longer a running job."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when the config.json in the resolved queue home is not valid JSON, because resourceConfig reads it while waiting or before the action starts."
+			},
+			{
+				"name": "action error",
+				"type": "thrown",
+				"description": "Whatever error or rejection action throws, re-raised unchanged after the queue entry is removed and the queue connection is closed."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "resourceWork",
@@ -56,37 +179,159 @@
 						"name": "resourceWork.request",
 						"type": "Partial<ResourceRequest>",
 						"required": true,
-						"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
+						"description": "The admission request object: priority ('agent-test', 'coding' or 'environment'), cpus and memoryMiB (finite positive numbers) and label (1 to 100 characters), parsed by the strict resourceRequestSchema so unknown keys fail; omitted priority, memoryMiB and label take 'coding', 512 and 'Managed work'. An omitted cpus becomes 1, or min(1, HARNESS_RESOURCE_CPUS) when HARNESS_RESOURCE_LEASE is set; admission rejects a cpus above usableCores after the cpuReservePercent share or a memoryMiB above memoryTotalBytes after the memory reserve (when telemetry is available), rejects a nested request above its parent lease's cpus or memoryMiB, and leaves any other request waiting in the queue.",
+						"examples": [
+							{
+								"priority": "environment",
+								"cpus": 2,
+								"memoryMiB": 4096,
+								"label": "Scoped verification"
+							},
+							{
+								"priority": "coding",
+								"memoryMiB": 2048,
+								"label": "Module task CLI"
+							},
+							{
+								"priority": "agent-test",
+								"label": "Managed work"
+							}
+						]
 					},
 					{
 						"name": "resourceWork.action",
 						"type": "(context: ResourceContext) => Promise<T>",
 						"required": true,
-						"description": "Asynchronous work executed only after admission; receives the bounded resource context."
+						"description": "Asynchronous work called at most once, and only after the queue has marked the request running, with a ResourceContext whose id is the admitted job id, whose env sets HARNESS_RESOURCE_LEASE to that id together with the admitted cpus, memory and priority values, and whose track(pid) records a worker process on the job. Its resolved value becomes the output, and a rejection is re-raised unchanged after the queue entry is removed and the queue connection is closed."
 					},
 					{
 						"name": "resourceWork.env",
 						"type": "Record<string, string | undefined>",
 						"required": false,
-						"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+						"description": "The caller environment, merged over whichever of the nine keys that resourceEnvironment() copies from process.env are set (it is called without arguments, so it always reads process.env); HARNESS_RESOURCES_HOME selects the queue home, HARNESS_RESOURCE_LEASE nests the request under that running job, and every merged key reaches the action's context env. Defaults to process.env, so the whole process environment, including any credentials, is merged in.",
+						"examples": [
+							{
+								"HARNESS_RESOURCES_HOME": "/var/lib/harness/resources"
+							},
+							{
+								"HARNESS_RESOURCE_LEASE": "3f9c2a7e-6b1d-4c8e-9a51-2d7e0b4f8c16",
+								"HARNESS_RESOURCE_CPUS": "2",
+								"HARNESS_RESOURCE_MEMORY_MIB": "4096",
+								"HARNESS_RESOURCE_PRIORITY": "coding"
+							},
+							{
+								"CARGO_BUILD_JOBS": "4",
+								"GOMAXPROCS": "4"
+							}
+						]
 					},
 					{
 						"name": "resourceWork.options",
 						"type": "Omit<RunOptions, 'env'>",
 						"required": false,
 						"default": {},
-						"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+						"description": "Admission options: signal cancels admission or waiting before the action starts (a running action does not receive it), waitTimeoutMs bounds the queue wait (1800000 ms when omitted, and when set it must be a finite number above 0), and onWaiting receives the queue's reason text each time it changes while the request is queued. Defaults to {}, which keeps the 1800000 ms wait bound and sets no signal or callback.",
+						"examples": [
+							{},
+							{
+								"waitTimeoutMs": 60000
+							},
+							{
+								"waitTimeoutMs": 900000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceWork",
 						"type": "Promise<T>",
-						"description": "Admitted operation result, with reservation and connection released after success or failure."
+						"description": "The value action resolves with (T is chosen by the caller; the module task runner resolves with TaskProcessResult), returned once the queue entry is removed and the queue connection is closed. An admission or action failure rejects with the same error after that cleanup.",
+						"examples": [
+							{
+								"code": 0,
+								"stdout": "done\n"
+							},
+							{
+								"code": 1,
+								"stdout": ""
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by resourceRequestSchema.parse for an unknown key, a priority outside its three values, a cpus or memoryMiB that is not a finite positive number (including a lease-derived cpus from a non-numeric HARNESS_RESOURCE_CPUS), or a label outside 1 to 100 characters; the same error type is also thrown when an existing config.json fails resourceConfigSchema or a stored queue row fails resourceJobSchema."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Unsupported resource queue schema' while the service is constructed, when the queue database's user_version is neither 0 nor 1; the database is closed first."
+					},
+					{
+						"name": "AbortError",
+						"type": "thrown",
+						"description": "Thrown with options.signal's abort reason (a DOMException named AbortError unless abort() was given another reason) by throwIfAborted before enqueue, while waiting, and before the action starts; a pending wait timer also rejects with an AbortError when the signal aborts."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid resource queue wait timeout' before enqueue when options.waitTimeoutMs is set but is not a finite number above 0."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Cannot establish resource request owner' before the queue entry is added, when the start time of the current process cannot be read."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Resource queue is full' before the queue entry is added, when the queue already holds 512 or more jobs."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid inherited resource lease' before the queue entry is added, when HARNESS_RESOURCE_LEASE is non-empty but names no running job or that job's identity check (resourceIdentity) fails."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Nested work exceeds its parent resource reservation' before the queue entry is added, when a request under HARNESS_RESOURCE_LEASE asks for more cpus or memoryMiB than its parent job reserves."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown while waiting once the deadline passes (waitTimeoutMs, or 1800000 ms when omitted), with a message that starts 'Resource queue wait timed out' and adds the last reason, the sampled capacity and the running reservations."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Resource request exceeds usable capacity after reserves' while waiting when impossibleRequest is true (cpus above usableCores after the cpuReservePercent share, or memoryMiB above memoryTotalBytes after the memory reserve, with telemetry available)."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Resource request disappeared' while waiting when the queued job is missing from the queue as it is scheduled."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Parent resource reservation ended' while waiting when the request's parent job is no longer a running job."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when the config.json in the resolved queue home is not valid JSON, because resourceConfig reads it while waiting or before the action starts."
+					},
+					{
+						"name": "action error",
+						"type": "thrown",
+						"description": "Whatever error or rejection action throws, re-raised unchanged after the queue entry is removed and the queue connection is closed."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
