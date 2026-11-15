@@ -27,82 +27,345 @@
 				"name": "EntityConfigScreen.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Prepared history index for the selected repository and its recorded revisions."
+				"description": "The history index read from index.json: the branches with their head commits, each revision the history lists with its records, coverage and legacy report ids, and the units, benchmarks and profiles it holds. A commit or branch the index does not list is reported as missing, and `truncated` is true when older commits were left out at the build limit.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "7f3c2a9e1b4d6058c2e7a1f94d0b3e6c8a5d2f10"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "7f3c2a9e1b4d6058c2e7a1f94d0b3e6c8a5d2f10",
+								"parents": ["2b8e6d4a0c9f1e37a5d2b8c60f4e9a1d3c7b5e28"],
+								"subject": "Show config controls in the explorer",
+								"author": "Example Author",
+								"committedAt": "2026-11-14T10:01:47+00:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "c4a1e9f07b3d2658e1a9c47f0d3b6e52a8f1c9d74b0e3a6f285d19c7e4b03a6d",
+										"status": "passed",
+										"profile": "5e2a9c1f7b04d836",
+										"finishedAt": "2026-11-14T10:09:51.407Z",
+										"base": null,
+										"valid": true,
+										"problems": []
+									}
+								],
+								"legacy": []
+							},
+							{
+								"commit": "2b8e6d4a0c9f1e37a5d2b8c60f4e9a1d3c7b5e28",
+								"parents": [],
+								"subject": "Start the harness console",
+								"author": "Example Author",
+								"committedAt": "2026-11-02T16:20:05+00:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": ["no verification record is attached to this commit"],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [
+							{
+								"id": "5e2a9c1f7b04d836",
+								"platform": "darwin",
+								"arch": "arm64",
+								"cpu": "Apple M3 Pro",
+								"runtime": "node 22.11.0"
+							}
+						],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "EntityConfigScreen.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Exact selected source revision supplying every displayed contract, measurement and capture."
+				"description": "The revision of the shown commit, read from `revisions/<commit>.json` and held only while its commit equals the scope's commit. Every contract, measurement and capture on the screen is bound to this revision.",
+				"examples": [
+					{
+						"commit": "7f3c2a9e1b4d6058c2e7a1f94d0b3e6c8a5d2f10",
+						"registry": {
+							"available": true,
+							"units": [
+								{
+									"id": "relay.config.relay",
+									"kind": "config",
+									"status": "active",
+									"title": "relayConfig",
+									"responsibility": "Declares operator controls for relay request limits, pairing capacity and device traffic.",
+									"dependencies": [],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/relay/src/configs/networking-security/relayConfig.ts",
+											"packages/relay/src/configs/relayConfig.ts"
+										],
+										"symbols": ["relayConfig", "relayConfig"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [
+											{
+												"name": "relayConfig",
+												"type": "unknown"
+											}
+										],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/relay/src/configs/networking-security/relayConfig.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "a41c9e07f2d3b685"
+								}
+							],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [
+							{
+								"id": "c4a1e9f07b3d2658e1a9c47f0d3b6e52a8f1c9d74b0e3a6f285d19c7e4b03a6d",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "7f3c2a9e1b4d6058c2e7a1f94d0b3e6c8a5d2f10",
+									"base": null
+								},
+								"profile": "5e2a9c1f7b04d836",
+								"startedAt": "2026-11-14T10:02:33.118Z",
+								"finishedAt": "2026-11-14T10:09:51.407Z",
+								"gates": {
+									"tests": "passed",
+									"scenarios": "passed"
+								},
+								"failures": [],
+								"tests": [],
+								"scenarios": [],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							}
+						],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "EntityConfigScreen.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "First parent of the selected commit, or null at a branch tip or first commit."
+				"description": "The revision of the selected commit's first parent, which the explorer uses to list the units that commit removed. It is null for a branch address with no commit selected, for a first commit, and when the index does not list that parent.",
+				"examples": [
+					null,
+					{
+						"commit": "2b8e6d4a0c9f1e37a5d2b8c60f4e9a1d3c7b5e28",
+						"registry": {
+							"available": false,
+							"gap": "no unit registry is stored at this revision",
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "EntityConfigScreen.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch, commit and comparison scope shared by the explorer host."
+				"description": "Where the screen is in history: its address (`location`), the branch and its tip, the shown commit and its first parent, and whether that commit is the tip. `mode` is 'current' for an address with no commit and 'commit' for one that names one, and the config pane receives this same scope.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": "7f3c2a9e1b4d6058c2e7a1f94d0b3e6c8a5d2f10",
+							"category": "configs",
+							"entity": "relay.config.relay"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "7f3c2a9e1b4d6058c2e7a1f94d0b3e6c8a5d2f10",
+						"commit": "7f3c2a9e1b4d6058c2e7a1f94d0b3e6c8a5d2f10",
+						"atTip": true,
+						"parent": "2b8e6d4a0c9f1e37a5d2b8c60f4e9a1d3c7b5e28",
+						"summary": {
+							"commit": "7f3c2a9e1b4d6058c2e7a1f94d0b3e6c8a5d2f10",
+							"parents": ["2b8e6d4a0c9f1e37a5d2b8c60f4e9a1d3c7b5e28"],
+							"subject": "Show config controls in the explorer",
+							"author": "Example Author",
+							"committedAt": "2026-11-14T10:01:47+00:00",
+							"branches": ["main"],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [
+								{
+									"id": "c4a1e9f07b3d2658e1a9c47f0d3b6e52a8f1c9d74b0e3a6f285d19c7e4b03a6d",
+									"status": "passed",
+									"profile": "5e2a9c1f7b04d836",
+									"finishedAt": "2026-11-14T10:09:51.407Z",
+									"base": null,
+									"valid": true,
+									"problems": []
+								}
+							],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "EntityConfigScreen.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current explorer location, including category, entity, section and tab."
+				"description": "The address shown on the screen, which is `scope.location`: the branch, the commit, the category and, when one is open, the entity with its section and tab. The config pane renders only for an entity whose category is 'configs'.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "7f3c2a9e1b4d6058c2e7a1f94d0b3e6c8a5d2f10",
+						"category": "configs",
+						"entity": "relay.config.relay"
+					}
+				]
 			},
 			{
 				"name": "EntityConfigScreen.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Units projected from the selected revision, including entities removed by the shown commit."
+				"description": "The units the explorer lists at this revision, grouped in category order: the active units of `head` that have a category, together with the units the shown commit removed, which are taken from the parent and marked removed. A unit with no category is left out, though relations still name it.",
+				"examples": [
+					[
+						{
+							"id": "relay.config.relay",
+							"category": "configs",
+							"role": "Config",
+							"name": "relayConfig",
+							"purpose": "Declares operator controls for relay request limits, pairing capacity and device traffic.",
+							"unit": {
+								"id": "relay.config.relay",
+								"kind": "config",
+								"status": "active",
+								"title": "relayConfig",
+								"responsibility": "Declares operator controls for relay request limits, pairing capacity and device traffic.",
+								"dependencies": [],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/relay/src/configs/networking-security/relayConfig.ts",
+										"packages/relay/src/configs/relayConfig.ts"
+									],
+									"symbols": ["relayConfig", "relayConfig"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [
+										{
+											"name": "relayConfig",
+											"type": "unknown"
+										}
+									],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/relay/src/configs/networking-security/relayConfig.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "a41c9e07f2d3b685"
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Coverage incomplete",
+								"reasons": [
+									"The record ran no test.",
+									"No scenario covers this unit; tests alone do not show how it behaves."
+								]
+							},
+							"change": null,
+							"appRoute": null
+						}
+					]
+				]
 			},
 			{
 				"name": "EntityConfigScreen.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Host-provided readers for entity relationships, history and selected-revision details."
+				"description": "The host's readers for entities: `href` builds the full address of a location, and `relations`, `evidence`, `behavior` and `history` answer for a unit. The screen works none of these out itself."
 			},
 			{
 				"name": "EntityConfigScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Revision reader used only for commits the displayed history requests."
+				"description": "The revision reader: `revision(commit)` loads `revisions/<commit>.json` for one commit. The harness console calls it for the shown commit, and for its first parent only when a commit is selected and the index lists that parent."
 			},
 			{
 				"name": "EntityConfigScreen.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Base URL for retained recorded evidence media."
+				"description": "The URL prefix that retained recorded evidence media is served under: the harness console passes its base followed by `/media/`, which is `/harness/media/`. It ends with a slash because each media file's name is added to it by plain concatenation.",
+				"examples": ["/harness/media/"]
 			},
 			{
 				"name": "EntityConfigScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Receives the requested explorer destination for host-controlled navigation."
+				"description": "The host's navigation callback: it takes an explorer location, navigates to its address, and scrolls the page to the top when the category, screen, entity, helper or section changes. A change of tab alone does not scroll."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityConfigScreen.configurationOverview",
 				"type": "markup",
-				"description": "A config with its summary, what it provides and who uses it. Relationships and tests by tab."
+				"description": "The rendered screen: a `hx-div` marked `harness-entity-config-screen` with `display: contents`, so it draws no box, around the entity frame and its sections. The pane shows the config for an entity whose category is 'configs' and is empty for any other entity."
 			}
 		],
-		"errors": [
-			{
-				"name": "no-registry",
-				"type": "stated",
-				"description": "A revision that stores no unit registry says so; nothing of another revision is shown."
-			},
-			{
-				"name": "entity-missing",
-				"type": "stated",
-				"description": "An entity the shown revision does not hold is said to be missing, with the way back to its collection."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
