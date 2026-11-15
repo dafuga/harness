@@ -32,17 +32,19 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SecureFailure.constructor.reason",
 				"type": "SecureFailureReason",
-				"required": true
+				"required": true,
+				"description": "The category of secure-channel violation recorded by SecureFailure and interpolated into its message. It is limited to state, packet, counter, tag, and size.",
+				"examples": ["packet", "counter", "tag"]
 			}
 		],
 		"outputs": [],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [
 			{
@@ -51,17 +53,20 @@
 					{
 						"name": "SecureFailure.constructor.reason",
 						"type": "SecureFailureReason",
-						"required": true
+						"required": true,
+						"description": "The category of secure-channel violation recorded by SecureFailure and interpolated into its message. It is limited to state, packet, counter, tag, and size.",
+						"examples": ["packet", "counter", "tag"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SecureFailure.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed SecureFailure error instance. Its name is set to SecureFailure, and its message is Secure channel followed by the supplied reason."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
