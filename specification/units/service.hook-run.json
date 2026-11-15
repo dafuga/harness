@@ -21,27 +21,53 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HookRunService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root used by verification and history calls. The constructor stores the string as-is and does not normalize or validate the path.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+				]
 			},
 			{
 				"name": "HookRunService.prePush.input",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Raw pre-push hook text passed to pushedRefs to select commits. This class does not parse the text itself; selected commits are processed sequentially.",
+				"examples": [
+					"refs/heads/feature 0123456789abcdef0123456789abcdef01234567 refs/heads/main 89abcdef0123456789abcdef0123456789abcdef\n"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HookRunService.prePush",
-				"type": "Promise<HookOutcome>"
+				"type": "Promise<HookOutcome>",
+				"description": "On success, returns the commits selected from the input split into verified and blocked arrays; a commit is verified when its record has no failures, and blocked otherwise. Each record is attached to history before its result is added, and an existing passing record avoids a new verification.",
+				"examples": [
+					{
+						"verified": [],
+						"blocked": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"failures": ["verification failed"]
+							}
+						]
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects unchanged if pushedRefs throws or verifyRun/historyAttach rejects; verifyCheck rejections are caught and treated as no prior passing proof."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HookRunService.prePush",
@@ -49,17 +75,39 @@
 					{
 						"name": "HookRunService.prePush.input",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Raw pre-push hook text passed to pushedRefs to select commits. This class does not parse the text itself; selected commits are processed sequentially.",
+						"examples": [
+							"refs/heads/feature 0123456789abcdef0123456789abcdef01234567 refs/heads/main 89abcdef0123456789abcdef0123456789abcdef\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HookRunService.prePush",
-						"type": "Promise<HookOutcome>"
+						"type": "Promise<HookOutcome>",
+						"description": "On success, returns the commits selected from the input split into verified and blocked arrays; a commit is verified when its record has no failures, and blocked otherwise. Each record is attached to history before its result is added, and an existing passing record avoids a new verification.",
+						"examples": [
+							{
+								"verified": [],
+								"blocked": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"failures": ["verification failed"]
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects unchanged if pushedRefs throws or verifyRun/historyAttach rejects; verifyCheck rejections are caught and treated as no prior passing proof."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -69,17 +117,22 @@
 					{
 						"name": "HookRunService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root used by verification and history calls. The constructor stores the string as-is and does not normalize or validate the path.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-9"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HookRunService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructor returns a HookRunService instance that retains the provided repository root for later prePush calls."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
