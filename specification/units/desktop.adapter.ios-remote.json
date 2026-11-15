@@ -48,7 +48,7 @@
 		"outputs": [
 			{
 				"name": "bridge",
-				"type": "DesktopBridge over HarnessRemote Capacitor plugin",
+				"type": "RemoteNativePlugin",
 				"description": "The page-facing Capacitor bridge registered as HarnessRemote, exposing status, scan, disconnect, and request promises plus status and event notifications. Its channel, credential, keys, and saved copies stay in native code.",
 				"examples": [
 					{
@@ -60,7 +60,7 @@
 			},
 			{
 				"name": "status",
-				"type": "RemotePhoneStatus with explicit offline cached state",
+				"type": "RemoteNativeStatus",
 				"description": "A snapshot of connection state and public host, device, grant, reason, last-online time, and attached methods. It remains offline while the computer is away; eligible cached reads are returned by requests with cachedAt, and a known screen lock is included only while online.",
 				"examples": [
 					{

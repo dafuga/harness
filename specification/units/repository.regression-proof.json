@@ -167,24 +167,78 @@
 		],
 		"outputs": [
 			{
-				"name": "Result",
-				"type": "Regression result",
-				"description": "A regression history view containing the loop and tested units with a red result, a red and green pair, or a visible gap when evidence cannot be read. Stored records, logs, manifests, and notes provide the evidence behind each view.",
+				"name": "RegressionProofRepository.history",
+				"type": "Promise<RegressionView[]>",
+				"description": "Promise resolving to flattened regression views for the requested commit and eligible commits with identical source trees. Corrupt or unreadable per-note evidence is retained as a gap in its view.",
+				"examples": [
+					[
+						{
+							"loop": "regression-proof-fixture",
+							"units": ["repository.regression-proof"],
+							"red": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"sourceTree": "89abcdef0123456789abcdef0123456789abcdef",
+								"id": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+								"status": "failed",
+								"command": "bun run test:unit",
+								"assertion": "Expected 1 result",
+								"finishedAt": "2026-11-14T09:00:01.000Z",
+								"output": "Expected 1 result\n"
+							}
+						}
+					]
+				]
+			},
+			{
+				"name": "RegressionProofRepository.save",
+				"type": "Promise<void>",
+				"description": "Promise resolves with no value after storing the record, log, manifest, and optional files, appending the regression note, and updating the source archive ref."
+			},
+			{
+				"name": "RegressionProofRepository.load",
+				"type": "Promise<{ record: RegressionRecord; output: string; files: Map<string, Buffer> }>",
+				"description": "Returns the parsed record, UTF-8 output text, and a Map of capture paths to validated original Buffers. It reads from the note’s evidence commit, checks the pinned history and source tree, and validates checkpoint identities, hashes, capture bytes, decoding, and served revision when present."
+			},
+			{
+				"name": "RegressionProofRepository.latest",
+				"type": "Promise<RegressionNote | undefined>",
+				"description": "Promise resolves to the latest matching note at the nearest ancestor containing a candidate for the requested loop and phase. It resolves undefined when no candidate exists on the supplied commit’s ancestry.",
 				"examples": [
 					{
+						"schemaVersion": 1,
+						"kind": "regression",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
 						"loop": "regression-proof-fixture",
-						"units": ["repository.regression-proof"],
-						"red": {
-							"commit": "0123456789abcdef0123456789abcdef01234567",
-							"sourceTree": "89abcdef0123456789abcdef0123456789abcdef",
-							"id": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
-							"status": "failed",
-							"command": "bun run test:unit",
-							"assertion": "Expected 1 result",
-							"finishedAt": "2026-11-14T09:00:01.000Z",
-							"output": "Expected 1 result\n"
+						"phase": "red",
+						"record": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+						"evidence": {
+							"commit": "abcdef0123456789abcdef0123456789abcdef01",
+							"path": "regressions/0123456789abcdef0123456789abcdef01234567/e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+							"manifest": "2efc19f8acf26688a61b822b501f73d5d3f462a103a124d50024f21ea9e24c07"
 						}
 					}
+				]
+			},
+			{
+				"name": "regressionNotes",
+				"type": "RegressionNote[]",
+				"description": "Returns regression notes from all parsed note entries, preserving map and entry iteration order. Other note kinds and each ReadNote’s parsing problems are excluded.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"kind": "regression",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"loop": "regression-proof-fixture",
+							"phase": "red",
+							"record": "e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+							"evidence": {
+								"commit": "abcdef0123456789abcdef0123456789abcdef01",
+								"path": "regressions/0123456789abcdef0123456789abcdef01234567/e03ef85b6af87fee1d92b9cc051d0e92c7a0ea63213f167d811bbae7b857b53d",
+								"manifest": "2efc19f8acf26688a61b822b501f73d5d3f462a103a124d50024f21ea9e24c07"
+							}
+						}
+					]
 				]
 			}
 		],
