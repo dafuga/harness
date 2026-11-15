@@ -19,31 +19,61 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "selectRatchetBase.git",
 				"type": "GitRead",
-				"required": true
+				"required": true,
+				"description": "Runs one read-only git command from an argument list and returns its output as a string; it throws when git fails. selectRatchetBase calls it only with rev-parse and merge-base arguments and treats a throw or blank output as no result."
 			},
 			{
 				"name": "selectRatchetBase.env",
 				"type": "Readonly<Record<string, string | undefined>>",
-				"required": true
+				"required": true,
+				"description": "The environment map that selectRatchetBase reads: only HARNESS_DEBT_RATCHET_BASE and GITHUB_BASE_REF are used, each trimmed first, and an undefined value counts as unset. A non-empty HARNESS_DEBT_RATCHET_BASE that is not all zeros is tried first and, when it resolves to a commit, wins; GITHUB_BASE_REF names the origin branch that is tried before origin/main and main.",
+				"examples": [
+					{
+						"GITHUB_BASE_REF": "main"
+					},
+					{
+						"HARNESS_DEBT_RATCHET_BASE": "9b4e1d07a3c85f2e6d91b0f47c2a8e5d3f106b8c"
+					},
+					{
+						"HARNESS_DEBT_RATCHET_BASE": "0000000000000000000000000000000000000000"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ratchetBaseVariable",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported constant is the environment variable name HARNESS_DEBT_RATCHET_BASE, which selectRatchetBase reads for a ref or commit that replaces the protected-branch lookup. It is a fixed string, and the messages from selectRatchetBase quote this same name.",
+				"examples": ["HARNESS_DEBT_RATCHET_BASE"]
 			},
 			{
 				"name": "selectRatchetBase",
-				"type": "RatchetBase"
+				"type": "RatchetBase",
+				"description": "The RatchetBase chosen for this checkout: commit is the full commit hash to compare against, or null when HEAD does not resolve or HEAD has no parent and no candidate yields a base, and message says why, including every candidate that was passed over. The first usable choice wins: the HARNESS_DEBT_RATCHET_BASE commit (or its merge-base with HEAD), then the merge-base of HEAD with the origin branch named by GITHUB_BASE_REF when set, origin/main and main, and finally HEAD^, which compares only the last commit.",
+				"examples": [
+					{
+						"commit": "3c8a1f5d9e2b7406a1d3f8c9e0b57a2d4f6e1c83",
+						"message": "Ratchet base: merge-base of HEAD and origin/main."
+					},
+					{
+						"commit": "e71d0b4c6a9f2857d03b1e8c4a6f9d2b70c5e3a1",
+						"message": "origin/main does not exist. main does not exist. Ratchet base: HEAD^, so only the last commit is compared. Set HARNESS_DEBT_RATCHET_BASE to compare a wider range."
+					},
+					{
+						"commit": null,
+						"message": "origin/main does not exist. main does not exist. HEAD has no parent: debt ratchets have no base. Set HARNESS_DEBT_RATCHET_BASE to compare a wider range."
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "selectRatchetBase",
@@ -51,22 +81,50 @@
 					{
 						"name": "selectRatchetBase.git",
 						"type": "GitRead",
-						"required": true
+						"required": true,
+						"description": "Runs one read-only git command from an argument list and returns its output as a string; it throws when git fails. selectRatchetBase calls it only with rev-parse and merge-base arguments and treats a throw or blank output as no result."
 					},
 					{
 						"name": "selectRatchetBase.env",
 						"type": "Readonly<Record<string, string | undefined>>",
-						"required": true
+						"required": true,
+						"description": "The environment map that selectRatchetBase reads: only HARNESS_DEBT_RATCHET_BASE and GITHUB_BASE_REF are used, each trimmed first, and an undefined value counts as unset. A non-empty HARNESS_DEBT_RATCHET_BASE that is not all zeros is tried first and, when it resolves to a commit, wins; GITHUB_BASE_REF names the origin branch that is tried before origin/main and main.",
+						"examples": [
+							{
+								"GITHUB_BASE_REF": "main"
+							},
+							{
+								"HARNESS_DEBT_RATCHET_BASE": "9b4e1d07a3c85f2e6d91b0f47c2a8e5d3f106b8c"
+							},
+							{
+								"HARNESS_DEBT_RATCHET_BASE": "0000000000000000000000000000000000000000"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "selectRatchetBase",
-						"type": "RatchetBase"
+						"type": "RatchetBase",
+						"description": "The RatchetBase chosen for this checkout: commit is the full commit hash to compare against, or null when HEAD does not resolve or HEAD has no parent and no candidate yields a base, and message says why, including every candidate that was passed over. The first usable choice wins: the HARNESS_DEBT_RATCHET_BASE commit (or its merge-base with HEAD), then the merge-base of HEAD with the origin branch named by GITHUB_BASE_REF when set, origin/main and main, and finally HEAD^, which compares only the last commit.",
+						"examples": [
+							{
+								"commit": "3c8a1f5d9e2b7406a1d3f8c9e0b57a2d4f6e1c83",
+								"message": "Ratchet base: merge-base of HEAD and origin/main."
+							},
+							{
+								"commit": "e71d0b4c6a9f2857d03b1e8c4a6f9d2b70c5e3a1",
+								"message": "origin/main does not exist. main does not exist. Ratchet base: HEAD^, so only the last commit is compared. Set HARNESS_DEBT_RATCHET_BASE to compare a wider range."
+							},
+							{
+								"commit": null,
+								"message": "origin/main does not exist. main does not exist. HEAD has no parent: debt ratchets have no base. Set HARNESS_DEBT_RATCHET_BASE to compare a wider range."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
