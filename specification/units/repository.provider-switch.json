@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/repositories/ProviderSwitchRepository.ts",
-			"src/repositories/agents-providers/ProviderSwitchRepository.ts"
-		],
+		"source": ["src/repositories/agents-providers/ProviderSwitchRepository.ts"],
 		"symbols": [
-			"ProviderSwitchRepository",
 			"ProviderSwitchRepository",
 			"ProviderSwitchRepository.constructor",
 			"ProviderSwitchRepository.get",

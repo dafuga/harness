@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/repositories/ProjectWorkRepository.ts",
 			"src/repositories/projects-sessions/ProjectWorkRepository.ts",
 			"src/repositories/projects-sessions/ProjectWorkRepository.types.ts"
 		],
 		"symbols": [
-			"ProjectWorkRepository",
 			"ProjectWorkRepository",
 			"ProjectWorkRepository.constructor",
 			"ProjectWorkRepository.checkouts",

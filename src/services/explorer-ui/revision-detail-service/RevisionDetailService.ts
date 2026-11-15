@@ -8,7 +8,7 @@ import { BudgetService } from '../../budget-service/BudgetService';
 import { CommitTreeAdapter } from '../../../adapters/CommitTreeAdapter';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import type { VerificationRecord } from '../../../core/verificationTypes';
-import { ScenarioRepository } from '../../../repositories/ScenarioRepository';
+import { ScenarioRepository } from '../../../repositories/verification-evidence/ScenarioRepository';
 import { UnitRegistryRepository } from '../../../repositories/UnitRegistryRepository';
 import type { MediaPlacer } from '../../../utils/mediaPlace';
 import { recordView, type RecordView, type ResolvedMedia } from '../../../utils/recordView';

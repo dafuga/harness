@@ -1,6 +1,8 @@
 import { desktopBridge } from '../src/lib/development-tooling/desktop-bridge/desktopBridge';
 import { AgentActivityService } from '../../../src/services/agent-activity-service/AgentActivityService';
-import { ProjectWorkRepository } from '../../../src/repositories/ProjectWorkRepository';
+import { ProjectWorkRepository } from '../../../src/repositories/projects-sessions/ProjectWorkRepository';
+import { existsSync, readFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { test, expect } from 'vitest';
 import { fixture } from './project-fixture';
 test('an explicit stale project ID cannot read the newly selected project', async () => {
@@ -45,3 +47,23 @@ test('live agent reads follow the selected repository and reject a stale project
 	const empty = await bridge.agentActivity!({ projectId: first.session.projectId! });
 	expect(empty.agents).toMatchObject({ tracking: 'never-used', working: null, roster: [] });
 }, 15000);
+
+test('relocated repositories leave no stub at their old paths or in the legacy manifest', () => {
+	const root = resolve(import.meta.dirname, '../../..');
+	const manifest: { legacy: string[] } = JSON.parse(
+		readFileSync(join(root, 'harness.groups.json'), 'utf8')
+	);
+	const relocations: Record<string, string> = {
+		MeasurementRepository: 'verification-evidence',
+		ProjectWorkRepository: 'projects-sessions',
+		ProviderSwitchRepository: 'agents-providers',
+		ScenarioRepository: 'verification-evidence'
+	};
+	for (const [name, folder] of Object.entries(relocations)) {
+		const stub = `src/repositories/${name}.ts`;
+		const declaration = `src/repositories/${folder}/${name}.ts`;
+		expect(existsSync(join(root, stub)), stub).toBe(false);
+		expect(existsSync(join(root, declaration)), declaration).toBe(true);
+		expect(manifest.legacy, stub).not.toContain(stub);
+	}
+});

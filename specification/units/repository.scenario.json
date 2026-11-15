@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/repositories/ScenarioRepository.ts",
 			"src/repositories/verification-evidence/ScenarioRepository.ts",
 			"src/repositories/verification-evidence/ScenarioRepository.types.ts"
 		],
 		"symbols": [
-			"ScenarioRepository",
 			"ScenarioRepository",
 			"ScenarioRepository.constructor",
 			"ScenarioRepository.read",

@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/repositories/MeasurementRepository.ts",
-			"src/repositories/verification-evidence/MeasurementRepository.ts"
-		],
+		"source": ["src/repositories/verification-evidence/MeasurementRepository.ts"],
 		"symbols": [
-			"MeasurementRepository",
 			"MeasurementRepository",
 			"MeasurementRepository.constructor",
 			"MeasurementRepository.write",

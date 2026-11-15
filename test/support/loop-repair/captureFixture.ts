@@ -1,4 +1,4 @@
-import { ScenarioRepository } from '../../../src/repositories/ScenarioRepository';
+import { ScenarioRepository } from '../../../src/repositories/verification-evidence/ScenarioRepository';
 import { UnitRegistryRepository } from '../../../src/repositories/UnitRegistryRepository';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
