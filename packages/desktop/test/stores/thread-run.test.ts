@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { createThreadRunStore } from '../../src/lib/stores/threadRun.svelte';
+import { createThreadRunStore } from '../../src/lib/stores/development-tooling/threadRun.svelte';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 import type { RunRequest } from '../../src/models/DesktopBridge.types';
 
@@ -85,4 +85,10 @@ test('only a configured environment scopes a Change; unconfigured projects keep 
 	const second = createThreadRunStore(workspace);
 	await second.start(async () => ({ ...request, mode: 'change' }));
 	expect(startRun.mock.calls[1][0]).toHaveProperty('environment', 'prod');
+});
+
+test('a new store is idle and shows nothing until a run starts', () => {
+	const run = createThreadRunStore(workspaceOf({}).workspace);
+	expect(run.active).toBe(false);
+	expect([run.runId, run.status, run.streaming, run.error]).toEqual(['', '', '', '']);
 });
