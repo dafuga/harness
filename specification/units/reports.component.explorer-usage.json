@@ -28,68 +28,74 @@
 				"name": "ExplorerUsage.consumers",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Referenced consumers at the shown revision, or empty for a dash."
+				"description": "Consumer entities for the shown revision, in caller-supplied order; an empty array renders a dash. Entries are deduplicated by usageIdentity (entity id plus caller symbol when present), retaining the first occurrence, and only the first three distinct entries are eligible to show.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerUsage.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Navigation preserving the selected branch and commit."
+				"description": "The current route and navigation callbacks passed to each consumer link. The route supplies the link scope, href builds its address, go handles plain clicks, and the optional source callback opens a source-only consumer; that button is disabled when source is absent."
 			},
 			{
 				"name": "ExplorerUsage.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "The selected revision evidence resolver; no screenshot is borrowed from another entity."
+				"description": "The host-provided entity resolver passed to each consumer link. Its evidence(unit) method is called only while an open preview belongs to pages, layouts, or components; this component does not use the resolver's other methods."
 			},
 			{
 				"name": "ExplorerUsage.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "URL prefix resolving the referenced screenshot file."
+				"description": "A string prefix concatenated directly with the screenshot file for an open visual preview that has an image. It is passed through without path normalization and is unused for nonvisual previews or missing screenshots.",
+				"examples": ["/"]
 			},
 			{
 				"name": "ExplorerUsage.layout",
 				"type": "'grouped' | 'flat'",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional compatibility input. Defaults to JavaScript undefined. Its value is ignored: every footer remains a flat list."
+				"description": "Compatibility input accepting grouped or flat; this component never reads it, so it does not change the single flat consumer list. The list remains in first-occurrence order and is subject to limit and the three-link maximum.",
+				"examples": ["grouped", "flat"]
 			},
 			{
 				"name": "ExplorerUsage.limit",
 				"type": "number",
 				"required": false,
 				"default": 3,
-				"description": "Optional lower limit; every footer shows at most three distinct consumers. A zero limit shows the hidden-consumer count; positive limits use an accessible overflow ellipsis."
+				"description": "Defaults to 3. The slice end is Math.min(3, Math.max(0, limit)), so negative values show none, values above three show at most three, and fractional values are truncated by slice.",
+				"examples": [0, 2, 4]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerUsage",
 				"type": "markup",
-				"description": "One flat Used In list in provided consumer order, capped at three distinct links; overflow has an accessible ellipsis, or a visible hidden-consumer count when the limit is zero."
+				"description": "Markup puts a Used In label over one flat list, or an em dash when there are no distinct consumers. It shows at most three links; when consumers are omitted, it includes the omitted count for assistive technology and shows an ellipsis only when at least one link is visible."
 			}
 		],
 		"errors": [
 			{
 				"name": "nav.href callback error",
 				"type": "thrown",
-				"description": "An error from the address callback propagates while rendering a consumer link."
+				"description": "An error thrown by nav.href(to) propagates while an ordinary, non-source-only consumer link renders; source-only callers render a button and do not call href."
 			},
 			{
 				"name": "nav.go callback error",
 				"type": "thrown",
-				"description": "An error from the navigation callback propagates when a consumer link is activated."
+				"description": "An error thrown by nav.go(to) propagates on a plain click of an ordinary consumer link; modified clicks keep browser behavior and do not call go."
 			},
 			{
 				"name": "nav.source callback error",
 				"type": "thrown",
-				"description": "An error from the source-opening callback propagates when a consumer's source button is activated."
+				"description": "An error thrown by the optional nav.source callback propagates when a source-only consumer button is activated; when source is absent, that button is disabled."
 			},
 			{
 				"name": "lens.evidence callback error",
 				"type": "thrown",
-				"description": "An error from the evidence callback propagates when a visual consumer preview opens."
+				"description": "An error thrown by lens.evidence(entity.unit) propagates when a preview opens for a pages, layouts, or components consumer; other categories do not call evidence."
 			}
 		],
 		"errorStatus": "declared",
