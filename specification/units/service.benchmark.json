@@ -18,35 +18,46 @@
 				"name": "BenchmarkService.execute.operation",
 				"type": "string",
 				"required": true,
-				"description": "Validation, execution or persisted-results operation selected by the CLI."
+				"description": "Selects the action: 'validate' prints the preview from prepareBenchmark and returns without calling runBenchmark, 'results' reads and prints the persisted run named by target, and any other value, such as 'run', starts a benchmark run.",
+				"examples": ["validate", "run", "results"]
 			},
 			{
 				"name": "BenchmarkService.execute.target",
 				"type": "string",
 				"required": true,
-				"description": "Definition JSON path for validation or execution, or a persisted run ID for results."
+				"description": "For 'results' it is a persisted run ID passed unchanged to repository.read, and for 'validate' and every other operation it is a definition path passed unchanged to prepareBenchmark or runBenchmark. The value is not checked or normalized, and any error from those calls is caught and passed to fail().",
+				"examples": ["benchmarks/subagent-review.json", "benchmarks/reviewer-candidates.json"]
 			},
 			{
 				"name": "BenchmarkService.execute.options",
 				"type": "BenchmarkOptions",
 				"required": true,
-				"description": "JSON output selection and optional reproducible trial-order seed."
+				"description": "json selects JSON output instead of the text table for every operation except 'validate', which always prints JSON. seed is forwarded unchanged to runBenchmark when a run starts and is ignored for 'validate' and 'results'.",
+				"examples": [
+					{
+						"json": false
+					},
+					{
+						"json": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "BenchmarkService.execute",
 				"type": "Promise<void>",
-				"description": "Prints the selected benchmark operation; unsuccessful runs retain a nonzero exit status."
+				"description": "Resolves after printing the 'validate' preview as JSON, or the run or persisted run with its comparison as JSON when options.json is set and as a text table otherwise. Only 'run' sets process.exitCode to 1, when run.completedAt is falsy or a trial status is not 'passed'."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Reports an invalid operation, definition, persisted run or provider failure as a CLI error."
+				"description": "Raised by fail() for any error thrown inside perform(), such as from prepareBenchmark, repository.read or runBenchmark; execute passes the message of an Error, or 'Benchmark operation failed.' when the thrown value is not an Error. A SIGINT or SIGTERM during a run aborts the signal passed to runBenchmark with the reason Error('Benchmark interrupted.')."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "BenchmarkService.execute",
@@ -55,35 +66,46 @@
 						"name": "BenchmarkService.execute.operation",
 						"type": "string",
 						"required": true,
-						"description": "Validation, execution or persisted-results operation selected by the CLI."
+						"description": "Selects the action: 'validate' prints the preview from prepareBenchmark and returns without calling runBenchmark, 'results' reads and prints the persisted run named by target, and any other value, such as 'run', starts a benchmark run.",
+						"examples": ["validate", "run", "results"]
 					},
 					{
 						"name": "BenchmarkService.execute.target",
 						"type": "string",
 						"required": true,
-						"description": "Definition JSON path for validation or execution, or a persisted run ID for results."
+						"description": "For 'results' it is a persisted run ID passed unchanged to repository.read, and for 'validate' and every other operation it is a definition path passed unchanged to prepareBenchmark or runBenchmark. The value is not checked or normalized, and any error from those calls is caught and passed to fail().",
+						"examples": ["benchmarks/subagent-review.json", "benchmarks/reviewer-candidates.json"]
 					},
 					{
 						"name": "BenchmarkService.execute.options",
 						"type": "BenchmarkOptions",
 						"required": true,
-						"description": "JSON output selection and optional reproducible trial-order seed."
+						"description": "json selects JSON output instead of the text table for every operation except 'validate', which always prints JSON. seed is forwarded unchanged to runBenchmark when a run starts and is ignored for 'validate' and 'results'.",
+						"examples": [
+							{
+								"json": false
+							},
+							{
+								"json": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BenchmarkService.execute",
 						"type": "Promise<void>",
-						"description": "Prints the selected benchmark operation; unsuccessful runs retain a nonzero exit status."
+						"description": "Resolves after printing the 'validate' preview as JSON, or the run or persisted run with its comparison as JSON when options.json is set and as a text table otherwise. Only 'run' sets process.exitCode to 1, when run.completedAt is falsy or a trial status is not 'passed'."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised by fail() for any error thrown inside perform(), such as from prepareBenchmark, repository.read or runBenchmark; execute passes the message of an Error, or 'Benchmark operation failed.' when the thrown value is not an Error. A SIGINT or SIGTERM during a run aborts the signal passed to runBenchmark with the reason Error('Benchmark interrupted.')."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
