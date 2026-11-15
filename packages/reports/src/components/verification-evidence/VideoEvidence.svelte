@@ -15,7 +15,6 @@
 		note = $state(''),
 		error = $state(''),
 		loading = $state(false),
-		settled = $state(false),
 		saving = $state(false);
 	let flags = $state<FrameFlag[]>(untrack(() => initialFlags)),
 		selected = $state<FrameFlag>();
@@ -30,10 +29,15 @@
 				flag.clip.viewport === video?.reference?.viewport
 		)
 	);
-	const source = (file: string) => /^(?:https?:|blob:|data:|\/)/.test(file) ? file : assetBase + file;
-	const frameImage = (flag: FrameFlag) =>
-		'/api/video-flag-frame?' + new URLSearchParams({ unit: flag.clip.unit, id: flag.id });
-	const standing = (flag: FrameFlag) => flag.status.charAt(0).toUpperCase() + flag.status.slice(1);
+	const source = (file: string) => {
+		return /^(?:https?:|blob:|data:|\/)/.test(file) ? file : assetBase + file;
+	};
+	const frameImage = (flag: FrameFlag) => {
+		return '/api/video-flag-frame?' + new URLSearchParams({ unit: flag.clip.unit, id: flag.id });
+	};
+	const standing = (flag: FrameFlag) => {
+		return flag.status.charAt(0).toUpperCase() + flag.status.slice(1);
+	};
 	let details = $derived({
 		...item,
 		provenance: [
@@ -65,8 +69,6 @@
 		selected = undefined;
 		frame = 0;
 		error = '';
-		loading = false;
-		untrack(updatePlayer);
 		if (!current?.reference) return;
 		loading = true;
 		void refresh(current, controller);
@@ -99,12 +101,8 @@
 		if (player && video)
 			frame = Math.min(lastFrame, Math.floor(player.currentTime * video.frameRate));
 	}
-	function updatePlayer() {
-		settled = Boolean(player && player.readyState >= 2 && player.paused && !player.seeking);
-		currentFrame();
-	}
 	const canFlag = () => {
-		return Boolean(video?.reference && settled && !saving && !loading && player?.paused && !player.seeking);
+		return Boolean(video?.reference && !saving);
 	};
 	async function save(event: SubmitEvent) {
 		event.preventDefault();
@@ -143,11 +141,9 @@
 			muted
 			preload="metadata"
 			playsinline
-			ontimeupdate={updatePlayer}
-			onloadeddata={updatePlayer} onplay={updatePlayer} onpause={updatePlayer}
-			onseeking={updatePlayer} onseeked={updatePlayer} onemptied={updatePlayer}
+			ontimeupdate={currentFrame}
 			onerror={() =>
-				{ settled = false; error = 'The recorded video could not be played. Download the original to inspect it.'; }}
+				(error = 'The recorded video could not be played. Download the original to inspect it.')}
 		></hx-video>{/if}
 	{#if video}
 		<hx-div class="video-timeline">
@@ -181,8 +177,7 @@
 				>Frame note<hx-textarea aria-label="Frame note" bind:value={note} maxlength="2000" rows="2"
 				></hx-textarea></hx-label
 			>
-			<hx-p class="muted">Pause playback and let seeking settle before flagging a frame.</hx-p>
-			<hx-button type="submit" disabled={!canFlag()}
+			<hx-button type="submit" disabled={saving || loading || !player}
 				>{saving ? 'Saving frame…' : 'Flag current frame'}</hx-button
 			>
 		</hx-form>{:else}<hx-p class="muted"
