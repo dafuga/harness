@@ -29,29 +29,81 @@
 				"name": "AgentModelPicker.providers",
 				"type": "ProviderState[]",
 				"required": true,
-				"description": "Required providers with labels, models, availability and reasons. Unavailable providers stay visible with disabled model buttons; an available provider with no models gets an explicit empty message."
+				"description": "Required array of ProviderState entries, rendered in array order with each provider's label, its reason line when reason is set, and its models; the picker does not read version or imageGeneration. Unavailable providers stay visible with disabled model buttons, an available provider with no models shows 'No models listed.', and an empty array shows 'No agent provider available.'",
+				"examples": [
+					[
+						{
+							"id": "claude",
+							"label": "Claude CLI",
+							"available": true,
+							"reason": null,
+							"version": "2.1.0",
+							"imageGeneration": false,
+							"models": [
+								{
+									"id": "claude-opus-5-5",
+									"label": "Claude Opus 5.5",
+									"efforts": ["low", "medium", "high", "xhigh", "max"],
+									"defaultEffort": "xhigh",
+									"isDefault": true
+								}
+							]
+						}
+					],
+					[
+						{
+							"id": "claude",
+							"label": "Claude CLI",
+							"available": true,
+							"reason": null,
+							"version": "2.1.0",
+							"imageGeneration": false,
+							"models": [
+								{
+									"id": "claude-opus-5-5",
+									"label": "Claude Opus 5.5",
+									"efforts": ["low", "medium", "high", "xhigh", "max"],
+									"defaultEffort": "xhigh",
+									"isDefault": true
+								}
+							]
+						},
+						{
+							"id": "codex",
+							"label": "Codex CLI",
+							"available": false,
+							"reason": "Sign in to Codex CLI with a ChatGPT subscription.",
+							"version": "0.58.0",
+							"imageGeneration": false,
+							"models": []
+						}
+					]
+				]
 			},
 			{
 				"name": "AgentModelPicker.provider",
 				"type": "ProviderId",
 				"required": true,
-				"description": "Required bindable provider identifier. Selecting a model stores its provider identifier unchanged. Together with model, determines the selected button and tooltip."
+				"description": "Required bindable ProviderId, either 'codex' or 'claude', naming the chosen provider; a model click stores the clicked provider section's id here unchanged. Together with model, it sets the active class and aria-pressed=true on the matching button, and the title passed to ChoiceDialog is 'Model: <provider label> · <model label>' when both match a listed choice, otherwise 'Choose model'.",
+				"examples": ["claude", "codex"]
 			},
 			{
 				"name": "AgentModelPicker.model",
 				"type": "string",
 				"required": true,
-				"description": "Required bindable model identifier. Selecting a model stores its identifier unchanged and closes the picker. Does not choose a default model."
+				"description": "Required bindable model identifier, matched by id against the listed models of the chosen provider and never defaulted by the picker. A model click stores the clicked model's id unchanged here and calls the close() argument of the children snippet; a value that matches no listed model leaves no button active and gives the title 'Choose model'.",
+				"examples": ["claude-opus-5-5"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AgentModelPicker",
 				"type": "markup",
-				"description": "Model icon and provider-grouped dialog with reasons, selected state and empty-provider messages. An enabled choice updates provider and model together."
+				"description": "Markup for a ChoiceDialog labelled 'Choose model' with the model icon and one section per provider, each showing its label, its reason when set, and a button per model; the current choice gets the active class and aria-pressed=true, buttons of unavailable providers are disabled, and the messages 'No models listed.' and 'No agent provider available.' appear where they apply. An enabled model button sets provider and model together, then calls close()."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
