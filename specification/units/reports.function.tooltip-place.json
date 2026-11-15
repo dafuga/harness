@@ -21,29 +21,61 @@
 				"name": "tooltipPlace.mark",
 				"type": "TooltipMark",
 				"required": true,
-				"description": "Anchor rectangle in viewport coordinates."
+				"description": "The rectangle the tooltip belongs to, with numeric left, top, width, and height. Its horizontal center and top and bottom edges set the candidate alignment and vertical positions; the function uses coordinates as given.",
+				"examples": [
+					{
+						"left": 100,
+						"top": 80,
+						"width": 32,
+						"height": 20
+					}
+				]
 			},
 			{
 				"name": "tooltipPlace.tip",
 				"type": "TooltipSize",
 				"required": true,
-				"description": "Tooltip width and height."
+				"description": "The numeric width and height of the tooltip. Its width controls horizontal centering, and its height is checked against the available room above and below the mark; values are used as given.",
+				"examples": [
+					{
+						"width": 240,
+						"height": 160
+					}
+				]
 			},
 			{
 				"name": "tooltipPlace.view",
 				"type": "TooltipSize",
 				"required": true,
-				"description": "Viewport width and height."
+				"description": "The numeric width and height of the view containing the tooltip. Its width sets the horizontal clamp and its height determines the room below the mark; values are used as given.",
+				"examples": [
+					{
+						"width": 1024,
+						"height": 768
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "tooltipPlace",
 				"type": "{ left: number; top: number; height?: number }",
-				"description": "Centered horizontal position constrained toward eight-pixel margins. Prefers below when it fits, otherwise above; when neither fits, uses the roomier side and supplies its available height for scrolling."
+				"description": "The horizontal left and vertical top positions, with an optional height when the tooltip cannot fit above or below; the horizontal clamp may not keep an overwide tooltip within the view. It centers horizontally and applies an 8-pixel gap; it prefers below when that fits, otherwise above when that fits, and if neither fits uses the roomier side (below on a tie) with that room as height, starting at the 8-pixel gap when above is chosen.",
+				"examples": [
+					{
+						"left": 8,
+						"top": 108
+					},
+					{
+						"left": 300,
+						"top": 392,
+						"height": 368
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "tooltipPlace",
@@ -52,30 +84,61 @@
 						"name": "tooltipPlace.mark",
 						"type": "TooltipMark",
 						"required": true,
-						"description": "Anchor rectangle in viewport coordinates."
+						"description": "The rectangle the tooltip belongs to, with numeric left, top, width, and height. Its horizontal center and top and bottom edges set the candidate alignment and vertical positions; the function uses coordinates as given.",
+						"examples": [
+							{
+								"left": 100,
+								"top": 80,
+								"width": 32,
+								"height": 20
+							}
+						]
 					},
 					{
 						"name": "tooltipPlace.tip",
 						"type": "TooltipSize",
 						"required": true,
-						"description": "Tooltip width and height."
+						"description": "The numeric width and height of the tooltip. Its width controls horizontal centering, and its height is checked against the available room above and below the mark; values are used as given.",
+						"examples": [
+							{
+								"width": 240,
+								"height": 160
+							}
+						]
 					},
 					{
 						"name": "tooltipPlace.view",
 						"type": "TooltipSize",
 						"required": true,
-						"description": "Viewport width and height."
+						"description": "The numeric width and height of the view containing the tooltip. Its width sets the horizontal clamp and its height determines the room below the mark; values are used as given.",
+						"examples": [
+							{
+								"width": 1024,
+								"height": 768
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "tooltipPlace",
 						"type": "{ left: number; top: number; height?: number }",
-						"description": "Centered horizontal position constrained toward eight-pixel margins. Prefers below when it fits, otherwise above; when neither fits, uses the roomier side and supplies its available height for scrolling."
+						"description": "The horizontal left and vertical top positions, with an optional height when the tooltip cannot fit above or below; the horizontal clamp may not keep an overwide tooltip within the view. It centers horizontally and applies an 8-pixel gap; it prefers below when that fits, otherwise above when that fits, and if neither fits uses the roomier side (below on a tie) with that room as height, starting at the 8-pixel gap when above is chosen.",
+						"examples": [
+							{
+								"left": 8,
+								"top": 108
+							},
+							{
+								"left": 300,
+								"top": 392,
+								"height": 368
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
