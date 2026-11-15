@@ -32,81 +32,383 @@
 				"name": "KernelBenchmarkService.constructor.plan",
 				"type": "BenchPlan",
 				"required": true,
-				"description": "CLI vector, fresh-process sample count and warm-loop iteration count."
+				"description": "CLI command vector used to launch fresh-process samples and the HTTP server, plus the cold sample and warm iteration counts. The service uses coldSamples for fresh-process calls and warmIterations for calls on initialized runtimes without validating the counts.",
+				"examples": [
+					{
+						"cli": ["harness"],
+						"coldSamples": 5,
+						"warmIterations": 100
+					}
+				]
 			},
 			{
 				"name": "KernelBenchmarkService.constructor.context",
 				"type": "MeasureContext",
 				"required": true,
-				"description": "Revision/profile context attached to each benchmark measurement."
+				"description": "Measurement context passed to benchMeasurement for each recorded result. This service does not inspect or validate its fields.",
+				"examples": [
+					{
+						"profile": "macos-arm64",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "KernelBenchmarkService.measure.run",
 				"type": "WorkloadRun",
 				"required": true,
-				"description": "Validated workload run containing request, node count, seed and ID."
+				"description": "Workload id, node count, seed, and runtime request used by the measurement loop. The service uses nodes and seed for fresh-process samples and uses id and request for the measurements without checking their consistency.",
+				"examples": [
+					{
+						"id": "graph-3",
+						"nodes": 3,
+						"seed": 42,
+						"request": {
+							"operation": "impact",
+							"input": {
+								"base": {
+									"nodes": ["reports.component.evidence-grid", "reports.component.kernel"],
+									"edges": [
+										[0, 1]
+									]
+								},
+								"head": {
+									"nodes": [
+										"reports.component.evidence-grid",
+										"reports.component.kernel",
+										"reports.test.evidence-grid"
+									],
+									"edges": [
+										[0, 1],
+										[2, 0]
+									]
+								},
+								"changed": ["reports.component.evidence-grid"],
+								"uncertain": [],
+								"sinks": ["reports.test.evidence-grid"]
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "KernelBenchmarkService.measure.url",
 				"type": "string",
 				"required": true,
-				"description": "URL of the already running HTTP kernel server; used for the HTTP runtime."
+				"description": "Server URL supplied to the HTTP runtime and cold HTTP samples. The service uses it only for the http target and does not start the server here.",
+				"examples": ["http://127.0.0.1:4173"]
 			},
 			{
 				"name": "KernelBenchmarkService.describe.run",
 				"type": "WorkloadRun",
 				"required": true,
-				"description": "Workload request whose size facts are reported."
+				"description": "Workload run whose id, node count, and request dimensions are summarized. The request input is assumed to contain array-valued base.edges and changed fields; byte counts use UTF-8 lengths of serialized request and impactKernel response.",
+				"examples": [
+					{
+						"id": "graph-3",
+						"nodes": 3,
+						"seed": 42,
+						"request": {
+							"operation": "impact",
+							"input": {
+								"base": {
+									"nodes": ["reports.component.evidence-grid", "reports.component.kernel"],
+									"edges": [
+										[0, 1]
+									]
+								},
+								"head": {
+									"nodes": [
+										"reports.component.evidence-grid",
+										"reports.component.kernel",
+										"reports.test.evidence-grid"
+									],
+									"edges": [
+										[0, 1],
+										[2, 0]
+									]
+								},
+								"changed": ["reports.component.evidence-grid"],
+								"uncertain": [],
+								"sinks": ["reports.test.evidence-grid"]
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "serveKernel.cli",
 				"type": "string[]",
 				"required": true,
-				"description": "CLI executable and leading arguments used to launch the kernel server."
+				"description": "CLI command vector whose first string is passed to spawn and whose remaining strings precede kernel serve --port 0 --runtime module. The vector must contain an executable command; the function does not validate it first.",
+				"examples": [
+					["harness"]
+				]
 			},
 			{
 				"name": "serveKernel.startupTimeoutMs",
 				"type": "number",
 				"required": false,
 				"default": 20000,
-				"description": "Maximum wait for valid server readiness output."
+				"description": "Maximum wait in milliseconds for readiness output. It defaults to 20000 and is passed to setTimeout without range validation.",
+				"examples": [30000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "KernelBenchmarkService.measure",
 				"type": "Promise<BenchMeasurement[]>",
-				"description": "Cold and warm latency, throughput and memory measurement entries for each configured runtime; memory may be reported unavailable when it cannot be attributed."
+				"description": "Resolved array containing cold latency, warm latency, throughput, and memory measurements for module, wasm, process, and http runtimes. Each successful call returns 16 entries, and memory may carry an unavailable reason when it cannot be attributed.",
+				"examples": [
+					[
+						{
+							"unit": "function.impact-kernel",
+							"metric": "latency-cold-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.82,
+							"method": "Median of 5 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "module",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 5
+						},
+						{
+							"unit": "function.impact-kernel",
+							"metric": "latency-warm-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.08,
+							"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "module",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 100
+						},
+						{
+							"unit": "function.impact-kernel",
+							"metric": "throughput-ops",
+							"unitOfMeasure": "ops/s",
+							"value": 12500,
+							"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "module",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 100
+						},
+						{
+							"unit": "function.impact-kernel",
+							"metric": "memory-bytes",
+							"unitOfMeasure": "bytes",
+							"value": null,
+							"method": "Not measured.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "module",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"unavailable": "In-process module memory cannot be attributed to one unit."
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "latency-cold-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.91,
+							"method": "Median of 5 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "wasm",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 5
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "latency-warm-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.1,
+							"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "wasm",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 100
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "throughput-ops",
+							"unitOfMeasure": "ops/s",
+							"value": 10000,
+							"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "wasm",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 100
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "memory-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 524288,
+							"method": "Linear memory size of the instantiated module after the warm loop.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "wasm",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": []
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "latency-cold-ms",
+							"unitOfMeasure": "ms",
+							"value": 1.37,
+							"method": "Median of 5 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "process",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 5
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "latency-warm-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.24,
+							"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "process",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 100
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "throughput-ops",
+							"unitOfMeasure": "ops/s",
+							"value": 4166.67,
+							"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "process",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 100
+						},
+						{
+							"unit": "kernel.impact-kernel",
+							"metric": "memory-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 7340032,
+							"method": "Peak resident set size of one native process run, from /usr/bin/time.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "process",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": []
+						},
+						{
+							"unit": "function.impact-kernel",
+							"metric": "latency-cold-ms",
+							"unitOfMeasure": "ms",
+							"value": 2.14,
+							"method": "Median of 5 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "http",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 5
+						},
+						{
+							"unit": "function.impact-kernel",
+							"metric": "latency-warm-ms",
+							"unitOfMeasure": "ms",
+							"value": 0.39,
+							"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "http",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 100
+						},
+						{
+							"unit": "function.impact-kernel",
+							"metric": "throughput-ops",
+							"unitOfMeasure": "ops/s",
+							"value": 2564.1,
+							"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "http",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"samples": 100
+						},
+						{
+							"unit": "function.impact-kernel",
+							"metric": "memory-bytes",
+							"unitOfMeasure": "bytes",
+							"value": null,
+							"method": "Not measured.",
+							"workload": "graph-3",
+							"profile": "macos-arm64",
+							"target": "http",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": [],
+							"unavailable": "Memory belongs to the serving process, not to the caller."
+						}
+					]
+				]
 			},
 			{
 				"name": "KernelBenchmarkService.describe",
 				"type": "Workload",
-				"description": "Workload dimensions and serialized request/response byte counts derived from the request."
+				"description": "Workload summary containing the run id and node count, edge and changed counts from request.input, and UTF-8 byte lengths of serialized request and impactKernel response. The implementation assumes request.input.base.edges and request.input.changed are arrays.",
+				"examples": [
+					{
+						"id": "workload-100",
+						"nodes": 100,
+						"edges": 120,
+						"changed": 8,
+						"requestBytes": 2048,
+						"responseBytes": 1536
+					}
+				]
 			},
 			{
 				"name": "serveKernel",
 				"type": "Promise<{ url: string; stop(): void }>",
-				"description": "Ready server URL plus a stop function that signals the launched child."
+				"description": "Resolves after the child emits its first stdout chunk containing JSON with a string url, returning that URL and a stop function that calls child.kill(). Startup timeout, early exit, or invalid readiness data rejects the promise."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "benchmark measurement requires the kernel build and rejects cold samples that exit unsuccessfully"
+				"description": "Thrown through fail when the native kernel artifact is absent or a cold sample exits with a nonzero code. A cold sample failure includes its stderr."
 			},
 			{
 				"name": "Kernel server startup failure",
 				"type": "thrown",
-				"description": "serveKernel rejects on spawn error, timeout, early child exit or invalid readiness JSON",
-				"examples": [
-					"Kernel server startup timed out.",
-					"Kernel server exited before readiness.",
-					"Kernel server returned invalid readiness data."
-				]
+				"description": "Rejected when spawning fails, the startup timeout elapses, the child exits before readiness, or the first stdout chunk is not JSON containing a string url. Timeout, early-exit, and invalid-readiness cases reject with Error."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "serveKernel rejects with Error when child spawning fails, startup times out, the child exits before readiness, or its first stdout chunk is invalid JSON or contains a non-string url."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "KernelBenchmarkService.measure",
@@ -115,27 +417,270 @@
 						"name": "KernelBenchmarkService.measure.run",
 						"type": "WorkloadRun",
 						"required": true,
-						"description": "Validated workload run containing request, node count, seed and ID."
+						"description": "Workload id, node count, seed, and runtime request used by the measurement loop. The service uses nodes and seed for fresh-process samples and uses id and request for the measurements without checking their consistency.",
+						"examples": [
+							{
+								"id": "graph-3",
+								"nodes": 3,
+								"seed": 42,
+								"request": {
+									"operation": "impact",
+									"input": {
+										"base": {
+											"nodes": ["reports.component.evidence-grid", "reports.component.kernel"],
+											"edges": [
+												[0, 1]
+											]
+										},
+										"head": {
+											"nodes": [
+												"reports.component.evidence-grid",
+												"reports.component.kernel",
+												"reports.test.evidence-grid"
+											],
+											"edges": [
+												[0, 1],
+												[2, 0]
+											]
+										},
+										"changed": ["reports.component.evidence-grid"],
+										"uncertain": [],
+										"sinks": ["reports.test.evidence-grid"]
+									}
+								}
+							}
+						]
 					},
 					{
 						"name": "KernelBenchmarkService.measure.url",
 						"type": "string",
 						"required": true,
-						"description": "URL of the already running HTTP kernel server; used for the HTTP runtime."
+						"description": "Server URL supplied to the HTTP runtime and cold HTTP samples. The service uses it only for the http target and does not start the server here.",
+						"examples": ["http://127.0.0.1:4173"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "KernelBenchmarkService.measure",
 						"type": "Promise<BenchMeasurement[]>",
-						"description": "Cold and warm latency, throughput and memory measurement entries for each configured runtime; memory may be reported unavailable when it cannot be attributed."
+						"description": "Resolved array containing cold latency, warm latency, throughput, and memory measurements for module, wasm, process, and http runtimes. Each successful call returns 16 entries, and memory may carry an unavailable reason when it cannot be attributed.",
+						"examples": [
+							[
+								{
+									"unit": "function.impact-kernel",
+									"metric": "latency-cold-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.82,
+									"method": "Median of 5 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "module",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 5
+								},
+								{
+									"unit": "function.impact-kernel",
+									"metric": "latency-warm-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.08,
+									"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "module",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 100
+								},
+								{
+									"unit": "function.impact-kernel",
+									"metric": "throughput-ops",
+									"unitOfMeasure": "ops/s",
+									"value": 12500,
+									"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "module",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 100
+								},
+								{
+									"unit": "function.impact-kernel",
+									"metric": "memory-bytes",
+									"unitOfMeasure": "bytes",
+									"value": null,
+									"method": "Not measured.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "module",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"unavailable": "In-process module memory cannot be attributed to one unit."
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "latency-cold-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.91,
+									"method": "Median of 5 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "wasm",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 5
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "latency-warm-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.1,
+									"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "wasm",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 100
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "throughput-ops",
+									"unitOfMeasure": "ops/s",
+									"value": 10000,
+									"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "wasm",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 100
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "memory-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 524288,
+									"method": "Linear memory size of the instantiated module after the warm loop.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "wasm",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": []
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "latency-cold-ms",
+									"unitOfMeasure": "ms",
+									"value": 1.37,
+									"method": "Median of 5 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "process",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 5
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "latency-warm-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.24,
+									"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "process",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 100
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "throughput-ops",
+									"unitOfMeasure": "ops/s",
+									"value": 4166.67,
+									"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "process",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 100
+								},
+								{
+									"unit": "kernel.impact-kernel",
+									"metric": "memory-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 7340032,
+									"method": "Peak resident set size of one native process run, from /usr/bin/time.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "process",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": []
+								},
+								{
+									"unit": "function.impact-kernel",
+									"metric": "latency-cold-ms",
+									"unitOfMeasure": "ms",
+									"value": 2.14,
+									"method": "Median of 5 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "http",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 5
+								},
+								{
+									"unit": "function.impact-kernel",
+									"metric": "latency-warm-ms",
+									"unitOfMeasure": "ms",
+									"value": 0.39,
+									"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "http",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 100
+								},
+								{
+									"unit": "function.impact-kernel",
+									"metric": "throughput-ops",
+									"unitOfMeasure": "ops/s",
+									"value": 2564.1,
+									"method": "Median of 100 calls on an initialized runtime, including request serialization and response parsing.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "http",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"samples": 100
+								},
+								{
+									"unit": "function.impact-kernel",
+									"metric": "memory-bytes",
+									"unitOfMeasure": "bytes",
+									"value": null,
+									"method": "Not measured.",
+									"workload": "graph-3",
+									"profile": "macos-arm64",
+									"target": "http",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": [],
+									"unavailable": "Memory belongs to the serving process, not to the caller."
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "benchmark measurement requires the kernel build and rejects cold samples that exit unsuccessfully"
+						"description": "Thrown through fail when the native kernel artifact is absent or a cold sample exits with a nonzero code. A cold sample failure includes its stderr."
 					}
 				],
 				"errorStatus": "declared"
@@ -147,14 +692,56 @@
 						"name": "KernelBenchmarkService.describe.run",
 						"type": "WorkloadRun",
 						"required": true,
-						"description": "Workload request whose size facts are reported."
+						"description": "Workload run whose id, node count, and request dimensions are summarized. The request input is assumed to contain array-valued base.edges and changed fields; byte counts use UTF-8 lengths of serialized request and impactKernel response.",
+						"examples": [
+							{
+								"id": "graph-3",
+								"nodes": 3,
+								"seed": 42,
+								"request": {
+									"operation": "impact",
+									"input": {
+										"base": {
+											"nodes": ["reports.component.evidence-grid", "reports.component.kernel"],
+											"edges": [
+												[0, 1]
+											]
+										},
+										"head": {
+											"nodes": [
+												"reports.component.evidence-grid",
+												"reports.component.kernel",
+												"reports.test.evidence-grid"
+											],
+											"edges": [
+												[0, 1],
+												[2, 0]
+											]
+										},
+										"changed": ["reports.component.evidence-grid"],
+										"uncertain": [],
+										"sinks": ["reports.test.evidence-grid"]
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "KernelBenchmarkService.describe",
 						"type": "Workload",
-						"description": "Workload dimensions and serialized request/response byte counts derived from the request."
+						"description": "Workload summary containing the run id and node count, edge and changed counts from request.input, and UTF-8 byte lengths of serialized request and impactKernel response. The implementation assumes request.input.base.edges and request.input.changed are arrays.",
+						"examples": [
+							{
+								"id": "workload-100",
+								"nodes": 100,
+								"edges": 120,
+								"changed": 8,
+								"requestBytes": 2048,
+								"responseBytes": 1536
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -167,33 +754,37 @@
 						"name": "serveKernel.cli",
 						"type": "string[]",
 						"required": true,
-						"description": "CLI executable and leading arguments used to launch the kernel server."
+						"description": "CLI command vector whose first string is passed to spawn and whose remaining strings precede kernel serve --port 0 --runtime module. The vector must contain an executable command; the function does not validate it first.",
+						"examples": [
+							["harness"]
+						]
 					},
 					{
 						"name": "serveKernel.startupTimeoutMs",
 						"type": "number",
 						"required": false,
 						"default": 20000,
-						"description": "Maximum wait for valid server readiness output."
+						"description": "Maximum wait in milliseconds for readiness output. It defaults to 20000 and is passed to setTimeout without range validation.",
+						"examples": [30000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "serveKernel",
 						"type": "Promise<{ url: string; stop(): void }>",
-						"description": "Ready server URL plus a stop function that signals the launched child."
+						"description": "Resolves after the child emits its first stdout chunk containing JSON with a string url, returning that URL and a stop function that calls child.kill(). Startup timeout, early exit, or invalid readiness data rejects the promise."
 					}
 				],
 				"errors": [
 					{
 						"name": "Kernel server startup failure",
 						"type": "thrown",
-						"description": "serveKernel rejects on spawn error, timeout, early child exit or invalid readiness JSON",
-						"examples": [
-							"Kernel server startup timed out.",
-							"Kernel server exited before readiness.",
-							"Kernel server returned invalid readiness data."
-						]
+						"description": "Rejected when spawning fails, the startup timeout elapses, the child exits before readiness, or the first stdout chunk is not JSON containing a string url. Timeout, early-exit, and invalid-readiness cases reject with Error."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "serveKernel rejects with Error when child spawning fails, startup times out, the child exits before readiness, or its first stdout chunk is invalid JSON or contains a non-string url."
 					}
 				],
 				"errorStatus": "declared"
@@ -207,13 +798,26 @@
 						"name": "KernelBenchmarkService.constructor.plan",
 						"type": "BenchPlan",
 						"required": true,
-						"description": "CLI vector, fresh-process sample count and warm-loop iteration count."
+						"description": "CLI command vector used to launch fresh-process samples and the HTTP server, plus the cold sample and warm iteration counts. The service uses coldSamples for fresh-process calls and warmIterations for calls on initialized runtimes without validating the counts.",
+						"examples": [
+							{
+								"cli": ["harness"],
+								"coldSamples": 5,
+								"warmIterations": 100
+							}
+						]
 					},
 					{
 						"name": "KernelBenchmarkService.constructor.context",
 						"type": "MeasureContext",
 						"required": true,
-						"description": "Revision/profile context attached to each benchmark measurement."
+						"description": "Measurement context passed to benchMeasurement for each recorded result. This service does not inspect or validate its fields.",
+						"examples": [
+							{
+								"profile": "macos-arm64",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
