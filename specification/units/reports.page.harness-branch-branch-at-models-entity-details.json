@@ -18,12 +18,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The rendered markup of the Model details page: one HarnessScreen element whose title prop is 'Model details' and whose content prop is the EntityDetailsScreen component. The file declares no props and reads no route parameters, so the element and its props are the same on every render and this markup is the page's entire output."
 			}
 		],
 		"errors": [],
