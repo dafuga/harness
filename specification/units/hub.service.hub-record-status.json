@@ -24,44 +24,196 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubRecordStatusService.constructor.context",
 				"type": "Context",
-				"required": true
+				"required": true,
+				"description": "The request-scoped context the caller authorizes before construction, supplying notes (the promise of every note), attached (the service that loads attached records) and tree (the lookup of a commit's tree hash). The instance keeps the whole context privately and exposes attached as its readonly attached member."
 			},
 			{
 				"name": "HubRecordStatusService.status.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The full 40-character hex hash of the commit whose note is read, matched exactly against the note keys. A commit with no note gives an empty status rather than an error.",
+				"examples": [
+					"6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12",
+					"b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b"
+				]
 			},
 			{
 				"name": "HubRecordStatusService.problems.line",
 				"type": "VerificationNote",
-				"required": true
+				"required": true,
+				"description": "One verification line from a commit's note, as returned by verifications(). Its evidence pointer is loaded, and the record it names is judged against this line's record id, outcome, profile, finish time and source.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"kind": "verification",
+						"record": "5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+						"status": "passed",
+						"profile": "7d4b9e21c0a35f86",
+						"finishedAt": "2026-11-14T18:22:05.417Z",
+						"source": {
+							"commit": "6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12",
+							"tree": "c4e91a7d0b35f286e9d1c7a04b8f3e52a6d0c917",
+							"base": "3e7b0d5a9c12f48e6b1d0a7c5f92e83b4d6a1c07"
+						},
+						"evidence": {
+							"commit": "a9c3e51f7d20b84e6c1f3a95d7e02b48c6f1d3e9",
+							"path": "records/6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12/5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+							"manifest": "9f4a12c7e0b358d6a1f9e24c7b03d86e5a2c9f1b4e70d38a6c5b92f1e4d07a3c"
+						}
+					},
+					{
+						"schemaVersion": 1,
+						"kind": "verification",
+						"record": "e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+						"status": "failed",
+						"profile": "e3f08a6d2b19c475",
+						"finishedAt": "2026-11-13T07:58:40.102Z",
+						"source": {
+							"commit": "b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b",
+							"tree": "7c2a0e9f15b48d63e0a7c921f5d8b34e6a1c0f78",
+							"base": null
+						},
+						"evidence": {
+							"commit": "d05b8e3a6c1f29e47a0d5b3c8e61f9a2b4c7d0e8",
+							"path": "records/b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b/e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+							"manifest": "0d6e8b25a4f1c973e9b02d7a5c81f46e3b9a0d52c7e18f64a3d5b09e2c76f81a"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubRecordStatusService.all",
-				"type": "Promise<Map<string, ReadNote>>"
+				"type": "Promise<Map<string, ReadNote>>",
+				"description": "The context's notes promise, returned unchanged, so every call resolves to the same map of every commit's note, keyed by commit hash. Each ReadNote holds the valid entries written for that commit and one problem message for each line that was refused."
 			},
 			{
 				"name": "HubRecordStatusService.verifications",
-				"type": "Promise<VerificationNote[]>"
+				"type": "Promise<VerificationNote[]>",
+				"description": "Every verification line of every commit's note, flattened into one array in map order; reason and other entry kinds are left out. This is where a record id is looked up, both by callers and when inherited records are loaded.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"kind": "verification",
+							"record": "5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+							"status": "passed",
+							"profile": "7d4b9e21c0a35f86",
+							"finishedAt": "2026-11-14T18:22:05.417Z",
+							"source": {
+								"commit": "6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12",
+								"tree": "c4e91a7d0b35f286e9d1c7a04b8f3e52a6d0c917",
+								"base": "3e7b0d5a9c12f48e6b1d0a7c5f92e83b4d6a1c07"
+							},
+							"evidence": {
+								"commit": "a9c3e51f7d20b84e6c1f3a95d7e02b48c6f1d3e9",
+								"path": "records/6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12/5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+								"manifest": "9f4a12c7e0b358d6a1f9e24c7b03d86e5a2c9f1b4e70d38a6c5b92f1e4d07a3c"
+							}
+						}
+					],
+					[
+						{
+							"schemaVersion": 1,
+							"kind": "verification",
+							"record": "5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+							"status": "passed",
+							"profile": "7d4b9e21c0a35f86",
+							"finishedAt": "2026-11-14T18:22:05.417Z",
+							"source": {
+								"commit": "6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12",
+								"tree": "c4e91a7d0b35f286e9d1c7a04b8f3e52a6d0c917",
+								"base": "3e7b0d5a9c12f48e6b1d0a7c5f92e83b4d6a1c07"
+							},
+							"evidence": {
+								"commit": "a9c3e51f7d20b84e6c1f3a95d7e02b48c6f1d3e9",
+								"path": "records/6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12/5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+								"manifest": "9f4a12c7e0b358d6a1f9e24c7b03d86e5a2c9f1b4e70d38a6c5b92f1e4d07a3c"
+							}
+						},
+						{
+							"schemaVersion": 1,
+							"kind": "verification",
+							"record": "e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+							"status": "failed",
+							"profile": "e3f08a6d2b19c475",
+							"finishedAt": "2026-11-13T07:58:40.102Z",
+							"source": {
+								"commit": "b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b",
+								"tree": "7c2a0e9f15b48d63e0a7c921f5d8b34e6a1c0f78",
+								"base": null
+							},
+							"evidence": {
+								"commit": "d05b8e3a6c1f29e47a0d5b3c8e61f9a2b4c7d0e8",
+								"path": "records/b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b/e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+								"manifest": "0d6e8b25a4f1c973e9b02d7a5c81f46e3b9a0d52c7e18f64a3d5b09e2c76f81a"
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "HubRecordStatusService.status",
-				"type": "Promise<CommitStatus>"
+				"type": "Promise<CommitStatus>",
+				"description": "The verification state of one commit: verified is true only when a passing record with no problems is attached to it, records holds one entry per distinct record on that commit's note, and problems holds the note's refused lines. A commit with no note yields verified false and empty lists.",
+				"examples": [
+					{
+						"commit": "6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12",
+						"verified": true,
+						"records": [
+							{
+								"record": "5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"evidence": {
+									"commit": "a9c3e51f7d20b84e6c1f3a95d7e02b48c6f1d3e9",
+									"path": "records/6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12/5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+									"manifest": "9f4a12c7e0b358d6a1f9e24c7b03d86e5a2c9f1b4e70d38a6c5b92f1e4d07a3c"
+								}
+							}
+						],
+						"problems": []
+					},
+					{
+						"commit": "b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b",
+						"verified": false,
+						"records": [
+							{
+								"record": "e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+								"status": "failed",
+								"valid": false,
+								"problems": ["manifest does not match the hash in the note"],
+								"evidence": {
+									"commit": "d05b8e3a6c1f29e47a0d5b3c8e61f9a2b4c7d0e8",
+									"path": "records/b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b/e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+									"manifest": "0d6e8b25a4f1c973e9b02d7a5c81f46e3b9a0d52c7e18f64a3d5b09e2c76f81a"
+								}
+							}
+						],
+						"problems": ["note line 3 is not a valid history entry"]
+					}
+				]
 			},
 			{
 				"name": "HubRecordStatusService.problems",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "Lists everything wrong with one attached record: its own identity and file problems and, only when it has none, the problems of the records it inherits through its base and scenarios. An empty array means no problem was found with that record or its lineage.",
+				"examples": [
+					[],
+					["manifest does not match the hash in the note"],
+					["base record 0c7f9a3e5b18 did not pass"]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "HubRecordStatusService.all",
@@ -69,11 +221,12 @@
 				"outputs": [
 					{
 						"name": "HubRecordStatusService.all",
-						"type": "Promise<Map<string, ReadNote>>"
+						"type": "Promise<Map<string, ReadNote>>",
+						"description": "The context's notes promise, returned unchanged, so every call resolves to the same map of every commit's note, keyed by commit hash. Each ReadNote holds the valid entries written for that commit and one problem message for each line that was refused."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubRecordStatusService.verifications",
@@ -81,11 +234,72 @@
 				"outputs": [
 					{
 						"name": "HubRecordStatusService.verifications",
-						"type": "Promise<VerificationNote[]>"
+						"type": "Promise<VerificationNote[]>",
+						"description": "Every verification line of every commit's note, flattened into one array in map order; reason and other entry kinds are left out. This is where a record id is looked up, both by callers and when inherited records are loaded.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"kind": "verification",
+									"record": "5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+									"status": "passed",
+									"profile": "7d4b9e21c0a35f86",
+									"finishedAt": "2026-11-14T18:22:05.417Z",
+									"source": {
+										"commit": "6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12",
+										"tree": "c4e91a7d0b35f286e9d1c7a04b8f3e52a6d0c917",
+										"base": "3e7b0d5a9c12f48e6b1d0a7c5f92e83b4d6a1c07"
+									},
+									"evidence": {
+										"commit": "a9c3e51f7d20b84e6c1f3a95d7e02b48c6f1d3e9",
+										"path": "records/6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12/5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+										"manifest": "9f4a12c7e0b358d6a1f9e24c7b03d86e5a2c9f1b4e70d38a6c5b92f1e4d07a3c"
+									}
+								}
+							],
+							[
+								{
+									"schemaVersion": 1,
+									"kind": "verification",
+									"record": "5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+									"status": "passed",
+									"profile": "7d4b9e21c0a35f86",
+									"finishedAt": "2026-11-14T18:22:05.417Z",
+									"source": {
+										"commit": "6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12",
+										"tree": "c4e91a7d0b35f286e9d1c7a04b8f3e52a6d0c917",
+										"base": "3e7b0d5a9c12f48e6b1d0a7c5f92e83b4d6a1c07"
+									},
+									"evidence": {
+										"commit": "a9c3e51f7d20b84e6c1f3a95d7e02b48c6f1d3e9",
+										"path": "records/6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12/5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+										"manifest": "9f4a12c7e0b358d6a1f9e24c7b03d86e5a2c9f1b4e70d38a6c5b92f1e4d07a3c"
+									}
+								},
+								{
+									"schemaVersion": 1,
+									"kind": "verification",
+									"record": "e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+									"status": "failed",
+									"profile": "e3f08a6d2b19c475",
+									"finishedAt": "2026-11-13T07:58:40.102Z",
+									"source": {
+										"commit": "b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b",
+										"tree": "7c2a0e9f15b48d63e0a7c921f5d8b34e6a1c0f78",
+										"base": null
+									},
+									"evidence": {
+										"commit": "d05b8e3a6c1f29e47a0d5b3c8e61f9a2b4c7d0e8",
+										"path": "records/b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b/e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+										"manifest": "0d6e8b25a4f1c973e9b02d7a5c81f46e3b9a0d52c7e18f64a3d5b09e2c76f81a"
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubRecordStatusService.status",
@@ -93,17 +307,61 @@
 					{
 						"name": "HubRecordStatusService.status.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The full 40-character hex hash of the commit whose note is read, matched exactly against the note keys. A commit with no note gives an empty status rather than an error.",
+						"examples": [
+							"6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12",
+							"b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubRecordStatusService.status",
-						"type": "Promise<CommitStatus>"
+						"type": "Promise<CommitStatus>",
+						"description": "The verification state of one commit: verified is true only when a passing record with no problems is attached to it, records holds one entry per distinct record on that commit's note, and problems holds the note's refused lines. A commit with no note yields verified false and empty lists.",
+						"examples": [
+							{
+								"commit": "6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12",
+								"verified": true,
+								"records": [
+									{
+										"record": "5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"evidence": {
+											"commit": "a9c3e51f7d20b84e6c1f3a95d7e02b48c6f1d3e9",
+											"path": "records/6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12/5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+											"manifest": "9f4a12c7e0b358d6a1f9e24c7b03d86e5a2c9f1b4e70d38a6c5b92f1e4d07a3c"
+										}
+									}
+								],
+								"problems": []
+							},
+							{
+								"commit": "b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b",
+								"verified": false,
+								"records": [
+									{
+										"record": "e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+										"status": "failed",
+										"valid": false,
+										"problems": ["manifest does not match the hash in the note"],
+										"evidence": {
+											"commit": "d05b8e3a6c1f29e47a0d5b3c8e61f9a2b4c7d0e8",
+											"path": "records/b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b/e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+											"manifest": "0d6e8b25a4f1c973e9b02d7a5c81f46e3b9a0d52c7e18f64a3d5b09e2c76f81a"
+										}
+									}
+								],
+								"problems": ["note line 3 is not a valid history entry"]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubRecordStatusService.problems",
@@ -111,17 +369,62 @@
 					{
 						"name": "HubRecordStatusService.problems.line",
 						"type": "VerificationNote",
-						"required": true
+						"required": true,
+						"description": "One verification line from a commit's note, as returned by verifications(). Its evidence pointer is loaded, and the record it names is judged against this line's record id, outcome, profile, finish time and source.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"kind": "verification",
+								"record": "5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+								"status": "passed",
+								"profile": "7d4b9e21c0a35f86",
+								"finishedAt": "2026-11-14T18:22:05.417Z",
+								"source": {
+									"commit": "6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12",
+									"tree": "c4e91a7d0b35f286e9d1c7a04b8f3e52a6d0c917",
+									"base": "3e7b0d5a9c12f48e6b1d0a7c5f92e83b4d6a1c07"
+								},
+								"evidence": {
+									"commit": "a9c3e51f7d20b84e6c1f3a95d7e02b48c6f1d3e9",
+									"path": "records/6a0f3c9e2d41b7085e8c1f4a9d3b27e60c5f8a12/5b9e0c3d7a1f24e8b6d09c4a7f3e2b185d6c0a9f4e7b2d31c8a5f0e6b9d4c7a2",
+									"manifest": "9f4a12c7e0b358d6a1f9e24c7b03d86e5a2c9f1b4e70d38a6c5b92f1e4d07a3c"
+								}
+							},
+							{
+								"schemaVersion": 1,
+								"kind": "verification",
+								"record": "e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+								"status": "failed",
+								"profile": "e3f08a6d2b19c475",
+								"finishedAt": "2026-11-13T07:58:40.102Z",
+								"source": {
+									"commit": "b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b",
+									"tree": "7c2a0e9f15b48d63e0a7c921f5d8b34e6a1c0f78",
+									"base": null
+								},
+								"evidence": {
+									"commit": "d05b8e3a6c1f29e47a0d5b3c8e61f9a2b4c7d0e8",
+									"path": "records/b72d94e0a1c35f6e8d09b4a7c2e15f30d86a9c4b/e21a7f403c9d8b160f5e2a7cd94b1e386a0c5f92b7e8d1439c2f6a0e58d1b4e7",
+									"manifest": "0d6e8b25a4f1c973e9b02d7a5c81f46e3b9a0d52c7e18f64a3d5b09e2c76f81a"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubRecordStatusService.problems",
-						"type": "Promise<string[]>"
+						"type": "Promise<string[]>",
+						"description": "Lists everything wrong with one attached record: its own identity and file problems and, only when it has none, the problems of the records it inherits through its base and scenarios. An empty array means no problem was found with that record or its lineage.",
+						"examples": [
+							[],
+							["manifest does not match the hash in the note"],
+							["base record 0c7f9a3e5b18 did not pass"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -131,17 +434,19 @@
 					{
 						"name": "HubRecordStatusService.constructor.context",
 						"type": "Context",
-						"required": true
+						"required": true,
+						"description": "The request-scoped context the caller authorizes before construction, supplying notes (the promise of every note), attached (the service that loads attached records) and tree (the lookup of a commit's tree hash). The instance keeps the whole context privately and exposes attached as its readonly attached member."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubRecordStatusService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new HubRecordStatusService instance, which holds its context privately and exposes the readonly attached member. Its limit is that it is a class instance, which JSON cannot express."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
