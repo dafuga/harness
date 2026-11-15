@@ -4,7 +4,7 @@ import {
 	harnessLayout,
 	mapColumns
 } from '../../src/components/explorer-ui/harness-map/harnessLayout';
-import { nodeSize } from '../../src/utils/harnessLayout';
+import { nodeSize } from '../../src/utils/explorer-ui/harnessLayout';
 import {
 	drawnEdges,
 	focusView,

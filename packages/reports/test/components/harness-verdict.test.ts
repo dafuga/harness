@@ -1,7 +1,7 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import Status from '../../src/components/shared-primitives/status/Status.svelte';
-import { harnessIcons } from '../../src/utils/harnessIcons';
+import { harnessIcons } from '../../src/utils/explorer-ui/harnessIcons';
 
 const markup = (props: Record<string, unknown>) =>
 	render(Status, { props: props as never }).body.replace(/<!--.*?-->/g, '');

@@ -2,7 +2,7 @@ import { render } from 'svelte/server';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import HarnessIcon from '../../src/components/explorer-ui/HarnessIcon.svelte';
-import { harnessIcons, type HarnessIconName } from '../../src/utils/harnessIcons';
+import { harnessIcons, type HarnessIconName } from '../../src/utils/explorer-ui/harnessIcons';
 
 const markup = (props: { name: HarnessIconName; size?: number; label?: string }) =>
 	render(HarnessIcon, { props }).body;

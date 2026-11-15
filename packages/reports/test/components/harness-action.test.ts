@@ -2,7 +2,7 @@ import { createRawSnippet } from 'svelte';
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import HarnessAction from '../../src/components/explorer-ui/HarnessAction.svelte';
-import { harnessIcons } from '../../src/utils/harnessIcons';
+import { harnessIcons } from '../../src/utils/explorer-ui/harnessIcons';
 
 const words = createRawSnippet(() => ({ render: () => '<span>Go to tip</span>' }));
 const markup = (props: Record<string, unknown> = {}) =>

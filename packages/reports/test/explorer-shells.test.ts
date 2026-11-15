@@ -6,7 +6,7 @@ import { entityUsage } from '../src/components/explorer-ui/entity-relations/enti
 import { explorerCategory, explorerRole } from '../src/utils/explorer-ui/explorerCategory';
 import { explorerEntities } from '../src/utils/explorer-ui/explorerEntities';
 import { explorerRelations } from '../src/utils/explorer-ui/explorerRelations';
-import { categoryIcon } from '../src/utils/harnessIcons';
+import { categoryIcon } from '../src/utils/explorer-ui/harnessIcons';
 import { harnessShell } from '../src/components/explorer-ui/harness-navbar/harnessShell';
 import {
 	shellBranch,

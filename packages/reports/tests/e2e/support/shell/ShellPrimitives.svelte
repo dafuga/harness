@@ -6,7 +6,10 @@
 	import HarnessSelectors from '../../../../src/components/explorer-ui/harness-selectors/HarnessSelectors.svelte';
 	import HarnessTabs from '../../../../src/components/explorer-ui/HarnessTabs.svelte';
 	import Status from '../../../../src/components/shared-primitives/status/Status.svelte';
-	import { harnessIcons, type HarnessIconName } from '../../../../src/utils/harnessIcons';
+	import {
+		harnessIcons,
+		type HarnessIconName
+	} from '../../../../src/utils/explorer-ui/harnessIcons';
 	import { sha, shellBranch, shellCommits, shellHref, shellIndex, shellMount } from '../shellData';
 	// Every shared piece of the shell once, inside the explorer, and the two rows of the console
 	// that was outside it, where no explorer rule may reach them.
