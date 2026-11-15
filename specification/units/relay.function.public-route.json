@@ -18,23 +18,32 @@
 				"name": "publicRoute.method",
 				"type": "string",
 				"required": true,
-				"description": "HTTP method compared exactly, including case."
+				"description": "HTTP method used in exact route lookup. Matching is case-sensitive: GET serves health, connect, and pairing information; POST serves the three pairing actions.",
+				"examples": ["GET", "POST"]
 			},
 			{
 				"name": "publicRoute.pathname",
 				"type": "string",
 				"required": true,
-				"description": "URL pathname only, without query data."
+				"description": "Pathname supplied for route matching. Only the exact health path or host paths with recognized suffixes and identifiers matching the imported host and pairing patterns produce a route; query strings are not parsed separately.",
+				"examples": ["/v1/health"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "publicRoute",
 				"type": "PublicRoute | undefined",
-				"description": "Health route for GET /v1/health; GET host connect; GET pairing information; or POST pairing request, poll and exchange. Host and pairing identifiers must match protocol patterns, and returned paths are rebuilt from those validated parts. Everything else, including management paths, returns undefined."
+				"description": "A recognized route object, or undefined for every other method and pathname pair. Returned paths are reconstructed from the validated components.",
+				"examples": [
+					{
+						"kind": "health",
+						"path": "/v1/health"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "publicRoute",
@@ -43,24 +52,32 @@
 						"name": "publicRoute.method",
 						"type": "string",
 						"required": true,
-						"description": "HTTP method compared exactly, including case."
+						"description": "HTTP method used in exact route lookup. Matching is case-sensitive: GET serves health, connect, and pairing information; POST serves the three pairing actions.",
+						"examples": ["GET", "POST"]
 					},
 					{
 						"name": "publicRoute.pathname",
 						"type": "string",
 						"required": true,
-						"description": "URL pathname only, without query data."
+						"description": "Pathname supplied for route matching. Only the exact health path or host paths with recognized suffixes and identifiers matching the imported host and pairing patterns produce a route; query strings are not parsed separately.",
+						"examples": ["/v1/health"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "publicRoute",
 						"type": "PublicRoute | undefined",
-						"description": "Health route for GET /v1/health; GET host connect; GET pairing information; or POST pairing request, poll and exchange. Host and pairing identifiers must match protocol patterns, and returned paths are rebuilt from those validated parts. Everything else, including management paths, returns undefined."
+						"description": "A recognized route object, or undefined for every other method and pathname pair. Returned paths are reconstructed from the validated components.",
+						"examples": [
+							{
+								"kind": "health",
+								"path": "/v1/health"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
