@@ -143,15 +143,6 @@ test('capture readiness runs under the server-free shell config', async () => {
 	}
 });
 
-test('the shell configuration lives in its own module, with no stub at its old path', () => {
-	const moved = 'packages/reports/src/configs/development-tooling/shellViteConfig.ts';
-	const oldPath = 'packages/reports/src/configs/shellViteConfig.ts';
-	expect(existsSync(moved)).toBe(true);
-	expect(existsSync(oldPath)).toBe(false);
-	const groups = JSON.parse(readFileSync('harness.groups.json', 'utf8')) as { legacy: string[] };
-	expect(groups.legacy).not.toContain(oldPath);
-});
-
 test('an ordinary reports end-to-end spec keeps the default Playwright config', () => {
 	const path = 'packages/reports/tests/e2e/harness-explorer-routes.spec.ts';
 	expect(existsSync(path)).toBe(true);

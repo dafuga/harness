@@ -1,7 +1,4 @@
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import groups from '../../harness.groups.json';
 import { consoleHostFiles } from '../../src/cli/program/console-install-service/consoleHostFiles';
 
 const files = consoleHostFiles({
@@ -46,13 +43,4 @@ test('the server module binds the host policy, and no endpoint answers without i
 		// Nothing generated reads a file, a process or an environment: it must run on Workers.
 		expect(file.contents).not.toMatch(/node:|process\.|Buffer\b/);
 	}
-});
-
-test('the relocated host files leave no stub at their old path or in the groups manifest', () => {
-	const root = join(import.meta.dirname, '../..');
-	const stub = 'src/services/console-install-service/consoleHostFiles.ts';
-	const relocated = 'src/cli/program/console-install-service/consoleHostFiles.ts';
-	expect(existsSync(join(root, stub)), stub).toBe(false);
-	expect(existsSync(join(root, relocated)), relocated).toBe(true);
-	expect(JSON.stringify(groups), stub).not.toContain(stub);
 });

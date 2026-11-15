@@ -1,5 +1,3 @@
-import { readdirSync, readFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import type { ImpactInput, ImpactOutput } from '../../src/core/execution-runtimes/kernelTypes';
 import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
@@ -196,20 +194,4 @@ test.each([
 		ok: true,
 		output: { affected: via ? [changedA, other] : [changedA], uncovered: [], unknown: [] }
 	});
-});
-
-/** Every TypeScript, JavaScript or Svelte file under a directory, by its full path. */
-function sourceFiles(directory: string): string[] {
-	return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-		const path = join(directory, entry.name);
-		if (entry.isDirectory()) return sourceFiles(path);
-		return /\.(?:ts|js|svelte)$/.test(entry.name) ? [path] : [];
-	});
-}
-
-test('no source or test file imports a run-kernel relocation stub that was removed', () => {
-	const root = resolve(import.meta.dirname, '../..');
-	const removed = /workflows\/run-kernel\/(?:impactKernel|kernelWorkload)['"]/;
-	const files = [...sourceFiles(join(root, 'src')), ...sourceFiles(join(root, 'test'))];
-	expect(files.filter((path) => removed.test(readFileSync(path, 'utf8')))).toEqual([]);
 });

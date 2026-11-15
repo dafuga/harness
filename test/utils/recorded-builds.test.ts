@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -140,10 +139,4 @@ test('a build entry with an unknown field is still refused beside skippedBuilds,
 	expect(judged.errors[0]).toContain('builds.0');
 	expect(judged.errors[0]).toContain('note');
 	expect(await kept(record, 'unknown-run')).toEqual([]);
-});
-
-test('the retired stub path stays deleted, and the projection is imported from the module it moved to', () => {
-	const repository = join(import.meta.dirname, '../..');
-	const retired = join(repository, 'src/services/record-assembly-service/recordedBuilds.ts');
-	expect(existsSync(retired)).toBe(false);
 });

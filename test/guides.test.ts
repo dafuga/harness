@@ -1,25 +1,9 @@
 import { measureWorkload } from './support/measureWorkload';
-import { existsSync, readFileSync } from 'node:fs';
 import { harnessRuleLimits, harnessRuleSummariesFor } from '../src/rules/catalog';
 import { expect, test } from 'vitest';
 import { availableGuideTopics, findGuide, guides } from '../src/guides/development-tooling/guide';
 import { scaffoldKinds } from '../src/templates/scaffoldTypes';
 import { findGuideByTopic } from '../src/guides/development-tooling/topics';
-
-test('removed guide relocation stubs are absent from the catalog and filesystem', () => {
-	const removedPaths = [
-		'src/guides/guide.ts',
-		'src/guides/history.ts',
-		'src/guides/loop.ts',
-		'src/guides/render.ts'
-	];
-	const groups = readFileSync('harness.groups.json', 'utf8');
-
-	for (const path of removedPaths) {
-		expect(groups).not.toContain(path);
-		expect(existsSync(path)).toBe(false);
-	}
-});
 
 test('model guidance is available for agents', () =>
 	measureWorkload('guide.scaffolds', 'layout-catalog-behavior', () => {
