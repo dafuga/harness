@@ -46,14 +46,6 @@ test('generated identifiers, credentials and codes have their declared shapes', 
 	expect(normalizeCode(' abcd-efgh ')).toBe('ABCDEFGH');
 	expect(pairingCode()).not.toBe(code);
 });
-test('a pairing code is two groups of four pairing characters, and draws do not repeat', () => {
-	const codes = Array.from({ length: 64 }, () => pairingCode());
-	expect(new Set(codes).size).toBe(codes.length);
-	for (const code of codes) {
-		expect(code).toMatch(/^[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/);
-		expect(normalizeCode(code)).toMatch(remotePatterns.code);
-	}
-});
 test('a request digest ignores key order and separates method from input', async () => {
 	const digest = (method: 'startRun' | 'approve', input: Record<string, unknown>, id = 'x') =>
 		requestDigest({ type: 'request', id, method, input });

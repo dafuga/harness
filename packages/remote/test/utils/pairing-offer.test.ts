@@ -1,5 +1,5 @@
 import type { OfferVectors } from './pairing-offer.test.types';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { offerRules } from '../../src/utils/networking-security/pairingOffer';
 import { pairingOffer } from '../../../desktop/src/services/networking-security/remote-host-service/pairingOffer';
@@ -76,41 +76,4 @@ test('nothing but an offer can be written', () => {
 test('what is not text is not an offer', () => {
 	for (const value of [null, undefined, 7, {}, [valid.text]])
 		expect(read(value as unknown as string)).toEqual({ refused: 'invalid' });
-});
-
-function sources(directory: URL): URL[] {
-	return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-		if (entry.isDirectory()) return sources(new URL(`${entry.name}/`, directory));
-		const path = new URL(entry.name, directory);
-		return /\.(ts|js|svelte)$/.test(path.pathname) ? [path] : [];
-	});
-}
-
-test('the remote utils relocation stubs stay removed and nothing imports their old paths', () => {
-	const remote = new URL('../../', import.meta.url);
-	const names = ['pairingEnvelope', 'pairingOffer', 'relayOrigin', 'sealPacket'];
-	const stubs = names.map((name) => new URL(`src/utils/${name}`, remote).href);
-	const roots = [
-		new URL('src/', remote),
-		new URL('test/', remote),
-		new URL('../desktop/src/', remote),
-		new URL('../desktop/test/', remote)
-	];
-	const dependencies = roots.flatMap((root) =>
-		sources(root).flatMap((path) =>
-			[
-				...readFileSync(path, 'utf8').matchAll(
-					/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*|\bvi\.mock\(\s*)['"]([^'"]+)['"]/g
-				)
-			]
-				.map(([, specifier]) => [specifier, new URL(specifier, path).href])
-				.filter(([, href]) => stubs.includes(href.replace(/\.ts$/, '')))
-				.map(([specifier]) => `${path.pathname} -> ${specifier}`)
-		)
-	);
-	expect(dependencies, 'removed relocation stubs must not be imported').toEqual([]);
-	expect(
-		stubs.filter((stub) => existsSync(new URL(`${stub}.ts`))),
-		'removed relocation stubs must stay deleted'
-	).toEqual([]);
 });

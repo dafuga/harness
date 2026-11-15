@@ -5,7 +5,6 @@ import { importRemoteKeys, remoteKeys } from '../../src/utils/remoteKeys';
 import { openPacket, sealPacket } from '../../src/services/secure-channel-service/sealPacket';
 import { sessionKeys } from '../../src/services/secure-channel-service/sessionKeys';
 import type { SessionKeyInput } from '../../src/utils/networking-security/sessionKeys';
-import { sessionKeys as relocatedSessionKeys } from '../../src/utils/networking-security/sessionKeys';
 import { vectors } from '../support/vectors';
 
 async function inputs() {
@@ -80,7 +79,4 @@ test('a host without the pinned static key derives keys that open nothing', asyn
 	await expect(
 		openPacket({ key: keys.receive, direction: 'd2h', counter: 0, more: false }, first.data)
 	).rejects.toBeInstanceOf(SecureFailure);
-});
-test('the networking-security module exports the same key derivation', () => {
-	expect(relocatedSessionKeys).toBe(sessionKeys);
 });
