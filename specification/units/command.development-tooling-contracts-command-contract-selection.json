@@ -92,7 +92,7 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "The requested folder resolves outside the configured project root."
+				"description": "A query target or folder filter normalizes outside the configured project root."
 			}
 		],
 		"errorStatus": "declared",

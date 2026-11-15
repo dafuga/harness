@@ -35,7 +35,7 @@
 			{
 				"name": "InvalidArgumentError",
 				"type": "thrown",
-				"description": "Installed CLI option parsers reject a nonpositive limit or a depth outside zero through ten."
+				"description": "Installed CLI parsers reject a limit token unless it is a positive safe integer without leading zeros, or a depth token unless it is unsigned decimal digits evaluating to zero through ten."
 			},
 			{
 				"name": "ExpectedCliError",
