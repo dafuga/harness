@@ -24,51 +24,223 @@
 				"name": "BenchmarkRepository.constructor.home",
 				"type": "unknown",
 				"required": false,
-				"description": "Directory containing the private persisted benchmark run subfolders."
+				"description": "Storage root that directory() joins each run ID to, so it must be a string path. Defaults to join(process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'), 'benchmarks'): the HARNESS_ANALYTICS_HOME value when it is defined, otherwise the .codex/harness folder under the home directory, with 'benchmarks' appended.",
+				"examples": [
+					"/Users/example/.codex/harness/benchmarks",
+					"/srv/harness-analytics/benchmarks"
+				]
 			},
 			{
 				"name": "BenchmarkRepository.directory.id",
 				"type": "string",
 				"required": true,
-				"description": "UUID-shaped persisted benchmark run identifier."
+				"description": "Run identifier that directory() accepts only when it matches /^[a-f0-9-]{36}$/, the 36-character lowercase hex and hyphen shape randomUUID() produces. Any other value makes directory() throw the 'Invalid benchmark run ID.' error, so save() and read() reject with it too.",
+				"examples": ["3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f", "c0a8f3d2-19e7-4b6a-8d35-6f0e2c9b7a14"]
 			},
 			{
 				"name": "BenchmarkRepository.save.run",
 				"type": "BenchmarkRun",
 				"required": true,
-				"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
+				"description": "Complete run record to persist: the pinned definition, runner versions, fingerprint and the trials recorded so far. Its id must pass the directory() run-ID check, and the run must serialize with JSON.stringify (no BigInt values or circular references), otherwise save() rejects.",
+				"examples": [
+					{
+						"version": 1,
+						"id": "3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
+						"project": "/srv/repos/checkout-service",
+						"revision": "e6b1f0c2d9a47358be12f0c9d7a64a1e3f85b270",
+						"fingerprint": "5f0c9e2b7a4d1836c0e9f27b4a5d8e13f6c2b9a07d4e1f58c3b6a2d9e0f7c146",
+						"seed": "comparison-1",
+						"definition": {
+							"version": 1,
+							"name": "cart-discount-check",
+							"project": ".",
+							"revision": "main",
+							"task": "Reject expired discount codes at checkout.",
+							"contract": "Keep the public signature of applyDiscount() unchanged.",
+							"allowedFiles": ["src/checkout/discount.ts"],
+							"checks": [
+								{
+									"id": "typecheck",
+									"command": "npm run typecheck"
+								},
+								{
+									"id": "unit",
+									"command": "npm test"
+								}
+							],
+							"setup": ["npm ci"],
+							"candidates": [
+								{
+									"id": "codex-fast",
+									"runner": "codex",
+									"model": "gpt-6-luna",
+									"effort": "low",
+									"instructions": "",
+									"tools": "default"
+								},
+								{
+									"id": "claude-review",
+									"runner": "claude",
+									"model": "claude-sonnet-5-5",
+									"effort": "medium",
+									"instructions": "Keep the diff minimal.",
+									"tools": "files"
+								}
+							],
+							"budget": {
+								"repetitions": 3,
+								"timeoutMs": 900000,
+								"repairs": 2
+							}
+						},
+						"runnerVersions": {
+							"codex-fast": "codex-cli 0.92.0",
+							"claude-review": "2.0.45 (Claude Code)"
+						},
+						"startedAt": "2026-11-15T09:30:12.418Z",
+						"ownerPid": 48213,
+						"trials": [
+							{
+								"id": "b7d2e4a0-19c5-4f3e-8a6b-2c9d0e1f7a53",
+								"candidate": "codex-fast",
+								"repetition": 1,
+								"status": "running",
+								"submissions": [],
+								"turns": [],
+								"agentDurationMs": 0,
+								"evaluationDurationMs": 0,
+								"durationMs": 0,
+								"repairs": 0
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "BenchmarkRepository.read.id",
 				"type": "string",
 				"required": true,
-				"description": "UUID-shaped persisted benchmark run identifier."
+				"description": "Run identifier whose run.json is read from its subfolder; it must match /^[a-f0-9-]{36}$/, or read() rejects with the 'Invalid benchmark run ID.' error. When no run.json exists for a valid ID, read() rejects with the file-system error.",
+				"examples": ["3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f", "c0a8f3d2-19e7-4b6a-8d35-6f0e2c9b7a14"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "BenchmarkRepository.directory",
 				"type": "string",
-				"description": "Private subdirectory for the validated run identifier."
+				"description": "Path of the run's private subfolder: the storage root joined with the validated run ID. directory() only computes this path and does not create the folder; save() creates it with mode 0o700.",
+				"examples": [
+					"/Users/example/.codex/harness/benchmarks/3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
+					"/srv/harness-analytics/benchmarks/c0a8f3d2-19e7-4b6a-8d35-6f0e2c9b7a14"
+				]
 			},
 			{
 				"name": "BenchmarkRepository.save",
 				"type": "Promise<void>",
-				"description": "Atomically replaces the private run JSON record."
+				"description": "Resolves with no value after the run is written to run.json.tmp (mode 0o600) and renamed over run.json, which replaces the earlier record only at that final rename. It rejects if any step fails, and because the rename comes last, a failure before it leaves the previous run.json in place."
 			},
 			{
 				"name": "BenchmarkRepository.read",
 				"type": "Promise<BenchmarkRun>",
-				"description": "Persisted run with abandoned running trials marked interrupted."
+				"description": "Resolves with the parsed run.json, in which every trial with status 'running' is reported as 'interrupted' when run.ownerPid is missing or process.kill(run.ownerPid, 0) throws. That status change exists only in the returned object: read() never writes run.json, so the file on disk keeps the status it was saved with.",
+				"examples": [
+					{
+						"version": 1,
+						"id": "3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
+						"project": "/srv/repos/checkout-service",
+						"revision": "e6b1f0c2d9a47358be12f0c9d7a64a1e3f85b270",
+						"fingerprint": "5f0c9e2b7a4d1836c0e9f27b4a5d8e13f6c2b9a07d4e1f58c3b6a2d9e0f7c146",
+						"seed": "comparison-1",
+						"definition": {
+							"version": 1,
+							"name": "cart-discount-check",
+							"project": ".",
+							"revision": "main",
+							"task": "Reject expired discount codes at checkout.",
+							"contract": "Keep the public signature of applyDiscount() unchanged.",
+							"allowedFiles": ["src/checkout/discount.ts"],
+							"checks": [
+								{
+									"id": "typecheck",
+									"command": "npm run typecheck"
+								},
+								{
+									"id": "unit",
+									"command": "npm test"
+								}
+							],
+							"setup": ["npm ci"],
+							"candidates": [
+								{
+									"id": "codex-fast",
+									"runner": "codex",
+									"model": "gpt-6-luna",
+									"effort": "low",
+									"instructions": "",
+									"tools": "default"
+								},
+								{
+									"id": "claude-review",
+									"runner": "claude",
+									"model": "claude-sonnet-5-5",
+									"effort": "medium",
+									"instructions": "Keep the diff minimal.",
+									"tools": "files"
+								}
+							],
+							"budget": {
+								"repetitions": 3,
+								"timeoutMs": 900000,
+								"repairs": 2
+							}
+						},
+						"runnerVersions": {
+							"codex-fast": "codex-cli 0.92.0",
+							"claude-review": "2.0.45 (Claude Code)"
+						},
+						"startedAt": "2026-11-15T09:30:12.418Z",
+						"ownerPid": 48213,
+						"trials": [
+							{
+								"id": "b7d2e4a0-19c5-4f3e-8a6b-2c9d0e1f7a53",
+								"candidate": "codex-fast",
+								"repetition": 1,
+								"status": "interrupted",
+								"submissions": [],
+								"turns": [],
+								"agentDurationMs": 0,
+								"evaluationDurationMs": 0,
+								"durationMs": 0,
+								"repairs": 0
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects invalid run IDs or unavailable persisted records."
+				"description": "Thrown by directory() when the run ID does not match /^[a-f0-9-]{36}$/, with the message 'Invalid benchmark run ID.'; save() and read() reject with it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects save() when mkdir, writeFile or rename fails, and read() when run.json cannot be read, for example because no run was saved under that ID."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "read() rejects with it when run.json is not valid JSON."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "save() rejects with it when the run cannot be serialized (BigInt values or circular references), and read() rejects with it when the parsed record has no iterable trials array or holds a null trial."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "BenchmarkRepository.directory",
@@ -77,23 +249,32 @@
 						"name": "BenchmarkRepository.directory.id",
 						"type": "string",
 						"required": true,
-						"description": "UUID-shaped persisted benchmark run identifier."
+						"description": "Run identifier that directory() accepts only when it matches /^[a-f0-9-]{36}$/, the 36-character lowercase hex and hyphen shape randomUUID() produces. Any other value makes directory() throw the 'Invalid benchmark run ID.' error, so save() and read() reject with it too.",
+						"examples": [
+							"3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
+							"c0a8f3d2-19e7-4b6a-8d35-6f0e2c9b7a14"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BenchmarkRepository.directory",
 						"type": "string",
-						"description": "Private subdirectory for the validated run identifier."
+						"description": "Path of the run's private subfolder: the storage root joined with the validated run ID. directory() only computes this path and does not create the folder; save() creates it with mode 0o700.",
+						"examples": [
+							"/Users/example/.codex/harness/benchmarks/3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
+							"/srv/harness-analytics/benchmarks/c0a8f3d2-19e7-4b6a-8d35-6f0e2c9b7a14"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown synchronously when the run ID does not match /^[a-f0-9-]{36}$/, with the message 'Invalid benchmark run ID.'."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "BenchmarkRepository.save",
@@ -102,18 +283,107 @@
 						"name": "BenchmarkRepository.save.run",
 						"type": "BenchmarkRun",
 						"required": true,
-						"description": "Pinned benchmark definition, candidate configurations and recorded trial outcomes."
+						"description": "Complete run record to persist: the pinned definition, runner versions, fingerprint and the trials recorded so far. Its id must pass the directory() run-ID check, and the run must serialize with JSON.stringify (no BigInt values or circular references), otherwise save() rejects.",
+						"examples": [
+							{
+								"version": 1,
+								"id": "3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
+								"project": "/srv/repos/checkout-service",
+								"revision": "e6b1f0c2d9a47358be12f0c9d7a64a1e3f85b270",
+								"fingerprint": "5f0c9e2b7a4d1836c0e9f27b4a5d8e13f6c2b9a07d4e1f58c3b6a2d9e0f7c146",
+								"seed": "comparison-1",
+								"definition": {
+									"version": 1,
+									"name": "cart-discount-check",
+									"project": ".",
+									"revision": "main",
+									"task": "Reject expired discount codes at checkout.",
+									"contract": "Keep the public signature of applyDiscount() unchanged.",
+									"allowedFiles": ["src/checkout/discount.ts"],
+									"checks": [
+										{
+											"id": "typecheck",
+											"command": "npm run typecheck"
+										},
+										{
+											"id": "unit",
+											"command": "npm test"
+										}
+									],
+									"setup": ["npm ci"],
+									"candidates": [
+										{
+											"id": "codex-fast",
+											"runner": "codex",
+											"model": "gpt-6-luna",
+											"effort": "low",
+											"instructions": "",
+											"tools": "default"
+										},
+										{
+											"id": "claude-review",
+											"runner": "claude",
+											"model": "claude-sonnet-5-5",
+											"effort": "medium",
+											"instructions": "Keep the diff minimal.",
+											"tools": "files"
+										}
+									],
+									"budget": {
+										"repetitions": 3,
+										"timeoutMs": 900000,
+										"repairs": 2
+									}
+								},
+								"runnerVersions": {
+									"codex-fast": "codex-cli 0.92.0",
+									"claude-review": "2.0.45 (Claude Code)"
+								},
+								"startedAt": "2026-11-15T09:30:12.418Z",
+								"ownerPid": 48213,
+								"trials": [
+									{
+										"id": "b7d2e4a0-19c5-4f3e-8a6b-2c9d0e1f7a53",
+										"candidate": "codex-fast",
+										"repetition": 1,
+										"status": "running",
+										"submissions": [],
+										"turns": [],
+										"agentDurationMs": 0,
+										"evaluationDurationMs": 0,
+										"durationMs": 0,
+										"repairs": 0
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BenchmarkRepository.save",
 						"type": "Promise<void>",
-						"description": "Atomically replaces the private run JSON record."
+						"description": "Resolves with no value after the run is written to run.json.tmp (mode 0o600) and renamed over run.json, which replaces the earlier record only at that final rename. It rejects if any step fails, and because the rename comes last, a failure before it leaves the previous run.json in place."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by directory(run.id) inside save(), so the promise rejects, when run.id does not match /^[a-f0-9-]{36}$/."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the file-system error from mkdir, writeFile or rename, for example when the run folder cannot be created or run.json.tmp cannot be written."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects when JSON.stringify cannot serialize the run (BigInt values or circular references)."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "BenchmarkRepository.read",
@@ -122,18 +392,116 @@
 						"name": "BenchmarkRepository.read.id",
 						"type": "string",
 						"required": true,
-						"description": "UUID-shaped persisted benchmark run identifier."
+						"description": "Run identifier whose run.json is read from its subfolder; it must match /^[a-f0-9-]{36}$/, or read() rejects with the 'Invalid benchmark run ID.' error. When no run.json exists for a valid ID, read() rejects with the file-system error.",
+						"examples": [
+							"3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
+							"c0a8f3d2-19e7-4b6a-8d35-6f0e2c9b7a14"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BenchmarkRepository.read",
 						"type": "Promise<BenchmarkRun>",
-						"description": "Persisted run with abandoned running trials marked interrupted."
+						"description": "Resolves with the parsed run.json, in which every trial with status 'running' is reported as 'interrupted' when run.ownerPid is missing or process.kill(run.ownerPid, 0) throws. That status change exists only in the returned object: read() never writes run.json, so the file on disk keeps the status it was saved with.",
+						"examples": [
+							{
+								"version": 1,
+								"id": "3f2a9c1e-7b4d-4e8a-9c6f-1a2b3c4d5e6f",
+								"project": "/srv/repos/checkout-service",
+								"revision": "e6b1f0c2d9a47358be12f0c9d7a64a1e3f85b270",
+								"fingerprint": "5f0c9e2b7a4d1836c0e9f27b4a5d8e13f6c2b9a07d4e1f58c3b6a2d9e0f7c146",
+								"seed": "comparison-1",
+								"definition": {
+									"version": 1,
+									"name": "cart-discount-check",
+									"project": ".",
+									"revision": "main",
+									"task": "Reject expired discount codes at checkout.",
+									"contract": "Keep the public signature of applyDiscount() unchanged.",
+									"allowedFiles": ["src/checkout/discount.ts"],
+									"checks": [
+										{
+											"id": "typecheck",
+											"command": "npm run typecheck"
+										},
+										{
+											"id": "unit",
+											"command": "npm test"
+										}
+									],
+									"setup": ["npm ci"],
+									"candidates": [
+										{
+											"id": "codex-fast",
+											"runner": "codex",
+											"model": "gpt-6-luna",
+											"effort": "low",
+											"instructions": "",
+											"tools": "default"
+										},
+										{
+											"id": "claude-review",
+											"runner": "claude",
+											"model": "claude-sonnet-5-5",
+											"effort": "medium",
+											"instructions": "Keep the diff minimal.",
+											"tools": "files"
+										}
+									],
+									"budget": {
+										"repetitions": 3,
+										"timeoutMs": 900000,
+										"repairs": 2
+									}
+								},
+								"runnerVersions": {
+									"codex-fast": "codex-cli 0.92.0",
+									"claude-review": "2.0.45 (Claude Code)"
+								},
+								"startedAt": "2026-11-15T09:30:12.418Z",
+								"ownerPid": 48213,
+								"trials": [
+									{
+										"id": "b7d2e4a0-19c5-4f3e-8a6b-2c9d0e1f7a53",
+										"candidate": "codex-fast",
+										"repetition": 1,
+										"status": "interrupted",
+										"submissions": [],
+										"turns": [],
+										"agentDurationMs": 0,
+										"evaluationDurationMs": 0,
+										"durationMs": 0,
+										"repairs": 0
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the 'Invalid benchmark run ID.' error when the run ID does not match /^[a-f0-9-]{36}$/."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the file-system error from readFile when run.json does not exist or cannot be read."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejects when run.json is not valid JSON."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects when the parsed record has no iterable trials array or holds a null trial."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -144,17 +512,22 @@
 						"name": "BenchmarkRepository.constructor.home",
 						"type": "unknown",
 						"required": false,
-						"description": "Directory containing the private persisted benchmark run subfolders."
+						"description": "Storage root that directory() joins each run ID to, so it must be a string path. Defaults to join(process.env.HARNESS_ANALYTICS_HOME ?? join(homedir(), '.codex', 'harness'), 'benchmarks'): the HARNESS_ANALYTICS_HOME value when it is defined, otherwise the .codex/harness folder under the home directory, with 'benchmarks' appended.",
+						"examples": [
+							"/Users/example/.codex/harness/benchmarks",
+							"/srv/harness-analytics/benchmarks"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BenchmarkRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The BenchmarkRepository instance itself, whose readonly home property is the storage root that directory(), save() and read() use."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
