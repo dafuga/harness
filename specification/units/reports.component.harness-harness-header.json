@@ -33,47 +33,84 @@
 				"name": "HarnessHeader.base",
 				"type": "string",
 				"required": true,
-				"description": "Required explorer URL prefix, passed to the navigation bar and prepended to a missing-address home link."
+				"description": "Required mount of the console, the explorer URL prefix (for example /harness): it is passed to the navigation bar when navbar is supplied and is prepended to missing.home for the newest-commit link. The header uses it as given, with no check or normalization.",
+				"examples": ["/harness"]
 			},
 			{
 				"name": "HarnessHeader.links",
 				"type": "Array<{ label: string; href: string }>",
 				"required": false,
 				"default": [],
-				"description": "Optional additional-view links, defaulting to an empty list. Used by the legacy header only."
+				"description": "Optional links for the 'Other views' navigation of the legacy header, which renders only when navbar is null; the default [] leaves that navigation empty. Each href is rendered exactly as given, with no base added, so a caller must include the base itself.",
+				"examples": [
+					[],
+					[
+						{
+							"label": "Translations",
+							"href": "/harness/branch/main/translations"
+						}
+					],
+					[
+						{
+							"label": "Translations",
+							"href": "/harness/branch/main/translations"
+						},
+						{
+							"label": "Platforms",
+							"href": "/harness/branch/main/platforms"
+						}
+					]
+				]
 			},
 			{
 				"name": "HarnessHeader.problem",
 				"type": "string",
 				"required": true,
-				"description": "Required problem text. A nonempty value is displayed as an alert."
+				"description": "Required text explaining why the history or a revision could not be loaded; when it is nonempty it is shown as the text of a notice with role=alert, and an empty string draws nothing. The header shows the text unchanged and does not validate it.",
+				"examples": [
+					"",
+					"The history could not be loaded. Refresh the page to try again.",
+					"This revision could not be loaded. Refresh the page to try again."
+				]
 			},
 			{
 				"name": "HarnessHeader.missing",
 				"type": "{ message: string; home: string | null } | null",
 				"required": true,
-				"description": "Required missing-address information or null. Shows its message and a newest-revision link when home is provided."
+				"description": "Required missing-address information, or null when no address is missing: when it is non-null, its message is drawn in a notice with role=alert, and an 'Open the newest commit' link to base + home follows only when home is a nonempty string. The header joins base and home by plain string concatenation.",
+				"examples": [
+					null,
+					{
+						"message": "This address names no page of the explorer.",
+						"home": "/branch/main/pages"
+					},
+					{
+						"message": "This history holds no commit.",
+						"home": null
+					}
+				]
 			},
 			{
 				"name": "HarnessHeader.navbar",
 				"type": "Omit<HarnessNavbarInput, 'base'> | null",
 				"required": false,
 				"default": null,
-				"description": "Optional navigation-bar context without its base, defaulting to null. When supplied, replaces the legacy heading and links."
+				"description": "Optional navigation-bar input: the HarnessNavbarInput fields other than base, which the header passes to the navigation bar with base added, defaulting to null. When it is non-null it replaces the legacy heading and the 'Other views' links, and the header passes its fields through unchanged.",
+				"examples": [null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessHeader",
 				"type": "markup",
-				"description": "Navigation bar or legacy heading, followed by problem and missing-address alerts. It renders supplied state and performs no data fetching. States: missing-no-home: The missing-revision notice has no newest-commit recovery link. long-repository: The explorer navbar retains a long repository name. base: Without navbar input, the header shows the Harness title, brand and Other views links."
+				"description": "Markup for the header: with navbar, a hx-div with class hx-header wrapping the navigation bar; without it, the legacy hx-header with the Harness heading, brand, subtitle and 'Other views' links. A nonempty problem follows as a notice with role=alert, and a non-null missing as another, whose 'Open the newest commit' link appears only when missing.home is a nonempty string; the header fetches no data."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller navbar or child rendering error",
 				"type": "propagated",
-				"description": "Errors from supplied navbar navigation callbacks or rendered child components propagate. Supplied problem and missing-address data render notices rather than throw."
+				"description": "The header throws nothing itself and catches nothing: an error from the navbar's href or onroute callback, or from a child component it renders (HarnessNavbar, Notice or BrandMark), is not handled here. It validates neither problem nor missing and renders them as given."
 			}
 		],
 		"errorStatus": "declared",
