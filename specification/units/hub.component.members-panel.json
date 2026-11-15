@@ -32,17 +32,29 @@
 				"name": "MembersPanel.projectId",
 				"type": "string",
 				"required": true,
-				"description": "Required project identifier used for project and member reads on mount and passed to the owner invitation form. Prop changes do not independently trigger another load."
+				"description": "Identifier of the project to display: a UUID that createProject generates with crypto.randomUUID, read on mount through projects.get and projects.members and passed unchanged to InvitationForm for owners. The component does not validate it, and a later change to the prop does not repeat the reads, although the invitation form gets the new value.",
+				"examples": [
+					"5b1e8c2a-94f3-4d7e-a6b0-2c8f19d4e7a3",
+					"e0c4a7f2-1b9d-4c36-8f5a-7d2e6b03c9b1",
+					"9a7d3f10-62e8-4b5c-b1d9-04f6a8e2c735"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "MembersPanel",
 				"type": "markup",
-				"description": "Members heading and table of names, emails and roles once the project is loaded. Empty lists are explicitly labeled. Owners see an invitation form; others see an owner-only explanation. Read failures are alerts."
+				"description": "Renders the heading 'Members', or 'Members of <project name>' once the project has loaded, and, when a read fails, an element with role 'alert' that shows the error text. Once the project has loaded it also renders a 'Project members' table with Name, Email and Role columns, one row per member or a 'No members are listed.' row (which also shows when only the members read fails), followed by an invitation form for owners or the note 'Only an owner of this project invites people.' for any other role."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown during component initialization when no hosted browser context is provided above the component, because browserContext() returns undefined and destructuring its projects property fails. Failed project or member reads are caught in onMount and shown in an alert instead of being thrown."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
