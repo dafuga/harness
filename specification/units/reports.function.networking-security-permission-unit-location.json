@@ -20,27 +20,145 @@
 				"name": "permissionUnitLocation.host",
 				"type": "Pick<ExplorerPermissionsScreenProps, 'entities' | 'route'>",
 				"required": true,
-				"description": "Shown registry and route; entities are searched before reading the route, including when no unit matches."
+				"description": "The shown permission registry ('entities') and route ('route', which supplies 'branch' and 'commit'). 'entities' is searched first and 'route' is then read whether or not a unit matches, so a null or undefined 'host', 'entities' or 'route' throws a TypeError.",
+				"examples": [
+					{
+						"entities": [
+							{
+								"id": "reports.function.networking-security-permission-unit-location",
+								"category": "functions",
+								"role": "Function",
+								"name": "Permission unit location",
+								"purpose": "Links only units registered in the shown permission revision.",
+								"unit": {
+									"id": "reports.function.networking-security-permission-unit-location",
+									"kind": "function",
+									"status": "active",
+									"title": "permissionUnitLocation",
+									"responsibility": "Links only units registered in the shown permission revision.",
+									"dependencies": [
+										{
+											"unit": "reports.component.networking-security-explorer-permissions-screen",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/networking-security/explorer-permissions-screen/permissionUnitLocation.ts"
+										],
+										"symbols": ["permissionUnitLocation"]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "permissionUnitLocation.host",
+												"type": "Pick<ExplorerPermissionsScreenProps, 'entities' | 'route'>",
+												"required": true
+											},
+											{
+												"name": "permissionUnitLocation.id",
+												"type": "string",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "permissionUnitLocation",
+												"type": "ExplorerLocation | null"
+											}
+										],
+										"errors": [
+											{
+												"name": "TypeError",
+												"type": "thrown"
+											}
+										]
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/components/networking-security/explorer-permissions-screen/permissionUnitLocation.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "1.0.0"
+								},
+								"verdict": {
+									"passed": true,
+									"label": "Proven",
+									"reasons": []
+								},
+								"change": null,
+								"appRoute": null
+							}
+						],
+						"route": {
+							"branch": "main",
+							"commit": "3a7f9c2e1b8d4a6f0e5c7b9d2a4f6e8c1b3d5a70",
+							"category": "functions",
+							"entity": "reports.function.networking-security-permission-unit-location"
+						}
+					},
+					{
+						"entities": [],
+						"route": {
+							"branch": "feature/permission-units",
+							"commit": "9c4e1a7d2b6f8e03c5a9d1b7e4f2a6c8d0b35e91",
+							"category": "components"
+						}
+					}
+				]
 			},
 			{
 				"name": "permissionUnitLocation.id",
 				"type": "string",
 				"required": true,
-				"description": "Exact registered unit ID; no default or inferred category is supplied."
+				"description": "The unit ID to link, matched with strict equality (===) against each entity's 'id' in registry order, so only an exact, case-sensitive match links and the first match wins. No trimming, default or category inference is applied: the category always comes from the matched entity.",
+				"examples": [
+					"reports.component.evidence-grid",
+					"reports.function.networking-security-permission-unit-location",
+					"reports.model.explorer-types"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "permissionUnitLocation",
 				"type": "ExplorerLocation | null",
-				"description": "The registered unit route under its own category at the shown branch and commit; null when absent."
+				"description": "The ExplorerLocation built from the route's 'branch' and 'commit', the matched entity's 'category' and the requested id as 'entity'. It is null when no registered entity has that id.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "3a7f9c2e1b8d4a6f0e5c7b9d2a4f6e8c1b3d5a70",
+						"category": "components",
+						"entity": "reports.component.evidence-grid"
+					},
+					null
+				]
 			}
 		],
 		"errors": [
 			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when 'host', 'entities' or 'route' is null or undefined, when 'entities' has no callable 'find', or when an entity the search reaches is null or undefined."
+			},
+			{
 				"name": "Input access failure",
 				"type": "propagated",
-				"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+				"description": "Errors from reading 'host.entities', 'host.route', the route's 'branch' and 'commit', each entity's 'id' during the search or the matched entity's 'category', and from calling 'find', propagate unchanged."
 			}
 		],
 		"errorStatus": "declared",
@@ -52,27 +170,145 @@
 						"name": "permissionUnitLocation.host",
 						"type": "Pick<ExplorerPermissionsScreenProps, 'entities' | 'route'>",
 						"required": true,
-						"description": "Shown registry and route; entities are searched before reading the route, including when no unit matches."
+						"description": "The shown permission registry ('entities') and route ('route', which supplies 'branch' and 'commit'). 'entities' is searched first and 'route' is then read whether or not a unit matches, so a null or undefined 'host', 'entities' or 'route' throws a TypeError.",
+						"examples": [
+							{
+								"entities": [
+									{
+										"id": "reports.function.networking-security-permission-unit-location",
+										"category": "functions",
+										"role": "Function",
+										"name": "Permission unit location",
+										"purpose": "Links only units registered in the shown permission revision.",
+										"unit": {
+											"id": "reports.function.networking-security-permission-unit-location",
+											"kind": "function",
+											"status": "active",
+											"title": "permissionUnitLocation",
+											"responsibility": "Links only units registered in the shown permission revision.",
+											"dependencies": [
+												{
+													"unit": "reports.component.networking-security-explorer-permissions-screen",
+													"via": "import"
+												},
+												{
+													"unit": "reports.model.explorer-types",
+													"via": "import"
+												}
+											],
+											"scenarios": [],
+											"owns": {
+												"source": [
+													"packages/reports/src/components/networking-security/explorer-permissions-screen/permissionUnitLocation.ts"
+												],
+												"symbols": ["permissionUnitLocation"]
+											},
+											"contract": {
+												"inputs": [
+													{
+														"name": "permissionUnitLocation.host",
+														"type": "Pick<ExplorerPermissionsScreenProps, 'entities' | 'route'>",
+														"required": true
+													},
+													{
+														"name": "permissionUnitLocation.id",
+														"type": "string",
+														"required": true
+													}
+												],
+												"outputs": [
+													{
+														"name": "permissionUnitLocation",
+														"type": "ExplorerLocation | null"
+													}
+												],
+												"errors": [
+													{
+														"name": "TypeError",
+														"type": "thrown"
+													}
+												]
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/components/networking-security/explorer-permissions-screen/permissionUnitLocation.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "1.0.0"
+										},
+										"verdict": {
+											"passed": true,
+											"label": "Proven",
+											"reasons": []
+										},
+										"change": null,
+										"appRoute": null
+									}
+								],
+								"route": {
+									"branch": "main",
+									"commit": "3a7f9c2e1b8d4a6f0e5c7b9d2a4f6e8c1b3d5a70",
+									"category": "functions",
+									"entity": "reports.function.networking-security-permission-unit-location"
+								}
+							},
+							{
+								"entities": [],
+								"route": {
+									"branch": "feature/permission-units",
+									"commit": "9c4e1a7d2b6f8e03c5a9d1b7e4f2a6c8d0b35e91",
+									"category": "components"
+								}
+							}
+						]
 					},
 					{
 						"name": "permissionUnitLocation.id",
 						"type": "string",
 						"required": true,
-						"description": "Exact registered unit ID; no default or inferred category is supplied."
+						"description": "The unit ID to link, matched with strict equality (===) against each entity's 'id' in registry order, so only an exact, case-sensitive match links and the first match wins. No trimming, default or category inference is applied: the category always comes from the matched entity.",
+						"examples": [
+							"reports.component.evidence-grid",
+							"reports.function.networking-security-permission-unit-location",
+							"reports.model.explorer-types"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "permissionUnitLocation",
 						"type": "ExplorerLocation | null",
-						"description": "The registered unit route under its own category at the shown branch and commit; null when absent."
+						"description": "The ExplorerLocation built from the route's 'branch' and 'commit', the matched entity's 'category' and the requested id as 'entity'. It is null when no registered entity has that id.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "3a7f9c2e1b8d4a6f0e5c7b9d2a4f6e8c1b3d5a70",
+								"category": "components",
+								"entity": "reports.component.evidence-grid"
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when 'host', 'entities' or 'route' is null or undefined, when 'entities' has no callable 'find', or when an entity the search reaches is null or undefined."
+					},
+					{
 						"name": "Input access failure",
 						"type": "propagated",
-						"description": "Errors from supplied getters, collection methods or species constructors propagate unchanged."
+						"description": "Errors from reading 'host.entities', 'host.route', the route's 'branch' and 'commit', each entity's 'id' during the search or the matched entity's 'category', and from calling 'find', propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"
