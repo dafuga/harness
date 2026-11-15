@@ -30,46 +30,86 @@
 				"name": "rpcMessages.state",
 				"type": "RpcState",
 				"required": true,
-				"description": "Pending-request map, notification listeners and sender."
+				"description": "State with a numeric-ID pending map, event-listener set, and sender callback used while handling replies and notifications. The function assumes these members are usable and does not validate them."
 			},
 			{
 				"name": "rpcMessages.line",
 				"type": "string",
 				"required": true,
-				"description": "One JSON message line; invalid JSON is ignored."
+				"description": "Serialized input line passed to JSON.parse and then treated as a message record. Invalid JSON syntax is ignored; matched replies need a numeric pending ID, notifications need a string method, and parsed null is not guarded.",
+				"examples": ["{\"id\":1,\"result\":{\"ok\":true}}", "{\"method\":\"event\",\"params\":{}}"]
 			},
 			{
 				"name": "rpcRequest.state",
 				"type": "RpcState",
 				"required": true,
-				"description": "Pending-request map and sender used for the new request."
+				"description": "State containing the pending-request map and sender callback used to register and transmit the new frame. It assumes the map and callback are usable and does not validate them."
 			},
 			{
 				"name": "rpcRequest.frame",
 				"type": "{ id: number; method: string; params: unknown }",
 				"required": true,
-				"description": "Request ID, method and parameters to send."
+				"description": "Object passed to state.send and tracked by its numeric ID until reply or timeout. Its declared fields are id, method, and params; the implementation does not validate them.",
+				"examples": [
+					{
+						"id": 1,
+						"method": "example/method",
+						"params": {}
+					},
+					{
+						"id": 42,
+						"method": "other/method",
+						"params": {
+							"text": "hello"
+						}
+					}
+				]
 			},
 			{
 				"name": "rpcRequest.timeoutMs",
 				"type": "number",
 				"required": true,
-				"description": "Milliseconds before the pending request is rejected as timed out."
+				"description": "Delay in milliseconds passed directly to setTimeout for removal and rejection of this request. The implementation does not validate the value.",
+				"examples": [1000, 30000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "rpcMessages",
 				"type": "void",
-				"description": "Settles matching requests, dispatches notifications or rejects incoming interactive requests as unavailable; returns nothing."
+				"description": "Returns undefined after processing the line. A message with a string method is answered with an unavailable error if it has an id; otherwise it is delivered to listeners."
 			},
 			{
 				"name": "rpcRequest",
 				"type": "Promise<unknown>",
-				"description": "Reply result, or rejection from the remote error, send failure or timeout."
+				"description": "Resolves with the matched reply's result without validating its shape; if result is absent, the resolved value is undefined. It rejects on a truthy reply error, timeout, or a thrown value from the sender.",
+				"examples": [
+					{
+						"ok": true
+					},
+					null,
+					"done"
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A matched reply with a truthy error causes rpcRequest to reject with an Error whose message is String(error.message ?? 'Codex RPC failed.'). The timeout callback also rejects with Error('Codex ' + frame.method + ' timed out.')."
+			},
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "If state.send throws while rpcRequest sends the frame, rpcRequest rejects with the same thrown value after removing the pending entry and clearing its timer. In rpcMessages, thrown values from pending callbacks, notification listeners, or the sender answering an incoming request propagate synchronously because those calls are not caught."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A line whose JSON text parses to null triggers TypeError when rpcMessages reads msg.id; JSON.parse syntax errors are caught and ignored."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "rpcMessages",
@@ -78,24 +118,39 @@
 						"name": "rpcMessages.state",
 						"type": "RpcState",
 						"required": true,
-						"description": "Pending-request map, notification listeners and sender."
+						"description": "State with a numeric-ID pending map, event-listener set, and sender callback used while handling replies and notifications. The function assumes these members are usable and does not validate them."
 					},
 					{
 						"name": "rpcMessages.line",
 						"type": "string",
 						"required": true,
-						"description": "One JSON message line; invalid JSON is ignored."
+						"description": "Serialized input line passed to JSON.parse and then treated as a message record. Invalid JSON syntax is ignored; matched replies need a numeric pending ID, notifications need a string method, and parsed null is not guarded.",
+						"examples": [
+							"{\"id\":1,\"result\":{\"ok\":true}}",
+							"{\"method\":\"event\",\"params\":{}}"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "rpcMessages",
 						"type": "void",
-						"description": "Settles matching requests, dispatches notifications or rejects incoming interactive requests as unavailable; returns nothing."
+						"description": "Returns undefined after processing the line. A message with a string method is answered with an unavailable error if it has an id; otherwise it is delivered to listeners."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "If a pending callback, notification listener, or sender called for an incoming method with an id throws, that value propagates synchronously because rpcMessages does not catch callback exceptions."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A line whose JSON text parses to null triggers TypeError when rpcMessages reads msg.id; JSON.parse syntax errors are caught and ignored."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "rpcRequest",
@@ -104,30 +159,63 @@
 						"name": "rpcRequest.state",
 						"type": "RpcState",
 						"required": true,
-						"description": "Pending-request map and sender used for the new request."
+						"description": "State containing the pending-request map and sender callback used to register and transmit the new frame. It assumes the map and callback are usable and does not validate them."
 					},
 					{
 						"name": "rpcRequest.frame",
 						"type": "{ id: number; method: string; params: unknown }",
 						"required": true,
-						"description": "Request ID, method and parameters to send."
+						"description": "Object passed to state.send and tracked by its numeric ID until reply or timeout. Its declared fields are id, method, and params; the implementation does not validate them.",
+						"examples": [
+							{
+								"id": 1,
+								"method": "example/method",
+								"params": {}
+							},
+							{
+								"id": 42,
+								"method": "other/method",
+								"params": {
+									"text": "hello"
+								}
+							}
+						]
 					},
 					{
 						"name": "rpcRequest.timeoutMs",
 						"type": "number",
 						"required": true,
-						"description": "Milliseconds before the pending request is rejected as timed out."
+						"description": "Delay in milliseconds passed directly to setTimeout for removal and rejection of this request. The implementation does not validate the value.",
+						"examples": [1000, 30000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "rpcRequest",
 						"type": "Promise<unknown>",
-						"description": "Reply result, or rejection from the remote error, send failure or timeout."
+						"description": "Resolves with the matched reply's result without validating its shape; if result is absent, the resolved value is undefined. It rejects on a truthy reply error, timeout, or a thrown value from the sender.",
+						"examples": [
+							{
+								"ok": true
+							},
+							null,
+							"done"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A matched reply with a truthy error causes rpcRequest to reject with an Error whose message is String(error.message ?? 'Codex RPC failed.'). The timeout callback also rejects with Error('Codex ' + frame.method + ' timed out.')."
+					},
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "If state.send throws while rpcRequest sends the frame, the returned promise rejects with that same thrown value after the pending entry is removed and its timer is cleared."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
