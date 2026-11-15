@@ -26,30 +26,469 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "isAppOnlyScaffold.kind",
 				"type": "PieceKind",
-				"required": true
+				"required": true,
+				"description": "The scaffold kind whose appOnly flag is returned; it must be one of the 36 names in scaffoldKinds, which PieceKind is derived from. Values outside that set are not validated at runtime, so the call may throw the TypeError listed in errors.",
+				"examples": ["component", "service", "game-view"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "scaffoldKinds",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The readonly tuple of the 36 scaffold kind names in declaration order, from which PieceKind is derived. The readonly typing exists only at compile time: the code does not freeze the array, so it stays mutable at runtime.",
+				"examples": [
+					[
+						"game-view",
+						"mechanic",
+						"checkpoint",
+						"controller",
+						"service",
+						"decorator",
+						"component",
+						"test",
+						"feature",
+						"migration",
+						"view",
+						"layout",
+						"api",
+						"store",
+						"hook",
+						"e2e",
+						"adapter",
+						"repository",
+						"validator",
+						"serializer",
+						"policy",
+						"job",
+						"notification",
+						"seeder",
+						"command",
+						"util",
+						"mailer",
+						"helper",
+						"concern",
+						"channel",
+						"resource",
+						"form",
+						"partial",
+						"initializer",
+						"config",
+						"middleware"
+					]
+				]
 			},
 			{
 				"name": "scaffoldDetails",
-				"type": "Record<PieceKind, ScaffoldDetail>"
+				"type": "Record<PieceKind, ScaffoldDetail>",
+				"description": "The map from each of the 36 PieceKind names to its ScaffoldDetail, built by spreading the three game-authoring entries and then adding the 33 local entries; isAppOnlyScaffold reads its appOnly field. gameOnly is true only on game-view, mechanic and checkpoint and is absent from every other entry.",
+				"examples": [
+					{
+						"game-view": {
+							"kind": "game-view",
+							"summary": "Game scene, UI and visual direction.",
+							"appOnly": true,
+							"gameOnly": true,
+							"contains": [
+								"Game view config under src/configs/<name>ViewConfig.ts.",
+								"View dimension taken from the project's harness.dimension."
+							],
+							"exampleCommand": "harness generate game-view example"
+						},
+						"mechanic": {
+							"kind": "mechanic",
+							"summary": "Independent deterministic state/input/event behavior.",
+							"appOnly": true,
+							"gameOnly": true,
+							"contains": [
+								"Mechanic function under src/utils/<name>.ts.",
+								"Mechanic unit test under test/<name>.test.ts."
+							],
+							"exampleCommand": "harness generate mechanic example"
+						},
+						"checkpoint": {
+							"kind": "checkpoint",
+							"summary": "Executable condition/action checkpoint.",
+							"appOnly": true,
+							"gameOnly": true,
+							"contains": ["Checkpoint config under src/configs/<name>CheckpointConfig.ts."],
+							"exampleCommand": "harness generate checkpoint example"
+						},
+						"controller": {
+							"kind": "controller",
+							"summary": "Request handling as a thin coordinator.",
+							"appOnly": false,
+							"contains": [
+								"Controller class under src/controllers.",
+								"Focused action method returning a response.",
+								"Controller unit test."
+							],
+							"exampleCommand": "harness generate controller example"
+						},
+						"service": {
+							"kind": "service",
+							"summary": "Workflow logic with one reason to change.",
+							"appOnly": false,
+							"contains": [
+								"Service class under src/services.",
+								"Small public run method as the workflow entry.",
+								"Service unit test."
+							],
+							"exampleCommand": "harness generate service example"
+						},
+						"decorator": {
+							"kind": "decorator",
+							"summary": "Presentation shaping around a raw object.",
+							"appOnly": false,
+							"contains": [
+								"Decorator class under src/decorators.",
+								"Display-ready method.",
+								"Decorator unit test."
+							],
+							"exampleCommand": "harness generate decorator example"
+						},
+						"component": {
+							"kind": "component",
+							"summary": "Reusable Svelte UI component.",
+							"appOnly": true,
+							"contains": [
+								"Svelte component under src/components.",
+								"Typed props using Svelte 5 runes.",
+								"Component smoke test."
+							],
+							"exampleCommand": "harness generate component example"
+						},
+						"test": {
+							"kind": "test",
+							"summary": "Focused Vitest spec.",
+							"appOnly": false,
+							"contains": ["Vitest file under test.", "Single starting assertion."],
+							"exampleCommand": "harness generate test example"
+						},
+						"feature": {
+							"kind": "feature",
+							"summary": "Feature specification before implementation.",
+							"appOnly": false,
+							"contains": [
+								"Planned feature markdown under specification/features/planned.",
+								"Overview, acceptance criteria, and future enhancements."
+							],
+							"exampleCommand": "harness generate feature example"
+						},
+						"migration": {
+							"kind": "migration",
+							"summary": "Small reversible database migration.",
+							"appOnly": false,
+							"contains": [
+								"SQL migration under db/migrations.",
+								"Comment prompt for reversible scope."
+							],
+							"exampleCommand": "harness generate migration example"
+						},
+						"view": {
+							"kind": "view",
+							"summary": "SvelteKit route page.",
+							"appOnly": true,
+							"contains": [
+								"Route page under src/routes/<name>/+page.svelte.",
+								"Page title and data-harness marker.",
+								"Route smoke test."
+							],
+							"exampleCommand": "harness generate view example"
+						},
+						"layout": {
+							"kind": "layout",
+							"summary": "SvelteKit route layout.",
+							"appOnly": true,
+							"contains": [
+								"Route layout under src/routes/<name>/+layout.svelte.",
+								"Typed child snippet rendering.",
+								"Layout smoke test."
+							],
+							"exampleCommand": "harness generate layout example"
+						},
+						"api": {
+							"kind": "api",
+							"summary": "SvelteKit API endpoint.",
+							"appOnly": true,
+							"contains": [
+								"Server route under src/routes/api/<name>/+server.ts.",
+								"GET handler returning JSON.",
+								"API unit test."
+							],
+							"exampleCommand": "harness generate api example"
+						},
+						"store": {
+							"kind": "store",
+							"summary": "Svelte rune store.",
+							"appOnly": true,
+							"contains": [
+								"Store factory under src/lib/stores.",
+								"State getter and setter.",
+								"Store unit test."
+							],
+							"exampleCommand": "harness generate store example"
+						},
+						"hook": {
+							"kind": "hook",
+							"summary": "SvelteKit handle helper.",
+							"appOnly": true,
+							"contains": [
+								"Handle function under src/hooks.",
+								"Resolve passthrough starting point.",
+								"Hook unit test."
+							],
+							"exampleCommand": "harness generate hook example"
+						},
+						"e2e": {
+							"kind": "e2e",
+							"summary": "Playwright workflow spec.",
+							"appOnly": true,
+							"contains": [
+								"Playwright spec under tests/e2e.",
+								"Page navigation and visible route marker assertion."
+							],
+							"exampleCommand": "harness generate e2e example"
+						},
+						"adapter": {
+							"kind": "adapter",
+							"summary": "Integration adapter boundary.",
+							"appOnly": false,
+							"contains": [
+								"Adapter class under src/adapters.",
+								"Typed config object.",
+								"Adapter unit test."
+							],
+							"exampleCommand": "harness generate adapter example"
+						},
+						"repository": {
+							"kind": "repository",
+							"summary": "Persistence collection boundary.",
+							"appOnly": false,
+							"contains": [
+								"Repository class under src/repositories.",
+								"Find and save methods.",
+								"Repository unit test."
+							],
+							"exampleCommand": "harness generate repository example"
+						},
+						"validator": {
+							"kind": "validator",
+							"summary": "Input validation boundary.",
+							"appOnly": false,
+							"contains": [
+								"Validator class under src/validators.",
+								"Structured valid/errors result.",
+								"Validator unit test."
+							],
+							"exampleCommand": "harness generate validator example"
+						},
+						"serializer": {
+							"kind": "serializer",
+							"summary": "API or export serialization.",
+							"appOnly": false,
+							"contains": [
+								"Serializer class under src/serializers.",
+								"Serialize method returning a plain object.",
+								"Serializer unit test."
+							],
+							"exampleCommand": "harness generate serializer example"
+						},
+						"policy": {
+							"kind": "policy",
+							"summary": "Authorization policy logic.",
+							"appOnly": false,
+							"contains": [
+								"Policy class under src/policies.",
+								"Actor type and permission method.",
+								"Policy unit test."
+							],
+							"exampleCommand": "harness generate policy example"
+						},
+						"job": {
+							"kind": "job",
+							"summary": "Background-work shape.",
+							"appOnly": false,
+							"contains": ["Job class under src/jobs.", "Run method.", "Job unit test."],
+							"exampleCommand": "harness generate job example"
+						},
+						"notification": {
+							"kind": "notification",
+							"summary": "Notification formatting.",
+							"appOnly": false,
+							"contains": [
+								"Notification class under src/notifications.",
+								"Run method as a delivery placeholder.",
+								"Notification unit test."
+							],
+							"exampleCommand": "harness generate notification example"
+						},
+						"seeder": {
+							"kind": "seeder",
+							"summary": "Seed-data setup.",
+							"appOnly": false,
+							"contains": [
+								"Seed function under db/seed-data.",
+								"Seed metadata return value.",
+								"Seeder unit test."
+							],
+							"exampleCommand": "harness generate seeder example"
+						},
+						"command": {
+							"kind": "command",
+							"summary": "Command object for one operation.",
+							"appOnly": false,
+							"contains": [
+								"Command class under src/commands.",
+								"Run method.",
+								"Command unit test."
+							],
+							"exampleCommand": "harness generate command example"
+						},
+						"util": {
+							"kind": "util",
+							"summary": "Tiny utility function.",
+							"appOnly": false,
+							"contains": [
+								"Utility function under src/utils.",
+								"Single-purpose input/output behavior.",
+								"Utility unit test."
+							],
+							"exampleCommand": "harness generate util example"
+						},
+						"mailer": {
+							"kind": "mailer",
+							"summary": "Email rendering without delivery side effects.",
+							"appOnly": false,
+							"contains": [
+								"Mailer class under src/mailers.",
+								"Subject and text rendering methods.",
+								"Mailer unit test."
+							],
+							"exampleCommand": "harness generate mailer example"
+						},
+						"helper": {
+							"kind": "helper",
+							"summary": "Small display helper for views or serializers.",
+							"appOnly": false,
+							"contains": [
+								"Pure camelCase function under src/helpers.",
+								"Pure formatting function.",
+								"Helper unit test."
+							],
+							"exampleCommand": "harness generate helper example"
+						},
+						"concern": {
+							"kind": "concern",
+							"summary": "Reusable cross-cutting behavior.",
+							"appOnly": false,
+							"contains": [
+								"Concern function under src/concerns.",
+								"Typed input and merged output.",
+								"Concern unit test."
+							],
+							"exampleCommand": "harness generate concern example"
+						},
+						"channel": {
+							"kind": "channel",
+							"summary": "ActionCable-style realtime boundary.",
+							"appOnly": false,
+							"contains": [
+								"Channel class under src/channels.",
+								"Subscribe and broadcast methods.",
+								"Channel unit test."
+							],
+							"exampleCommand": "harness generate channel example"
+						},
+						"resource": {
+							"kind": "resource",
+							"summary": "Full app-facing resource scaffold.",
+							"appOnly": true,
+							"contains": [
+								"Model, controller, policy, serializer, migration, API route, view, and e2e spec.",
+								"Unit tests for generated package-safe pieces.",
+								"Route and API markers for browser verification."
+							],
+							"exampleCommand": "harness generate resource example"
+						},
+						"form": {
+							"kind": "form",
+							"summary": "Form object for validation and payload shaping.",
+							"appOnly": false,
+							"contains": [
+								"Form class under src/forms.",
+								"Values, validate, and submit payload methods.",
+								"Form unit test."
+							],
+							"exampleCommand": "harness generate form example"
+						},
+						"partial": {
+							"kind": "partial",
+							"summary": "Reusable route-level partial component.",
+							"appOnly": true,
+							"contains": [
+								"Svelte partial under src/components/partials.",
+								"Typed props and data-harness marker.",
+								"Partial smoke test."
+							],
+							"exampleCommand": "harness generate partial example"
+						},
+						"initializer": {
+							"kind": "initializer",
+							"summary": "Boot-time setup hook.",
+							"appOnly": false,
+							"contains": [
+								"Initializer function under src/initializers.",
+								"Typed config input.",
+								"Initializer unit test."
+							],
+							"exampleCommand": "harness generate initializer example"
+						},
+						"config": {
+							"kind": "config",
+							"summary": "Meaningful controls for people running or developing the app.",
+							"appOnly": false,
+							"contains": [
+								"Config object under src/configs.",
+								"An empty starting object; add only controls with a concrete audience and purpose.",
+								"Internal by default; declare configControls before exposing public settings.",
+								"Config unit test."
+							],
+							"exampleCommand": "harness generate config example"
+						},
+						"middleware": {
+							"kind": "middleware",
+							"summary": "Request middleware boundary.",
+							"appOnly": false,
+							"contains": [
+								"Middleware class under src/middleware.",
+								"Handle method that can pass through or respond.",
+								"Middleware unit test."
+							],
+							"exampleCommand": "harness generate middleware example"
+						}
+					}
+				]
 			},
 			{
 				"name": "isAppOnlyScaffold",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "The appOnly field of the kind's ScaffoldDetail, returned unchanged. It is true for game-view, mechanic, checkpoint, component, view, layout, api, store, hook, e2e, resource and partial, and false for the other 24 kinds.",
+				"examples": [true, false]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown as a TypeError when scaffoldDetails[kind] is undefined and its appOnly property is read, which requires a value outside PieceKind that bypasses the type check. The function contains no throw statement."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "isAppOnlyScaffold",
@@ -57,17 +496,27 @@
 					{
 						"name": "isAppOnlyScaffold.kind",
 						"type": "PieceKind",
-						"required": true
+						"required": true,
+						"description": "The scaffold kind whose appOnly flag is returned; it must be one of the 36 names in scaffoldKinds, which PieceKind is derived from. Values outside that set are not validated at runtime, so the call may throw the TypeError listed in errors.",
+						"examples": ["component", "service", "game-view"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isAppOnlyScaffold",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "The appOnly field of the kind's ScaffoldDetail, returned unchanged. It is true for game-view, mechanic, checkpoint, component, view, layout, api, store, hook, e2e, resource and partial, and false for the other 24 kinds.",
+						"examples": [true, false]
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown as a TypeError when scaffoldDetails[kind] is undefined and its appOnly property is read, which requires a value outside PieceKind that bypasses the type check. The function contains no throw statement."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
