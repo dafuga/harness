@@ -35,14 +35,94 @@
 				"type": "BrowserDiagnostic[]",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional recorded test-attempt diagnostics. Default: undefined (unavailable). An empty array has no recorded entries. Supplied attempts may contain observations, expectations or both."
+				"description": "Optional list of recorded test attempts, one BrowserDiagnostic per attempt with its observed errors (errors) and expected errors (expected), omitted (undefined) by default. Undefined shows an unavailable message, an empty array shows a no-entries message, and a non-empty array renders the Browser errors group; the component does not validate the shape, so each attempt must provide both arrays.",
+				"examples": [
+					[
+						{
+							"test": "Orders › request failure and recovery",
+							"file": "tests/e2e/browser-error-evidence.spec.ts",
+							"project": "chromium",
+							"retry": 1,
+							"browser": "chromium",
+							"errors": [
+								{
+									"type": "console",
+									"message": "Orders unavailable",
+									"page": "http://127.0.0.1:5796/orders",
+									"source": "http://127.0.0.1:5796/src/lib/orders.ts",
+									"line": 19,
+									"column": 4
+								}
+							],
+							"expected": [
+								{
+									"type": "console",
+									"message": "Orders unavailable",
+									"reason": "The server returns 503 to exercise retry.",
+									"source": "http://127.0.0.1:5796/src/lib/orders.ts"
+								}
+							]
+						}
+					],
+					[
+						{
+							"test": "Receipt after payment",
+							"file": "tests/e2e/browser-error-evidence.spec.ts",
+							"project": "chromium",
+							"retry": 0,
+							"browser": "chromium",
+							"errors": [
+								{
+									"type": "pageerror",
+									"message": "Receipt is unavailable",
+									"page": "http://127.0.0.1:5796/receipt",
+									"stack": "Error: Receipt is unavailable\n    at loadReceipt (http://127.0.0.1:5796/src/lib/receipt.ts:18:3)"
+								}
+							],
+							"expected": []
+						}
+					],
+					[
+						{
+							"test": "Stale asset recovery › falls back when a chunk is missing",
+							"file": "tests/e2e/browser-error-evidence.spec.ts",
+							"project": "chromium",
+							"retry": 0,
+							"errors": [],
+							"expected": [
+								{
+									"type": "pageerror",
+									"message": "Failed to fetch dynamically imported module: http://127.0.0.1:5796/assets/report-chart-7c1d.js",
+									"reason": "The chunk probe deletes the chunk to exercise the fallback view."
+								}
+							]
+						},
+						{
+							"test": "Stale asset recovery › falls back when a chunk is missing",
+							"file": "tests/e2e/browser-error-evidence.spec.ts",
+							"project": "chromium",
+							"retry": 1,
+							"errors": [
+								{
+									"type": "console",
+									"message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+									"page": "http://127.0.0.1:5796/",
+									"source": "http://127.0.0.1:5796/assets/report-chart-7c1d.js",
+									"line": 0,
+									"column": 0
+								}
+							],
+							"expected": []
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "BrowserErrors",
 				"type": "markup",
-				"description": "An unavailable or empty collection receives a neutral message without a test verdict. Otherwise an expandable Browser errors group shows the classified row count, test/file/project or browser identity and retry number. Rows show expected, unexpected or missing-expected status, message, expectation reason and available source/page/stack as escaped text. Source line and column display one-based coordinates. A supplied attempt with no rows retains its context and an explicit no-diagnostics message under a zero-entry summary."
+				"description": "With a non-empty diagnostics array it renders an expandable Browser errors group whose summary counts the classified rows of all attempts; each attempt shows its test, file, project or browser (falling back to 'Browser') and retry number, then one row per classified error with its status (Expected, Unexpected or Missing expected error), console.error or Uncaught exception label, message, expectation reason (on Expected and Missing expected error rows), source with one-based line and column, page and stack as escaped text. Undefined diagnostics render 'Browser diagnostics are unavailable for this record.' and an empty array renders 'No browser diagnostic entries were recorded.' (both neutral, with no test verdict), and an attempt with no rows shows 'No diagnostic entries were recorded for this test.' under its identity."
 			}
 		],
 		"errors": [],
