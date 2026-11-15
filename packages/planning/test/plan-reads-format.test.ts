@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
 import { planGit } from '../src/lib/planning-collaboration/planning/planGit';
 import { type Git } from '../src/utils/planGit';
-import { planReads } from '../src/services/planning-service/planReads';
+import { planReads } from '../src/lib/planning-collaboration/planning/planning-service/planReads';
 
 /**
  * Real SHA-1 and SHA-256 repositories. A name is answered again within one operation only when

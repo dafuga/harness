@@ -13,7 +13,7 @@ import type {
 import { hash } from '../../src/utils/planData';
 import { approvable, optionOf, type WriteImages } from '../../src/utils/planOptions';
 import { checkOptions } from '../../src/utils/planning-collaboration/plan-read/checkOptions';
-import { planOptions } from '../../src/services/planning-service/planOptions';
+import { planOptions } from '../../src/lib/planning-collaboration/planning/planning-service/planOptions';
 
 /**
  * The rules of design options apart from Git: how options are numbered and written, what they
@@ -23,7 +23,7 @@ const generator = { provider: 'codex', model: 'selected' };
 
 test.each([
 	['src/utils/planOptions.ts', 'planOptions'],
-	['src/services/planning-service/planOptions.ts', 'planOptions'],
+	['src/lib/planning-collaboration/planning/planning-service/planOptions.ts', 'planOptions'],
 	['src/utils/planOptions.ts', 'checkOptions'],
 	['src/utils/planning-collaboration/plan-read/checkOptions.ts', 'checkOptions'],
 	['src/utils/planOptions.ts', 'heldBy'],
