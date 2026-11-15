@@ -9,10 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubCommitFacts.ts",
-			"packages/collaboration/src/utils/githubCommitFacts.ts"
+			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubCommitFacts.ts"
 		],
-		"symbols": ["githubCommitFacts", "githubCommitFacts"]
+		"symbols": ["githubCommitFacts"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -98,11 +97,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/githubCommitFacts.ts",
+		"entry": "packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubCommitFacts.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/githubCommitFacts.ts"
+				"entry": "packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubCommitFacts.ts"
 			}
 		]
 	},

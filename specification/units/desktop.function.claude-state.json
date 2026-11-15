@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeState.ts",
-			"packages/desktop/src/utils/claudeState.ts"
-		],
-		"symbols": ["claudeState", "claudeState"]
+		"source": ["packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeState.ts"],
+		"symbols": ["claudeState"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -86,11 +83,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/claudeState.ts",
+		"entry": "packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeState.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/claudeState.ts"
+				"entry": "packages/desktop/src/adapters/agents-providers/claude-cli-adapter/claudeState.ts"
 			}
 		]
 	},

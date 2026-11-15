@@ -11,17 +11,9 @@
 		"source": [
 			"src/repositories/git-source-history/source-history-repository/sourceBranches.ts",
 			"src/repositories/git-source-history/source-history-repository/sourceBranches.types.ts",
-			"src/utils/git-source-history/sourceBranches.ts",
-			"src/utils/sourceBranches.ts"
+			"src/utils/git-source-history/sourceBranches.ts"
 		],
-		"symbols": [
-			"sourceBranches",
-			"Tracked",
-			"ListedRef",
-			"SourceBranch",
-			"sourceBranches",
-			"sourceBranches"
-		]
+		"symbols": ["sourceBranches", "Tracked", "ListedRef", "SourceBranch", "sourceBranches"]
 	},
 	"contract": {
 		"origin": "declared",

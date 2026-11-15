@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/project-switcher/projectList.ts",
 			"packages/desktop/src/components/projects-sessions/project-switcher/projectList.ts",
 			"packages/desktop/src/utils/projects-sessions/projectList.ts"
 		],
-		"symbols": ["projectList", "projectList", "listedProjects", "projectList"]
+		"symbols": ["projectList", "listedProjects", "projectList"]
 	},
 	"contract": {
 		"origin": "declared",

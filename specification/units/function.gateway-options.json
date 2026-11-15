@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts",
-			"src/utils/gatewayOptions.ts"
-		],
-		"symbols": ["gatewayOptions", "gatewayOptions"]
+		"source": ["src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts"],
+		"symbols": ["gatewayOptions"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -65,11 +62,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/gatewayOptions.ts",
+		"entry": "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/gatewayOptions.ts"
+				"entry": "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts"
 			}
 		]
 	},

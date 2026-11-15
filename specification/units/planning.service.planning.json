@@ -9,10 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/planning/src/lib/planning-collaboration/planning/planning-service/PlanningService.ts",
-			"packages/planning/src/lib/planning/planning-service/PlanningService.ts"
+			"packages/planning/src/lib/planning-collaboration/planning/planning-service/PlanningService.ts"
 		],
-		"symbols": ["planningService", "planningService"]
+		"symbols": ["planningService"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/repositories/report-repository/reportFiles.ts",
 			"packages/reports/src/repositories/reports-media/report-repository/reportFiles.ts",
 			"packages/reports/src/utils/reports-media/reportFiles.ts"
 		],
-		"symbols": ["reportFiles", "reportFiles", "safeId", "readJson", "atomicJson", "reportFiles"]
+		"symbols": ["reportFiles", "safeId", "readJson", "atomicJson", "reportFiles"]
 	},
 	"contract": {
 		"origin": "declared",

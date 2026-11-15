@@ -9,10 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/collaboration/src/utils/create-collaboration/createCollaboration.ts",
 			"packages/collaboration/src/utils/projects-sessions/create-collaboration/createCollaboration.ts"
 		],
-		"symbols": ["createCollaboration", "createCollaboration"]
+		"symbols": ["createCollaboration"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -95,11 +94,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/create-collaboration/createCollaboration.ts",
+		"entry": "packages/collaboration/src/utils/projects-sessions/create-collaboration/createCollaboration.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/create-collaboration/createCollaboration.ts"
+				"entry": "packages/collaboration/src/utils/projects-sessions/create-collaboration/createCollaboration.ts"
 			}
 		]
 	},

@@ -9,10 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/collaboration/src/utils/create-git-hub-repository/commitRecords.ts",
 			"packages/collaboration/src/utils/git-source-history/create-git-hub-repository/commitRecords.ts"
 		],
-		"symbols": ["commitRecords", "commitRecords"]
+		"symbols": ["commitRecords"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,11 +81,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/create-git-hub-repository/commitRecords.ts",
+		"entry": "packages/collaboration/src/utils/git-source-history/create-git-hub-repository/commitRecords.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/create-git-hub-repository/commitRecords.ts"
+				"entry": "packages/collaboration/src/utils/git-source-history/create-git-hub-repository/commitRecords.ts"
 			}
 		]
 	},

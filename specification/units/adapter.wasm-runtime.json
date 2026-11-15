@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter.ts",
-			"src/adapters/wasm-runtime-adapter/WasmRuntimeAdapter.ts"
-		],
-		"symbols": ["WasmRuntimeAdapter", "WasmRuntimeAdapter.constructor", "WasmRuntimeAdapter"]
+		"source": ["src/adapters/execution-runtimes/wasm-runtime-adapter/WasmRuntimeAdapter.ts"],
+		"symbols": ["WasmRuntimeAdapter", "WasmRuntimeAdapter.constructor"]
 	},
 	"contract": {
 		"origin": "derived",

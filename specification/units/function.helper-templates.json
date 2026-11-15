@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/services/explorer-ui/revision-detail-service/helperTemplates.ts",
-			"src/services/explorer-ui/revision-detail-service/helperTemplates.types.ts",
-			"src/services/revision-detail-service/helperTemplates.ts"
+			"src/services/explorer-ui/revision-detail-service/helperTemplates.types.ts"
 		],
-		"symbols": ["helperTemplates", "Node", "helperTemplates"]
+		"symbols": ["helperTemplates", "Node"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/planning/src/lib/planning-collaboration/planning/planning-service/planHistory.ts",
-			"packages/planning/src/lib/planning/planning-service/planHistory.ts",
 			"packages/planning/src/utils/planning-collaboration/planHistory.ts"
 		],
-		"symbols": ["planHistory", "planHistory", "commits", "revisionInfo", "planHistory"]
+		"symbols": ["planHistory", "commits", "revisionInfo", "planHistory"]
 	},
 	"contract": {
 		"origin": "declared",

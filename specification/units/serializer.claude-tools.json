@@ -8,15 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.ts",
-			"src/serializers/claude-tools-serializer/ClaudeToolsSerializer.ts"
-		],
+		"source": ["src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer.ts"],
 		"symbols": [
 			"ClaudeToolsSerializer",
 			"ClaudeToolsSerializer.constructor",
-			"ClaudeToolsSerializer.server",
-			"ClaudeToolsSerializer"
+			"ClaudeToolsSerializer.server"
 		]
 	},
 	"contract": {

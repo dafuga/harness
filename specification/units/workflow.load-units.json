@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/workflows/development-tooling/load-units/loadUnits.ts",
-			"src/workflows/development-tooling/load-units/loadUnits.types.ts",
-			"src/workflows/load-units/loadUnits.ts"
+			"src/workflows/development-tooling/load-units/loadUnits.types.ts"
 		],
-		"symbols": ["loadUnits", "graphOf", "LoadedUnits", "LoadedUnits", "loadUnits", "graphOf"]
+		"symbols": ["loadUnits", "graphOf", "LoadedUnits", "LoadedUnits"]
 	},
 	"contract": {
 		"origin": "derived",

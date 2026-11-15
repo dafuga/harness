@@ -9,17 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/utils/projectCapabilities.ts",
 			"packages/desktop/src/utils/projects-sessions/load-workspace/projectCapabilities.ts",
 			"packages/desktop/src/utils/projects-sessions/projectCapabilities.ts"
 		],
-		"symbols": [
-			"projectCapabilities",
-			"closedCapabilities",
-			"projectCapabilities",
-			"closedCapabilities",
-			"projectCapabilities"
-		]
+		"symbols": ["projectCapabilities", "closedCapabilities", "projectCapabilities"]
 	},
 	"contract": {
 		"origin": "declared",

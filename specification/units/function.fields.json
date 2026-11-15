@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/core/development-tooling/fields/fields.ts",
-			"src/core/development-tooling/fields/fields.types.ts",
-			"src/core/fields/fields.ts"
+			"src/core/development-tooling/fields/fields.types.ts"
 		],
-		"symbols": ["parseFields", "FieldType", "Field", "FieldType", "Field", "parseFields"]
+		"symbols": ["parseFields", "FieldType", "Field", "FieldType", "Field"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -9,17 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/recordCapture.ts",
 			"src/utils/reports-media/record-capture/recordCapture.ts",
 			"src/utils/reports-media/record-capture/recordCapture.types.ts"
 		],
-		"symbols": [
-			"evidenceRequested",
-			"recordCapture",
-			"evidenceRequested",
-			"recordCapture",
-			"Environment"
-		]
+		"symbols": ["evidenceRequested", "recordCapture", "Environment"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -127,11 +120,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/recordCapture.ts",
+		"entry": "src/utils/reports-media/record-capture/recordCapture.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/recordCapture.ts"
+				"entry": "src/utils/reports-media/record-capture/recordCapture.ts"
 			}
 		]
 	},

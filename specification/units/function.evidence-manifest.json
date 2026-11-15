@@ -9,19 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/evidence-attach-service/evidenceManifest.ts",
 			"src/services/verification-evidence/evidence-attach-service/evidenceManifest.ts",
 			"src/utils/verification-evidence/evidenceManifest.ts",
 			"src/utils/verification-evidence/evidenceManifest.types.ts"
 		],
-		"symbols": [
-			"evidenceManifest",
-			"evidenceManifest",
-			"recordFiles",
-			"evidenceManifest",
-			"RecordFile",
-			"RecordFile"
-		]
+		"symbols": ["evidenceManifest", "recordFiles", "evidenceManifest", "RecordFile", "RecordFile"]
 	},
 	"contract": {
 		"origin": "declared",

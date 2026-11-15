@@ -9,15 +9,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service/SocketFrameService.ts",
-			"packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts"
+			"packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service/SocketFrameService.ts"
 		],
 		"symbols": [
 			"SocketFrameService",
 			"SocketFrameService.constructor",
 			"SocketFrameService.message",
-			"SocketFrameService.closed",
-			"SocketFrameService"
+			"SocketFrameService.closed"
 		]
 	},
 	"contract": {

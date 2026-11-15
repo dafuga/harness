@@ -9,17 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/gatherCaptures.ts",
 			"src/utils/verification-evidence/gatherCaptures.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures.ts"
 		],
-		"symbols": [
-			"gatherCaptures",
-			"Gathered",
-			"GatherResult",
-			"gatherCaptures",
-			"gatherCaptures"
-		]
+		"symbols": ["Gathered", "GatherResult", "gatherCaptures", "gatherCaptures"]
 	},
 	"contract": {
 		"origin": "declared",
