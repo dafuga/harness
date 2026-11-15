@@ -31,57 +31,106 @@
 				"name": "lineProcess.command",
 				"type": "string",
 				"required": true,
-				"description": "Executable to spawn on the first exchange or after the previous child stops."
+				"description": "Executable name or path passed to spawn from node:child_process without a shell, started by the first exchange and started again by any exchange after the previous child has stopped. A child 'error' event clears the child and resolves any pending exchange with a runtime-unavailable failure that names this command.",
+				"examples": ["node", "python3"]
 			},
 			{
 				"name": "lineProcess.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Arguments passed directly to the child process with piped standard streams."
+				"description": "Argument array passed to spawn from node:child_process with piped standard streams, one element per argument and no shell parsing. The same array is reused each time the child is started again after it stops.",
+				"examples": [
+					["server.js"],
+					["-u", "worker.py"],
+					[]
+				]
 			},
 			{
 				"name": "unavailable.command",
 				"type": "string",
 				"required": true,
-				"description": "Executable name to identify in a startup-failure message."
+				"description": "Command name placed after 'cannot start ' in the runtime-unavailable message, and the value is not validated or trimmed. lineProcess passes its own command here.",
+				"examples": ["node", "python3"]
 			},
 			{
 				"name": "unavailable.error",
 				"type": "Error",
 				"required": true,
-				"description": "Startup error whose message should be included."
+				"description": "Startup error whose message property is appended after the command name and a colon in the runtime-unavailable message. No other property of the error is read, so its stack is not included."
 			},
 			{
 				"name": "exited.code",
 				"type": "number | null",
 				"required": true,
-				"description": "Exit status, or null when no numeric status is known."
+				"description": "Exit status of the child, or null when no numeric status is known; null is written as unknown in the runtime-failed message. lineProcess passes the code from the child's close event.",
+				"examples": [1, 2, null]
 			},
 			{
 				"name": "exited.stderr",
 				"type": "string",
 				"required": true,
-				"description": "Error-output text to trim and include up to its last 200 characters."
+				"description": "Error-output text that is trimmed and reduced to its last 200 UTF-16 code units, then appended after a colon only when that text is not empty. lineProcess always passes an empty string, so its exit failures carry no detail.",
+				"examples": ["", "Error: unexpected token in input"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "lineProcess",
 				"type": "LineProcess",
-				"description": "Handle with exchange and close methods. Exchange writes one normalized line and waits for a response line or timeout; close kills the child with SIGKILL and clears its buffer."
+				"description": "Handle with exchange(line, timeoutMs) and close(). exchange writes the line with each LF or CRLF line break replaced by a space and terminated with a newline, then resolves with the next stdout line or a failure; a timeout kills the child with SIGKILL before it resolves, while close kills the child with SIGKILL, clears the buffer, and leaves a pending exchange to end when its timeout fires."
 			},
 			{
 				"name": "unavailable",
 				"type": "RuntimeResponse",
-				"description": "Runtime failure with code runtime-unavailable and the command/startup error message."
+				"description": "Runtime failure with code runtime-unavailable and message 'cannot start ' followed by the command, a colon, a space, and the startup error message. lineProcess returns it as the failure of any pending exchange, and the next exchange spawns the command again.",
+				"examples": [
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-unavailable",
+							"message": "cannot start node: spawn node ENOENT"
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-unavailable",
+							"message": "cannot start python3: spawn python3 EACCES"
+						}
+					}
+				]
 			},
 			{
 				"name": "exited",
 				"type": "RuntimeResponse",
-				"description": "Runtime failure with code runtime-failed, exit status and optional trimmed stderr detail."
+				"description": "Runtime failure with code runtime-failed and message 'process exited with code ' followed by the exit status (unknown for null), plus ': ' and the trimmed stderr detail, capped at its last 200 UTF-16 code units, only when that detail is not empty. lineProcess returns it as the failure of any pending exchange when the current child closes.",
+				"examples": [
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-failed",
+							"message": "process exited with code 1"
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-failed",
+							"message": "process exited with code unknown"
+						}
+					},
+					{
+						"ok": false,
+						"error": {
+							"code": "runtime-failed",
+							"message": "process exited with code 2: Error: unexpected token in input"
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "lineProcess",
@@ -90,24 +139,30 @@
 						"name": "lineProcess.command",
 						"type": "string",
 						"required": true,
-						"description": "Executable to spawn on the first exchange or after the previous child stops."
+						"description": "Executable name or path passed to spawn from node:child_process without a shell, started by the first exchange and started again by any exchange after the previous child has stopped. A child 'error' event clears the child and resolves any pending exchange with a runtime-unavailable failure that names this command.",
+						"examples": ["node", "python3"]
 					},
 					{
 						"name": "lineProcess.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Arguments passed directly to the child process with piped standard streams."
+						"description": "Argument array passed to spawn from node:child_process with piped standard streams, one element per argument and no shell parsing. The same array is reused each time the child is started again after it stops.",
+						"examples": [
+							["server.js"],
+							["-u", "worker.py"],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "lineProcess",
 						"type": "LineProcess",
-						"description": "Handle with exchange and close methods. Exchange writes one normalized line and waits for a response line or timeout; close kills the child with SIGKILL and clears its buffer."
+						"description": "Handle with exchange(line, timeoutMs) and close(). exchange writes the line with each LF or CRLF line break replaced by a space and terminated with a newline, then resolves with the next stdout line or a failure; a timeout kills the child with SIGKILL before it resolves, while close kills the child with SIGKILL, clears the buffer, and leaves a pending exchange to end when its timeout fires."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "unavailable",
@@ -116,24 +171,41 @@
 						"name": "unavailable.command",
 						"type": "string",
 						"required": true,
-						"description": "Executable name to identify in a startup-failure message."
+						"description": "Command name placed after 'cannot start ' in the runtime-unavailable message, and the value is not validated or trimmed. lineProcess passes its own command here.",
+						"examples": ["node", "python3"]
 					},
 					{
 						"name": "unavailable.error",
 						"type": "Error",
 						"required": true,
-						"description": "Startup error whose message should be included."
+						"description": "Startup error whose message property is appended after the command name and a colon in the runtime-unavailable message. No other property of the error is read, so its stack is not included."
 					}
 				],
 				"outputs": [
 					{
 						"name": "unavailable",
 						"type": "RuntimeResponse",
-						"description": "Runtime failure with code runtime-unavailable and the command/startup error message."
+						"description": "Runtime failure with code runtime-unavailable and message 'cannot start ' followed by the command, a colon, a space, and the startup error message. lineProcess returns it as the failure of any pending exchange, and the next exchange spawns the command again.",
+						"examples": [
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-unavailable",
+									"message": "cannot start node: spawn node ENOENT"
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-unavailable",
+									"message": "cannot start python3: spawn python3 EACCES"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "exited",
@@ -142,24 +214,49 @@
 						"name": "exited.code",
 						"type": "number | null",
 						"required": true,
-						"description": "Exit status, or null when no numeric status is known."
+						"description": "Exit status of the child, or null when no numeric status is known; null is written as unknown in the runtime-failed message. lineProcess passes the code from the child's close event.",
+						"examples": [1, 2, null]
 					},
 					{
 						"name": "exited.stderr",
 						"type": "string",
 						"required": true,
-						"description": "Error-output text to trim and include up to its last 200 characters."
+						"description": "Error-output text that is trimmed and reduced to its last 200 UTF-16 code units, then appended after a colon only when that text is not empty. lineProcess always passes an empty string, so its exit failures carry no detail.",
+						"examples": ["", "Error: unexpected token in input"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "exited",
 						"type": "RuntimeResponse",
-						"description": "Runtime failure with code runtime-failed, exit status and optional trimmed stderr detail."
+						"description": "Runtime failure with code runtime-failed and message 'process exited with code ' followed by the exit status (unknown for null), plus ': ' and the trimmed stderr detail, capped at its last 200 UTF-16 code units, only when that detail is not empty. lineProcess returns it as the failure of any pending exchange when the current child closes.",
+						"examples": [
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-failed",
+									"message": "process exited with code 1"
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-failed",
+									"message": "process exited with code unknown"
+								}
+							},
+							{
+								"ok": false,
+								"error": {
+									"code": "runtime-failed",
+									"message": "process exited with code 2: Error: unexpected token in input"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
