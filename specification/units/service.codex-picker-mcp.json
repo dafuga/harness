@@ -17,31 +17,37 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CodexPickerMcpService.constructor.service",
 				"type": "ProviderSwitchService",
-				"required": true
+				"required": true,
+				"description": "The ProviderSwitchService instance retained by this service and passed to pickerMcpTools for each registered tool call. The constructor does not validate its behavior."
 			},
 			{
 				"name": "CodexPickerMcpService.constructor.html",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The HTML markup used as the text of the registered model-picker resource at pickerResource. It is passed through as provided.",
+				"examples": ["<!doctype html><html><body><main id=\"model-picker\"></main></body></html>"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "pickerResource",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The fixed URI at which the model-picker resource is registered and which is attached to each registered tool as its UI resource. It is always ui://harness-claude/model-picker.",
+				"examples": ["ui://harness-claude/model-picker"]
 			},
 			{
 				"name": "CodexPickerMcpService.connect",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise returned when connect() is called; it resolves after server.connect(new StdioServerTransport()) completes. Its resolved value is void."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "CodexPickerMcpService.connect",
@@ -49,11 +55,12 @@
 				"outputs": [
 					{
 						"name": "CodexPickerMcpService.connect",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise returned when connect() is called; it resolves after server.connect(new StdioServerTransport()) completes. Its resolved value is void."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -63,22 +70,28 @@
 					{
 						"name": "CodexPickerMcpService.constructor.service",
 						"type": "ProviderSwitchService",
-						"required": true
+						"required": true,
+						"description": "The ProviderSwitchService instance retained by this service and passed to pickerMcpTools for each registered tool call. The constructor does not validate its behavior."
 					},
 					{
 						"name": "CodexPickerMcpService.constructor.html",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The HTML markup used as the text of the registered model-picker resource at pickerResource. It is passed through as provided.",
+						"examples": [
+							"<!doctype html><html><body><main id=\"model-picker\"></main></body></html>"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CodexPickerMcpService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed CodexPickerMcpService instance has the model-picker resource and six picker tools registered on its MCP server. The stdio transport is attached only when connect() is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
