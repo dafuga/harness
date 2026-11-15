@@ -1,6 +1,6 @@
 // @harness-uid u_i5scgbpvjs
 import { randomUUID, createHash } from 'node:crypto';
-import { ProjectSessionService } from '../../../../../desktop/src/services/project-session-service/ProjectSessionService';
+import { ProjectSessionService } from '../../../../../desktop/src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { DesktopRunService } from '../../../../../desktop/src/services/agents-providers/desktop-run-service/DesktopRunService';
 import { DesktopBridgeService } from '../../../../../desktop/src/services/development-tooling/desktop-bridge-service/DesktopBridgeService';
 import { ProviderDiscoveryService } from '../../../../../desktop/src/services/provider-discovery-service/ProviderDiscoveryService';
