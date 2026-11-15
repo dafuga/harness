@@ -32,29 +32,30 @@
 				"name": "GameLevelPlan.context",
 				"type": "{\n\t\tview: GameView;\n\t\t/** The document as it stands, sent whole with a generation request. */\n\t\tdocument: GameDocument;\n\t\tprojectId?: string | null;\n\t\trevision?: string;\n\t\tcommit?: string;\n\t\tbridge?: DesktopBridge;\n\t\t/** History or a game that cannot be saved: nothing is generated, edited or approved. */\n\t\treadonly: boolean;\n\t}",
 				"required": true,
-				"description": "Current level, full authoring document, selected project revision, writable/history mode and local generation bridge."
+				"description": "The level being planned (`view`), the whole `document` that each generation request sends, and the `readonly` flag, which blocks generating, editing, approving and building. `projectId`, `revision`, `commit` and `bridge` are optional: generating needs `projectId`, `revision` and `bridge.gameLevelGenerate`, a set `commit` (history) blocks it, and the component passes the reason to the steps as `status.reason`."
 			},
 			{
 				"name": "GameLevelPlan.run",
 				"type": "GameRun",
 				"required": true,
-				"description": "Current preview run, reset to the generated spawn on build."
+				"description": "The preview run, which only `build()` reads and replaces through the `run` binding: it sets `state.x` and `state.y` to the layout's `spawn.x` and `spawn.z`, removes this view's `trace` entries, empties `completed` entirely and resets this view's `progress` to an empty list. Every other field of the run and of `state` is kept as it is."
 			},
 			{
 				"name": "GameLevelPlan.change",
 				"type": "(patch: Partial<GameView>) => void",
 				"required": true,
-				"description": "Publish an edited brief, accepted proposal, approval or built geometry to the workspace."
+				"description": "The callback that receives each edit as a partial view patch: `{ dimension, planning }` for any brief, dimension or proposal change or withdrawal (these clear `planning.approved` and `planning.built`), `{ planning }` with `planning.approved` set to the proposal id for an approval, and `{ world, planning }` with `planning.built` set to the proposal id for a build, where `world` is a `$state.snapshot` of the proposal layout. It is never called while `readonly` is true."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameLevelPlan",
 				"type": "markup",
-				"description": "Guide concept, brief, generation and human approval before building a level."
+				"description": "The `hx-section` for the level plan: a heading from the current step (`What is this level?`, `Describe the level`, `Review the proposal` or `Level built`) with a `Step n of 3` label on every step but the built one, then `GameLevelBrief` on the concept and brief steps or `GameLevelReview` on the other steps once a proposal exists. A review or built step without a proposal shows only the heading."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
