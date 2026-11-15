@@ -31,30 +31,124 @@
 				"name": "scenarioHealth.input",
 				"type": "ScenarioHealthInput",
 				"required": true,
-				"description": "Scenario manifests and unit identity, kind, and lifecycle facts to summarize."
+				"description": "Supplies scenario manifests and unit identity, kind, and status facts for the report. The calculation reads scenario ids, viewport ids and sizes, scenario unit ids, state coverage labels, and unit id/kind/status; it reports only active uncovered units while counting retired uncovered units separately.",
+				"examples": [
+					{
+						"scenarios": [],
+						"units": [
+							{
+								"id": "reports.component.evidence-grid",
+								"kind": "component",
+								"status": "active"
+							},
+							{
+								"id": "reports.page.overview",
+								"kind": "page",
+								"status": "retired"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "renderScenarioHealth.health",
 				"type": "ScenarioHealth",
 				"required": true,
-				"description": "The report produced by scenarioHealth."
+				"description": "Supplies the report produced by `scenarioHealth` for human-readable formatting. The renderer omits individual uncovered unit ids and prints counts and package.kind totals instead.",
+				"examples": [
+					{
+						"scenarios": 0,
+						"viewports": {
+							"known": ["desktop", "tablet", "mobile"],
+							"unknown": [],
+							"conflicts": [],
+							"offPreset": []
+						},
+						"coverage": {
+							"required": 0,
+							"missing": 0,
+							"inapplicable": 0
+						},
+						"noScenario": {
+							"total": 1,
+							"retired": 1,
+							"counts": {
+								"components": 1,
+								"pages": 0,
+								"other": 0
+							},
+							"components": ["reports.component.evidence-grid"],
+							"pages": [],
+							"other": [],
+							"byPrefix": {
+								"reports.component": 1
+							}
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "documentedViewports",
 				"type": "string[]",
-				"description": "Viewport ids promised by documentation: desktop, tablet, and mobile."
+				"description": "Provides the documented viewport ids used to classify viewport ids as known or unknown. The initial values are desktop, tablet, and mobile; the exported array is mutable at runtime.",
+				"examples": [
+					["desktop", "tablet", "mobile"]
+				]
 			},
 			{
 				"name": "scenarioHealth",
 				"type": "ScenarioHealth",
-				"description": "Counts scenarios, viewport ids and conflicting sizes, state coverage classifications, and active or retired units absent from all scenarios."
+				"description": "Returns the report-only summary used by the CLI display. It counts state coverage and uncovered active units and reports unknown, conflicting, and off-preset viewports without changing scenario or check results.",
+				"examples": [
+					{
+						"scenarios": 0,
+						"viewports": {
+							"known": ["desktop", "tablet", "mobile"],
+							"unknown": [],
+							"conflicts": [],
+							"offPreset": []
+						},
+						"coverage": {
+							"required": 0,
+							"missing": 0,
+							"inapplicable": 0
+						},
+						"noScenario": {
+							"total": 1,
+							"retired": 1,
+							"counts": {
+								"components": 1,
+								"pages": 0,
+								"other": 0
+							},
+							"components": ["reports.component.evidence-grid"],
+							"pages": [],
+							"other": [],
+							"byPrefix": {
+								"reports.component": 1
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "renderScenarioHealth",
 				"type": "string[]",
-				"description": "Human-readable report lines; unit ids are omitted in favor of the command’s JSON output."
+				"description": "Formats the summary as human-readable lines for CLI display. It prints viewport and coverage details and uncovered-unit counts by package.kind, while omitting individual uncovered unit ids.",
+				"examples": [
+					[
+						"Report only, nothing here changes the result of this check:",
+						"Viewport ids outside desktop|tablet|mobile: 0",
+						"Warning (canonical presets desktop 1440x900, tablet 920x800, mobile 390x844): 0 scenario viewports use another size.",
+						"Viewport ids used at more than one size: 0",
+						"State coverage: 0 required, 0 missing, 0 inapplicable (field `coverage` of each state).",
+						"Active units in no scenario: 1 (components 1, pages 0, other 0); retired units outside any scenario: 1.",
+						"  reports.component: 1",
+						"Run `harness scenarios check --json` for the unit ids."
+					]
+				]
 			}
 		],
 		"errors": [],
@@ -67,14 +161,62 @@
 						"name": "scenarioHealth.input",
 						"type": "ScenarioHealthInput",
 						"required": true,
-						"description": "Scenario manifests and unit identity, kind, and lifecycle facts to summarize."
+						"description": "Supplies scenario manifests and unit identity, kind, and status facts for the report. The calculation reads scenario ids, viewport ids and sizes, scenario unit ids, state coverage labels, and unit id/kind/status; it reports only active uncovered units while counting retired uncovered units separately.",
+						"examples": [
+							{
+								"scenarios": [],
+								"units": [
+									{
+										"id": "reports.component.evidence-grid",
+										"kind": "component",
+										"status": "active"
+									},
+									{
+										"id": "reports.page.overview",
+										"kind": "page",
+										"status": "retired"
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scenarioHealth",
 						"type": "ScenarioHealth",
-						"description": "Counts scenarios, viewport ids and conflicting sizes, state coverage classifications, and active or retired units absent from all scenarios."
+						"description": "Returns the report-only summary used by the CLI display. It counts state coverage and uncovered active units and reports unknown, conflicting, and off-preset viewports without changing scenario or check results.",
+						"examples": [
+							{
+								"scenarios": 0,
+								"viewports": {
+									"known": ["desktop", "tablet", "mobile"],
+									"unknown": [],
+									"conflicts": [],
+									"offPreset": []
+								},
+								"coverage": {
+									"required": 0,
+									"missing": 0,
+									"inapplicable": 0
+								},
+								"noScenario": {
+									"total": 1,
+									"retired": 1,
+									"counts": {
+										"components": 1,
+										"pages": 0,
+										"other": 0
+									},
+									"components": ["reports.component.evidence-grid"],
+									"pages": [],
+									"other": [],
+									"byPrefix": {
+										"reports.component": 1
+									}
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -87,14 +229,57 @@
 						"name": "renderScenarioHealth.health",
 						"type": "ScenarioHealth",
 						"required": true,
-						"description": "The report produced by scenarioHealth."
+						"description": "Supplies the report produced by `scenarioHealth` for human-readable formatting. The renderer omits individual uncovered unit ids and prints counts and package.kind totals instead.",
+						"examples": [
+							{
+								"scenarios": 0,
+								"viewports": {
+									"known": ["desktop", "tablet", "mobile"],
+									"unknown": [],
+									"conflicts": [],
+									"offPreset": []
+								},
+								"coverage": {
+									"required": 0,
+									"missing": 0,
+									"inapplicable": 0
+								},
+								"noScenario": {
+									"total": 1,
+									"retired": 1,
+									"counts": {
+										"components": 1,
+										"pages": 0,
+										"other": 0
+									},
+									"components": ["reports.component.evidence-grid"],
+									"pages": [],
+									"other": [],
+									"byPrefix": {
+										"reports.component": 1
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderScenarioHealth",
 						"type": "string[]",
-						"description": "Human-readable report lines; unit ids are omitted in favor of the command’s JSON output."
+						"description": "Formats the summary as human-readable lines for CLI display. It prints viewport and coverage details and uncovered-unit counts by package.kind, while omitting individual uncovered unit ids.",
+						"examples": [
+							[
+								"Report only, nothing here changes the result of this check:",
+								"Viewport ids outside desktop|tablet|mobile: 0",
+								"Warning (canonical presets desktop 1440x900, tablet 920x800, mobile 390x844): 0 scenario viewports use another size.",
+								"Viewport ids used at more than one size: 0",
+								"State coverage: 0 required, 0 missing, 0 inapplicable (field `coverage` of each state).",
+								"Active units in no scenario: 1 (components 1, pages 0, other 0); retired units outside any scenario: 1.",
+								"  reports.component: 1",
+								"Run `harness scenarios check --json` for the unit ids."
+							]
+						]
 					}
 				],
 				"errors": [],
