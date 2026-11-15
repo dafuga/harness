@@ -1,3 +1,4 @@
+import type { VerificationRecord } from '../../src/core/verification-evidence/verificationTypes';
 import { expect, vi } from 'vitest';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -28,16 +29,7 @@ async function assertAttachmentCase(
 	const rejected = ['late', 'old'].includes(standing);
 	const resolves = ['full', 'scoped'].includes(standing);
 
-	const f = await frameFlagFixture(root, git);
-	const original = await attachedFrameFixture({
-		root,
-		git,
-		reference: f.reference,
-		video: f.original,
-		standing: 'full'
-	});
-	const flags = new FrameFlagService(root);
-	const flag = await flags.flag({ clip: original, frameNumber: 2 });
+	const { f, original, flag, flags } = await originalFlagFixture({ root, git });
 	const { record, files } = frameRecordFixture({
 		root,
 		git,
@@ -71,4 +63,40 @@ async function assertAttachmentCase(
 	expect(await new HistoryNoteRepository(root).text(f.reference.revision)).toContain(record.id);
 	if (rejected)
 		expect((await flags.list(original.unit)).every((item) => item.status === 'active')).toBe(true);
+}
+
+async function assertOldProof(root: string, record: VerificationRecord, pending: boolean) {
+	const report = await new VerificationCheckService(root).check(record.source.commit, {
+		record,
+		directory: root
+	});
+	expect(report.status).toBe(pending ? 'failed' : 'passed');
+	if (pending) expect(report.problems.join(' ')).toMatch(/pending.*flag|flag.*pending/i);
+}
+
+async function originalFlagFixture({
+	root,
+	git
+}: Parameters<Parameters<typeof withTempRepo>[0]>[0]) {
+	const f = await frameFlagFixture(root, git);
+	const original = await attachedFrameFixture({
+		root,
+		git,
+		reference: f.reference,
+		video: f.original,
+		standing: 'full'
+	});
+	const prior = frameRecordFixture({
+		root,
+		git,
+		reference: f.reference,
+		video: f.original,
+		standing: 'full'
+	}).record;
+	await assertOldProof(root, prior, false);
+	const flags = new FrameFlagService(root);
+	const flag = await flags.flag({ clip: original, frameNumber: 2 });
+	await assertOldProof(root, prior, true);
+	expect(await flags.frame(original.unit, flag.id)).toBeInstanceOf(Buffer);
+	return { f, original, flag, flags };
 }
