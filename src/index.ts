@@ -193,3 +193,4 @@ export { FrameFlagService } from './services/verification-evidence/FrameFlagServ
 export { NativeVideoRecorderService } from './services/verification-evidence/NativeVideoRecorderService';
 export { VideoArchiveService } from './services/verification-evidence/VideoArchiveService';
 export { VideoReferenceService } from './services/verification-evidence/VideoReferenceService';
+export { VideoCaptureService } from './services/verification-evidence/VideoCaptureService';
