@@ -20,59 +20,230 @@
 				"name": "isSnapshot.data",
 				"type": "object | null",
 				"required": true,
-				"description": "A picker response, or null."
+				"description": "The picker response to check, or null. A value is a snapshot only when it is not null and has a 'defaultProvider' property (own or inherited), whatever that property holds; the check never reads the property's value or any other field.",
+				"examples": [
+					{
+						"sessionId": "3f2b9c1e-7a4d-4e8b-9c2f-1a2b3c4d5e6f",
+						"defaultProvider": "openai",
+						"active": {
+							"selection": {
+								"provider": "openai",
+								"model": "gpt-5-codex",
+								"effort": "medium"
+							},
+							"idle": true,
+							"clients": 1,
+							"observedAt": "2026-11-14T09:29:58.000Z"
+						},
+						"request": null,
+						"models": [
+							{
+								"provider": "harness-claude",
+								"model": "claude-sonnet-5-5",
+								"label": "Claude Sonnet 5.5",
+								"efforts": ["low", "medium", "high"],
+								"defaultEffort": "medium",
+								"source": "local-catalog"
+							},
+							{
+								"provider": "openai",
+								"model": "gpt-5-codex",
+								"label": "GPT-5 Codex",
+								"efforts": ["low", "medium", "high"],
+								"defaultEffort": "medium",
+								"source": "local-catalog"
+							}
+						],
+						"controlConnected": true,
+						"message": "Desktop control is connected."
+					},
+					{
+						"sessionId": "3f2b9c1e-7a4d-4e8b-9c2f-1a2b3c4d5e6f",
+						"defaultProvider": "openai",
+						"active": null,
+						"request": {
+							"id": "switch-7c1e0b92",
+							"sessionId": "3f2b9c1e-7a4d-4e8b-9c2f-1a2b3c4d5e6f",
+							"target": {
+								"provider": "openai",
+								"model": "gpt-5-codex",
+								"effort": "medium"
+							},
+							"status": "pending",
+							"createdAt": "2026-11-14T09:30:00.000Z",
+							"reason": "Switched in the model picker."
+						},
+						"models": [
+							{
+								"provider": "openai",
+								"model": "gpt-5-codex",
+								"label": "GPT-5 Codex",
+								"efforts": ["low", "medium", "high"],
+								"defaultEffort": "medium",
+								"source": "local-catalog"
+							}
+						],
+						"controlConnected": false,
+						"message": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+					},
+					null
+				]
 			},
 			{
 				"name": "readSessions.data",
 				"type": "object | null",
 				"required": true,
-				"description": "A response to a request for queued sessions, or null."
+				"description": "A response to a queued-sessions request, or null. Only its 'sessions' property is read, and a null input, a missing property or a non-array value all give null.",
+				"examples": [
+					{
+						"sessions": [
+							{
+								"id": "switch-7c1e0b92",
+								"sessionId": "3f2b9c1e-7a4d-4e8b-9c2f-1a2b3c4d5e6f",
+								"target": {
+									"provider": "openai",
+									"model": "gpt-5-codex",
+									"effort": "medium"
+								},
+								"status": "pending",
+								"createdAt": "2026-11-14T09:30:00.000Z",
+								"reason": "Switched in the model picker."
+							}
+						]
+					},
+					{
+						"sessions": []
+					},
+					null
+				]
 			},
 			{
 				"name": "selectionLabel.models",
 				"type": "PickerModel[]",
 				"required": true,
-				"description": "The catalog models."
+				"description": "The catalog of PickerModel entries to search. Only the first entry whose provider and model both equal the target's supplies the label, so later duplicates are ignored, and an empty array is valid (the model id is then the label).",
+				"examples": [
+					[
+						{
+							"provider": "harness-claude",
+							"model": "claude-sonnet-5-5",
+							"label": "Claude Sonnet 5.5",
+							"efforts": ["low", "medium", "high"],
+							"defaultEffort": "medium",
+							"source": "local-catalog"
+						},
+						{
+							"provider": "openai",
+							"model": "gpt-5-codex",
+							"label": "GPT-5 Codex",
+							"efforts": ["low", "medium", "high"],
+							"defaultEffort": "medium",
+							"source": "local-catalog"
+						}
+					],
+					[
+						{
+							"provider": "openai",
+							"model": "gpt-5-codex",
+							"label": "GPT-5 Codex",
+							"efforts": ["low", "medium", "high"],
+							"defaultEffort": "medium",
+							"source": "local-catalog"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "selectionLabel.target",
 				"type": "ProviderSelection",
 				"required": true,
-				"description": "The provider and model of a queued switch."
+				"description": "The selection of the queued switch to label. Only its provider and model are compared with the catalog, so its effort never changes the label.",
+				"examples": [
+					{
+						"provider": "openai",
+						"model": "gpt-5-codex",
+						"effort": "medium"
+					},
+					{
+						"provider": "harness-claude",
+						"model": "claude-sonnet-5-5",
+						"effort": "high"
+					},
+					{
+						"provider": "openai",
+						"model": "gpt-4.1",
+						"effort": "low"
+					}
+				]
 			},
 			{
 				"name": "failureText.cause",
 				"type": "ThrownValue",
 				"required": true,
-				"description": "Whatever was thrown."
+				"description": "Whatever was thrown or rejected (ThrownValue is unknown). Only an Error instance contributes its message; any other value, including a string, null or a plain object with a message property, yields the fallback.",
+				"examples": [
+					"Request timed out",
+					null,
+					{
+						"code": "ETIMEDOUT",
+						"message": "Request timed out"
+					}
+				]
 			},
 			{
 				"name": "failureText.fallback",
 				"type": "string",
 				"required": true,
-				"description": "The text to use when the thrown value is not an Error."
+				"description": "The text returned when the cause is not an Error instance, and it is returned unchanged. An Error's message wins even when it is empty, so the fallback applies only to values that are not Error instances.",
+				"examples": ["Model switch failed.", "Could not load queued switches.", "Unknown error."]
 			}
 		],
 		"outputs": [
 			{
 				"name": "isSnapshot",
 				"type": "data is PickerSnapshot",
-				"description": "True when the response names the default provider and so is a picker snapshot."
+				"description": "True when the response is not null and has a 'defaultProvider' property, which narrows the argument to PickerSnapshot; false otherwise, including for null. It never inspects the property's value or any other field.",
+				"examples": [true, false]
 			},
 			{
 				"name": "readSessions",
 				"type": "SwitchRequest[] | null",
-				"description": "The queued sessions, or null when the response holds no list."
+				"description": "The response's 'sessions' array, returned unchanged including when it is empty, or null when the response holds no array there. A null result means no list was present, while [] means a list with no queued sessions.",
+				"examples": [
+					[
+						{
+							"id": "switch-7c1e0b92",
+							"sessionId": "3f2b9c1e-7a4d-4e8b-9c2f-1a2b3c4d5e6f",
+							"target": {
+								"provider": "openai",
+								"model": "gpt-5-codex",
+								"effort": "medium"
+							},
+							"status": "pending",
+							"createdAt": "2026-11-14T09:30:00.000Z",
+							"reason": "Switched in the model picker."
+						}
+					],
+					[],
+					null
+				]
 			},
 			{
 				"name": "selectionLabel",
 				"type": "string",
-				"description": "The catalog label of the model, or the model id when the catalog does not list it."
+				"description": "The 'label' of the first catalog entry whose provider and model both equal the target's, or the target's model id when no entry matches or that entry's label is null or undefined. Because the id fallback is the raw model string, a result such as 'gpt-4.1' is an id rather than a display name.",
+				"examples": ["Claude Sonnet 5.5", "GPT-5 Codex", "gpt-4.1"]
 			},
 			{
 				"name": "failureText",
 				"type": "string",
-				"description": "The error message, or the fallback."
+				"description": "The message of the cause when it is an Error instance, returned even when empty, otherwise the fallback text unchanged. A message is never read from a value that is not an Error instance.",
+				"examples": [
+					"Request timed out",
+					"Model switch failed.",
+					"Desktop control connection unavailable. Requests stay pending; no provider settings change."
+				]
 			}
 		],
 		"errors": [],
@@ -85,18 +256,86 @@
 						"name": "isSnapshot.data",
 						"type": "object | null",
 						"required": true,
-						"description": "A picker response, or null."
+						"description": "The picker response to check, or null. A value is a snapshot only when it is not null and has a 'defaultProvider' property (own or inherited), whatever that property holds; the check never reads the property's value or any other field.",
+						"examples": [
+							{
+								"sessionId": "3f2b9c1e-7a4d-4e8b-9c2f-1a2b3c4d5e6f",
+								"defaultProvider": "openai",
+								"active": {
+									"selection": {
+										"provider": "openai",
+										"model": "gpt-5-codex",
+										"effort": "medium"
+									},
+									"idle": true,
+									"clients": 1,
+									"observedAt": "2026-11-14T09:29:58.000Z"
+								},
+								"request": null,
+								"models": [
+									{
+										"provider": "harness-claude",
+										"model": "claude-sonnet-5-5",
+										"label": "Claude Sonnet 5.5",
+										"efforts": ["low", "medium", "high"],
+										"defaultEffort": "medium",
+										"source": "local-catalog"
+									},
+									{
+										"provider": "openai",
+										"model": "gpt-5-codex",
+										"label": "GPT-5 Codex",
+										"efforts": ["low", "medium", "high"],
+										"defaultEffort": "medium",
+										"source": "local-catalog"
+									}
+								],
+								"controlConnected": true,
+								"message": "Desktop control is connected."
+							},
+							{
+								"sessionId": "3f2b9c1e-7a4d-4e8b-9c2f-1a2b3c4d5e6f",
+								"defaultProvider": "openai",
+								"active": null,
+								"request": {
+									"id": "switch-7c1e0b92",
+									"sessionId": "3f2b9c1e-7a4d-4e8b-9c2f-1a2b3c4d5e6f",
+									"target": {
+										"provider": "openai",
+										"model": "gpt-5-codex",
+										"effort": "medium"
+									},
+									"status": "pending",
+									"createdAt": "2026-11-14T09:30:00.000Z",
+									"reason": "Switched in the model picker."
+								},
+								"models": [
+									{
+										"provider": "openai",
+										"model": "gpt-5-codex",
+										"label": "GPT-5 Codex",
+										"efforts": ["low", "medium", "high"],
+										"defaultEffort": "medium",
+										"source": "local-catalog"
+									}
+								],
+								"controlConnected": false,
+								"message": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+							},
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isSnapshot",
 						"type": "data is PickerSnapshot",
-						"description": "True when the response names the default provider and so is a picker snapshot."
+						"description": "True when the response is not null and has a 'defaultProvider' property, which narrows the argument to PickerSnapshot; false otherwise, including for null. It never inspects the property's value or any other field.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readSessions",
@@ -105,14 +344,54 @@
 						"name": "readSessions.data",
 						"type": "object | null",
 						"required": true,
-						"description": "A response to a request for queued sessions, or null."
+						"description": "A response to a queued-sessions request, or null. Only its 'sessions' property is read, and a null input, a missing property or a non-array value all give null.",
+						"examples": [
+							{
+								"sessions": [
+									{
+										"id": "switch-7c1e0b92",
+										"sessionId": "3f2b9c1e-7a4d-4e8b-9c2f-1a2b3c4d5e6f",
+										"target": {
+											"provider": "openai",
+											"model": "gpt-5-codex",
+											"effort": "medium"
+										},
+										"status": "pending",
+										"createdAt": "2026-11-14T09:30:00.000Z",
+										"reason": "Switched in the model picker."
+									}
+								]
+							},
+							{
+								"sessions": []
+							},
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readSessions",
 						"type": "SwitchRequest[] | null",
-						"description": "The queued sessions, or null when the response holds no list."
+						"description": "The response's 'sessions' array, returned unchanged including when it is empty, or null when the response holds no array there. A null result means no list was present, while [] means a list with no queued sessions.",
+						"examples": [
+							[
+								{
+									"id": "switch-7c1e0b92",
+									"sessionId": "3f2b9c1e-7a4d-4e8b-9c2f-1a2b3c4d5e6f",
+									"target": {
+										"provider": "openai",
+										"model": "gpt-5-codex",
+										"effort": "medium"
+									},
+									"status": "pending",
+									"createdAt": "2026-11-14T09:30:00.000Z",
+									"reason": "Switched in the model picker."
+								}
+							],
+							[],
+							null
+						]
 					}
 				],
 				"errors": [],
@@ -125,20 +404,69 @@
 						"name": "selectionLabel.models",
 						"type": "PickerModel[]",
 						"required": true,
-						"description": "The catalog models."
+						"description": "The catalog of PickerModel entries to search. Only the first entry whose provider and model both equal the target's supplies the label, so later duplicates are ignored, and an empty array is valid (the model id is then the label).",
+						"examples": [
+							[
+								{
+									"provider": "harness-claude",
+									"model": "claude-sonnet-5-5",
+									"label": "Claude Sonnet 5.5",
+									"efforts": ["low", "medium", "high"],
+									"defaultEffort": "medium",
+									"source": "local-catalog"
+								},
+								{
+									"provider": "openai",
+									"model": "gpt-5-codex",
+									"label": "GPT-5 Codex",
+									"efforts": ["low", "medium", "high"],
+									"defaultEffort": "medium",
+									"source": "local-catalog"
+								}
+							],
+							[
+								{
+									"provider": "openai",
+									"model": "gpt-5-codex",
+									"label": "GPT-5 Codex",
+									"efforts": ["low", "medium", "high"],
+									"defaultEffort": "medium",
+									"source": "local-catalog"
+								}
+							],
+							[]
+						]
 					},
 					{
 						"name": "selectionLabel.target",
 						"type": "ProviderSelection",
 						"required": true,
-						"description": "The provider and model of a queued switch."
+						"description": "The selection of the queued switch to label. Only its provider and model are compared with the catalog, so its effort never changes the label.",
+						"examples": [
+							{
+								"provider": "openai",
+								"model": "gpt-5-codex",
+								"effort": "medium"
+							},
+							{
+								"provider": "harness-claude",
+								"model": "claude-sonnet-5-5",
+								"effort": "high"
+							},
+							{
+								"provider": "openai",
+								"model": "gpt-4.1",
+								"effort": "low"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "selectionLabel",
 						"type": "string",
-						"description": "The catalog label of the model, or the model id when the catalog does not list it."
+						"description": "The 'label' of the first catalog entry whose provider and model both equal the target's, or the target's model id when no entry matches or that entry's label is null or undefined. Because the id fallback is the raw model string, a result such as 'gpt-4.1' is an id rather than a display name.",
+						"examples": ["Claude Sonnet 5.5", "GPT-5 Codex", "gpt-4.1"]
 					}
 				],
 				"errors": [],
@@ -151,24 +479,42 @@
 						"name": "failureText.cause",
 						"type": "ThrownValue",
 						"required": true,
-						"description": "Whatever was thrown."
+						"description": "Whatever was thrown or rejected (ThrownValue is unknown). Only an Error instance contributes its message; any other value, including a string, null or a plain object with a message property, yields the fallback.",
+						"examples": [
+							"Request timed out",
+							null,
+							{
+								"code": "ETIMEDOUT",
+								"message": "Request timed out"
+							}
+						]
 					},
 					{
 						"name": "failureText.fallback",
 						"type": "string",
 						"required": true,
-						"description": "The text to use when the thrown value is not an Error."
+						"description": "The text returned when the cause is not an Error instance, and it is returned unchanged. An Error's message wins even when it is empty, so the fallback applies only to values that are not Error instances.",
+						"examples": [
+							"Model switch failed.",
+							"Could not load queued switches.",
+							"Unknown error."
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "failureText",
 						"type": "string",
-						"description": "The error message, or the fallback."
+						"description": "The message of the cause when it is an Error instance, returned even when empty, otherwise the fallback text unchanged. A message is never read from a value that is not an Error instance.",
+						"examples": [
+							"Request timed out",
+							"Model switch failed.",
+							"Desktop control connection unavailable. Requests stay pending; no provider settings change."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
