@@ -31,102 +31,187 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "r2ScreenshotConfig.source",
 				"type": "NodeJS.ProcessEnv",
-				"required": true
+				"required": true,
+				"description": "Environment-variable map used as the primary source for R2 settings. Account ID, bucket, and credentials fall back to localFile; the endpoint is read only from this map.",
+				"examples": [
+					{
+						"PROJECT_REPORTS_R2_ACCOUNT_ID": "r2-account",
+						"PROJECT_REPORTS_R2_BUCKET": "project-reports",
+						"PROJECT_REPORTS_R2_ACCESS_KEY_ID": "access-key-id",
+						"PROJECT_REPORTS_R2_SECRET_ACCESS_KEY": "secret-access-key",
+						"PROJECT_REPORTS_R2_ENDPOINT": "http://127.0.0.1:9000"
+					}
+				]
 			},
 			{
 				"name": "r2ScreenshotConfig.localFile",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional file path whose matching R2 account, bucket, and credential assignments supply fallback values; a missing file is ignored only for ENOENT, while other read errors propagate. Defaults to undefined, which skips file reading.",
+				"examples": ["packages/reports/.env"]
 			},
 			{
 				"name": "r2ObjectKey.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report identifier passed to safeId to form the runs path segment in an object key. This adapter does not otherwise validate it.",
+				"examples": ["report-123"]
 			},
 			{
 				"name": "r2ObjectKey.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Screenshot filename used as the key's final path segment. It must be exactly 64 lowercase hexadecimal characters followed by .png, .jpg, or .webp, or key creation throws.",
+				"examples": ["0000000000000000000000000000000000000000000000000000000000000000.png"]
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.constructor.config",
 				"type": "R2ScreenshotStoreAdapterConfig",
-				"required": true
+				"required": true,
+				"description": "R2 account ID, bucket, access key, secret key, and optional endpoint used to configure the adapter. If endpoint is omitted, the client uses the account-derived Cloudflare R2 endpoint.",
+				"examples": [
+					{
+						"accountId": "r2-account",
+						"bucket": "project-reports",
+						"accessKeyId": "access-key-id",
+						"secretAccessKey": "secret-access-key",
+						"endpoint": "http://127.0.0.1:9000"
+					}
+				]
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.constructor.client",
 				"type": "S3Client",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional S3Client used to send screenshot requests. Defaults to undefined, which creates a client with region auto, path-style requests, the configured or account-derived endpoint, and the supplied credentials."
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.put.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report identifier passed to safeId to form the runs path segment in the screenshot object key. This adapter does not otherwise validate it.",
+				"examples": ["report-123"]
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.put.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Screenshot filename used as the key's final path segment. It must be exactly 64 lowercase hexadecimal characters followed by .png, .jpg, or .webp, or the put promise rejects.",
+				"examples": ["0000000000000000000000000000000000000000000000000000000000000000.png"]
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.put.bytes",
 				"type": "Buffer",
-				"required": true
+				"required": true,
+				"description": "Binary screenshot contents sent as the PutObjectCommand body. The adapter forwards the Buffer without inspecting its contents."
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.put.mime",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Content type sent as the PutObjectCommand ContentType. The adapter forwards this string without validating it.",
+				"examples": ["image/png", "image/jpeg", "image/webp"]
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.get.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report identifier passed to safeId to form the runs path segment in the screenshot object key. This adapter does not otherwise validate it.",
+				"examples": ["report-123"]
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.get.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Screenshot filename used as the key's final path segment. It must be exactly 64 lowercase hexadecimal characters followed by .png, .jpg, or .webp, or the get promise rejects.",
+				"examples": ["0000000000000000000000000000000000000000000000000000000000000000.png"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "screenshotObjectPrefix",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Constant prefix prepended to every screenshot object key produced by this adapter.",
+				"examples": ["uploaded-screenshots/"]
 			},
 			{
 				"name": "r2ScreenshotConfig",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolved R2 configuration returned by the helper. Process values take precedence over local-file values, missing account, bucket, or credential values become empty strings, and endpoint comes only from the process environment.",
+				"examples": [
+					{
+						"accountId": "r2-account",
+						"bucket": "project-reports",
+						"accessKeyId": "access-key-id",
+						"secretAccessKey": "secret-access-key",
+						"endpoint": "http://127.0.0.1:9000"
+					}
+				]
 			},
 			{
 				"name": "r2ObjectKey",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "R2 key formed from uploaded-screenshots/runs/, safeId(reportId), /assets/, and the validated screenshot filename. The filename must match the 64-character lowercase hexadecimal pattern with a .png, .jpg, or .webp suffix.",
+				"examples": [
+					"uploaded-screenshots/runs/report-123/assets/0000000000000000000000000000000000000000000000000000000000000000.png"
+				]
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.fromEnvironment",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "New R2ScreenshotStoreAdapter built from process.env, with PROJECT_REPORTS_CONFIG_FILE read unless NODE_ENV is test. It requires account ID, bucket, access key, and secret key, and accepts an endpoint override only when it matches http://127.0.0.1:<port>."
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.put",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Promise that resolves after the PutObjectCommand succeeds and has no resolved value. The command sends the configured bucket, generated key, provided Buffer, and MIME string."
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.get",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Promise that resolves to a Buffer containing the response body bytes from GetObjectCommand. It rejects if the request fails or the response has no body."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by r2ObjectKey when the filename is not 64 lowercase hexadecimal characters followed by .png, .jpg, or .webp; its message is Invalid R2 image name."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by fromEnvironment when account ID, bucket, access key, or secret key is missing; its message is Cloudflare R2 screenshot storage is not configured."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by fromEnvironment when an endpoint override does not match http://127.0.0.1:<port>; its message is R2 endpoint override must be a local test server."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by get when the R2 response has no body; its message is R2 image has no body."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Non-ENOENT errors from reading the optional local configuration file propagate unchanged; ENOENT is ignored."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejections from S3Client.send and response-body byte conversion propagate unchanged from the adapter."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "r2ScreenshotConfig",
@@ -134,22 +219,51 @@
 					{
 						"name": "r2ScreenshotConfig.source",
 						"type": "NodeJS.ProcessEnv",
-						"required": true
+						"required": true,
+						"description": "Environment-variable map used as the primary source for R2 settings. Account ID, bucket, and credentials fall back to localFile; the endpoint is read only from this map.",
+						"examples": [
+							{
+								"PROJECT_REPORTS_R2_ACCOUNT_ID": "r2-account",
+								"PROJECT_REPORTS_R2_BUCKET": "project-reports",
+								"PROJECT_REPORTS_R2_ACCESS_KEY_ID": "access-key-id",
+								"PROJECT_REPORTS_R2_SECRET_ACCESS_KEY": "secret-access-key",
+								"PROJECT_REPORTS_R2_ENDPOINT": "http://127.0.0.1:9000"
+							}
+						]
 					},
 					{
 						"name": "r2ScreenshotConfig.localFile",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional file path whose matching R2 account, bucket, and credential assignments supply fallback values; a missing file is ignored only for ENOENT, while other read errors propagate. Defaults to undefined, which skips file reading.",
+						"examples": ["packages/reports/.env"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "r2ScreenshotConfig",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolved R2 configuration returned by the helper. Process values take precedence over local-file values, missing account, bucket, or credential values become empty strings, and endpoint comes only from the process environment.",
+						"examples": [
+							{
+								"accountId": "r2-account",
+								"bucket": "project-reports",
+								"accessKeyId": "access-key-id",
+								"secretAccessKey": "secret-access-key",
+								"endpoint": "http://127.0.0.1:9000"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "If localFile is supplied, a readFileSync error other than ENOENT propagates; ENOENT is ignored."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "r2ObjectKey",
@@ -157,27 +271,36 @@
 					{
 						"name": "r2ObjectKey.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report identifier passed to safeId to form the runs path segment in an object key. This adapter does not otherwise validate it.",
+						"examples": ["report-123"]
 					},
 					{
 						"name": "r2ObjectKey.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Screenshot filename used as the key's final path segment. It must be exactly 64 lowercase hexadecimal characters followed by .png, .jpg, or .webp, or key creation throws.",
+						"examples": ["0000000000000000000000000000000000000000000000000000000000000000.png"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "r2ObjectKey",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "R2 key formed from uploaded-screenshots/runs/, safeId(reportId), /assets/, and the validated screenshot filename. The filename must match the 64-character lowercase hexadecimal pattern with a .png, .jpg, or .webp suffix.",
+						"examples": [
+							"uploaded-screenshots/runs/report-123/assets/0000000000000000000000000000000000000000000000000000000000000000.png"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when file is not 64 lowercase hexadecimal characters followed by .png, .jpg, or .webp; the message is Invalid R2 image name."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.fromEnvironment",
@@ -185,16 +308,23 @@
 				"outputs": [
 					{
 						"name": "R2ScreenshotStoreAdapter.fromEnvironment",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "New R2ScreenshotStoreAdapter built from process.env, with PROJECT_REPORTS_CONFIG_FILE read unless NODE_ENV is test. It requires account ID, bucket, access key, and secret key, and accepts an endpoint override only when it matches http://127.0.0.1:<port>."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when account ID, bucket, access key, or secret key is missing; the message is Cloudflare R2 screenshot storage is not configured."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when an endpoint override does not match http://127.0.0.1:<port>; the message is R2 endpoint override must be a local test server."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.put",
@@ -202,32 +332,51 @@
 					{
 						"name": "R2ScreenshotStoreAdapter.put.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report identifier passed to safeId to form the runs path segment in the screenshot object key. This adapter does not otherwise validate it.",
+						"examples": ["report-123"]
 					},
 					{
 						"name": "R2ScreenshotStoreAdapter.put.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Screenshot filename used as the key's final path segment. It must be exactly 64 lowercase hexadecimal characters followed by .png, .jpg, or .webp, or the put promise rejects.",
+						"examples": ["0000000000000000000000000000000000000000000000000000000000000000.png"]
 					},
 					{
 						"name": "R2ScreenshotStoreAdapter.put.bytes",
 						"type": "Buffer",
-						"required": true
+						"required": true,
+						"description": "Binary screenshot contents sent as the PutObjectCommand body. The adapter forwards the Buffer without inspecting its contents."
 					},
 					{
 						"name": "R2ScreenshotStoreAdapter.put.mime",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Content type sent as the PutObjectCommand ContentType. The adapter forwards this string without validating it.",
+						"examples": ["image/png", "image/jpeg", "image/webp"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "R2ScreenshotStoreAdapter.put",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Promise that resolves after the PutObjectCommand succeeds and has no resolved value. The command sends the configured bucket, generated key, provided Buffer, and MIME string."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The promise rejects with Invalid R2 image name when the filename fails r2ObjectKey validation."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A rejection from S3Client.send propagates unchanged if the R2 put request fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "R2ScreenshotStoreAdapter.get",
@@ -235,27 +384,43 @@
 					{
 						"name": "R2ScreenshotStoreAdapter.get.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report identifier passed to safeId to form the runs path segment in the screenshot object key. This adapter does not otherwise validate it.",
+						"examples": ["report-123"]
 					},
 					{
 						"name": "R2ScreenshotStoreAdapter.get.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Screenshot filename used as the key's final path segment. It must be exactly 64 lowercase hexadecimal characters followed by .png, .jpg, or .webp, or the get promise rejects.",
+						"examples": ["0000000000000000000000000000000000000000000000000000000000000000.png"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "R2ScreenshotStoreAdapter.get",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Promise that resolves to a Buffer containing the response body bytes from GetObjectCommand. It rejects if the request fails or the response has no body."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The promise rejects with Invalid R2 image name when the filename fails r2ObjectKey validation."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the R2 response has no body; the message is R2 image has no body."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejections from S3Client.send or transformToByteArray propagate unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -265,22 +430,35 @@
 					{
 						"name": "R2ScreenshotStoreAdapter.constructor.config",
 						"type": "R2ScreenshotStoreAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "R2 account ID, bucket, access key, secret key, and optional endpoint used to configure the adapter. If endpoint is omitted, the client uses the account-derived Cloudflare R2 endpoint.",
+						"examples": [
+							{
+								"accountId": "r2-account",
+								"bucket": "project-reports",
+								"accessKeyId": "access-key-id",
+								"secretAccessKey": "secret-access-key",
+								"endpoint": "http://127.0.0.1:9000"
+							}
+						]
 					},
 					{
 						"name": "R2ScreenshotStoreAdapter.constructor.client",
 						"type": "S3Client",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional S3Client used to send screenshot requests. Defaults to undefined, which creates a client with region auto, path-style requests, the configured or account-derived endpoint, and the supplied credentials."
 					}
 				],
 				"outputs": [
 					{
 						"name": "R2ScreenshotStoreAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "New R2ScreenshotStoreAdapter instance configured with the supplied client or a newly created S3Client. The generated client uses region auto and forcePathStyle true."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
