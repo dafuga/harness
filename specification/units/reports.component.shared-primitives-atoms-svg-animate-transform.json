@@ -29,17 +29,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native animateTransform element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered inside the native animateTransform element when provided; if absent, the element has no rendered child content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgAnimateTransform",
 				"type": "markup",
-				"description": "The actual native animateTransform element, with forwarded attributes and content and no additional wrapper."
+				"description": "The component renders a native animateTransform element and spreads all remaining props onto it; it renders children only when supplied and adds no wrapper."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
