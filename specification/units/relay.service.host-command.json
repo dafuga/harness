@@ -23,47 +23,59 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostCommandService.constructor.sockets",
 				"type": "HostSocketsAdapter",
-				"required": true
+				"required": true,
+				"description": "The adapter the service uses to find a connection by its connectionId, read that connection's attachment, and send frames. A packet or device-drop frame only reaches a connection whose attachment has role 'device' and the deviceId the frame names, and otherwise the frame is ignored."
 			},
 			{
 				"name": "HostCommandService.constructor.link",
 				"type": "HostLinkService",
-				"required": true
+				"required": true,
+				"description": "The link service that ends a socket with a close code. It ends the frame's own socket with relayCloseCodes.protocol (4400) when the text is not a valid command, and it ends the target connection of a device-drop frame with that frame's code."
 			},
 			{
 				"name": "HostCommandService.constructor.offers",
 				"type": "PairingOfferService",
-				"required": true
+				"required": true,
+				"description": "The pairing service that carries out the pairing-open, pairing-approve, pairing-deny and pairing-close commands. Its result, a RelayErrorCode or nothing, becomes the ack: a code gives ok: false with that error, and nothing gives ok: true."
 			},
 			{
 				"name": "HostCommandService.constructor.revocation",
 				"type": "DeviceRevocationService",
-				"required": true
+				"required": true,
+				"description": "The service that revokes a device for a device-revoke command, called with that command's deviceId and for no other command. Its return value is not read, so the device-revoke ack is ok: true once revoke returns without throwing."
 			},
 			{
 				"name": "HostCommandService.handle.socket",
 				"type": "WebSocket",
-				"required": true
+				"required": true,
+				"description": "The host's socket that the frame arrived on. It is ended with relayCloseCodes.protocol (4400) when the text is not a valid command, and it receives the 'ack' frame for each acknowledged command; packet and device-drop frames get no ack and only send to or end the connection they name."
 			},
 			{
 				"name": "HostCommandService.handle.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The raw text of one host frame, parsed with JSON.parse and checked by HostCommandValidator.command; a frame that fails either step ends the socket with relayCloseCodes.protocol (4400). Parse and validation failures are caught inside the service and never escape as exceptions.",
+				"examples": [
+					"{\"type\":\"device-revoke\",\"ref\":\"ref-0042\",\"deviceId\":\"3c1f9a52-8d7e-4b10-a6f4-2e9d5b07c813\"}",
+					"{\"type\":\"packet\",\"deviceId\":\"3c1f9a52-8d7e-4b10-a6f4-2e9d5b07c813\",\"connectionId\":\"b7e4d2a1-65f3-4c9e-8a02-19f3c6d4e7b8\",\"packet\":{\"kind\":\"input\",\"seq\":118}}",
+					"{\"type\":\"device-drop\",\"deviceId\":\"3c1f9a52-8d7e-4b10-a6f4-2e9d5b07c813\",\"connectionId\":\"b7e4d2a1-65f3-4c9e-8a02-19f3c6d4e7b8\",\"code\":1000}"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostCommandService.handle",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise resolves with no value once the frame has been processed, ended, or acknowledged, and it rejects only if a collaborator called while handling the frame throws or rejects, because handle has no throw of its own. A failed command is reported as an ack with ok: false, not as a rejection."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "HostCommandService.handle",
@@ -71,22 +83,30 @@
 					{
 						"name": "HostCommandService.handle.socket",
 						"type": "WebSocket",
-						"required": true
+						"required": true,
+						"description": "The host's socket that the frame arrived on. It is ended with relayCloseCodes.protocol (4400) when the text is not a valid command, and it receives the 'ack' frame for each acknowledged command; packet and device-drop frames get no ack and only send to or end the connection they name."
 					},
 					{
 						"name": "HostCommandService.handle.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The raw text of one host frame, parsed with JSON.parse and checked by HostCommandValidator.command; a frame that fails either step ends the socket with relayCloseCodes.protocol (4400). Parse and validation failures are caught inside the service and never escape as exceptions.",
+						"examples": [
+							"{\"type\":\"device-revoke\",\"ref\":\"ref-0042\",\"deviceId\":\"3c1f9a52-8d7e-4b10-a6f4-2e9d5b07c813\"}",
+							"{\"type\":\"packet\",\"deviceId\":\"3c1f9a52-8d7e-4b10-a6f4-2e9d5b07c813\",\"connectionId\":\"b7e4d2a1-65f3-4c9e-8a02-19f3c6d4e7b8\",\"packet\":{\"kind\":\"input\",\"seq\":118}}",
+							"{\"type\":\"device-drop\",\"deviceId\":\"3c1f9a52-8d7e-4b10-a6f4-2e9d5b07c813\",\"connectionId\":\"b7e4d2a1-65f3-4c9e-8a02-19f3c6d4e7b8\",\"code\":1000}"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostCommandService.handle",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise resolves with no value once the frame has been processed, ended, or acknowledged, and it rejects only if a collaborator called while handling the frame throws or rejects, because handle has no throw of its own. A failed command is reported as an ack with ok: false, not as a rejection."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -96,32 +116,37 @@
 					{
 						"name": "HostCommandService.constructor.sockets",
 						"type": "HostSocketsAdapter",
-						"required": true
+						"required": true,
+						"description": "The adapter the service uses to find a connection by its connectionId, read that connection's attachment, and send frames. A packet or device-drop frame only reaches a connection whose attachment has role 'device' and the deviceId the frame names, and otherwise the frame is ignored."
 					},
 					{
 						"name": "HostCommandService.constructor.link",
 						"type": "HostLinkService",
-						"required": true
+						"required": true,
+						"description": "The link service that ends a socket with a close code. It ends the frame's own socket with relayCloseCodes.protocol (4400) when the text is not a valid command, and it ends the target connection of a device-drop frame with that frame's code."
 					},
 					{
 						"name": "HostCommandService.constructor.offers",
 						"type": "PairingOfferService",
-						"required": true
+						"required": true,
+						"description": "The pairing service that carries out the pairing-open, pairing-approve, pairing-deny and pairing-close commands. Its result, a RelayErrorCode or nothing, becomes the ack: a code gives ok: false with that error, and nothing gives ok: true."
 					},
 					{
 						"name": "HostCommandService.constructor.revocation",
 						"type": "DeviceRevocationService",
-						"required": true
+						"required": true,
+						"description": "The service that revokes a device for a device-revoke command, called with that command's deviceId and for no other command. Its return value is not read, so the device-revoke ack is ok: true once revoke returns without throwing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostCommandService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new HostCommandService instance. The constructor body is empty: it stores the four constructor parameters as readonly fields and creates a HostCommandValidator for command checks."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
