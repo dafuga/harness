@@ -18,23 +18,30 @@
 				"name": "indexFiles.directory",
 				"type": "string",
 				"required": true,
-				"description": "Directory containing index.json and the index’s files."
+				"description": "Path of a history index directory, as written by harness history build --out; it must hold index.json directly inside it or the call rejects with ExpectedCliError. A relative path is resolved from the process working directory, and every regular file beneath the directory is read, including any file the build did not write.",
+				"examples": [".cache/harness/history"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "indexFiles",
 				"type": "Promise<IndexFile[]>",
-				"description": "Sorted relative forward-slash paths and original bytes of every regular file found recursively."
+				"description": "Resolves to one entry per regular file under the directory, with its path relative to the directory in forward slashes (for example index.json or revisions/<commit>.json) and its original bytes; entries are ordered by plain string comparison of the paths. Directories and symbolic links are left out, and every file's bytes are held in memory at once before the promise resolves."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown when index.json is absent, with the history-build command needed to create an index."
+				"description": "Rejects the returned promise with this error when index.json is not found directly inside the directory, including when the directory itself is missing; the message names the directory and the harness history build --out command that creates an index there."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Node filesystem error, with a code such as EACCES or ENOENT, that rejects the returned promise unchanged when readdir cannot list the directory or readFile cannot read a listed file, such as a file removed after it was listed."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "indexFiles",
@@ -43,23 +50,30 @@
 						"name": "indexFiles.directory",
 						"type": "string",
 						"required": true,
-						"description": "Directory containing index.json and the index’s files."
+						"description": "Path of a history index directory, as written by harness history build --out; it must hold index.json directly inside it or the call rejects with ExpectedCliError. A relative path is resolved from the process working directory, and every regular file beneath the directory is read, including any file the build did not write.",
+						"examples": [".cache/harness/history"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "indexFiles",
 						"type": "Promise<IndexFile[]>",
-						"description": "Sorted relative forward-slash paths and original bytes of every regular file found recursively."
+						"description": "Resolves to one entry per regular file under the directory, with its path relative to the directory in forward slashes (for example index.json or revisions/<commit>.json) and its original bytes; entries are ordered by plain string comparison of the paths. Directories and symbolic links are left out, and every file's bytes are held in memory at once before the promise resolves."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects the returned promise with this error when index.json is not found directly inside the directory, including when the directory itself is missing; the message names the directory and the harness history build --out command that creates an index there."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Node filesystem error, with a code such as EACCES or ENOENT, that rejects the returned promise unchanged when readdir cannot list the directory or readFile cannot read a listed file, such as a file removed after it was listed."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
