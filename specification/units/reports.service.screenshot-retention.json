@@ -16,32 +16,50 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ScreenshotRetentionService.constructor.repository",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The repository that run uses to list the reports it scans, to load each one, and to resolve its directory. Defaults to new ReportRepository() when omitted, and the readonly field keeps that repository for every run call."
 			},
 			{
 				"name": "ScreenshotRetentionService.run.now",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The Date that sets the cleanup time: an R2-stored evidence item that is not already missing expires when its capture time (capturedAt, or the report's startedAt when capturedAt is missing or empty) is at or before now minus 30 days. Defaults to new Date(), the moment run is called; run throws 'Invalid cleanup time' when now.getTime() is not finite, and the ISO string of now becomes the updatedAt of each changed report."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ScreenshotRetentionService.run",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The resolved summary of one cleanup pass: expired counts the evidence items newly marked missing across all reports, and reports counts how many reports had at least one such item. Both are 0 when no R2-stored evidence item that is not already missing has a capture time at or before the 30-day cutoff.",
+				"examples": [
+					{
+						"expired": 0,
+						"reports": 0
+					},
+					{
+						"expired": 3,
+						"reports": 2
+					},
+					{
+						"expired": 1,
+						"reports": 1
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown as Error('Invalid cleanup time') when now.getTime() is not finite, as Error('Invalid report assets directory') when a report with expired evidence has a symbolic link at its assets directory, and as Error('Invalid report exports directory') when a report with expired evidence and exports has a symbolic link at its exports or exports/assets directory. Errors from the repository, report lock, resultStatus, r2ObjectKey, atomicJson and rm calls are not caught in this file and are not covered by this entry."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ScreenshotRetentionService.run",
@@ -49,22 +67,39 @@
 					{
 						"name": "ScreenshotRetentionService.run.now",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The Date that sets the cleanup time: an R2-stored evidence item that is not already missing expires when its capture time (capturedAt, or the report's startedAt when capturedAt is missing or empty) is at or before now minus 30 days. Defaults to new Date(), the moment run is called; run throws 'Invalid cleanup time' when now.getTime() is not finite, and the ISO string of now becomes the updatedAt of each changed report."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ScreenshotRetentionService.run",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The resolved summary of one cleanup pass: expired counts the evidence items newly marked missing across all reports, and reports counts how many reports had at least one such item. Both are 0 when no R2-stored evidence item that is not already missing has a capture time at or before the 30-day cutoff.",
+						"examples": [
+							{
+								"expired": 0,
+								"reports": 0
+							},
+							{
+								"expired": 3,
+								"reports": 2
+							},
+							{
+								"expired": 1,
+								"reports": 1
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as Error('Invalid cleanup time') when now.getTime() is not finite, as Error('Invalid report assets directory') when a report with expired evidence has a symbolic link at its assets directory, and as Error('Invalid report exports directory') when a report with expired evidence and exports has a symbolic link at its exports or exports/assets directory. Errors from the repository, report lock, resultStatus, r2ObjectKey, atomicJson and rm calls are not caught in this file and are not covered by this entry."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -74,17 +109,19 @@
 					{
 						"name": "ScreenshotRetentionService.constructor.repository",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The repository that run uses to list the reports it scans, to load each one, and to resolve its directory. Defaults to new ReportRepository() when omitted, and the readonly field keeps that repository for every run call."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ScreenshotRetentionService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The ScreenshotRetentionService instance the constructor creates, holding the given repository (or a new ReportRepository() when none is passed) in its readonly repository field. run is its only public method."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
