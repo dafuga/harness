@@ -51,6 +51,20 @@ function options(slotKey: string) {
 					.evaluate((el) => globalThis.getComputedStyle(el).backgroundColor)
 			).toBe('rgb(0, 0, 255)');
 			await mark('state', 'hovered');
+			await page.getByRole('button').evaluate((el) => {
+				el.style.transition = 'none';
+				el.style.backgroundColor = 'rgb(0, 255, 0)';
+			});
+			expect(
+				await page
+					.getByRole('button')
+					.evaluate((el) => globalThis.getComputedStyle(el).backgroundColor)
+			).toBe('rgb(0, 255, 0)');
+			await mark('state', 'green');
+			await page.getByRole('button').evaluate((el) => {
+				el.style.backgroundColor = 'rgb(255, 0, 0)';
+			});
+			await mark('state', 'red');
 		}
 	};
 }
@@ -97,7 +111,13 @@ test('NativeVideoRecorderService record finalizes mapped native frames and reuse
 	});
 	expect(result.metadata.native.frames.length).toBeGreaterThan(10);
 	expect(result.metadata.mapping.length).toBe(result.metadata.facts.frameCount);
-	expect(result.metadata.events.map((event) => event.id)).toEqual(['trigger', 'rest', 'hovered']);
+	expect(result.metadata.events.map((event) => event.id)).toEqual([
+		'trigger',
+		'rest',
+		'hovered',
+		'green',
+		'red'
+	]);
 	assertRecordingTimeline(result);
 	const bytes = readFileSync(result.video.path);
 	expect(bytes.indexOf(Buffer.from('moov'))).toBeLessThan(bytes.indexOf(Buffer.from('mdat')));

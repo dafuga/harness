@@ -32,6 +32,16 @@ export function assertRecordingFidelity(result: NativeRecording): void {
 			)
 		).size
 	).toBeGreaterThan(3);
+	for (const event of result.metadata.events.filter((event) =>
+		['green', 'red'].includes(event.id)
+	)) {
+		const rgb = pixels.subarray(event.frameNumber * 3, event.frameNumber * 3 + 3);
+		expect(
+			event.id === 'green' ? rgb[1] : rgb[0],
+			`encoded ${event.id} assertion frame visibly contains the asserted state`
+		).toBeGreaterThan(180);
+		expect(event.id === 'green' ? rgb[0] : rgb[1]).toBeLessThan(80);
+	}
 }
 
 export function assertRecordingTimeline(result: NativeRecording): void {
