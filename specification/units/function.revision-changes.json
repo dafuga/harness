@@ -29,17 +29,134 @@
 				"name": "revisionChanges.input",
 				"type": "ChangesInput",
 				"required": true,
-				"description": "Stored impact or null, current registry, optional parent registry and fallback parent commit. Registry comparison requires both registries to be available."
+				"description": "The stored source impact (or null; its direct, added and removed lists are merged in), the commit's registry, the first parent's registry (undefined when the same build does not hold it) and a fallback base commit that applies only when the impact is null or has no base. Versions are compared only when the parent and commit registries are both available: a unit only in the commit's registry counts as added, a unit only in the parent registry as removed, and a unit in both with a different version as direct.",
+				"examples": [
+					{
+						"impact": {
+							"base": "3b9f0c2e41d7a85f6e2c1b09d4a7f38e5c6d2a91",
+							"units": {
+								"direct": ["function.revision-changes"],
+								"added": [],
+								"removed": [],
+								"indirect": ["reports.component.evidence-grid"]
+							}
+						},
+						"registry": {
+							"available": true,
+							"units": [
+								{
+									"id": "function.revision-changes",
+									"version": "e41b07c29a6d"
+								},
+								{
+									"id": "reports.component.evidence-grid",
+									"version": "9a0d5f13c7e2"
+								}
+							]
+						},
+						"parent": {
+							"available": true,
+							"units": [
+								{
+									"id": "function.revision-changes",
+									"version": "7c2e9a04f1b8"
+								},
+								{
+									"id": "reports.component.evidence-grid",
+									"version": "9a0d5f13c7e2"
+								}
+							]
+						}
+					},
+					{
+						"impact": null,
+						"registry": {
+							"available": true,
+							"units": [
+								{
+									"id": "function.revision-changes",
+									"version": "e41b07c29a6d"
+								},
+								{
+									"id": "reports.component.evidence-grid",
+									"version": "9a0d5f13c7e2"
+								}
+							]
+						},
+						"parent": {
+							"available": true,
+							"units": [
+								{
+									"id": "function.revision-changes",
+									"version": "7c2e9a04f1b8"
+								},
+								{
+									"id": "reports.component.evidence-grid",
+									"version": "9a0d5f13c7e2"
+								},
+								{
+									"id": "reports.component.legacy-grid",
+									"version": "4d1b8e77a0c3"
+								}
+							]
+						},
+						"base": "a6e4d1c07f93b28e5d0a4c716f9e2b8d3c5a1f47"
+					},
+					{
+						"impact": {
+							"base": null,
+							"units": {
+								"direct": [],
+								"added": ["function.revision-changes", "reports.component.evidence-grid"],
+								"removed": [],
+								"indirect": []
+							}
+						},
+						"registry": {
+							"available": true,
+							"units": [
+								{
+									"id": "function.revision-changes",
+									"version": "e41b07c29a6d"
+								},
+								{
+									"id": "reports.component.evidence-grid",
+									"version": "9a0d5f13c7e2"
+								}
+							]
+						},
+						"parent": {
+							"available": false,
+							"units": []
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "revisionChanges",
 				"type": "RevisionChanges | null",
-				"description": "Sorted direct, added and removed unit ids with the parent commit, or null when neither impact nor comparable registries exist. Indirect dependents are excluded; added/removed ids are removed from direct."
+				"description": "The commit's direct, added and removed unit ids, each sorted and without duplicates, and base taken from the impact, else from the fallback base, else null. An id listed in added or removed is dropped from direct, indirect dependents are never listed, and the whole value is null when there is no impact and the parent and commit registries are not both available.",
+				"examples": [
+					{
+						"base": "a6e4d1c07f93b28e5d0a4c716f9e2b8d3c5a1f47",
+						"direct": ["function.revision-changes"],
+						"added": [],
+						"removed": ["reports.component.legacy-grid"]
+					},
+					{
+						"base": null,
+						"direct": [],
+						"added": ["function.revision-changes", "reports.component.evidence-grid"],
+						"removed": []
+					},
+					null
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "revisionChanges",
@@ -48,18 +165,134 @@
 						"name": "revisionChanges.input",
 						"type": "ChangesInput",
 						"required": true,
-						"description": "Stored impact or null, current registry, optional parent registry and fallback parent commit. Registry comparison requires both registries to be available."
+						"description": "The stored source impact (or null; its direct, added and removed lists are merged in), the commit's registry, the first parent's registry (undefined when the same build does not hold it) and a fallback base commit that applies only when the impact is null or has no base. Versions are compared only when the parent and commit registries are both available: a unit only in the commit's registry counts as added, a unit only in the parent registry as removed, and a unit in both with a different version as direct.",
+						"examples": [
+							{
+								"impact": {
+									"base": "3b9f0c2e41d7a85f6e2c1b09d4a7f38e5c6d2a91",
+									"units": {
+										"direct": ["function.revision-changes"],
+										"added": [],
+										"removed": [],
+										"indirect": ["reports.component.evidence-grid"]
+									}
+								},
+								"registry": {
+									"available": true,
+									"units": [
+										{
+											"id": "function.revision-changes",
+											"version": "e41b07c29a6d"
+										},
+										{
+											"id": "reports.component.evidence-grid",
+											"version": "9a0d5f13c7e2"
+										}
+									]
+								},
+								"parent": {
+									"available": true,
+									"units": [
+										{
+											"id": "function.revision-changes",
+											"version": "7c2e9a04f1b8"
+										},
+										{
+											"id": "reports.component.evidence-grid",
+											"version": "9a0d5f13c7e2"
+										}
+									]
+								}
+							},
+							{
+								"impact": null,
+								"registry": {
+									"available": true,
+									"units": [
+										{
+											"id": "function.revision-changes",
+											"version": "e41b07c29a6d"
+										},
+										{
+											"id": "reports.component.evidence-grid",
+											"version": "9a0d5f13c7e2"
+										}
+									]
+								},
+								"parent": {
+									"available": true,
+									"units": [
+										{
+											"id": "function.revision-changes",
+											"version": "7c2e9a04f1b8"
+										},
+										{
+											"id": "reports.component.evidence-grid",
+											"version": "9a0d5f13c7e2"
+										},
+										{
+											"id": "reports.component.legacy-grid",
+											"version": "4d1b8e77a0c3"
+										}
+									]
+								},
+								"base": "a6e4d1c07f93b28e5d0a4c716f9e2b8d3c5a1f47"
+							},
+							{
+								"impact": {
+									"base": null,
+									"units": {
+										"direct": [],
+										"added": ["function.revision-changes", "reports.component.evidence-grid"],
+										"removed": [],
+										"indirect": []
+									}
+								},
+								"registry": {
+									"available": true,
+									"units": [
+										{
+											"id": "function.revision-changes",
+											"version": "e41b07c29a6d"
+										},
+										{
+											"id": "reports.component.evidence-grid",
+											"version": "9a0d5f13c7e2"
+										}
+									]
+								},
+								"parent": {
+									"available": false,
+									"units": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "revisionChanges",
 						"type": "RevisionChanges | null",
-						"description": "Sorted direct, added and removed unit ids with the parent commit, or null when neither impact nor comparable registries exist. Indirect dependents are excluded; added/removed ids are removed from direct."
+						"description": "The commit's direct, added and removed unit ids, each sorted and without duplicates, and base taken from the impact, else from the fallback base, else null. An id listed in added or removed is dropped from direct, indirect dependents are never listed, and the whole value is null when there is no impact and the parent and commit registries are not both available.",
+						"examples": [
+							{
+								"base": "a6e4d1c07f93b28e5d0a4c716f9e2b8d3c5a1f47",
+								"direct": ["function.revision-changes"],
+								"added": [],
+								"removed": ["reports.component.legacy-grid"]
+							},
+							{
+								"base": null,
+								"direct": [],
+								"added": ["function.revision-changes", "reports.component.evidence-grid"],
+								"removed": []
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
