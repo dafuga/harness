@@ -33,102 +33,202 @@
 				"name": "featureStatusReport.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository root containing feature docs, loop records, unit manifests, and optional evidence history."
+				"description": "Repository root from which featureDocuments and completeLoopsFor read planned and implemented feature documents and loop folders under specification/ and under each packages/<name>/ directory; this operation does not read unit manifests or evidence history. Returned paths are relative to this root, and a missing folder contributes nothing.",
+				"examples": ["/workspace/harness", "/srv/ci/harness"]
 			},
 			{
 				"name": "featureStatusReport.verifiedUnitIds",
 				"type": "ReadonlySet<string>",
 				"required": true,
-				"description": "Unit IDs independently confirmed by the caller for comparison against each planned document."
+				"description": "Unit IDs the caller has already confirmed as verified; each planned document whose frontmatter unitIds contains one of them is listed in stalePlanned with a verified-units reason. The function only reads this set and checks no evidence itself, so an empty set adds no verified-units reasons."
 			},
 			{
 				"name": "linkedUnits.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository root whose unit manifests are scanned for explicit documentation links."
+				"description": "Repository root whose specification/units directory is scanned recursively for .json files, each parsed as a unit manifest; files that are not valid JSON or whose id or documentation field is not a string are skipped. A missing directory contributes nothing.",
+				"examples": ["/workspace/harness", "/srv/ci/harness"]
 			},
 			{
 				"name": "verifiedUnitsInHistory.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository root whose harness-evidence Git ref is queried for passed verification records."
+				"description": "Repository root whose refs/heads/harness-evidence ref is queried through Git for passed verification records; when that ref is missing or Git cannot read the root, the result is an empty set rather than an error.",
+				"examples": ["/workspace/harness", "/srv/ci/harness"]
 			},
 			{
 				"name": "verifiedUnitsInHistory.unitIds",
 				"type": "ReadonlySet<string>",
 				"required": true,
-				"description": "Unit IDs to search for in committed passed verification records; history is only a warning signal, not shipment proof."
+				"description": "Unit IDs searched for in records/**/record.json files on the evidence ref as a JSON unit key with that exact string value; an empty set returns an empty result without querying Git. A match counts only when the record status is passed and one of its components names the unit, and the result is a warning signal, not shipment proof."
 			},
 			{
 				"name": "featureDocuments.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository root whose root and package planned/implemented feature documents are read."
+				"description": "Repository root whose specification/features/planned and specification/features/implemented folders, and the same two folders under each packages/<name>/ directory, supply the direct .md files that are read. Returned paths are relative to this root, and a missing folder contributes no documents.",
+				"examples": ["/workspace/harness", "/srv/ci/harness"]
 			},
 			{
 				"name": "completeLoopsFor.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository root whose root and package loop folders are inspected."
+				"description": "Repository root whose specification/loops folder, and the specification/loops folder under each packages/<name>/ directory, are scanned one level deep for loop directories that contain a loop.json file. Returned loop paths are relative to this root, and a missing folder contributes no loops.",
+				"examples": ["/workspace/harness", "/srv/ci/harness"]
 			},
 			{
 				"name": "completeLoopsFor.docPath",
 				"type": "string",
 				"required": true,
-				"description": "Relative feature-document path matched by loop name or stored loop/trace references."
+				"description": "Feature-document path relative to the root, such as the path field of a featureDocuments entry. A loop directory matches when its name equals the document basename without .md or when the text of its loop.json or trace.ndjson contains this exact path.",
+				"examples": [
+					"specification/features/planned/report-feature-status.md",
+					"packages/evidence/specification/features/implemented/evidence-grid.md"
+				]
 			},
 			{
 				"name": "filesBelow.directory",
 				"type": "string",
 				"required": true,
-				"description": "Directory to recursively list; unreadable or missing directories are treated as empty."
+				"description": "Directory whose contents are listed recursively: subdirectories are descended into, while symbolic links are neither listed nor followed. A missing or unreadable directory, at the top level or nested, contributes no files instead of an error.",
+				"examples": [
+					"/workspace/harness/specification/units",
+					"/workspace/harness/specification/loops"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "featureStatusReport",
 				"type": "{ documents: number; planned: number; implemented: number; classificationMismatches: { path: string; folderStatus: string; frontmatterStatus: string | undefined }[]; stalePlanned: { path: string; reasons: string[] }[]; missingOwnershipOrDateEvidence: { path: string; fields: string[] }[] }",
-				"description": "Counts planned and implemented feature docs, reports folder/frontmatter mismatches, potential stale planned labels, and absent ownership or review-date evidence."
+				"description": "Object holding documents, planned and implemented counts (documents is always planned plus implemented), classificationMismatches where the frontmatter status differs from the folder status, including when no frontmatter status exists, stalePlanned for planned documents with a complete loop or with a frontmatter unit ID the caller marked verified, and missingOwnershipOrDateEvidence for documents whose owner or reviewedAt is null or undefined. These are review signals: nothing is written, and a stale label does not prove that work shipped.",
+				"examples": [
+					{
+						"documents": 5,
+						"planned": 2,
+						"implemented": 3,
+						"classificationMismatches": [
+							{
+								"path": "specification/features/planned/report-feature-status.md",
+								"folderStatus": "planned",
+								"frontmatterStatus": "implemented"
+							}
+						],
+						"stalePlanned": [
+							{
+								"path": "specification/features/planned/evidence-grid.md",
+								"reasons": [
+									"complete loop specification/loops/evidence-grid",
+									"verified units reports.component.evidence-grid"
+								]
+							}
+						],
+						"missingOwnershipOrDateEvidence": [
+							{
+								"path": "packages/evidence/specification/features/implemented/evidence-grid.md",
+								"fields": ["owner", "reviewedAt"]
+							}
+						]
+					},
+					{
+						"documents": 0,
+						"planned": 0,
+						"implemented": 0,
+						"classificationMismatches": [],
+						"stalePlanned": [],
+						"missingOwnershipOrDateEvidence": []
+					}
+				]
 			},
 			{
 				"name": "linkedUnits",
 				"type": "Map<string, string[]>",
-				"description": "Map from a feature-document path to unit IDs whose manifests explicitly name that document."
+				"description": "Map keyed by each unit manifest's raw documentation string, without checking that a feature document exists at that path, to the unit IDs of the manifests that name it in scan order; duplicate IDs from separate manifests are both kept. Manifests that are not valid JSON or whose id or documentation field is not a string contribute nothing."
 			},
 			{
 				"name": "verifiedUnitsInHistory",
 				"type": "Set<string>",
-				"description": "Set of requested unit IDs found in passed committed history records; this signal does not establish shipment."
+				"description": "Subset of the requested unit IDs that appears as the unit of a component in a passed record on refs/heads/harness-evidence; the set is empty when no IDs are requested, when the ref is missing, or when Git cannot answer. It is a warning signal only and does not establish that any unit shipped."
 			},
 			{
 				"name": "main",
 				"type": "void",
-				"description": "Prints the current project feature-status report, explicit unit links, history signals and the unknown owner/date qualification without modifying documents."
+				"description": "Writes the feature-status JSON for process.cwd() to standard output: the featureStatusReport fields, unitLinks for unit manifests that name a discovered feature document, and a fixed ownershipAndDateEvidence note, without modifying documents. When process.argv includes --check and classificationMismatches is not empty, it also sets process.exitCode to 1."
 			},
 			{
 				"name": "featureDocuments",
 				"type": "Array<{ path: string; status: 'planned' | 'implemented'; metadata: { status: string | undefined; owner: string | null | undefined; reviewedAt: string | null | undefined; unitIds: string[] } }>",
-				"description": "Feature document paths, folder status and parsed frontmatter signals; absent owner/date evidence remains undefined or null."
+				"description": "One entry for each .md file directly inside a planned or implemented feature folder of the root or of a packages/<name>/ directory, with its root-relative path, its folder status, and the frontmatter status, owner, reviewedAt and unitIds. owner and reviewedAt are undefined when the key is absent, null when written as null, and otherwise the raw text after the colon and spaces (possibly empty); unitIds comes from a JSON array on its unitIds line or else from indented list items, and is empty when neither yields strings.",
+				"examples": [
+					[
+						{
+							"path": "specification/features/planned/report-feature-status.md",
+							"status": "planned",
+							"metadata": {
+								"status": "planned",
+								"owner": "platform-team",
+								"reviewedAt": "2026-10-30",
+								"unitIds": ["script.report-feature-status"]
+							}
+						},
+						{
+							"path": "packages/evidence/specification/features/implemented/evidence-grid.md",
+							"status": "implemented",
+							"metadata": {
+								"status": "implemented",
+								"owner": null,
+								"reviewedAt": null,
+								"unitIds": ["reports.component.evidence-grid"]
+							}
+						}
+					],
+					[
+						{
+							"path": "specification/features/planned/export-csv.md",
+							"status": "planned",
+							"metadata": {
+								"status": "implemented",
+								"owner": "platform-team",
+								"reviewedAt": "2026-09-14",
+								"unitIds": ["reports.component.evidence-grid"]
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "completeLoopsFor",
 				"type": "string[]",
-				"description": "Relative paths of matching loops with a nonempty step list whose steps are all complete; invalid or incomplete evidence is ignored."
+				"description": "Root-relative paths of the loop directories that match the document by name or referenced text and whose loop.json has a nonempty steps array in which every step status is complete. Loops with missing, unreadable, invalid or incomplete evidence are omitted instead of reported as errors.",
+				"examples": [
+					["specification/loops/report-feature-status"],
+					["packages/evidence/specification/loops/evidence-grid"]
+				]
 			},
 			{
 				"name": "filesBelow",
 				"type": "string[]",
-				"description": "Recursively discovered regular-file paths; symlinks and unreadable directory entries do not contribute."
+				"description": "Paths of every regular file found recursively under the directory, each built with path.join from the directory argument and the names below it. Symbolic links and entries inside unreadable or missing directories do not appear.",
+				"examples": [
+					[
+						"/workspace/harness/specification/units/reports.component.evidence-grid.json",
+						"/workspace/harness/specification/units/script.report-feature-status.json"
+					],
+					[
+						"/workspace/harness/specification/loops/report-feature-status/loop.json",
+						"/workspace/harness/specification/loops/report-feature-status/trace.ndjson"
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Feature documentation read failure",
 				"type": "thrown",
-				"description": "Unexpected feature-document read failures can throw; malformed historical evidence is ignored by the history lookup."
+				"description": "Thrown when readFileSync fails on a planned or implemented feature .md file, for example from a permission error or a file removed after it was listed, because featureDocuments does not catch read failures. Malformed loop, unit and history evidence is caught and skipped, so it never produces this error."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "featureStatusReport",
@@ -137,27 +237,65 @@
 						"name": "featureStatusReport.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository root containing feature docs, loop records, unit manifests, and optional evidence history."
+						"description": "Repository root from which featureDocuments and completeLoopsFor read planned and implemented feature documents and loop folders under specification/ and under each packages/<name>/ directory; this operation does not read unit manifests or evidence history. Returned paths are relative to this root, and a missing folder contributes nothing.",
+						"examples": ["/workspace/harness", "/srv/ci/harness"]
 					},
 					{
 						"name": "featureStatusReport.verifiedUnitIds",
 						"type": "ReadonlySet<string>",
 						"required": true,
-						"description": "Unit IDs independently confirmed by the caller for comparison against each planned document."
+						"description": "Unit IDs the caller has already confirmed as verified; each planned document whose frontmatter unitIds contains one of them is listed in stalePlanned with a verified-units reason. The function only reads this set and checks no evidence itself, so an empty set adds no verified-units reasons."
 					}
 				],
 				"outputs": [
 					{
 						"name": "featureStatusReport",
 						"type": "{ documents: number; planned: number; implemented: number; classificationMismatches: { path: string; folderStatus: string; frontmatterStatus: string | undefined }[]; stalePlanned: { path: string; reasons: string[] }[]; missingOwnershipOrDateEvidence: { path: string; fields: string[] }[] }",
-						"description": "Counts planned and implemented feature docs, reports folder/frontmatter mismatches, potential stale planned labels, and absent ownership or review-date evidence."
+						"description": "Object holding documents, planned and implemented counts (documents is always planned plus implemented), classificationMismatches where the frontmatter status differs from the folder status, including when no frontmatter status exists, stalePlanned for planned documents with a complete loop or with a frontmatter unit ID the caller marked verified, and missingOwnershipOrDateEvidence for documents whose owner or reviewedAt is null or undefined. These are review signals: nothing is written, and a stale label does not prove that work shipped.",
+						"examples": [
+							{
+								"documents": 5,
+								"planned": 2,
+								"implemented": 3,
+								"classificationMismatches": [
+									{
+										"path": "specification/features/planned/report-feature-status.md",
+										"folderStatus": "planned",
+										"frontmatterStatus": "implemented"
+									}
+								],
+								"stalePlanned": [
+									{
+										"path": "specification/features/planned/evidence-grid.md",
+										"reasons": [
+											"complete loop specification/loops/evidence-grid",
+											"verified units reports.component.evidence-grid"
+										]
+									}
+								],
+								"missingOwnershipOrDateEvidence": [
+									{
+										"path": "packages/evidence/specification/features/implemented/evidence-grid.md",
+										"fields": ["owner", "reviewedAt"]
+									}
+								]
+							},
+							{
+								"documents": 0,
+								"planned": 0,
+								"implemented": 0,
+								"classificationMismatches": [],
+								"stalePlanned": [],
+								"missingOwnershipOrDateEvidence": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Feature documentation read failure",
 						"type": "thrown",
-						"description": "Unexpected feature-document read failures can throw; malformed historical evidence is ignored by the history lookup."
+						"description": "Thrown when readFileSync fails on a planned or implemented feature .md file, for example from a permission error or a file removed after it was listed, because featureDocuments does not catch read failures. Malformed loop, unit and history evidence is caught and skipped, so it never produces this error."
 					}
 				],
 				"errorStatus": "declared"
@@ -169,14 +307,15 @@
 						"name": "linkedUnits.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository root whose unit manifests are scanned for explicit documentation links."
+						"description": "Repository root whose specification/units directory is scanned recursively for .json files, each parsed as a unit manifest; files that are not valid JSON or whose id or documentation field is not a string are skipped. A missing directory contributes nothing.",
+						"examples": ["/workspace/harness", "/srv/ci/harness"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "linkedUnits",
 						"type": "Map<string, string[]>",
-						"description": "Map from a feature-document path to unit IDs whose manifests explicitly name that document."
+						"description": "Map keyed by each unit manifest's raw documentation string, without checking that a feature document exists at that path, to the unit IDs of the manifests that name it in scan order; duplicate IDs from separate manifests are both kept. Manifests that are not valid JSON or whose id or documentation field is not a string contribute nothing."
 					}
 				],
 				"errors": [],
@@ -189,20 +328,21 @@
 						"name": "verifiedUnitsInHistory.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository root whose harness-evidence Git ref is queried for passed verification records."
+						"description": "Repository root whose refs/heads/harness-evidence ref is queried through Git for passed verification records; when that ref is missing or Git cannot read the root, the result is an empty set rather than an error.",
+						"examples": ["/workspace/harness", "/srv/ci/harness"]
 					},
 					{
 						"name": "verifiedUnitsInHistory.unitIds",
 						"type": "ReadonlySet<string>",
 						"required": true,
-						"description": "Unit IDs to search for in committed passed verification records; history is only a warning signal, not shipment proof."
+						"description": "Unit IDs searched for in records/**/record.json files on the evidence ref as a JSON unit key with that exact string value; an empty set returns an empty result without querying Git. A match counts only when the record status is passed and one of its components names the unit, and the result is a warning signal, not shipment proof."
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifiedUnitsInHistory",
 						"type": "Set<string>",
-						"description": "Set of requested unit IDs found in passed committed history records; this signal does not establish shipment."
+						"description": "Subset of the requested unit IDs that appears as the unit of a component in a passed record on refs/heads/harness-evidence; the set is empty when no IDs are requested, when the ref is missing, or when Git cannot answer. It is a warning signal only and does not establish that any unit shipped."
 					}
 				],
 				"errors": [],
@@ -215,14 +355,14 @@
 					{
 						"name": "main",
 						"type": "void",
-						"description": "Prints the current project feature-status report, explicit unit links, history signals and the unknown owner/date qualification without modifying documents."
+						"description": "Writes the feature-status JSON for process.cwd() to standard output: the featureStatusReport fields, unitLinks for unit manifests that name a discovered feature document, and a fixed ownershipAndDateEvidence note, without modifying documents. When process.argv includes --check and classificationMismatches is not empty, it also sets process.exitCode to 1."
 					}
 				],
 				"errors": [
 					{
 						"name": "Feature documentation read failure",
 						"type": "thrown",
-						"description": "Unexpected feature-document read failures can throw; malformed historical evidence is ignored by the history lookup."
+						"description": "Thrown when readFileSync fails on a planned or implemented feature .md file, for example from a permission error or a file removed after it was listed, because featureDocuments does not catch read failures. Malformed loop, unit and history evidence is caught and skipped, so it never produces this error."
 					}
 				],
 				"errorStatus": "declared"
@@ -234,21 +374,58 @@
 						"name": "featureDocuments.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository root whose root and package planned/implemented feature documents are read."
+						"description": "Repository root whose specification/features/planned and specification/features/implemented folders, and the same two folders under each packages/<name>/ directory, supply the direct .md files that are read. Returned paths are relative to this root, and a missing folder contributes no documents.",
+						"examples": ["/workspace/harness", "/srv/ci/harness"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "featureDocuments",
 						"type": "Array<{ path: string; status: 'planned' | 'implemented'; metadata: { status: string | undefined; owner: string | null | undefined; reviewedAt: string | null | undefined; unitIds: string[] } }>",
-						"description": "Feature document paths, folder status and parsed frontmatter signals; absent owner/date evidence remains undefined or null."
+						"description": "One entry for each .md file directly inside a planned or implemented feature folder of the root or of a packages/<name>/ directory, with its root-relative path, its folder status, and the frontmatter status, owner, reviewedAt and unitIds. owner and reviewedAt are undefined when the key is absent, null when written as null, and otherwise the raw text after the colon and spaces (possibly empty); unitIds comes from a JSON array on its unitIds line or else from indented list items, and is empty when neither yields strings.",
+						"examples": [
+							[
+								{
+									"path": "specification/features/planned/report-feature-status.md",
+									"status": "planned",
+									"metadata": {
+										"status": "planned",
+										"owner": "platform-team",
+										"reviewedAt": "2026-10-30",
+										"unitIds": ["script.report-feature-status"]
+									}
+								},
+								{
+									"path": "packages/evidence/specification/features/implemented/evidence-grid.md",
+									"status": "implemented",
+									"metadata": {
+										"status": "implemented",
+										"owner": null,
+										"reviewedAt": null,
+										"unitIds": ["reports.component.evidence-grid"]
+									}
+								}
+							],
+							[
+								{
+									"path": "specification/features/planned/export-csv.md",
+									"status": "planned",
+									"metadata": {
+										"status": "implemented",
+										"owner": "platform-team",
+										"reviewedAt": "2026-09-14",
+										"unitIds": ["reports.component.evidence-grid"]
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Feature documentation read failure",
 						"type": "thrown",
-						"description": "Unexpected feature-document read failures can throw; malformed historical evidence is ignored by the history lookup."
+						"description": "Thrown when readFileSync fails on a planned or implemented feature .md file, for example from a permission error or a file removed after it was listed, because featureDocuments does not catch read failures. Malformed loop, unit and history evidence is caught and skipped, so it never produces this error."
 					}
 				],
 				"errorStatus": "declared"
@@ -260,20 +437,29 @@
 						"name": "completeLoopsFor.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository root whose root and package loop folders are inspected."
+						"description": "Repository root whose specification/loops folder, and the specification/loops folder under each packages/<name>/ directory, are scanned one level deep for loop directories that contain a loop.json file. Returned loop paths are relative to this root, and a missing folder contributes no loops.",
+						"examples": ["/workspace/harness", "/srv/ci/harness"]
 					},
 					{
 						"name": "completeLoopsFor.docPath",
 						"type": "string",
 						"required": true,
-						"description": "Relative feature-document path matched by loop name or stored loop/trace references."
+						"description": "Feature-document path relative to the root, such as the path field of a featureDocuments entry. A loop directory matches when its name equals the document basename without .md or when the text of its loop.json or trace.ndjson contains this exact path.",
+						"examples": [
+							"specification/features/planned/report-feature-status.md",
+							"packages/evidence/specification/features/implemented/evidence-grid.md"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "completeLoopsFor",
 						"type": "string[]",
-						"description": "Relative paths of matching loops with a nonempty step list whose steps are all complete; invalid or incomplete evidence is ignored."
+						"description": "Root-relative paths of the loop directories that match the document by name or referenced text and whose loop.json has a nonempty steps array in which every step status is complete. Loops with missing, unreadable, invalid or incomplete evidence are omitted instead of reported as errors.",
+						"examples": [
+							["specification/loops/report-feature-status"],
+							["packages/evidence/specification/loops/evidence-grid"]
+						]
 					}
 				],
 				"errors": [],
@@ -286,14 +472,28 @@
 						"name": "filesBelow.directory",
 						"type": "string",
 						"required": true,
-						"description": "Directory to recursively list; unreadable or missing directories are treated as empty."
+						"description": "Directory whose contents are listed recursively: subdirectories are descended into, while symbolic links are neither listed nor followed. A missing or unreadable directory, at the top level or nested, contributes no files instead of an error.",
+						"examples": [
+							"/workspace/harness/specification/units",
+							"/workspace/harness/specification/loops"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "filesBelow",
 						"type": "string[]",
-						"description": "Recursively discovered regular-file paths; symlinks and unreadable directory entries do not contribute."
+						"description": "Paths of every regular file found recursively under the directory, each built with path.join from the directory argument and the names below it. Symbolic links and entries inside unreadable or missing directories do not appear.",
+						"examples": [
+							[
+								"/workspace/harness/specification/units/reports.component.evidence-grid.json",
+								"/workspace/harness/specification/units/script.report-feature-status.json"
+							],
+							[
+								"/workspace/harness/specification/loops/report-feature-status/loop.json",
+								"/workspace/harness/specification/loops/report-feature-status/trace.ndjson"
+							]
+						]
 					}
 				],
 				"errors": [],
