@@ -44,35 +44,112 @@
 				"name": "CheckRunService.constructor.context",
 				"type": "RunContext",
 				"required": true,
-				"description": "Run metadata, snapshot and scratch directories, environment, and optional capture byte limits."
+				"description": "Provides a clean snapshot, scratch directory, commit and tree, profile, environment, and optional capture byte caps. The runner defaults HARNESS_RESOURCE_PRIORITY to 'environment' when that environment key is absent; absent capture limits impose no cap.",
+				"examples": [
+					{
+						"snapshot": "/tmp/harness/snapshots/0123456789abcdef0123456789abcdef01234567",
+						"directory": "/tmp/harness/verification/run-20261115T120000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"tree": "89abcdef89abcdef89abcdef89abcdef89abcdef",
+						"profile": "macos-arm64-node22",
+						"env": {
+							"CI": "true",
+							"HARNESS_RESOURCE_PRIORITY": "environment"
+						},
+						"limits": {
+							"maxCaptureBytes": 10485760,
+							"maxRecordBytes": 52428800
+						}
+					}
+				]
 			},
 			{
 				"name": "CheckRunService.run.check",
 				"type": "PlannedCheck",
 				"required": true,
-				"description": "Planned check to execute with its runner, target, cwd, command and timeout."
+				"description": "A planned unit, integration, or end-to-end check with the command, snapshot-relative working directory, and time limit to run. Its ID determines the log name and evidence leaf, while an optional scenario scopes the evidence path and prefixes failures.",
+				"examples": [
+					{
+						"id": "src/services/CheckRunService.test.ts",
+						"name": "CheckRunService",
+						"kind": "unit",
+						"runner": "command",
+						"target": "module",
+						"cwd": ".",
+						"command": "printf passed",
+						"timeoutMs": 30000
+					}
+				]
 			},
 			{
 				"name": "CheckRunService.version.tool",
 				"type": "{ id: string; command: string }",
 				"required": true,
-				"description": "Declared tool ID and command whose first nonempty output line identifies its version."
+				"description": "A declared tool identifier and shell command, run from the snapshot root with the run environment. The identifier names the tool log, whose first nonempty trimmed line is returned when the command passes.",
+				"examples": [
+					{
+						"id": "node",
+						"command": "node --version"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CheckRunService.run",
 				"type": "Promise<CheckOutcome>",
-				"description": "Outcome with the check entry, pass/fail state, admitted captures, and capture or execution failures."
+				"description": "Resolves to the planned check, its recorded test entry, gathered evidence captures, and any execution or capture failure messages. It passes only when the isolated command passed and no failure messages were recorded.",
+				"examples": [
+					{
+						"check": {
+							"id": "src/services/CheckRunService.test.ts",
+							"name": "CheckRunService",
+							"kind": "unit",
+							"runner": "command",
+							"target": "module",
+							"cwd": ".",
+							"command": "printf passed",
+							"timeoutMs": 30000
+						},
+						"passed": true,
+						"entry": {
+							"id": "src/services/CheckRunService.test.ts",
+							"kind": "unit",
+							"runner": "command",
+							"target": "module",
+							"status": "passed",
+							"durationMs": 18,
+							"log": {
+								"path": "logs/src-services-CheckRunService.test.ts.log",
+								"sha256": "284d1e8c4918248233df17642bbb940c001e1fa856c18aab86ba6dbe7813eb13",
+								"bytes": 6
+							}
+						},
+						"gathered": [],
+						"failures": []
+					}
+				]
 			},
 			{
 				"name": "CheckRunService.version",
 				"type": "Promise<string | undefined>",
-				"description": "First nonempty output line on success, or undefined when the command does not complete successfully or prints no version."
+				"description": "Resolves to the first nonempty trimmed line of the tool log when the isolated command passes; otherwise it resolves to undefined. A missing, unreadable, or empty log also yields undefined.",
+				"examples": ["v22.11.0"]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "The run rejects with ZodError when HARNESS_RESOURCE_PRIORITY is outside 'agent-test', 'coding', or 'environment', or when resourceWork's resource request fails schema parsing."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The run rejects with Error when resource admission cannot establish the owner, the queue is full, or an inherited lease is invalid or too small; log-directory or log-file creation failures also propagate."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CheckRunService.run",
@@ -81,17 +158,70 @@
 						"name": "CheckRunService.run.check",
 						"type": "PlannedCheck",
 						"required": true,
-						"description": "Planned check to execute with its runner, target, cwd, command and timeout."
+						"description": "A planned unit, integration, or end-to-end check with the command, snapshot-relative working directory, and time limit to run. Its ID determines the log name and evidence leaf, while an optional scenario scopes the evidence path and prefixes failures.",
+						"examples": [
+							{
+								"id": "src/services/CheckRunService.test.ts",
+								"name": "CheckRunService",
+								"kind": "unit",
+								"runner": "command",
+								"target": "module",
+								"cwd": ".",
+								"command": "printf passed",
+								"timeoutMs": 30000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CheckRunService.run",
 						"type": "Promise<CheckOutcome>",
-						"description": "Outcome with the check entry, pass/fail state, admitted captures, and capture or execution failures."
+						"description": "Resolves to the planned check, its recorded test entry, gathered evidence captures, and any execution or capture failure messages. It passes only when the isolated command passed and no failure messages were recorded.",
+						"examples": [
+							{
+								"check": {
+									"id": "src/services/CheckRunService.test.ts",
+									"name": "CheckRunService",
+									"kind": "unit",
+									"runner": "command",
+									"target": "module",
+									"cwd": ".",
+									"command": "printf passed",
+									"timeoutMs": 30000
+								},
+								"passed": true,
+								"entry": {
+									"id": "src/services/CheckRunService.test.ts",
+									"kind": "unit",
+									"runner": "command",
+									"target": "module",
+									"status": "passed",
+									"durationMs": 18,
+									"log": {
+										"path": "logs/src-services-CheckRunService.test.ts.log",
+										"sha256": "284d1e8c4918248233df17642bbb940c001e1fa856c18aab86ba6dbe7813eb13",
+										"bytes": 6
+									}
+								},
+								"gathered": [],
+								"failures": []
+							}
+						]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "The run rejects with ZodError when HARNESS_RESOURCE_PRIORITY is outside 'agent-test', 'coding', or 'environment', or when resourceWork's resource request fails schema parsing."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The run rejects with Error when resource admission cannot establish the owner, the queue is full, or an inherited lease is invalid or too small; log-directory or log-file creation failures also propagate."
+					}
+				],
 				"errorStatus": "declared"
 			},
 			{
@@ -101,17 +231,30 @@
 						"name": "CheckRunService.version.tool",
 						"type": "{ id: string; command: string }",
 						"required": true,
-						"description": "Declared tool ID and command whose first nonempty output line identifies its version."
+						"description": "A declared tool identifier and shell command, run from the snapshot root with the run environment. The identifier names the tool log, whose first nonempty trimmed line is returned when the command passes.",
+						"examples": [
+							{
+								"id": "node",
+								"command": "node --version"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CheckRunService.version",
 						"type": "Promise<string | undefined>",
-						"description": "First nonempty output line on success, or undefined when the command does not complete successfully or prints no version."
+						"description": "Resolves to the first nonempty trimmed line of the tool log when the isolated command passes; otherwise it resolves to undefined. A missing, unreadable, or empty log also yields undefined.",
+						"examples": ["v22.11.0"]
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The method rejects with Error when isolated execution cannot create or write its log; a non-passing command result instead resolves to undefined."
+					}
+				],
 				"errorStatus": "declared"
 			}
 		],
@@ -123,14 +266,31 @@
 						"name": "CheckRunService.constructor.context",
 						"type": "RunContext",
 						"required": true,
-						"description": "Run metadata, snapshot and scratch directories, environment, and optional capture byte limits."
+						"description": "Provides a clean snapshot, scratch directory, commit and tree, profile, environment, and optional capture byte caps. The runner defaults HARNESS_RESOURCE_PRIORITY to 'environment' when that environment key is absent; absent capture limits impose no cap.",
+						"examples": [
+							{
+								"snapshot": "/tmp/harness/snapshots/0123456789abcdef0123456789abcdef01234567",
+								"directory": "/tmp/harness/verification/run-20261115T120000Z",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"tree": "89abcdef89abcdef89abcdef89abcdef89abcdef",
+								"profile": "macos-arm64-node22",
+								"env": {
+									"CI": "true",
+									"HARNESS_RESOURCE_PRIORITY": "environment"
+								},
+								"limits": {
+									"maxCaptureBytes": 10485760,
+									"maxRecordBytes": 52428800
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CheckRunService.constructor",
 						"type": "CheckRunService",
-						"description": "Runner retaining the check context and one record-wide capture budget."
+						"description": "An initialized runner retaining the run context and one record-wide capture budget initialized from context.limits.maxRecordBytes; an absent record limit leaves that budget uncapped."
 					}
 				],
 				"errors": [],
