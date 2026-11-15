@@ -12,42 +12,71 @@
 		"symbols": ["reviewModuleTask"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "reviewModuleTask.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root passed to worktree checkpointing and module-task analytics sync. It is used when an incomplete review needs a checkpoint and after the repository update.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
+				]
 			},
 			{
 				"name": "reviewModuleTask.repository",
 				"type": "ModuleTaskRepository",
-				"required": true
+				"required": true,
+				"description": "The module-task repository read to find the task and updated with the review result. It must provide read() with data.tasks and update(callback, checkpoint) returning the commit and callback value."
 			},
 			{
 				"name": "reviewModuleTask.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The task identifier matched against task.id in the initial read and again during the update. It must identify the same task in both queue snapshots.",
+				"examples": ["module-task-17"]
 			},
 			{
 				"name": "reviewModuleTask.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The review payload parsed by reviewInputSchema before the task is changed. Its attempt is compared with the current claim token; an accepted verdict accepts the task, while other verdicts requeue it, and an incomplete verdict creates a checkpoint only when one is absent.",
+				"examples": [
+					{
+						"attempt": "attempt-7",
+						"verdict": "accepted"
+					},
+					{
+						"attempt": "attempt-7",
+						"verdict": "incomplete"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reviewModuleTask",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to an object containing the commit returned by repository.update and the task returned by its update callback. The task reflects the appended review and the resulting accepted or queued state; its remaining fields are supplied by the repository task value.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"task": {
+							"id": "module-task-17",
+							"status": "accepted"
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The explicit guards throw when the task is not awaiting this attempt (missing task, wrong status or claim token, or missing result), or when the task review becomes stale before update (status, claim token, contract hash, or result changed); the stale-review error prevents overwriting a result."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reviewModuleTask",
@@ -55,37 +84,66 @@
 					{
 						"name": "reviewModuleTask.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root passed to worktree checkpointing and module-task analytics sync. It is used when an incomplete review needs a checkpoint and after the repository update.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
+						]
 					},
 					{
 						"name": "reviewModuleTask.repository",
 						"type": "ModuleTaskRepository",
-						"required": true
+						"required": true,
+						"description": "The module-task repository read to find the task and updated with the review result. It must provide read() with data.tasks and update(callback, checkpoint) returning the commit and callback value."
 					},
 					{
 						"name": "reviewModuleTask.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The task identifier matched against task.id in the initial read and again during the update. It must identify the same task in both queue snapshots.",
+						"examples": ["module-task-17"]
 					},
 					{
 						"name": "reviewModuleTask.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The review payload parsed by reviewInputSchema before the task is changed. Its attempt is compared with the current claim token; an accepted verdict accepts the task, while other verdicts requeue it, and an incomplete verdict creates a checkpoint only when one is absent.",
+						"examples": [
+							{
+								"attempt": "attempt-7",
+								"verdict": "accepted"
+							},
+							{
+								"attempt": "attempt-7",
+								"verdict": "incomplete"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reviewModuleTask",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to an object containing the commit returned by repository.update and the task returned by its update callback. The task reflects the appended review and the resulting accepted or queued state; its remaining fields are supplied by the repository task value.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"task": {
+									"id": "module-task-17",
+									"status": "accepted"
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The explicit guards throw when the task is not awaiting this attempt (missing task, wrong status or claim token, or missing result), or when the task review becomes stale before update (status, claim token, contract hash, or result changed); the stale-review error prevents overwriting a result."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
