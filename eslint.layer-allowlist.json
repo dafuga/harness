@@ -257,11 +257,6 @@
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
 		},
 		{
-			"from": "src/utils/pickerPaths.ts",
-			"to": "src/cli/program/codex-picker-command/pickerPaths",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/utils/projects-sessions/projectActivity.ts",
 			"to": "src/services/projects-sessions/project-activity-service/projectActivity",
 			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."

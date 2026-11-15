@@ -10,7 +10,7 @@ import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import type { VerificationRecord } from '../../../core/verificationTypes';
 import { ScenarioRepository } from '../../../repositories/verification-evidence/ScenarioRepository';
 import { UnitRegistryRepository } from '../../../repositories/verification-evidence/UnitRegistryRepository';
-import type { MediaPlacer } from '../../../utils/mediaPlace';
+import type { MediaPlacer } from '../../../utils/development-tooling/mediaPlace';
 import {
 	recordView,
 	type RecordView,

@@ -10,14 +10,11 @@
 	"owns": {
 		"source": [
 			"src/services/check-run-service/mediaFacts.ts",
-			"src/utils/mediaFacts.ts",
 			"src/utils/verification-evidence/mediaFacts.ts",
 			"src/workflows/run-verify/verification-service/check-run-service/mediaFacts.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/mediaFacts.ts"
 		],
 		"symbols": [
-			"pngChecksum",
-			"mediaFacts",
 			"pngChecksum",
 			"mediaFacts",
 			"MediaFacts",

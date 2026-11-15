@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/codex-picker-command/pickerPaths.ts", "src/utils/pickerPaths.ts"],
-		"symbols": ["pickerPaths", "pickerPaths"]
+		"source": ["src/cli/program/codex-picker-command/pickerPaths.ts"],
+		"symbols": ["pickerPaths"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -42,11 +42,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/pickerPaths.ts",
+		"entry": "src/cli/program/codex-picker-command/pickerPaths.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/pickerPaths.ts"
+				"entry": "src/cli/program/codex-picker-command/pickerPaths.ts"
 			}
 		]
 	},

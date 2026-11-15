@@ -1,6 +1,9 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
-import { checkedMedia } from '../../src/utils/mediaPlace';
+import {
+	checkedMedia,
+	mediaPlace as relocatedMediaPlace
+} from '../../src/utils/development-tooling/mediaPlace';
 import { mediaPlace } from '../../src/cli/program/history-index-service/history-media-service/mediaPlace';
 
 const bytes = Buffer.from('recorded bytes');
@@ -27,4 +30,10 @@ test('a placer that writes nothing says the same of every capture', async () => 
 	const file = { path: 'evidence/a/clip.wav', sha256 };
 	expect(await checkedMedia.place(bytes, file, gap)).toEqual({ media: `media/${sha256}.wav` });
 	expect(await checkedMedia.place(undefined, file, gap)).toEqual({ media: null, gap });
+});
+
+test('the relocated module offers the placer the history media service uses', async () => {
+	const file = { path: 'evidence/a/clip.wav', sha256 };
+	expect(relocatedMediaPlace).toBe(mediaPlace);
+	expect(await checkedMedia.place(bytes, file, gap)).toEqual(mediaPlace(bytes, file, gap));
 });
