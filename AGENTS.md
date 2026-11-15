@@ -6,7 +6,9 @@ This is a Harness CLI project. Treat Harness as the operating contract for every
 
 Start with `harness contracts map <source-path-or-folder>` to find the owning contracts and their recorded dependencies/dependents. Use `harness contracts list --area <category>` or `harness contracts search "term" -i --limit 10`, then `harness contracts show <id-or-path>` before opening implementation. Add `--json` for structured output; search also supports `--regex`, `--folder` and `--kind`. Run `harness info contracts` for examples and exact matching rules.
 
-These commands read stored unit/scenario JSON only and reload it on each invocation. They do not inspect source, infer missing states, or verify registry freshness. Paths are project-root relative; use `--root <project>` from elsewhere. Read dependency contracts first; open source for the units you need to change or a specific contract gap. Use `harness units check` to verify freshness.
+Use `harness contracts diff` for HEAD to working-tree changes, `harness contracts diff <commit>` for that commit's first-parent delta, or `harness contracts diff <base>..<head> --summary` for a range. `--since <rev>` includes working-tree changes; `--staged` reads the index. Use `harness contracts log <unit>` for commit summaries and `harness contracts last <unit>` for the latest material field diff. History supports folder/area/kind/field filters and JSON; `--summary --json` keeps counts and omits field values.
+
+Lookup reloads stored unit/scenario JSON; diff/log/last read raw unit JSON snapshots and Git commit metadata. They do not inspect source, infer missing states, or verify registry freshness. Named metadata matches by name, examples and unknown arrays retain order, and formatting-only files are counted separately. Paths are project-root relative; use `--root <project>` from elsewhere. Read dependency contracts first; open source for the units you need to change or a specific contract gap. Use `harness units check` to verify freshness. Run `harness info contracts` for snapshot, count and identity limits.
 
 ## Required Harness Workflow
 

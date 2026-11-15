@@ -10,6 +10,11 @@ import type { ContractHistoryOptions } from './contractHistory.types';
 
 /** Add snapshot/history queries beside existing stored-contract lookup operations. */
 export function registerContractHistory(contracts: Command): void {
+	registerContractDiff(contracts);
+	for (const verb of ['log [unit]', 'last <unit>']) registerContractLog(contracts, verb);
+}
+
+function registerContractDiff(contracts: Command): void {
 	const diff = contracts
 		.command('diff [revision] [head]')
 		.description(
@@ -22,6 +27,7 @@ export function registerContractHistory(contracts: Command): void {
 			'Compare revision -> working tree (includes untracked contracts).'
 		)
 		.option('--staged', 'Compare HEAD -> Git index; excludes unstaged and untracked changes.');
+	historyHelp(diff, 'diff');
 	diff.action(
 		async (
 			revision: string | undefined,
@@ -41,28 +47,41 @@ export function registerContractHistory(contracts: Command): void {
 			);
 		}
 	);
-	for (const verb of ['log [unit]', 'last <unit>']) {
-		const command = contracts
-			.command(verb)
-			.description(
-				verb.startsWith('last')
-					? 'Latest committed material contract change, with fields and commit identity.'
-					: 'Reachable commits with per-contract change summaries; follows stable unit identity.'
-			);
-		historyOptions(command).option(
-			'--since <revision>',
-			'Only committed changes after this revision, through HEAD.'
+}
+
+function registerContractLog(contracts: Command, verb: string): void {
+	const command = contracts
+		.command(verb)
+		.description(
+			verb.startsWith('last')
+				? 'Latest committed material contract change, with fields and commit identity.'
+				: 'Reachable commits with per-contract change summaries; follows stable unit identity.'
 		);
-		command.action(async (unit: string | undefined, _options: unknown, selected: Command) => {
-			const options = selected.optsWithGlobals<ContractHistoryOptions>();
-			const result = await readContractLog(unit ?? '', options, selected.name() === 'last');
-			console.log(
-				options.json
-					? renderContractHistoryJson(result, options.summary)
-					: renderContractLog(result, selected.name() === 'log' || options.summary)
-			);
-		});
-	}
+	historyOptions(command).option(
+		'--since <revision>',
+		'Only committed changes after this revision, through HEAD.'
+	);
+	historyHelp(command, command.name());
+	command.action(async (unit: string | undefined, _options: unknown, selected: Command) => {
+		const options = selected.optsWithGlobals<ContractHistoryOptions>();
+		const result = await readContractLog(unit ?? '', options, selected.name() === 'last');
+		console.log(
+			options.json
+				? renderContractHistoryJson(result, options.summary)
+				: renderContractLog(result, selected.name() === 'log' || options.summary)
+		);
+	});
+}
+
+function historyHelp(command: Command, operation: string): void {
+	const snapshots =
+		operation === 'diff'
+			? 'No selector: HEAD -> working tree, including untracked/ignored unit JSON. One commit: first parent -> commit (empty base for root). Range/two revisions compare commits; --since compares to worktree; --staged reads HEAD -> index. Selectors are exclusive.'
+			: 'Reachable authored contract commits through HEAD; merge deltas use the actual first parent. Log defaults to 20 matching commits and compact text; last always returns one detailed material change. --since excludes history reachable from that revision.';
+	command.addHelpText(
+		'after',
+		`\n${snapshots}\n\nNamed metadata matches by name; known sets retain duplicate relations. Examples and unknown arrays keep order. Formatting-only and metadata-reorder-only files have separate counts. Filters match either snapshot; --field errors includes errorStatus. Diff counts precede --limit; --summary omits field values in text and JSON.\n\nOnly raw stored unit JSON and Git metadata are read. Stable uid follows renames; pre-uid id reuse or unrelated branch identity can be ambiguous. Invalid roots/refs, missing HEAD, invalid/duplicate JSON identities, outside-root folders and unmerged index stages fail.\n\nExamples:\n  harness contracts diff HEAD~3..HEAD --summary\n  harness contracts log command.units --limit 5\n  harness contracts last command.units\nSee: harness info contracts`
+	);
 }
 
 function historyOptions(command: Command): Command {

@@ -81,7 +81,7 @@ export const commandHelp = [
 	{
 		name: 'contracts',
 		signature: 'contracts',
-		description: 'Read, list, search and map stored contracts without opening source.',
+		description: 'Read, search, diff and trace stored contracts without opening source.',
 		term: 'contracts [options]',
 		aliases: []
 	},

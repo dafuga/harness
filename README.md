@@ -238,6 +238,30 @@ harness contracts map src/cli/program --depth 1 --json
 
 The commands reload the existing JSON registry recursively on every invocation, so moved/nested/edited/deleted contracts need no separate search-index rebuild. They read `specification/units` and, for show/search, `specification/scenarios`; executable catalogs are outside their scope. Contract content can be stale or incomplete: use `harness units check` to verify freshness, and `harness units show` when you need source-derived hashes, graph and test impact. Run `harness info contracts` or `harness contracts <verb> --help` for details.
 
+### Contract changes and committed history
+
+```sh
+harness contracts diff
+harness contracts diff HEAD                    # what HEAD itself changed
+harness contracts diff HEAD~3..HEAD --summary
+harness contracts diff main HEAD --unit command.units --field type,description
+harness contracts diff --since main --folder src/cli --json
+harness contracts diff --staged
+harness contracts log command.units --limit 5
+harness contracts log --folder src/cli --field errors --json
+harness contracts last command.units
+```
+
+`diff` defaults to **HEAD → working tree**, including untracked unit JSON (even Git-ignored JSON in `specification/units`). A single commit means **its first parent → that commit**; a root commit uses an empty base. A two-revision range or two separate revisions compares those snapshots directly. `--since <rev>` compares that commit to the working tree; `--staged` compares HEAD to the Git index, excluding unstaged and untracked changes. Revision arguments, `--since` and `--staged` are mutually exclusive. Only stored unit JSON and Git metadata are read; current schema parsing never strips historical fields. Scenario JSON and source are outside these history commands.
+
+Each contract is added, removed, moved/renamed or changed. Stable uid joins file/id/source moves; unchanged id is the fallback when either side lacks uid. Fields use paths such as `outputs[maxReviewStateBytes].type`, with old and new values. Known metadata collections (inputs, outputs, errors, operations, initialization, snippets, storage/fields, helper contracts and config controls) match items by name. Known set-like metadata, including dependencies, owned paths/symbols, scenario ids and runtime targets, ignores ordering while retaining duplicate records and distinct relations. Examples, their nested business data, and unknown arrays preserve order. Whitespace inside string values remains meaningful.
+
+Formatting-only counts include changed file bytes whose decoded JSON is identical after ignoring object key order. Metadata-reorder-only counts cover otherwise equal known collections whose order changed, optionally with formatting. Identical files count in neither group. Summary contract-kind and field-kind counts cover all filtered changes **before** diff's `--limit`; each displayed contract includes added/removed/changed field counts. Folder/area/kind/unit filters match either snapshot, including retired contracts; folder accepts an owned source or stored-contract subtree. `--field` accepts comma-separated `type`, `description` (including responsibility), `examples`, `errors` (including errorStatus) and `dependencies`. Field filters remove contracts with no matching material fields; a file-only move therefore disappears under a field filter. Ignored-file counts use the contract filters before field filtering.
+
+`log [unit]` lists up to 20 matching material commits with date, author and a per-contract summary; `--limit` changes that commit limit. It includes reachable branch commits in topological order, and describes each merge result against its actual first parent. `last <unit>` returns one latest matching committed change with its field diff, skipping formatting and metadata-order-only commits. Both support `--since` (the revision-exclusive Git range through HEAD), folder/area/kind/field filters and JSON. Stable uid follows id/file renames, with observed unchanged-id fallback before uid introduction. Renames before uid, reused ids without uid and unrelated branch identity can be ambiguous; the output states this limit. Raising log's limit continues through remaining candidate history. Empty log results say no semantic commits; last fails when none match.
+
+Text uses wrapped `+`, `-` and `~` rows, with color on terminals (`NO_COLOR` disables it). `--json` retains complete field values; `--summary` omits field values in both text and JSON while retaining per-contract counts. Each query reloads movable refs, worktree and index; only Git-returned immutable blobs are cached within that invocation. Invalid roots/refs or missing HEAD fail clearly. Invalid JSON, absent ids, duplicate ids/uids, outside-root folder filters and unmerged index stages are rejected. Symlink contract files are excluded, and a symlink worktree unit directory is rejected. No history command writes source, registry, index or Git history.
+
 ```bash
 harness generate unit PriceQuote                 # any scaffold kind, plus its manifest
 harness generate unit Billing --kind service --responsibility "Charges an invoice once."

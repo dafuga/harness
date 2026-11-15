@@ -114,7 +114,9 @@ function contractLookupRules(): string {
 		'- Start with `harness contracts map <source-path-or-folder>` to find the owning contracts and their dependency/dependent neighbours.',
 		'- Use `harness contracts list --area <category>` or `harness contracts search "term" -i --limit 10` to find relevant contracts before opening source.',
 		'- Read `harness contracts show <unit-id-or-path>`; add `--json` for structured data. Search supports `--regex`, `--kind` and `--folder`.',
-		'- These commands read stored unit and scenario contracts only. Paths are project-root relative; use `--root <project>` when outside it. They do not infer missing contracts or verify source freshness.',
+		'- Use `harness contracts diff` for HEAD to working tree, `harness contracts diff <commit>` for that commit, and `harness contracts diff <base>..<head> --summary` for a range. `--since <rev>` compares to the working tree; `--staged` reads the index.',
+		'- Use `harness contracts log <unit>` for commit summaries and `harness contracts last <unit>` for its latest material field diff. Filters and JSON apply; `--summary --json` omits field values. Run `harness info contracts` for identity, array and count rules.',
+		'- Lookup reads stored unit/scenario JSON; history reads raw unit JSON snapshots and Git metadata. No source is inspected. Paths are project-root relative; use `--root <project>` outside it. These queries do not infer missing contracts or verify source freshness.',
 		'- Understand dependencies from their contracts; open implementation only for the units you need to change or when the stored contract leaves a specific gap.',
 		''
 	].join('\n');
