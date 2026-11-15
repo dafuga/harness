@@ -18,29 +18,32 @@
 				"name": "reportLock.directory",
 				"type": "string",
 				"required": true,
-				"description": "Existing report directory where the lock file is created."
+				"description": "Directory path whose `.lock` child is opened with exclusive-create mode. It must permit creating and writing that lock file, which is closed and removed after the operation.",
+				"examples": ["packages/reports"]
 			},
 			{
 				"name": "reportLock.operation",
 				"type": "() => Promise<T>",
 				"required": true,
-				"description": "Async operation to run after acquiring the lock."
+				"description": "Asynchronous report work invoked after `.lock` is created and its PID is written. Its resolved value is returned, and its rejection propagates."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportLock",
 				"type": "Promise<T>",
-				"description": "Promise resolving to the operation result. Tries exclusive lock creation up to 200 times, with 25-millisecond delays. An older-than-five-second lock with a valid PID is removed only if that process no longer exists. The lock is closed and removed after the operation."
+				"description": "Fulfills with the operation's resolved value after lock cleanup. The caller determines `T`; lock acquisition is attempted up to 200 times with 25-millisecond waits, and recovery removes a lock older than five seconds only when it contains a valid PID for a process that no longer exists.",
+				"examples": ["updated"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects with Report is busy; retry this update after exhausting attempts. Other filesystem and operation errors propagate."
+				"description": "Rejects with `Error('Report is busy; retry this update')` after all 200 lock attempts fail. Non-`EEXIST` open errors, lock write or close errors, final unlink errors other than `ENOENT`, and rejection reasons from `operation` propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportLock",
@@ -49,29 +52,32 @@
 						"name": "reportLock.directory",
 						"type": "string",
 						"required": true,
-						"description": "Existing report directory where the lock file is created."
+						"description": "Directory path whose `.lock` child is opened with exclusive-create mode. It must permit creating and writing that lock file, which is closed and removed after the operation.",
+						"examples": ["packages/reports"]
 					},
 					{
 						"name": "reportLock.operation",
 						"type": "() => Promise<T>",
 						"required": true,
-						"description": "Async operation to run after acquiring the lock."
+						"description": "Asynchronous report work invoked after `.lock` is created and its PID is written. Its resolved value is returned, and its rejection propagates."
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportLock",
 						"type": "Promise<T>",
-						"description": "Promise resolving to the operation result. Tries exclusive lock creation up to 200 times, with 25-millisecond delays. An older-than-five-second lock with a valid PID is removed only if that process no longer exists. The lock is closed and removed after the operation."
+						"description": "Fulfills with the operation's resolved value after lock cleanup. The caller determines `T`; lock acquisition is attempted up to 200 times with 25-millisecond waits, and recovery removes a lock older than five seconds only when it contains a valid PID for a process that no longer exists.",
+						"examples": ["updated"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with `Error('Report is busy; retry this update')` after all 200 lock attempts fail. Non-`EEXIST` open errors, lock write or close errors, final unlink errors other than `ENOENT`, and rejection reasons from `operation` propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
