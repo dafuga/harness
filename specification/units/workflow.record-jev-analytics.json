@@ -12,51 +12,128 @@
 		"symbols": ["recordResponse", "recordCleanCode"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "recordResponse.report",
 				"type": "ResponseCheckReport",
-				"required": true
+				"required": true,
+				"description": "The response-check result passed to analytics recording. The recorder records status, requested model, an optional evaluator model, a fingerprint of input hashes and rubric settings, and usage token counts; it omits checks, coverage, mode, and error text.",
+				"examples": [
+					{
+						"status": "dry-run",
+						"mode": "advisory",
+						"rubricVersion": "response-check-v1",
+						"requestedModel": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"inputHashes": {
+							"request": "de9740dc25a22fef9a9389a8b47cbd0fcf734ec597a7264f6e49818942c53fb3",
+							"response": "e0a98e03046cd94e02d0fb22ff958a3c0069f4a7b82df23d8a264d4e786c5544",
+							"context": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+							"criteria": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+						},
+						"checks": [],
+						"coverage": ["fulfillment", "completeness", "constraints", "relevance"],
+						"usage": {
+							"input_tokens": 0,
+							"output_tokens": 0
+						}
+					}
+				]
 			},
 			{
 				"name": "recordResponse.context",
 				"type": "AnalyticsContext",
-				"required": true
+				"required": true,
+				"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "recordResponse.durationMs",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Elapsed response-check duration in milliseconds, copied unchanged into the analytics event. No range is enforced here.",
+				"examples": [1842]
 			},
 			{
 				"name": "recordCleanCode.report",
 				"type": "CleanCodeReport",
-				"required": true
+				"required": true,
+				"description": "The clean-code result passed to analytics recording. The event includes status, requested model, distinct file evaluator models when present, an all-files cached flag, a fingerprint of file paths and hashes plus rubric settings, and usage token counts; it omits coverage and assessments.",
+				"examples": [
+					{
+						"mode": "advisory",
+						"status": "incomplete",
+						"rubricVersion": "clean-code-v1",
+						"requestedModel": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"coverage": {
+							"selectedFiles": ["src/workflows/agents-providers/recordJevAnalytics.ts"],
+							"excludedPaths": [],
+							"unsupportedFiles": []
+						},
+						"files": [
+							{
+								"path": "src/workflows/agents-providers/recordJevAnalytics.ts",
+								"contentHash": "",
+								"contextHash": "",
+								"status": "incomplete",
+								"assessments": [],
+								"contextPaths": [],
+								"omittedContext": [],
+								"cached": false,
+								"usage": {
+									"input_tokens": 0,
+									"output_tokens": 0
+								},
+								"error": "Jev review was cancelled."
+							}
+						],
+						"usage": {
+							"input_tokens": 0,
+							"output_tokens": 0
+						}
+					}
+				]
 			},
 			{
 				"name": "recordCleanCode.context",
 				"type": "AnalyticsContext",
-				"required": true
+				"required": true,
+				"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "recordCleanCode.timing",
 				"type": "{ root: string; durationMs: number }",
-				"required": true
+				"required": true,
+				"description": "Project root used by analytics recording to identify the repository, plus clean-code elapsed duration in milliseconds. The root is passed to project identity lookup and the duration is copied without a range check.",
+				"examples": [
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+						"durationMs": 2350
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordResponse",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Promise<void> that resolves after the response analytics record is attempted; it yields no JSON value or event ID. Analytics persistence is skipped when HARNESS_ANALYTICS_DISABLED is set to 1, and recordAnalytics catches its persistence failures."
 			},
 			{
 				"name": "recordCleanCode",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Promise<void> that resolves after the clean-code analytics record is attempted; it yields no JSON value or event ID. Analytics persistence is skipped when HARNESS_ANALYTICS_DISABLED is set to 1, and recordAnalytics catches its persistence failures."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "recordResponse",
@@ -64,27 +141,56 @@
 					{
 						"name": "recordResponse.report",
 						"type": "ResponseCheckReport",
-						"required": true
+						"required": true,
+						"description": "The response-check result passed to analytics recording. The recorder records status, requested model, an optional evaluator model, a fingerprint of input hashes and rubric settings, and usage token counts; it omits checks, coverage, mode, and error text.",
+						"examples": [
+							{
+								"status": "dry-run",
+								"mode": "advisory",
+								"rubricVersion": "response-check-v1",
+								"requestedModel": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"inputHashes": {
+									"request": "de9740dc25a22fef9a9389a8b47cbd0fcf734ec597a7264f6e49818942c53fb3",
+									"response": "e0a98e03046cd94e02d0fb22ff958a3c0069f4a7b82df23d8a264d4e786c5544",
+									"context": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+									"criteria": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+								},
+								"checks": [],
+								"coverage": ["fulfillment", "completeness", "constraints", "relevance"],
+								"usage": {
+									"input_tokens": 0,
+									"output_tokens": 0
+								}
+							}
+						]
 					},
 					{
 						"name": "recordResponse.context",
 						"type": "AnalyticsContext",
-						"required": true
+						"required": true,
+						"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
+						"examples": [
+							{}
+						]
 					},
 					{
 						"name": "recordResponse.durationMs",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Elapsed response-check duration in milliseconds, copied unchanged into the analytics event. No range is enforced here.",
+						"examples": [1842]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordResponse",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Promise<void> that resolves after the response analytics record is attempted; it yields no JSON value or event ID. Analytics persistence is skipped when HARNESS_ANALYTICS_DISABLED is set to 1, and recordAnalytics catches its persistence failures."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordCleanCode",
@@ -92,27 +198,75 @@
 					{
 						"name": "recordCleanCode.report",
 						"type": "CleanCodeReport",
-						"required": true
+						"required": true,
+						"description": "The clean-code result passed to analytics recording. The event includes status, requested model, distinct file evaluator models when present, an all-files cached flag, a fingerprint of file paths and hashes plus rubric settings, and usage token counts; it omits coverage and assessments.",
+						"examples": [
+							{
+								"mode": "advisory",
+								"status": "incomplete",
+								"rubricVersion": "clean-code-v1",
+								"requestedModel": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"coverage": {
+									"selectedFiles": ["src/workflows/agents-providers/recordJevAnalytics.ts"],
+									"excludedPaths": [],
+									"unsupportedFiles": []
+								},
+								"files": [
+									{
+										"path": "src/workflows/agents-providers/recordJevAnalytics.ts",
+										"contentHash": "",
+										"contextHash": "",
+										"status": "incomplete",
+										"assessments": [],
+										"contextPaths": [],
+										"omittedContext": [],
+										"cached": false,
+										"usage": {
+											"input_tokens": 0,
+											"output_tokens": 0
+										},
+										"error": "Jev review was cancelled."
+									}
+								],
+								"usage": {
+									"input_tokens": 0,
+									"output_tokens": 0
+								}
+							}
+						]
 					},
 					{
 						"name": "recordCleanCode.context",
 						"type": "AnalyticsContext",
-						"required": true
+						"required": true,
+						"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
+						"examples": [
+							{}
+						]
 					},
 					{
 						"name": "recordCleanCode.timing",
 						"type": "{ root: string; durationMs: number }",
-						"required": true
+						"required": true,
+						"description": "Project root used by analytics recording to identify the repository, plus clean-code elapsed duration in milliseconds. The root is passed to project identity lookup and the duration is copied without a range check.",
+						"examples": [
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7",
+								"durationMs": 2350
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordCleanCode",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Promise<void> that resolves after the clean-code analytics record is attempted; it yields no JSON value or event ID. Analytics persistence is skipped when HARNESS_ANALYTICS_DISABLED is set to 1, and recordAnalytics catches its persistence failures."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
