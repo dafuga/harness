@@ -9,14 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/repositories/evidence-branch-repository/lfsPointer.ts",
 			"src/repositories/verification-evidence/evidence-branch-repository/lfsPointer.ts",
-			"src/services/attached-record-service/lfsPointer.ts",
+			"src/services/history-status-service/attached-record-service/lfsPointer.ts",
 			"src/services/verification-evidence/history-status-service/attached-record-service/lfsPointer.ts",
 			"src/utils/lfsPointer.ts",
 			"src/utils/verification-evidence/lfsPointer.ts",
 			"src/utils/verification-evidence/lfsPointer.types.ts"
 		],
 		"symbols": [
+			"lfsAttributes",
 			"lfsAttributes",
 			"parseLfsPointer",
 			"parseLfsPointer",
