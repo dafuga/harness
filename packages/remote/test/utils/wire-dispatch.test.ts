@@ -3,7 +3,8 @@ import { RemoteFailure, remoteLimits } from '../../src/models/Remote.types';
 import type { WireRequest } from '../../src/models/Remote.types';
 import { ResponseLedgerService } from '../../src/services/networking-security/wire-session-service/ResponseLedgerService';
 import { wireDispatch } from '../../src/services/wire-session-service/wireDispatch';
-import type { WireDispatchContext } from '../../src/utils/wireDispatch';
+import type { WireDispatchContext } from '../../src/utils/networking-security/wireDispatch';
+import { wireDispatch as relocatedWireDispatch } from '../../src/utils/networking-security/wireDispatch';
 
 const request = (method: WireRequest['method'], id = 'a'): WireRequest => ({
 	type: 'request',
@@ -72,4 +73,7 @@ test('declared failures keep their code and others are explained', async () => {
 		ok: false,
 		error: { code: 'failed', message: 'Explained' }
 	});
+});
+test('the networking-security module exports the same dispatcher', () => {
+	expect(relocatedWireDispatch).toBe(wireDispatch);
 });

@@ -11,16 +11,9 @@
 		"source": [
 			"packages/remote/src/services/networking-security/wire-session-service/wireDispatch.ts",
 			"packages/remote/src/services/wire-session-service/wireDispatch.ts",
-			"packages/remote/src/utils/networking-security/wireDispatch.ts",
-			"packages/remote/src/utils/wireDispatch.ts"
+			"packages/remote/src/utils/networking-security/wireDispatch.ts"
 		],
-		"symbols": [
-			"wireDispatch",
-			"wireDispatch",
-			"WireDispatchContext",
-			"wireDispatch",
-			"wireDispatch"
-		]
+		"symbols": ["wireDispatch", "wireDispatch", "WireDispatchContext", "wireDispatch"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -11,10 +11,9 @@
 		"source": [
 			"packages/remote/src/services/networking-security/secure-channel-service/sessionKeys.ts",
 			"packages/remote/src/services/secure-channel-service/sessionKeys.ts",
-			"packages/remote/src/utils/networking-security/sessionKeys.ts",
-			"packages/remote/src/utils/sessionKeys.ts"
+			"packages/remote/src/utils/networking-security/sessionKeys.ts"
 		],
-		"symbols": ["sessionKeys", "sessionKeys", "SessionKeyInput", "sessionKeys", "sessionKeys"]
+		"symbols": ["sessionKeys", "sessionKeys", "SessionKeyInput", "sessionKeys"]
 	},
 	"contract": {
 		"origin": "declared",
