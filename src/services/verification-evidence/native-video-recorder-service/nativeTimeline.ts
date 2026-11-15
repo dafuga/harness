@@ -11,11 +11,7 @@ export function recordingTimeline(
 ): NativeRecordingMetadata {
 	const { start, endTimestamp, count } = retainedRecordingInterval(capture);
 	const mapping = sampleRecordingFrames(capture.frames, start.timestamp, count);
-	const events = capture.events.map((event) => ({
-		...event,
-		atSeconds: (event.timestamp - start.timestamp) / 1000,
-		frameNumber: Math.ceil(((event.timestamp - start.timestamp) * 30) / 1000)
-	}));
+	const events = mappedRecordingEvents(capture, mapping, start.timestamp);
 	if (events.some((event) => event.frameNumber >= count || event.atSeconds < 0))
 		recordingFailure('asserted native event lies outside encoded frames');
 	const gaps = capture.frames
@@ -101,4 +97,21 @@ function initialRecordingFacts(
 		codec: 'h264',
 		pixelFormat: 'yuv420p'
 	};
+}
+
+function mappedRecordingEvents(
+	capture: NativeCapture,
+	mapping: NativeRecordingMetadata['mapping'],
+	startTimestamp: number
+): NativeRecordingMetadata['events'] {
+	return capture.events.map((event) => {
+		const after = Math.max(event.timestamp, event.sourceTimestamp ?? event.timestamp);
+		const sample = mapping.find(
+			(sample) =>
+				startTimestamp + (sample.frameNumber * 1000) / 30 >= after &&
+				sample.nativeTimestamp >= (event.sourceTimestamp ?? -Infinity)
+		);
+		if (!sample) recordingFailure('No encoded frame maps to the asserted native paint.');
+		return { ...event, atSeconds: sample.frameNumber / 30, frameNumber: sample.frameNumber };
+	});
 }

@@ -31,6 +31,9 @@ export interface NativeRecordingEvent {
 	kind: 'trigger' | 'state' | 'edge';
 	id: string;
 	timestamp: number;
+	/** Native paint selected after the assertion barrier, or the held damage-driven frame. */
+	sourceTimestamp?: number;
+	paint?: 'native-frame' | 'held-static-frame';
 	atSeconds: number;
 	frameNumber: number;
 }

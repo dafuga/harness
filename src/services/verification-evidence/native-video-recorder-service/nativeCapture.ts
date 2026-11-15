@@ -6,6 +6,7 @@ import type {
 	NativeRecordingOptions,
 	NativeRecordingSession
 } from '../NativeVideoRecorderService.types';
+import { nativeVisit } from './nativeVisit';
 import { nativeFrameWriter } from './nativeFrames';
 import { recordingFailure } from './nativeFiles';
 import { removeRecordingMarker, showRecordingMarker, verifyRecordingMarker } from './nativeMarker';
@@ -91,11 +92,7 @@ async function capturePrepared(
 		const mark = async (kind: 'trigger' | 'state' | 'edge', id: string) => {
 			if (!id.trim() || id.length > 200 || events.length >= 256)
 				recordingFailure('invalid native recording event');
-			events.push({
-				kind,
-				id,
-				timestamp: await page.evaluate(() => performance.timeOrigin + performance.now())
-			});
+			events.push(await nativeVisit(page, writer.frames, kind, id));
 		};
 		await mark('trigger', 'trigger');
 		await options.perform({ ...session, mark });

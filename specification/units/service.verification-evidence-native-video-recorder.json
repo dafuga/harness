@@ -20,7 +20,8 @@
 			"src/services/verification-evidence/native-video-recorder-service/nativeFiles.ts",
 			"src/services/verification-evidence/native-video-recorder-service/nativeFrames.ts",
 			"src/services/verification-evidence/native-video-recorder-service/nativeMarker.ts",
-			"src/services/verification-evidence/native-video-recorder-service/nativeTimeline.ts"
+			"src/services/verification-evidence/native-video-recorder-service/nativeTimeline.ts",
+			"src/services/verification-evidence/native-video-recorder-service/nativeVisit.ts"
 		],
 		"symbols": [
 			"NativeVideoRecorderService",
@@ -59,7 +60,8 @@
 			"showRecordingMarker",
 			"removeRecordingMarker",
 			"verifyRecordingMarker",
-			"recordingTimeline"
+			"recordingTimeline",
+			"nativeVisit"
 		]
 	},
 	"contract": {
@@ -345,6 +347,30 @@
 				"type": "NativeCapture",
 				"required": true,
 				"description": "Bounded native JPEG frame index, renderer assertion events, discarded marker and measured acquisition end."
+			},
+			{
+				"name": "nativeVisit.page",
+				"type": "Page",
+				"required": true,
+				"description": "Fresh isolated recording page; the browser clock and animations continue normally through a bounded paint barrier."
+			},
+			{
+				"name": "nativeVisit.frames",
+				"type": "NativeCapture['frames']",
+				"required": true,
+				"description": "Bounded native acquisition index used to select a painted frame or explicitly labelled held static frame."
+			},
+			{
+				"name": "nativeVisit.kind",
+				"type": "'trigger' | 'state' | 'edge'",
+				"required": true,
+				"description": "Trigger marker or caller-asserted visible state/edge; state and edge visits wait for paint before script advancement."
+			},
+			{
+				"name": "nativeVisit.id",
+				"type": "string",
+				"required": true,
+				"description": "Nonempty declared state or transition identity already checked by the recording script."
 			}
 		],
 		"outputs": [
@@ -1310,6 +1336,50 @@
 						"name": "NodeJS.ErrnoException",
 						"type": "thrown",
 						"description": "Owned cache, frame, media or receipt filesystem operations cannot complete."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "nativeVisit",
+				"inputs": [
+					{
+						"name": "nativeVisit.page",
+						"type": "Page",
+						"required": true,
+						"description": "Fresh isolated recording page; the browser clock and animations continue normally through a bounded paint barrier."
+					},
+					{
+						"name": "nativeVisit.frames",
+						"type": "NativeCapture['frames']",
+						"required": true,
+						"description": "Bounded native acquisition index used to select a painted frame or explicitly labelled held static frame."
+					},
+					{
+						"name": "nativeVisit.kind",
+						"type": "'trigger' | 'state' | 'edge'",
+						"required": true,
+						"description": "Trigger marker or caller-asserted visible state/edge; state and edge visits wait for paint before script advancement."
+					},
+					{
+						"name": "nativeVisit.id",
+						"type": "string",
+						"required": true,
+						"description": "Nonempty declared state or transition identity already checked by the recording script."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeVisit",
+						"type": "Promise<NativeCapture['events'][number]>",
+						"description": "Renderer observation timestamp plus selected native source timestamp and explicit paint/held-frame standing for canonical visit mapping."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "No acquired frame can represent the asserted state; page operations can also reject when the owning context closes or times out."
 					}
 				],
 				"errorStatus": "declared"
