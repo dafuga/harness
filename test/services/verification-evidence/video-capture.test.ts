@@ -9,6 +9,7 @@ import { VideoEvidenceService } from '../../../src/services/verification-evidenc
 import { captureReviewFlag } from '../../support/videoCaptureFlags';
 import { assertRealVideoCapture } from '../../support/videoCaptureReal';
 import { measureWorkload } from '../../support/measureWorkload';
+import { assertCaptureIndexOwnership } from '../../support/videoCaptureProtocol';
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -141,6 +142,7 @@ test('capture orchestration cleans owned raw only after an attached matching rec
 			f.native.produced.every((item) => existsSync(item.video.path) && existsSync(item.poster.path))
 		).toBe(true);
 		expect(result.raw.every((raw) => !existsSync(join(raw.directory, 'raw')))).toBe(true);
+		await assertCaptureIndexOwnership(f);
 	});
 }, 30_000);
 
