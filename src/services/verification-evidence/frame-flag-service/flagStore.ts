@@ -10,7 +10,6 @@ import {
 	boundClip,
 	frameHash,
 	parseFlagJson,
-	parseFlagValue,
 	resolutionSchema,
 	sameFrameSlot,
 	storedFlagSchema
@@ -93,10 +92,7 @@ async function readFlag(
 	tip: string,
 	path: string
 ): Promise<FrameFlag> {
-	const metadata = parseFlagValue(
-		storedFlagSchema,
-		parseFlagJson(await repository.tree.read(tip, path))
-	);
+	const metadata = parseFlagJson(storedFlagSchema, await repository.tree.read(tip, path));
 	const directory = `video-feedback/${metadata.clip.sha256}/${metadata.id}`;
 	if (path !== `${directory}/flag.json`)
 		throw new ExpectedCliError('Corrupt frame flag path binding.');
@@ -124,10 +120,7 @@ async function applyResolution(
 	context: { flags: FrameFlag[]; load: ResolutionReader }
 ): Promise<void> {
 	const { flags, load } = context;
-	const event = parseFlagValue(
-		resolutionSchema,
-		parseFlagJson(await repository.tree.read(tip, path))
-	);
+	const event = parseFlagJson(resolutionSchema, await repository.tree.read(tip, path));
 	const flag = flags.find((candidate) => candidate.id === event.flag);
 	if (!flag || path !== resolutionPath(flag, event))
 		throw new ExpectedCliError('Corrupt frame resolution identity or path.');

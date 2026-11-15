@@ -104,7 +104,7 @@ export function inspectFlagPng(bytes: Buffer) {
 		throw new ExpectedCliError('Frame PNG dimensions exceed the video limits.');
 	try {
 		const facts = mediaFacts(bytes, 'image/png');
-		if (!('kind' in facts) || facts.kind !== 'image') throw new Error('invalid PNG');
+		if (!('kind' in facts) || facts.kind !== 'image') throw new ExpectedCliError('invalid PNG');
 		return facts;
 	} catch {
 		throw new ExpectedCliError('Frame PNG is corrupt or cannot be decoded.');

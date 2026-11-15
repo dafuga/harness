@@ -89,27 +89,35 @@ export const currentSchema = z.array(
 	z.strictObject({ clipId: ownerSchema, viewport: ownerSchema, sha256: hash })
 );
 
-export function parseFlagValue<T>(schema: z.ZodType<T>, value: unknown): T {
+function parseUncheckedFlagValue<T>(schema: z.ZodType<T>, value: unknown): T {
 	const parsed = schema.safeParse(value);
 	if (!parsed.success)
 		throw new ExpectedCliError(`Invalid frame feedback: ${parsed.error.message}`);
 	return parsed.data;
 }
 
-export function parseFlagJson(bytes: Buffer | undefined): unknown {
+/** Revalidate typed callers too: JavaScript and injected readers remain untrusted at runtime. */
+export function parseFlagValue<T>(schema: z.ZodType<T>, value: T): T {
+	return parseUncheckedFlagValue(schema, value);
+}
+
+/** Unknown JSON stays inside the parser until the supplied schema has accepted it. */
+export function parseFlagJson<T>(schema: z.ZodType<T>, bytes: Buffer | undefined): T {
+	let value: unknown;
 	try {
-		if (!bytes) throw new Error('missing metadata');
-		return JSON.parse(bytes.toString('utf8')) as unknown;
+		if (!bytes) throw new ExpectedCliError('missing metadata');
+		value = JSON.parse(bytes.toString('utf8')) as unknown;
 	} catch {
 		throw new ExpectedCliError('Corrupt or missing frame feedback evidence metadata.');
 	}
+	return parseUncheckedFlagValue(schema, value);
 }
 
 export function frameHash(bytes: Buffer | string): string {
 	return createHash('sha256').update(bytes).digest('hex');
 }
 
-export function boundClip(reference: FrameClipReference, value: unknown): FrameClip {
+export function boundClip(reference: FrameClipReference, value: FrameClip): FrameClip {
 	const clip = parseFlagValue(clipSchema, value);
 	for (const key of ['record', 'revision', 'unit', 'clipId', 'viewport'] as const) {
 		if (clip[key] !== reference[key])
