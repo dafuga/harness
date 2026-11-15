@@ -1247,7 +1247,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.constructor",
-						"type": "unknown",
+						"type": "RemoteHttpProjectAdapter",
 						"description": "Constructs the adapter instance and its authenticated HTTP, agent, projection, and evidence services. The returned class instance cannot be represented in JSON."
 					}
 				],

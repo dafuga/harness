@@ -198,7 +198,7 @@
 				"outputs": [
 					{
 						"name": "ApiSessionRepository.constructor",
-						"type": "unknown",
+						"type": "ApiSessionRepository",
 						"description": "The new repository instance; its session file is join(directory, SHA-256 hex digest of origin + '.json'), and its lock and temporary files are created beside it."
 					}
 				],

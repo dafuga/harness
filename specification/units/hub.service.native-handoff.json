@@ -141,7 +141,7 @@
 			},
 			{
 				"name": "POLL_INTERVAL",
-				"type": "unknown",
+				"type": "number",
 				"description": "The poll interval, 2, that start returns as the interval field of NativeStartResult; the desktop counts it in seconds. poll does not check how often it is called, so the value is advice to the caller and not an enforced limit.",
 				"examples": [2]
 			},
@@ -482,7 +482,7 @@
 				"outputs": [
 					{
 						"name": "NativeHandoffService.constructor",
-						"type": "unknown",
+						"type": "NativeHandoffService",
 						"description": "The NativeHandoffService instance that the constructor creates. It holds only the options it was given, and every method reads them from there."
 					}
 				],

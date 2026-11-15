@@ -1547,7 +1547,7 @@
 				"outputs": [
 					{
 						"name": "HubProjectionService.constructor",
-						"type": "unknown",
+						"type": "HubProjectionService",
 						"description": "The constructor returns a HubProjectionService instance that retains the supplied dependencies and creates its HubEvidenceService reader. This class instance is not JSON-serializable, so no JSON example is supplied."
 					}
 				],

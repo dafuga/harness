@@ -484,7 +484,7 @@
 				"outputs": [
 					{
 						"name": "HistoryNoteRepository.constructor",
-						"type": "unknown",
+						"type": "HistoryNoteRepository",
 						"description": "Constructs the repository object that retains a GitAdapter configured with the supplied root. The result is a class instance and cannot be represented as JSON."
 					}
 				],

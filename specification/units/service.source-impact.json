@@ -313,7 +313,7 @@
 				"outputs": [
 					{
 						"name": "SourceImpactService.constructor",
-						"type": "unknown",
+						"type": "SourceImpactService",
 						"description": "A SourceImpactService instance bound to the repository root, with its Git adapter, source indexer and impact runtime initialized. It caches each commit side promise so a tree is indexed once per service instance."
 					}
 				],

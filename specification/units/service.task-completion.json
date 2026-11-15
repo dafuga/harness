@@ -652,7 +652,7 @@
 				"outputs": [
 					{
 						"name": "TaskCompletionService.constructor",
-						"type": "unknown",
+						"type": "TaskCompletionService",
 						"description": "The new TaskCompletionService instance, which only stores the root; constructing it reads no files and runs no Git commands."
 					}
 				],

@@ -340,7 +340,7 @@
 				"outputs": [
 					{
 						"name": "RevisionDetailService.constructor",
-						"type": "unknown",
+						"type": "RevisionDetailService",
 						"description": "Constructed RevisionDetailService instance bound to the repository root, history service, and shared source context. It creates a GitAdapter and does not load a revision until build is called."
 					}
 				],

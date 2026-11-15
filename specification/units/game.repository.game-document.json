@@ -232,7 +232,7 @@
 				"outputs": [
 					{
 						"name": "GameDocumentRepository.constructor",
-						"type": "unknown",
+						"type": "GameDocumentRepository",
 						"description": "The constructed repository instance retains the supplied root for later reads and saves. The constructor does not inspect or validate the path."
 					}
 				],

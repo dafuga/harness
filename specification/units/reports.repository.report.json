@@ -828,7 +828,7 @@
 				"outputs": [
 					{
 						"name": "ReportRepository.constructor",
-						"type": "unknown",
+						"type": "ReportRepository",
 						"description": "A ReportRepository class instance whose readonly root is selected by reportFiles from the supplied root, PROJECT_REPORTS_HOME, or the homedir fallback."
 					}
 				],

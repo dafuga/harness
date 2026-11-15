@@ -81,7 +81,7 @@
 		"outputs": [
 			{
 				"name": "FRAME_SECONDS",
-				"type": "unknown",
+				"type": "number",
 				"description": "The exported constant `FRAME_SECONDS = 3` is the fixed length of each replay frame in seconds; `replayFrames` takes no duration argument, so this value cannot vary per call. It sets every frame's `duration` and, multiplied by a frame's `index`, gives its `start`.",
 				"examples": [3]
 			},

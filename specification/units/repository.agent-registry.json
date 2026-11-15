@@ -537,7 +537,7 @@
 				"outputs": [
 					{
 						"name": "AgentRegistryRepository.constructor",
-						"type": "unknown",
+						"type": "AgentRegistryRepository",
 						"description": "The constructed repository instance, with its storage directory set beneath the supplied checkout root. Consumers use it to register, update, finish, read, list, and remove agent records."
 					}
 				],

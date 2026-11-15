@@ -33,7 +33,7 @@
 		"outputs": [
 			{
 				"name": "unshownHostedArtifact",
-				"type": "unknown",
+				"type": "string",
 				"description": "The fixed message string that hostedAttestation passes to the Error it throws for a refused declaration. It is a constant export, so its value never changes with the input.",
 				"examples": ["The hosted service sent a kind this app does not show."]
 			},

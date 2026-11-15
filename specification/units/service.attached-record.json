@@ -113,7 +113,7 @@
 				"outputs": [
 					{
 						"name": "AttachedRecordService.constructor",
-						"type": "unknown",
+						"type": "AttachedRecordService",
 						"description": "The constructed service instance, with an EvidenceBranchRepository and LfsAdapter rooted at root, the optional within pin, and an initially empty per-process load cache."
 					}
 				],

@@ -94,7 +94,7 @@
 				"outputs": [
 					{
 						"name": "EvidenceRestoreService.constructor",
-						"type": "unknown",
+						"type": "EvidenceRestoreService",
 						"description": "An EvidenceRestoreService instance holding the verification store, history status, and history note repositories rooted at the supplied path. Restore work begins only when restore() is called."
 					}
 				],

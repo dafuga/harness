@@ -1669,7 +1669,7 @@
 				"outputs": [
 					{
 						"name": "CatalogRepository.constructor",
-						"type": "unknown",
+						"type": "CatalogRepository",
 						"description": "The new CatalogRepository instance; its readonly adapter property is the SqliteAdapter built over the given connection and the catalog models."
 					}
 				],

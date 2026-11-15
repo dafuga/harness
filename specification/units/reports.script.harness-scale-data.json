@@ -47,7 +47,7 @@
 		"outputs": [
 			{
 				"name": "generatedUnits",
-				"type": "unknown",
+				"type": "number",
 				"description": "The fixed number of generated units exported by the script: 480, with generated IDs indexed from 000 through 479. The generator uses a 120-unit offset when assigning dependencies.",
 				"examples": [480]
 			},

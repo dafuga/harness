@@ -61,7 +61,7 @@
 				"outputs": [
 					{
 						"name": "SecureFailure.constructor",
-						"type": "unknown",
+						"type": "SecureFailure",
 						"description": "The constructed SecureFailure error instance. Its name is set to SecureFailure, and its message is Secure channel followed by the supplied reason."
 					}
 				],

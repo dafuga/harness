@@ -420,7 +420,7 @@
 				"outputs": [
 					{
 						"name": "AgentActivityService.constructor",
-						"type": "unknown",
+						"type": "AgentActivityService",
 						"description": "The constructed service instance, with a registry rooted at the supplied checkout path and a process identity adapter for checking named PIDs."
 					}
 				],

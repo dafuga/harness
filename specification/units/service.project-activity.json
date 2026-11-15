@@ -770,7 +770,7 @@
 				"outputs": [
 					{
 						"name": "ProjectActivityService.constructor",
-						"type": "unknown",
+						"type": "ProjectActivityService",
 						"description": "The new ProjectActivityService, which holds a ProjectWorkRepository for the root; building it reads nothing from Git or the disk."
 					}
 				],

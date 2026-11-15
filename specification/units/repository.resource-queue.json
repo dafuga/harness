@@ -623,7 +623,7 @@
 				"outputs": [
 					{
 						"name": "ResourceQueueRepository.constructor",
-						"type": "unknown",
+						"type": "ResourceQueueRepository",
 						"description": "The ResourceQueueRepository instance backed by a ResourceDatabase opened for home. Callers use it for queue and snapshot access, then close the connection when finished."
 					}
 				],

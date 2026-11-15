@@ -36,7 +36,7 @@
 		"outputs": [
 			{
 				"name": "pickerResource",
-				"type": "unknown",
+				"type": "string",
 				"description": "The fixed URI at which the model-picker resource is registered and which is attached to each registered tool as its UI resource. It is always ui://harness-claude/model-picker.",
 				"examples": ["ui://harness-claude/model-picker"]
 			},
@@ -86,7 +86,7 @@
 				"outputs": [
 					{
 						"name": "CodexPickerMcpService.constructor",
-						"type": "unknown",
+						"type": "CodexPickerMcpService",
 						"description": "The constructed CodexPickerMcpService instance has the model-picker resource and six picker tools registered on its MCP server. The stdio transport is attached only when connect() is called."
 					}
 				],

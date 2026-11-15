@@ -172,7 +172,7 @@
 				"outputs": [
 					{
 						"name": "CheckpointImageRepository.constructor",
-						"type": "unknown",
+						"type": "CheckpointImageRepository",
 						"description": "The constructor creates the new CheckpointImageRepository instance, which holds root as its private root property. The constructor performs no I/O and no validation."
 					}
 				],

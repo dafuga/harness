@@ -261,7 +261,7 @@
 				"outputs": [
 					{
 						"name": "RelayLinkService.constructor",
-						"type": "unknown",
+						"type": "RelayLinkService",
 						"description": "A RelayLinkService instance in state 'offline' with no socket and `running` false; constructing it creates no socket or timer until `start` is called."
 					}
 				],

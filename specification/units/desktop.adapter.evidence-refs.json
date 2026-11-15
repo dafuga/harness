@@ -65,13 +65,13 @@
 		"outputs": [
 			{
 				"name": "notesRef",
-				"type": "unknown",
+				"type": "string",
 				"description": "The fixed Git reference name from which Harness notes revisions are read.",
 				"examples": ["refs/notes/harness"]
 			},
 			{
 				"name": "evidenceRef",
-				"type": "unknown",
+				"type": "string",
 				"description": "The fixed Git reference name from which evidence revisions are read.",
 				"examples": ["refs/heads/harness-evidence"]
 			},
@@ -214,7 +214,7 @@
 				"outputs": [
 					{
 						"name": "EvidenceRefsAdapter.constructor",
-						"type": "unknown",
+						"type": "EvidenceRefsAdapter",
 						"description": "The EvidenceRefsAdapter instance that retains the repository root for later ref reads and ancestry checks."
 					}
 				],

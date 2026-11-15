@@ -29,17 +29,13 @@
 				"type": "string[]",
 				"required": true,
 				"description": "The command-line options of the simulator build, one exact option per array entry: --sync, --fixture, --scan-fixture or --release, in any order and repeated freely. Any other entry makes iosBuildPlan return an error object, and an empty array is a valid Debug build with fixture, scanFixture and sync all false.",
-				"examples": [
-					["--sync", "--fixture"],
-					["--sync", "--release"],
-					[]
-				]
+				"examples": [["--sync", "--fixture"], ["--sync", "--release"], []]
 			}
 		],
 		"outputs": [
 			{
 				"name": "fixtureNeedsDebug",
-				"type": "unknown",
+				"type": "string",
 				"description": "The exported text that iosBuildPlan returns as its error when --fixture or --scan-fixture is combined with --release. It states that a fixture build is a Debug build and that a Release product never accepts a local relay, and the same text is returned for either option.",
 				"examples": [
 					"A fixture build is a Debug build: --fixture cannot be combined with --release. A Release product never accepts a local relay."
@@ -102,11 +98,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "The command-line options of the simulator build, one exact option per array entry: --sync, --fixture, --scan-fixture or --release, in any order and repeated freely. Any other entry makes iosBuildPlan return an error object, and an empty array is a valid Debug build with fixture, scanFixture and sync all false.",
-						"examples": [
-							["--sync", "--fixture"],
-							["--sync", "--release"],
-							[]
-						]
+						"examples": [["--sync", "--fixture"], ["--sync", "--release"], []]
 					}
 				],
 				"outputs": [

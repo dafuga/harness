@@ -86,7 +86,7 @@
 		"outputs": [
 			{
 				"name": "responseRubricVersion",
-				"type": "unknown",
+				"type": "string",
 				"description": "The rubric version string `response-check-v1` is a fixed exported constant that depends on no input and cannot be reassigned.",
 				"examples": ["response-check-v1"]
 			},

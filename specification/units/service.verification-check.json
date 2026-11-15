@@ -409,7 +409,7 @@
 				"outputs": [
 					{
 						"name": "VerificationCheckService.constructor",
-						"type": "unknown",
+						"type": "VerificationCheckService",
 						"description": "Constructed service instance holding the repository root and indexer for later check and integrity calls. If no indexer is provided, the constructor creates a new SourceIndexService."
 					}
 				],

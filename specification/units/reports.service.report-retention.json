@@ -32,9 +32,7 @@
 				"required": false,
 				"default": {},
 				"description": "The options select one report when run is truthy and set the effective dry-run flag from Boolean(dryRun). A run-scoped call skips orphan cleanup, and an omitted argument defaults to {}.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			}
 		],
 		"outputs": [
@@ -73,9 +71,7 @@
 						"required": false,
 						"default": {},
 						"description": "The options select one report when run is truthy and set the effective dry-run flag from Boolean(dryRun). A run-scoped call skips orphan cleanup, and an omitted argument defaults to {}.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					}
 				],
 				"outputs": [
@@ -120,7 +116,7 @@
 				"outputs": [
 					{
 						"name": "ReportRetentionService.constructor",
-						"type": "unknown",
+						"type": "ReportRetentionService",
 						"description": "The constructor creates a ReportRetentionService instance that retains the repository reference for later reads and directory lookups. If the argument is omitted, the default parameter constructs new ReportRepository()."
 					}
 				],

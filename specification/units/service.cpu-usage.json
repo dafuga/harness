@@ -83,7 +83,7 @@
 				"outputs": [
 					{
 						"name": "CpuUsageService.constructor",
-						"type": "unknown",
+						"type": "CpuUsageService",
 						"description": "A constructed CpuUsageService instance configured with the supplied adapter or the default CpuProcessAdapter. The instance exposes snapshot() for CPU sampling."
 					}
 				],

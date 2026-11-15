@@ -68,7 +68,7 @@
 				"outputs": [
 					{
 						"name": "DeviceSessionService.constructor",
-						"type": "unknown",
+						"type": "DeviceSessionService",
 						"description": "The new DeviceSessionService, whose public wire property is the WireSessionService that serves the phone; it opens no project until a request names one. Events go only to the connection the phone attached, and until one attaches they are only recorded for replay."
 					}
 				],

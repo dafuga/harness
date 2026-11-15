@@ -73,9 +73,7 @@
 				"type": "Record<string, unknown>",
 				"required": true,
 				"description": "Record of parameters forwarded as the agent operation input. This service does not validate its keys; guarded write methods also require a writable branch tip.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "HarnessApiService.call.requestId",
@@ -245,9 +243,7 @@
 						"type": "Record<string, unknown>",
 						"required": true,
 						"description": "Record of parameters forwarded as the agent operation input. This service does not validate its keys; guarded write methods also require a writable branch tip.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					},
 					{
 						"name": "HarnessApiService.call.requestId",
@@ -299,7 +295,7 @@
 				"outputs": [
 					{
 						"name": "HarnessApiService.constructor",
-						"type": "unknown",
+						"type": "HarnessApiService",
 						"description": "The constructed HarnessApiService instance exposes its HTTP adapter, resolved project, and hosted-mode flag, and retains a session repository. This is a class instance."
 					}
 				],

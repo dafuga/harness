@@ -200,7 +200,7 @@
 				"outputs": [
 					{
 						"name": "ReportPagesRetentionAdapter.constructor",
-						"type": "unknown",
+						"type": "ReportPagesRetentionAdapter",
 						"description": "Adapter instance created by the constructor, holding the injected `command` and `request` as private readonly fields and exposing `purge`. The constructor neither calls nor validates either function."
 					}
 				],

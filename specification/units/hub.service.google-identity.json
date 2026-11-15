@@ -67,7 +67,7 @@
 		"outputs": [
 			{
 				"name": "GOOGLE_JWKS_URL",
-				"type": "unknown",
+				"type": "string",
 				"description": "Google's public JSON Web Key Set endpoint, exported as a constant. Nothing in this unit reads it: verify checks signatures only with the keys option passed to the constructor.",
 				"examples": ["https://www.googleapis.com/oauth2/v3/certs"]
 			},
@@ -75,9 +75,7 @@
 				"name": "GOOGLE_ISSUERS",
 				"type": "unknown",
 				"description": "The two issuer values a Google credential may carry in its iss claim: the https form and the bare host name. verify passes this list to jwtVerify as the accepted issuers, so a credential with any other iss is rejected.",
-				"examples": [
-					["https://accounts.google.com", "accounts.google.com"]
-				]
+				"examples": [["https://accounts.google.com", "accounts.google.com"]]
 			},
 			{
 				"name": "GoogleIdentityService.verify",
@@ -207,7 +205,7 @@
 				"outputs": [
 					{
 						"name": "GoogleIdentityService.constructor",
-						"type": "unknown",
+						"type": "GoogleIdentityService",
 						"description": "The new GoogleIdentityService instance, which keeps the options and exposes verify. The constructor only stores its argument, so it cannot fail."
 					}
 				],

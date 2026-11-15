@@ -202,7 +202,7 @@
 				"outputs": [
 					{
 						"name": "LocalDocumentAdapter.constructor",
-						"type": "unknown",
+						"type": "LocalDocumentAdapter<T>",
 						"description": "The new LocalDocumentAdapter instance; the constructor performs no file access and only stores the result of empty() as the in-memory copy."
 					}
 				],

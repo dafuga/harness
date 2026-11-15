@@ -40,13 +40,13 @@
 		"outputs": [
 			{
 				"name": "unreadableMedia",
-				"type": "unknown",
+				"type": "string",
 				"description": "The exported message that remoteBinary uses as the message of the Error it throws for an encoding other than 'base64', non-string data, or undecodable base64. It is never returned as a value, so it reaches a caller only as that Error's message.",
 				"examples": ["The computer sent media this app cannot read."]
 			},
 			{
 				"name": "damagedMedia",
-				"type": "unknown",
+				"type": "string",
 				"description": "The exported message that remoteBinary uses as the message of the Error it throws when the decoded byte count differs from byteLength or the SHA-256 hex differs from sha256. It is never returned as a value, so it reaches a caller only as that Error's message.",
 				"examples": ["The media arrived damaged and is not shown."]
 			},
