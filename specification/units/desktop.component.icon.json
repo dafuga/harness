@@ -25,24 +25,27 @@
 				"name": "Icon.name",
 				"type": "string",
 				"required": true,
-				"description": "Which icon to draw. An unrecognized name uses the page icon."
+				"description": "It selects the SVG path when the icon renders; recognized keys are open, pages, apis, layouts, components, models, game, functions, configs, services, model, reasoning, settings, branch, commit, workbench, and deploy, while other strings use the pages path.",
+				"examples": ["open", "pages", "apis"]
 			},
 			{
 				"name": "Icon.size",
 				"type": "number",
 				"required": false,
 				"default": 22,
-				"description": "The icon’s width and height in pixels; 22 when no size is supplied."
+				"description": "It sets the rendered SVG width and height; the component uses 22 when size is omitted and applies no additional range or unit validation.",
+				"examples": [16, 22, 32]
 			}
 		],
 		"outputs": [
 			{
 				"name": "Icon",
 				"type": "markup",
-				"description": "A line icon hidden from screen readers. The surrounding control supplies its accessible name."
+				"description": "It renders a decorative hx-svg with width and height from size, a 0 0 24 24 viewBox, and one hx-svg-path using the selected path data. It uses a 1.6 currentColor rounded stroke and aria-hidden=true; unknown names render the pages path."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
