@@ -18,17 +18,51 @@
 				"name": "resourceEnvironment.env",
 				"type": "Record<string, string | undefined>",
 				"required": false,
-				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+				"description": "The environment record to read for the nine recognized resource and worker keys; all other entries are ignored and never returned, and values are copied as given with no path resolution or range checks. It matters when resource context is propagated to a subprocess separately from application configuration, and it defaults to process.env when the argument is undefined.",
+				"examples": [
+					{
+						"HARNESS_RESOURCES_HOME": "/opt/harness/resources",
+						"HARNESS_RESOURCE_CPUS": "4",
+						"HARNESS_RESOURCE_MEMORY_MIB": "8192",
+						"PATH": "/usr/local/bin:/usr/bin:/bin"
+					},
+					{
+						"CARGO_BUILD_JOBS": "8",
+						"RAYON_NUM_THREADS": "8",
+						"GOMAXPROCS": "4",
+						"OMP_NUM_THREADS": "4",
+						"LANG": "en_US.UTF-8"
+					},
+					{
+						"LANG": "en_US.UTF-8",
+						"TERM": "xterm-256color"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "resourceEnvironment",
 				"type": "Record<string, string | undefined>",
-				"description": "Only recognized resource and native-worker environment fields, preserving their supplied values."
+				"description": "The subset of the nine recognized resource and worker keys that are set, in the order they are listed in the source, each with its value copied unchanged; keys whose value is undefined are omitted, so the result is an empty object when none are set. It is the resource context that is propagated separately from a subprocess's application configuration.",
+				"examples": [
+					{
+						"HARNESS_RESOURCES_HOME": "/opt/harness/resources",
+						"HARNESS_RESOURCE_CPUS": "4",
+						"HARNESS_RESOURCE_MEMORY_MIB": "8192"
+					},
+					{
+						"CARGO_BUILD_JOBS": "8",
+						"RAYON_NUM_THREADS": "8",
+						"GOMAXPROCS": "4",
+						"OMP_NUM_THREADS": "4"
+					},
+					{}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "resourceEnvironment",
@@ -37,18 +71,51 @@
 						"name": "resourceEnvironment.env",
 						"type": "Record<string, string | undefined>",
 						"required": false,
-						"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+						"description": "The environment record to read for the nine recognized resource and worker keys; all other entries are ignored and never returned, and values are copied as given with no path resolution or range checks. It matters when resource context is propagated to a subprocess separately from application configuration, and it defaults to process.env when the argument is undefined.",
+						"examples": [
+							{
+								"HARNESS_RESOURCES_HOME": "/opt/harness/resources",
+								"HARNESS_RESOURCE_CPUS": "4",
+								"HARNESS_RESOURCE_MEMORY_MIB": "8192",
+								"PATH": "/usr/local/bin:/usr/bin:/bin"
+							},
+							{
+								"CARGO_BUILD_JOBS": "8",
+								"RAYON_NUM_THREADS": "8",
+								"GOMAXPROCS": "4",
+								"OMP_NUM_THREADS": "4",
+								"LANG": "en_US.UTF-8"
+							},
+							{
+								"LANG": "en_US.UTF-8",
+								"TERM": "xterm-256color"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceEnvironment",
 						"type": "Record<string, string | undefined>",
-						"description": "Only recognized resource and native-worker environment fields, preserving their supplied values."
+						"description": "The subset of the nine recognized resource and worker keys that are set, in the order they are listed in the source, each with its value copied unchanged; keys whose value is undefined are omitted, so the result is an empty object when none are set. It is the resource context that is propagated separately from a subprocess's application configuration.",
+						"examples": [
+							{
+								"HARNESS_RESOURCES_HOME": "/opt/harness/resources",
+								"HARNESS_RESOURCE_CPUS": "4",
+								"HARNESS_RESOURCE_MEMORY_MIB": "8192"
+							},
+							{
+								"CARGO_BUILD_JOBS": "8",
+								"RAYON_NUM_THREADS": "8",
+								"GOMAXPROCS": "4",
+								"OMP_NUM_THREADS": "4"
+							},
+							{}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
