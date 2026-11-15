@@ -38,8 +38,9 @@
 		"outputs": [
 			{
 				"name": "forgetRemote",
-				"type": "void",
-				"description": "This contract entry is typed void, but the implementation returns a boolean indicating whether workspace.bridge.hostedStatus is truthy. Callers can use that result to decide whether the hosted account should be listed again."
+				"type": "boolean",
+				"description": "Whether workspace.bridge.hostedStatus is truthy after invalidation and view handling. The caller uses true to list the hosted account again; the boolean does not indicate whether an eligible account view was preserved.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],

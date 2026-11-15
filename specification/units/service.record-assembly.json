@@ -31,7 +31,7 @@
 				"name": "RecordAssemblyService.constructor.context",
 				"type": "AssemblyContext",
 				"required": true,
-				"description": "Carries the repository root, tested commit and tree, required nullable baseCommit and requestedBase, base and head revisions, impact report, profile, store, and the reason-report callback. requirePerformance, baseRecord and sourceHashes are optional. The performance gate runs only when requirePerformance is true; supplied sourceHashes provide recorded component-side hashes. The store and callback are runtime dependencies, so a JSON example cannot represent a complete context."
+				"description": "Context for assembling verification evidence: repository and tested source identity, base selection, revision indexes, impact, profile, persistence and reason reporting. Performance and source-hash options control their corresponding assembly work; the store and reason-report callback are runtime dependencies that a complete JSON example cannot represent."
 			},
 			{
 				"name": "RecordAssemblyService.assemble.input",
@@ -243,7 +243,7 @@
 						"name": "RecordAssemblyService.constructor.context",
 						"type": "AssemblyContext",
 						"required": true,
-						"description": "Carries the repository root, tested commit and tree, base and head revisions, impact report, profile, store, and a callback for the reason report; requirePerformance, baseRecord, requestedBase, and sourceHashes are optional. The performance gate runs only when requirePerformance is truthy, and supplied sourceHashes replace the revision indexes used to record component files; the store, callback, and source-hash maps cannot be represented in JSON."
+						"description": "Context for assembling verification evidence: repository and tested source identity, base selection, revision indexes, impact, profile, persistence and reason reporting. Performance and source-hash options control their corresponding assembly work; the store and reason-report callback are runtime dependencies that a complete JSON example cannot represent."
 					}
 				],
 				"outputs": [
