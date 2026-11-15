@@ -8,7 +8,7 @@ import {
 	otherArtifact,
 	unshownArtifact
 } from '../../src/utils/remoteArtifact';
-import { remoteArtifact } from '../../src/adapters/capacitor-bridge-adapter/remoteArtifact';
+import { remoteArtifact } from '../../src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/remoteArtifact';
 import { damagedMedia, unreadableMedia } from '../../src/utils/remoteBinary';
 
 const hash = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');

@@ -1,7 +1,7 @@
 import type { Call, Answer } from './phone-evidence-bridge.test.types';
 import { createHash } from 'node:crypto';
 import { expect, test, vi } from 'vitest';
-import { CapacitorBridgeAdapter } from '../../src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter';
+import { CapacitorBridgeAdapter } from '../../src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter';
 import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery

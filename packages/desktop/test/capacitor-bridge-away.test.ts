@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { CapacitorBridgeAdapter } from '../src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter';
+import { CapacitorBridgeAdapter } from '../src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter';
 import type { RemoteNativePlugin, RemoteNativeStatus } from '../src/models/Environment.types';
 
 const online: RemoteNativeStatus = {

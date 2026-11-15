@@ -1,7 +1,7 @@
 import type { Call, Answer } from './capacitor-bridge.test.types';
 import { createHash } from 'node:crypto';
 import { expect, test, vi } from 'vitest';
-import { CapacitorBridgeAdapter } from '../../src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter';
+import { CapacitorBridgeAdapter } from '../../src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter';
 import type {
 	RemoteNativeEvent,
 	RemoteNativePlugin,
