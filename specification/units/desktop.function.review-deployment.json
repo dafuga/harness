@@ -18,29 +18,178 @@
 				"name": "reviewDeployment.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+				"description": "Repository directory for the Git reads (`git -C root`), passed to `options.plugin.discover` and returned unchanged as `root`. reviewDeployment does not check that it is a Git repository, so a directory outside one makes the Git reads reject.",
+				"examples": [
+					"/Users/dev/projects/harness-web",
+					"/home/dev/src/harness-docs",
+					"/Users/dev/work/harness-desktop"
+				]
 			},
 			{
 				"name": "reviewDeployment.input",
 				"type": "DeploymentQuery",
 				"required": true,
-				"description": "Requested environment and immutable source commit with the originating project identity."
+				"description": "Requested `environment` (dev, stage, preprod or prod), which selects the target, the predecessor and the plan environment, and the source `commit`, which becomes the plan commit unless a prod promotion supplies a preprod receipt. When `deploymentBlockers` takes its non-prod path, the plan gets a blocker if HEAD differs from `commit` or the current branch differs from the discovered `sourceBranch`; the optional `projectId` is unused here, and the result's `projectId` comes from `options.projectId`.",
+				"examples": [
+					{
+						"environment": "dev",
+						"commit": "4a7d9c2e1b3f5a6d8e0c9b7a5f3e1d2c4b6a8f90",
+						"projectId": "local-6c1f0b7e4a9d2c83f5e1b0a7d4c9e2f6b8a1d3c5e7f9b0a2d4c6e8f1a3b5c7d9"
+					},
+					{
+						"environment": "prod",
+						"commit": "c81e7f0a3d25b94e6f1a0c8d7b3e52f94a6d1b07",
+						"projectId": "local-2d7a9c4e1f8b3d6a0e5c2b9f7d4a1e8c3b6d0f9a2e5c8b1d4f7a0e3c6b9d2f5a"
+					},
+					{
+						"environment": "preprod",
+						"commit": "9f63b0d2e7a4c1f8d5b9e3a0c6f2d7b1e4a8c5f9"
+					}
+				]
 			},
 			{
 				"name": "reviewDeployment.options",
 				"type": "{ plugin: DeploymentPlugin; projectId: string | null; queuedChange?: boolean }",
 				"required": true,
-				"description": "Adapter and project identity, with an explicit flag for lower-environment chat-chain admission."
+				"description": "Adapter and project identity: `plugin.discover(root)` supplies the configuration, `plugin.id` becomes `plan.adapter`, and `projectId` is copied unchanged to the result. When `queuedChange` is true, `deploymentBlockers` runs with environment `dev` instead of `input.environment`, while the target, predecessor and plan environment still use `input.environment`."
 			}
 		],
 		"outputs": [
 			{
 				"name": "reviewDeployment",
 				"type": "Promise<ReviewedDeployment>",
-				"description": "Reviewed immutable plan with expiry, target, predecessor receipt and configuration fingerprint."
+				"description": "Resolves to the reviewed plan, which expires five minutes after review and lists its blockers, with `sourceEnvironment` (the previous configured environment, or null), `root`, `projectId` and `fingerprint` (SHA-256 hex of the discovered configuration's JSON). `target` is undefined when the environment has no configured target, and `predecessor` is the preprod receipt for a prod promotion, otherwise the stored receipt for `sourceEnvironment`, or null.",
+				"examples": [
+					{
+						"sourceEnvironment": null,
+						"plan": {
+							"id": "3f9c2a71-6d4e-4b8a-9e15-0a7d2c8f4b61",
+							"environment": "dev",
+							"commit": "4a7d9c2e1b3f5a6d8e0c9b7a5f3e1d2c4b6a8f90",
+							"branch": "main",
+							"adapter": "cloudflare",
+							"target": "workers · harness-web · dev · account 5b7e1f0c9a4d28e6f3b1c0d7a9e2f4b8 · https://dev.harness-web.example.com/health",
+							"steps": [
+								"Prepare source",
+								"Run checks",
+								"Build source",
+								"Deploy to Cloudflare",
+								"Verify health"
+							],
+							"blockers": [],
+							"expiresAt": "2026-11-15T10:03:31.204Z"
+						},
+						"fingerprint": "9b0e4f7a2c6d8e1f3a5b7c9d0e2f4a6b8c1d3e5f7a9b0c2d4e6f8a1b3c5d7e9f",
+						"root": "/Users/dev/projects/harness-web",
+						"projectId": "local-6c1f0b7e4a9d2c83f5e1b0a7d4c9e2f6b8a1d3c5e7f9b0a2d4c6e8f1a3b5c7d9",
+						"target": {
+							"environment": "dev",
+							"kind": "workers",
+							"config": "wrangler.jsonc",
+							"name": "harness-web",
+							"accountId": "5b7e1f0c9a4d28e6f3b1c0d7a9e2f4b8",
+							"tokenEnv": "HARNESS_WEB_DEV_CLOUDFLARE_API_TOKEN",
+							"wranglerEnvironment": "dev",
+							"branch": "",
+							"output": "",
+							"healthUrl": "https://dev.harness-web.example.com/health"
+						},
+						"predecessor": null
+					},
+					{
+						"sourceEnvironment": "preprod",
+						"plan": {
+							"id": "b64e0d1a-8f27-4c93-a5e0-3d1f7b9c2a84",
+							"environment": "prod",
+							"commit": "c81e7f0a3d25b94e6f1a0c8d7b3e52f94a6d1b07",
+							"promotion": {
+								"preprod": {
+									"environment": "preprod",
+									"commit": "c81e7f0a3d25b94e6f1a0c8d7b3e52f94a6d1b07",
+									"branch": "main",
+									"updatedAt": "2026-11-14T17:30:12.845Z",
+									"adapter": "cloudflare",
+									"deploymentId": "3f8a1c0e",
+									"configuration": "1d8f3a6c0b5e9d2f7a4c1e8b6d3f0a9c5e2b7d4f1a8c6e3b0d9f2a7c5e4b1d8f",
+									"url": "https://3f8a1c0e.harness-docs.pages.dev"
+								},
+								"production": {
+									"environment": "prod",
+									"commit": "e02b9d6f4c1a8e7b3d5f0a2c9e6b1d4f8a7c3e25",
+									"branch": "main",
+									"updatedAt": "2026-11-07T09:14:55.031Z",
+									"adapter": "cloudflare",
+									"deploymentId": "9d4b2e7a",
+									"configuration": "7a2c9e0d4f1b8a3c6e5d2f9b0a7c4e1d8b3f6a9c2e5d0b7f4a1c8e3d6b9f2a05",
+									"url": "https://9d4b2e7a.harness-docs.pages.dev"
+								},
+								"commitsBehind": 3
+							},
+							"branch": "main",
+							"adapter": "cloudflare",
+							"target": "pages · harness-docs · main · account e41d7a0c3b9f52e8a6d1c4f0b7e3a9d2 · https://docs.example.com/health",
+							"steps": [
+								"Prepare source",
+								"Run checks",
+								"Build source",
+								"Deploy to Cloudflare",
+								"Verify health"
+							],
+							"blockers": [],
+							"expiresAt": "2026-11-15T10:17:07.518Z"
+						},
+						"fingerprint": "1d8f3a6c0b5e9d2f7a4c1e8b6d3f0a9c5e2b7d4f1a8c6e3b0d9f2a7c5e4b1d8f",
+						"root": "/home/dev/src/harness-docs",
+						"projectId": "local-2d7a9c4e1f8b3d6a0e5c2b9f7d4a1e8c3b6d0f9a2e5c8b1d4f7a0e3c6b9d2f5a",
+						"target": {
+							"environment": "prod",
+							"kind": "pages",
+							"config": "wrangler.jsonc",
+							"name": "harness-docs",
+							"accountId": "e41d7a0c3b9f52e8a6d1c4f0b7e3a9d2",
+							"tokenEnv": "HARNESS_DOCS_PROD_CLOUDFLARE_API_TOKEN",
+							"wranglerEnvironment": "",
+							"branch": "main",
+							"output": "dist",
+							"healthUrl": "https://docs.example.com/health"
+						},
+						"predecessor": {
+							"environment": "preprod",
+							"commit": "c81e7f0a3d25b94e6f1a0c8d7b3e52f94a6d1b07",
+							"branch": "main",
+							"updatedAt": "2026-11-14T17:30:12.845Z",
+							"adapter": "cloudflare",
+							"deploymentId": "3f8a1c0e",
+							"configuration": "1d8f3a6c0b5e9d2f7a4c1e8b6d3f0a9c5e2b7d4f1a8c6e3b0d9f2a7c5e4b1d8f",
+							"url": "https://3f8a1c0e.harness-docs.pages.dev"
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "DeploymentPlugin.discover rejection",
+				"type": "thrown",
+				"description": "Rejects with whatever `options.plugin.discover(root)` rejects with, passed through unchanged; the DeploymentPlugin type does not define those errors."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the error from a git read that exits non-zero (for example when `root` is not a Git repository or has no commits), or with a filesystem error other than ENOENT while reading receipts.json."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Rejects when `harness-deployments/receipts.json` under the Git common directory is valid JSON that does not match the receipt schema, for example a commit that is not 40 to 64 lowercase hexadecimal characters; deploymentState rethrows it."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Rejects when `harness-deployments/receipts.json` under the Git common directory is not valid JSON; deploymentState rethrows it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reviewDeployment",
@@ -49,30 +198,178 @@
 						"name": "reviewDeployment.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+						"description": "Repository directory for the Git reads (`git -C root`), passed to `options.plugin.discover` and returned unchanged as `root`. reviewDeployment does not check that it is a Git repository, so a directory outside one makes the Git reads reject.",
+						"examples": [
+							"/Users/dev/projects/harness-web",
+							"/home/dev/src/harness-docs",
+							"/Users/dev/work/harness-desktop"
+						]
 					},
 					{
 						"name": "reviewDeployment.input",
 						"type": "DeploymentQuery",
 						"required": true,
-						"description": "Requested environment and immutable source commit with the originating project identity."
+						"description": "Requested `environment` (dev, stage, preprod or prod), which selects the target, the predecessor and the plan environment, and the source `commit`, which becomes the plan commit unless a prod promotion supplies a preprod receipt. When `deploymentBlockers` takes its non-prod path, the plan gets a blocker if HEAD differs from `commit` or the current branch differs from the discovered `sourceBranch`; the optional `projectId` is unused here, and the result's `projectId` comes from `options.projectId`.",
+						"examples": [
+							{
+								"environment": "dev",
+								"commit": "4a7d9c2e1b3f5a6d8e0c9b7a5f3e1d2c4b6a8f90",
+								"projectId": "local-6c1f0b7e4a9d2c83f5e1b0a7d4c9e2f6b8a1d3c5e7f9b0a2d4c6e8f1a3b5c7d9"
+							},
+							{
+								"environment": "prod",
+								"commit": "c81e7f0a3d25b94e6f1a0c8d7b3e52f94a6d1b07",
+								"projectId": "local-2d7a9c4e1f8b3d6a0e5c2b9f7d4a1e8c3b6d0f9a2e5c8b1d4f7a0e3c6b9d2f5a"
+							},
+							{
+								"environment": "preprod",
+								"commit": "9f63b0d2e7a4c1f8d5b9e3a0c6f2d7b1e4a8c5f9"
+							}
+						]
 					},
 					{
 						"name": "reviewDeployment.options",
 						"type": "{ plugin: DeploymentPlugin; projectId: string | null; queuedChange?: boolean }",
 						"required": true,
-						"description": "Adapter and project identity, with an explicit flag for lower-environment chat-chain admission."
+						"description": "Adapter and project identity: `plugin.discover(root)` supplies the configuration, `plugin.id` becomes `plan.adapter`, and `projectId` is copied unchanged to the result. When `queuedChange` is true, `deploymentBlockers` runs with environment `dev` instead of `input.environment`, while the target, predecessor and plan environment still use `input.environment`."
 					}
 				],
 				"outputs": [
 					{
 						"name": "reviewDeployment",
 						"type": "Promise<ReviewedDeployment>",
-						"description": "Reviewed immutable plan with expiry, target, predecessor receipt and configuration fingerprint."
+						"description": "Resolves to the reviewed plan, which expires five minutes after review and lists its blockers, with `sourceEnvironment` (the previous configured environment, or null), `root`, `projectId` and `fingerprint` (SHA-256 hex of the discovered configuration's JSON). `target` is undefined when the environment has no configured target, and `predecessor` is the preprod receipt for a prod promotion, otherwise the stored receipt for `sourceEnvironment`, or null.",
+						"examples": [
+							{
+								"sourceEnvironment": null,
+								"plan": {
+									"id": "3f9c2a71-6d4e-4b8a-9e15-0a7d2c8f4b61",
+									"environment": "dev",
+									"commit": "4a7d9c2e1b3f5a6d8e0c9b7a5f3e1d2c4b6a8f90",
+									"branch": "main",
+									"adapter": "cloudflare",
+									"target": "workers · harness-web · dev · account 5b7e1f0c9a4d28e6f3b1c0d7a9e2f4b8 · https://dev.harness-web.example.com/health",
+									"steps": [
+										"Prepare source",
+										"Run checks",
+										"Build source",
+										"Deploy to Cloudflare",
+										"Verify health"
+									],
+									"blockers": [],
+									"expiresAt": "2026-11-15T10:03:31.204Z"
+								},
+								"fingerprint": "9b0e4f7a2c6d8e1f3a5b7c9d0e2f4a6b8c1d3e5f7a9b0c2d4e6f8a1b3c5d7e9f",
+								"root": "/Users/dev/projects/harness-web",
+								"projectId": "local-6c1f0b7e4a9d2c83f5e1b0a7d4c9e2f6b8a1d3c5e7f9b0a2d4c6e8f1a3b5c7d9",
+								"target": {
+									"environment": "dev",
+									"kind": "workers",
+									"config": "wrangler.jsonc",
+									"name": "harness-web",
+									"accountId": "5b7e1f0c9a4d28e6f3b1c0d7a9e2f4b8",
+									"tokenEnv": "HARNESS_WEB_DEV_CLOUDFLARE_API_TOKEN",
+									"wranglerEnvironment": "dev",
+									"branch": "",
+									"output": "",
+									"healthUrl": "https://dev.harness-web.example.com/health"
+								},
+								"predecessor": null
+							},
+							{
+								"sourceEnvironment": "preprod",
+								"plan": {
+									"id": "b64e0d1a-8f27-4c93-a5e0-3d1f7b9c2a84",
+									"environment": "prod",
+									"commit": "c81e7f0a3d25b94e6f1a0c8d7b3e52f94a6d1b07",
+									"promotion": {
+										"preprod": {
+											"environment": "preprod",
+											"commit": "c81e7f0a3d25b94e6f1a0c8d7b3e52f94a6d1b07",
+											"branch": "main",
+											"updatedAt": "2026-11-14T17:30:12.845Z",
+											"adapter": "cloudflare",
+											"deploymentId": "3f8a1c0e",
+											"configuration": "1d8f3a6c0b5e9d2f7a4c1e8b6d3f0a9c5e2b7d4f1a8c6e3b0d9f2a7c5e4b1d8f",
+											"url": "https://3f8a1c0e.harness-docs.pages.dev"
+										},
+										"production": {
+											"environment": "prod",
+											"commit": "e02b9d6f4c1a8e7b3d5f0a2c9e6b1d4f8a7c3e25",
+											"branch": "main",
+											"updatedAt": "2026-11-07T09:14:55.031Z",
+											"adapter": "cloudflare",
+											"deploymentId": "9d4b2e7a",
+											"configuration": "7a2c9e0d4f1b8a3c6e5d2f9b0a7c4e1d8b3f6a9c2e5d0b7f4a1c8e3d6b9f2a05",
+											"url": "https://9d4b2e7a.harness-docs.pages.dev"
+										},
+										"commitsBehind": 3
+									},
+									"branch": "main",
+									"adapter": "cloudflare",
+									"target": "pages · harness-docs · main · account e41d7a0c3b9f52e8a6d1c4f0b7e3a9d2 · https://docs.example.com/health",
+									"steps": [
+										"Prepare source",
+										"Run checks",
+										"Build source",
+										"Deploy to Cloudflare",
+										"Verify health"
+									],
+									"blockers": [],
+									"expiresAt": "2026-11-15T10:17:07.518Z"
+								},
+								"fingerprint": "1d8f3a6c0b5e9d2f7a4c1e8b6d3f0a9c5e2b7d4f1a8c6e3b0d9f2a7c5e4b1d8f",
+								"root": "/home/dev/src/harness-docs",
+								"projectId": "local-2d7a9c4e1f8b3d6a0e5c2b9f7d4a1e8c3b6d0f9a2e5c8b1d4f7a0e3c6b9d2f5a",
+								"target": {
+									"environment": "prod",
+									"kind": "pages",
+									"config": "wrangler.jsonc",
+									"name": "harness-docs",
+									"accountId": "e41d7a0c3b9f52e8a6d1c4f0b7e3a9d2",
+									"tokenEnv": "HARNESS_DOCS_PROD_CLOUDFLARE_API_TOKEN",
+									"wranglerEnvironment": "",
+									"branch": "main",
+									"output": "dist",
+									"healthUrl": "https://docs.example.com/health"
+								},
+								"predecessor": {
+									"environment": "preprod",
+									"commit": "c81e7f0a3d25b94e6f1a0c8d7b3e52f94a6d1b07",
+									"branch": "main",
+									"updatedAt": "2026-11-14T17:30:12.845Z",
+									"adapter": "cloudflare",
+									"deploymentId": "3f8a1c0e",
+									"configuration": "1d8f3a6c0b5e9d2f7a4c1e8b6d3f0a9c5e2b7d4f1a8c6e3b0d9f2a7c5e4b1d8f",
+									"url": "https://3f8a1c0e.harness-docs.pages.dev"
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "DeploymentPlugin.discover rejection",
+						"type": "thrown",
+						"description": "Rejects with whatever `options.plugin.discover(root)` rejects with, passed through unchanged; the DeploymentPlugin type does not define those errors."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the error from a git read that exits non-zero (for example when `root` is not a Git repository or has no commits), or with a filesystem error other than ENOENT while reading receipts.json."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Rejects when `harness-deployments/receipts.json` under the Git common directory is valid JSON that does not match the receipt schema, for example a commit that is not 40 to 64 lowercase hexadecimal characters; deploymentState rethrows it."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Rejects when `harness-deployments/receipts.json` under the Git common directory is not valid JSON; deploymentState rethrows it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
