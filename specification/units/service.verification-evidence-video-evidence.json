@@ -79,7 +79,7 @@
 				"name": "VideoEvidenceService.coverage.observations",
 				"type": "VideoObservation[]",
 				"required": true,
-				"description": "Already admitted clip observations with visible assertion timestamps and freshness supplied by the evidence caller."
+				"description": "Admitted clip observations; only explicit fresh=true with every required clip state, edge and checkpoint inside its retained interval contributes coverage."
 			},
 			{
 				"name": "clipInputClosure.context",
@@ -199,7 +199,7 @@
 				"name": "graphCoverage.observations",
 				"type": "VideoObservation[]",
 				"required": true,
-				"description": "Timestamped state and transition assertions from clips admitted by the evidence caller."
+				"description": "Admitted clip observations; only explicit fresh=true with every required clip state, edge and checkpoint inside its retained interval contributes coverage."
 			}
 		],
 		"outputs": [
@@ -216,7 +216,7 @@
 			{
 				"name": "VideoEvidenceService.coverage",
 				"type": "VideoGraphCoverage[]",
-				"description": "Coverage fractions and missing state, edge and clip slots for each finite graph."
+				"description": "Per-graph state, edge and clip completeness fractions and missing slots; only individually complete fresh clips contribute, and zero viewport coverage is incomplete."
 			},
 			{
 				"name": "clipInputHash",
@@ -226,7 +226,7 @@
 			{
 				"name": "graphCoverage",
 				"type": "VideoGraphCoverage[]",
-				"description": "Per-graph state/edge coverage and explicit missing slots; empty viewport coverage is incomplete."
+				"description": "Per-graph state, edge and clip completeness fractions and missing slots; only individually complete fresh clips contribute, and zero viewport coverage is incomplete."
 			},
 			{
 				"name": "clipInputClosure",
@@ -337,14 +337,14 @@
 						"name": "VideoEvidenceService.coverage.observations",
 						"type": "VideoObservation[]",
 						"required": true,
-						"description": "Already admitted clip observations with visible assertion timestamps and freshness supplied by the evidence caller."
+						"description": "Admitted clip observations; only explicit fresh=true with every required clip state, edge and checkpoint inside its retained interval contributes coverage."
 					}
 				],
 				"outputs": [
 					{
 						"name": "VideoEvidenceService.coverage",
 						"type": "VideoGraphCoverage[]",
-						"description": "Coverage fractions and missing state, edge and clip slots for each finite graph."
+						"description": "Per-graph state, edge and clip completeness fractions and missing slots; only individually complete fresh clips contribute, and zero viewport coverage is incomplete."
 					}
 				],
 				"errors": [
@@ -670,14 +670,14 @@
 						"name": "graphCoverage.observations",
 						"type": "VideoObservation[]",
 						"required": true,
-						"description": "Timestamped state and transition assertions from clips admitted by the evidence caller."
+						"description": "Admitted clip observations; only explicit fresh=true with every required clip state, edge and checkpoint inside its retained interval contributes coverage."
 					}
 				],
 				"outputs": [
 					{
 						"name": "graphCoverage",
 						"type": "VideoGraphCoverage[]",
-						"description": "Per-graph state/edge coverage and explicit missing slots; empty viewport coverage is incomplete."
+						"description": "Per-graph state, edge and clip completeness fractions and missing slots; only individually complete fresh clips contribute, and zero viewport coverage is incomplete."
 					}
 				],
 				"errors": [],

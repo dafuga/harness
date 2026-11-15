@@ -20,6 +20,7 @@ export function graphCoverage(
 		const covered = observationSlots(clips, observations);
 		const missing = required.filter((slot) => !covered.has(slot));
 		const ratio = (kind: string) => {
+			if (!viewports.length) return 0;
 			const slots = required.filter((slot) => slot.includes(`/${kind}/`));
 			return slots.length ? slots.filter((slot) => covered.has(slot)).length / slots.length : 1;
 		};
@@ -27,6 +28,7 @@ export function graphCoverage(
 			graph: graph.id,
 			states: ratio('state'),
 			edges: ratio('edge'),
+			clips: ratio('clip'),
 			complete: viewports.length > 0 && missing.length === 0,
 			missing
 		};
@@ -62,9 +64,32 @@ function validObservation(
 	observation: VideoObservation
 ): boolean {
 	return (
-		observation.fresh !== false &&
+		observation.fresh === true &&
 		clip.viewports.includes(observation.viewport) &&
+		Number.isFinite(observation.durationSeconds) &&
 		observation.durationSeconds > 0 &&
-		observation.durationSeconds <= clip.durationSeconds
+		observation.durationSeconds <= clip.durationSeconds &&
+		completeVisits(
+			[...clip.states, clip.entry, clip.exit],
+			observation.states,
+			observation.durationSeconds
+		) &&
+		completeVisits(clip.edges, observation.edges, observation.durationSeconds)
+	);
+}
+
+function completeVisits(
+	ids: string[],
+	visits: VideoObservation['states'],
+	duration: number
+): boolean {
+	return ids.every((id) =>
+		visits.some(
+			(visit) =>
+				visit.id === id &&
+				Number.isFinite(visit.atSeconds) &&
+				visit.atSeconds >= 0 &&
+				visit.atSeconds <= duration
+		)
 	);
 }

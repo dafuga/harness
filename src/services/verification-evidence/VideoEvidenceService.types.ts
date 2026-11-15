@@ -27,6 +27,7 @@ export interface VideoGraphCoverage {
 	graph: string;
 	states: number;
 	edges: number;
+	clips?: number;
 	complete: boolean;
 	missing: string[];
 }
