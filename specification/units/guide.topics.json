@@ -15,36 +15,79 @@
 		"symbols": ["availableGuideTopics", "findGuideByTopic", "TopicEntry"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "availableGuideTopics.entries",
 				"type": "TopicEntry[]",
-				"required": true
+				"required": true,
+				"description": "The entries whose topic strings are collected in the order given; each must carry a string topic, and no other field is read. The array is not modified, and an empty array gives an empty result.",
+				"examples": [
+					[
+						{
+							"topic": "page"
+						},
+						{
+							"topic": "scaffolds"
+						},
+						{
+							"topic": "page"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "findGuideByTopic.guides",
 				"type": "Guide[]",
-				"required": true
+				"required": true,
+				"description": "The guides to search; each must extend TopicEntry, so it carries a string topic, and their topics form the known set that decides which form of the requested topic is resolved. The first guide whose topic equals the resolved topic is returned, the array is not modified, and a stored topic with uppercase letters, whitespace, or underscores can never match.",
+				"examples": [
+					[
+						{
+							"topic": "page"
+						},
+						{
+							"topic": "scaffolds"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "findGuideByTopic.topic",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The requested topic is trimmed, lowercased, and has whitespace runs and underscores replaced by hyphens, and that form is the resolved topic when it is a topic of guides. Otherwise, 'page' and 'pages' try 'page' and 'view', 'scaffold' tries 'scaffolds', a form ending in 'ies' tries the same form with 'y' in place of 'ies', and any other form ending in 's' tries the form without its final 's'; the first alternate that is a topic of guides becomes the resolved topic, and otherwise the normalized form is used.",
+				"examples": ["page", "Pages", "scaffold"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "availableGuideTopics",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The distinct topic strings from the entries, exactly as stored and in the order each first appears. A new array is returned on every call, and an empty entries array gives an empty array.",
+				"examples": [
+					["page", "scaffolds"],
+					[]
+				]
 			},
 			{
 				"name": "findGuideByTopic",
-				"type": "Guide | undefined"
+				"type": "Guide | undefined",
+				"description": "The first guide in guides whose topic equals the resolved topic, returned as the same object from the input array (not a copy), or undefined when no guide has that topic. Nothing is thrown when no guide matches, so callers must handle the undefined result.",
+				"examples": [
+					{
+						"topic": "page"
+					},
+					{
+						"topic": "scaffolds"
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "availableGuideTopics",
@@ -52,17 +95,37 @@
 					{
 						"name": "availableGuideTopics.entries",
 						"type": "TopicEntry[]",
-						"required": true
+						"required": true,
+						"description": "The entries whose topic strings are collected in the order given; each must carry a string topic, and no other field is read. The array is not modified, and an empty array gives an empty result.",
+						"examples": [
+							[
+								{
+									"topic": "page"
+								},
+								{
+									"topic": "scaffolds"
+								},
+								{
+									"topic": "page"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "availableGuideTopics",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The distinct topic strings from the entries, exactly as stored and in the order each first appears. A new array is returned on every call, and an empty entries array gives an empty array.",
+						"examples": [
+							["page", "scaffolds"],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "findGuideByTopic",
@@ -70,22 +133,45 @@
 					{
 						"name": "findGuideByTopic.guides",
 						"type": "Guide[]",
-						"required": true
+						"required": true,
+						"description": "The guides to search; each must extend TopicEntry, so it carries a string topic, and their topics form the known set that decides which form of the requested topic is resolved. The first guide whose topic equals the resolved topic is returned, the array is not modified, and a stored topic with uppercase letters, whitespace, or underscores can never match.",
+						"examples": [
+							[
+								{
+									"topic": "page"
+								},
+								{
+									"topic": "scaffolds"
+								}
+							],
+							[]
+						]
 					},
 					{
 						"name": "findGuideByTopic.topic",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The requested topic is trimmed, lowercased, and has whitespace runs and underscores replaced by hyphens, and that form is the resolved topic when it is a topic of guides. Otherwise, 'page' and 'pages' try 'page' and 'view', 'scaffold' tries 'scaffolds', a form ending in 'ies' tries the same form with 'y' in place of 'ies', and any other form ending in 's' tries the form without its final 's'; the first alternate that is a topic of guides becomes the resolved topic, and otherwise the normalized form is used.",
+						"examples": ["page", "Pages", "scaffold"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "findGuideByTopic",
-						"type": "Guide | undefined"
+						"type": "Guide | undefined",
+						"description": "The first guide in guides whose topic equals the resolved topic, returned as the same object from the input array (not a copy), or undefined when no guide has that topic. Nothing is thrown when no guide matches, so callers must handle the undefined result.",
+						"examples": [
+							{
+								"topic": "page"
+							},
+							{
+								"topic": "scaffolds"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
