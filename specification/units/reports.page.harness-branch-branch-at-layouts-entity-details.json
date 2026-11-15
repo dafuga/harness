@@ -24,41 +24,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The contract of the shell; by tab its measurements, an unavailable one with its reason, and its source."
+				"description": "The rendered page markup passes the EntityDetailsScreen component to HarnessScreen as content under the fixed title \"Layout details\"."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Shell details · Harness"
+				"description": "The fixed title passed to HarnessScreen when this page renders.",
+				"examples": ["Layout details"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-at-revision",
-				"type": "notice",
-				"description": "A shell the shown revision does not hold is said, with the way back to the collection."
-			},
-			{
-				"name": "other-category",
-				"type": "redirect",
-				"description": "A unit that is not a shell at this revision is led to the address of its own category."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
