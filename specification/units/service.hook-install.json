@@ -339,7 +339,7 @@
 				"outputs": [
 					{
 						"name": "HookInstallService.constructor",
-						"type": "unknown",
+						"type": "HookInstallService",
 						"description": "The constructed `HookInstallService` instance. It stores the root path and creates a `GitAdapter` for that root; repository paths are resolved later by service methods."
 					}
 				],

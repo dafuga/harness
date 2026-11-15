@@ -381,7 +381,7 @@
 				"outputs": [
 					{
 						"name": "RemoteFailure.constructor",
-						"type": "unknown",
+						"type": "RemoteFailure",
 						"description": "An Error subclass named RemoteFailure with the selected code and display message. Its optional requestId is not set by the constructor and can identify the failing request when that id is known."
 					}
 				],

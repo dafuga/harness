@@ -1481,7 +1481,7 @@
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.constructor",
-						"type": "unknown",
+						"type": "GitSourceAdapter",
 						"description": "Creates a GitSourceAdapter instance that stores the supplied root in its readonly root field. Construction performs no Git reads."
 					}
 				],

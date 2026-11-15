@@ -148,7 +148,7 @@
 				"outputs": [
 					{
 						"name": "HistoryMediaService.constructor",
-						"type": "unknown",
+						"type": "HistoryMediaService",
 						"description": "A HistoryMediaService instance. Its counts start at zero and it starts with no remembered media paths; it writes files only when place receives matching bytes."
 					}
 				],

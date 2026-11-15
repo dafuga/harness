@@ -96,7 +96,7 @@
 				"outputs": [
 					{
 						"name": "ProjectSyncService.constructor",
-						"type": "unknown",
+						"type": "ProjectSyncService",
 						"description": "Returns a ProjectSyncService instance configured with the supplied options. Construction does not start reads or install listeners; call start to activate syncing."
 					}
 				],

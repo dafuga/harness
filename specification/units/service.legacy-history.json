@@ -80,7 +80,7 @@
 				"outputs": [
 					{
 						"name": "LegacyHistoryService.constructor",
-						"type": "unknown",
+						"type": "LegacyHistoryService",
 						"description": "The LegacyHistoryService instance retaining EvidenceTreeAdapter and LfsAdapter created with root. Its entries(media) method reads the current evidence tip and resolves legacy report media."
 					}
 				],

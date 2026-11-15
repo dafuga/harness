@@ -413,7 +413,7 @@
 				"outputs": [
 					{
 						"name": "WasmModuleRuntimeAdapter.constructor",
-						"type": "unknown",
+						"type": "WasmModuleRuntimeAdapter",
 						"description": "Creates a wasm runtime with kind set to wasm and stores the source loader and selected timeout. Module loading is deferred until invoke, invokeText, or memoryBytes first needs an instance."
 					}
 				],

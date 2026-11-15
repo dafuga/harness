@@ -332,7 +332,7 @@
 				"outputs": [
 					{
 						"name": "HistoryIndexService.constructor",
-						"type": "unknown",
+						"type": "HistoryIndexService",
 						"description": "The HistoryIndexService instance: it holds root and a HistoryStatusService made from it, and creating it runs no git command and reads no file."
 					}
 				],

@@ -136,7 +136,7 @@
 				"outputs": [
 					{
 						"name": "LegacyReportRepository.constructor",
-						"type": "unknown",
+						"type": "LegacyReportRepository",
 						"description": "The constructed repository instance retains the supplied store path. Construction performs no filesystem access; reads occur when runs() or asset() is called."
 					}
 				],

@@ -114,8 +114,8 @@
 				"outputs": [
 					{
 						"name": "HubAgentController.constructor",
-						"type": "unknown",
-						"description": "The resolved value is the new HubAgentController instance, which retains the supplied Context for later handle calls. Construction only stores that context and does not authorize a request or call the executor."
+						"type": "HubAgentController",
+						"description": "The new HubAgentController instance retaining the supplied Context for later handle calls. Construction stores context without authorizing a request or calling the executor."
 					}
 				],
 				"errors": [],

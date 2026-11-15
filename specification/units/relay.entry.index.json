@@ -218,7 +218,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHostObject.constructor",
-						"type": "unknown",
+						"type": "RemoteHostObject",
 						"description": "The new RemoteHostObject instance the runtime creates; the constructor has no return statement, so the instance is the only value it produces. Construction sets the #runtime field and calls setWebSocketAutoResponse on the state."
 					}
 				],

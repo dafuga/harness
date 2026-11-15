@@ -304,7 +304,7 @@
 				"outputs": [
 					{
 						"name": "HistorySyncService.constructor",
-						"type": "unknown",
+						"type": "HistorySyncService",
 						"description": "The new HistorySyncService instance, which keeps the EvidenceTreeAdapter, LfsAdapter and HistoryNoteRepository built from root in private readonly fields."
 					}
 				],

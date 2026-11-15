@@ -68,7 +68,7 @@
 				"outputs": [
 					{
 						"name": "ElectronEnvironmentAdapter.constructor",
-						"type": "unknown",
+						"type": "ElectronEnvironmentAdapter",
 						"description": "Creates an adapter that retains the supplied config for later `connect()` calls. The result is a class instance, which JSON cannot express."
 					}
 				],

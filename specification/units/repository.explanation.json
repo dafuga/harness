@@ -484,7 +484,7 @@
 				"outputs": [
 					{
 						"name": "ExplanationRepository.constructor",
-						"type": "unknown",
+						"type": "ExplanationRepository",
 						"description": "The new ExplanationRepository instance, which keeps root and the scratch path join(root, file) for its methods."
 					}
 				],

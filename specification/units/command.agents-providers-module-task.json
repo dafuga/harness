@@ -86,7 +86,7 @@
 				"outputs": [
 					{
 						"name": "ModuleTaskCommand.constructor",
-						"type": "unknown",
+						"type": "ModuleTaskCommand",
 						"description": "The constructed ModuleTaskCommand instance used to register CLI commands. It stores the provided service or the instance created by `new ModuleTaskService()`."
 					}
 				],

@@ -861,7 +861,7 @@
 				"outputs": [
 					{
 						"name": "VerificationStoreRepository.constructor",
-						"type": "unknown",
+						"type": "VerificationStoreRepository",
 						"description": "The constructed VerificationStoreRepository instance, which retains the root-derived store path and a VerificationRecordValidator. Construction joins paths but does not create the store directory."
 					}
 				],

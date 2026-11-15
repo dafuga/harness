@@ -189,7 +189,7 @@
 				"outputs": [
 					{
 						"name": "ProviderDiscoveryService.constructor",
-						"type": "unknown",
+						"type": "ProviderDiscoveryService",
 						"description": "Creates a ProviderDiscoveryService instance containing the supplied runner record. It does not discover provider state until list() or select() is called."
 					}
 				],

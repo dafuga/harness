@@ -1185,7 +1185,7 @@
 				"outputs": [
 					{
 						"name": "SourceProfileAdapter.constructor",
-						"type": "unknown",
+						"type": "SourceProfileAdapter",
 						"description": "Adapter instance whose owners map holds the eligible units for each resolvable realpath of their owned sources; sources that cannot be resolved are skipped."
 					}
 				],

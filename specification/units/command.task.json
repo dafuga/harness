@@ -296,7 +296,7 @@
 				"outputs": [
 					{
 						"name": "TaskCommand.constructor",
-						"type": "unknown",
+						"type": "TaskCommand",
 						"description": "TaskCommand instance retaining the selected root; run uses that root for loop-state and task-audit service calls."
 					}
 				],

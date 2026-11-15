@@ -98,7 +98,7 @@
 				"outputs": [
 					{
 						"name": "CodexGatewayService.constructor",
-						"type": "unknown",
+						"type": "CodexGatewayService",
 						"description": "The new CodexGatewayService instance that `new` returns, which keeps the config object by reference and an empty CodexSessionRepository in its private `repository` field. The constructor does no validation and cannot throw, because the only work CodexSessionRepository does on construction is creating an empty Map."
 					}
 				],

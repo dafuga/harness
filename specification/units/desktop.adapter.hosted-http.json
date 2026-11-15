@@ -485,7 +485,7 @@
 				"outputs": [
 					{
 						"name": "HostedHttpAdapter.constructor",
-						"type": "unknown",
+						"type": "HostedHttpAdapter",
 						"description": "The new HostedHttpAdapter instance, whose private origin is the value hostedOrigin returns for options.origin; if that check throws, no instance is produced."
 					}
 				],
