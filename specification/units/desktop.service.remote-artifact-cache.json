@@ -22,46 +22,168 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteArtifactCacheService.constructor.reads",
 				"type": "HostedReadService",
-				"required": true
+				"required": true,
+				"description": "An instance of HostedReadService supplies the authorized hosted-read and cache behavior used by artifact reads. Credential checks, authority changes, and offline-cache handling are delegated to it."
 			},
 			{
 				"name": "RemoteArtifactCacheService.pin.identity",
 				"type": "CacheIdentity",
-				"required": true
+				"required": true,
+				"description": "A CacheIdentity records the principal, project, repository, and source/revision provenance used to associate a capture with a pinned evidence answer. pin stores a shallow copy keyed by JSON.stringify and evicts the oldest key after 64 identities; it does not validate the identity.",
+				"examples": [
+					{
+						"collaborationRevision": null,
+						"principalId": "12345678901234567890",
+						"projectId": "project-alpha",
+						"repositoryId": 123456789,
+						"requestedRef": "main",
+						"sourceCommit": "2943ac13ce64b486e920a5e69f9ee6719d7c5f54",
+						"sourceTree": "321a8fa6052cf4cc76a7e2b9121abb35f73475c0",
+						"notesRef": null,
+						"notesRevision": null,
+						"evidenceRef": null,
+						"evidenceRevision": null,
+						"historyIndexRevision": null,
+						"artifactHash": null,
+						"profile": null
+					}
+				]
 			},
 			{
 				"name": "RemoteArtifactCacheService.read.input",
 				"type": "{ key: string; query: Query }",
-				"required": true
+				"required": true,
+				"description": "The key is the generated artifact request path used with query.projectId to scope the cached entry. Query names one capture and supplies the expected SHA-256; its artifact hash must be 64 lowercase hexadecimal characters and the capture is limited to 11 MiB.",
+				"examples": [
+					{
+						"key": "/api/projects/project-alpha/artifact?entityId=reports.component.evidence-grid&commit=2943ac13ce64b486e920a5e69f9ee6719d7c5f54&branch=main&mode=commit&side=after&recordId=2f7335364813f5e38461d534ff8dbc565491db546d1f14f280536022d896b038&scenarioId=desktop-smoke&state=ready&evidenceId=screenshot-main&sha256=969ff7e7fb4df79179b07bc50199f1b4a718427d40a5d649c7263a7bc4b65b43&viewport=1280x800",
+						"query": {
+							"projectId": "project-alpha",
+							"entityId": "reports.component.evidence-grid",
+							"commit": "2943ac13ce64b486e920a5e69f9ee6719d7c5f54",
+							"branch": "main",
+							"mode": "commit",
+							"side": "after",
+							"recordId": "2f7335364813f5e38461d534ff8dbc565491db546d1f14f280536022d896b038",
+							"scenarioId": "desktop-smoke",
+							"state": "ready",
+							"evidenceId": "screenshot-main",
+							"viewport": "1280x800",
+							"sha256": "969ff7e7fb4df79179b07bc50199f1b4a718427d40a5d649c7263a7bc4b65b43",
+							"notesRevision": null,
+							"evidenceRevision": null
+						}
+					}
+				]
 			},
 			{
 				"name": "RemoteArtifactCacheService.read.load",
 				"type": "() => Promise<Media>",
-				"required": true
+				"required": true,
+				"description": "The callback obtains a remote capture as bytes, media type, and authenticated principal when HostedReadService loads fresh data. The bytes must match query.sha256, fit within 11 MiB, use a supported media type, and carry the verified session principal."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteArtifactCacheService.pin",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns undefined after adding or refreshing the identity in the in-memory pinned map."
 			},
 			{
 				"name": "RemoteArtifactCacheService.read",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the revalidated artifact bytes, served media type, and SHA-256, either from a fresh read or an accepted offline cache entry. Captures larger than 11 MiB, hash mismatches, and unsupported media are rejected.",
+				"examples": [
+					{
+						"bytes": [
+							137,
+							80,
+							78,
+							71,
+							13,
+							10,
+							26,
+							10,
+							0,
+							0,
+							0,
+							13,
+							73,
+							72,
+							68,
+							82,
+							0,
+							0,
+							0,
+							1,
+							0,
+							0,
+							0,
+							1,
+							8,
+							4,
+							0,
+							0,
+							0,
+							181,
+							28,
+							12,
+							2,
+							0,
+							0,
+							0,
+							11,
+							73,
+							68,
+							65,
+							84,
+							120,
+							218,
+							99,
+							252,
+							255,
+							31,
+							0,
+							2,
+							235,
+							1,
+							245,
+							105,
+							71,
+							105,
+							165,
+							0,
+							0,
+							0,
+							0,
+							73,
+							69,
+							78,
+							68,
+							174,
+							66,
+							96,
+							130
+						],
+						"mediaType": "image/png",
+						"sha256": "969ff7e7fb4df79179b07bc50199f1b4a718427d40a5d649c7263a7bc4b65b43"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The service throws Error for malformed or oversized cached data, a SHA-256 mismatch, unsupported media, and hosted authority or cache-identity failures. read can also reject with an error from load or HostedReadService if no validated offline cache entry can satisfy the request."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RemoteArtifactCacheService.pin",
@@ -69,17 +191,37 @@
 					{
 						"name": "RemoteArtifactCacheService.pin.identity",
 						"type": "CacheIdentity",
-						"required": true
+						"required": true,
+						"description": "A CacheIdentity records the principal, project, repository, and source/revision provenance used to associate a capture with a pinned evidence answer. pin stores a shallow copy keyed by JSON.stringify and evicts the oldest key after 64 identities; it does not validate the identity.",
+						"examples": [
+							{
+								"collaborationRevision": null,
+								"principalId": "12345678901234567890",
+								"projectId": "project-alpha",
+								"repositoryId": 123456789,
+								"requestedRef": "main",
+								"sourceCommit": "2943ac13ce64b486e920a5e69f9ee6719d7c5f54",
+								"sourceTree": "321a8fa6052cf4cc76a7e2b9121abb35f73475c0",
+								"notesRef": null,
+								"notesRevision": null,
+								"evidenceRef": null,
+								"evidenceRevision": null,
+								"historyIndexRevision": null,
+								"artifactHash": null,
+								"profile": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteArtifactCacheService.pin",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns undefined after adding or refreshing the identity in the in-memory pinned map."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteArtifactCacheService.read",
@@ -87,22 +229,128 @@
 					{
 						"name": "RemoteArtifactCacheService.read.input",
 						"type": "{ key: string; query: Query }",
-						"required": true
+						"required": true,
+						"description": "The key is the generated artifact request path used with query.projectId to scope the cached entry. Query names one capture and supplies the expected SHA-256; its artifact hash must be 64 lowercase hexadecimal characters and the capture is limited to 11 MiB.",
+						"examples": [
+							{
+								"key": "/api/projects/project-alpha/artifact?entityId=reports.component.evidence-grid&commit=2943ac13ce64b486e920a5e69f9ee6719d7c5f54&branch=main&mode=commit&side=after&recordId=2f7335364813f5e38461d534ff8dbc565491db546d1f14f280536022d896b038&scenarioId=desktop-smoke&state=ready&evidenceId=screenshot-main&sha256=969ff7e7fb4df79179b07bc50199f1b4a718427d40a5d649c7263a7bc4b65b43&viewport=1280x800",
+								"query": {
+									"projectId": "project-alpha",
+									"entityId": "reports.component.evidence-grid",
+									"commit": "2943ac13ce64b486e920a5e69f9ee6719d7c5f54",
+									"branch": "main",
+									"mode": "commit",
+									"side": "after",
+									"recordId": "2f7335364813f5e38461d534ff8dbc565491db546d1f14f280536022d896b038",
+									"scenarioId": "desktop-smoke",
+									"state": "ready",
+									"evidenceId": "screenshot-main",
+									"viewport": "1280x800",
+									"sha256": "969ff7e7fb4df79179b07bc50199f1b4a718427d40a5d649c7263a7bc4b65b43",
+									"notesRevision": null,
+									"evidenceRevision": null
+								}
+							}
+						]
 					},
 					{
 						"name": "RemoteArtifactCacheService.read.load",
 						"type": "() => Promise<Media>",
-						"required": true
+						"required": true,
+						"description": "The callback obtains a remote capture as bytes, media type, and authenticated principal when HostedReadService loads fresh data. The bytes must match query.sha256, fit within 11 MiB, use a supported media type, and carry the verified session principal."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteArtifactCacheService.read",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the revalidated artifact bytes, served media type, and SHA-256, either from a fresh read or an accepted offline cache entry. Captures larger than 11 MiB, hash mismatches, and unsupported media are rejected.",
+						"examples": [
+							{
+								"bytes": [
+									137,
+									80,
+									78,
+									71,
+									13,
+									10,
+									26,
+									10,
+									0,
+									0,
+									0,
+									13,
+									73,
+									72,
+									68,
+									82,
+									0,
+									0,
+									0,
+									1,
+									0,
+									0,
+									0,
+									1,
+									8,
+									4,
+									0,
+									0,
+									0,
+									181,
+									28,
+									12,
+									2,
+									0,
+									0,
+									0,
+									11,
+									73,
+									68,
+									65,
+									84,
+									120,
+									218,
+									99,
+									252,
+									255,
+									31,
+									0,
+									2,
+									235,
+									1,
+									245,
+									105,
+									71,
+									105,
+									165,
+									0,
+									0,
+									0,
+									0,
+									73,
+									69,
+									78,
+									68,
+									174,
+									66,
+									96,
+									130
+								],
+								"mediaType": "image/png",
+								"sha256": "969ff7e7fb4df79179b07bc50199f1b4a718427d40a5d649c7263a7bc4b65b43"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The operation rejects with Error for malformed or oversized cached data, a SHA-256 mismatch, unsupported media, and hosted authority or cache-identity failures. It can also propagate a load or HostedReadService rejection when no validated offline cache entry can satisfy the request."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -112,17 +360,19 @@
 					{
 						"name": "RemoteArtifactCacheService.constructor.reads",
 						"type": "HostedReadService",
-						"required": true
+						"required": true,
+						"description": "An instance of HostedReadService supplies the authorized hosted-read and cache behavior used by artifact reads. Credential checks, authority changes, and offline-cache handling are delegated to it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteArtifactCacheService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Constructs a service instance with an empty pinned-identity map and a HostedArtifactValidator."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
