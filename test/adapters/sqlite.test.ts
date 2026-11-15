@@ -1,5 +1,5 @@
 import { DatabaseSync } from 'node:sqlite';
-import { afterEach, beforeEach, expect, test } from 'vitest';
+import { afterEach, beforeEach, expect, expectTypeOf, test } from 'vitest';
 import {
 	createSqliteAdapter,
 	type SqliteAdapter
@@ -104,4 +104,12 @@ test('schema coverage rejects unmodeled tables, missing columns and colliding fi
 			}
 		])
 	).toThrow('Duplicate SQLite column');
+});
+
+test('field inputs are typed as stored field values, never unknown', () => {
+	type FieldValues = Record<string, string | number | boolean | null | object>;
+	expectTypeOf<Parameters<SqliteAdapter['findBy']>[1]>().toEqualTypeOf<FieldValues>();
+	expectTypeOf<Parameters<SqliteAdapter['create']>[1]>().toEqualTypeOf<FieldValues>();
+	expectTypeOf<Parameters<SqliteAdapter['update']>[2]>().toEqualTypeOf<FieldValues>();
+	expectTypeOf<Parameters<SqliteAdapter['insert']>[1]>().toEqualTypeOf<FieldValues>();
 });

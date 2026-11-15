@@ -12,6 +12,9 @@ import {
 } from '../../utils/development-tooling/sqliteTableSql';
 import { SqliteTableAdapter } from './SqliteTableAdapter';
 
+/** A stored field value: a scalar its type accepts, null, or an object for json and blob fields. */
+type SqliteFieldValue = string | number | boolean | null | object;
+
 /** A driver-injected adapter: constructing or importing it never opens a database. */
 export class SqliteAdapter implements PersistenceAdapter {
 	private readonly models = new Map<string, SqliteModel>();
@@ -34,16 +37,16 @@ export class SqliteAdapter implements PersistenceAdapter {
 	async find<T>(table: string, id: number | string): Promise<T | null> {
 		return this.table(table).find<T>(id);
 	}
-	async findBy<T>(table: string, fields: Record<string, unknown>): Promise<T[]> {
+	async findBy<T>(table: string, fields: Record<string, SqliteFieldValue>): Promise<T[]> {
 		return this.table(table).findBy<T>(fields);
 	}
-	async create<T>(table: string, input: Record<string, unknown>): Promise<T> {
+	async create<T>(table: string, input: Record<string, SqliteFieldValue>): Promise<T> {
 		return this.insert<T>(table, input);
 	}
 	async update<T>(
 		table: string,
 		id: number | string,
-		input: Record<string, unknown>
+		input: Record<string, SqliteFieldValue>
 	): Promise<T | null> {
 		return this.table(table).update<T>(id, input);
 	}
@@ -51,7 +54,7 @@ export class SqliteAdapter implements PersistenceAdapter {
 		return this.table(table).delete(id);
 	}
 	/** Synchronous insertion is also available inside an atomic transaction. */
-	insert<T>(table: string, input: Record<string, unknown>): T {
+	insert<T>(table: string, input: Record<string, SqliteFieldValue>): T {
 		return this.table(table).insert<T>(input);
 	}
 	query<T>(sql: string, bindings: SqliteValue[] = []): T[] {

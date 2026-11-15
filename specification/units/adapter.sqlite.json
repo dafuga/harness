@@ -27,345 +27,178 @@
 		]
 	},
 	"contract": {
-		"origin": "declared",
+		"origin": "derived",
 		"inputs": [
 			{
 				"name": "SqliteAdapter.constructor.db",
 				"type": "SqliteDatabase",
-				"required": true,
-				"description": "The caller-supplied synchronous SQLite database used by the adapter for prepared statements and exec calls. Importing or constructing the adapter does not open a database."
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.constructor.models",
 				"type": "readonly SqliteModel[]",
-				"required": true,
-				"description": "The readonly list of SQLite models registered during construction. Each model is passed to sqliteTableSql, and duplicate table names throw an Error.",
-				"examples": [
-					[
-						{
-							"table": "reports",
-							"primaryKey": "id",
-							"fields": {
-								"id": {
-									"type": "number",
-									"column": "id",
-									"nullable": false
-								},
-								"title": {
-									"type": "string",
-									"column": "title",
-									"nullable": false
-								}
-							}
-						}
-					]
-				]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.find.table",
 				"type": "string",
-				"required": true,
-				"description": "The registered model table name used for this lookup. A table without a registered model throws an Error.",
-				"examples": ["reports"]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.find.id",
 				"type": "number | string",
-				"required": true,
-				"description": "The numeric or string record key passed to the table adapter for this lookup. SqliteAdapter does not coerce or generate the key.",
-				"examples": [42]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.findBy.table",
 				"type": "string",
-				"required": true,
-				"description": "The registered model table name used for this query. A table without a registered model throws an Error.",
-				"examples": ["reports"]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.findBy.fields",
-				"type": "Record<string, unknown>",
-				"required": true,
-				"description": "The property/value filters forwarded to the table adapter for this query. SqliteAdapter itself does not interpret these values.",
-				"examples": [
-					{
-						"title": "Quarterly review"
-					}
-				]
+				"type": "Record<string, SqliteFieldValue>",
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.create.table",
 				"type": "string",
-				"required": true,
-				"description": "The registered model table name used for insertion. A table without a registered model throws an Error.",
-				"examples": ["reports"]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.create.input",
-				"type": "Record<string, unknown>",
-				"required": true,
-				"description": "The property/value record forwarded to insert for creation. SqliteAdapter does not reshape the object before calling insert.",
-				"examples": [
-					{
-						"title": "Quarterly review"
-					}
-				]
+				"type": "Record<string, SqliteFieldValue>",
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.update.table",
 				"type": "string",
-				"required": true,
-				"description": "The registered model table name used for this update. A table without a registered model throws an Error.",
-				"examples": ["reports"]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.update.id",
 				"type": "number | string",
-				"required": true,
-				"description": "The numeric or string record key passed to the table adapter for this update. SqliteAdapter does not coerce or generate the key.",
-				"examples": [42]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.update.input",
-				"type": "Record<string, unknown>",
-				"required": true,
-				"description": "The property/value record forwarded to the table adapter for updating this row. SqliteAdapter passes the object through unchanged.",
-				"examples": [
-					{
-						"title": "Quarterly review"
-					}
-				]
+				"type": "Record<string, SqliteFieldValue>",
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.delete.table",
 				"type": "string",
-				"required": true,
-				"description": "The registered model table name used for deletion. A table without a registered model throws an Error.",
-				"examples": ["reports"]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.delete.id",
 				"type": "number | string",
-				"required": true,
-				"description": "The numeric or string record key passed to the table adapter for deletion. SqliteAdapter does not coerce or generate the key.",
-				"examples": [42]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.insert.table",
 				"type": "string",
-				"required": true,
-				"description": "The registered model table name used for synchronous insertion. A table without a registered model throws an Error.",
-				"examples": ["reports"]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.insert.input",
-				"type": "Record<string, unknown>",
-				"required": true,
-				"description": "The property/value record forwarded to the table adapter for insertion. SqliteAdapter passes the object through unchanged.",
-				"examples": [
-					{
-						"title": "Quarterly review"
-					}
-				]
+				"type": "Record<string, SqliteFieldValue>",
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.query.sql",
 				"type": "string",
-				"required": true,
-				"description": "The SQL statement prepared by the injected database and read with its all method. SqliteAdapter passes the statement unchanged.",
-				"examples": ["SELECT * FROM reports WHERE id = ?"]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.query.bindings",
 				"type": "SqliteValue[]",
 				"required": false,
-				"default": [],
-				"description": "The SQLite values spread into the prepared statement's all call. This input defaults to an empty array and accepts only SqliteValue members.",
-				"examples": [
-					[42]
-				]
+				"default": []
 			},
 			{
 				"name": "SqliteAdapter.execute.sql",
 				"type": "string",
-				"required": true,
-				"description": "The SQL statement prepared by the injected database and executed with its run method. SqliteAdapter passes the statement unchanged.",
-				"examples": ["DELETE FROM reports WHERE id = ?"]
+				"required": true
 			},
 			{
 				"name": "SqliteAdapter.execute.bindings",
 				"type": "SqliteValue[]",
 				"required": false,
-				"default": [],
-				"description": "The SQLite values spread into the prepared statement's run call. This input defaults to an empty array and accepts only SqliteValue members.",
-				"examples": [
-					[42]
-				]
+				"default": []
 			},
 			{
 				"name": "SqliteAdapter.transaction.write",
 				"type": "() => T",
-				"required": true,
-				"description": "The callback invoked between a savepoint and its release. It must be synchronous and return no thenable, or transaction throws an Error."
+				"required": true
 			},
 			{
 				"name": "createSqliteAdapter.db",
 				"type": "SqliteDatabase",
-				"required": true,
-				"description": "The caller-supplied synchronous SQLite database used by the adapter for prepared statements and exec calls. The factory does not open a database."
+				"required": true
 			},
 			{
 				"name": "createSqliteAdapter.models",
 				"type": "readonly SqliteModel[]",
-				"required": true,
-				"description": "The readonly list of SQLite models passed to the new adapter. Duplicate table names throw an Error during construction.",
-				"examples": [
-					[
-						{
-							"table": "reports",
-							"primaryKey": "id",
-							"fields": {
-								"id": {
-									"type": "number",
-									"column": "id",
-									"nullable": false
-								},
-								"title": {
-									"type": "string",
-									"column": "title",
-									"nullable": false
-								}
-							}
-						}
-					]
-				]
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "SqliteAdapter.find",
-				"type": "Promise<T | null>",
-				"description": "The promise resolves to the row found for the supplied id, or null when no row matches. The row shape is determined by the caller's T.",
-				"examples": [
-					{
-						"id": 42,
-						"title": "Quarterly review"
-					},
-					null
-				]
+				"type": "Promise<T | null>"
 			},
 			{
 				"name": "SqliteAdapter.findBy",
-				"type": "Promise<T[]>",
-				"description": "The promise resolves to all rows matching the supplied fields and may contain no rows. Each row has the caller's T shape.",
-				"examples": [
-					[
-						{
-							"id": 42,
-							"title": "Quarterly review"
-						}
-					]
-				]
+				"type": "Promise<T[]>"
 			},
 			{
 				"name": "SqliteAdapter.create",
-				"type": "Promise<T>",
-				"description": "The promise resolves to the row returned by insert for the supplied input. Its shape is determined by the caller's T.",
-				"examples": [
-					{
-						"id": 42,
-						"title": "Quarterly review"
-					}
-				]
+				"type": "Promise<T>"
 			},
 			{
 				"name": "SqliteAdapter.update",
-				"type": "Promise<T | null>",
-				"description": "The promise resolves to the updated row, or null when no row matches the supplied id. The row shape is determined by the caller's T.",
-				"examples": [
-					{
-						"id": 42,
-						"title": "Quarterly review"
-					},
-					null
-				]
+				"type": "Promise<T | null>"
 			},
 			{
 				"name": "SqliteAdapter.delete",
-				"type": "Promise<boolean>",
-				"description": "The promise resolves to true when the table adapter deletes a row and false when it deletes none. It does not return the deleted row.",
-				"examples": [true, false]
+				"type": "Promise<boolean>"
 			},
 			{
 				"name": "SqliteAdapter.insert",
-				"type": "T",
-				"description": "The synchronous result is the inserted row returned by the table adapter. Its shape is determined by the caller's T.",
-				"examples": [
-					{
-						"id": 42,
-						"title": "Quarterly review"
-					}
-				]
+				"type": "T"
 			},
 			{
 				"name": "SqliteAdapter.query",
-				"type": "T[]",
-				"description": "The result is the array returned by the prepared statement's all method. It may be empty, and each row has the caller's T shape.",
-				"examples": [
-					[
-						{
-							"id": 42,
-							"title": "Quarterly review"
-						}
-					]
-				]
+				"type": "T[]"
 			},
 			{
 				"name": "SqliteAdapter.execute",
-				"type": "unknown",
-				"description": "The result is returned by the prepared statement's run method and is typed unknown in this contract. The SQLite statement interface defines changes and lastInsertRowid on that result.",
-				"examples": [
-					{
-						"changes": 1,
-						"lastInsertRowid": 42
-					}
-				]
+				"type": "unknown"
 			},
 			{
 				"name": "SqliteAdapter.createTables",
-				"type": "void",
-				"description": "The method passes generated CREATE TABLE SQL to db.exec for every registered model. It returns no value."
+				"type": "void"
 			},
 			{
 				"name": "SqliteAdapter.transaction",
-				"type": "T",
-				"description": "The result is the value returned by the synchronous callback after the savepoint is released. If the callback or a database operation throws, the method rolls back to the savepoint and rethrows.",
-				"examples": [
-					{
-						"id": 42,
-						"title": "Quarterly review"
-					}
-				]
+				"type": "T"
 			},
 			{
 				"name": "SqliteAdapter.assertModels",
-				"type": "void",
-				"description": "The method checks that every non-SQLite application table has a model and that each model's declared columns match the actual table columns. It returns no value and throws an Error on either mismatch."
+				"type": "void"
 			},
 			{
 				"name": "createSqliteAdapter",
-				"type": "SqliteAdapter",
-				"description": "The factory creates and returns a SqliteAdapter using the supplied database and models. Duplicate model table names cause construction to throw an Error."
+				"type": "SqliteAdapter"
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown",
-				"description": "Thrown for duplicate model table names, requests for unregistered tables, asynchronous or thenable transaction callbacks, and model/schema mismatches detected by assertModels."
+				"type": "thrown"
 			}
 		],
-		"errorStatus": "declared",
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "SqliteAdapter.find",
@@ -373,40 +206,22 @@
 					{
 						"name": "SqliteAdapter.find.table",
 						"type": "string",
-						"required": true,
-						"description": "The registered model table name used for this lookup. A table without a registered model throws an Error.",
-						"examples": ["reports"]
+						"required": true
 					},
 					{
 						"name": "SqliteAdapter.find.id",
 						"type": "number | string",
-						"required": true,
-						"description": "The numeric or string record key passed to the table adapter for this lookup. SqliteAdapter does not coerce or generate the key.",
-						"examples": [42]
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.find",
-						"type": "Promise<T | null>",
-						"description": "The promise resolves to the row found for the supplied id, or null when no row matches. The row shape is determined by the caller's T.",
-						"examples": [
-							{
-								"id": 42,
-								"title": "Quarterly review"
-							},
-							null
-						]
+						"type": "Promise<T | null>"
 					}
 				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown when no model is registered for the requested table."
-					}
-				],
-				"errorStatus": "declared"
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "SqliteAdapter.findBy",
@@ -414,45 +229,22 @@
 					{
 						"name": "SqliteAdapter.findBy.table",
 						"type": "string",
-						"required": true,
-						"description": "The registered model table name used for this query. A table without a registered model throws an Error.",
-						"examples": ["reports"]
+						"required": true
 					},
 					{
 						"name": "SqliteAdapter.findBy.fields",
-						"type": "Record<string, unknown>",
-						"required": true,
-						"description": "The property/value filters forwarded to the table adapter for this query. SqliteAdapter itself does not interpret these values.",
-						"examples": [
-							{
-								"title": "Quarterly review"
-							}
-						]
+						"type": "Record<string, SqliteFieldValue>",
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.findBy",
-						"type": "Promise<T[]>",
-						"description": "The promise resolves to all rows matching the supplied fields and may contain no rows. Each row has the caller's T shape.",
-						"examples": [
-							[
-								{
-									"id": 42,
-									"title": "Quarterly review"
-								}
-							]
-						]
+						"type": "Promise<T[]>"
 					}
 				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown when no model is registered for the requested table."
-					}
-				],
-				"errorStatus": "declared"
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "SqliteAdapter.create",
@@ -460,43 +252,22 @@
 					{
 						"name": "SqliteAdapter.create.table",
 						"type": "string",
-						"required": true,
-						"description": "The registered model table name used for insertion. A table without a registered model throws an Error.",
-						"examples": ["reports"]
+						"required": true
 					},
 					{
 						"name": "SqliteAdapter.create.input",
-						"type": "Record<string, unknown>",
-						"required": true,
-						"description": "The property/value record forwarded to insert for creation. SqliteAdapter does not reshape the object before calling insert.",
-						"examples": [
-							{
-								"title": "Quarterly review"
-							}
-						]
+						"type": "Record<string, SqliteFieldValue>",
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.create",
-						"type": "Promise<T>",
-						"description": "The promise resolves to the row returned by insert for the supplied input. Its shape is determined by the caller's T.",
-						"examples": [
-							{
-								"id": 42,
-								"title": "Quarterly review"
-							}
-						]
+						"type": "Promise<T>"
 					}
 				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown when no model is registered for the requested table."
-					}
-				],
-				"errorStatus": "declared"
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "SqliteAdapter.update",
@@ -504,51 +275,27 @@
 					{
 						"name": "SqliteAdapter.update.table",
 						"type": "string",
-						"required": true,
-						"description": "The registered model table name used for this update. A table without a registered model throws an Error.",
-						"examples": ["reports"]
+						"required": true
 					},
 					{
 						"name": "SqliteAdapter.update.id",
 						"type": "number | string",
-						"required": true,
-						"description": "The numeric or string record key passed to the table adapter for this update. SqliteAdapter does not coerce or generate the key.",
-						"examples": [42]
+						"required": true
 					},
 					{
 						"name": "SqliteAdapter.update.input",
-						"type": "Record<string, unknown>",
-						"required": true,
-						"description": "The property/value record forwarded to the table adapter for updating this row. SqliteAdapter passes the object through unchanged.",
-						"examples": [
-							{
-								"title": "Quarterly review"
-							}
-						]
+						"type": "Record<string, SqliteFieldValue>",
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.update",
-						"type": "Promise<T | null>",
-						"description": "The promise resolves to the updated row, or null when no row matches the supplied id. The row shape is determined by the caller's T.",
-						"examples": [
-							{
-								"id": 42,
-								"title": "Quarterly review"
-							},
-							null
-						]
+						"type": "Promise<T | null>"
 					}
 				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown when no model is registered for the requested table."
-					}
-				],
-				"errorStatus": "declared"
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "SqliteAdapter.delete",
@@ -556,34 +303,22 @@
 					{
 						"name": "SqliteAdapter.delete.table",
 						"type": "string",
-						"required": true,
-						"description": "The registered model table name used for deletion. A table without a registered model throws an Error.",
-						"examples": ["reports"]
+						"required": true
 					},
 					{
 						"name": "SqliteAdapter.delete.id",
 						"type": "number | string",
-						"required": true,
-						"description": "The numeric or string record key passed to the table adapter for deletion. SqliteAdapter does not coerce or generate the key.",
-						"examples": [42]
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.delete",
-						"type": "Promise<boolean>",
-						"description": "The promise resolves to true when the table adapter deletes a row and false when it deletes none. It does not return the deleted row.",
-						"examples": [true, false]
+						"type": "Promise<boolean>"
 					}
 				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown when no model is registered for the requested table."
-					}
-				],
-				"errorStatus": "declared"
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "SqliteAdapter.insert",
@@ -591,43 +326,22 @@
 					{
 						"name": "SqliteAdapter.insert.table",
 						"type": "string",
-						"required": true,
-						"description": "The registered model table name used for synchronous insertion. A table without a registered model throws an Error.",
-						"examples": ["reports"]
+						"required": true
 					},
 					{
 						"name": "SqliteAdapter.insert.input",
-						"type": "Record<string, unknown>",
-						"required": true,
-						"description": "The property/value record forwarded to the table adapter for insertion. SqliteAdapter passes the object through unchanged.",
-						"examples": [
-							{
-								"title": "Quarterly review"
-							}
-						]
+						"type": "Record<string, SqliteFieldValue>",
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.insert",
-						"type": "T",
-						"description": "The synchronous result is the inserted row returned by the table adapter. Its shape is determined by the caller's T.",
-						"examples": [
-							{
-								"id": 42,
-								"title": "Quarterly review"
-							}
-						]
+						"type": "T"
 					}
 				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown when no model is registered for the requested table."
-					}
-				],
-				"errorStatus": "declared"
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "SqliteAdapter.query",
@@ -635,38 +349,23 @@
 					{
 						"name": "SqliteAdapter.query.sql",
 						"type": "string",
-						"required": true,
-						"description": "The SQL statement prepared by the injected database and read with its all method. SqliteAdapter passes the statement unchanged.",
-						"examples": ["SELECT * FROM reports WHERE id = ?"]
+						"required": true
 					},
 					{
 						"name": "SqliteAdapter.query.bindings",
 						"type": "SqliteValue[]",
 						"required": false,
-						"default": [],
-						"description": "The SQLite values spread into the prepared statement's all call. This input defaults to an empty array and accepts only SqliteValue members.",
-						"examples": [
-							[42]
-						]
+						"default": []
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.query",
-						"type": "T[]",
-						"description": "The result is the array returned by the prepared statement's all method. It may be empty, and each row has the caller's T shape.",
-						"examples": [
-							[
-								{
-									"id": 42,
-									"title": "Quarterly review"
-								}
-							]
-						]
+						"type": "T[]"
 					}
 				],
 				"errors": [],
-				"errorStatus": "declared"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "SqliteAdapter.execute",
@@ -674,36 +373,23 @@
 					{
 						"name": "SqliteAdapter.execute.sql",
 						"type": "string",
-						"required": true,
-						"description": "The SQL statement prepared by the injected database and executed with its run method. SqliteAdapter passes the statement unchanged.",
-						"examples": ["DELETE FROM reports WHERE id = ?"]
+						"required": true
 					},
 					{
 						"name": "SqliteAdapter.execute.bindings",
 						"type": "SqliteValue[]",
 						"required": false,
-						"default": [],
-						"description": "The SQLite values spread into the prepared statement's run call. This input defaults to an empty array and accepts only SqliteValue members.",
-						"examples": [
-							[42]
-						]
+						"default": []
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.execute",
-						"type": "unknown",
-						"description": "The result is returned by the prepared statement's run method and is typed unknown in this contract. The SQLite statement interface defines changes and lastInsertRowid on that result.",
-						"examples": [
-							{
-								"changes": 1,
-								"lastInsertRowid": 42
-							}
-						]
+						"type": "unknown"
 					}
 				],
 				"errors": [],
-				"errorStatus": "declared"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "SqliteAdapter.createTables",
@@ -711,12 +397,11 @@
 				"outputs": [
 					{
 						"name": "SqliteAdapter.createTables",
-						"type": "void",
-						"description": "The method passes generated CREATE TABLE SQL to db.exec for every registered model. It returns no value."
+						"type": "void"
 					}
 				],
 				"errors": [],
-				"errorStatus": "declared"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "SqliteAdapter.transaction",
@@ -724,31 +409,22 @@
 					{
 						"name": "SqliteAdapter.transaction.write",
 						"type": "() => T",
-						"required": true,
-						"description": "The callback invoked between a savepoint and its release. It must be synchronous and return no thenable, or transaction throws an Error."
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.transaction",
-						"type": "T",
-						"description": "The result is the value returned by the synchronous callback after the savepoint is released. If the callback or a database operation throws, the method rolls back to the savepoint and rethrows.",
-						"examples": [
-							{
-								"id": 42,
-								"title": "Quarterly review"
-							}
-						]
+						"type": "T"
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown when the callback is async or returns a thenable. Errors from the callback or database operations are rolled back and rethrown."
+						"type": "thrown"
 					}
 				],
-				"errorStatus": "declared"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "SqliteAdapter.assertModels",
@@ -756,18 +432,16 @@
 				"outputs": [
 					{
 						"name": "SqliteAdapter.assertModels",
-						"type": "void",
-						"description": "The method checks that every non-SQLite application table has a model and that each model's declared columns match the actual table columns. It returns no value and throws an Error on either mismatch."
+						"type": "void"
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown when an application table lacks a model or a model's declared columns do not match the actual columns."
+						"type": "thrown"
 					}
 				],
-				"errorStatus": "declared"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "createSqliteAdapter",
@@ -775,51 +449,22 @@
 					{
 						"name": "createSqliteAdapter.db",
 						"type": "SqliteDatabase",
-						"required": true,
-						"description": "The caller-supplied synchronous SQLite database used by the adapter for prepared statements and exec calls. The factory does not open a database."
+						"required": true
 					},
 					{
 						"name": "createSqliteAdapter.models",
 						"type": "readonly SqliteModel[]",
-						"required": true,
-						"description": "The readonly list of SQLite models passed to the new adapter. Duplicate table names throw an Error during construction.",
-						"examples": [
-							[
-								{
-									"table": "reports",
-									"primaryKey": "id",
-									"fields": {
-										"id": {
-											"type": "number",
-											"column": "id",
-											"nullable": false
-										},
-										"title": {
-											"type": "string",
-											"column": "title",
-											"nullable": false
-										}
-									}
-								}
-							]
-						]
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "createSqliteAdapter",
-						"type": "SqliteAdapter",
-						"description": "The factory creates and returns a SqliteAdapter using the supplied database and models. Duplicate model table names cause construction to throw an Error."
+						"type": "SqliteAdapter"
 					}
 				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown when the supplied models contain duplicate table names."
-					}
-				],
-				"errorStatus": "declared"
+				"errors": [],
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": [
@@ -829,51 +474,27 @@
 					{
 						"name": "SqliteAdapter.constructor.db",
 						"type": "SqliteDatabase",
-						"required": true,
-						"description": "The caller-supplied synchronous SQLite database used by the adapter for prepared statements and exec calls. Importing or constructing the adapter does not open a database."
+						"required": true
 					},
 					{
 						"name": "SqliteAdapter.constructor.models",
 						"type": "readonly SqliteModel[]",
-						"required": true,
-						"description": "The readonly list of SQLite models registered during construction. Each model is passed to sqliteTableSql, and duplicate table names throw an Error.",
-						"examples": [
-							[
-								{
-									"table": "reports",
-									"primaryKey": "id",
-									"fields": {
-										"id": {
-											"type": "number",
-											"column": "id",
-											"nullable": false
-										},
-										"title": {
-											"type": "string",
-											"column": "title",
-											"nullable": false
-										}
-									}
-								}
-							]
-						]
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.constructor",
-						"type": "unknown",
-						"description": "The constructed adapter instance storing the supplied database and registered models. Construction does not open a database."
+						"type": "unknown"
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown when two constructor models declare the same table name."
+						"type": "thrown"
 					}
 				],
-				"errorStatus": "declared"
+				"errorStatus": "unknown"
 			}
 		]
 	},
