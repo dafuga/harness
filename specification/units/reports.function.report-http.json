@@ -61,23 +61,7 @@
 			{
 				"name": "reportHttp",
 				"type": "Response",
-				"description": "SvelteKit json() Response whose JSON body has app 'project-reports', version 1, buildId from reportBuildIdentity(), revision from HARNESS_VERIFY_REVISION (null when unset) and root, a 64-character lowercase SHA-256 hex digest of repository.root. The source comment says only a server started for a verification run knows its revision, so other servers report null, and root is a digest rather than the path itself.",
-				"examples": [
-					{
-						"app": "project-reports",
-						"version": 1,
-						"buildId": "20261114.1",
-						"revision": "4c1e7a9d2b5f8036e1a4c7d9b2f5083e6a1c4d7b",
-						"root": "9f2c4b7e1d8a3f06b5c2e9d4a7f1083b6e5d2c9a4f7b0e3d8c1a6f5b2e9d4c70"
-					},
-					{
-						"app": "project-reports",
-						"version": 1,
-						"buildId": "20261115.2",
-						"revision": null,
-						"root": "5a0e8d3c7b1f94e26d0a5c8b3e7f2d19a4c6b0e8f3d5a7c2e1b9f6d4a8c0e325"
-					}
-				]
+				"description": "SvelteKit json() Response whose JSON body has app 'project-reports', version 1, buildId from reportBuildIdentity(), revision from HARNESS_VERIFY_REVISION (null when unset) and root, a 64-character lowercase SHA-256 hex digest of repository.root. The source comment says only a server started for a verification run knows its revision, so other servers report null, and root is a digest rather than the path itself."
 			},
 			{
 				"name": "reportFile",
@@ -111,23 +95,7 @@
 					{
 						"name": "reportHttp",
 						"type": "Response",
-						"description": "SvelteKit json() Response whose JSON body has app 'project-reports', version 1, buildId from reportBuildIdentity(), revision from HARNESS_VERIFY_REVISION (null when unset) and root, a 64-character lowercase SHA-256 hex digest of repository.root. The source comment says only a server started for a verification run knows its revision, so other servers report null, and root is a digest rather than the path itself.",
-						"examples": [
-							{
-								"app": "project-reports",
-								"version": 1,
-								"buildId": "20261114.1",
-								"revision": "4c1e7a9d2b5f8036e1a4c7d9b2f5083e6a1c4d7b",
-								"root": "9f2c4b7e1d8a3f06b5c2e9d4a7f1083b6e5d2c9a4f7b0e3d8c1a6f5b2e9d4c70"
-							},
-							{
-								"app": "project-reports",
-								"version": 1,
-								"buildId": "20261115.2",
-								"revision": null,
-								"root": "5a0e8d3c7b1f94e26d0a5c8b3e7f2d19a4c6b0e8f3d5a7c2e1b9f6d4a8c0e325"
-							}
-						]
+						"description": "SvelteKit json() Response whose JSON body has app 'project-reports', version 1, buildId from reportBuildIdentity(), revision from HARNESS_VERIFY_REVISION (null when unset) and root, a 64-character lowercase SHA-256 hex digest of repository.root. The source comment says only a server started for a verification run knows its revision, so other servers report null, and root is a digest rather than the path itself."
 					}
 				],
 				"errors": [],
