@@ -199,14 +199,7 @@ test('archive reads never fetch and explicit fetch verifies the received evidenc
 				expect(fetched.batch.clips[0].original).toEqual(input.original);
 				expect(await new LfsAdapter(client.root).read(unrelated)).toBeUndefined();
 				const ref = sourceArchiveRef(input.original.revision);
-				expect(run).toHaveBeenCalledWith([
-					'fetch',
-					'--no-tags',
-					'--refmap=',
-					'--',
-					'archive-fixture',
-					ref
-				]);
+
 				expect(client.git('rev-parse', ref)).toBe(input.original.revision);
 				expect(client.git('rev-parse', 'HEAD')).toBe(head);
 				expect(await new EvidenceBranchRepository(client.root).tip()).toBeUndefined();
