@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { ProviderSwitchService } from '../../src/services/ProviderSwitchService';
+import { ProviderSwitchService } from '../../src/services/agents-providers/ProviderSwitchService';
 import { createPickerFixture } from '../support/picker';
 
 test('queues a session selection durably without changing active or default provider', async () => {

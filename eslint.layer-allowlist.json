@@ -102,11 +102,6 @@
 			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
 		},
 		{
-			"from": "src/services/PickerPreviewService.ts",
-			"to": "src/cli/program/codex-picker-command/PickerPreviewService",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/unit-index-service/UnitIndexService.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService",
 			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."

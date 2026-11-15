@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/ReasonPathService.ts",
 			"src/services/development-tooling/ReasonPathService.ts",
 			"src/services/development-tooling/ReasonPathService.types.ts"
 		],
 		"symbols": [
-			"ReasonPathService",
 			"ReasonPathService",
 			"ReasonPathService.constructor",
 			"ReasonPathService.report",

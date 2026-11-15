@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { ProviderSwitchApplyService } from '../../src/services/ProviderSwitchApplyService';
-import { ProviderSwitchService } from '../../src/services/ProviderSwitchService';
+import { ProviderSwitchApplyService } from '../../src/services/agents-providers/ProviderSwitchApplyService';
+import { ProviderSwitchService } from '../../src/services/agents-providers/ProviderSwitchService';
 import { createPickerFixture } from '../support/picker';
 import type { SessionObservation } from '../../src/core/development-tooling/pickerTypes';
 

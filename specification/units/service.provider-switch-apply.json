@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/ProviderSwitchApplyService.ts",
-			"src/services/agents-providers/ProviderSwitchApplyService.ts"
-		],
+		"source": ["src/services/agents-providers/ProviderSwitchApplyService.ts"],
 		"symbols": [
-			"ProviderSwitchApplyService",
 			"ProviderSwitchApplyService",
 			"ProviderSwitchApplyService.constructor",
 			"ProviderSwitchApplyService.apply"

@@ -5,7 +5,7 @@ import {
 	CodexPickerMcpService,
 	pickerResource
 } from '../../src/services/agents-providers/CodexPickerMcpService';
-import { ProviderSwitchService } from '../../src/services/ProviderSwitchService';
+import { ProviderSwitchService } from '../../src/services/agents-providers/ProviderSwitchService';
 import { createPickerFixture } from '../support/picker';
 
 test('MCP exposes a thread panel and explicit pending switch tools, with no apply action', async () => {

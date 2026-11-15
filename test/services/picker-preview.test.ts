@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { PickerPreviewService } from '../../src/services/PickerPreviewService';
-import { ProviderSwitchService } from '../../src/services/ProviderSwitchService';
+import { PickerPreviewService } from '../../src/cli/program/codex-picker-command/PickerPreviewService';
+import { ProviderSwitchService } from '../../src/services/agents-providers/ProviderSwitchService';
 import { createPickerFixture } from '../support/picker';
 
 test('preview confines writes to its synthetic session and rejects foreign hosts/origins', async () => {
