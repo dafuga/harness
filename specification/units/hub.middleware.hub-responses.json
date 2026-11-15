@@ -15,22 +15,30 @@
 		"symbols": ["HubResponsesMiddleware", "HubResponsesMiddleware.handle", "HubResponsesMiddleware"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubResponsesMiddleware.handle.response",
 				"type": "Response",
-				"required": true
+				"required": true,
+				"description": "The Response to harden: handle writes X-Frame-Options, Content-Security-Policy, Referrer-Policy, X-Content-Type-Options and Cache-Control into its headers in place, replacing any existing values of those names. Its headers must be mutable, because a Response with immutable headers, such as one returned by fetch(), makes the first Headers.set call throw a TypeError."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubResponsesMiddleware.handle",
-				"type": "Response"
+				"type": "Response",
+				"description": "The same Response object that was passed in, returned after the five headers are set; handle never builds a new Response, so the status, body and all other headers are unchanged."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when response has no headers (for example it is null or undefined), or when its headers are immutable, such as a Response returned by fetch(), which makes Headers.set throw. handle does not catch it, so the error propagates to the caller and no Response is returned."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HubResponsesMiddleware.handle",
@@ -38,17 +46,25 @@
 					{
 						"name": "HubResponsesMiddleware.handle.response",
 						"type": "Response",
-						"required": true
+						"required": true,
+						"description": "The Response to harden: handle writes X-Frame-Options, Content-Security-Policy, Referrer-Policy, X-Content-Type-Options and Cache-Control into its headers in place, replacing any existing values of those names. Its headers must be mutable, because a Response with immutable headers, such as one returned by fetch(), makes the first Headers.set call throw a TypeError."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubResponsesMiddleware.handle",
-						"type": "Response"
+						"type": "Response",
+						"description": "The same Response object that was passed in, returned after the five headers are set; handle never builds a new Response, so the status, body and all other headers are unchanged."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when response has no headers (for example it is null or undefined), or when its headers are immutable, such as a Response returned by fetch(), which makes Headers.set throw. handle does not catch it, so the error propagates to the caller and no Response is returned."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
