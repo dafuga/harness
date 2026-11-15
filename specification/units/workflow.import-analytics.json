@@ -12,28 +12,42 @@
 		"symbols": ["importAnalytics"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "importAnalytics.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Path to the repository tree to scan; it is passed through resolve and used to look for specification/loops at each project while recursing into child directories. Traversal skips hidden directories and node_modules, dist, build, and analytics.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "importAnalytics.historical",
 				"type": "boolean",
 				"required": false,
-				"default": true
+				"default": true,
+				"description": "Marks generated analytics events as historical, and the value is copied into each event. If omitted, it defaults to true; it does not filter which loop states or trace records are read.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "importAnalytics",
-				"type": "Promise<number>"
+				"type": "Promise<number>",
+				"description": "Count of generated events from loops whose per-loop processing completed, accumulated after their events are passed to recordImported. It includes loop creation, completed steps and loops, and recognized loop.evaluated trace records; per-loop failures are logged and excluded from the count.",
+				"examples": [0, 3]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The promise can reject if opening the analytics repository, resolving or traversing the root, computing project identity, reconciling history, or closing the repository fails. Individual loop read, parse, and event-recording failures are caught and logged, and a missing or unreadable specification/loops directory is treated as empty."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "importAnalytics",
@@ -41,23 +55,37 @@
 					{
 						"name": "importAnalytics.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Path to the repository tree to scan; it is passed through resolve and used to look for specification/loops at each project while recursing into child directories. Traversal skips hidden directories and node_modules, dist, build, and analytics.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					},
 					{
 						"name": "importAnalytics.historical",
 						"type": "boolean",
 						"required": false,
-						"default": true
+						"default": true,
+						"description": "Marks generated analytics events as historical, and the value is copied into each event. If omitted, it defaults to true; it does not filter which loop states or trace records are read.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "importAnalytics",
-						"type": "Promise<number>"
+						"type": "Promise<number>",
+						"description": "Count of generated events from loops whose per-loop processing completed, accumulated after their events are passed to recordImported. It includes loop creation, completed steps and loops, and recognized loop.evaluated trace records; per-loop failures are logged and excluded from the count.",
+						"examples": [0, 3]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The promise can reject if opening the analytics repository, resolving or traversing the root, computing project identity, reconciling history, or closing the repository fails. Individual loop read, parse, and event-recording failures are caught and logged, and a missing or unreadable specification/loops directory is treated as empty."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
