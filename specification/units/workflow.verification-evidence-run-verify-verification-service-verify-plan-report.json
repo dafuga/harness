@@ -21,20 +21,169 @@
 				"name": "verifyPlanReport.plan",
 				"type": "PlannedCheck[]",
 				"required": true,
-				"description": "Selected checks with their IDs, targets, runner commands, working directories, and per-check timeouts."
+				"description": "The ordered planned checks to classify, each carrying its ID, name, kind, target, runner, working directory, command and timeout. A candidate requires a supported runner invocation with exactly one literal test-file argument matching the normalized target, plus matching runner, cwd, timeout and command template.",
+				"examples": [
+					[
+						{
+							"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+							"name": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+							"kind": "unit",
+							"runner": "vitest",
+							"target": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+							"cwd": ".",
+							"command": "bun x vitest run src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+							"timeoutMs": 600000
+						},
+						{
+							"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+							"name": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+							"kind": "unit",
+							"runner": "vitest",
+							"target": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+							"cwd": ".",
+							"command": "bun x vitest run src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+							"timeoutMs": 600000
+						},
+						{
+							"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+							"name": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+							"kind": "integration",
+							"runner": "vitest",
+							"target": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+							"cwd": ".",
+							"command": "bun x vitest run --config vitest.integration.config.ts src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+							"timeoutMs": 600000
+						},
+						{
+							"id": "workflow.verification-evidence-run-verify-verification-service-verify-plan-report:browser-report",
+							"scenario": "workflow.verification-evidence-run-verify-verification-service-verify-plan-report",
+							"name": "browser-report",
+							"kind": "e2e",
+							"runner": "playwright",
+							"target": "tests/e2e/verification-plan.spec.ts",
+							"cwd": ".",
+							"command": "bun x playwright test --project=chromium",
+							"timeoutMs": 600000
+						}
+					]
+				]
 			},
 			{
 				"name": "verifyPlanReport.source",
 				"type": "VerifyPlanReport['source']",
 				"required": true,
-				"description": "Commit, base-resolution, runtime, and scope metadata for this plan report."
+				"description": "The commit, requested and proven base commits, runtime, and selection metadata attached to this plan. Base values may be null, and entity is present only for entity-scoped planning.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"base": null,
+						"requestedBase": null,
+						"runtime": "module",
+						"scope": "full",
+						"baseResolution": "empty-conservative",
+						"selectionNote": "No locally cached passing base was provable without restoring evidence. Planned from an empty base; a run may restore proof and select fewer checks."
+					},
+					{
+						"commit": "89abcdef0123456789abcdef0123456789abcdef",
+						"base": null,
+						"requestedBase": null,
+						"runtime": "module",
+						"scope": "entity",
+						"entity": "workflow.verification-evidence-run-verify-verification-service-verify-plan-report",
+						"baseResolution": "entity",
+						"selectionNote": "Entity planning uses the same scoped scenario selection as verify run --entity."
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "verifyPlanReport",
 				"type": "VerifyPlanReport",
-				"description": "Deterministic report retaining every planned check and marking exact command-shape candidates, singletons, and checks that cannot be normalized safely; it never executes or combines checks."
+				"description": "The source metadata, one ordered decision per planned check, summary counts and candidate command groups. Candidates describe matching command templates only; checks are never combined or executed, and commands that cannot be proven eligible are marked ineligible.",
+				"examples": [
+					{
+						"mode": "report-only",
+						"executedChecks": 0,
+						"note": "Candidates describe matching command shapes; checks remain uncombined and are not executed.",
+						"sideEffects": "Does not restore evidence or run planned checks; impact analysis may invoke the selected local kernel.",
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"base": null,
+							"requestedBase": null,
+							"runtime": "module",
+							"scope": "full",
+							"baseResolution": "empty-conservative",
+							"selectionNote": "No locally cached passing base was provable without restoring evidence. Planned from an empty base; a run may restore proof and select fewer checks."
+						},
+						"plannedChecks": 4,
+						"candidateGroups": 1,
+						"candidateChecks": 2,
+						"singletons": 1,
+						"ineligible": 1,
+						"checks": [
+							{
+								"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+								"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+								"runner": "vitest",
+								"cwd": ".",
+								"command": "bun x vitest run src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+								"timeoutMs": 600000,
+								"decision": "candidate",
+								"groupId": "candidate-001"
+							},
+							{
+								"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+								"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+								"runner": "vitest",
+								"cwd": ".",
+								"command": "bun x vitest run src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+								"timeoutMs": 600000,
+								"decision": "candidate",
+								"groupId": "candidate-001"
+							},
+							{
+								"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+								"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+								"runner": "vitest",
+								"cwd": ".",
+								"command": "bun x vitest run --config vitest.integration.config.ts src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+								"timeoutMs": 600000,
+								"decision": "singleton",
+								"reason": "No other planned check has the same runner, cwd, target-normalized command, and timeout."
+							},
+							{
+								"id": "workflow.verification-evidence-run-verify-verification-service-verify-plan-report:browser-report",
+								"path": "tests/e2e/verification-plan.spec.ts",
+								"runner": "playwright",
+								"cwd": ".",
+								"command": "bun x playwright test --project=chromium",
+								"timeoutMs": 600000,
+								"decision": "ineligible",
+								"reason": "Could not prove the declared runner and one literal test-file argument match this check; command remains ungrouped."
+							}
+						],
+						"candidates": [
+							{
+								"id": "candidate-001",
+								"runner": "vitest",
+								"cwd": ".",
+								"commandTemplate": "bun x vitest run {target}",
+								"timeoutMs": 600000,
+								"checks": [
+									{
+										"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+										"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts"
+									},
+									{
+										"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+										"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts"
+									}
+								]
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
@@ -47,20 +196,169 @@
 						"name": "verifyPlanReport.plan",
 						"type": "PlannedCheck[]",
 						"required": true,
-						"description": "Selected checks with their IDs, targets, runner commands, working directories, and per-check timeouts."
+						"description": "The ordered planned checks to classify, each carrying its ID, name, kind, target, runner, working directory, command and timeout. A candidate requires a supported runner invocation with exactly one literal test-file argument matching the normalized target, plus matching runner, cwd, timeout and command template.",
+						"examples": [
+							[
+								{
+									"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+									"name": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+									"kind": "unit",
+									"runner": "vitest",
+									"target": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+									"cwd": ".",
+									"command": "bun x vitest run src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+									"timeoutMs": 600000
+								},
+								{
+									"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+									"name": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+									"kind": "unit",
+									"runner": "vitest",
+									"target": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+									"cwd": ".",
+									"command": "bun x vitest run src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+									"timeoutMs": 600000
+								},
+								{
+									"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+									"name": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+									"kind": "integration",
+									"runner": "vitest",
+									"target": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+									"cwd": ".",
+									"command": "bun x vitest run --config vitest.integration.config.ts src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+									"timeoutMs": 600000
+								},
+								{
+									"id": "workflow.verification-evidence-run-verify-verification-service-verify-plan-report:browser-report",
+									"scenario": "workflow.verification-evidence-run-verify-verification-service-verify-plan-report",
+									"name": "browser-report",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/verification-plan.spec.ts",
+									"cwd": ".",
+									"command": "bun x playwright test --project=chromium",
+									"timeoutMs": 600000
+								}
+							]
+						]
 					},
 					{
 						"name": "verifyPlanReport.source",
 						"type": "VerifyPlanReport['source']",
 						"required": true,
-						"description": "Commit, base-resolution, runtime, and scope metadata for this plan report."
+						"description": "The commit, requested and proven base commits, runtime, and selection metadata attached to this plan. Base values may be null, and entity is present only for entity-scoped planning.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"base": null,
+								"requestedBase": null,
+								"runtime": "module",
+								"scope": "full",
+								"baseResolution": "empty-conservative",
+								"selectionNote": "No locally cached passing base was provable without restoring evidence. Planned from an empty base; a run may restore proof and select fewer checks."
+							},
+							{
+								"commit": "89abcdef0123456789abcdef0123456789abcdef",
+								"base": null,
+								"requestedBase": null,
+								"runtime": "module",
+								"scope": "entity",
+								"entity": "workflow.verification-evidence-run-verify-verification-service-verify-plan-report",
+								"baseResolution": "entity",
+								"selectionNote": "Entity planning uses the same scoped scenario selection as verify run --entity."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyPlanReport",
 						"type": "VerifyPlanReport",
-						"description": "Deterministic report retaining every planned check and marking exact command-shape candidates, singletons, and checks that cannot be normalized safely; it never executes or combines checks."
+						"description": "The source metadata, one ordered decision per planned check, summary counts and candidate command groups. Candidates describe matching command templates only; checks are never combined or executed, and commands that cannot be proven eligible are marked ineligible.",
+						"examples": [
+							{
+								"mode": "report-only",
+								"executedChecks": 0,
+								"note": "Candidates describe matching command shapes; checks remain uncombined and are not executed.",
+								"sideEffects": "Does not restore evidence or run planned checks; impact analysis may invoke the selected local kernel.",
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"base": null,
+									"requestedBase": null,
+									"runtime": "module",
+									"scope": "full",
+									"baseResolution": "empty-conservative",
+									"selectionNote": "No locally cached passing base was provable without restoring evidence. Planned from an empty base; a run may restore proof and select fewer checks."
+								},
+								"plannedChecks": 4,
+								"candidateGroups": 1,
+								"candidateChecks": 2,
+								"singletons": 1,
+								"ineligible": 1,
+								"checks": [
+									{
+										"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+										"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+										"runner": "vitest",
+										"cwd": ".",
+										"command": "bun x vitest run src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+										"timeoutMs": 600000,
+										"decision": "candidate",
+										"groupId": "candidate-001"
+									},
+									{
+										"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+										"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+										"runner": "vitest",
+										"cwd": ".",
+										"command": "bun x vitest run src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+										"timeoutMs": 600000,
+										"decision": "candidate",
+										"groupId": "candidate-001"
+									},
+									{
+										"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+										"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+										"runner": "vitest",
+										"cwd": ".",
+										"command": "bun x vitest run --config vitest.integration.config.ts src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.types.test.ts",
+										"timeoutMs": 600000,
+										"decision": "singleton",
+										"reason": "No other planned check has the same runner, cwd, target-normalized command, and timeout."
+									},
+									{
+										"id": "workflow.verification-evidence-run-verify-verification-service-verify-plan-report:browser-report",
+										"path": "tests/e2e/verification-plan.spec.ts",
+										"runner": "playwright",
+										"cwd": ".",
+										"command": "bun x playwright test --project=chromium",
+										"timeoutMs": 600000,
+										"decision": "ineligible",
+										"reason": "Could not prove the declared runner and one literal test-file argument match this check; command remains ungrouped."
+									}
+								],
+								"candidates": [
+									{
+										"id": "candidate-001",
+										"runner": "vitest",
+										"cwd": ".",
+										"commandTemplate": "bun x vitest run {target}",
+										"timeoutMs": 600000,
+										"checks": [
+											{
+												"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts",
+												"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanReport.test.ts"
+											},
+											{
+												"id": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts",
+												"path": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlanWorkflow.test.ts"
+											}
+										]
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
