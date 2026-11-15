@@ -267,7 +267,7 @@ reads HEAD, so uncommitted tests cannot complete it.
 Run `harness units check-contract <id>` when writing or changing a contract. It
 reviews the working contract against source props, errors, function/snippet outputs
 and state declarations. Both commands accept `--json` and exit non-zero while gaps
-remain. `check-contract --all` summarises findings per entity. Add external state
+remain. `harness units check-contract --all` summarises findings per entity. Add external state
 inventories with `--required-states path/to/widget-required-states.json`; repository
 `*required-states*.json` files and catalog/preview scenario registries are discovered
 automatically. Findings are heuristic review prompts, not a completeness proof.

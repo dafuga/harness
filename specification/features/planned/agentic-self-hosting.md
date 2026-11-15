@@ -40,7 +40,7 @@ the public contracts of their dependencies.
 - `@dafuga01/harness/contracts` and `@dafuga01/harness/runtime` are typed package entry points
   that never start the CLI.
 
-The `generate unit`, `units`, `impact` and `kernel` commands and the package entry points exist
+The `harness generate unit`, `harness units`, `harness impact` and `harness kernel` commands and the package entry points exist
 today; see Delivery status.
 
 ## Acceptance Criteria
