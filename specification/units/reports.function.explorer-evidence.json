@@ -21,29 +21,91 @@
 				"name": "explorerEvidence.scope",
 				"type": "Pick<ExplorerScope, 'commit' | 'mode' | 'parent'>",
 				"required": true,
-				"description": "Selected commit, current/commit mode and first-parent identifier; no application scope or generated routing state is required."
+				"description": "Identifies the requested commit, whether the page follows the current tip or stays at a selected commit, and that commit's first parent (null when it has none). The function reads a parent side only in commit mode when parent is non-null.",
+				"examples": [
+					{
+						"commit": "7f8a9c5e1d2b4a6c8e0f13579bdf2468ace01357",
+						"mode": "current",
+						"parent": null
+					}
+				]
 			},
 			{
 				"name": "explorerEvidence.revisions",
 				"type": "ExplorerRevisions",
 				"required": true,
-				"description": "Shown revision and parent state: undefined while loading, null when unavailable, or the stored parent revision."
+				"description": "Carries the stored head revision and the first-parent revision while available; parent is null when none is stored or undefined while it is being read. A revision is used only when its commit exactly matches the requested commit.",
+				"examples": [
+					{
+						"head": {
+							"commit": "7f8a9c5e1d2b4a6c8e0f13579bdf2468ace01357",
+							"registry": {
+								"available": false,
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						},
+						"parent": null
+					}
+				]
 			},
 			{
 				"name": "explorerEvidence.unit",
 				"type": "Pick<HarnessUnit, 'id'>",
 				"required": true,
-				"description": "Unit identifier whose scenarios and captures should be selected."
+				"description": "Identifies the entity by its Harness unit id, which the function uses to select unit coverage and captures. Only id is read from this argument.",
+				"examples": [
+					{
+						"id": "reports.function.explorer-evidence"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "explorerEvidence",
 				"type": "ExplorerEvidence",
-				"description": "After evidence bound to the exact shown commit, and first-parent evidence only in selected-commit mode. Each side includes the chosen verdict record, applicable coverage, captures and explicit gaps. Current captures must be usable and not inherited. Scenario/state/viewport declarations from both sides are retained; differing profiles, viewport dimensions or tests are listed as comparison limits. Retained focused screenshots remain visible for their exact unit and revision, separately labelled without granting a verification verdict."
+				"description": "Returns evidence for the exact requested commit and, for a selected commit with a first parent, its parent; an unavailable or mismatched revision is shown as a gap instead of substituting another revision. Captures, scenario and state coverage, initial-commit status, and reasons the sides are incomparable are retained; only a usable, non-inherited capture is marked current.",
+				"examples": [
+					{
+						"mode": "current",
+						"scenarios": [],
+						"after": {
+							"commit": "7f8a9c5e1d2b4a6c8e0f13579bdf2468ace01357",
+							"detail": {
+								"commit": "7f8a9c5e1d2b4a6c8e0f13579bdf2468ace01357",
+								"registry": {
+									"available": false,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							},
+							"record": null,
+							"captures": [],
+							"coverage": [],
+							"gap": "No unit registry is stored at this revision."
+						},
+						"before": null,
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "explorerEvidence",
@@ -52,30 +114,91 @@
 						"name": "explorerEvidence.scope",
 						"type": "Pick<ExplorerScope, 'commit' | 'mode' | 'parent'>",
 						"required": true,
-						"description": "Selected commit, current/commit mode and first-parent identifier; no application scope or generated routing state is required."
+						"description": "Identifies the requested commit, whether the page follows the current tip or stays at a selected commit, and that commit's first parent (null when it has none). The function reads a parent side only in commit mode when parent is non-null.",
+						"examples": [
+							{
+								"commit": "7f8a9c5e1d2b4a6c8e0f13579bdf2468ace01357",
+								"mode": "current",
+								"parent": null
+							}
+						]
 					},
 					{
 						"name": "explorerEvidence.revisions",
 						"type": "ExplorerRevisions",
 						"required": true,
-						"description": "Shown revision and parent state: undefined while loading, null when unavailable, or the stored parent revision."
+						"description": "Carries the stored head revision and the first-parent revision while available; parent is null when none is stored or undefined while it is being read. A revision is used only when its commit exactly matches the requested commit.",
+						"examples": [
+							{
+								"head": {
+									"commit": "7f8a9c5e1d2b4a6c8e0f13579bdf2468ace01357",
+									"registry": {
+										"available": false,
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"parent": null
+							}
+						]
 					},
 					{
 						"name": "explorerEvidence.unit",
 						"type": "Pick<HarnessUnit, 'id'>",
 						"required": true,
-						"description": "Unit identifier whose scenarios and captures should be selected."
+						"description": "Identifies the entity by its Harness unit id, which the function uses to select unit coverage and captures. Only id is read from this argument.",
+						"examples": [
+							{
+								"id": "reports.function.explorer-evidence"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerEvidence",
 						"type": "ExplorerEvidence",
-						"description": "After evidence bound to the exact shown commit, and first-parent evidence only in selected-commit mode. Each side includes the chosen verdict record, applicable coverage, captures and explicit gaps. Current captures must be usable and not inherited. Scenario/state/viewport declarations from both sides are retained; differing profiles, viewport dimensions or tests are listed as comparison limits. Retained focused screenshots remain visible for their exact unit and revision, separately labelled without granting a verification verdict."
+						"description": "Returns evidence for the exact requested commit and, for a selected commit with a first parent, its parent; an unavailable or mismatched revision is shown as a gap instead of substituting another revision. Captures, scenario and state coverage, initial-commit status, and reasons the sides are incomparable are retained; only a usable, non-inherited capture is marked current.",
+						"examples": [
+							{
+								"mode": "current",
+								"scenarios": [],
+								"after": {
+									"commit": "7f8a9c5e1d2b4a6c8e0f13579bdf2468ace01357",
+									"detail": {
+										"commit": "7f8a9c5e1d2b4a6c8e0f13579bdf2468ace01357",
+										"registry": {
+											"available": false,
+											"units": [],
+											"scenarios": [],
+											"graph": {
+												"edges": []
+											}
+										},
+										"comparison": null,
+										"records": [],
+										"explanations": []
+									},
+									"record": null,
+									"captures": [],
+									"coverage": [],
+									"gap": "No unit registry is stored at this revision."
+								},
+								"before": null,
+								"initial": null,
+								"incomparable": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
