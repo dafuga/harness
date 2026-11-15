@@ -21,17 +21,32 @@
 				"name": "hubRemote.env",
 				"type": "HubEnv",
 				"required": true,
-				"description": "Environment containing relay origin, optional environment name and remote-host object binding."
+				"description": "HubEnv is the hub's environment record; the function reads its optional HARNESS_RELAY_ORIGIN, HARNESS_ENVIRONMENT and REMOTE_HOSTS (the Durable Object namespace binding). A missing or unusable origin or binding makes the function return null: the origin must be https, or http on localhost or 127.0.0.1 unless HARNESS_ENVIRONMENT is 'production', with no credentials, path, query or fragment, and the binding must expose idFromName and get functions.",
+				"examples": [
+					{
+						"HARNESS_RELAY_ORIGIN": "https://relay.example.com",
+						"HARNESS_ENVIRONMENT": "production"
+					},
+					{
+						"HARNESS_RELAY_ORIGIN": "http://localhost:8787",
+						"HARNESS_ENVIRONMENT": "local"
+					},
+					{
+						"HARNESS_ENVIRONMENT": "staging"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubRemote",
 				"type": "HubRemoteRuntime | null",
-				"description": "Normalized origin and relay-management adapter, or null. Accepts exact HTTPS origins, plus HTTP localhost or 127.0.0.1 outside production; binding must expose idFromName and get functions."
+				"description": "The value is null unless both a usable origin and a usable REMOTE_HOSTS binding are present. Otherwise it is an object whose origin is the normalized URL origin (scheme, host and port, no path) and whose relay is a RelayManageAdapter built on the binding; that class instance cannot be written as JSON, so the examples show only null.",
+				"examples": [null]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "hubRemote",
@@ -40,18 +55,32 @@
 						"name": "hubRemote.env",
 						"type": "HubEnv",
 						"required": true,
-						"description": "Environment containing relay origin, optional environment name and remote-host object binding."
+						"description": "HubEnv is the hub's environment record; the function reads its optional HARNESS_RELAY_ORIGIN, HARNESS_ENVIRONMENT and REMOTE_HOSTS (the Durable Object namespace binding). A missing or unusable origin or binding makes the function return null: the origin must be https, or http on localhost or 127.0.0.1 unless HARNESS_ENVIRONMENT is 'production', with no credentials, path, query or fragment, and the binding must expose idFromName and get functions.",
+						"examples": [
+							{
+								"HARNESS_RELAY_ORIGIN": "https://relay.example.com",
+								"HARNESS_ENVIRONMENT": "production"
+							},
+							{
+								"HARNESS_RELAY_ORIGIN": "http://localhost:8787",
+								"HARNESS_ENVIRONMENT": "local"
+							},
+							{
+								"HARNESS_ENVIRONMENT": "staging"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubRemote",
 						"type": "HubRemoteRuntime | null",
-						"description": "Normalized origin and relay-management adapter, or null. Accepts exact HTTPS origins, plus HTTP localhost or 127.0.0.1 outside production; binding must expose idFromName and get functions."
+						"description": "The value is null unless both a usable origin and a usable REMOTE_HOSTS binding are present. Otherwise it is an object whose origin is the normalized URL origin (scheme, host and port, no path) and whose relay is a RelayManageAdapter built on the binding; that class instance cannot be written as JSON, so the examples show only null.",
+						"examples": [null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
