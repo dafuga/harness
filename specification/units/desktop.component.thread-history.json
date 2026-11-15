@@ -32,42 +32,83 @@
 				"name": "ThreadHistory.entity",
 				"type": "EntityDetail",
 				"required": true,
-				"description": "Entity history, versions, category, identifier and title. Functions show plan versions without image requests; other categories may show each version’s first relevant image."
+				"description": "Provides the entity identity, category, title, history records, and design versions rendered by the component. For functions, unapproved versions are labeled Plan and thumbnails are suppressed; other categories can show the first image selected for each version.",
+				"examples": [
+					{
+						"id": "desktop.component.thread-history",
+						"category": "components",
+						"kind": "component",
+						"title": "Thread history",
+						"summary": "Shows entity history and versions.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": null
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"history": [],
+						"sources": ["packages/desktop/src/components/git-source-history/ThreadHistory.svelte"],
+						"size": {
+							"available": false,
+							"text": ""
+						},
+						"performance": {
+							"available": false,
+							"text": ""
+						}
+					}
+				]
 			},
 			{
 				"name": "ThreadHistory.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace supplied to version thumbnails for image retrieval."
+				"description": "Provides workspace state to ImageThumbnail when a version has an image and the entity is not in the functions category. It is used for thumbnail retrieval, not for history rows or version selection."
 			},
 			{
 				"name": "ThreadHistory.version",
 				"type": "string",
 				"required": true,
-				"description": "Required current version for highlighting and choosing its currently viewed option thumbnail."
+				"description": "Identifies the current version button and determines which option is used for its thumbnail. Only a matching version uses the option input; versions without options use their image list, and functions do not render thumbnails.",
+				"examples": ["v1", "v2"]
 			},
 			{
 				"name": "ThreadHistory.option",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional current-version option, empty by default. Other versions use their approved or first option through the helper."
+				"description": "Names the design option shown for the current version when that version has options; other versions use their current approved option when valid or their first option. Defaults to the empty string, so an unmatched option falls back to the valid current approval or first option, and versions without options use all their images.",
+				"examples": ["", "o1", "o2"]
 			},
 			{
 				"name": "ThreadHistory.select",
 				"type": "(version: string) => void",
 				"required": true,
-				"description": "Required callback receiving the clicked version. Does not itself mutate the version prop."
+				"description": "Is invoked with the version string when a version button is clicked. Selection is delegated to the parent and does not change this component's version input."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ThreadHistory",
 				"type": "markup",
-				"description": "Expandable event history with titles, raw recorded timestamps and details, plus a selectable version strip. Empty history is explicit. Versions show thumbnails where applicable and Plan/Design or approval labels. An approval tied to a known option names that option."
+				"description": "Renders an expandable entity history with each event's title, at string, and detail, or a no-history message, followed by a button for each version. Buttons mark the matching version active and show the approved option number when the approval names an existing option, otherwise Approved, Plan for an unapproved function, or Design for another unapproved entity; an image is included only when the selected option has one and the entity category is not functions."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
