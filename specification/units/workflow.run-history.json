@@ -27,62 +27,150 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sourceCommit.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository path passed to GitAdapter for the revision lookup. It must identify a Git repository.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
+				]
 			},
 			{
 				"name": "sourceCommit.reference",
 				"type": "string",
 				"required": false,
-				"default": "HEAD"
+				"default": "HEAD",
+				"description": "Git revision expression resolved as <reference>^{commit} in that repository. It must name a commit, and the default is HEAD.",
+				"examples": ["HEAD", "main~2"]
 			},
 			{
 				"name": "historyAttach.options",
 				"type": "HistoryOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Options select the repository root, source commit, and verification record to attach. Omitted root uses process.cwd(), omitted commit resolves as HEAD, and omitted record selects the latest stored record for that commit.",
+				"examples": [
+					{},
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"record": "verify-20261115T120000Z"
+					}
+				]
 			},
 			{
 				"name": "historyStatus.options",
 				"type": "HistoryOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Options select the repository root and source commit for the Git-history status query. Omitted root uses process.cwd() and omitted commit resolves as HEAD; record is accepted by the shared options type but is not used here.",
+				"examples": [
+					{},
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "renderStatus.status",
 				"type": "CommitStatus",
-				"required": true
+				"required": true,
+				"description": "Git-history result for one source commit, including its verification records and problems. verified is true only when an attached record passed and is valid after its record, files, and lineage are checked.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"verified": true,
+						"records": [
+							{
+								"record": "verify-20261115T120000Z",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"evidence": {
+									"commit": "89abcdef89abcdef89abcdef89abcdef89abcdef",
+									"path": "records/0123456789abcdef0123456789abcdef01234567/verify-20261115T120000Z",
+									"manifest": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+								}
+							}
+						],
+						"problems": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceCommit",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Full commit hash resolved from the requested reference in the repository. Resolution rejects if root is not a Git repository or the reference does not name a commit.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "historyAttach",
-				"type": "Promise<Attached>"
+				"type": "Promise<Attached>",
+				"description": "Details of the verification record attached to the source commit, including its evidence pointer, notes ref, archive ref, and whether this call created it. created is false when the exact record was already attached, and attachment can reject when the record is missing or invalid.",
+				"examples": [
+					{
+						"record": "verify-20261115T120000Z",
+						"status": "passed",
+						"source": "0123456789abcdef0123456789abcdef01234567",
+						"evidence": {
+							"commit": "89abcdef89abcdef89abcdef89abcdef89abcdef",
+							"path": "records/0123456789abcdef0123456789abcdef01234567/verify-20261115T120000Z",
+							"manifest": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+						},
+						"note": "refs/notes/harness",
+						"archive": "refs/harness/source/0123456789abcdef0123456789abcdef01234567",
+						"created": true
+					}
+				]
 			},
 			{
 				"name": "historyStatus",
-				"type": "Promise<CommitStatus>"
+				"type": "Promise<CommitStatus>",
+				"description": "Git-history result for one full source commit, with attached verification records and problems. verified is true only when an attached record has status passed and is valid after its record, files, and lineage are checked.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"verified": true,
+						"records": [
+							{
+								"record": "verify-20261115T120000Z",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"evidence": {
+									"commit": "89abcdef89abcdef89abcdef89abcdef89abcdef",
+									"path": "records/0123456789abcdef0123456789abcdef01234567/verify-20261115T120000Z",
+									"manifest": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+								}
+							}
+						],
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "renderStatus",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable newline-separated summary produced from CommitStatus. Each record line shows the first 12 characters of its record id, its status, and (not usable) when valid is false.",
+				"examples": [
+					"Commit 0123456789abcdef0123456789abcdef01234567 is verified by Git history: 1 attached record.\n  verify-20261 passed"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised when the source repository or revision is invalid, or when a selected verification record cannot be found or attached. Its message carries the specific failure reason."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sourceCommit",
@@ -90,28 +178,37 @@
 					{
 						"name": "sourceCommit.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository path passed to GitAdapter for the revision lookup. It must identify a Git repository.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
+						]
 					},
 					{
 						"name": "sourceCommit.reference",
 						"type": "string",
 						"required": false,
-						"default": "HEAD"
+						"default": "HEAD",
+						"description": "Git revision expression resolved as <reference>^{commit} in that repository. It must name a commit, and the default is HEAD.",
+						"examples": ["HEAD", "main~2"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceCommit",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Full commit hash resolved from the requested reference in the repository. Resolution rejects if root is not a Git repository or the reference does not name a commit.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when the root is not a Git repository or the requested reference does not resolve to a commit. The message identifies the failure reason."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "historyAttach",
@@ -120,22 +217,48 @@
 						"name": "historyAttach.options",
 						"type": "HistoryOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Options select the repository root, source commit, and verification record to attach. Omitted root uses process.cwd(), omitted commit resolves as HEAD, and omitted record selects the latest stored record for that commit.",
+						"examples": [
+							{},
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"record": "verify-20261115T120000Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "historyAttach",
-						"type": "Promise<Attached>"
+						"type": "Promise<Attached>",
+						"description": "Details of the verification record attached to the source commit, including its evidence pointer, notes ref, archive ref, and whether this call created it. created is false when the exact record was already attached, and attachment can reject when the record is missing or invalid.",
+						"examples": [
+							{
+								"record": "verify-20261115T120000Z",
+								"status": "passed",
+								"source": "0123456789abcdef0123456789abcdef01234567",
+								"evidence": {
+									"commit": "89abcdef89abcdef89abcdef89abcdef89abcdef",
+									"path": "records/0123456789abcdef0123456789abcdef01234567/verify-20261115T120000Z",
+									"manifest": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+								},
+								"note": "refs/notes/harness",
+								"archive": "refs/harness/source/0123456789abcdef0123456789abcdef01234567",
+								"created": true
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when source resolution fails, no matching verification record exists, or the selected record cannot be attached because its integrity, dependencies, or archive step fails. The message identifies the failure reason."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "historyStatus",
@@ -144,17 +267,52 @@
 						"name": "historyStatus.options",
 						"type": "HistoryOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Options select the repository root and source commit for the Git-history status query. Omitted root uses process.cwd() and omitted commit resolves as HEAD; record is accepted by the shared options type but is not used here.",
+						"examples": [
+							{},
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "historyStatus",
-						"type": "Promise<CommitStatus>"
+						"type": "Promise<CommitStatus>",
+						"description": "Git-history result for one full source commit, with attached verification records and problems. verified is true only when an attached record has status passed and is valid after its record, files, and lineage are checked.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"verified": true,
+								"records": [
+									{
+										"record": "verify-20261115T120000Z",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"evidence": {
+											"commit": "89abcdef89abcdef89abcdef89abcdef89abcdef",
+											"path": "records/0123456789abcdef0123456789abcdef01234567/verify-20261115T120000Z",
+											"manifest": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+										}
+									}
+								],
+								"problems": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when the root is not a Git repository or the requested reference does not resolve to a commit. This error can propagate from its call to sourceCommit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderStatus",
@@ -162,17 +320,42 @@
 					{
 						"name": "renderStatus.status",
 						"type": "CommitStatus",
-						"required": true
+						"required": true,
+						"description": "Git-history result for one source commit, including its verification records and problems. verified is true only when an attached record passed and is valid after its record, files, and lineage are checked.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"verified": true,
+								"records": [
+									{
+										"record": "verify-20261115T120000Z",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"evidence": {
+											"commit": "89abcdef89abcdef89abcdef89abcdef89abcdef",
+											"path": "records/0123456789abcdef0123456789abcdef01234567/verify-20261115T120000Z",
+											"manifest": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210"
+										}
+									}
+								],
+								"problems": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderStatus",
-						"type": "string"
+						"type": "string",
+						"description": "Human-readable newline-separated summary produced from CommitStatus. Each record line shows the first 12 characters of its record id, its status, and (not usable) when valid is false.",
+						"examples": [
+							"Commit 0123456789abcdef0123456789abcdef01234567 is verified by Git history: 1 attached record.\n  verify-20261 passed"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
