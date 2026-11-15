@@ -31,32 +31,51 @@
 				"name": "RecordedPreview.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Current project and revision context used to fetch the recorded image."
+				"description": "The Workspace store (a WorkspaceState instance) whose shown project revision (branch and commit), pinned flag and project id choose the evidence read, and whose bridge performs it. No read starts until the figure is within 200px of the viewport, or at once where IntersectionObserver is unavailable, and without a shown project or a bridge that provides evidence the preview shows the missing state 'Recorded screenshots cannot be read on this connection.'"
 			},
 			{
 				"name": "RecordedPreview.entityId",
 				"type": "string",
 				"required": true,
-				"description": "Registered entity whose selected screenshot is shown."
+				"description": "The id of the registered entity (a unit id) whose screenshot is shown; the evidence read is scoped to it, and an answer for another entity or commit is refused as an error. When the thumbnail names no binding, the scenario and required state that list this id in the evidence registry choose the capture.",
+				"examples": ["reports.component.evidence-grid", "desktop.component.recorded-preview"]
 			},
 			{
 				"name": "RecordedPreview.title",
 				"type": "string",
 				"required": true,
-				"description": "Accessible title identifying the previewed entity."
+				"description": "The accessible name of the previewed entity: the figure is labeled 'Recorded preview of {title}', and the image alt, when an image is shown, reads 'Screenshot of {title}'. It is only a label, so it never selects or fetches a screenshot.",
+				"examples": ["Evidence grid", "RecordedPreview"]
 			},
 			{
 				"name": "RecordedPreview.thumbnail",
 				"type": "RecordedThumbnail",
 				"required": true,
-				"description": "Recorded screenshot selection and provenance to load for this entity."
+				"description": "The entity's recorded binding: source 'recorded', with the manifest preview fields scenario, state and viewport, which must be given together to name one capture. When all three are absent, the scenario and required state that the evidence registry lists for this entity are used, preferring the desktop viewport; a partial binding ends in the error state 'The screenshot binding is incomplete.' instead of a fallback.",
+				"examples": [
+					{
+						"source": "recorded",
+						"scenario": "catalog-previews",
+						"state": "local-catalog",
+						"viewport": "desktop"
+					},
+					{
+						"source": "recorded",
+						"scenario": "catalog-previews",
+						"state": "history-catalog",
+						"viewport": "desktop"
+					},
+					{
+						"source": "recorded"
+					}
+				]
 			},
 			{
 				"name": "RecordedPreview.compact",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Defaults to false. Hide the caption for minimal page cards; keep capture origin and missing-image details available on hover.",
+				"description": "Defaults to false. When true, the figcaption under the image is not rendered, while the figure's hover title still carries the caption (which includes the short commit of the capture) or, when there is no caption, the reason.",
 				"examples": [true, false]
 			}
 		],
@@ -64,10 +83,11 @@
 			{
 				"name": "preview",
 				"type": "markup",
-				"description": "A checked screenshot with its state and tested commit, or an explicit loading or unavailable state."
+				"description": "The hx-figure markup: once the bytes hash to the SHA-256 that the evidence answer states and are image/png or image/jpeg, it holds the image and, unless compact, a figcaption naming the state and short commit (marked inherited when reused). Until then, or when no usable screenshot exists, it holds a role=status placeholder reading 'Loading screenshot…' while loading and 'Screenshot unavailable' otherwise, plus the reason when one is set."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
