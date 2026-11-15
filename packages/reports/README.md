@@ -17,9 +17,9 @@ Harness report commands read explicit environment variables and the configuratio
 Backfill existing unexpired local evidence and cached MP4s without changing results, transcripts, or report dates:
 
 ```bash
-bun run report sync-storage --dry-run
-bun run report sync-storage
-bun run report sync-storage --run RUN_ID
+harness report sync-storage --dry-run
+harness report sync-storage
+harness report sync-storage --run RUN_ID
 ```
 
 The command updates only storage metadata, skips expired reports, and can be retried. Any per-report errors are returned with a nonzero exit status.
@@ -43,9 +43,9 @@ Every report expires 30 days after its immutable `startedAt` timestamp. The dail
 Install/update the existing daily cleanup job on this Mac:
 
 ```bash
-bun run report cleanup --dry-run
+harness report cleanup --dry-run
 python3 packages/reports/scripts/install_screenshot_retention.py
-bun run report cleanup
+harness report cleanup
 ```
 
 The existing LaunchAgent label is reused. It runs at 03:00 local time and on load; catch-up runs after the Mac returns. A bounded 30-day history is written to `PROJECT_REPORTS_HOME/retention-history.jsonl`. `--run RUN_ID` restricts cleanup to one report. Without that flag it also expires old orphan objects and loose cache/import/backup files inside the report store, without following symlinks. Source repositories and files outside the report store are excluded.
@@ -58,14 +58,14 @@ From the Harness repository root:
 
 ```bash
 bun install
-bun run report serve
+harness report serve
 ```
 
-`serve` reuses a matching loopback server, prefers port 5588, skips occupied ports, and leaves the server running. Open the returned URL in the Codex in-app browser. `bun run dev:reports` is also available for ordinary frontend work.
+`serve` reuses a matching loopback server, prefers port 5588, skips occupied ports, and leaves the server running. Open the returned URL in the Codex in-app browser. `harness report serve` is also available for ordinary frontend work.
 
 ## Managed development preview recovery
 
-`bun run dev:reports` and the desktop development command share one loopback owner.
+`harness report serve` and the desktop development command share one loopback owner.
 The launch command stays running as a supervisor, with one replaceable Node/Vite worker.
 It recovers a crashed or unresponsive worker and repeated HTTP 500 failures at the same
 address. Three failed health checks trigger recovery; the old worker exits before its
@@ -80,14 +80,14 @@ compilation errors.
 
 ## CLI
 
-Run these from the Harness repository root, use installed `harness report`, or invoke `bun /Users/danielfugere/projects/harness/src/index.ts report` from another project:
+Use the installed `harness report` command from any directory:
 
 ```bash
-bun run report begin --project /path/to/project --title 'Task name' --mode feature --environment 'local browser' --revision COMMIT
-bun run report record --run RUN_ID --kind check --data '{"id":"unit","title":"Unit tests","status":"passed","command":"bun test"}'
-bun run report record --run RUN_ID --kind evidence --data '{"id":"after-mobile","title":"Mobile result","category":"Changed flow","path":"/absolute/screenshot.png","status":"passed","viewport":"390px mobile","phase":"after","comparison":"main-flow","order":2}'
-bun run report finalize --run RUN_ID
-bun run report cleanup
+harness report begin --project /path/to/project --title 'Task name' --mode feature --environment 'local browser' --revision COMMIT
+harness report record --run RUN_ID --kind check --data '{"id":"unit","title":"Unit tests","status":"passed","command":"bun test"}'
+harness report record --run RUN_ID --kind evidence --data '{"id":"after-mobile","title":"Mobile result","category":"Changed flow","path":"/absolute/screenshot.png","status":"passed","viewport":"390px mobile","phase":"after","comparison":"main-flow","order":2}'
+harness report finalize --run RUN_ID
+harness report cleanup
 ```
 
 `begin` supports `feature` and `suite` modes, optional `--summary`, `--historical`, and `--acceptance` JSON array. `record` accepts `check`, `evidence`, `finding`, `coverage`, `acceptance`, `summary`, and `heartbeat`, with `--data` JSON or `--file` JSON. Record acceptance criteria during a run with `--kind acceptance --data '{"items":["The changed flow works"]}'`; this replaces the active list. Use `before` and `after` phases with the same `comparison` value to pair screenshots. Include `source` and `capturedAt` when available. Statuses are `running`, `passed`, `failed`, `blocked`, `skipped`, `not-proven`, and `interrupted`.
@@ -95,10 +95,10 @@ bun run report cleanup
 Import existing runner output without changing the project's test commands:
 
 ```bash
-bun run report import --run RUN_ID --format playwright --file /path/to/playwright-results.json
-bun run report import --run RUN_ID --format vitest --file /path/to/vitest-results.json
-bun run report import --run RUN_ID --format command --file /path/to/command-outcome.json
-bun run report import --run RUN_ID --format manual --file /path/to/records.json
+harness report import --run RUN_ID --format playwright --file /path/to/playwright-results.json
+harness report import --run RUN_ID --format vitest --file /path/to/vitest-results.json
+harness report import --run RUN_ID --format command --file /path/to/command-outcome.json
+harness report import --run RUN_ID --format manual --file /path/to/records.json
 ```
 
 A command outcome is JSON with `title`, `exitCode`, `command`, `output`, and optional `durationMs`. A manual import is a JSON array of `record` objects. The `mira` format imports the existing Fatebound archive with `--file`, `--findings`, and `--project`, creating a historical suite report if `--run` is omitted.
@@ -112,7 +112,7 @@ The explorer renders recorded audio alongside entity evidence, including transcr
 To attach a recording through the CLI:
 
 ```bash
-bun run report record --run RUN_ID --kind evidence --data '{"id":"fresh-yes","title":"French fresh yes","category":"Fresh commands","path":"/absolute/yes.wav","status":"failed","source":"Actual GPT Live capture","capturedAt":"2026-09-26T12:00:00Z","transcript":"Mm-hm.","note":"Classifier rejected this fresh query."}'
+harness report record --run RUN_ID --kind evidence --data '{"id":"fresh-yes","title":"French fresh yes","category":"Fresh commands","path":"/absolute/yes.wav","status":"failed","source":"Actual GPT Live capture","capturedAt":"2026-09-26T12:00:00Z","transcript":"Mm-hm.","note":"Classifier rejected this fresh query."}'
 ```
 
 The CLI validates the file contents, derives media type and MIME type, hashes the original bytes and derives PCM WAV duration. For other formats, duration appears after playback loads metadata; an optional `durationSeconds` can be supplied with known provenance. Historical recordings should retain their capture dates and original outcomes and use a new `--historical` report. Finalized histories remain immutable.

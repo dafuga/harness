@@ -9,20 +9,20 @@ Use this skill whenever you are planning, implementing, reviewing, or verifying 
 
 ## Contracts first
 
-Start with `bun src/index.ts contracts map <source-path-or-folder>` to find the owning contracts and their recorded dependencies/dependents. Use `contracts list --area <category>` or `contracts search "term" -i --limit 10`, then `contracts show <id-or-path>` before opening implementation. Add `--json` for structured output; search also supports `--regex`, `--folder` and `--kind`. Run `info contracts` for examples and exact matching rules.
+Start with `harness contracts map <source-path-or-folder>` to find the owning contracts and their recorded dependencies/dependents. Use `harness contracts list --area <category>` or `harness contracts search "term" -i --limit 10`, then `harness contracts show <id-or-path>` before opening implementation. Add `--json` for structured output; search also supports `--regex`, `--folder` and `--kind`. Run `harness info contracts` for examples and exact matching rules.
 
-These commands read stored unit/scenario JSON only and reload it on each invocation. They do not inspect source, infer missing states, or verify registry freshness. Paths are project-root relative; use `--root <project>` from elsewhere. Read dependency contracts first; open source for the units you need to change or a specific contract gap. Use `units check` to verify freshness.
+These commands read stored unit/scenario JSON only and reload it on each invocation. They do not inspect source, infer missing states, or verify registry freshness. Paths are project-root relative; use `--root <project>` from elsewhere. Read dependency contracts first; open source for the units you need to change or a specific contract gap. Use `harness units check` to verify freshness.
 
 ## Operating Rules
 
-Compose UI as atoms → molecules → organisms → layouts/templates → pages. Reuse existing shared controls and canonical element atoms. Native markup belongs inside atoms; molecules compose atoms, and organisms compose smaller controls and feature sections. Keep feature categories and stable identities separate from level. Declare `@harness-tier` and the relative `@harness-atoms` directory; use native atom calls for bindings/actions and keep `atomicComponents()` plus generated native typings installed. Read `harness info component`; install the library with `harness generate elements`, and use `generate component --level organism` for feature sections. Validate composition with audit and units check, then exercise real interactions and the standard visual catalog.
+Compose UI as atoms → molecules → organisms → layouts/templates → pages. Reuse existing shared controls and canonical element atoms. Native markup belongs inside atoms; molecules compose atoms, and organisms compose smaller controls and feature sections. Keep feature categories and stable identities separate from level. Declare `@harness-tier` and the relative `@harness-atoms` directory; use native atom calls for bindings/actions and keep `atomicComponents()` plus generated native typings installed. Read `harness info component`; install the library with `harness generate elements`, and use `harness generate component --level organism` for feature sections. Validate composition with audit and units check, then exercise real interactions and the standard visual catalog.
 
 Harness application's own UI uses the documented shared design tokens across Reports, Desktop/iOS and Hub. Add missing design categories or named tokens to Styles before using them; run the standardized app-style-tokens admission checks. This application-specific palette must not be imposed on generated tenant projects. Preserve data-derived geometry, structural CSS and external asset branding.
 
 Choose component colors from Styles → Colors, defined in `appStyleTokensConfig`. Follow each role's usage guidance and the shared control's actual variant; decorative accents do not define action semantics. Keep that guide and the standard Styles assertions aligned when adding a semantic use. Keep one base primary color; document fill, border and contrasting-text treatments beneath it in the same Colors inventory.
 
 1. Treat `harness info`, Harness generators, and `harness audit` as mandatory project controls.
-2. Run `bun run dev -- info <topic>` or `bun run dev -- info scaffolds --json` before creating unfamiliar code shapes.
+2. Run `harness info <topic>` or `harness info scaffolds --json` before creating unfamiliar code shapes.
 3. For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
 4. Prefer adding or updating generators over manually duplicating scaffold behavior.
 5. Add or update unit and temp-workspace E2E tests for generator, audit, and CLI behavior changes.
@@ -41,7 +41,7 @@ When you orchestrate (Zenith root, or any session that hands work to workers), r
 
 ## Configuration review
 
-Expose only important controls a user, operator or app developer actually needs to change. Before adding one, identify who changes it, the behavior they need to control and the sensible default; prefer a fixed implementation value when no tuning need exists. Public config units declare exact source/value names, audience and purpose in `configControls`. Run `units check` to reject missing, duplicate, unowned or unresolved controls, and verify re-indexing preserves the declarations.
+Expose only important controls a user, operator or app developer actually needs to change. Before adding one, identify who changes it, the behavior they need to control and the sensible default; prefer a fixed implementation value when no tuning need exists. Public config units declare exact source/value names, audience and purpose in `configControls`. Run `harness units check` to reject missing, duplicate, unowned or unresolved controls, and verify re-indexing preserves the declarations.
 
 Keep schemas, protocol invariants, lookup tables, fixture/build machinery and documentation internal; design tokens belong in Styles. An export or a filename ending in Config does not establish a public setting. New config scaffolds start internal and empty, without invented name/enabled flags. Preserve source, contracts and history when cleaning up existing catalogs. Generated tenant AGENTS and Harness skills inherit this standard from the shared config rules.
 
@@ -51,7 +51,7 @@ Keep schemas, protocol invariants, lookup tables, fixture/build machinery and do
 - Show the actual merged `main` version with the change: verify runtime source and served revision data, select current `main`, then capture and inspect fresh pixels. Report pending merge or publication separately; an older commit or feature fixture is not current-main delivery.
 - Keep one persistent Harness browsing preview across chats and worktrees. Verify the configured endpoint's live owner and served source/history; coordinate updates with its owner.
 - Reuse that preview. When a different revision or data set is needed, coordinate its update with the owner; do not describe an older served build as proof of unmerged work.
-- Do not evade the singleton through `HARNESS_PREVIEW_OWNER_PORT`, another free port, direct Vite or `build/index.js` launches, or `report serve`. An additional persistent preview requires Daniel's explicit request.
+- Do not evade the singleton through `HARNESS_PREVIEW_OWNER_PORT`, another free port, direct Vite or `build/index.js` launches, or `harness report serve`. An additional persistent preview requires Daniel's explicit request.
 - Isolated automated test servers are allowed only for their fixture lifetime. Use existing test configuration, retain task-owned process handles, and tear down in `finally` on success, failure, timeout and cancellation. Do not leave a fixture detached for browsing or stop another task's server.
 - Preserve the shared preview and all source/history/evidence. After authorized cleanup, re-inventory listeners and check ownership, HTTP readiness and the browser; a stopped worker may otherwise respawn under its supervisor.
 
@@ -107,7 +107,7 @@ same callable. Exercise distinct owner and callable names at current and histori
 
 ## Bug and Regression Loops
 
-- Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
+- Commit the strengthened failing test before product repair. Run `harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure>` on that commit. Make a separate fix commit and run `harness loop record --phase green` against the same tests, fixtures, command and environment. Keep both commits when landing; never squash away this regression history. Focused red/green proof does not replace full verification.
 
 - Freeze scenario slot/state declarations and shared browser marker assertions in the test-only checkpoint alongside the strengthened test. The complete test corpus is frozen, including tests outside the declared command. A repair commit changes product source only; partition scenario or fixture corrections before recording the matched pair.
 
@@ -146,7 +146,7 @@ same callable. Exercise distinct owner and callable names at current and histori
 ## Screenshot Evidence
 
 Write and commit the standard Playwright tests for each entity's declared states and
-desktop/tablet/mobile viewports. Run `bun src/index.ts verify run --priority agent-test --entity <id>`;
+desktop/tablet/mobile viewports. Run `harness verify run --priority agent-test --entity <id>`;
 complete passing entity checks automatically attach screenshots with their verification record link.
 Failed or incomplete entity runs attach nothing. Uncommitted tests are excluded. Fetch each
 state/viewport through `harness api screenshot`; agents need no manual attachment command.
@@ -191,7 +191,7 @@ Use source-and-run-specific output directories for verification attempts. Before
 
 Codex sessions assigning module work use `harness task feature <id> --goal <text> --tldr <text>`, then `harness task add --input <file>`. A task must identify a registered module and include a wanted contract with responsibility, inputs, outputs and errors. Admission commits feature context and the contract to `refs/harness/tasks`; source HEAD and unrelated edits stay intact.
 
-Use `--model <exact-id> --intelligence <level>` for explicit selection. Otherwise auto tries `claude-haiku-5-5` at medium and falls back to `gpt-6-luna` at max only for structured Claude quota rejection. Worker prompts begin with the identical shared feature goal/TLDR, then include the overall module goal and committed wanted contract. `harness task worker --worker <id> --watch` picks up matching assignments in isolated worktrees; CLI success leaves changes in review, not verified completion. Use one repository as the active queue owner; `task sync <remote>` exchanges the task ref and refuses divergence.
+Use `--model <exact-id> --intelligence <level>` for explicit selection. Otherwise auto tries `claude-haiku-5-5` at medium and falls back to `gpt-6-luna` at max only for structured Claude quota rejection. Worker prompts begin with the identical shared feature goal/TLDR, then include the overall module goal and committed wanted contract. `harness task worker --worker <id> --watch` picks up matching assignments in isolated worktrees; CLI success leaves changes in review, not verified completion. Use one repository as the active queue owner; `harness task sync <remote>` exchanges the task ref and refuses divergence.
 
 Bind reviews to the submitted claim with `harness task review <id> --attempt <token> --verdict accepted|incomplete`; incomplete reviews require `--feedback`. Rejection commits the submitted source as the next repair base and preserves the wanted contract. `harness analytics tasks --project <root> --json` reconciles committed attempts and reviews idempotently. Keep reported model and token counters distinct from requested settings; preserve unknown usage and API price ranges. Bounce rate counts incomplete reviews over accepted plus incomplete reviews, separately from execution failures.
 

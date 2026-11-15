@@ -10,9 +10,9 @@ This is a Harness SvelteKit app. Treat Harness as the operating contract for eve
 - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
 - Add or update a feature spec before implementation.
 - Keep files small, focused, and aligned with `harness.audit.json` limits.
-- Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`.
-- Real report commands use the configured private R2 storage. Never pass `PROJECT_REPORTS_ASSET_STORAGE=local` for user reports; that opt-out is restricted to isolated temporary test stores. Backfill existing local media with `report sync-storage`, and verify cloud bytes before claiming uploads.
-- Report storage expires after 30 days from report creation. Use `report cleanup --dry-run` before changing retention scope, preserve failed-deletion metadata, and never clean application source files outside the report store.
+- Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `harness audit .`.
+- Real report commands use the configured private R2 storage. Never pass `PROJECT_REPORTS_ASSET_STORAGE=local` for user reports; that opt-out is restricted to isolated temporary test stores. Backfill existing local media with `harness report sync-storage`, and verify cloud bytes before claiming uploads.
+- Report storage expires after 30 days from report creation. Use `harness report cleanup --dry-run` before changing retention scope, preserve failed-deletion metadata, and never clean application source files outside the report store.
 
 ## Concise Writing
 

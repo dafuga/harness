@@ -6,35 +6,46 @@ and loop driven development that agents can query before making a change.
 
 Game projects retain app pages and add independent mechanics and executable checkpoint graphs. See [the game engine guide](packages/game/README.md) for authoring, AI preview costs and verification.
 
+## Install this checkout's CLI
+
+Run these setup commands from the intended primary checkout, not a task worktree. On Daniel's Mac that checkout is `/Users/danielfugere/projects/harness-integration`:
+
+```sh
+bun run build:cli
+bun link
+chmod 755 dist/index.js
+```
+
+The package's `bin.harness` registration makes `harness` available through the existing package-manager bin directory. The mode step preserves normal executable permissions after linking. Use `harness` from any directory; contract queries can select another project with `--root <project>`.
+
 ## Commands
 
 ```bash
-bun run dev -- new lib my-lib
-bun run dev -- new app my-app
-bun run dev -- new game my-game --dimension 3d
-bun run dev -- generate model Post title:string body:text --adapter sqlite
-bun run dev -- generate mailer Welcome
-bun run dev -- generate resource Article
-bun run dev -- info scaffolds
-bun run dev -- info model
-bun run dev -- info model --json
-bun run dev -- loop search feature
-bun run dev -- loop create checkout-flow --from feature --goal "Customers can check out"
-bun run dev -- loop next checkout-flow
-bun run dev -- loop evaluate checkout-flow
-bun run dev -- audit .
-bun run dev -- audit . --coverage
-bun run dev -- audit . --profile app
-bun run dev -- audit . --profile dapp
-bun run dev -- generate unit PriceQuote
-bun run dev -- units index --write
-bun run dev -- units check
-bun run dev -- units show service.analytics
-bun run dev -- impact
-bun run dev -- kernel parity
-bun run dev -- explain list
-bun run dev -- verify run
-bun run check
+harness new lib my-lib
+harness new app my-app
+harness new game my-game --dimension 3d
+harness generate model Post title:string body:text --adapter sqlite
+harness generate mailer Welcome
+harness generate resource Article
+harness info scaffolds
+harness info model
+harness info model --json
+harness loop search feature
+harness loop create checkout-flow --from feature --goal "Customers can check out"
+harness loop next checkout-flow
+harness loop evaluate checkout-flow
+harness audit .
+harness audit . --coverage
+harness audit . --profile app
+harness audit . --profile dapp
+harness generate unit PriceQuote
+harness units index --write
+harness units check
+harness units show service.analytics
+harness impact
+harness kernel parity
+harness explain list
+harness verify run
 ```
 
 The Explorer’s APIs catalog lists HTTP endpoints and method exports at the selected project revision. Each page has an APIs tab for source-recorded usage through its components and services. API cards open contracts and consumer links in the same revision. Computed or external requests are not presented as confirmed same-app endpoint dependencies.
@@ -100,11 +111,11 @@ mode and approval. Defining a contract creates a plan; implementation and design
 approval keep their existing gates. Hosted writes additionally require writer
 access and a bound executor. Historical commits remain read-only.
 
-`get entities` reads the app's catalog. `get units` reads every registered kind,
+`harness api get entities` reads the app's catalog. `harness api get units` reads every registered kind,
 including private backend entries, commands, adapters, policies and workflows;
-`get registry` also returns the pinned commit. `contracts get ID` keeps the
+`harness api get registry` also returns the pinned commit. `harness api contracts get ID` keeps the
 catalog's current planning contract when one exists, and reads the registered
-contract for backend units outside that catalog. `get contracts` lists all
+contract for backend units outside that catalog. `harness api get contracts` lists all
 registered contracts.
 
 Screenshot downloads retrieve recorded verification captures and check their
@@ -113,9 +124,9 @@ the exact capture; the result retains its revision, timestamp and focused or
 inherited provenance. Missing captures require the page's standard capture
 scenario. This command does not start a new browser capture or agent run.
 
-`request METHOD /api/path` and `get /api/path` cover every endpoint the server
+`harness api request METHOD /api/path` and `harness api get /api/path` cover every endpoint the server
 exposes, including future resources. Named resources are conveniences; the server
-can reject unavailable operations. Local-only `activity` and `build` expose the
+can reject unavailable operations. Local-only `harness api get activity` and `harness api get build` expose the
 console's process activity and build identity. Redirects and off-origin request
 paths are refused, and mutations are never retried automatically. Save and reuse
 the printed request id if an agent start's response is lost.
@@ -225,7 +236,7 @@ harness contracts map src/cli/program --depth 1 --json
 
 `map` separates owning contracts, dependencies and dependents; missing dependency contracts appear as unresolved ids. It follows stored edges for one hop by default (`--depth 0..10`), handles cycles, and applies `--limit` to owning matches. `--area` matches a source-path segment or dotted id prefix; `--folder` respects path boundaries; `--kind` is exact. Filters combine. Internal units are included, and `--include-retired` adds tombstones. Paths are project-root relative; `--root <project>` works from any directory. JSON list/search empty results are `[]`; show/map fail for unknown targets.
 
-The commands reload the existing JSON registry recursively on every invocation, so moved/nested/edited/deleted contracts need no separate search-index rebuild. They read `specification/units` and, for show/search, `specification/scenarios`; executable catalogs are outside their scope. Contract content can be stale or incomplete: use `harness units check` to verify freshness, and `units show` when you need source-derived hashes, graph and test impact. Run `harness info contracts` or `harness contracts <verb> --help` for details.
+The commands reload the existing JSON registry recursively on every invocation, so moved/nested/edited/deleted contracts need no separate search-index rebuild. They read `specification/units` and, for show/search, `specification/scenarios`; executable catalogs are outside their scope. Contract content can be stale or incomplete: use `harness units check` to verify freshness, and `harness units show` when you need source-derived hashes, graph and test impact. Run `harness info contracts` or `harness contracts <verb> --help` for details.
 
 ```bash
 harness generate unit PriceQuote                 # any scaffold kind, plus its manifest
@@ -256,7 +267,7 @@ reads HEAD, so uncommitted tests cannot complete it.
 Run `harness units check-contract <id>` when writing or changing a contract. It
 reviews the working contract against source props, errors, function/snippet outputs
 and state declarations. Both commands accept `--json` and exit non-zero while gaps
-remain. `check-contract --all` summarises findings per entity. Add external state
+remain. `harness units check-contract --all` summarises findings per entity. Add external state
 inventories with `--required-states path/to/widget-required-states.json`; repository
 `*required-states*.json` files and catalog/preview scenario registries are discovered
 automatically. Findings are heuristic review prompts, not a completeness proof.
@@ -733,7 +744,7 @@ at the selected commit, in the gallery, the viewer or the audio card.
 `HARNESS_OWNER_MODE=loopback`, bound to a loopback address, and only to a peer that connects
 from loopback. `Host` and forwarding headers are never authorization, and owner mode is
 refused behind an address header. Without owner mode every page, API, data and media
-request is answered `403`. `harness report serve` and `bun run dev:reports` start it that
+request is answered `403`. `harness report serve` starts it that
 way. The former `/`, `/reports/<id>` and `/analytics` routes redirect to `/harness/reports`,
 `/harness/reports/<id>` and `/harness/analytics`.
 
@@ -844,12 +855,12 @@ Review is disabled by default; ordinary audits make no API calls.
 
 ```bash
 # Preview exactly which files would be reviewed, without credentials or API calls.
-bun run dev -- audit . --clean-code --dry-run --json
+harness audit . --clean-code --dry-run --json
 # Supply HARNESS_JEV_API_KEY through your project-owned environment, then review.
-bun run dev -- audit . --clean-code --json
+harness audit . --clean-code --json
 # Enforce confident violations after assessing advisory results.
-bun run dev -- audit . --clean-code --gate
-bun run dev -- info clean-code
+harness audit . --clean-code --gate
+harness info clean-code
 ```
 
 Use a dedicated project credential. Keys belong in the environment, never in audit
@@ -998,8 +1009,7 @@ Project Reports checkout is no longer needed for development or installed report
 From the Harness repository root:
 
 ```sh
-bun run report serve
-bun run dev:reports
+harness report serve
 bun run test:reports
 bun run check:reports
 ```
@@ -1101,7 +1111,7 @@ no changes to Codex's defaults or provider catalog:
 ```sh
 mkdir -p .cache/codex-gateway
 (umask 077; openssl rand -hex 32 > .cache/codex-gateway/token)
-bun run dev -- codex serve --token-file .cache/codex-gateway/token
+harness codex serve --token-file .cache/codex-gateway/token
 ```
 
 The default port is 47831; use `--port` when that port is already occupied. Keep
@@ -1195,7 +1205,7 @@ Run `harness module add notes` and `harness module generate notes note Meeting`.
 
 ### CLI startup and compatibility imports
 
-`bun run dev` and the packaged `harness` executable use `src/cli/index.ts`, with command families loaded on demand. Root help uses lightweight metadata checked against the complete command registrations in the unit suite. CLI builds include the generated dynamic chunks; copy the complete `dist` tree when installing a build.
+The installed `harness` executable uses the packaged CLI, with command families loaded on demand. Rebuild and link the chosen primary checkout when developing it; runtime usage remains `harness <command>`. Root help uses lightweight metadata checked against the complete command registrations in the unit suite. CLI builds include the generated dynamic chunks; copy the complete `dist` tree when installing a build.
 
 The historical `src/index.ts` retains source exports and direct execution for compatibility. Importing it does not execute the CLI. New library consumers should use the documented package API (`src/lib` / `dist/api`) rather than a CLI entry. Importing the compatibility barrel still loads its exported dependency graph.
 
@@ -1216,7 +1226,7 @@ fail. Direct consumers can call `browserErrorCollector()`, then `watch(context)`
 
 Loop evaluator entries may declare a positive `timeoutMs`; absent that field, evaluators
 have a six-hour backstop so a full project check is not killed after one minute.
-`loop evaluate --no-run-evaluators` skips repository commands. Bounded async commands
+`harness loop evaluate --no-run-evaluators` skips repository commands. Bounded async commands
 also have a six-hour backstop; synchronous direct probes default to one minute, with
 shorter explicit bounds at probe call sites. Git selects a local or long-running deadline;
 callers can override it explicitly. A failure retains stdout/stderr within the combined

@@ -2,7 +2,7 @@
 
 The checkpoints below retain the original implementation evidence and failures. Their measurements and status statements apply to the named historical revisions. Consolidated delivery verification, current source identity and provider boundaries are recorded in [Module task completion analytics](../module-task-analytics/verification.md).
 
-Codex sessions create module assignments through the Harness CLI. Both Claude Code and Codex CLI consume the same committed definitions. Concurrent workers coordinate through one repository's Git ref; another clone receives the task and source history with explicit `task sync` and queue-owner handoff.
+Codex sessions create module assignments through the Harness CLI. Both Claude Code and Codex CLI consume the same committed definitions. Concurrent workers coordinate through one repository's Git ref; another clone receives the task and source history with explicit `harness task sync` and queue-owner handoff.
 
 ```sh
 harness task feature checkout --goal "Make checkout reliable" --tldr "Build validated orders and payment handling"
@@ -34,7 +34,7 @@ Example `task.json` for a project with a registered `service.orders` unit:
 
 The module goal is snapshotted from the committed registry. Supply `moduleGoal` when a unit has only a generated placeholder. Explicit `verificationFiles` must name test files or fixtures and extend the module's source-file scope. Unknown modules, missing wanted contracts and duplicate task IDs are rejected.
 
-Admission writes `queue.json` on `refs/harness/tasks` using Git objects and compare-and-swap ref updates. The source revision, wanted contract, contract SHA256, shared feature goal/TLDR and module goal are committed before pickup. The source HEAD, index and unrelated edits stay intact. Feature contexts and task definitions are immutable; a changed contract gets a new task ID. `task sync <remote>` exchanges the explicit ref without forcing or overwriting divergent queues.
+Admission writes `queue.json` on `refs/harness/tasks` using Git objects and compare-and-swap ref updates. The source revision, wanted contract, contract SHA256, shared feature goal/TLDR and module goal are committed before pickup. The source HEAD, index and unrelated edits stay intact. Feature contexts and task definitions are immutable; a changed contract gets a new task ID. `harness task sync <remote>` exchanges the explicit ref without forcing or overwriting divergent queues.
 
 Prompts begin with the identical overall feature goal and TLDR. Module details, instructions, source commit and wanted contract follow. This preserves a reusable prefix; actual cache hits still depend on the CLI envelope and provider cache rules.
 
@@ -42,7 +42,7 @@ Omitting `model` selects `auto`: `claude-haiku-5-5` at `medium`, with `gpt-6-lun
 
 Workers claim matching assignees/modules atomically and serialize work on the same module. Work runs in an isolated checkout beneath the repository's `.cache/harness/task-worktrees`, pinned to the task's source commit. Changes remain available for review. Writes outside the declared scope or changes to the pinned commit fail the task. Claude receives file and command tools with edit acceptance; Codex uses workspace-write. Saved host login is reused without forwarding inherited provider API keys.
 
-Successful CLI completion produces `review`, preserving requested and reported model information separately. Existing `task check` and project verification still decide completion. `task retry` preserves failed results and claim history; a running claim is recoverable only after confirming its local owner ended or its PID was reused. Unknown or other-clone owners are preserved.
+Successful CLI completion produces `review`, preserving requested and reported model information separately. Existing `harness task check` and project verification still decide completion. `harness task retry` preserves failed results and claim history; a running claim is recoverable only after confirming its local owner ended or its PID was reused. Unknown or other-clone owners are preserved.
 
 ## Verification
 
@@ -54,7 +54,7 @@ The original executable checkpoint is `e4efd95a5c1c1bcb1886bc7c735ca63eb3ebed40`
 
 - All 31 combined CLI E2Es pass at executable source `e4efd95a5c1c1bcb1886bc7c735ca63eb3ebed40`: eight module-task cases plus 23 existing API cases, one worker, 42.97 seconds. The provider executables are synthetic protocol fixtures. Remote log: `/tmp/harness-module-task-cli-final.log`.
 - All 31 focused module-task, unit ownership and project-template cases pass. Root types and lint pass. Harness audit has no findings; registry integrity reports 1,777 units, 161 recorded uncertainties and no errors. Local logs: `/tmp/harness-module-tasks-focused-verified.log`, `/tmp/harness-module-tasks-types-verified.log`, `/tmp/harness-module-tasks-lint-verified.log`, `/tmp/harness-module-task-audit-final.json` and `/tmp/harness-module-task-unit-integrity-final.json`.
-- The installed local Harness CLI was rebuilt from the executable source above. Manual `harness task --help` and `harness task schema` confirm the new commands and preserved `task check`.
+- The installed local Harness CLI was rebuilt from the executable source above. Manual `harness task --help` and `harness task schema` confirm the new commands and preserved `harness task check`.
 - Required `bun run check` at sealed source `f479aad816ff396078ec0ed9d1ddd3cf67ea6726` passes formatting, root types, lint, Rust checks and the kernel build, then stops at the broad unit suite: **1,215 passed, 2 failed, 25 skipped** across 266 files, 568.73 seconds. The failures are `test/late-cleanup.test.ts:135` (tool start expected 1, observed 0) and `test/verification-observations.test.ts:168` (design-option-storage recording times out after 60 seconds). Both were independently reproduced on clean main `bb0d5b323e7e93886c3e19f1e88b46af582bed8b` during the preceding API work. Assertions remain unchanged. Aggregate E2E, full build/package and downstream workspace stages after this gate did not execute; focused CLI passes do not replace them. Log: `/tmp/harness-module-task-check-verified.log`.
 - Ten exact-range change reasons are committed in Harness Git notes on the sealed source. `explain check` passes for `9f3d5bab2b053fbb0a6d04f0fc3f3c932d9cbdfe..f479aad816ff396078ec0ed9d1ddd3cf67ea6726`. Red, green and capture records were fetched back to the primary checkout and successfully re-read through `RegressionProofRepository`, checking record, manifest, log and source identities.
 

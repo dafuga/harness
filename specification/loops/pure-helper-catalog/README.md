@@ -19,8 +19,8 @@ single-consumer ownership rule. This change does not invent placeholder models o
 
 ## Consistent revision data
 
-Normal `units index --write` derives and commits `helperContracts` with each unit manifest.
-`units check` detects stale declarations. Native and hosted catalogs read these declarations;
+Normal `harness units index --write` derives and commits `helperContracts` with each unit manifest.
+`harness units check` detects stale declarations. Native and hosted catalogs read these declarations;
 they do not scan source on every click. Their snapshot profiles are versioned so a catalog
 cached under the previous policy is not reused. The web history explorer derives metadata
 from the source of the selected revision. Missing historical declarations never imply purity.

@@ -34,7 +34,7 @@ verification measures the stored messages of the commits it verifies, so a commi
 - A stage acts only in a worktree that opted into that stage. Each stage has an opt-in file of
   its own in the worktree's Git directory: `harness-hooks` for pre-push, as every version wrote
   it, and `harness-hooks-commit-msg` for commit-msg. A wrapper never reads the file of another
-  stage, and `hooks status` says for each stage whether it is enabled here.
+  stage, and `harness hooks status` says for each stage whether it is enabled here.
 - A worktree that opted into pushes under an earlier Harness is never handed commit-msg: its
   commits start no Harness, its pushes start its own Harness once, and its opt-in file is left
   byte for byte. Installing again replaces the first commit-msg wrapper, which read the push
@@ -50,7 +50,7 @@ verification measures the stored messages of the commits it verifies, so a commi
   starts with `#` is counted.
 - Only source commits after the proven base up to the verified commit are measured; commits of
   evidence and commits whose tree does not declare the limits are not.
-- The pre-push wrapper is byte-identical to the one before this change, and `hooks status`
+- The pre-push wrapper is byte-identical to the one before this change, and `harness hooks status`
   keeps its pre-push fields.
 - The limits are stated in the hooks and explain guides and in the agent instructions.
 
