@@ -1,7 +1,10 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { relayConfig } from '../../src/configs/networking-security/relayConfig';
 import type { RateBucket, RateRecord } from '../../src/models/RelayHost.types';
-import { RateLimitService, type RateStore } from '../../src/services/RateLimitService';
+import {
+	RateLimitService,
+	type RateStore
+} from '../../src/lib/execution-runtimes/host-runtime/RateLimitService';
 
 /** Keeps windows the way a host object does, and counts what is written. */
 function memoryStore(): RateStore & { writes: number } {
