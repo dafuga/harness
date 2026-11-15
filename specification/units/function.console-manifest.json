@@ -39,39 +39,195 @@
 				"name": "consoleManifest.host",
 				"type": "string",
 				"required": true,
-				"description": "Host project directory containing harness.console.json."
+				"description": "Host project directory; the record is read from harness.console.json inside it, built with node:path join. Any read failure, including a missing directory or file, returns an empty record instead of rejecting, so a wrong host looks like a fresh install.",
+				"examples": ["/home/dev/projects/acme-web", "/workspace/payments-api"]
 			},
 			{
 				"name": "writeConsoleManifest.host",
 				"type": "string",
 				"required": true,
-				"description": "Host project directory in which harness.console.json will be written."
+				"description": "Host project directory that receives harness.console.json, built with node:path join; the directory must already exist because the write does not create it, and a missing or unwritable directory rejects the call.",
+				"examples": ["/home/dev/projects/acme-web", "/workspace/payments-api"]
 			},
 			{
 				"name": "writeConsoleManifest.manifest",
 				"type": "ConsoleManifest",
 				"required": true,
-				"description": "Installation record to serialize, including file entries, ownership and changes. The files array is sorted on a copy before writing."
+				"description": "Installation record to serialize; its files array is copied and sorted by path before writing, while changes and every other field, including schemaVersion, are written as given without validation.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"files": [],
+						"changes": []
+					},
+					{
+						"schemaVersion": 1,
+						"files": [
+							{
+								"path": "console/index.html",
+								"sha256": "c41f7a08e93b26d5a1f0c8e7b4d29a63f5e1c0b8d7a6924e3f0b5c1d8e7a2f96",
+								"owner": "harness"
+							},
+							{
+								"path": "console/assets/app.js",
+								"sha256": "5e8b1d0c7a4f93e2b6d1c08f4a7e2b9d3c6f1a0e8b5d2c7f4a9e6b3d0c1f8a27",
+								"owner": "harness"
+							}
+						],
+						"changes": [
+							{
+								"path": "console/index.html",
+								"action": "replaced",
+								"reason": "host held a different index.html",
+								"at": "2026-11-02T14:31:08.000Z",
+								"before": {
+									"sha256": "0d9e4b7a1c6f38e2d5a9b0c4f7e1d6a3b8c2f5e9d0a7b4c1e6f3d8a2b5c9e047",
+									"bytes": 512,
+									"saved": ".harness/saved/console/index.html"
+								},
+								"after": {
+									"sha256": "c41f7a08e93b26d5a1f0c8e7b4d29a63f5e1c0b8d7a6924e3f0b5c1d8e7a2f96",
+									"bytes": 4096
+								}
+							}
+						]
+					},
+					{
+						"schemaVersion": 1,
+						"storage": {
+							"kind": "bucket",
+							"binding": "CONSOLE_HISTORY",
+							"prefix": "console/history/"
+						},
+						"files": [
+							{
+								"path": "console/theme.css",
+								"sha256": "0d9e4b7a1c6f38e2d5a9b0c4f7e1d6a3b8c2f5e9d0a7b4c1e6f3d8a2b5c9e047",
+								"owner": "host"
+							}
+						],
+						"changes": [
+							{
+								"path": "console/legacy.css",
+								"action": "removed",
+								"reason": "file is no longer part of the console bundle",
+								"at": "2026-11-09T09:12:44.000Z",
+								"before": {
+									"sha256": "7a2c9e5f0b8d1a4c6e3f9b7d2a5c8e1f4b0d6a3c9e7f2b5d8a1c4e6f0b3d9a72",
+									"bytes": 218,
+									"saved": ".harness/saved/console/legacy.css"
+								},
+								"after": null
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleManifestFile",
 				"type": "unknown",
-				"description": "Installation record filename harness.console.json."
+				"description": "Constant file name harness.console.json, joined to the host directory by both functions; it is exported rather than passed in, so every host uses the same name.",
+				"examples": ["harness.console.json"]
 			},
 			{
 				"name": "consoleManifest",
 				"type": "Promise<ConsoleManifest>",
-				"description": "Parsed installation record with schemaVersion forced to 1, missing files and changes defaulted to empty arrays, and missing file ownership defaulted to harness. Read failures return an empty record; malformed JSON still rejects."
+				"description": "Parsed installation record: schemaVersion is always 1, missing or null files and changes become empty arrays, and a files entry without an owner gets owner harness. A read failure or a zero-length file returns an empty record; malformed JSON rejects with SyntaxError, and a null document, a files value that is neither an array nor null, or a null files entry rejects with TypeError.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"files": [],
+						"changes": []
+					},
+					{
+						"schemaVersion": 1,
+						"files": [
+							{
+								"path": "console/assets/app.js",
+								"sha256": "5e8b1d0c7a4f93e2b6d1c08f4a7e2b9d3c6f1a0e8b5d2c7f4a9e6b3d0c1f8a27",
+								"owner": "harness"
+							},
+							{
+								"path": "console/index.html",
+								"sha256": "c41f7a08e93b26d5a1f0c8e7b4d29a63f5e1c0b8d7a6924e3f0b5c1d8e7a2f96",
+								"owner": "harness"
+							}
+						],
+						"changes": [
+							{
+								"path": "console/index.html",
+								"action": "replaced",
+								"reason": "host held a different index.html",
+								"at": "2026-11-02T14:31:08.000Z",
+								"before": {
+									"sha256": "0d9e4b7a1c6f38e2d5a9b0c4f7e1d6a3b8c2f5e9d0a7b4c1e6f3d8a2b5c9e047",
+									"bytes": 512,
+									"saved": ".harness/saved/console/index.html"
+								},
+								"after": {
+									"sha256": "c41f7a08e93b26d5a1f0c8e7b4d29a63f5e1c0b8d7a6924e3f0b5c1d8e7a2f96",
+									"bytes": 4096
+								}
+							}
+						]
+					},
+					{
+						"schemaVersion": 1,
+						"storage": {
+							"kind": "bucket",
+							"binding": "CONSOLE_HISTORY",
+							"prefix": "console/history/"
+						},
+						"files": [
+							{
+								"path": "console/theme.css",
+								"sha256": "0d9e4b7a1c6f38e2d5a9b0c4f7e1d6a3b8c2f5e9d0a7b4c1e6f3d8a2b5c9e047",
+								"owner": "host"
+							}
+						],
+						"changes": [
+							{
+								"path": "console/legacy.css",
+								"action": "removed",
+								"reason": "file is no longer part of the console bundle",
+								"at": "2026-11-09T09:12:44.000Z",
+								"before": {
+									"sha256": "7a2c9e5f0b8d1a4c6e3f9b7d2a5c8e1f4b0d6a3c9e7f2b5d8a1c4e6f0b3d9a72",
+									"bytes": 218,
+									"saved": ".harness/saved/console/legacy.css"
+								},
+								"after": null
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "writeConsoleManifest",
 				"type": "Promise<void>",
-				"description": "Resolves after writing tab-indented JSON with a trailing newline and files sorted by path. The target file is replaced; write failures reject."
+				"description": "Resolves once harness.console.json in host has been overwritten with tab-indented JSON, a trailing newline and files sorted by path. The file is written in place, not through a temp file, so a failed write can leave it truncated or partly written, and a missing or unwritable host directory rejects."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse inside consoleManifest when harness.console.json exists but its text is not valid JSON; consoleManifest rejects with it and does not modify the file."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown inside consoleManifest when the stored document is null, when files is neither an array nor null, or when a files entry is null, because the code reads those values without type checks; consoleManifest rejects with it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Node.js filesystem error (a plain Error whose code is ENOENT, EACCES, ENOSPC or similar) that writeConsoleManifest rejects with when harness.console.json cannot be written in host, for example because the directory is missing or not writable."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "consoleManifest",
@@ -80,18 +236,98 @@
 						"name": "consoleManifest.host",
 						"type": "string",
 						"required": true,
-						"description": "Host project directory containing harness.console.json."
+						"description": "Host project directory; the record is read from harness.console.json inside it, built with node:path join. Any read failure, including a missing directory or file, returns an empty record instead of rejecting, so a wrong host looks like a fresh install.",
+						"examples": ["/home/dev/projects/acme-web", "/workspace/payments-api"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleManifest",
 						"type": "Promise<ConsoleManifest>",
-						"description": "Parsed installation record with schemaVersion forced to 1, missing files and changes defaulted to empty arrays, and missing file ownership defaulted to harness. Read failures return an empty record; malformed JSON still rejects."
+						"description": "Parsed installation record: schemaVersion is always 1, missing or null files and changes become empty arrays, and a files entry without an owner gets owner harness. A read failure or a zero-length file returns an empty record; malformed JSON rejects with SyntaxError, and a null document, a files value that is neither an array nor null, or a null files entry rejects with TypeError.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"files": [],
+								"changes": []
+							},
+							{
+								"schemaVersion": 1,
+								"files": [
+									{
+										"path": "console/assets/app.js",
+										"sha256": "5e8b1d0c7a4f93e2b6d1c08f4a7e2b9d3c6f1a0e8b5d2c7f4a9e6b3d0c1f8a27",
+										"owner": "harness"
+									},
+									{
+										"path": "console/index.html",
+										"sha256": "c41f7a08e93b26d5a1f0c8e7b4d29a63f5e1c0b8d7a6924e3f0b5c1d8e7a2f96",
+										"owner": "harness"
+									}
+								],
+								"changes": [
+									{
+										"path": "console/index.html",
+										"action": "replaced",
+										"reason": "host held a different index.html",
+										"at": "2026-11-02T14:31:08.000Z",
+										"before": {
+											"sha256": "0d9e4b7a1c6f38e2d5a9b0c4f7e1d6a3b8c2f5e9d0a7b4c1e6f3d8a2b5c9e047",
+											"bytes": 512,
+											"saved": ".harness/saved/console/index.html"
+										},
+										"after": {
+											"sha256": "c41f7a08e93b26d5a1f0c8e7b4d29a63f5e1c0b8d7a6924e3f0b5c1d8e7a2f96",
+											"bytes": 4096
+										}
+									}
+								]
+							},
+							{
+								"schemaVersion": 1,
+								"storage": {
+									"kind": "bucket",
+									"binding": "CONSOLE_HISTORY",
+									"prefix": "console/history/"
+								},
+								"files": [
+									{
+										"path": "console/theme.css",
+										"sha256": "0d9e4b7a1c6f38e2d5a9b0c4f7e1d6a3b8c2f5e9d0a7b4c1e6f3d8a2b5c9e047",
+										"owner": "host"
+									}
+								],
+								"changes": [
+									{
+										"path": "console/legacy.css",
+										"action": "removed",
+										"reason": "file is no longer part of the console bundle",
+										"at": "2026-11-09T09:12:44.000Z",
+										"before": {
+											"sha256": "7a2c9e5f0b8d1a4c6e3f9b7d2a5c8e1f4b0d6a3c9e7f2b5d8a1c4e6f0b3d9a72",
+											"bytes": 218,
+											"saved": ".harness/saved/console/legacy.css"
+										},
+										"after": null
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse inside consoleManifest when harness.console.json exists but its text is not valid JSON; consoleManifest rejects with it and does not modify the file."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown inside consoleManifest when the stored document is null, when files is neither an array nor null, or when a files entry is null, because the code reads those values without type checks; consoleManifest rejects with it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "writeConsoleManifest",
@@ -100,24 +336,99 @@
 						"name": "writeConsoleManifest.host",
 						"type": "string",
 						"required": true,
-						"description": "Host project directory in which harness.console.json will be written."
+						"description": "Host project directory that receives harness.console.json, built with node:path join; the directory must already exist because the write does not create it, and a missing or unwritable directory rejects the call.",
+						"examples": ["/home/dev/projects/acme-web", "/workspace/payments-api"]
 					},
 					{
 						"name": "writeConsoleManifest.manifest",
 						"type": "ConsoleManifest",
 						"required": true,
-						"description": "Installation record to serialize, including file entries, ownership and changes. The files array is sorted on a copy before writing."
+						"description": "Installation record to serialize; its files array is copied and sorted by path before writing, while changes and every other field, including schemaVersion, are written as given without validation.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"files": [],
+								"changes": []
+							},
+							{
+								"schemaVersion": 1,
+								"files": [
+									{
+										"path": "console/index.html",
+										"sha256": "c41f7a08e93b26d5a1f0c8e7b4d29a63f5e1c0b8d7a6924e3f0b5c1d8e7a2f96",
+										"owner": "harness"
+									},
+									{
+										"path": "console/assets/app.js",
+										"sha256": "5e8b1d0c7a4f93e2b6d1c08f4a7e2b9d3c6f1a0e8b5d2c7f4a9e6b3d0c1f8a27",
+										"owner": "harness"
+									}
+								],
+								"changes": [
+									{
+										"path": "console/index.html",
+										"action": "replaced",
+										"reason": "host held a different index.html",
+										"at": "2026-11-02T14:31:08.000Z",
+										"before": {
+											"sha256": "0d9e4b7a1c6f38e2d5a9b0c4f7e1d6a3b8c2f5e9d0a7b4c1e6f3d8a2b5c9e047",
+											"bytes": 512,
+											"saved": ".harness/saved/console/index.html"
+										},
+										"after": {
+											"sha256": "c41f7a08e93b26d5a1f0c8e7b4d29a63f5e1c0b8d7a6924e3f0b5c1d8e7a2f96",
+											"bytes": 4096
+										}
+									}
+								]
+							},
+							{
+								"schemaVersion": 1,
+								"storage": {
+									"kind": "bucket",
+									"binding": "CONSOLE_HISTORY",
+									"prefix": "console/history/"
+								},
+								"files": [
+									{
+										"path": "console/theme.css",
+										"sha256": "0d9e4b7a1c6f38e2d5a9b0c4f7e1d6a3b8c2f5e9d0a7b4c1e6f3d8a2b5c9e047",
+										"owner": "host"
+									}
+								],
+								"changes": [
+									{
+										"path": "console/legacy.css",
+										"action": "removed",
+										"reason": "file is no longer part of the console bundle",
+										"at": "2026-11-09T09:12:44.000Z",
+										"before": {
+											"sha256": "7a2c9e5f0b8d1a4c6e3f9b7d2a5c8e1f4b0d6a3c9e7f2b5d8a1c4e6f0b3d9a72",
+											"bytes": 218,
+											"saved": ".harness/saved/console/legacy.css"
+										},
+										"after": null
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "writeConsoleManifest",
 						"type": "Promise<void>",
-						"description": "Resolves after writing tab-indented JSON with a trailing newline and files sorted by path. The target file is replaced; write failures reject."
+						"description": "Resolves once harness.console.json in host has been overwritten with tab-indented JSON, a trailing newline and files sorted by path. The file is written in place, not through a temp file, so a failed write can leave it truncated or partly written, and a missing or unwritable host directory rejects."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Node.js filesystem error (a plain Error whose code is ENOENT, EACCES, ENOSPC or similar) that writeConsoleManifest rejects with when harness.console.json cannot be written in host, for example because the directory is missing or not writable."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
