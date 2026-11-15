@@ -22,94 +22,200 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteProjectionService.constructor.http",
 				"type": "HostedHttpAdapter",
-				"required": true
+				"required": true,
+				"description": "The hosted HTTP adapter used by the service's read and discovery helpers to request hosted JSON. It matters when a snapshot or remote resource is loaded."
 			},
 			{
 				"name": "RemoteProjectionService.constructor.options",
 				"type": "HostedReadOptions",
-				"required": true
+				"required": true,
+				"description": "Options passed to HostedReadService and used by this service. The cache option controls whether read fetches snapshot metadata before loading a resource."
 			},
 			{
 				"name": "RemoteProjectionService.branch.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The hosted project identifier whose last recorded branch is requested. It must satisfy the hosted project ID format checked when building API paths.",
+				"examples": ["acme-dashboard"]
 			},
 			{
 				"name": "RemoteProjectionService.snapshot.input",
 				"type": "{ projectId: string; branch: string | null; commit: string | null; }",
-				"required": true
+				"required": true,
+				"description": "Selects the hosted project and optional branch and commit query values for the snapshot request. A non-null commit is also checked against the validated snapshot revision.",
+				"examples": [
+					{
+						"projectId": "acme-dashboard",
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					},
+					{
+						"projectId": "acme-dashboard",
+						"branch": null,
+						"commit": null
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectionService.read.input",
 				"type": "{ projectId: string; commit: string; branch?: string | null }",
-				"required": true
+				"required": true,
+				"description": "Selects the hosted project and required expected commit for a resource read, with an optional branch query value. When caching is enabled, the commit is checked against freshly fetched snapshot metadata.",
+				"examples": [
+					{
+						"projectId": "acme-dashboard",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main"
+					},
+					{
+						"projectId": "acme-dashboard",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectionService.read.operation",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The operation path segment used to form the hosted resource URL. The snapshot segment is used by this implementation when it fetches snapshot metadata.",
+				"examples": ["snapshot"]
 			},
 			{
 				"name": "RemoteProjectionService.read.validate",
 				"type": "(value: unknown) => T",
-				"required": true
+				"required": true,
+				"description": "A caller-supplied function that validates an unknown fetched or cached value and returns the caller's type T. It is applied before a value is returned."
 			},
 			{
 				"name": "RemoteProjectionService.read.load",
 				"type": "() => Promise<unknown>",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "An optional asynchronous provider for the raw resource value. If omitted, the service fetches the computed resource path through the HTTP adapter."
 			},
 			{
 				"name": "RemoteProjectionService.path.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The hosted project identifier inserted into the API path after validation and URL encoding. Identifiers must match the service's alphanumeric, dot, underscore, and hyphen format.",
+				"examples": ["acme-dashboard"]
 			},
 			{
 				"name": "RemoteProjectionService.path.operation",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The operation path segment appended after the hosted project identifier. An empty string omits that segment.",
+				"examples": ["snapshot"]
 			},
 			{
 				"name": "RemoteProjectionService.path.input",
 				"type": "object",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "An object whose enumerable non-null values become URL query parameters, except projectId. Null and undefined values are omitted.",
+				"examples": [
+					{},
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteProjectionService.branch",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The branch recorded by the most recent successful snapshot for this project. It is null until the service has recorded a branch.",
+				"examples": ["main", null]
 			},
 			{
 				"name": "RemoteProjectionService.snapshot",
-				"type": "Promise<ProjectSnapshot>"
+				"type": "Promise<ProjectSnapshot>",
+				"description": "The validated project snapshot after the hosted read result is applied. Offline results become non-writable, and any cache metadata is marked offline and read-only when present.",
+				"examples": [
+					{
+						"project": {
+							"name": "Acme Dashboard",
+							"root": "/Users/danielfugere/projects/acme-dashboard",
+							"id": "acme-dashboard"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tip": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "0123456789abcdef0123456789abcdef01234567",
+								"current": true
+							}
+						],
+						"commits": [
+							{
+								"hash": "0123456789abcdef0123456789abcdef01234567",
+								"subject": "Initialize dashboard",
+								"authoredAt": "2026-11-10T09:15:00.000Z",
+								"committedAt": "2026-11-10T09:15:00.000Z"
+							}
+						],
+						"entities": [],
+						"writable": false
+					}
+				]
 			},
 			{
 				"name": "RemoteProjectionService.projects",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The project-discovery result for the principal's owned and joined projects. The discovery helper reads a newly found project once so it can be kept offline.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "RemoteProjectionService.read",
-				"type": "Promise<T>"
+				"type": "Promise<T>",
+				"description": "The value returned by the caller's validator for the fetched or cached resource. Its shape is defined by generic T and the validator; with caching enabled, matching snapshot metadata for the requested commit is required."
 			},
 			{
 				"name": "RemoteProjectionService.path",
-				"type": "string"
+				"type": "string",
+				"description": "A relative hosted API URL containing the encoded project identifier, optional operation segment, and eligible query parameters. It throws when the project identifier fails the hosted ID format check.",
+				"examples": [
+					"/api/projects/acme-dashboard/snapshot?branch=main&commit=0123456789abcdef0123456789abcdef01234567"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when projectionPath receives a project ID that does not match the hosted project identifier pattern."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown when a validated snapshot has cache.identity.sourceCommit different from revision.commit."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown when a non-empty requested commit differs from the validated snapshot revision.commit."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown when fetched snapshot metadata has a revision.commit different from the requested commit."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RemoteProjectionService.branch",
@@ -117,17 +223,21 @@
 					{
 						"name": "RemoteProjectionService.branch.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The hosted project identifier whose last recorded branch is requested. It must satisfy the hosted project ID format checked when building API paths.",
+						"examples": ["acme-dashboard"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectionService.branch",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The branch recorded by the most recent successful snapshot for this project. It is null until the service has recorded a branch.",
+						"examples": ["main", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteProjectionService.snapshot",
@@ -135,17 +245,79 @@
 					{
 						"name": "RemoteProjectionService.snapshot.input",
 						"type": "{ projectId: string; branch: string | null; commit: string | null; }",
-						"required": true
+						"required": true,
+						"description": "Selects the hosted project and optional branch and commit query values for the snapshot request. A non-null commit is also checked against the validated snapshot revision.",
+						"examples": [
+							{
+								"projectId": "acme-dashboard",
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"projectId": "acme-dashboard",
+								"branch": null,
+								"commit": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectionService.snapshot",
-						"type": "Promise<ProjectSnapshot>"
+						"type": "Promise<ProjectSnapshot>",
+						"description": "The validated project snapshot after the hosted read result is applied. Offline results become non-writable, and any cache metadata is marked offline and read-only when present.",
+						"examples": [
+							{
+								"project": {
+									"name": "Acme Dashboard",
+									"root": "/Users/danielfugere/projects/acme-dashboard",
+									"id": "acme-dashboard"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tip": "0123456789abcdef0123456789abcdef01234567",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "0123456789abcdef0123456789abcdef01234567",
+										"current": true
+									}
+								],
+								"commits": [
+									{
+										"hash": "0123456789abcdef0123456789abcdef01234567",
+										"subject": "Initialize dashboard",
+										"authoredAt": "2026-11-10T09:15:00.000Z",
+										"committedAt": "2026-11-10T09:15:00.000Z"
+									}
+								],
+								"entities": [],
+								"writable": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when projectionPath receives a project ID that does not match the hosted project identifier pattern."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a validated snapshot has cache.identity.sourceCommit different from revision.commit."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a non-empty requested commit differs from the validated snapshot revision.commit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteProjectionService.projects",
@@ -153,11 +325,15 @@
 				"outputs": [
 					{
 						"name": "RemoteProjectionService.projects",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The project-discovery result for the principal's owned and joined projects. The discovery helper reads a newly found project once so it can be kept offline.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteProjectionService.read",
@@ -165,32 +341,66 @@
 					{
 						"name": "RemoteProjectionService.read.input",
 						"type": "{ projectId: string; commit: string; branch?: string | null }",
-						"required": true
+						"required": true,
+						"description": "Selects the hosted project and required expected commit for a resource read, with an optional branch query value. When caching is enabled, the commit is checked against freshly fetched snapshot metadata.",
+						"examples": [
+							{
+								"projectId": "acme-dashboard",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main"
+							},
+							{
+								"projectId": "acme-dashboard",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					},
 					{
 						"name": "RemoteProjectionService.read.operation",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The operation path segment used to form the hosted resource URL. The snapshot segment is used by this implementation when it fetches snapshot metadata.",
+						"examples": ["snapshot"]
 					},
 					{
 						"name": "RemoteProjectionService.read.validate",
 						"type": "(value: unknown) => T",
-						"required": true
+						"required": true,
+						"description": "A caller-supplied function that validates an unknown fetched or cached value and returns the caller's type T. It is applied before a value is returned."
 					},
 					{
 						"name": "RemoteProjectionService.read.load",
 						"type": "() => Promise<unknown>",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "An optional asynchronous provider for the raw resource value. If omitted, the service fetches the computed resource path through the HTTP adapter."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectionService.read",
-						"type": "Promise<T>"
+						"type": "Promise<T>",
+						"description": "The value returned by the caller's validator for the fetched or cached resource. Its shape is defined by generic T and the validator; with caching enabled, matching snapshot metadata for the requested commit is required."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when projectionPath receives a project ID that does not match the hosted project identifier pattern."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a validated snapshot has cache.identity.sourceCommit different from revision.commit."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when fetched snapshot metadata has a revision.commit different from the requested commit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RemoteProjectionService.path",
@@ -198,28 +408,50 @@
 					{
 						"name": "RemoteProjectionService.path.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The hosted project identifier inserted into the API path after validation and URL encoding. Identifiers must match the service's alphanumeric, dot, underscore, and hyphen format.",
+						"examples": ["acme-dashboard"]
 					},
 					{
 						"name": "RemoteProjectionService.path.operation",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The operation path segment appended after the hosted project identifier. An empty string omits that segment.",
+						"examples": ["snapshot"]
 					},
 					{
 						"name": "RemoteProjectionService.path.input",
 						"type": "object",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "An object whose enumerable non-null values become URL query parameters, except projectId. Null and undefined values are omitted.",
+						"examples": [
+							{},
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectionService.path",
-						"type": "string"
+						"type": "string",
+						"description": "A relative hosted API URL containing the encoded project identifier, optional operation segment, and eligible query parameters. It throws when the project identifier fails the hosted ID format check.",
+						"examples": [
+							"/api/projects/acme-dashboard/snapshot?branch=main&commit=0123456789abcdef0123456789abcdef01234567"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when projectionPath receives a project ID that does not match the hosted project identifier pattern."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -229,22 +461,25 @@
 					{
 						"name": "RemoteProjectionService.constructor.http",
 						"type": "HostedHttpAdapter",
-						"required": true
+						"required": true,
+						"description": "The hosted HTTP adapter used by the service's read and discovery helpers to request hosted JSON. It matters when a snapshot or remote resource is loaded."
 					},
 					{
 						"name": "RemoteProjectionService.constructor.options",
 						"type": "HostedReadOptions",
-						"required": true
+						"required": true,
+						"description": "Options passed to HostedReadService and used by this service. The cache option controls whether read fetches snapshot metadata before loading a resource."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RemoteProjectionService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed RemoteProjectionService instance. It retains the supplied HTTP adapter and creates the hosted read helper, project discovery helper, and response validator."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
