@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/cli-environment/cliEnvironment.ts",
-			"packages/desktop/src/utils/cliEnvironment.ts"
-		],
-		"symbols": ["cliEnvironment", "cliEnvironment"]
+		"source": ["packages/desktop/src/utils/cli-environment/cliEnvironment.ts"],
+		"symbols": ["cliEnvironment"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -51,11 +48,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/cliEnvironment.ts",
+		"entry": "packages/desktop/src/utils/cli-environment/cliEnvironment.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/cliEnvironment.ts"
+				"entry": "packages/desktop/src/utils/cli-environment/cliEnvironment.ts"
 			}
 		]
 	},

@@ -1,6 +1,6 @@
 // @harness-uid u_el27gksita
-import { cliEnvironment } from '../cliEnvironment';
-import { killOwnedProcess } from '../cliProcess';
+import { cliEnvironment } from '../cli-environment/cliEnvironment';
+import { killOwnedProcess } from '../agents-providers/cliProcess';
 import { spawn } from 'node:child_process';
 import type { DeployCommand } from '../../models/development-tooling/Deployment.types';
 /** No shell, inherited Cloudflare credentials, or credential-bearing failure output. */
