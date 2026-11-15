@@ -18,10 +18,11 @@
 			{
 				"name": "catalogModels",
 				"type": "readonly [typeof CatalogMetadata, typeof CatalogBranch, typeof CatalogRevision, typeof CatalogEntity, typeof CatalogRevisionEntity, typeof CatalogDependency, typeof CatalogRecord, typeof CatalogScenario]",
-				"description": "The model constructors for every application table in the query catalog."
+				"description": "The readonly ordered tuple of constructors for the eight declared Catalog models used by the Git-derived SQLite query catalog."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
