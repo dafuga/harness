@@ -10,11 +10,9 @@
 	"owns": {
 		"source": [
 			"src/utils/execution-runtimes/impact-kernel/kernelClosure.ts",
-			"src/utils/execution-runtimes/impact-kernel/kernelClosure.types.ts",
-			"src/utils/impact-kernel/kernelClosure.ts",
-			"src/utils/kernelClosure.ts"
+			"src/utils/execution-runtimes/impact-kernel/kernelClosure.types.ts"
 		],
-		"symbols": ["kernelClosure", "Indexed", "Reached", "kernelClosure", "kernelClosure"]
+		"symbols": ["kernelClosure", "Indexed", "Reached"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -66,11 +64,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/kernelClosure.ts",
+		"entry": "src/utils/execution-runtimes/impact-kernel/kernelClosure.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/kernelClosure.ts"
+				"entry": "src/utils/execution-runtimes/impact-kernel/kernelClosure.ts"
 			}
 		]
 	},
