@@ -21,32 +21,48 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AttachedRecordService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem path of the repository root used to construct the evidence branch repository and LFS adapter. It determines where evidence history and LFS objects are read.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+				]
 			},
 			{
 				"name": "AttachedRecordService.constructor.within",
 				"type": "string | null",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional evidence commit that pins pointer validation to that commit’s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 			},
 			{
 				"name": "AttachedRecordService.load.pointer",
 				"type": "EvidencePointer",
-				"required": true
+				"required": true,
+				"description": "Pointer to a stored evidence directory, identifying its commit, directory path, and expected manifest hash. The commit must exist in the evidence branch and, when a pin is configured, belong to its history; the manifest hash must match the SHA-256 of manifest.json.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"path": "verification/records/2026-11-15/record-7f3a2c1",
+						"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AttachedRecordService.load",
-				"type": "Promise<AttachedRecord>"
+				"type": "Promise<AttachedRecord>",
+				"description": "Resolves to the attached record for the pointer, including the original pointer, a Map of readable file bytes keyed by file path, and any validation problems. The manifest and record are optional when their data is absent or invalid; each pointer key is read and hashed once per process."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "AttachedRecordService.load",
@@ -54,17 +70,26 @@
 					{
 						"name": "AttachedRecordService.load.pointer",
 						"type": "EvidencePointer",
-						"required": true
+						"required": true,
+						"description": "Pointer to a stored evidence directory, identifying its commit, directory path, and expected manifest hash. The commit must exist in the evidence branch and, when a pin is configured, belong to its history; the manifest hash must match the SHA-256 of manifest.json.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"path": "verification/records/2026-11-15/record-7f3a2c1",
+								"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AttachedRecordService.load",
-						"type": "Promise<AttachedRecord>"
+						"type": "Promise<AttachedRecord>",
+						"description": "Resolves to the attached record for the pointer, including the original pointer, a Map of readable file bytes keyed by file path, and any validation problems. The manifest and record are optional when their data is absent or invalid; each pointer key is read and hashed once per process."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -74,22 +99,30 @@
 					{
 						"name": "AttachedRecordService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem path of the repository root used to construct the evidence branch repository and LFS adapter. It determines where evidence history and LFS objects are read.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+						]
 					},
 					{
 						"name": "AttachedRecordService.constructor.within",
 						"type": "string | null",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional evidence commit that pins pointer validation to that commit’s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AttachedRecordService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed service instance, with an EvidenceBranchRepository and LfsAdapter rooted at root, the optional within pin, and an initially empty per-process load cache."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
