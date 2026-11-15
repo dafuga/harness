@@ -43,8 +43,8 @@
 		],
 		"errors": [
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "Request handling error",
+				"type": "propagated",
 				"description": "If config creation, rate limiting, runtime/controller construction, or request handling throws or rejects, this handler has no catch and the failure propagates to its caller. This file does not specify the concrete error name or failure conditions."
 			}
 		],

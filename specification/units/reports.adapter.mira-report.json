@@ -77,8 +77,8 @@
 				"description": "Parsed JSON is cast without runtime validation, so incompatible array or record shapes can cause TypeError during iteration, field access, or path construction."
 			},
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "File read or ReportRepository.record error",
+				"type": "propagated",
 				"description": "Filesystem read failures and throws or rejected values from ReportRepository.record propagate through ingest without being translated."
 			}
 		],
@@ -140,8 +140,8 @@
 						"description": "Parsed JSON is cast without runtime validation, so incompatible array or record shapes can cause TypeError during iteration, field access, or path construction."
 					},
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "File read or ReportRepository.record error",
+						"type": "propagated",
 						"description": "Filesystem read failures and throws or rejected values from ReportRepository.record propagate through ingest without being translated."
 					}
 				],

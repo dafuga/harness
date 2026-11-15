@@ -52,8 +52,8 @@
 		],
 		"errors": [
 			{
-				"name": "error",
-				"type": "thrown",
+				"name": "Page or run action rejection",
+				"type": "propagated",
 				"description": "An awaited page or run action can reject the async flow; when seen catches a failed page.until check, it records a failed check and rethrows the same error."
 			}
 		],
@@ -78,8 +78,8 @@
 				],
 				"errors": [
 					{
-						"name": "error",
-						"type": "thrown",
+						"name": "Page or run action rejection",
+						"type": "propagated",
 						"description": "An awaited page or run action can reject the async flow; when seen catches a failed page.until check, it records a failed check and rethrows the same error."
 					}
 				],
@@ -104,8 +104,8 @@
 				],
 				"errors": [
 					{
-						"name": "error",
-						"type": "thrown",
+						"name": "Page or run action rejection",
+						"type": "propagated",
 						"description": "An awaited page or run action can reject the async flow; when seen catches a failed page.until check, it records a failed check and rethrows the same error."
 					}
 				],
@@ -130,8 +130,8 @@
 				],
 				"errors": [
 					{
-						"name": "error",
-						"type": "thrown",
+						"name": "Page or run action rejection",
+						"type": "propagated",
 						"description": "An awaited page or run action can reject the async flow; when seen catches a failed page.until check, it records a failed check and rethrows the same error."
 					}
 				],

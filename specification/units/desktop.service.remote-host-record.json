@@ -132,8 +132,8 @@
 		],
 		"errors": [
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "Store or callback error",
+				"type": "propagated",
 				"description": "The original value thrown or rejected by a store method or the wanted callback is propagated. off() swallows read failures but still propagates a save failure."
 			}
 		],
@@ -152,8 +152,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "store.available() error",
+						"type": "propagated",
 						"description": "If store.available() throws, available() propagates that value synchronously."
 					}
 				],
@@ -187,8 +187,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "store.read() rejection",
+						"type": "propagated",
 						"description": "A rejection from store.read() is rethrown unchanged; the failed shared read is cleared so a later call can retry."
 					}
 				],
@@ -206,8 +206,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "store.save() rejection",
+						"type": "propagated",
 						"description": "A rejection from store.save() propagates when a record is present in memory."
 					}
 				],
@@ -225,8 +225,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "store.save() rejection",
+						"type": "propagated",
 						"description": "A store.read() failure is swallowed by off(), but a rejection from store.save() propagates."
 					}
 				],
@@ -291,8 +291,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "wanted() or store.save() error",
+						"type": "propagated",
 						"description": "A throw from wanted() or a rejection from store.save() rejects enrol(); a failed save is rethrown after rollback."
 					}
 				],

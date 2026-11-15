@@ -99,13 +99,13 @@
 				"description": "Invalid UTF-8 decoding or JSON parsing throws Error with message Invalid committed artifact and code artifact-corrupt."
 			},
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "crypto.subtle.digest rejection",
+				"type": "propagated",
 				"description": "If crypto.subtle.digest throws or rejects, the returned Promise rejects with that failure unchanged. This implementation does not specify a stable error name or message."
 			},
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "canonicalJson or hubHash error",
+				"type": "propagated",
 				"description": "Errors from canonicalJson(value) or rejection from hubHash propagate through the returned Promise unchanged. This implementation does not specify a stable error name or message."
 			},
 			{
@@ -175,8 +175,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "crypto.subtle.digest rejection",
+						"type": "propagated",
 						"description": "If crypto.subtle.digest throws or rejects, the returned Promise rejects with that failure unchanged. This implementation does not specify a stable error name or message."
 					}
 				],
@@ -208,8 +208,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "canonicalJson or hubHash error",
+						"type": "propagated",
 						"description": "Errors from canonicalJson(value) or rejection from hubHash propagate through the returned Promise unchanged. This implementation does not specify a stable error name or message."
 					}
 				],

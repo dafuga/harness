@@ -58,8 +58,8 @@
 				"description": "For POST `/tools`, the handler throws `Error('Request too large')` when the body string length exceeds 16,000 and `Error('The preview only accepts its synthetic session.')` for a truthy `arguments.session_id` other than `preview-session`; `respond` catches these and returns HTTP 400 JSON with `error: Invalid preview request.`."
 			},
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "HTML supplier rejection",
+				"type": "propagated",
 				"description": "If the asynchronous HTML supplier rejects while GET `/preview` is handled, `fetch` propagates that rejection unchanged; the implementation does not constrain its name or value."
 			}
 		],
@@ -84,8 +84,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "HTML supplier rejection",
+						"type": "propagated",
 						"description": "If the asynchronous HTML supplier rejects while GET `/preview` is handled, `fetch` propagates that rejection unchanged; the implementation does not constrain its name or value. Failures inside POST `/tools` handling are caught and returned as HTTP 400 JSON."
 					}
 				],

@@ -149,8 +149,8 @@
 				"description": "Thrown by the prepare step when the run is aborted while it is being prepared, by cancelActive or by a lost repository lease; start rejects with it after the run is released."
 			},
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "Run preparation error",
+				"type": "propagated",
 				"description": "Any other error from designCount, the arbiter claim, the repository lease or run preparation reaches the caller unchanged, so its name is set by the code that threw it."
 			}
 		],
@@ -242,8 +242,8 @@
 						"description": "Thrown by the prepare step when the run is aborted while it is being prepared, by cancelActive or by a lost repository lease; start rejects with it after the run is released."
 					},
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Run preparation error",
+						"type": "propagated",
 						"description": "Any other error from designCount, the arbiter claim, the repository lease or run preparation reaches the caller unchanged, so its name is set by the code that threw it."
 					}
 				],

@@ -153,23 +153,23 @@
 		],
 		"errors": [
 			{
-				"name": "unspecified",
-				"type": "thrown",
+				"name": "SourceImpactService construction error",
+				"type": "propagated",
 				"description": "Creating the SourceImpactService can propagate a construction failure. This implementation does not establish a specific error name or shape."
 			},
 			{
-				"name": "unspecified",
-				"type": "thrown",
+				"name": "Collaborator rejection",
+				"type": "propagated",
 				"description": "An awaited history, Git, source-impact, repository, catalog, media-placement, or regression-proof collaborator can reject, and build does not catch those failures. This implementation does not establish a specific rejection name or shape."
 			},
 			{
-				"name": "unspecified",
-				"type": "thrown",
+				"name": "tree.list() rejection",
+				"type": "propagated",
 				"description": "A failure from listing the source tree rejects the operation because tree.list() is outside the manifest-read catch. Individual manifest read and parse failures are caught and recorded as gaps."
 			},
 			{
-				"name": "unspecified",
-				"type": "thrown",
+				"name": "GitAdapter or revisionSources construction error",
+				"type": "propagated",
 				"description": "Construction can propagate a failure from creating the GitAdapter or, when kept is omitted, from creating revisionSources(root). This implementation does not establish a specific error name or shape."
 			}
 		],
@@ -195,8 +195,8 @@
 				],
 				"errors": [
 					{
-						"name": "unspecified",
-						"type": "thrown",
+						"name": "SourceImpactService construction error",
+						"type": "propagated",
 						"description": "Creating the SourceImpactService can propagate a construction failure. This implementation does not establish a specific error name or shape."
 					}
 				],
@@ -264,8 +264,8 @@
 				],
 				"errors": [
 					{
-						"name": "unspecified",
-						"type": "thrown",
+						"name": "Collaborator rejection",
+						"type": "propagated",
 						"description": "An awaited history, Git, source-impact, repository, catalog, media-placement, or regression-proof collaborator can reject, and build does not catch those failures. This implementation does not establish a specific rejection name or shape."
 					}
 				],
@@ -305,8 +305,8 @@
 				],
 				"errors": [
 					{
-						"name": "unspecified",
-						"type": "thrown",
+						"name": "tree.list() rejection",
+						"type": "propagated",
 						"description": "A failure from listing the source tree rejects the operation because tree.list() is outside the manifest-read catch. Individual manifest read and parse failures are caught and recorded as gaps."
 					}
 				],
@@ -346,8 +346,8 @@
 				],
 				"errors": [
 					{
-						"name": "unspecified",
-						"type": "thrown",
+						"name": "GitAdapter or revisionSources construction error",
+						"type": "propagated",
 						"description": "Construction can propagate a failure from creating the GitAdapter or, when kept is omitted, from creating revisionSources(root). This implementation does not establish a specific error name or shape."
 					}
 				],

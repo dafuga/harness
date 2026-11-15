@@ -427,8 +427,8 @@
 				"description": "Thrown by current() with the message 'Turn remote access on first.' when the stored record is missing or disabled, or when no runtime is running."
 			},
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "Switch, record or listener error",
+				"type": "propagated",
 				"description": "Rejections of the awaited switch, record save and publish steps, and exceptions from a status listener, passed through unchanged by start, enable, disable, stop, saved and published."
 			}
 		],
@@ -494,8 +494,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Switch launch rejection",
+						"type": "propagated",
 						"description": "Rejection of the awaited switch launch step, passed through unchanged."
 					}
 				],
@@ -577,8 +577,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Switch enable or publish rejection",
+						"type": "propagated",
 						"description": "Rejection of the awaited switch enable step, or of the status or publish step after it, passed through unchanged."
 					}
 				],
@@ -615,8 +615,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Switch disable or publish rejection",
+						"type": "propagated",
 						"description": "Rejection of the awaited switch disable step, or of the publish step after it, passed through unchanged."
 					}
 				],
@@ -681,8 +681,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Switch stop or publish rejection",
+						"type": "propagated",
 						"description": "Rejection of the awaited switch stop step, or of the publish step after it, passed through unchanged."
 					}
 				],
@@ -870,8 +870,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Status listener error",
+						"type": "propagated",
 						"description": "Exception from a status listener, which stops the remaining listeners and passes through unchanged."
 					}
 				],
@@ -958,8 +958,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Record save or publish rejection",
+						"type": "propagated",
 						"description": "Rejection of the awaited record save, or of the publish step after it, passed through unchanged."
 					}
 				],

@@ -73,8 +73,8 @@
 		],
 		"errors": [
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "Survivor listing or signalling error",
+				"type": "propagated",
 				"description": "Rejects with the value thrown or rejected by descendants.survivors() or signalProcesses; this implementation does not assign a specific error name."
 			}
 		],
@@ -147,8 +147,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Survivor listing or signalling error",
+						"type": "propagated",
 						"description": "Rejects with the value thrown or rejected by descendants.survivors() or signalProcesses; this implementation does not assign a specific error name."
 					}
 				],

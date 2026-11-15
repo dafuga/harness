@@ -63,8 +63,8 @@
 		],
 		"errors": [
 			{
-				"name": "unknown",
-				"type": "thrown",
+				"name": "History or record load rejection",
+				"type": "propagated",
 				"description": "The asynchronous functions propagate failures from verification-history queries, attached-record loads, and record-view construction without catching or translating them; the rejection reason is not constrained by this implementation."
 			}
 		],
@@ -101,8 +101,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "Record load rejection",
+						"type": "propagated",
 						"description": "Rejects with a failure from attached-record loading, referenced-origin lookup, or recordView; Promise.all propagates any item rejection without translation."
 					}
 				],
@@ -134,8 +134,8 @@
 				],
 				"errors": [
 					{
-						"name": "unknown",
-						"type": "thrown",
+						"name": "History query rejection",
+						"type": "propagated",
 						"description": "Rejects if history.verifications() or the selected history.attached.load() call rejects; the implementation does not catch or translate the rejection."
 					}
 				],
