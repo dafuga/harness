@@ -36,16 +36,34 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "relayCloseCodes",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Close codes for relay connections, keyed by reason: protocol 4400, unauthorized 4401, idle 4408, replaced 4409, tooLarge 4413 and rateLimited 4429. It matters whenever a relay connection closes for one of these reasons; `as const` types only these six values as literal numbers, and nothing freezes the object at runtime.",
+				"examples": [
+					{
+						"protocol": 4400,
+						"unauthorized": 4401,
+						"idle": 4408,
+						"replaced": 4409,
+						"tooLarge": 4413,
+						"rateLimited": 4429
+					}
+				]
 			},
 			{
 				"name": "relayHeaders",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Request headers of `GET /v1/hosts/{hostId}/connect`, beside `Authorization: Bearer`: `role` is `X-Harness-Role` and `device` is `X-Harness-Device`. It matters wherever that request's headers are set or read, and these are the only two names defined here, each typed as a literal string by `as const`.",
+				"examples": [
+					{
+						"role": "X-Harness-Role",
+						"device": "X-Harness-Device"
+					}
+				]
 			}
 		],
 		"errors": [],
