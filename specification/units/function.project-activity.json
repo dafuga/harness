@@ -9,13 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/project-activity-service/projectActivity.ts",
 			"src/services/projects-sessions/project-activity-service/projectActivity.ts",
 			"src/utils/projectActivity.ts",
 			"src/utils/projects-sessions/projectActivity.ts"
 		],
 		"symbols": [
-			"projectActivity",
 			"projectActivity",
 			"projectActivity",
 			"ActivityRevision",

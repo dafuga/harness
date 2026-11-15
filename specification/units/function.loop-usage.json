@@ -9,8 +9,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/project-activity-service/loopUsage.ts",
-			"src/services/projects-sessions/project-activity-service/loopUsage.ts"
+			"src/services/projects-sessions/project-activity-service/loopUsage.ts",
+			"src/utils/loopUsage.ts"
 		],
 		"symbols": ["loopUsage", "loopUsage"]
 	},
@@ -70,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/services/projects-sessions/project-activity-service/loopUsage.ts",
+		"entry": "src/utils/loopUsage.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/services/projects-sessions/project-activity-service/loopUsage.ts"
+				"entry": "src/utils/loopUsage.ts"
 			}
 		]
 	},
