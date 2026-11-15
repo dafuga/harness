@@ -34,12 +34,24 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "remoteScanFailures",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The fixed error-code values used when the native plugin rejects a scan that ends without an offer. It contains only the seven codes declared by the implementation.",
+				"examples": [
+					[
+						"camera-denied",
+						"camera-unavailable",
+						"scan-cancelled",
+						"offer-invalid",
+						"offer-unsupported",
+						"offer-environment",
+						"offer-expired"
+					]
+				]
 			}
 		],
 		"errors": [],
