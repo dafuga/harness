@@ -9,14 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/collaboration/src/utils/create-git-hub-source/exactRef.ts",
 			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/exactRef.ts",
 			"packages/collaboration/src/utils/git-source-history/githubTransport.ts",
 			"packages/collaboration/src/utils/git-source-history/githubTransport.types.ts",
 			"packages/collaboration/src/utils/githubTransport.ts"
 		],
 		"symbols": [
-			"exactRef",
 			"exactRef",
 			"githubTransport",
 			"refPath",

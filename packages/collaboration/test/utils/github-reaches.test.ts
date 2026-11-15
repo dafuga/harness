@@ -1,6 +1,6 @@
 import type { Compared } from './github-reaches.test.types';
 import { expect, test } from 'vitest';
-import { createGitHubSource } from '../../src/utils/create-git-hub-source/createGitHubSource';
+import { createGitHubSource } from '../../src/utils/git-source-history/create-git-hub-source/createGitHubSource';
 import { sourceRepository } from '../githubFixture';
 
 const tip = 'a'.repeat(40),

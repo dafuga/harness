@@ -1,7 +1,7 @@
 import { measureWorkload } from '../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import type { GitHubOptions } from '../src/models/planning-collaboration/Collaboration.types';
-import { createGitHubSource } from '../src/utils/create-git-hub-source/createGitHubSource';
+import { createGitHubSource } from '../src/utils/git-source-history/create-git-hub-source/createGitHubSource';
 import { base64 } from '../src/utils/githubTransport';
 import { digest } from '../src/utils/parseCollaborationInput';
 import { anchor, sourceRepository } from './githubFixture';
