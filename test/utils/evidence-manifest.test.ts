@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
 import { evidenceManifestSchema } from '../../src/core/historyTypes';
-import { evidenceManifest } from '../../src/services/evidence-attach-service/evidenceManifest';
+import { evidenceManifest } from '../../src/services/verification-evidence/evidence-attach-service/evidenceManifest';
 import { recordFiles } from '../../src/utils/evidenceManifest';
 import { verificationSample } from '../support/verificationSample';
 

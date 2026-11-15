@@ -11,7 +11,7 @@ import {
 import {
 	EvidenceAttachService,
 	type Attached
-} from '../../../src/services/evidence-attach-service/EvidenceAttachService';
+} from '../../../src/services/verification-evidence/evidence-attach-service/EvidenceAttachService';
 import { EvidenceRestoreService } from '../../../src/services/EvidenceRestoreService';
 import { sourceCommit } from '../../../src/workflows/runHistory';
 

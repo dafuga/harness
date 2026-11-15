@@ -8,7 +8,7 @@ import type {
 } from './evidenceRecords.types';
 import type { EvidencePointer } from '../../../../src/core/historyTypes';
 import type { Capture, VerificationRecord } from '../../../../src/core/verificationTypes';
-import { evidenceManifest } from '../../../../src/services/evidence-attach-service/evidenceManifest';
+import { evidenceManifest } from '../../../../src/services/verification-evidence/evidence-attach-service/evidenceManifest';
 import { lfsPointer, lfsStored } from '../../../../src/utils/lfsPointer';
 import { sealRecord } from '../../../../src/utils/sealRecord';
 import { json, sha256 } from './evidenceSource';
