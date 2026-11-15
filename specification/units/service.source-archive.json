@@ -294,7 +294,7 @@
 		],
 		"errors": [
 			{
-				"name": "SourceArchiveService.archive",
+				"name": "Error",
 				"type": "thrown",
 				"description": "Rejects when the committed tree cannot be opened or listed, or when the media output directory cannot be created. Individual source-read and media-write failures are retained as unavailable source gaps instead."
 			}
@@ -411,7 +411,7 @@
 				],
 				"errors": [
 					{
-						"name": "SourceArchiveService.archive",
+						"name": "Error",
 						"type": "thrown",
 						"description": "Rejects when the committed tree cannot be opened or listed, or when the media output directory cannot be created. Individual source-read and media-write failures are retained as unavailable source gaps instead."
 					}
