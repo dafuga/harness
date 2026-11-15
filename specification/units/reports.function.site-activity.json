@@ -18,10 +18,213 @@
 			{
 				"name": "siteActivity",
 				"type": "Promise<Shown | undefined>",
-				"description": "Promise resolving to the site’s activity and live observations from the activity service, requesting twenty commits; undefined when any part of the read fails. Undefined means unavailable, not an empty activity result."
+				"description": "The activity of the application this server is hosted for, read when called: `activity` holds up to twenty of the newest commits of its source history, with the units and reasons of each, its loop usage and up to forty files those commits changed, and `live` holds up to twelve of its checkouts, each with its branch, head and up to forty uncommitted paths, and the agents registered in any of its checkouts. It is undefined when any part of the read throws, so undefined means the activity is unavailable, not an empty result.",
+				"examples": [
+					{
+						"activity": {
+							"schemaVersion": 1,
+							"kind": "live",
+							"repository": {
+								"name": "harness-app",
+								"branch": "main",
+								"head": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28"
+							},
+							"asOf": {
+								"commit": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28",
+								"committedAt": "2026-11-14T17:22:08-05:00"
+							},
+							"loops": {
+								"total": 2,
+								"types": [
+									{
+										"template": "custom",
+										"loops": 2,
+										"complete": 1,
+										"open": 1,
+										"lastUsedAt": "2026-11-14T16:58:31.204Z",
+										"names": ["site-activity-contract", "agent-roster-copy"]
+									}
+								]
+							},
+							"work": [
+								{
+									"commit": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28",
+									"subject": "Describe the hosted site activity contract",
+									"author": "Mira Okafor",
+									"committedAt": "2026-11-14T17:22:08-05:00",
+									"branches": ["main"],
+									"units": ["reports.function.site-activity"],
+									"unitCount": 1,
+									"reasons": [
+										{
+											"unit": "reports.function.site-activity",
+											"behavior": "Reads activity only for the application to which the reports server is bound."
+										}
+									],
+									"reasonCount": 1,
+									"files": 2
+								},
+								{
+									"commit": "b71e0d4c93a6f258e1d07c4b9a3f6e2d85c1a0f7",
+									"subject": "Fix the reports server site root for worktrees",
+									"author": "Jonas Brill",
+									"committedAt": "2026-11-13T10:05:41+01:00",
+									"branches": ["login-fix", "main"],
+									"units": ["reports.function.report-site"],
+									"unitCount": 1,
+									"reasons": [],
+									"reasonCount": 0,
+									"files": 1
+								}
+							],
+							"files": [
+								{
+									"path": "packages/reports/src/routes/api/project-activity/siteActivity.ts",
+									"status": "modified",
+									"units": ["reports.function.site-activity"],
+									"commit": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28",
+									"committedAt": "2026-11-14T17:22:08-05:00"
+								},
+								{
+									"path": "specification/units/reports.function.site-activity.json",
+									"status": "modified",
+									"units": [],
+									"commit": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28",
+									"committedAt": "2026-11-14T17:22:08-05:00"
+								},
+								{
+									"path": "packages/reports/src/utils/reports-media/reportSite.ts",
+									"status": "modified",
+									"units": ["reports.function.report-site"],
+									"commit": "b71e0d4c93a6f258e1d07c4b9a3f6e2d85c1a0f7",
+									"committedAt": "2026-11-13T10:05:41+01:00"
+								}
+							]
+						},
+						"live": {
+							"sampledAt": "2026-11-15T14:03:22.418Z",
+							"worktrees": [
+								{
+									"name": "harness-app",
+									"branch": "main",
+									"head": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28",
+									"primary": true,
+									"changes": [
+										{
+											"path": "packages/reports/src/utils/siteActivity.ts",
+											"status": "modified",
+											"units": ["reports.function.site-activity"]
+										}
+									],
+									"truncated": false
+								},
+								{
+									"name": "harness-app-login-fix",
+									"branch": "login-fix",
+									"head": "b71e0d4c93a6f258e1d07c4b9a3f6e2d85c1a0f7",
+									"primary": false,
+									"changes": [],
+									"truncated": false
+								}
+							],
+							"agents": {
+								"tracking": "available",
+								"working": 1,
+								"unreadable": 0,
+								"roster": [
+									{
+										"id": "3f9c2b7e-8a14-4d6e-9b1f-2c5a7d8e9f01",
+										"label": "Contract writer",
+										"provider": "anthropic",
+										"model": "claude-haiku-5-5",
+										"worktree": "harness-app",
+										"branch": "main",
+										"task": "Describe the hosted site activity contract",
+										"loop": "site-activity-contract",
+										"units": ["reports.function.site-activity"],
+										"unknownUnits": [],
+										"registeredAt": "2026-11-15T13:40:12.095Z",
+										"heartbeatAt": "2026-11-15T13:58:40.021Z",
+										"expiresAt": "2026-11-15T14:13:40.021Z",
+										"state": "working",
+										"detail": "Last heartbeat at 2026-11-15T13:58:40.021Z"
+									}
+								]
+							}
+						}
+					},
+					{
+						"activity": {
+							"schemaVersion": 1,
+							"kind": "live",
+							"repository": {
+								"name": "harness-notes",
+								"branch": "main",
+								"head": "d4a0f27e9c153b8e6f40a2c1d7e95b3f08c6a1e4"
+							},
+							"asOf": {
+								"commit": "d4a0f27e9c153b8e6f40a2c1d7e95b3f08c6a1e4",
+								"committedAt": "2026-11-12T08:47:19-08:00"
+							},
+							"loops": {
+								"total": 0,
+								"types": []
+							},
+							"work": [
+								{
+									"commit": "d4a0f27e9c153b8e6f40a2c1d7e95b3f08c6a1e4",
+									"subject": "Start the notes index",
+									"author": "Sam Ortiz",
+									"committedAt": "2026-11-12T08:47:19-08:00",
+									"branches": ["main"],
+									"units": [],
+									"unitCount": 0,
+									"reasons": [],
+									"reasonCount": 0,
+									"files": 1
+								}
+							],
+							"files": [
+								{
+									"path": "README.md",
+									"status": "added",
+									"units": [],
+									"commit": "d4a0f27e9c153b8e6f40a2c1d7e95b3f08c6a1e4",
+									"committedAt": "2026-11-12T08:47:19-08:00"
+								}
+							]
+						},
+						"live": {
+							"sampledAt": "2026-11-15T09:30:05.776Z",
+							"worktrees": [
+								{
+									"name": "harness-notes",
+									"branch": "main",
+									"head": "d4a0f27e9c153b8e6f40a2c1d7e95b3f08c6a1e4",
+									"primary": true,
+									"changes": [
+										{
+											"path": "drafts/outline.md",
+											"status": "untracked",
+											"units": []
+										}
+									],
+									"truncated": false
+								}
+							],
+							"agents": {
+								"tracking": "never-used",
+								"working": null,
+								"unreadable": 0,
+								"roster": []
+							}
+						}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "siteActivity",
@@ -30,11 +233,213 @@
 					{
 						"name": "siteActivity",
 						"type": "Promise<Shown | undefined>",
-						"description": "Promise resolving to the site’s activity and live observations from the activity service, requesting twenty commits; undefined when any part of the read fails. Undefined means unavailable, not an empty activity result."
+						"description": "The activity of the application this server is hosted for, read when called: `activity` holds up to twenty of the newest commits of its source history, with the units and reasons of each, its loop usage and up to forty files those commits changed, and `live` holds up to twelve of its checkouts, each with its branch, head and up to forty uncommitted paths, and the agents registered in any of its checkouts. It is undefined when any part of the read throws, so undefined means the activity is unavailable, not an empty result.",
+						"examples": [
+							{
+								"activity": {
+									"schemaVersion": 1,
+									"kind": "live",
+									"repository": {
+										"name": "harness-app",
+										"branch": "main",
+										"head": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28"
+									},
+									"asOf": {
+										"commit": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28",
+										"committedAt": "2026-11-14T17:22:08-05:00"
+									},
+									"loops": {
+										"total": 2,
+										"types": [
+											{
+												"template": "custom",
+												"loops": 2,
+												"complete": 1,
+												"open": 1,
+												"lastUsedAt": "2026-11-14T16:58:31.204Z",
+												"names": ["site-activity-contract", "agent-roster-copy"]
+											}
+										]
+									},
+									"work": [
+										{
+											"commit": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28",
+											"subject": "Describe the hosted site activity contract",
+											"author": "Mira Okafor",
+											"committedAt": "2026-11-14T17:22:08-05:00",
+											"branches": ["main"],
+											"units": ["reports.function.site-activity"],
+											"unitCount": 1,
+											"reasons": [
+												{
+													"unit": "reports.function.site-activity",
+													"behavior": "Reads activity only for the application to which the reports server is bound."
+												}
+											],
+											"reasonCount": 1,
+											"files": 2
+										},
+										{
+											"commit": "b71e0d4c93a6f258e1d07c4b9a3f6e2d85c1a0f7",
+											"subject": "Fix the reports server site root for worktrees",
+											"author": "Jonas Brill",
+											"committedAt": "2026-11-13T10:05:41+01:00",
+											"branches": ["login-fix", "main"],
+											"units": ["reports.function.report-site"],
+											"unitCount": 1,
+											"reasons": [],
+											"reasonCount": 0,
+											"files": 1
+										}
+									],
+									"files": [
+										{
+											"path": "packages/reports/src/routes/api/project-activity/siteActivity.ts",
+											"status": "modified",
+											"units": ["reports.function.site-activity"],
+											"commit": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28",
+											"committedAt": "2026-11-14T17:22:08-05:00"
+										},
+										{
+											"path": "specification/units/reports.function.site-activity.json",
+											"status": "modified",
+											"units": [],
+											"commit": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28",
+											"committedAt": "2026-11-14T17:22:08-05:00"
+										},
+										{
+											"path": "packages/reports/src/utils/reports-media/reportSite.ts",
+											"status": "modified",
+											"units": ["reports.function.report-site"],
+											"commit": "b71e0d4c93a6f258e1d07c4b9a3f6e2d85c1a0f7",
+											"committedAt": "2026-11-13T10:05:41+01:00"
+										}
+									]
+								},
+								"live": {
+									"sampledAt": "2026-11-15T14:03:22.418Z",
+									"worktrees": [
+										{
+											"name": "harness-app",
+											"branch": "main",
+											"head": "9f2c4e81a7d03b56c1e8f4a2d97b0c3e5a6f1d28",
+											"primary": true,
+											"changes": [
+												{
+													"path": "packages/reports/src/utils/siteActivity.ts",
+													"status": "modified",
+													"units": ["reports.function.site-activity"]
+												}
+											],
+											"truncated": false
+										},
+										{
+											"name": "harness-app-login-fix",
+											"branch": "login-fix",
+											"head": "b71e0d4c93a6f258e1d07c4b9a3f6e2d85c1a0f7",
+											"primary": false,
+											"changes": [],
+											"truncated": false
+										}
+									],
+									"agents": {
+										"tracking": "available",
+										"working": 1,
+										"unreadable": 0,
+										"roster": [
+											{
+												"id": "3f9c2b7e-8a14-4d6e-9b1f-2c5a7d8e9f01",
+												"label": "Contract writer",
+												"provider": "anthropic",
+												"model": "claude-haiku-5-5",
+												"worktree": "harness-app",
+												"branch": "main",
+												"task": "Describe the hosted site activity contract",
+												"loop": "site-activity-contract",
+												"units": ["reports.function.site-activity"],
+												"unknownUnits": [],
+												"registeredAt": "2026-11-15T13:40:12.095Z",
+												"heartbeatAt": "2026-11-15T13:58:40.021Z",
+												"expiresAt": "2026-11-15T14:13:40.021Z",
+												"state": "working",
+												"detail": "Last heartbeat at 2026-11-15T13:58:40.021Z"
+											}
+										]
+									}
+								}
+							},
+							{
+								"activity": {
+									"schemaVersion": 1,
+									"kind": "live",
+									"repository": {
+										"name": "harness-notes",
+										"branch": "main",
+										"head": "d4a0f27e9c153b8e6f40a2c1d7e95b3f08c6a1e4"
+									},
+									"asOf": {
+										"commit": "d4a0f27e9c153b8e6f40a2c1d7e95b3f08c6a1e4",
+										"committedAt": "2026-11-12T08:47:19-08:00"
+									},
+									"loops": {
+										"total": 0,
+										"types": []
+									},
+									"work": [
+										{
+											"commit": "d4a0f27e9c153b8e6f40a2c1d7e95b3f08c6a1e4",
+											"subject": "Start the notes index",
+											"author": "Sam Ortiz",
+											"committedAt": "2026-11-12T08:47:19-08:00",
+											"branches": ["main"],
+											"units": [],
+											"unitCount": 0,
+											"reasons": [],
+											"reasonCount": 0,
+											"files": 1
+										}
+									],
+									"files": [
+										{
+											"path": "README.md",
+											"status": "added",
+											"units": [],
+											"commit": "d4a0f27e9c153b8e6f40a2c1d7e95b3f08c6a1e4",
+											"committedAt": "2026-11-12T08:47:19-08:00"
+										}
+									]
+								},
+								"live": {
+									"sampledAt": "2026-11-15T09:30:05.776Z",
+									"worktrees": [
+										{
+											"name": "harness-notes",
+											"branch": "main",
+											"head": "d4a0f27e9c153b8e6f40a2c1d7e95b3f08c6a1e4",
+											"primary": true,
+											"changes": [
+												{
+													"path": "drafts/outline.md",
+													"status": "untracked",
+													"units": []
+												}
+											],
+											"truncated": false
+										}
+									],
+									"agents": {
+										"tracking": "never-used",
+										"working": null,
+										"unreadable": 0,
+										"roster": []
+									}
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
