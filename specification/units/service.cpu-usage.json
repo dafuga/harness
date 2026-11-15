@@ -12,22 +12,36 @@
 		"symbols": ["CpuUsageService", "CpuUsageService.constructor", "CpuUsageService.snapshot"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CpuUsageService.constructor.adapter",
 				"type": "{ sample(): Promise<CpuReading> }",
-				"required": false
+				"required": false,
+				"description": "Adapter that supplies CPU readings through sample() for the before-and-after measurement. Defaults to new CpuProcessAdapter(); sampling or metric failures are returned as an unavailable snapshot."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CpuUsageService.snapshot",
-				"type": "Promise<CpuSnapshot>"
+				"type": "Promise<CpuSnapshot>",
+				"description": "Promise resolving to a CPU snapshot produced from two adapter readings with a 1,000 ms wait between them. Calls during an in-flight measurement share its promise, and measurement failures resolve to an unavailable snapshot.",
+				"examples": [
+					{
+						"status": "unavailable",
+						"sampledAt": "2026-11-15T12:00:01.000Z",
+						"intervalMs": 0,
+						"logicalCores": 0,
+						"machinePercent": null,
+						"trackedPercent": null,
+						"groups": [],
+						"agents": []
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "CpuUsageService.snapshot",
@@ -35,11 +49,24 @@
 				"outputs": [
 					{
 						"name": "CpuUsageService.snapshot",
-						"type": "Promise<CpuSnapshot>"
+						"type": "Promise<CpuSnapshot>",
+						"description": "Promise resolving to a CPU snapshot produced from two adapter readings with a 1,000 ms wait between them. Calls during an in-flight measurement share its promise, and measurement failures resolve to an unavailable snapshot.",
+						"examples": [
+							{
+								"status": "unavailable",
+								"sampledAt": "2026-11-15T12:00:01.000Z",
+								"intervalMs": 0,
+								"logicalCores": 0,
+								"machinePercent": null,
+								"trackedPercent": null,
+								"groups": [],
+								"agents": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -49,17 +76,19 @@
 					{
 						"name": "CpuUsageService.constructor.adapter",
 						"type": "{ sample(): Promise<CpuReading> }",
-						"required": false
+						"required": false,
+						"description": "Adapter that supplies CPU readings through sample() for the before-and-after measurement. Defaults to new CpuProcessAdapter(); sampling or metric failures are returned as an unavailable snapshot."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CpuUsageService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A constructed CpuUsageService instance configured with the supplied adapter or the default CpuProcessAdapter. The instance exposes snapshot() for CPU sampling."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
