@@ -162,7 +162,7 @@
 			{
 				"name": "contractStates",
 				"type": "UnitState[]",
-				"description": "One UnitState per distinct name, in discovery order: quoted literal members of input types are REQUIRED, while optional-presence states for inputs with required false, empty-string states for string-typed inputs, collection sizes, disabled and show-flag states, and keyword or collection states from item names and descriptions are GUESS. Each name is kept once, with the origin and single reason of its first match, so later duplicates are dropped rather than merged.",
+				"description": "One UnitState per distinct name, in discovery order: quoted literal members of input types are REQUIRED, while optional-presence states for inputs with required false, empty-string states for string-typed inputs, collection sizes, disabled and show-flag states, and keyword or collection states from item names and descriptions are GUESS. Each name is kept once, with the origin and single reason of its first match, so later duplicates are dropped rather than merged. Optional-presence, empty-string and collection-size guesses canonicalize the final prop-name segment with toKebabCase, so camelCase props produce kebab-case capture IDs. This changes generated GUESS names only; public prop names and types, quoted literal REQUIRED values and declared registry state IDs retain their existing meaning.",
 				"examples": [
 					[
 						{
@@ -320,7 +320,7 @@
 					{
 						"name": "contractStates",
 						"type": "UnitState[]",
-						"description": "One UnitState per distinct name, in discovery order: quoted literal members of input types are REQUIRED, while optional-presence states for inputs with required false, empty-string states for string-typed inputs, collection sizes, disabled and show-flag states, and keyword or collection states from item names and descriptions are GUESS. Each name is kept once, with the origin and single reason of its first match, so later duplicates are dropped rather than merged.",
+						"description": "One UnitState per distinct name, in discovery order: quoted literal members of input types are REQUIRED, while optional-presence states for inputs with required false, empty-string states for string-typed inputs, collection sizes, disabled and show-flag states, and keyword or collection states from item names and descriptions are GUESS. Each name is kept once, with the origin and single reason of its first match, so later duplicates are dropped rather than merged. Optional-presence, empty-string and collection-size guesses canonicalize the final prop-name segment with toKebabCase, so camelCase props produce kebab-case capture IDs. This changes generated GUESS names only; public prop names and types, quoted literal REQUIRED values and declared registry state IDs retain their existing meaning.",
 						"examples": [
 							[
 								{
@@ -523,6 +523,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.case",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.unit-types",
 			"via": "import",
