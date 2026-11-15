@@ -3,7 +3,7 @@ import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
 } from '../../../../../../desktop/src/models/DesktopEvidence.types';
-import { evidencePayload } from '../../../../../../desktop/src/utils/evidencePayload';
+import { evidencePayload } from '../../../../../../desktop/src/utils/verification-evidence/evidencePayload';
 import { hubFail } from '../../../../utils/development-tooling/hubJson';
 
 function fields(request: Request, projectId: string, channel: string) {

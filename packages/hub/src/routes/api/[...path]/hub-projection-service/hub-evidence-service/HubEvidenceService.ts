@@ -5,7 +5,7 @@ import type {
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
 } from '../../../../../../../desktop/src/models/DesktopEvidence.types';
-import { evidencePayload } from '../../../../../../../desktop/src/utils/evidencePayload';
+import { evidencePayload } from '../../../../../../../desktop/src/utils/verification-evidence/evidencePayload';
 import { artifactAnswer } from '../../../../../../../desktop/src/utils/artifact-answer/artifactAnswer';
 import { artifactLimit } from '../../../../../../../desktop/src/utils/reports-media/artifactMedia';
 import { recordedAnswer } from '../../../../../../../desktop/src/utils/recorded-answer/recordedAnswer';

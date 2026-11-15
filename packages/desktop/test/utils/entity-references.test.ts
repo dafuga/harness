@@ -1,7 +1,7 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import { entityReferences } from '../../src/components/explorer-ui/reference-text/entityReferences';
-import { isUnitId } from '../../src/utils/entityReferences';
+import { isUnitId } from '../../src/utils/explorer-ui/entityReferences';
 
 /** The grammar of a reference id, and markers that are broken around a whole one. */
 test('an id is lower-case dotted segments of at most 200 characters', () => {
@@ -27,4 +27,15 @@ test('lines, markup and malformed markers around references join back into the t
 	const parts = entityReferences(value);
 	expect(parts.map((part) => part.text).join('')).toBe(value);
 	expect(parts.filter((part) => part.kind === 'reference')).toHaveLength(1);
+});
+
+/** A marker is a reference exactly when its identity has the reference grammar. */
+test('a marker becomes a reference exactly when its identity passes isUnitId', () => {
+	for (const id of ['a.b', 'app.page.orders', 'App.X', '1app.page', 'orders']) {
+		const parts = entityReferences(`[[unit:${id}]]`);
+		expect(
+			parts.some((part) => part.kind === 'reference'),
+			id
+		).toBe(isUnitId(id));
+	}
 });
