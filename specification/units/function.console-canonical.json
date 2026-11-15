@@ -45,116 +45,280 @@
 				"name": "defaultCommit.index",
 				"type": "IndexedHistory",
 				"required": true,
-				"description": "Indexed branches and revisions used to resolve a requested commit or fallback."
+				"description": "The branch and revision entries used to resolve the preferred commit. Only branch heads also present in revisions are eligible; if none match, the first revision or an empty string is used.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"name": "release/2.4",
+								"head": "abcdef0123456789abcdef0123456789abcdef01"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branches": ["main"]
+							},
+							{
+								"commit": "abcdef0123456789abcdef0123456789abcdef01",
+								"branches": ["release/2.4"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "defaultCommit.asked",
 				"type": "string",
 				"required": true,
-				"description": "Requested commit id; used only when present in the index."
+				"description": "The commit hash to prefer when it appears in index.revisions. Any other value falls through to an indexed branch head or revision.",
+				"examples": [
+					"0123456789abcdef0123456789abcdef01234567",
+					"abcdef0123456789abcdef0123456789abcdef01"
+				]
 			},
 			{
 				"name": "commitBranch.index",
 				"type": "IndexedHistory",
 				"required": true,
-				"description": "Indexed revisions and their containing branches."
+				"description": "The history index whose matching revision lists containing branches. Only names recorded for that revision matter, with main and master preferred.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"name": "release/2.4",
+								"head": "abcdef0123456789abcdef0123456789abcdef01"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branches": ["main"]
+							},
+							{
+								"commit": "abcdef0123456789abcdef0123456789abcdef01",
+								"branches": ["release/2.4"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "commitBranch.commit",
 				"type": "string",
 				"required": true,
-				"description": "Commit whose containing branch should be chosen."
+				"description": "The commit hash whose recorded branches are selected. An absent revision or one with no branches yields null.",
+				"examples": [
+					"0123456789abcdef0123456789abcdef01234567",
+					"abcdef0123456789abcdef0123456789abcdef01"
+				]
 			},
 			{
 				"name": "explorerHome.index",
 				"type": "IndexedHistory",
 				"required": true,
-				"description": "Indexed branches and revisions available for the initial Pages view."
+				"description": "The branch and revision entries used to choose the initial Pages location. Only heads found in revisions count; otherwise the first revision is used, and an empty history yields undefined.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"name": "release/2.4",
+								"head": "abcdef0123456789abcdef0123456789abcdef01"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branches": ["main"]
+							},
+							{
+								"commit": "abcdef0123456789abcdef0123456789abcdef01",
+								"branches": ["release/2.4"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "explorerExact.path",
 				"type": "string",
 				"required": true,
-				"description": "Explorer path without the host base; trailing slashes are ignored."
+				"description": "An explorer path, excluding the route base. Trailing slashes are removed before parsing, and the value is exact only when a route parses and its canonical path matches.",
+				"examples": ["/branch/main/commit/0123456789abcdef0123456789abcdef01234567/pages"]
 			},
 			{
 				"name": "explorerExact.search",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional query string, defaulting to empty; a tab is included when checking the canonical form."
+				"description": "The query string passed to explorerRoute, with only tab and helper parameters retained for the canonical comparison. Defaults to the empty string.",
+				"examples": [""]
 			},
 			{
 				"name": "explorerAddress.index",
 				"type": "IndexedHistory",
 				"required": true,
-				"description": "History index used to resolve old addresses and fallback selections."
+				"description": "The history index used to resolve requested commits and branch fallback locations. A selected commit is honored only if it appears in revisions.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"name": "release/2.4",
+								"head": "abcdef0123456789abcdef0123456789abcdef01"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branches": ["main"]
+							},
+							{
+								"commit": "abcdef0123456789abcdef0123456789abcdef01",
+								"branches": ["release/2.4"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "explorerAddress.path",
 				"type": "string",
 				"required": true,
-				"description": "Path relative to the console base, including root, legacy page, report, analytics or explorer routes."
+				"description": "The path after the console base, which may be root, a prior console page, a reports or analytics route, or an explorer route. Exact explorer routes and unrecognized paths return undefined.",
+				"examples": [
+					"",
+					"/reports",
+					"/branch/main/commit/0123456789abcdef0123456789abcdef01234567/pages"
+				]
 			},
 			{
 				"name": "explorerAddress.search",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional query string carrying legacy selection or explorer tab state; defaults to empty."
+				"description": "The query used to read commit, supported view, a lowercase 40-character base hash, and unit fields; explorer routes also receive tab and helper values. Defaults to the empty string.",
+				"examples": [
+					"?commit=0123456789abcdef0123456789abcdef01234567&view=history&base=abcdef0123456789abcdef0123456789abcdef01&unit=reports.component.evidence-grid"
+				]
 			},
 			{
 				"name": "consoleCanonical.index",
 				"type": "IndexedHistory",
 				"required": true,
-				"description": "History index used to resolve the requested address."
+				"description": "The history index passed to explorerAddress for the URL path. It determines whether selected commits are retained and which indexed branch or revision supplies the fallback.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "0123456789abcdef0123456789abcdef01234567"
+							},
+							{
+								"name": "release/2.4",
+								"head": "abcdef0123456789abcdef0123456789abcdef01"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branches": ["main"]
+							},
+							{
+								"commit": "abcdef0123456789abcdef0123456789abcdef01",
+								"branches": ["release/2.4"]
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "consoleCanonical.url",
 				"type": "URL",
 				"required": true,
-				"description": "Current URL whose path and query should be normalized."
+				"description": "The URL whose pathname and search are parsed after slicing base.length characters from the pathname. The code does not check that the pathname starts with base."
 			},
 			{
 				"name": "consoleCanonical.base",
 				"type": "string",
 				"required": true,
-				"description": "Host route prefix to remove before parsing and prepend to a replacement path."
+				"description": "The route prefix removed by slicing that many characters from url.pathname and added to any resolved explorer path. The prefix is not checked against the start of the pathname.",
+				"examples": ["/console"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "defaultCommit",
 				"type": "string",
-				"description": "Requested known commit, otherwise an indexed main/master branch head, another indexed head, first revision, or an empty string."
+				"description": "The asked commit when indexed; otherwise the head of the first indexed main or master branch, another indexed branch head, the first revision, or an empty string. A branch head is eligible only if its commit is in revisions.",
+				"examples": [
+					"0123456789abcdef0123456789abcdef01234567",
+					"abcdef0123456789abcdef0123456789abcdef01",
+					""
+				]
 			},
 			{
 				"name": "commitBranch",
 				"type": "string | null",
-				"description": "First main/master branch containing the commit, otherwise its first branch, or null when none is recorded."
+				"description": "The preferred main or master branch recorded on the commit's revision, otherwise its first recorded branch. Returns null when the revision or its branch list is absent.",
+				"examples": ["main", "release/2.4", null]
 			},
 			{
 				"name": "explorerHome",
 				"type": "ExplorerLocation | undefined",
-				"description": "Pages location at an indexed preferred or first branch tip, otherwise the first retained revision with no branch; undefined for an empty history."
+				"description": "A Pages location at the first indexed main or master branch tip or the first other indexed branch tip; if no branch tip is indexed, it uses the first revision with a null branch. Returns undefined when revisions is empty.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "pages"
+					},
+					{
+						"branch": null,
+						"commit": "abcdef0123456789abcdef0123456789abcdef01",
+						"category": "pages"
+					}
+				]
 			},
 			{
 				"name": "explorerExact",
 				"type": "boolean",
-				"description": "True when the path and recognized tab/helper selection already match the explorer formatter’s output after removing trailing slashes."
+				"description": "True when the path parses to a location and its canonical explorer path, plus tab and helper query parameters, equals the path after trailing slashes are removed. Otherwise it is false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "explorerAddress",
 				"type": "string | undefined",
-				"description": "Replacement explorer path for a recognized noncanonical address; undefined for an exact explorer address or an unrecognized path."
+				"description": "The canonical explorer path for a root, earlier console page or query, reports or analytics path, or noncanonical explorer route. It returns undefined for an exact explorer route or when no location resolves.",
+				"examples": [
+					"/branch/main/pages",
+					"/branch/main/commit/0123456789abcdef0123456789abcdef01234567/pages"
+				]
 			},
 			{
 				"name": "consoleCanonical",
 				"type": "string | undefined",
-				"description": "Replacement path including the host base, or undefined when no replacement is resolved. This helper returns text and does not perform a redirect."
+				"description": "The base-prefixed path returned by explorerAddress for a noncanonical URL, or undefined if no replacement resolves. It computes a string and does not navigate or redirect.",
+				"examples": ["/console/branch/main/pages"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "defaultCommit",
@@ -163,24 +327,57 @@
 						"name": "defaultCommit.index",
 						"type": "IndexedHistory",
 						"required": true,
-						"description": "Indexed branches and revisions used to resolve a requested commit or fallback."
+						"description": "The branch and revision entries used to resolve the preferred commit. Only branch heads also present in revisions are eligible; if none match, the first revision or an empty string is used.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "0123456789abcdef0123456789abcdef01234567"
+									},
+									{
+										"name": "release/2.4",
+										"head": "abcdef0123456789abcdef0123456789abcdef01"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"branches": ["main"]
+									},
+									{
+										"commit": "abcdef0123456789abcdef0123456789abcdef01",
+										"branches": ["release/2.4"]
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "defaultCommit.asked",
 						"type": "string",
 						"required": true,
-						"description": "Requested commit id; used only when present in the index."
+						"description": "The commit hash to prefer when it appears in index.revisions. Any other value falls through to an indexed branch head or revision.",
+						"examples": [
+							"0123456789abcdef0123456789abcdef01234567",
+							"abcdef0123456789abcdef0123456789abcdef01"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "defaultCommit",
 						"type": "string",
-						"description": "Requested known commit, otherwise an indexed main/master branch head, another indexed head, first revision, or an empty string."
+						"description": "The asked commit when indexed; otherwise the head of the first indexed main or master branch, another indexed branch head, the first revision, or an empty string. A branch head is eligible only if its commit is in revisions.",
+						"examples": [
+							"0123456789abcdef0123456789abcdef01234567",
+							"abcdef0123456789abcdef0123456789abcdef01",
+							""
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "commitBranch",
@@ -189,24 +386,53 @@
 						"name": "commitBranch.index",
 						"type": "IndexedHistory",
 						"required": true,
-						"description": "Indexed revisions and their containing branches."
+						"description": "The history index whose matching revision lists containing branches. Only names recorded for that revision matter, with main and master preferred.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "0123456789abcdef0123456789abcdef01234567"
+									},
+									{
+										"name": "release/2.4",
+										"head": "abcdef0123456789abcdef0123456789abcdef01"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"branches": ["main"]
+									},
+									{
+										"commit": "abcdef0123456789abcdef0123456789abcdef01",
+										"branches": ["release/2.4"]
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "commitBranch.commit",
 						"type": "string",
 						"required": true,
-						"description": "Commit whose containing branch should be chosen."
+						"description": "The commit hash whose recorded branches are selected. An absent revision or one with no branches yields null.",
+						"examples": [
+							"0123456789abcdef0123456789abcdef01234567",
+							"abcdef0123456789abcdef0123456789abcdef01"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "commitBranch",
 						"type": "string | null",
-						"description": "First main/master branch containing the commit, otherwise its first branch, or null when none is recorded."
+						"description": "The preferred main or master branch recorded on the commit's revision, otherwise its first recorded branch. Returns null when the revision or its branch list is absent.",
+						"examples": ["main", "release/2.4", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerHome",
@@ -215,18 +441,54 @@
 						"name": "explorerHome.index",
 						"type": "IndexedHistory",
 						"required": true,
-						"description": "Indexed branches and revisions available for the initial Pages view."
+						"description": "The branch and revision entries used to choose the initial Pages location. Only heads found in revisions count; otherwise the first revision is used, and an empty history yields undefined.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "0123456789abcdef0123456789abcdef01234567"
+									},
+									{
+										"name": "release/2.4",
+										"head": "abcdef0123456789abcdef0123456789abcdef01"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"branches": ["main"]
+									},
+									{
+										"commit": "abcdef0123456789abcdef0123456789abcdef01",
+										"branches": ["release/2.4"]
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerHome",
 						"type": "ExplorerLocation | undefined",
-						"description": "Pages location at an indexed preferred or first branch tip, otherwise the first retained revision with no branch; undefined for an empty history."
+						"description": "A Pages location at the first indexed main or master branch tip or the first other indexed branch tip; if no branch tip is indexed, it uses the first revision with a null branch. Returns undefined when revisions is empty.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null,
+								"category": "pages"
+							},
+							{
+								"branch": null,
+								"commit": "abcdef0123456789abcdef0123456789abcdef01",
+								"category": "pages"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerExact",
@@ -235,25 +497,28 @@
 						"name": "explorerExact.path",
 						"type": "string",
 						"required": true,
-						"description": "Explorer path without the host base; trailing slashes are ignored."
+						"description": "An explorer path, excluding the route base. Trailing slashes are removed before parsing, and the value is exact only when a route parses and its canonical path matches.",
+						"examples": ["/branch/main/commit/0123456789abcdef0123456789abcdef01234567/pages"]
 					},
 					{
 						"name": "explorerExact.search",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Optional query string, defaulting to empty; a tab is included when checking the canonical form."
+						"description": "The query string passed to explorerRoute, with only tab and helper parameters retained for the canonical comparison. Defaults to the empty string.",
+						"examples": [""]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerExact",
 						"type": "boolean",
-						"description": "True when the path and recognized tab/helper selection already match the explorer formatter’s output after removing trailing slashes."
+						"description": "True when the path parses to a location and its canonical explorer path, plus tab and helper query parameters, equals the path after trailing slashes are removed. Otherwise it is false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerAddress",
@@ -262,31 +527,67 @@
 						"name": "explorerAddress.index",
 						"type": "IndexedHistory",
 						"required": true,
-						"description": "History index used to resolve old addresses and fallback selections."
+						"description": "The history index used to resolve requested commits and branch fallback locations. A selected commit is honored only if it appears in revisions.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "0123456789abcdef0123456789abcdef01234567"
+									},
+									{
+										"name": "release/2.4",
+										"head": "abcdef0123456789abcdef0123456789abcdef01"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"branches": ["main"]
+									},
+									{
+										"commit": "abcdef0123456789abcdef0123456789abcdef01",
+										"branches": ["release/2.4"]
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "explorerAddress.path",
 						"type": "string",
 						"required": true,
-						"description": "Path relative to the console base, including root, legacy page, report, analytics or explorer routes."
+						"description": "The path after the console base, which may be root, a prior console page, a reports or analytics route, or an explorer route. Exact explorer routes and unrecognized paths return undefined.",
+						"examples": [
+							"",
+							"/reports",
+							"/branch/main/commit/0123456789abcdef0123456789abcdef01234567/pages"
+						]
 					},
 					{
 						"name": "explorerAddress.search",
 						"type": "string",
 						"required": false,
 						"default": "",
-						"description": "Optional query string carrying legacy selection or explorer tab state; defaults to empty."
+						"description": "The query used to read commit, supported view, a lowercase 40-character base hash, and unit fields; explorer routes also receive tab and helper values. Defaults to the empty string.",
+						"examples": [
+							"?commit=0123456789abcdef0123456789abcdef01234567&view=history&base=abcdef0123456789abcdef0123456789abcdef01&unit=reports.component.evidence-grid"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerAddress",
 						"type": "string | undefined",
-						"description": "Replacement explorer path for a recognized noncanonical address; undefined for an exact explorer address or an unrecognized path."
+						"description": "The canonical explorer path for a root, earlier console page or query, reports or analytics path, or noncanonical explorer route. It returns undefined for an exact explorer route or when no location resolves.",
+						"examples": [
+							"/branch/main/pages",
+							"/branch/main/commit/0123456789abcdef0123456789abcdef01234567/pages"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "consoleCanonical",
@@ -295,30 +596,56 @@
 						"name": "consoleCanonical.index",
 						"type": "IndexedHistory",
 						"required": true,
-						"description": "History index used to resolve the requested address."
+						"description": "The history index passed to explorerAddress for the URL path. It determines whether selected commits are retained and which indexed branch or revision supplies the fallback.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "0123456789abcdef0123456789abcdef01234567"
+									},
+									{
+										"name": "release/2.4",
+										"head": "abcdef0123456789abcdef0123456789abcdef01"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"branches": ["main"]
+									},
+									{
+										"commit": "abcdef0123456789abcdef0123456789abcdef01",
+										"branches": ["release/2.4"]
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "consoleCanonical.url",
 						"type": "URL",
 						"required": true,
-						"description": "Current URL whose path and query should be normalized."
+						"description": "The URL whose pathname and search are parsed after slicing base.length characters from the pathname. The code does not check that the pathname starts with base."
 					},
 					{
 						"name": "consoleCanonical.base",
 						"type": "string",
 						"required": true,
-						"description": "Host route prefix to remove before parsing and prepend to a replacement path."
+						"description": "The route prefix removed by slicing that many characters from url.pathname and added to any resolved explorer path. The prefix is not checked against the start of the pathname.",
+						"examples": ["/console"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleCanonical",
 						"type": "string | undefined",
-						"description": "Replacement path including the host base, or undefined when no replacement is resolved. This helper returns text and does not perform a redirect."
+						"description": "The base-prefixed path returned by explorerAddress for a noncanonical URL, or undefined if no replacement resolves. It computes a string and does not navigate or redirect.",
+						"examples": ["/console/branch/main/pages"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
