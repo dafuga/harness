@@ -12,22 +12,24 @@
 		"symbols": ["registerHooksCommand", "Flags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerHooksCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The parent Commander Command instance passed to registerHooksCommand. It is required to attach the hooks subcommand and its install, uninstall, status, and run commands."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerHooksCommand",
-				"type": "Command"
+				"type": "Command",
+				"description": "The Commander Command instance created for the hooks subcommand and returned by registerHooksCommand. It contains install, uninstall, status, and run commands."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "registerHooksCommand",
@@ -35,17 +37,19 @@
 					{
 						"name": "registerHooksCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The parent Commander Command instance passed to registerHooksCommand. It is required to attach the hooks subcommand and its install, uninstall, status, and run commands."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerHooksCommand",
-						"type": "Command"
+						"type": "Command",
+						"description": "The Commander Command instance created for the hooks subcommand and returned by registerHooksCommand. It contains install, uninstall, status, and run commands."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
