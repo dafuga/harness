@@ -18,40 +18,112 @@
 				"name": "correctedLocation.at",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "The address that was asked for."
+				"description": "The address of the entity at the viewed revision, including its category and optional helper. Its category and entity select the correction path; `platforms` always returns null.",
+				"examples": [
+					{
+						"branch": null,
+						"commit": null,
+						"category": "components",
+						"entity": "reports.function.corrected-location"
+					},
+					{
+						"branch": null,
+						"commit": null,
+						"category": "functions",
+						"helper": "helperOwners"
+					}
+				]
 			},
 			{
 				"name": "correctedLocation.entities",
 				"type": "Array<Pick<ExplorerEntity, 'id' | 'category'> & Partial<Pick<ExplorerEntity, 'unit'>>>",
 				"required": true,
-				"description": "The entities of the shown revision, each with the category its manifest declares there."
+				"description": "Entries for entities listed at the viewed revision, matched by `id` and `category`; each may omit `unit`. Helper correction considers a unit only when its `helpers` contains a matching name.",
+				"examples": [
+					[
+						{
+							"id": "reports.function.corrected-location",
+							"category": "functions"
+						}
+					],
+					[
+						{
+							"id": "reports.component.evidence-grid",
+							"category": "components"
+						}
+					]
+				]
 			},
 			{
 				"name": "compactHelperLocation.at",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "A resolved callable location to shorten without losing its identity."
+				"description": "The address to compact. It is eligible only when its category is `functions` and both `helper` and `entity` are present.",
+				"examples": [
+					{
+						"branch": null,
+						"commit": null,
+						"category": "functions",
+						"entity": "reports.function.corrected-location",
+						"helper": "helperOwners"
+					}
+				]
 			},
 			{
 				"name": "compactHelperLocation.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Public entities of the target revision."
+				"description": "Full explorer entities at the viewed revision. Only function entities whose unit lists a helper with the exact requested name can establish ownership.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "correctedLocation",
 				"type": "ExplorerLocation | null",
-				"description": "Corrected category or the sole helper owner at the selected revision; null when unchanged, unknown or ambiguous."
+				"description": "An address with its category changed to the listed entity category, or with the sole matching owner added for a function helper without an entity. Returns null when no correction applies, including for `platforms`, an absent entity, or zero or multiple helper owners.",
+				"examples": [
+					{
+						"branch": null,
+						"commit": null,
+						"category": "functions",
+						"entity": "reports.function.corrected-location"
+					},
+					{
+						"branch": null,
+						"commit": null,
+						"category": "functions",
+						"entity": "reports.function.corrected-location",
+						"helper": "helperOwners"
+					},
+					null
+				]
 			},
 			{
 				"name": "compactHelperLocation",
 				"type": "ExplorerLocation",
-				"description": "Owner-free helper location only when one matching owner is proven; otherwise the original location."
+				"description": "An explorer address with `entity` omitted only when exactly one function entity owns the named helper and it is the current entity. In every other case, the input address is returned unchanged.",
+				"examples": [
+					{
+						"branch": null,
+						"commit": null,
+						"category": "functions",
+						"helper": "helperOwners"
+					},
+					{
+						"branch": null,
+						"commit": null,
+						"category": "functions",
+						"entity": "reports.function.corrected-location",
+						"helper": "helperOwners"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "correctedLocation",
@@ -60,24 +132,68 @@
 						"name": "correctedLocation.at",
 						"type": "ExplorerLocation",
 						"required": true,
-						"description": "The address that was asked for."
+						"description": "The address of the entity at the viewed revision, including its category and optional helper. Its category and entity select the correction path; `platforms` always returns null.",
+						"examples": [
+							{
+								"branch": null,
+								"commit": null,
+								"category": "components",
+								"entity": "reports.function.corrected-location"
+							},
+							{
+								"branch": null,
+								"commit": null,
+								"category": "functions",
+								"helper": "helperOwners"
+							}
+						]
 					},
 					{
 						"name": "correctedLocation.entities",
 						"type": "Array<Pick<ExplorerEntity, 'id' | 'category'> & Partial<Pick<ExplorerEntity, 'unit'>>>",
 						"required": true,
-						"description": "The entities of the shown revision, each with the category its manifest declares there."
+						"description": "Entries for entities listed at the viewed revision, matched by `id` and `category`; each may omit `unit`. Helper correction considers a unit only when its `helpers` contains a matching name.",
+						"examples": [
+							[
+								{
+									"id": "reports.function.corrected-location",
+									"category": "functions"
+								}
+							],
+							[
+								{
+									"id": "reports.component.evidence-grid",
+									"category": "components"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "correctedLocation",
 						"type": "ExplorerLocation | null",
-						"description": "Corrected category or the sole helper owner at the selected revision; null when unchanged, unknown or ambiguous."
+						"description": "An address with its category changed to the listed entity category, or with the sole matching owner added for a function helper without an entity. Returns null when no correction applies, including for `platforms`, an absent entity, or zero or multiple helper owners.",
+						"examples": [
+							{
+								"branch": null,
+								"commit": null,
+								"category": "functions",
+								"entity": "reports.function.corrected-location"
+							},
+							{
+								"branch": null,
+								"commit": null,
+								"category": "functions",
+								"entity": "reports.function.corrected-location",
+								"helper": "helperOwners"
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "compactHelperLocation",
@@ -86,24 +202,51 @@
 						"name": "compactHelperLocation.at",
 						"type": "ExplorerLocation",
 						"required": true,
-						"description": "A resolved callable location to shorten without losing its identity."
+						"description": "The address to compact. It is eligible only when its category is `functions` and both `helper` and `entity` are present.",
+						"examples": [
+							{
+								"branch": null,
+								"commit": null,
+								"category": "functions",
+								"entity": "reports.function.corrected-location",
+								"helper": "helperOwners"
+							}
+						]
 					},
 					{
 						"name": "compactHelperLocation.entities",
 						"type": "ExplorerEntity[]",
 						"required": true,
-						"description": "Public entities of the target revision."
+						"description": "Full explorer entities at the viewed revision. Only function entities whose unit lists a helper with the exact requested name can establish ownership.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "compactHelperLocation",
 						"type": "ExplorerLocation",
-						"description": "Owner-free helper location only when one matching owner is proven; otherwise the original location."
+						"description": "An explorer address with `entity` omitted only when exactly one function entity owns the named helper and it is the current entity. In every other case, the input address is returned unchanged.",
+						"examples": [
+							{
+								"branch": null,
+								"commit": null,
+								"category": "functions",
+								"helper": "helperOwners"
+							},
+							{
+								"branch": null,
+								"commit": null,
+								"category": "functions",
+								"entity": "reports.function.corrected-location",
+								"helper": "helperOwners"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
