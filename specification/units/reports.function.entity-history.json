@@ -48,101 +48,448 @@
 				"name": "reviewChanges.review",
 				"type": "HarnessReview",
 				"required": true,
-				"description": "Budget review containing new limits and optional prior limits."
+				"description": "A reviewed budget line: its type, the commit and record it cites, the reviewer, reason and time, and the limits it froze, keyed by metric name with artifact-bytes:<target> for emitted sizes. after holds the new limits, and before holds the prior limits, which only an approval carries.",
+				"examples": [
+					{
+						"type": "approval",
+						"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+						"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+						"reviewer": "Ada",
+						"reason": "Adds caching.",
+						"at": "2026-11-02T15:40:52.106Z",
+						"before": {
+							"source-bytes": 12980,
+							"complexity": 36,
+							"dependencies": 6
+						},
+						"after": {
+							"source-bytes": 15420,
+							"complexity": 38,
+							"dependencies": 6
+						}
+					},
+					{
+						"type": "baseline",
+						"commit": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+						"record": "0f6b3d8a2c51e97b4a0d6f3c8e1b57a92d4c0e6f8b3a1d59c7e2f40a6b8d1c3e",
+						"reviewer": "Grace",
+						"reason": "Initial limits.",
+						"at": "2026-10-20T09:16:31.084Z",
+						"after": {
+							"source-bytes": 12980,
+							"complexity": 36,
+							"dependencies": 6
+						}
+					}
+				]
 			},
 			{
 				"name": "historyVerdict.coverage",
 				"type": "Coverage",
 				"required": true,
-				"description": "Recorded coverage status."
+				"description": "The coverage a commit's revision records: verified, failed, invalid or unverified. A value outside those four has no entry, so the verdict is undefined.",
+				"examples": ["verified", "failed", "unverified"]
 			},
 			{
 				"name": "historyListed.rows",
 				"type": "ExplorerHistoryRow[]",
 				"required": true,
-				"description": "Candidate history rows in their supplied order."
+				"description": "The candidate history rows, kept in the order given. A row with standing changed is always listed, while an unknown row is listed only when its read detail says the entity changed directly, was added or was removed, and is unread when it has no read detail.",
+				"examples": [
+					[
+						{
+							"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+							"subject": "Show each limit's old and new value",
+							"author": "Mina Park",
+							"committedAt": "2026-11-02T14:03:27+01:00",
+							"coverage": "verified",
+							"previous": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+							"standing": "changed",
+							"change": "direct",
+							"gap": null,
+							"measured": {
+								"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+								"size": 15420,
+								"complexity": 38,
+								"dependencies": 6,
+								"notes": {}
+							},
+							"sizeChange": 2440,
+							"complexityChange": 2,
+							"reviews": []
+						},
+						{
+							"commit": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+							"subject": "Cache entity measurements",
+							"author": "Tomas Reyes",
+							"committedAt": "2026-10-27T16:40:09-04:00",
+							"coverage": "unverified",
+							"previous": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+							"standing": "unknown",
+							"change": null,
+							"gap": "This history was built before it recorded what each commit changed.",
+							"measured": null,
+							"sizeChange": null,
+							"complexityChange": null,
+							"reviews": []
+						}
+					]
+				]
 			},
 			{
 				"name": "historyListed.read",
 				"type": "Pick<Map<string, ExplorerHistoryDetail>, 'get'>",
 				"required": true,
-				"description": "Lookup of already-read revision details by commit."
+				"description": "Lookup of read revision details by commit; only get is called, and a commit it returns nothing for is not yet read. The change in the detail it returns decides whether an unknown row is listed."
 			},
 			{
 				"name": "entityHistory.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Index containing benchmark series."
+				"description": "The harness index whose benchmark series are read; only its benchmarks are used, and only those of the given unit contribute timings.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+								"parents": ["9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9"],
+								"subject": "Show each limit's old and new value",
+								"author": "Mina Park",
+								"committedAt": "2026-11-02T14:03:27+01:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+										"status": "passed",
+										"profile": "5c1e7a09d3b8f266",
+										"finishedAt": "2026-11-02T13:21:08.447Z",
+										"base": null,
+										"valid": true,
+										"problems": []
+									}
+								],
+								"legacy": [],
+								"changes": {
+									"base": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+									"direct": ["reports.function.entity-measure"],
+									"added": [],
+									"removed": []
+								}
+							},
+							{
+								"commit": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+								"parents": ["3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73"],
+								"subject": "Cache entity measurements",
+								"author": "Tomas Reyes",
+								"committedAt": "2026-10-27T16:40:09-04:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							},
+							{
+								"commit": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+								"parents": ["b07d4f92e1a86c35d0f7e4b28a91c6d3f5e0a8b2"],
+								"subject": "Add per-commit timing series",
+								"author": "Lin Chen",
+								"committedAt": "2026-10-20T10:12:55+01:00",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [
+									{
+										"id": "0f6b3d8a2c51e97b4a0d6f3c8e1b57a92d4c0e6f8b3a1d59c7e2f40a6b8d1c3e",
+										"status": "passed",
+										"profile": "5c1e7a09d3b8f266",
+										"finishedAt": "2026-10-20T09:14:12.530Z",
+										"base": null,
+										"valid": true,
+										"problems": []
+									}
+								],
+								"legacy": [],
+								"changes": {
+									"base": "b07d4f92e1a86c35d0f7e4b28a91c6d3f5e0a8b2",
+									"direct": [],
+									"added": ["reports.function.entity-measure"],
+									"removed": []
+								}
+							}
+						],
+						"units": [
+							{
+								"id": "reports.function.entity-measure",
+								"growth": [
+									{
+										"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+										"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+										"source-bytes": 15420,
+										"complexity": 38,
+										"dependencies": 6
+									},
+									{
+										"commit": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+										"record": "0f6b3d8a2c51e97b4a0d6f3c8e1b57a92d4c0e6f8b3a1d59c7e2f40a6b8d1c3e",
+										"source-bytes": 12980,
+										"complexity": 36,
+										"dependencies": 6
+									}
+								]
+							}
+						],
+						"benchmarks": [
+							{
+								"unit": "reports.function.entity-measure",
+								"workload": "initialize-fields",
+								"metric": "latency-warm-ms",
+								"target": "module",
+								"incompatible": false,
+								"series": [
+									{
+										"profile": "5c1e7a09d3b8f266",
+										"unitOfMeasure": "ms",
+										"method": "Median of 5 batches of 1000 awaited representative calls after 3 warmups; includes await overhead.",
+										"points": [
+											{
+												"commit": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+												"record": "0f6b3d8a2c51e97b4a0d6f3c8e1b57a92d4c0e6f8b3a1d59c7e2f40a6b8d1c3e",
+												"value": 0.7912
+											},
+											{
+												"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+												"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+												"value": 0.8421
+											}
+										]
+									}
+								]
+							}
+						],
+						"profiles": [
+							{
+								"id": "5c1e7a09d3b8f266",
+								"platform": "darwin",
+								"arch": "arm64",
+								"cpu": "Apple M3 Pro",
+								"runtime": "bun 1.2.19"
+							}
+						],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					},
+					{
+						"branches": [],
+						"revisions": [],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "entityHistory.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit whose benchmark series should be used."
+				"description": "The unit id whose benchmarks are used; a benchmark counts only when its unit equals this string exactly.",
+				"examples": ["reports.function.entity-measure", "reports.function.entity-history"]
 			},
 			{
 				"name": "entityHistory.rows",
 				"type": "ExplorerHistoryRow[]",
 				"required": true,
-				"description": "Listed commits in newest-first order; each compares only to the next listed commit in the same series."
+				"description": "The listed commits in newest-first order; only each row's commit is read, and each row is compared with the row after it in the array, so the last row has no earlier value.",
+				"examples": [
+					[
+						{
+							"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+							"subject": "Show each limit's old and new value",
+							"author": "Mina Park",
+							"committedAt": "2026-11-02T14:03:27+01:00",
+							"coverage": "verified",
+							"previous": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+							"standing": "changed",
+							"change": "direct",
+							"gap": null,
+							"measured": {
+								"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+								"size": 15420,
+								"complexity": 38,
+								"dependencies": 6,
+								"notes": {}
+							},
+							"sizeChange": 2440,
+							"complexityChange": 2,
+							"reviews": []
+						},
+						{
+							"commit": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+							"subject": "Add per-commit timing series",
+							"author": "Lin Chen",
+							"committedAt": "2026-10-20T10:12:55+01:00",
+							"coverage": "verified",
+							"previous": "b07d4f92e1a86c35d0f7e4b28a91c6d3f5e0a8b2",
+							"standing": "changed",
+							"change": "added",
+							"gap": null,
+							"measured": {
+								"record": "0f6b3d8a2c51e97b4a0d6f3c8e1b57a92d4c0e6f8b3a1d59c7e2f40a6b8d1c3e",
+								"size": 12980,
+								"complexity": 36,
+								"dependencies": 6,
+								"notes": {}
+							},
+							"sizeChange": null,
+							"complexityChange": null,
+							"reviews": []
+						}
+					]
+				]
 			},
 			{
 				"name": "historyProfiles.timings",
 				"type": "Map<string, HistoryTiming[]>",
 				"required": true,
-				"description": "Timing map whose profile identifiers should be collected."
+				"description": "The timing map whose values are read; the profile of every timing in every value is collected, and the keys are ignored."
 			},
 			{
 				"name": "signedBytes.delta",
 				"type": "number | null | undefined",
 				"required": true,
-				"description": "Byte difference, or null/undefined when no comparison exists."
+				"description": "The byte difference between a size and the size before it, negative for a decrease; null or undefined means there is no earlier size to compare with.",
+				"examples": [1210, -512, null]
 			},
 			{
 				"name": "signedCount.delta",
 				"type": "number | null | undefined",
 				"required": true,
-				"description": "Count difference, or null/undefined when no comparison exists."
+				"description": "The difference between a count and the count before it, negative for a decrease; null or undefined means there is no earlier count to compare with.",
+				"examples": [3, -1, null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "historyVerdict",
 				"type": "{ passed: boolean; label: string }",
-				"description": "Passed only for verified coverage; other labels distinguish verification failure, unusable evidence and missing evidence."
+				"description": "Whether a commit's evidence passed and the label shown for it: only verified coverage passes, labelled 'Full coverage passed'; failed, invalid and unverified coverage do not pass, labelled 'Verification failed', 'Evidence unusable' and 'Evidence missing' respectively.",
+				"examples": [
+					{
+						"passed": true,
+						"label": "Full coverage passed"
+					},
+					{
+						"passed": false,
+						"label": "Verification failed"
+					},
+					{
+						"passed": false,
+						"label": "Evidence missing"
+					}
+				]
 			},
 			{
 				"name": "historyListed",
 				"type": "{ listed: ExplorerHistoryRow[]; unread: ExplorerHistoryRow[] }",
-				"description": "Listed rows known to have changed the entity directly, been added or removed, plus a separate list of unknown rows whose details have not arrived."
+				"description": "The listed array holds the rows the history records as changing the entity directly, adding or removing it, plus unknown rows whose read detail says the same; the unread array holds the unknown rows that have no read detail yet. Both keep the input order, and an unknown row whose detail reports any other change, or none, is in neither array.",
+				"examples": [
+					{
+						"listed": [
+							{
+								"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+								"subject": "Show each limit's old and new value",
+								"author": "Mina Park",
+								"committedAt": "2026-11-02T14:03:27+01:00",
+								"coverage": "verified",
+								"previous": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+								"standing": "changed",
+								"change": "direct",
+								"gap": null,
+								"measured": {
+									"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+									"size": 15420,
+									"complexity": 38,
+									"dependencies": 6,
+									"notes": {}
+								},
+								"sizeChange": 2440,
+								"complexityChange": 2,
+								"reviews": []
+							}
+						],
+						"unread": [
+							{
+								"commit": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+								"subject": "Cache entity measurements",
+								"author": "Tomas Reyes",
+								"committedAt": "2026-10-27T16:40:09-04:00",
+								"coverage": "unverified",
+								"previous": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+								"standing": "unknown",
+								"change": null,
+								"gap": "This history was built before it recorded what each commit changed.",
+								"measured": null,
+								"sizeChange": null,
+								"complexityChange": null,
+								"reviews": []
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "entityHistory",
 				"type": "Map<string, HistoryTiming[]>",
-				"description": "Map of timings at listed commits, preserving workload, metric, target and profile. A before value is included only when that same series has a point at the next listed commit."
+				"description": "Keyed by listed commit, it holds the timings of each commit that has at least one: one per series with a point at that commit, carrying the series' profile, workload, metric, target and unit, with after set to that point's value. A before value is set only when that same series has a point at the next listed commit, and series whose unit is not ms, us, μs, ns or s are skipped."
 			},
 			{
 				"name": "historyProfiles",
 				"type": "string[]",
-				"description": "Distinct profiles in first-occurrence order."
+				"description": "Each distinct profile identifier once, in the order it first occurs as the timings are read: value by value in the map's order, and within each value in array order.",
+				"examples": [
+					["5c1e7a09d3b8f266"],
+					["5c1e7a09d3b8f266", "a41f0d2e9b7c3851"]
+				]
 			},
 			{
 				"name": "reviewChanges",
 				"type": "string[]",
-				"description": "One readable sentence per new limit, including the old-to-new change when a prior value exists. Emitted-size keys receive target labels."
+				"description": "One string per key of review.after, in that object's key order: the key's name in lowercase words followed by its new value, or by the prior and new values joined with an arrow when review.before has a prior value for that key. An artifact-bytes:<target> key is named emitted size with the target's label, such as process (native) or Wasm.",
+				"examples": [
+					["source bytes 12980 → 15420", "complexity 36 → 38", "dependencies 6 → 6"],
+					["source bytes 12980", "complexity 36", "dependencies 6"],
+					["emitted size (process (native)) 1048576 → 1100000", "emitted size (Wasm) 524288"]
+				]
 			},
 			{
 				"name": "signedBytes",
 				"type": "string",
-				"description": "Empty for a missing comparison, No change for zero, otherwise signed human-readable bytes."
+				"description": "The signed size change: an empty string when there is no comparison, No change for zero, and otherwise a + sign or a Unicode minus (−) followed by the size in B, KB or MB, rounded to at most one decimal place.",
+				"examples": ["+1.2 KB", "−512 B", "No change"]
 			},
 			{
 				"name": "signedCount",
 				"type": "string",
-				"description": "Empty for a missing comparison, No change for zero, otherwise a signed count."
+				"description": "The signed change of a count: an empty string when there is no comparison, No change for zero, and otherwise a + sign or a Unicode minus (−) followed by the absolute count, which is not rounded.",
+				"examples": ["+3", "−1", "No change"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "reviewChanges",
@@ -151,18 +498,56 @@
 						"name": "reviewChanges.review",
 						"type": "HarnessReview",
 						"required": true,
-						"description": "Budget review containing new limits and optional prior limits."
+						"description": "A reviewed budget line: its type, the commit and record it cites, the reviewer, reason and time, and the limits it froze, keyed by metric name with artifact-bytes:<target> for emitted sizes. after holds the new limits, and before holds the prior limits, which only an approval carries.",
+						"examples": [
+							{
+								"type": "approval",
+								"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+								"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+								"reviewer": "Ada",
+								"reason": "Adds caching.",
+								"at": "2026-11-02T15:40:52.106Z",
+								"before": {
+									"source-bytes": 12980,
+									"complexity": 36,
+									"dependencies": 6
+								},
+								"after": {
+									"source-bytes": 15420,
+									"complexity": 38,
+									"dependencies": 6
+								}
+							},
+							{
+								"type": "baseline",
+								"commit": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+								"record": "0f6b3d8a2c51e97b4a0d6f3c8e1b57a92d4c0e6f8b3a1d59c7e2f40a6b8d1c3e",
+								"reviewer": "Grace",
+								"reason": "Initial limits.",
+								"at": "2026-10-20T09:16:31.084Z",
+								"after": {
+									"source-bytes": 12980,
+									"complexity": 36,
+									"dependencies": 6
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reviewChanges",
 						"type": "string[]",
-						"description": "One readable sentence per new limit, including the old-to-new change when a prior value exists. Emitted-size keys receive target labels."
+						"description": "One string per key of review.after, in that object's key order: the key's name in lowercase words followed by its new value, or by the prior and new values joined with an arrow when review.before has a prior value for that key. An artifact-bytes:<target> key is named emitted size with the target's label, such as process (native) or Wasm.",
+						"examples": [
+							["source bytes 12980 → 15420", "complexity 36 → 38", "dependencies 6 → 6"],
+							["source bytes 12980", "complexity 36", "dependencies 6"],
+							["emitted size (process (native)) 1048576 → 1100000", "emitted size (Wasm) 524288"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "historyVerdict",
@@ -171,18 +556,33 @@
 						"name": "historyVerdict.coverage",
 						"type": "Coverage",
 						"required": true,
-						"description": "Recorded coverage status."
+						"description": "The coverage a commit's revision records: verified, failed, invalid or unverified. A value outside those four has no entry, so the verdict is undefined.",
+						"examples": ["verified", "failed", "unverified"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "historyVerdict",
 						"type": "{ passed: boolean; label: string }",
-						"description": "Passed only for verified coverage; other labels distinguish verification failure, unusable evidence and missing evidence."
+						"description": "Whether a commit's evidence passed and the label shown for it: only verified coverage passes, labelled 'Full coverage passed'; failed, invalid and unverified coverage do not pass, labelled 'Verification failed', 'Evidence unusable' and 'Evidence missing' respectively.",
+						"examples": [
+							{
+								"passed": true,
+								"label": "Full coverage passed"
+							},
+							{
+								"passed": false,
+								"label": "Verification failed"
+							},
+							{
+								"passed": false,
+								"label": "Evidence missing"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "historyListed",
@@ -191,24 +591,108 @@
 						"name": "historyListed.rows",
 						"type": "ExplorerHistoryRow[]",
 						"required": true,
-						"description": "Candidate history rows in their supplied order."
+						"description": "The candidate history rows, kept in the order given. A row with standing changed is always listed, while an unknown row is listed only when its read detail says the entity changed directly, was added or was removed, and is unread when it has no read detail.",
+						"examples": [
+							[
+								{
+									"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+									"subject": "Show each limit's old and new value",
+									"author": "Mina Park",
+									"committedAt": "2026-11-02T14:03:27+01:00",
+									"coverage": "verified",
+									"previous": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+									"standing": "changed",
+									"change": "direct",
+									"gap": null,
+									"measured": {
+										"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+										"size": 15420,
+										"complexity": 38,
+										"dependencies": 6,
+										"notes": {}
+									},
+									"sizeChange": 2440,
+									"complexityChange": 2,
+									"reviews": []
+								},
+								{
+									"commit": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+									"subject": "Cache entity measurements",
+									"author": "Tomas Reyes",
+									"committedAt": "2026-10-27T16:40:09-04:00",
+									"coverage": "unverified",
+									"previous": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+									"standing": "unknown",
+									"change": null,
+									"gap": "This history was built before it recorded what each commit changed.",
+									"measured": null,
+									"sizeChange": null,
+									"complexityChange": null,
+									"reviews": []
+								}
+							]
+						]
 					},
 					{
 						"name": "historyListed.read",
 						"type": "Pick<Map<string, ExplorerHistoryDetail>, 'get'>",
 						"required": true,
-						"description": "Lookup of already-read revision details by commit."
+						"description": "Lookup of read revision details by commit; only get is called, and a commit it returns nothing for is not yet read. The change in the detail it returns decides whether an unknown row is listed."
 					}
 				],
 				"outputs": [
 					{
 						"name": "historyListed",
 						"type": "{ listed: ExplorerHistoryRow[]; unread: ExplorerHistoryRow[] }",
-						"description": "Listed rows known to have changed the entity directly, been added or removed, plus a separate list of unknown rows whose details have not arrived."
+						"description": "The listed array holds the rows the history records as changing the entity directly, adding or removing it, plus unknown rows whose read detail says the same; the unread array holds the unknown rows that have no read detail yet. Both keep the input order, and an unknown row whose detail reports any other change, or none, is in neither array.",
+						"examples": [
+							{
+								"listed": [
+									{
+										"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+										"subject": "Show each limit's old and new value",
+										"author": "Mina Park",
+										"committedAt": "2026-11-02T14:03:27+01:00",
+										"coverage": "verified",
+										"previous": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+										"standing": "changed",
+										"change": "direct",
+										"gap": null,
+										"measured": {
+											"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+											"size": 15420,
+											"complexity": 38,
+											"dependencies": 6,
+											"notes": {}
+										},
+										"sizeChange": 2440,
+										"complexityChange": 2,
+										"reviews": []
+									}
+								],
+								"unread": [
+									{
+										"commit": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+										"subject": "Cache entity measurements",
+										"author": "Tomas Reyes",
+										"committedAt": "2026-10-27T16:40:09-04:00",
+										"coverage": "unverified",
+										"previous": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+										"standing": "unknown",
+										"change": null,
+										"gap": "This history was built before it recorded what each commit changed.",
+										"measured": null,
+										"sizeChange": null,
+										"complexityChange": null,
+										"reviews": []
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "entityHistory",
@@ -217,30 +701,231 @@
 						"name": "entityHistory.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Index containing benchmark series."
+						"description": "The harness index whose benchmark series are read; only its benchmarks are used, and only those of the given unit contribute timings.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+										"parents": ["9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9"],
+										"subject": "Show each limit's old and new value",
+										"author": "Mina Park",
+										"committedAt": "2026-11-02T14:03:27+01:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [
+											{
+												"id": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+												"status": "passed",
+												"profile": "5c1e7a09d3b8f266",
+												"finishedAt": "2026-11-02T13:21:08.447Z",
+												"base": null,
+												"valid": true,
+												"problems": []
+											}
+										],
+										"legacy": [],
+										"changes": {
+											"base": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+											"direct": ["reports.function.entity-measure"],
+											"added": [],
+											"removed": []
+										}
+									},
+									{
+										"commit": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+										"parents": ["3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73"],
+										"subject": "Cache entity measurements",
+										"author": "Tomas Reyes",
+										"committedAt": "2026-10-27T16:40:09-04:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "unverified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									},
+									{
+										"commit": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+										"parents": ["b07d4f92e1a86c35d0f7e4b28a91c6d3f5e0a8b2"],
+										"subject": "Add per-commit timing series",
+										"author": "Lin Chen",
+										"committedAt": "2026-10-20T10:12:55+01:00",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "verified",
+										"gaps": [],
+										"records": [
+											{
+												"id": "0f6b3d8a2c51e97b4a0d6f3c8e1b57a92d4c0e6f8b3a1d59c7e2f40a6b8d1c3e",
+												"status": "passed",
+												"profile": "5c1e7a09d3b8f266",
+												"finishedAt": "2026-10-20T09:14:12.530Z",
+												"base": null,
+												"valid": true,
+												"problems": []
+											}
+										],
+										"legacy": [],
+										"changes": {
+											"base": "b07d4f92e1a86c35d0f7e4b28a91c6d3f5e0a8b2",
+											"direct": [],
+											"added": ["reports.function.entity-measure"],
+											"removed": []
+										}
+									}
+								],
+								"units": [
+									{
+										"id": "reports.function.entity-measure",
+										"growth": [
+											{
+												"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+												"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+												"source-bytes": 15420,
+												"complexity": 38,
+												"dependencies": 6
+											},
+											{
+												"commit": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+												"record": "0f6b3d8a2c51e97b4a0d6f3c8e1b57a92d4c0e6f8b3a1d59c7e2f40a6b8d1c3e",
+												"source-bytes": 12980,
+												"complexity": 36,
+												"dependencies": 6
+											}
+										]
+									}
+								],
+								"benchmarks": [
+									{
+										"unit": "reports.function.entity-measure",
+										"workload": "initialize-fields",
+										"metric": "latency-warm-ms",
+										"target": "module",
+										"incompatible": false,
+										"series": [
+											{
+												"profile": "5c1e7a09d3b8f266",
+												"unitOfMeasure": "ms",
+												"method": "Median of 5 batches of 1000 awaited representative calls after 3 warmups; includes await overhead.",
+												"points": [
+													{
+														"commit": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+														"record": "0f6b3d8a2c51e97b4a0d6f3c8e1b57a92d4c0e6f8b3a1d59c7e2f40a6b8d1c3e",
+														"value": 0.7912
+													},
+													{
+														"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+														"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+														"value": 0.8421
+													}
+												]
+											}
+										]
+									}
+								],
+								"profiles": [
+									{
+										"id": "5c1e7a09d3b8f266",
+										"platform": "darwin",
+										"arch": "arm64",
+										"cpu": "Apple M3 Pro",
+										"runtime": "bun 1.2.19"
+									}
+								],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							},
+							{
+								"branches": [],
+								"revisions": [],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "entityHistory.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit whose benchmark series should be used."
+						"description": "The unit id whose benchmarks are used; a benchmark counts only when its unit equals this string exactly.",
+						"examples": ["reports.function.entity-measure", "reports.function.entity-history"]
 					},
 					{
 						"name": "entityHistory.rows",
 						"type": "ExplorerHistoryRow[]",
 						"required": true,
-						"description": "Listed commits in newest-first order; each compares only to the next listed commit in the same series."
+						"description": "The listed commits in newest-first order; only each row's commit is read, and each row is compared with the row after it in the array, so the last row has no earlier value.",
+						"examples": [
+							[
+								{
+									"commit": "c4f81a7d3e90b256a8d1f4c07e3b9a2d58e6f1b3",
+									"subject": "Show each limit's old and new value",
+									"author": "Mina Park",
+									"committedAt": "2026-11-02T14:03:27+01:00",
+									"coverage": "verified",
+									"previous": "9e27b4d0a1c63f58e2b7d941c0a6f3e85d2b74c9",
+									"standing": "changed",
+									"change": "direct",
+									"gap": null,
+									"measured": {
+										"record": "7d4f1a9c03e8b25f6a71d09c4e2b8f3a5c16e7d90b4a2f81c3e6d5a7b9f0e24d",
+										"size": 15420,
+										"complexity": 38,
+										"dependencies": 6,
+										"notes": {}
+									},
+									"sizeChange": 2440,
+									"complexityChange": 2,
+									"reviews": []
+								},
+								{
+									"commit": "3b8e0d61f7a25c94e0d3b7a18f6c2e9d4a5b0f73",
+									"subject": "Add per-commit timing series",
+									"author": "Lin Chen",
+									"committedAt": "2026-10-20T10:12:55+01:00",
+									"coverage": "verified",
+									"previous": "b07d4f92e1a86c35d0f7e4b28a91c6d3f5e0a8b2",
+									"standing": "changed",
+									"change": "added",
+									"gap": null,
+									"measured": {
+										"record": "0f6b3d8a2c51e97b4a0d6f3c8e1b57a92d4c0e6f8b3a1d59c7e2f40a6b8d1c3e",
+										"size": 12980,
+										"complexity": 36,
+										"dependencies": 6,
+										"notes": {}
+									},
+									"sizeChange": null,
+									"complexityChange": null,
+									"reviews": []
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityHistory",
 						"type": "Map<string, HistoryTiming[]>",
-						"description": "Map of timings at listed commits, preserving workload, metric, target and profile. A before value is included only when that same series has a point at the next listed commit."
+						"description": "Keyed by listed commit, it holds the timings of each commit that has at least one: one per series with a point at that commit, carrying the series' profile, workload, metric, target and unit, with after set to that point's value. A before value is set only when that same series has a point at the next listed commit, and series whose unit is not ms, us, μs, ns or s are skipped."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "historyProfiles",
@@ -249,18 +934,22 @@
 						"name": "historyProfiles.timings",
 						"type": "Map<string, HistoryTiming[]>",
 						"required": true,
-						"description": "Timing map whose profile identifiers should be collected."
+						"description": "The timing map whose values are read; the profile of every timing in every value is collected, and the keys are ignored."
 					}
 				],
 				"outputs": [
 					{
 						"name": "historyProfiles",
 						"type": "string[]",
-						"description": "Distinct profiles in first-occurrence order."
+						"description": "Each distinct profile identifier once, in the order it first occurs as the timings are read: value by value in the map's order, and within each value in array order.",
+						"examples": [
+							["5c1e7a09d3b8f266"],
+							["5c1e7a09d3b8f266", "a41f0d2e9b7c3851"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "signedBytes",
@@ -269,18 +958,20 @@
 						"name": "signedBytes.delta",
 						"type": "number | null | undefined",
 						"required": true,
-						"description": "Byte difference, or null/undefined when no comparison exists."
+						"description": "The byte difference between a size and the size before it, negative for a decrease; null or undefined means there is no earlier size to compare with.",
+						"examples": [1210, -512, null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "signedBytes",
 						"type": "string",
-						"description": "Empty for a missing comparison, No change for zero, otherwise signed human-readable bytes."
+						"description": "The signed size change: an empty string when there is no comparison, No change for zero, and otherwise a + sign or a Unicode minus (−) followed by the size in B, KB or MB, rounded to at most one decimal place.",
+						"examples": ["+1.2 KB", "−512 B", "No change"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "signedCount",
@@ -289,18 +980,20 @@
 						"name": "signedCount.delta",
 						"type": "number | null | undefined",
 						"required": true,
-						"description": "Count difference, or null/undefined when no comparison exists."
+						"description": "The difference between a count and the count before it, negative for a decrease; null or undefined means there is no earlier count to compare with.",
+						"examples": [3, -1, null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "signedCount",
 						"type": "string",
-						"description": "Empty for a missing comparison, No change for zero, otherwise a signed count."
+						"description": "The signed change of a count: an empty string when there is no comparison, No change for zero, and otherwise a + sign or a Unicode minus (−) followed by the absolute count, which is not rounded.",
+						"examples": ["+3", "−1", "No change"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
