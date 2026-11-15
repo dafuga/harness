@@ -18,52 +18,467 @@
 				"name": "focusedCaptures.detail",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Stored revision with exact-commit captures or validated whole-tree identity. Entity projections carry an opaque sourceTree hash; raw prepared history may use its legacy side locator. A different tree is rejected."
+				"description": "The stored revision whose `regressions` supply the focused points: a point is used when its commit equals this revision's commit, or when its sourceTree equals this revision's sourceTree or this revision's `side` is `sides/<sourceTree>.json`. A point from any other tree is skipped rather than rejected, and a revision without `regressions` yields no captures.",
+				"examples": [
+					{
+						"commit": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20",
+						"sourceTree": "e8d4b27c91f03a56d2e7b84c0f19a3d5c6b28e71",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": [],
+						"regressions": [
+							{
+								"loop": "catalog-captures",
+								"units": ["reports.component.evidence-grid"],
+								"red": null,
+								"green": {
+									"commit": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20",
+									"sourceTree": "e8d4b27c91f03a56d2e7b84c0f19a3d5c6b28e71",
+									"id": "d4e1a07c93b26f85e0c17a4d9b3f62e8a5c01d7f94b2e6a38c5d0f17e9b4a263",
+									"status": "passed",
+									"command": "pnpm exec playwright test tests/e2e/evidence-grid.spec.ts",
+									"assertion": "evidence grid screenshots match the focused baseline",
+									"output": "2 passed (6.1s)",
+									"finishedAt": "2026-11-10T14:23:41.117Z",
+									"captures": [
+										{
+											"unit": "reports.component.evidence-grid",
+											"capture": {
+												"evidence": "evidence-grid-focus",
+												"kind": "screenshot",
+												"state": "populated-list-desktop",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "focused/populated-list-desktop.png",
+												"sha256": "c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f",
+												"bytes": 48213,
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-10T14:21:58.902Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+													"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+												},
+												"media": "media/c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f.png"
+											},
+											"viewport": {
+												"width": 1440,
+												"height": 900
+											}
+										},
+										{
+											"unit": "reports.component.evidence-grid",
+											"capture": {
+												"evidence": "evidence-grid-focus",
+												"kind": "screenshot",
+												"state": "populated-list-mobile",
+												"viewport": "mobile",
+												"status": "passed",
+												"path": "focused/populated-list-mobile.png",
+												"sha256": "61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b",
+												"bytes": 19876,
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-10T14:22:03.417Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+													"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+												},
+												"media": "media/61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b.png"
+											},
+											"viewport": {
+												"width": 390,
+												"height": 844
+											}
+										}
+									]
+								}
+							}
+						]
+					},
+					{
+						"commit": "0c9d7e21f4a83b56c2e9d07a1f6b43e8d5c2a7f0",
+						"side": "sides/e8d4b27c91f03a56d2e7b84c0f19a3d5c6b28e71.json",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": [],
+						"regressions": [
+							{
+								"loop": "modules-horizontal-navbar",
+								"units": ["reports.component.evidence-grid"],
+								"red": {
+									"commit": "a3f19c0d7e52b84f6c1d9a07e3b5f28c4d6e1a90",
+									"sourceTree": "e8d4b27c91f03a56d2e7b84c0f19a3d5c6b28e71",
+									"id": "7f0c2b9e4d61a8c3e5b07f29c8d4a16e3b9f0c75a2e84d1b6c3f9a07d2e5b18c",
+									"status": "failed",
+									"command": "pnpm exec playwright test tests/e2e/evidence-grid.spec.ts --grep empty",
+									"assertion": "empty state screenshot matches the focused baseline",
+									"output": "1 failed (4.4s)",
+									"finishedAt": "2026-11-09T18:05:12.440Z",
+									"captures": [
+										{
+											"unit": "reports.component.evidence-grid",
+											"capture": {
+												"evidence": "evidence-grid-focus",
+												"kind": "screenshot",
+												"state": "empty-state-desktop",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "focused/empty-state-desktop.png",
+												"sha256": "9a6e0d3cb218f7e45d0c93a1e7f42b8dc03a9e651b7d4f208e3c5a9bf1d60e27",
+												"bytes": 21877,
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-09T18:04:50.215Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "b04e7a19c35d2f86e1a9b0437d6c2e589f1b03a74c8e5d12a6f09b3ed2715c4a",
+													"revision": "a3f19c0d7e52b84f6c1d9a07e3b5f28c4d6e1a90"
+												},
+												"media": "media/9a6e0d3cb218f7e45d0c93a1e7f42b8dc03a9e651b7d4f208e3c5a9bf1d60e27.png"
+											},
+											"viewport": {
+												"width": 1440,
+												"height": 900
+											}
+										}
+									]
+								}
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "focusedCaptures.unit",
 				"type": "string",
 				"required": true,
-				"description": "Registered unit identifier; another unit cannot supply a missing screenshot."
+				"description": "The unit id whose screenshots are wanted, such as `reports.component.evidence-grid`. A capture recorded for any other unit is skipped, so no other unit can supply a missing screenshot.",
+				"examples": ["reports.component.evidence-grid", "reports.function.entity-behavior"]
 			},
 			{
 				"name": "withoutViewportSuffix.state",
 				"type": "string",
 				"required": true,
-				"description": "Recorded state identifier that may end with its device viewport suffix."
+				"description": "The recorded state identifier, which may end in `-` followed by its viewport id. It is returned unchanged unless the viewport is non-empty and the state ends with that exact suffix.",
+				"examples": ["populated-list-desktop", "empty-state", "populated-list-mobile"]
 			},
 			{
 				"name": "withoutViewportSuffix.viewport",
 				"type": "string",
 				"required": true,
-				"description": "Viewport identifier to remove only when it is the exact final state suffix."
+				"description": "The viewport identifier whose `-<viewport>` suffix is removed from the state. An empty string removes nothing, and only the exact final suffix is ever removed.",
+				"examples": ["desktop", "mobile", "tablet"]
 			},
 			{
 				"name": "focusedScenario.sides",
 				"type": "Array<ExplorerSide | null>",
 				"required": true,
-				"description": "Selected commit and first-parent evidence, retaining the union of their focused states and viewport declarations."
+				"description": "Each entry is one side of the evidence (an ExplorerSide) or null when that side is absent, and null entries contribute nothing. Only captures marked `focused` are read, and declared viewport sizes come from each side's `detail.registry.scenarios` that list the unit.",
+				"examples": [
+					[
+						{
+							"commit": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20",
+							"detail": {
+								"commit": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [
+										{
+											"id": "evidence-grid-states",
+											"title": "Evidence grid states",
+											"kind": "ui",
+											"units": ["reports.component.evidence-grid"],
+											"states": [
+												{
+													"id": "populated-list",
+													"coverage": "required"
+												}
+											],
+											"viewports": [
+												{
+													"id": "desktop",
+													"width": 1440,
+													"height": 900
+												},
+												{
+													"id": "mobile",
+													"width": 390,
+													"height": 844
+												}
+											],
+											"tests": [
+												{
+													"id": "evidence-grid.spec",
+													"kind": "e2e",
+													"runner": "playwright"
+												}
+											]
+										}
+									],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							},
+							"record": null,
+							"captures": [
+								{
+									"scenario": "focused",
+									"state": "populated-list",
+									"capture": {
+										"evidence": "evidence-grid-focus",
+										"kind": "screenshot",
+										"state": "populated-list-desktop",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "focused/populated-list-desktop.png",
+										"sha256": "c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f",
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-10T14:21:58.902Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+											"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+										},
+										"media": "media/c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f.png"
+									},
+									"standing": "unvalidated",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null,
+									"focused": {
+										"loop": "catalog-captures",
+										"status": "passed",
+										"record": "d4e1a07c93b26f85e0c17a4d9b3f62e8a5c01d7f94b2e6a38c5d0f17e9b4a263",
+										"viewport": {
+											"width": 1440,
+											"height": 900
+										}
+									}
+								},
+								{
+									"scenario": "focused",
+									"state": "populated-list",
+									"capture": {
+										"evidence": "evidence-grid-focus",
+										"kind": "screenshot",
+										"state": "populated-list-mobile",
+										"viewport": "mobile",
+										"status": "passed",
+										"path": "focused/populated-list-mobile.png",
+										"sha256": "61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b",
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-10T14:22:03.417Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+											"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+										},
+										"media": "media/61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b.png"
+									},
+									"standing": "unvalidated",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null,
+									"focused": {
+										"loop": "catalog-captures",
+										"status": "passed",
+										"record": "d4e1a07c93b26f85e0c17a4d9b3f62e8a5c01d7f94b2e6a38c5d0f17e9b4a263",
+										"viewport": {
+											"width": 390,
+											"height": 844
+										}
+									}
+								}
+							],
+							"coverage": [],
+							"gap": null
+						},
+						null
+					],
+					[null, null]
+				]
 			},
 			{
 				"name": "focusedScenario.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit whose focused gallery is described independently of full-verification scenario coverage."
+				"description": "The unit whose focused gallery is described, and the only unit named in the result. No scenario is required to cover it, because only declared viewport sizes are read from registry scenarios that list it.",
+				"examples": ["reports.component.evidence-grid", "reports.function.entity-behavior"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "focusedCaptures",
 				"type": "ExplorerCapture[]",
-				"description": "Newest screenshot per state and viewport, bound to this unit, served build and original revision. Identical-tree reuse retains that original source and focused status; it grants no full verdict."
+				"description": "The newest kept capture for each state and viewport across the matching regression points, where newest means the latest point `finishedAt`; a kept capture is a passed screenshot with `provenance` `actual-capture`, media, a server build id, and a server revision equal to its point's commit. Every item has `standing` `unvalidated` and `usable` true, `current` is true only when that commit is the detail's commit (otherwise `inheritedFrom` names it), and nothing here grants a full verdict.",
+				"examples": [
+					[
+						{
+							"scenario": "focused",
+							"state": "populated-list",
+							"capture": {
+								"evidence": "evidence-grid-focus",
+								"kind": "screenshot",
+								"state": "populated-list-desktop",
+								"viewport": "desktop",
+								"status": "passed",
+								"path": "focused/populated-list-desktop.png",
+								"sha256": "c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f",
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-10T14:21:58.902Z",
+								"provenance": "actual-capture",
+								"server": {
+									"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+									"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+								},
+								"media": "media/c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f.png"
+							},
+							"standing": "unvalidated",
+							"usable": true,
+							"current": true,
+							"inheritedFrom": null,
+							"focused": {
+								"loop": "catalog-captures",
+								"status": "passed",
+								"record": "d4e1a07c93b26f85e0c17a4d9b3f62e8a5c01d7f94b2e6a38c5d0f17e9b4a263",
+								"viewport": {
+									"width": 1440,
+									"height": 900
+								}
+							}
+						},
+						{
+							"scenario": "focused",
+							"state": "populated-list",
+							"capture": {
+								"evidence": "evidence-grid-focus",
+								"kind": "screenshot",
+								"state": "populated-list-mobile",
+								"viewport": "mobile",
+								"status": "passed",
+								"path": "focused/populated-list-mobile.png",
+								"sha256": "61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b",
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-10T14:22:03.417Z",
+								"provenance": "actual-capture",
+								"server": {
+									"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+									"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+								},
+								"media": "media/61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b.png"
+							},
+							"standing": "unvalidated",
+							"usable": true,
+							"current": true,
+							"inheritedFrom": null,
+							"focused": {
+								"loop": "catalog-captures",
+								"status": "passed",
+								"record": "d4e1a07c93b26f85e0c17a4d9b3f62e8a5c01d7f94b2e6a38c5d0f17e9b4a263",
+								"viewport": {
+									"width": 390,
+									"height": 844
+								}
+							}
+						}
+					],
+					[
+						{
+							"scenario": "focused",
+							"state": "empty-state-desktop",
+							"capture": {
+								"evidence": "evidence-grid-focus",
+								"kind": "screenshot",
+								"state": "empty-state-desktop",
+								"viewport": "desktop",
+								"status": "passed",
+								"path": "focused/empty-state-desktop.png",
+								"sha256": "9a6e0d3cb218f7e45d0c93a1e7f42b8dc03a9e651b7d4f208e3c5a9bf1d60e27",
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-09T18:04:50.215Z",
+								"provenance": "actual-capture",
+								"server": {
+									"buildId": "b04e7a19c35d2f86e1a9b0437d6c2e589f1b03a74c8e5d12a6f09b3ed2715c4a",
+									"revision": "a3f19c0d7e52b84f6c1d9a07e3b5f28c4d6e1a90"
+								},
+								"media": "media/9a6e0d3cb218f7e45d0c93a1e7f42b8dc03a9e651b7d4f208e3c5a9bf1d60e27.png"
+							},
+							"standing": "unvalidated",
+							"usable": true,
+							"current": false,
+							"inheritedFrom": "a3f19c0d7e52b84f6c1d9a07e3b5f28c4d6e1a90",
+							"focused": {
+								"loop": "modules-horizontal-navbar",
+								"status": "failed",
+								"record": "7f0c2b9e4d61a8c3e5b07f29c8d4a16e3b9f0c75a2e84d1b6c3f9a07d2e5b18c",
+								"viewport": {
+									"width": 1440,
+									"height": 900
+								}
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "focusedScenario",
 				"type": "HarnessScenario[]",
-				"description": "Focused gallery declarations with its captured states and viewports; empty when neither side has a usable focused image."
+				"description": "One focused gallery declaration, with `id` and `kind` both `focused`, that lists the unit, its distinct captured states each marked `required`, and its distinct viewports; the array is empty when no side holds a capture marked `focused`. A viewport's size comes from a declared viewport with the same id (and the same width when a capture recorded one), else from the recorded size of a capture for that viewport, else from the fixed sizes for desktop (1440 by 900), tablet (920 by 800) and mobile (390 by 844), else 0 by 0.",
+				"examples": [
+					[
+						{
+							"id": "focused",
+							"title": "Focused screenshots",
+							"kind": "focused",
+							"units": ["reports.component.evidence-grid"],
+							"tests": [],
+							"states": [
+								{
+									"id": "populated-list",
+									"coverage": "required"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1440,
+									"height": 900
+								},
+								{
+									"id": "mobile",
+									"width": 390,
+									"height": 844
+								}
+							]
+						}
+					],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "focusedCaptures",
@@ -72,24 +487,277 @@
 						"name": "focusedCaptures.detail",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Stored revision with exact-commit captures or validated whole-tree identity. Entity projections carry an opaque sourceTree hash; raw prepared history may use its legacy side locator. A different tree is rejected."
+						"description": "The stored revision whose `regressions` supply the focused points: a point is used when its commit equals this revision's commit, or when its sourceTree equals this revision's sourceTree or this revision's `side` is `sides/<sourceTree>.json`. A point from any other tree is skipped rather than rejected, and a revision without `regressions` yields no captures.",
+						"examples": [
+							{
+								"commit": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20",
+								"sourceTree": "e8d4b27c91f03a56d2e7b84c0f19a3d5c6b28e71",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": [],
+								"regressions": [
+									{
+										"loop": "catalog-captures",
+										"units": ["reports.component.evidence-grid"],
+										"red": null,
+										"green": {
+											"commit": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20",
+											"sourceTree": "e8d4b27c91f03a56d2e7b84c0f19a3d5c6b28e71",
+											"id": "d4e1a07c93b26f85e0c17a4d9b3f62e8a5c01d7f94b2e6a38c5d0f17e9b4a263",
+											"status": "passed",
+											"command": "pnpm exec playwright test tests/e2e/evidence-grid.spec.ts",
+											"assertion": "evidence grid screenshots match the focused baseline",
+											"output": "2 passed (6.1s)",
+											"finishedAt": "2026-11-10T14:23:41.117Z",
+											"captures": [
+												{
+													"unit": "reports.component.evidence-grid",
+													"capture": {
+														"evidence": "evidence-grid-focus",
+														"kind": "screenshot",
+														"state": "populated-list-desktop",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "focused/populated-list-desktop.png",
+														"sha256": "c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f",
+														"bytes": 48213,
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-10T14:21:58.902Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+															"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+														},
+														"media": "media/c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f.png"
+													},
+													"viewport": {
+														"width": 1440,
+														"height": 900
+													}
+												},
+												{
+													"unit": "reports.component.evidence-grid",
+													"capture": {
+														"evidence": "evidence-grid-focus",
+														"kind": "screenshot",
+														"state": "populated-list-mobile",
+														"viewport": "mobile",
+														"status": "passed",
+														"path": "focused/populated-list-mobile.png",
+														"sha256": "61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b",
+														"bytes": 19876,
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-10T14:22:03.417Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+															"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+														},
+														"media": "media/61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b.png"
+													},
+													"viewport": {
+														"width": 390,
+														"height": 844
+													}
+												}
+											]
+										}
+									}
+								]
+							},
+							{
+								"commit": "0c9d7e21f4a83b56c2e9d07a1f6b43e8d5c2a7f0",
+								"side": "sides/e8d4b27c91f03a56d2e7b84c0f19a3d5c6b28e71.json",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": [],
+								"regressions": [
+									{
+										"loop": "modules-horizontal-navbar",
+										"units": ["reports.component.evidence-grid"],
+										"red": {
+											"commit": "a3f19c0d7e52b84f6c1d9a07e3b5f28c4d6e1a90",
+											"sourceTree": "e8d4b27c91f03a56d2e7b84c0f19a3d5c6b28e71",
+											"id": "7f0c2b9e4d61a8c3e5b07f29c8d4a16e3b9f0c75a2e84d1b6c3f9a07d2e5b18c",
+											"status": "failed",
+											"command": "pnpm exec playwright test tests/e2e/evidence-grid.spec.ts --grep empty",
+											"assertion": "empty state screenshot matches the focused baseline",
+											"output": "1 failed (4.4s)",
+											"finishedAt": "2026-11-09T18:05:12.440Z",
+											"captures": [
+												{
+													"unit": "reports.component.evidence-grid",
+													"capture": {
+														"evidence": "evidence-grid-focus",
+														"kind": "screenshot",
+														"state": "empty-state-desktop",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "focused/empty-state-desktop.png",
+														"sha256": "9a6e0d3cb218f7e45d0c93a1e7f42b8dc03a9e651b7d4f208e3c5a9bf1d60e27",
+														"bytes": 21877,
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-09T18:04:50.215Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "b04e7a19c35d2f86e1a9b0437d6c2e589f1b03a74c8e5d12a6f09b3ed2715c4a",
+															"revision": "a3f19c0d7e52b84f6c1d9a07e3b5f28c4d6e1a90"
+														},
+														"media": "media/9a6e0d3cb218f7e45d0c93a1e7f42b8dc03a9e651b7d4f208e3c5a9bf1d60e27.png"
+													},
+													"viewport": {
+														"width": 1440,
+														"height": 900
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "focusedCaptures.unit",
 						"type": "string",
 						"required": true,
-						"description": "Registered unit identifier; another unit cannot supply a missing screenshot."
+						"description": "The unit id whose screenshots are wanted, such as `reports.component.evidence-grid`. A capture recorded for any other unit is skipped, so no other unit can supply a missing screenshot.",
+						"examples": ["reports.component.evidence-grid", "reports.function.entity-behavior"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "focusedCaptures",
 						"type": "ExplorerCapture[]",
-						"description": "Newest screenshot per state and viewport, bound to this unit, served build and original revision. Identical-tree reuse retains that original source and focused status; it grants no full verdict."
+						"description": "The newest kept capture for each state and viewport across the matching regression points, where newest means the latest point `finishedAt`; a kept capture is a passed screenshot with `provenance` `actual-capture`, media, a server build id, and a server revision equal to its point's commit. Every item has `standing` `unvalidated` and `usable` true, `current` is true only when that commit is the detail's commit (otherwise `inheritedFrom` names it), and nothing here grants a full verdict.",
+						"examples": [
+							[
+								{
+									"scenario": "focused",
+									"state": "populated-list",
+									"capture": {
+										"evidence": "evidence-grid-focus",
+										"kind": "screenshot",
+										"state": "populated-list-desktop",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "focused/populated-list-desktop.png",
+										"sha256": "c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f",
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-10T14:21:58.902Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+											"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+										},
+										"media": "media/c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f.png"
+									},
+									"standing": "unvalidated",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null,
+									"focused": {
+										"loop": "catalog-captures",
+										"status": "passed",
+										"record": "d4e1a07c93b26f85e0c17a4d9b3f62e8a5c01d7f94b2e6a38c5d0f17e9b4a263",
+										"viewport": {
+											"width": 1440,
+											"height": 900
+										}
+									}
+								},
+								{
+									"scenario": "focused",
+									"state": "populated-list",
+									"capture": {
+										"evidence": "evidence-grid-focus",
+										"kind": "screenshot",
+										"state": "populated-list-mobile",
+										"viewport": "mobile",
+										"status": "passed",
+										"path": "focused/populated-list-mobile.png",
+										"sha256": "61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b",
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-10T14:22:03.417Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+											"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+										},
+										"media": "media/61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b.png"
+									},
+									"standing": "unvalidated",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null,
+									"focused": {
+										"loop": "catalog-captures",
+										"status": "passed",
+										"record": "d4e1a07c93b26f85e0c17a4d9b3f62e8a5c01d7f94b2e6a38c5d0f17e9b4a263",
+										"viewport": {
+											"width": 390,
+											"height": 844
+										}
+									}
+								}
+							],
+							[
+								{
+									"scenario": "focused",
+									"state": "empty-state-desktop",
+									"capture": {
+										"evidence": "evidence-grid-focus",
+										"kind": "screenshot",
+										"state": "empty-state-desktop",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "focused/empty-state-desktop.png",
+										"sha256": "9a6e0d3cb218f7e45d0c93a1e7f42b8dc03a9e651b7d4f208e3c5a9bf1d60e27",
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-09T18:04:50.215Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "b04e7a19c35d2f86e1a9b0437d6c2e589f1b03a74c8e5d12a6f09b3ed2715c4a",
+											"revision": "a3f19c0d7e52b84f6c1d9a07e3b5f28c4d6e1a90"
+										},
+										"media": "media/9a6e0d3cb218f7e45d0c93a1e7f42b8dc03a9e651b7d4f208e3c5a9bf1d60e27.png"
+									},
+									"standing": "unvalidated",
+									"usable": true,
+									"current": false,
+									"inheritedFrom": "a3f19c0d7e52b84f6c1d9a07e3b5f28c4d6e1a90",
+									"focused": {
+										"loop": "modules-horizontal-navbar",
+										"status": "failed",
+										"record": "7f0c2b9e4d61a8c3e5b07f29c8d4a16e3b9f0c75a2e84d1b6c3f9a07d2e5b18c",
+										"viewport": {
+											"width": 1440,
+											"height": 900
+										}
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "withoutViewportSuffix",
@@ -98,23 +766,27 @@
 						"name": "withoutViewportSuffix.state",
 						"type": "string",
 						"required": true,
-						"description": "Recorded state identifier that may end with its device viewport suffix."
+						"description": "The recorded state identifier, which may end in `-` followed by its viewport id. It is returned unchanged unless the viewport is non-empty and the state ends with that exact suffix.",
+						"examples": ["populated-list-desktop", "empty-state", "populated-list-mobile"]
 					},
 					{
 						"name": "withoutViewportSuffix.viewport",
 						"type": "string",
 						"required": true,
-						"description": "Viewport identifier to remove only when it is the exact final state suffix."
+						"description": "The viewport identifier whose `-<viewport>` suffix is removed from the state. An empty string removes nothing, and only the exact final suffix is ever removed.",
+						"examples": ["desktop", "mobile", "tablet"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "withoutViewportSuffix",
-						"type": "string"
+						"type": "string",
+						"description": "The state with its final `-<viewport>` suffix removed when the viewport is non-empty and the state ends with that suffix; otherwise the state is returned unchanged.",
+						"examples": ["populated-list", "empty-state", "populated-list-mobile"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "focusedScenario",
@@ -123,24 +795,183 @@
 						"name": "focusedScenario.sides",
 						"type": "Array<ExplorerSide | null>",
 						"required": true,
-						"description": "Selected commit and first-parent evidence, retaining the union of their focused states and viewport declarations."
+						"description": "Each entry is one side of the evidence (an ExplorerSide) or null when that side is absent, and null entries contribute nothing. Only captures marked `focused` are read, and declared viewport sizes come from each side's `detail.registry.scenarios` that list the unit.",
+						"examples": [
+							[
+								{
+									"commit": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20",
+									"detail": {
+										"commit": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20",
+										"registry": {
+											"available": true,
+											"units": [],
+											"scenarios": [
+												{
+													"id": "evidence-grid-states",
+													"title": "Evidence grid states",
+													"kind": "ui",
+													"units": ["reports.component.evidence-grid"],
+													"states": [
+														{
+															"id": "populated-list",
+															"coverage": "required"
+														}
+													],
+													"viewports": [
+														{
+															"id": "desktop",
+															"width": 1440,
+															"height": 900
+														},
+														{
+															"id": "mobile",
+															"width": 390,
+															"height": 844
+														}
+													],
+													"tests": [
+														{
+															"id": "evidence-grid.spec",
+															"kind": "e2e",
+															"runner": "playwright"
+														}
+													]
+												}
+											],
+											"graph": {
+												"edges": []
+											}
+										},
+										"comparison": null,
+										"records": [],
+										"explanations": []
+									},
+									"record": null,
+									"captures": [
+										{
+											"scenario": "focused",
+											"state": "populated-list",
+											"capture": {
+												"evidence": "evidence-grid-focus",
+												"kind": "screenshot",
+												"state": "populated-list-desktop",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "focused/populated-list-desktop.png",
+												"sha256": "c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f",
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-10T14:21:58.902Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+													"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+												},
+												"media": "media/c2f8a15e9d046b3ae71f2c85b0d9e3467a1c5f92d8b30e4cf6a9d2175e0b8c3f.png"
+											},
+											"standing": "unvalidated",
+											"usable": true,
+											"current": true,
+											"inheritedFrom": null,
+											"focused": {
+												"loop": "catalog-captures",
+												"status": "passed",
+												"record": "d4e1a07c93b26f85e0c17a4d9b3f62e8a5c01d7f94b2e6a38c5d0f17e9b4a263",
+												"viewport": {
+													"width": 1440,
+													"height": 900
+												}
+											}
+										},
+										{
+											"scenario": "focused",
+											"state": "populated-list",
+											"capture": {
+												"evidence": "evidence-grid-focus",
+												"kind": "screenshot",
+												"state": "populated-list-mobile",
+												"viewport": "mobile",
+												"status": "passed",
+												"path": "focused/populated-list-mobile.png",
+												"sha256": "61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b",
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-10T14:22:03.417Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "3e9a5c1fb7d20e64a81c9f37d05b2e8a6f4c1d93e7a0b25c98d13f6e0c4a7b21",
+													"revision": "5b7e2c94a1d08f3e6b29c4a7d1e05f8b3c6a9d20"
+												},
+												"media": "media/61d4b09fe2a7c1538f0d6b4e9a3c17d25e8b40f6c1a92d7e3b0f58a4d6e21c9b.png"
+											},
+											"standing": "unvalidated",
+											"usable": true,
+											"current": true,
+											"inheritedFrom": null,
+											"focused": {
+												"loop": "catalog-captures",
+												"status": "passed",
+												"record": "d4e1a07c93b26f85e0c17a4d9b3f62e8a5c01d7f94b2e6a38c5d0f17e9b4a263",
+												"viewport": {
+													"width": 390,
+													"height": 844
+												}
+											}
+										}
+									],
+									"coverage": [],
+									"gap": null
+								},
+								null
+							],
+							[null, null]
+						]
 					},
 					{
 						"name": "focusedScenario.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit whose focused gallery is described independently of full-verification scenario coverage."
+						"description": "The unit whose focused gallery is described, and the only unit named in the result. No scenario is required to cover it, because only declared viewport sizes are read from registry scenarios that list it.",
+						"examples": ["reports.component.evidence-grid", "reports.function.entity-behavior"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "focusedScenario",
 						"type": "HarnessScenario[]",
-						"description": "Focused gallery declarations with its captured states and viewports; empty when neither side has a usable focused image."
+						"description": "One focused gallery declaration, with `id` and `kind` both `focused`, that lists the unit, its distinct captured states each marked `required`, and its distinct viewports; the array is empty when no side holds a capture marked `focused`. A viewport's size comes from a declared viewport with the same id (and the same width when a capture recorded one), else from the recorded size of a capture for that viewport, else from the fixed sizes for desktop (1440 by 900), tablet (920 by 800) and mobile (390 by 844), else 0 by 0.",
+						"examples": [
+							[
+								{
+									"id": "focused",
+									"title": "Focused screenshots",
+									"kind": "focused",
+									"units": ["reports.component.evidence-grid"],
+									"tests": [],
+									"states": [
+										{
+											"id": "populated-list",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1440,
+											"height": 900
+										},
+										{
+											"id": "mobile",
+											"width": 390,
+											"height": 844
+										}
+									]
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
