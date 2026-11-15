@@ -33,46 +33,150 @@
 				"name": "comparisonChoices.base",
 				"type": "ComparedSide",
 				"required": true,
-				"description": "Earlier revision and its selected record, which may be null."
+				"description": "The earlier revision and its optional selected verification record. This operation reads scenarios only from the record, so a null record contributes no choices.",
+				"examples": [
+					{
+						"detail": {
+							"commit": "1111111111111111111111111111111111111111",
+							"registry": {
+								"available": true,
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						},
+						"record": null
+					}
+				]
 			},
 			{
 				"name": "comparisonChoices.head",
 				"type": "ComparedSide",
 				"required": true,
-				"description": "Later revision and its selected record, which may be null."
+				"description": "The later revision and its optional selected verification record. This operation reads scenarios only from the record, so a null record contributes no choices.",
+				"examples": [
+					{
+						"detail": {
+							"commit": "2222222222222222222222222222222222222222",
+							"registry": {
+								"available": true,
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						},
+						"record": null
+					}
+				]
 			},
 			{
 				"name": "harnessComparison.base",
 				"type": "ComparedSide",
 				"required": true,
-				"description": "Earlier revision and selected record."
+				"description": "The earlier revision and its optional selected verification record. The revision supplies its commit and viewport labels; a null record produces explicit before-side gaps.",
+				"examples": [
+					{
+						"detail": {
+							"commit": "3333333333333333333333333333333333333333",
+							"registry": {
+								"available": true,
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						},
+						"record": null
+					}
+				]
 			},
 			{
 				"name": "harnessComparison.head",
 				"type": "ComparedSide",
 				"required": true,
-				"description": "Later revision and selected record."
+				"description": "The later revision and its optional selected verification record. The revision supplies its commit and viewport labels; a null record produces explicit after-side gaps.",
+				"examples": [
+					{
+						"detail": {
+							"commit": "4444444444444444444444444444444444444444",
+							"registry": {
+								"available": true,
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						},
+						"record": null
+					}
+				]
 			},
 			{
 				"name": "harnessComparison.choice",
 				"type": "StateChoice",
 				"required": true,
-				"description": "Scenario plus optional empty state/viewport selectors; empty state or viewport includes all matching choices."
+				"description": "The scenario id and state and viewport selectors. Empty state or viewport strings disable that filter, while the scenario is always matched exactly.",
+				"examples": [
+					{
+						"scenario": "checkout-summary",
+						"state": "loaded",
+						"viewport": "desktop"
+					},
+					{
+						"scenario": "checkout-summary",
+						"state": "",
+						"viewport": ""
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "comparisonChoices",
 				"type": "unknown",
-				"description": "Sorted unique scenario, state and viewport choices from scenarios containing screenshot or audio media on either side."
+				"description": "A sorted list of scenario choices collected from both selected records, each with sorted unique state and viewport ids. Scenarios without screenshot or audio captures are omitted, and a missing record contributes no choices.",
+				"examples": [
+					[
+						{
+							"scenario": "checkout-summary",
+							"states": ["empty", "loaded"],
+							"viewports": ["desktop", "mobile"]
+						}
+					]
+				]
 			},
 			{
 				"name": "harnessComparison",
 				"type": "unknown",
-				"description": "Gallery items paired by scenario, state, evidence and viewport-or-kind, plus readable aligned-state summaries. Missing sides receive explicit gaps. Captures keep their own provenance, and no other revision fills a gap."
+				"description": "An object containing gallery items and aligned-state summaries for matching recorded media. Keys are unique and sorted; each key yields before then after items, with explicit gaps for missing captures that are never filled from another revision.",
+				"examples": [
+					{
+						"items": [],
+						"aligned": []
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "comparisonChoices",
@@ -81,24 +185,71 @@
 						"name": "comparisonChoices.base",
 						"type": "ComparedSide",
 						"required": true,
-						"description": "Earlier revision and its selected record, which may be null."
+						"description": "The earlier revision and its optional selected verification record. This operation reads scenarios only from the record, so a null record contributes no choices.",
+						"examples": [
+							{
+								"detail": {
+									"commit": "1111111111111111111111111111111111111111",
+									"registry": {
+										"available": true,
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"record": null
+							}
+						]
 					},
 					{
 						"name": "comparisonChoices.head",
 						"type": "ComparedSide",
 						"required": true,
-						"description": "Later revision and its selected record, which may be null."
+						"description": "The later revision and its optional selected verification record. This operation reads scenarios only from the record, so a null record contributes no choices.",
+						"examples": [
+							{
+								"detail": {
+									"commit": "2222222222222222222222222222222222222222",
+									"registry": {
+										"available": true,
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"record": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "comparisonChoices",
 						"type": "unknown",
-						"description": "Sorted unique scenario, state and viewport choices from scenarios containing screenshot or audio media on either side."
+						"description": "A sorted list of scenario choices collected from both selected records, each with sorted unique state and viewport ids. Scenarios without screenshot or audio captures are omitted, and a missing record contributes no choices.",
+						"examples": [
+							[
+								{
+									"scenario": "checkout-summary",
+									"states": ["empty", "loaded"],
+									"viewports": ["desktop", "mobile"]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "harnessComparison",
@@ -107,30 +258,86 @@
 						"name": "harnessComparison.base",
 						"type": "ComparedSide",
 						"required": true,
-						"description": "Earlier revision and selected record."
+						"description": "The earlier revision and its optional selected verification record. The revision supplies its commit and viewport labels; a null record produces explicit before-side gaps.",
+						"examples": [
+							{
+								"detail": {
+									"commit": "3333333333333333333333333333333333333333",
+									"registry": {
+										"available": true,
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"record": null
+							}
+						]
 					},
 					{
 						"name": "harnessComparison.head",
 						"type": "ComparedSide",
 						"required": true,
-						"description": "Later revision and selected record."
+						"description": "The later revision and its optional selected verification record. The revision supplies its commit and viewport labels; a null record produces explicit after-side gaps.",
+						"examples": [
+							{
+								"detail": {
+									"commit": "4444444444444444444444444444444444444444",
+									"registry": {
+										"available": true,
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"records": [],
+									"explanations": []
+								},
+								"record": null
+							}
+						]
 					},
 					{
 						"name": "harnessComparison.choice",
 						"type": "StateChoice",
 						"required": true,
-						"description": "Scenario plus optional empty state/viewport selectors; empty state or viewport includes all matching choices."
+						"description": "The scenario id and state and viewport selectors. Empty state or viewport strings disable that filter, while the scenario is always matched exactly.",
+						"examples": [
+							{
+								"scenario": "checkout-summary",
+								"state": "loaded",
+								"viewport": "desktop"
+							},
+							{
+								"scenario": "checkout-summary",
+								"state": "",
+								"viewport": ""
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessComparison",
 						"type": "unknown",
-						"description": "Gallery items paired by scenario, state, evidence and viewport-or-kind, plus readable aligned-state summaries. Missing sides receive explicit gaps. Captures keep their own provenance, and no other revision fills a gap."
+						"description": "An object containing gallery items and aligned-state summaries for matching recorded media. Keys are unique and sorted; each key yields before then after items, with explicit gaps for missing captures that are never filled from another revision.",
+						"examples": [
+							{
+								"items": [],
+								"aligned": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
