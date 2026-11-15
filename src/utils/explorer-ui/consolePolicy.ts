@@ -7,6 +7,6 @@ export const denyAll: ConsolePolicy = () => false;
 export {
 	loopbackAddress,
 	consolePolicy
-} from '../../../packages/reports/src/utils/console-server/consolePolicy';
+} from '../../../packages/reports/src/utils/explorer-ui/console-server/consolePolicy';
 
 export type { ConsoleRequest, ConsolePolicy, OwnerMode } from './consolePolicy.types';

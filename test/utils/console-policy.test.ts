@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import {
 	consolePolicy,
 	loopbackAddress
-} from '../../packages/reports/src/utils/console-server/consolePolicy';
+} from '../../packages/reports/src/utils/explorer-ui/console-server/consolePolicy';
 import { denyAll } from '../../src/utils/consolePolicy';
 
 const event = (peer: string | undefined, headers: Record<string, string> = {}) => ({

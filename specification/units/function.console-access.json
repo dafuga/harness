@@ -9,13 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/utils/console-server/consoleAccess.ts",
 			"packages/reports/src/utils/explorer-ui/console-server/consoleAccess.ts",
 			"src/utils/consoleAccess.ts",
 			"src/utils/explorer-ui/consoleAccess.ts"
 		],
 		"symbols": [
-			"consoleAccess",
 			"consoleAccess",
 			"consoleAccess",
 			"ConsoleData",

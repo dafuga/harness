@@ -33,4 +33,4 @@ export interface ConsoleAccess {
 	media(event: ConsoleRequest, name: string): Promise<Response>;
 }
 
-export { consoleAccess } from '../../../packages/reports/src/utils/console-server/consoleAccess';
+export { consoleAccess } from '../../../packages/reports/src/utils/explorer-ui/console-server/consoleAccess';

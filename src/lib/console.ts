@@ -7,10 +7,10 @@
 export {
 	consolePolicy,
 	loopbackAddress
-} from '../../packages/reports/src/utils/console-server/consolePolicy';
+} from '../../packages/reports/src/utils/explorer-ui/console-server/consolePolicy';
 export { denyAll } from '../utils/explorer-ui/consolePolicy';
 export type { ConsolePolicy, ConsoleRequest, OwnerMode } from '../utils/explorer-ui/consolePolicy';
-export { consoleAccess } from '../../packages/reports/src/utils/console-server/consoleAccess';
+export { consoleAccess } from '../../packages/reports/src/utils/explorer-ui/console-server/consoleAccess';
 export type {
 	ConsoleAccess,
 	ConsoleData,

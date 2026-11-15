@@ -1,6 +1,8 @@
 import { expect, test } from 'vitest';
-import { consoleAccess } from '../../packages/reports/src/utils/console-server/consoleAccess';
+import { consoleAccess } from '../../packages/reports/src/utils/explorer-ui/console-server/consoleAccess';
 import { consoleBundle } from '../../src/utils/consoleBundle';
+import * as consoleEntry from '../../src/lib/console';
+import { consoleAccess as topLevelAccess } from '../../src/utils/consoleAccess';
 
 const commit = 'a'.repeat(40);
 const image = `${'b'.repeat(64)}.png`;
@@ -107,4 +109,9 @@ test('the root and the earlier query form are redirected into the explorer, afte
 		const refused = await closed.entry(event(address), '/harness');
 		expect([refused?.status, refused?.headers.get('location')]).toEqual([403, null]);
 	}
+});
+
+test('the public entry and the top-level module hand out the relocated consoleAccess', () => {
+	expect(consoleEntry.consoleAccess).toBe(consoleAccess);
+	expect(topLevelAccess).toBe(consoleAccess);
 });
