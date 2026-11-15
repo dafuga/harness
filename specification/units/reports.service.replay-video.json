@@ -14,32 +14,37 @@
 		"symbols": ["ReplayVideoService", "ReplayVideoService.constructor", "ReplayVideoService.create"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReplayVideoService.constructor.repository",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Optional repository used to load reports and resolve their directories. Defaults to new ReportRepository() when omitted."
 			},
 			{
 				"name": "ReplayVideoService.create.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report identifier passed to repository.get and repository.directory to load the report and locate its files. The method uses the supplied string without format normalization.",
+				"examples": ["report-123"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReplayVideoService.create",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The completed replay-video contents as a Node.js Buffer, returned from a restored cache or after generation and storage. At most two distinct in-process preparation jobs run at once; calls with a matching in-flight key reuse its job."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The service explicitly throws this Error when the report is expired after 30 days or when two preparation jobs are already in progress and a new distinct job is requested. Errors rejected by awaited dependencies also reject create."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ReplayVideoService.create",
@@ -47,22 +52,26 @@
 					{
 						"name": "ReplayVideoService.create.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report identifier passed to repository.get and repository.directory to load the report and locate its files. The method uses the supplied string without format normalization.",
+						"examples": ["report-123"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReplayVideoService.create",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The completed replay-video contents as a Node.js Buffer, returned from a restored cache or after generation and storage. At most two distinct in-process preparation jobs run at once; calls with a matching in-flight key reuse its job."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The service explicitly throws this Error when the report is expired after 30 days or when two preparation jobs are already in progress and a new distinct job is requested. Errors rejected by awaited dependencies also reject create."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -72,17 +81,19 @@
 					{
 						"name": "ReplayVideoService.constructor.repository",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Optional repository used to load reports and resolve their directories. Defaults to new ReportRepository() when omitted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReplayVideoService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed ReplayVideoService instance, retaining the supplied repository or the default ReportRepository."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
