@@ -9,8 +9,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
-			"packages/reports/src/utils/reportCleanupLog.ts"
+			"packages/reports/src/services/report-command-service/report-retention-service/reportCleanupLog.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts"
 		],
 		"symbols": ["reportCleanupLog", "reportCleanupLog"]
 	},
@@ -77,11 +77,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/reportCleanupLog.ts",
+		"entry": "packages/reports/src/services/report-command-service/report-retention-service/reportCleanupLog.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/reportCleanupLog.ts"
+				"entry": "packages/reports/src/services/report-command-service/report-retention-service/reportCleanupLog.ts"
 			}
 		]
 	},

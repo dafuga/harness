@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/reportBuildIdentity.ts",
-			"packages/reports/src/utils/reports-media/reportBuildIdentity.ts"
-		],
-		"symbols": ["reportBuildIdentity", "reportBuildIdentity"]
+		"source": ["packages/reports/src/utils/reports-media/reportBuildIdentity.ts"],
+		"symbols": ["reportBuildIdentity"]
 	},
 	"contract": {
 		"origin": "declared",

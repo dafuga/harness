@@ -2,7 +2,7 @@ import { expect, test } from '../../../../test/support/browserTest';
 import { readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/reports-media/report-repository/ReportRepository';
-import { replayVideoKey } from '../../src/utils/replayVideo';
+import { replayVideoKey } from '../../src/utils/reports-media/replayVideo';
 import { fixtures } from './support/fixtures';
 test('MP4 download uploads the same playable bytes, supports seeking, and recovers after local eviction', async ({
 	request

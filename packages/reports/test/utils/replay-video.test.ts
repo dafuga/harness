@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { replayVideoKey } from '../../src/utils/replayVideo';
+import { replayVideoKey } from '../../src/utils/reports-media/replayVideo';
 import type { Report } from '../../src/models/reports-media/Report.types';
 const report = (id: string): Report =>
 	({

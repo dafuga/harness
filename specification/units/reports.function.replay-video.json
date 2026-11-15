@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/routes/api/replay-video/replay-video-service/replayVideo.ts",
-			"packages/reports/src/utils/replayVideo.ts",
 			"packages/reports/src/utils/reports-media/replayVideo.ts"
 		],
-		"symbols": ["replayVideo", "replayVideo", "replayVideoKey", "replayVideoKey", "replayVideo"]
+		"symbols": ["replayVideo", "replayVideoKey", "replayVideo"]
 	},
 	"contract": {
 		"origin": "declared",

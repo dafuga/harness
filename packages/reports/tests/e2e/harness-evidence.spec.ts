@@ -7,7 +7,7 @@ import { scenarioCoverage } from '../../../../src/services/verification-service/
 import type { Gathered } from '../../../../src/utils/verification-evidence/gatherCaptures';
 import type { HarnessScenario, HarnessUnit } from '../../src/models/Harness.types';
 import { scenarioFor } from '../../src/utils/explorerState';
-import { reportBuildIdentity } from '../../src/utils/reportBuildIdentity';
+import { reportBuildIdentity } from '../../src/utils/reports-media/reportBuildIdentity';
 import { captureFlow } from './support/explorerFlow';
 import { askedFor, explorerFlows, explorerStates as states } from './support/explorerStates';
 import {
