@@ -1,5 +1,4 @@
-import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { componentManifestSchema } from '../../src/core/development-tooling/unitTypes';
 
@@ -27,8 +26,7 @@ export async function writeContract(root: string, path: string, data: unknown) {
 	await writeFile(destination, JSON.stringify(data));
 }
 
-export async function contractsProject() {
-	const root = await mkdtemp(join(tmpdir(), 'harness-contracts-'));
+export async function contractsProject(root: string) {
 	const price = contractUnit('service.price', 'src/services/billing/Price.ts', ['model.invoice']);
 	price.title = 'PriceService';
 	price.responsibility = 'Quotes invoice totals without charging.';
