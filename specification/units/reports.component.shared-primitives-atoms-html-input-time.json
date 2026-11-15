@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "Optional Svelte snippet that is destructured out of the props and never rendered, so passing one has no effect on the output. The element is an input, which is a void element, so it can never contain child content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputTime",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native input element rendered directly by the component, with the other props spread onto it and no wrapper element around it. The type attribute is set to time after the spread, so it overrides any type passed in."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
