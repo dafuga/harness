@@ -35,30 +35,45 @@
 			{
 				"name": "roundsProtocol",
 				"type": "unknown",
-				"description": "Protocol id harness-rounds/1 for warmed rounds of complete invocations."
+				"description": "Protocol id 'harness-rounds/1' naming Harness's own benchmark protocol: warm-up calls, then rounds of timed whole invocations. comparisonSchema's protocol field only requires a string that is non-empty after trimming and does not check it against this constant.",
+				"examples": ["harness-rounds/1"]
 			},
 			{
 				"name": "warmupCalls",
 				"type": "unknown",
-				"description": "Three calls made before timed benchmark rounds."
+				"description": "Number of calls made before the first timed round, fixed at 3; the source says it is part of the protocol and so part of the context. comparisonSchema's sampling.warmup field only requires a nonnegative integer and does not check it against this constant.",
+				"examples": [3]
 			},
 			{
 				"name": "measurementBoundaries",
 				"type": "unknown",
-				"description": "Allowed boundaries: public-invocation for the whole runtime call, or fixture for a declared test value."
+				"description": "The two allowed measurement boundaries: 'public-invocation' times the whole call, and 'fixture' is a value a test fixture declares. comparisonSchema's boundary field accepts only these two values.",
+				"examples": [
+					["public-invocation", "fixture"]
+				]
 			},
 			{
 				"name": "metricUnits",
 				"type": "Record<string, string>",
-				"description": "Expected units: milliseconds for cold, warm and floor latency; ops/s for throughput; bytes for memory."
+				"description": "Maps each budgeted metric to the unit it is measured in: 'ms' for the three latency metrics, 'ops/s' for throughput and 'bytes' for memory. Another unit is never converted or compared, and metric names not listed here have no entry.",
+				"examples": [
+					{
+						"latency-cold-ms": "ms",
+						"latency-warm-ms": "ms",
+						"latency-floor-ms": "ms",
+						"throughput-ops": "ops/s",
+						"memory-bytes": "bytes"
+					}
+				]
 			},
 			{
 				"name": "comparisonSchema",
 				"type": "unknown",
-				"description": "Strict Zod schema for a 64-character lowercase SHA-256 request digest, supported boundary, nonempty trimmed protocol and strict sampling counts with nonnegative warm-up and positive rounds and iterations."
+				"description": "Strict Zod object (z.strictObject) holding the context that must be identical before two measurements may be compared: request, a 64-character lowercase SHA-256 hex digest of the canonical request (its operation and complete input); boundary, one of measurementBoundaries; protocol, a string that is non-empty after trimming; and sampling, a strict object with a nonnegative integer warmup and integer rounds and iterations of at least 1. Unknown keys are rejected at the top level and inside sampling, and a workload name alone identifies none of these fields."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
