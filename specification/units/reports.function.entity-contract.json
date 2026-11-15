@@ -36,57 +36,311 @@
 				"name": "requiredStates.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Unit whose required states are requested."
+				"description": "The unit whose required states are listed; only its id is read, to find the scenarios that name it and to narrow each of them. A unit that no scenario names gets an empty list.",
+				"examples": [
+					{
+						"id": "reports.component.evidence-grid",
+						"kind": "component",
+						"status": "active",
+						"title": "Evidence grid",
+						"responsibility": "Shows the captures of one state as a grid of tiles.",
+						"dependencies": [
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": ["evidence-explorer"],
+						"owns": {
+							"source": ["packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"],
+							"symbols": ["EvidenceGrid"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "captures",
+									"type": "HarnessCapture[]",
+									"required": true,
+									"description": "The captures of the state to show, in the order they were recorded."
+								}
+							],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "5c1e0a93f7d2b488"
+					}
+				]
 			},
 			{
 				"name": "requiredStates.scenarios",
 				"type": "HarnessScenario[]",
 				"required": true,
-				"description": "Scenario declarations to examine."
+				"description": "The scenario declarations to examine: only those whose units list names the unit count, and only their states that scenarioFor keeps for the unit with coverage 'required' are listed. Declared order is kept, and a state id shared by several scenarios is listed once.",
+				"examples": [
+					[
+						{
+							"id": "evidence-explorer",
+							"title": "Evidence explorer over one commit",
+							"kind": "ui",
+							"units": ["reports.component.evidence-grid", "reports.component.evidence-tile"],
+							"states": [
+								{
+									"id": "listed",
+									"title": "A grid of captures",
+									"coverage": "required",
+									"units": ["reports.component.evidence-grid"]
+								},
+								{
+									"id": "tile",
+									"title": "One capture of the grid",
+									"coverage": "required",
+									"units": ["reports.component.evidence-tile"]
+								},
+								{
+									"id": "denied",
+									"title": "Signed out",
+									"coverage": "inapplicable",
+									"reason": "the explorer has no sign-in"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1440,
+									"height": 900
+								}
+							],
+							"tests": [
+								{
+									"id": "evidence-browser",
+									"kind": "e2e",
+									"runner": "playwright"
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "requiredStates.units",
 				"type": "HarnessUnit[]",
 				"required": true,
-				"description": "Registry units used to determine which scenario states actually show the unit."
+				"description": "The registry the states are read against: a visual unit (page, shell, component, layout or partial) is shown by the states that name it or name nothing; any other unit by the states that name it, else by those naming an active unit that depends on it to any depth, else by every state. A unit missing from this list has no kind, so it is not treated as visual.",
+				"examples": [
+					[
+						{
+							"id": "reports.component.evidence-grid",
+							"kind": "component",
+							"status": "active",
+							"title": "Evidence grid",
+							"responsibility": "Shows the captures of one state as a grid of tiles.",
+							"dependencies": [
+								{
+									"unit": "reports.model.harness-types",
+									"via": "import"
+								}
+							],
+							"scenarios": ["evidence-explorer"],
+							"owns": {
+								"source": ["packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"],
+								"symbols": ["EvidenceGrid"]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "captures",
+										"type": "HarnessCapture[]",
+										"required": true,
+										"description": "The captures of the state to show, in the order they were recorded."
+									}
+								],
+								"outputs": [],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "5c1e0a93f7d2b488"
+						}
+					]
+				]
 			},
 			{
 				"name": "entityContract.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Unit supplying its responsibility, contract and runtime."
+				"description": "The unit whose contract is described: its responsibility shows for pages and configs, its runtime targets for services, and its contract inputs, outputs and errors, each as far as its category shows them. A markup output named like its title, one of its symbols or one of its file names without endings reads 'rendered markup'.",
+				"examples": [
+					{
+						"id": "reports.component.evidence-grid",
+						"kind": "component",
+						"status": "active",
+						"title": "Evidence grid",
+						"responsibility": "Shows the captures of one state as a grid of tiles.",
+						"dependencies": [
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": ["evidence-explorer"],
+						"owns": {
+							"source": ["packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"],
+							"symbols": ["EvidenceGrid"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "captures",
+									"type": "HarnessCapture[]",
+									"required": true,
+									"description": "The captures of the state to show, in the order they were recorded."
+								}
+							],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "5c1e0a93f7d2b488"
+					}
+				]
 			},
 			{
 				"name": "entityContract.facts",
 				"type": "ContractFacts",
 				"required": true,
-				"description": "Display category plus an optional app route."
+				"description": "The display category that selects the rows, and an optional web address of a page. Only pages show the address, as 'App route', with 'Not recorded' when it is null, undefined or empty.",
+				"examples": [
+					{
+						"category": "components"
+					},
+					{
+						"category": "pages",
+						"appRoute": "/evidence"
+					},
+					{
+						"category": "pages",
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "humanize.name",
 				"type": "string",
 				"required": true,
-				"description": "Identifier to split into ordinary lowercase words."
+				"description": "The identifier to split into words, in any casing: camel-case, acronym boundaries and runs of '_', '-' or '.' separate them. Surrounding whitespace is trimmed, and an empty string gives an empty result.",
+				"examples": ["pageSize", "HTTPServer", "order_item.total"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "humanize",
 				"type": "string",
-				"description": "Words separated at camel-case, acronym and underscore/dot/hyphen boundaries, trimmed and lowercased."
+				"description": "The identifier as lowercase words: a space at each camel-case, acronym, or '_', '-' or '.' boundary, with a run of separators becoming one space. The ends are trimmed of whitespace; other characters, including spaces already inside the text, are kept.",
+				"examples": ["page size", "http server", "order item total"]
 			},
 			{
 				"name": "requiredStates",
 				"type": "string[]",
-				"description": "Unique required state identifiers from scenarios naming the unit, narrowed through scenarioFor."
+				"description": "The unique ids of the required states of the scenarios that name the unit, each narrowed for it, in first-seen order. Missing and inapplicable states never appear, and the list is empty when no scenario names the unit.",
+				"examples": [
+					["listed"],
+					["default", "empty"],
+					[]
+				]
 			},
 			{
 				"name": "entityContract",
 				"type": "ContractRow[]",
-				"description": "Category-specific rows: pages include purpose and address; configs show purpose and provided outputs; other categories show inputs, outputs and errors, with service runtime. Verification states appear only in evidence views. Field descriptions are retained, with missing descriptions stated when some fields are described. Component-self markup outputs read rendered markup."
+				"description": "The rows for the unit's category: pages show Purpose, App route, Inputs and Output; configs show Purpose and Provides; components show Props; any other category shows Inputs and Output, with services adding Runs as; Fails with is added for every category but configs when the unit declares errors. Rows list their fields as items, with 'No description recorded.' for undescribed ones, once any field has a description; a markup output named like its unit's title, symbols or files reads 'rendered markup', and no row holds verification states, files, symbols or types.",
+				"examples": [
+					[
+						{
+							"label": "Props",
+							"value": "captures",
+							"items": [
+								{
+									"name": "captures",
+									"text": "The captures of the state to show, in the order they were recorded."
+								}
+							]
+						}
+					],
+					[
+						{
+							"label": "Purpose",
+							"value": "Shows the evidence of one commit."
+						},
+						{
+							"label": "App route",
+							"value": "/evidence"
+						},
+						{
+							"label": "Inputs",
+							"value": "commit"
+						},
+						{
+							"label": "Output",
+							"value": "Nothing declared"
+						}
+					],
+					[
+						{
+							"label": "Inputs",
+							"value": "account id"
+						},
+						{
+							"label": "Output",
+							"value": "orders"
+						},
+						{
+							"label": "Runs as",
+							"value": "Module, Wasm, Native process"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "requiredStates",
@@ -95,30 +349,175 @@
 						"name": "requiredStates.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Unit whose required states are requested."
+						"description": "The unit whose required states are listed; only its id is read, to find the scenarios that name it and to narrow each of them. A unit that no scenario names gets an empty list.",
+						"examples": [
+							{
+								"id": "reports.component.evidence-grid",
+								"kind": "component",
+								"status": "active",
+								"title": "Evidence grid",
+								"responsibility": "Shows the captures of one state as a grid of tiles.",
+								"dependencies": [
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": ["evidence-explorer"],
+								"owns": {
+									"source": ["packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"],
+									"symbols": ["EvidenceGrid"]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "captures",
+											"type": "HarnessCapture[]",
+											"required": true,
+											"description": "The captures of the state to show, in the order they were recorded."
+										}
+									],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "5c1e0a93f7d2b488"
+							}
+						]
 					},
 					{
 						"name": "requiredStates.scenarios",
 						"type": "HarnessScenario[]",
 						"required": true,
-						"description": "Scenario declarations to examine."
+						"description": "The scenario declarations to examine: only those whose units list names the unit count, and only their states that scenarioFor keeps for the unit with coverage 'required' are listed. Declared order is kept, and a state id shared by several scenarios is listed once.",
+						"examples": [
+							[
+								{
+									"id": "evidence-explorer",
+									"title": "Evidence explorer over one commit",
+									"kind": "ui",
+									"units": ["reports.component.evidence-grid", "reports.component.evidence-tile"],
+									"states": [
+										{
+											"id": "listed",
+											"title": "A grid of captures",
+											"coverage": "required",
+											"units": ["reports.component.evidence-grid"]
+										},
+										{
+											"id": "tile",
+											"title": "One capture of the grid",
+											"coverage": "required",
+											"units": ["reports.component.evidence-tile"]
+										},
+										{
+											"id": "denied",
+											"title": "Signed out",
+											"coverage": "inapplicable",
+											"reason": "the explorer has no sign-in"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1440,
+											"height": 900
+										}
+									],
+									"tests": [
+										{
+											"id": "evidence-browser",
+											"kind": "e2e",
+											"runner": "playwright"
+										}
+									]
+								}
+							]
+						]
 					},
 					{
 						"name": "requiredStates.units",
 						"type": "HarnessUnit[]",
 						"required": true,
-						"description": "Registry units used to determine which scenario states actually show the unit."
+						"description": "The registry the states are read against: a visual unit (page, shell, component, layout or partial) is shown by the states that name it or name nothing; any other unit by the states that name it, else by those naming an active unit that depends on it to any depth, else by every state. A unit missing from this list has no kind, so it is not treated as visual.",
+						"examples": [
+							[
+								{
+									"id": "reports.component.evidence-grid",
+									"kind": "component",
+									"status": "active",
+									"title": "Evidence grid",
+									"responsibility": "Shows the captures of one state as a grid of tiles.",
+									"dependencies": [
+										{
+											"unit": "reports.model.harness-types",
+											"via": "import"
+										}
+									],
+									"scenarios": ["evidence-explorer"],
+									"owns": {
+										"source": ["packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"],
+										"symbols": ["EvidenceGrid"]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "captures",
+												"type": "HarnessCapture[]",
+												"required": true,
+												"description": "The captures of the state to show, in the order they were recorded."
+											}
+										],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5c1e0a93f7d2b488"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "requiredStates",
 						"type": "string[]",
-						"description": "Unique required state identifiers from scenarios naming the unit, narrowed through scenarioFor."
+						"description": "The unique ids of the required states of the scenarios that name the unit, each narrowed for it, in first-seen order. Missing and inapplicable states never appear, and the list is empty when no scenario names the unit.",
+						"examples": [
+							["listed"],
+							["default", "empty"],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "entityContract",
@@ -127,24 +526,130 @@
 						"name": "entityContract.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Unit supplying its responsibility, contract and runtime."
+						"description": "The unit whose contract is described: its responsibility shows for pages and configs, its runtime targets for services, and its contract inputs, outputs and errors, each as far as its category shows them. A markup output named like its title, one of its symbols or one of its file names without endings reads 'rendered markup'.",
+						"examples": [
+							{
+								"id": "reports.component.evidence-grid",
+								"kind": "component",
+								"status": "active",
+								"title": "Evidence grid",
+								"responsibility": "Shows the captures of one state as a grid of tiles.",
+								"dependencies": [
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": ["evidence-explorer"],
+								"owns": {
+									"source": ["packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"],
+									"symbols": ["EvidenceGrid"]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "captures",
+											"type": "HarnessCapture[]",
+											"required": true,
+											"description": "The captures of the state to show, in the order they were recorded."
+										}
+									],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/components/explorer-ui/EvidenceGrid.svelte"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "5c1e0a93f7d2b488"
+							}
+						]
 					},
 					{
 						"name": "entityContract.facts",
 						"type": "ContractFacts",
 						"required": true,
-						"description": "Display category plus an optional app route."
+						"description": "The display category that selects the rows, and an optional web address of a page. Only pages show the address, as 'App route', with 'Not recorded' when it is null, undefined or empty.",
+						"examples": [
+							{
+								"category": "components"
+							},
+							{
+								"category": "pages",
+								"appRoute": "/evidence"
+							},
+							{
+								"category": "pages",
+								"appRoute": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityContract",
 						"type": "ContractRow[]",
-						"description": "Category-specific rows: pages include purpose and address; configs show purpose and provided outputs; other categories show inputs, outputs and errors, with service runtime. Verification states appear only in evidence views. Field descriptions are retained, with missing descriptions stated when some fields are described. Component-self markup outputs read rendered markup."
+						"description": "The rows for the unit's category: pages show Purpose, App route, Inputs and Output; configs show Purpose and Provides; components show Props; any other category shows Inputs and Output, with services adding Runs as; Fails with is added for every category but configs when the unit declares errors. Rows list their fields as items, with 'No description recorded.' for undescribed ones, once any field has a description; a markup output named like its unit's title, symbols or files reads 'rendered markup', and no row holds verification states, files, symbols or types.",
+						"examples": [
+							[
+								{
+									"label": "Props",
+									"value": "captures",
+									"items": [
+										{
+											"name": "captures",
+											"text": "The captures of the state to show, in the order they were recorded."
+										}
+									]
+								}
+							],
+							[
+								{
+									"label": "Purpose",
+									"value": "Shows the evidence of one commit."
+								},
+								{
+									"label": "App route",
+									"value": "/evidence"
+								},
+								{
+									"label": "Inputs",
+									"value": "commit"
+								},
+								{
+									"label": "Output",
+									"value": "Nothing declared"
+								}
+							],
+							[
+								{
+									"label": "Inputs",
+									"value": "account id"
+								},
+								{
+									"label": "Output",
+									"value": "orders"
+								},
+								{
+									"label": "Runs as",
+									"value": "Module, Wasm, Native process"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "humanize",
@@ -153,18 +658,20 @@
 						"name": "humanize.name",
 						"type": "string",
 						"required": true,
-						"description": "Identifier to split into ordinary lowercase words."
+						"description": "The identifier to split into words, in any casing: camel-case, acronym boundaries and runs of '_', '-' or '.' separate them. Surrounding whitespace is trimmed, and an empty string gives an empty result.",
+						"examples": ["pageSize", "HTTPServer", "order_item.total"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "humanize",
 						"type": "string",
-						"description": "Words separated at camel-case, acronym and underscore/dot/hyphen boundaries, trimmed and lowercased."
+						"description": "The identifier as lowercase words: a space at each camel-case, acronym, or '_', '-' or '.' boundary, with a run of separators becoming one space. The ends are trimmed of whitespace; other characters, including spaces already inside the text, are kept.",
+						"examples": ["page size", "http server", "order item total"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
