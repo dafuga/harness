@@ -21,41 +21,65 @@
 				"name": "hubSource.input",
 				"type": "{ source: SourceHistoryAdapter; cache: CollaborationCache; actor: Actor; project: Project & { collaborationCommit?: string }; ref: string; }",
 				"required": true,
-				"description": "Source adapter, cache, actor, authorized project and requested ref; optional collaboration commit joins the cache identity."
+				"description": "Supplies the adapter, cache, actor, project, and ref used to resolve project.sourceRepository and build the context. project.collaborationCommit is optional and is recorded as null when absent."
 			},
 			{
 				"name": "hubRead.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "Carries the source adapter, repository, pinned commit, tree entries, cache identity, and cache used by the read. Only matching blob entries with mode 100644 or 100755 are eligible."
 			},
 			{
 				"name": "hubRead.path",
 				"type": "string",
 				"required": true,
-				"description": "Exact repository path of a regular or executable blob in the context tree."
+				"description": "Exact path looked up in context.entries. Only blob entries with type blob and mode 100644 or 100755 are accepted.",
+				"examples": ["packages/hub/src/utils/development-tooling/hubSource.ts"]
 			},
 			{
 				"name": "hubRead.hash",
 				"type": "string | null",
 				"required": false,
 				"default": null,
-				"description": "Expected SHA-256, or null by default."
+				"description": "Optional hash passed with the raw blob to hubMaterializedHash; it defaults to null. hubRead forwards it unchanged.",
+				"examples": [null, "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubSource",
 				"type": "Promise<HubSourceContext>",
-				"description": "Context containing resolved commit/tree, source entries and an identity binding actor, project, repository, requested ref, collaboration revision and optional notes/evidence pins."
+				"description": "Pins project.sourceRepository at the resolved commit and loads that commit tree into entries. The identity records actor, project, repository, requested ref, source commit/tree, nullable notes/evidence and collaboration revisions, while historyIndexRevision, artifactHash, and profile start null."
 			},
 			{
 				"name": "hubRead",
 				"type": "Promise<Uint8Array>",
-				"description": "Verified raw file bytes or materialized Git LFS bytes. Missing regular paths are refused; raw blob identity, requested hash and LFS length are checked, with cache helpers enforcing the LFS content hash."
+				"description": "Returns raw bytes for a non-LFS blob. For an LFS blob it returns a same-sized cached value, or reads bytes at the pinned commit/path, checks their length against the binding, caches them, and returns them."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SourceHistoryAdapter rejection",
+				"type": "thrown",
+				"description": "hubSource rejects if resolve, either optionalRef call, or tree rejects; the rejection is not translated in this function."
+			},
+			{
+				"name": "hubFail('not-found')",
+				"type": "thrown",
+				"description": "hubRead calls hubFail('not-found') when context.entries has no exact-path blob with mode 100644 or 100755."
+			},
+			{
+				"name": "hubFail()",
+				"type": "thrown",
+				"description": "hubRead calls hubFail() when source.read returns bytes whose length differs from binding.size."
+			},
+			{
+				"name": "hubRead dependency rejection",
+				"type": "thrown",
+				"description": "Rejections from hubRaw, hubMaterializedHash, readCache, context.source.read, or writeCache propagate from hubRead."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubSource",
@@ -64,18 +88,24 @@
 						"name": "hubSource.input",
 						"type": "{ source: SourceHistoryAdapter; cache: CollaborationCache; actor: Actor; project: Project & { collaborationCommit?: string }; ref: string; }",
 						"required": true,
-						"description": "Source adapter, cache, actor, authorized project and requested ref; optional collaboration commit joins the cache identity."
+						"description": "Supplies the adapter, cache, actor, project, and ref used to resolve project.sourceRepository and build the context. project.collaborationCommit is optional and is recorded as null when absent."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubSource",
 						"type": "Promise<HubSourceContext>",
-						"description": "Context containing resolved commit/tree, source entries and an identity binding actor, project, repository, requested ref, collaboration revision and optional notes/evidence pins."
+						"description": "Pins project.sourceRepository at the resolved commit and loads that commit tree into entries. The identity records actor, project, repository, requested ref, source commit/tree, nullable notes/evidence and collaboration revisions, while historyIndexRevision, artifactHash, and profile start null."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SourceHistoryAdapter rejection",
+						"type": "thrown",
+						"description": "hubSource rejects if resolve, either optionalRef call, or tree rejects; the rejection is not translated in this function."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubRead",
@@ -84,31 +114,49 @@
 						"name": "hubRead.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "Carries the source adapter, repository, pinned commit, tree entries, cache identity, and cache used by the read. Only matching blob entries with mode 100644 or 100755 are eligible."
 					},
 					{
 						"name": "hubRead.path",
 						"type": "string",
 						"required": true,
-						"description": "Exact repository path of a regular or executable blob in the context tree."
+						"description": "Exact path looked up in context.entries. Only blob entries with type blob and mode 100644 or 100755 are accepted.",
+						"examples": ["packages/hub/src/utils/development-tooling/hubSource.ts"]
 					},
 					{
 						"name": "hubRead.hash",
 						"type": "string | null",
 						"required": false,
 						"default": null,
-						"description": "Expected SHA-256, or null by default."
+						"description": "Optional hash passed with the raw blob to hubMaterializedHash; it defaults to null. hubRead forwards it unchanged.",
+						"examples": [null, "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubRead",
 						"type": "Promise<Uint8Array>",
-						"description": "Verified raw file bytes or materialized Git LFS bytes. Missing regular paths are refused; raw blob identity, requested hash and LFS length are checked, with cache helpers enforcing the LFS content hash."
+						"description": "Returns raw bytes for a non-LFS blob. For an LFS blob it returns a same-sized cached value, or reads bytes at the pinned commit/path, checks their length against the binding, caches them, and returns them."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "hubFail('not-found')",
+						"type": "thrown",
+						"description": "hubRead calls hubFail('not-found') when context.entries has no exact-path blob with mode 100644 or 100755."
+					},
+					{
+						"name": "hubFail()",
+						"type": "thrown",
+						"description": "hubRead calls hubFail() when source.read returns bytes whose length differs from binding.size."
+					},
+					{
+						"name": "hubRead dependency rejection",
+						"type": "thrown",
+						"description": "Rejections from hubRaw, hubMaterializedHash, readCache, context.source.read, or writeCache propagate from hubRead."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
