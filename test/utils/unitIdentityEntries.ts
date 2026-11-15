@@ -35,7 +35,7 @@ export async function assertIdentityEntries(): Promise<void> {
 	const entries = [
 		'src/utils/unitIdentity.ts',
 		'src/utils/accounts-access/unitIdentity.ts',
-		'src/utils/classify-path/unitIdentity.ts',
+		'src/utils/development-tooling/classify-path/unitIdentity.ts',
 		'src/utils/development-tooling/classify-path/unitIdentity.ts'
 	];
 	assertColdEntries(

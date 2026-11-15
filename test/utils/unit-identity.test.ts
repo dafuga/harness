@@ -2,7 +2,7 @@ import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidato
 import { indexFiles, unitOf } from '../support/memoryTree';
 import { afterAll, expect, test } from 'vitest';
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
-import { unitIdentity } from '../../src/utils/classify-path/unitIdentity';
+import { unitIdentity } from '../../src/utils/development-tooling/classify-path/unitIdentity';
 import { assertIdentityEntries } from './unitIdentityEntries';
 
 test('unitIdentity derives kind and name from Harness scaffold folders', () => {
