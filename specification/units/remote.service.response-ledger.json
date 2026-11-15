@@ -22,33 +22,89 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ResponseLedgerService.constructor.options",
 				"type": "LedgerOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "The bounds and clock of this ledger instance: capacity caps the answers held, ttlMs how long a settled answer is kept, tombstones how many request ids may ever be spent, and now supplies the clock. Defaults to {}, which gives capacity remoteLimits.ledgerEntries (256), ttlMs remoteLimits.ledgerTtlMs (900000 ms), tombstones 65536 and now Date.now().",
+				"examples": [
+					{
+						"capacity": 256,
+						"ttlMs": 900000,
+						"tombstones": 65536
+					},
+					{
+						"capacity": 32,
+						"ttlMs": 60000,
+						"tombstones": 1024
+					}
+				]
 			},
 			{
 				"name": "ResponseLedgerService.run.request",
 				"type": "{ id: string; digest: string }",
-				"required": true
+				"required": true,
+				"description": "The request identity every run call is checked against: id keys the answer and stays spent for the life of this ledger, and digest is compared for equality only, with the digest first recorded for that id. The ledger checks neither the format nor the length of either value, and at most tombstones ids are ever spent (default 65536).",
+				"examples": [
+					{
+						"id": "7d1c4f0e-2b9a-4c63-8e51-3a0f9b6d2c17",
+						"digest": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+					},
+					{
+						"id": "b3e8a2f5-61d0-4e7a-9c14-d8f2a7e05b93",
+						"digest": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+					}
+				]
 			},
 			{
 				"name": "ResponseLedgerService.run.execute",
 				"type": "() => Promise<unknown>",
-				"required": true
+				"required": true,
+				"description": "The mutation itself, called at most once and only for a new id that the ledger accepts, on a microtask after run returns. Its resolved value becomes the answer kept for that id, and its rejection is replayed to repeats with the same digest while that answer is kept."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ResponseLedgerService.run",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "The promise of this id's first answer: it resolves with the value execute resolved and rejects with the reason execute rejected, and a repeat with the same id and digest receives this same promise while the answer is kept. A refused call instead rejects with a RemoteFailure.",
+				"examples": [
+					{
+						"ok": true
+					},
+					{
+						"accepted": true
+					},
+					"stored"
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "RemoteFailure.request-conflict",
+				"type": "thrown",
+				"description": "Rejected with a RemoteFailure of code request-conflict when this id is still answered or was already spent under a different digest, so the mutation is not performed. Its default display text is 'This request id was already used for something else.'"
+			},
+			{
+				"name": "RemoteFailure.request-expired",
+				"type": "thrown",
+				"description": "Rejected with a RemoteFailure of code request-expired when this id was spent under the same digest but its answer has since been forgotten, by ttlMs expiry or by capacity eviction, so the request is refused rather than run again. Its default display text is 'This change may already have been made. Reload before trying again.'"
+			},
+			{
+				"name": "RemoteFailure.too-many-requests",
+				"type": "thrown",
+				"description": "Rejected with a RemoteFailure of code too-many-requests when spent ids reach the tombstones limit (default 65536), or when the capacity limit (default 256) is reached and every held answer is still pending, so the new id is not accepted. Its default display text is 'Too many requests are waiting.'"
+			},
+			{
+				"name": "ResponseLedgerService.run.execute",
+				"type": "thrown",
+				"description": "The rejection reason that execute itself produced, passed through unchanged as the rejection of run. The same rejection is returned again for repeats with the same id and digest while the answer is kept."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ResponseLedgerService.run",
@@ -56,22 +112,65 @@
 					{
 						"name": "ResponseLedgerService.run.request",
 						"type": "{ id: string; digest: string }",
-						"required": true
+						"required": true,
+						"description": "The request identity every run call is checked against: id keys the answer and stays spent for the life of this ledger, and digest is compared for equality only, with the digest first recorded for that id. The ledger checks neither the format nor the length of either value, and at most tombstones ids are ever spent (default 65536).",
+						"examples": [
+							{
+								"id": "7d1c4f0e-2b9a-4c63-8e51-3a0f9b6d2c17",
+								"digest": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+							},
+							{
+								"id": "b3e8a2f5-61d0-4e7a-9c14-d8f2a7e05b93",
+								"digest": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+							}
+						]
 					},
 					{
 						"name": "ResponseLedgerService.run.execute",
 						"type": "() => Promise<unknown>",
-						"required": true
+						"required": true,
+						"description": "The mutation itself, called at most once and only for a new id that the ledger accepts, on a microtask after run returns. Its resolved value becomes the answer kept for that id, and its rejection is replayed to repeats with the same digest while that answer is kept."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResponseLedgerService.run",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "The promise of this id's first answer: it resolves with the value execute resolved and rejects with the reason execute rejected, and a repeat with the same id and digest receives this same promise while the answer is kept. A refused call instead rejects with a RemoteFailure.",
+						"examples": [
+							{
+								"ok": true
+							},
+							{
+								"accepted": true
+							},
+							"stored"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RemoteFailure.request-conflict",
+						"type": "thrown",
+						"description": "Rejected with a RemoteFailure of code request-conflict when this id is still answered or was already spent under a different digest, so the mutation is not performed. Its default display text is 'This request id was already used for something else.'"
+					},
+					{
+						"name": "RemoteFailure.request-expired",
+						"type": "thrown",
+						"description": "Rejected with a RemoteFailure of code request-expired when this id was spent under the same digest but its answer has since been forgotten, by ttlMs expiry or by capacity eviction, so the request is refused rather than run again. Its default display text is 'This change may already have been made. Reload before trying again.'"
+					},
+					{
+						"name": "RemoteFailure.too-many-requests",
+						"type": "thrown",
+						"description": "Rejected with a RemoteFailure of code too-many-requests when spent ids reach the tombstones limit (default 65536), or when the capacity limit (default 256) is reached and every held answer is still pending, so the new id is not accepted. Its default display text is 'Too many requests are waiting.'"
+					},
+					{
+						"name": "ResponseLedgerService.run.execute",
+						"type": "thrown",
+						"description": "The rejection reason that execute itself produced, passed through unchanged as the rejection of run. The same rejection is returned again for repeats with the same id and digest while the answer is kept."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -82,17 +181,31 @@
 						"name": "ResponseLedgerService.constructor.options",
 						"type": "LedgerOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "The bounds and clock of this ledger instance: capacity caps the answers held, ttlMs how long a settled answer is kept, tombstones how many request ids may ever be spent, and now supplies the clock. Defaults to {}, which gives capacity remoteLimits.ledgerEntries (256), ttlMs remoteLimits.ledgerTtlMs (900000 ms), tombstones 65536 and now Date.now().",
+						"examples": [
+							{
+								"capacity": 256,
+								"ttlMs": 900000,
+								"tombstones": 65536
+							},
+							{
+								"capacity": 32,
+								"ttlMs": 60000,
+								"tombstones": 1024
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResponseLedgerService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ResponseLedgerService, holding the given options with no kept answers and no spent ids yet. Constructing it runs no mutation and cannot fail."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
