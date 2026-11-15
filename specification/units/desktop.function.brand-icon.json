@@ -22,24 +22,33 @@
 				"name": "brandIcon.size",
 				"type": "number",
 				"required": true,
-				"description": "The requested width and height in pixels. Callers should supply a usable whole-number image size; this helper does not validate a supported size range."
+				"description": "The width and height of the square PNG in pixels, written to both IHDR fields and used to lay out the pixel grid and the mark. The helper does no range check, so a negative, fractional or infinite size can make Node throw a RangeError, while a zero size is not rejected and writes zero into the header.",
+				"examples": [1024, 512, 180]
 			},
 			{
 				"name": "brandIcon.variant",
 				"type": "BrandIconVariant",
 				"required": false,
 				"default": "ios",
-				"description": "The icon treatment: ios by default for an opaque navy background, or mac for a rounded navy plate inside a transparent margin."
+				"description": "The icon treatment: 'ios' is an opaque, full-bleed navy square in RGB with the gold mark at five-eighths of the size, while 'mac' is a rounded navy plate inset by 10% of the size in a transparent RGBA margin, with the mark at half the size. Only the exact string 'mac' selects the Mac treatment, and any other value is rendered as 'ios' because the helper does not validate it.",
+				"examples": ["ios", "mac"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "brandIcon",
 				"type": "Uint8Array",
-				"description": "PNG bytes at the requested square size, using RGB for iOS and RGBA transparency for Mac. Geometry comes from the shared brand tiles; no file is written."
+				"description": "The complete PNG file as bytes at the requested square size, made of the 8-byte signature and the IHDR, IDAT and IEND chunks, using color type 2 (RGB) for ios and color type 6 (RGBA) for mac, where the plate edge is anti-aliased into alpha. The tile geometry comes from the shared brand mark, and no file is written, so the caller must save these bytes itself."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Thrown synchronously by Node's buffer and typed-array checks, which can fire for a negative, infinite or fractional size or for a pixel buffer too large to allocate. brandIcon has no try/catch or validation of its own, so the error reaches the caller unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "brandIcon",
@@ -48,25 +57,33 @@
 						"name": "brandIcon.size",
 						"type": "number",
 						"required": true,
-						"description": "The requested width and height in pixels. Callers should supply a usable whole-number image size; this helper does not validate a supported size range."
+						"description": "The width and height of the square PNG in pixels, written to both IHDR fields and used to lay out the pixel grid and the mark. The helper does no range check, so a negative, fractional or infinite size can make Node throw a RangeError, while a zero size is not rejected and writes zero into the header.",
+						"examples": [1024, 512, 180]
 					},
 					{
 						"name": "brandIcon.variant",
 						"type": "BrandIconVariant",
 						"required": false,
 						"default": "ios",
-						"description": "The icon treatment: ios by default for an opaque navy background, or mac for a rounded navy plate inside a transparent margin."
+						"description": "The icon treatment: 'ios' is an opaque, full-bleed navy square in RGB with the gold mark at five-eighths of the size, while 'mac' is a rounded navy plate inset by 10% of the size in a transparent RGBA margin, with the mark at half the size. Only the exact string 'mac' selects the Mac treatment, and any other value is rendered as 'ios' because the helper does not validate it.",
+						"examples": ["ios", "mac"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "brandIcon",
 						"type": "Uint8Array",
-						"description": "PNG bytes at the requested square size, using RGB for iOS and RGBA transparency for Mac. Geometry comes from the shared brand tiles; no file is written."
+						"description": "The complete PNG file as bytes at the requested square size, made of the 8-byte signature and the IHDR, IDAT and IEND chunks, using color type 2 (RGB) for ios and color type 6 (RGBA) for mac, where the plate edge is anti-aliased into alpha. The tile geometry comes from the shared brand mark, and no file is written, so the caller must save these bytes itself."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown synchronously by Node's buffer and typed-array checks, which can fire for a negative, infinite or fractional size or for a pixel buffer too large to allocate. brandIcon has no try/catch or validation of its own, so the error reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
