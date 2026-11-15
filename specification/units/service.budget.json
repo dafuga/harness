@@ -27,41 +27,62 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "BudgetService.baselines.events",
 				"type": "BudgetEvent[]",
-				"required": true
+				"required": true,
+				"description": "Ledger events folded in input order to derive each unit's frozen metrics, unmeasured statements, and performance entries. Baseline events contribute metrics; other events contribute after-values, and a later performance entry replaces an earlier one only for the same workload, metric, target, and profile.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "BudgetService.baselines.manifests",
 				"type": "ComponentManifest[]",
-				"required": true
+				"required": true,
+				"description": "Component manifests are used to add units without an existing baseline to the returned map. A unit inherits the baseline of its first predecessor already in the map, while a unit with its own baseline is not overwritten.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "BudgetService.evaluate.subjects",
 				"type": "BudgetSubject[]",
-				"required": true
+				"required": true,
+				"description": "Each subject pairs a component manifest with a checkSize flag for budget evaluation. The manifest supplies the unit ID, runtime kind, and performance budgets; checkSize is passed to the finding evaluator to control size and complexity checks.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "BudgetService.evaluate.context",
 				"type": "{ measurements: Measurement[]; baselines: Map<string, UnitBaseline>; profile: string }",
-				"required": true
+				"required": true,
+				"description": "Evaluation context contains measurements, baselines keyed by unit ID, and the profile passed to the finding evaluator. Each subject's manifest ID selects its baseline."
 			}
 		],
 		"outputs": [
 			{
 				"name": "BudgetService.baselines",
-				"type": "Map<string, UnitBaseline>"
+				"type": "Map<string, UnitBaseline>",
+				"description": "A map keyed by unit ID containing ledger-derived baselines and, when available, inherited baselines. Inherited entries carry inheritedFrom; a unit with neither its own baseline nor an available predecessor is absent."
 			},
 			{
 				"name": "BudgetService.evaluate",
-				"type": "BudgetReport"
+				"type": "BudgetReport",
+				"description": "A report containing the findings for all subjects and failure messages derived from those findings. Passed and unavailable findings are omitted from failures, and an otherwise unreviewed missing baseline is reported once per unit.",
+				"examples": [
+					{
+						"findings": [],
+						"failures": []
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "BudgetService.baselines",
@@ -69,22 +90,31 @@
 					{
 						"name": "BudgetService.baselines.events",
 						"type": "BudgetEvent[]",
-						"required": true
+						"required": true,
+						"description": "Ledger events folded in input order to derive each unit's frozen metrics, unmeasured statements, and performance entries. Baseline events contribute metrics; other events contribute after-values, and a later performance entry replaces an earlier one only for the same workload, metric, target, and profile.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "BudgetService.baselines.manifests",
 						"type": "ComponentManifest[]",
-						"required": true
+						"required": true,
+						"description": "Component manifests are used to add units without an existing baseline to the returned map. A unit inherits the baseline of its first predecessor already in the map, while a unit with its own baseline is not overwritten.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BudgetService.baselines",
-						"type": "Map<string, UnitBaseline>"
+						"type": "Map<string, UnitBaseline>",
+						"description": "A map keyed by unit ID containing ledger-derived baselines and, when available, inherited baselines. Inherited entries carry inheritedFrom; a unit with neither its own baseline nor an available predecessor is absent."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "BudgetService.evaluate",
@@ -92,22 +122,34 @@
 					{
 						"name": "BudgetService.evaluate.subjects",
 						"type": "BudgetSubject[]",
-						"required": true
+						"required": true,
+						"description": "Each subject pairs a component manifest with a checkSize flag for budget evaluation. The manifest supplies the unit ID, runtime kind, and performance budgets; checkSize is passed to the finding evaluator to control size and complexity checks.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "BudgetService.evaluate.context",
 						"type": "{ measurements: Measurement[]; baselines: Map<string, UnitBaseline>; profile: string }",
-						"required": true
+						"required": true,
+						"description": "Evaluation context contains measurements, baselines keyed by unit ID, and the profile passed to the finding evaluator. Each subject's manifest ID selects its baseline."
 					}
 				],
 				"outputs": [
 					{
 						"name": "BudgetService.evaluate",
-						"type": "BudgetReport"
+						"type": "BudgetReport",
+						"description": "A report containing the findings for all subjects and failure messages derived from those findings. Passed and unavailable findings are omitted from failures, and an otherwise unreviewed missing baseline is reported once per unit.",
+						"examples": [
+							{
+								"findings": [],
+								"failures": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
