@@ -40,153 +40,327 @@
 				"name": "ComponentPropsResolver.constructor.tree",
 				"type": "SourceTree",
 				"required": true,
-				"description": "Readable source snapshot used to resolve prop declarations without importing application code."
+				"description": "Snapshot whose read() supplies the component and imported source text the resolver inspects; the constructor only stores it, and nothing is imported or executed from it."
 			},
 			{
 				"name": "ComponentPropsResolver.constructor.files",
 				"type": "Map<string, SourceFile>",
 				"required": true,
-				"description": "Indexed source files and references available in this same revision."
+				"description": "Indexed file map that the resolver consults for each file's language and resolved reference paths when following imports; the constructor only stores it and does not modify it."
 			},
 			{
 				"name": "ComponentPropsResolver.inputs.path",
 				"type": "string",
 				"required": true,
-				"description": "Source path containing the component prop declaration to resolve."
+				"description": "Repository-relative path of the component or TypeScript file whose $props() declaration is resolved; the file is read through the snapshot, and a rejected read rejects the call.",
+				"examples": [
+					"src/lib/components/evidence/EvidenceGrid.svelte",
+					"src/lib/components/reports/ReportHeader.svelte"
+				]
 			},
 			{
 				"name": "ComponentPropsResolver.inputs.owner",
 				"type": "string",
 				"required": true,
-				"description": "Component name prefixed to each resolved prop field."
+				"description": "Component name written before each resolved prop as Owner.prop; resolveComponentProps passes the component's export name, and the value is not validated.",
+				"examples": ["EvidenceGrid", "ReportHeader"]
 			},
 			{
 				"name": "ComponentPropsResolver.inputs.seen",
 				"type": "Set<string>",
 				"required": false,
-				"description": "Already visited type references for recursion protection; defaults to a new empty Set."
+				"description": "Visited type-reference keys that stop recursive prop-type resolution; once more than 32 keys are recorded, nothing further is resolved. When omitted it defaults to new Set<string>(), a new empty Set on each call."
 			},
 			{
 				"name": "resolveComponentProps.tree",
 				"type": "SourceTree",
 				"required": true,
-				"description": "Readable snapshot supplying the indexed component and imported prop-type source."
+				"description": "Snapshot whose read() supplies the Svelte component source and the imported prop-type source; list() is not called."
 			},
 			{
 				"name": "resolveComponentProps.files",
 				"type": "Map<string, SourceFile>",
 				"required": true,
-				"description": "Indexed file map whose component prop signatures are enriched in place."
+				"description": "Indexed file map keyed by repository-relative path; each Svelte file whose component export resolves props has that export's inputs replaced in place, and other entries are left unchanged."
 			},
 			{
 				"name": "SourceIndexService.index.tree",
 				"type": "SourceTree",
 				"required": true,
-				"description": "Snapshot with list and read operations; source read failures reject indexing."
+				"description": "Snapshot whose list() supplies the entries and whose read() supplies the text of each readable, non-ignored entry, and index() keeps at most 256 of those reads in flight. A rejected list or read rejects index(), and the snapshot's revision becomes the index revision."
 			},
 			{
 				"name": "SourceIndexService.index.config",
 				"type": "UnitsConfig",
 				"required": true,
-				"description": "Workspace, classification, ignore and declared-reference rules for this index."
+				"description": "Configuration passed to classifyPath, which assigns each kept file its classification, workspace and identity and omits files classified as ignored. Its references entries override import resolution for the same from and specifier, resolving to the entry's to path or otherwise marking the reference external.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"workspaces": [
+							{
+								"name": "",
+								"root": "."
+							}
+						],
+						"tests": ["test/", "tests/"],
+						"global": [],
+						"ignored": ["**/*.md", "specification/features/", "specification/loops/", ".gitignore"],
+						"references": []
+					},
+					{
+						"schemaVersion": 1,
+						"workspaces": [
+							{
+								"name": "",
+								"root": "."
+							}
+						],
+						"tests": ["test/"],
+						"global": ["package.json", "tsconfig.json"],
+						"ignored": ["**/*.md", ".gitignore"],
+						"references": [
+							{
+								"from": "src/lib/catalog.ts",
+								"specifier": "virtual:catalog",
+								"to": "src/generated/catalog.ts",
+								"reason": "Generated catalog file that is tracked in this repository."
+							},
+							{
+								"from": "src/lib/ui/Button.svelte",
+								"specifier": "@acme/ui-kit",
+								"external": "@acme/ui-kit",
+								"reason": "Published package resolved outside this repository."
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "importedBinding.file",
 				"type": "ts.SourceFile",
 				"required": true,
-				"description": "Parsed TypeScript source containing import and re-export bindings."
+				"description": "Parsed TypeScript source whose top-level import and export-from declarations are searched in statement order; the first match wins and the file is not modified."
 			},
 			{
 				"name": "importedBinding.name",
 				"type": "string",
 				"required": true,
-				"description": "Local or exported binding name to resolve to its original name and module specifier."
+				"description": "Local name of a default or named import, or exported name of a re-export with a from clause, to resolve to its original name and module specifier; namespace imports and local exports without a from clause never match.",
+				"examples": ["EvidenceRow", "EvidenceGrid", "Props"]
 			},
 			{
 				"name": "selectedProps.items",
 				"type": "ContractItem[]",
 				"required": true,
-				"description": "Resolved prop fields to transform without executing component code."
+				"description": "Prop fields with bare names, as member resolution produces them; the array and its items are not modified, because the transforms return new arrays and Partial and Required return copied items.",
+				"examples": [
+					[
+						{
+							"name": "rows",
+							"type": "EvidenceRow[]",
+							"required": true
+						},
+						{
+							"name": "density",
+							"type": "'comfortable' | 'compact'",
+							"required": false
+						}
+					],
+					[
+						{
+							"name": "title",
+							"type": "string",
+							"required": true
+						},
+						{
+							"name": "tone",
+							"type": "'info' | 'warn'",
+							"required": false
+						}
+					]
+				]
 			},
 			{
 				"name": "selectedProps.operator",
 				"type": "string",
 				"required": true,
-				"description": "Partial, Required or Pick selects its named transform; other operators use the exclusion branch."
+				"description": "Partial makes every item optional and Required makes every item required; Pick keeps the items whose names appear in keys, and any other operator, such as Omit, keeps the items whose names do not appear.",
+				"examples": ["Pick", "Omit", "Partial"]
 			},
 			{
 				"name": "selectedProps.keys",
 				"type": "ts.TypeNode | undefined",
 				"required": true,
-				"description": "Literal key type or union used by Pick/exclusion; absent or unsupported keys yield no selected fields."
+				"description": "Key type node that Pick and Omit read for string literal names, alone or in a union; when it is absent or has no string literal names, Pick and Omit return an empty array, and Partial and Required ignore it."
 			},
 			{
 				"name": "scanStorage.code",
 				"type": "string",
 				"required": true,
-				"description": "TypeScript source to inspect for exported classes with static definition syntax; never evaluated."
+				"description": "TypeScript module text whose exported classes with a static definition property are read; it is parsed but never evaluated, so no import, validator or table access runs.",
+				"examples": [
+					"export class Report {\n\tstatic definition = {\n\t\ttable: 'reports',\n\t\tfields: {\n\t\t\tid: { type: 'string' },\n\t\t\ttitle: { type: 'string', required: true }\n\t\t}\n\t};\n}\n",
+					"export class Note {\n\tstatic definition = {\n\t\ttable: 'notes',\n\t\tfields: {\n\t\t\tbody: { type: 'string', nullable: true }\n\t\t}\n\t};\n}\n"
+				]
 			},
 			{
 				"name": "sourceExecution.code",
 				"type": "string",
 				"required": true,
-				"description": "Source bytes to classify as runtime, declarative or unknown."
+				"description": "Source text inspected only when language is 'ts', where it is parsed without being executed; any top-level statement other than an interface, type alias, ambient declaration, type-only import or export, or empty statement makes it runtime unless the code has parse diagnostics, which make it unknown.",
+				"examples": [
+					"export interface EvidenceRow {\n\tid: string;\n\ttitle: string;\n}\n",
+					"export const rowLimit = 50;\n"
+				]
 			},
 			{
 				"name": "sourceExecution.language",
 				"type": "SourceLanguage",
 				"required": true,
-				"description": "Indexed language determining the applicable source classifier."
+				"description": "Indexed language that selects the classifier: 'css' is declarative without reading the code, 'ts' is parsed, and 'svelte' or 'other' are unknown.",
+				"examples": ["ts", "svelte", "css"]
 			},
 			{
 				"name": "sourceExecution.path",
 				"type": "string",
 				"required": true,
-				"description": "Source path used to recognize supported declaration and script contexts."
+				"description": "Path passed to the TypeScript parser as its file name when language is 'ts', which the parser uses to choose how to read the text, such as JSX for .tsx; the file is not read from disk.",
+				"examples": [
+					"src/lib/reports/evidence.ts",
+					"src/lib/components/evidence/EvidenceGrid.svelte",
+					"src/styles/evidence.css"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ComponentPropsResolver.inputs",
 				"type": "Promise<ContractItem[]>",
-				"description": "Resolved prop fields with source-derived names, types, required flags and literal defaults."
+				"description": "Resolves to the prop fields named Owner.prop, with source-written types, required flags and literal defaults from the $props destructuring (including $bindable arguments); an optional prop with no destructuring initializer gets 'undefined (omitted)'. It resolves to an empty array when the file declares no $props() call.",
+				"examples": [
+					[
+						{
+							"name": "EvidenceGrid.rows",
+							"type": "EvidenceRow[]",
+							"required": true
+						},
+						{
+							"name": "EvidenceGrid.density",
+							"type": "'comfortable' | 'compact'",
+							"required": false,
+							"default": "compact"
+						},
+						{
+							"name": "EvidenceGrid.onSelect",
+							"type": "(row: EvidenceRow) => void",
+							"required": false,
+							"default": "undefined (omitted)"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "resolveComponentProps",
 				"type": "Promise<void>",
-				"description": "Completes after enriching indexed component prop signatures; returns no data."
+				"description": "Resolves with no value once each Svelte component export that resolves props has its inputs replaced in place; other files are left unchanged."
 			},
 			{
 				"name": "SourceIndexService.index",
 				"type": "Promise<SourceIndex>",
-				"description": "SourceIndex keyed by repository-relative paths; ignored paths are omitted and cached parses from prior revisions are released."
+				"description": "Resolves to the snapshot's revision and a files Map keyed by repository-relative path, with ignored entries omitted; cached parses that this index does not use are released before it resolves."
 			},
 			{
 				"name": "importedBinding",
 				"type": "{ name: string; specifier: string } | undefined",
-				"description": "Original binding name and module specifier, or undefined when no supported import/re-export binds that name."
+				"description": "The original binding name and module specifier, where a default import reports 'default'; undefined when no supported import or re-export binds the name.",
+				"examples": [
+					{
+						"name": "EvidenceRow",
+						"specifier": "../reports/types"
+					},
+					{
+						"name": "default",
+						"specifier": "./EvidenceGrid.svelte"
+					}
+				]
 			},
 			{
 				"name": "selectedProps",
 				"type": "ContractItem[]",
-				"description": "Transformed prop fields; unresolved key selections remain an empty array."
+				"description": "The transformed items: Partial and Required return copies with required set, Pick and Omit return the filtered original items, and unresolved keys give an empty array.",
+				"examples": [
+					[
+						{
+							"name": "rows",
+							"type": "EvidenceRow[]",
+							"required": false
+						},
+						{
+							"name": "density",
+							"type": "'comfortable' | 'compact'",
+							"required": false
+						}
+					],
+					[
+						{
+							"name": "rows",
+							"type": "EvidenceRow[]",
+							"required": true
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "scanStorage",
 				"type": "NonNullable<ComponentManifest['contract']['storage']>",
-				"description": "Static storage facts including explicitly unresolved schema syntax; does not create tables or read rows."
+				"description": "One storage record per exported class with a static definition, giving its table, primaryKey (defaulting to 'id'), and fields with type, required, nullable and literal default values, with unresolved syntax listed as text. It never creates tables or reads rows.",
+				"examples": [
+					[
+						{
+							"name": "Report",
+							"table": "reports",
+							"primaryKey": "id",
+							"fields": [
+								{
+									"name": "id",
+									"type": "string",
+									"required": true,
+									"nullable": false,
+									"primaryKey": true
+								},
+								{
+									"name": "title",
+									"type": "string",
+									"required": true,
+									"nullable": false,
+									"primaryKey": false
+								}
+							]
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "sourceExecution",
 				"type": "NonNullable<SourceFile['execution']>",
-				"description": "Source-based runtime/declarative/unknown classification; unreadable or unsupported code is never assumed declarative."
+				"description": "'declarative' for CSS and for TypeScript whose top-level statements are all types, ambient declarations or type-only imports and exports; 'runtime' for other parsed TypeScript; and 'unknown' for Svelte, other languages and TypeScript with parse diagnostics, and unknown is never assumed declarative.",
+				"examples": ["declarative", "runtime", "unknown"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Source read or parse failure",
-				"type": "propagated",
-				"description": "Snapshot list/read rejections and parser or prop-resolver exceptions reject indexing; unreadable source is not fabricated."
+				"type": "thrown",
+				"description": "Rejections from the snapshot's list() or read() calls, and exceptions from parsing or prop resolution, reject the call; no partial index is returned."
+			},
+			{
+				"name": "Source syntax access failure",
+				"type": "thrown",
+				"description": "Values outside the documented types, such as an undefined file, throw whatever property access or the TypeScript parser raises; these transforms perform no I/O and catch nothing."
 			}
 		],
 		"errorStatus": "declared",
@@ -198,33 +372,60 @@
 						"name": "ComponentPropsResolver.inputs.path",
 						"type": "string",
 						"required": true,
-						"description": "Source path containing the component prop declaration to resolve."
+						"description": "Repository-relative path of the component or TypeScript file whose $props() declaration is resolved; the file is read through the snapshot, and a rejected read rejects the call.",
+						"examples": [
+							"src/lib/components/evidence/EvidenceGrid.svelte",
+							"src/lib/components/reports/ReportHeader.svelte"
+						]
 					},
 					{
 						"name": "ComponentPropsResolver.inputs.owner",
 						"type": "string",
 						"required": true,
-						"description": "Component name prefixed to each resolved prop field."
+						"description": "Component name written before each resolved prop as Owner.prop; resolveComponentProps passes the component's export name, and the value is not validated.",
+						"examples": ["EvidenceGrid", "ReportHeader"]
 					},
 					{
 						"name": "ComponentPropsResolver.inputs.seen",
 						"type": "Set<string>",
 						"required": false,
-						"description": "Already visited type references for recursion protection; defaults to a new empty Set."
+						"description": "Visited type-reference keys that stop recursive prop-type resolution; once more than 32 keys are recorded, nothing further is resolved. When omitted it defaults to new Set<string>(), a new empty Set on each call."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ComponentPropsResolver.inputs",
 						"type": "Promise<ContractItem[]>",
-						"description": "Resolved prop fields with source-derived names, types, required flags and literal defaults."
+						"description": "Resolves to the prop fields named Owner.prop, with source-written types, required flags and literal defaults from the $props destructuring (including $bindable arguments); an optional prop with no destructuring initializer gets 'undefined (omitted)'. It resolves to an empty array when the file declares no $props() call.",
+						"examples": [
+							[
+								{
+									"name": "EvidenceGrid.rows",
+									"type": "EvidenceRow[]",
+									"required": true
+								},
+								{
+									"name": "EvidenceGrid.density",
+									"type": "'comfortable' | 'compact'",
+									"required": false,
+									"default": "compact"
+								},
+								{
+									"name": "EvidenceGrid.onSelect",
+									"type": "(row: EvidenceRow) => void",
+									"required": false,
+									"default": "undefined (omitted)"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Source read or parse failure",
-						"type": "propagated",
-						"description": "Snapshot list/read rejections and parser or prop-resolver exceptions reject indexing; unreadable source is not fabricated."
+						"type": "thrown",
+						"description": "Rejections from the snapshot's list() or read() calls, and exceptions from parsing or prop resolution, reject the call; no partial index is returned."
 					}
 				],
 				"errorStatus": "declared"
@@ -236,27 +437,27 @@
 						"name": "resolveComponentProps.tree",
 						"type": "SourceTree",
 						"required": true,
-						"description": "Readable snapshot supplying the indexed component and imported prop-type source."
+						"description": "Snapshot whose read() supplies the Svelte component source and the imported prop-type source; list() is not called."
 					},
 					{
 						"name": "resolveComponentProps.files",
 						"type": "Map<string, SourceFile>",
 						"required": true,
-						"description": "Indexed file map whose component prop signatures are enriched in place."
+						"description": "Indexed file map keyed by repository-relative path; each Svelte file whose component export resolves props has that export's inputs replaced in place, and other entries are left unchanged."
 					}
 				],
 				"outputs": [
 					{
 						"name": "resolveComponentProps",
 						"type": "Promise<void>",
-						"description": "Completes after enriching indexed component prop signatures; returns no data."
+						"description": "Resolves with no value once each Svelte component export that resolves props has its inputs replaced in place; other files are left unchanged."
 					}
 				],
 				"errors": [
 					{
 						"name": "Source read or parse failure",
-						"type": "propagated",
-						"description": "Snapshot list/read rejections and parser or prop-resolver exceptions reject indexing; unreadable source is not fabricated."
+						"type": "thrown",
+						"description": "Rejections from the snapshot's list() or read() calls, and exceptions from parsing or prop resolution, reject the call; no partial index is returned."
 					}
 				],
 				"errorStatus": "declared"
@@ -268,27 +469,73 @@
 						"name": "SourceIndexService.index.tree",
 						"type": "SourceTree",
 						"required": true,
-						"description": "Snapshot with list and read operations; source read failures reject indexing."
+						"description": "Snapshot whose list() supplies the entries and whose read() supplies the text of each readable, non-ignored entry, and index() keeps at most 256 of those reads in flight. A rejected list or read rejects index(), and the snapshot's revision becomes the index revision."
 					},
 					{
 						"name": "SourceIndexService.index.config",
 						"type": "UnitsConfig",
 						"required": true,
-						"description": "Workspace, classification, ignore and declared-reference rules for this index."
+						"description": "Configuration passed to classifyPath, which assigns each kept file its classification, workspace and identity and omits files classified as ignored. Its references entries override import resolution for the same from and specifier, resolving to the entry's to path or otherwise marking the reference external.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"workspaces": [
+									{
+										"name": "",
+										"root": "."
+									}
+								],
+								"tests": ["test/", "tests/"],
+								"global": [],
+								"ignored": [
+									"**/*.md",
+									"specification/features/",
+									"specification/loops/",
+									".gitignore"
+								],
+								"references": []
+							},
+							{
+								"schemaVersion": 1,
+								"workspaces": [
+									{
+										"name": "",
+										"root": "."
+									}
+								],
+								"tests": ["test/"],
+								"global": ["package.json", "tsconfig.json"],
+								"ignored": ["**/*.md", ".gitignore"],
+								"references": [
+									{
+										"from": "src/lib/catalog.ts",
+										"specifier": "virtual:catalog",
+										"to": "src/generated/catalog.ts",
+										"reason": "Generated catalog file that is tracked in this repository."
+									},
+									{
+										"from": "src/lib/ui/Button.svelte",
+										"specifier": "@acme/ui-kit",
+										"external": "@acme/ui-kit",
+										"reason": "Published package resolved outside this repository."
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceIndexService.index",
 						"type": "Promise<SourceIndex>",
-						"description": "SourceIndex keyed by repository-relative paths; ignored paths are omitted and cached parses from prior revisions are released."
+						"description": "Resolves to the snapshot's revision and a files Map keyed by repository-relative path, with ignored entries omitted; cached parses that this index does not use are released before it resolves."
 					}
 				],
 				"errors": [
 					{
 						"name": "Source read or parse failure",
-						"type": "propagated",
-						"description": "Snapshot list/read rejections and parser or prop-resolver exceptions reject indexing; unreadable source is not fabricated."
+						"type": "thrown",
+						"description": "Rejections from the snapshot's list() or read() calls, and exceptions from parsing or prop resolution, reject the call; no partial index is returned."
 					}
 				],
 				"errorStatus": "declared"
@@ -300,27 +547,38 @@
 						"name": "importedBinding.file",
 						"type": "ts.SourceFile",
 						"required": true,
-						"description": "Parsed TypeScript source containing import and re-export bindings."
+						"description": "Parsed TypeScript source whose top-level import and export-from declarations are searched in statement order; the first match wins and the file is not modified."
 					},
 					{
 						"name": "importedBinding.name",
 						"type": "string",
 						"required": true,
-						"description": "Local or exported binding name to resolve to its original name and module specifier."
+						"description": "Local name of a default or named import, or exported name of a re-export with a from clause, to resolve to its original name and module specifier; namespace imports and local exports without a from clause never match.",
+						"examples": ["EvidenceRow", "EvidenceGrid", "Props"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "importedBinding",
 						"type": "{ name: string; specifier: string } | undefined",
-						"description": "Original binding name and module specifier, or undefined when no supported import/re-export binds that name."
+						"description": "The original binding name and module specifier, where a default import reports 'default'; undefined when no supported import or re-export binds the name.",
+						"examples": [
+							{
+								"name": "EvidenceRow",
+								"specifier": "../reports/types"
+							},
+							{
+								"name": "default",
+								"specifier": "./EvidenceGrid.svelte"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Source syntax access failure",
-						"type": "propagated",
-						"description": "Parsing or reading caller-supplied syntax nodes may throw; this syntax transformation performs no filesystem I/O."
+						"type": "thrown",
+						"description": "A file without a statements list, such as undefined, throws a TypeError when the lookup reads it; the lookup has no try/catch and performs no I/O."
 					}
 				],
 				"errorStatus": "declared"
@@ -332,33 +590,82 @@
 						"name": "selectedProps.items",
 						"type": "ContractItem[]",
 						"required": true,
-						"description": "Resolved prop fields to transform without executing component code."
+						"description": "Prop fields with bare names, as member resolution produces them; the array and its items are not modified, because the transforms return new arrays and Partial and Required return copied items.",
+						"examples": [
+							[
+								{
+									"name": "rows",
+									"type": "EvidenceRow[]",
+									"required": true
+								},
+								{
+									"name": "density",
+									"type": "'comfortable' | 'compact'",
+									"required": false
+								}
+							],
+							[
+								{
+									"name": "title",
+									"type": "string",
+									"required": true
+								},
+								{
+									"name": "tone",
+									"type": "'info' | 'warn'",
+									"required": false
+								}
+							]
+						]
 					},
 					{
 						"name": "selectedProps.operator",
 						"type": "string",
 						"required": true,
-						"description": "Partial, Required or Pick selects its named transform; other operators use the exclusion branch."
+						"description": "Partial makes every item optional and Required makes every item required; Pick keeps the items whose names appear in keys, and any other operator, such as Omit, keeps the items whose names do not appear.",
+						"examples": ["Pick", "Omit", "Partial"]
 					},
 					{
 						"name": "selectedProps.keys",
 						"type": "ts.TypeNode | undefined",
 						"required": true,
-						"description": "Literal key type or union used by Pick/exclusion; absent or unsupported keys yield no selected fields."
+						"description": "Key type node that Pick and Omit read for string literal names, alone or in a union; when it is absent or has no string literal names, Pick and Omit return an empty array, and Partial and Required ignore it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "selectedProps",
 						"type": "ContractItem[]",
-						"description": "Transformed prop fields; unresolved key selections remain an empty array."
+						"description": "The transformed items: Partial and Required return copies with required set, Pick and Omit return the filtered original items, and unresolved keys give an empty array.",
+						"examples": [
+							[
+								{
+									"name": "rows",
+									"type": "EvidenceRow[]",
+									"required": false
+								},
+								{
+									"name": "density",
+									"type": "'comfortable' | 'compact'",
+									"required": false
+								}
+							],
+							[
+								{
+									"name": "rows",
+									"type": "EvidenceRow[]",
+									"required": true
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Source syntax access failure",
-						"type": "propagated",
-						"description": "Parsing or reading caller-supplied syntax nodes may throw; this syntax transformation performs no filesystem I/O."
+						"type": "thrown",
+						"description": "A non-array items value throws a TypeError from items.map or items.filter when the transform reads it; the transform has no try/catch and performs no I/O."
 					}
 				],
 				"errorStatus": "declared"
@@ -370,21 +677,51 @@
 						"name": "scanStorage.code",
 						"type": "string",
 						"required": true,
-						"description": "TypeScript source to inspect for exported classes with static definition syntax; never evaluated."
+						"description": "TypeScript module text whose exported classes with a static definition property are read; it is parsed but never evaluated, so no import, validator or table access runs.",
+						"examples": [
+							"export class Report {\n\tstatic definition = {\n\t\ttable: 'reports',\n\t\tfields: {\n\t\t\tid: { type: 'string' },\n\t\t\ttitle: { type: 'string', required: true }\n\t\t}\n\t};\n}\n",
+							"export class Note {\n\tstatic definition = {\n\t\ttable: 'notes',\n\t\tfields: {\n\t\t\tbody: { type: 'string', nullable: true }\n\t\t}\n\t};\n}\n"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanStorage",
 						"type": "NonNullable<ComponentManifest['contract']['storage']>",
-						"description": "Static storage facts including explicitly unresolved schema syntax; does not create tables or read rows."
+						"description": "One storage record per exported class with a static definition, giving its table, primaryKey (defaulting to 'id'), and fields with type, required, nullable and literal default values, with unresolved syntax listed as text. It never creates tables or reads rows.",
+						"examples": [
+							[
+								{
+									"name": "Report",
+									"table": "reports",
+									"primaryKey": "id",
+									"fields": [
+										{
+											"name": "id",
+											"type": "string",
+											"required": true,
+											"nullable": false,
+											"primaryKey": true
+										},
+										{
+											"name": "title",
+											"type": "string",
+											"required": true,
+											"nullable": false,
+											"primaryKey": false
+										}
+									]
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Source syntax access failure",
-						"type": "propagated",
-						"description": "Parsing or reading caller-supplied syntax nodes may throw; this syntax transformation performs no filesystem I/O."
+						"type": "thrown",
+						"description": "Any exception raised while the TypeScript parser or AST access handles the supplied code propagates unchanged; the scanner has no try/catch and performs no I/O."
 					}
 				],
 				"errorStatus": "declared"
@@ -396,33 +733,44 @@
 						"name": "sourceExecution.code",
 						"type": "string",
 						"required": true,
-						"description": "Source bytes to classify as runtime, declarative or unknown."
+						"description": "Source text inspected only when language is 'ts', where it is parsed without being executed; any top-level statement other than an interface, type alias, ambient declaration, type-only import or export, or empty statement makes it runtime unless the code has parse diagnostics, which make it unknown.",
+						"examples": [
+							"export interface EvidenceRow {\n\tid: string;\n\ttitle: string;\n}\n",
+							"export const rowLimit = 50;\n"
+						]
 					},
 					{
 						"name": "sourceExecution.language",
 						"type": "SourceLanguage",
 						"required": true,
-						"description": "Indexed language determining the applicable source classifier."
+						"description": "Indexed language that selects the classifier: 'css' is declarative without reading the code, 'ts' is parsed, and 'svelte' or 'other' are unknown.",
+						"examples": ["ts", "svelte", "css"]
 					},
 					{
 						"name": "sourceExecution.path",
 						"type": "string",
 						"required": true,
-						"description": "Source path used to recognize supported declaration and script contexts."
+						"description": "Path passed to the TypeScript parser as its file name when language is 'ts', which the parser uses to choose how to read the text, such as JSX for .tsx; the file is not read from disk.",
+						"examples": [
+							"src/lib/reports/evidence.ts",
+							"src/lib/components/evidence/EvidenceGrid.svelte",
+							"src/styles/evidence.css"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceExecution",
 						"type": "NonNullable<SourceFile['execution']>",
-						"description": "Source-based runtime/declarative/unknown classification; unreadable or unsupported code is never assumed declarative."
+						"description": "'declarative' for CSS and for TypeScript whose top-level statements are all types, ambient declarations or type-only imports and exports; 'runtime' for other parsed TypeScript; and 'unknown' for Svelte, other languages and TypeScript with parse diagnostics, and unknown is never assumed declarative.",
+						"examples": ["declarative", "runtime", "unknown"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Source syntax access failure",
-						"type": "propagated",
-						"description": "Parsing or reading caller-supplied syntax nodes may throw; this syntax transformation performs no filesystem I/O."
+						"type": "thrown",
+						"description": "Any exception raised by the TypeScript parser for the supplied code propagates unchanged; the classifier has no try/catch and performs no I/O."
 					}
 				],
 				"errorStatus": "declared"
@@ -436,20 +784,20 @@
 						"name": "ComponentPropsResolver.constructor.tree",
 						"type": "SourceTree",
 						"required": true,
-						"description": "Readable source snapshot used to resolve prop declarations without importing application code."
+						"description": "Snapshot whose read() supplies the component and imported source text the resolver inspects; the constructor only stores it, and nothing is imported or executed from it."
 					},
 					{
 						"name": "ComponentPropsResolver.constructor.files",
 						"type": "Map<string, SourceFile>",
 						"required": true,
-						"description": "Indexed source files and references available in this same revision."
+						"description": "Indexed file map that the resolver consults for each file's language and resolved reference paths when following imports; the constructor only stores it and does not modify it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ComponentPropsResolver.constructor",
 						"type": "unknown",
-						"description": "Constructs a resolver holding the supplied snapshot and index; resolves no prop fields during construction."
+						"description": "A ComponentPropsResolver holding the supplied tree and files; it reads no source and resolves no prop fields during construction."
 					}
 				],
 				"errors": [],
