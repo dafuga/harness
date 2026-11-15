@@ -18,10 +18,16 @@
 			{
 				"name": "cliEnvironment",
 				"type": "NodeJS.ProcessEnv",
-				"description": "A new environment based on scrubEnvironment, with PATH entries deduplicated in order and common user, Bun, Homebrew and system executable directories appended. It does not change the parent process environment."
+				"description": "An environment object copied from `scrubEnvironment()` for task subprocesses, with `PATH` rebuilt from its nonempty existing entries followed in order by the user's `.local/bin` and `.bun/bin`, `/opt/homebrew/bin`, `/usr/local/bin`, `/usr/bin`, and `/bin`; duplicates are removed by keeping their first occurrence. Finder-launched apps may inherit a minimal `PATH`, and this helper changes only the returned object.",
+				"examples": [
+					{
+						"PATH": "/usr/bin:/bin:/Users/danielfugere/.local/bin:/Users/danielfugere/.bun/bin:/opt/homebrew/bin:/usr/local/bin"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "cliEnvironment",
@@ -30,11 +36,16 @@
 					{
 						"name": "cliEnvironment",
 						"type": "NodeJS.ProcessEnv",
-						"description": "A new environment based on scrubEnvironment, with PATH entries deduplicated in order and common user, Bun, Homebrew and system executable directories appended. It does not change the parent process environment."
+						"description": "An environment object copied from `scrubEnvironment()` for task subprocesses, with `PATH` rebuilt from its nonempty existing entries followed in order by the user's `.local/bin` and `.bun/bin`, `/opt/homebrew/bin`, `/usr/local/bin`, `/usr/bin`, and `/bin`; duplicates are removed by keeping their first occurrence. Finder-launched apps may inherit a minimal `PATH`, and this helper changes only the returned object.",
+						"examples": [
+							{
+								"PATH": "/usr/bin:/bin:/Users/danielfugere/.local/bin:/Users/danielfugere/.bun/bin:/opt/homebrew/bin:/usr/local/bin"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
