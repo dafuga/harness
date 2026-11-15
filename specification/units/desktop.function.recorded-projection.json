@@ -22,35 +22,82 @@
 				"name": "recordedProjection.evidence",
 				"type": "ExplorerEvidence",
 				"required": true,
-				"description": "The entity-scoped evidence whose coverage determines which scenario states to retain."
+				"description": "Explorer evidence for the selected revision or current branch. The projection applies to its after side and, when non-null, its before side; other top-level fields are retained.",
+				"examples": [
+					{
+						"mode": "current",
+						"scenarios": [],
+						"after": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"detail": null,
+							"record": null,
+							"captures": [],
+							"coverage": [],
+							"gap": null
+						},
+						"before": null,
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			},
 			{
 				"name": "recordedProjection.entityId",
 				"type": "string",
 				"required": true,
-				"description": "The exact unit identity to retain in registry details, reasons, failures, measurements, budgets and change summaries."
+				"description": "Exact registered unit ID to keep in revision details and entity-scoped results. Equality checks and failure-prefix matching use it verbatim.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "side.whole",
 				"type": "ExplorerSide",
 				"required": true,
-				"description": "Complete evidence side whose revision and record metadata must be preserved."
+				"description": "One side with its revision detail, judging record, captures, coverage and gap. If detail is null, the function returns the side unchanged; otherwise coverage selects retained scenario states.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"detail": null,
+						"record": null,
+						"captures": [],
+						"coverage": [],
+						"gap": null
+					}
+				]
 			},
 			{
 				"name": "side.entity",
 				"type": "string",
 				"required": true,
-				"description": "Registered entity identifier used to restrict the projected detail and records."
+				"description": "Exact registered unit ID used to retain matching registry units, entity-specific measurements and explanations, and failures beginning with that ID followed by a colon and space.",
+				"examples": ["reports.component.evidence-grid"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordedProjection",
 				"type": "ExplorerEvidence",
-				"description": "Entity-scoped sides preserve captures, coverage, tests, judging records and the opaque source-tree hash needed to re-derive identical-tree screenshots. Unrelated units, graph edges, changed files, uncertainty lists and cache filenames are excluded. A side without detail stays unchanged. The input is not mutated."
+				"description": "Evidence with each available side's detail scoped to entityId; top-level scenario declarations and side captures and coverage are preserved. A side without detail is returned unchanged, and the input object is not mutated.",
+				"examples": [
+					{
+						"mode": "current",
+						"scenarios": [],
+						"after": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"detail": null,
+							"record": null,
+							"captures": [],
+							"coverage": [],
+							"gap": null
+						},
+						"before": null,
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "recordedProjection",
@@ -59,24 +106,59 @@
 						"name": "recordedProjection.evidence",
 						"type": "ExplorerEvidence",
 						"required": true,
-						"description": "The entity-scoped evidence whose coverage determines which scenario states to retain."
+						"description": "Explorer evidence for the selected revision or current branch. The projection applies to its after side and, when non-null, its before side; other top-level fields are retained.",
+						"examples": [
+							{
+								"mode": "current",
+								"scenarios": [],
+								"after": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"detail": null,
+									"record": null,
+									"captures": [],
+									"coverage": [],
+									"gap": null
+								},
+								"before": null,
+								"initial": null,
+								"incomparable": []
+							}
+						]
 					},
 					{
 						"name": "recordedProjection.entityId",
 						"type": "string",
 						"required": true,
-						"description": "The exact unit identity to retain in registry details, reasons, failures, measurements, budgets and change summaries."
+						"description": "Exact registered unit ID to keep in revision details and entity-scoped results. Equality checks and failure-prefix matching use it verbatim.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordedProjection",
 						"type": "ExplorerEvidence",
-						"description": "Entity-scoped sides preserve captures, coverage, tests, judging records and the opaque source-tree hash needed to re-derive identical-tree screenshots. Unrelated units, graph edges, changed files, uncertainty lists and cache filenames are excluded. A side without detail stays unchanged. The input is not mutated."
+						"description": "Evidence with each available side's detail scoped to entityId; top-level scenario declarations and side captures and coverage are preserved. A side without detail is returned unchanged, and the input object is not mutated.",
+						"examples": [
+							{
+								"mode": "current",
+								"scenarios": [],
+								"after": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"detail": null,
+									"record": null,
+									"captures": [],
+									"coverage": [],
+									"gap": null
+								},
+								"before": null,
+								"initial": null,
+								"incomparable": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "side",
@@ -85,23 +167,45 @@
 						"name": "side.whole",
 						"type": "ExplorerSide",
 						"required": true,
-						"description": "Complete evidence side whose revision and record metadata must be preserved."
+						"description": "One side with its revision detail, judging record, captures, coverage and gap. If detail is null, the function returns the side unchanged; otherwise coverage selects retained scenario states.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"detail": null,
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": null
+							}
+						]
 					},
 					{
 						"name": "side.entity",
 						"type": "string",
 						"required": true,
-						"description": "Registered entity identifier used to restrict the projected detail and records."
+						"description": "Exact registered unit ID used to retain matching registry units, entity-specific measurements and explanations, and failures beginning with that ID followed by a colon and space.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "side",
-						"type": "ExplorerSide"
+						"type": "ExplorerSide",
+						"description": "Projected side preserving its commit, captures, coverage and gap. When detail exists, unrelated unit data and graph edges are removed, and the side's record becomes the matching projected record or null; without detail, the original side is returned.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"detail": null,
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
