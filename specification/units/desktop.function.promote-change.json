@@ -21,46 +21,63 @@
 				"name": "prepareChangeEnvironment.session",
 				"type": "ProjectSessionService",
 				"required": true,
-				"description": "Project session used to identify the active source repository and configured branch."
+				"description": "Project session whose requireProject().root is the source repository root that the environment checks run in; the configured source branch comes from deploymentConfig(root), not from this session."
 			},
 			{
 				"name": "prepareChangeEnvironment.request",
 				"type": "| Pick<RunRequest, 'mode' | 'environment'> | { mode: 'ask' | 'change'; environment?: RunRequest['environment'] }",
 				"required": true,
-				"description": "Run mode and optional selected environment; unscoped or read-only requests do not promote."
+				"description": "Run mode and optional environment; only mode 'change' with an environment runs the branch, clean-worktree and target checks, and every environment changeEnvironment returns for it needs a configured deployment target. Any other request, including a change with no environment, resolves without checks.",
+				"examples": [
+					{
+						"mode": "change",
+						"environment": "prod"
+					},
+					{
+						"mode": "change"
+					},
+					{
+						"mode": "ask"
+					}
+				]
 			},
 			{
 				"name": "promoteChange.context",
 				"type": "PromotionContext",
 				"required": true,
-				"description": "Repository-locked run context with source revision, cancellation signal and status emitter."
+				"description": "Repository-locked run context for the change run, from which promoteChange reads root, emit, id, signal, session, revision.branch and request.environment. It runs inside the change run's existing repository lock, and no remote branches are pushed."
 			},
 			{
 				"name": "promoteChange.before",
 				"type": "SourceSnapshot",
 				"required": true,
-				"description": "Source snapshot taken before the agent writes; only observed changes are staged."
+				"description": "Baseline Map from repository-relative path to content hash (sha256 hex, or 'link:' plus the target for a symbolic link); files that are missing or neither regular files nor symbolic links are left out. promoteChange compares it with a fresh sourceSnapshot(root) through sourceChanges and stages only the paths sourceChanges reports."
 			}
 		],
 		"outputs": [
 			{
 				"name": "prepareChangeEnvironment",
 				"type": "unknown",
-				"description": "Resolves when admission is safe or the request is unscoped; rejects invalid mappings or source state."
+				"description": "Resolves with undefined when the request is not a change with an environment, or when the source branch, clean worktree and every required environment target pass; rejects with an Error for a branch other than config.sourceBranch, a dirty worktree or a missing target."
 			},
 			{
 				"name": "promoteChange",
 				"type": "Promise<string>",
-				"description": "Public summary naming the queued lower boundary and the separate production action when needed."
+				"description": "Resolves with a summary string: 'Code changes recorded. Verification is still required.' when the request has no environment, otherwise a line naming the last environment changeEnvironment returns (preprod for prod) and, for prod, a hint to use Deploy to promote preprod to production.",
+				"examples": [
+					"Code changes recorded. Verification is still required.",
+					"Change verified and committed. Deployments through preprod are queued; follow the deployment activity indicator. Use Deploy to promote preprod to production."
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
+				"description": "prepareChangeEnvironment throws for a branch other than config.sourceBranch, a dirty source worktree or an environment without a configured target, and promoteChange throws 'Change cancelled before deployment.' when context.signal is aborted before the verification command runs or after session.atBranch resolves. Errors from called helpers propagate unchanged, including changeEnvironment's 'Unknown deployment environment.' for an environment outside dev, stage, preprod and prod."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "prepareChangeEnvironment",
@@ -69,29 +86,42 @@
 						"name": "prepareChangeEnvironment.session",
 						"type": "ProjectSessionService",
 						"required": true,
-						"description": "Project session used to identify the active source repository and configured branch."
+						"description": "Project session whose requireProject().root is the source repository root that the environment checks run in; the configured source branch comes from deploymentConfig(root), not from this session."
 					},
 					{
 						"name": "prepareChangeEnvironment.request",
 						"type": "| Pick<RunRequest, 'mode' | 'environment'> | { mode: 'ask' | 'change'; environment?: RunRequest['environment'] }",
 						"required": true,
-						"description": "Run mode and optional selected environment; unscoped or read-only requests do not promote."
+						"description": "Run mode and optional environment; only mode 'change' with an environment runs the branch, clean-worktree and target checks, and every environment changeEnvironment returns for it needs a configured deployment target. Any other request, including a change with no environment, resolves without checks.",
+						"examples": [
+							{
+								"mode": "change",
+								"environment": "prod"
+							},
+							{
+								"mode": "change"
+							},
+							{
+								"mode": "ask"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "prepareChangeEnvironment",
 						"type": "unknown",
-						"description": "Resolves when admission is safe or the request is unscoped; rejects invalid mappings or source state."
+						"description": "Resolves with undefined when the request is not a change with an environment, or when the source branch, clean worktree and every required environment target pass; rejects with an Error for a branch other than config.sourceBranch, a dirty worktree or a missing target."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws for a branch other than config.sourceBranch, a dirty source worktree or an environment without a configured target. Errors from session.requireProject, deploymentConfig, gitRead and changeEnvironment propagate unchanged; changeEnvironment throws 'Unknown deployment environment.' for an environment outside dev, stage, preprod and prod."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "promoteChange",
@@ -100,29 +130,34 @@
 						"name": "promoteChange.context",
 						"type": "PromotionContext",
 						"required": true,
-						"description": "Repository-locked run context with source revision, cancellation signal and status emitter."
+						"description": "Repository-locked run context for the change run, from which promoteChange reads root, emit, id, signal, session, revision.branch and request.environment. It runs inside the change run's existing repository lock, and no remote branches are pushed."
 					},
 					{
 						"name": "promoteChange.before",
 						"type": "SourceSnapshot",
 						"required": true,
-						"description": "Source snapshot taken before the agent writes; only observed changes are staged."
+						"description": "Baseline Map from repository-relative path to content hash (sha256 hex, or 'link:' plus the target for a symbolic link); files that are missing or neither regular files nor symbolic links are left out. promoteChange compares it with a fresh sourceSnapshot(root) through sourceChanges and stages only the paths sourceChanges reports."
 					}
 				],
 				"outputs": [
 					{
 						"name": "promoteChange",
 						"type": "Promise<string>",
-						"description": "Public summary naming the queued lower boundary and the separate production action when needed."
+						"description": "Resolves with a summary string: 'Code changes recorded. Verification is still required.' when the request has no environment, otherwise a line naming the last environment changeEnvironment returns (preprod for prod) and, for prod, a hint to use Deploy to promote preprod to production.",
+						"examples": [
+							"Code changes recorded. Verification is still required.",
+							"Change verified and committed. Deployments through preprod are queued; follow the deployment activity indicator. Use Deploy to promote preprod to production."
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws 'Change cancelled before deployment.' when context.signal is aborted before the verification command runs or after session.atBranch resolves. Errors from deploymentCommand, session.atBranch, gitRead, sourceSnapshot, DeploymentService.enqueue and changeEnvironment propagate unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
