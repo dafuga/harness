@@ -24,41 +24,48 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The contract of the component; by tab its measurements, an unavailable one with its reason, and its source."
+				"description": "The details page of one component in the explorer frame: with no tab, or a tab other than measurements or source, its contract and performance profile; with ?tab=measurements its measurements and frozen limits; with ?tab=source its source files and test files. A notice takes the place of that content when the history, the revision, the registry or the component cannot be shown, and nothing of another revision is shown in its place."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Component details · Harness"
+				"description": "The document title: HarnessScreen sets it to the title 'Component details' followed by ' · Harness', so it is the same for every component, tab and revision.",
+				"examples": ["Component details · Harness"]
 			}
 		],
 		"errors": [
 			{
 				"name": "not-in-history",
 				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
+				"description": "A branch or commit that the history does not hold, or a commit that its branch does not contain, is said by a notice that names it, such as 'Commit <short> is not in this history.' or 'Branch <name> does not contain commit <short>.', and no revision is shown. When the history has a home address, the notice also links 'Open the newest commit'."
 			},
 			{
 				"name": "no-registry",
 				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
+				"description": "A revision whose registry is not available is said by a notice titled 'No registry at this revision', whose message is the registry's own gap or else 'No unit registry is stored at' and the short commit, and the component is not drawn. Nothing of another revision is shown in its place, and the notice's action 'Stay on this revision' goes to the components of that revision."
 			},
 			{
 				"name": "not-at-revision",
 				"type": "notice",
-				"description": "A component the shown revision does not hold is said, with the way back to the collection."
+				"description": "A component that the registry of the shown revision does not hold, and that its commit did not remove, is said by a notice titled 'Not at this revision', which reads 'Nothing named <entity> is in the registry at <short>.' and offers 'Back to the collection' for the components of that revision. Nothing of another revision is shown in its place."
 			},
 			{
 				"name": "other-category",
 				"type": "redirect",
-				"description": "A unit that is not a component at this revision is led to the address of its own category."
+				"description": "Once the revision is loaded, an address whose component is listed under another category at this revision is replaced, not added to the history, by the same address under that category, keeping the branch, commit, section and tab."
 			},
 			{
 				"name": "not-admitted",
 				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
+				"description": "A data request that the owner policy does not admit is answered 403 Forbidden before any history is read. The policy admits a request only when owner mode is loopback, the server is bound to a loopback address, the client connects from a loopback address and no address header is configured; Host and Forwarded headers are never consulted."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A data request that is not answered OK, such as a 403 refusal or a 404 for a file that is not stored, makes the client reject with an Error whose message is '<path> could not be loaded (<status>)', and the console catches it. A failed index shows 'The history could not be loaded. Refresh the page to try again.', a failed revision shows 'This revision could not be loaded. Refresh the page to try again.', and a failed first parent or activity read is taken as absent with no notice."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
