@@ -6,7 +6,9 @@ import { contractUnit, writeContract } from '../../support/contractsProject';
 import {
 	assertHistoryOwnKeys,
 	assertHistoryMetadataArrays,
-	assertLegacyAndMergedHistory
+	assertLegacyAndMergedHistory,
+	assertInitialHistoryChange,
+	assertHistoryText
 } from '../../support/contractHistoryMatrix';
 import {
 	commitHistory,
@@ -54,18 +56,7 @@ test('ContractsCommand diff snapshots return complete semantic JSON and accurate
 		changed.futureField.enabled = true;
 		await writeContract(root, 'price.json', changed);
 		const diff = JSON.parse(await runHistory(root, 'diff', '--json'));
-		expect(diff.changes).toEqual([
-			{
-				id: unit.id,
-				kind: 'changed',
-				contractPath: 'specification/units/price.json',
-				sourcePaths: unit.owns.source,
-				fields: [
-					{ path: 'outputs[total].type', kind: 'changed', before: 'number', after: 'Money' },
-					{ path: 'futureField.enabled', kind: 'changed', before: false, after: true }
-				]
-			}
-		]);
+		assertInitialHistoryChange(diff.changes, unit);
 		expect(await runHistory(root, 'diff')).toContain('outputs[total].type');
 		await assertOrderedHistoryExamples(root, unit);
 		await assertHistoryMetadataArrays(root);
@@ -175,6 +166,7 @@ test('ContractsCommand log and last follow unit identity and skip nonmaterial co
 			JSON.parse(await runHistory(root, 'log', '--folder', 'src/models', '--json')).entries
 		).toEqual([]);
 		expect(log.entries[0].changes[0].kind).toBe('moved');
+		await assertHistoryText(root, unit.id, `${initial}..${moved}`);
 		await assertLegacyAndMergedHistory(root);
 	}));
 

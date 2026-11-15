@@ -4,6 +4,43 @@ import { expect } from 'vitest';
 import { contractUnit, writeContract } from './contractsProject';
 import { commitHistory, historyGit, runHistory } from './contractHistory';
 
+export function assertInitialHistoryChange(
+	changes: unknown,
+	unit: { id: string; owns: { source: string[] } }
+): void {
+	expect(changes).toEqual([
+		{
+			id: unit.id,
+			kind: 'changed',
+			contractPath: 'specification/units/price.json',
+			sourcePaths: unit.owns.source,
+			fieldCounts: { added: 0, removed: 0, changed: 2 },
+			fields: [
+				{ path: 'outputs[total].type', kind: 'changed', before: 'number', after: 'Money' },
+				{ path: 'futureField.enabled', kind: 'changed', before: false, after: true }
+			]
+		}
+	]);
+}
+
+export async function assertHistoryText(root: string, unit: string, range: string): Promise<void> {
+	const log = await runHistory(root, 'log', unit);
+	expect(log).not.toContain('outputs[total].type:');
+	const last = await runHistory(root, 'last', unit, '--field', 'type');
+	expect(last).toContain('outputs[total].type:');
+	expect(last).not.toContain('History limited');
+	expect(last).not.toContain('raise --limit');
+	const summary = await runHistory(root, 'diff', range, '--field', 'type', '--summary');
+	expect(summary).toContain('+0/-0/~1');
+	for (const text of [log, last, summary])
+		expect(text.split('\n').every((line) => line.length <= 100)).toBe(true);
+	const json = JSON.parse(
+		await runHistory(root, 'diff', range, '--field', 'type', '--summary', '--json')
+	);
+	expect(json.changes[0].fieldCounts).toEqual({ added: 0, removed: 0, changed: 1 });
+	expect(json.changes[0].fields).toBeUndefined();
+}
+
 export async function assertHistoryOwnKeys(root: string): Promise<void> {
 	const unit = contractUnit('service.price', 'src/services/billing/Price.ts');
 	await rm(join(root, 'specification/units/untracked.json'));
