@@ -95,7 +95,7 @@
 		"outputs": [
 			{
 				"name": "GameImageService.generate",
-				"type": "unknown",
+				"type": "Promise<{ image: CheckpointImage; dataUrl: string }>",
 				"description": "Resolves to an image record and a PNG data URL. The image record has path, model (fixed to gpt-image-2), prompt, and ISO createdAt; the assembled prompt is limited to 20,000 characters.",
 				"examples": [
 					{
@@ -111,7 +111,7 @@
 			},
 			{
 				"name": "GameImageService.read",
-				"type": "unknown",
+				"type": "Promise<string>",
 				"description": "Resolves to the value returned by CheckpointImageRepository.read for the supplied path and commit; this service does not define that value's shape.",
 				"examples": [
 					"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGOQm5DyHwAD9AISxJ7C2gAAAABJRU5ErkJggg=="
@@ -173,7 +173,7 @@
 				"outputs": [
 					{
 						"name": "GameImageService.generate",
-						"type": "unknown",
+						"type": "Promise<{ image: CheckpointImage; dataUrl: string }>",
 						"description": "Resolves to an image record and a PNG data URL. The image record has path, model (fixed to gpt-image-2), prompt, and ISO createdAt; the assembled prompt is limited to 20,000 characters.",
 						"examples": [
 							{
@@ -221,7 +221,7 @@
 				"outputs": [
 					{
 						"name": "GameImageService.read",
-						"type": "unknown",
+						"type": "Promise<string>",
 						"description": "Resolves to the value returned by CheckpointImageRepository.read for the supplied path and commit; this service does not define that value's shape.",
 						"examples": [
 							"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGOQm5DyHwAD9AISxJ7C2gAAAABJRU5ErkJggg=="
@@ -252,7 +252,7 @@
 				"outputs": [
 					{
 						"name": "GameImageService.constructor",
-						"type": "unknown",
+						"type": "GameImageService",
 						"description": "Creates a GameImageService instance retaining the supplied session and adapter; the adapter defaults to new GptImageAdapter()."
 					}
 				],

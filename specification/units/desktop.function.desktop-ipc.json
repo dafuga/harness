@@ -34,7 +34,7 @@
 		"outputs": [
 			{
 				"name": "bootstrapChannel",
-				"type": "unknown",
+				"type": "\"transport:bootstrap\"",
 				"description": "The one channel the main process answers over IPC: `transport:bootstrap`. It carries the bootstrap for the caller's own loopback socket; project operations and the control port use that socket.",
 				"examples": ["transport:bootstrap"]
 			},

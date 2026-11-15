@@ -42,7 +42,7 @@
 		"outputs": [
 			{
 				"name": "hostedEvidencePath",
-				"type": "unknown",
+				"type": "string",
 				"description": "The function returns a relative URL at /api/projects/{encoded projectId}/{operation} with validated fields in a fixed query order. Null artifact fields are omitted, unrecognized fields are discarded by evidencePayload, and no network request is made.",
 				"examples": [
 					"/api/projects/reports-web/evidence?entityId=reports.component.evidence-grid&commit=0123456789abcdef0123456789abcdef01234567&branch=main&mode=current",
@@ -88,7 +88,7 @@
 				"outputs": [
 					{
 						"name": "hostedEvidencePath",
-						"type": "unknown",
+						"type": "string",
 						"description": "The function returns a relative URL at /api/projects/{encoded projectId}/{operation} with validated fields in a fixed query order. Null artifact fields are omitted, unrecognized fields are discarded by evidencePayload, and no network request is made.",
 						"examples": [
 							"/api/projects/reports-web/evidence?entityId=reports.component.evidence-grid&commit=0123456789abcdef0123456789abcdef01234567&branch=main&mode=current",

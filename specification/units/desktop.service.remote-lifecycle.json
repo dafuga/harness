@@ -117,7 +117,7 @@
 				"outputs": [
 					{
 						"name": "RemoteLifecycleService.constructor",
-						"type": "unknown",
+						"type": "RemoteLifecycleService",
 						"description": "The RemoteLifecycleService instance that new creates; it starts with locked and suspended set to false and keeps the options it was given."
 					}
 				],

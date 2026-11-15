@@ -130,7 +130,7 @@
 		"outputs": [
 			{
 				"name": "RemoteProjectionService.branch",
-				"type": "unknown",
+				"type": "string | null",
 				"description": "The branch recorded by the most recent successful snapshot for this project. It is null until the service has recorded a branch.",
 				"examples": ["main", null]
 			},
@@ -173,7 +173,7 @@
 			},
 			{
 				"name": "RemoteProjectionService.projects",
-				"type": "unknown",
+				"type": "ReturnType<ProjectDiscoveryService['projects']>",
 				"description": "The project-discovery result for the principal's owned and joined projects. The discovery helper reads a newly found project once so it can be kept offline.",
 				"examples": [[]]
 			},
@@ -229,7 +229,7 @@
 				"outputs": [
 					{
 						"name": "RemoteProjectionService.branch",
-						"type": "unknown",
+						"type": "string | null",
 						"description": "The branch recorded by the most recent successful snapshot for this project. It is null until the service has recorded a branch.",
 						"examples": ["main", null]
 					}
@@ -323,7 +323,7 @@
 				"outputs": [
 					{
 						"name": "RemoteProjectionService.projects",
-						"type": "unknown",
+						"type": "ReturnType<ProjectDiscoveryService['projects']>",
 						"description": "The project-discovery result for the principal's owned and joined projects. The discovery helper reads a newly found project once so it can be kept offline.",
 						"examples": [[]]
 					}
@@ -470,7 +470,7 @@
 				"outputs": [
 					{
 						"name": "RemoteProjectionService.constructor",
-						"type": "unknown",
+						"type": "RemoteProjectionService",
 						"description": "The constructed RemoteProjectionService instance. It retains the supplied HTTP adapter and creates the hosted read helper, project discovery helper, and response validator."
 					}
 				],

@@ -220,7 +220,7 @@
 				"outputs": [
 					{
 						"name": "NativeAuthService.constructor",
-						"type": "unknown",
+						"type": "NativeAuthService",
 						"description": "The NativeAuthService instance created by new NativeAuthService(options), holding the options, a null pending handoff, a serial promise queue and a NativeHandoffValidator as private state."
 					}
 				],

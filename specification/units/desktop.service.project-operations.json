@@ -100,7 +100,7 @@
 		"outputs": [
 			{
 				"name": "ProjectOperationsService.listProjects",
-				"type": "unknown",
+				"type": "ReturnType<ProjectSessionService['registry']['list']>",
 				"description": "Returns the registered local projects from session.registry.list(). Each item has a local- ID containing the SHA-256 of its canonical root, its basename, kind local, and the root path; invalid registry data rejects.",
 				"examples": [
 					[],
@@ -116,7 +116,7 @@
 			},
 			{
 				"name": "ProjectOperationsService.selectProject",
-				"type": "unknown",
+				"type": "ReturnType<ProjectSessionService['open']>",
 				"description": "Resolves to the project snapshot from session.snapshot() or session.open(). An already selected project with no switch in progress is snapshotted using branch null and commit null; otherwise the registered project root is opened.",
 				"examples": [
 					{
@@ -163,7 +163,7 @@
 			},
 			{
 				"name": "ProjectOperationsService.addComment",
-				"type": "unknown",
+				"type": "ReturnType<ProjectSessionService['outbox']['save']>",
 				"description": "Resolves to the pending comment record saved by the local outbox. Non-discussion anchors are checked against the current revision and catalog, and any referenced image or thread must match.",
 				"examples": [
 					{
@@ -192,7 +192,7 @@
 			},
 			{
 				"name": "ProjectOperationsService.pendingComments",
-				"type": "unknown",
+				"type": "ReturnType<ProjectSessionService['outbox']['list']>",
 				"description": "Resolves to the selected project's pending local comment records from the outbox. It requires a fully open project and does not publish or sync these drafts.",
 				"examples": [
 					[],
@@ -238,7 +238,7 @@
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.listProjects",
-						"type": "unknown",
+						"type": "ReturnType<ProjectSessionService['registry']['list']>",
 						"description": "Returns the registered local projects from session.registry.list(). Each item has a local- ID containing the SHA-256 of its canonical root, its basename, kind local, and the root path; invalid registry data rejects.",
 						"examples": [
 							[],
@@ -280,7 +280,7 @@
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.selectProject",
-						"type": "unknown",
+						"type": "ReturnType<ProjectSessionService['open']>",
 						"description": "Resolves to the project snapshot from session.snapshot() or session.open(). An already selected project with no switch in progress is snapshotted using branch null and commit null; otherwise the registered project root is opened.",
 						"examples": [
 							{
@@ -393,7 +393,7 @@
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.addComment",
-						"type": "unknown",
+						"type": "ReturnType<ProjectSessionService['outbox']['save']>",
 						"description": "Resolves to the pending comment record saved by the local outbox. Non-discussion anchors are checked against the current revision and catalog, and any referenced image or thread must match.",
 						"examples": [
 							{
@@ -450,7 +450,7 @@
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.pendingComments",
-						"type": "unknown",
+						"type": "ReturnType<ProjectSessionService['outbox']['list']>",
 						"description": "Resolves to the selected project's pending local comment records from the outbox. It requires a fully open project and does not publish or sync these drafts.",
 						"examples": [
 							[],
@@ -511,7 +511,7 @@
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.constructor",
-						"type": "unknown",
+						"type": "ProjectOperationsService",
 						"description": "The constructed ProjectOperationsService instance, which retains the supplied session and outbox. The outbox defaults to session.outbox when omitted."
 					}
 				],

@@ -36,7 +36,7 @@
 		"outputs": [
 			{
 				"name": "hostedImage",
-				"type": "unknown",
+				"type": "Uint8Array",
 				"description": "The decoded image as the same Uint8Array passed through ImageBytesValidator. The validator requires a complete PNG with nonzero dimensions and at most 32,000,000 pixels; the hosted-image 25,000,000-byte cap is applied first."
 			}
 		],
@@ -72,7 +72,7 @@
 				"outputs": [
 					{
 						"name": "hostedImage",
-						"type": "unknown",
+						"type": "Uint8Array",
 						"description": "The decoded image as the same Uint8Array passed through ImageBytesValidator. The validator requires a complete PNG with nonzero dimensions and at most 32,000,000 pixels; the hosted-image 25,000,000-byte cap is applied first."
 					}
 				],
