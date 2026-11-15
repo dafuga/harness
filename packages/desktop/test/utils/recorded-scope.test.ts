@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import { recordedScope } from '../../src/utils/recordedScope';
+import { recordedScope, recordedTip } from '../../src/utils/reports-media/recordedScope';
 import { head, home, parent } from '../recorded-sample';
 
 const at = '2026-10-01T00:00:00.000Z';
@@ -59,6 +59,13 @@ test('the tip is addressed by its branch alone, and only while it is the tip', (
 	expect(() => recordedScope(current, { ...facts, tip: 'e'.repeat(40) })).toThrow(
 		/no longer the tip of branch main/
 	);
+});
+
+test('the tip guard refuses a moved tip only for the current view, and names its branch', () => {
+	const current = { ...query, mode: 'current' as const };
+	expect(() => recordedTip(current, head)).not.toThrow();
+	expect(() => recordedTip(current, 'e'.repeat(40))).toThrow(/no longer the tip of branch main/);
+	expect(() => recordedTip(query, 'e'.repeat(40))).not.toThrow();
 });
 
 test('an entity that is not registered, or is of no listed category, is refused', () => {

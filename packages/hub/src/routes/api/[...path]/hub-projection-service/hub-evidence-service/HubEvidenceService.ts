@@ -9,7 +9,7 @@ import { evidencePayload } from '../../../../../../../desktop/src/utils/verifica
 import { artifactAnswer } from '../../../../../../../desktop/src/utils/artifact-answer/artifactAnswer';
 import { artifactLimit } from '../../../../../../../desktop/src/utils/reports-media/artifactMedia';
 import { recordedAnswer } from '../../../../../../../desktop/src/utils/recorded-answer/recordedAnswer';
-import { recordedCapture } from '../../../../../../../desktop/src/utils/recordedCapture';
+import { recordedCapture } from '../../../../../../../desktop/src/utils/reports-media/recordedCapture';
 import { explorerEvidence } from '$reports/utils/explorerEvidence';
 import { hubFail } from '../../../../../utils/development-tooling/hubJson';
 import { hubEvidenceOrigin } from '../../../../../utils/verification-evidence/hubEvidenceViews';

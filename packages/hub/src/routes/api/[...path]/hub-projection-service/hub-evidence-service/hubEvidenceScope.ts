@@ -6,7 +6,7 @@ import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
 } from '../../../../../../../desktop/src/models/DesktopEvidence.types';
-import { recordedScope } from '../../../../../../../desktop/src/utils/recordedScope';
+import { recordedScope } from '../../../../../../../desktop/src/utils/reports-media/recordedScope';
 import {
 	hubSource,
 	type HubSourceContext

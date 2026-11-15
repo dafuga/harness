@@ -10,20 +10,10 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/recorded-answer/recordedProjection.ts",
-			"packages/desktop/src/utils/recordedProjection.ts",
 			"packages/desktop/src/utils/reports-media/recordedProjection.ts",
 			"packages/desktop/src/utils/reports-media/recordedProjection.types.ts"
 		],
-		"symbols": [
-			"recordedProjection",
-			"recordedProjection",
-			"side",
-			"side",
-			"recordedProjection",
-			"Impact",
-			"Shown",
-			"Staged"
-		]
+		"symbols": ["recordedProjection", "side", "recordedProjection", "Impact", "Shown", "Staged"]
 	},
 	"contract": {
 		"origin": "declared",
