@@ -20,6 +20,7 @@
 			"ModuleTaskRunnerAdapter.command",
 			"ModuleTaskRunnerAdapter.run",
 			"TaskProcessResult",
+			"TaskProcessExecutor",
 			"TaskPublicEvent",
 			"ModuleTaskRunError",
 			"taskProcess",
@@ -31,7 +32,7 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskRunnerAdapter.constructor.execute",
-				"type": "unknown",
+				"type": "TaskProcessExecutor",
 				"required": false
 			},
 			{
@@ -143,7 +144,7 @@
 				"inputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.constructor.execute",
-						"type": "unknown",
+						"type": "TaskProcessExecutor",
 						"required": false
 					}
 				],

@@ -5,13 +5,13 @@ import type {
 	TaskRunner,
 	TaskSelection
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
-import type { TaskPublicEvent } from './ModuleTaskRunnerAdapter.types';
+import type { TaskProcessExecutor, TaskPublicEvent } from './ModuleTaskRunnerAdapter.types';
 import { ModuleTaskRunError } from './ModuleTaskRunnerAdapter.types';
 import { taskProcess } from './module-task-runner-adapter/taskProcess';
 import { taskUsage } from './module-task-runner-adapter/taskUsage';
 /** Run the installed CLIs with saved login, exact model/effort and public output only. */
 export class ModuleTaskRunnerAdapter implements TaskRunner {
-	constructor(private readonly execute = taskProcess) {}
+	constructor(private readonly execute: TaskProcessExecutor = taskProcess) {}
 	command(selection: TaskSelection): string[] {
 		if (selection.provider === 'claude') return claudeTaskCommand(selection);
 		return [

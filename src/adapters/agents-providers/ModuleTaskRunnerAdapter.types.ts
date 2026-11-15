@@ -1,8 +1,14 @@
 // @harness-uid u_rw64iex44n
+import type { TaskRunInput } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 export interface TaskProcessResult {
 	code: number;
 	stdout: string;
 }
+/** Runs one task CLI command for a run input and resolves its captured exit code and stdout. */
+export type TaskProcessExecutor = (
+	command: string[],
+	input: TaskRunInput
+) => Promise<TaskProcessResult>;
 export interface TaskPublicEvent {
 	type: string;
 	subtype?: string;
