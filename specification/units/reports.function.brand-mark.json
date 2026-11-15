@@ -18,25 +18,70 @@
 			{
 				"name": "brandGrid",
 				"type": "unknown",
-				"description": "The 32-unit geometry grid."
+				"description": "The side length of the mark's square grid, 32 units, which the tiles in brandTiles span from 0 to 32 on both axes; it matters to code that works in tile coordinates. It is a fixed const number that is not computed from the tiles, and brandMark() does not read it: its SVG has its own fixed 52-unit viewBox.",
+				"examples": [32]
 			},
 			{
 				"name": "brandTiles",
 				"type": "unknown",
-				"description": "Five 10-unit square tiles at the corners and center of a three-by-three lattice, spaced in 11-unit steps, with stable numeric identifiers."
+				"description": "The five tiles of the mark in order, each an object with a numeric id (its index, 0 to 4), an x and y origin in the 32-unit grid, and a size of 10 units; brandMark() adds 10 to each origin when it draws them. The tiles sit at the four corners and the center of a 3 by 3 lattice, spaced in 11-unit steps (a 10-unit tile plus a 1-unit gap), and the array is not frozen, so edits to it change the output of later brandMark() calls.",
+				"examples": [
+					[
+						{
+							"id": 0,
+							"x": 0,
+							"y": 0,
+							"size": 10
+						},
+						{
+							"id": 1,
+							"x": 22,
+							"y": 0,
+							"size": 10
+						},
+						{
+							"id": 2,
+							"x": 11,
+							"y": 11,
+							"size": 10
+						},
+						{
+							"id": 3,
+							"x": 0,
+							"y": 22,
+							"size": 10
+						},
+						{
+							"id": 4,
+							"x": 22,
+							"y": 22,
+							"size": 10
+						}
+					]
+				]
 			},
 			{
 				"name": "brandColors",
 				"type": "unknown",
-				"description": "Gold #f2bf3f and navy #0b1a37 colors."
+				"description": "The two brand colors as hex strings: gold #f2bf3f fills the tiles and navy #0b1a37 fills the plate behind them in brandMark(). The object is not frozen, so a caller that changes a property changes the colors used by later brandMark() calls.",
+				"examples": [
+					{
+						"gold": "#f2bf3f",
+						"navy": "#0b1a37"
+					}
+				]
 			},
 			{
 				"name": "brandMark",
 				"type": "string",
-				"description": "Standalone SVG text with gold tiles inset by ten units on a navy 52-unit rounded square."
+				"description": "The mark as standalone SVG markup, as returned by brandMark() for use as a favicon: a navy rounded square of 52 units with corner radius 10, carrying five gold 10-unit tiles offset by 10 units. It is rebuilt on every call from the current brandTiles and brandColors, and it has no width or height attributes, so its rendered size comes from the element that embeds it.",
+				"examples": [
+					"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 52 52\"><rect width=\"52\" height=\"52\" rx=\"10\" fill=\"#0b1a37\"/><rect x=\"10\" y=\"10\" width=\"10\" height=\"10\" fill=\"#f2bf3f\"/><rect x=\"32\" y=\"10\" width=\"10\" height=\"10\" fill=\"#f2bf3f\"/><rect x=\"21\" y=\"21\" width=\"10\" height=\"10\" fill=\"#f2bf3f\"/><rect x=\"10\" y=\"32\" width=\"10\" height=\"10\" fill=\"#f2bf3f\"/><rect x=\"32\" y=\"32\" width=\"10\" height=\"10\" fill=\"#f2bf3f\"/></svg>"
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "brandMark",
@@ -45,11 +90,14 @@
 					{
 						"name": "brandMark",
 						"type": "string",
-						"description": "Standalone SVG text with gold tiles inset by ten units on a navy 52-unit rounded square."
+						"description": "The mark as standalone SVG markup, as returned by brandMark() for use as a favicon: a navy rounded square of 52 units with corner radius 10, carrying five gold 10-unit tiles offset by 10 units. It is rebuilt on every call from the current brandTiles and brandColors, and it has no width or height attributes, so its rendered size comes from the element that embeds it.",
+						"examples": [
+							"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 52 52\"><rect width=\"52\" height=\"52\" rx=\"10\" fill=\"#0b1a37\"/><rect x=\"10\" y=\"10\" width=\"10\" height=\"10\" fill=\"#f2bf3f\"/><rect x=\"32\" y=\"10\" width=\"10\" height=\"10\" fill=\"#f2bf3f\"/><rect x=\"21\" y=\"21\" width=\"10\" height=\"10\" fill=\"#f2bf3f\"/><rect x=\"10\" y=\"32\" width=\"10\" height=\"10\" fill=\"#f2bf3f\"/><rect x=\"32\" y=\"32\" width=\"10\" height=\"10\" fill=\"#f2bf3f\"/></svg>"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
