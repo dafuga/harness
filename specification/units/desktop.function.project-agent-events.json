@@ -18,28 +18,18 @@
 				"name": "projectAgentEvents.agent",
 				"type": "ProjectAgent",
 				"required": true,
-				"description": "The project conversation that owns the active run and its visible messages.",
-				"examples": [
-					{
-						"workspace": {
-							"projectId": "local-demo"
-						},
-						"runId": "run-1",
-						"messages": [],
-						"said": ""
-					}
-				]
+				"description": "The mutable project-agent object whose run and conversation state receive the event. The handler ignores the event unless this agent has a nonempty active run id equal to the event's runId."
 			},
 			{
 				"name": "projectAgentEvents.value",
 				"type": "RunEvent",
 				"required": true,
-				"description": "Public progress, answer text, changes or terminal result from a specific run.",
+				"description": "A desktop bridge event carrying a runId and event-specific data for status, replay, text, failure, cancellation or completion. It matters only when its runId matches the agent's nonempty active run; terminal events can refresh the workspace and open a saved thread.",
 				"examples": [
 					{
 						"runId": "run-1",
 						"kind": "text",
-						"text": "See [[unit:app.component.toolbar]]"
+						"text": "The project reply is ready."
 					}
 				]
 			}
@@ -48,11 +38,17 @@
 			{
 				"name": "projectAgentEvents",
 				"type": "Promise<void>",
-				"description": "Updates only the matching conversation, keeps terminal text and refreshes its project. Resolves without a return value.",
-				"examples": [null]
+				"description": "A promise that resolves with undefined after processing the event, or immediately when its runId does not match the agent's active run. Terminal handling refreshes the workspace and can load deployments and navigate to a saved thread; uncaught handling errors reject the promise."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Propagated error",
+				"type": "thrown",
+				"description": "An exception raised while handling the event or recording a message, and rejections from terminal workspace refresh, optional deployment loading, or saved-thread setup and navigation, propagate through this promise. The handler does not catch or normalize these failures."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "projectAgentEvents",
@@ -61,28 +57,18 @@
 						"name": "projectAgentEvents.agent",
 						"type": "ProjectAgent",
 						"required": true,
-						"description": "The project conversation that owns the active run and its visible messages.",
-						"examples": [
-							{
-								"workspace": {
-									"projectId": "local-demo"
-								},
-								"runId": "run-1",
-								"messages": [],
-								"said": ""
-							}
-						]
+						"description": "The mutable project-agent object whose run and conversation state receive the event. The handler ignores the event unless this agent has a nonempty active run id equal to the event's runId."
 					},
 					{
 						"name": "projectAgentEvents.value",
 						"type": "RunEvent",
 						"required": true,
-						"description": "Public progress, answer text, changes or terminal result from a specific run.",
+						"description": "A desktop bridge event carrying a runId and event-specific data for status, replay, text, failure, cancellation or completion. It matters only when its runId matches the agent's nonempty active run; terminal events can refresh the workspace and open a saved thread.",
 						"examples": [
 							{
 								"runId": "run-1",
 								"kind": "text",
-								"text": "See [[unit:app.component.toolbar]]"
+								"text": "The project reply is ready."
 							}
 						]
 					}
@@ -91,12 +77,17 @@
 					{
 						"name": "projectAgentEvents",
 						"type": "Promise<void>",
-						"description": "Updates only the matching conversation, keeps terminal text and refreshes its project. Resolves without a return value.",
-						"examples": [null]
+						"description": "A promise that resolves with undefined after processing the event, or immediately when its runId does not match the agent's active run. Terminal handling refreshes the workspace and can load deployments and navigate to a saved thread; uncaught handling errors reject the promise."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Propagated error",
+						"type": "thrown",
+						"description": "An exception raised while handling the event or recording a message, and rejections from terminal workspace refresh, optional deployment loading, or saved-thread setup and navigation, propagate through this promise. The handler does not catch or normalize these failures."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
