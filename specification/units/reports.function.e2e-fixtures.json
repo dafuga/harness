@@ -43,67 +43,110 @@
 				"name": "e2eFixtures.env",
 				"type": "Environment",
 				"required": false,
-				"description": "Optional environment map, defaulting to process.env; requires HARNESS_E2E_ROOT."
+				"description": "Environment record used to resolve a run’s fixture paths; a truthy HARNESS_E2E_ROOT is required, and console and analytics overrides apply when present. Defaults to process.env.",
+				"examples": [
+					{
+						"HARNESS_E2E_ROOT": "/tmp/harness-reports-e2e-a1b2c3"
+					},
+					{
+						"HARNESS_E2E_ROOT": "/tmp/harness-reports-e2e-d4e5f6",
+						"HARNESS_CONSOLE_E2E_HOME": "/tmp/harness-console-e2e-d4e5f6",
+						"HARNESS_ANALYTICS_HOME": "/tmp/harness-analytics-e2e-d4e5f6"
+					}
+				]
 			},
 			{
 				"name": "freePorts.count",
 				"type": "number",
 				"required": true,
-				"description": "Number of loopback ports to sample; zero returns an empty list."
+				"description": "Number of loopback ports to sample; zero returns an empty array. The implementation does not validate other values as positive integers.",
+				"examples": [0, 1, 3]
 			},
 			{
 				"name": "openE2eRun.env",
 				"type": "Environment",
 				"required": false,
-				"description": "Optional mutable environment map, defaulting to process.env. Existing directory and named ports are retained; unnamed ports are assigned."
+				"description": "Mutable environment record used to name or create a run and record its ports. Defaults to process.env; a supplied HARNESS_E2E_ROOT is retained, and existing named ports are left intact.",
+				"examples": [
+					{},
+					{
+						"HARNESS_E2E_ROOT": "/tmp/harness-reports-e2e-a1b2c3",
+						"PROJECT_REPORTS_E2E_PORT": "4173"
+					}
+				]
 			},
 			{
 				"name": "namedE2eRun.env",
 				"type": "Environment",
 				"required": false,
-				"description": "Optional environment map, defaulting to process.env, inspected for a named root without an owner."
+				"description": "Environment record inspected for a truthy HARNESS_E2E_ROOT and a missing HARNESS_E2E_OWNER. Defaults to process.env.",
+				"examples": [
+					{},
+					{
+						"HARNESS_E2E_ROOT": "/tmp/harness-reports-e2e-a1b2c3"
+					}
+				]
 			},
 			{
 				"name": "closeE2eRun.env",
 				"type": "Environment",
 				"required": false,
-				"description": "Optional environment map, defaulting to process.env; cleanup requires this process to own its root."
+				"description": "Environment record whose run directories are removed only when HARNESS_E2E_OWNER equals this process’s PID and HARNESS_E2E_ROOT is set. Defaults to process.env.",
+				"examples": [
+					{},
+					{
+						"HARNESS_E2E_ROOT": "/tmp/harness-reports-e2e-a1b2c3",
+						"HARNESS_E2E_OWNER": "24680"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "e2eFixtures",
 				"type": "E2eFixtures",
-				"description": "Run root, report/console/analytics/build locations and a site-path function. Console and analytics environment overrides are honored."
+				"description": "Fixture locations for one run: its root, report, console, analytics and build directories, plus site(name) for a site checkout path. Console and analytics use their respective environment overrides when set; build is under the checkout cache keyed by the root basename."
 			},
 			{
 				"name": "freePorts",
 				"type": "number[]",
-				"description": "Ports that were available when a child process briefly listened, then released them. They are not reserved for later use."
+				"description": "Array of numeric loopback ports that a child process briefly bound and then released. The ports are not reserved for later use.",
+				"examples": [
+					[],
+					[49152],
+					[49152, 49153]
+				]
 			},
 			{
 				"name": "openE2eRun",
 				"type": "E2eFixtures",
-				"description": "Creates a temporary run directory and records this process as owner when none was named, assigns missing port variables, and returns fixture locations."
+				"description": "Fixture locations for the opened run. If HARNESS_E2E_ROOT is unset, it creates a temporary directory and marks this process as owner; it assigns and records free values for each unset port variable."
 			},
 			{
 				"name": "namedE2eRun",
 				"type": "boolean",
-				"description": "True when a root is set without an owner marker."
+				"description": "Boolean that is true only when HARNESS_E2E_ROOT is truthy and HARNESS_E2E_OWNER is unset.",
+				"examples": [true, false]
 			},
 			{
 				"name": "closeE2eRun",
 				"type": "void",
-				"description": "Removes the owned run directory and its frozen build cache. Does nothing when another process owns the run or no root exists."
+				"description": "Removes the run root and its frozen build-cache directory only when HARNESS_E2E_OWNER equals this process’s PID and HARNESS_E2E_ROOT is set; otherwise it returns without cleanup."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Missing HARNESS_E2E_ROOT throws explicit guidance. Filesystem, child-process and parsing failures may propagate."
+				"description": "Thrown when e2eFixtures has no truthy HARNESS_E2E_ROOT, or when filesystem or child-process operations fail."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown if freePorts cannot parse the child process’s port list as JSON."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "e2eFixtures",
@@ -112,23 +155,29 @@
 						"name": "e2eFixtures.env",
 						"type": "Environment",
 						"required": false,
-						"description": "Optional environment map, defaulting to process.env; requires HARNESS_E2E_ROOT."
+						"description": "Environment record used to resolve a run’s fixture paths; a truthy HARNESS_E2E_ROOT is required, and console and analytics overrides apply when present. Defaults to process.env.",
+						"examples": [
+							{
+								"HARNESS_E2E_ROOT": "/tmp/harness-reports-e2e-a1b2c3"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "e2eFixtures",
 						"type": "E2eFixtures",
-						"description": "Run root, report/console/analytics/build locations and a site-path function. Console and analytics environment overrides are honored."
+						"description": "Fixture locations for one run: its root, report, console, analytics and build directories, plus site(name) for a site checkout path. Console and analytics use their respective environment overrides when set; build is under the checkout cache keyed by the root basename."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with guidance when HARNESS_E2E_ROOT is unset or empty."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "freePorts",
@@ -137,18 +186,35 @@
 						"name": "freePorts.count",
 						"type": "number",
 						"required": true,
-						"description": "Number of loopback ports to sample; zero returns an empty list."
+						"description": "Number of loopback ports to sample; zero returns an empty array. The implementation does not validate other values as positive integers.",
+						"examples": [0, 1, 3]
 					}
 				],
 				"outputs": [
 					{
 						"name": "freePorts",
 						"type": "number[]",
-						"description": "Ports that were available when a child process briefly listened, then released them. They are not reserved for later use."
+						"description": "Array of numeric loopback ports that a child process briefly bound and then released. The ports are not reserved for later use.",
+						"examples": [
+							[],
+							[49152],
+							[49152, 49153]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A child-process execution failure from execFileSync propagates."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown if the child process output is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "openE2eRun",
@@ -157,18 +223,36 @@
 						"name": "openE2eRun.env",
 						"type": "Environment",
 						"required": false,
-						"description": "Optional mutable environment map, defaulting to process.env. Existing directory and named ports are retained; unnamed ports are assigned."
+						"description": "Mutable environment record used to name or create a run and record its ports. Defaults to process.env; a supplied HARNESS_E2E_ROOT is retained, and existing named ports are left intact.",
+						"examples": [
+							{},
+							{
+								"HARNESS_E2E_ROOT": "/tmp/harness-reports-e2e-a1b2c3",
+								"PROJECT_REPORTS_E2E_PORT": "4173"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "openE2eRun",
 						"type": "E2eFixtures",
-						"description": "Creates a temporary run directory and records this process as owner when none was named, assigns missing port variables, and returns fixture locations."
+						"description": "Fixture locations for the opened run. If HARNESS_E2E_ROOT is unset, it creates a temporary directory and marks this process as owner; it assigns and records free values for each unset port variable."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem failures while creating a temporary run directory, or child-process execution failures while sampling ports, propagate."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown if the child process output used for port sampling is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "namedE2eRun",
@@ -177,18 +261,25 @@
 						"name": "namedE2eRun.env",
 						"type": "Environment",
 						"required": false,
-						"description": "Optional environment map, defaulting to process.env, inspected for a named root without an owner."
+						"description": "Environment record inspected for a truthy HARNESS_E2E_ROOT and a missing HARNESS_E2E_OWNER. Defaults to process.env.",
+						"examples": [
+							{},
+							{
+								"HARNESS_E2E_ROOT": "/tmp/harness-reports-e2e-a1b2c3"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "namedE2eRun",
 						"type": "boolean",
-						"description": "True when a root is set without an owner marker."
+						"description": "Boolean that is true only when HARNESS_E2E_ROOT is truthy and HARNESS_E2E_OWNER is unset.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "closeE2eRun",
@@ -197,18 +288,31 @@
 						"name": "closeE2eRun.env",
 						"type": "Environment",
 						"required": false,
-						"description": "Optional environment map, defaulting to process.env; cleanup requires this process to own its root."
+						"description": "Environment record whose run directories are removed only when HARNESS_E2E_OWNER equals this process’s PID and HARNESS_E2E_ROOT is set. Defaults to process.env.",
+						"examples": [
+							{},
+							{
+								"HARNESS_E2E_ROOT": "/tmp/harness-reports-e2e-a1b2c3",
+								"HARNESS_E2E_OWNER": "24680"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "closeE2eRun",
 						"type": "void",
-						"description": "Removes the owned run directory and its frozen build cache. Does nothing when another process owns the run or no root exists."
+						"description": "Removes the run root and its frozen build-cache directory only when HARNESS_E2E_OWNER equals this process’s PID and HARNESS_E2E_ROOT is set; otherwise it returns without cleanup."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem failures while removing the owned run root or frozen build-cache directory propagate from rmSync."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
