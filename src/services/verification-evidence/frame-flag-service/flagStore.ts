@@ -158,8 +158,8 @@ function validateReplacement(
 		const addressed = flags.find((candidate) => candidate.id === id);
 		if (!addressed || !sameFrameSlot(addressed.clip, event.replacement))
 			throw new ExpectedCliError('Frame resolution cites unknown or wrong-owner flags.');
-		if (Date.parse(clip.capturedAt) < Date.parse(addressed.createdAt))
-			throw new ExpectedCliError('Frame resolution replacement predates its flag.');
+		if (Date.parse(clip.capturedAt) <= Date.parse(addressed.createdAt))
+			throw new ExpectedCliError('Frame resolution replacement must be newer than its flag.');
 	}
 }
 
