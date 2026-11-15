@@ -1,6 +1,8 @@
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import { legacyRecordSchema } from '../../src/core/historyTypes';
-import { legacyReport } from '../../src/services/legacy-import-service/legacyReport';
+import { legacyReport } from '../../src/cli/program/legacy-import-service/legacyReport';
 
 const manifest = {
 	schemaVersion: 1,
@@ -78,4 +80,12 @@ test('legacyReport carries media provenance and drops local paths, commands and 
 test('legacyReport refuses what is not a report manifest', () => {
 	expect(legacyReport({ id: 'x' })).toBeUndefined();
 	expect(legacyReport('text')).toBeUndefined();
+});
+
+test('legacyReport has no stub left at its old service path', () => {
+	const stub = resolve(
+		import.meta.dirname,
+		'../../src/services/legacy-import-service/legacyReport.ts'
+	);
+	expect(existsSync(stub)).toBe(false);
 });

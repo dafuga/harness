@@ -97,11 +97,6 @@
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
 		},
 		{
-			"from": "src/services/legacy-import-service/legacyReport.ts",
-			"to": "src/cli/program/legacy-import-service/legacyReport",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/module-system/ModuleScaffoldService.ts",
 			"to": "src/workflows/projects-sessions/generate-code/generateCode",
 			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
