@@ -9,6 +9,7 @@ import { browserErrorCollector } from '../../../../test/support/browserTest';
 import { record as search } from './support/component-previews/platformSearchVideo';
 import { record as interaction } from './support/component-previews/platformInteractionVideo';
 import { record as loading } from './support/component-previews/loadingStateVideo';
+import { videoPilotMeasurements } from './support/component-previews/videoPilotMeasurements';
 
 const contextSchema = z.object({
 	schemaVersion: z.literal(1),
@@ -62,7 +63,7 @@ const result = await new VideoCaptureService(context.repository).record({
 		? { recordingAuthorization: { task: 'video-build-20261115' } }
 		: {}),
 	browserFactory: () => chromium.launch({ headless: true }),
-	async loadScript({ clip, pendingFlags }) {
+	async loadScript({ clip, viewport, pendingFlags }) {
 		if (pendingFlags.some((flag) => !reviewed.includes(flag.id)))
 			throw Error(
 				'Review each pending frame flag and provide its explicit reviewed ID before recording.'
@@ -84,6 +85,16 @@ const result = await new VideoCaptureService(context.repository).record({
 		if (!script) throw Error('No literal pilot factory is registered for this clip.');
 		return {
 			...script,
+			async prepare(session) {
+				await script.prepare(session);
+				await videoPilotMeasurements(session.page, {
+					unit: clip.unit,
+					clipId: clip.id,
+					state: clip.state,
+					viewport,
+					buildId: compiled?.buildId ?? 'not-built'
+				});
+			},
 			diagnostics: browserErrorCollector('chromium'),
 			addressedFlags: pendingFlags.map((flag) => flag.id)
 		};
