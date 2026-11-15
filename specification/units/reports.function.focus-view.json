@@ -48,143 +48,268 @@
 				"name": "focusView.layout",
 				"type": "HarnessLayout",
 				"required": true,
-				"description": "Layout containing requested nodes."
+				"description": "The positioned map layout, including node IDs and whole-map dimensions. It supplies the nodes to bound and the whole-view fallback; unmatched IDs do not add bounds.",
+				"examples": [
+					{
+						"width": 360,
+						"height": 200,
+						"nodes": [],
+						"edges": []
+					}
+				]
 			},
 			{
 				"name": "focusView.ids",
 				"type": "Set<string>",
 				"required": true,
-				"description": "Node identifiers to focus."
+				"description": "The set of unit IDs to include in the focused view. IDs absent from the layout are ignored; no matches or all nodes matching returns the whole view."
 			},
 			{
 				"name": "focusOn.layout",
 				"type": "HarnessLayout",
 				"required": true,
-				"description": "Layout to consider for automatic focus."
+				"description": "The positioned map layout used to decide whether automatic focus applies. A focused view is calculated only when the layout has more than 60 nodes; otherwise the result is null.",
+				"examples": [
+					{
+						"width": 360,
+						"height": 200,
+						"nodes": [],
+						"edges": []
+					}
+				]
 			},
 			{
 				"name": "focusOn.ids",
 				"type": "Set<string>",
 				"required": true,
-				"description": "Requested node identifiers."
+				"description": "The set of unit IDs to include if automatic focus applies. It is used only when the layout has more than 60 nodes."
 			},
 			{
 				"name": "zoomView.view",
 				"type": "MapView",
 				"required": true,
-				"description": "Current viewport."
+				"description": "The current map viewport whose center and aspect ratio are preserved during zoom. Its width is used as the divisor when calculating the new height.",
+				"examples": [
+					{
+						"x": -24,
+						"y": -24,
+						"width": 408,
+						"height": 248
+					}
+				]
 			},
 			{
 				"name": "zoomView.factor",
 				"type": "number",
 				"required": true,
-				"description": "Zoom factor dividing the viewport width."
+				"description": "The zoom multiplier used to divide the current width. The new width is clamped to at least twice nodeSize.width and at most 1.5 times whole.width; the function does not validate the factor.",
+				"examples": [1.25]
 			},
 			{
 				"name": "zoomView.whole",
 				"type": "MapView",
 				"required": true,
-				"description": "Whole-map bounds used for the maximum zoom-out width."
+				"description": "The whole-map viewport used to cap zoomed-out width at 1.5 times whole.width. Its x and height do not affect the calculation.",
+				"examples": [
+					{
+						"x": -24,
+						"y": -24,
+						"width": 408,
+						"height": 248
+					}
+				]
 			},
 			{
 				"name": "panView.view",
 				"type": "MapView",
 				"required": true,
-				"description": "Current viewport to move."
+				"description": "The current map viewport to translate. Its dimensions are preserved.",
+				"examples": [
+					{
+						"x": -24,
+						"y": -24,
+						"width": 408,
+						"height": 248
+					}
+				]
 			},
 			{
 				"name": "panView.dx",
 				"type": "number",
 				"required": true,
-				"description": "Horizontal shift in map units."
+				"description": "The horizontal translation in map units. It is added directly to the viewport x coordinate.",
+				"examples": [-18]
 			},
 			{
 				"name": "panView.dy",
 				"type": "number",
 				"required": true,
-				"description": "Vertical shift in map units."
+				"description": "The vertical translation in map units. It is added directly to the viewport y coordinate.",
+				"examples": [12]
 			},
 			{
 				"name": "drawnEdges.layout",
 				"type": "HarnessLayout",
 				"required": true,
-				"description": "Layout whose edges may be drawn."
+				"description": "The map layout supplying the node count and dependency edges. At 60 nodes or fewer all edges are returned; above 60 only edges touching the selected ID are returned.",
+				"examples": [
+					{
+						"width": 360,
+						"height": 200,
+						"nodes": [],
+						"edges": []
+					}
+				]
 			},
 			{
 				"name": "drawnEdges.selected",
 				"type": "string | null",
 				"required": true,
-				"description": "Selected node or null."
+				"description": "The selected unit ID, or null when there is no selection. It filters edges only when the layout has more than 60 nodes.",
+				"examples": ["reports.component.evidence-grid", null]
 			},
 			{
 				"name": "nextNode.layout",
 				"type": "HarnessLayout",
 				"required": true,
-				"description": "Layout supplying node positions."
+				"description": "The positioned map nodes searched for the origin and directional candidates. Candidate nodes must also have IDs in shown; the origin only needs to exist in the layout.",
+				"examples": [
+					{
+						"width": 360,
+						"height": 200,
+						"nodes": [],
+						"edges": []
+					}
+				]
 			},
 			{
 				"name": "nextNode.from",
 				"type": "string",
 				"required": true,
-				"description": "Current node identifier."
+				"description": "The ID of the node from which navigation starts. It must match a layout node; an unknown ID produces undefined.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "nextNode.key",
 				"type": "string",
 				"required": true,
-				"description": "Arrow key specifying direction."
+				"description": "The direction key for navigation. Only ArrowLeft, ArrowRight, ArrowUp and ArrowDown are recognized; other strings produce undefined.",
+				"examples": ["ArrowRight"]
 			},
 			{
 				"name": "nextNode.shown",
 				"type": "Set<string>",
 				"required": true,
-				"description": "Identifiers eligible for keyboard navigation."
+				"description": "The set of unit IDs eligible as navigation destinations. If no eligible node lies ahead, the existing origin ID is returned even if it is not in this set."
 			},
 			{
 				"name": "wholeView.layout",
 				"type": "HarnessLayout",
 				"required": true,
-				"description": "Layout to fit."
+				"description": "The layout whose width and height define the whole-map viewport. The returned bounds start 24 units above and left of the layout and add 48 units to each dimension.",
+				"examples": [
+					{
+						"width": 360,
+						"height": 200,
+						"nodes": [],
+						"edges": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "wholeView",
 				"type": "MapView",
-				"description": "Whole layout with 24 units of padding on every side."
+				"description": "The full layout viewport, expanded by the fixed 24-unit padding on every side.",
+				"examples": [
+					{
+						"x": -24,
+						"y": -24,
+						"width": 408,
+						"height": 248
+					}
+				]
 			},
 			{
 				"name": "focusView",
 				"type": "MapView",
-				"description": "Bounds of requested nodes with at least about four cells of context in each dimension; returns the whole view for none or all of the nodes."
+				"description": "The bounds of matched nodes, expanded to at least four cells in each dimension plus padding. It returns the whole view when no nodes or all nodes match, or when the calculated bounds are at least as large as the whole view in both dimensions.",
+				"examples": [
+					{
+						"x": 48,
+						"y": 20,
+						"width": 240,
+						"height": 144
+					}
+				]
 			},
 			{
 				"name": "focusOn",
 				"type": "MapView | null",
-				"description": "Focused bounds only for maps above 60 nodes; otherwise null."
+				"description": "A focused viewport for layouts with more than 60 nodes, or null for smaller layouts. Its focus behavior follows focusView.",
+				"examples": [
+					{
+						"x": 48,
+						"y": 20,
+						"width": 240,
+						"height": 144
+					},
+					null
+				]
 			},
 			{
 				"name": "zoomView",
 				"type": "MapView",
-				"description": "Centered zoom preserving aspect ratio, clamped between two node widths and 1.5 whole-map widths."
+				"description": "A viewport scaled about its center while preserving aspect ratio. Its width is bounded by twice nodeSize.width and 1.5 times whole.width, with no separate height clamp.",
+				"examples": [
+					{
+						"x": -20,
+						"y": -10,
+						"width": 320,
+						"height": 195
+					}
+				]
 			},
 			{
 				"name": "panView",
 				"type": "MapView",
-				"description": "Viewport translated by the supplied offsets without changing size."
+				"description": "A viewport translated by dx and dy in map units. Width and height are unchanged and no map-boundary clamp is applied.",
+				"examples": [
+					{
+						"x": -42,
+						"y": -12,
+						"width": 360,
+						"height": 200
+					}
+				]
 			},
 			{
 				"name": "drawnEdges",
 				"type": "HarnessLayout['edges']",
-				"description": "All edges for at most 60 nodes; otherwise only edges touching the selection."
+				"description": "All dependency edges for layouts with at most 60 nodes; above 60 nodes, only edges whose from or to ID equals selected are returned.",
+				"examples": [
+					[
+						{
+							"from": "reports.function.focus-view",
+							"to": "reports.component.evidence-grid",
+							"x1": 144,
+							"y1": 0,
+							"x2": 0,
+							"y2": 0
+						}
+					]
+				]
 			},
 			{
 				"name": "nextNode",
 				"type": "string | undefined",
-				"description": "Nearest eligible node ahead, minimizing along-axis distance plus four times sideways distance; stays at the current node when none is ahead, and returns undefined for an unknown origin or non-arrow key."
+				"description": "The nearest shown node ahead in the requested direction, minimizing along-axis distance plus four times sideways distance. It returns the origin node ID if no candidate is ahead, and undefined for a missing origin or unrecognized key.",
+				"examples": ["reports.function.focus-view"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "focusView",
@@ -193,24 +318,40 @@
 						"name": "focusView.layout",
 						"type": "HarnessLayout",
 						"required": true,
-						"description": "Layout containing requested nodes."
+						"description": "The positioned map layout, including node IDs and whole-map dimensions. It supplies the nodes to bound and the whole-view fallback; unmatched IDs do not add bounds.",
+						"examples": [
+							{
+								"width": 360,
+								"height": 200,
+								"nodes": [],
+								"edges": []
+							}
+						]
 					},
 					{
 						"name": "focusView.ids",
 						"type": "Set<string>",
 						"required": true,
-						"description": "Node identifiers to focus."
+						"description": "The set of unit IDs to include in the focused view. IDs absent from the layout are ignored; no matches or all nodes matching returns the whole view."
 					}
 				],
 				"outputs": [
 					{
 						"name": "focusView",
 						"type": "MapView",
-						"description": "Bounds of requested nodes with at least about four cells of context in each dimension; returns the whole view for none or all of the nodes."
+						"description": "The bounds of matched nodes, expanded to at least four cells in each dimension plus padding. It returns the whole view when no nodes or all nodes match, or when the calculated bounds are at least as large as the whole view in both dimensions.",
+						"examples": [
+							{
+								"x": 48,
+								"y": 20,
+								"width": 240,
+								"height": 144
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "focusOn",
@@ -219,24 +360,41 @@
 						"name": "focusOn.layout",
 						"type": "HarnessLayout",
 						"required": true,
-						"description": "Layout to consider for automatic focus."
+						"description": "The positioned map layout used to decide whether automatic focus applies. A focused view is calculated only when the layout has more than 60 nodes; otherwise the result is null.",
+						"examples": [
+							{
+								"width": 360,
+								"height": 200,
+								"nodes": [],
+								"edges": []
+							}
+						]
 					},
 					{
 						"name": "focusOn.ids",
 						"type": "Set<string>",
 						"required": true,
-						"description": "Requested node identifiers."
+						"description": "The set of unit IDs to include if automatic focus applies. It is used only when the layout has more than 60 nodes."
 					}
 				],
 				"outputs": [
 					{
 						"name": "focusOn",
 						"type": "MapView | null",
-						"description": "Focused bounds only for maps above 60 nodes; otherwise null."
+						"description": "A focused viewport for layouts with more than 60 nodes, or null for smaller layouts. Its focus behavior follows focusView.",
+						"examples": [
+							{
+								"x": 48,
+								"y": 20,
+								"width": 240,
+								"height": 144
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "zoomView",
@@ -245,30 +403,55 @@
 						"name": "zoomView.view",
 						"type": "MapView",
 						"required": true,
-						"description": "Current viewport."
+						"description": "The current map viewport whose center and aspect ratio are preserved during zoom. Its width is used as the divisor when calculating the new height.",
+						"examples": [
+							{
+								"x": -24,
+								"y": -24,
+								"width": 408,
+								"height": 248
+							}
+						]
 					},
 					{
 						"name": "zoomView.factor",
 						"type": "number",
 						"required": true,
-						"description": "Zoom factor dividing the viewport width."
+						"description": "The zoom multiplier used to divide the current width. The new width is clamped to at least twice nodeSize.width and at most 1.5 times whole.width; the function does not validate the factor.",
+						"examples": [1.25]
 					},
 					{
 						"name": "zoomView.whole",
 						"type": "MapView",
 						"required": true,
-						"description": "Whole-map bounds used for the maximum zoom-out width."
+						"description": "The whole-map viewport used to cap zoomed-out width at 1.5 times whole.width. Its x and height do not affect the calculation.",
+						"examples": [
+							{
+								"x": -24,
+								"y": -24,
+								"width": 408,
+								"height": 248
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "zoomView",
 						"type": "MapView",
-						"description": "Centered zoom preserving aspect ratio, clamped between two node widths and 1.5 whole-map widths."
+						"description": "A viewport scaled about its center while preserving aspect ratio. Its width is bounded by twice nodeSize.width and 1.5 times whole.width, with no separate height clamp.",
+						"examples": [
+							{
+								"x": -20,
+								"y": -10,
+								"width": 320,
+								"height": 195
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "panView",
@@ -277,30 +460,48 @@
 						"name": "panView.view",
 						"type": "MapView",
 						"required": true,
-						"description": "Current viewport to move."
+						"description": "The current map viewport to translate. Its dimensions are preserved.",
+						"examples": [
+							{
+								"x": -24,
+								"y": -24,
+								"width": 408,
+								"height": 248
+							}
+						]
 					},
 					{
 						"name": "panView.dx",
 						"type": "number",
 						"required": true,
-						"description": "Horizontal shift in map units."
+						"description": "The horizontal translation in map units. It is added directly to the viewport x coordinate.",
+						"examples": [-18]
 					},
 					{
 						"name": "panView.dy",
 						"type": "number",
 						"required": true,
-						"description": "Vertical shift in map units."
+						"description": "The vertical translation in map units. It is added directly to the viewport y coordinate.",
+						"examples": [12]
 					}
 				],
 				"outputs": [
 					{
 						"name": "panView",
 						"type": "MapView",
-						"description": "Viewport translated by the supplied offsets without changing size."
+						"description": "A viewport translated by dx and dy in map units. Width and height are unchanged and no map-boundary clamp is applied.",
+						"examples": [
+							{
+								"x": -42,
+								"y": -12,
+								"width": 360,
+								"height": 200
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "drawnEdges",
@@ -309,24 +510,45 @@
 						"name": "drawnEdges.layout",
 						"type": "HarnessLayout",
 						"required": true,
-						"description": "Layout whose edges may be drawn."
+						"description": "The map layout supplying the node count and dependency edges. At 60 nodes or fewer all edges are returned; above 60 only edges touching the selected ID are returned.",
+						"examples": [
+							{
+								"width": 360,
+								"height": 200,
+								"nodes": [],
+								"edges": []
+							}
+						]
 					},
 					{
 						"name": "drawnEdges.selected",
 						"type": "string | null",
 						"required": true,
-						"description": "Selected node or null."
+						"description": "The selected unit ID, or null when there is no selection. It filters edges only when the layout has more than 60 nodes.",
+						"examples": ["reports.component.evidence-grid", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "drawnEdges",
 						"type": "HarnessLayout['edges']",
-						"description": "All edges for at most 60 nodes; otherwise only edges touching the selection."
+						"description": "All dependency edges for layouts with at most 60 nodes; above 60 nodes, only edges whose from or to ID equals selected are returned.",
+						"examples": [
+							[
+								{
+									"from": "reports.function.focus-view",
+									"to": "reports.component.evidence-grid",
+									"x1": 144,
+									"y1": 0,
+									"x2": 0,
+									"y2": 0
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "nextNode",
@@ -335,36 +557,47 @@
 						"name": "nextNode.layout",
 						"type": "HarnessLayout",
 						"required": true,
-						"description": "Layout supplying node positions."
+						"description": "The positioned map nodes searched for the origin and directional candidates. Candidate nodes must also have IDs in shown; the origin only needs to exist in the layout.",
+						"examples": [
+							{
+								"width": 360,
+								"height": 200,
+								"nodes": [],
+								"edges": []
+							}
+						]
 					},
 					{
 						"name": "nextNode.from",
 						"type": "string",
 						"required": true,
-						"description": "Current node identifier."
+						"description": "The ID of the node from which navigation starts. It must match a layout node; an unknown ID produces undefined.",
+						"examples": ["reports.component.evidence-grid"]
 					},
 					{
 						"name": "nextNode.key",
 						"type": "string",
 						"required": true,
-						"description": "Arrow key specifying direction."
+						"description": "The direction key for navigation. Only ArrowLeft, ArrowRight, ArrowUp and ArrowDown are recognized; other strings produce undefined.",
+						"examples": ["ArrowRight"]
 					},
 					{
 						"name": "nextNode.shown",
 						"type": "Set<string>",
 						"required": true,
-						"description": "Identifiers eligible for keyboard navigation."
+						"description": "The set of unit IDs eligible as navigation destinations. If no eligible node lies ahead, the existing origin ID is returned even if it is not in this set."
 					}
 				],
 				"outputs": [
 					{
 						"name": "nextNode",
 						"type": "string | undefined",
-						"description": "Nearest eligible node ahead, minimizing along-axis distance plus four times sideways distance; stays at the current node when none is ahead, and returns undefined for an unknown origin or non-arrow key."
+						"description": "The nearest shown node ahead in the requested direction, minimizing along-axis distance plus four times sideways distance. It returns the origin node ID if no candidate is ahead, and undefined for a missing origin or unrecognized key.",
+						"examples": ["reports.function.focus-view"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "wholeView",
@@ -373,18 +606,34 @@
 						"name": "wholeView.layout",
 						"type": "HarnessLayout",
 						"required": true,
-						"description": "Layout to fit."
+						"description": "The layout whose width and height define the whole-map viewport. The returned bounds start 24 units above and left of the layout and add 48 units to each dimension.",
+						"examples": [
+							{
+								"width": 360,
+								"height": 200,
+								"nodes": [],
+								"edges": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "wholeView",
 						"type": "MapView",
-						"description": "Whole layout with 24 units of padding on every side."
+						"description": "The full layout viewport, expanded by the fixed 24-unit padding on every side.",
+						"examples": [
+							{
+								"x": -24,
+								"y": -24,
+								"width": 408,
+								"height": 248
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
