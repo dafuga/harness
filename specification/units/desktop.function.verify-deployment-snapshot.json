@@ -18,52 +18,173 @@
 				"name": "captureDeploymentTarget.reviewed",
 				"type": "ReviewedDeployment",
 				"required": true,
-				"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
+				"description": "A reviewed deployment record containing the plan, configuration fingerprint, project root, optional target, and predecessor receipt. The plan environment and commit select the destination and constrain promotion to the reviewed source and configuration.",
+				"examples": [
+					{
+						"sourceEnvironment": null,
+						"plan": {
+							"id": "550e8400-e29b-41d4-a716-446655440000",
+							"environment": "dev",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"branch": "main",
+							"adapter": "cloudflare",
+							"target": "workers · desktop-dev · dev · account 0123456789abcdef0123456789abcdef · https://desktop-dev.workers.dev",
+							"steps": [
+								"Prepare source",
+								"Run checks",
+								"Build source",
+								"Deploy to Cloudflare",
+								"Verify health"
+							],
+							"blockers": [],
+							"expiresAt": "2026-11-15T12:05:00.000Z"
+						},
+						"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+						"projectId": null,
+						"target": {
+							"environment": "dev",
+							"kind": "workers",
+							"config": "wrangler.jsonc",
+							"name": "desktop-dev",
+							"accountId": "0123456789abcdef0123456789abcdef",
+							"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+							"wranglerEnvironment": "dev",
+							"branch": "",
+							"output": "",
+							"healthUrl": "https://desktop-dev.workers.dev"
+						},
+						"predecessor": null
+					}
+				]
 			},
 			{
 				"name": "captureDeploymentTarget.plugin",
 				"type": "DeploymentPlugin",
 				"required": true,
-				"description": "Deployment adapter used to discover configured target identities."
+				"description": "A deployment adapter with an id and discover/deploy callbacks. discover(root) supplies the configuration checked against the reviewed fingerprint, so this value cannot be represented in JSON."
 			},
 			{
 				"name": "verifyDeploymentSnapshot.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+				"description": "Repository root to validate against the reviewed root and inspect for an isolated source checkout. When it differs from reviewed.root, its Git revision must equal plan.commit and its worktree must be clean.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+				]
 			},
 			{
 				"name": "verifyDeploymentSnapshot.reviewed",
 				"type": "ReviewedDeployment",
 				"required": true,
-				"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
+				"description": "A reviewed deployment record containing the plan, configuration fingerprint, project root, optional target, and predecessor receipt. The plan environment and commit select the destination and constrain promotion to the reviewed source and configuration.",
+				"examples": [
+					{
+						"sourceEnvironment": null,
+						"plan": {
+							"id": "550e8400-e29b-41d4-a716-446655440000",
+							"environment": "dev",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"branch": "main",
+							"adapter": "cloudflare",
+							"target": "workers · desktop-dev · dev · account 0123456789abcdef0123456789abcdef · https://desktop-dev.workers.dev",
+							"steps": [
+								"Prepare source",
+								"Run checks",
+								"Build source",
+								"Deploy to Cloudflare",
+								"Verify health"
+							],
+							"blockers": [],
+							"expiresAt": "2026-11-15T12:05:00.000Z"
+						},
+						"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+						"projectId": null,
+						"target": {
+							"environment": "dev",
+							"kind": "workers",
+							"config": "wrangler.jsonc",
+							"name": "desktop-dev",
+							"accountId": "0123456789abcdef0123456789abcdef",
+							"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+							"wranglerEnvironment": "dev",
+							"branch": "",
+							"output": "",
+							"healthUrl": "https://desktop-dev.workers.dev"
+						},
+						"predecessor": null
+					}
+				]
 			},
 			{
 				"name": "verifyDeploymentSnapshot.guard",
 				"type": "{ plugin: DeploymentPlugin; destination: DeploymentReceipt | null }",
 				"required": true,
-				"description": "Reviewed configuration or destination proof that must still match before the next step."
+				"description": "Snapshot containing the deployment plugin and the destination receipt captured before deployment, or null when no receipt existed. The discovered configuration and current destination must still match this snapshot."
 			}
 		],
 		"outputs": [
 			{
 				"name": "captureDeploymentTarget",
 				"type": "unknown",
-				"description": "Configured target and captured destination receipt, or an admission error."
+				"description": "Returns config.targets[plan.environment] and the current receipt for that environment, or null when no receipt is recorded. The target is not separately checked for presence here; predecessor and ancestry checks apply only when those conditions exist.",
+				"examples": [
+					{
+						"target": {
+							"environment": "dev",
+							"kind": "workers",
+							"config": "wrangler.jsonc",
+							"name": "desktop-dev",
+							"accountId": "0123456789abcdef0123456789abcdef",
+							"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+							"wranglerEnvironment": "dev",
+							"branch": "",
+							"output": "",
+							"healthUrl": "https://desktop-dev.workers.dev"
+						},
+						"destination": null
+					},
+					{
+						"target": {
+							"environment": "dev",
+							"kind": "workers",
+							"config": "wrangler.jsonc",
+							"name": "desktop-dev",
+							"accountId": "0123456789abcdef0123456789abcdef",
+							"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+							"wranglerEnvironment": "dev",
+							"branch": "",
+							"output": "",
+							"healthUrl": "https://desktop-dev.workers.dev"
+						},
+						"destination": {
+							"environment": "dev",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"branch": "main",
+							"updatedAt": "2026-11-15T12:00:00.000Z",
+							"adapter": "cloudflare",
+							"deploymentId": "550e8400-e29b-41d4-a716-446655440001",
+							"configuration": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
+							"url": "https://desktop-dev.workers.dev"
+						}
+					}
+				]
 			},
 			{
 				"name": "verifyDeploymentSnapshot",
 				"type": "unknown",
-				"description": "Resolves only while the source, mapping and captured destination remain valid."
+				"description": "Resolves to undefined after the source, configuration, and destination snapshot checks pass. A different root is also required to match the reviewed commit and have a clean worktree."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
+				"description": "Throws Error when the reviewed configuration changes, a required predecessor proof is absent or mismatched, destination history is not forward-only, an isolated source changes or is dirty, or the destination receipt changes. Rejections from adapter discovery and state or Git reads can also propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "captureDeploymentTarget",
@@ -72,29 +193,109 @@
 						"name": "captureDeploymentTarget.reviewed",
 						"type": "ReviewedDeployment",
 						"required": true,
-						"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
+						"description": "A reviewed deployment record containing the plan, configuration fingerprint, project root, optional target, and predecessor receipt. The plan environment and commit select the destination and constrain promotion to the reviewed source and configuration.",
+						"examples": [
+							{
+								"sourceEnvironment": null,
+								"plan": {
+									"id": "550e8400-e29b-41d4-a716-446655440000",
+									"environment": "dev",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"branch": "main",
+									"adapter": "cloudflare",
+									"target": "workers · desktop-dev · dev · account 0123456789abcdef0123456789abcdef · https://desktop-dev.workers.dev",
+									"steps": [
+										"Prepare source",
+										"Run checks",
+										"Build source",
+										"Deploy to Cloudflare",
+										"Verify health"
+									],
+									"blockers": [],
+									"expiresAt": "2026-11-15T12:05:00.000Z"
+								},
+								"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+								"projectId": null,
+								"target": {
+									"environment": "dev",
+									"kind": "workers",
+									"config": "wrangler.jsonc",
+									"name": "desktop-dev",
+									"accountId": "0123456789abcdef0123456789abcdef",
+									"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+									"wranglerEnvironment": "dev",
+									"branch": "",
+									"output": "",
+									"healthUrl": "https://desktop-dev.workers.dev"
+								},
+								"predecessor": null
+							}
+						]
 					},
 					{
 						"name": "captureDeploymentTarget.plugin",
 						"type": "DeploymentPlugin",
 						"required": true,
-						"description": "Deployment adapter used to discover configured target identities."
+						"description": "A deployment adapter with an id and discover/deploy callbacks. discover(root) supplies the configuration checked against the reviewed fingerprint, so this value cannot be represented in JSON."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureDeploymentTarget",
 						"type": "unknown",
-						"description": "Configured target and captured destination receipt, or an admission error."
+						"description": "Returns config.targets[plan.environment] and the current receipt for that environment, or null when no receipt is recorded. The target is not separately checked for presence here; predecessor and ancestry checks apply only when those conditions exist.",
+						"examples": [
+							{
+								"target": {
+									"environment": "dev",
+									"kind": "workers",
+									"config": "wrangler.jsonc",
+									"name": "desktop-dev",
+									"accountId": "0123456789abcdef0123456789abcdef",
+									"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+									"wranglerEnvironment": "dev",
+									"branch": "",
+									"output": "",
+									"healthUrl": "https://desktop-dev.workers.dev"
+								},
+								"destination": null
+							},
+							{
+								"target": {
+									"environment": "dev",
+									"kind": "workers",
+									"config": "wrangler.jsonc",
+									"name": "desktop-dev",
+									"accountId": "0123456789abcdef0123456789abcdef",
+									"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+									"wranglerEnvironment": "dev",
+									"branch": "",
+									"output": "",
+									"healthUrl": "https://desktop-dev.workers.dev"
+								},
+								"destination": {
+									"environment": "dev",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"branch": "main",
+									"updatedAt": "2026-11-15T12:00:00.000Z",
+									"adapter": "cloudflare",
+									"deploymentId": "550e8400-e29b-41d4-a716-446655440001",
+									"configuration": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
+									"url": "https://desktop-dev.workers.dev"
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error if configuration differs from the reviewed fingerprint, a required predecessor receipt does not prove the prior environment, exact commit, and configuration, or the destination is not an ancestor of the reviewed commit. Adapter discovery, deployment-state reads, and uncaught Git reads may also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "verifyDeploymentSnapshot",
@@ -103,35 +304,77 @@
 						"name": "verifyDeploymentSnapshot.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+						"description": "Repository root to validate against the reviewed root and inspect for an isolated source checkout. When it differs from reviewed.root, its Git revision must equal plan.commit and its worktree must be clean.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						]
 					},
 					{
 						"name": "verifyDeploymentSnapshot.reviewed",
 						"type": "ReviewedDeployment",
 						"required": true,
-						"description": "Reviewed deployment plan with repository, target, configuration hash and predecessor receipt."
+						"description": "A reviewed deployment record containing the plan, configuration fingerprint, project root, optional target, and predecessor receipt. The plan environment and commit select the destination and constrain promotion to the reviewed source and configuration.",
+						"examples": [
+							{
+								"sourceEnvironment": null,
+								"plan": {
+									"id": "550e8400-e29b-41d4-a716-446655440000",
+									"environment": "dev",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"branch": "main",
+									"adapter": "cloudflare",
+									"target": "workers · desktop-dev · dev · account 0123456789abcdef0123456789abcdef · https://desktop-dev.workers.dev",
+									"steps": [
+										"Prepare source",
+										"Run checks",
+										"Build source",
+										"Deploy to Cloudflare",
+										"Verify health"
+									],
+									"blockers": [],
+									"expiresAt": "2026-11-15T12:05:00.000Z"
+								},
+								"fingerprint": "8259a49b8a9e05ccc1e9c59a704fd28118d311db9f9bb05ec3ece6103bd80cec",
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+								"projectId": null,
+								"target": {
+									"environment": "dev",
+									"kind": "workers",
+									"config": "wrangler.jsonc",
+									"name": "desktop-dev",
+									"accountId": "0123456789abcdef0123456789abcdef",
+									"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+									"wranglerEnvironment": "dev",
+									"branch": "",
+									"output": "",
+									"healthUrl": "https://desktop-dev.workers.dev"
+								},
+								"predecessor": null
+							}
+						]
 					},
 					{
 						"name": "verifyDeploymentSnapshot.guard",
 						"type": "{ plugin: DeploymentPlugin; destination: DeploymentReceipt | null }",
 						"required": true,
-						"description": "Reviewed configuration or destination proof that must still match before the next step."
+						"description": "Snapshot containing the deployment plugin and the destination receipt captured before deployment, or null when no receipt existed. The discovered configuration and current destination must still match this snapshot."
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyDeploymentSnapshot",
 						"type": "unknown",
-						"description": "Resolves only while the source, mapping and captured destination remain valid."
+						"description": "Resolves to undefined after the source, configuration, and destination snapshot checks pass. A different root is also required to match the reviewed commit and have a clean worktree."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error if an isolated source has a different revision or dirty worktree, configuration differs from the reviewed fingerprint, or the current destination receipt differs from the captured receipt. Adapter discovery, deployment-state reads, and uncaught Git reads may also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
