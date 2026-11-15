@@ -9,15 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/routes/api/replay-video/replay-video-service/ReplayVideoService.ts",
-			"packages/reports/src/services/replay-video-service/ReplayVideoService.ts"
+			"packages/reports/src/routes/api/replay-video/replay-video-service/ReplayVideoService.ts"
 		],
-		"symbols": [
-			"ReplayVideoService",
-			"ReplayVideoService.constructor",
-			"ReplayVideoService.create",
-			"ReplayVideoService"
-		]
+		"symbols": ["ReplayVideoService", "ReplayVideoService.constructor", "ReplayVideoService.create"]
 	},
 	"contract": {
 		"origin": "derived",

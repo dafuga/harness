@@ -2,7 +2,7 @@ import type * as S3 from '@aws-sdk/client-s3';
 import { afterEach, expect, test, vi } from 'vitest';
 import { rm, readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { ReplayVideoService } from '../src/services/replay-video-service/ReplayVideoService';
+import { ReplayVideoService } from '../src/routes/api/replay-video/replay-video-service/ReplayVideoService';
 import { ReportCommandService } from '../src/services/report-command-service/ReportCommandService';
 import { configureFixtureCloud, fixtureCloudResponse, storageFixture } from './storageFixture';
 const cloud = vi.hoisted(() => ({ objects: new Map<string, Buffer>(), calls: [] as string[] }));
