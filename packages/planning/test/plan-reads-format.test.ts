@@ -6,7 +6,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
-import { planGit } from '../src/lib/planning/planGit';
+import { planGit } from '../src/lib/planning-collaboration/planning/planGit';
 import { type Git } from '../src/utils/planGit';
 import { planReads } from '../src/services/planning-service/planReads';
 
