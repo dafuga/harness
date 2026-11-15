@@ -52,114 +52,328 @@
 				"name": "emittedChange.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit identifier to compare."
+				"description": "Unit identifier whose declarations and measurements are compared. Only its process and Wasm targets can produce rows.",
+				"examples": ["reports.function.harness-emitted"]
 			},
 			{
 				"name": "emittedChange.sides",
 				"type": "Array<{ units: HarnessUnit[]; record: HarnessRecord | null }>",
 				"required": true,
-				"description": "Comparison sides in before/after order; targets are gathered from supplied unit definitions."
+				"description": "Each side pairs unit definitions with a record, and unit definitions across all supplied sides determine the process and Wasm targets. Only the first two records provide before and after values; a missing match is null.",
+				"examples": [
+					[
+						{
+							"units": [
+								{
+									"id": "reports.function.harness-emitted",
+									"kind": "function",
+									"status": "active",
+									"title": "Build-output measurements",
+									"responsibility": "Formats native/Wasm build sizes, reviewed limits and comparisons separately by target.",
+									"dependencies": [
+										{
+											"unit": "reports.model.harness-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/explorer-ui/harness-compare/harnessEmitted.ts",
+											"packages/reports/src/components/explorer-ui/harness-growth/harnessEmitted.ts",
+											"packages/reports/src/utils/explorer-ui/harnessEmitted.ts",
+											"packages/reports/src/utils/explorer-ui/harnessEmitted.types.ts",
+											"packages/reports/src/utils/harnessEmitted.ts"
+										],
+										"symbols": ["harnessEmitted"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/harnessEmitted.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "1.0.0"
+								}
+							],
+							"record": null
+						},
+						{
+							"units": [],
+							"record": null
+						}
+					]
+				]
 			},
 			{
 				"name": "emittedTargets.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Index with emitted growth values and notes."
+				"description": "History index searched for the requested unit's growth points. A missing unit or history without recognized process or Wasm keys yields an empty result.",
+				"examples": [
+					{
+						"branches": [],
+						"revisions": [],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "emittedTargets.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit identifier whose targets are requested."
+				"description": "Identifier of the unit whose growth history is inspected. Only process and Wasm targets are returned, in that fixed order.",
+				"examples": ["reports.function.harness-emitted"]
 			},
 			{
 				"name": "emittedBytes.count",
 				"type": "number",
 				"required": true,
-				"description": "Number of bytes to format."
+				"description": "Number interpolated into the byte label without conversion or validation. Exactly 1 uses the singular label; every other value uses the plural label.",
+				"examples": [0, 1, 1024]
 			},
 			{
 				"name": "emittedLabel.target",
 				"type": "string",
 				"required": true,
-				"description": "Target kind to label."
+				"description": "Target name to label for display. Process and Wasm have fixed labels; any other name is returned unchanged.",
+				"examples": ["process", "wasm", "custom"]
 			},
 			{
 				"name": "emittedKey.target",
 				"type": "string",
 				"required": true,
-				"description": "Target kind for the ledger key."
+				"description": "Target name appended to the artifact-bytes metric prefix. The function does not validate the target name.",
+				"examples": ["process", "wasm"]
 			},
 			{
 				"name": "built.record",
 				"type": "HarnessRecord | null",
 				"required": true,
-				"description": "Optional selected verification record containing emitted-size observations."
+				"description": "Record whose measurements are searched for this unit and the artifact-bytes metric. A match must have the requested target and falsy workload and profile; null or no match returns undefined.",
+				"examples": [null]
 			},
 			{
 				"name": "built.unit",
 				"type": "string",
 				"required": true,
-				"description": "Registered unit identifier whose emitted artifact measurement is selected."
+				"description": "Identifier that must exactly match the measurement's unit field. It is used together with the metric, target, workload, and profile filters.",
+				"examples": ["reports.function.harness-emitted"]
 			},
 			{
 				"name": "built.target",
 				"type": "string",
 				"required": false,
-				"description": "Optional execution target used to select its matching emitted-size observation."
+				"default": "undefined",
+				"description": "Optional target name matched exactly against a measurement's target field; omission matches an undefined target. Defaults to undefined.",
+				"examples": ["process", "wasm"]
 			},
 			{
 				"name": "targetsOf.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Unit whose declared runtime targets determine applicable emitted artifact rows."
+				"description": "Unit whose runtime target declarations are inspected. Only process and Wasm kinds are retained, in the fixed process-then-Wasm order.",
+				"examples": [
+					{
+						"id": "reports.function.harness-emitted",
+						"kind": "function",
+						"status": "active",
+						"title": "Build-output measurements",
+						"responsibility": "Formats native/Wasm build sizes, reviewed limits and comparisons separately by target.",
+						"dependencies": [
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"packages/reports/src/components/explorer-ui/harness-compare/harnessEmitted.ts",
+								"packages/reports/src/components/explorer-ui/harness-growth/harnessEmitted.ts",
+								"packages/reports/src/utils/explorer-ui/harnessEmitted.ts",
+								"packages/reports/src/utils/explorer-ui/harnessEmitted.types.ts",
+								"packages/reports/src/utils/harnessEmitted.ts"
+							],
+							"symbols": ["harnessEmitted"]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorer-ui/harnessEmitted.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "1.0.0"
+					}
+				]
 			},
 			{
 				"name": "harnessEmitted.unit",
 				"type": "HarnessUnit",
 				"required": true,
-				"description": "Unit with declared execution targets and emitted limits."
+				"description": "Unit whose runtime declarations and emitted limits determine the output lines. Units without process or Wasm targets receive a single no-output line.",
+				"examples": [
+					{
+						"id": "reports.function.harness-emitted",
+						"kind": "function",
+						"status": "active",
+						"title": "Build-output measurements",
+						"responsibility": "Formats native/Wasm build sizes, reviewed limits and comparisons separately by target.",
+						"dependencies": [
+							{
+								"unit": "reports.model.harness-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"packages/reports/src/components/explorer-ui/harness-compare/harnessEmitted.ts",
+								"packages/reports/src/components/explorer-ui/harness-growth/harnessEmitted.ts",
+								"packages/reports/src/utils/explorer-ui/harnessEmitted.ts",
+								"packages/reports/src/utils/explorer-ui/harnessEmitted.types.ts",
+								"packages/reports/src/utils/harnessEmitted.ts"
+							],
+							"symbols": ["harnessEmitted"]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/reports/src/utils/explorer-ui/harnessEmitted.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "1.0.0"
+					}
+				]
 			},
 			{
 				"name": "harnessEmitted.record",
 				"type": "HarnessRecord | null",
 				"required": true,
-				"description": "Record whose unprofiled, workload-free build measurement is used, or null."
+				"description": "Record used for build measurements and budget findings, or null when no record is available. Only workload-free, profile-free artifact-bytes measurements are used for sizes.",
+				"examples": [null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "emittedBytes",
 				"type": "string",
-				"description": "Count followed by byte for one, otherwise bytes."
+				"description": "Formats the count as a decimal string followed by byte only when the count equals 1; all other counts use bytes.",
+				"examples": ["0 bytes", "1 byte", "1024 bytes"]
 			},
 			{
 				"name": "emittedLabel",
 				"type": "string",
-				"description": "Friendly native-process or Wasm label, otherwise the original target."
+				"description": "Maps process to process (native) and wasm to Wasm. Unknown target names pass through unchanged.",
+				"examples": ["process (native)", "Wasm", "custom"]
 			},
 			{
 				"name": "emittedKey",
 				"type": "string",
-				"description": "artifact-bytes followed by a colon and target kind."
+				"description": "Prefixes the target name with artifact-bytes: for use as the ledger or growth-note key.",
+				"examples": ["artifact-bytes:process", "artifact-bytes:wasm"]
 			},
 			{
 				"name": "harnessEmitted",
 				"type": "EmittedLine[]",
-				"description": "One line per declared process/Wasm target with size, limit and findings. Units declaring neither receive an explicit no-output line. Missing measurements remain unavailable."
+				"description": "Returns one line per declared process or Wasm target, with its measured value, limit, and optional budget finding. With no such target it returns one none line; a missing size is described and never treated as zero.",
+				"examples": [
+					[
+						{
+							"target": "none",
+							"label": "",
+							"value": "none: This unit declares no process or Wasm output.",
+							"limit": "no limit applies"
+						}
+					],
+					[
+						{
+							"target": "process",
+							"label": "process (native)",
+							"value": "2560 bytes",
+							"limit": "frozen at 2048 bytes",
+							"note": "Grew from 1024 to 2560 bytes without a recorded approval."
+						}
+					]
+				]
 			},
 			{
 				"name": "emittedChange",
 				"type": "EmittedChange[]",
-				"description": "Before and after numeric sizes or null, separately for process and Wasm targets declared on either side."
+				"description": "Returns one row for each process or Wasm target declared on either side, in fixed order. Before and after are measured byte counts or null when the corresponding size is absent.",
+				"examples": [
+					[
+						{
+							"target": "process",
+							"label": "process (native)",
+							"before": 1024,
+							"after": 2560
+						},
+						{
+							"target": "wasm",
+							"label": "Wasm",
+							"before": null,
+							"after": 4096
+						}
+					]
+				]
 			},
 			{
 				"name": "emittedTargets",
 				"type": "string[]",
-				"description": "Process/Wasm targets found in growth values or notes, in fixed target order."
+				"description": "Returns process and Wasm keys found in the unit's growth emitted maps or artifact-bytes notes, in fixed order. Missing units and histories without those keys produce an empty array.",
+				"examples": [
+					[],
+					["process", "wasm"]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "emittedChange",
@@ -168,24 +382,98 @@
 						"name": "emittedChange.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit identifier to compare."
+						"description": "Unit identifier whose declarations and measurements are compared. Only its process and Wasm targets can produce rows.",
+						"examples": ["reports.function.harness-emitted"]
 					},
 					{
 						"name": "emittedChange.sides",
 						"type": "Array<{ units: HarnessUnit[]; record: HarnessRecord | null }>",
 						"required": true,
-						"description": "Comparison sides in before/after order; targets are gathered from supplied unit definitions."
+						"description": "Each side pairs unit definitions with a record, and unit definitions across all supplied sides determine the process and Wasm targets. Only the first two records provide before and after values; a missing match is null.",
+						"examples": [
+							[
+								{
+									"units": [
+										{
+											"id": "reports.function.harness-emitted",
+											"kind": "function",
+											"status": "active",
+											"title": "Build-output measurements",
+											"responsibility": "Formats native/Wasm build sizes, reviewed limits and comparisons separately by target.",
+											"dependencies": [
+												{
+													"unit": "reports.model.harness-types",
+													"via": "import"
+												}
+											],
+											"scenarios": [],
+											"owns": {
+												"source": [
+													"packages/reports/src/components/explorer-ui/harness-compare/harnessEmitted.ts",
+													"packages/reports/src/components/explorer-ui/harness-growth/harnessEmitted.ts",
+													"packages/reports/src/utils/explorer-ui/harnessEmitted.ts",
+													"packages/reports/src/utils/explorer-ui/harnessEmitted.types.ts",
+													"packages/reports/src/utils/harnessEmitted.ts"
+												],
+												"symbols": ["harnessEmitted"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorer-ui/harnessEmitted.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "1.0.0"
+										}
+									],
+									"record": null
+								},
+								{
+									"units": [],
+									"record": null
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "emittedChange",
 						"type": "EmittedChange[]",
-						"description": "Before and after numeric sizes or null, separately for process and Wasm targets declared on either side."
+						"description": "Returns one row for each process or Wasm target declared on either side, in fixed order. Before and after are measured byte counts or null when the corresponding size is absent.",
+						"examples": [
+							[
+								{
+									"target": "process",
+									"label": "process (native)",
+									"before": 1024,
+									"after": 2560
+								},
+								{
+									"target": "wasm",
+									"label": "Wasm",
+									"before": null,
+									"after": 4096
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "emittedTargets",
@@ -194,24 +482,41 @@
 						"name": "emittedTargets.index",
 						"type": "HarnessIndex",
 						"required": true,
-						"description": "Index with emitted growth values and notes."
+						"description": "History index searched for the requested unit's growth points. A missing unit or history without recognized process or Wasm keys yields an empty result.",
+						"examples": [
+							{
+								"branches": [],
+								"revisions": [],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "emittedTargets.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit identifier whose targets are requested."
+						"description": "Identifier of the unit whose growth history is inspected. Only process and Wasm targets are returned, in that fixed order.",
+						"examples": ["reports.function.harness-emitted"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "emittedTargets",
 						"type": "string[]",
-						"description": "Process/Wasm targets found in growth values or notes, in fixed target order."
+						"description": "Returns process and Wasm keys found in the unit's growth emitted maps or artifact-bytes notes, in fixed order. Missing units and histories without those keys produce an empty array.",
+						"examples": [
+							[],
+							["process", "wasm"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "emittedBytes",
@@ -220,18 +525,20 @@
 						"name": "emittedBytes.count",
 						"type": "number",
 						"required": true,
-						"description": "Number of bytes to format."
+						"description": "Number interpolated into the byte label without conversion or validation. Exactly 1 uses the singular label; every other value uses the plural label.",
+						"examples": [0, 1, 1024]
 					}
 				],
 				"outputs": [
 					{
 						"name": "emittedBytes",
 						"type": "string",
-						"description": "Count followed by byte for one, otherwise bytes."
+						"description": "Formats the count as a decimal string followed by byte only when the count equals 1; all other counts use bytes.",
+						"examples": ["0 bytes", "1 byte", "1024 bytes"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "emittedLabel",
@@ -240,18 +547,20 @@
 						"name": "emittedLabel.target",
 						"type": "string",
 						"required": true,
-						"description": "Target kind to label."
+						"description": "Target name to label for display. Process and Wasm have fixed labels; any other name is returned unchanged.",
+						"examples": ["process", "wasm", "custom"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "emittedLabel",
 						"type": "string",
-						"description": "Friendly native-process or Wasm label, otherwise the original target."
+						"description": "Maps process to process (native) and wasm to Wasm. Unknown target names pass through unchanged.",
+						"examples": ["process (native)", "Wasm", "custom"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "emittedKey",
@@ -260,18 +569,20 @@
 						"name": "emittedKey.target",
 						"type": "string",
 						"required": true,
-						"description": "Target kind for the ledger key."
+						"description": "Target name appended to the artifact-bytes metric prefix. The function does not validate the target name.",
+						"examples": ["process", "wasm"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "emittedKey",
 						"type": "string",
-						"description": "artifact-bytes followed by a colon and target kind."
+						"description": "Prefixes the target name with artifact-bytes: for use as the ledger or growth-note key.",
+						"examples": ["artifact-bytes:process", "artifact-bytes:wasm"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "built",
@@ -280,29 +591,45 @@
 						"name": "built.record",
 						"type": "HarnessRecord | null",
 						"required": true,
-						"description": "Optional selected verification record containing emitted-size observations."
+						"description": "Record whose measurements are searched for this unit and the artifact-bytes metric. A match must have the requested target and falsy workload and profile; null or no match returns undefined.",
+						"examples": [null]
 					},
 					{
 						"name": "built.unit",
 						"type": "string",
 						"required": true,
-						"description": "Registered unit identifier whose emitted artifact measurement is selected."
+						"description": "Identifier that must exactly match the measurement's unit field. It is used together with the metric, target, workload, and profile filters.",
+						"examples": ["reports.function.harness-emitted"]
 					},
 					{
 						"name": "built.target",
 						"type": "string",
 						"required": false,
-						"description": "Optional execution target used to select its matching emitted-size observation."
+						"default": "undefined",
+						"description": "Optional target name matched exactly against a measurement's target field; omission matches an undefined target. Defaults to undefined.",
+						"examples": ["process", "wasm"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "built",
-						"type": "Measurement | undefined"
+						"type": "Measurement | undefined",
+						"description": "Returns the first matching build measurement, or undefined when the record is null or has no match. The returned measurement must match the unit, artifact-bytes metric, target, and falsy workload and profile fields.",
+						"examples": [
+							{
+								"unit": "reports.function.harness-emitted",
+								"metric": "artifact-bytes",
+								"unitOfMeasure": "bytes",
+								"value": 1024,
+								"workload": null,
+								"profile": null,
+								"target": "process"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "targetsOf",
@@ -311,17 +638,68 @@
 						"name": "targetsOf.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Unit whose declared runtime targets determine applicable emitted artifact rows."
+						"description": "Unit whose runtime target declarations are inspected. Only process and Wasm kinds are retained, in the fixed process-then-Wasm order.",
+						"examples": [
+							{
+								"id": "reports.function.harness-emitted",
+								"kind": "function",
+								"status": "active",
+								"title": "Build-output measurements",
+								"responsibility": "Formats native/Wasm build sizes, reviewed limits and comparisons separately by target.",
+								"dependencies": [
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/components/explorer-ui/harness-compare/harnessEmitted.ts",
+										"packages/reports/src/components/explorer-ui/harness-growth/harnessEmitted.ts",
+										"packages/reports/src/utils/explorer-ui/harnessEmitted.ts",
+										"packages/reports/src/utils/explorer-ui/harnessEmitted.types.ts",
+										"packages/reports/src/utils/harnessEmitted.ts"
+									],
+									"symbols": ["harnessEmitted"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/harnessEmitted.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "1.0.0"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "targetsOf",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Returns only process and Wasm kinds declared in runtime.targets, ordered process then Wasm. Other target kinds are omitted.",
+						"examples": [
+							[],
+							["process", "wasm"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "harnessEmitted",
@@ -330,24 +708,90 @@
 						"name": "harnessEmitted.unit",
 						"type": "HarnessUnit",
 						"required": true,
-						"description": "Unit with declared execution targets and emitted limits."
+						"description": "Unit whose runtime declarations and emitted limits determine the output lines. Units without process or Wasm targets receive a single no-output line.",
+						"examples": [
+							{
+								"id": "reports.function.harness-emitted",
+								"kind": "function",
+								"status": "active",
+								"title": "Build-output measurements",
+								"responsibility": "Formats native/Wasm build sizes, reviewed limits and comparisons separately by target.",
+								"dependencies": [
+									{
+										"unit": "reports.model.harness-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/components/explorer-ui/harness-compare/harnessEmitted.ts",
+										"packages/reports/src/components/explorer-ui/harness-growth/harnessEmitted.ts",
+										"packages/reports/src/utils/explorer-ui/harnessEmitted.ts",
+										"packages/reports/src/utils/explorer-ui/harnessEmitted.types.ts",
+										"packages/reports/src/utils/harnessEmitted.ts"
+									],
+									"symbols": ["harnessEmitted"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/harnessEmitted.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "1.0.0"
+							}
+						]
 					},
 					{
 						"name": "harnessEmitted.record",
 						"type": "HarnessRecord | null",
 						"required": true,
-						"description": "Record whose unprofiled, workload-free build measurement is used, or null."
+						"description": "Record used for build measurements and budget findings, or null when no record is available. Only workload-free, profile-free artifact-bytes measurements are used for sizes.",
+						"examples": [null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessEmitted",
 						"type": "EmittedLine[]",
-						"description": "One line per declared process/Wasm target with size, limit and findings. Units declaring neither receive an explicit no-output line. Missing measurements remain unavailable."
+						"description": "Returns one line per declared process or Wasm target, with its measured value, limit, and optional budget finding. With no such target it returns one none line; a missing size is described and never treated as zero.",
+						"examples": [
+							[
+								{
+									"target": "none",
+									"label": "",
+									"value": "none: This unit declares no process or Wasm output.",
+									"limit": "no limit applies"
+								}
+							],
+							[
+								{
+									"target": "process",
+									"label": "process (native)",
+									"value": "2560 bytes",
+									"limit": "frozen at 2048 bytes",
+									"note": "Grew from 1024 to 2560 bytes without a recorded approval."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
