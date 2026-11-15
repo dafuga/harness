@@ -29,42 +29,71 @@
 				"name": "createProject.input",
 				"type": "CreateProjectInput",
 				"required": true,
-				"description": "Project kind and name with optional parent directory, game dimension and force; omitted parent creates the named directory relative to the current directory, and omitted force protects changed files."
+				"description": "Provides the required project kind and name, with optional parent, dimension, and force fields. A non-empty parent prefixes the target directory; an omitted or empty parent uses the name, dimension is limited to 2d or 3d when truthy, and omitted dimension or force is passed through as undefined.",
+				"examples": [
+					{
+						"kind": "app",
+						"name": "ledger-console",
+						"force": true,
+						"parent": "packages",
+						"dimension": "3d"
+					}
+				]
 			},
 			{
 				"name": "renderCreateProject.result",
 				"type": "CreateProjectResult",
 				"required": true,
-				"description": "Created project kind/name and actual per-file write statuses to render."
+				"description": "Provides the project kind, validated name, and write results to format. The kind and name supply the heading, and the write results supply the rendered file list.",
+				"examples": [
+					{
+						"kind": "app",
+						"name": "ledger-console",
+						"writes": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "createProject",
 				"type": "Promise<CreateProjectResult>",
-				"description": "Promise of the validated project kind/name and ordered file-write results; earlier successful writes are not rolled back after a later failure."
+				"description": "Resolves to an object containing the input kind, validated name, and write results returned by writePlannedFiles. A rejection from template generation or either awaited filesystem step rejects the promise without rollback in this function.",
+				"examples": [
+					{
+						"kind": "app",
+						"name": "ledger-console",
+						"writes": []
+					}
+				]
 			},
 			{
 				"name": "renderCreateProject",
 				"type": "string",
-				"description": "Human-readable creation heading and per-file create/skip/overwrite lines."
+				"description": "Returns a creation heading followed by the formatted write list from renderFileList. The heading uses the result kind and name.",
+				"examples": ["Created app harness \"ledger-console\".\n"]
 			}
 		],
 		"errors": [
 			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown when input.dimension is truthy and is neither \"2d\" nor \"3d\"; its message is exactly \"Dimension must be 2d or 3d.\"."
+			},
+			{
 				"name": "Error(\"Dimension must be 2d or 3d.\")",
 				"type": "thrown",
-				"description": "Throws Error with this exact message when a provided dimension is neither 2d nor 3d."
+				"description": "Thrown before template generation when input.dimension is truthy and is neither \"2d\" nor \"3d\"; the message is exactly \"Dimension must be 2d or 3d.\"."
 			},
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid project names and refused overwrites with the existing CLI failure messages."
+				"description": "The call to validateProjectName rejects a name that fails project-name validation before template generation or filesystem work."
 			},
 			{
 				"name": "Project file failure",
-				"type": "propagated",
-				"description": "Template construction and filesystem errors propagate; the caller owns recovery of a partially written target."
+				"type": "thrown",
+				"description": "An error from template generation, parent creation, or planned-file writing rejects the returned promise. This function does not roll back writes completed before a later failure."
 			}
 		],
 		"errorStatus": "declared",
@@ -76,31 +105,52 @@
 						"name": "createProject.input",
 						"type": "CreateProjectInput",
 						"required": true,
-						"description": "Project kind and name with optional parent directory, game dimension and force; omitted parent creates the named directory relative to the current directory, and omitted force protects changed files."
+						"description": "Provides the required project kind and name, with optional parent, dimension, and force fields. A non-empty parent prefixes the target directory; an omitted or empty parent uses the name, dimension is limited to 2d or 3d when truthy, and omitted dimension or force is passed through as undefined.",
+						"examples": [
+							{
+								"kind": "app",
+								"name": "ledger-console",
+								"force": true,
+								"parent": "packages",
+								"dimension": "3d"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "createProject",
 						"type": "Promise<CreateProjectResult>",
-						"description": "Promise of the validated project kind/name and ordered file-write results; earlier successful writes are not rolled back after a later failure."
+						"description": "Resolves to an object containing the input kind, validated name, and write results returned by writePlannedFiles. A rejection from template generation or either awaited filesystem step rejects the promise without rollback in this function.",
+						"examples": [
+							{
+								"kind": "app",
+								"name": "ledger-console",
+								"writes": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when input.dimension is truthy and is neither \"2d\" nor \"3d\"; its message is exactly \"Dimension must be 2d or 3d.\"."
+					},
+					{
 						"name": "Error(\"Dimension must be 2d or 3d.\")",
 						"type": "thrown",
-						"description": "Throws Error with this exact message when a provided dimension is neither 2d nor 3d."
+						"description": "Thrown before template generation when input.dimension is truthy and is neither \"2d\" nor \"3d\"; the message is exactly \"Dimension must be 2d or 3d.\"."
 					},
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Rejects invalid project names and refused overwrites with the existing CLI failure messages."
+						"description": "The call to validateProjectName rejects a name that fails project-name validation before template generation or filesystem work."
 					},
 					{
 						"name": "Project file failure",
-						"type": "propagated",
-						"description": "Template construction and filesystem errors propagate; the caller owns recovery of a partially written target."
+						"type": "thrown",
+						"description": "An error from template generation, parent creation, or planned-file writing rejects the returned promise. This function does not roll back writes completed before a later failure."
 					}
 				],
 				"errorStatus": "declared"
@@ -112,14 +162,22 @@
 						"name": "renderCreateProject.result",
 						"type": "CreateProjectResult",
 						"required": true,
-						"description": "Created project kind/name and actual per-file write statuses to render."
+						"description": "Provides the project kind, validated name, and write results to format. The kind and name supply the heading, and the write results supply the rendered file list.",
+						"examples": [
+							{
+								"kind": "app",
+								"name": "ledger-console",
+								"writes": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderCreateProject",
 						"type": "string",
-						"description": "Human-readable creation heading and per-file create/skip/overwrite lines."
+						"description": "Returns a creation heading followed by the formatted write list from renderFileList. The heading uses the result kind and name.",
+						"examples": ["Created app harness \"ledger-console\".\n"]
 					}
 				],
 				"errors": [],
