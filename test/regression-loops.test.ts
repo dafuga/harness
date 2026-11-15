@@ -6,7 +6,7 @@ import { withTempDir } from './support/temporary';
 import { searchLoops } from '../src/cli/program/loopSearch';
 import { resolveLoopTemplate } from '../src/workflows/loopTemplates';
 import { projectFiles } from '../src/templates/project';
-import { findGuide } from '../src/guides/guide';
+import { findGuide } from '../src/guides/development-tooling/guide';
 import { environmentProfile } from '../src/workflows/verification-evidence/record-regression/RegressionProofService';
 
 test('regression profiles ignore volatile macOS launcher identity while retaining workload settings', () => {

@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { projectFiles } from '../src/templates/project';
 import { pieceFiles } from '../src/templates/pieces';
-import { findGuide } from '../src/guides/guide';
+import { findGuide } from '../src/guides/development-tooling/guide';
 import { generatePiece } from '../src/workflows/generate-code/generateCode';
 
 for (const kind of ['console', 'pageerror'] as const) {

@@ -10,19 +10,9 @@
 	"owns": {
 		"source": [
 			"src/guides/development-tooling/guide.ts",
-			"src/guides/development-tooling/guide.types.ts",
-			"src/guides/guide.ts"
+			"src/guides/development-tooling/guide.types.ts"
 		],
-		"symbols": [
-			"guides",
-			"findGuide",
-			"availableGuideTopics",
-			"Guide",
-			"Guide",
-			"guides",
-			"findGuide",
-			"availableGuideTopics"
-		]
+		"symbols": ["guides", "findGuide", "availableGuideTopics", "Guide", "Guide"]
 	},
 	"contract": {
 		"origin": "derived",
