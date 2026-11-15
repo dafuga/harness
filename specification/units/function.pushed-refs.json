@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/cli/program/hook-run-service/pushedRefs.ts",
-			"src/services/hook-run-service/pushedRefs.ts",
-			"src/utils/pushedRefs.ts"
-		],
-		"symbols": ["pushedRefs", "pushedRefs", "pushedRefs"]
+		"source": ["src/cli/program/hook-run-service/pushedRefs.ts", "src/utils/pushedRefs.ts"],
+		"symbols": ["pushedRefs", "pushedRefs"]
 	},
 	"contract": {
 		"origin": "declared",
