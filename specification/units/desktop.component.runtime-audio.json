@@ -37,27 +37,168 @@
 				"name": "RuntimeAudio.result",
 				"type": "EntityEvidenceResult",
 				"required": true,
-				"description": "Required evidence result with audio entries, declarations, comparison mode and commit scope. Groups clips by comparison identity; after falls back to current."
+				"description": "The evidence answer the card is built from: the component reads the audio clips in result.evidence (mediaType 'audio'), whether a scenario declares audio (an evidence item of kind 'audio'), evidence.mode, and scope.commit and scope.parent, and never reads identity or behavior. Clips are grouped by their comparison value, the after pane uses the current clip when there is no after clip, and the card is hidden unless a clip exists or audio is declared.",
+				"examples": [
+					{
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": "c3f8a2d19e6b47058d2f1a9c3e7b4d60f5a8c211",
+								"category": "components",
+								"entity": "desktop.component.runtime-audio"
+							},
+							"mode": "commit",
+							"branch": "main",
+							"tip": "e07d5b92c4a1f8362b9d0e7a4c5f1b28d6e93a7c",
+							"commit": "c3f8a2d19e6b47058d2f1a9c3e7b4d60f5a8c211",
+							"atTip": false,
+							"parent": "9b1e4c7a2f08d3e56a91c4b07f2d8e3a5c6b0f14",
+							"summary": {
+								"commit": "c3f8a2d19e6b47058d2f1a9c3e7b4d60f5a8c211",
+								"parents": ["9b1e4c7a2f08d3e56a91c4b07f2d8e3a5c6b0f14"],
+								"subject": "Pair the before and after audio clips",
+								"author": "Jordan Lee",
+								"committedAt": "2026-11-10T14:22:05Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"identity": {
+							"principalId": "google-109384756201938475610",
+							"projectId": "3f6c1b2a-8d4e-4a7b-9c10-5e2f7a9d1b36",
+							"repositoryId": 482910374,
+							"requestedRef": "main",
+							"sourceCommit": "c3f8a2d19e6b47058d2f1a9c3e7b4d60f5a8c211",
+							"sourceTree": "4a6e0d7b1c93f258e0b74d6a9c12f3e85b07d4a9",
+							"notesRef": "refs/notes/harness",
+							"notesRevision": "a51f9e03c7d284b6e1f0a9d35c8b2e47f6d10c93",
+							"evidenceRef": "refs/heads/harness-evidence",
+							"evidenceRevision": "2d8b7f4c01e96a3b5f7d2c8e4a1b90d6f3c57e28",
+							"historyIndexRevision": "6e3a0f9d25b81c47e0d9a6f3b2c58e14d7a09b6c",
+							"artifactHash": null,
+							"profile": "1db6ce9451b5e530"
+						},
+						"evidence": {
+							"mode": "commit",
+							"scenarios": [],
+							"after": {
+								"commit": "c3f8a2d19e6b47058d2f1a9c3e7b4d60f5a8c211",
+								"detail": null,
+								"record": null,
+								"gap": "Revision c3f8a2d is not available here; no other revision is shown in its place.",
+								"coverage": [],
+								"captures": []
+							},
+							"before": {
+								"commit": "9b1e4c7a2f08d3e56a91c4b07f2d8e3a5c6b0f14",
+								"detail": null,
+								"record": null,
+								"gap": "Revision 9b1e4c7 is not available here; no other revision is shown in its place.",
+								"coverage": [],
+								"captures": []
+							},
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "commit",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": null,
+							"scenarios": []
+						}
+					},
+					{
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": null,
+								"category": "components",
+								"entity": "desktop.component.runtime-audio"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "e07d5b92c4a1f8362b9d0e7a4c5f1b28d6e93a7c",
+							"commit": "e07d5b92c4a1f8362b9d0e7a4c5f1b28d6e93a7c",
+							"atTip": true,
+							"parent": "c3f8a2d19e6b47058d2f1a9c3e7b4d60f5a8c211",
+							"summary": {
+								"commit": "e07d5b92c4a1f8362b9d0e7a4c5f1b28d6e93a7c",
+								"parents": ["c3f8a2d19e6b47058d2f1a9c3e7b4d60f5a8c211"],
+								"subject": "Keep the audio card while a clip is read",
+								"author": "Sam Okafor",
+								"committedAt": "2026-11-12T09:47:30Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"identity": {
+							"principalId": "google-109384756201938475610",
+							"projectId": "3f6c1b2a-8d4e-4a7b-9c10-5e2f7a9d1b36",
+							"repositoryId": 482910374,
+							"requestedRef": "main",
+							"sourceCommit": "e07d5b92c4a1f8362b9d0e7a4c5f1b28d6e93a7c",
+							"sourceTree": "f1c07e5a9d38b246e0a7c19d5b3f8e62a4d0c7b1",
+							"notesRef": "refs/notes/harness",
+							"notesRevision": "a51f9e03c7d284b6e1f0a9d35c8b2e47f6d10c93",
+							"evidenceRef": "refs/heads/harness-evidence",
+							"evidenceRevision": "8c4e2a7f15d09b63e2c8a4f7d1b05e96c3a2f48d",
+							"historyIndexRevision": "3b7d9e1a48f062c5d9b1e7a3f40c86d2e5a9b10f",
+							"artifactHash": null,
+							"profile": "1db6ce9451b5e530"
+						},
+						"evidence": {
+							"mode": "current",
+							"scenarios": [],
+							"after": {
+								"commit": "e07d5b92c4a1f8362b9d0e7a4c5f1b28d6e93a7c",
+								"detail": null,
+								"record": null,
+								"gap": "Revision e07d5b9 is not available here; no other revision is shown in its place.",
+								"coverage": [],
+								"captures": []
+							},
+							"before": null,
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "current",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": null,
+							"scenarios": []
+						}
+					}
+				]
 			},
 			{
 				"name": "RuntimeAudio.evidence",
 				"type": "EntityEvidence",
 				"required": true,
-				"description": "Evidence state providing a URL for side and file. Promise failures are caught and shown as unverified."
+				"description": "The EntityEvidence store instance whose url(side, file) returns a promise for an object URL of one clip; the component calls it for each clip pane it renders. A rejected promise is caught and shown in that pane as a Not verified notice with the error's message."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimeAudio",
 				"type": "markup",
-				"description": "Audio panel when clips exist or audio is declared. Commit mode pairs before/after; other modes show current. Paired side cards are labelled Before and After. Includes playback controls, transcript and standing/status for a loaded clip; reading and unverified notices show no standing line. Reading/error states. Missing sides and declared-but-absent clips are explicit gaps. Catalog states: default (current clip), paired (commit before/after), missing-before (a side without its clip), declared-absent (a declared clip not recorded), unverified (a clip whose read failed) and reading (a clip still being read)."
+				"description": "The audio card, shown only when a clip exists or a scenario declares audio: commit mode is headed 'Audio before and after' with Before and After panes, and other modes are headed 'Current audio'. A loaded clip shows its audio controls, its transcript when it has one and its 'standing · status' line; a clip still being read shows 'Reading the clip…' and a failed read shows a Not verified notice, and neither of those shows a standing line; a missing side or a declared clip with no recording shows a 'No clip' gap."
 			}
 		],
 		"errors": [
 			{
 				"name": "Clip read failure",
 				"type": "caught",
-				"description": "A rejected clip URL promise is caught and shown as an unverified clip with the error message."
+				"description": "A clip whose evidence.url promise rejects is caught by the {:catch} branch and shown in its pane as a Not verified notice with the error's message."
 			}
 		],
 		"errorStatus": "declared",
