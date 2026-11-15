@@ -1,8 +1,9 @@
+import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { consoleRoute } from '../../src/utils/console-canonical/consoleRoute';
 import { consoleRoutePath } from '../../packages/reports/src/components/projects-sessions/project-activity/consoleRoute';
 import { sourceBranches } from '../../src/repositories/source-history-repository/sourceBranches';
-import { type ListedRef } from '../../src/utils/sourceBranches';
+import { type ListedRef } from '../../src/utils/git-source-history/sourceBranches';
 
 const [a, b, c, d] = ['a', 'b', 'c', 'd'].map((letter) => letter.repeat(40));
 const local = (name: string, head: string): ListedRef => ({ ref: `refs/heads/${name}`, head });
@@ -81,4 +82,9 @@ test('a page of a remote tip has a path of its own that leads back to the same b
 	expect(
 		consoleRoute(consoleRoutePath({ ...route, branch: 'origin/feature/kept#1' }))?.branch
 	).toBe('origin/feature/kept#1');
+});
+
+test('sourceBranches has one module now: no relocation stub is left at its old utils path', () => {
+	const stub = new URL('../../src/utils/sourceBranches.ts', import.meta.url);
+	expect(existsSync(stub)).toBe(false);
 });
