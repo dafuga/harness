@@ -21,34 +21,122 @@
 				"name": "projectList.projects",
 				"type": "DesktopProject[]",
 				"required": true,
-				"description": "The projects already listed, in display order. Existing entries are kept as supplied, including their names and any duplicates."
+				"description": "The projects supplied for the switcher, in display order. The original array and its entries are preserved when no append is needed, including any duplicates.",
+				"examples": [
+					[
+						{
+							"id": "project-1",
+							"name": "Atlas",
+							"kind": "local"
+						}
+					],
+					[
+						{
+							"id": "project-2",
+							"name": "Atlas Shared",
+							"kind": "shared"
+						}
+					]
+				]
 			},
 			{
 				"name": "projectList.snapshot",
 				"type": "ProjectSnapshot | null",
 				"required": true,
-				"description": "The shown project snapshot, or null when no project is shown. Its identity is used to avoid appending it again; an absent identity is represented by an empty string."
+				"description": "The snapshot for the project currently shown in the switcher, or null when none is shown. Its optional project id falls back to an empty string, and only capabilities.source equal to github makes an appended entry shared.",
+				"examples": [
+					null,
+					{
+						"project": {
+							"name": "Atlas",
+							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+							"id": "project-1"
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": true,
+							"planning": true,
+							"approval": false,
+							"source": "github"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"tip": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"current": true
+							}
+						],
+						"commits": [
+							{
+								"hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"subject": "Initial commit",
+								"authoredAt": "2026-11-10T12:00:00.000Z"
+							}
+						],
+						"entities": [],
+						"writable": true
+					}
+				]
 			},
 			{
 				"name": "listedProjects.bridge",
 				"type": "DesktopBridge",
 				"required": true,
-				"description": "The desktop connection, optionally offering a project-list operation. An older connection without that operation is accepted."
+				"description": "The desktop bridge, whose listProjects method may be absent. The method is called when present; when absent, the function resolves to an empty list."
 			}
 		],
 		"outputs": [
 			{
 				"name": "listedProjects",
 				"type": "Promise<DesktopProject[]>",
-				"description": "A promise for the connection’s listed projects, or an empty list when the operation is absent. A failure from the listing operation is passed back as a rejected promise."
+				"description": "A promise resolving to the result of bridge.listProjects() when available or to an empty list when absent. If the bridge method throws or its promise rejects, the returned promise rejects with that reason.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "project-1",
+							"name": "Atlas",
+							"kind": "local"
+						}
+					]
+				]
 			},
 			{
 				"name": "projectList",
 				"type": "DesktopProject[]",
-				"description": "The original list when there is no snapshot or its project identity is already present. Otherwise a new list appends the shown project with its name and identity. A GitHub-backed snapshot is marked shared; all other snapshots are marked local."
+				"description": "The original array when the snapshot is null or its effective id is already present; otherwise a new array appends the snapshot id and name. The appended entry is shared only when capabilities.source is github, and local otherwise.",
+				"examples": [
+					[
+						{
+							"id": "project-1",
+							"name": "Atlas",
+							"kind": "local"
+						}
+					],
+					[
+						{
+							"id": "project-1",
+							"name": "Atlas",
+							"kind": "shared"
+						}
+					]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "bridge.listProjects rejection",
+				"type": "thrown",
+				"description": "An exception thrown by bridge.listProjects() or a rejection from its returned promise becomes the rejection reason of listedProjects. The implementation does not catch or wrap that reason."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "projectList",
@@ -57,24 +145,95 @@
 						"name": "projectList.projects",
 						"type": "DesktopProject[]",
 						"required": true,
-						"description": "The projects already listed, in display order. Existing entries are kept as supplied, including their names and any duplicates."
+						"description": "The projects supplied for the switcher, in display order. The original array and its entries are preserved when no append is needed, including any duplicates.",
+						"examples": [
+							[
+								{
+									"id": "project-1",
+									"name": "Atlas",
+									"kind": "local"
+								}
+							],
+							[
+								{
+									"id": "project-2",
+									"name": "Atlas Shared",
+									"kind": "shared"
+								}
+							]
+						]
 					},
 					{
 						"name": "projectList.snapshot",
 						"type": "ProjectSnapshot | null",
 						"required": true,
-						"description": "The shown project snapshot, or null when no project is shown. Its identity is used to avoid appending it again; an absent identity is represented by an empty string."
+						"description": "The snapshot for the project currently shown in the switcher, or null when none is shown. Its optional project id falls back to an empty string, and only capabilities.source equal to github makes an appended entry shared.",
+						"examples": [
+							null,
+							{
+								"project": {
+									"name": "Atlas",
+									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+									"id": "project-1"
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": true,
+									"planning": true,
+									"approval": false,
+									"source": "github"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"tip": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+										"current": true
+									}
+								],
+								"commits": [
+									{
+										"hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+										"subject": "Initial commit",
+										"authoredAt": "2026-11-10T12:00:00.000Z"
+									}
+								],
+								"entities": [],
+								"writable": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectList",
 						"type": "DesktopProject[]",
-						"description": "The original list when there is no snapshot or its project identity is already present. Otherwise a new list appends the shown project with its name and identity. A GitHub-backed snapshot is marked shared; all other snapshots are marked local."
+						"description": "The original array when the snapshot is null or its effective id is already present; otherwise a new array appends the snapshot id and name. The appended entry is shared only when capabilities.source is github, and local otherwise.",
+						"examples": [
+							[
+								{
+									"id": "project-1",
+									"name": "Atlas",
+									"kind": "local"
+								}
+							],
+							[
+								{
+									"id": "project-1",
+									"name": "Atlas",
+									"kind": "shared"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "listedProjects",
@@ -83,18 +242,34 @@
 						"name": "listedProjects.bridge",
 						"type": "DesktopBridge",
 						"required": true,
-						"description": "The desktop connection, optionally offering a project-list operation. An older connection without that operation is accepted."
+						"description": "The desktop bridge, whose listProjects method may be absent. The method is called when present; when absent, the function resolves to an empty list."
 					}
 				],
 				"outputs": [
 					{
 						"name": "listedProjects",
 						"type": "Promise<DesktopProject[]>",
-						"description": "A promise for the connection’s listed projects, or an empty list when the operation is absent. A failure from the listing operation is passed back as a rejected promise."
+						"description": "A promise resolving to the result of bridge.listProjects() when available or to an empty list when absent. If the bridge method throws or its promise rejects, the returned promise rejects with that reason.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "project-1",
+									"name": "Atlas",
+									"kind": "local"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "bridge.listProjects rejection",
+						"type": "thrown",
+						"description": "An exception thrown by bridge.listProjects() or a rejection from its returned promise becomes the rejection reason of listedProjects. The implementation does not catch or wrap that reason."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
