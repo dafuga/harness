@@ -29,41 +29,108 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ConsoleInstallService.install.options",
 				"type": "ConsoleInstallOptions",
-				"required": true
+				"required": true,
+				"description": "Selects the SvelteKit host, policy module/export and console base path, with optional history input, storage binding and conflict handling. `data` and `bucket` default to undefined (no data is indexed and bundle storage is used), `prefix` defaults to \"\", and `update`/`keep` default to undefined; `update === true` replaces held content, while `keep` leaves it host-owned unless update is true.",
+				"examples": [
+					{
+						"host": "/repo/apps/console",
+						"policy": "$lib/server/historyPolicy",
+						"policyExport": "historyPolicy",
+						"base": "/console"
+					},
+					{
+						"host": "/repo/apps/console",
+						"policy": "$lib/server/historyPolicy",
+						"policyExport": "historyPolicy",
+						"base": "/console",
+						"data": "dist/history",
+						"bucket": "CONSOLE_HISTORY",
+						"prefix": "history",
+						"update": true,
+						"keep": false
+					}
+				]
 			},
 			{
 				"name": "ConsoleInstallService.restore.host",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem root of the SvelteKit host whose console manifest and files are used by restore. It is the base for reading and writing that host's manifest and files.",
+				"examples": ["/repo/apps/console"]
 			},
 			{
 				"name": "ConsoleInstallService.restore.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "File path under `host` whose latest recorded change is to be restored. If no saved replaced contents are available for that path, restore raises ExpectedCliError.",
+				"examples": ["src/routes/console/+page.server.ts"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ConsoleInstallService.install",
-				"type": "Promise<ConsoleInstallResult>"
+				"type": "Promise<ConsoleInstallResult>",
+				"description": "Resolves with host/base/policy details, file paths written/removed/kept, recorded content changes, indexed data counts, storage and bundle size, and warnings. `data` is null when no history directory is supplied, and `bundle` is null when nothing is bundled.",
+				"examples": [
+					{
+						"host": "/repo/apps/console",
+						"base": "/console",
+						"policy": "$lib/server/historyPolicy#historyPolicy",
+						"written": ["src/hooks.server.ts"],
+						"removed": [],
+						"kept": [],
+						"changes": [],
+						"data": {
+							"revisions": 12,
+							"media": 3,
+							"bytes": 16480
+						},
+						"storage": {
+							"kind": "bucket",
+							"binding": "CONSOLE_HISTORY",
+							"prefix": "history"
+						},
+						"bundle": null,
+						"warnings": []
+					}
+				]
 			},
 			{
 				"name": "ConsoleInstallService.restore",
-				"type": "Promise<ConsoleChange>"
+				"type": "Promise<ConsoleChange>",
+				"description": "Resolves with the change record created when the latest saved content for `path` is restored. It records the displaced and restored content identities, the displaced copy's project-local path, the action, reason and timestamp.",
+				"examples": [
+					{
+						"path": "src/lib/server/history-note.ts",
+						"action": "restored",
+						"reason": "restores what was replaced at 2026-11-14T10:30:00.000Z",
+						"at": "2026-11-14T10:31:00.000Z",
+						"before": {
+							"sha256": "5013c0401e2df136bbd94597b732e4938e5d07488be6e9c2047c81f1cf05a432",
+							"bytes": 29,
+							"saved": ".harness/console/replaced/5013c0401e2df136bbd94597b732e4938e5d07488be6e9c2047c81f1cf05a432"
+						},
+						"after": {
+							"sha256": "7644f7f52820bb415afccf747892bf7a9f9aecc6e657af58b71615311948415a",
+							"bytes": 31
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An expected CLI error raised when install finds conflicting content without an update/keep decision, or restore finds no saved replaced contents for the requested path. Install raises before applying its planned file writes, and restore raises before updating the manifest."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ConsoleInstallService.install",
@@ -71,17 +138,56 @@
 					{
 						"name": "ConsoleInstallService.install.options",
 						"type": "ConsoleInstallOptions",
-						"required": true
+						"required": true,
+						"description": "Selects the SvelteKit host, policy module/export and console base path, with optional history input, storage binding and conflict handling. `data` and `bucket` default to undefined (no data is indexed and bundle storage is used), `prefix` defaults to \"\", and `update`/`keep` default to undefined; `update === true` replaces held content, while `keep` leaves it host-owned unless update is true.",
+						"examples": [
+							{
+								"host": "/repo/apps/console",
+								"policy": "$lib/server/historyPolicy",
+								"policyExport": "historyPolicy",
+								"base": "/console"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConsoleInstallService.install",
-						"type": "Promise<ConsoleInstallResult>"
+						"type": "Promise<ConsoleInstallResult>",
+						"description": "Resolves with host/base/policy details, file paths written/removed/kept, recorded content changes, indexed data counts, storage and bundle size, and warnings. `data` is null when no history directory is supplied, and `bundle` is null when nothing is bundled.",
+						"examples": [
+							{
+								"host": "/repo/apps/console",
+								"base": "/console",
+								"policy": "$lib/server/historyPolicy#historyPolicy",
+								"written": ["src/hooks.server.ts"],
+								"removed": [],
+								"kept": [],
+								"changes": [],
+								"data": {
+									"revisions": 12,
+									"media": 3,
+									"bytes": 16480
+								},
+								"storage": {
+									"kind": "bucket",
+									"binding": "CONSOLE_HISTORY",
+									"prefix": "history"
+								},
+								"bundle": null,
+								"warnings": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when one or more desired files conflict and neither `update` nor `keep` selects behavior; the conflict report is raised before any planned writes."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ConsoleInstallService.restore",
@@ -89,27 +195,50 @@
 					{
 						"name": "ConsoleInstallService.restore.host",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem root of the SvelteKit host whose console manifest and files are used by restore. It is the base for reading and writing that host's manifest and files.",
+						"examples": ["/repo/apps/console"]
 					},
 					{
 						"name": "ConsoleInstallService.restore.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "File path under `host` whose latest recorded change is to be restored. If no saved replaced contents are available for that path, restore raises ExpectedCliError.",
+						"examples": ["src/routes/console/+page.server.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ConsoleInstallService.restore",
-						"type": "Promise<ConsoleChange>"
+						"type": "Promise<ConsoleChange>",
+						"description": "Resolves with the change record created when the latest saved content for `path` is restored. It records the displaced and restored content identities, the displaced copy's project-local path, the action, reason and timestamp.",
+						"examples": [
+							{
+								"path": "src/lib/server/history-note.ts",
+								"action": "restored",
+								"reason": "restores what was replaced at 2026-11-14T10:30:00.000Z",
+								"at": "2026-11-14T10:31:00.000Z",
+								"before": {
+									"sha256": "5013c0401e2df136bbd94597b732e4938e5d07488be6e9c2047c81f1cf05a432",
+									"bytes": 29,
+									"saved": ".harness/console/replaced/5013c0401e2df136bbd94597b732e4938e5d07488be6e9c2047c81f1cf05a432"
+								},
+								"after": {
+									"sha256": "7644f7f52820bb415afccf747892bf7a9f9aecc6e657af58b71615311948415a",
+									"bytes": 31
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when no saved replaced contents are available for the requested path, including when there is no recorded change or its saved copy cannot be read."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
