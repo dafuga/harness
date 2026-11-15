@@ -21,15 +21,17 @@
 				"name": "repositoryLease.root",
 				"type": "string",
 				"required": true,
-				"description": "Canonical local repository root to reserve across Harness app processes.",
-				"examples": ["/projects/atlas"]
+				"description": "Exact repository-root path used to derive a per-checkout lock key. Coordination across processes depends on callers supplying the same string, because the implementation hashes it as-is and does not validate or normalize it.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "repositoryLease",
 				"type": "Promise<RepositoryLease | null>",
-				"description": "An async release callback with an abort signal, or null while another owner holds the repository. Always release in finally.",
+				"description": "Resolves to null when the nonblocking advisory lock is unavailable or a live owner marker is found, otherwise to an async release callback carrying an AbortSignal. Calling the callback removes the marker only if it still matches this owner, then releases the helper lock; the signal aborts if the helper is lost or its pipe closes unexpectedly.",
 				"examples": [null]
 			}
 		],
@@ -37,10 +39,10 @@
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Refuses unsupported platforms, unreadable lock owners or filesystem failures instead of running without a lock.",
-				"examples": ["Cross-app repository locking is not supported on this platform."]
+				"description": "Throws Error('Cross-app repository locking is not supported on this platform.') outside macOS and Linux, and Error('Invalid project lock owner.') for a malformed saved PID; other helper, filesystem, and non-ESRCH process-probe errors are propagated, and acquisition cleanup can reject. An acquired release callback can separately reject if its owner marker cannot be read or unlinked or its helper lock cannot be released."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "repositoryLease",
@@ -49,20 +51,28 @@
 						"name": "repositoryLease.root",
 						"type": "string",
 						"required": true,
-						"description": "Canonical local repository root to reserve across Harness app processes.",
-						"examples": ["/projects/atlas"]
+						"description": "Exact repository-root path used to derive a per-checkout lock key. Coordination across processes depends on callers supplying the same string, because the implementation hashes it as-is and does not validate or normalize it.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "repositoryLease",
 						"type": "Promise<RepositoryLease | null>",
-						"description": "An async release callback with an abort signal, or null while another owner holds the repository. Always release in finally.",
+						"description": "Resolves to null when the nonblocking advisory lock is unavailable or a live owner marker is found, otherwise to an async release callback carrying an AbortSignal. Calling the callback removes the marker only if it still matches this owner, then releases the helper lock; the signal aborts if the helper is lost or its pipe closes unexpectedly.",
 						"examples": [null]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error('Cross-app repository locking is not supported on this platform.') outside macOS and Linux, and Error('Invalid project lock owner.') for a malformed saved PID; other helper, filesystem, and non-ESRCH process-probe errors are propagated, and acquisition cleanup can reject. An acquired release callback can separately reject if its owner marker cannot be read or unlinked or its helper lock cannot be released."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
