@@ -170,11 +170,9 @@
 		"outputs": [
 			{
 				"name": "writingVersions",
-				"type": "unknown",
+				"type": "readonly [1, 2]",
 				"description": "The supported writing versions, 1 and 2, which a repository can declare as `writing` in harness.verify.json. writingHeld searches this list from the newest version down, so a declaration is held to the highest version in it that is not above the declared number.",
-				"examples": [
-					[1, 2]
-				]
+				"examples": [[1, 2]]
 			},
 			{
 				"name": "writingVersion",
@@ -184,7 +182,7 @@
 			},
 			{
 				"name": "writingLimits",
-				"type": "unknown",
+				"type": "typeof writingLimits",
 				"description": "The shared bounds: behavior 30 words and 200 characters, attempt 20 words and 140 characters, subject 72 characters with no word cap, and body 60 words and 400 characters. These are the version 1 bounds, and writingPolicy builds a new object from them that sets the attempt words to 15 for version 2, leaving this object unchanged.",
 				"examples": [
 					{

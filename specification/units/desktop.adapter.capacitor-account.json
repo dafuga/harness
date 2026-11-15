@@ -276,7 +276,7 @@
 				"outputs": [
 					{
 						"name": "failure",
-						"type": "unknown",
+						"type": "Error & { status: number; code: string; }",
 						"description": "Error carrying the supplied status and code; its message is the supplied message or the browserError result when omitted."
 					}
 				],
@@ -302,7 +302,7 @@
 				"outputs": [
 					{
 						"name": "refusal",
-						"type": "unknown",
+						"type": "Error & { status: number; code: string; }",
 						"description": "Error derived from a native plugin rejection, with its code preserved or set to failed and a status mapped from known codes. Unmapped codes receive status 0."
 					}
 				],
@@ -411,7 +411,7 @@
 				"outputs": [
 					{
 						"name": "refused",
-						"type": "unknown",
+						"type": "Error & { status: number; code: string; }",
 						"description": "Error carrying the native reply status and the public error code parsed from its JSON body, if readable. Invalid or unreadable bodies produce an empty code."
 					}
 				],
@@ -631,7 +631,7 @@
 				"outputs": [
 					{
 						"name": "CapacitorAccountAdapter.constructor",
-						"type": "unknown",
+						"type": "CapacitorAccountAdapter",
 						"description": "New adapter instance retaining the supplied native plugin configuration. The instance starts without a known account status."
 					}
 				],

@@ -29,7 +29,7 @@
 		"outputs": [
 			{
 				"name": "hostChanges",
-				"type": "unknown",
+				"type": "{ observe: (value: string) => void; record: (runId: string) => Promise<{ path: string; before: string | null; after: string | null; coverage: \"observed-cli-file-operation\"; }[]>; }",
 				"description": "An object with observe(value), which remembers each reported path that is not strictly inside the project once, as an absolute path, and starts its first hash read at that moment, and record(runId), which reads the final hashes and resolves to the list of entries ({path, before, after, coverage}). Entries are kept even when before and after are equal, a hash read that fails is stored as null, and record appends one JSON line (runId, ISO timestamp, coverage label, entries) to work/host-changes.ndjson whenever there are entries."
 			}
 		],
@@ -60,7 +60,7 @@
 				"outputs": [
 					{
 						"name": "hostChanges",
-						"type": "unknown",
+						"type": "{ observe: (value: string) => void; record: (runId: string) => Promise<{ path: string; before: string | null; after: string | null; coverage: \"observed-cli-file-operation\"; }[]>; }",
 						"description": "An object with observe(value), which remembers each reported path that is not strictly inside the project once, as an absolute path, and starts its first hash read at that moment, and record(runId), which reads the final hashes and resolves to the list of entries ({path, before, after, coverage}). Entries are kept even when before and after are equal, a hash read that fails is stored as null, and record appends one JSON line (runId, ISO timestamp, coverage label, entries) to work/host-changes.ndjson whenever there are entries."
 					}
 				],

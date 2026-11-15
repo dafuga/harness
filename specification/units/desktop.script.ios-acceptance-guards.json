@@ -41,10 +41,7 @@
 				"type": "string[]",
 				"required": true,
 				"description": "The secrets to hide, each matched as written and with every character outside A-Z, a-z and 0-9 removed; a form shorter than 4 characters is ignored. An empty list hides nothing.",
-				"examples": [
-					["K7Q2-9WXM"],
-					["K7Q2-9WXM", "R4T8-ZP2L"]
-				]
+				"examples": [["K7Q2-9WXM"], ["K7Q2-9WXM", "R4T8-ZP2L"]]
 			},
 			{
 				"name": "expiredOffer.scan",
@@ -71,7 +68,7 @@
 		"outputs": [
 			{
 				"name": "loopbackArgument",
-				"type": "unknown",
+				"type": "\"-HarnessRemoteLoopback\"",
 				"description": "The launch argument by which a Debug product, and only a Debug product, accepts a local relay: the fixed string -HarnessRemoteLoopback.",
 				"examples": ["-HarnessRemoteLoopback"]
 			},
@@ -89,13 +86,13 @@
 			},
 			{
 				"name": "scanMarker",
-				"type": "unknown",
+				"type": "\"HarnessSyntheticScans\"",
 				"description": "The words by which a product is known to hold the TEST ONLY scan fixture; no product of the real source does. It is the fixed string HarnessSyntheticScans.",
 				"examples": ["HarnessSyntheticScans"]
 			},
 			{
 				"name": "scanArgument",
-				"type": "unknown",
+				"type": "\"-HarnessSyntheticScans\"",
 				"description": "The launch argument that tells the TEST ONLY scan fixture copy what its scans answer: the fixed string -HarnessSyntheticScans, which is scanMarker with a leading dash.",
 				"examples": ["-HarnessSyntheticScans"]
 			},
@@ -152,10 +149,7 @@
 						"type": "string[]",
 						"required": true,
 						"description": "The secrets to hide, each matched as written and with every character outside A-Z, a-z and 0-9 removed; a form shorter than 4 characters is ignored. An empty list hides nothing.",
-						"examples": [
-							["K7Q2-9WXM"],
-							["K7Q2-9WXM", "R4T8-ZP2L"]
-						]
+						"examples": [["K7Q2-9WXM"], ["K7Q2-9WXM", "R4T8-ZP2L"]]
 					}
 				],
 				"outputs": [

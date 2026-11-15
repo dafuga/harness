@@ -162,7 +162,7 @@
 			},
 			{
 				"name": "ProjectContextValidator.comment",
-				"type": "unknown",
+				"type": "import('../../models/projects-sessions/ProjectContext.types').HumanCommentDraft",
 				"description": "The validated thread comment: requestId and text as given, projectId and threadId only when supplied, and an anchor holding entityId, version, imageSha256, state, viewport, region, option (only when supplied), branch and commit. Input fields outside these are not copied into the result.",
 				"examples": [
 					{
@@ -469,7 +469,7 @@
 				"outputs": [
 					{
 						"name": "ProjectContextValidator.comment",
-						"type": "unknown",
+						"type": "import('../../models/projects-sessions/ProjectContext.types').HumanCommentDraft",
 						"description": "The validated thread comment: requestId and text as given, projectId and threadId only when supplied, and an anchor holding entityId, version, imageSha256, state, viewport, region, option (only when supplied), branch and commit. Input fields outside these are not copied into the result.",
 						"examples": [
 							{

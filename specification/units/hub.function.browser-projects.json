@@ -70,7 +70,7 @@
 			},
 			{
 				"name": "browserProjects",
-				"type": "unknown",
+				"type": "{ list: () => Promise<ProjectSummary[]>; get: (projectId: string) => Promise<ProjectSummary>; create: (input: { name: string; repositoryId: number; }) => Promise<ProjectSummary>; members: (projectId: string) => Promise<Member[]>; invite: (projectId: string, input: { email: string; role: Exclude<Role, \"owner\">; }) => Promise<Invitation>; accept: (projectId: string, invitationId: string, code: string) => Promise<ProjectSummary>; github: () => Promise<GithubStatus>; repositories: () => Promise<GithubRepositories>; }",
 				"description": "An object of eight methods (list, get, create, members, invite, accept, github, repositories) that each return the promise from api.get or api.send for a /api/projects or /api/github route. Permissions are decided by the server, which binds every request to the signed-in person; this object performs no checks of its own."
 			}
 		],
@@ -162,7 +162,7 @@
 				"outputs": [
 					{
 						"name": "browserProjects",
-						"type": "unknown",
+						"type": "{ list: () => Promise<ProjectSummary[]>; get: (projectId: string) => Promise<ProjectSummary>; create: (input: { name: string; repositoryId: number; }) => Promise<ProjectSummary>; members: (projectId: string) => Promise<Member[]>; invite: (projectId: string, input: { email: string; role: Exclude<Role, \"owner\">; }) => Promise<Invitation>; accept: (projectId: string, invitationId: string, code: string) => Promise<ProjectSummary>; github: () => Promise<GithubStatus>; repositories: () => Promise<GithubRepositories>; }",
 						"description": "An object of eight methods (list, get, create, members, invite, accept, github, repositories) that each return the promise from api.get or api.send for a /api/projects or /api/github route. Permissions are decided by the server, which binds every request to the signed-in person; this object performs no checks of its own."
 					}
 				],

@@ -39,7 +39,7 @@
 			},
 			{
 				"name": "remoteFixtureProject",
-				"type": "unknown",
+				"type": "Promise<{ root: string; entityId: string; threadId: string; }>",
 				"description": "An object giving the absolute path of a new temporary Git repository (root), the id of its one planned page (entityId) and the id of a thread opened on that page (threadId). Each call creates a new repository under the OS temp directory, with a design image for the page, and the code never removes it.",
 				"examples": [
 					{
@@ -110,7 +110,7 @@
 				"outputs": [
 					{
 						"name": "remoteFixtureProject",
-						"type": "unknown",
+						"type": "Promise<{ root: string; entityId: string; threadId: string; }>",
 						"description": "An object giving the absolute path of a new temporary Git repository (root), the id of its one planned page (entityId) and the id of a thread opened on that page (threadId). Each call creates a new repository under the OS temp directory, with a design image for the page, and the code never removes it.",
 						"examples": [
 							{

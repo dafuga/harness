@@ -177,19 +177,19 @@
 		"outputs": [
 			{
 				"name": "everyProject",
-				"type": "unknown",
+				"type": "\"$projects\"",
 				"description": "The reserved project id $projects, used for events about the whole session or project discovery rather than one project. forgetShared treats it as the whole session, so it removes every shared project from the list.",
 				"examples": ["$projects"]
 			},
 			{
 				"name": "deniedNotice",
-				"type": "unknown",
+				"type": "string",
 				"description": "The exact text stored as the workspace error when a denied event clears the shown GitHub-backed project. cacheStatus passes it for every denied event, but it is stored only when that project is cleared.",
 				"examples": ["Access to this shared project ended. Connect again or ask its owner."]
 			},
 			{
 				"name": "offlineNotice",
-				"type": "unknown",
+				"type": "string",
 				"description": "The exact reason text that offlineCapabilities sets on an offline view's capabilities. It is a fixed string, so every offline view carries the same reason.",
 				"examples": ["Offline cached view. Comments and changes need a connection."]
 			},

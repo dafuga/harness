@@ -374,7 +374,7 @@
 				"outputs": [
 					{
 						"name": "LfsAdapter.constructor",
-						"type": "unknown",
+						"type": "LfsAdapter",
 						"description": "The new LfsAdapter instance that `new LfsAdapter(root)` evaluates to; the constructor body has no return value of its own. The git common directory is not looked up here, only when path is first called."
 					}
 				],

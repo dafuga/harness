@@ -765,7 +765,7 @@
 				"outputs": [
 					{
 						"name": "CatalogWriteService.constructor",
-						"type": "unknown",
+						"type": "CatalogWriteService",
 						"description": "The new CatalogWriteService instance, whose only state is the adapter it stores as a private readonly field; the constructor runs no database operation."
 					}
 				],
