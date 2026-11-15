@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/hooks.server.ts",
-			"packages/reports/src/lib/development-tooling/server-hooks/hooks.server.ts",
-			"packages/reports/src/lib/server-hooks/hooks.server.ts"
+			"packages/reports/src/lib/development-tooling/server-hooks/hooks.server.ts"
 		],
-		"symbols": ["handle", "handle", "handle"]
+		"symbols": ["handle", "handle"]
 	},
 	"contract": {
 		"origin": "derived",
