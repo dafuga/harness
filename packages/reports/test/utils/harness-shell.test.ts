@@ -8,7 +8,7 @@ import { measureWorkload } from '../../../../test/support/measureWorkload';
 import type { ExplorerLocation } from '../../src/models/Explorer.types';
 import { retainedBranch } from '../../src/utils/harnessAncestry';
 import { harnessShell } from '../../src/components/explorer-ui/harness-navbar/harnessShell';
-import { type HarnessNavbarInput } from '../../src/utils/harnessShell';
+import { type HarnessNavbarInput } from '../../src/utils/explorer-ui/harnessShell';
 import {
 	sha,
 	shellBranch,

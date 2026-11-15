@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { plainClick } from '../src/utils/harnessShell';
+import { plainClick } from '../src/utils/explorer-ui/harnessShell';
 
 test('only a plain left click is followed inside the application', () => {
 	const click = (changes: Partial<MouseEvent> = {}) =>

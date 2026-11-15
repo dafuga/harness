@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { mediaResponse } from '../../src/utils/mediaResponse';
+import { mediaResponse } from '../../src/utils/development-tooling/mediaResponse';
 const bytes = Buffer.from('0123456789');
 test('serves exact ranges, suffixes, open ends and clamped ends for seeking', async () => {
 	for (const [range, expected, contentRange] of [

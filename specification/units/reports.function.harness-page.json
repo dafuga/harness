@@ -11,20 +11,9 @@
 		"source": [
 			"packages/reports/src/utils/explorer-ui/harness-page/harnessPage.ts",
 			"packages/reports/src/utils/explorer-ui/harness-page/harnessPage.types.ts",
-			"packages/reports/src/utils/harness-page/harnessPage.ts",
-			"packages/reports/src/utils/harnessPage.ts"
+			"packages/reports/src/utils/harness-page/harnessPage.ts"
 		],
-		"symbols": [
-			"homePath",
-			"harnessPage",
-			"HarnessPage",
-			"HarnessPage",
-			"homePath",
-			"harnessPage",
-			"HarnessPage",
-			"homePath",
-			"harnessPage"
-		]
+		"symbols": ["homePath", "harnessPage", "HarnessPage", "HarnessPage", "homePath", "harnessPage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -154,11 +143,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/harnessPage.ts",
+		"entry": "packages/reports/src/utils/explorer-ui/harness-page/harnessPage.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/harnessPage.ts"
+				"entry": "packages/reports/src/utils/explorer-ui/harness-page/harnessPage.ts"
 			}
 		]
 	},
