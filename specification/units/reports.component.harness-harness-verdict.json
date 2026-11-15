@@ -32,91 +32,106 @@
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional verdict flag, default false. Only literal true is proven; used by verdict mode."
+				"description": "Controls whether verdict mode is proven; only literal true counts as a pass. It defaults to false, and other modes do not use it to choose their status.",
+				"examples": [true, false]
 			},
 			{
 				"name": "Status.variant",
 				"type": "'verdict' | 'icon' | 'badge' | 'run'",
 				"required": false,
 				"default": "verdict",
-				"description": "Optional mode, default verdict: verdict tooltip, Desktop icon, translated badge, or run progress."
+				"description": "Selects the rendering mode and defaults to verdict. The allowed modes are verdict, icon, badge, and run.",
+				"examples": ["verdict", "icon", "badge"]
 			},
 			{
 				"name": "Status.status",
 				"type": "string",
 				"required": false,
 				"default": "unknown",
-				"description": "Optional status string, default unknown. Icon passes only for verified; badge translates the declared report status."
+				"description": "Supplies the icon or badge status and defaults to unknown. Icon mode shows a check only for verified; badge mode passes the string to the report-status translator.",
+				"examples": ["unknown", "verified"]
 			},
 			{
 				"name": "Status.reason",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional icon explanation, default empty; empty displays No verification recorded for this revision."
+				"description": "Supplies the explanation shown in icon mode and defaults to an empty string. An empty reason becomes No verification recorded for this revision.",
+				"examples": [
+					"No verification recorded for this revision.",
+					"The capture does not match this revision."
+				]
 			},
 			{
 				"name": "Status.active",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional run activity flag, default false. True shows Cancel run."
+				"description": "Controls whether run mode shows the Cancel run button and defaults to false. It has an effect only when run mode has a truthy label.",
+				"examples": [false, true]
 			},
 			{
 				"name": "Status.cancel",
 				"type": "() => void",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional callback. Defaults to JavaScript undefined. Called only when Cancel run is clicked; errors propagate."
+				"description": "Provides the callback for the Cancel run button and defaults to undefined. It is only attached when run mode has a truthy label and active is true; callback errors propagate."
 			},
 			{
 				"name": "Status.children",
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional run content snippet. Defaults to JavaScript undefined. Omitted content displays label; rendering errors propagate."
+				"description": "Provides custom run content and defaults to undefined. Run mode renders it instead of the label when both the snippet and a truthy label are present; rendering errors propagate."
 			},
 			{
 				"name": "Status.label",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional words. Defaults to JavaScript undefined. Verdict defaults to Full coverage passed or Verification failed; run omits empty labels."
+				"description": "Supplies the displayed label and defaults to undefined; verdict mode derives Full coverage passed or Verification failed when it is absent. Run mode renders nothing unless the label is truthy.",
+				"examples": ["Full coverage passed", "Verification failed", "Generating report"]
 			},
 			{
 				"name": "Status.reasons",
 				"type": "string[]",
 				"required": false,
 				"default": [],
-				"description": "Optional ordered failure reasons, default []; a successful verdict omits them."
+				"description": "Supplies ordered reasons for a non-passing verdict tooltip and defaults to an empty array. A proven verdict hides these reasons.",
+				"examples": [
+					[],
+					["No verification record was found", "Capture predates this commit"]
+				]
 			},
 			{
 				"name": "Status.framed",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional verdict outline, default false; true preserves the framed icon treatment."
+				"description": "Controls the outline around the verdict icon and defaults to false. It affects verdict mode only.",
+				"examples": [false, true]
 			},
 			{
 				"name": "Status.bare",
 				"type": "boolean",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional compatibility input. Defaults to JavaScript undefined; verdict mode always draws only the icon."
+				"description": "Accepts a compatibility boolean and defaults to undefined. The value is not read when rendering; verdict mode always draws only the icon.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "Status",
 				"type": "markup",
-				"description": "The requested status treatment: verdict with accessible tooltip, Desktop check or cross, translated badge, or run text with an optional cancellation action. Each mode retains its own existing visual behavior. States: passed-open: The passing verdict tooltip is open with its successful verification label. failed-open: The failing verdict tooltip is open with its recorded reasons. unknown-open: The unknown verdict tooltip is open with its missing-evidence reasons. long-open: The failing tooltip contains many long reasons and scrolls within the viewport. icon-failed: Icon mode shows a cross with the failed-verification explanation. icon-unverified: Icon mode shows a cross with the unverified-revision explanation. icon-unknown: Icon mode shows a cross with the unknown-status explanation. icon-no-reason: Icon mode falls back to No verification recorded for this revision. icon-open: Icon mode exposes its reason status when focused, hovered or activated. icon-long: Icon mode displays a long verification-gap explanation. badge-passed: Badge mode displays the translated passed label and decorative dot. badge-running: Badge mode displays the translated running label and decorative dot. badge-failed: Badge mode displays the translated failed label and decorative dot. badge-blocked: Badge mode displays the translated blocked label and decorative dot. badge-skipped: Badge mode displays the translated skipped label and decorative dot. badge-not-proven: Badge mode displays the translated not-proven label and decorative dot. badge-interrupted: Badge mode displays the translated interrupted label and decorative dot. run-idle: Run mode retains its status content without an active Cancel run action. verdict: The verdict marker shows the supplied verification label and expandable reasons. badge: The translated status label and decorative dot appear without a verdict tooltip."
+				"description": "Produces markup for the selected verdict, icon, badge, or run mode. Verdict mode treats only passed === true as a pass and exposes ordered reasons in an accessible tooltip; icon mode shows its explanation while focused, hovered, or activated, badge mode translates status, and run mode renders only for a truthy label with cancellation available when active."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller rendering or callback error",
-				"type": "propagated",
-				"description": "Errors from run content or cancellation callbacks propagate. Tooltip placement reads only the visible verdict elements."
+				"type": "thrown",
+				"description": "Errors raised while rendering the supplied run snippet or invoking the cancellation callback propagate without being caught or converted."
 			}
 		],
 		"errorStatus": "declared",
