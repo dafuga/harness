@@ -37,8 +37,8 @@
 				"name": "VerificationCheckService.constructor.indexer",
 				"type": "SourceIndexService",
 				"required": false,
-				"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full.",
-				"default": "new SourceIndexService()"
+				"default": "new SourceIndexService()",
+				"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full."
 			},
 			{
 				"name": "VerificationCheckService.check.commit",
@@ -444,8 +444,8 @@
 						"name": "VerificationCheckService.constructor.indexer",
 						"type": "SourceIndexService",
 						"required": false,
-						"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full.",
-						"default": "new SourceIndexService()"
+						"default": "new SourceIndexService()",
+						"description": "SourceIndexService passed to loadSide while rebuilding the committed source. Defaults to new SourceIndexService(): an instance may be shared and reuses parsing only for files with identical content, while each commit is still indexed and compared in full."
 					}
 				],
 				"outputs": [

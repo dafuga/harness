@@ -140,8 +140,8 @@
 				"name": "snapshotVideoInputs.evidenceRoot",
 				"type": "string",
 				"required": false,
-				"description": "Original Git repository carrying reviewer evidence. Omission uses root, appropriate only when root itself is the repository.",
-				"default": "root"
+				"default": "root",
+				"description": "Original Git repository carrying reviewer evidence. Omission uses root, appropriate only when root itself is the repository."
 			},
 			{
 				"name": "snapshotVideoRun.run",
@@ -348,8 +348,8 @@
 						"name": "snapshotVideoInputs.evidenceRoot",
 						"type": "string",
 						"required": false,
-						"description": "Original Git repository carrying reviewer evidence. Omission uses root, appropriate only when root itself is the repository.",
-						"default": "root"
+						"default": "root",
+						"description": "Original Git repository carrying reviewer evidence. Omission uses root, appropriate only when root itself is the repository."
 					}
 				],
 				"outputs": [

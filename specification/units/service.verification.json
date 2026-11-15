@@ -69,8 +69,8 @@
 				"name": "pendingVideoSelection.pending",
 				"type": "ReadonlySet<string>",
 				"required": false,
-				"description": "Enrolled scenario IDs requiring real re-execution because current reviewer flags remain unresolved. Omission uses an empty set.",
-				"default": "new Set()"
+				"default": "new Set()",
+				"description": "Enrolled scenario IDs requiring real re-execution because current reviewer flags remain unresolved. Omission uses an empty set."
 			},
 			{
 				"name": "verificationScenarioCoverage.context",
@@ -385,8 +385,8 @@
 						"name": "pendingVideoSelection.pending",
 						"type": "ReadonlySet<string>",
 						"required": false,
-						"description": "Enrolled scenario IDs requiring real re-execution because current reviewer flags remain unresolved. Omission uses an empty set.",
-						"default": "new Set()"
+						"default": "new Set()",
+						"description": "Enrolled scenario IDs requiring real re-execution because current reviewer flags remain unresolved. Omission uses an empty set."
 					}
 				],
 				"outputs": [
