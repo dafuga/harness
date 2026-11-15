@@ -25,31 +25,98 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "snapshotCleanCodeFile.input",
 				"type": "SnapshotInput",
-				"required": true
+				"required": true,
+				"description": "The review request for one target file: the project root that the target, related and convention paths are read from, the repository-relative target path, the repository-relative candidate files that related-file lookup may select from, and the audit findings. Only findings whose path equals the target path are kept in the snapshot state.",
+				"examples": [
+					{
+						"root": "/workspace/harness-app",
+						"path": "src/audit/verification-evidence/cleanCodeSnapshot.ts",
+						"files": [
+							"scripts/clean-build.sh",
+							"src/audit/development-tooling/cleanCodeFiles.ts",
+							"src/audit/development-tooling/cleanCodeRelated.ts",
+							"src/audit/development-tooling/config.ts",
+							"src/audit/verification-evidence/cleanCodeSnapshot.ts"
+						],
+						"findings": [
+							{
+								"path": "scripts/clean-build.sh",
+								"rule": "shell-unsafe-rm",
+								"message": "Avoid broad rm -rf patterns."
+							}
+						]
+					},
+					{
+						"root": "/workspace/harness-app",
+						"path": "src/audit/development-tooling/cleanCodeFiles.ts",
+						"files": [
+							"src/audit/development-tooling/cleanCodeFiles.ts",
+							"src/audit/development-tooling/cleanCodeFiles.types.ts"
+						],
+						"findings": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "maxReviewStateBytes",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported byte budget, the literal 24000, for the UTF-8 length of the JSON-serialized review state. snapshotCleanCodeFile throws when the state exceeds 24000 bytes, keeps a related file only if the state including it stays at or below 22000 bytes, and keeps a convention file only if the state including it stays at or below 23500 bytes.",
+				"examples": [24000]
 			},
 			{
 				"name": "snapshotCleanCodeFile",
-				"type": "Promise<ReviewSnapshot>"
+				"type": "Promise<ReviewSnapshot>",
+				"description": "The review snapshot for the target: `target` is the target file as a ReviewInputFile, `inputs` is that same target followed by each related and convention file that was kept, and `state` is the JSON string of the bounded review state. `contextHash` is the SHA-256 hex digest of the JSON array of [path, hash] pairs in `inputs`, `contextPaths` lists the kept context paths, and `omittedContext` lists related paths that were over 6000 bytes, did not fit the budget or failed to read, together with convention paths that did not fit.",
+				"examples": [
+					{
+						"target": {
+							"path": "src/audit/verification-evidence/cleanCodeSnapshot.ts",
+							"contents": "import { readReviewInput } from '../development-tooling/cleanCodeFiles';\nimport { relatedReviewPaths, reviewConventionPaths } from '../development-tooling/cleanCodeRelated';\nimport { readAuditConfig } from '../development-tooling/config';\n\nexport const maxReviewStateBytes = 24000;\n",
+							"hash": "5e0c7a91d2b43f68a1c9e07d4b25f3a6c8d1e90b7f4a2c63d5e8b1a09f7c42d6"
+						},
+						"inputs": [
+							{
+								"path": "src/audit/verification-evidence/cleanCodeSnapshot.ts",
+								"contents": "import { readReviewInput } from '../development-tooling/cleanCodeFiles';\nimport { relatedReviewPaths, reviewConventionPaths } from '../development-tooling/cleanCodeRelated';\nimport { readAuditConfig } from '../development-tooling/config';\n\nexport const maxReviewStateBytes = 24000;\n",
+								"hash": "5e0c7a91d2b43f68a1c9e07d4b25f3a6c8d1e90b7f4a2c63d5e8b1a09f7c42d6"
+							},
+							{
+								"path": "src/audit/development-tooling/cleanCodeFiles.ts",
+								"contents": "// @harness-uid u_xjxwj3n4f7\nimport type { ReviewInputFile } from './cleanCodeFiles.types';\n",
+								"hash": "b71f04c2e9a835d6f0c17e4b92a8d35e6f1c07a9b42d8e53c6a1f09e72d4b8c1"
+							},
+							{
+								"path": "src/audit/development-tooling/cleanCodeRelated.ts",
+								"contents": "// @harness-uid u_kwgamkdari\nimport { basename, dirname, extname, join } from 'node:path';\n",
+								"hash": "2d8a6f13c05b7e94a1d2f8c6e03b5a79d4c1e8f260b3a9d7c5e1f4a02b6d8e37"
+							}
+						],
+						"contextHash": "8a4f2c9e61d0b7f35c2a9e84d17b6f03e5a8c12d9f47b0e6a3c95d28f1b7e406",
+						"state": "{\"target\":{\"path\":\"src/audit/verification-evidence/cleanCodeSnapshot.ts\",\"language\":\".ts\",\"code\":\"import { readReviewInput } from '../development-tooling/cleanCodeFiles';\\nimport { relatedReviewPaths, reviewConventionPaths } from '../development-tooling/cleanCodeRelated';\\nimport { readAuditConfig } from '../development-tooling/config';\\n\\nexport const maxReviewStateBytes = 24000;\\n\"},\"related\":[{\"path\":\"src/audit/development-tooling/cleanCodeFiles.ts\",\"code\":\"// @harness-uid u_xjxwj3n4f7\\nimport type { ReviewInputFile } from './cleanCodeFiles.types';\\n\"},{\"path\":\"src/audit/development-tooling/cleanCodeRelated.ts\",\"code\":\"// @harness-uid u_kwgamkdari\\nimport { basename, dirname, extname, join } from 'node:path';\\n\"}],\"conventions\":[],\"omittedContext\":[\"src/audit/development-tooling/config.ts\"],\"auditFindings\":[]}",
+						"contextPaths": [
+							"src/audit/development-tooling/cleanCodeFiles.ts",
+							"src/audit/development-tooling/cleanCodeRelated.ts"
+						],
+						"omittedContext": ["src/audit/development-tooling/config.ts"]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects with an Error when the target cannot be read: its path resolves outside the root, it is a symlink or not a regular file, it is larger than 1 MiB, or a Node file-system error occurs. It also rejects with 'Target exceeds the bounded review context; no code was truncated.' when the state holding the target and its findings is over 24000 bytes, and with 'Supplied context exceeds the review budget.' when the final state is over 24000 bytes."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "snapshotCleanCodeFile",
@@ -57,22 +124,87 @@
 					{
 						"name": "snapshotCleanCodeFile.input",
 						"type": "SnapshotInput",
-						"required": true
+						"required": true,
+						"description": "The review request for one target file: the project root that the target, related and convention paths are read from, the repository-relative target path, the repository-relative candidate files that related-file lookup may select from, and the audit findings. Only findings whose path equals the target path are kept in the snapshot state.",
+						"examples": [
+							{
+								"root": "/workspace/harness-app",
+								"path": "src/audit/verification-evidence/cleanCodeSnapshot.ts",
+								"files": [
+									"scripts/clean-build.sh",
+									"src/audit/development-tooling/cleanCodeFiles.ts",
+									"src/audit/development-tooling/cleanCodeRelated.ts",
+									"src/audit/development-tooling/config.ts",
+									"src/audit/verification-evidence/cleanCodeSnapshot.ts"
+								],
+								"findings": [
+									{
+										"path": "scripts/clean-build.sh",
+										"rule": "shell-unsafe-rm",
+										"message": "Avoid broad rm -rf patterns."
+									}
+								]
+							},
+							{
+								"root": "/workspace/harness-app",
+								"path": "src/audit/development-tooling/cleanCodeFiles.ts",
+								"files": [
+									"src/audit/development-tooling/cleanCodeFiles.ts",
+									"src/audit/development-tooling/cleanCodeFiles.types.ts"
+								],
+								"findings": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "snapshotCleanCodeFile",
-						"type": "Promise<ReviewSnapshot>"
+						"type": "Promise<ReviewSnapshot>",
+						"description": "The review snapshot for the target: `target` is the target file as a ReviewInputFile, `inputs` is that same target followed by each related and convention file that was kept, and `state` is the JSON string of the bounded review state. `contextHash` is the SHA-256 hex digest of the JSON array of [path, hash] pairs in `inputs`, `contextPaths` lists the kept context paths, and `omittedContext` lists related paths that were over 6000 bytes, did not fit the budget or failed to read, together with convention paths that did not fit.",
+						"examples": [
+							{
+								"target": {
+									"path": "src/audit/verification-evidence/cleanCodeSnapshot.ts",
+									"contents": "import { readReviewInput } from '../development-tooling/cleanCodeFiles';\nimport { relatedReviewPaths, reviewConventionPaths } from '../development-tooling/cleanCodeRelated';\nimport { readAuditConfig } from '../development-tooling/config';\n\nexport const maxReviewStateBytes = 24000;\n",
+									"hash": "5e0c7a91d2b43f68a1c9e07d4b25f3a6c8d1e90b7f4a2c63d5e8b1a09f7c42d6"
+								},
+								"inputs": [
+									{
+										"path": "src/audit/verification-evidence/cleanCodeSnapshot.ts",
+										"contents": "import { readReviewInput } from '../development-tooling/cleanCodeFiles';\nimport { relatedReviewPaths, reviewConventionPaths } from '../development-tooling/cleanCodeRelated';\nimport { readAuditConfig } from '../development-tooling/config';\n\nexport const maxReviewStateBytes = 24000;\n",
+										"hash": "5e0c7a91d2b43f68a1c9e07d4b25f3a6c8d1e90b7f4a2c63d5e8b1a09f7c42d6"
+									},
+									{
+										"path": "src/audit/development-tooling/cleanCodeFiles.ts",
+										"contents": "// @harness-uid u_xjxwj3n4f7\nimport type { ReviewInputFile } from './cleanCodeFiles.types';\n",
+										"hash": "b71f04c2e9a835d6f0c17e4b92a8d35e6f1c07a9b42d8e53c6a1f09e72d4b8c1"
+									},
+									{
+										"path": "src/audit/development-tooling/cleanCodeRelated.ts",
+										"contents": "// @harness-uid u_kwgamkdari\nimport { basename, dirname, extname, join } from 'node:path';\n",
+										"hash": "2d8a6f13c05b7e94a1d2f8c6e03b5a79d4c1e8f260b3a9d7c5e1f4a02b6d8e37"
+									}
+								],
+								"contextHash": "8a4f2c9e61d0b7f35c2a9e84d17b6f03e5a8c12d9f47b0e6a3c95d28f1b7e406",
+								"state": "{\"target\":{\"path\":\"src/audit/verification-evidence/cleanCodeSnapshot.ts\",\"language\":\".ts\",\"code\":\"import { readReviewInput } from '../development-tooling/cleanCodeFiles';\\nimport { relatedReviewPaths, reviewConventionPaths } from '../development-tooling/cleanCodeRelated';\\nimport { readAuditConfig } from '../development-tooling/config';\\n\\nexport const maxReviewStateBytes = 24000;\\n\"},\"related\":[{\"path\":\"src/audit/development-tooling/cleanCodeFiles.ts\",\"code\":\"// @harness-uid u_xjxwj3n4f7\\nimport type { ReviewInputFile } from './cleanCodeFiles.types';\\n\"},{\"path\":\"src/audit/development-tooling/cleanCodeRelated.ts\",\"code\":\"// @harness-uid u_kwgamkdari\\nimport { basename, dirname, extname, join } from 'node:path';\\n\"}],\"conventions\":[],\"omittedContext\":[\"src/audit/development-tooling/config.ts\"],\"auditFindings\":[]}",
+								"contextPaths": [
+									"src/audit/development-tooling/cleanCodeFiles.ts",
+									"src/audit/development-tooling/cleanCodeRelated.ts"
+								],
+								"omittedContext": ["src/audit/development-tooling/config.ts"]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with an Error when the target cannot be read: its path resolves outside the root, it is a symlink or not a regular file, it is larger than 1 MiB, or a Node file-system error occurs. It also rejects with 'Target exceeds the bounded review context; no code was truncated.' when the state holding the target and its findings is over 24000 bytes, and with 'Supplied context exceeds the review budget.' when the final state is over 24000 bytes."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
