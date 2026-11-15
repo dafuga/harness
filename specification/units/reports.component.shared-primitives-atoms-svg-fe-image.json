@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feImage element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered inside the feImage element when truthy. When omitted, it produces no rendered child content."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeImage",
 				"type": "markup",
-				"description": "The actual native feImage element, with forwarded attributes and content and no additional wrapper."
+				"description": "The component renders a native SVG feImage element with the remaining props spread onto it and the optional snippet rendered inside. It adds no wrapper or extra behavior."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
