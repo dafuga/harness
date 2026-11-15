@@ -37,85 +37,279 @@
 				"name": "ExplorerModuleCard.row",
 				"type": "CatalogRow | SupportRow",
 				"required": true,
-				"description": "Selected module or support dependency with its actual identity and revision-scoped consumers."
+				"description": "A catalog entity row or a support dependency absent from a collection; it supplies the identity, label, effective category, and consumer list for the card. A support row has no entity category and links only when its opens field supplies a category.",
+				"examples": [
+					{
+						"entity": {
+							"id": "reports.component.explorer-ui-explorer-module-card",
+							"category": "components",
+							"role": "Component",
+							"name": "ExplorerModuleCard",
+							"purpose": "Renders catalog and relationship cards with optional revision-scoped images and up to three flat Used In links.",
+							"unit": {
+								"id": "reports.component.explorer-ui-explorer-module-card",
+								"kind": "component",
+								"status": "active",
+								"title": "ExplorerModuleCard",
+								"responsibility": "Renders catalog and relationship cards with optional revision-scoped images and up to three flat Used In links.",
+								"dependencies": [
+									{
+										"unit": "reports.component.explorer-ui-explorer-kit-card",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.explorer-usage",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.harness-entity-link",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.harness-harness-icon",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.shared-primitives-atoms-html-code",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.shared-primitives-atoms-html-div",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.shared-primitives-atoms-html-figure",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.shared-primitives-atoms-html-h2",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.shared-primitives-atoms-html-img",
+										"via": "import"
+									},
+									{
+										"unit": "reports.component.shared-primitives-atoms-html-span",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte",
+										"packages/reports/src/components/explorer-ui/explorerModuleCard.css"
+									],
+									"symbols": [
+										"ExplorerModuleCard",
+										"ExplorerModuleCard.picture",
+										"ExplorerModuleCard.usage"
+									]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "ExplorerModuleCard.row",
+											"type": "CatalogRow | SupportRow",
+											"required": true
+										},
+										{
+											"name": "ExplorerModuleCard.nav",
+											"type": "EntityNav",
+											"required": true
+										},
+										{
+											"name": "ExplorerModuleCard.lens",
+											"type": "EntityLens",
+											"required": true
+										},
+										{
+											"name": "ExplorerModuleCard.mediaBase",
+											"type": "string",
+											"required": true
+										},
+										{
+											"name": "ExplorerModuleCard.category",
+											"type": "ExplorerCategory | null",
+											"required": false,
+											"default": "undefined (omitted)"
+										},
+										{
+											"name": "ExplorerModuleCard.shot",
+											"type": "Evidence | null",
+											"required": false,
+											"default": "undefined (omitted)"
+										}
+									],
+									"outputs": [
+										{
+											"name": "ExplorerModuleCard",
+											"type": "markup"
+										}
+									],
+									"errors": [
+										{
+											"name": "TypeError",
+											"type": "thrown"
+										},
+										{
+											"name": "RangeError",
+											"type": "thrown"
+										},
+										{
+											"name": "Example serialization callback error",
+											"type": "thrown"
+										},
+										{
+											"name": "nav.href callback error",
+											"type": "thrown"
+										},
+										{
+											"name": "nav.go callback error",
+											"type": "thrown"
+										},
+										{
+											"name": "nav.source callback error",
+											"type": "thrown"
+										},
+										{
+											"name": "lens.evidence callback error",
+											"type": "thrown"
+										}
+									]
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/components/explorer-ui/ExplorerModuleCard.svelte"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "1"
+							},
+							"verdict": {
+								"passed": true,
+								"label": "Passed",
+								"reasons": []
+							},
+							"change": null,
+							"appRoute": null
+						},
+						"id": "reports.component.explorer-ui-explorer-module-card",
+						"name": "ExplorerModuleCard",
+						"summary": "Renders catalog and relationship cards with optional revision-scoped images and up to three flat Used In links.",
+						"changed": false,
+						"shared": false,
+						"verdict": {
+							"passed": true,
+							"label": "Passed",
+							"reasons": []
+						},
+						"usedOn": [],
+						"usedBy": [],
+						"contains": [],
+						"targets": ["module"],
+						"components": 0
+					}
+				]
 			},
 			{
 				"name": "ExplorerModuleCard.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Navigation preserving branch, commit, entity and selected helper."
+				"description": "The current explorer location and the URL and navigation callbacks passed to entity and consumer links. It matters whenever this card renders a link; its source callback is optional."
 			},
 			{
 				"name": "ExplorerModuleCard.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Revision-scoped evidence and consumer previews."
+				"description": "The revision-scoped evidence and relationship lookups supplied by the host. The card reads evidence when a visual catalog row omits shot and passes the lens to Used In content for consumer previews."
 			},
 			{
 				"name": "ExplorerModuleCard.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "URL prefix for the selected evidence assets."
+				"description": "A URL prefix concatenated directly with the selected capture file to form the image source. It is used only when the capture has a nonmissing file that has not failed to load.",
+				"examples": ["/media/"]
 			},
 			{
 				"name": "ExplorerModuleCard.category",
 				"type": "ExplorerCategory | null",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional category, defaulting to JavaScript undefined and the row category when available. Null also uses that fallback. Visual and nonvisual cards share this renderer."
+				"description": "An optional category override; undefined or null falls back to a catalog entity category, while a support row has no category fallback. The effective category selects the page, visual, or code-card branch.",
+				"examples": ["components", null]
 			},
 			{
 				"name": "ExplorerModuleCard.shot",
 				"type": "Evidence | null",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional own capture, defaulting to JavaScript undefined. Visual rows then resolve their own capture through lens; null explicitly shows a gap. Nonvisual rows omit the image region."
+				"description": "An optional card-owned evidence capture; when omitted, a visual catalog row resolves its capture through lens.evidence and catalogShot, while null forces a gap. Nonvisual branches do not render the picture snippet.",
+				"examples": [
+					{
+						"id": "explorer-module-card-current",
+						"title": "ExplorerModuleCard",
+						"category": "screenshot",
+						"file": "packages/reports/artifacts/explorer-module-card.png",
+						"status": "passed"
+					},
+					null
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerModuleCard",
 				"type": "markup",
-				"description": "One name or helper invocation, its own image for visual modules, and at most three distinct Used In links followed by an ellipsis. Page cards omit an empty Used In row. Unsupported dependencies have no invented detail link."
+				"description": "A module-variant Card whose branch renders a page, visual card, or code tile with the row name or derived helper/API call. It includes the picture and Used In content where that branch calls them; page cards omit empty Used In content, and support rows link only when opens supplies a target category."
 			}
 		],
 		"errors": [
 			{
 				"name": "TypeError",
 				"type": "thrown",
-				"description": "Function-card argument examples cannot serialize BigInt or circular values."
+				"description": "JSON.stringify throws TypeError when a selected recorded argument example contains a BigInt or a cycle while invocation builds the helper call."
 			},
 			{
 				"name": "RangeError",
 				"type": "thrown",
-				"description": "Serializing a deeply nested function argument example can exceed the runtime stack."
+				"description": "Serializing a sufficiently deeply nested recorded argument example can exceed JSON.stringify recursion and throw RangeError while invocation builds the helper call."
 			},
 			{
 				"name": "Example serialization callback error",
 				"type": "thrown",
-				"description": "A getter, proxy or toJSON method on an example value can throw while its invocation is serialized."
+				"description": "A getter, Proxy trap, or toJSON method on a selected example can throw during argument lookup or JSON.stringify; invocation does not catch it."
 			},
 			{
 				"name": "nav.href callback error",
 				"type": "thrown",
-				"description": "An error from the address callback propagates while rendering the card or a consumer link."
+				"description": "An exception from nav.href propagates when an EntityLink rendered by this card resolves its destination."
 			},
 			{
 				"name": "nav.go callback error",
 				"type": "thrown",
-				"description": "An error from the navigation callback propagates when a card or consumer link is activated."
+				"description": "An exception from nav.go propagates when a card or consumer link is activated."
 			},
 			{
 				"name": "nav.source callback error",
 				"type": "thrown",
-				"description": "An error from the source-opening callback propagates when a consumer's source button is activated."
+				"description": "An exception from nav.source propagates when a consumer source button is activated."
 			},
 			{
 				"name": "lens.evidence callback error",
 				"type": "thrown",
-				"description": "An evidence callback error propagates while resolving the card image or opening a visual consumer preview."
+				"description": "An exception from lens.evidence propagates while this card resolves its capture or a visual consumer preview is opened."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
