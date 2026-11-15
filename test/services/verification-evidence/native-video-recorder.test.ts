@@ -172,7 +172,7 @@ test('NativeVideoRecorderService record refuses overlapping slot ownership', asy
 		prepare: async ({ page }) => {
 			entered();
 			await waiting;
-			await page.setContent('<button>Move</button>');
+			await options('locked').prepare({ page });
 		}
 	});
 	try {
