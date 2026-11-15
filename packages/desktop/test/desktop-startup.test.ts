@@ -84,7 +84,7 @@ beforeEach(() => {
 /** The app once its window is open, as a person meets it. */
 async function started() {
 	state.ready.mockImplementation(async () => undefined);
-	await import('../src/initializers/initializeDesktop');
+	await import('../src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop');
 	await vi.waitFor(() => expect(state.windows).toHaveLength(1));
 	return state.windows[0];
 }
@@ -92,7 +92,7 @@ const event = () => ({ preventDefault: vi.fn() });
 const settled = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 test('only the first app instance reaches readiness and backend startup', async () => {
-	await import('../src/initializers/initializeDesktop');
+	await import('../src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop');
 	expect(state.lock).toHaveBeenCalledOnce();
 	expect(state.ready).toHaveBeenCalledOnce();
 	expect(state.lock.mock.invocationCallOrder[0]).toBeLessThan(
@@ -103,7 +103,7 @@ test('only the first app instance reaches readiness and backend startup', async 
 
 test('a second app instance quits before readiness or any backend can start', async () => {
 	state.lock.mockReturnValue(false);
-	await import('../src/initializers/initializeDesktop');
+	await import('../src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop');
 	expect(state.quit).toHaveBeenCalledOnce();
 	expect(state.ready).not.toHaveBeenCalled();
 });

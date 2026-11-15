@@ -9,14 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/initializers/initializeDesktop.ts",
 			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.types.ts"
 		],
 		"symbols": [
-			"initializeDesktop",
 			"initializeDesktop",
 			"initializeDesktop",
 			"initializeDesktop",
