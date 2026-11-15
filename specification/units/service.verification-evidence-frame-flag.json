@@ -7,17 +7,30 @@
 	"responsibility": "Stores version-bound frame flags durably and supplies unresolved image feedback to the owning unit.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"src/services/verification-evidence/FrameFlagService.ts",
 			"src/services/verification-evidence/FrameFlagService.types.ts",
 			"src/services/verification-evidence/frame-flag-service/flagMedia.ts",
 			"src/services/verification-evidence/frame-flag-service/flagSchema.ts",
-			"src/services/verification-evidence/frame-flag-service/flagStore.ts"
+			"src/services/verification-evidence/frame-flag-service/flagStore.ts",
+			"src/services/verification-evidence/frame-flag-service/flagStore.types.ts",
+			"src/services/verification-evidence/frame-flag-service/readFlagFrame.ts",
+			"src/services/verification-evidence/frame-flag-service/readFrameCapture.ts",
+			"src/services/verification-evidence/frame-flag-service/readFrameCapture.types.ts"
 		],
 		"symbols": [
 			"FrameFlagService",
+			"FrameFlagService.constructor",
 			"FrameFlagService.run",
+			"FrameFlagService.flag",
+			"FrameFlagService.list",
+			"FrameFlagService.feedback",
+			"FrameFlagService.frame",
+			"FrameFlagService.address",
 			"FrameClipReference",
 			"FrameClip",
 			"FrameClipReader",
@@ -25,20 +38,437 @@
 			"FrameFlagInput",
 			"FrameFlag",
 			"FrameCurrentClip",
-			"FrameFeedback"
+			"FrameFeedback",
+			"StoredFrameFlag",
+			"FrameVideoFacts",
+			"LoadedFrameClip",
+			"FrameResolution",
+			"defaultAttachedReader",
+			"inspectFrameClip",
+			"extractFlagFrame",
+			"inspectFlagPng",
+			"materializeFlagFrame",
+			"retainedFlagFrame",
+			"ownerSchema",
+			"referenceSchema",
+			"inputSchema",
+			"storedFlagSchema",
+			"resolutionSchema",
+			"currentSchema",
+			"parseFlagValue",
+			"parseFlagJson",
+			"frameHash",
+			"boundClip",
+			"framePosition",
+			"sameFrameSlot",
+			"addressedFlags",
+			"owningFrameCapture",
+			"storeFrameFlag",
+			"readFrameFlags",
+			"storeFrameResolution",
+			"ResolutionClip",
+			"ResolutionReader",
+			"readFlagFrame",
+			"readFrameCapture",
+			"ReadFrameCapture",
+			"SelectedFrameCapture"
 		]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "FrameFlagService.constructor.root",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "FrameFlagService.constructor.reader",
+				"type": "FrameClipReader",
+				"required": false
+			},
+			{
+				"name": "FrameFlagService.flag.input",
+				"type": "FrameFlagInput",
+				"required": true
+			},
+			{
+				"name": "FrameFlagService.list.unit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "FrameFlagService.list.current",
+				"type": "FrameCurrentClip[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "FrameFlagService.feedback.unit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "FrameFlagService.feedback.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "FrameFlagService.frame.unit",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "FrameFlagService.frame.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "FrameFlagService.address.reference",
+				"type": "FrameClipReference",
+				"required": true
+			},
+			{
+				"name": "defaultAttachedReader.reference",
+				"type": "FrameClipReference",
+				"required": true,
+				"description": "Exact original attached parent and clip slot requested for frame feedback."
+			},
+			{
+				"name": "defaultAttachedReader.root",
+				"type": "string",
+				"required": false,
+				"description": "Project checkout used for immutable source and evidence reads."
+			},
+			{
+				"name": "defaultAttachedReader.pinned",
+				"type": "PinnedHistory",
+				"required": false,
+				"description": "Optional fixed evidence and notes snapshot; supplied bounds are never widened."
+			},
+			{
+				"name": "inspectFrameClip.clip",
+				"type": "FrameClip",
+				"required": true
+			},
+			{
+				"name": "extractFlagFrame.clip",
+				"type": "FrameClip",
+				"required": true
+			},
+			{
+				"name": "extractFlagFrame.frameNumber",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "inspectFlagPng.bytes",
+				"type": "Buffer",
+				"required": true
+			},
+			{
+				"name": "materializeFlagFrame.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "materializeFlagFrame.flag",
+				"type": "FrameFlag",
+				"required": true
+			},
+			{
+				"name": "materializeFlagFrame.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "retainedFlagFrame.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "retainedFlagFrame.flag",
+				"type": "FrameFlag",
+				"required": true
+			},
+			{
+				"name": "parseFlagValue.schema",
+				"type": "z.ZodType<T>",
+				"required": true
+			},
+			{
+				"name": "parseFlagValue.value",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "parseFlagJson.bytes",
+				"type": "Buffer | undefined",
+				"required": true
+			},
+			{
+				"name": "frameHash.bytes",
+				"type": "Buffer | string",
+				"required": true
+			},
+			{
+				"name": "boundClip.reference",
+				"type": "FrameClipReference",
+				"required": true
+			},
+			{
+				"name": "boundClip.value",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "framePosition.input",
+				"type": "FrameFlagInput",
+				"required": true
+			},
+			{
+				"name": "framePosition.facts",
+				"type": "FrameVideoFacts",
+				"required": true
+			},
+			{
+				"name": "sameFrameSlot.left",
+				"type": "FrameClipReference",
+				"required": true
+			},
+			{
+				"name": "sameFrameSlot.right",
+				"type": "FrameClipReference",
+				"required": true
+			},
+			{
+				"name": "addressedFlags.clip",
+				"type": "FrameClip",
+				"required": true
+			},
+			{
+				"name": "addressedFlags.flags",
+				"type": "FrameFlag[]",
+				"required": true
+			},
+			{
+				"name": "owningFrameCapture.record",
+				"type": "VerificationRecord",
+				"required": true
+			},
+			{
+				"name": "owningFrameCapture.reference",
+				"type": "FrameClipReference",
+				"required": true
+			},
+			{
+				"name": "storeFrameFlag.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "storeFrameFlag.flag",
+				"type": "StoredFrameFlag",
+				"required": true
+			},
+			{
+				"name": "storeFrameFlag.png",
+				"type": "Buffer",
+				"required": true
+			},
+			{
+				"name": "readFrameFlags.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readFrameFlags.reader",
+				"type": "FrameClipReader",
+				"required": false
+			},
+			{
+				"name": "storeFrameResolution.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "storeFrameResolution.flag",
+				"type": "FrameFlag",
+				"required": true
+			},
+			{
+				"name": "storeFrameResolution.clip",
+				"type": "FrameClip",
+				"required": true
+			},
+			{
+				"name": "readFlagFrame.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readFlagFrame.flag",
+				"type": "FrameFlag",
+				"required": true
+			},
+			{
+				"name": "readFrameCapture.root",
+				"type": "string",
+				"required": true,
+				"description": "Project checkout used to read immutable source, notes and evidence objects."
+			},
+			{
+				"name": "readFrameCapture.reference",
+				"type": "FrameClipReference",
+				"required": true,
+				"description": "Exact original attached parent, tested source, owner, clip and viewport."
+			},
+			{
+				"name": "readFrameCapture.pinned",
+				"type": "PinnedHistory",
+				"required": false,
+				"description": "Immutable evidence and notes commits; null refuses unavailable evidence or notes."
+			}
+		],
 		"outputs": [
 			{
 				"name": "FrameFlagService.run",
 				"type": "string"
+			},
+			{
+				"name": "FrameFlagService.flag",
+				"type": "Promise<FrameFlag>"
+			},
+			{
+				"name": "FrameFlagService.list",
+				"type": "Promise<FrameFlag[]>"
+			},
+			{
+				"name": "FrameFlagService.feedback",
+				"type": "Promise<FrameFeedback>"
+			},
+			{
+				"name": "FrameFlagService.frame",
+				"type": "Promise<Buffer>"
+			},
+			{
+				"name": "FrameFlagService.address",
+				"type": "Promise<FrameFlag[]>"
+			},
+			{
+				"name": "defaultAttachedReader",
+				"type": "Promise<FrameClip>",
+				"description": "Original clip identity, timing, dimensions and verified bytes for exact frame extraction."
+			},
+			{
+				"name": "inspectFrameClip",
+				"type": "FrameVideoFacts"
+			},
+			{
+				"name": "extractFlagFrame",
+				"type": "Buffer"
+			},
+			{
+				"name": "inspectFlagPng",
+				"type": "unknown"
+			},
+			{
+				"name": "materializeFlagFrame",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "retainedFlagFrame",
+				"type": "Promise<Buffer>"
+			},
+			{
+				"name": "ownerSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "referenceSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "inputSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "storedFlagSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "resolutionSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "currentSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "parseFlagValue",
+				"type": "T"
+			},
+			{
+				"name": "parseFlagJson",
+				"type": "unknown"
+			},
+			{
+				"name": "frameHash",
+				"type": "string"
+			},
+			{
+				"name": "boundClip",
+				"type": "FrameClip"
+			},
+			{
+				"name": "framePosition",
+				"type": "unknown"
+			},
+			{
+				"name": "sameFrameSlot",
+				"type": "boolean"
+			},
+			{
+				"name": "addressedFlags",
+				"type": "FrameFlag[]"
+			},
+			{
+				"name": "owningFrameCapture",
+				"type": "Capture"
+			},
+			{
+				"name": "storeFrameFlag",
+				"type": "Promise<FrameFlag>"
+			},
+			{
+				"name": "readFrameFlags",
+				"type": "Promise<FrameFlag[]>"
+			},
+			{
+				"name": "storeFrameResolution",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "readFlagFrame",
+				"type": "Promise<Buffer>"
+			},
+			{
+				"name": "readFrameCapture",
+				"type": "Promise<ReadFrameCapture>",
+				"description": "Selected admitted capture metadata and bounded verified video bytes; archived siblings are not loaded."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "FrameFlagService.run",
@@ -51,11 +481,735 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "FrameFlagService.flag",
+				"inputs": [
+					{
+						"name": "FrameFlagService.flag.input",
+						"type": "FrameFlagInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.flag",
+						"type": "Promise<FrameFlag>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "FrameFlagService.list",
+				"inputs": [
+					{
+						"name": "FrameFlagService.list.unit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "FrameFlagService.list.current",
+						"type": "FrameCurrentClip[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.list",
+						"type": "Promise<FrameFlag[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "FrameFlagService.feedback",
+				"inputs": [
+					{
+						"name": "FrameFlagService.feedback.unit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "FrameFlagService.feedback.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.feedback",
+						"type": "Promise<FrameFeedback>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "FrameFlagService.frame",
+				"inputs": [
+					{
+						"name": "FrameFlagService.frame.unit",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "FrameFlagService.frame.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.frame",
+						"type": "Promise<Buffer>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "FrameFlagService.address",
+				"inputs": [
+					{
+						"name": "FrameFlagService.address.reference",
+						"type": "FrameClipReference",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.address",
+						"type": "Promise<FrameFlag[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "defaultAttachedReader",
+				"inputs": [
+					{
+						"name": "defaultAttachedReader.reference",
+						"type": "FrameClipReference",
+						"required": true,
+						"description": "Exact original attached parent and clip slot requested for frame feedback."
+					},
+					{
+						"name": "defaultAttachedReader.root",
+						"type": "string",
+						"required": false,
+						"description": "Project checkout used for immutable source and evidence reads."
+					},
+					{
+						"name": "defaultAttachedReader.pinned",
+						"type": "PinnedHistory",
+						"required": false,
+						"description": "Optional fixed evidence and notes snapshot; supplied bounds are never widened."
+					}
+				],
+				"outputs": [
+					{
+						"name": "defaultAttachedReader",
+						"type": "Promise<FrameClip>",
+						"description": "Original clip identity, timing, dimensions and verified bytes for exact frame extraction."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inspectFrameClip",
+				"inputs": [
+					{
+						"name": "inspectFrameClip.clip",
+						"type": "FrameClip",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inspectFrameClip",
+						"type": "FrameVideoFacts"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "extractFlagFrame",
+				"inputs": [
+					{
+						"name": "extractFlagFrame.clip",
+						"type": "FrameClip",
+						"required": true
+					},
+					{
+						"name": "extractFlagFrame.frameNumber",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "extractFlagFrame",
+						"type": "Buffer"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inspectFlagPng",
+				"inputs": [
+					{
+						"name": "inspectFlagPng.bytes",
+						"type": "Buffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inspectFlagPng",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "materializeFlagFrame",
+				"inputs": [
+					{
+						"name": "materializeFlagFrame.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "materializeFlagFrame.flag",
+						"type": "FrameFlag",
+						"required": true
+					},
+					{
+						"name": "materializeFlagFrame.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "materializeFlagFrame",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "retainedFlagFrame",
+				"inputs": [
+					{
+						"name": "retainedFlagFrame.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "retainedFlagFrame.flag",
+						"type": "FrameFlag",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "retainedFlagFrame",
+						"type": "Promise<Buffer>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseFlagValue",
+				"inputs": [
+					{
+						"name": "parseFlagValue.schema",
+						"type": "z.ZodType<T>",
+						"required": true
+					},
+					{
+						"name": "parseFlagValue.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseFlagValue",
+						"type": "T"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseFlagJson",
+				"inputs": [
+					{
+						"name": "parseFlagJson.bytes",
+						"type": "Buffer | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseFlagJson",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "frameHash",
+				"inputs": [
+					{
+						"name": "frameHash.bytes",
+						"type": "Buffer | string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "frameHash",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "boundClip",
+				"inputs": [
+					{
+						"name": "boundClip.reference",
+						"type": "FrameClipReference",
+						"required": true
+					},
+					{
+						"name": "boundClip.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "boundClip",
+						"type": "FrameClip"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "framePosition",
+				"inputs": [
+					{
+						"name": "framePosition.input",
+						"type": "FrameFlagInput",
+						"required": true
+					},
+					{
+						"name": "framePosition.facts",
+						"type": "FrameVideoFacts",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "framePosition",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sameFrameSlot",
+				"inputs": [
+					{
+						"name": "sameFrameSlot.left",
+						"type": "FrameClipReference",
+						"required": true
+					},
+					{
+						"name": "sameFrameSlot.right",
+						"type": "FrameClipReference",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sameFrameSlot",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "addressedFlags",
+				"inputs": [
+					{
+						"name": "addressedFlags.clip",
+						"type": "FrameClip",
+						"required": true
+					},
+					{
+						"name": "addressedFlags.flags",
+						"type": "FrameFlag[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "addressedFlags",
+						"type": "FrameFlag[]"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "owningFrameCapture",
+				"inputs": [
+					{
+						"name": "owningFrameCapture.record",
+						"type": "VerificationRecord",
+						"required": true
+					},
+					{
+						"name": "owningFrameCapture.reference",
+						"type": "FrameClipReference",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "owningFrameCapture",
+						"type": "Capture"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "storeFrameFlag",
+				"inputs": [
+					{
+						"name": "storeFrameFlag.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "storeFrameFlag.flag",
+						"type": "StoredFrameFlag",
+						"required": true
+					},
+					{
+						"name": "storeFrameFlag.png",
+						"type": "Buffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "storeFrameFlag",
+						"type": "Promise<FrameFlag>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readFrameFlags",
+				"inputs": [
+					{
+						"name": "readFrameFlags.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readFrameFlags.reader",
+						"type": "FrameClipReader",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readFrameFlags",
+						"type": "Promise<FrameFlag[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "storeFrameResolution",
+				"inputs": [
+					{
+						"name": "storeFrameResolution.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "storeFrameResolution.flag",
+						"type": "FrameFlag",
+						"required": true
+					},
+					{
+						"name": "storeFrameResolution.clip",
+						"type": "FrameClip",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "storeFrameResolution",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readFlagFrame",
+				"inputs": [
+					{
+						"name": "readFlagFrame.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readFlagFrame.flag",
+						"type": "FrameFlag",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readFlagFrame",
+						"type": "Promise<Buffer>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readFrameCapture",
+				"inputs": [
+					{
+						"name": "readFrameCapture.root",
+						"type": "string",
+						"required": true,
+						"description": "Project checkout used to read immutable source, notes and evidence objects."
+					},
+					{
+						"name": "readFrameCapture.reference",
+						"type": "FrameClipReference",
+						"required": true,
+						"description": "Exact original attached parent, tested source, owner, clip and viewport."
+					},
+					{
+						"name": "readFrameCapture.pinned",
+						"type": "PinnedHistory",
+						"required": false,
+						"description": "Immutable evidence and notes commits; null refuses unavailable evidence or notes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readFrameCapture",
+						"type": "Promise<ReadFrameCapture>",
+						"description": "Selected admitted capture metadata and bounded verified video bytes; archived siblings are not loaded."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "FrameFlagService.constructor",
+				"inputs": [
+					{
+						"name": "FrameFlagService.constructor.root",
+						"type": "string",
+						"required": false
+					},
+					{
+						"name": "FrameFlagService.constructor.reader",
+						"type": "FrameClipReader",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "FrameFlagService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.lfs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.lfs-pointer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.media-facts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.evidence-branch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.history-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-reference",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.verification-record",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/verification-evidence/FrameFlagService.ts",
@@ -71,8 +1225,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }
