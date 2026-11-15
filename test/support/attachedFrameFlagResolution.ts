@@ -82,7 +82,7 @@ async function assertAttachmentCase(
 
 /** A new parent preserves old acknowledgements without pretending to resolve them again. */
 async function assertReusedFlagResolution(root: string, original: VerificationRecord) {
-	const reused = structuredClone(original);
+	const reused = globalThis.structuredClone(original);
 	reused.id = 'd'.repeat(64);
 	for (const capture of reused.scenarios.flatMap((scenario) =>
 		scenario.states.flatMap((state) => state.captures)
