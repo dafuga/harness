@@ -15,27 +15,220 @@
 		"symbols": ["evaluateCleanCodeFile", "JevEvaluator", "JevEvaluator", "EvaluationInput"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "evaluateCleanCodeFile.input",
 				"type": "EvaluationInput",
-				"required": true
+				"required": true,
+				"description": "The single EvaluationInput for one file review: the project root, the ReviewSnapshot of the target file and its supplied context, the CleanCodeSettings and CleanCodeOptions, the JevEvaluator callback that performs each Jev request, and an optional onUsage callback that receives the usage of each fresh Jev response. settings.model controls caching and the model check: jev-latest and jev-preview skip both the cache and the check that the returned model equals settings.model, any other value must equal the returned model, and options.refresh skips reading a cached result."
 			}
 		],
 		"outputs": [
 			{
 				"name": "evaluateCleanCodeFile",
-				"type": "Promise<FileReview>"
+				"type": "Promise<FileReview>",
+				"description": "The review of one target file: one assessment per clean-code principle, a status (violations, needs-review or clean) derived from them, the project-relative path, SHA-256 hashes of the target content and of its supplied context, the context paths and omitted context, the Jev model, and usage summed over the evaluation and any localization request. cached is true only when a valid stored evaluation was reused (unreadable or invalid cache entries are ignored), and usage then repeats that stored evaluation's token counts.",
+				"examples": [
+					{
+						"path": "src/audit/development-tooling/cleanCodeAssessment.ts",
+						"contentHash": "9c2e4f7a1b6d03e8f5a2c9d14b7e60f3a8c5d12e9b4f70a6c3d8e1f5b2a9c047",
+						"contextHash": "5d07a3c9e1f48b26d0a7c35e9f1b842ad6c0e7f3b95a1d28c4e6f0a7b3d91e5c",
+						"status": "violations",
+						"assessments": [
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.93,
+								"probabilities": {
+									"meets": 0.93,
+									"violates": 0.02,
+									"not_applicable": 0.01,
+									"insufficient_context": 0.04
+								},
+								"principle": "meaningful-names",
+								"title": "Meaningful names",
+								"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+								"status": "meets"
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.9,
+								"probabilities": {
+									"meets": 0.9,
+									"violates": 0.04,
+									"not_applicable": 0.02,
+									"insufficient_context": 0.04
+								},
+								"principle": "single-responsibility",
+								"title": "Focused responsibility",
+								"guidance": "Extract unrelated responsibilities behind named boundaries; keep tightly related behavior together.",
+								"status": "meets"
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.91,
+								"probabilities": {
+									"meets": 0.91,
+									"violates": 0.03,
+									"not_applicable": 0.02,
+									"insufficient_context": 0.04
+								},
+								"principle": "focused-functions",
+								"title": "Focused functions",
+								"guidance": "Extract independent tasks into clearly named functions without fragmenting an already coherent operation.",
+								"status": "meets"
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.88,
+								"probabilities": {
+									"meets": 0.88,
+									"violates": 0.05,
+									"not_applicable": 0.03,
+									"insufficient_context": 0.04
+								},
+								"principle": "abstraction-level",
+								"title": "Consistent abstraction",
+								"guidance": "Move low-level details behind a named operation when they obscure orchestration.",
+								"status": "meets"
+							},
+							{
+								"type": "choice",
+								"choice": "violates",
+								"confidence": 0.88,
+								"probabilities": {
+									"meets": 0.06,
+									"violates": 0.88,
+									"not_applicable": 0.02,
+									"insufficient_context": 0.04
+								},
+								"principle": "duplication",
+								"title": "Avoid needless duplication",
+								"guidance": "Unify repeated domain knowledge; similar syntax or independent test examples alone are not a violation.",
+								"status": "violates"
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.94,
+								"probabilities": {
+									"meets": 0.94,
+									"violates": 0.02,
+									"not_applicable": 0.02,
+									"insufficient_context": 0.02
+								},
+								"principle": "side-effects",
+								"title": "Explicit side effects",
+								"guidance": "Make side effects explicit in names and contracts; ordinary UI event handlers and command operations may mutate.",
+								"status": "meets"
+							},
+							{
+								"type": "choice",
+								"choice": "not_applicable",
+								"confidence": 0.9,
+								"probabilities": {
+									"meets": 0.04,
+									"violates": 0.02,
+									"not_applicable": 0.9,
+									"insufficient_context": 0.04
+								},
+								"principle": "error-handling",
+								"title": "Useful error handling",
+								"guidance": "Handle or propagate failures intentionally with useful context; use the language and project error conventions.",
+								"status": "not-applicable"
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.86,
+								"probabilities": {
+									"meets": 0.86,
+									"violates": 0.04,
+									"not_applicable": 0.06,
+									"insufficient_context": 0.04
+								},
+								"principle": "comments",
+								"title": "Useful comments",
+								"guidance": "Explain intent and constraints; remove misleading comments and obsolete commented-out code.",
+								"status": "meets"
+							},
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.92,
+								"probabilities": {
+									"meets": 0.92,
+									"violates": 0.02,
+									"not_applicable": 0.02,
+									"insufficient_context": 0.04
+								},
+								"principle": "boundaries",
+								"title": "Clear dependency boundaries",
+								"guidance": "Keep dependencies explicit and avoid exposing or depending on unrelated internals; do not require classes.",
+								"status": "meets"
+							},
+							{
+								"type": "choice",
+								"choice": "insufficient_context",
+								"confidence": 0.78,
+								"probabilities": {
+									"meets": 0.1,
+									"violates": 0.04,
+									"not_applicable": 0.08,
+									"insufficient_context": 0.78
+								},
+								"principle": "testability",
+								"title": "Testable behavior",
+								"guidance": "Test observable success and failure behavior; avoid assertions that only mirror implementation.",
+								"status": "needs-review"
+							},
+							{
+								"type": "choice",
+								"choice": "not_applicable",
+								"confidence": 0.95,
+								"probabilities": {
+									"meets": 0.02,
+									"violates": 0.01,
+									"not_applicable": 0.95,
+									"insufficient_context": 0.02
+								},
+								"principle": "async-boundaries",
+								"title": "Clear asynchronous behavior",
+								"guidance": "Make completion, cancellation and shared-state ownership explicit where concurrent behavior exists.",
+								"status": "not-applicable"
+							}
+						],
+						"contextPaths": [
+							"src/audit/development-tooling/cleanCodeRubric.ts",
+							"src/audit/development-tooling/cleanCodeTypes.ts",
+							"AGENTS.md",
+							".codex/skills/harness/SKILL.md",
+							"harness.audit.json",
+							"src/audit/AGENTS.md"
+						],
+						"omittedContext": [],
+						"model": "jev-1.13.0",
+						"usage": {
+							"input_tokens": 14862,
+							"output_tokens": 1408
+						},
+						"cached": false
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown inside this async function, so the promise rejects, when a source or supplied context input no longer matches its recorded hash or cannot be re-read (the result is discarded), when the localization response reports a different Jev model than the evaluation, or when settings.model is not jev-latest or jev-preview and Jev returns a different model. Failures from the injected evaluate and onUsage callbacks, from validating the Jev evaluation or localization response, and from the cache-key, assessment, location and cache-write helpers are not caught here and reject the promise unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "evaluateCleanCodeFile",
@@ -43,22 +236,215 @@
 					{
 						"name": "evaluateCleanCodeFile.input",
 						"type": "EvaluationInput",
-						"required": true
+						"required": true,
+						"description": "The single EvaluationInput for one file review: the project root, the ReviewSnapshot of the target file and its supplied context, the CleanCodeSettings and CleanCodeOptions, the JevEvaluator callback that performs each Jev request, and an optional onUsage callback that receives the usage of each fresh Jev response. settings.model controls caching and the model check: jev-latest and jev-preview skip both the cache and the check that the returned model equals settings.model, any other value must equal the returned model, and options.refresh skips reading a cached result."
 					}
 				],
 				"outputs": [
 					{
 						"name": "evaluateCleanCodeFile",
-						"type": "Promise<FileReview>"
+						"type": "Promise<FileReview>",
+						"description": "The review of one target file: one assessment per clean-code principle, a status (violations, needs-review or clean) derived from them, the project-relative path, SHA-256 hashes of the target content and of its supplied context, the context paths and omitted context, the Jev model, and usage summed over the evaluation and any localization request. cached is true only when a valid stored evaluation was reused (unreadable or invalid cache entries are ignored), and usage then repeats that stored evaluation's token counts.",
+						"examples": [
+							{
+								"path": "src/audit/development-tooling/cleanCodeAssessment.ts",
+								"contentHash": "9c2e4f7a1b6d03e8f5a2c9d14b7e60f3a8c5d12e9b4f70a6c3d8e1f5b2a9c047",
+								"contextHash": "5d07a3c9e1f48b26d0a7c35e9f1b842ad6c0e7f3b95a1d28c4e6f0a7b3d91e5c",
+								"status": "violations",
+								"assessments": [
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.93,
+										"probabilities": {
+											"meets": 0.93,
+											"violates": 0.02,
+											"not_applicable": 0.01,
+											"insufficient_context": 0.04
+										},
+										"principle": "meaningful-names",
+										"title": "Meaningful names",
+										"guidance": "Name identifiers after their domain purpose; retain conventional framework and short local names when clear.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.9,
+										"probabilities": {
+											"meets": 0.9,
+											"violates": 0.04,
+											"not_applicable": 0.02,
+											"insufficient_context": 0.04
+										},
+										"principle": "single-responsibility",
+										"title": "Focused responsibility",
+										"guidance": "Extract unrelated responsibilities behind named boundaries; keep tightly related behavior together.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.91,
+										"probabilities": {
+											"meets": 0.91,
+											"violates": 0.03,
+											"not_applicable": 0.02,
+											"insufficient_context": 0.04
+										},
+										"principle": "focused-functions",
+										"title": "Focused functions",
+										"guidance": "Extract independent tasks into clearly named functions without fragmenting an already coherent operation.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.88,
+										"probabilities": {
+											"meets": 0.88,
+											"violates": 0.05,
+											"not_applicable": 0.03,
+											"insufficient_context": 0.04
+										},
+										"principle": "abstraction-level",
+										"title": "Consistent abstraction",
+										"guidance": "Move low-level details behind a named operation when they obscure orchestration.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "violates",
+										"confidence": 0.88,
+										"probabilities": {
+											"meets": 0.06,
+											"violates": 0.88,
+											"not_applicable": 0.02,
+											"insufficient_context": 0.04
+										},
+										"principle": "duplication",
+										"title": "Avoid needless duplication",
+										"guidance": "Unify repeated domain knowledge; similar syntax or independent test examples alone are not a violation.",
+										"status": "violates"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.94,
+										"probabilities": {
+											"meets": 0.94,
+											"violates": 0.02,
+											"not_applicable": 0.02,
+											"insufficient_context": 0.02
+										},
+										"principle": "side-effects",
+										"title": "Explicit side effects",
+										"guidance": "Make side effects explicit in names and contracts; ordinary UI event handlers and command operations may mutate.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "not_applicable",
+										"confidence": 0.9,
+										"probabilities": {
+											"meets": 0.04,
+											"violates": 0.02,
+											"not_applicable": 0.9,
+											"insufficient_context": 0.04
+										},
+										"principle": "error-handling",
+										"title": "Useful error handling",
+										"guidance": "Handle or propagate failures intentionally with useful context; use the language and project error conventions.",
+										"status": "not-applicable"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.86,
+										"probabilities": {
+											"meets": 0.86,
+											"violates": 0.04,
+											"not_applicable": 0.06,
+											"insufficient_context": 0.04
+										},
+										"principle": "comments",
+										"title": "Useful comments",
+										"guidance": "Explain intent and constraints; remove misleading comments and obsolete commented-out code.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.92,
+										"probabilities": {
+											"meets": 0.92,
+											"violates": 0.02,
+											"not_applicable": 0.02,
+											"insufficient_context": 0.04
+										},
+										"principle": "boundaries",
+										"title": "Clear dependency boundaries",
+										"guidance": "Keep dependencies explicit and avoid exposing or depending on unrelated internals; do not require classes.",
+										"status": "meets"
+									},
+									{
+										"type": "choice",
+										"choice": "insufficient_context",
+										"confidence": 0.78,
+										"probabilities": {
+											"meets": 0.1,
+											"violates": 0.04,
+											"not_applicable": 0.08,
+											"insufficient_context": 0.78
+										},
+										"principle": "testability",
+										"title": "Testable behavior",
+										"guidance": "Test observable success and failure behavior; avoid assertions that only mirror implementation.",
+										"status": "needs-review"
+									},
+									{
+										"type": "choice",
+										"choice": "not_applicable",
+										"confidence": 0.95,
+										"probabilities": {
+											"meets": 0.02,
+											"violates": 0.01,
+											"not_applicable": 0.95,
+											"insufficient_context": 0.02
+										},
+										"principle": "async-boundaries",
+										"title": "Clear asynchronous behavior",
+										"guidance": "Make completion, cancellation and shared-state ownership explicit where concurrent behavior exists.",
+										"status": "not-applicable"
+									}
+								],
+								"contextPaths": [
+									"src/audit/development-tooling/cleanCodeRubric.ts",
+									"src/audit/development-tooling/cleanCodeTypes.ts",
+									"AGENTS.md",
+									".codex/skills/harness/SKILL.md",
+									"harness.audit.json",
+									"src/audit/AGENTS.md"
+								],
+								"omittedContext": [],
+								"model": "jev-1.13.0",
+								"usage": {
+									"input_tokens": 14862,
+									"output_tokens": 1408
+								},
+								"cached": false
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown inside this async function, so the promise rejects, when a source or supplied context input no longer matches its recorded hash or cannot be re-read (the result is discarded), when the localization response reports a different Jev model than the evaluation, or when settings.model is not jev-latest or jev-preview and Jev returns a different model. Failures from the injected evaluate and onUsage callbacks, from validating the Jev evaluation or localization response, and from the cache-key, assessment, location and cache-write helpers are not caught here and reject the promise unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
