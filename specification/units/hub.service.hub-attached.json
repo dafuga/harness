@@ -22,50 +22,127 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubAttachedService.constructor.context",
 				"type": "Context",
-				"required": true
+				"required": true,
+				"description": "The source context for reading pinned evidence: base is the HubSourceContext of the source repository, within is the pinned evidence revision or null, and reaches(tip, commit) resolves to whether commit is reachable from tip. load and regression refuse a commit unless within is set and reaches(within, commit) resolves true."
 			},
 			{
 				"name": "HubAttachedService.load.pointer",
 				"type": "EvidencePointer",
-				"required": true
+				"required": true,
+				"description": "The address of one stored record: its evidence commit, its path records/<tested commit>/<record id> on the evidence branch, and the sha256 of its manifest.json. A pointer with another field, a commit or manifest that is not lowercase hex, or a path outside records/ is reported in problems instead of being thrown.",
+				"examples": [
+					{
+						"commit": "a41f09c3e7b25d86f1409be2c7d35a8e6f21b0d4",
+						"path": "records/d6e13b7f58a20c94e3b71f0a6d2c58e9b4f17a03/9c04e7a1b53d8f26e0a4c97d15b83e6f0a2d4c98b17e5f3a60d9c2b84e1f7a35",
+						"manifest": "3b8f0a6d1c57e2f94a0d8b63c1e7f5a92d4b08c6e3f1a7d9b25c0e84f6a1d739"
+					},
+					{
+						"commit": "0f7c25e9a8d13b64c0e7f2a95d8b31c6e4a70f2b",
+						"path": "records/e83b19d0c4a72f65b8e01d3c9a7f42b6d05e8c1a/f2a6d94c08e1b37a5d9c26f0e8b41a7c3d5e09f2b68a1c4d7e03f9b5a2c8d16e",
+						"manifest": "c51d7e0a3b96f248d1e05c7a9f3b8d26e4a10c7f5b92d3e8a6c04f1b97e2d05a"
+					}
+				]
 			},
 			{
 				"name": "HubAttachedService.regression.note",
 				"type": "RegressionNote",
-				"required": true
+				"required": true,
+				"description": "A regression history note: the tested commit, the loop name, the phase (red, green or capture), the regression record id, and an evidence pointer whose path is regressions/<tested commit>/<record id>. regression reads the checkpoint only through that pointer, and readRegression refuses the note when its path, manifest hash, record identity or phase does not match the evidence.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"kind": "regression",
+						"commit": "d6e13b7f58a20c94e3b71f0a6d2c58e9b4f17a03",
+						"loop": "checkout-flow",
+						"phase": "green",
+						"record": "4b7e2a91d06c35f8e9a1b72d4c0f63e8a5d19b27c3e6f08a4d1b92e7c5f0a836",
+						"evidence": {
+							"commit": "a41f09c3e7b25d86f1409be2c7d35a8e6f21b0d4",
+							"path": "regressions/d6e13b7f58a20c94e3b71f0a6d2c58e9b4f17a03/4b7e2a91d06c35f8e9a1b72d4c0f63e8a5d19b27c3e6f08a4d1b92e7c5f0a836",
+							"manifest": "e07a4c9d2b18f63e5a0c7d94b1e28f36c5a0d7b49e1f2c83a6d5b07e4f9c1a28"
+						}
+					},
+					{
+						"schemaVersion": 1,
+						"kind": "regression",
+						"commit": "e83b19d0c4a72f65b8e01d3c9a7f42b6d05e8c1a",
+						"loop": "newsletter-signup",
+						"phase": "red",
+						"record": "f2a6d94c08e1b37a5d9c26f0e8b41a7c3d5e09f2b68a1c4d7e03f9b5a2c8d16e",
+						"evidence": {
+							"commit": "5c18e0f7a24d9b36c8e1f05a7d2b94c6e0f38a1d",
+							"path": "regressions/e83b19d0c4a72f65b8e01d3c9a7f42b6d05e8c1a/f2a6d94c08e1b37a5d9c26f0e8b41a7c3d5e09f2b68a1c4d7e03f9b5a2c8d16e",
+							"manifest": "9d2e61b0f4c83a57e0d29b6c1f7a4e83d5c06b19a2f8e47c3d0b15a6e9f2c71d"
+						}
+					}
+				]
 			},
 			{
 				"name": "HubAttachedService.readFile.pointer",
 				"type": "EvidencePointer",
-				"required": true
+				"required": true,
+				"description": "The record's pointer, in the same form load takes. readFile loads it first and refuses the read when that record has any problem.",
+				"examples": [
+					{
+						"commit": "a41f09c3e7b25d86f1409be2c7d35a8e6f21b0d4",
+						"path": "records/d6e13b7f58a20c94e3b71f0a6d2c58e9b4f17a03/9c04e7a1b53d8f26e0a4c97d15b83e6f0a2d4c98b17e5f3a60d9c2b84e1f7a35",
+						"manifest": "3b8f0a6d1c57e2f94a0d8b63c1e7f5a92d4b08c6e3f1a7d9b25c0e84f6a1d739"
+					},
+					{
+						"commit": "0f7c25e9a8d13b64c0e7f2a95d8b31c6e4a70f2b",
+						"path": "records/e83b19d0c4a72f65b8e01d3c9a7f42b6d05e8c1a/f2a6d94c08e1b37a5d9c26f0e8b41a7c3d5e09f2b68a1c4d7e03f9b5a2c8d16e",
+						"manifest": "c51d7e0a3b96f248d1e05c7a9f3b8d26e4a10c7f5b92d3e8a6c04f1b97e2d05a"
+					}
+				]
 			},
 			{
 				"name": "HubAttachedService.readFile.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "A file path inside the record directory, exactly as the manifest lists it; record.json is listed in every manifest that passes its checks. readFile returns bytes only for a path that has a recorded fact in a record with no problems, and refuses any other path.",
+				"examples": ["record.json", "logs/titles-page-renders.log"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubAttachedService.load",
-				"type": "Promise<HubAttachedRecord>"
+				"type": "Promise<HubAttachedRecord>",
+				"description": "The attached record for the pointer: the frozen pointer, the manifest and parsed record when they were read, a files map that holds only the record.json bytes, a facts map of each file that passed its checks, and a problems list. Evidence that fails a check resolves with its reasons in problems, while a refusal from a helper, such as an oversized file or a blob that does not match its tree entry, rejects."
 			},
 			{
 				"name": "HubAttachedService.regression",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The readRegression result for the note: the parsed regression record, its output text, and a Map of focused capture bytes keyed by path. regression throws evidence-unreadable when within is null or note.evidence.commit is not reachable from it, or when the tree that base.source.facts reports for note.commit is missing or differs from the record's source tree, and readRegression throws its own refusal when the record, its hashes, identity, phase or captures do not match."
 			},
 			{
 				"name": "HubAttachedService.readFile",
-				"type": "Promise<Uint8Array>"
+				"type": "Promise<Uint8Array>",
+				"description": "The bytes of one file read again from the pinned source, returned only when they still match the size, sha256 and blob that load recorded for that path. A file whose recorded size is above artifactLimit is refused before the file itself is read again."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "evidence-unreadable",
+				"type": "thrown",
+				"description": "Thrown by regression as an Error with the message 'Harness artifact unavailable' and code 'evidence-unreadable', when within is null or note.evidence.commit is not reachable from it, or when the tree that base.source.facts reports for note.commit is missing or differs from the record's source tree."
+			},
+			{
+				"name": "artifact-refused",
+				"type": "thrown",
+				"description": "Thrown by readFile as an Error with the message 'Harness artifact unavailable' and code 'artifact-refused', when load reports any problem or has no fact for the path, when the file read again has problems or no bytes, or when its blob differs from the blob load recorded."
+			},
+			{
+				"name": "artifact-too-large",
+				"type": "thrown",
+				"description": "Thrown by readFile as an Error with the message 'Harness artifact unavailable' and code 'artifact-too-large', when the path's recorded size is greater than artifactLimit, checked before the file is read again."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HubAttachedService.load",
@@ -73,17 +150,31 @@
 					{
 						"name": "HubAttachedService.load.pointer",
 						"type": "EvidencePointer",
-						"required": true
+						"required": true,
+						"description": "The address of one stored record: its evidence commit, its path records/<tested commit>/<record id> on the evidence branch, and the sha256 of its manifest.json. A pointer with another field, a commit or manifest that is not lowercase hex, or a path outside records/ is reported in problems instead of being thrown.",
+						"examples": [
+							{
+								"commit": "a41f09c3e7b25d86f1409be2c7d35a8e6f21b0d4",
+								"path": "records/d6e13b7f58a20c94e3b71f0a6d2c58e9b4f17a03/9c04e7a1b53d8f26e0a4c97d15b83e6f0a2d4c98b17e5f3a60d9c2b84e1f7a35",
+								"manifest": "3b8f0a6d1c57e2f94a0d8b63c1e7f5a92d4b08c6e3f1a7d9b25c0e84f6a1d739"
+							},
+							{
+								"commit": "0f7c25e9a8d13b64c0e7f2a95d8b31c6e4a70f2b",
+								"path": "records/e83b19d0c4a72f65b8e01d3c9a7f42b6d05e8c1a/f2a6d94c08e1b37a5d9c26f0e8b41a7c3d5e09f2b68a1c4d7e03f9b5a2c8d16e",
+								"manifest": "c51d7e0a3b96f248d1e05c7a9f3b8d26e4a10c7f5b92d3e8a6c04f1b97e2d05a"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubAttachedService.load",
-						"type": "Promise<HubAttachedRecord>"
+						"type": "Promise<HubAttachedRecord>",
+						"description": "The attached record for the pointer: the frozen pointer, the manifest and parsed record when they were read, a files map that holds only the record.json bytes, a facts map of each file that passed its checks, and a problems list. Evidence that fails a check resolves with its reasons in problems, while a refusal from a helper, such as an oversized file or a blob that does not match its tree entry, rejects."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubAttachedService.regression",
@@ -91,17 +182,53 @@
 					{
 						"name": "HubAttachedService.regression.note",
 						"type": "RegressionNote",
-						"required": true
+						"required": true,
+						"description": "A regression history note: the tested commit, the loop name, the phase (red, green or capture), the regression record id, and an evidence pointer whose path is regressions/<tested commit>/<record id>. regression reads the checkpoint only through that pointer, and readRegression refuses the note when its path, manifest hash, record identity or phase does not match the evidence.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"kind": "regression",
+								"commit": "d6e13b7f58a20c94e3b71f0a6d2c58e9b4f17a03",
+								"loop": "checkout-flow",
+								"phase": "green",
+								"record": "4b7e2a91d06c35f8e9a1b72d4c0f63e8a5d19b27c3e6f08a4d1b92e7c5f0a836",
+								"evidence": {
+									"commit": "a41f09c3e7b25d86f1409be2c7d35a8e6f21b0d4",
+									"path": "regressions/d6e13b7f58a20c94e3b71f0a6d2c58e9b4f17a03/4b7e2a91d06c35f8e9a1b72d4c0f63e8a5d19b27c3e6f08a4d1b92e7c5f0a836",
+									"manifest": "e07a4c9d2b18f63e5a0c7d94b1e28f36c5a0d7b49e1f2c83a6d5b07e4f9c1a28"
+								}
+							},
+							{
+								"schemaVersion": 1,
+								"kind": "regression",
+								"commit": "e83b19d0c4a72f65b8e01d3c9a7f42b6d05e8c1a",
+								"loop": "newsletter-signup",
+								"phase": "red",
+								"record": "f2a6d94c08e1b37a5d9c26f0e8b41a7c3d5e09f2b68a1c4d7e03f9b5a2c8d16e",
+								"evidence": {
+									"commit": "5c18e0f7a24d9b36c8e1f05a7d2b94c6e0f38a1d",
+									"path": "regressions/e83b19d0c4a72f65b8e01d3c9a7f42b6d05e8c1a/f2a6d94c08e1b37a5d9c26f0e8b41a7c3d5e09f2b68a1c4d7e03f9b5a2c8d16e",
+									"manifest": "9d2e61b0f4c83a57e0d29b6c1f7a4e83d5c06b19a2f8e47c3d0b15a6e9f2c71d"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubAttachedService.regression",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The readRegression result for the note: the parsed regression record, its output text, and a Map of focused capture bytes keyed by path. regression throws evidence-unreadable when within is null or note.evidence.commit is not reachable from it, or when the tree that base.source.facts reports for note.commit is missing or differs from the record's source tree, and readRegression throws its own refusal when the record, its hashes, identity, phase or captures do not match."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "evidence-unreadable",
+						"type": "thrown",
+						"description": "Thrown by regression as an Error with the message 'Harness artifact unavailable' and code 'evidence-unreadable', when within is null or note.evidence.commit is not reachable from it, or when the tree that base.source.facts reports for note.commit is missing or differs from the record's source tree."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubAttachedService.readFile",
@@ -109,22 +236,49 @@
 					{
 						"name": "HubAttachedService.readFile.pointer",
 						"type": "EvidencePointer",
-						"required": true
+						"required": true,
+						"description": "The record's pointer, in the same form load takes. readFile loads it first and refuses the read when that record has any problem.",
+						"examples": [
+							{
+								"commit": "a41f09c3e7b25d86f1409be2c7d35a8e6f21b0d4",
+								"path": "records/d6e13b7f58a20c94e3b71f0a6d2c58e9b4f17a03/9c04e7a1b53d8f26e0a4c97d15b83e6f0a2d4c98b17e5f3a60d9c2b84e1f7a35",
+								"manifest": "3b8f0a6d1c57e2f94a0d8b63c1e7f5a92d4b08c6e3f1a7d9b25c0e84f6a1d739"
+							},
+							{
+								"commit": "0f7c25e9a8d13b64c0e7f2a95d8b31c6e4a70f2b",
+								"path": "records/e83b19d0c4a72f65b8e01d3c9a7f42b6d05e8c1a/f2a6d94c08e1b37a5d9c26f0e8b41a7c3d5e09f2b68a1c4d7e03f9b5a2c8d16e",
+								"manifest": "c51d7e0a3b96f248d1e05c7a9f3b8d26e4a10c7f5b92d3e8a6c04f1b97e2d05a"
+							}
+						]
 					},
 					{
 						"name": "HubAttachedService.readFile.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "A file path inside the record directory, exactly as the manifest lists it; record.json is listed in every manifest that passes its checks. readFile returns bytes only for a path that has a recorded fact in a record with no problems, and refuses any other path.",
+						"examples": ["record.json", "logs/titles-page-renders.log"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubAttachedService.readFile",
-						"type": "Promise<Uint8Array>"
+						"type": "Promise<Uint8Array>",
+						"description": "The bytes of one file read again from the pinned source, returned only when they still match the size, sha256 and blob that load recorded for that path. A file whose recorded size is above artifactLimit is refused before the file itself is read again."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "artifact-refused",
+						"type": "thrown",
+						"description": "Thrown by readFile as an Error with the message 'Harness artifact unavailable' and code 'artifact-refused', when load reports any problem or has no fact for the path, when the file read again has problems or no bytes, or when its blob differs from the blob load recorded."
+					},
+					{
+						"name": "artifact-too-large",
+						"type": "thrown",
+						"description": "Thrown by readFile as an Error with the message 'Harness artifact unavailable' and code 'artifact-too-large', when the path's recorded size is greater than artifactLimit, checked before the file is read again."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -134,17 +288,19 @@
 					{
 						"name": "HubAttachedService.constructor.context",
 						"type": "Context",
-						"required": true
+						"required": true,
+						"description": "The source context for reading pinned evidence: base is the HubSourceContext of the source repository, within is the pinned evidence revision or null, and reaches(tip, commit) resolves to whether commit is reachable from tip. load and regression refuse a commit unless within is set and reaches(within, commit) resolves true."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubAttachedService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new HubAttachedService instance, which holds the context, a memo of load promises keyed by the pointer's JSON text, and a queue that serializes reads."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
