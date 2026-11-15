@@ -21,29 +21,36 @@
 				"name": "planDesign.context",
 				"type": "RunContext",
 				"required": true,
-				"description": "The prepared Plan context, including entity, selected thread, project revision, request, image model and generator, planning connection, cancellation signal and progress callback."
+				"description": "The prepared Plan run context, which the function reads and never assigns to: the entity (id, category, latestVersion, threads), the request (threadId, provider, model), the revision (commit, branch), imageModel, generator, planning port, session, signal, emit and run id. The entity, selected thread and revision set the draft's entity id, base revision, expected latest version, state and viewport, and the signal is passed to generation and checked after generation and before saving."
 			},
 			{
 				"name": "planDesign.prompt",
 				"type": "string",
 				"required": true,
-				"description": "The proposal text. Visual categories use it to build image instructions; functions, configs and services retain it as notes without generating images."
+				"description": "The proposal text for this version. For pages, layouts and components it is passed to designPrompt to build the image instruction and also appears in the saved notes as the Proposal, while every other category keeps it unchanged as the draft notes and generates no image.",
+				"examples": [
+					"Settings page with a compact header, grouped toggles and a primary Save button.",
+					"Two-column checkout layout with the order summary pinned to the right on desktop.",
+					"Retry failed syncs with exponential backoff and show a banner after three failed attempts."
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planDesign",
 				"type": "unknown",
-				"description": "A promise for a saved-version message. Pages, shells and components generate the requested 1–10 options, three by default, sequentially before saving one version. A single option is saved as one image. A version and thread notice are then saved and emitted for review; temporary generation files are removed after the main attempt."
+				"description": "Resolves to the string 'Saved <version> for review.', where <version> is the version planning.addDesign saved, after its design event is emitted and the thread notice is appended. It rejects instead when RunCancelled is thrown or any generation, branch, save or notice call rejects, and the temporary directory for the run is removed in a finally block that covers those steps.",
+				"examples": ["Saved v003 for review.", "Saved v001 for review."]
 			}
 		],
 		"errors": [
 			{
 				"name": "RunCancelled",
 				"type": "thrown",
-				"description": "Rejects when cancellation is observed after a generation or before saving. Generated options are not saved if generation fails or is cancelled before the save step."
+				"description": "Thrown inside planDesign, which then rejects with it, when context.signal is aborted after an image or option generation returns or just before the save step. Nothing is saved in that case, because options are saved only through planning.addDesign at the end, and errors raised by generateImage or the planning port pass through unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planDesign",
@@ -52,29 +59,36 @@
 						"name": "planDesign.context",
 						"type": "RunContext",
 						"required": true,
-						"description": "The prepared Plan context, including entity, selected thread, project revision, request, image model and generator, planning connection, cancellation signal and progress callback."
+						"description": "The prepared Plan run context, which the function reads and never assigns to: the entity (id, category, latestVersion, threads), the request (threadId, provider, model), the revision (commit, branch), imageModel, generator, planning port, session, signal, emit and run id. The entity, selected thread and revision set the draft's entity id, base revision, expected latest version, state and viewport, and the signal is passed to generation and checked after generation and before saving."
 					},
 					{
 						"name": "planDesign.prompt",
 						"type": "string",
 						"required": true,
-						"description": "The proposal text. Visual categories use it to build image instructions; functions, configs and services retain it as notes without generating images."
+						"description": "The proposal text for this version. For pages, layouts and components it is passed to designPrompt to build the image instruction and also appears in the saved notes as the Proposal, while every other category keeps it unchanged as the draft notes and generates no image.",
+						"examples": [
+							"Settings page with a compact header, grouped toggles and a primary Save button.",
+							"Two-column checkout layout with the order summary pinned to the right on desktop.",
+							"Retry failed syncs with exponential backoff and show a banner after three failed attempts."
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planDesign",
 						"type": "unknown",
-						"description": "A promise for a saved-version message. Pages, shells and components generate the requested 1–10 options, three by default, sequentially before saving one version. A single option is saved as one image. A version and thread notice are then saved and emitted for review; temporary generation files are removed after the main attempt."
+						"description": "Resolves to the string 'Saved <version> for review.', where <version> is the version planning.addDesign saved, after its design event is emitted and the thread notice is appended. It rejects instead when RunCancelled is thrown or any generation, branch, save or notice call rejects, and the temporary directory for the run is removed in a finally block that covers those steps.",
+						"examples": ["Saved v003 for review.", "Saved v001 for review."]
 					}
 				],
 				"errors": [
 					{
 						"name": "RunCancelled",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown inside planDesign, which then rejects with it, when context.signal is aborted after an image or option generation returns or just before the save step. Nothing is saved in that case, because options are saved only through planning.addDesign at the end, and errors raised by generateImage or the planning port pass through unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
