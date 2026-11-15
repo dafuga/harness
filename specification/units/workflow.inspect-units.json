@@ -35,81 +35,392 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "unitSchema.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The exact schema key requested by unitSchema; it selects one of ComponentManifest, ScenarioManifest, or VerificationRecord. Any other name raises ExpectedCliError.",
+				"examples": ["ComponentManifest", "ScenarioManifest", "VerificationRecord"]
 			},
 			{
 				"name": "listUnits.options",
 				"type": "UnitsOptions & { kind?: string }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Options are passed to loadUnits, with optional root selecting the unit registry location and optional kind filtering entries after load. The result contains only active units, and an unrecognized kind matches none.",
+				"examples": [
+					{},
+					{
+						"kind": "workflow",
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+					}
+				]
 			},
 			{
 				"name": "unitsGraph.options",
 				"type": "UnitsOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Options are passed through to loadUnits; root selects which unit registry is loaded. This operation reads root and does not use the other UnitsOptions fields.",
+				"examples": [
+					{},
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+					}
+				]
 			},
 			{
 				"name": "showUnit.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The exact unit id to find in the freshly loaded manifests. An id with no exact match raises ExpectedCliError.",
+				"examples": ["workflow.inspect-units"]
 			},
 			{
 				"name": "showUnit.options",
 				"type": "UnitsOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Options are passed to loadUnits, with root selecting the unit registry location. This operation reads root and does not use the other UnitsOptions fields.",
+				"examples": [
+					{},
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+					}
+				]
 			},
 			{
 				"name": "testAttribution.graph",
 				"type": "SourceGraph",
-				"required": true
+				"required": true,
+				"description": "The indexed source graph whose nodes and edges are searched backward from the unit and its owned source files. Only test nodes whose ids end in .test.ts, .test.js, .spec.ts, or .spec.js are attributed.",
+				"examples": [
+					{
+						"nodes": [
+							{
+								"id": "file:src/cli/program/inspectUnits.test.ts",
+								"kind": "test"
+							},
+							{
+								"id": "file:src/cli/program/inspectUnits.ts",
+								"kind": "source"
+							}
+						],
+						"edges": [
+							{
+								"from": "file:src/cli/program/inspectUnits.test.ts",
+								"to": "file:src/cli/program/inspectUnits.ts",
+								"via": "import",
+								"typeOnly": false
+							}
+						],
+						"uncertain": []
+					}
+				]
 			},
 			{
 				"name": "testAttribution.manifest",
 				"type": "ComponentManifest",
-				"required": true
+				"required": true,
+				"description": "The unit manifest seeds reachability with its unit id and owned source paths. A test is direct only when its shortest path has one edge whose destination is one of those owned source paths.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "workflow.inspect-units",
+						"uid": "u_76b76sztpq",
+						"kind": "workflow",
+						"title": "inspectUnits",
+						"responsibility": "Owns the inspectUnits command workflow.",
+						"responsibilityOrigin": "derived",
+						"status": "active",
+						"owns": {
+							"source": [
+								"src/cli/program/inspectUnits.ts",
+								"src/cli/program/inspectUnits.types.ts",
+								"src/cli/program/testAttribution.ts",
+								"src/cli/program/testAttribution.types.ts",
+								"src/workflows/inspectUnits.ts"
+							],
+							"symbols": [
+								"unitSchema",
+								"listUnits",
+								"unitsGraph",
+								"showUnit",
+								"renderUnit",
+								"testAttribution"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/cli/program/inspectUnits.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/cli/program/inspectUnits.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "testAttribution.scenarios",
 				"type": "ScenarioManifest[]",
-				"required": true
+				"required": true,
+				"description": "Scenario manifests are filtered to those whose units include manifest.id. Each retained scenario contributes only id, tests, and evidence to the returned attribution.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "scenario.inspect-units",
+							"title": "Inspect units",
+							"kind": "headless",
+							"units": ["workflow.inspect-units"],
+							"states": [
+								{
+									"id": "state.default",
+									"title": "Default",
+									"coverage": "required"
+								}
+							],
+							"viewports": [],
+							"tests": [
+								{
+									"id": "test.inspect-units",
+									"kind": "unit",
+									"runner": "vitest",
+									"target": "src/cli/program/inspectUnits.test.ts"
+								}
+							],
+							"evidence": []
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The JSON Schema value returned from z.toJSONSchema for the selected manifest schema. It is available for ComponentManifest, ScenarioManifest, and VerificationRecord; unknown names raise ExpectedCliError.",
+				"examples": [
+					{
+						"type": "object",
+						"additionalProperties": false
+					}
+				]
 			},
 			{
 				"name": "listUnits",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The active units from the stored registry, each projected to id, kind, and responsibility. A supplied kind filter is applied after active-status filtering, so inactive units never appear.",
+				"examples": [
+					[
+						{
+							"id": "workflow.inspect-units",
+							"kind": "workflow",
+							"responsibility": "Owns the inspectUnits command workflow."
+						}
+					]
+				]
 			},
 			{
 				"name": "unitsGraph",
-				"type": "Promise<SourceGraph>"
+				"type": "Promise<SourceGraph>",
+				"description": "The SourceGraph built from loaded unit registry data and source references. It contains nodes, edges, and uncertain references.",
+				"examples": [
+					{
+						"nodes": [
+							{
+								"id": "file:src/cli/program/inspectUnits.test.ts",
+								"kind": "test"
+							},
+							{
+								"id": "file:src/cli/program/inspectUnits.ts",
+								"kind": "source"
+							}
+						],
+						"edges": [
+							{
+								"from": "file:src/cli/program/inspectUnits.test.ts",
+								"to": "file:src/cli/program/inspectUnits.ts",
+								"via": "import",
+								"typeOnly": false
+							}
+						],
+						"uncertain": []
+					}
+				]
 			},
 			{
 				"name": "showUnit",
-				"type": "Promise<UnitDetail>"
+				"type": "Promise<UnitDetail>",
+				"description": "The detail view for the exact matching fresh manifest, including its version hashes, direct consumers, sorted test file paths, declarations, and direct dependency contracts. Test attribution reports file impact and does not establish assertion coverage.",
+				"examples": [
+					{
+						"manifest": {
+							"schemaVersion": 1,
+							"id": "workflow.inspect-units",
+							"uid": "u_76b76sztpq",
+							"kind": "workflow",
+							"title": "inspectUnits",
+							"responsibility": "Owns the inspectUnits command workflow.",
+							"responsibilityOrigin": "derived",
+							"status": "active",
+							"owns": {
+								"source": [
+									"src/cli/program/inspectUnits.ts",
+									"src/cli/program/inspectUnits.types.ts",
+									"src/cli/program/testAttribution.ts",
+									"src/cli/program/testAttribution.types.ts",
+									"src/workflows/inspectUnits.ts"
+								],
+								"symbols": [
+									"unitSchema",
+									"listUnits",
+									"unitsGraph",
+									"showUnit",
+									"renderUnit",
+									"testAttribution"
+								]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"dependencies": [],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/cli/program/inspectUnits.ts",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/cli/program/inspectUnits.ts"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						},
+						"version": {
+							"unit": "workflow.inspect-units",
+							"manifest": "4d967a5bc4239e1f0a6b7d8c2e5f90134d967a5bc4239e1f0a6b7d8c2e5f9013",
+							"source": "5e078b6cd5340f2a1b7c8e9d3f6a01245e078b6cd5340f2a1b7c8e9d3f6a0124",
+							"contract": "6f189c7de6451a3b2c8d9e0f4a7b12356f189c7de6451a3b2c8d9e0f4a7b1235",
+							"runtime": "7a29d8ef065b2c4d3e9f0a1b5c8d23467a29d8ef065b2c4d3e9f0a1b5c8d2346",
+							"files": [
+								{
+									"path": "src/cli/program/inspectUnits.ts",
+									"hash": "a17c309e5b2d4f6081a3c5e7b9d0f214a17c309e"
+								}
+							]
+						},
+						"consumers": [],
+						"tests": ["src/cli/program/inspectUnits.test.ts"],
+						"testAttribution": {
+							"directImports": [
+								{
+									"file": "src/cli/program/inspectUnits.test.ts",
+									"path": [
+										{
+											"from": "file:src/cli/program/inspectUnits.test.ts",
+											"to": "file:src/cli/program/inspectUnits.ts",
+											"via": "import",
+											"typeOnly": false
+										}
+									],
+									"dependency": "runtime"
+								}
+							],
+							"transitiveImpacts": [],
+							"scenarios": [
+								{
+									"id": "scenario.inspect-units",
+									"tests": [
+										{
+											"id": "test.inspect-units",
+											"kind": "unit",
+											"runner": "vitest",
+											"target": "src/cli/program/inspectUnits.test.ts"
+										}
+									],
+									"evidence": []
+								}
+							]
+						},
+						"declarations": [],
+						"dependencies": []
+					}
+				]
 			},
 			{
 				"name": "testAttribution",
-				"type": "TestAttribution"
+				"type": "TestAttribution",
+				"description": "Returns directImports, transitiveImpacts, and matching scenario declarations; direct imports require a one-edge path to an owned source and all other reachable tests are transitive impacts. Dependency mode is runtime only when every non-ownership reference is non-type-only, type-only if any reference is type-only, and unknown otherwise; the result does not claim assertion coverage.",
+				"examples": [
+					{
+						"directImports": [
+							{
+								"file": "src/cli/program/inspectUnits.test.ts",
+								"path": [
+									{
+										"from": "file:src/cli/program/inspectUnits.test.ts",
+										"to": "file:src/cli/program/inspectUnits.ts",
+										"via": "import",
+										"typeOnly": false
+									}
+								],
+								"dependency": "runtime"
+							}
+						],
+						"transitiveImpacts": [],
+						"scenarios": [
+							{
+								"id": "scenario.inspect-units",
+								"tests": [
+									{
+										"id": "test.inspect-units",
+										"kind": "unit",
+										"runner": "vitest",
+										"target": "src/cli/program/inspectUnits.test.ts"
+									}
+								],
+								"evidence": []
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when unitSchema receives a name outside ComponentManifest, ScenarioManifest, and VerificationRecord, or showUnit cannot find the requested unit id."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "unitSchema",
@@ -117,22 +428,32 @@
 					{
 						"name": "unitSchema.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The exact schema key requested by unitSchema; it selects one of ComponentManifest, ScenarioManifest, or VerificationRecord. Any other name raises ExpectedCliError.",
+						"examples": ["ComponentManifest", "ScenarioManifest", "VerificationRecord"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitSchema",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The JSON Schema value returned from z.toJSONSchema for the selected manifest schema. It is available for ComponentManifest, ScenarioManifest, and VerificationRecord; unknown names raise ExpectedCliError.",
+						"examples": [
+							{
+								"type": "object",
+								"additionalProperties": false
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the requested schema name is not ComponentManifest, ScenarioManifest, or VerificationRecord; the message includes the invalid name and supported choices."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "listUnits",
@@ -141,17 +462,35 @@
 						"name": "listUnits.options",
 						"type": "UnitsOptions & { kind?: string }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Options are passed to loadUnits, with optional root selecting the unit registry location and optional kind filtering entries after load. The result contains only active units, and an unrecognized kind matches none.",
+						"examples": [
+							{},
+							{
+								"kind": "workflow",
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "listUnits",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The active units from the stored registry, each projected to id, kind, and responsibility. A supplied kind filter is applied after active-status filtering, so inactive units never appear.",
+						"examples": [
+							[
+								{
+									"id": "workflow.inspect-units",
+									"kind": "workflow",
+									"responsibility": "Owns the inspectUnits command workflow."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "unitsGraph",
@@ -160,17 +499,48 @@
 						"name": "unitsGraph.options",
 						"type": "UnitsOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Options are passed through to loadUnits; root selects which unit registry is loaded. This operation reads root and does not use the other UnitsOptions fields.",
+						"examples": [
+							{},
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitsGraph",
-						"type": "Promise<SourceGraph>"
+						"type": "Promise<SourceGraph>",
+						"description": "The SourceGraph built from loaded unit registry data and source references. It contains nodes, edges, and uncertain references.",
+						"examples": [
+							{
+								"nodes": [
+									{
+										"id": "file:src/cli/program/inspectUnits.test.ts",
+										"kind": "test"
+									},
+									{
+										"id": "file:src/cli/program/inspectUnits.ts",
+										"kind": "source"
+									}
+								],
+								"edges": [
+									{
+										"from": "file:src/cli/program/inspectUnits.test.ts",
+										"to": "file:src/cli/program/inspectUnits.ts",
+										"via": "import",
+										"typeOnly": false
+									}
+								],
+								"uncertain": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "showUnit",
@@ -178,28 +548,141 @@
 					{
 						"name": "showUnit.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The exact unit id to find in the freshly loaded manifests. An id with no exact match raises ExpectedCliError.",
+						"examples": ["workflow.inspect-units"]
 					},
 					{
 						"name": "showUnit.options",
 						"type": "UnitsOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Options are passed to loadUnits, with root selecting the unit registry location. This operation reads root and does not use the other UnitsOptions fields.",
+						"examples": [
+							{},
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "showUnit",
-						"type": "Promise<UnitDetail>"
+						"type": "Promise<UnitDetail>",
+						"description": "The detail view for the exact matching fresh manifest, including its version hashes, direct consumers, sorted test file paths, declarations, and direct dependency contracts. Test attribution reports file impact and does not establish assertion coverage.",
+						"examples": [
+							{
+								"manifest": {
+									"schemaVersion": 1,
+									"id": "workflow.inspect-units",
+									"uid": "u_76b76sztpq",
+									"kind": "workflow",
+									"title": "inspectUnits",
+									"responsibility": "Owns the inspectUnits command workflow.",
+									"responsibilityOrigin": "derived",
+									"status": "active",
+									"owns": {
+										"source": [
+											"src/cli/program/inspectUnits.ts",
+											"src/cli/program/inspectUnits.types.ts",
+											"src/cli/program/testAttribution.ts",
+											"src/cli/program/testAttribution.types.ts",
+											"src/workflows/inspectUnits.ts"
+										],
+										"symbols": [
+											"unitSchema",
+											"listUnits",
+											"unitsGraph",
+											"showUnit",
+											"renderUnit",
+											"testAttribution"
+										]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"dependencies": [],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/cli/program/inspectUnits.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/cli/program/inspectUnits.ts"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								},
+								"version": {
+									"unit": "workflow.inspect-units",
+									"manifest": "4d967a5bc4239e1f0a6b7d8c2e5f90134d967a5bc4239e1f0a6b7d8c2e5f9013",
+									"source": "5e078b6cd5340f2a1b7c8e9d3f6a01245e078b6cd5340f2a1b7c8e9d3f6a0124",
+									"contract": "6f189c7de6451a3b2c8d9e0f4a7b12356f189c7de6451a3b2c8d9e0f4a7b1235",
+									"runtime": "7a29d8ef065b2c4d3e9f0a1b5c8d23467a29d8ef065b2c4d3e9f0a1b5c8d2346",
+									"files": [
+										{
+											"path": "src/cli/program/inspectUnits.ts",
+											"hash": "a17c309e5b2d4f6081a3c5e7b9d0f214a17c309e"
+										}
+									]
+								},
+								"consumers": [],
+								"tests": ["src/cli/program/inspectUnits.test.ts"],
+								"testAttribution": {
+									"directImports": [
+										{
+											"file": "src/cli/program/inspectUnits.test.ts",
+											"path": [
+												{
+													"from": "file:src/cli/program/inspectUnits.test.ts",
+													"to": "file:src/cli/program/inspectUnits.ts",
+													"via": "import",
+													"typeOnly": false
+												}
+											],
+											"dependency": "runtime"
+										}
+									],
+									"transitiveImpacts": [],
+									"scenarios": [
+										{
+											"id": "scenario.inspect-units",
+											"tests": [
+												{
+													"id": "test.inspect-units",
+													"kind": "unit",
+													"runner": "vitest",
+													"target": "src/cli/program/inspectUnits.test.ts"
+												}
+											],
+											"evidence": []
+										}
+									]
+								},
+								"declarations": [],
+								"dependencies": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when no freshly loaded manifest has the requested unit id; the message includes that id."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "testAttribution",
@@ -207,27 +690,167 @@
 					{
 						"name": "testAttribution.graph",
 						"type": "SourceGraph",
-						"required": true
+						"required": true,
+						"description": "The indexed source graph whose nodes and edges are searched backward from the unit and its owned source files. Only test nodes whose ids end in .test.ts, .test.js, .spec.ts, or .spec.js are attributed.",
+						"examples": [
+							{
+								"nodes": [
+									{
+										"id": "file:src/cli/program/inspectUnits.test.ts",
+										"kind": "test"
+									},
+									{
+										"id": "file:src/cli/program/inspectUnits.ts",
+										"kind": "source"
+									}
+								],
+								"edges": [
+									{
+										"from": "file:src/cli/program/inspectUnits.test.ts",
+										"to": "file:src/cli/program/inspectUnits.ts",
+										"via": "import",
+										"typeOnly": false
+									}
+								],
+								"uncertain": []
+							}
+						]
 					},
 					{
 						"name": "testAttribution.manifest",
 						"type": "ComponentManifest",
-						"required": true
+						"required": true,
+						"description": "The unit manifest seeds reachability with its unit id and owned source paths. A test is direct only when its shortest path has one edge whose destination is one of those owned source paths.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "workflow.inspect-units",
+								"uid": "u_76b76sztpq",
+								"kind": "workflow",
+								"title": "inspectUnits",
+								"responsibility": "Owns the inspectUnits command workflow.",
+								"responsibilityOrigin": "derived",
+								"status": "active",
+								"owns": {
+									"source": [
+										"src/cli/program/inspectUnits.ts",
+										"src/cli/program/inspectUnits.types.ts",
+										"src/cli/program/testAttribution.ts",
+										"src/cli/program/testAttribution.types.ts",
+										"src/workflows/inspectUnits.ts"
+									],
+									"symbols": [
+										"unitSchema",
+										"listUnits",
+										"unitsGraph",
+										"showUnit",
+										"renderUnit",
+										"testAttribution"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/cli/program/inspectUnits.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/cli/program/inspectUnits.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "testAttribution.scenarios",
 						"type": "ScenarioManifest[]",
-						"required": true
+						"required": true,
+						"description": "Scenario manifests are filtered to those whose units include manifest.id. Each retained scenario contributes only id, tests, and evidence to the returned attribution.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "scenario.inspect-units",
+									"title": "Inspect units",
+									"kind": "headless",
+									"units": ["workflow.inspect-units"],
+									"states": [
+										{
+											"id": "state.default",
+											"title": "Default",
+											"coverage": "required"
+										}
+									],
+									"viewports": [],
+									"tests": [
+										{
+											"id": "test.inspect-units",
+											"kind": "unit",
+											"runner": "vitest",
+											"target": "src/cli/program/inspectUnits.test.ts"
+										}
+									],
+									"evidence": []
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "testAttribution",
-						"type": "TestAttribution"
+						"type": "TestAttribution",
+						"description": "Returns directImports, transitiveImpacts, and matching scenario declarations; direct imports require a one-edge path to an owned source and all other reachable tests are transitive impacts. Dependency mode is runtime only when every non-ownership reference is non-type-only, type-only if any reference is type-only, and unknown otherwise; the result does not claim assertion coverage.",
+						"examples": [
+							{
+								"directImports": [
+									{
+										"file": "src/cli/program/inspectUnits.test.ts",
+										"path": [
+											{
+												"from": "file:src/cli/program/inspectUnits.test.ts",
+												"to": "file:src/cli/program/inspectUnits.ts",
+												"via": "import",
+												"typeOnly": false
+											}
+										],
+										"dependency": "runtime"
+									}
+								],
+								"transitiveImpacts": [],
+								"scenarios": [
+									{
+										"id": "scenario.inspect-units",
+										"tests": [
+											{
+												"id": "test.inspect-units",
+												"kind": "unit",
+												"runner": "vitest",
+												"target": "src/cli/program/inspectUnits.test.ts"
+											}
+										],
+										"evidence": []
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
