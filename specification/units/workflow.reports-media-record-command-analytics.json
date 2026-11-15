@@ -18,36 +18,49 @@
 				"name": "recordCommandAnalytics.args",
 				"type": "readonly string[]",
 				"required": true,
-				"description": "CLI arguments used to identify lookup-only commands that should not create an event."
+				"description": "CLI argument strings are checked before recording; values recognized by skipsAnalytics suppress the event, and other values are passed to commandAction.",
+				"examples": [
+					["help"],
+					["version"],
+					["info"]
+				]
 			},
 			{
 				"name": "recordCommandAnalytics.startedAt",
 				"type": "number",
 				"required": true,
-				"description": "Start time in epoch milliseconds used to compute elapsed duration."
+				"description": "When analytics is not skipped, this millisecond timestamp is subtracted from Date.now() to produce durationMs; the function does not validate its range.",
+				"examples": [1700000000000, 1760000000000]
 			},
 			{
 				"name": "recordCommandAnalytics.exitCode",
 				"type": "number | string | null | undefined",
 				"required": true,
-				"description": "Command result code; nullish values are recorded as zero."
+				"description": "Accepts a number, string, null, or undefined, and is converted with Number(exitCode ?? 0) for the event; nullish values therefore become zero.",
+				"examples": [0, "1", null]
 			},
 			{
 				"name": "recordCommandAnalytics.record",
 				"type": "typeof recordAnalytics",
 				"required": false,
-				"description": "Optional recorder override; defaults to recordAnalytics."
+				"description": "Optional recorder called with the command event when analytics is not skipped; omitted input defaults to the imported recordAnalytics function. Its failure propagates through the returned promise."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordCommandAnalytics",
 				"type": "Promise<void>",
-				"description": "Resolves after the command event is recorded, or immediately when skipsAnalytics is true."
+				"description": "Resolves to void after the recorder finishes when analytics is not skipped, or immediately when skipsAnalytics(args) returns true."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Propagated failure",
+				"type": "thrown",
+				"description": "A throw from skipsAnalytics or commandAction, or a throw or rejection from the selected recorder, rejects this promise without being caught or transformed."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "recordCommandAnalytics",
@@ -56,32 +69,39 @@
 						"name": "recordCommandAnalytics.args",
 						"type": "readonly string[]",
 						"required": true,
-						"description": "CLI arguments used to identify lookup-only commands that should not create an event."
+						"description": "CLI argument strings are checked before recording; values recognized by skipsAnalytics suppress the event, and other values are passed to commandAction.",
+						"examples": [
+							["help"],
+							["version"],
+							["info"]
+						]
 					},
 					{
 						"name": "recordCommandAnalytics.startedAt",
 						"type": "number",
 						"required": true,
-						"description": "Start time in epoch milliseconds used to compute elapsed duration."
+						"description": "When analytics is not skipped, this millisecond timestamp is subtracted from Date.now() to produce durationMs; the function does not validate its range.",
+						"examples": [1700000000000, 1760000000000]
 					},
 					{
 						"name": "recordCommandAnalytics.exitCode",
 						"type": "number | string | null | undefined",
 						"required": true,
-						"description": "Command result code; nullish values are recorded as zero."
+						"description": "Accepts a number, string, null, or undefined, and is converted with Number(exitCode ?? 0) for the event; nullish values therefore become zero.",
+						"examples": [0, "1", null]
 					},
 					{
 						"name": "recordCommandAnalytics.record",
 						"type": "typeof recordAnalytics",
 						"required": false,
-						"description": "Optional recorder override; defaults to recordAnalytics."
+						"description": "Optional recorder called with the command event when analytics is not skipped; omitted input defaults to the imported recordAnalytics function. Its failure propagates through the returned promise."
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordCommandAnalytics",
 						"type": "Promise<void>",
-						"description": "Resolves after the command event is recorded, or immediately when skipsAnalytics is true."
+						"description": "Resolves to void after the recorder finishes when analytics is not skipped, or immediately when skipsAnalytics(args) returns true."
 					}
 				],
 				"errors": [],
