@@ -36,34 +36,24 @@
 				"name": "EntityFrame.host",
 				"type": "ExplorerScreenProps",
 				"required": true,
-				"description": "Everything the host gives a screen: the shown revision, address, entities and its answers."
+				"description": "Host props provide the shown revision, route, listed entities, parent revision, lens data and navigation/rendering inputs used to resolve the address. An unlisted entity resolves only from an active head unit or, when a parent revision contains it and head.sourceImpact marks its id removed, from that prior unit."
 			},
 			{
 				"name": "EntityFrame.children",
 				"type": "Snippet<[ExplorerEntity, EntityNav]>",
 				"required": true,
-				"description": "The screen of the entity the address names; it is given that entity."
+				"description": "Screen snippet used for a resolved entity, receiving the entity and navigation state. It is not rendered while an unselected function unit with multiple helpers shows its chooser or when no entity resolves."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityFrame.entityHeaderAndScreen",
 				"type": "markup",
-				"description": "Selected entity header and screen. A helper address selects only its callable API; a legacy multi-callable address offers individual links. Missing helpers remain explicit. Owning module identity/history is retained. Screenshot selection receives the entity preview binding."
+				"description": "Markup wraps ExplorerFrame and shows either the multi-helper chooser, the resolved entity header with its supplied screen, or the missing-state view. Listed entities take precedence; otherwise an entity is available only from an active head unit or a parent unit whose id head.sourceImpact marks removed."
 			}
 		],
-		"errors": [
-			{
-				"name": "no-registry",
-				"type": "stated",
-				"description": "A revision that stores no unit registry says so; nothing of another revision is shown."
-			},
-			{
-				"name": "entity-missing",
-				"type": "stated",
-				"description": "An entity the shown revision does not hold is said to be missing, with the way back to its collection."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
