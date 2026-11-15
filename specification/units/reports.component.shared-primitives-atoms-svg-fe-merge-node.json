@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feMergeNode element; native HTML content rules still apply."
+				"description": "Optional Svelte snippet rendered inside the feMergeNode element with {@render children()} only when provided; when it is omitted, the element has no child content. The component calls it with no arguments and does not validate or transform what it renders."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeMergeNode",
 				"type": "markup",
-				"description": "The actual native feMergeNode element, with forwarded attributes and content and no additional wrapper."
+				"description": "The rendered native feMergeNode element in the SVG namespace, with every forwarded attribute and the optional children inside it. The element name is fixed to feMergeNode, and no wrapper element is added around it."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
