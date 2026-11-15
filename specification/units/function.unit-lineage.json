@@ -21,23 +21,156 @@
 				"name": "unitLineage.unit",
 				"type": "LineageSubject",
 				"required": true,
-				"description": "Current unit id and ordered exported-symbol list."
+				"description": "The id and ordered exported-symbol list of the unit being examined: the id decides whether it reuses a retired id with a numeric suffix, and the list decides whether a retired manifest exposes the same symbols. A symbol match needs a nonempty list equal to the manifest's owned symbols in the same order, compared case-sensitively.",
+				"examples": [
+					{
+						"id": "catalog.component.gallery-grid",
+						"symbols": ["EvidenceGrid", "EvidenceGridProps"]
+					},
+					{
+						"id": "reports.component.evidence-grid-2",
+						"symbols": ["EvidenceGrid", "EvidenceGridProps", "defaultGridColumns"]
+					}
+				]
 			},
 			{
 				"name": "unitLineage.retired",
 				"type": "ComponentManifest[]",
 				"required": true,
-				"description": "Candidate manifests to examine for retired predecessors."
+				"description": "The manifests of candidate predecessor units; only entries with status 'retired' and an id different from the current unit id are examined, and the array itself is not changed. An id that appears in more than one entry is listed once for each matching entry.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "reports.component.evidence-grid",
+							"uid": "u_qk3m7wzd2a",
+							"kind": "component",
+							"title": "Evidence grid",
+							"responsibility": "Lays captured evidence screenshots out in a fixed-column grid.",
+							"responsibilityOrigin": "declared",
+							"status": "retired",
+							"owns": {
+								"source": ["src/reports/component/evidenceGrid.ts"],
+								"symbols": ["EvidenceGrid", "EvidenceGridProps"]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"dependencies": [],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/reports/component/evidenceGrid.ts",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/reports/component/evidenceGrid.ts"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						}
+					],
+					[
+						{
+							"schemaVersion": 1,
+							"id": "reports.component.evidence-grid",
+							"uid": "u_qk3m7wzd2a",
+							"kind": "component",
+							"title": "Evidence grid",
+							"responsibility": "Lays captured evidence screenshots out in a fixed-column grid.",
+							"responsibilityOrigin": "declared",
+							"status": "retired",
+							"owns": {
+								"source": ["src/reports/component/evidenceGrid.ts"],
+								"symbols": ["EvidenceGrid", "EvidenceGridProps"]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"dependencies": [],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/reports/component/evidenceGrid.ts",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/reports/component/evidenceGrid.ts"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						},
+						{
+							"schemaVersion": 1,
+							"id": "reports.chart.bar-panel",
+							"uid": "u_b7dx2nqe4k",
+							"kind": "component",
+							"title": "Bar panel",
+							"responsibility": "Draws a labelled bar chart panel for one metric.",
+							"responsibilityOrigin": "declared",
+							"status": "active",
+							"owns": {
+								"source": ["src/reports/chart/barPanel.ts"],
+								"symbols": ["BarPanel", "BarPanelProps"]
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"dependencies": [],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/reports/chart/barPanel.ts",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/reports/chart/barPanel.ts"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitLineage",
 				"type": "string[]",
-				"description": "Sorted predecessor ids, excluding the current id, whose nonempty symbols match in order or whose id is reused with a numeric suffix."
+				"description": "The retired predecessor ids this unit continues, sorted in default string order and never including the current unit id; the list is empty when no retired manifest matches. An id is included when its manifest's owned symbols equal the current unit's nonempty symbols, or when the current unit id is that id followed by a dash and one or more digits.",
+				"examples": [
+					["reports.component.evidence-grid"],
+					["catalog.component.evidence-grid", "reports.component.evidence-grid"],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "unitLineage",
@@ -46,24 +179,156 @@
 						"name": "unitLineage.unit",
 						"type": "LineageSubject",
 						"required": true,
-						"description": "Current unit id and ordered exported-symbol list."
+						"description": "The id and ordered exported-symbol list of the unit being examined: the id decides whether it reuses a retired id with a numeric suffix, and the list decides whether a retired manifest exposes the same symbols. A symbol match needs a nonempty list equal to the manifest's owned symbols in the same order, compared case-sensitively.",
+						"examples": [
+							{
+								"id": "catalog.component.gallery-grid",
+								"symbols": ["EvidenceGrid", "EvidenceGridProps"]
+							},
+							{
+								"id": "reports.component.evidence-grid-2",
+								"symbols": ["EvidenceGrid", "EvidenceGridProps", "defaultGridColumns"]
+							}
+						]
 					},
 					{
 						"name": "unitLineage.retired",
 						"type": "ComponentManifest[]",
 						"required": true,
-						"description": "Candidate manifests to examine for retired predecessors."
+						"description": "The manifests of candidate predecessor units; only entries with status 'retired' and an id different from the current unit id are examined, and the array itself is not changed. An id that appears in more than one entry is listed once for each matching entry.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "reports.component.evidence-grid",
+									"uid": "u_qk3m7wzd2a",
+									"kind": "component",
+									"title": "Evidence grid",
+									"responsibility": "Lays captured evidence screenshots out in a fixed-column grid.",
+									"responsibilityOrigin": "declared",
+									"status": "retired",
+									"owns": {
+										"source": ["src/reports/component/evidenceGrid.ts"],
+										"symbols": ["EvidenceGrid", "EvidenceGridProps"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"dependencies": [],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/reports/component/evidenceGrid.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/reports/component/evidenceGrid.ts"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								}
+							],
+							[
+								{
+									"schemaVersion": 1,
+									"id": "reports.component.evidence-grid",
+									"uid": "u_qk3m7wzd2a",
+									"kind": "component",
+									"title": "Evidence grid",
+									"responsibility": "Lays captured evidence screenshots out in a fixed-column grid.",
+									"responsibilityOrigin": "declared",
+									"status": "retired",
+									"owns": {
+										"source": ["src/reports/component/evidenceGrid.ts"],
+										"symbols": ["EvidenceGrid", "EvidenceGridProps"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"dependencies": [],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/reports/component/evidenceGrid.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/reports/component/evidenceGrid.ts"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								},
+								{
+									"schemaVersion": 1,
+									"id": "reports.chart.bar-panel",
+									"uid": "u_b7dx2nqe4k",
+									"kind": "component",
+									"title": "Bar panel",
+									"responsibility": "Draws a labelled bar chart panel for one metric.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"owns": {
+										"source": ["src/reports/chart/barPanel.ts"],
+										"symbols": ["BarPanel", "BarPanelProps"]
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"dependencies": [],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/reports/chart/barPanel.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/reports/chart/barPanel.ts"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitLineage",
 						"type": "string[]",
-						"description": "Sorted predecessor ids, excluding the current id, whose nonempty symbols match in order or whose id is reused with a numeric suffix."
+						"description": "The retired predecessor ids this unit continues, sorted in default string order and never including the current unit id; the list is empty when no retired manifest matches. An id is included when its manifest's owned symbols equal the current unit's nonempty symbols, or when the current unit id is that id followed by a dash and one or more digits.",
+						"examples": [
+							["reports.component.evidence-grid"],
+							["catalog.component.evidence-grid", "reports.component.evidence-grid"],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
