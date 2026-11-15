@@ -49,7 +49,7 @@
 				"required": true,
 				"description": "The workspace path to read, optionally naming a project, encoded branch, commit, category, entity and section. A named commit must contain exactly 40 lowercase hexadecimal characters. The category defaults to pages when absent.",
 				"examples": [
-					"/projects/sample-project/harness/branch/feature%2Frouting/pages/desktop.function.workspace-route/history",
+					"/projects/sample-project/harness/branch/feature%2Frouting/functions/desktop.function.workspace-route/history",
 					"/harness/pages"
 				]
 			},
@@ -60,7 +60,7 @@
 				"description": "The category to link to, plus optional project, branch, commit, entity and section. Project, branch and entity names are URL-encoded. A section is included only when an entity is supplied. This builder does not validate a supplied commit.",
 				"examples": [
 					{
-						"category": "pages",
+						"category": "functions",
 						"projectId": "sample-project",
 						"branch": "feature/routing",
 						"entityId": "desktop.function.workspace-route",
@@ -96,7 +96,7 @@
 						"projectId": "sample-project",
 						"branch": "feature/routing",
 						"commit": null,
-						"category": "pages",
+						"category": "functions",
 						"entityId": "desktop.function.workspace-route",
 						"suffix": "history"
 					},
@@ -115,7 +115,7 @@
 				"type": "string",
 				"description": "A workspace path carrying the supplied selections. A missing project creates a legacy /harness link; absent branch and commit leave the revision unspecified.",
 				"examples": [
-					"/projects/sample-project/harness/branch/feature%2Frouting/pages/desktop.function.workspace-route/history",
+					"/projects/sample-project/harness/branch/feature%2Frouting/functions/desktop.function.workspace-route/history",
 					"/harness/pages"
 				]
 			}
@@ -170,7 +170,7 @@
 						"required": true,
 						"description": "The workspace path to read, optionally naming a project, encoded branch, commit, category, entity and section. A named commit must contain exactly 40 lowercase hexadecimal characters. The category defaults to pages when absent.",
 						"examples": [
-							"/projects/sample-project/harness/branch/feature%2Frouting/pages/desktop.function.workspace-route/history",
+							"/projects/sample-project/harness/branch/feature%2Frouting/functions/desktop.function.workspace-route/history",
 							"/harness/pages"
 						]
 					}
@@ -185,7 +185,7 @@
 								"projectId": "sample-project",
 								"branch": "feature/routing",
 								"commit": null,
-								"category": "pages",
+								"category": "functions",
 								"entityId": "desktop.function.workspace-route",
 								"suffix": "history"
 							},
@@ -224,7 +224,7 @@
 						"description": "The category to link to, plus optional project, branch, commit, entity and section. Project, branch and entity names are URL-encoded. A section is included only when an entity is supplied. This builder does not validate a supplied commit.",
 						"examples": [
 							{
-								"category": "pages",
+								"category": "functions",
 								"projectId": "sample-project",
 								"branch": "feature/routing",
 								"entityId": "desktop.function.workspace-route",
@@ -239,7 +239,7 @@
 						"type": "string",
 						"description": "A workspace path carrying the supplied selections. A missing project creates a legacy /harness link; absent branch and commit leave the revision unspecified.",
 						"examples": [
-							"/projects/sample-project/harness/branch/feature%2Frouting/pages/desktop.function.workspace-route/history",
+							"/projects/sample-project/harness/branch/feature%2Frouting/functions/desktop.function.workspace-route/history",
 							"/harness/pages"
 						]
 					}
