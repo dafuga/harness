@@ -32,75 +32,141 @@
 				"name": "DecartStreamAdapter.constructor.canvas",
 				"type": "HTMLCanvasElement",
 				"required": true,
-				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+				"description": "The canvas that connect captures with canvas.captureStream(25); the constructor only stores it in a private readonly field, and the adapter requests no camera or microphone."
 			},
 			{
 				"name": "DecartStreamAdapter.connect.session",
 				"type": "RenderSession",
 				"required": true,
-				"description": "Bounded ephemeral rendering session prepared by the project service."
+				"description": "A RenderSession passed unchanged to the connector in its session option; the adapter reads only seconds, which arms a timer that stops the preview after seconds * 1000 milliseconds. Sessions from DecartAdapter.start carry an integer seconds value from 10 to 60.",
+				"examples": [
+					{
+						"apiKey": "ephemeral-key-example-0001",
+						"expiresAt": "2026-11-15T12:01:00.000Z",
+						"model": "lucy-2.5",
+						"fast": false,
+						"seconds": 30,
+						"rate": 0.02
+					},
+					{
+						"apiKey": "ephemeral-key-example-0002",
+						"expiresAt": "2026-11-15T12:31:00.000Z",
+						"model": "lucy-restyle-2",
+						"fast": false,
+						"seconds": 60,
+						"rate": 0.01
+					},
+					{
+						"apiKey": "ephemeral-key-example-0003",
+						"expiresAt": "2026-11-15T09:16:00.000Z",
+						"model": "lucy-2.5",
+						"fast": true,
+						"seconds": 10,
+						"rate": 0.04
+					}
+				]
 			},
 			{
 				"name": "DecartStreamAdapter.connect.prompt",
 				"type": "Prompt",
 				"required": true,
-				"description": "Visual guidance with optional cancellation and an explicitly supplied safe connector."
+				"description": "Prompt text as a string, or an object with prompt text, an optional AbortSignal whose abort stops the preview, and an optional VideoConnector. Connecting needs a connector, so a string prompt or an object without connector makes connect reject.",
+				"examples": [
+					{
+						"prompt": "a quiet harbor at dawn in soft watercolor"
+					},
+					"slow pan across a foggy pine forest"
+				]
 			},
 			{
 				"name": "DecartStreamAdapter.connect.onStream",
 				"type": "(stream: MediaStream) => void",
 				"required": true,
-				"description": "Callback receiving the rendered remote stream for this preview."
+				"description": "Called with the remote MediaStream that the connector reports through onRemoteStream while the preview is running. A remote stream that arrives after the preview has stopped has its tracks stopped and is not passed to this callback."
 			},
 			{
 				"name": "connectDecart.canvas",
 				"type": "HTMLCanvasElement",
 				"required": true,
-				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+				"description": "The canvas passed to a new DecartStreamAdapter, which captures it with canvas.captureStream(25) when connect runs; the adapter requests no camera or microphone."
 			},
 			{
 				"name": "connectDecart.session",
 				"type": "RenderSession",
 				"required": true,
-				"description": "Bounded ephemeral rendering session prepared by the project service."
+				"description": "A RenderSession passed unchanged to the connector in its session option; the adapter reads only seconds, which arms a timer that stops the preview after seconds * 1000 milliseconds. Sessions from DecartAdapter.start carry an integer seconds value from 10 to 60.",
+				"examples": [
+					{
+						"apiKey": "ephemeral-key-example-0001",
+						"expiresAt": "2026-11-15T12:01:00.000Z",
+						"model": "lucy-2.5",
+						"fast": false,
+						"seconds": 30,
+						"rate": 0.02
+					},
+					{
+						"apiKey": "ephemeral-key-example-0002",
+						"expiresAt": "2026-11-15T12:31:00.000Z",
+						"model": "lucy-restyle-2",
+						"fast": false,
+						"seconds": 60,
+						"rate": 0.01
+					},
+					{
+						"apiKey": "ephemeral-key-example-0003",
+						"expiresAt": "2026-11-15T09:16:00.000Z",
+						"model": "lucy-2.5",
+						"fast": true,
+						"seconds": 10,
+						"rate": 0.04
+					}
+				]
 			},
 			{
 				"name": "connectDecart.prompt",
 				"type": "Prompt",
 				"required": true,
-				"description": "Visual guidance with optional cancellation and an explicitly supplied safe connector."
+				"description": "Prompt text as a string, or an object with prompt text, an optional AbortSignal whose abort stops the preview, and an optional VideoConnector. Connecting needs a connector, so a string prompt or an object without connector makes connect reject.",
+				"examples": [
+					{
+						"prompt": "a quiet harbor at dawn in soft watercolor"
+					},
+					"slow pan across a foggy pine forest"
+				]
 			},
 			{
 				"name": "connectDecart.onStream",
 				"type": "(stream: MediaStream) => void",
 				"required": true,
-				"description": "Callback receiving the rendered remote stream for this preview."
+				"description": "Called with the remote MediaStream that the connector reports through onRemoteStream while the preview is running. A remote stream that arrives after the preview has stopped has its tracks stopped and is not passed to this callback."
 			}
 		],
 		"outputs": [
 			{
 				"name": "decartTransportReady",
 				"type": "boolean",
-				"description": "False while no credential-safe live video transport is registered."
+				"description": "Always false in this implementation: the function returns the literal false because the public vendor SDK puts its client credential in a URL and no safe transport is registered. connect does not read this value, and a connection needs a connector in the prompt.",
+				"examples": [false]
 			},
 			{
 				"name": "DecartStreamAdapter.connect",
 				"type": "Promise<{ stop(): void; ended(): boolean; setPrompt(text: string): void }>",
-				"description": "Bounded connection controls that stop tracks and the remote connection without automatic retries."
+				"description": "Resolves to controls: stop() stops the captured and remote tracks and disconnects the connection (repeat calls do nothing), ended() reports whether the preview has stopped, and setPrompt(text) forwards text to the connection and stops the preview if that call rejects. The preview also stops once session.seconds * 1000 milliseconds have passed, when the document becomes hidden, when the prompt's signal aborts, or when the connection reports error or sessionEnded; no automatic retries are requested (retries: 0, capacityRetryBudgetMs: 0)."
 			},
 			{
 				"name": "connectDecart",
 				"type": "Promise<{ stop(): void; ended(): boolean; setPrompt(text: string): void }>",
-				"description": "Bounded connection controls that stop tracks and the remote connection without automatic retries."
+				"description": "Resolves to controls: stop() stops the captured and remote tracks and disconnects the connection (repeat calls do nothing), ended() reports whether the preview has stopped, and setPrompt(text) forwards text to the connection and stops the preview if that call rejects. The preview also stops once session.seconds * 1000 milliseconds have passed, when the document becomes hidden, when the prompt's signal aborts, or when the connection reports error or sessionEnded; no automatic retries are requested (retries: 0, capacityRetryBudgetMs: 0)."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Unavailable transport, cancellation or connection failure; native rendering remains independent."
+				"description": "connect rejects with Error when the prompt has no connector ('Live AI is unavailable until a credential-safe provider transport is configured.'), when the prompt's signal is already aborted ('AI preview cancelled.'), or when the connector throws or rejects ('AI video connection failed. The simple renderer remains available.'). Connector failures stop the captured tracks before the rejection, and an error from canvas.captureStream(25) is not caught, so it reaches the caller unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "decartTransportReady",
@@ -109,11 +175,12 @@
 					{
 						"name": "decartTransportReady",
 						"type": "boolean",
-						"description": "False while no credential-safe live video transport is registered."
+						"description": "Always false in this implementation: the function returns the literal false because the public vendor SDK puts its client credential in a URL and no safe transport is registered. connect does not read this value, and a connection needs a connector in the prompt.",
+						"examples": [false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DecartStreamAdapter.connect",
@@ -122,30 +189,68 @@
 						"name": "DecartStreamAdapter.connect.session",
 						"type": "RenderSession",
 						"required": true,
-						"description": "Bounded ephemeral rendering session prepared by the project service."
+						"description": "A RenderSession passed unchanged to the connector in its session option; the adapter reads only seconds, which arms a timer that stops the preview after seconds * 1000 milliseconds. Sessions from DecartAdapter.start carry an integer seconds value from 10 to 60.",
+						"examples": [
+							{
+								"apiKey": "ephemeral-key-example-0001",
+								"expiresAt": "2026-11-15T12:01:00.000Z",
+								"model": "lucy-2.5",
+								"fast": false,
+								"seconds": 30,
+								"rate": 0.02
+							},
+							{
+								"apiKey": "ephemeral-key-example-0002",
+								"expiresAt": "2026-11-15T12:31:00.000Z",
+								"model": "lucy-restyle-2",
+								"fast": false,
+								"seconds": 60,
+								"rate": 0.01
+							},
+							{
+								"apiKey": "ephemeral-key-example-0003",
+								"expiresAt": "2026-11-15T09:16:00.000Z",
+								"model": "lucy-2.5",
+								"fast": true,
+								"seconds": 10,
+								"rate": 0.04
+							}
+						]
 					},
 					{
 						"name": "DecartStreamAdapter.connect.prompt",
 						"type": "Prompt",
 						"required": true,
-						"description": "Visual guidance with optional cancellation and an explicitly supplied safe connector."
+						"description": "Prompt text as a string, or an object with prompt text, an optional AbortSignal whose abort stops the preview, and an optional VideoConnector. Connecting needs a connector, so a string prompt or an object without connector makes connect reject.",
+						"examples": [
+							{
+								"prompt": "a quiet harbor at dawn in soft watercolor"
+							},
+							"slow pan across a foggy pine forest"
+						]
 					},
 					{
 						"name": "DecartStreamAdapter.connect.onStream",
 						"type": "(stream: MediaStream) => void",
 						"required": true,
-						"description": "Callback receiving the rendered remote stream for this preview."
+						"description": "Called with the remote MediaStream that the connector reports through onRemoteStream while the preview is running. A remote stream that arrives after the preview has stopped has its tracks stopped and is not passed to this callback."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DecartStreamAdapter.connect",
 						"type": "Promise<{ stop(): void; ended(): boolean; setPrompt(text: string): void }>",
-						"description": "Bounded connection controls that stop tracks and the remote connection without automatic retries."
+						"description": "Resolves to controls: stop() stops the captured and remote tracks and disconnects the connection (repeat calls do nothing), ended() reports whether the preview has stopped, and setPrompt(text) forwards text to the connection and stops the preview if that call rejects. The preview also stops once session.seconds * 1000 milliseconds have passed, when the document becomes hidden, when the prompt's signal aborts, or when the connection reports error or sessionEnded; no automatic retries are requested (retries: 0, capacityRetryBudgetMs: 0)."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "connect rejects with Error when the prompt has no connector ('Live AI is unavailable until a credential-safe provider transport is configured.'), when the prompt's signal is already aborted ('AI preview cancelled.'), or when the connector throws or rejects ('AI video connection failed. The simple renderer remains available.'). Connector failures stop the captured tracks before the rejection, and an error from canvas.captureStream(25) is not caught, so it reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "connectDecart",
@@ -154,36 +259,74 @@
 						"name": "connectDecart.canvas",
 						"type": "HTMLCanvasElement",
 						"required": true,
-						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+						"description": "The canvas passed to a new DecartStreamAdapter, which captures it with canvas.captureStream(25) when connect runs; the adapter requests no camera or microphone."
 					},
 					{
 						"name": "connectDecart.session",
 						"type": "RenderSession",
 						"required": true,
-						"description": "Bounded ephemeral rendering session prepared by the project service."
+						"description": "A RenderSession passed unchanged to the connector in its session option; the adapter reads only seconds, which arms a timer that stops the preview after seconds * 1000 milliseconds. Sessions from DecartAdapter.start carry an integer seconds value from 10 to 60.",
+						"examples": [
+							{
+								"apiKey": "ephemeral-key-example-0001",
+								"expiresAt": "2026-11-15T12:01:00.000Z",
+								"model": "lucy-2.5",
+								"fast": false,
+								"seconds": 30,
+								"rate": 0.02
+							},
+							{
+								"apiKey": "ephemeral-key-example-0002",
+								"expiresAt": "2026-11-15T12:31:00.000Z",
+								"model": "lucy-restyle-2",
+								"fast": false,
+								"seconds": 60,
+								"rate": 0.01
+							},
+							{
+								"apiKey": "ephemeral-key-example-0003",
+								"expiresAt": "2026-11-15T09:16:00.000Z",
+								"model": "lucy-2.5",
+								"fast": true,
+								"seconds": 10,
+								"rate": 0.04
+							}
+						]
 					},
 					{
 						"name": "connectDecart.prompt",
 						"type": "Prompt",
 						"required": true,
-						"description": "Visual guidance with optional cancellation and an explicitly supplied safe connector."
+						"description": "Prompt text as a string, or an object with prompt text, an optional AbortSignal whose abort stops the preview, and an optional VideoConnector. Connecting needs a connector, so a string prompt or an object without connector makes connect reject.",
+						"examples": [
+							{
+								"prompt": "a quiet harbor at dawn in soft watercolor"
+							},
+							"slow pan across a foggy pine forest"
+						]
 					},
 					{
 						"name": "connectDecart.onStream",
 						"type": "(stream: MediaStream) => void",
 						"required": true,
-						"description": "Callback receiving the rendered remote stream for this preview."
+						"description": "Called with the remote MediaStream that the connector reports through onRemoteStream while the preview is running. A remote stream that arrives after the preview has stopped has its tracks stopped and is not passed to this callback."
 					}
 				],
 				"outputs": [
 					{
 						"name": "connectDecart",
 						"type": "Promise<{ stop(): void; ended(): boolean; setPrompt(text: string): void }>",
-						"description": "Bounded connection controls that stop tracks and the remote connection without automatic retries."
+						"description": "Resolves to controls: stop() stops the captured and remote tracks and disconnects the connection (repeat calls do nothing), ended() reports whether the preview has stopped, and setPrompt(text) forwards text to the connection and stops the preview if that call rejects. The preview also stops once session.seconds * 1000 milliseconds have passed, when the document becomes hidden, when the prompt's signal aborts, or when the connection reports error or sessionEnded; no automatic retries are requested (retries: 0, capacityRetryBudgetMs: 0)."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "connect rejects with Error when the prompt has no connector ('Live AI is unavailable until a credential-safe provider transport is configured.'), when the prompt's signal is already aborted ('AI preview cancelled.'), or when the connector throws or rejects ('AI video connection failed. The simple renderer remains available.'). Connector failures stop the captured tracks before the rejection, and an error from canvas.captureStream(25) is not caught, so it reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -194,17 +337,18 @@
 						"name": "DecartStreamAdapter.constructor.canvas",
 						"type": "HTMLCanvasElement",
 						"required": true,
-						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+						"description": "The canvas that connect captures with canvas.captureStream(25); the constructor only stores it in a private readonly field, and the adapter requests no camera or microphone."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DecartStreamAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new DecartStreamAdapter instance, which holds the canvas and starts no capture, connection or timer until connect is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
