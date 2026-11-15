@@ -17,49 +17,71 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CommitTreeAdapter.open.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root passed to GitAdapter for revision lookup and object reads. It selects which repository this adapter uses.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+				]
 			},
 			{
 				"name": "CommitTreeAdapter.open.reference",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Revision expression resolved with git rev-parse --verify --quiet after appending ^{commit}. It must resolve to a commit in the selected repository.",
+				"examples": ["HEAD"]
 			},
 			{
 				"name": "CommitTreeAdapter.read.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative path matched exactly against the selected commit tree. It must identify a blob listed in that commit; this method does not normalize the path.",
+				"examples": ["src/adapters/git-source-history/CommitTreeAdapter.ts"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CommitTreeAdapter.open",
-				"type": "Promise<CommitTreeAdapter>"
+				"type": "Promise<CommitTreeAdapter>",
+				"description": "An adapter bound to the selected repository and the commit resolved from reference; its revision property is the resolved commit ID. Opening fails if the expression does not identify a commit."
 			},
 			{
 				"name": "CommitTreeAdapter.list",
-				"type": "Promise<TreeEntry[]>"
+				"type": "Promise<TreeEntry[]>",
+				"description": "The recursive list of blob files in the adapter’s exact commit, each represented by its repository-relative path and Git object hash. Entries that do not match the blob-line format are omitted.",
+				"examples": [
+					[
+						{
+							"path": "src/adapters/git-source-history/CommitTreeAdapter.ts",
+							"hash": "1234567890abcdef1234567890abcdef12345678"
+						}
+					]
+				]
 			},
 			{
 				"name": "CommitTreeAdapter.read",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "The UTF-8 decoded contents of the blob at path in the adapter’s exact commit. It rejects when no listed entry has that exact path.",
+				"examples": ["export { CommitTreeAdapter } from './git-source-history/CommitTreeAdapter';"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by read when the requested path is absent from the selected commit tree."
 			},
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised through fail when the supplied revision expression does not name a commit in the selected repository."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CommitTreeAdapter.open",
@@ -67,27 +89,35 @@
 					{
 						"name": "CommitTreeAdapter.open.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root passed to GitAdapter for revision lookup and object reads. It selects which repository this adapter uses.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
+						]
 					},
 					{
 						"name": "CommitTreeAdapter.open.reference",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Revision expression resolved with git rev-parse --verify --quiet after appending ^{commit}. It must resolve to a commit in the selected repository.",
+						"examples": ["HEAD"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CommitTreeAdapter.open",
-						"type": "Promise<CommitTreeAdapter>"
+						"type": "Promise<CommitTreeAdapter>",
+						"description": "An adapter bound to the selected repository and the commit resolved from reference; its revision property is the resolved commit ID. Opening fails if the expression does not identify a commit."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised through fail when the supplied revision expression does not name a commit in the selected repository."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CommitTreeAdapter.list",
@@ -95,11 +125,20 @@
 				"outputs": [
 					{
 						"name": "CommitTreeAdapter.list",
-						"type": "Promise<TreeEntry[]>"
+						"type": "Promise<TreeEntry[]>",
+						"description": "The recursive list of blob files in the adapter’s exact commit, each represented by its repository-relative path and Git object hash. Entries that do not match the blob-line format are omitted.",
+						"examples": [
+							[
+								{
+									"path": "src/adapters/git-source-history/CommitTreeAdapter.ts",
+									"hash": "1234567890abcdef1234567890abcdef12345678"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CommitTreeAdapter.read",
@@ -107,22 +146,29 @@
 					{
 						"name": "CommitTreeAdapter.read.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative path matched exactly against the selected commit tree. It must identify a blob listed in that commit; this method does not normalize the path.",
+						"examples": ["src/adapters/git-source-history/CommitTreeAdapter.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CommitTreeAdapter.read",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "The UTF-8 decoded contents of the blob at path in the adapter’s exact commit. It rejects when no listed entry has that exact path.",
+						"examples": [
+							"export { CommitTreeAdapter } from './git-source-history/CommitTreeAdapter';"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by read when the requested path is absent from the selected commit tree."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
