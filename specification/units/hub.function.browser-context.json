@@ -33,15 +33,22 @@
 			{
 				"name": "provideBrowser",
 				"type": "HostedBrowser",
-				"description": "New services stored in the current Svelte context; a 401 refreshes the session when an actor was known."
+				"description": "The new HostedBrowser this call builds and stores under key with setContext, so browserContext can read it: api is built by browserApi(fetch, failure handler), session by createSessionStore(browserAuth(api)), and projects by browserProjects(api). A failure whose status is 401 starts session.refresh() only when session.actor is set, and the refresh promise is discarded with void, so a rejected refresh is not caught here."
 			},
 			{
 				"name": "browserContext",
 				"type": "HostedBrowser",
-				"description": "Services previously provided in the current component context."
+				"description": "The same HostedBrowser object that provideBrowser stored under key in the component context that getContext reads. Nothing checks that a provider ran, so if none did, the result is whatever getContext returns for key, which the declared HostedBrowser type does not reflect."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by Svelte when provideBrowser (through setContext) or browserContext (through getContext) runs outside component initialization; neither function catches it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "provideBrowser",
@@ -50,11 +57,17 @@
 					{
 						"name": "provideBrowser",
 						"type": "HostedBrowser",
-						"description": "New services stored in the current Svelte context; a 401 refreshes the session when an actor was known."
+						"description": "The new HostedBrowser this call builds and stores under key with setContext, so browserContext can read it: api is built by browserApi(fetch, failure handler), session by createSessionStore(browserAuth(api)), and projects by browserProjects(api). A failure whose status is 401 starts session.refresh() only when session.actor is set, and the refresh promise is discarded with void, so a rejected refresh is not caught here."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by setContext when provideBrowser runs outside component initialization; there is no try/catch, so an error raised while browserApi, browserAuth, createSessionStore or browserProjects builds the services also propagates unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "browserContext",
@@ -63,11 +76,17 @@
 					{
 						"name": "browserContext",
 						"type": "HostedBrowser",
-						"description": "Services previously provided in the current component context."
+						"description": "The same HostedBrowser object that provideBrowser stored under key in the component context that getContext reads. Nothing checks that a provider ran, so if none did, the result is whatever getContext returns for key, which the declared HostedBrowser type does not reflect."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by getContext when browserContext runs outside component initialization; the function does not catch it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
