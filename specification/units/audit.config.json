@@ -20,41 +20,218 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "readAuditConfig.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project root directory in which harness.audit.json is looked up; the value is combined with that file name using path.join and is not validated. When the file does not exist, readAuditConfig returns the default configuration instead of throwing.",
+				"examples": ["/home/dev/code/billing-api", "/workspace/harness-app"]
 			},
 			{
 				"name": "filterIgnoredFindings.findings",
 				"type": "AuditFinding[]",
-				"required": true
+				"required": true,
+				"description": "Array of audit findings to classify; a finding is ignored when some config.ignore entry has a matching path (an exact match, or a prefix match when the entry ends with '/') and either no rule or the same rule. The function does not validate the array, and both result arrays keep the input order.",
+				"examples": [
+					[
+						{
+							"path": "src/billing/invoices.ts",
+							"rule": "small-file",
+							"message": "File has 412 lines. Limit is 220. Split it by responsibility."
+						},
+						{
+							"path": "src/reports/summary.ts",
+							"rule": "max-classes-per-file",
+							"message": "File defines 2 classes. Limit is 1."
+						}
+					],
+					[
+						{
+							"path": "src/legacy/parser.ts",
+							"rule": "small-file",
+							"message": "File has 340 lines. Limit is 300. Split it by responsibility."
+						},
+						{
+							"path": "src/billing/invoices.ts",
+							"rule": "small-file",
+							"message": "File has 412 lines. Limit is 300. Split it by responsibility."
+						}
+					]
+				]
 			},
 			{
 				"name": "filterIgnoredFindings.config",
 				"type": "ResolvedAuditConfig",
-				"required": true
+				"required": true,
+				"description": "Resolved audit settings, normally the object returned by readAuditConfig, whose ignore array already excludes entries with blank paths. Only the ignore array is read; cleanCode and limits are not used by this function.",
+				"examples": [
+					{
+						"cleanCode": {
+							"mode": "off",
+							"model": "jev-1.13.0",
+							"minConfidence": 0.85,
+							"apiKeyEnv": "HARNESS_JEV_API_KEY",
+							"exclude": []
+						},
+						"ignore": [],
+						"limits": {
+							"maxFileLines": 220,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						}
+					},
+					{
+						"cleanCode": {
+							"mode": "advisory",
+							"model": "jev-1.13.0",
+							"minConfidence": 0.9,
+							"apiKeyEnv": "HARNESS_JEV_API_KEY",
+							"exclude": ["src/generated/"]
+						},
+						"ignore": [
+							{
+								"path": "src/legacy/",
+								"rule": "small-file",
+								"reason": "Scheduled for the billing rewrite."
+							}
+						],
+						"limits": {
+							"maxFileLines": 300,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "readAuditConfig",
-				"type": "ResolvedAuditConfig"
+				"type": "ResolvedAuditConfig",
+				"description": "Normalized audit settings read from harness.audit.json, or the built-in defaults when that file is absent. Every cleanCode field and all eight limits are filled in, and ignore entries with blank paths are removed.",
+				"examples": [
+					{
+						"cleanCode": {
+							"mode": "off",
+							"model": "jev-1.13.0",
+							"minConfidence": 0.85,
+							"apiKeyEnv": "HARNESS_JEV_API_KEY",
+							"exclude": []
+						},
+						"ignore": [],
+						"limits": {
+							"maxFileLines": 220,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						}
+					},
+					{
+						"cleanCode": {
+							"mode": "advisory",
+							"model": "jev-1.13.0",
+							"minConfidence": 0.9,
+							"apiKeyEnv": "HARNESS_JEV_API_KEY",
+							"exclude": ["src/generated/"]
+						},
+						"ignore": [
+							{
+								"path": "src/legacy/",
+								"rule": "small-file",
+								"reason": "Scheduled for the billing rewrite."
+							}
+						],
+						"limits": {
+							"maxFileLines": 300,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						}
+					}
+				]
 			},
 			{
 				"name": "filterIgnoredFindings",
-				"type": "{ activeFindings: AuditFinding[]; ignoredFindings: AuditFinding[] }"
+				"type": "{ activeFindings: AuditFinding[]; ignoredFindings: AuditFinding[] }",
+				"description": "Partition of the input findings: activeFindings holds those that no ignore entry matches, and ignoredFindings holds those that at least one entry matches. Every input finding appears in exactly one of the two arrays, in input order.",
+				"examples": [
+					{
+						"activeFindings": [
+							{
+								"path": "src/billing/invoices.ts",
+								"rule": "small-file",
+								"message": "File has 412 lines. Limit is 300. Split it by responsibility."
+							}
+						],
+						"ignoredFindings": [
+							{
+								"path": "src/legacy/parser.ts",
+								"rule": "small-file",
+								"message": "File has 340 lines. Limit is 300. Split it by responsibility."
+							}
+						]
+					},
+					{
+						"activeFindings": [
+							{
+								"path": "src/billing/invoices.ts",
+								"rule": "small-file",
+								"message": "File has 412 lines. Limit is 220. Split it by responsibility."
+							},
+							{
+								"path": "src/reports/summary.ts",
+								"rule": "max-classes-per-file",
+								"message": "File defines 2 classes. Limit is 1."
+							}
+						],
+						"ignoredFindings": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by fail() when harness.audit.json has an invalid cleanCode section or a limits value that is not a positive integer, including null. Its message names the rejected field, for example cleanCode.mode or limits.maxFileLines."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when harness.audit.json exists but its contents are not valid JSON. readAuditConfig does not catch it, so the parser's error reaches the caller unchanged."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Node.js file-system error from readFileSync when harness.audit.json exists but cannot be read, for example EACCES when read permission is missing or EISDIR when the path is a directory. readAuditConfig does not catch it, so the error reaches the caller unchanged."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown while normalizing the parsed file when its top-level JSON value is null, when ignore is a non-null value that is not an array, or when an ignore entry is null or has a path that is not a string. readAuditConfig does not catch it, so the runtime error reaches the caller unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "readAuditConfig",
@@ -62,17 +239,89 @@
 					{
 						"name": "readAuditConfig.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project root directory in which harness.audit.json is looked up; the value is combined with that file name using path.join and is not validated. When the file does not exist, readAuditConfig returns the default configuration instead of throwing.",
+						"examples": ["/home/dev/code/billing-api", "/workspace/harness-app"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readAuditConfig",
-						"type": "ResolvedAuditConfig"
+						"type": "ResolvedAuditConfig",
+						"description": "Normalized audit settings read from harness.audit.json, or the built-in defaults when that file is absent. Every cleanCode field and all eight limits are filled in, and ignore entries with blank paths are removed.",
+						"examples": [
+							{
+								"cleanCode": {
+									"mode": "off",
+									"model": "jev-1.13.0",
+									"minConfidence": 0.85,
+									"apiKeyEnv": "HARNESS_JEV_API_KEY",
+									"exclude": []
+								},
+								"ignore": [],
+								"limits": {
+									"maxFileLines": 220,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								}
+							},
+							{
+								"cleanCode": {
+									"mode": "advisory",
+									"model": "jev-1.13.0",
+									"minConfidence": 0.9,
+									"apiKeyEnv": "HARNESS_JEV_API_KEY",
+									"exclude": ["src/generated/"]
+								},
+								"ignore": [
+									{
+										"path": "src/legacy/",
+										"rule": "small-file",
+										"reason": "Scheduled for the billing rewrite."
+									}
+								],
+								"limits": {
+									"maxFileLines": 300,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown by fail() when harness.audit.json has an invalid cleanCode section or a limits value that is not a positive integer, including null. Its message names the rejected field, for example cleanCode.mode or limits.maxFileLines."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when harness.audit.json exists but its contents are not valid JSON. readAuditConfig does not catch it, so the parser's error reaches the caller unchanged."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Node.js file-system error from readFileSync when harness.audit.json exists but cannot be read, for example EACCES when read permission is missing or EISDIR when the path is a directory. readAuditConfig does not catch it, so the error reaches the caller unchanged."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown while normalizing the parsed file when its top-level JSON value is null, when ignore is a non-null value that is not an array, or when an ignore entry is null or has a path that is not a string. readAuditConfig does not catch it, so the runtime error reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "filterIgnoredFindings",
@@ -80,22 +329,132 @@
 					{
 						"name": "filterIgnoredFindings.findings",
 						"type": "AuditFinding[]",
-						"required": true
+						"required": true,
+						"description": "Array of audit findings to classify; a finding is ignored when some config.ignore entry has a matching path (an exact match, or a prefix match when the entry ends with '/') and either no rule or the same rule. The function does not validate the array, and both result arrays keep the input order.",
+						"examples": [
+							[
+								{
+									"path": "src/billing/invoices.ts",
+									"rule": "small-file",
+									"message": "File has 412 lines. Limit is 220. Split it by responsibility."
+								},
+								{
+									"path": "src/reports/summary.ts",
+									"rule": "max-classes-per-file",
+									"message": "File defines 2 classes. Limit is 1."
+								}
+							],
+							[
+								{
+									"path": "src/legacy/parser.ts",
+									"rule": "small-file",
+									"message": "File has 340 lines. Limit is 300. Split it by responsibility."
+								},
+								{
+									"path": "src/billing/invoices.ts",
+									"rule": "small-file",
+									"message": "File has 412 lines. Limit is 300. Split it by responsibility."
+								}
+							]
+						]
 					},
 					{
 						"name": "filterIgnoredFindings.config",
 						"type": "ResolvedAuditConfig",
-						"required": true
+						"required": true,
+						"description": "Resolved audit settings, normally the object returned by readAuditConfig, whose ignore array already excludes entries with blank paths. Only the ignore array is read; cleanCode and limits are not used by this function.",
+						"examples": [
+							{
+								"cleanCode": {
+									"mode": "off",
+									"model": "jev-1.13.0",
+									"minConfidence": 0.85,
+									"apiKeyEnv": "HARNESS_JEV_API_KEY",
+									"exclude": []
+								},
+								"ignore": [],
+								"limits": {
+									"maxFileLines": 220,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								}
+							},
+							{
+								"cleanCode": {
+									"mode": "advisory",
+									"model": "jev-1.13.0",
+									"minConfidence": 0.9,
+									"apiKeyEnv": "HARNESS_JEV_API_KEY",
+									"exclude": ["src/generated/"]
+								},
+								"ignore": [
+									{
+										"path": "src/legacy/",
+										"rule": "small-file",
+										"reason": "Scheduled for the billing rewrite."
+									}
+								],
+								"limits": {
+									"maxFileLines": 300,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "filterIgnoredFindings",
-						"type": "{ activeFindings: AuditFinding[]; ignoredFindings: AuditFinding[] }"
+						"type": "{ activeFindings: AuditFinding[]; ignoredFindings: AuditFinding[] }",
+						"description": "Partition of the input findings: activeFindings holds those that no ignore entry matches, and ignoredFindings holds those that at least one entry matches. Every input finding appears in exactly one of the two arrays, in input order.",
+						"examples": [
+							{
+								"activeFindings": [
+									{
+										"path": "src/billing/invoices.ts",
+										"rule": "small-file",
+										"message": "File has 412 lines. Limit is 300. Split it by responsibility."
+									}
+								],
+								"ignoredFindings": [
+									{
+										"path": "src/legacy/parser.ts",
+										"rule": "small-file",
+										"message": "File has 340 lines. Limit is 300. Split it by responsibility."
+									}
+								]
+							},
+							{
+								"activeFindings": [
+									{
+										"path": "src/billing/invoices.ts",
+										"rule": "small-file",
+										"message": "File has 412 lines. Limit is 220. Split it by responsibility."
+									},
+									{
+										"path": "src/reports/summary.ts",
+										"rule": "max-classes-per-file",
+										"message": "File defines 2 classes. Limit is 1."
+									}
+								],
+								"ignoredFindings": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
