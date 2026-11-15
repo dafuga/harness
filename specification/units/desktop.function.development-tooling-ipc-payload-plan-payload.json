@@ -18,23 +18,85 @@
 				"name": "planPayload.input",
 				"type": "Record<string, unknown>",
 				"required": true,
-				"description": "Untrusted createPlan fields: category, title, goal and an optional proposed contract."
+				"description": "The untrusted createPlan object: category must be one of the eight catalog categories, title must be a non-blank string of at most 160 characters, goal a non-blank string of at most 6000 characters, and contract is validated only when it is not undefined. Every other top-level key is ignored.",
+				"examples": [
+					{
+						"category": "components",
+						"title": "Evidence grid for report units",
+						"goal": "Show the latest verification captures for each report unit in one grid so a reviewer can compare them."
+					},
+					{
+						"category": "functions",
+						"title": "Plan payload validation",
+						"goal": "Validate a plan draft before it reaches local or hosted execution.",
+						"contract": {
+							"inputs": [
+								{
+									"name": "input",
+									"type": "Record<string, unknown>",
+									"description": "Untrusted createPlan fields."
+								}
+							],
+							"outputs": [
+								{
+									"name": "planPayload",
+									"type": "PlanDraft"
+								}
+							],
+							"errors": ["InvalidCategory"]
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "planPayload",
 				"type": "PlanDraft",
-				"description": "Bounded plan fields, retaining the authored contract without adding states or viewports."
+				"description": "The validated plan draft: category is one of pages, apis, layouts, components, functions, configs, services or models, title is a non-blank string of at most 160 characters, and goal is a non-blank string of at most 6000 characters. The contract key appears only when the input's contract was not undefined, as the value returned by zod's parse, and no states or viewports are added.",
+				"examples": [
+					{
+						"category": "components",
+						"title": "Evidence grid for report units",
+						"goal": "Show the latest verification captures for each report unit in one grid so a reviewer can compare them."
+					},
+					{
+						"category": "functions",
+						"title": "Plan payload validation",
+						"goal": "Validate a plan draft before it reaches local or hosted execution.",
+						"contract": {
+							"inputs": [
+								{
+									"name": "input",
+									"type": "Record<string, unknown>",
+									"description": "Untrusted createPlan fields."
+								}
+							],
+							"outputs": [
+								{
+									"name": "planPayload",
+									"type": "PlanDraft"
+								}
+							],
+							"errors": ["InvalidCategory"]
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects invalid categories, text, contract fields, oversized lists and duplicate error names."
+				"description": "Thrown with the message 'Invalid option.' when category is not one of the eight catalog categories, and with 'Invalid text field.' when title or goal is not a string, is blank after trimming, or is longer than 160 characters (title) or 6000 characters (goal)."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by the zod parse of any contract that is not undefined: it must be an object with exactly the arrays inputs, outputs and errors, each list holds at most 24 entries, and each error name is non-blank, at most 160 characters and unique. Each input or output field must have only name, type and an optional description, with name and type non-blank and at most 160 characters and description at most 2000 characters."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "planPayload",
@@ -43,18 +105,85 @@
 						"name": "planPayload.input",
 						"type": "Record<string, unknown>",
 						"required": true,
-						"description": "Untrusted createPlan fields: category, title, goal and an optional proposed contract."
+						"description": "The untrusted createPlan object: category must be one of the eight catalog categories, title must be a non-blank string of at most 160 characters, goal a non-blank string of at most 6000 characters, and contract is validated only when it is not undefined. Every other top-level key is ignored.",
+						"examples": [
+							{
+								"category": "components",
+								"title": "Evidence grid for report units",
+								"goal": "Show the latest verification captures for each report unit in one grid so a reviewer can compare them."
+							},
+							{
+								"category": "functions",
+								"title": "Plan payload validation",
+								"goal": "Validate a plan draft before it reaches local or hosted execution.",
+								"contract": {
+									"inputs": [
+										{
+											"name": "input",
+											"type": "Record<string, unknown>",
+											"description": "Untrusted createPlan fields."
+										}
+									],
+									"outputs": [
+										{
+											"name": "planPayload",
+											"type": "PlanDraft"
+										}
+									],
+									"errors": ["InvalidCategory"]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planPayload",
 						"type": "PlanDraft",
-						"description": "Bounded plan fields, retaining the authored contract without adding states or viewports."
+						"description": "The validated plan draft: category is one of pages, apis, layouts, components, functions, configs, services or models, title is a non-blank string of at most 160 characters, and goal is a non-blank string of at most 6000 characters. The contract key appears only when the input's contract was not undefined, as the value returned by zod's parse, and no states or viewports are added.",
+						"examples": [
+							{
+								"category": "components",
+								"title": "Evidence grid for report units",
+								"goal": "Show the latest verification captures for each report unit in one grid so a reviewer can compare them."
+							},
+							{
+								"category": "functions",
+								"title": "Plan payload validation",
+								"goal": "Validate a plan draft before it reaches local or hosted execution.",
+								"contract": {
+									"inputs": [
+										{
+											"name": "input",
+											"type": "Record<string, unknown>",
+											"description": "Untrusted createPlan fields."
+										}
+									],
+									"outputs": [
+										{
+											"name": "planPayload",
+											"type": "PlanDraft"
+										}
+									],
+									"errors": ["InvalidCategory"]
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid option.' when category is not one of the eight catalog categories, and with 'Invalid text field.' when title or goal is not a string, is blank after trimming, or is longer than 160 characters (title) or 6000 characters (goal)."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by the zod parse of any contract that is not undefined: it must be an object with exactly the arrays inputs, outputs and errors, each list holds at most 24 entries, and each error name is non-blank, at most 160 characters and unique. Each input or output field must have only name, type and an optional description, with name and type non-blank and at most 160 characters and description at most 2000 characters."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
