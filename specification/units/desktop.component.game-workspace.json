@@ -45,35 +45,45 @@
 				"type": "string | null",
 				"required": false,
 				"default": null,
-				"description": "Identifier of the game project to load, or null before project selection."
+				"description": "Identifier of the game project that bridge.gameRead loads and bridge.gameSave writes; the component passes it through unchecked, and the desktop game request validator accepts only 'local-' followed by 64 lowercase hex characters. When it is null or empty, or bridge has no gameRead, the workspace runs in demo mode on the in-memory exampleDocument('2d'), shows no Save button and saves nothing.",
+				"examples": [
+					null,
+					"local-3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c4b6d8a1f3e5c7b9d0a2f4e6c8b1d3a5f",
+					"local-c41e8a205d97f3b10e6a2c849bd1f7e3a6c0852d19f4b7e0d3a85c2f7e90b16a"
+				]
 			},
 			{
 				"name": "GameWorkspace.commit",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional historical commit to load; omitted for the current editable document."
+				"description": "Commit that bridge.gameRead loads instead of the current document; the component sends it only when truthy, and the desktop game request validator accepts only a 40-character lowercase hex SHA. Any truthy commit locks the workspace (no edits and no Save), including in demo mode, where it is not read.",
+				"examples": [
+					"3c1f9a0e5b7d2c4861f0e9a3b5d7c2e1f4a6b8d0",
+					"a94e2c7f0d13b8e65a2f7c90d4b1e83f6c5a2d17"
+				]
 			},
 			{
 				"name": "GameWorkspace.readonly",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Prevents document changes and saves when true; defaults to false."
+				"description": "When true, the workspace refuses edits, hides Save and passes the locked state to its child components. When false (the default), editing still requires an empty commit and, outside demo mode, a bridge with gameSave.",
+				"examples": [false, true]
 			},
 			{
 				"name": "GameWorkspace.bridge",
 				"type": "DesktopBridge",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional native bridge used to read and save game documents."
+				"description": "Native DesktopBridge object: gameRead({ projectId, commit? }) must resolve to { document, revision }, and gameSave({ projectId, document, expectedRevision }) must resolve to { revision }. When it is omitted or lacks gameRead, or projectId is null or empty, the workspace runs in demo mode; with a projectId and gameRead but no gameSave, it is locked."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameWorkspace",
 				"type": "markup",
-				"description": "Own game documents, optimistic saves, runtime progress and checkpoint modal lifecycle. Catches read and save failures and shows them in an alert; throws nothing itself. Catalog states: default (demo, nothing saved), project (saved project), loading (read pending), error (read failed), readonly (Read-only chip, no Save) and history (a commit shown as History)."
+				"description": "After a GameNavigationGuard, renders an hx-section (class game, data-harness-component game-workspace) holding a Back to project link, a Game Views header with GameWorkspaceChips and a primary Save button (shown only when editable outside demo mode and disabled unless there are unsaved changes, no validation problems and no load or save in progress), the demo note in demo mode, a role=alert paragraph for a revision conflict or a read or save error, the view fields, a role=alert paragraph for validation problems, and the panel for the current tab. While a read is pending and no view is loaded it shows 'Loading the game…', and read and save failures are caught and shown in the role=alert paragraph, so the component throws nothing itself."
 			}
 		],
 		"errors": [],
