@@ -25,55 +25,78 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "WireFramingService.constructor.options",
 				"type": "WireFramingOptions",
-				"required": true
+				"required": true,
+				"description": "The connection's options: write is required and receives each text frame, and defer runs each later step of sending (default: a zero-delay setTimeout). Each optional field falls back to the value the code uses: chunkBytes remoteLimits.chunkBytes (131072), frameBytes remoteLimits.frameBytes (262144), incomingBytes and outgoingBytes remoteLimits.messageBytes (16777216), parts Math.ceil(incomingBytes / 1024) + 16 (16400 by default), and streams localTransport.streams (8)."
 			},
 			{
 				"name": "WireFramingService.send.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The text of one message, sent as its UTF-8 bytes in parts of at most chunkBytes bytes (default remoteLimits.chunkBytes, 131072). A text whose UTF-8 length is over outgoingBytes (default remoteLimits.messageBytes, 16777216) is refused with RemoteFailure 'too-large' and nothing is queued.",
+				"examples": [
+					"hello",
+					"{\"type\":\"event\",\"channel\":\"run\",\"sequence\":12,\"value\":null}"
+				]
 			},
 			{
 				"name": "WireFramingService.send.ordered",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Defaults to false. A true (ordered) message completes in the order sent and is written in bursts of up to 16 frames per step, ahead of the others, which take turns.",
+				"examples": [false, true]
 			},
 			{
 				"name": "WireFramingService.accept.frame",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "One text frame from the peer: a JSON object with exactly the keys type ('part'), message, index, last and data, where message and index are safe non-negative integers, last is a boolean, and data is base64 that decodes to at most chunkBytes bytes (default remoteLimits.chunkBytes, 131072). A frame longer than frameBytes (its string length; default remoteLimits.frameBytes, 262144), or one that is not a part of this shape, is refused with RemoteFailure.",
+				"examples": [
+					"{\"type\":\"part\",\"message\":0,\"index\":0,\"last\":true,\"data\":\"aGVsbG8=\"}",
+					"{\"type\":\"part\",\"message\":1,\"index\":1,\"last\":true,\"data\":\"d29ybGQ=\"}"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "WireFramingService.send",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing: the text is queued, and its frames go to write during this call or in later steps through defer."
 			},
 			{
 				"name": "WireFramingService.accept",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "The whole text of a message once its last part has been accepted, or null while that message still has parts to come.",
+				"examples": [
+					null,
+					"hello",
+					"{\"type\":\"event\",\"channel\":\"run\",\"sequence\":12,\"value\":null}"
+				]
 			},
 			{
 				"name": "WireFramingService.reset",
-				"type": "void"
+				"type": "void",
+				"description": "The connection ended: partly received messages and messages not yet sent are dropped, while the highest message id already seen is kept, so later incoming ids must be higher still."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "RemoteFailure",
+				"type": "thrown",
+				"description": "A RemoteFailure whose code gives the reason: 'too-large' for text over outgoingBytes, for a frame over frameBytes, for a part over chunkBytes, or for a message over incomingBytes or its parts limit. 'invalid-message' covers a frame that is not a part, bad base64, an empty part that is not last, an index or message id out of sequence, or text that is not valid UTF-8, and 'too-many-requests' covers a new multipart message while streams are all in use."
 			},
 			{
-				"name": "RemoteFailure",
-				"type": "thrown"
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown inside partOf, as new Error('Not a part.'), when a parsed frame is not a part or its data is not a string; the try block there catches it, so callers never receive it and get RemoteFailure 'invalid-message' instead."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "WireFramingService.send",
@@ -81,28 +104,37 @@
 					{
 						"name": "WireFramingService.send.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The text of one message, sent as its UTF-8 bytes in parts of at most chunkBytes bytes (default remoteLimits.chunkBytes, 131072). A text whose UTF-8 length is over outgoingBytes (default remoteLimits.messageBytes, 16777216) is refused with RemoteFailure 'too-large' and nothing is queued.",
+						"examples": [
+							"hello",
+							"{\"type\":\"event\",\"channel\":\"run\",\"sequence\":12,\"value\":null}"
+						]
 					},
 					{
 						"name": "WireFramingService.send.ordered",
 						"type": "boolean",
 						"required": false,
-						"default": false
+						"default": false,
+						"description": "Defaults to false. A true (ordered) message completes in the order sent and is written in bursts of up to 16 frames per step, ahead of the others, which take turns.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireFramingService.send",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing: the text is queued, and its frames go to write during this call or in later steps through defer."
 					}
 				],
 				"errors": [
 					{
 						"name": "RemoteFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with code 'too-large' when the UTF-8 length of the text is over outgoingBytes (default remoteLimits.messageBytes, 16777216); nothing is queued or written in that case."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WireFramingService.accept",
@@ -110,22 +142,34 @@
 					{
 						"name": "WireFramingService.accept.frame",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "One text frame from the peer: a JSON object with exactly the keys type ('part'), message, index, last and data, where message and index are safe non-negative integers, last is a boolean, and data is base64 that decodes to at most chunkBytes bytes (default remoteLimits.chunkBytes, 131072). A frame longer than frameBytes (its string length; default remoteLimits.frameBytes, 262144), or one that is not a part of this shape, is refused with RemoteFailure.",
+						"examples": [
+							"{\"type\":\"part\",\"message\":0,\"index\":0,\"last\":true,\"data\":\"aGVsbG8=\"}",
+							"{\"type\":\"part\",\"message\":1,\"index\":1,\"last\":true,\"data\":\"d29ybGQ=\"}"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireFramingService.accept",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "The whole text of a message once its last part has been accepted, or null while that message still has parts to come.",
+						"examples": [
+							null,
+							"hello",
+							"{\"type\":\"event\",\"channel\":\"run\",\"sequence\":12,\"value\":null}"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "RemoteFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with code 'too-large' when the frame is longer than frameBytes (its string length; default remoteLimits.frameBytes, 262144), a part decodes to more than chunkBytes bytes (default remoteLimits.chunkBytes, 131072), the message has more parts than its parts limit, or its total size exceeds incomingBytes (default remoteLimits.messageBytes, 16777216). Thrown with code 'invalid-message' for a frame that is not a part, bad base64, an empty part that is not last, an index or message id out of sequence, or text that is not valid UTF-8, and with code 'too-many-requests' when a new multipart message arrives while streams (default localTransport.streams, 8) are all in use."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WireFramingService.reset",
@@ -133,11 +177,12 @@
 				"outputs": [
 					{
 						"name": "WireFramingService.reset",
-						"type": "void"
+						"type": "void",
+						"description": "The connection ended: partly received messages and messages not yet sent are dropped, while the highest message id already seen is kept, so later incoming ids must be higher still."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -147,17 +192,19 @@
 					{
 						"name": "WireFramingService.constructor.options",
 						"type": "WireFramingOptions",
-						"required": true
+						"required": true,
+						"description": "The connection's options: write is required and receives each text frame, and defer runs each later step of sending (default: a zero-delay setTimeout). Each optional field falls back to the value the code uses: chunkBytes remoteLimits.chunkBytes (131072), frameBytes remoteLimits.frameBytes (262144), incomingBytes and outgoingBytes remoteLimits.messageBytes (16777216), parts Math.ceil(incomingBytes / 1024) + 16 (16400 by default), and streams localTransport.streams (8)."
 					}
 				],
 				"outputs": [
 					{
 						"name": "WireFramingService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A new WireFramingService that keeps the options object it was given, with no queued messages and no partly received messages; its first outgoing message gets id 0."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
