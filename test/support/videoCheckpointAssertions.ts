@@ -2,7 +2,8 @@ import { expect } from 'vitest';
 import { videoClipSchema } from '../../src/utils/verification-evidence/videoClipSchema';
 import type { VideoDeclaration } from '../../src/utils/verification-evidence/videoClipSchema.types';
 
-export function assertVideoCheckpoints(declaration: VideoDeclaration) {
+export function assertVideoCheckpoints(declaration: VideoDeclaration, run: string) {
+	expect(run).toBe('video-evidence');
 	const manifest = videoClipSchema(declaration);
 	const configured = {
 		...manifest,

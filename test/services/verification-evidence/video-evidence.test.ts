@@ -57,10 +57,8 @@ async function fixture(root: string) {
 		);
 	}
 }
-test('VideoEvidenceService runs', () => {
-	expect(new VideoEvidenceService().run()).toBe('video-evidence');
-	assertVideoCheckpoints(manifest);
-});
+test('VideoEvidenceService runs', () =>
+	assertVideoCheckpoints(manifest, new VideoEvidenceService().run()));
 test('clip planning reuses unchanged inputs and invalidates only actual consumers', async () => {
 	await measureWorkload(videoUnit, 'plan-input-closure', () =>
 		withTempDir('harness-video-', async (root) => {
