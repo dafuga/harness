@@ -21,41 +21,77 @@
 				"name": "ModuleResourceService.generate.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute project directory containing the package manifest and module metadata."
+				"description": "Project directory passed to the catalog, module tree, group plan, scaffold and write steps, and also to the package plan for dependency resources and to the install for testing modules. Dependency resources read package.json from it, and the module state file harness.modules.json is written there.",
+				"examples": ["/workspace/acme-web", "/home/build/repos/acme-web"]
 			},
 			{
 				"name": "ModuleResourceService.generate.module",
 				"type": "string",
 				"required": true,
-				"description": "Identity of the installed module that owns this resource type."
+				"description": "Definition id of the installed module that owns the resource type; generate throws when no installed catalog entry has this id, and the value is stored as the module field of the resource record. Definition ids are lowercase kebab-case strings, and the matched definition is added to the state modules list when it is not already recorded.",
+				"examples": ["ui-kit", "data-layer"]
 			},
 			{
 				"name": "ModuleResourceService.generate.type",
 				"type": "string",
 				"required": true,
-				"description": "Resource type declared by the installed module."
+				"description": "Resource id declared in the installed module's resources; generate throws when that module declares no resource with this id, and the id selects the template files or generator used for the plan and is stored as the type field of the resource record. Resource ids use the same lowercase kebab-case pattern as definition ids.",
+				"examples": ["component", "dependency"]
 			},
 			{
 				"name": "ModuleResourceService.generate.requested",
 				"type": "string | ModuleResourceRequest",
 				"required": true,
-				"description": "Resource name, or a name with its responsibility group; dependency resources require an exact package pin."
+				"description": "A string is the resource name, and a ModuleResourceRequest adds an optional group that defaults to the kebab-case name and, when the templates use the group placeholder, must be lowercase letters and numbers separated by single dashes other than 'uncategorized'. Non-dependency names are trimmed and checked by validateCodeName, while dependency resources pass the value unchanged to ModulePackageService.plan, which requires an exact pinned version such as package@1.2.3 with an optional @scope/ prefix.",
+				"examples": [
+					"evidence-grid",
+					"zod@3.23.8",
+					{
+						"name": "evidence-grid",
+						"group": "reports"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleResourceService.generate",
 				"type": "Promise<string[]>",
-				"description": "Relative resource and metadata paths created or updated; testing foundation preparation runs through a separate installation before resource persistence."
+				"description": "Scaffold output paths from ModuleScaffoldService.generate, empty unless the resource uses a scaffold generator, followed by the paths returned from writeModuleFiles for the planned files and the harness.modules.json state file. When the module definition sets testing, ModuleInstallService.add runs before planning and its result is not part of this list.",
+				"examples": [
+					["src/components/evidence-grid/EvidenceGrid.tsx", "harness.modules.json"],
+					["package.json", "harness.modules.json"],
+					[
+						"src/components/reports/evidence-grid/EvidenceGrid.tsx",
+						"harness.groups.json",
+						"harness.modules.json"
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
+				"description": "Thrown directly when the catalog reports gaps, the module has no installed entry, the resource type is unknown, a resource with the same module, type and PascalCase-equal name already exists, or a file path or body contains a {{placeholder}} other than name, group, PascalName, camelName, snakeName or kebabName. Errors from the catalog, module tree, install, package plan, group plan, scaffold and write steps propagate unchanged."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Thrown through validateCodeName, which raises it from validateName, for a non-dependency name that is empty after trimming, contains '..', '/' or a backslash, or is not a leading letter or number followed only by letters, numbers, spaces, dashes or underscores. Dependency resources never reach this check."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by moduleGroupConfig.parse for a grouped resource whose group id is not lowercase letters and numbers separated by single dashes, or is 'uncategorized'. Only resources whose template files use the group placeholder reach this parse."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown for a grouped resource whose group id has an empty dash-separated segment, such as an empty group string or a double dash, because the title builder reads the first character of each segment before moduleGroupConfig.parse runs."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleResourceService.generate",
@@ -64,41 +100,77 @@
 						"name": "ModuleResourceService.generate.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute project directory containing the package manifest and module metadata."
+						"description": "Project directory passed to the catalog, module tree, group plan, scaffold and write steps, and also to the package plan for dependency resources and to the install for testing modules. Dependency resources read package.json from it, and the module state file harness.modules.json is written there.",
+						"examples": ["/workspace/acme-web", "/home/build/repos/acme-web"]
 					},
 					{
 						"name": "ModuleResourceService.generate.module",
 						"type": "string",
 						"required": true,
-						"description": "Identity of the installed module that owns this resource type."
+						"description": "Definition id of the installed module that owns the resource type; generate throws when no installed catalog entry has this id, and the value is stored as the module field of the resource record. Definition ids are lowercase kebab-case strings, and the matched definition is added to the state modules list when it is not already recorded.",
+						"examples": ["ui-kit", "data-layer"]
 					},
 					{
 						"name": "ModuleResourceService.generate.type",
 						"type": "string",
 						"required": true,
-						"description": "Resource type declared by the installed module."
+						"description": "Resource id declared in the installed module's resources; generate throws when that module declares no resource with this id, and the id selects the template files or generator used for the plan and is stored as the type field of the resource record. Resource ids use the same lowercase kebab-case pattern as definition ids.",
+						"examples": ["component", "dependency"]
 					},
 					{
 						"name": "ModuleResourceService.generate.requested",
 						"type": "string | ModuleResourceRequest",
 						"required": true,
-						"description": "Resource name, or a name with its responsibility group; dependency resources require an exact package pin."
+						"description": "A string is the resource name, and a ModuleResourceRequest adds an optional group that defaults to the kebab-case name and, when the templates use the group placeholder, must be lowercase letters and numbers separated by single dashes other than 'uncategorized'. Non-dependency names are trimmed and checked by validateCodeName, while dependency resources pass the value unchanged to ModulePackageService.plan, which requires an exact pinned version such as package@1.2.3 with an optional @scope/ prefix.",
+						"examples": [
+							"evidence-grid",
+							"zod@3.23.8",
+							{
+								"name": "evidence-grid",
+								"group": "reports"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleResourceService.generate",
 						"type": "Promise<string[]>",
-						"description": "Relative resource and metadata paths created or updated; testing foundation preparation runs through a separate installation before resource persistence."
+						"description": "Scaffold output paths from ModuleScaffoldService.generate, empty unless the resource uses a scaffold generator, followed by the paths returned from writeModuleFiles for the planned files and the harness.modules.json state file. When the module definition sets testing, ModuleInstallService.add runs before planning and its result is not part of this list.",
+						"examples": [
+							["src/components/evidence-grid/EvidenceGrid.tsx", "harness.modules.json"],
+							["package.json", "harness.modules.json"],
+							[
+								"src/components/reports/evidence-grid/EvidenceGrid.tsx",
+								"harness.groups.json",
+								"harness.modules.json"
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown directly when the catalog reports gaps, the module has no installed entry, the resource type is unknown, a resource with the same module, type and PascalCase-equal name already exists, or a file path or body contains a {{placeholder}} other than name, group, PascalName, camelName, snakeName or kebabName. Errors from the catalog, module tree, install, package plan, group plan, scaffold and write steps propagate unchanged."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown through validateCodeName, which raises it from validateName, for a non-dependency name that is empty after trimming, contains '..', '/' or a backslash, or is not a leading letter or number followed only by letters, numbers, spaces, dashes or underscores. Dependency resources never reach this check."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by moduleGroupConfig.parse for a grouped resource whose group id is not lowercase letters and numbers separated by single dashes, or is 'uncategorized'. Only resources whose template files use the group placeholder reach this parse."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown for a grouped resource whose group id has an empty dash-separated segment, such as an empty group string or a double dash, because the title builder reads the first character of each segment before moduleGroupConfig.parse runs."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
