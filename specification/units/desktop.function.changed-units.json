@@ -18,23 +18,36 @@
 				"name": "changedUnits.paths",
 				"type": "string[]",
 				"required": true,
-				"description": "The changed file paths to look up. Paths are not included in the returned notice; repeated input paths can still increase the unowned-file count."
+				"description": "The repository paths reported as changed; each array entry is passed to owners in order and contributes independently to the outside-file count. Paths are not included in the notice, and repeated paths are counted repeatedly when they have no owners.",
+				"examples": [
+					[
+						"packages/desktop/src/utils/changedUnits.ts",
+						"packages/desktop/src/utils/git-source-history/changedUnits.ts"
+					],
+					["packages/desktop/src/utils/explorer-ui/entityReferences.ts"]
+				]
 			},
 			{
 				"name": "changedUnits.owners",
 				"type": "(path: string) => string[]",
 				"required": true,
-				"description": "A lookup returning owning unit identities for each path. Only identities matching the unit-reference grammar are included; an empty result counts the path as unowned."
+				"description": "The lookup called once for each path to return candidate unit ids. Valid unit ids are deduplicated and sorted for naming; an empty result counts the path as outside, while a nonempty result with no valid ids does not."
 			}
 		],
 		"outputs": [
 			{
 				"name": "changedUnits",
 				"type": "string",
-				"description": "A notice with distinct valid unit identities sorted and written as unit references, limited to 40 named units with any remainder counted. Also counts paths with no owners. Returns an empty string when neither valid owners nor unowned paths can be reported."
+				"description": "The notice for valid owner ids and/or paths whose lookup returns an empty array; valid ids are deduplicated, sorted and rendered as unit references, with at most 40 named and any remainder counted. Empty-owner paths are counted separately; no notice is returned when no valid id or empty-owner path exists, and paths themselves are never printed.",
+				"examples": [
+					"Units changed: [[unit:desktop.function.changed-units]].",
+					"Units changed: [[unit:desktop.function.changed-units]], [[unit:desktop.function.entity-references]]; 2 files outside any unit.",
+					"1 file outside any unit."
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "changedUnits",
@@ -43,24 +56,36 @@
 						"name": "changedUnits.paths",
 						"type": "string[]",
 						"required": true,
-						"description": "The changed file paths to look up. Paths are not included in the returned notice; repeated input paths can still increase the unowned-file count."
+						"description": "The repository paths reported as changed; each array entry is passed to owners in order and contributes independently to the outside-file count. Paths are not included in the notice, and repeated paths are counted repeatedly when they have no owners.",
+						"examples": [
+							[
+								"packages/desktop/src/utils/changedUnits.ts",
+								"packages/desktop/src/utils/git-source-history/changedUnits.ts"
+							],
+							["packages/desktop/src/utils/explorer-ui/entityReferences.ts"]
+						]
 					},
 					{
 						"name": "changedUnits.owners",
 						"type": "(path: string) => string[]",
 						"required": true,
-						"description": "A lookup returning owning unit identities for each path. Only identities matching the unit-reference grammar are included; an empty result counts the path as unowned."
+						"description": "The lookup called once for each path to return candidate unit ids. Valid unit ids are deduplicated and sorted for naming; an empty result counts the path as outside, while a nonempty result with no valid ids does not."
 					}
 				],
 				"outputs": [
 					{
 						"name": "changedUnits",
 						"type": "string",
-						"description": "A notice with distinct valid unit identities sorted and written as unit references, limited to 40 named units with any remainder counted. Also counts paths with no owners. Returns an empty string when neither valid owners nor unowned paths can be reported."
+						"description": "The notice for valid owner ids and/or paths whose lookup returns an empty array; valid ids are deduplicated, sorted and rendered as unit references, with at most 40 named and any remainder counted. Empty-owner paths are counted separately; no notice is returned when no valid id or empty-owner path exists, and paths themselves are never printed.",
+						"examples": [
+							"Units changed: [[unit:desktop.function.changed-units]].",
+							"Units changed: [[unit:desktop.function.changed-units]], [[unit:desktop.function.entity-references]]; 2 files outside any unit.",
+							"1 file outside any unit."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
