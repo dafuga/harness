@@ -12,22 +12,63 @@
 		"symbols": ["ModelDependencyService", "ModelDependencyService.ensure"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModelDependencyService.ensure.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Directory that contains the package.json to update; ensure reads and may rewrite only join(root, 'package.json'); a relative root is resolved against the process working directory. When that file does not exist (ENOENT, including when root itself is missing), ensure resolves to an empty array instead of failing.",
+				"examples": [".", "packages/sqlite-models", "examples/todo-app"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModelDependencyService.ensure",
-				"type": "Promise<FileWriteResult[]>"
+				"type": "Promise<FileWriteResult[]>",
+				"description": "Resolves to an empty array when root/package.json does not exist, the file is empty, the manifest name equals packageInfo.name, or dependencies already has a truthy entry for packageInfo.name. Otherwise it adds packageInfo.name to dependencies (using the devDependencies version when present, else ^packageInfo.version), removes it from devDependencies when that object exists, writes root/package.json, and resolves to one entry with path 'package.json', the rewritten JSON text (tab-indented, with a trailing newline), and status 'overwritten'.",
+				"examples": [
+					[],
+					[
+						{
+							"path": "package.json",
+							"contents": "{\n\t\"name\": \"sqlite-models\",\n\t\"version\": \"0.1.0\",\n\t\"dependencies\": {\n\t\t\"shared-runtime\": \"^1.0.0\"\n\t}\n}\n",
+							"status": "overwritten"
+						}
+					],
+					[
+						{
+							"path": "package.json",
+							"contents": "{\n\t\"name\": \"sqlite-models\",\n\t\"version\": \"0.1.0\",\n\t\"devDependencies\": {},\n\t\"dependencies\": {\n\t\t\"shared-runtime\": \"2.3.0\"\n\t}\n}\n",
+							"status": "overwritten"
+						}
+					]
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rethrown unchanged when readFile fails with any error code other than ENOENT, such as EACCES for an unreadable package.json or EISDIR when package.json is a directory. Nothing is written when this happens."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when package.json holds non-empty text that is not valid JSON, for example because of a trailing comma. Nothing is written when this happens."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when package.json parses to null, where reading manifest.name fails, or to a string, number or boolean, where assigning manifest.dependencies fails in strict-mode code. Nothing is written when this happens."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Propagated unchanged from writeFile when it rejects, for example with EACCES or EROFS, so ensure rejects instead of resolving."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModelDependencyService.ensure",
@@ -35,17 +76,58 @@
 					{
 						"name": "ModelDependencyService.ensure.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Directory that contains the package.json to update; ensure reads and may rewrite only join(root, 'package.json'); a relative root is resolved against the process working directory. When that file does not exist (ENOENT, including when root itself is missing), ensure resolves to an empty array instead of failing.",
+						"examples": [".", "packages/sqlite-models", "examples/todo-app"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModelDependencyService.ensure",
-						"type": "Promise<FileWriteResult[]>"
+						"type": "Promise<FileWriteResult[]>",
+						"description": "Resolves to an empty array when root/package.json does not exist, the file is empty, the manifest name equals packageInfo.name, or dependencies already has a truthy entry for packageInfo.name. Otherwise it adds packageInfo.name to dependencies (using the devDependencies version when present, else ^packageInfo.version), removes it from devDependencies when that object exists, writes root/package.json, and resolves to one entry with path 'package.json', the rewritten JSON text (tab-indented, with a trailing newline), and status 'overwritten'.",
+						"examples": [
+							[],
+							[
+								{
+									"path": "package.json",
+									"contents": "{\n\t\"name\": \"sqlite-models\",\n\t\"version\": \"0.1.0\",\n\t\"dependencies\": {\n\t\t\"shared-runtime\": \"^1.0.0\"\n\t}\n}\n",
+									"status": "overwritten"
+								}
+							],
+							[
+								{
+									"path": "package.json",
+									"contents": "{\n\t\"name\": \"sqlite-models\",\n\t\"version\": \"0.1.0\",\n\t\"devDependencies\": {},\n\t\"dependencies\": {\n\t\t\"shared-runtime\": \"2.3.0\"\n\t}\n}\n",
+									"status": "overwritten"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rethrown unchanged when readFile fails with any error code other than ENOENT, such as EACCES for an unreadable package.json or EISDIR when package.json is a directory. Nothing is written when this happens."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when package.json holds non-empty text that is not valid JSON, for example because of a trailing comma. Nothing is written when this happens."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when package.json parses to null, where reading manifest.name fails, or to a string, number or boolean, where assigning manifest.dependencies fails in strict-mode code. Nothing is written when this happens."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagated unchanged from writeFile when it rejects, for example with EACCES or EROFS, so ensure rejects instead of resolving."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
