@@ -27,76 +27,104 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AcceptanceRecord.constructor.print",
 				"type": "(line: string) => void",
-				"required": false
+				"required": false,
+				"description": "Function that receives the lines emitted by begin and check. It matters when capturing or redirecting output; when omitted, it defaults to console.log."
 			},
 			{
 				"name": "AcceptanceRecord.begin.phase",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Current phase label assigned before later checks are recorded. It matters because each check stores this value; begin also prints it as a heading.",
+				"examples": ["Preparing iOS simulator"]
 			},
 			{
 				"name": "AcceptanceRecord.hide.secret",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Sensitive string added to the record’s redaction inputs. It matters when safe processes text later; hide itself does not print it.",
+				"examples": ["482901"]
 			},
 			{
 				"name": "AcceptanceRecord.safe.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Text passed with secrets previously supplied to hide to redacted. It matters when returning text intended for safe printing or writing; filtering details are delegated to redacted.",
+				"examples": ["Simulator is ready"]
 			},
 			{
 				"name": "AcceptanceRecord.check.passed",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Any value converted with Boolean(...) to determine the check’s passed flag. It matters when recording an assertion; truthy values count as passed and falsy values count as failed.",
+				"examples": [true, false, 0]
 			},
 			{
 				"name": "AcceptanceRecord.check.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Name label processed through safe before it is stored and printed. It matters when recording an assertion; the saved and emitted name is the processed text.",
+				"examples": ["Simulator became available"]
 			},
 			{
 				"name": "AcceptanceRecord.stopped.error",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Value passed to errorMessage when a phase cannot continue. The first line of its resulting message, capped at 240 characters, is embedded in the failed check name.",
+				"examples": [
+					"Simulator launch timed out",
+					{
+						"message": "Simulator launch timed out"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "AcceptanceRecord.begin",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned. It sets the current phase and emits a blank-line-prefixed phase heading through the configured print callback."
 			},
 			{
 				"name": "AcceptanceRecord.hide",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned. It appends the supplied secret to the redaction list for later safe text processing."
 			},
 			{
 				"name": "AcceptanceRecord.safe",
-				"type": "string"
+				"type": "string",
+				"description": "String produced by redacted from the supplied text and stored secrets. It is used when a caller needs sanitized text; exact substitutions are delegated to redacted.",
+				"examples": ["Simulator is ready"]
 			},
 			{
 				"name": "AcceptanceRecord.check",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned. It records the current phase, safe-processed name, and Boolean-converted result, then emits an ok or FAIL line."
 			},
 			{
 				"name": "AcceptanceRecord.stopped",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned. It records a failed check whose name starts with “the phase stopped:” and includes only the first line of the reason, truncated to 240 characters."
 			},
 			{
 				"name": "AcceptanceRecord.failed",
-				"type": "number"
+				"type": "number",
+				"description": "Number of recorded checks whose passed flag is false. It matters when reading the record’s failure count; it is recalculated from checks on access.",
+				"examples": [0, 1, 2]
 			},
 			{
 				"name": "AcceptanceRecord.passed",
-				"type": "number"
+				"type": "number",
+				"description": "Number of recorded checks minus the failed count. It matters when reading the record’s pass count; it is recalculated from checks on access.",
+				"examples": [0, 1, 2]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "AcceptanceRecord.begin",
@@ -104,17 +132,20 @@
 					{
 						"name": "AcceptanceRecord.begin.phase",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Current phase label assigned before later checks are recorded. It matters because each check stores this value; begin also prints it as a heading.",
+						"examples": ["Preparing iOS simulator"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AcceptanceRecord.begin",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned. It sets the current phase and emits a blank-line-prefixed phase heading through the configured print callback."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AcceptanceRecord.hide",
@@ -122,17 +153,20 @@
 					{
 						"name": "AcceptanceRecord.hide.secret",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Sensitive string added to the record’s redaction inputs. It matters when safe processes text later; hide itself does not print it.",
+						"examples": ["482901"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AcceptanceRecord.hide",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned. It appends the supplied secret to the redaction list for later safe text processing."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AcceptanceRecord.safe",
@@ -140,17 +174,21 @@
 					{
 						"name": "AcceptanceRecord.safe.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Text passed with secrets previously supplied to hide to redacted. It matters when returning text intended for safe printing or writing; filtering details are delegated to redacted.",
+						"examples": ["Simulator is ready"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AcceptanceRecord.safe",
-						"type": "string"
+						"type": "string",
+						"description": "String produced by redacted from the supplied text and stored secrets. It is used when a caller needs sanitized text; exact substitutions are delegated to redacted.",
+						"examples": ["Simulator is ready"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AcceptanceRecord.check",
@@ -158,22 +196,27 @@
 					{
 						"name": "AcceptanceRecord.check.passed",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Any value converted with Boolean(...) to determine the check’s passed flag. It matters when recording an assertion; truthy values count as passed and falsy values count as failed.",
+						"examples": [true, false, 0]
 					},
 					{
 						"name": "AcceptanceRecord.check.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Name label processed through safe before it is stored and printed. It matters when recording an assertion; the saved and emitted name is the processed text.",
+						"examples": ["Simulator became available"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AcceptanceRecord.check",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned. It records the current phase, safe-processed name, and Boolean-converted result, then emits an ok or FAIL line."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AcceptanceRecord.stopped",
@@ -181,17 +224,25 @@
 					{
 						"name": "AcceptanceRecord.stopped.error",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Value passed to errorMessage when a phase cannot continue. The first line of its resulting message, capped at 240 characters, is embedded in the failed check name.",
+						"examples": [
+							"Simulator launch timed out",
+							{
+								"message": "Simulator launch timed out"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AcceptanceRecord.stopped",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned. It records a failed check whose name starts with “the phase stopped:” and includes only the first line of the reason, truncated to 240 characters."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AcceptanceRecord.failed",
@@ -199,11 +250,13 @@
 				"outputs": [
 					{
 						"name": "AcceptanceRecord.failed",
-						"type": "number"
+						"type": "number",
+						"description": "Number of recorded checks whose passed flag is false. It matters when reading the record’s failure count; it is recalculated from checks on access.",
+						"examples": [0, 1, 2]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AcceptanceRecord.passed",
@@ -211,11 +264,13 @@
 				"outputs": [
 					{
 						"name": "AcceptanceRecord.passed",
-						"type": "number"
+						"type": "number",
+						"description": "Number of recorded checks minus the failed count. It matters when reading the record’s pass count; it is recalculated from checks on access.",
+						"examples": [0, 1, 2]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -225,17 +280,19 @@
 					{
 						"name": "AcceptanceRecord.constructor.print",
 						"type": "(line: string) => void",
-						"required": false
+						"required": false,
+						"description": "Function that receives the lines emitted by begin and check. It matters when capturing or redirecting output; when omitted, it defaults to console.log."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AcceptanceRecord.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "New AcceptanceRecord instance with empty checks and secrets and an empty current phase. The instance retains the supplied print callback, or console.log when the callback is omitted."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
