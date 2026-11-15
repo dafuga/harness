@@ -31,29 +31,36 @@
 				"name": "PreviewServerService.constructor.port",
 				"type": "number",
 				"required": false,
-				"description": "Loopback port used to reserve the one preview slot.",
-				"examples": [47840]
+				"description": "Loopback port on 127.0.0.1 that reserves the one preview slot, so processes that should share a preview must use the same port; when the bind fails with EADDRINUSE, run() reads the owner record served on this port. Defaults to previewOwnerPort: 47840.",
+				"examples": [47840, 48123]
 			},
 			{
 				"name": "PreviewServerService.run.identity",
 				"type": "string",
 				"required": true,
-				"description": "Fingerprint of the checkout and selected history data.",
-				"examples": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+				"description": "Fingerprint of the checkout and selected history data, published in the owner record that later processes compare exactly, so a different value is rejected instead of reused; that record must stay within 2048 characters. Only the first run() call on an instance uses it, because later calls return the same promise.",
+				"examples": [
+					"9f2c4e7a1b8d3f60c5e2a9d74b1f08e6d3c5a2b9e7f14d80c6a3b5e2f9d17c40",
+					"0a7d3c91e5f24b6a8d0e3f7c9b2a5d1e4f6c8b0a3d9e7f2c5b1a4d8e6f0c3b7d"
+				]
 			},
 			{
 				"name": "PreviewServerService.run.start",
 				"type": "() => Promise<PreviewHandle>",
 				"required": true,
-				"description": "Starts the preview only after this process owns the slot; returns its URL and cleanup function."
+				"description": "Starts the preview only after this process owns the slot, and it must resolve to a handle whose url is exactly http://127.0.0.1:<port>, because reusing processes reject any other form. If it rejects or throws, run() closes this process’s listener and rejects with that same error."
 			}
 		],
 		"outputs": [
 			{
 				"name": "PreviewServerService.run",
 				"type": "Promise<PreviewResult>",
-				"description": "The preview address and whether another process already owned it.",
+				"description": "The preview url and whether it was reused: reused is false when this process bound the slot and started the preview, and true when the url was taken from the process that already owned the slot.",
 				"examples": [
+					{
+						"url": "http://127.0.0.1:5688",
+						"reused": false
+					},
 					{
 						"url": "http://127.0.0.1:5688",
 						"reused": true
@@ -63,10 +70,62 @@
 			{
 				"name": "PreviewServerService.close",
 				"type": "Promise<void>",
-				"description": "Releases only this process’s preview and ownership listener; a reusing process leaves the owner running."
+				"description": "Releases only this process’s preview and ownership listener after any pending run() settles, and a reusing process leaves the owner running; repeated calls return the same promise."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "listen error with a code other than EADDRINUSE",
+				"type": "thrown",
+				"description": "Any error from binding 127.0.0.1 on this port whose code is not EADDRINUSE, such as a permission error or an invalid port; run() rejects with it before start() is called, so no preview starts."
+			},
+			{
+				"name": "Error: Preview ownership port is occupied by another application.",
+				"type": "thrown",
+				"description": "Thrown by previewOwner() when the port answers with a non-2xx status, a body longer than 2048 characters, or a protocol other than harness-preview-v1; run() rejects with it instead of reusing that port."
+			},
+			{
+				"name": "Error: Invalid preview owner address.",
+				"type": "thrown",
+				"description": "Thrown by previewOwner() when the owner record’s url is not null and does not match http://127.0.0.1:<digits>; run() rejects with it instead of reusing that port."
+			},
+			{
+				"name": "Error: A different Harness preview is already running at ${owner.url ?? 'startup'}. Close it before switching checkout or history data.",
+				"type": "thrown",
+				"description": "Thrown by previewOwner() when the owner record’s identity differs from this run’s identity; the message names the owner’s url, or 'startup' while it is still null. run() rejects with it instead of reusing that port."
+			},
+			{
+				"name": "Error: The existing Harness preview is still starting; no duplicate was launched.",
+				"type": "thrown",
+				"description": "Thrown by previewOwner() after 100 attempts in which the owner with the same identity still has a null url, with a 100 ms wait after each attempt. run() rejects with it and starts no preview."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A TypeError from previewOwner() when the request to the occupied port fails to connect, gets a redirect response that redirect: 'error' refuses, or its body cannot be read. A body that parses to the JSON value null also throws a TypeError when its protocol is read; run() rejects with it unchanged."
+			},
+			{
+				"name": "TimeoutError",
+				"type": "thrown",
+				"description": "A DOMException named TimeoutError from previewOwner() when a request to the occupied port, or reading its body, takes longer than 1000 ms. previewOwner() does not retry it, so run() rejects with it unchanged."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "A SyntaxError from JSON.parse in previewOwner() when a 2xx body of at most 2048 characters is not valid JSON. run() rejects with it unchanged."
+			},
+			{
+				"name": "start() rejection",
+				"type": "thrown",
+				"description": "Whatever start() rejects with or throws, passed through unchanged: run() closes this process’s listener, rejects with that same error, and later run() calls on this instance return that same rejection."
+			},
+			{
+				"name": "PreviewHandle.close() rejection",
+				"type": "thrown",
+				"description": "The rejection of the started handle’s close(), passed through unchanged: close() still closes this process’s listener in a finally block, then rejects with that same error."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PreviewServerService.run",
@@ -75,22 +134,29 @@
 						"name": "PreviewServerService.run.identity",
 						"type": "string",
 						"required": true,
-						"description": "Fingerprint of the checkout and selected history data.",
-						"examples": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+						"description": "Fingerprint of the checkout and selected history data, published in the owner record that later processes compare exactly, so a different value is rejected instead of reused; that record must stay within 2048 characters. Only the first run() call on an instance uses it, because later calls return the same promise.",
+						"examples": [
+							"9f2c4e7a1b8d3f60c5e2a9d74b1f08e6d3c5a2b9e7f14d80c6a3b5e2f9d17c40",
+							"0a7d3c91e5f24b6a8d0e3f7c9b2a5d1e4f6c8b0a3d9e7f2c5b1a4d8e6f0c3b7d"
+						]
 					},
 					{
 						"name": "PreviewServerService.run.start",
 						"type": "() => Promise<PreviewHandle>",
 						"required": true,
-						"description": "Starts the preview only after this process owns the slot; returns its URL and cleanup function."
+						"description": "Starts the preview only after this process owns the slot, and it must resolve to a handle whose url is exactly http://127.0.0.1:<port>, because reusing processes reject any other form. If it rejects or throws, run() closes this process’s listener and rejects with that same error."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PreviewServerService.run",
 						"type": "Promise<PreviewResult>",
-						"description": "The preview address and whether another process already owned it.",
+						"description": "The preview url and whether it was reused: reused is false when this process bound the slot and started the preview, and true when the url was taken from the process that already owned the slot.",
 						"examples": [
+							{
+								"url": "http://127.0.0.1:5688",
+								"reused": false
+							},
 							{
 								"url": "http://127.0.0.1:5688",
 								"reused": true
@@ -98,8 +164,54 @@
 						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "listen error with a code other than EADDRINUSE",
+						"type": "thrown",
+						"description": "Any error from binding 127.0.0.1 on this port whose code is not EADDRINUSE, such as a permission error or an invalid port; run() rejects with it before start() is called, so no preview starts."
+					},
+					{
+						"name": "Error: Preview ownership port is occupied by another application.",
+						"type": "thrown",
+						"description": "Thrown by previewOwner() when the port answers with a non-2xx status, a body longer than 2048 characters, or a protocol other than harness-preview-v1; run() rejects with it instead of reusing that port."
+					},
+					{
+						"name": "Error: Invalid preview owner address.",
+						"type": "thrown",
+						"description": "Thrown by previewOwner() when the owner record’s url is not null and does not match http://127.0.0.1:<digits>; run() rejects with it instead of reusing that port."
+					},
+					{
+						"name": "Error: A different Harness preview is already running at ${owner.url ?? 'startup'}. Close it before switching checkout or history data.",
+						"type": "thrown",
+						"description": "Thrown by previewOwner() when the owner record’s identity differs from this run’s identity; the message names the owner’s url, or 'startup' while it is still null. run() rejects with it instead of reusing that port."
+					},
+					{
+						"name": "Error: The existing Harness preview is still starting; no duplicate was launched.",
+						"type": "thrown",
+						"description": "Thrown by previewOwner() after 100 attempts in which the owner with the same identity still has a null url, with a 100 ms wait after each attempt. run() rejects with it and starts no preview."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "A TypeError from previewOwner() when the request to the occupied port fails to connect, gets a redirect response that redirect: 'error' refuses, or its body cannot be read. A body that parses to the JSON value null also throws a TypeError when its protocol is read; run() rejects with it unchanged."
+					},
+					{
+						"name": "TimeoutError",
+						"type": "thrown",
+						"description": "A DOMException named TimeoutError from previewOwner() when a request to the occupied port, or reading its body, takes longer than 1000 ms. previewOwner() does not retry it, so run() rejects with it unchanged."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A SyntaxError from JSON.parse in previewOwner() when a 2xx body of at most 2048 characters is not valid JSON. run() rejects with it unchanged."
+					},
+					{
+						"name": "start() rejection",
+						"type": "thrown",
+						"description": "Whatever start() rejects with or throws, passed through unchanged: run() closes this process’s listener, rejects with that same error, and later run() calls on this instance return that same rejection."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PreviewServerService.close",
@@ -108,11 +220,17 @@
 					{
 						"name": "PreviewServerService.close",
 						"type": "Promise<void>",
-						"description": "Releases only this process’s preview and ownership listener; a reusing process leaves the owner running."
+						"description": "Releases only this process’s preview and ownership listener after any pending run() settles, and a reusing process leaves the owner running; repeated calls return the same promise."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "PreviewHandle.close() rejection",
+						"type": "thrown",
+						"description": "The rejection of the started handle’s close(), passed through unchanged: close() still closes this process’s listener in a finally block, then rejects with that same error."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -123,18 +241,19 @@
 						"name": "PreviewServerService.constructor.port",
 						"type": "number",
 						"required": false,
-						"description": "Loopback port used to reserve the one preview slot.",
-						"examples": [47840]
+						"description": "Loopback port on 127.0.0.1 that reserves the one preview slot, so processes that should share a preview must use the same port; when the bind fails with EADDRINUSE, run() reads the owner record served on this port. Defaults to previewOwnerPort: 47840.",
+						"examples": [47840, 48123]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PreviewServerService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new instance, which holds no server, preview or pending run until run() is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
