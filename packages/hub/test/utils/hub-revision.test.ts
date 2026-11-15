@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import { hubEvidenceRevision } from '../../src/utils/hub-evidence-revision/hubEvidenceRevision';
+import { hubEvidenceRevision } from '../../src/utils/verification-evidence/hub-evidence-revision/hubEvidenceRevision';
 import { evidenceFixture, sourceAt, type EvidenceFixture } from '../support/evidenceFixture';
 import { statusAt } from '../support/evidenceReaders';
 import { clock, page, sha256 } from '../support/evidenceRecords';

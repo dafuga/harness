@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/utils/hub-evidence-revision/hubEvidenceViews.ts",
 			"packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceViews.ts",
 			"packages/hub/src/utils/verification-evidence/hubEvidenceViews.ts"
 		],
-		"symbols": ["hubEvidenceViews", "hubEvidenceViews", "hubEvidenceOrigin", "hubEvidenceViews"]
+		"symbols": ["hubEvidenceViews", "hubEvidenceOrigin", "hubEvidenceViews"]
 	},
 	"contract": {
 		"origin": "declared",
