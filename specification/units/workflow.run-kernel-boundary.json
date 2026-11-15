@@ -15,25 +15,222 @@
 		"symbols": ["boundaryUnit", "kernelBoundary", "BoundaryBenchmark", "BoundaryBenchmark"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "boundaryUnit",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "This fixed service unit identifier is attached to every returned measurement and each capture record. Its value is service.unit-runtime.",
+				"examples": ["service.unit-runtime"]
 			},
 			{
 				"name": "kernelBoundary",
-				"type": "Promise<BoundaryBenchmark>"
+				"type": "Promise<BoundaryBenchmark>",
+				"description": "Runs the deterministic 1,000-node, seed-7 graph-1k workload through the module, wasm, and process runtimes, with three warm-up calls and five rounds of 50 calls per target; it returns three metrics from each target. It resolves only after each target is benchmarked, its capture is recorded, and its runtime closes; failures reject the promise.",
+				"examples": [
+					{
+						"unit": "service.unit-runtime",
+						"workload": "graph-1k",
+						"measurements": [
+							{
+								"unit": "service.unit-runtime",
+								"workload": "graph-1k",
+								"target": "module",
+								"samples": 250,
+								"comparison": {
+									"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 50
+									}
+								},
+								"metric": "latency-floor-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.42,
+								"method": "Fastest of 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing."
+							},
+							{
+								"unit": "service.unit-runtime",
+								"workload": "graph-1k",
+								"target": "module",
+								"samples": 250,
+								"comparison": {
+									"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 50
+									}
+								},
+								"metric": "latency-warm-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.52,
+								"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing."
+							},
+							{
+								"unit": "service.unit-runtime",
+								"workload": "graph-1k",
+								"target": "module",
+								"samples": 250,
+								"comparison": {
+									"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 50
+									}
+								},
+								"metric": "throughput-ops",
+								"unitOfMeasure": "ops/s",
+								"value": 1923.076923076923,
+								"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing."
+							},
+							{
+								"unit": "service.unit-runtime",
+								"workload": "graph-1k",
+								"target": "wasm",
+								"samples": 250,
+								"comparison": {
+									"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 50
+									}
+								},
+								"metric": "latency-floor-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.61,
+								"method": "Fastest of 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing."
+							},
+							{
+								"unit": "service.unit-runtime",
+								"workload": "graph-1k",
+								"target": "wasm",
+								"samples": 250,
+								"comparison": {
+									"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 50
+									}
+								},
+								"metric": "latency-warm-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.8,
+								"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing."
+							},
+							{
+								"unit": "service.unit-runtime",
+								"workload": "graph-1k",
+								"target": "wasm",
+								"samples": 250,
+								"comparison": {
+									"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 50
+									}
+								},
+								"metric": "throughput-ops",
+								"unitOfMeasure": "ops/s",
+								"value": 1250,
+								"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing."
+							},
+							{
+								"unit": "service.unit-runtime",
+								"workload": "graph-1k",
+								"target": "process",
+								"samples": 250,
+								"comparison": {
+									"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 50
+									}
+								},
+								"metric": "latency-floor-ms",
+								"unitOfMeasure": "ms",
+								"value": 1.2,
+								"method": "Fastest of 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing."
+							},
+							{
+								"unit": "service.unit-runtime",
+								"workload": "graph-1k",
+								"target": "process",
+								"samples": 250,
+								"comparison": {
+									"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 50
+									}
+								},
+								"metric": "latency-warm-ms",
+								"unitOfMeasure": "ms",
+								"value": 1.6,
+								"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing."
+							},
+							{
+								"unit": "service.unit-runtime",
+								"workload": "graph-1k",
+								"target": "process",
+								"samples": 250,
+								"comparison": {
+									"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 50
+									}
+								},
+								"metric": "throughput-ops",
+								"unitOfMeasure": "ops/s",
+								"value": 625,
+								"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing."
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when the process target has no native kernel command; the message is “Build the kernel first: bun run build:kernel.”"
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A timed invocation throws this when its runtime response is not ok; the message includes the runtime kind and the response error message."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "kernelBoundary",
@@ -41,11 +238,211 @@
 				"outputs": [
 					{
 						"name": "kernelBoundary",
-						"type": "Promise<BoundaryBenchmark>"
+						"type": "Promise<BoundaryBenchmark>",
+						"description": "Runs the deterministic 1,000-node, seed-7 graph-1k workload through the module, wasm, and process runtimes, with three warm-up calls and five rounds of 50 calls per target; it returns three metrics from each target. It resolves only after each target is benchmarked, its capture is recorded, and its runtime closes; failures reject the promise.",
+						"examples": [
+							{
+								"unit": "service.unit-runtime",
+								"workload": "graph-1k",
+								"measurements": [
+									{
+										"unit": "service.unit-runtime",
+										"workload": "graph-1k",
+										"target": "module",
+										"samples": 250,
+										"comparison": {
+											"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 50
+											}
+										},
+										"metric": "latency-floor-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.42,
+										"method": "Fastest of 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing."
+									},
+									{
+										"unit": "service.unit-runtime",
+										"workload": "graph-1k",
+										"target": "module",
+										"samples": 250,
+										"comparison": {
+											"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 50
+											}
+										},
+										"metric": "latency-warm-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.52,
+										"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing."
+									},
+									{
+										"unit": "service.unit-runtime",
+										"workload": "graph-1k",
+										"target": "module",
+										"samples": 250,
+										"comparison": {
+											"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 50
+											}
+										},
+										"metric": "throughput-ops",
+										"unitOfMeasure": "ops/s",
+										"value": 1923.076923076923,
+										"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing."
+									},
+									{
+										"unit": "service.unit-runtime",
+										"workload": "graph-1k",
+										"target": "wasm",
+										"samples": 250,
+										"comparison": {
+											"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 50
+											}
+										},
+										"metric": "latency-floor-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.61,
+										"method": "Fastest of 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing."
+									},
+									{
+										"unit": "service.unit-runtime",
+										"workload": "graph-1k",
+										"target": "wasm",
+										"samples": 250,
+										"comparison": {
+											"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 50
+											}
+										},
+										"metric": "latency-warm-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.8,
+										"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing."
+									},
+									{
+										"unit": "service.unit-runtime",
+										"workload": "graph-1k",
+										"target": "wasm",
+										"samples": 250,
+										"comparison": {
+											"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 50
+											}
+										},
+										"metric": "throughput-ops",
+										"unitOfMeasure": "ops/s",
+										"value": 1250,
+										"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing."
+									},
+									{
+										"unit": "service.unit-runtime",
+										"workload": "graph-1k",
+										"target": "process",
+										"samples": 250,
+										"comparison": {
+											"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 50
+											}
+										},
+										"metric": "latency-floor-ms",
+										"unitOfMeasure": "ms",
+										"value": 1.2,
+										"method": "Fastest of 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing."
+									},
+									{
+										"unit": "service.unit-runtime",
+										"workload": "graph-1k",
+										"target": "process",
+										"samples": 250,
+										"comparison": {
+											"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 50
+											}
+										},
+										"metric": "latency-warm-ms",
+										"unitOfMeasure": "ms",
+										"value": 1.6,
+										"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing."
+									},
+									{
+										"unit": "service.unit-runtime",
+										"workload": "graph-1k",
+										"target": "process",
+										"samples": 250,
+										"comparison": {
+											"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 50
+											}
+										},
+										"metric": "throughput-ops",
+										"unitOfMeasure": "ops/s",
+										"value": 625,
+										"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing."
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Thrown when the process target has no native kernel command; the message is “Build the kernel first: bun run build:kernel.”"
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A timed invocation throws this when its runtime response is not ok; the message includes the runtime kind and the response error message."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
