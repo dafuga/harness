@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "The optional children prop is a Svelte Snippet that the component destructures out of its props, so it is never spread onto the input element. The component never renders it, so passing it has no effect on the output."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputRadio",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native input element that svelte:element renders with this set to 'input', with every prop except children spread onto it and then type set to 'radio', so any type prop is overridden. The component adds no wrapper element around it and renders no child content."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
