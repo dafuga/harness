@@ -18,15 +18,30 @@
 			{
 				"name": "BrowserApi",
 				"type": "BrowserApi",
-				"description": "JSON reads and writes, bounded media reads with MIME metadata, and byte reads."
+				"description": "The request client for reads and writes, with four Promise-returning methods that each take a string path: get<T> and send<T> resolve to a caller-chosen T, media resolves to { bytes: Uint8Array; mediaType: string }, and bytes resolves to a Uint8Array. send accepts only 'POST' or 'DELETE' with an optional unknown body, query values may be string, null or undefined, and these declarations do not check responses against T."
 			},
 			{
 				"name": "ApiFailure",
 				"type": "ApiFailure",
-				"description": "A failed request with an HTTP status and public error code."
+				"description": "An Error subtype for a failed API request, carrying a numeric status and a string code that a caller can inspect when a request fails. Nothing in these files constructs or throws an ApiFailure, and the types accept any number for status and any string for code.",
+				"examples": [
+					{
+						"name": "Error",
+						"message": "Project not found",
+						"status": 404,
+						"code": "project_not_found"
+					},
+					{
+						"name": "Error",
+						"message": "Internal server error",
+						"status": 500,
+						"code": "internal_error"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
