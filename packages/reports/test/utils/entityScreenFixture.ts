@@ -50,7 +50,6 @@ export function assertVideoProjection(page: HarnessUnit, tip: Revision) {
 		}
 	});
 	expect(catalogShot(video)?.mimeType).not.toBe('video/mp4');
-	assertVideoSlots(video);
 	const inheritedVideo = structuredClone(video);
 	const inheritedClip = inheritedVideo.after.captures.at(-1)!;
 	inheritedClip.current = false;
@@ -70,9 +69,10 @@ export function assertVideoProjection(page: HarnessUnit, tip: Revision) {
 			freshness: 'inherited'
 		}
 	});
+	return video;
 }
 
-function assertVideoSlots(evidence: ExplorerEvidence) {
+export function assertVideoSlots(evidence: ExplorerEvidence) {
 	const several = structuredClone(evidence),
 		first = several.after.captures.at(-1)!;
 	several.after.captures.push({
