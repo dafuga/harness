@@ -26,54 +26,235 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectWorkRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The directory the repository reads from: checkouts(), changes() and loops(commit) run Git in it, and loops() without a commit reads specification/loops beneath it. The constructor does not check it; outside Git, checkouts() returns this directory alone.",
+				"examples": ["/home/dev/projects/harness-app", "/home/dev/src/orders-api"]
 			},
 			{
 				"name": "ProjectWorkRepository.changes.commits",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "The commit ids to read, each passed to git log as a revision (a full SHA, a short SHA or a ref). An empty array returns an empty Map without running Git, and one revision that Git cannot resolve makes the whole call reject.",
+				"examples": [
+					["9b1d4e72a0c53f86d1e2b7a94c0f3e58d6a21b47"],
+					["0d7f3a9c2e51b684f0a7d3c95e2b1f80a6d4c37e", "9b1d4e72a0c53f86d1e2b7a94c0f3e58d6a21b47"]
+				]
 			},
 			{
 				"name": "ProjectWorkRepository.uncommitted.checkout",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The checkout directory to read: git status runs in it, and the path is not checked against checkouts(). A directory with no Git repository around it gives an empty result, because the exit code is not read, while a directory that cannot be started (such as a missing path) makes the call reject.",
+				"examples": ["/home/dev/projects/harness-app", "/home/dev/projects/harness-app-fix"]
 			},
 			{
 				"name": "ProjectWorkRepository.uncommitted.limit",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The most changed paths to return, in path order; the value is used unchecked as the end index of slice, so 0 returns none and a value at or above the number of changes returns all of them. truncated is true when more changes exist than this value.",
+				"examples": [50, 200, 1000]
 			},
 			{
 				"name": "ProjectWorkRepository.loops.commit",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "The commit to read loops from: Git lists every loop.json below specification/loops at that commit, at any depth, and shows each one. When it is omitted or empty, the loops are read from the working tree's specification/loops/<name>/loop.json files and Git is not run.",
+				"examples": [
+					"9b1d4e72a0c53f86d1e2b7a94c0f3e58d6a21b47",
+					"0d7f3a9c2e51b684f0a7d3c95e2b1f80a6d4c37e"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectWorkRepository.checkouts",
-				"type": "Promise<Checkout[]>"
+				"type": "Promise<Checkout[]>",
+				"description": "The checkouts that git worktree list reports, in Git's order, with the first one as the primary checkout (primary true); bare and prunable worktrees are left out, and branch is null when HEAD is detached. Outside Git the list holds only the root directory, with branch and head null.",
+				"examples": [
+					[
+						{
+							"path": "/home/dev/projects/harness-app",
+							"branch": "main",
+							"head": "5c1e9d0a7b3f24e8d6c1a09b7e2f4d8c3a6b1e05",
+							"primary": true
+						},
+						{
+							"path": "/home/dev/projects/harness-app-fix",
+							"branch": "fix/loop-evidence",
+							"head": "a84f2c6e1d9b07f35c2e8a41d6b9f0c7e3a25d18",
+							"primary": false
+						}
+					],
+					[
+						{
+							"path": "/home/dev/projects/harness-app",
+							"branch": "main",
+							"head": "5c1e9d0a7b3f24e8d6c1a09b7e2f4d8c3a6b1e05",
+							"primary": true
+						},
+						{
+							"path": "/home/dev/projects/harness-app-review",
+							"branch": null,
+							"head": "e27b40d9c1a685f3b0d4e92c7a1f6b58d0c3e94a",
+							"primary": false
+						}
+					],
+					[
+						{
+							"path": "/home/dev/projects/harness-app",
+							"branch": null,
+							"head": null,
+							"primary": true
+						}
+					]
+				]
 			},
 			{
 				"name": "ProjectWorkRepository.changes",
-				"type": "Promise<Map<string, PathChange[]>>"
+				"type": "Promise<Map<string, PathChange[]>>",
+				"description": "For each commit, the paths it changed against its first parent, each with status added, removed or modified; a commit with no changed paths maps to an empty array. The Map is keyed by the full commit id that Git prints rather than by the revision given, and it keeps the order of the input."
 			},
 			{
 				"name": "ProjectWorkRepository.uncommitted",
-				"type": "Promise<{ changes: PathChange[]; truncated: boolean }>"
+				"type": "Promise<{ changes: PathChange[]; truncated: boolean }>",
+				"description": "The changed paths of the checkout that are not committed, sorted by path and cut to the limit, each with status untracked, conflicted, removed, renamed, added or modified; paths under .cache/ (Harness's own cache) are not counted as changes. truncated is true when more paths were found than the limit allows.",
+				"examples": [
+					{
+						"changes": [
+							{
+								"path": "specification/loops/evidence-grid/loop.json",
+								"status": "modified"
+							},
+							{
+								"path": "src/reports/EvidenceGrid.tsx",
+								"status": "untracked"
+							}
+						],
+						"truncated": false
+					},
+					{
+						"changes": [
+							{
+								"path": "src/reports/EvidenceGrid.tsx",
+								"status": "untracked"
+							}
+						],
+						"truncated": true
+					},
+					{
+						"changes": [],
+						"truncated": false
+					}
+				]
 			},
 			{
 				"name": "ProjectWorkRepository.loops",
-				"type": "Promise<LoopState[]>"
+				"type": "Promise<LoopState[]>",
+				"description": "Each loop.json the query finds, parsed as JSON and cast to LoopState without a shape check, so stored fields come back as written; a file that is missing or is not valid JSON is skipped. Without a commit the loops follow the sorted names of the entries under specification/loops, and with a commit they follow the order Git lists the files in.",
+				"examples": [
+					[
+						{
+							"name": "evidence-grid",
+							"goal": "Render the evidence grid on the reports page",
+							"createdAt": "2026-11-09T10:12:44.067Z",
+							"updatedAt": "2026-11-10T16:03:19.512Z",
+							"agentModel": "claude-sonnet-5-5",
+							"completion": {
+								"version": 1,
+								"kind": "coding"
+							},
+							"steps": [
+								{
+									"id": "read-contract",
+									"title": "Read the report contract",
+									"status": "complete",
+									"completedAt": "2026-11-09T11:40:02.311Z",
+									"evidence": "Grid columns match the report schema."
+								},
+								{
+									"id": "render-grid",
+									"title": "Render the grid",
+									"status": "pending"
+								}
+							]
+						},
+						{
+							"name": "invoice-total-rounding",
+							"goal": "Stop invoice totals drifting by a cent",
+							"createdAt": "2026-11-12T09:01:37.448Z",
+							"updatedAt": "2026-11-12T09:01:37.448Z",
+							"template": "bug-fix",
+							"templateLineage": ["bug-fix"],
+							"enforceOrder": true,
+							"regressionCommits": 1,
+							"steps": [
+								{
+									"id": "reproduce",
+									"title": "Reproduce the drift with a failing test",
+									"status": "pending"
+								},
+								{
+									"id": "fix-rounding",
+									"title": "Round each line before summing",
+									"status": "pending"
+								}
+							]
+						}
+					],
+					[
+						{
+							"name": "payment-retries",
+							"goal": "Plan retry behavior for failed card payments",
+							"createdAt": "2026-10-21T08:55:10.902Z",
+							"updatedAt": "2026-10-28T13:17:46.240Z",
+							"completion": {
+								"version": 1,
+								"kind": "planning"
+							},
+							"steps": [
+								{
+									"id": "survey-providers",
+									"title": "Survey the payment providers",
+									"status": "complete",
+									"completedAt": "2026-10-23T09:30:00.000Z",
+									"evidence": "Retry limits noted for each provider."
+								}
+							],
+							"closed": {
+								"status": "abandoned",
+								"reason": "Superseded by the provider rewrite",
+								"closedAt": "2026-10-28T13:17:46.240Z"
+							}
+						}
+					],
+					[]
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "BoundedCommandFailure",
+				"type": "thrown",
+				"description": "Rejects a Git query whose command cannot run to completion: it cannot start, it exceeds its deadline (6 hours for worktree list, 30 minutes for log, status, ls-tree and show), or its stdout and stderr together exceed 128 MiB."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by changes() when git log exits with a non-zero code, for example for a revision Git cannot resolve; the message holds the git arguments and Git's stderr."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by loops() without a commit when specification/loops exists under root but cannot be read as a directory; the Node.js error's code, such as ENOTDIR or EACCES, gives the cause."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProjectWorkRepository.checkouts",
@@ -81,11 +262,56 @@
 				"outputs": [
 					{
 						"name": "ProjectWorkRepository.checkouts",
-						"type": "Promise<Checkout[]>"
+						"type": "Promise<Checkout[]>",
+						"description": "The checkouts that git worktree list reports, in Git's order, with the first one as the primary checkout (primary true); bare and prunable worktrees are left out, and branch is null when HEAD is detached. Outside Git the list holds only the root directory, with branch and head null.",
+						"examples": [
+							[
+								{
+									"path": "/home/dev/projects/harness-app",
+									"branch": "main",
+									"head": "5c1e9d0a7b3f24e8d6c1a09b7e2f4d8c3a6b1e05",
+									"primary": true
+								},
+								{
+									"path": "/home/dev/projects/harness-app-fix",
+									"branch": "fix/loop-evidence",
+									"head": "a84f2c6e1d9b07f35c2e8a41d6b9f0c7e3a25d18",
+									"primary": false
+								}
+							],
+							[
+								{
+									"path": "/home/dev/projects/harness-app",
+									"branch": "main",
+									"head": "5c1e9d0a7b3f24e8d6c1a09b7e2f4d8c3a6b1e05",
+									"primary": true
+								},
+								{
+									"path": "/home/dev/projects/harness-app-review",
+									"branch": null,
+									"head": "e27b40d9c1a685f3b0d4e92c7a1f6b58d0c3e94a",
+									"primary": false
+								}
+							],
+							[
+								{
+									"path": "/home/dev/projects/harness-app",
+									"branch": null,
+									"head": null,
+									"primary": true
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejects when git worktree list cannot run to completion: it cannot start, it exceeds its 6-hour deadline, or its stdout and stderr together exceed 128 MiB. A non-zero exit is not a rejection here; the root directory alone is returned."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectWorkRepository.changes",
@@ -93,17 +319,37 @@
 					{
 						"name": "ProjectWorkRepository.changes.commits",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "The commit ids to read, each passed to git log as a revision (a full SHA, a short SHA or a ref). An empty array returns an empty Map without running Git, and one revision that Git cannot resolve makes the whole call reject.",
+						"examples": [
+							["9b1d4e72a0c53f86d1e2b7a94c0f3e58d6a21b47"],
+							[
+								"0d7f3a9c2e51b684f0a7d3c95e2b1f80a6d4c37e",
+								"9b1d4e72a0c53f86d1e2b7a94c0f3e58d6a21b47"
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectWorkRepository.changes",
-						"type": "Promise<Map<string, PathChange[]>>"
+						"type": "Promise<Map<string, PathChange[]>>",
+						"description": "For each commit, the paths it changed against its first parent, each with status added, removed or modified; a commit with no changed paths maps to an empty array. The Map is keyed by the full commit id that Git prints rather than by the revision given, and it keeps the order of the input."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejects when git log cannot run to completion: it cannot start, it exceeds its 30-minute deadline, or its stdout and stderr together exceed 128 MiB."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when git log exits with a non-zero code, for example for a revision Git cannot resolve; the message holds the git arguments and Git's stderr."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectWorkRepository.uncommitted",
@@ -111,22 +357,61 @@
 					{
 						"name": "ProjectWorkRepository.uncommitted.checkout",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The checkout directory to read: git status runs in it, and the path is not checked against checkouts(). A directory with no Git repository around it gives an empty result, because the exit code is not read, while a directory that cannot be started (such as a missing path) makes the call reject.",
+						"examples": ["/home/dev/projects/harness-app", "/home/dev/projects/harness-app-fix"]
 					},
 					{
 						"name": "ProjectWorkRepository.uncommitted.limit",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The most changed paths to return, in path order; the value is used unchecked as the end index of slice, so 0 returns none and a value at or above the number of changes returns all of them. truncated is true when more changes exist than this value.",
+						"examples": [50, 200, 1000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectWorkRepository.uncommitted",
-						"type": "Promise<{ changes: PathChange[]; truncated: boolean }>"
+						"type": "Promise<{ changes: PathChange[]; truncated: boolean }>",
+						"description": "The changed paths of the checkout that are not committed, sorted by path and cut to the limit, each with status untracked, conflicted, removed, renamed, added or modified; paths under .cache/ (Harness's own cache) are not counted as changes. truncated is true when more paths were found than the limit allows.",
+						"examples": [
+							{
+								"changes": [
+									{
+										"path": "specification/loops/evidence-grid/loop.json",
+										"status": "modified"
+									},
+									{
+										"path": "src/reports/EvidenceGrid.tsx",
+										"status": "untracked"
+									}
+								],
+								"truncated": false
+							},
+							{
+								"changes": [
+									{
+										"path": "src/reports/EvidenceGrid.tsx",
+										"status": "untracked"
+									}
+								],
+								"truncated": true
+							},
+							{
+								"changes": [],
+								"truncated": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "Rejects when git status cannot run to completion: it cannot start, it exceeds its 30-minute deadline, or its stdout and stderr together exceed 128 MiB. A non-zero exit is not checked, so it does not reject."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectWorkRepository.loops",
@@ -134,17 +419,113 @@
 					{
 						"name": "ProjectWorkRepository.loops.commit",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "The commit to read loops from: Git lists every loop.json below specification/loops at that commit, at any depth, and shows each one. When it is omitted or empty, the loops are read from the working tree's specification/loops/<name>/loop.json files and Git is not run.",
+						"examples": [
+							"9b1d4e72a0c53f86d1e2b7a94c0f3e58d6a21b47",
+							"0d7f3a9c2e51b684f0a7d3c95e2b1f80a6d4c37e"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectWorkRepository.loops",
-						"type": "Promise<LoopState[]>"
+						"type": "Promise<LoopState[]>",
+						"description": "Each loop.json the query finds, parsed as JSON and cast to LoopState without a shape check, so stored fields come back as written; a file that is missing or is not valid JSON is skipped. Without a commit the loops follow the sorted names of the entries under specification/loops, and with a commit they follow the order Git lists the files in.",
+						"examples": [
+							[
+								{
+									"name": "evidence-grid",
+									"goal": "Render the evidence grid on the reports page",
+									"createdAt": "2026-11-09T10:12:44.067Z",
+									"updatedAt": "2026-11-10T16:03:19.512Z",
+									"agentModel": "claude-sonnet-5-5",
+									"completion": {
+										"version": 1,
+										"kind": "coding"
+									},
+									"steps": [
+										{
+											"id": "read-contract",
+											"title": "Read the report contract",
+											"status": "complete",
+											"completedAt": "2026-11-09T11:40:02.311Z",
+											"evidence": "Grid columns match the report schema."
+										},
+										{
+											"id": "render-grid",
+											"title": "Render the grid",
+											"status": "pending"
+										}
+									]
+								},
+								{
+									"name": "invoice-total-rounding",
+									"goal": "Stop invoice totals drifting by a cent",
+									"createdAt": "2026-11-12T09:01:37.448Z",
+									"updatedAt": "2026-11-12T09:01:37.448Z",
+									"template": "bug-fix",
+									"templateLineage": ["bug-fix"],
+									"enforceOrder": true,
+									"regressionCommits": 1,
+									"steps": [
+										{
+											"id": "reproduce",
+											"title": "Reproduce the drift with a failing test",
+											"status": "pending"
+										},
+										{
+											"id": "fix-rounding",
+											"title": "Round each line before summing",
+											"status": "pending"
+										}
+									]
+								}
+							],
+							[
+								{
+									"name": "payment-retries",
+									"goal": "Plan retry behavior for failed card payments",
+									"createdAt": "2026-10-21T08:55:10.902Z",
+									"updatedAt": "2026-10-28T13:17:46.240Z",
+									"completion": {
+										"version": 1,
+										"kind": "planning"
+									},
+									"steps": [
+										{
+											"id": "survey-providers",
+											"title": "Survey the payment providers",
+											"status": "complete",
+											"completedAt": "2026-10-23T09:30:00.000Z",
+											"evidence": "Retry limits noted for each provider."
+										}
+									],
+									"closed": {
+										"status": "abandoned",
+										"reason": "Superseded by the provider rewrite",
+										"closedAt": "2026-10-28T13:17:46.240Z"
+									}
+								}
+							],
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "BoundedCommandFailure",
+						"type": "thrown",
+						"description": "With a commit, rejects when git ls-tree or git show cannot run to completion: it cannot start, it exceeds its 30-minute deadline, or its stdout and stderr together exceed 128 MiB. A non-zero exit from either does not reject; that listing or file is skipped."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by loops() without a commit when specification/loops exists under root but cannot be read as a directory; the Node.js error's code, such as ENOTDIR or EACCES, gives the cause."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -154,17 +535,20 @@
 					{
 						"name": "ProjectWorkRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The directory the repository reads from: checkouts(), changes() and loops(commit) run Git in it, and loops() without a commit reads specification/loops beneath it. The constructor does not check it; outside Git, checkouts() returns this directory alone.",
+						"examples": ["/home/dev/projects/harness-app", "/home/dev/src/orders-api"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectWorkRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new ProjectWorkRepository, which holds a GitAdapter for root and runs no command until one of its queries is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
