@@ -21,23 +21,24 @@
 				"name": "hostRuntime.state",
 				"type": "DurableObjectState",
 				"required": true,
-				"description": "Durable Object identity, storage and socket state."
+				"description": "Durable Object state passed to the factory to create storage and socket adapters and establish this object’s identity. The ownership predicate compares state.id; the factory does not invoke storage or socket operations."
 			},
 			{
 				"name": "hostRuntime.env",
 				"type": "RelayEnv",
 				"required": true,
-				"description": "Relay environment whose host namespace determines whether a requested host belongs to this object."
+				"description": "Relay environment used by the ownership predicate to resolve a host ID through REMOTE_HOSTS.idFromName(hostId) and compare it with this object’s ID. The factory reads no other environment binding."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostRuntime",
 				"type": "HostRuntime",
-				"description": "Runtime exposing HTTP controller, frame service and pairing-offer service, sharing storage, sockets, host link, rate limiter and revocation dependencies. The ownership predicate compares the namespace-derived host identity with the object identity."
+				"description": "The assembled runtime exposes http, frames, and offers, backed by the constructed host controllers, frame service, and pairing-offer service. The factory wires these services without executing a request, frame, or offer operation."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "hostRuntime",
@@ -46,24 +47,24 @@
 						"name": "hostRuntime.state",
 						"type": "DurableObjectState",
 						"required": true,
-						"description": "Durable Object identity, storage and socket state."
+						"description": "Durable Object state passed to the factory to create storage and socket adapters and establish this object’s identity. The ownership predicate compares state.id; the factory does not invoke storage or socket operations."
 					},
 					{
 						"name": "hostRuntime.env",
 						"type": "RelayEnv",
 						"required": true,
-						"description": "Relay environment whose host namespace determines whether a requested host belongs to this object."
+						"description": "Relay environment used by the ownership predicate to resolve a host ID through REMOTE_HOSTS.idFromName(hostId) and compare it with this object’s ID. The factory reads no other environment binding."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostRuntime",
 						"type": "HostRuntime",
-						"description": "Runtime exposing HTTP controller, frame service and pairing-offer service, sharing storage, sockets, host link, rate limiter and revocation dependencies. The ownership predicate compares the namespace-derived host identity with the object identity."
+						"description": "The assembled runtime exposes http, frames, and offers, backed by the constructed host controllers, frame service, and pairing-offer service. The factory wires these services without executing a request, frame, or offer operation."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
