@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native optgroup element; native HTML content rules still apply."
+				"description": "Optional Svelte snippet whose markup renders inside the optgroup element; it is called with no arguments only when it is truthy, so omitting it leaves the optgroup without content. The component does not inspect or filter that markup, so the HTML content model of the optgroup element governs what it renders."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlOptgroup",
 				"type": "markup",
-				"description": "The actual native optgroup element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native optgroup element itself, with every prop other than children spread onto it and the children snippet rendered inside it, and no wrapper element around it. It is always rendered, even when no props or children are passed."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
