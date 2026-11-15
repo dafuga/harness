@@ -33,17 +33,25 @@
 				"name": "NativeApproval.handoffId",
 				"type": "string",
 				"required": true,
-				"description": "Required identifier used to read the native request and approve it. Loading occurs on mount; prop changes alone do not reload."
+				"description": "Identifies the native request that a Harness device started; it is passed unchanged to the native request read on mount and to each approval submit. This component neither trims nor validates it, and changing it later does not re-read the request, though the next approval submit uses the new value.",
+				"examples": ["9kQ2zTx7LpRw4mVb", "hA8sD2fG6jK1pQ5r", "Zc3vN7bM1xW5lE8o"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "NativeApproval",
 				"type": "markup",
-				"description": "Names the account and requested projects, explains role-limited viewing, comments and agent changes, and accepts a device code in a POST body. Never puts the code or credential in a link."
+				"description": "Renders one section for the approval page: a notice to open it in its own tab when framed, a reading line while the request loads, an expired or already-approved message, an Approved confirmation after a successful approval, or otherwise the pending form. The pending form names the requested scope and the session actor's email, explains that project roles limit access (readers view, commenters also comment, writers can ask agents to make changes), and sends the typed code, trimmed and upper-cased, in a request body, never as part of an address."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "nativeScope rejection",
+				"type": "thrown",
+				"description": "Rejects the promise returned by the onMount callback with the value of a failed nativeScope(null, projects) call in its catch branch, because that await is outside any try block and nothing in this component catches it. Failures of nativeRequest, nativeScope(asked.resource, projects) and nativeApprove are caught and shown as text in the form alert, so this component does not throw them."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
