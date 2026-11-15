@@ -18,36 +18,86 @@
 				"name": "requirementLabel.field",
 				"type": "ContractField",
 				"required": true,
-				"description": "The contract field."
+				"description": "The field record passed to requirementLabel. Its requiredness is reported only when its required member is exactly true or false.",
+				"examples": [
+					{
+						"name": "timeoutMs",
+						"type": "number",
+						"required": true,
+						"source": "illustrative",
+						"examples": []
+					},
+					{
+						"name": "theme",
+						"type": "string",
+						"required": false,
+						"source": "illustrative",
+						"examples": []
+					},
+					{
+						"name": "label",
+						"type": "string",
+						"source": "illustrative",
+						"examples": []
+					}
+				]
 			},
 			{
 				"name": "defaultText.field",
 				"type": "ContractField",
 				"required": true,
-				"description": "The contract field."
+				"description": "The field record whose own default property, if present, is converted to source text. A missing own default returns null; present values are passed to JSON.stringify and then String if JSON.stringify is nullish.",
+				"examples": [
+					{
+						"name": "theme",
+						"type": "string",
+						"default": "system",
+						"source": "illustrative",
+						"examples": []
+					},
+					{
+						"name": "timeoutMs",
+						"type": "number",
+						"default": 0,
+						"source": "illustrative",
+						"examples": []
+					},
+					{
+						"name": "description",
+						"type": "string",
+						"source": "illustrative",
+						"examples": []
+					}
+				]
 			},
 			{
 				"name": "nameWords.name",
 				"type": "string",
 				"required": true,
-				"description": "A dotted field name."
+				"description": "The string is split at each literal period, preserving empty segments. No validation or trimming is performed.",
+				"examples": ["data.displayName"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "requirementLabel",
 				"type": "string",
-				"description": "Required, Optional, or that requiredness is not recorded."
+				"description": "Returns Required when required is exactly true, Optional when it is exactly false, and Requiredness not recorded for every other value.",
+				"examples": ["Required", "Optional", "Requiredness not recorded"]
 			},
 			{
 				"name": "defaultText",
 				"type": "string | null",
-				"description": "The default as JSON text (undefined as the word), or null when the field declares none."
+				"description": "An own default property is converted with JSON.stringify, falling back to String(default) when JSON.stringify returns nullish. It returns null when default is not an own property, and serialization errors are not caught.",
+				"examples": ["\"system\"", "0", null]
 			},
 			{
 				"name": "nameWords",
 				"type": "string[]",
-				"description": "The words of the name between dots."
+				"description": "The substrings from name.split(\".\"), preserving empty segments and all characters other than the split periods. A string with no periods produces a one-element array.",
+				"examples": [
+					["data", "displayName"]
+				]
 			}
 		],
 		"errors": [],
@@ -60,18 +110,41 @@
 						"name": "requirementLabel.field",
 						"type": "ContractField",
 						"required": true,
-						"description": "The contract field."
+						"description": "The field record passed to requirementLabel. Its requiredness is reported only when its required member is exactly true or false.",
+						"examples": [
+							{
+								"name": "timeoutMs",
+								"type": "number",
+								"required": true,
+								"source": "illustrative",
+								"examples": []
+							},
+							{
+								"name": "theme",
+								"type": "string",
+								"required": false,
+								"source": "illustrative",
+								"examples": []
+							},
+							{
+								"name": "label",
+								"type": "string",
+								"source": "illustrative",
+								"examples": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "requirementLabel",
 						"type": "string",
-						"description": "Required, Optional, or that requiredness is not recorded."
+						"description": "Returns Required when required is exactly true, Optional when it is exactly false, and Requiredness not recorded for every other value.",
+						"examples": ["Required", "Optional", "Requiredness not recorded"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "defaultText",
@@ -80,14 +153,37 @@
 						"name": "defaultText.field",
 						"type": "ContractField",
 						"required": true,
-						"description": "The contract field."
+						"description": "The field record whose own default property, if present, is converted to source text. A missing own default returns null; present values are passed to JSON.stringify and then String if JSON.stringify is nullish.",
+						"examples": [
+							{
+								"name": "theme",
+								"type": "string",
+								"default": "system",
+								"source": "illustrative",
+								"examples": []
+							},
+							{
+								"name": "timeoutMs",
+								"type": "number",
+								"default": 0,
+								"source": "illustrative",
+								"examples": []
+							},
+							{
+								"name": "description",
+								"type": "string",
+								"source": "illustrative",
+								"examples": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "defaultText",
 						"type": "string | null",
-						"description": "The default as JSON text (undefined as the word), or null when the field declares none."
+						"description": "An own default property is converted with JSON.stringify, falling back to String(default) when JSON.stringify returns nullish. It returns null when default is not an own property, and serialization errors are not caught.",
+						"examples": ["\"system\"", "0", null]
 					}
 				],
 				"errors": [],
@@ -100,14 +196,18 @@
 						"name": "nameWords.name",
 						"type": "string",
 						"required": true,
-						"description": "A dotted field name."
+						"description": "The string is split at each literal period, preserving empty segments. No validation or trimming is performed.",
+						"examples": ["data.displayName"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "nameWords",
 						"type": "string[]",
-						"description": "The words of the name between dots."
+						"description": "The substrings from name.split(\".\"), preserving empty segments and all characters other than the split periods. A string with no periods produces a one-element array.",
+						"examples": [
+							["data", "displayName"]
+						]
 					}
 				],
 				"errors": [],
