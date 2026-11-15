@@ -3,7 +3,7 @@ import { written } from '../explorerRegistryStates';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import type { HarnessScenario, HarnessUnit } from '../../src/models/Harness.types';
+import type { HarnessScenario, HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import { explorerRelations } from '../../src/utils/explorer-ui/explorerRelations';
 import { scenarioFor } from '../../src/utils/explorerState';
 import { revision } from '../explorerFixture';

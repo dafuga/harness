@@ -4,8 +4,8 @@ import type { ExplorerBehavior } from '../../../models/explorer-ui/Explorer.type
 import type { ExplorerScope } from '../../../models/explorer-ui/Explorer.types';
 import type { ExplorerEntity } from '../../../models/explorer-ui/Explorer.types';
 import type { ExplorerLocation } from '../../../models/explorer-ui/Explorer.types';
-import type { HarnessIndex } from '../../../models/Harness.types';
-import type { HarnessRevision } from '../../../models/Harness.types';
+import type { HarnessIndex } from '../../../models/explorer-ui/Harness.types';
+import type { HarnessRevision } from '../../../models/explorer-ui/Harness.types';
 import type { EntityLens } from '../../../utils/explorer-ui/entityLens';
 
 export type ConsoleAnswer = { evidence: ExplorerEvidence; behavior: ExplorerBehavior };

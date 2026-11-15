@@ -1,5 +1,5 @@
 import { modelDefinition } from '../../../../test/entityClassFixtures';
-import type { HarnessUnit } from '../../../../src/models/Harness.types';
+import type { HarnessUnit } from '../../../../src/models/explorer-ui/Harness.types';
 import { ids, units } from '../../../../test/entityUnits';
 /** Additional synthetic declarations opened by the Layouts, Models and Types routes. */
 export const routeIds = {

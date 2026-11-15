@@ -1,3 +1,3 @@
-import type { HarnessRecord } from '../../src/models/Harness.types';
+import type { HarnessRecord } from '../../src/models/explorer-ui/Harness.types';
 
 export type Scenario = HarnessRecord['scenarios'][number];

@@ -5,7 +5,7 @@ import type {
 	HarnessRecord,
 	HarnessRevision,
 	HarnessUnit
-} from '../src/models/Harness.types';
+} from '../src/models/explorer-ui/Harness.types';
 import { record } from './entityFixture';
 import { capture, commits, ids, units } from './entityUnits';
 import { categorySources, projectPageSources } from './entityPreviewGroups';

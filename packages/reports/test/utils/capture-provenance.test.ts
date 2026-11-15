@@ -1,7 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import type { Scenario } from './capture-provenance.test.types';
 import { expect, test } from 'vitest';
-import type { HarnessCapture, HarnessRecord } from '../../src/models/Harness.types';
+import type { HarnessCapture, HarnessRecord } from '../../src/models/explorer-ui/Harness.types';
 import { harnessEvidence } from '../../src/utils/harnessEvidence';
 import { captureProvenance, scenarioOrigin } from '../../src/utils/reports-media/captureProvenance';
 

@@ -1,5 +1,5 @@
 import type { ExplorerScope } from '../src/models/explorer-ui/Explorer.types';
-import type { HarnessRevision } from '../src/models/Harness.types';
+import type { HarnessRevision } from '../src/models/explorer-ui/Harness.types';
 
 export interface View {
 	scope: ExplorerScope;

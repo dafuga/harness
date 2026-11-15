@@ -1,4 +1,4 @@
-import type { HarnessUnit } from '../src/models/Harness.types';
+import type { HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 import { commits } from './entityUnits';
 
 /** Synthetic model declarations let normal model detail coverage distinguish methods and storage. */

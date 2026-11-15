@@ -1,5 +1,5 @@
 // @harness-uid u_xjxqzbfms6
-import type { HarnessRevision } from '$reports/models/Harness.types';
+import type { HarnessRevision } from '$reports/models/explorer-ui/Harness.types';
 
 export type Impact = NonNullable<HarnessRevision['sourceImpact']>;
 

@@ -1,4 +1,4 @@
-import type { HarnessCapture } from '../src/models/Harness.types';
+import type { HarnessCapture } from '../src/models/explorer-ui/Harness.types';
 import type { BehaviorCell } from '../src/utils/entityBehavior';
 import { artifactBehavior } from '../src/utils/explorer-reading/explorerArtifact';
 

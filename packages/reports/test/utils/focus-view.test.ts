@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { HarnessUnit } from '../../src/models/Harness.types';
+import type { HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import {
 	harnessLayout,
 	mapColumns

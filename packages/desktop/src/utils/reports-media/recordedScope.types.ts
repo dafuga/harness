@@ -1,5 +1,5 @@
 // @harness-uid u_2rustlmo6g
-import type { HarnessRevisionSummary } from '$reports/models/Harness.types';
+import type { HarnessRevisionSummary } from '$reports/models/explorer-ui/Harness.types';
 import type { EntityEvidenceQuery } from '../../models/verification-evidence/DesktopEvidence.types';
 
 /** What a backend knows of the commit an evidence read names, before any evidence is read. */

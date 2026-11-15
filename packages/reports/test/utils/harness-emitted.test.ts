@@ -1,5 +1,9 @@
 import { expect, test } from 'vitest';
-import type { HarnessIndex, HarnessRecord, HarnessUnit } from '../../src/models/Harness.types';
+import type {
+	HarnessIndex,
+	HarnessRecord,
+	HarnessUnit
+} from '../../src/models/explorer-ui/Harness.types';
 import { emittedChange } from '../../src/components/explorer-ui/harness-compare/harnessEmitted';
 import { harnessEmitted } from '../../src/utils/harnessEmitted';
 import { harnessEmittedGrowth } from '../../src/components/explorer-ui/harness-growth/harnessEmittedGrowth';

@@ -1,4 +1,4 @@
-import type { HarnessUnit } from '../../../reports/src/models/Harness.types';
+import type { HarnessUnit } from '../../../reports/src/models/explorer-ui/Harness.types';
 import type { Thumbnail } from '../../src/models/development-tooling/Desktop.types';
 import type { UnitDocumentation } from '../../../../src/utils/unit-documentation/unitDocumentation';
 import { commits, ids } from '../../../reports/test/entityUnits';

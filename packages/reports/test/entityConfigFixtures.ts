@@ -1,4 +1,4 @@
-import type { HarnessUnit } from '../src/models/Harness.types';
+import type { HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 import { commits } from './entityUnits';
 
 /** Multiline source expressions are preserved verbatim, including markup-like string content. */

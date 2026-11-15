@@ -1,5 +1,9 @@
 import type { RecordScenario } from './entityFixture.types';
-import type { HarnessIndex, HarnessRecord, HarnessRevision } from '../src/models/Harness.types';
+import type {
+	HarnessIndex,
+	HarnessRecord,
+	HarnessRevision
+} from '../src/models/explorer-ui/Harness.types';
 import { capture, commits, ids, scenarios, units, type CaptureSeed } from './entityUnits';
 import { configSnapshot } from './entityConfigFixtures';
 

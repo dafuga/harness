@@ -1,4 +1,4 @@
-import type { HarnessUnit } from '../src/models/Harness.types';
+import type { HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 import { ids } from './entityUnits';
 
 const returnNames: Record<string, string> = {

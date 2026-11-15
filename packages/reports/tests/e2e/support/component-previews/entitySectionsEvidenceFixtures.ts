@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { chromium, type Page } from '@playwright/test';
-import type { HarnessRevision } from '../../../../src/models/Harness.types';
+import type { HarnessRevision } from '../../../../src/models/explorer-ui/Harness.types';
 import type { RegressionView } from '../../../../../../src/core/regressionTypes';
 import type { Data } from './illustratedData.types';
 import { record, revision } from '../../../../test/entityFixture';

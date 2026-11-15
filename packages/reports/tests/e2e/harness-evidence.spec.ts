@@ -5,7 +5,7 @@ import { gatherCaptures } from '../../../../src/services/check-run-service/gathe
 import { focusedScreens } from '../../../../src/workflows/verification-evidence/record-regression/focusedScreens';
 import { scenarioCoverage } from '../../../../src/services/verification-service/scenarioCoverage';
 import type { Gathered } from '../../../../src/utils/verification-evidence/gatherCaptures';
-import type { HarnessScenario, HarnessUnit } from '../../src/models/Harness.types';
+import type { HarnessScenario, HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import { scenarioFor } from '../../src/utils/explorerState';
 import { reportBuildIdentity } from '../../src/utils/reports-media/reportBuildIdentity';
 import { captureFlow } from './support/explorerFlow';

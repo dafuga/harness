@@ -1,6 +1,6 @@
 // @harness-uid u_5kqofa6wua
-import type { HarnessRevisionSummary } from '$reports/models/Harness.types';
-import type { HarnessRevision } from '$reports/models/Harness.types';
+import type { HarnessRevisionSummary } from '$reports/models/explorer-ui/Harness.types';
+import type { HarnessRevision } from '$reports/models/explorer-ui/Harness.types';
 import type { RevisionRecords } from '../../../../../../src/utils/development-tooling/revisionSummary';
 import type { HistoryStatusService } from '../../../../../../src/services/history-status-service/HistoryStatusService';
 

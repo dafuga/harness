@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { HarnessScenario, HarnessUnit } from '../../src/models/Harness.types';
+import type { HarnessScenario, HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import {
 	entityContract,
 	humanize,

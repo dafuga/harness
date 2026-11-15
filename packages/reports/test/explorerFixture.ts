@@ -8,7 +8,7 @@ import type {
 	HarnessRevisionSummary,
 	HarnessScenario,
 	HarnessUnit
-} from '../src/models/Harness.types';
+} from '../src/models/explorer-ui/Harness.types';
 
 export const sha = (letter: string) => letter.repeat(40);
 

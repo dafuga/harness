@@ -1,6 +1,10 @@
 import type { UnitSeed, CaptureSeed } from './entityUnits.types';
 import { serviceMetadata } from './entityClassFixtures';
-import type { HarnessCapture, HarnessScenario, HarnessUnit } from '../src/models/Harness.types';
+import type {
+	HarnessCapture,
+	HarnessScenario,
+	HarnessUnit
+} from '../src/models/explorer-ui/Harness.types';
 
 /** Synthetic history of an invented orders application; nothing here is a real repository. */
 export const sha = (letter: string): string => letter.repeat(40);

@@ -1,4 +1,4 @@
-import type { HarnessUnit } from '../src/models/Harness.types';
+import type { HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 
 export interface UnitSeed {
 	id: string;

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { HarnessLegacyReport } from '../../src/models/Harness.types';
+import type { HarnessLegacyReport } from '../../src/models/explorer-ui/Harness.types';
 import { reportDestination } from '../../src/routes/harness/reports/[id]/reportDestination';
 import { history, sha, summary } from '../explorerFixture';
 

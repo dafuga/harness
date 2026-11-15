@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { modelDefinitions } from '../../../src/services/explorer-ui/revision-detail-service/modelDefinitions';
-import type { HarnessUnit } from '../src/models/Harness.types';
+import type { HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 
 const root = join(import.meta.dirname, '../../..');
 

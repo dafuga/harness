@@ -1,7 +1,7 @@
 // @harness-uid u_xjxqzbfms6
 import type { Shown, Staged, Impact } from './recordedProjection.types';
 import type { ExplorerSide } from '$reports/models/explorer-ui/Explorer.types';
-import type { HarnessRecord, HarnessRevision } from '$reports/models/Harness.types';
+import type { HarnessRecord, HarnessRevision } from '$reports/models/explorer-ui/Harness.types';
 
 const shownOn = (side: ExplorerSide): Shown =>
 	new Map(

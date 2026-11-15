@@ -1,4 +1,4 @@
-import type { HarnessRevision } from '../src/models/Harness.types';
+import type { HarnessRevision } from '../src/models/explorer-ui/Harness.types';
 import { commits, ids } from './entityUnits';
 
 /** Committed usage documentation differs at each revision; it is never verification evidence. */

@@ -5,7 +5,7 @@ import { at, checkpoint, explorer } from './support/explorer';
 import { captureSections, viewports } from './support/harnessCapture';
 import { home, revision, seeded, short } from './support/harnessHistory';
 import { fits } from './support/sharedSelect';
-import type { HarnessRevision } from '../../src/models/Harness.types';
+import type { HarnessRevision } from '../../src/models/explorer-ui/Harness.types';
 import { explorerKindCategory } from '../../../../src/utils/explorerRoute';
 
 function everyKind(): HarnessRevision {

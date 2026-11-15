@@ -1,5 +1,9 @@
 import { modelDefinition } from './entityClassFixtures';
-import type { HarnessRevision, HarnessScenario, HarnessUnit } from '../src/models/Harness.types';
+import type {
+	HarnessRevision,
+	HarnessScenario,
+	HarnessUnit
+} from '../src/models/explorer-ui/Harness.types';
 import { record, revision } from './entityFixture';
 import { capture, commits, ids, scenarios, units } from './entityUnits';
 

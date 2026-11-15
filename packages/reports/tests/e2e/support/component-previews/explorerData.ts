@@ -14,7 +14,7 @@ import { screenOptions } from '../../../../src/utils/explorer-ui/entityScreens';
 import { historyDetail } from '../../../../src/utils/explorerHistory';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import type { ExplorerSide } from '../../../../src/models/explorer-ui/ExplorerEvidence.types';
-import type { HarnessExplanation } from '../../../../src/models/Harness.types';
+import type { HarnessExplanation } from '../../../../src/models/explorer-ui/Harness.types';
 export { index, commits, ids };
 const head = revision(commits.middle, [record(commits.middle)]);
 const parent = revision(commits.first, [record(commits.first)]);

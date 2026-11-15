@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { ExplorerScope } from '../../src/models/explorer-ui/Explorer.types';
-import type { HarnessUnit } from '../../src/models/Harness.types';
+import type { HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import { explorerEvidence } from '../../src/utils/explorerEvidence';
 import { explorerVerdict } from '../../src/utils/explorer-verdict/explorerVerdict';
 import {

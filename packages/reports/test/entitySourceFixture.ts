@@ -1,4 +1,4 @@
-import type { HarnessRevision } from '../src/models/Harness.types';
+import type { HarnessRevision } from '../src/models/explorer-ui/Harness.types';
 import { revision } from './entityFixture';
 import { commits, ids } from './entityUnits';
 import { withHelpers } from './entityPreviewHelpers';

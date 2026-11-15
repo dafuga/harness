@@ -447,14 +447,14 @@
 		},
 		{
 			"from": "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts",
-			"specifier": "$reports/models/Harness.types",
-			"to": "packages/reports/src/models/Harness.types.ts",
+			"specifier": "$reports/models/explorer-ui/Harness.types",
+			"to": "packages/reports/src/models/explorer-ui/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
 			"from": "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.types.ts",
-			"specifier": "$reports/models/Harness.types",
-			"to": "packages/reports/src/models/Harness.types.ts",
+			"specifier": "$reports/models/explorer-ui/Harness.types",
+			"to": "packages/reports/src/models/explorer-ui/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -819,8 +819,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/reports-media/recordedCapture.types.ts",
-			"specifier": "$reports/models/Harness.types",
-			"to": "packages/reports/src/models/Harness.types.ts",
+			"specifier": "$reports/models/explorer-ui/Harness.types",
+			"to": "packages/reports/src/models/explorer-ui/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -873,14 +873,14 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/reports-media/recordedScope.types.ts",
-			"specifier": "$reports/models/Harness.types",
-			"to": "packages/reports/src/models/Harness.types.ts",
+			"specifier": "$reports/models/explorer-ui/Harness.types",
+			"to": "packages/reports/src/models/explorer-ui/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
 			"from": "packages/desktop/src/utils/reports-media/recordedProjection.ts",
-			"specifier": "$reports/models/Harness.types",
-			"to": "packages/reports/src/models/Harness.types.ts",
+			"specifier": "$reports/models/explorer-ui/Harness.types",
+			"to": "packages/reports/src/models/explorer-ui/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -903,8 +903,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/reports-media/recordedScope.ts",
-			"specifier": "$reports/models/Harness.types",
-			"to": "packages/reports/src/models/Harness.types.ts",
+			"specifier": "$reports/models/explorer-ui/Harness.types",
+			"to": "packages/reports/src/models/explorer-ui/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -927,14 +927,14 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/reports-media/recordedProjection.types.ts",
-			"specifier": "$reports/models/Harness.types",
-			"to": "packages/reports/src/models/Harness.types.ts",
+			"specifier": "$reports/models/explorer-ui/Harness.types",
+			"to": "packages/reports/src/models/explorer-ui/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
 			"from": "packages/desktop/src/utils/artifact-answer/artifactAnswer.types.ts",
-			"specifier": "$reports/models/Harness.types",
-			"to": "packages/reports/src/models/Harness.types.ts",
+			"specifier": "$reports/models/explorer-ui/Harness.types",
+			"to": "packages/reports/src/models/explorer-ui/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -993,8 +993,8 @@
 		},
 		{
 			"from": "packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceRevision.ts",
-			"specifier": "$reports/models/Harness.types",
-			"to": "packages/reports/src/models/Harness.types.ts",
+			"specifier": "$reports/models/explorer-ui/Harness.types",
+			"to": "packages/reports/src/models/explorer-ui/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{

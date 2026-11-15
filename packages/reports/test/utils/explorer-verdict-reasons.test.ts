@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { HarnessRecord, HarnessRevision } from '../../src/models/Harness.types';
+import type { HarnessRecord, HarnessRevision } from '../../src/models/explorer-ui/Harness.types';
 import { explorerVerdict } from '../../src/utils/explorer-verdict/explorerVerdict';
 import { capture, complete, declared, record, result, revision, unit } from '../explorerFixture';
 

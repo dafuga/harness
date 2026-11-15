@@ -1,6 +1,9 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import type { HarnessIndex, HarnessRevisionSummary } from '../../src/models/Harness.types';
+import type {
+	HarnessIndex,
+	HarnessRevisionSummary
+} from '../../src/models/explorer-ui/Harness.types';
 import { branchCommits } from '../../src/components/explorer-ui/harness-navbar/harnessAncestry';
 import {
 	branchNames,

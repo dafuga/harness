@@ -1,5 +1,5 @@
 import { permissionProfiles } from '../../../test/support/permissionProfiles';
-import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
+import type { HarnessRevision, HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 import { commits, ids } from './entityUnits';
 
 export const apiIds = {

@@ -8,7 +8,7 @@ import type {
 	HarnessRevision,
 	HarnessScenario,
 	HarnessUnit
-} from '../../reports/src/models/Harness.types';
+} from '../../reports/src/models/explorer-ui/Harness.types';
 
 export const head = 'a'.repeat(40);
 export const parent = 'b'.repeat(40);

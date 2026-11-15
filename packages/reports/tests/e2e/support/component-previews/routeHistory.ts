@@ -7,7 +7,7 @@ import type {
 	HarnessIndex,
 	HarnessRecord,
 	HarnessRevision
-} from '../../../../src/models/Harness.types';
+} from '../../../../src/models/explorer-ui/Harness.types';
 import { index, record, revision, tested } from '../../../../test/entityFixture';
 import { commits, ids, scenarios } from '../../../../test/entityUnits';
 import { sealedHistory } from '../../../../../desktop/tests/e2e/ui-evidence-history';

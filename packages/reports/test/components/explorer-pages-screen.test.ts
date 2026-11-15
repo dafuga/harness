@@ -5,7 +5,7 @@ import { explorerEvidence } from '../../src/utils/explorerEvidence';
 import { scope } from '../entityPlaces';
 import { withFocused } from '../entityStates';
 import { unit } from '../explorerFixture';
-import type { HarnessUnit, HarnessRevision } from '../../src/models/Harness.types';
+import type { HarnessUnit, HarnessRevision } from '../../src/models/explorer-ui/Harness.types';
 import { expect, test } from 'vitest';
 import ExplorerPagesScreen from '../../src/components/explorer-ui/ExplorerPagesScreen.svelte';
 import { revision } from '../entityFixture';

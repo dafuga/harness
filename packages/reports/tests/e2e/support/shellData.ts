@@ -2,7 +2,10 @@ import type {
 	ExplorerLocation,
 	ExplorerScope
 } from '../../../src/models/explorer-ui/Explorer.types';
-import type { HarnessIndex, HarnessRevisionSummary } from '../../../src/models/Harness.types';
+import type {
+	HarnessIndex,
+	HarnessRevisionSummary
+} from '../../../src/models/explorer-ui/Harness.types';
 import { explorerRoutePath } from '../../../../../src/utils/explorerRoute';
 
 /**

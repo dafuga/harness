@@ -10,7 +10,7 @@ import '../src/lib/styles/gallery.css';
 import '../src/lib/styles/gallery-2.css';
 import '../src/lib/styles/harness.css';
 import type { ExplorerLocation } from '../src/models/explorer-ui/Explorer.types';
-import type { HarnessRevision } from '../src/models/Harness.types';
+import type { HarnessRevision } from '../src/models/explorer-ui/Harness.types';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { index, revision } from './entityFixture';
 import { lens, place, viewOf } from './entityPlaces';

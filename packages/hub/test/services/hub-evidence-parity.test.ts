@@ -7,7 +7,7 @@ import { revisionRegistry } from '../../../../src/utils/revision-registry/revisi
 import { revisionSummary } from '../../../../src/utils/revisionSummary';
 import { recordedAnswer } from '../../../desktop/src/utils/recorded-answer/recordedAnswer';
 import { recordedScope } from '../../../desktop/src/utils/reports-media/recordedScope';
-import type { HarnessRevision } from '../../../reports/src/models/Harness.types';
+import type { HarnessRevision } from '../../../reports/src/models/explorer-ui/Harness.types';
 import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';
 import { asked, evidenceFixture, read, type EvidenceFixture } from '../support/evidenceFixture';
 import { blobId } from '../support/evidenceGit';

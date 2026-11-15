@@ -1,5 +1,5 @@
-import type { HarnessRecord } from '../../../reports/src/models/Harness.types';
-import type { HarnessRevision } from '../../../reports/src/models/Harness.types';
+import type { HarnessRecord } from '../../../reports/src/models/explorer-ui/Harness.types';
+import type { HarnessRevision } from '../../../reports/src/models/explorer-ui/Harness.types';
 
 export type Result = HarnessRecord['scenarios'][number];
 

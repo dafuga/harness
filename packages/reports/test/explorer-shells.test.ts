@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { readFileSync } from 'node:fs';
-import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
+import type { HarnessRevision, HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 import { catalogUnits } from '../tests/e2e/support/component-previews/catalogUnits';
 import { entityUsage } from '../src/components/explorer-ui/entity-relations/entityUsage';
 import { explorerCategory, explorerRole } from '../src/utils/explorerCategory';

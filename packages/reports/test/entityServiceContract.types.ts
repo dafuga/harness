@@ -1,4 +1,4 @@
-import type { HarnessUnit } from '../src/models/Harness.types';
+import type { HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 
 /** A service as its manifest declares it, and its class as revision metadata records it. */
 export type Declared = Pick<HarnessUnit, 'id' | 'title' | 'responsibility' | 'contract'> & {

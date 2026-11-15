@@ -3,7 +3,7 @@ import type { Component } from 'svelte';
 import { render } from 'svelte/server';
 import type { ExplorerLocation } from '../src/models/explorer-ui/Explorer.types';
 import type { ExplorerScreenProps } from '../src/models/explorer-ui/ExplorerScreen.types';
-import type { HarnessIndex } from '../src/models/Harness.types';
+import type { HarnessIndex } from '../src/models/explorer-ui/Harness.types';
 import ExplorerContent from '../src/components/explorer-ui/ExplorerContent.svelte';
 import EntityTests from '../src/components/explorer-ui/entity-tests/EntityTests.svelte';
 import { explorerRoutePath } from '../../../src/utils/explorerRoute';

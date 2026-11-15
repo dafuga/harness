@@ -1,5 +1,5 @@
 import type { Declared } from './entityServiceContract.types';
-import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
+import type { HarnessRevision, HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 import { serviceClassProof, serviceMetadata } from './entityClassFixtures';
 import { ids, units } from './entityUnits';
 

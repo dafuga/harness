@@ -1,5 +1,5 @@
 import { withConsumers } from './entityRelationFixtures';
-import type { HarnessRevision } from '../src/models/Harness.types';
+import type { HarnessRevision } from '../src/models/explorer-ui/Harness.types';
 import { ids } from './entityUnits';
 import { serviceClassProof } from './entityClassFixtures';
 

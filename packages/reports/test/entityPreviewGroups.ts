@@ -1,6 +1,6 @@
 import { deliveryConfig } from './entityConfigFixtures';
 import { modelDefinition } from './entityClassFixtures';
-import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
+import type { HarnessRevision, HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 import { commits, ids, units } from './entityUnits';
 import taxonomy from '../../../harness.groups.json' with { type: 'json' };
 import { moduleGroup } from '../../../src/utils/development-tooling/moduleGroup';

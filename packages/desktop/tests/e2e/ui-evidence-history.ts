@@ -6,7 +6,7 @@ import type {
 	HarnessRecord,
 	HarnessRevision,
 	HarnessScenario
-} from '../../../reports/src/models/Harness.types';
+} from '../../../reports/src/models/explorer-ui/Harness.types';
 import { runDocument } from '../../../reports/test/entityArtifacts';
 import { record, revision, tested } from '../../../reports/test/entityFixture';
 import { commits, ids, scenarios } from '../../../reports/test/entityUnits';

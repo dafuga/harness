@@ -3,7 +3,7 @@ import { render } from 'svelte/server';
 import { expect } from 'vitest';
 import { words } from './entityRender';
 import EntitySource, { archivedSource } from '../src/components/explorer-ui/EntitySource.svelte';
-import type { HarnessUnit } from '../src/models/Harness.types';
+import type { HarnessUnit } from '../src/models/explorer-ui/Harness.types';
 
 /** Arrays admitted before JSON retain indexed values without using their iterator or species. */
 export function sourceAdmissionArrays(unit: HarnessUnit) {
