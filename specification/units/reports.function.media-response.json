@@ -18,36 +18,47 @@
 				"name": "mediaResponse.bytes",
 				"type": "Buffer",
 				"required": true,
-				"description": "Complete media bytes."
+				"description": "The Node.js Buffer containing the complete media body; its length sets the full-response length and range bounds. Valid ranges are sliced from this buffer."
 			},
 			{
 				"name": "mediaResponse.mime",
 				"type": "string",
 				"required": true,
-				"description": "Content MIME type."
+				"description": "The string used for the response's Content-Type header, which identifies the media to clients. It is passed directly to Headers, so invalid HTTP header values can throw TypeError.",
+				"examples": ["image/jpeg", "application/pdf"]
 			},
 			{
 				"name": "mediaResponse.range",
 				"type": "string | null",
 				"required": false,
-				"description": "Optional Range header, null or empty for a full response."
+				"default": "undefined",
+				"description": "When omitted (default undefined), null, or empty, the helper returns the full buffer; otherwise this is one bytes=...-... range. It accepts closed, open-ended, or positive suffix ranges and returns 416 for malformed, unsafe-integer, or unsatisfiable ranges; multiple ranges are unsupported.",
+				"examples": [null, "bytes=0-1023", "bytes=-512"]
 			},
 			{
 				"name": "mediaResponse.disposition",
 				"type": "string",
 				"required": false,
 				"default": "inline",
-				"description": "Optional Content-Disposition header, defaulting to inline."
+				"description": "The string used as the response's Content-Disposition header to set client presentation behavior. It defaults to inline and is passed directly to Headers, so invalid HTTP header values can throw TypeError.",
+				"examples": ["inline", "attachment; filename=\"report.pdf\""]
 			}
 		],
 		"outputs": [
 			{
 				"name": "mediaResponse",
 				"type": "unknown",
-				"description": "Response with no-store, nosniff and byte-range support. No range returns all bytes with 200; valid single closed, open-ended or suffix ranges return 206 and matching length/range headers. Malformed or unsatisfiable ranges return 416 with total length."
+				"description": "Returns a Fetch Response with Content-Type, X-Content-Type-Options: nosniff, Cache-Control: no-store, Content-Disposition, and Accept-Ranges: bytes headers. A falsy range yields status 200 with all bytes and Content-Length; a valid single range yields status 206 with the selected bytes, Content-Range, and selected-byte Content-Length, while a malformed or unsatisfiable nonempty range yields status 416, a null body, and Content-Range: bytes */<total-size>."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Constructing Headers throws TypeError if the supplied mime or disposition is not a valid HTTP header value. This exception is not caught, so the function returns no Response."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "mediaResponse",
@@ -56,37 +67,47 @@
 						"name": "mediaResponse.bytes",
 						"type": "Buffer",
 						"required": true,
-						"description": "Complete media bytes."
+						"description": "The Node.js Buffer containing the complete media body; its length sets the full-response length and range bounds. Valid ranges are sliced from this buffer."
 					},
 					{
 						"name": "mediaResponse.mime",
 						"type": "string",
 						"required": true,
-						"description": "Content MIME type."
+						"description": "The string used for the response's Content-Type header, which identifies the media to clients. It is passed directly to Headers, so invalid HTTP header values can throw TypeError.",
+						"examples": ["image/jpeg", "application/pdf"]
 					},
 					{
 						"name": "mediaResponse.range",
 						"type": "string | null",
 						"required": false,
-						"description": "Optional Range header, null or empty for a full response."
+						"default": "undefined",
+						"description": "When omitted (default undefined), null, or empty, the helper returns the full buffer; otherwise this is one bytes=...-... range. It accepts closed, open-ended, or positive suffix ranges and returns 416 for malformed, unsafe-integer, or unsatisfiable ranges; multiple ranges are unsupported.",
+						"examples": [null, "bytes=0-1023", "bytes=-512"]
 					},
 					{
 						"name": "mediaResponse.disposition",
 						"type": "string",
 						"required": false,
 						"default": "inline",
-						"description": "Optional Content-Disposition header, defaulting to inline."
+						"description": "The string used as the response's Content-Disposition header to set client presentation behavior. It defaults to inline and is passed directly to Headers, so invalid HTTP header values can throw TypeError.",
+						"examples": ["inline", "attachment; filename=\"report.pdf\""]
 					}
 				],
 				"outputs": [
 					{
 						"name": "mediaResponse",
 						"type": "unknown",
-						"description": "Response with no-store, nosniff and byte-range support. No range returns all bytes with 200; valid single closed, open-ended or suffix ranges return 206 and matching length/range headers. Malformed or unsatisfiable ranges return 416 with total length."
+						"description": "Returns a Fetch Response with Content-Type, X-Content-Type-Options: nosniff, Cache-Control: no-store, Content-Disposition, and Accept-Ranges: bytes headers. A falsy range yields status 200 with all bytes and Content-Length; a valid single range yields status 206 with the selected bytes, Content-Range, and selected-byte Content-Length, while a malformed or unsatisfiable nonempty range yields status 416, a null body, and Content-Range: bytes */<total-size>."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Constructing Headers throws TypeError if the supplied mime or disposition is not a valid HTTP header value. This exception is not caught, so the function returns no Response."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
