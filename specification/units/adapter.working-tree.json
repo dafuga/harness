@@ -17,31 +17,87 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "WorkingTreeAdapter.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Directory the adapter treats as its working tree; it is passed to GitAdapter and is the base that list() and read() join relative paths onto. The constructor does not validate it, so the repository check and all file access happen later, in list() or read().",
+				"examples": [
+					"/home/dev/workspace/app",
+					"/srv/checkouts/billing-service",
+					"C:\\work\\monorepo\\service"
+				]
 			},
 			{
 				"name": "WorkingTreeAdapter.read.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "File path relative to root, joined onto root with path.join and not checked to stay inside it, so '..' segments can point outside root. The file is read as UTF-8 text, and the promise rejects when no readable file exists at that path.",
+				"examples": [
+					"README.md",
+					"package.json",
+					"src/adapters/git-source-history/WorkingTreeAdapter.ts"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "WorkingTreeAdapter.list",
-				"type": "Promise<TreeEntry[]>"
+				"type": "Promise<TreeEntry[]>",
+				"description": "Resolves to one entry per file found, sorted by path with plain string comparison, where each path is relative to root with '/' separators and each hash is the Git blob id of the file's raw bytes on disk (SHA-1 over 'blob <size>', a NUL byte and the bytes). The scan lists tracked and untracked files with git ls-files -co --exclude-standard in a git repository and uses collectAuditedFiles otherwise; it runs once per adapter, later calls receive the same promise even if it rejected, and files that cannot be read while hashing are dropped.",
+				"examples": [
+					[
+						{
+							"path": ".gitignore",
+							"hash": "4f1c9a7e2b3d58061e9f2a6c0d8b7e5a3f10c924"
+						},
+						{
+							"path": "README.md",
+							"hash": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+						},
+						{
+							"path": "package.json",
+							"hash": "9a2d6c0be41f87a35d3e90c1b72f64d8e05a1c37"
+						}
+					],
+					[
+						{
+							"path": "src/adapters/WorkingTreeAdapter.ts",
+							"hash": "c3d1f0a8e27b946d5f0e18a2b7c64d93e0f5a2b1"
+						}
+					]
+				]
 			},
 			{
 				"name": "WorkingTreeAdapter.read",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves to the file's text, decoded as UTF-8 from the bytes on disk at the time of the call. Nothing is cached, so each call reads the disk again, and the promise rejects when the file cannot be read.",
+				"examples": [
+					"// @harness-uid u_4n3szslobj\nexport { WorkingTreeAdapter } from './git-source-history/WorkingTreeAdapter';\nexport * from './git-source-history/WorkingTreeAdapter';\n",
+					"{\n\t\"name\": \"app\"\n}\n"
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with whatever GitAdapter.isRepository, GitAdapter.run or collectAuditedFiles rejects with, because the scan does not catch those rejections."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the error the node:fs/promises readFile call raises for the path joined onto root, for example ENOENT when nothing exists there, because read() does not catch it."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown synchronously, not as a rejection, when path (or root) is not a string, because read() calls path.join before it returns its promise."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "WorkingTreeAdapter.list",
@@ -49,11 +105,40 @@
 				"outputs": [
 					{
 						"name": "WorkingTreeAdapter.list",
-						"type": "Promise<TreeEntry[]>"
+						"type": "Promise<TreeEntry[]>",
+						"description": "Resolves to one entry per file found, sorted by path with plain string comparison, where each path is relative to root with '/' separators and each hash is the Git blob id of the file's raw bytes on disk (SHA-1 over 'blob <size>', a NUL byte and the bytes). The scan lists tracked and untracked files with git ls-files -co --exclude-standard in a git repository and uses collectAuditedFiles otherwise; it runs once per adapter, later calls receive the same promise even if it rejected, and files that cannot be read while hashing are dropped.",
+						"examples": [
+							[
+								{
+									"path": ".gitignore",
+									"hash": "4f1c9a7e2b3d58061e9f2a6c0d8b7e5a3f10c924"
+								},
+								{
+									"path": "README.md",
+									"hash": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+								},
+								{
+									"path": "package.json",
+									"hash": "9a2d6c0be41f87a35d3e90c1b72f64d8e05a1c37"
+								}
+							],
+							[
+								{
+									"path": "src/adapters/WorkingTreeAdapter.ts",
+									"hash": "c3d1f0a8e27b946d5f0e18a2b7c64d93e0f5a2b1"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with whatever GitAdapter.isRepository, GitAdapter.run or collectAuditedFiles rejects with, because the scan does not catch those rejections."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "WorkingTreeAdapter.read",
@@ -61,17 +146,39 @@
 					{
 						"name": "WorkingTreeAdapter.read.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "File path relative to root, joined onto root with path.join and not checked to stay inside it, so '..' segments can point outside root. The file is read as UTF-8 text, and the promise rejects when no readable file exists at that path.",
+						"examples": [
+							"README.md",
+							"package.json",
+							"src/adapters/git-source-history/WorkingTreeAdapter.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WorkingTreeAdapter.read",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves to the file's text, decoded as UTF-8 from the bytes on disk at the time of the call. Nothing is cached, so each call reads the disk again, and the promise rejects when the file cannot be read.",
+						"examples": [
+							"// @harness-uid u_4n3szslobj\nexport { WorkingTreeAdapter } from './git-source-history/WorkingTreeAdapter';\nexport * from './git-source-history/WorkingTreeAdapter';\n",
+							"{\n\t\"name\": \"app\"\n}\n"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the error the node:fs/promises readFile call raises for the path joined onto root, for example ENOENT when nothing exists there, because read() does not catch it."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously, not as a rejection, when path (or root) is not a string, because read() calls path.join before it returns its promise."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -81,17 +188,24 @@
 					{
 						"name": "WorkingTreeAdapter.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Directory the adapter treats as its working tree; it is passed to GitAdapter and is the base that list() and read() join relative paths onto. The constructor does not validate it, so the repository check and all file access happen later, in list() or read().",
+						"examples": [
+							"/home/dev/workspace/app",
+							"/srv/checkouts/billing-service",
+							"C:\\work\\monorepo\\service"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "WorkingTreeAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new WorkingTreeAdapter instance; its constructor body only stores root and creates a GitAdapter for it, with no file or git call of its own. Its list() and read() methods do the file and git work: list() once per adapter, read() on every call."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
