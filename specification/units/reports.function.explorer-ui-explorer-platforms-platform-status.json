@@ -24,27 +24,80 @@
 				"name": "platformStatus.platform",
 				"type": "PlatformEntry",
 				"required": false,
-				"description": "The selected revision’s platform declaration; undefined yields the Not recorded state."
+				"default": "undefined",
+				"description": "The selected revision’s PlatformEntry declaration, when one is available. The function reads only status; when omitted, it defaults to undefined and reports not-recorded.",
+				"examples": [
+					{
+						"id": "web",
+						"runtime": "Browser",
+						"status": "not-configured",
+						"summary": "Web platform configuration is not present.",
+						"configuration": [],
+						"commands": [],
+						"requirements": [],
+						"sources": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "platformViews",
 				"type": "readonly PlatformView[]",
-				"description": "Stable target identifiers, display names and icons for Web, iOS, Android and Desktop (Electron)."
+				"description": "The fixed descriptor list for the Web, iOS, Android and Desktop (Electron) platform views, in that order. Each entry contains its id, display name and icon; this list is constant.",
+				"examples": [
+					[
+						{
+							"id": "web",
+							"name": "Web",
+							"icon": "web"
+						},
+						{
+							"id": "ios",
+							"name": "iOS",
+							"icon": "phone"
+						},
+						{
+							"id": "android",
+							"name": "Android",
+							"icon": "android"
+						},
+						{
+							"id": "desktop",
+							"name": "Desktop (Electron)",
+							"icon": "desktop"
+						}
+					]
+				]
 			},
 			{
 				"name": "unrecorded",
 				"type": "string",
-				"description": "Notice used when a revision has no recorded platform configuration."
+				"description": "The fixed notice for a revision with no recorded platform configuration. This export does not inspect a revision or vary by platform.",
+				"examples": ["No platform configuration is recorded at this revision."]
 			},
 			{
 				"name": "platformStatus",
 				"type": "{ id: \"configured\" | \"setup-required\" | \"not-configured\" | \"not-recorded\"; label: string }",
-				"description": "The declaration’s status identifier and human-readable label. This describes repository configuration, not a live deployment verdict."
+				"description": "The returned status identifier and fixed label, derived from platform?.status and falling back to not-recorded when that value is nullish. It describes repository configuration only and does not indicate whether a deployment works.",
+				"examples": [
+					{
+						"id": "configured",
+						"label": "Configured"
+					},
+					{
+						"id": "setup-required",
+						"label": "Setup required"
+					},
+					{
+						"id": "not-recorded",
+						"label": "Not recorded"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "platformStatus",
@@ -53,18 +106,45 @@
 						"name": "platformStatus.platform",
 						"type": "PlatformEntry",
 						"required": false,
-						"description": "The selected revision’s platform declaration; undefined yields the Not recorded state."
+						"default": "undefined",
+						"description": "The selected revision’s PlatformEntry declaration, when one is available. The function reads only status; when omitted, it defaults to undefined and reports not-recorded.",
+						"examples": [
+							{
+								"id": "web",
+								"runtime": "Browser",
+								"status": "not-configured",
+								"summary": "Web platform configuration is not present.",
+								"configuration": [],
+								"commands": [],
+								"requirements": [],
+								"sources": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "platformStatus",
 						"type": "{ id: \"configured\" | \"setup-required\" | \"not-configured\" | \"not-recorded\"; label: string }",
-						"description": "The declaration’s status identifier and human-readable label. This describes repository configuration, not a live deployment verdict."
+						"description": "The returned status identifier and fixed label, derived from platform?.status and falling back to not-recorded when that value is nullish. It describes repository configuration only and does not indicate whether a deployment works.",
+						"examples": [
+							{
+								"id": "configured",
+								"label": "Configured"
+							},
+							{
+								"id": "setup-required",
+								"label": "Setup required"
+							},
+							{
+								"id": "not-recorded",
+								"label": "Not recorded"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
