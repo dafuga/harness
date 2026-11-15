@@ -20,23 +20,27 @@
 				"name": "frameTooLarge.message",
 				"type": "string | ArrayBuffer",
 				"required": true,
-				"description": "Text frame or binary ArrayBuffer. Text is measured as UTF-8 bytes."
+				"description": "The frame to measure: a text string, measured as its UTF-8 byte count, or a binary ArrayBuffer, measured by its byteLength. Only the byte size is used, and any value that is not a string is read through byteLength with no type check.",
+				"examples": ["{\"type\":\"ping\"}", "naïve café ✓", "hello, remote desktop"]
 			},
 			{
 				"name": "frameTooLarge.limit",
 				"type": "number",
 				"required": false,
-				"description": "Optional byte limit, defaulting to the protocol’s 262,144 bytes."
+				"description": "Defaults to remoteLimits.frameBytes: the frameBytes entry of remoteLimits, imported from the remote package. A frame counts as too large only when its byte size is strictly greater than this value, and the number is used as given with no range check.",
+				"examples": [1024, 65536, 1048576]
 			}
 		],
 		"outputs": [
 			{
 				"name": "frameTooLarge",
 				"type": "boolean",
-				"description": "True only when frame bytes exceed the limit; equal size is accepted. Text-length bounds avoid encoding when the answer is already certain."
+				"description": "True only when the frame's byte size is strictly greater than the limit, so a frame exactly at the limit returns false. For text, a UTF-16 code-unit length above the limit returns true, and that length times three at or below the limit returns false, both without encoding; other text is UTF-8 encoded to count its bytes.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "frameTooLarge",
@@ -45,24 +49,27 @@
 						"name": "frameTooLarge.message",
 						"type": "string | ArrayBuffer",
 						"required": true,
-						"description": "Text frame or binary ArrayBuffer. Text is measured as UTF-8 bytes."
+						"description": "The frame to measure: a text string, measured as its UTF-8 byte count, or a binary ArrayBuffer, measured by its byteLength. Only the byte size is used, and any value that is not a string is read through byteLength with no type check.",
+						"examples": ["{\"type\":\"ping\"}", "naïve café ✓", "hello, remote desktop"]
 					},
 					{
 						"name": "frameTooLarge.limit",
 						"type": "number",
 						"required": false,
-						"description": "Optional byte limit, defaulting to the protocol’s 262,144 bytes."
+						"description": "Defaults to remoteLimits.frameBytes: the frameBytes entry of remoteLimits, imported from the remote package. A frame counts as too large only when its byte size is strictly greater than this value, and the number is used as given with no range check.",
+						"examples": [1024, 65536, 1048576]
 					}
 				],
 				"outputs": [
 					{
 						"name": "frameTooLarge",
 						"type": "boolean",
-						"description": "True only when frame bytes exceed the limit; equal size is accepted. Text-length bounds avoid encoding when the answer is already certain."
+						"description": "True only when the frame's byte size is strictly greater than the limit, so a frame exactly at the limit returns false. For text, a UTF-16 code-unit length above the limit returns true, and that length times three at or below the limit returns false, both without encoding; other text is UTF-8 encoded to count its bytes.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
