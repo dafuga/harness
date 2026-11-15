@@ -21,23 +21,110 @@
 				"name": "reportDestination.index",
 				"type": "HarnessIndex | null",
 				"required": true,
-				"description": "History index or null."
+				"description": "The history index the destination is read from: its branches, its revisions and the legacy reports it links to commits. Null, or an index that holds no revisions, makes the result an empty string.",
+				"examples": [
+					null,
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "a3f9c2e8d1b74065f2a9c8e1d7b3046a5f2e9c81"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "a3f9c2e8d1b74065f2a9c8e1d7b3046a5f2e9c81",
+								"parents": ["7b21d4f6a9e0c3b58d17f2e4a6c9b0d3e8f15a24"],
+								"subject": "Route legacy report links to the explorer",
+								"author": "Pat Lin",
+								"committedAt": "2026-10-27T17:21:08.000Z",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": ["no verified record"],
+								"records": [],
+								"legacy": ["5b0f7e3a-9c12-4d8e-a6f4-2e7c1b9d0a58"]
+							},
+							{
+								"commit": "7b21d4f6a9e0c3b58d17f2e4a6c9b0d3e8f15a24",
+								"parents": [],
+								"subject": "Scaffold the reports package",
+								"author": "Pat Lin",
+								"committedAt": "2026-10-12T09:48:02.000Z",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": ["no verified record"],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [
+							{
+								"id": "5b0f7e3a-9c12-4d8e-a6f4-2e7c1b9d0a58",
+								"title": "Checkout flow regression",
+								"mode": "feature",
+								"environment": "local",
+								"status": "passed",
+								"startedAt": "2026-10-28T09:12:44.512Z",
+								"revision": "a3f9c2e",
+								"linked": "a3f9c2e8d1b74065f2a9c8e1d7b3046a5f2e9c81",
+								"summary": "Checkout flow passed all checks.",
+								"checks": [
+									{
+										"id": "checkout-smoke",
+										"title": "Checkout smoke",
+										"status": "passed"
+									}
+								],
+								"media": []
+							}
+						],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "reportDestination.report",
 				"type": "NamedReport | null",
 				"required": true,
-				"description": "Report identifier and optional recorded revision, or null."
+				"description": "The report being opened: its id selects the imported legacy linkage, and its recorded revision is tried first, matched exactly against the commits the index holds. Null names no report, so the result is the explorer home or an empty string.",
+				"examples": [
+					{
+						"id": "5b0f7e3a-9c12-4d8e-a6f4-2e7c1b9d0a58",
+						"revision": "a3f9c2e8d1b74065f2a9c8e1d7b3046a5f2e9c81"
+					},
+					{
+						"id": "e6a1d0c4-58b2-4f7e-9d3a-01c8f4b6e277"
+					},
+					null
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportDestination",
 				"type": "string",
-				"description": "Console-relative Pages address for the first stored match among the report revision and imported legacy linkage; otherwise canonical home. Empty when there is no index or home."
+				"description": "Console-relative explorer path to Pages at the first of the report's recorded revision and imported legacy linkage that the index holds, scoped to a branch that lists that commit (preferring main or master) and to the commit alone when none does. Without such a commit it is Pages at the explorer home, and it is empty when the index is null or holds no revisions.",
+				"examples": [
+					"/branch/main/commit/a3f9c2e8d1b74065f2a9c8e1d7b3046a5f2e9c81/pages",
+					"/branch/main/pages",
+					""
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "URIError",
+				"type": "thrown",
+				"description": "Thrown by encodeURIComponent inside explorerRoutePath when the branch name the address is built on holds an unpaired UTF-16 surrogate; nothing in the function catches it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportDestination",
@@ -46,24 +133,110 @@
 						"name": "reportDestination.index",
 						"type": "HarnessIndex | null",
 						"required": true,
-						"description": "History index or null."
+						"description": "The history index the destination is read from: its branches, its revisions and the legacy reports it links to commits. Null, or an index that holds no revisions, makes the result an empty string.",
+						"examples": [
+							null,
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "a3f9c2e8d1b74065f2a9c8e1d7b3046a5f2e9c81"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "a3f9c2e8d1b74065f2a9c8e1d7b3046a5f2e9c81",
+										"parents": ["7b21d4f6a9e0c3b58d17f2e4a6c9b0d3e8f15a24"],
+										"subject": "Route legacy report links to the explorer",
+										"author": "Pat Lin",
+										"committedAt": "2026-10-27T17:21:08.000Z",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "unverified",
+										"gaps": ["no verified record"],
+										"records": [],
+										"legacy": ["5b0f7e3a-9c12-4d8e-a6f4-2e7c1b9d0a58"]
+									},
+									{
+										"commit": "7b21d4f6a9e0c3b58d17f2e4a6c9b0d3e8f15a24",
+										"parents": [],
+										"subject": "Scaffold the reports package",
+										"author": "Pat Lin",
+										"committedAt": "2026-10-12T09:48:02.000Z",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "unverified",
+										"gaps": ["no verified record"],
+										"records": [],
+										"legacy": []
+									}
+								],
+								"units": [],
+								"benchmarks": [],
+								"profiles": [],
+								"legacy": [
+									{
+										"id": "5b0f7e3a-9c12-4d8e-a6f4-2e7c1b9d0a58",
+										"title": "Checkout flow regression",
+										"mode": "feature",
+										"environment": "local",
+										"status": "passed",
+										"startedAt": "2026-10-28T09:12:44.512Z",
+										"revision": "a3f9c2e",
+										"linked": "a3f9c2e8d1b74065f2a9c8e1d7b3046a5f2e9c81",
+										"summary": "Checkout flow passed all checks.",
+										"checks": [
+											{
+												"id": "checkout-smoke",
+												"title": "Checkout smoke",
+												"status": "passed"
+											}
+										],
+										"media": []
+									}
+								],
+								"truncated": false,
+								"problems": []
+							}
+						]
 					},
 					{
 						"name": "reportDestination.report",
 						"type": "NamedReport | null",
 						"required": true,
-						"description": "Report identifier and optional recorded revision, or null."
+						"description": "The report being opened: its id selects the imported legacy linkage, and its recorded revision is tried first, matched exactly against the commits the index holds. Null names no report, so the result is the explorer home or an empty string.",
+						"examples": [
+							{
+								"id": "5b0f7e3a-9c12-4d8e-a6f4-2e7c1b9d0a58",
+								"revision": "a3f9c2e8d1b74065f2a9c8e1d7b3046a5f2e9c81"
+							},
+							{
+								"id": "e6a1d0c4-58b2-4f7e-9d3a-01c8f4b6e277"
+							},
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportDestination",
 						"type": "string",
-						"description": "Console-relative Pages address for the first stored match among the report revision and imported legacy linkage; otherwise canonical home. Empty when there is no index or home."
+						"description": "Console-relative explorer path to Pages at the first of the report's recorded revision and imported legacy linkage that the index holds, scoped to a branch that lists that commit (preferring main or master) and to the commit alone when none does. Without such a commit it is Pages at the explorer home, and it is empty when the index is null or holds no revisions.",
+						"examples": [
+							"/branch/main/commit/a3f9c2e8d1b74065f2a9c8e1d7b3046a5f2e9c81/pages",
+							"/branch/main/pages",
+							""
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "Thrown by encodeURIComponent inside explorerRoutePath when the branch name the address is built on holds an unpaired UTF-16 surrogate; nothing in the function catches it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
