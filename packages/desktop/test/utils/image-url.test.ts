@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
-import { imageUrl } from '../../src/utils/imageUrl';
+import { imageUrl } from '../../src/utils/reports-media/imageUrl';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 
 const request = { entityId: 'page:a', version: 'v002', sha256: 'b'.repeat(64) };
