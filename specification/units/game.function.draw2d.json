@@ -25,68 +25,383 @@
 				"name": "Canvas2dAdapter.constructor.canvas",
 				"type": "HTMLCanvasElement",
 				"required": true,
-				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+				"description": "The canvas this adapter paints into, stored unchanged as the readonly canvas property that render and dispose read on every call. The constructor does not check it: when getContext('2d') returns null, render returns without drawing and dispose does nothing."
 			},
 			{
 				"name": "Canvas2dAdapter.render.run",
 				"type": "GameRun",
 				"required": true,
-				"description": "Current deterministic game state, tick and checkpoint execution results."
+				"description": "The run whose state the frame reads: draw2d uses only run.state, reading x and y for the player position, hasKey and doorOpen, and the visible:door, visible:key and visible:player flags. A visible:door, visible:key or visible:player flag hides its item when it is exactly false, and a truthy hasKey also hides the key.",
+				"examples": [
+					{
+						"viewId": "courtyard",
+						"progress": {
+							"courtyard": []
+						},
+						"tick": 2,
+						"seed": 67634689,
+						"state": {
+							"x": 2,
+							"y": 0,
+							"hasKey": true,
+							"doorOpen": false,
+							"outcome": "",
+							"choice": "",
+							"view": "courtyard",
+							"event:key-collected": true
+						},
+						"completed": ["key"],
+						"events": ["key-collected"],
+						"trace": [
+							{
+								"viewId": "courtyard",
+								"tick": 2,
+								"checkpointId": "key",
+								"reason": "x gte 2"
+							}
+						]
+					},
+					{
+						"viewId": "garden-lane",
+						"progress": {
+							"garden-lane": []
+						},
+						"tick": 1,
+						"seed": 270369,
+						"state": {
+							"x": 2,
+							"y": 4,
+							"hasKey": false,
+							"doorOpen": false,
+							"outcome": "",
+							"choice": "",
+							"view": "garden-lane"
+						},
+						"completed": [],
+						"events": [],
+						"trace": []
+					}
+				]
 			},
 			{
 				"name": "Canvas2dAdapter.render.view",
 				"type": "GameView",
 				"required": true,
-				"description": "Active authored view, including dimension and checkpoint definitions."
+				"description": "The authored view that selects the scene: when view.world is truthy, the level is drawn from world.width, world.depth and world.objects and view.title is not drawn, otherwise view.title is drawn at x 24, y 32 over the default scene. Only view.world and view.title are read, so id, dimension, style, checkpoints and planning do not change the frame.",
+				"examples": [
+					{
+						"id": "courtyard",
+						"title": "The courtyard",
+						"dimension": "2d",
+						"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+						"checkpoints": [
+							{
+								"id": "key",
+								"title": "Collect the key",
+								"description": "When the player reaches the key, add it to inventory.",
+								"x": 0,
+								"y": 80,
+								"requires": [],
+								"conditions": [
+									{
+										"field": "x",
+										"op": "gte",
+										"value": 2
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "hasKey",
+										"value": true
+									},
+									{
+										"type": "emit",
+										"target": "key-collected",
+										"value": true
+									}
+								]
+							}
+						]
+					},
+					{
+						"id": "garden-lane",
+						"title": "Garden lane",
+						"dimension": "2d",
+						"style": "Top-down floor plan with a green lawn and pale stone walls.",
+						"checkpoints": [
+							{
+								"id": "gate",
+								"title": "Reach the gate",
+								"description": "Walking up to the gate pad records that the gate was reached.",
+								"x": 0,
+								"y": 80,
+								"requires": [],
+								"conditions": [
+									{
+										"field": "x",
+										"op": "gte",
+										"value": 9
+									}
+								],
+								"actions": [
+									{
+										"type": "emit",
+										"target": "gate-reached",
+										"value": true
+									}
+								]
+							}
+						],
+						"world": {
+							"width": 12,
+							"depth": 8,
+							"spawn": {
+								"x": 1.5,
+								"z": 4
+							},
+							"objects": [
+								{
+									"id": "north-wall",
+									"kind": "wall",
+									"label": "North wall",
+									"x": 6,
+									"z": 0.5,
+									"width": 12,
+									"depth": 1,
+									"height": 2.5
+								},
+								{
+									"id": "south-wall",
+									"kind": "wall",
+									"label": "South wall",
+									"x": 6,
+									"z": 7.5,
+									"width": 12,
+									"depth": 1,
+									"height": 2.5
+								},
+								{
+									"id": "gate-pad",
+									"kind": "goal",
+									"label": "Gate pad",
+									"x": 10,
+									"z": 4,
+									"width": 1.5,
+									"depth": 1.5,
+									"height": 1
+								}
+							]
+						}
+					}
+				]
 			},
 			{
 				"name": "create2d.canvas",
 				"type": "HTMLCanvasElement",
 				"required": true,
-				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+				"description": "The canvas that create2d passes unchanged to new Canvas2dAdapter(canvas), so the returned frame source paints onto it. create2d does not check it, and when getContext('2d') returns null, render draws nothing and dispose clears nothing."
 			},
 			{
 				"name": "draw2d.canvas",
 				"type": "HTMLCanvasElement",
 				"required": true,
-				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+				"description": "The canvas that draw2d paints: when getContext('2d') returns null the call returns without drawing, otherwise the frame is sized from canvas.width and canvas.height. After drawing it sets dataset.ready to 'true', and for a view with a world it also sets dataset.dimension to '2d'."
 			},
 			{
 				"name": "draw2d.run",
 				"type": "GameRun",
 				"required": true,
-				"description": "Current deterministic game state, tick and checkpoint execution results."
+				"description": "The run whose state the frame reads: draw2d uses only run.state, reading x and y for the player position, hasKey and doorOpen, and the visible:door, visible:key and visible:player flags. A visible:door, visible:key or visible:player flag hides its item when it is exactly false, and a truthy hasKey also hides the key.",
+				"examples": [
+					{
+						"viewId": "courtyard",
+						"progress": {
+							"courtyard": []
+						},
+						"tick": 2,
+						"seed": 67634689,
+						"state": {
+							"x": 2,
+							"y": 0,
+							"hasKey": true,
+							"doorOpen": false,
+							"outcome": "",
+							"choice": "",
+							"view": "courtyard",
+							"event:key-collected": true
+						},
+						"completed": ["key"],
+						"events": ["key-collected"],
+						"trace": [
+							{
+								"viewId": "courtyard",
+								"tick": 2,
+								"checkpointId": "key",
+								"reason": "x gte 2"
+							}
+						]
+					},
+					{
+						"viewId": "garden-lane",
+						"progress": {
+							"garden-lane": []
+						},
+						"tick": 1,
+						"seed": 270369,
+						"state": {
+							"x": 2,
+							"y": 4,
+							"hasKey": false,
+							"doorOpen": false,
+							"outcome": "",
+							"choice": "",
+							"view": "garden-lane"
+						},
+						"completed": [],
+						"events": [],
+						"trace": []
+					}
+				]
 			},
 			{
 				"name": "draw2d.view",
 				"type": "GameView",
 				"required": true,
-				"description": "Active authored view, including dimension and checkpoint definitions."
+				"description": "The authored view that selects the scene: when view.world is truthy, the level is drawn from world.width, world.depth and world.objects and view.title is not drawn, otherwise view.title is drawn at x 24, y 32 over the default scene. Only view.world and view.title are read, so id, dimension, style, checkpoints and planning do not change the frame.",
+				"examples": [
+					{
+						"id": "courtyard",
+						"title": "The courtyard",
+						"dimension": "2d",
+						"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+						"checkpoints": [
+							{
+								"id": "key",
+								"title": "Collect the key",
+								"description": "When the player reaches the key, add it to inventory.",
+								"x": 0,
+								"y": 80,
+								"requires": [],
+								"conditions": [
+									{
+										"field": "x",
+										"op": "gte",
+										"value": 2
+									}
+								],
+								"actions": [
+									{
+										"type": "set",
+										"target": "hasKey",
+										"value": true
+									},
+									{
+										"type": "emit",
+										"target": "key-collected",
+										"value": true
+									}
+								]
+							}
+						]
+					},
+					{
+						"id": "garden-lane",
+						"title": "Garden lane",
+						"dimension": "2d",
+						"style": "Top-down floor plan with a green lawn and pale stone walls.",
+						"checkpoints": [
+							{
+								"id": "gate",
+								"title": "Reach the gate",
+								"description": "Walking up to the gate pad records that the gate was reached.",
+								"x": 0,
+								"y": 80,
+								"requires": [],
+								"conditions": [
+									{
+										"field": "x",
+										"op": "gte",
+										"value": 9
+									}
+								],
+								"actions": [
+									{
+										"type": "emit",
+										"target": "gate-reached",
+										"value": true
+									}
+								]
+							}
+						],
+						"world": {
+							"width": 12,
+							"depth": 8,
+							"spawn": {
+								"x": 1.5,
+								"z": 4
+							},
+							"objects": [
+								{
+									"id": "north-wall",
+									"kind": "wall",
+									"label": "North wall",
+									"x": 6,
+									"z": 0.5,
+									"width": 12,
+									"depth": 1,
+									"height": 2.5
+								},
+								{
+									"id": "south-wall",
+									"kind": "wall",
+									"label": "South wall",
+									"x": 6,
+									"z": 7.5,
+									"width": 12,
+									"depth": 1,
+									"height": 2.5
+								},
+								{
+									"id": "gate-pad",
+									"kind": "goal",
+									"label": "Gate pad",
+									"x": 10,
+									"z": 4,
+									"width": 1.5,
+									"depth": 1.5,
+									"height": 1
+								}
+							]
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "Canvas2dAdapter.render",
 				"type": "void",
-				"description": "Paint the current game frame."
+				"description": "No value is returned; the call paints the current frame onto this.canvas through draw2d, and paints nothing when getContext('2d') returns null."
 			},
 			{
 				"name": "Canvas2dAdapter.dispose",
 				"type": "void",
-				"description": "Release the renderer resources."
+				"description": "No value is returned; the call clears the whole canvas with clearRect(0, 0, canvas.width, canvas.height) and does nothing when getContext('2d') returns null, so it releases no other resource."
 			},
 			{
 				"name": "create2d",
 				"type": "FrameSource",
-				"description": "Canvas frame source with render and dispose operations."
+				"description": "A new Canvas2dAdapter for the given canvas, typed as FrameSource and exposing the canvas property plus the render and dispose functions. Each call creates a new adapter and does not check the canvas."
 			},
 			{
 				"name": "draw2d",
 				"type": "void",
-				"description": "Paint the current game frame."
+				"description": "No value is returned; the call paints the frame onto the given canvas and returns without drawing when getContext('2d') returns null."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "Canvas2dAdapter.render",
@@ -95,24 +410,181 @@
 						"name": "Canvas2dAdapter.render.run",
 						"type": "GameRun",
 						"required": true,
-						"description": "Current deterministic game state, tick and checkpoint execution results."
+						"description": "The run whose state the frame reads: draw2d uses only run.state, reading x and y for the player position, hasKey and doorOpen, and the visible:door, visible:key and visible:player flags. A visible:door, visible:key or visible:player flag hides its item when it is exactly false, and a truthy hasKey also hides the key.",
+						"examples": [
+							{
+								"viewId": "courtyard",
+								"progress": {
+									"courtyard": []
+								},
+								"tick": 2,
+								"seed": 67634689,
+								"state": {
+									"x": 2,
+									"y": 0,
+									"hasKey": true,
+									"doorOpen": false,
+									"outcome": "",
+									"choice": "",
+									"view": "courtyard",
+									"event:key-collected": true
+								},
+								"completed": ["key"],
+								"events": ["key-collected"],
+								"trace": [
+									{
+										"viewId": "courtyard",
+										"tick": 2,
+										"checkpointId": "key",
+										"reason": "x gte 2"
+									}
+								]
+							},
+							{
+								"viewId": "garden-lane",
+								"progress": {
+									"garden-lane": []
+								},
+								"tick": 1,
+								"seed": 270369,
+								"state": {
+									"x": 2,
+									"y": 4,
+									"hasKey": false,
+									"doorOpen": false,
+									"outcome": "",
+									"choice": "",
+									"view": "garden-lane"
+								},
+								"completed": [],
+								"events": [],
+								"trace": []
+							}
+						]
 					},
 					{
 						"name": "Canvas2dAdapter.render.view",
 						"type": "GameView",
 						"required": true,
-						"description": "Active authored view, including dimension and checkpoint definitions."
+						"description": "The authored view that selects the scene: when view.world is truthy, the level is drawn from world.width, world.depth and world.objects and view.title is not drawn, otherwise view.title is drawn at x 24, y 32 over the default scene. Only view.world and view.title are read, so id, dimension, style, checkpoints and planning do not change the frame.",
+						"examples": [
+							{
+								"id": "courtyard",
+								"title": "The courtyard",
+								"dimension": "2d",
+								"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+								"checkpoints": [
+									{
+										"id": "key",
+										"title": "Collect the key",
+										"description": "When the player reaches the key, add it to inventory.",
+										"x": 0,
+										"y": 80,
+										"requires": [],
+										"conditions": [
+											{
+												"field": "x",
+												"op": "gte",
+												"value": 2
+											}
+										],
+										"actions": [
+											{
+												"type": "set",
+												"target": "hasKey",
+												"value": true
+											},
+											{
+												"type": "emit",
+												"target": "key-collected",
+												"value": true
+											}
+										]
+									}
+								]
+							},
+							{
+								"id": "garden-lane",
+								"title": "Garden lane",
+								"dimension": "2d",
+								"style": "Top-down floor plan with a green lawn and pale stone walls.",
+								"checkpoints": [
+									{
+										"id": "gate",
+										"title": "Reach the gate",
+										"description": "Walking up to the gate pad records that the gate was reached.",
+										"x": 0,
+										"y": 80,
+										"requires": [],
+										"conditions": [
+											{
+												"field": "x",
+												"op": "gte",
+												"value": 9
+											}
+										],
+										"actions": [
+											{
+												"type": "emit",
+												"target": "gate-reached",
+												"value": true
+											}
+										]
+									}
+								],
+								"world": {
+									"width": 12,
+									"depth": 8,
+									"spawn": {
+										"x": 1.5,
+										"z": 4
+									},
+									"objects": [
+										{
+											"id": "north-wall",
+											"kind": "wall",
+											"label": "North wall",
+											"x": 6,
+											"z": 0.5,
+											"width": 12,
+											"depth": 1,
+											"height": 2.5
+										},
+										{
+											"id": "south-wall",
+											"kind": "wall",
+											"label": "South wall",
+											"x": 6,
+											"z": 7.5,
+											"width": 12,
+											"depth": 1,
+											"height": 2.5
+										},
+										{
+											"id": "gate-pad",
+											"kind": "goal",
+											"label": "Gate pad",
+											"x": 10,
+											"z": 4,
+											"width": 1.5,
+											"depth": 1.5,
+											"height": 1
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "Canvas2dAdapter.render",
 						"type": "void",
-						"description": "Paint the current game frame."
+						"description": "No value is returned; the call paints the current frame onto this.canvas through draw2d, and paints nothing when getContext('2d') returns null."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "Canvas2dAdapter.dispose",
@@ -121,11 +593,11 @@
 					{
 						"name": "Canvas2dAdapter.dispose",
 						"type": "void",
-						"description": "Release the renderer resources."
+						"description": "No value is returned; the call clears the whole canvas with clearRect(0, 0, canvas.width, canvas.height) and does nothing when getContext('2d') returns null, so it releases no other resource."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "create2d",
@@ -134,18 +606,18 @@
 						"name": "create2d.canvas",
 						"type": "HTMLCanvasElement",
 						"required": true,
-						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+						"description": "The canvas that create2d passes unchanged to new Canvas2dAdapter(canvas), so the returned frame source paints onto it. create2d does not check it, and when getContext('2d') returns null, render draws nothing and dispose clears nothing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "create2d",
 						"type": "FrameSource",
-						"description": "Canvas frame source with render and dispose operations."
+						"description": "A new Canvas2dAdapter for the given canvas, typed as FrameSource and exposing the canvas property plus the render and dispose functions. Each call creates a new adapter and does not check the canvas."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "draw2d",
@@ -154,30 +626,187 @@
 						"name": "draw2d.canvas",
 						"type": "HTMLCanvasElement",
 						"required": true,
-						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+						"description": "The canvas that draw2d paints: when getContext('2d') returns null the call returns without drawing, otherwise the frame is sized from canvas.width and canvas.height. After drawing it sets dataset.ready to 'true', and for a view with a world it also sets dataset.dimension to '2d'."
 					},
 					{
 						"name": "draw2d.run",
 						"type": "GameRun",
 						"required": true,
-						"description": "Current deterministic game state, tick and checkpoint execution results."
+						"description": "The run whose state the frame reads: draw2d uses only run.state, reading x and y for the player position, hasKey and doorOpen, and the visible:door, visible:key and visible:player flags. A visible:door, visible:key or visible:player flag hides its item when it is exactly false, and a truthy hasKey also hides the key.",
+						"examples": [
+							{
+								"viewId": "courtyard",
+								"progress": {
+									"courtyard": []
+								},
+								"tick": 2,
+								"seed": 67634689,
+								"state": {
+									"x": 2,
+									"y": 0,
+									"hasKey": true,
+									"doorOpen": false,
+									"outcome": "",
+									"choice": "",
+									"view": "courtyard",
+									"event:key-collected": true
+								},
+								"completed": ["key"],
+								"events": ["key-collected"],
+								"trace": [
+									{
+										"viewId": "courtyard",
+										"tick": 2,
+										"checkpointId": "key",
+										"reason": "x gte 2"
+									}
+								]
+							},
+							{
+								"viewId": "garden-lane",
+								"progress": {
+									"garden-lane": []
+								},
+								"tick": 1,
+								"seed": 270369,
+								"state": {
+									"x": 2,
+									"y": 4,
+									"hasKey": false,
+									"doorOpen": false,
+									"outcome": "",
+									"choice": "",
+									"view": "garden-lane"
+								},
+								"completed": [],
+								"events": [],
+								"trace": []
+							}
+						]
 					},
 					{
 						"name": "draw2d.view",
 						"type": "GameView",
 						"required": true,
-						"description": "Active authored view, including dimension and checkpoint definitions."
+						"description": "The authored view that selects the scene: when view.world is truthy, the level is drawn from world.width, world.depth and world.objects and view.title is not drawn, otherwise view.title is drawn at x 24, y 32 over the default scene. Only view.world and view.title are read, so id, dimension, style, checkpoints and planning do not change the frame.",
+						"examples": [
+							{
+								"id": "courtyard",
+								"title": "The courtyard",
+								"dimension": "2d",
+								"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+								"checkpoints": [
+									{
+										"id": "key",
+										"title": "Collect the key",
+										"description": "When the player reaches the key, add it to inventory.",
+										"x": 0,
+										"y": 80,
+										"requires": [],
+										"conditions": [
+											{
+												"field": "x",
+												"op": "gte",
+												"value": 2
+											}
+										],
+										"actions": [
+											{
+												"type": "set",
+												"target": "hasKey",
+												"value": true
+											},
+											{
+												"type": "emit",
+												"target": "key-collected",
+												"value": true
+											}
+										]
+									}
+								]
+							},
+							{
+								"id": "garden-lane",
+								"title": "Garden lane",
+								"dimension": "2d",
+								"style": "Top-down floor plan with a green lawn and pale stone walls.",
+								"checkpoints": [
+									{
+										"id": "gate",
+										"title": "Reach the gate",
+										"description": "Walking up to the gate pad records that the gate was reached.",
+										"x": 0,
+										"y": 80,
+										"requires": [],
+										"conditions": [
+											{
+												"field": "x",
+												"op": "gte",
+												"value": 9
+											}
+										],
+										"actions": [
+											{
+												"type": "emit",
+												"target": "gate-reached",
+												"value": true
+											}
+										]
+									}
+								],
+								"world": {
+									"width": 12,
+									"depth": 8,
+									"spawn": {
+										"x": 1.5,
+										"z": 4
+									},
+									"objects": [
+										{
+											"id": "north-wall",
+											"kind": "wall",
+											"label": "North wall",
+											"x": 6,
+											"z": 0.5,
+											"width": 12,
+											"depth": 1,
+											"height": 2.5
+										},
+										{
+											"id": "south-wall",
+											"kind": "wall",
+											"label": "South wall",
+											"x": 6,
+											"z": 7.5,
+											"width": 12,
+											"depth": 1,
+											"height": 2.5
+										},
+										{
+											"id": "gate-pad",
+											"kind": "goal",
+											"label": "Gate pad",
+											"x": 10,
+											"z": 4,
+											"width": 1.5,
+											"depth": 1.5,
+											"height": 1
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "draw2d",
 						"type": "void",
-						"description": "Paint the current game frame."
+						"description": "No value is returned; the call paints the frame onto the given canvas and returns without drawing when getContext('2d') returns null."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -188,17 +817,18 @@
 						"name": "Canvas2dAdapter.constructor.canvas",
 						"type": "HTMLCanvasElement",
 						"required": true,
-						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+						"description": "The canvas this adapter paints into, stored unchanged as the readonly canvas property that render and dispose read on every call. The constructor does not check it: when getContext('2d') returns null, render returns without drawing and dispose does nothing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "Canvas2dAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new Canvas2dAdapter instance: its canvas property is the argument, and its render and dispose properties are arrow functions that use this.canvas."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
