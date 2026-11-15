@@ -18,24 +18,51 @@
 				"name": "readJsonBody.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request supplying headers and a byte stream."
+				"description": "readJsonBody reads this Request's Content-Type, Content-Length and body stream. The Content-Type is checked only when typed is true, a Content-Length above relayConfig.bodyBytes (16 KiB) returns undefined before any byte is read, the body is read chunk by chunk and cancelled at the first chunk that takes the total above that limit, and a null body stream returns undefined."
 			},
 			{
 				"name": "readJsonBody.typed",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Optional content-type requirement, defaulting to true. False skips only the application/json check for internal callers."
+				"description": "Defaults to true, which requires the Content-Type media type (the text before the first ';', trimmed and lower-cased) to equal application/json. False skips only that check, so the Content-Length and body size limits still apply; the doc comment reserves false for internal callers, since a public body has to say that it is JSON.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "readJsonBody",
 				"type": "Promise<Record<string, unknown> | undefined>",
-				"description": "Promise resolving to a non-null JSON object, or undefined for a missing body, wrong content type, declared/actual body over 16 KiB, malformed JSON or non-object result. Reads chunks incrementally and cancels at the first byte above the limit."
+				"description": "Resolves to the parsed JSON when it is an object that is neither null nor an array (isRecord), and to undefined for a null body stream, a failed Content-Type check when typed is true, a declared Content-Length or a body read past relayConfig.bodyBytes, malformed JSON, or a non-object result. The promise rejects only when acquiring the body reader, reading from it or cancelling it fails, because readJsonBody does not catch those errors.",
+				"examples": [
+					{
+						"title": "Weekly notes",
+						"pinned": true
+					},
+					{
+						"event": "ping",
+						"sequence": 3
+					},
+					{
+						"items": ["alpha", "beta"],
+						"count": 2
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by body.getReader() in boundedBytes when request.body is already locked by another reader; readJsonBody does not catch it, so the promise rejects with it."
+			},
+			{
+				"name": "body stream error",
+				"type": "thrown",
+				"description": "The error the request body stream was errored with, passed on as the rejection of reader.read() or reader.cancel() in boundedBytes; readJsonBody does not catch it, so the promise rejects with it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "readJsonBody",
@@ -44,25 +71,51 @@
 						"name": "readJsonBody.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request supplying headers and a byte stream."
+						"description": "readJsonBody reads this Request's Content-Type, Content-Length and body stream. The Content-Type is checked only when typed is true, a Content-Length above relayConfig.bodyBytes (16 KiB) returns undefined before any byte is read, the body is read chunk by chunk and cancelled at the first chunk that takes the total above that limit, and a null body stream returns undefined."
 					},
 					{
 						"name": "readJsonBody.typed",
 						"type": "boolean",
 						"required": false,
 						"default": true,
-						"description": "Optional content-type requirement, defaulting to true. False skips only the application/json check for internal callers."
+						"description": "Defaults to true, which requires the Content-Type media type (the text before the first ';', trimmed and lower-cased) to equal application/json. False skips only that check, so the Content-Length and body size limits still apply; the doc comment reserves false for internal callers, since a public body has to say that it is JSON.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readJsonBody",
 						"type": "Promise<Record<string, unknown> | undefined>",
-						"description": "Promise resolving to a non-null JSON object, or undefined for a missing body, wrong content type, declared/actual body over 16 KiB, malformed JSON or non-object result. Reads chunks incrementally and cancels at the first byte above the limit."
+						"description": "Resolves to the parsed JSON when it is an object that is neither null nor an array (isRecord), and to undefined for a null body stream, a failed Content-Type check when typed is true, a declared Content-Length or a body read past relayConfig.bodyBytes, malformed JSON, or a non-object result. The promise rejects only when acquiring the body reader, reading from it or cancelling it fails, because readJsonBody does not catch those errors.",
+						"examples": [
+							{
+								"title": "Weekly notes",
+								"pinned": true
+							},
+							{
+								"event": "ping",
+								"sequence": 3
+							},
+							{
+								"items": ["alpha", "beta"],
+								"count": 2
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by body.getReader() in boundedBytes when request.body is already locked by another reader; readJsonBody does not catch it, so the promise rejects with it."
+					},
+					{
+						"name": "body stream error",
+						"type": "thrown",
+						"description": "The error the request body stream was errored with, passed on as the rejection of reader.read() or reader.cancel() in boundedBytes; readJsonBody does not catch it, so the promise rejects with it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
