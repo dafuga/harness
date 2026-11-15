@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/projects-sessions/watchDeploymentActivities.ts",
-			"packages/desktop/src/utils/projects-sessions/watchDeploymentActivities.types.ts",
-			"packages/desktop/src/utils/watchDeploymentActivities.ts"
+			"packages/desktop/src/utils/projects-sessions/watchDeploymentActivities.types.ts"
 		],
-		"symbols": ["watchDeploymentActivities", "Events", "watchDeploymentActivities"]
+		"symbols": ["watchDeploymentActivities", "Events"]
 	},
 	"contract": {
 		"origin": "declared",
