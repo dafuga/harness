@@ -28,29 +28,98 @@
 				"name": "comparisonDifferences.metric",
 				"type": "string",
 				"required": true,
-				"description": "Metric name used to enforce the expected unit for known latency, throughput and memory metrics; custom metrics require matching units."
+				"description": "Metric name looked up in metricUnits: latency-cold-ms, latency-warm-ms and latency-floor-ms expect ms, throughput-ops expects ops/s and memory-bytes expects bytes. Any other name only requires the two units to be equal, and an inherited Object.prototype name such as constructor always reports a unit difference because the lookup returns a non-string value.",
+				"examples": ["latency-warm-ms", "throughput-ops", "memory-bytes"]
 			},
 			{
 				"name": "comparisonDifferences.measured",
 				"type": "MeasuredDefinition",
 				"required": true,
-				"description": "Current measurement’s unit, method description and comparison context; missing or invalid metadata is reported as incomplete."
+				"description": "The current measurement's unitOfMeasure, method and comparison: an empty or missing unitOfMeasure or method, or a missing or invalid comparison, is listed in differences and makes the verdict incomplete. A valid comparison has exactly the fields request (a sha256 hex digest of 64 lowercase hexadecimal characters), boundary (public-invocation or fixture), protocol (a string with at least one character after trimming) and sampling, and sampling has exactly warmup (a non-negative integer), rounds and iterations (integers of at least 1).",
+				"examples": [
+					{
+						"unitOfMeasure": "ms",
+						"method": "warm-up calls, then rounds of timed whole invocations",
+						"comparison": {
+							"request": "9c4e1a7f3b0d52e86a1f4c9b7d20e35a8f6b1c4d9e2a7f0b3c5d8e1a6f4b2c09",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 10,
+								"iterations": 100
+							}
+						}
+					},
+					{
+						"unitOfMeasure": "ms",
+						"method": "warm-up calls, then rounds of timed whole invocations"
+					}
+				]
 			},
 			{
 				"name": "comparisonDifferences.baseline",
 				"type": "MeasuredDefinition",
 				"required": true,
-				"description": "Reviewed baseline’s unit, method description and comparison context."
+				"description": "The baseline's unitOfMeasure, method and comparison, checked by the same rules as the measurement and reported under the name baseline when missing or invalid. For a comparable verdict each must equal the measurement's.",
+				"examples": [
+					{
+						"unitOfMeasure": "ms",
+						"method": "warm-up calls, then rounds of timed whole invocations",
+						"comparison": {
+							"request": "9c4e1a7f3b0d52e86a1f4c9b7d20e35a8f6b1c4d9e2a7f0b3c5d8e1a6f4b2c09",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 10,
+								"iterations": 100
+							}
+						}
+					},
+					{
+						"unitOfMeasure": "ms",
+						"method": "warm-up calls, then rounds of timed whole invocations",
+						"comparison": {
+							"request": "d61b8f2a0c7e4953b1a6d8f0e2c75a94b3e1f7d02c8a6b5e9f4d13a7c0e26b18",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 10,
+								"iterations": 50
+							}
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "comparisonDifferences",
 				"type": "ComparisonVerdict",
-				"description": "Comparable with no differences when definitions match; incomplete when metadata is missing or invalid; otherwise incompatible with ordered differences for unit, request, boundary, protocol, sampling and method."
+				"description": "Status is comparable, with an empty differences list, when both sides state a unit of measure, a method and a valid comparison and no difference is found. Status is incomplete when either side lacks or invalidly states one of those, and differences then lists each such item, measurement first, in the order comparison, unit of measure, method; otherwise status is incompatible and differences lists each mismatch in the order unit of measure, request, boundary, protocol, sampling, method.",
+				"examples": [
+					{
+						"status": "comparable",
+						"differences": []
+					},
+					{
+						"status": "incomplete",
+						"differences": ["the measurement states no comparison context"]
+					},
+					{
+						"status": "incompatible",
+						"differences": [
+							"request 9c4e1a7f3b0d differs from the baseline request d61b8f2a0c7e",
+							"sampling is 10 rounds of 100 calls after 3 warm-up calls, the baseline used 10 rounds of 50 calls after 3 warm-up calls"
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "comparisonDifferences",
@@ -59,30 +128,98 @@
 						"name": "comparisonDifferences.metric",
 						"type": "string",
 						"required": true,
-						"description": "Metric name used to enforce the expected unit for known latency, throughput and memory metrics; custom metrics require matching units."
+						"description": "Metric name looked up in metricUnits: latency-cold-ms, latency-warm-ms and latency-floor-ms expect ms, throughput-ops expects ops/s and memory-bytes expects bytes. Any other name only requires the two units to be equal, and an inherited Object.prototype name such as constructor always reports a unit difference because the lookup returns a non-string value.",
+						"examples": ["latency-warm-ms", "throughput-ops", "memory-bytes"]
 					},
 					{
 						"name": "comparisonDifferences.measured",
 						"type": "MeasuredDefinition",
 						"required": true,
-						"description": "Current measurement’s unit, method description and comparison context; missing or invalid metadata is reported as incomplete."
+						"description": "The current measurement's unitOfMeasure, method and comparison: an empty or missing unitOfMeasure or method, or a missing or invalid comparison, is listed in differences and makes the verdict incomplete. A valid comparison has exactly the fields request (a sha256 hex digest of 64 lowercase hexadecimal characters), boundary (public-invocation or fixture), protocol (a string with at least one character after trimming) and sampling, and sampling has exactly warmup (a non-negative integer), rounds and iterations (integers of at least 1).",
+						"examples": [
+							{
+								"unitOfMeasure": "ms",
+								"method": "warm-up calls, then rounds of timed whole invocations",
+								"comparison": {
+									"request": "9c4e1a7f3b0d52e86a1f4c9b7d20e35a8f6b1c4d9e2a7f0b3c5d8e1a6f4b2c09",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 10,
+										"iterations": 100
+									}
+								}
+							},
+							{
+								"unitOfMeasure": "ms",
+								"method": "warm-up calls, then rounds of timed whole invocations"
+							}
+						]
 					},
 					{
 						"name": "comparisonDifferences.baseline",
 						"type": "MeasuredDefinition",
 						"required": true,
-						"description": "Reviewed baseline’s unit, method description and comparison context."
+						"description": "The baseline's unitOfMeasure, method and comparison, checked by the same rules as the measurement and reported under the name baseline when missing or invalid. For a comparable verdict each must equal the measurement's.",
+						"examples": [
+							{
+								"unitOfMeasure": "ms",
+								"method": "warm-up calls, then rounds of timed whole invocations",
+								"comparison": {
+									"request": "9c4e1a7f3b0d52e86a1f4c9b7d20e35a8f6b1c4d9e2a7f0b3c5d8e1a6f4b2c09",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 10,
+										"iterations": 100
+									}
+								}
+							},
+							{
+								"unitOfMeasure": "ms",
+								"method": "warm-up calls, then rounds of timed whole invocations",
+								"comparison": {
+									"request": "d61b8f2a0c7e4953b1a6d8f0e2c75a94b3e1f7d02c8a6b5e9f4d13a7c0e26b18",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 10,
+										"iterations": 50
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "comparisonDifferences",
 						"type": "ComparisonVerdict",
-						"description": "Comparable with no differences when definitions match; incomplete when metadata is missing or invalid; otherwise incompatible with ordered differences for unit, request, boundary, protocol, sampling and method."
+						"description": "Status is comparable, with an empty differences list, when both sides state a unit of measure, a method and a valid comparison and no difference is found. Status is incomplete when either side lacks or invalidly states one of those, and differences then lists each such item, measurement first, in the order comparison, unit of measure, method; otherwise status is incompatible and differences lists each mismatch in the order unit of measure, request, boundary, protocol, sampling, method.",
+						"examples": [
+							{
+								"status": "comparable",
+								"differences": []
+							},
+							{
+								"status": "incomplete",
+								"differences": ["the measurement states no comparison context"]
+							},
+							{
+								"status": "incompatible",
+								"differences": [
+									"request 9c4e1a7f3b0d differs from the baseline request d61b8f2a0c7e",
+									"sampling is 10 rounds of 100 calls after 3 warm-up calls, the baseline used 10 rounds of 50 calls after 3 warm-up calls"
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
