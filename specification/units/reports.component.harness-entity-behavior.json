@@ -50,72 +50,335 @@
 				"name": "EntityBehavior.behavior",
 				"type": "ExplorerBehavior",
 				"required": true,
-				"description": "Required metadata for recorded rows before their contents are read. Row before/after hashes form the identity used to retain a completed reading."
+				"description": "The recorded results as the host found them, before any is read. Each row's before and after sha256 hashes form the identity that a completed reading is kept under, and with no rows nothing is read.",
+				"examples": [
+					{
+						"mode": "commit",
+						"rows": [
+							{
+								"scenario": "local-project-chat",
+								"state": "history-navigation",
+								"evidence": "local-chat-output",
+								"kind": "output",
+								"before": {
+									"evidence": "local-chat-output",
+									"kind": "output",
+									"state": "history-navigation",
+									"status": "passed",
+									"path": "evidence/4c1f8a0d7e3b92f6a5c0d8e1b7f24a9c63e0d5b1/local-project-chat/console-agent/local-chat-output-history-navigation.json",
+									"sha256": "3f9a1c0e7b2d4658a1f0c9e3d7b5a24061f8e9d2c3b4a5968778695a4b3c2d1e",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-13T19:48:02.330Z",
+									"media": "media/3f9a1c0e7b2d4658a1f0c9e3d7b5a24061f8e9d2c3b4a5968778695a4b3c2d1e.json"
+								},
+								"after": {
+									"evidence": "local-chat-output",
+									"kind": "output",
+									"state": "history-navigation",
+									"status": "passed",
+									"path": "evidence/9d4e2b7a1c8f03e5d6b2a4c9f1e7085b3a6d2c4e/local-project-chat/console-agent/local-chat-output-history-navigation.json",
+									"sha256": "5e0a7c3f9d41b8e26f0c9a7d3b1e5f48c2d6a0917e4b3f8c2d5a6e1b09f7c3d2",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-14T18:05:44.077Z",
+									"media": "media/5e0a7c3f9d41b8e26f0c9a7d3b1e5f48c2d6a0917e4b3f8c2d5a6e1b09f7c3d2.json"
+								},
+								"change": "differs",
+								"differences": []
+							}
+						],
+						"summary": "differs",
+						"reason": "The recorded results differ in bytes; reading them says whether the behaviour does.",
+						"scenarios": [
+							{
+								"id": "local-project-chat",
+								"title": "Local web project chat and its managed runtime",
+								"before": "passed",
+								"after": "passed"
+							}
+						]
+					},
+					{
+						"mode": "commit",
+						"rows": [
+							{
+								"scenario": "local-project-chat",
+								"state": "history-navigation",
+								"evidence": "local-chat-output",
+								"kind": "output",
+								"before": null,
+								"after": {
+									"evidence": "local-chat-output",
+									"kind": "output",
+									"state": "history-navigation",
+									"status": "passed",
+									"path": "evidence/2e7b9c4d1a0f6e8b3d5c7a9f1e2b4d6c8a0f3e5b/local-project-chat/console-agent/local-chat-output-history-navigation.json",
+									"sha256": "b64e0f7d2a9c8135e7d1f04ab6c2e9d8137a5f0c4b9e26d1a8f3c57e90d9b2a4",
+									"mediaType": "application/json",
+									"capturedAt": "2026-10-02T10:09:58.612Z",
+									"media": "media/b64e0f7d2a9c8135e7d1f04ab6c2e9d8137a5f0c4b9e26d1a8f3c57e90d9b2a4.json"
+								},
+								"change": "unknown",
+								"differences": []
+							}
+						],
+						"summary": "not-compared",
+						"reason": "This is the first commit of its history: there is no parent to compare with.",
+						"scenarios": [
+							{
+								"id": "local-project-chat",
+								"title": "Local web project chat and its managed runtime",
+								"before": null,
+								"after": "passed"
+							}
+						]
+					},
+					{
+						"mode": "commit",
+						"rows": [],
+						"summary": "unknown",
+						"reason": "Neither side recorded an output, assertions or a trace for this unit.",
+						"scenarios": []
+					}
+				]
 			},
 			{
 				"name": "EntityBehavior.read",
 				"type": "ExplorerBehavior | null",
 				"required": false,
 				"default": null,
-				"description": "Optional already-read behavior, default null. Non-null bypasses local reading; null means no preloaded result and does not itself indicate failure."
+				"description": "Optional behavior whose results were already read and compared; when it is non-null the component uses it and does no local reading. Null, the default, means no preloaded result and does not mean that a read failed.",
+				"examples": [
+					null,
+					{
+						"mode": "commit",
+						"rows": [
+							{
+								"scenario": "local-project-chat",
+								"state": "history-navigation",
+								"evidence": "local-chat-output",
+								"kind": "output",
+								"before": {
+									"evidence": "local-chat-output",
+									"kind": "output",
+									"state": "history-navigation",
+									"status": "passed",
+									"path": "evidence/4c1f8a0d7e3b92f6a5c0d8e1b7f24a9c63e0d5b1/local-project-chat/console-agent/local-chat-output-history-navigation.json",
+									"sha256": "3f9a1c0e7b2d4658a1f0c9e3d7b5a24061f8e9d2c3b4a5968778695a4b3c2d1e",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-13T19:48:02.330Z",
+									"media": "media/3f9a1c0e7b2d4658a1f0c9e3d7b5a24061f8e9d2c3b4a5968778695a4b3c2d1e.json"
+								},
+								"after": {
+									"evidence": "local-chat-output",
+									"kind": "output",
+									"state": "history-navigation",
+									"status": "passed",
+									"path": "evidence/9d4e2b7a1c8f03e5d6b2a4c9f1e7085b3a6d2c4e/local-project-chat/console-agent/local-chat-output-history-navigation.json",
+									"sha256": "5e0a7c3f9d41b8e26f0c9a7d3b1e5f48c2d6a0917e4b3f8c2d5a6e1b09f7c3d2",
+									"mediaType": "application/json",
+									"capturedAt": "2026-11-14T18:05:44.077Z",
+									"media": "media/5e0a7c3f9d41b8e26f0c9a7d3b1e5f48c2d6a0917e4b3f8c2d5a6e1b09f7c3d2.json"
+								},
+								"change": "changed",
+								"differences": ["output.status"]
+							}
+						],
+						"summary": "changed",
+						"reason": null,
+						"scenarios": [
+							{
+								"id": "local-project-chat",
+								"title": "Local web project chat and its managed runtime",
+								"before": "passed",
+								"after": "passed"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "EntityBehavior.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Required mode, commit and parent context. Paired panes require commit behavior with a parent."
+				"description": "The revision shown (commit), the revision it is compared with (parent, null for a first commit) and the mode, where current shows the View commit changes link. Panes are paired only when the shown behavior is in commit mode and parent is not null.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": null,
+							"category": "components",
+							"entity": "reports.component.harness-entity-behavior"
+						},
+						"mode": "current",
+						"branch": "main",
+						"tip": "9d4e2b7a1c8f03e5d6b2a4c9f1e7085b3a6d2c4e",
+						"commit": "9d4e2b7a1c8f03e5d6b2a4c9f1e7085b3a6d2c4e",
+						"atTip": true,
+						"parent": "4c1f8a0d7e3b92f6a5c0d8e1b7f24a9c63e0d5b1",
+						"summary": {
+							"commit": "9d4e2b7a1c8f03e5d6b2a4c9f1e7085b3a6d2c4e",
+							"parents": ["4c1f8a0d7e3b92f6a5c0d8e1b7f24a9c63e0d5b1"],
+							"subject": "Reject blank report titles before saving",
+							"author": "Maya Chen",
+							"committedAt": "2026-11-14T16:02:37+00:00",
+							"branches": ["main"],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [
+								{
+									"id": "a7c2e91f4b05d3286e9a1c7f0d4b52e8c63a9f1d7e0b24c5891f6a3d2e7c0b94",
+									"status": "passed",
+									"profile": "extended-vitest",
+									"finishedAt": "2026-11-14T18:12:37.905Z",
+									"base": null,
+									"valid": true,
+									"problems": []
+								}
+							],
+							"legacy": []
+						}
+					},
+					{
+						"location": {
+							"branch": "main",
+							"commit": "2e7b9c4d1a0f6e8b3d5c7a9f1e2b4d6c8a0f3e5b",
+							"category": "components",
+							"entity": "reports.component.harness-entity-behavior"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "9d4e2b7a1c8f03e5d6b2a4c9f1e7085b3a6d2c4e",
+						"commit": "2e7b9c4d1a0f6e8b3d5c7a9f1e2b4d6c8a0f3e5b",
+						"atTip": false,
+						"parent": null,
+						"summary": {
+							"commit": "2e7b9c4d1a0f6e8b3d5c7a9f1e2b4d6c8a0f3e5b",
+							"parents": [],
+							"subject": "Start the report explorer shell",
+							"author": "Sam Okafor",
+							"committedAt": "2026-10-02T09:44:12+00:00",
+							"branches": ["main"],
+							"retained": false,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [
+								{
+									"id": "d19f36a0c7e24b8f5a0d91c6e3b7f285a4c10e9d6b3f7a2c84e5d0b1f9a63c27",
+									"status": "passed",
+									"profile": "extended-vitest",
+									"finishedAt": "2026-10-02T10:15:31.440Z",
+									"base": null,
+									"valid": true,
+									"problems": []
+								}
+							],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "EntityBehavior.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Required base used by the artifact-reading helper and passed to run panels."
+				"description": "The base the artifact-reading helper uses to read recorded artifacts. The component passes it unchanged to explorerReading and to each run panel and does not check it.",
+				"examples": ["/harness/media/"]
 			},
 			{
 				"name": "EntityBehavior.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Required route context and navigation callbacks for full tests and selected-commit links."
+				"description": "The route whose category and entity name the entity, and the href and go callbacks that build and follow the full-test link and, in current mode, the View commit changes link. The component does not catch exceptions these callbacks throw."
 			},
 			{
 				"name": "EntityBehavior.reasons",
 				"type": "Reasons",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional entity change reasons, displayed separately from test observations. Supplied behavior text remains visible while recorded results load and takes precedence over derived comparison explanation. Defaults to JavaScript undefined (omitted)."
+				"description": "What the commit says it changed in the entity, shown in its own EntityReasons block apart from the test observations; non-empty behavior text replaces the derived explanation and stays visible while results load, and without it the derived explanation or 'No reason is recorded for this entity here.' is shown. Defaults to JavaScript undefined (omitted).",
+				"examples": [
+					{
+						"behavior": {
+							"text": "Blank report titles are now rejected before the report is saved.",
+							"cut": false
+						},
+						"simplification": {
+							"text": "Reuse the trimmed title check in the save path.",
+							"cut": false,
+							"outcomes": ["fewer branches"]
+						},
+						"performance": {
+							"text": "Check the title once instead of on every keystroke.",
+							"cut": false,
+							"outcomes": ["fewer calls"]
+						},
+						"notes": [
+							{
+								"behavior": "Blank report titles are now rejected before the report is saved.",
+								"subjects": ["validate report title"]
+							}
+						],
+						"attempted": [
+							{
+								"attempt": "Reuse the trimmed title check in the save path.",
+								"uses": [
+									{
+										"subject": "validate report title",
+										"kind": "simplification",
+										"outcome": "fewer branches"
+									}
+								]
+							},
+							{
+								"attempt": "Check the title once instead of on every keystroke.",
+								"uses": [
+									{
+										"subject": "validate report title",
+										"kind": "performance",
+										"outcome": "fewer calls"
+									}
+								]
+							}
+						],
+						"long": false
+					}
+				]
 			},
 			{
 				"name": "EntityBehavior.duration",
 				"type": "string",
 				"required": false,
 				"default": "Not measured",
-				"description": "Optional displayed end-to-end duration, defaulting to Not measured; the component does not calculate it. Defaults to Not measured."
+				"description": "How long the end-to-end checks of the shown revision ran, as its record states it; the component does not calculate it and passes it unchanged to the behavior facts list. It defaults to Not measured.",
+				"examples": ["Not measured", "184233 ms"]
 			},
 			{
 				"name": "EntityBehavior.unit",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional function identifier passed to run/artifact case rendering. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "The function identifier the results are shown for, when they are shown as its rows; it is passed to each run panel, and while it is set the full-test link reads View examples. It defaults to JavaScript undefined (omitted), not the literal string.",
+				"examples": ["reports.function.entity-behavior", "reports.function.explorer-reading"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityBehavior",
 				"type": "markup",
-				"description": "Current or before/after test panel. Reads artifacts when not supplied and ignores completion whose row-hash signature no longer matches. Pending reading omits settled reason-absence text; completed explanations use separate paragraphs. Missing groups are explicit. Shows scenario outcomes, duration, original reasons and navigation. A passing current/unchanged verdict requires passing results. Footer outcome values stay together. States: initial: The selected initial commit is shown without a parent comparison. empty: No behavior rows or scenarios are recorded and an empty message is shown. changed: The comparison highlights changed output fields between the two revisions. loading: The panel shows pending artifact reads instead of verified behavior contents."
+				"description": "The end-to-end panel for the shown entity, with scenario outcomes, duration, reasons and navigation: a before/after comparison when the shown behavior is in commit mode and the scope has a parent, otherwise one run, or an Evidence missing message when no end-to-end result is recorded. It reads artifacts when none were supplied, shows Reading the recorded results… while they load, shows Behavior unknown when reading them is rejected, ignores a completion whose row-hash signature no longer matches, and shows the passing Behavior unchanged or Current behavior verdict only when the results pass."
 			}
 		],
 		"errors": [
 			{
-				"name": "Recorded result read failure",
-				"type": "handled",
-				"description": "A rejected artifact read produces Behavior unknown and the recorded-results read gap; it is not reported as unchanged behavior."
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when the behavior, nav or scope prop is null or undefined, or when an object the component reads lacks a field it reads, for example behavior without rows, nav without route or reasons without behavior. Nothing in the component catches it."
 			},
 			{
 				"name": "Caller navigation or rendering error",
-				"type": "propagated",
-				"description": "Exceptions in caller navigation or rendered dependencies propagate; this component is not an error boundary."
+				"type": "thrown",
+				"description": "Exceptions thrown by nav.href or nav.go, by the helper functions called while deriving or rendering, or by rendered child components are not caught here and propagate out of the component. The component is not an error boundary, so these exceptions surface outside it."
 			}
 		],
 		"errorStatus": "declared",
