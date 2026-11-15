@@ -10,7 +10,7 @@ import {
 import { UnitRuntimeService } from '../../src/services/execution-runtimes/UnitRuntimeService';
 import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';
-import { kernelMutations } from '../../src/workflows/run-kernel/kernelWorkload';
+import { kernelMutations } from '../../src/cli/program/run-kernel/kernelWorkload';
 import { kernelWorkload } from '../../src/utils/kernelWorkload';
 import { recordCapture } from '../../src/utils/reports-media/record-capture/recordCapture';
 import { kernelVectors, vectorText } from '../support/kernelVectors';

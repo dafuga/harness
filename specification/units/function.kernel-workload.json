@@ -13,8 +13,7 @@
 			"src/cli/program/run-kernel/kernelWorkload.types.ts",
 			"src/utils/execution-runtimes/kernelWorkload.ts",
 			"src/utils/execution-runtimes/kernelWorkload.types.ts",
-			"src/utils/kernelWorkload.ts",
-			"src/workflows/run-kernel/kernelWorkload.ts"
+			"src/utils/kernelWorkload.ts"
 		],
 		"symbols": [
 			"kernelMutations",
@@ -29,9 +28,7 @@
 			"kernelMutations",
 			"kernelTexts",
 			"kernelWorkload",
-			"edges",
-			"kernelMutations",
-			"kernelTexts"
+			"edges"
 		]
 	},
 	"contract": {

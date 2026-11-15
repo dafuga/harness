@@ -8,7 +8,7 @@ import {
 } from '../../src/cli/program/run-kernel/RuntimeServerService';
 import { UnitRuntimeService } from '../../src/services/execution-runtimes/UnitRuntimeService';
 import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
-import { impactKernelText } from '../../src/workflows/run-kernel/impactKernel';
+import { impactKernelText } from '../../src/cli/program/run-kernel/impactKernel';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';
 
 const refused = {
