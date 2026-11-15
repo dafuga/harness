@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { PNG } from 'pngjs';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
-import { DesktopRunService } from '../src/services/desktop-run-service/DesktopRunService';
+import { DesktopRunService } from '../src/services/agents-providers/desktop-run-service/DesktopRunService';
 import { ProviderDiscoveryService } from '../src/services/provider-discovery-service/ProviderDiscoveryService';
 import type { AgentRunner, AgentTurn, ImageGenerator } from '../src/models/AgentRunner.types';
 import type { RunEvent, RunRequest } from '../src/models/DesktopBridge.types';

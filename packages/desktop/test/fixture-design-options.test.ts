@@ -4,7 +4,7 @@ import { rm } from 'node:fs/promises';
 import { PNG } from 'pngjs';
 import { createPlanning } from '../../planning/src/lib/planning/index';
 import type { RunEvent, RunRequest } from '../src/models/DesktopBridge.types';
-import { DesktopRunService } from '../src/services/desktop-run-service/DesktopRunService';
+import { DesktopRunService } from '../src/services/agents-providers/desktop-run-service/DesktopRunService';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 import { ProviderDiscoveryService } from '../src/services/provider-discovery-service/ProviderDiscoveryService';
 import {

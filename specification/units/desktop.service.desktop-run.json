@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunService.ts",
-			"packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunService.types.ts",
-			"packages/desktop/src/services/desktop-run-service/DesktopRunService.ts"
+			"packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunService.types.ts"
 		],
 		"symbols": [
 			"DesktopRunService",
@@ -19,8 +18,7 @@
 			"DesktopRunService.start",
 			"DesktopRunService.cancelActive",
 			"DesktopRunService.cancel",
-			"Prepared",
-			"DesktopRunService"
+			"Prepared"
 		]
 	},
 	"contract": {
