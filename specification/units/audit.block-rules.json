@@ -12,32 +12,94 @@
 		"symbols": ["auditBlocks"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "auditBlocks.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository path that labels the audited file: auditBlocks copies it unchanged into the path field of every finding and never inspects, normalizes or validates it. Any string is accepted, so pass the repository-relative path so each finding points to the real file.",
+				"examples": [
+					"src/audit/development-tooling/blockRules.ts",
+					"src/rules/explorer-ui/catalog.ts"
+				]
 			},
 			{
 				"name": "auditBlocks.lines",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "The raw source text of one file as an array with one element per line in file order, where index 0 is line 1 and the line number in a finding is the start index of its block plus one. Every element must be a string, and auditBlocks finds blocks by matching each line's text against class, function and method declaration patterns rather than by parsing a syntax tree.",
+				"examples": [
+					["export function add(a: number, b: number): number {", "\treturn a + b;", "}"],
+					[
+						"export class Cart {",
+						"\ttotal(items: number[]): number {",
+						"\t\treturn items.reduce((sum, item) => sum + item, 0);",
+						"\t}",
+						"}"
+					]
+				]
 			},
 			{
 				"name": "auditBlocks.limits",
 				"type": "HarnessRuleLimits",
-				"required": false
+				"required": false,
+				"description": "Optional threshold object: a finding for length, parameters, complexity or nesting is raised only when the measured value is greater than its matching field, and auditBlocks reads six of the eight fields, so maxFileLines and maxClassesPerFile have no effect here. Defaults to harnessRuleLimits: maxFileLines 220, maxFunctionLines 55, maxClassLines 120, maxMethodLines 35, maxNestingDepth 4, maxParameters 4, maxComplexity 10 and maxClassesPerFile 1, and an undefined value uses this default.",
+				"examples": [
+					{
+						"maxFileLines": 220,
+						"maxFunctionLines": 55,
+						"maxClassLines": 120,
+						"maxMethodLines": 35,
+						"maxNestingDepth": 4,
+						"maxParameters": 4,
+						"maxComplexity": 10,
+						"maxClassesPerFile": 1
+					},
+					{
+						"maxFileLines": 200,
+						"maxFunctionLines": 40,
+						"maxClassLines": 100,
+						"maxMethodLines": 25,
+						"maxNestingDepth": 3,
+						"maxParameters": 3,
+						"maxComplexity": 8,
+						"maxClassesPerFile": 1
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "auditBlocks",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "The rule violations that auditBlocks finds in the lines, with at most one finding per failed check on each detected block; each finding has exactly the path, rule and message fields, and rule is one of small-class, small-function, method-length, max-parameters, max-complexity, max-nesting or no-manager-name. An empty array means every detected block passed, and it is also returned when no class, function or method declaration is detected.",
+				"examples": [
+					[],
+					[
+						{
+							"path": "src/orders/pricing.ts",
+							"rule": "max-parameters",
+							"message": "Function starting near line 8 has 5 parameters. Limit is 4."
+						}
+					],
+					[
+						{
+							"path": "src/cart/CartManager.ts",
+							"rule": "no-manager-name",
+							"message": "Class starting near line 1 uses a catch-all Manager name."
+						},
+						{
+							"path": "src/cart/CartManager.ts",
+							"rule": "method-length",
+							"message": "Method starting near line 2 has 38 lines. Limit is 35."
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "auditBlocks",
@@ -45,27 +107,89 @@
 					{
 						"name": "auditBlocks.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository path that labels the audited file: auditBlocks copies it unchanged into the path field of every finding and never inspects, normalizes or validates it. Any string is accepted, so pass the repository-relative path so each finding points to the real file.",
+						"examples": [
+							"src/audit/development-tooling/blockRules.ts",
+							"src/rules/explorer-ui/catalog.ts"
+						]
 					},
 					{
 						"name": "auditBlocks.lines",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "The raw source text of one file as an array with one element per line in file order, where index 0 is line 1 and the line number in a finding is the start index of its block plus one. Every element must be a string, and auditBlocks finds blocks by matching each line's text against class, function and method declaration patterns rather than by parsing a syntax tree.",
+						"examples": [
+							["export function add(a: number, b: number): number {", "\treturn a + b;", "}"],
+							[
+								"export class Cart {",
+								"\ttotal(items: number[]): number {",
+								"\t\treturn items.reduce((sum, item) => sum + item, 0);",
+								"\t}",
+								"}"
+							]
+						]
 					},
 					{
 						"name": "auditBlocks.limits",
 						"type": "HarnessRuleLimits",
-						"required": false
+						"required": false,
+						"description": "Optional threshold object: a finding for length, parameters, complexity or nesting is raised only when the measured value is greater than its matching field, and auditBlocks reads six of the eight fields, so maxFileLines and maxClassesPerFile have no effect here. Defaults to harnessRuleLimits: maxFileLines 220, maxFunctionLines 55, maxClassLines 120, maxMethodLines 35, maxNestingDepth 4, maxParameters 4, maxComplexity 10 and maxClassesPerFile 1, and an undefined value uses this default.",
+						"examples": [
+							{
+								"maxFileLines": 220,
+								"maxFunctionLines": 55,
+								"maxClassLines": 120,
+								"maxMethodLines": 35,
+								"maxNestingDepth": 4,
+								"maxParameters": 4,
+								"maxComplexity": 10,
+								"maxClassesPerFile": 1
+							},
+							{
+								"maxFileLines": 200,
+								"maxFunctionLines": 40,
+								"maxClassLines": 100,
+								"maxMethodLines": 25,
+								"maxNestingDepth": 3,
+								"maxParameters": 3,
+								"maxComplexity": 8,
+								"maxClassesPerFile": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditBlocks",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "The rule violations that auditBlocks finds in the lines, with at most one finding per failed check on each detected block; each finding has exactly the path, rule and message fields, and rule is one of small-class, small-function, method-length, max-parameters, max-complexity, max-nesting or no-manager-name. An empty array means every detected block passed, and it is also returned when no class, function or method declaration is detected.",
+						"examples": [
+							[],
+							[
+								{
+									"path": "src/orders/pricing.ts",
+									"rule": "max-parameters",
+									"message": "Function starting near line 8 has 5 parameters. Limit is 4."
+								}
+							],
+							[
+								{
+									"path": "src/cart/CartManager.ts",
+									"rule": "no-manager-name",
+									"message": "Class starting near line 1 uses a catch-all Manager name."
+								},
+								{
+									"path": "src/cart/CartManager.ts",
+									"rule": "method-length",
+									"message": "Method starting near line 2 has 38 lines. Limit is 35."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
