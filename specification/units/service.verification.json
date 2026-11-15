@@ -30,23 +30,118 @@
 				"name": "VerificationService.constructor.context",
 				"type": "VerifyContext",
 				"required": true,
-				"description": "Exact revision, impact, manifests, verify config, base evidence, optional entity scope and environment."
+				"description": "The input for verifying one exact commit: its commit and tree, the store root, the base and head revisions, the impact report, the verify config, the environment and the explained callback. The constructor keeps it and opens the record store at root, and run() and plan() read its other fields as they need them; a null baseCommit means nothing is proven, and an entity runs only its own scenario states, so the record is partial."
 			}
 		],
 		"outputs": [
 			{
 				"name": "VerificationService.run",
 				"type": "Promise<StoredRecord>",
-				"description": "StoredRecord for the completed run, including its record and scratch-directory path."
+				"description": "The StoredRecord of the completed run: the sealed record, whose id is the SHA-256 of everything else in it, and the directory from directoryFor(commit, startedAt) that holds record.json. It resolves only after the record is saved, and run() catches nothing, so a rejected step it awaits rejects the promise.",
+				"examples": [
+					{
+						"record": {
+							"schemaVersion": 1,
+							"componentSchemaVersion": 2,
+							"id": "4b9e27d15f0a3c86e1d72b04f9a5c3e8d60b71f2a94c5e0d3b8a6f1c27e95d04",
+							"repository": "/srv/luna-pyramid",
+							"source": {
+								"commit": "9c4e7a1f2b68d03e5a7c9f14d2b8e60a3f5c1d78",
+								"tree": "e2f81b6c0d94a7135f0e8b2d6c9a41f7e3b05d28",
+								"base": "5d07b3a9e16c48f20a7d9e3b15c6f08d2a4e91b7",
+								"baseRecord": "a3c71e09d52f48b6e0c19d7a2f5b83e4c60d1f97ab2e5c38d04f6b19e7a2c5d8"
+							},
+							"profile": {
+								"id": "6f1d0a93c27b4e85",
+								"platform": "linux",
+								"arch": "x64",
+								"cpu": "AMD EPYC 7B13",
+								"cores": 8,
+								"memoryBytes": 34359738368,
+								"runtime": "bun 1.2.4"
+							},
+							"startedAt": "2026-11-14T16:05:31.482Z",
+							"finishedAt": "2026-11-14T16:07:02.910Z",
+							"status": "passed",
+							"components": [],
+							"measurements": [],
+							"impact": {
+								"runtime": "module",
+								"expanded": false,
+								"changed": [
+									{
+										"path": "docs/verification.md",
+										"status": "modified",
+										"classification": "other"
+									}
+								],
+								"units": {
+									"direct": [],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"uncertain": []
+							},
+							"tests": [],
+							"scenarios": [],
+							"budgets": {
+								"status": "passed",
+								"findings": []
+							},
+							"reasons": {
+								"status": "passed",
+								"missing": []
+							},
+							"gates": {
+								"snapshot": "passed",
+								"registry": "passed",
+								"ledger": "passed",
+								"tests": "passed",
+								"scenarios": "passed",
+								"reasons": "passed",
+								"budgets": "passed"
+							},
+							"failures": []
+						},
+						"directory": "/srv/luna-pyramid/.cache/harness/verifications/9c4e7a1f2b68d03e5a7c9f14d2b8e60a3f5c1d78/20261114160531482"
+					}
+				]
 			},
 			{
 				"name": "VerificationService.plan",
 				"type": "PlannedCheck[]",
-				"description": "Planned checks for this exact context without creating a snapshot or executing them."
+				"description": "The check list run() executes for this context: the selected test files first, none when an entity is set, then the checks of the scenarios that run, sorted by target. It only builds the list, so no snapshot is created and nothing runs, and with an entity set each check passes through scopedCheck before it is returned.",
+				"examples": [
+					[
+						{
+							"id": "reports.evidence-grid:evidence-grid-unit",
+							"scenario": "reports.evidence-grid",
+							"name": "evidence-grid-unit",
+							"kind": "unit",
+							"runner": "vitest",
+							"target": "src/reports/evidence-grid/EvidenceGrid.test.ts",
+							"cwd": ".",
+							"command": "bun x vitest run src/reports/evidence-grid/EvidenceGrid.test.ts",
+							"timeoutMs": 600000
+						},
+						{
+							"id": "reports.evidence-grid:evidence-grid-browser",
+							"scenario": "reports.evidence-grid",
+							"name": "evidence-grid-browser",
+							"kind": "e2e",
+							"runner": "playwright",
+							"target": "tests/e2e/evidence-grid.spec.ts",
+							"cwd": ".",
+							"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+							"timeoutMs": 300000
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "VerificationService.run",
@@ -55,7 +150,76 @@
 					{
 						"name": "VerificationService.run",
 						"type": "Promise<StoredRecord>",
-						"description": "StoredRecord for the completed run, including its record and scratch-directory path."
+						"description": "The StoredRecord of the completed run: the sealed record, whose id is the SHA-256 of everything else in it, and the directory from directoryFor(commit, startedAt) that holds record.json. It resolves only after the record is saved, and run() catches nothing, so a rejected step it awaits rejects the promise.",
+						"examples": [
+							{
+								"record": {
+									"schemaVersion": 1,
+									"componentSchemaVersion": 2,
+									"id": "4b9e27d15f0a3c86e1d72b04f9a5c3e8d60b71f2a94c5e0d3b8a6f1c27e95d04",
+									"repository": "/srv/luna-pyramid",
+									"source": {
+										"commit": "9c4e7a1f2b68d03e5a7c9f14d2b8e60a3f5c1d78",
+										"tree": "e2f81b6c0d94a7135f0e8b2d6c9a41f7e3b05d28",
+										"base": "5d07b3a9e16c48f20a7d9e3b15c6f08d2a4e91b7",
+										"baseRecord": "a3c71e09d52f48b6e0c19d7a2f5b83e4c60d1f97ab2e5c38d04f6b19e7a2c5d8"
+									},
+									"profile": {
+										"id": "6f1d0a93c27b4e85",
+										"platform": "linux",
+										"arch": "x64",
+										"cpu": "AMD EPYC 7B13",
+										"cores": 8,
+										"memoryBytes": 34359738368,
+										"runtime": "bun 1.2.4"
+									},
+									"startedAt": "2026-11-14T16:05:31.482Z",
+									"finishedAt": "2026-11-14T16:07:02.910Z",
+									"status": "passed",
+									"components": [],
+									"measurements": [],
+									"impact": {
+										"runtime": "module",
+										"expanded": false,
+										"changed": [
+											{
+												"path": "docs/verification.md",
+												"status": "modified",
+												"classification": "other"
+											}
+										],
+										"units": {
+											"direct": [],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"uncertain": []
+									},
+									"tests": [],
+									"scenarios": [],
+									"budgets": {
+										"status": "passed",
+										"findings": []
+									},
+									"reasons": {
+										"status": "passed",
+										"missing": []
+									},
+									"gates": {
+										"snapshot": "passed",
+										"registry": "passed",
+										"ledger": "passed",
+										"tests": "passed",
+										"scenarios": "passed",
+										"reasons": "passed",
+										"budgets": "passed"
+									},
+									"failures": []
+								},
+								"directory": "/srv/luna-pyramid/.cache/harness/verifications/9c4e7a1f2b68d03e5a7c9f14d2b8e60a3f5c1d78/20261114160531482"
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -68,7 +232,33 @@
 					{
 						"name": "VerificationService.plan",
 						"type": "PlannedCheck[]",
-						"description": "Planned checks for this exact context without creating a snapshot or executing them."
+						"description": "The check list run() executes for this context: the selected test files first, none when an entity is set, then the checks of the scenarios that run, sorted by target. It only builds the list, so no snapshot is created and nothing runs, and with an entity set each check passes through scopedCheck before it is returned.",
+						"examples": [
+							[
+								{
+									"id": "reports.evidence-grid:evidence-grid-unit",
+									"scenario": "reports.evidence-grid",
+									"name": "evidence-grid-unit",
+									"kind": "unit",
+									"runner": "vitest",
+									"target": "src/reports/evidence-grid/EvidenceGrid.test.ts",
+									"cwd": ".",
+									"command": "bun x vitest run src/reports/evidence-grid/EvidenceGrid.test.ts",
+									"timeoutMs": 600000
+								},
+								{
+									"id": "reports.evidence-grid:evidence-grid-browser",
+									"scenario": "reports.evidence-grid",
+									"name": "evidence-grid-browser",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/evidence-grid.spec.ts",
+									"cwd": ".",
+									"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+									"timeoutMs": 300000
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
@@ -83,14 +273,14 @@
 						"name": "VerificationService.constructor.context",
 						"type": "VerifyContext",
 						"required": true,
-						"description": "Exact revision, impact, manifests, verify config, base evidence, optional entity scope and environment."
+						"description": "The input for verifying one exact commit: its commit and tree, the store root, the base and head revisions, the impact report, the verify config, the environment and the explained callback. The constructor keeps it and opens the record store at root, and run() and plan() read its other fields as they need them; a null baseCommit means nothing is proven, and an entity runs only its own scenario states, so the record is partial."
 					}
 				],
 				"outputs": [
 					{
 						"name": "VerificationService.constructor",
 						"type": "VerificationService",
-						"description": "Service initialized with the verification context and record store."
+						"description": "The VerificationService instance, holding the context, a VerificationStoreRepository rooted at context.root, and the machine profile captured at construction, which run() writes into the record. Nothing is verified until run() is called."
 					}
 				],
 				"errors": [],
