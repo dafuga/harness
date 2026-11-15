@@ -18,16 +18,32 @@
 			{
 				"name": "r2EvidenceConfig",
 				"type": "unknown",
-				"description": "Complete R2 configuration, or undefined for an allowed temporary local-only store or an unconfigured temporary test store. Reads environment and the configured adapter configuration file, except that test mode does not pass the file override."
+				"description": "The R2 settings object: accountId, bucket, accessKeyId and secretAccessKey are non-empty strings, and endpoint is the PROJECT_REPORTS_R2_ENDPOINT value (undefined when unset; a non-empty value must match http://127.0.0.1:<port>). It is undefined for local-only storage (PROJECT_REPORTS_ASSET_STORAGE set to 'local'), or when all four R2 settings are empty and PROJECT_REPORTS_HOME resolves under the OS temp directory, /tmp or /private/tmp; otherwise the four required settings come from their PROJECT_REPORTS_R2_* environment variables first and then from the file named by PROJECT_REPORTS_CONFIG_FILE, which is not read when NODE_ENV is 'test'.",
+				"examples": [
+					{
+						"accountId": "7c1e5a9d3b0f4e8a2d6c1b9f5e3a7d0c",
+						"bucket": "report-evidence",
+						"accessKeyId": "example-access-key-id",
+						"secretAccessKey": "example-secret-access-key",
+						"endpoint": "http://127.0.0.1:9000"
+					},
+					{
+						"accountId": "3f9c1d7a5b2e4f60a8d9c7b1e2f3a4b5",
+						"bucket": "report-evidence-prod",
+						"accessKeyId": "example-prod-access-key-id",
+						"secretAccessKey": "example-prod-secret-access-key"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws when local-only storage is requested outside a temporary descendant directory, required R2 settings are missing, or an endpoint override is not an HTTP 127.0.0.1 server with an explicit port."
+				"description": "Throws an Error when PROJECT_REPORTS_ASSET_STORAGE is 'local' outside an isolated temporary store (PROJECT_REPORTS_HOME under the OS temp directory, /tmp or /private/tmp), when some but not all of the four R2 settings are empty or all four are empty outside such a store, or when all four settings are non-empty and a non-empty PROJECT_REPORTS_R2_ENDPOINT does not match http://127.0.0.1:<port>. It also rethrows a file read error other than ENOENT from the file named by PROJECT_REPORTS_CONFIG_FILE, which is read only when PROJECT_REPORTS_ASSET_STORAGE is not 'local', NODE_ENV is not 'test', and PROJECT_REPORTS_CONFIG_FILE is non-empty."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "r2EvidenceConfig",
@@ -36,16 +52,32 @@
 					{
 						"name": "r2EvidenceConfig",
 						"type": "unknown",
-						"description": "Complete R2 configuration, or undefined for an allowed temporary local-only store or an unconfigured temporary test store. Reads environment and the configured adapter configuration file, except that test mode does not pass the file override."
+						"description": "The R2 settings object: accountId, bucket, accessKeyId and secretAccessKey are non-empty strings, and endpoint is the PROJECT_REPORTS_R2_ENDPOINT value (undefined when unset; a non-empty value must match http://127.0.0.1:<port>). It is undefined for local-only storage (PROJECT_REPORTS_ASSET_STORAGE set to 'local'), or when all four R2 settings are empty and PROJECT_REPORTS_HOME resolves under the OS temp directory, /tmp or /private/tmp; otherwise the four required settings come from their PROJECT_REPORTS_R2_* environment variables first and then from the file named by PROJECT_REPORTS_CONFIG_FILE, which is not read when NODE_ENV is 'test'.",
+						"examples": [
+							{
+								"accountId": "7c1e5a9d3b0f4e8a2d6c1b9f5e3a7d0c",
+								"bucket": "report-evidence",
+								"accessKeyId": "example-access-key-id",
+								"secretAccessKey": "example-secret-access-key",
+								"endpoint": "http://127.0.0.1:9000"
+							},
+							{
+								"accountId": "3f9c1d7a5b2e4f60a8d9c7b1e2f3a4b5",
+								"bucket": "report-evidence-prod",
+								"accessKeyId": "example-prod-access-key-id",
+								"secretAccessKey": "example-prod-secret-access-key"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws an Error when PROJECT_REPORTS_ASSET_STORAGE is 'local' outside an isolated temporary store (PROJECT_REPORTS_HOME under the OS temp directory, /tmp or /private/tmp), when some but not all of the four R2 settings are empty or all four are empty outside such a store, or when all four settings are non-empty and a non-empty PROJECT_REPORTS_R2_ENDPOINT does not match http://127.0.0.1:<port>. It also rethrows a file read error other than ENOENT from the file named by PROJECT_REPORTS_CONFIG_FILE, which is read only when PROJECT_REPORTS_ASSET_STORAGE is not 'local', NODE_ENV is not 'test', and PROJECT_REPORTS_CONFIG_FILE is non-empty."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
