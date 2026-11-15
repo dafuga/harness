@@ -35,45 +35,299 @@
 				"name": "budgetReviews.ledgers",
 				"type": "BudgetEvent[][]",
 				"required": true,
-				"description": "Budget ledgers from one or more revisions; identical events are deduplicated by canonical JSON."
+				"description": "One list of budget ledger lines per revision, in ledger order; a line that appears more than once is kept once, because events are compared by canonicalJson (object keys sorted, undefined object fields dropped). Nothing is validated here, so every line must already match BudgetEvent.",
+				"examples": [
+					[
+						[
+							{
+								"type": "baseline",
+								"unit": "function.budget-reviews",
+								"record": {
+									"id": "5d0b7e41c9a3f86b2e10d4c7a95f3e28b61c0d7f4a9e2b835c6d1f07a4e9b3c2",
+									"commit": "9f3c2a7e4b1d08c6a5e2f7b9d3c4a1e0b8f6d2a5",
+									"tree": "0e7a4c91d3b628f5a0c9e1d74b2f63a8c5d90e1b"
+								},
+								"reviewer": "Priya Natarajan",
+								"reason": "Limits frozen when the unit was first established.",
+								"at": "2026-10-03T16:42:10.118Z",
+								"metrics": {
+									"source-bytes": 18432,
+									"complexity": 37,
+									"dependencies": 6
+								},
+								"performance": []
+							}
+						],
+						[
+							{
+								"type": "baseline",
+								"unit": "function.budget-reviews",
+								"record": {
+									"id": "5d0b7e41c9a3f86b2e10d4c7a95f3e28b61c0d7f4a9e2b835c6d1f07a4e9b3c2",
+									"commit": "9f3c2a7e4b1d08c6a5e2f7b9d3c4a1e0b8f6d2a5",
+									"tree": "0e7a4c91d3b628f5a0c9e1d74b2f63a8c5d90e1b"
+								},
+								"reviewer": "Priya Natarajan",
+								"reason": "Limits frozen when the unit was first established.",
+								"at": "2026-10-03T16:42:10.118Z",
+								"metrics": {
+									"source-bytes": 18432,
+									"complexity": 37,
+									"dependencies": 6
+								},
+								"performance": []
+							},
+							{
+								"type": "approval",
+								"unit": "function.budget-reviews",
+								"record": {
+									"id": "e1a47c03f82b59d6c0a3e7f1b94d28c5a6f0e3b7d91c4a2e85f6b0d3c7a19e42",
+									"commit": "4c8e0b27d15fa9360e2b8c4d7a1f95e03b6c2d18",
+									"tree": "a27d6f04c9e1b835d0f2a6c7e4918b3d5c0e7f22"
+								},
+								"reviewer": "Tomas Berg",
+								"reason": "Source grew with the approval table export; the complexity rise was reviewed.",
+								"at": "2026-11-10T09:31:47.602Z",
+								"before": {
+									"source-bytes": 18432,
+									"complexity": 37,
+									"dependencies": 6
+								},
+								"after": {
+									"source-bytes": 19104,
+									"complexity": 39,
+									"dependencies": 6
+								},
+								"performance": []
+							}
+						]
+					],
+					[
+						[
+							{
+								"type": "baseline",
+								"unit": "reports.component.evidence-grid",
+								"record": {
+									"id": "7b26e0d9a4c15f83e2d07b6c1a9f4e53d8b02c7a6f1e9d4b3c08a5e72f1d6b49",
+									"commit": "c3e91a7d05f24b8e6a0d3c9f17b5e2a48d6c0f93",
+									"tree": "6f0d2b8a94c1e7307d5a3f9c2e8b41d06a7c5e39"
+								},
+								"reviewer": "Tomas Berg",
+								"reason": "First verified record of the evidence grid report.",
+								"at": "2026-09-18T11:05:33.047Z",
+								"metrics": {
+									"source-bytes": 7310,
+									"complexity": 14,
+									"dependencies": 3
+								},
+								"unmeasured": {
+									"artifact-bytes:wasm": "dist/grid.wasm was not built in the verified snapshot."
+								},
+								"performance": []
+							}
+						]
+					]
+				]
 			},
 			{
 				"name": "frozenLimits.baseline",
 				"type": "BudgetBaseline | undefined",
 				"required": true,
-				"description": "Reviewed baseline containing frozen metrics and optional unavailable reasons, or undefined when none exists."
+				"description": "The reviewed BudgetBaseline of one unit in one revision, or undefined when that revision has none, which makes frozenLimits return undefined. Only its metrics and unmeasured fields are read, so its performance entries are ignored.",
+				"examples": [
+					{
+						"metrics": {
+							"source-bytes": 18432,
+							"complexity": 37,
+							"dependencies": 6
+						},
+						"performance": []
+					},
+					{
+						"metrics": {
+							"complexity": 118,
+							"dependencies": 9,
+							"artifact-bytes:process": 2411520
+						},
+						"unmeasured": {
+							"source-bytes": "Not measured: src/parser/grammar.ts was not read."
+						},
+						"performance": []
+					}
+				]
 			},
 			{
 				"name": "emittedLimits.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "Unit manifest whose execution targets determine which emitted limits are relevant."
+				"description": "The unit's ComponentManifest, of which only the kind of each runtime.targets entry is read, and only the wasm and process kinds count because those are the targets built as a file of their own. A unit with no wasm or process target emits nothing, which makes emittedLimits return undefined.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "tool.budget-report",
+						"uid": "u_pq7ndk4w2m",
+						"kind": "function",
+						"title": "Budget report command",
+						"responsibility": "Prints the budget findings of one verified record as plain text.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/tools/budget-report/main.ts"],
+							"symbols": ["main"]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"dependencies": [
+							{
+								"unit": "function.budget-findings",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "process",
+							"entry": "dist/bin/budget-report",
+							"targets": [
+								{
+									"kind": "process",
+									"entry": "dist/bin/budget-report"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					},
+					{
+						"schemaVersion": 1,
+						"id": "function.emitted-sizes",
+						"kind": "function",
+						"title": "Emitted sizes",
+						"responsibility": "Selects the frozen emitted size of each execution target from a unit's measurements.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/utils/development-tooling/emittedSizes.ts"],
+							"symbols": ["emittedMetric", "emittedKey", "emittedSizes"]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/utils/development-tooling/emittedSizes.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/utils/development-tooling/emittedSizes.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "emittedLimits.baseline",
 				"type": "BudgetBaseline | undefined",
 				"required": true,
-				"description": "Reviewed baseline to read target-specific limits and unavailable reasons from; may be undefined."
+				"description": "The reviewed BudgetBaseline of the same unit in one revision, read for the artifact-bytes:<kind> metric and the unmeasured reason of each wasm or process kind. When it is undefined, a unit that emits still gets an empty limits map, because no limit was reviewed.",
+				"examples": [
+					{
+						"metrics": {
+							"source-bytes": 18432,
+							"complexity": 37,
+							"dependencies": 6,
+							"artifact-bytes:process": 2411520
+						},
+						"performance": []
+					},
+					{
+						"metrics": {
+							"source-bytes": 52310,
+							"complexity": 118,
+							"dependencies": 9,
+							"artifact-bytes:wasm": 184320
+						},
+						"unmeasured": {
+							"artifact-bytes:process": "dist/bin/budget-report was not built in the verified snapshot."
+						},
+						"performance": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "budgetReviews",
 				"type": "Map<string, BudgetReview[]>",
-				"description": "Map from unit id to unique reviews sorted by their at timestamp, including the measured commit, reviewer, reason and before/after limits."
+				"description": "Maps each unit id to its reviews, with duplicate events removed and each list sorted ascending by its at string; a unit with no events is absent. Each review holds the type, the commit and record id of the measured record, the reviewer, reason and at, the after limits, the before limits for an approval only, and unmeasured when the event has one."
 			},
 			{
 				"name": "frozenLimits",
 				"type": "FrozenLimits | undefined",
-				"description": "Only source-bytes, complexity and dependencies limits and their unavailable reasons; undefined when the baseline is absent."
+				"description": "The source-bytes, complexity and dependencies limits that the baseline holds, under metrics, with their unmeasured reasons under unmeasured when there are any; other metrics, including the artifact-bytes limits, are left out. The result is undefined only when the baseline is undefined, and metrics is {} when the baseline holds none of the three.",
+				"examples": [
+					{
+						"metrics": {
+							"source-bytes": 18432,
+							"complexity": 37,
+							"dependencies": 6
+						}
+					},
+					{
+						"metrics": {
+							"complexity": 118,
+							"dependencies": 9
+						},
+						"unmeasured": {
+							"source-bytes": "Not measured: src/parser/grammar.ts was not read."
+						}
+					}
+				]
 			},
 			{
 				"name": "emittedLimits",
 				"type": "EmittedLimits | undefined",
-				"description": "Limits and unavailable reasons keyed by emitted runtime kind; undefined when the unit emits nothing, and an empty limits map when targets exist without reviewed limits."
+				"description": "Under limits it holds, keyed by kind, the reviewed limit of each distinct wasm or process kind among the unit's targets that the baseline holds an artifact-bytes:<kind> metric for; an unmeasured reason for such a kind goes under unmeasured when the baseline recorded one. It is undefined when the unit has no wasm or process target, and limits is {} when none of those kinds has a reviewed limit.",
+				"examples": [
+					{
+						"limits": {
+							"process": 2411520
+						}
+					},
+					{
+						"limits": {
+							"wasm": 184320
+						},
+						"unmeasured": {
+							"process": "dist/bin/budget-report was not built in the verified snapshot."
+						}
+					},
+					{
+						"limits": {}
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "budgetReviews",
@@ -82,18 +336,110 @@
 						"name": "budgetReviews.ledgers",
 						"type": "BudgetEvent[][]",
 						"required": true,
-						"description": "Budget ledgers from one or more revisions; identical events are deduplicated by canonical JSON."
+						"description": "One list of budget ledger lines per revision, in ledger order; a line that appears more than once is kept once, because events are compared by canonicalJson (object keys sorted, undefined object fields dropped). Nothing is validated here, so every line must already match BudgetEvent.",
+						"examples": [
+							[
+								[
+									{
+										"type": "baseline",
+										"unit": "function.budget-reviews",
+										"record": {
+											"id": "5d0b7e41c9a3f86b2e10d4c7a95f3e28b61c0d7f4a9e2b835c6d1f07a4e9b3c2",
+											"commit": "9f3c2a7e4b1d08c6a5e2f7b9d3c4a1e0b8f6d2a5",
+											"tree": "0e7a4c91d3b628f5a0c9e1d74b2f63a8c5d90e1b"
+										},
+										"reviewer": "Priya Natarajan",
+										"reason": "Limits frozen when the unit was first established.",
+										"at": "2026-10-03T16:42:10.118Z",
+										"metrics": {
+											"source-bytes": 18432,
+											"complexity": 37,
+											"dependencies": 6
+										},
+										"performance": []
+									}
+								],
+								[
+									{
+										"type": "baseline",
+										"unit": "function.budget-reviews",
+										"record": {
+											"id": "5d0b7e41c9a3f86b2e10d4c7a95f3e28b61c0d7f4a9e2b835c6d1f07a4e9b3c2",
+											"commit": "9f3c2a7e4b1d08c6a5e2f7b9d3c4a1e0b8f6d2a5",
+											"tree": "0e7a4c91d3b628f5a0c9e1d74b2f63a8c5d90e1b"
+										},
+										"reviewer": "Priya Natarajan",
+										"reason": "Limits frozen when the unit was first established.",
+										"at": "2026-10-03T16:42:10.118Z",
+										"metrics": {
+											"source-bytes": 18432,
+											"complexity": 37,
+											"dependencies": 6
+										},
+										"performance": []
+									},
+									{
+										"type": "approval",
+										"unit": "function.budget-reviews",
+										"record": {
+											"id": "e1a47c03f82b59d6c0a3e7f1b94d28c5a6f0e3b7d91c4a2e85f6b0d3c7a19e42",
+											"commit": "4c8e0b27d15fa9360e2b8c4d7a1f95e03b6c2d18",
+											"tree": "a27d6f04c9e1b835d0f2a6c7e4918b3d5c0e7f22"
+										},
+										"reviewer": "Tomas Berg",
+										"reason": "Source grew with the approval table export; the complexity rise was reviewed.",
+										"at": "2026-11-10T09:31:47.602Z",
+										"before": {
+											"source-bytes": 18432,
+											"complexity": 37,
+											"dependencies": 6
+										},
+										"after": {
+											"source-bytes": 19104,
+											"complexity": 39,
+											"dependencies": 6
+										},
+										"performance": []
+									}
+								]
+							],
+							[
+								[
+									{
+										"type": "baseline",
+										"unit": "reports.component.evidence-grid",
+										"record": {
+											"id": "7b26e0d9a4c15f83e2d07b6c1a9f4e53d8b02c7a6f1e9d4b3c08a5e72f1d6b49",
+											"commit": "c3e91a7d05f24b8e6a0d3c9f17b5e2a48d6c0f93",
+											"tree": "6f0d2b8a94c1e7307d5a3f9c2e8b41d06a7c5e39"
+										},
+										"reviewer": "Tomas Berg",
+										"reason": "First verified record of the evidence grid report.",
+										"at": "2026-09-18T11:05:33.047Z",
+										"metrics": {
+											"source-bytes": 7310,
+											"complexity": 14,
+											"dependencies": 3
+										},
+										"unmeasured": {
+											"artifact-bytes:wasm": "dist/grid.wasm was not built in the verified snapshot."
+										},
+										"performance": []
+									}
+								]
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "budgetReviews",
 						"type": "Map<string, BudgetReview[]>",
-						"description": "Map from unit id to unique reviews sorted by their at timestamp, including the measured commit, reviewer, reason and before/after limits."
+						"description": "Maps each unit id to its reviews, with duplicate events removed and each list sorted ascending by its at string; a unit with no events is absent. Each review holds the type, the commit and record id of the measured record, the reviewer, reason and at, the after limits, the before limits for an approval only, and unmeasured when the event has one."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "frozenLimits",
@@ -102,18 +448,57 @@
 						"name": "frozenLimits.baseline",
 						"type": "BudgetBaseline | undefined",
 						"required": true,
-						"description": "Reviewed baseline containing frozen metrics and optional unavailable reasons, or undefined when none exists."
+						"description": "The reviewed BudgetBaseline of one unit in one revision, or undefined when that revision has none, which makes frozenLimits return undefined. Only its metrics and unmeasured fields are read, so its performance entries are ignored.",
+						"examples": [
+							{
+								"metrics": {
+									"source-bytes": 18432,
+									"complexity": 37,
+									"dependencies": 6
+								},
+								"performance": []
+							},
+							{
+								"metrics": {
+									"complexity": 118,
+									"dependencies": 9,
+									"artifact-bytes:process": 2411520
+								},
+								"unmeasured": {
+									"source-bytes": "Not measured: src/parser/grammar.ts was not read."
+								},
+								"performance": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "frozenLimits",
 						"type": "FrozenLimits | undefined",
-						"description": "Only source-bytes, complexity and dependencies limits and their unavailable reasons; undefined when the baseline is absent."
+						"description": "The source-bytes, complexity and dependencies limits that the baseline holds, under metrics, with their unmeasured reasons under unmeasured when there are any; other metrics, including the artifact-bytes limits, are left out. The result is undefined only when the baseline is undefined, and metrics is {} when the baseline holds none of the three.",
+						"examples": [
+							{
+								"metrics": {
+									"source-bytes": 18432,
+									"complexity": 37,
+									"dependencies": 6
+								}
+							},
+							{
+								"metrics": {
+									"complexity": 118,
+									"dependencies": 9
+								},
+								"unmeasured": {
+									"source-bytes": "Not measured: src/parser/grammar.ts was not read."
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "emittedLimits",
@@ -122,24 +507,146 @@
 						"name": "emittedLimits.unit",
 						"type": "ComponentManifest",
 						"required": true,
-						"description": "Unit manifest whose execution targets determine which emitted limits are relevant."
+						"description": "The unit's ComponentManifest, of which only the kind of each runtime.targets entry is read, and only the wasm and process kinds count because those are the targets built as a file of their own. A unit with no wasm or process target emits nothing, which makes emittedLimits return undefined.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "tool.budget-report",
+								"uid": "u_pq7ndk4w2m",
+								"kind": "function",
+								"title": "Budget report command",
+								"responsibility": "Prints the budget findings of one verified record as plain text.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/tools/budget-report/main.ts"],
+									"symbols": ["main"]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"dependencies": [
+									{
+										"unit": "function.budget-findings",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "process",
+									"entry": "dist/bin/budget-report",
+									"targets": [
+										{
+											"kind": "process",
+											"entry": "dist/bin/budget-report"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							},
+							{
+								"schemaVersion": 1,
+								"id": "function.emitted-sizes",
+								"kind": "function",
+								"title": "Emitted sizes",
+								"responsibility": "Selects the frozen emitted size of each execution target from a unit's measurements.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/utils/development-tooling/emittedSizes.ts"],
+									"symbols": ["emittedMetric", "emittedKey", "emittedSizes"]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/utils/development-tooling/emittedSizes.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/utils/development-tooling/emittedSizes.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "emittedLimits.baseline",
 						"type": "BudgetBaseline | undefined",
 						"required": true,
-						"description": "Reviewed baseline to read target-specific limits and unavailable reasons from; may be undefined."
+						"description": "The reviewed BudgetBaseline of the same unit in one revision, read for the artifact-bytes:<kind> metric and the unmeasured reason of each wasm or process kind. When it is undefined, a unit that emits still gets an empty limits map, because no limit was reviewed.",
+						"examples": [
+							{
+								"metrics": {
+									"source-bytes": 18432,
+									"complexity": 37,
+									"dependencies": 6,
+									"artifact-bytes:process": 2411520
+								},
+								"performance": []
+							},
+							{
+								"metrics": {
+									"source-bytes": 52310,
+									"complexity": 118,
+									"dependencies": 9,
+									"artifact-bytes:wasm": 184320
+								},
+								"unmeasured": {
+									"artifact-bytes:process": "dist/bin/budget-report was not built in the verified snapshot."
+								},
+								"performance": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "emittedLimits",
 						"type": "EmittedLimits | undefined",
-						"description": "Limits and unavailable reasons keyed by emitted runtime kind; undefined when the unit emits nothing, and an empty limits map when targets exist without reviewed limits."
+						"description": "Under limits it holds, keyed by kind, the reviewed limit of each distinct wasm or process kind among the unit's targets that the baseline holds an artifact-bytes:<kind> metric for; an unmeasured reason for such a kind goes under unmeasured when the baseline recorded one. It is undefined when the unit has no wasm or process target, and limits is {} when none of those kinds has a reviewed limit.",
+						"examples": [
+							{
+								"limits": {
+									"process": 2411520
+								}
+							},
+							{
+								"limits": {
+									"wasm": 184320
+								},
+								"unmeasured": {
+									"process": "dist/bin/budget-report was not built in the verified snapshot."
+								}
+							},
+							{
+								"limits": {}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
