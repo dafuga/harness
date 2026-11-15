@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { HostObjectController } from '../../src/lib/execution-runtimes/host-runtime/HostObjectController';
 import type { RelayEnv } from '../../src/models/networking-security/RelayHost.types';
 import { PairingOfferService } from '../../src/lib/execution-runtimes/host-runtime/PairingOfferService';
-import { SocketFrameService } from '../../src/services/socket-frame-service/SocketFrameService';
+import { SocketFrameService } from '../../src/lib/execution-runtimes/host-runtime/socket-frame-service/SocketFrameService';
 import { hostRuntime } from '../../src/lib/execution-runtimes/host-runtime/hostRuntime';
 
 test('hostRuntime wires the parts of one host object without touching its state', () => {

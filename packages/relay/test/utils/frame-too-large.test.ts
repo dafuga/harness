@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { frameTooLarge } from '../../src/services/socket-frame-service/frameTooLarge';
+import { frameTooLarge } from '../../src/lib/execution-runtimes/host-runtime/socket-frame-service/frameTooLarge';
 
 const limit = 262144;
 
