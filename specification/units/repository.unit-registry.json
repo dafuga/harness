@@ -58,14 +58,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Unit id used to locate its manifest JSON file under unitsDirectory. Removal uses force, so a missing file is ignored.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["repository.unit-registry"]
 			},
 			{
 				"name": "UnitRegistryRepository.path.id",
 				"type": "string",
 				"required": true,
 				"description": "Unit id appended to unitsDirectory with a .json suffix. The method returns this repository-relative path without checking whether the file exists.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["repository.unit-registry"]
 			}
 		],
 		"outputs": [
@@ -105,7 +105,7 @@
 				"name": "UnitRegistryRepository.write",
 				"type": "Promise<string[]>",
 				"description": "Repository-relative paths of manifests whose canonical JSON contents were written. Manifests whose existing file contents already equal stableJson output are omitted.",
-				"examples": [["specification/units/reports.component.evidence-grid.json"]]
+				"examples": [["specification/units/repository.unit-registry.json"]]
 			},
 			{
 				"name": "UnitRegistryRepository.remove",
@@ -116,7 +116,7 @@
 				"name": "UnitRegistryRepository.path",
 				"type": "string",
 				"description": "Repository-relative manifest path formed as specification/units/<id>.json. The method does not access the filesystem.",
-				"examples": ["specification/units/reports.component.evidence-grid.json"]
+				"examples": ["specification/units/repository.unit-registry.json"]
 			}
 		],
 		"errors": [
@@ -217,7 +217,7 @@
 						"name": "UnitRegistryRepository.write",
 						"type": "Promise<string[]>",
 						"description": "Repository-relative paths of manifests whose canonical JSON contents were written. Manifests whose existing file contents already equal stableJson output are omitted.",
-						"examples": [["specification/units/reports.component.evidence-grid.json"]]
+						"examples": [["specification/units/repository.unit-registry.json"]]
 					}
 				],
 				"errors": [],
@@ -231,7 +231,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Unit id used to locate its manifest JSON file under unitsDirectory. Removal uses force, so a missing file is ignored.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": ["repository.unit-registry"]
 					}
 				],
 				"outputs": [
@@ -252,7 +252,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Unit id appended to unitsDirectory with a .json suffix. The method returns this repository-relative path without checking whether the file exists.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": ["repository.unit-registry"]
 					}
 				],
 				"outputs": [
@@ -260,7 +260,7 @@
 						"name": "UnitRegistryRepository.path",
 						"type": "string",
 						"description": "Repository-relative manifest path formed as specification/units/<id>.json. The method does not access the filesystem.",
-						"examples": ["specification/units/reports.component.evidence-grid.json"]
+						"examples": ["specification/units/repository.unit-registry.json"]
 					}
 				],
 				"errors": [],

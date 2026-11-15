@@ -21,7 +21,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Unit identifier attached to each measurement when recording this unit's unmeasured verification evidence. The function copies it unchanged and does not check registration or source ownership.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["service.record-assembly-service-unmeasured"]
 			},
 			{
 				"name": "unmeasured.testedRevision",
@@ -39,7 +39,7 @@
 				"examples": [
 					[
 						{
-							"unit": "reports.component.evidence-grid",
+							"unit": "service.record-assembly-service-unmeasured",
 							"value": null,
 							"method": "Not measured.",
 							"workload": null,
@@ -51,7 +51,7 @@
 							"artifacts": []
 						},
 						{
-							"unit": "reports.component.evidence-grid",
+							"unit": "service.record-assembly-service-unmeasured",
 							"value": null,
 							"method": "Not measured.",
 							"workload": null,
@@ -77,7 +77,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Unit identifier attached to each measurement when recording this unit's unmeasured verification evidence. The function copies it unchanged and does not check registration or source ownership.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": ["service.record-assembly-service-unmeasured"]
 					},
 					{
 						"name": "unmeasured.testedRevision",
@@ -95,7 +95,7 @@
 						"examples": [
 							[
 								{
-									"unit": "reports.component.evidence-grid",
+									"unit": "service.record-assembly-service-unmeasured",
 									"value": null,
 									"method": "Not measured.",
 									"workload": null,
@@ -107,7 +107,7 @@
 									"artifacts": []
 								},
 								{
-									"unit": "reports.component.evidence-grid",
+									"unit": "service.record-assembly-service-unmeasured",
 									"value": null,
 									"method": "Not measured.",
 									"workload": null,

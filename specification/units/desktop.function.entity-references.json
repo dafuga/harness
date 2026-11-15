@@ -29,14 +29,14 @@
 				"type": "string",
 				"required": true,
 				"description": "The original agent text to scan for complete [[unit:<id>]] markers. Only markers whose IDs match the lower-case dotted unit-ID grammar (maximum 200 characters) become references; invalid or unfinished markers remain text.",
-				"examples": ["Read [[unit:reports.component.evidence-grid]] now."]
+				"examples": ["Read [[unit:desktop.function.entity-references]] now."]
 			},
 			{
 				"name": "isUnitId.value",
 				"type": "string",
 				"required": true,
 				"description": "The candidate registry unit ID to validate. It must contain at least two lower-case dotted segments, each starting with a letter and continuing with letters, digits, or hyphens, and may be at most 200 characters; registration is not checked.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["desktop.function.entity-references"]
 			}
 		],
 		"outputs": [
@@ -58,8 +58,8 @@
 						},
 						{
 							"kind": "reference",
-							"id": "reports.component.evidence-grid",
-							"text": "[[unit:reports.component.evidence-grid]]"
+							"id": "desktop.function.entity-references",
+							"text": "[[unit:desktop.function.entity-references]]"
 						},
 						{
 							"kind": "text",
@@ -81,7 +81,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The original agent text to scan for complete [[unit:<id>]] markers. Only markers whose IDs match the lower-case dotted unit-ID grammar (maximum 200 characters) become references; invalid or unfinished markers remain text.",
-						"examples": ["Read [[unit:reports.component.evidence-grid]] now."]
+						"examples": ["Read [[unit:desktop.function.entity-references]] now."]
 					}
 				],
 				"outputs": [
@@ -97,8 +97,8 @@
 								},
 								{
 									"kind": "reference",
-									"id": "reports.component.evidence-grid",
-									"text": "[[unit:reports.component.evidence-grid]]"
+									"id": "desktop.function.entity-references",
+									"text": "[[unit:desktop.function.entity-references]]"
 								},
 								{
 									"kind": "text",
@@ -120,7 +120,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The candidate registry unit ID to validate. It must contain at least two lower-case dotted segments, each starting with a letter and continuing with letters, digits, or hyphens, and may be at most 200 characters; registration is not checked.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": ["desktop.function.entity-references"]
 					}
 				],
 				"outputs": [

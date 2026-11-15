@@ -29,7 +29,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Module ID compared with catalog definition IDs using strict equality and interpolated into the generated module README path. If no catalog entry matches, this method throws an Error naming the unknown ID; it does not normalize the string before matching.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": ["components"]
 			}
 		],
 		"outputs": [
@@ -64,7 +64,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Module ID compared with catalog definition IDs using strict equality and interpolated into the generated module README path. If no catalog entry matches, this method throws an Error naming the unknown ID; it does not normalize the string before matching.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": ["components"]
 					}
 				],
 				"outputs": [
