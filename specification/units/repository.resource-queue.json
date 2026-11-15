@@ -29,100 +29,228 @@
 				"name": "ResourceQueueRepository.constructor.home",
 				"type": "string",
 				"required": false,
-				"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+				"description": "The directory passed to resourceDatabase when opening the repository. Defaults to resourceHome() when omitted.",
+				"examples": ["/tmp/resource-queue"]
 			},
 			{
 				"name": "ResourceQueueRepository.add.job",
 				"type": "Omit<ResourceJob, 'sequence'>",
 				"required": true,
-				"description": "One lease with its owner PID, start identity, reservation and heartbeat."
+				"description": "A ResourceJob without its sequence field, serialized into the resource_jobs table. The stored row's sequence is added when all() reads it.",
+				"examples": [
+					{
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"priority": "coding",
+						"cpus": 1,
+						"memoryMiB": 512,
+						"label": "Managed work",
+						"ownerPid": 12345,
+						"ownerStarted": "2026-11-15T10:15:00.000Z",
+						"state": "queued",
+						"createdAt": 1794737700000,
+						"heartbeatAt": 1794737700000,
+						"notice": null
+					}
+				]
 			},
 			{
 				"name": "ResourceQueueRepository.patch.id",
 				"type": "string",
 				"required": true,
-				"description": "Lease UUID whose job or heartbeat is read or updated."
+				"description": "The ResourceJob id used to find the row to update. If no row matches, patch performs no write.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "ResourceQueueRepository.patch.changes",
 				"type": "Partial<ResourceJob>",
 				"required": true,
-				"description": "Partial fields to update atomically on the identified lease."
+				"description": "A partial ResourceJob merged over the matching stored job inside an immediate transaction. Missing ids are ignored, and the merged value is written without schema parsing here.",
+				"examples": [
+					{
+						"state": "running",
+						"heartbeatAt": 1794737705000,
+						"notice": null
+					}
+				]
 			},
 			{
 				"name": "ResourceQueueRepository.remove.id",
 				"type": "string",
 				"required": true,
-				"description": "Lease UUID whose job or heartbeat is read or updated."
+				"description": "The ResourceJob id used by the DELETE statement. A missing id deletes no row and is not reported.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "ResourceQueueRepository.schedule.sample",
 				"type": "ResourceSnapshot",
 				"required": true,
-				"description": "Timestamped host CPU, memory and pressure observation used for this admission decision."
+				"description": "The host resource snapshot passed to resourcePolicy for this scheduling decision.",
+				"examples": [
+					{
+						"status": "available",
+						"sampledAt": 1794737700000,
+						"logicalCores": 8,
+						"usableCores": 8,
+						"cpuUsedPercent": 12.5,
+						"cpuAvailableCores": 7,
+						"memoryTotalBytes": 17179869184,
+						"memoryAvailableBytes": 12884901888,
+						"memoryPressure": "normal"
+					}
+				]
 			},
 			{
 				"name": "ResourceQueueRepository.schedule.config",
 				"type": "ResourceConfig",
 				"required": true,
-				"description": "Validated reserve floors and telemetry timing limits; lower safety thresholds are rejected."
+				"description": "The ResourceConfig passed to resourcePolicy for this scheduling decision, containing CPU and memory reserve settings and telemetry timing limits.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"cpuReservePercent": 10,
+						"memoryReservePercent": 10,
+						"minMemoryReserveMiB": 2048,
+						"pollMs": 1000,
+						"staleSampleMs": 5000
+					}
+				]
 			},
 			{
 				"name": "ResourceQueueRepository.schedule.now",
 				"type": "number",
 				"required": false,
-				"description": "Current epoch time in milliseconds for telemetry freshness, queue ordering or lease expiry."
+				"description": "The numeric time value passed to resourcePolicy for this scheduling decision. Defaults to Date.now() when omitted.",
+				"examples": [1794737700000]
 			},
 			{
 				"name": "ResourceQueueRepository.saveSnapshot.sample",
 				"type": "ResourceSnapshot",
 				"required": true,
-				"description": "Timestamped host CPU, memory and pressure observation used for this admission decision."
+				"description": "The snapshot serialized into resource_state for the snapshot id. An older sample is skipped only when the stored sampledAt is at or before Date.now() and is later than this sample.",
+				"examples": [
+					{
+						"status": "available",
+						"sampledAt": 1794737700000,
+						"logicalCores": 8,
+						"usableCores": 8,
+						"cpuUsedPercent": 12.5,
+						"cpuAvailableCores": 7,
+						"memoryTotalBytes": 17179869184,
+						"memoryAvailableBytes": 12884901888,
+						"memoryPressure": "normal"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ResourceQueueRepository.all",
 				"type": "ResourceJob[]",
-				"description": "Persisted leases in insertion order, validated from their stored records."
+				"description": "Rows ordered by ascending sequence, with each data JSON value combined with its row sequence and parsed by resourceJobSchema.",
+				"examples": [
+					[
+						{
+							"id": "550e8400-e29b-41d4-a716-446655440000",
+							"priority": "coding",
+							"cpus": 1,
+							"memoryMiB": 512,
+							"label": "Managed work",
+							"ownerPid": 12345,
+							"ownerStarted": "2026-11-15T10:15:00.000Z",
+							"state": "queued",
+							"createdAt": 1794737700000,
+							"heartbeatAt": 1794737700000,
+							"notice": null,
+							"sequence": 1
+						}
+					]
+				]
 			},
 			{
 				"name": "ResourceQueueRepository.add",
 				"type": "void",
-				"description": "Inserts the lease using the shared sequence allocator."
+				"description": "Returns no value after inserting the job id and serialized job data into resource_jobs."
 			},
 			{
 				"name": "ResourceQueueRepository.patch",
 				"type": "void",
-				"description": "Atomically updates the matching lease when it still exists."
+				"description": "Returns no value after the matching job is updated; a missing id is a no-op."
 			},
 			{
 				"name": "ResourceQueueRepository.remove",
 				"type": "void",
-				"description": "Deletes only the identified lease."
+				"description": "Returns no value after deleting rows whose id matches the input."
 			},
 			{
 				"name": "ResourceQueueRepository.schedule",
 				"type": "ResourceJob[]",
-				"description": "Updated leases after one atomic priority and capacity decision."
+				"description": "The jobs read in sequence order and updated from one resourcePolicy decision inside an immediate transaction; granted jobs become running with a null notice, and queued jobs receive a changed decision notice.",
+				"examples": [
+					[
+						{
+							"id": "550e8400-e29b-41d4-a716-446655440000",
+							"priority": "coding",
+							"cpus": 1,
+							"memoryMiB": 512,
+							"label": "Managed work",
+							"ownerPid": 12345,
+							"ownerStarted": "2026-11-15T10:15:00.000Z",
+							"state": "running",
+							"createdAt": 1794737700000,
+							"heartbeatAt": 1794737700000,
+							"notice": null,
+							"sequence": 1
+						}
+					]
+				]
 			},
 			{
 				"name": "ResourceQueueRepository.snapshot",
 				"type": "ResourceSnapshot | undefined",
-				"description": "Latest timestamped host observation, absent before the first sample."
+				"description": "The parsed snapshot stored under the snapshot id, or undefined when that row is absent. This method parses JSON but does not apply resourceJobSchema.",
+				"examples": [
+					{
+						"status": "available",
+						"sampledAt": 1794737700000,
+						"logicalCores": 8,
+						"usableCores": 8,
+						"cpuUsedPercent": 12.5,
+						"cpuAvailableCores": 7,
+						"memoryTotalBytes": 17179869184,
+						"memoryAvailableBytes": 12884901888,
+						"memoryPressure": "normal"
+					}
+				]
 			},
 			{
 				"name": "ResourceQueueRepository.saveSnapshot",
 				"type": "void",
-				"description": "Persists fresh telemetry without pinning a future cached clock value."
+				"description": "Returns no value after the atomic save, or after the timestamp guard skips the write."
 			},
 			{
 				"name": "ResourceQueueRepository.close",
 				"type": "void",
-				"description": "Closes the owned SQLite connection."
+				"description": "Returns no value after closing the repository's ResourceDatabase connection."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "JSON.parse throws this when persisted job or snapshot data is not valid JSON."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "resourceJobSchema.parse throws this when persisted job data does not match the ResourceJob schema."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ResourceQueueRepository.all",
@@ -131,11 +259,45 @@
 					{
 						"name": "ResourceQueueRepository.all",
 						"type": "ResourceJob[]",
-						"description": "Persisted leases in insertion order, validated from their stored records."
+						"description": "Rows ordered by ascending sequence, with each data JSON value combined with its row sequence and parsed by resourceJobSchema.",
+						"examples": [
+							[
+								{
+									"id": "550e8400-e29b-41d4-a716-446655440000",
+									"priority": "coding",
+									"cpus": 1,
+									"memoryMiB": 512,
+									"label": "Managed work",
+									"ownerPid": 12345,
+									"ownerStarted": "2026-11-15T10:15:00.000Z",
+									"state": "queued",
+									"createdAt": 1794737700000,
+									"heartbeatAt": 1794737700000,
+									"notice": null,
+									"sequence": 1
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse throws this when persisted job or snapshot data is not valid JSON."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "resourceJobSchema.parse throws this when persisted job data does not match the ResourceJob schema."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceQueueRepository.add",
@@ -144,18 +306,39 @@
 						"name": "ResourceQueueRepository.add.job",
 						"type": "Omit<ResourceJob, 'sequence'>",
 						"required": true,
-						"description": "One lease with its owner PID, start identity, reservation and heartbeat."
+						"description": "A ResourceJob without its sequence field, serialized into the resource_jobs table. The stored row's sequence is added when all() reads it.",
+						"examples": [
+							{
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"priority": "coding",
+								"cpus": 1,
+								"memoryMiB": 512,
+								"label": "Managed work",
+								"ownerPid": 12345,
+								"ownerStarted": "2026-11-15T10:15:00.000Z",
+								"state": "queued",
+								"createdAt": 1794737700000,
+								"heartbeatAt": 1794737700000,
+								"notice": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResourceQueueRepository.add",
 						"type": "void",
-						"description": "Inserts the lease using the shared sequence allocator."
+						"description": "Returns no value after inserting the job id and serialized job data into resource_jobs."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceQueueRepository.patch",
@@ -164,24 +347,48 @@
 						"name": "ResourceQueueRepository.patch.id",
 						"type": "string",
 						"required": true,
-						"description": "Lease UUID whose job or heartbeat is read or updated."
+						"description": "The ResourceJob id used to find the row to update. If no row matches, patch performs no write.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 					},
 					{
 						"name": "ResourceQueueRepository.patch.changes",
 						"type": "Partial<ResourceJob>",
 						"required": true,
-						"description": "Partial fields to update atomically on the identified lease."
+						"description": "A partial ResourceJob merged over the matching stored job inside an immediate transaction. Missing ids are ignored, and the merged value is written without schema parsing here.",
+						"examples": [
+							{
+								"state": "running",
+								"heartbeatAt": 1794737705000,
+								"notice": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResourceQueueRepository.patch",
 						"type": "void",
-						"description": "Atomically updates the matching lease when it still exists."
+						"description": "Returns no value after the matching job is updated; a missing id is a no-op."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse throws this when persisted job or snapshot data is not valid JSON."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "resourceJobSchema.parse throws this when persisted job data does not match the ResourceJob schema."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceQueueRepository.remove",
@@ -190,18 +397,25 @@
 						"name": "ResourceQueueRepository.remove.id",
 						"type": "string",
 						"required": true,
-						"description": "Lease UUID whose job or heartbeat is read or updated."
+						"description": "The ResourceJob id used by the DELETE statement. A missing id deletes no row and is not reported.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResourceQueueRepository.remove",
 						"type": "void",
-						"description": "Deletes only the identified lease."
+						"description": "Returns no value after deleting rows whose id matches the input."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceQueueRepository.schedule",
@@ -210,30 +424,88 @@
 						"name": "ResourceQueueRepository.schedule.sample",
 						"type": "ResourceSnapshot",
 						"required": true,
-						"description": "Timestamped host CPU, memory and pressure observation used for this admission decision."
+						"description": "The host resource snapshot passed to resourcePolicy for this scheduling decision.",
+						"examples": [
+							{
+								"status": "available",
+								"sampledAt": 1794737700000,
+								"logicalCores": 8,
+								"usableCores": 8,
+								"cpuUsedPercent": 12.5,
+								"cpuAvailableCores": 7,
+								"memoryTotalBytes": 17179869184,
+								"memoryAvailableBytes": 12884901888,
+								"memoryPressure": "normal"
+							}
+						]
 					},
 					{
 						"name": "ResourceQueueRepository.schedule.config",
 						"type": "ResourceConfig",
 						"required": true,
-						"description": "Validated reserve floors and telemetry timing limits; lower safety thresholds are rejected."
+						"description": "The ResourceConfig passed to resourcePolicy for this scheduling decision, containing CPU and memory reserve settings and telemetry timing limits.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"cpuReservePercent": 10,
+								"memoryReservePercent": 10,
+								"minMemoryReserveMiB": 2048,
+								"pollMs": 1000,
+								"staleSampleMs": 5000
+							}
+						]
 					},
 					{
 						"name": "ResourceQueueRepository.schedule.now",
 						"type": "number",
 						"required": false,
-						"description": "Current epoch time in milliseconds for telemetry freshness, queue ordering or lease expiry."
+						"description": "The numeric time value passed to resourcePolicy for this scheduling decision. Defaults to Date.now() when omitted.",
+						"examples": [1794737700000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResourceQueueRepository.schedule",
 						"type": "ResourceJob[]",
-						"description": "Updated leases after one atomic priority and capacity decision."
+						"description": "The jobs read in sequence order and updated from one resourcePolicy decision inside an immediate transaction; granted jobs become running with a null notice, and queued jobs receive a changed decision notice.",
+						"examples": [
+							[
+								{
+									"id": "550e8400-e29b-41d4-a716-446655440000",
+									"priority": "coding",
+									"cpus": 1,
+									"memoryMiB": 512,
+									"label": "Managed work",
+									"ownerPid": 12345,
+									"ownerStarted": "2026-11-15T10:15:00.000Z",
+									"state": "running",
+									"createdAt": 1794737700000,
+									"heartbeatAt": 1794737700000,
+									"notice": null,
+									"sequence": 1
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse throws this when persisted job or snapshot data is not valid JSON."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "resourceJobSchema.parse throws this when persisted job data does not match the ResourceJob schema."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceQueueRepository.snapshot",
@@ -242,11 +514,35 @@
 					{
 						"name": "ResourceQueueRepository.snapshot",
 						"type": "ResourceSnapshot | undefined",
-						"description": "Latest timestamped host observation, absent before the first sample."
+						"description": "The parsed snapshot stored under the snapshot id, or undefined when that row is absent. This method parses JSON but does not apply resourceJobSchema.",
+						"examples": [
+							{
+								"status": "available",
+								"sampledAt": 1794737700000,
+								"logicalCores": 8,
+								"usableCores": 8,
+								"cpuUsedPercent": 12.5,
+								"cpuAvailableCores": 7,
+								"memoryTotalBytes": 17179869184,
+								"memoryAvailableBytes": 12884901888,
+								"memoryPressure": "normal"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse throws this when persisted job or snapshot data is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceQueueRepository.saveSnapshot",
@@ -255,18 +551,42 @@
 						"name": "ResourceQueueRepository.saveSnapshot.sample",
 						"type": "ResourceSnapshot",
 						"required": true,
-						"description": "Timestamped host CPU, memory and pressure observation used for this admission decision."
+						"description": "The snapshot serialized into resource_state for the snapshot id. An older sample is skipped only when the stored sampledAt is at or before Date.now() and is later than this sample.",
+						"examples": [
+							{
+								"status": "available",
+								"sampledAt": 1794737700000,
+								"logicalCores": 8,
+								"usableCores": 8,
+								"cpuUsedPercent": 12.5,
+								"cpuAvailableCores": 7,
+								"memoryTotalBytes": 17179869184,
+								"memoryAvailableBytes": 12884901888,
+								"memoryPressure": "normal"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResourceQueueRepository.saveSnapshot",
 						"type": "void",
-						"description": "Persists fresh telemetry without pinning a future cached clock value."
+						"description": "Returns no value after the atomic save, or after the timestamp guard skips the write."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse throws this when persisted job or snapshot data is not valid JSON."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceQueueRepository.close",
@@ -275,11 +595,17 @@
 					{
 						"name": "ResourceQueueRepository.close",
 						"type": "void",
-						"description": "Closes the owned SQLite connection."
+						"description": "Returns no value after closing the repository's ResourceDatabase connection."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -290,17 +616,25 @@
 						"name": "ResourceQueueRepository.constructor.home",
 						"type": "string",
 						"required": false,
-						"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
+						"description": "Filesystem directory passed to resourceDatabase when opening the repository. Defaults to resourceHome() when omitted.",
+						"examples": ["/tmp/resource-queue"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResourceQueueRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The ResourceQueueRepository instance backed by a ResourceDatabase opened for home. Callers use it for queue and snapshot access, then close the connection when finished."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
