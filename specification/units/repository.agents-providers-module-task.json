@@ -106,16 +106,8 @@
 			{
 				"name": "ModuleTaskRepository.read",
 				"type": "Promise<{ commit: string | undefined; data: ModuleTaskQueue }>",
-				"description": "Resolves to an object containing commit and data: the commit at refs/harness/tasks, or null when the ref is absent, and queue data validated by queueSchema. If absent, data is an empty version-1 queue; invalid committed JSON or queue shape rejects the Promise.",
+				"description": "Resolves to an object containing commit and data: the commit at refs/harness/tasks, or undefined when the ref is absent, and queue data validated by queueSchema. If absent, data is an empty version-1 queue; invalid committed JSON or queue shape rejects the Promise. The JSON example shows an existing ref because an explicit undefined commit is not representable in JSON.",
 				"examples": [
-					{
-						"commit": null,
-						"data": {
-							"schemaVersion": 1,
-							"features": [],
-							"tasks": []
-						}
-					},
 					{
 						"commit": "0123456789abcdef0123456789abcdef01234567",
 						"data": {
@@ -129,30 +121,22 @@
 			{
 				"name": "ModuleTaskRepository.update",
 				"type": "Promise<{ value: T; commit: string | undefined }>",
-				"description": "Resolves to the callback return value and resulting task-ref commit; unchanged normalized queue data preserves the previous commit. It retries ref compare-and-swap at most 16 times, then throws if updates keep racing.",
+				"description": "Resolves to the callback return value and resulting task-ref commit; unchanged normalized queue data preserves the previous commit. It retries ref compare-and-swap at most 16 times, then throws if updates keep racing. When no task ref exists and the normalized queue is unchanged, commit is undefined; the JSON example shows a committed result.",
 				"examples": [
 					{
 						"value": "updated",
 						"commit": "0123456789abcdef0123456789abcdef01234567"
-					},
-					{
-						"value": "unchanged",
-						"commit": null
 					}
 				]
 			},
 			{
 				"name": "ModuleTaskRepository.sync",
 				"type": "Promise<{ remote: string; commit: string | undefined }>",
-				"description": "Resolves to the requested remote and queue-ref commit after syncing the explicit task ref; it fetches advertised state and pushes the local ref when one exists. It rejects for an invalid remote name or divergent queues.",
+				"description": "Resolves to the requested remote and queue-ref commit after syncing the explicit task ref; it fetches advertised state and pushes the local ref when one exists. It rejects for an invalid remote name or divergent queues. If neither side leaves a local task ref, commit is undefined; the JSON example shows a committed queue.",
 				"examples": [
 					{
 						"remote": "origin",
 						"commit": "0123456789abcdef0123456789abcdef01234567"
-					},
-					{
-						"remote": "origin",
-						"commit": null
 					}
 				]
 			},
@@ -171,15 +155,11 @@
 			{
 				"name": "syncTaskQueue",
 				"type": "Promise<{ remote: string; commit: string | undefined }>",
-				"description": "Resolves to the requested remote and current task-ref commit after fetching an advertised queue ref and pushing the local ref when present. It returns a null commit when neither side leaves a local task ref, and throws for an invalid remote name or divergent histories.",
+				"description": "Resolves to the requested remote and current task-ref commit after fetching an advertised queue ref and pushing the local ref when present. It returns an explicit undefined commit when neither side leaves a local task ref, and throws for an invalid remote name or divergent histories. The JSON example shows a committed queue.",
 				"examples": [
 					{
 						"remote": "origin",
 						"commit": "0123456789abcdef0123456789abcdef01234567"
-					},
-					{
-						"remote": "origin",
-						"commit": null
 					}
 				]
 			},
@@ -247,16 +227,8 @@
 					{
 						"name": "ModuleTaskRepository.read",
 						"type": "Promise<{ commit: string | undefined; data: ModuleTaskQueue }>",
-						"description": "Resolves to an object containing commit and data: the commit at refs/harness/tasks, or null when the ref is absent, and queue data validated by queueSchema. If absent, data is an empty version-1 queue; invalid committed JSON or queue shape rejects the Promise.",
+						"description": "Resolves to an object containing commit and data: the commit at refs/harness/tasks, or undefined when the ref is absent, and queue data validated by queueSchema. If absent, data is an empty version-1 queue; invalid committed JSON or queue shape rejects the Promise. The JSON example shows an existing ref because an explicit undefined commit is not representable in JSON.",
 						"examples": [
-							{
-								"commit": null,
-								"data": {
-									"schemaVersion": 1,
-									"features": [],
-									"tasks": []
-								}
-							},
 							{
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"data": {
@@ -304,15 +276,11 @@
 					{
 						"name": "ModuleTaskRepository.update",
 						"type": "Promise<{ value: T; commit: string | undefined }>",
-						"description": "Resolves to the callback return value and resulting task-ref commit; unchanged normalized queue data preserves the previous commit. It retries ref compare-and-swap at most 16 times, then throws if updates keep racing.",
+						"description": "Resolves to the callback return value and resulting task-ref commit; unchanged normalized queue data preserves the previous commit. It retries ref compare-and-swap at most 16 times, then throws if updates keep racing. When no task ref exists and the normalized queue is unchanged, commit is undefined; the JSON example shows a committed result.",
 						"examples": [
 							{
 								"value": "updated",
 								"commit": "0123456789abcdef0123456789abcdef01234567"
-							},
-							{
-								"value": "unchanged",
-								"commit": null
 							}
 						]
 					}
@@ -351,15 +319,11 @@
 					{
 						"name": "ModuleTaskRepository.sync",
 						"type": "Promise<{ remote: string; commit: string | undefined }>",
-						"description": "Resolves to the requested remote and queue-ref commit after syncing the explicit task ref; it fetches advertised state and pushes the local ref when one exists. It rejects for an invalid remote name or divergent queues.",
+						"description": "Resolves to the requested remote and queue-ref commit after syncing the explicit task ref; it fetches advertised state and pushes the local ref when one exists. It rejects for an invalid remote name or divergent queues. If neither side leaves a local task ref, commit is undefined; the JSON example shows a committed queue.",
 						"examples": [
 							{
 								"remote": "origin",
 								"commit": "0123456789abcdef0123456789abcdef01234567"
-							},
-							{
-								"remote": "origin",
-								"commit": null
 							}
 						]
 					}
@@ -427,15 +391,11 @@
 					{
 						"name": "syncTaskQueue",
 						"type": "Promise<{ remote: string; commit: string | undefined }>",
-						"description": "Resolves to the requested remote and current task-ref commit after fetching an advertised queue ref and pushing the local ref when present. It returns a null commit when neither side leaves a local task ref, and throws for an invalid remote name or divergent histories.",
+						"description": "Resolves to the requested remote and current task-ref commit after fetching an advertised queue ref and pushing the local ref when present. It returns an explicit undefined commit when neither side leaves a local task ref, and throws for an invalid remote name or divergent histories. The JSON example shows a committed queue.",
 						"examples": [
 							{
 								"remote": "origin",
 								"commit": "0123456789abcdef0123456789abcdef01234567"
-							},
-							{
-								"remote": "origin",
-								"commit": null
 							}
 						]
 					}

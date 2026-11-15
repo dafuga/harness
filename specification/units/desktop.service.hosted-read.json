@@ -67,18 +67,8 @@
 			{
 				"name": "HostedReadService.read",
 				"type": "Promise<{ value: T; cachedAt: string | undefined; offline: boolean }>",
-				"description": "The resolved object { value, cachedAt, offline } of read: value is the loaded value unchecked on a fresh read, or the validate() result on an offline read. cachedAt is the ISO time the cache entry was written or kept, and it is undefined on a fresh read with no identity or no cache; offline is true only when the value was served from the kept entry.",
+				"description": "The resolved object { value, cachedAt, offline } of read: value is the loaded value unchecked on a fresh read, or the validate() result on an offline read. cachedAt is the ISO time the cache entry was written or kept, and it is undefined on a fresh read with no identity or no cache; offline is true only when the value was served from the kept entry. JSON examples show cached results; an uncached fresh result still has a cachedAt key whose value is undefined.",
 				"examples": [
-					{
-						"value": [
-							{
-								"id": "0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93",
-								"name": "Field Reports",
-								"kind": "shared"
-							}
-						],
-						"offline": false
-					},
 					{
 						"value": [
 							{
@@ -168,18 +158,8 @@
 					{
 						"name": "HostedReadService.read",
 						"type": "Promise<{ value: T; cachedAt: string | undefined; offline: boolean }>",
-						"description": "The resolved object { value, cachedAt, offline } of read: value is the loaded value unchecked on a fresh read, or the validate() result on an offline read. cachedAt is the ISO time the cache entry was written or kept, and it is undefined on a fresh read with no identity or no cache; offline is true only when the value was served from the kept entry.",
+						"description": "The resolved object { value, cachedAt, offline } of read: value is the loaded value unchecked on a fresh read, or the validate() result on an offline read. cachedAt is the ISO time the cache entry was written or kept, and it is undefined on a fresh read with no identity or no cache; offline is true only when the value was served from the kept entry. JSON examples show cached results; an uncached fresh result still has a cachedAt key whose value is undefined.",
 						"examples": [
-							{
-								"value": [
-									{
-										"id": "0b6d2f7e-3c1a-4e8b-9f52-7a4d8e1c6b93",
-										"name": "Field Reports",
-										"kind": "shared"
-									}
-								],
-								"offline": false
-							},
 							{
 								"value": [
 									{

@@ -97,18 +97,7 @@
 			{
 				"name": "RemoteArtifactCacheService.read",
 				"type": "Promise<ReturnType<HostedArtifactValidator['artifact']>>",
-				"description": "Resolves to the revalidated artifact bytes, served media type, and SHA-256, either from a fresh read or an accepted offline cache entry. Captures larger than 11 MiB, hash mismatches, and unsupported media are rejected.",
-				"examples": [
-					{
-						"bytes": [
-							137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0, 1,
-							8, 4, 0, 0, 0, 181, 28, 12, 2, 0, 0, 0, 11, 73, 68, 65, 84, 120, 218, 99, 252, 255,
-							31, 0, 2, 235, 1, 245, 105, 71, 105, 165, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130
-						],
-						"mediaType": "image/png",
-						"sha256": "969ff7e7fb4df79179b07bc50199f1b4a718427d40a5d649c7263a7bc4b65b43"
-					}
-				]
+				"description": "Resolves to revalidated artifact bytes as a Uint8Array, the served media type, and SHA-256, from a fresh read or an accepted offline cache entry. The runtime byte array has no literal JSON sample. Captures larger than 11 MiB, hash mismatches, and unsupported media are rejected."
 			}
 		],
 		"errors": [
@@ -199,19 +188,7 @@
 					{
 						"name": "RemoteArtifactCacheService.read",
 						"type": "Promise<ReturnType<HostedArtifactValidator['artifact']>>",
-						"description": "Resolves to the revalidated artifact bytes, served media type, and SHA-256, either from a fresh read or an accepted offline cache entry. Captures larger than 11 MiB, hash mismatches, and unsupported media are rejected.",
-						"examples": [
-							{
-								"bytes": [
-									137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0,
-									1, 8, 4, 0, 0, 0, 181, 28, 12, 2, 0, 0, 0, 11, 73, 68, 65, 84, 120, 218, 99, 252,
-									255, 31, 0, 2, 235, 1, 245, 105, 71, 105, 165, 0, 0, 0, 0, 73, 69, 78, 68, 174,
-									66, 96, 130
-								],
-								"mediaType": "image/png",
-								"sha256": "969ff7e7fb4df79179b07bc50199f1b4a718427d40a5d649c7263a7bc4b65b43"
-							}
-						]
+						"description": "Resolves to revalidated artifact bytes as a Uint8Array, the served media type, and SHA-256, from a fresh read or an accepted offline cache entry. The runtime byte array has no literal JSON sample. Captures larger than 11 MiB, hash mismatches, and unsupported media are rejected."
 					}
 				],
 				"errors": [
