@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/commands/ReportCommand.ts",
-			"packages/reports/src/commands/reports-media/ReportCommand.ts"
-		],
-		"symbols": ["ReportCommand", "ReportCommand", "ReportCommand.run"]
+		"source": ["packages/reports/src/commands/reports-media/ReportCommand.ts"],
+		"symbols": ["ReportCommand", "ReportCommand.run"]
 	},
 	"contract": {
 		"origin": "derived",
