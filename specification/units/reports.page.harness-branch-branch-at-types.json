@@ -19,12 +19,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The rendered markup of this page, which is what the /harness/branch/[branch]/[...at]/types route shows: one HarnessScreen component instance with title 'Types' and content set to the ExplorerCatalogScreen component. The template reads no route parameters or props, so the title and content are fixed in this file."
 			}
 		],
 		"errors": [],
