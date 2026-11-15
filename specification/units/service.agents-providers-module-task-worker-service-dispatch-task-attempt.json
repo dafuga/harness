@@ -12,32 +12,54 @@
 		"symbols": ["dispatchTaskAttempt"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "dispatchTaskAttempt.runner",
 				"type": "TaskRunner",
-				"required": true
+				"required": true,
+				"description": "A runner with a run(input) method that returns a promise for the provider result. Its reportedModel and usage values are read when building the attempt record."
 			},
 			{
 				"name": "dispatchTaskAttempt.input",
 				"type": "TaskRunInput",
-				"required": true
+				"required": true,
+				"description": "The complete TaskRunInput, including its AbortSignal, passed unchanged to runner.run. Its provider, model, and intelligence seed the attempt record, and its model is the fallback for cost quoting when no reported model is available."
 			},
 			{
 				"name": "dispatchTaskAttempt.executions",
 				"type": "TaskExecution[]",
-				"required": true
+				"required": true,
+				"description": "The mutable TaskExecution list supplied by the caller. The function appends a success record or attempts a failure record when an error reaches its catch block.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "dispatchTaskAttempt",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The TaskRunResult resolved by runner.run(input), returned unchanged after its success record is appended. If the run or attempt processing rejects, this function produces no output.",
+				"examples": [
+					{
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"intelligence": "medium",
+						"text": "Completed task.",
+						"reportedModel": "gpt-6-luna"
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "propagated error",
+				"type": "thrown",
+				"description": "A value thrown while constructing analytics or processing the attempt rejects this call. A runner rejection is rethrown after a failed record is appended, unless constructing or appending that record throws a later value."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "dispatchTaskAttempt",
@@ -45,27 +67,49 @@
 					{
 						"name": "dispatchTaskAttempt.runner",
 						"type": "TaskRunner",
-						"required": true
+						"required": true,
+						"description": "A runner with a run(input) method that returns a promise for the provider result. Its reportedModel and usage values are read when building the attempt record."
 					},
 					{
 						"name": "dispatchTaskAttempt.input",
 						"type": "TaskRunInput",
-						"required": true
+						"required": true,
+						"description": "The complete TaskRunInput, including its AbortSignal, passed unchanged to runner.run. Its provider, model, and intelligence seed the attempt record, and its model is the fallback for cost quoting when no reported model is available."
 					},
 					{
 						"name": "dispatchTaskAttempt.executions",
 						"type": "TaskExecution[]",
-						"required": true
+						"required": true,
+						"description": "The mutable TaskExecution list supplied by the caller. The function appends a success record or attempts a failure record when an error reaches its catch block.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "dispatchTaskAttempt",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The TaskRunResult resolved by runner.run(input), returned unchanged after its success record is appended. If the run or attempt processing rejects, this function produces no output.",
+						"examples": [
+							{
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"intelligence": "medium",
+								"text": "Completed task.",
+								"reportedModel": "gpt-6-luna"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "propagated error",
+						"type": "thrown",
+						"description": "A value thrown while constructing analytics or processing the attempt rejects this call. A runner rejection is rethrown after a failed record is appended, unless constructing or appending that record throws a later value."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
