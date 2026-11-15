@@ -8,16 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/agents-providers/projectAgentActions.ts",
-			"packages/desktop/src/utils/projectAgentActions.ts"
-		],
-		"symbols": [
-			"projectAgentActions",
-			"projectAgentComment",
-			"projectAgentActions",
-			"projectAgentComment"
-		]
+		"source": ["packages/desktop/src/utils/agents-providers/projectAgentActions.ts"],
+		"symbols": ["projectAgentActions", "projectAgentComment"]
 	},
 	"contract": {
 		"origin": "declared",

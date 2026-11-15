@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { deploymentFixture } from '../deployment-fixture';
-import { productionPromotion } from '../../src/utils/productionPromotion';
+import { productionPromotion } from '../../src/utils/projects-sessions/productionPromotion';
 import { deploymentProof } from '../../src/utils/projects-sessions/deploymentProof';
 import { saveDeployment } from '../../src/utils/projects-sessions/deploymentState';
 
