@@ -33,28 +33,78 @@
 				"name": "githubAppKey.pem",
 				"type": "string",
 				"required": true,
-				"description": "PKCS#1 or PKCS#8 PEM, accepting real or escaped newlines."
+				"description": "The GitHub App's RSA private key as one PEM block, either a PKCS#1 block labeled RSA PRIVATE KEY or a PKCS#8 block labeled PRIVATE KEY, with real line breaks or backslash-n sequences. githubAppKey trims surrounding whitespace and rejects with an AuthFailure whose code is github-disabled when text sits outside that single block or WebCrypto cannot import the key as RSASSA-PKCS1-v1_5 with SHA-256.",
+				"examples": [
+					"-----BEGIN RSA PRIVATE KEY-----\\nMIIEpAIBAAKCAQEAu3Yq8mRkT1dZ0wFJxL5Hc7Ns2VbA9oPiGe4UrQyKlMt6XhWj\\nD0fSaCnBvEzI3pOqR7aYh2LwMxK5tNcG9uD1sVeJ0bF8iTrZ6oHyU4PlQmXnE3Cj\\n-----END RSA PRIVATE KEY-----",
+					"-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7Rk2Lp9vXq8Zt\nHw3Ye1NcUo0aBmJrKd6GsEi4Vf7Pu5QxW2TlDyOhA9nRbS8gCjFkLzMeIqU1pXv3\n-----END PRIVATE KEY-----"
+				]
 			},
 			{
 				"name": "githubAppJwt.input",
 				"type": "GithubAppJwtInput",
 				"required": true,
-				"description": "App ID, imported signing key and current time in milliseconds."
+				"description": "The signing input holds appId, the GitHub App ID copied unchanged into the iss claim; key, the CryptoKey returned by githubAppKey that signs the token; and now, the current time in milliseconds, which is floored to whole seconds for the iat and exp claims. No range or format check runs on appId or now, so the caller must supply the actual current time, and the iat and exp claims then sit 60 seconds before and 540 seconds after that second.",
+				"examples": [
+					{
+						"appId": "123456",
+						"key": {
+							"algorithm": {
+								"name": "RSASSA-PKCS1-v1_5"
+							},
+							"extractable": false,
+							"type": "private",
+							"usages": ["sign"]
+						},
+						"now": 1794744000517
+					},
+					{
+						"appId": "2231874",
+						"key": {
+							"algorithm": {
+								"name": "RSASSA-PKCS1-v1_5"
+							},
+							"extractable": false,
+							"type": "private",
+							"usages": ["sign"]
+						},
+						"now": 1794745812004
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "githubAppKey",
 				"type": "Promise<CryptoKey>",
-				"description": "Nonextractable RSA SHA-256 signing key; invalid PEM or import failure rejects with github-disabled."
+				"description": "Resolves to a nonextractable CryptoKey imported as RSASSA-PKCS1-v1_5 with SHA-256 whose only usage is sign. A PEM that does not match the accepted format, or a key that WebCrypto cannot import, rejects with an AuthFailure whose code is github-disabled.",
+				"examples": [
+					{
+						"algorithm": {
+							"name": "RSASSA-PKCS1-v1_5"
+						},
+						"extractable": false,
+						"type": "private",
+						"usages": ["sign"]
+					}
+				]
 			},
 			{
 				"name": "githubAppJwt",
 				"type": "Promise<string>",
-				"description": "RS256 JWT with app ID issuer, issued-at one minute before the supplied time and expiration nine minutes after it."
+				"description": "Resolves to a compact RS256 JWT whose header carries alg RS256 and typ JWT and whose payload holds iss set to appId, iat set to Math.floor(now / 1000) minus 60, and exp set to Math.floor(now / 1000) plus 540. The function has no catch of its own, so a rejection from the signing step reaches the caller unchanged.",
+				"examples": [
+					"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxMjM0NTYiLCJpYXQiOjE3OTQ3NDM5NDAsImV4cCI6MTc5NDc0NDU0MH0.Zq8LrV3nTkH0xYcP2wEbM4sJf7dGa1RuQe9KoNhW6tCy0pIzVl3XrD8mUgS5nB2qFjL9oAeT4kZ7vYx1PwR6cNs0iHmU3dKEaJ8tO2lBfG5qWz7rMpxV4kQ0eYdT9hLc3sNu1Rj6oGm8iAb2yZfK5wD-pT3uE7nH1vXq4BcL9sImK0aW5zOdFg8RtYe2jQ_9hNcL3uSi6bVx1oPwAdG7yKf4ZeC0qJr8TlXs2nMhBo9VaU5Ei3wQpYgLc1xDt6rKsZ8fNaHu7vwO0eAj5gPq3mTyBb4RIsU9kHn2cWvF7dLx6aEoQzY3tiG8pMr0NeJb5KhfXc4oSl1BwA6uDvZ9gR"
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Error whose code is github-disabled and whose status is 503, thrown by authFail when the PEM does not match the accepted format or WebCrypto cannot import the key. githubAppKey rejects with it, and its message reads Hub auth github-disabled."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "githubAppKey",
@@ -63,18 +113,38 @@
 						"name": "githubAppKey.pem",
 						"type": "string",
 						"required": true,
-						"description": "PKCS#1 or PKCS#8 PEM, accepting real or escaped newlines."
+						"description": "The GitHub App's RSA private key as one PEM block, either a PKCS#1 block labeled RSA PRIVATE KEY or a PKCS#8 block labeled PRIVATE KEY, with real line breaks or backslash-n sequences. githubAppKey trims surrounding whitespace and rejects with an AuthFailure whose code is github-disabled when text sits outside that single block or WebCrypto cannot import the key as RSASSA-PKCS1-v1_5 with SHA-256.",
+						"examples": [
+							"-----BEGIN RSA PRIVATE KEY-----\\nMIIEpAIBAAKCAQEAu3Yq8mRkT1dZ0wFJxL5Hc7Ns2VbA9oPiGe4UrQyKlMt6XhWj\\nD0fSaCnBvEzI3pOqR7aYh2LwMxK5tNcG9uD1sVeJ0bF8iTrZ6oHyU4PlQmXnE3Cj\\n-----END RSA PRIVATE KEY-----",
+							"-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7Rk2Lp9vXq8Zt\nHw3Ye1NcUo0aBmJrKd6GsEi4Vf7Pu5QxW2TlDyOhA9nRbS8gCjFkLzMeIqU1pXv3\n-----END PRIVATE KEY-----"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "githubAppKey",
 						"type": "Promise<CryptoKey>",
-						"description": "Nonextractable RSA SHA-256 signing key; invalid PEM or import failure rejects with github-disabled."
+						"description": "Resolves to a nonextractable CryptoKey imported as RSASSA-PKCS1-v1_5 with SHA-256 whose only usage is sign. A PEM that does not match the accepted format, or a key that WebCrypto cannot import, rejects with an AuthFailure whose code is github-disabled.",
+						"examples": [
+							{
+								"algorithm": {
+									"name": "RSASSA-PKCS1-v1_5"
+								},
+								"extractable": false,
+								"type": "private",
+								"usages": ["sign"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Error whose code is github-disabled and whose status is 503, thrown by authFail when the PEM does not match the accepted format or WebCrypto cannot import the key. githubAppKey rejects with it, and its message reads Hub auth github-disabled."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "githubAppJwt",
@@ -83,18 +153,47 @@
 						"name": "githubAppJwt.input",
 						"type": "GithubAppJwtInput",
 						"required": true,
-						"description": "App ID, imported signing key and current time in milliseconds."
+						"description": "The signing input holds appId, the GitHub App ID copied unchanged into the iss claim; key, the CryptoKey returned by githubAppKey that signs the token; and now, the current time in milliseconds, which is floored to whole seconds for the iat and exp claims. No range or format check runs on appId or now, so the caller must supply the actual current time, and the iat and exp claims then sit 60 seconds before and 540 seconds after that second.",
+						"examples": [
+							{
+								"appId": "123456",
+								"key": {
+									"algorithm": {
+										"name": "RSASSA-PKCS1-v1_5"
+									},
+									"extractable": false,
+									"type": "private",
+									"usages": ["sign"]
+								},
+								"now": 1794744000517
+							},
+							{
+								"appId": "2231874",
+								"key": {
+									"algorithm": {
+										"name": "RSASSA-PKCS1-v1_5"
+									},
+									"extractable": false,
+									"type": "private",
+									"usages": ["sign"]
+								},
+								"now": 1794745812004
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "githubAppJwt",
 						"type": "Promise<string>",
-						"description": "RS256 JWT with app ID issuer, issued-at one minute before the supplied time and expiration nine minutes after it."
+						"description": "Resolves to a compact RS256 JWT whose header carries alg RS256 and typ JWT and whose payload holds iss set to appId, iat set to Math.floor(now / 1000) minus 60, and exp set to Math.floor(now / 1000) plus 540. The function has no catch of its own, so a rejection from the signing step reaches the caller unchanged.",
+						"examples": [
+							"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxMjM0NTYiLCJpYXQiOjE3OTQ3NDM5NDAsImV4cCI6MTc5NDc0NDU0MH0.Zq8LrV3nTkH0xYcP2wEbM4sJf7dGa1RuQe9KoNhW6tCy0pIzVl3XrD8mUgS5nB2qFjL9oAeT4kZ7vYx1PwR6cNs0iHmU3dKEaJ8tO2lBfG5qWz7rMpxV4kQ0eYdT9hLc3sNu1Rj6oGm8iAb2yZfK5wD-pT3uE7nH1vXq4BcL9sImK0aW5zOdFg8RtYe2jQ_9hNcL3uSi6bVx1oPwAdG7yKf4ZeC0qJr8TlXs2nMhBo9VaU5Ei3wQpYgLc1xDt6rKsZ8fNaHu7vwO0eAj5gPq3mTyBb4RIsU9kHn2cWvF7dLx6aEoQzY3tiG8pMr0NeJb5KhfXc4oSl1BwA6uDvZ9gR"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
