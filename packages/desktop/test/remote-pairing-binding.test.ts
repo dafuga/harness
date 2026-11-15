@@ -2,7 +2,7 @@ import type { Fixture } from './remote-pairing-binding.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { DevicePairingService } from '../../remote/src/index';
-import { RemoteHostService } from '../src/services/remote-host-service/RemoteHostService';
+import { RemoteHostService } from '../src/services/networking-security/remote-host-service/RemoteHostService';
 import { hostFixture } from './remote-host-fixture';
 
 const settle = { timeout: 15000 };
