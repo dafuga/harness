@@ -17,49 +17,161 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "responseCheckSettings.options",
 				"type": "ResponseCheckOptions",
-				"required": true
+				"required": true,
+				"description": "The ResponseCheckOptions object; responseCheckSettings reads only model, minConfidence and apiKeyEnv, which default to 'jev-1.13.0', '0.85' and 'HARNESS_JEV_API_KEY' when absent. responseCheckSettings throws when model is not 'jev-' followed by one or more letters, digits, dots or hyphens, when minConfidence does not convert to a finite number greater than 0 and at most 1, or when apiKeyEnv is not an uppercase letter followed by uppercase letters, digits or underscores.",
+				"examples": [
+					{
+						"request": "evidence/request.txt",
+						"response": "evidence/response.txt",
+						"context": "evidence/context.md",
+						"criteria": "evidence/criteria.json",
+						"model": "jev-1.13.0",
+						"minConfidence": "0.85",
+						"apiKeyEnv": "HARNESS_JEV_API_KEY"
+					},
+					{
+						"request": "reports/checkout/request.txt",
+						"response": "reports/checkout/response.txt",
+						"context": "reports/checkout/context.md",
+						"criteria": "reports/checkout/criteria.json",
+						"model": "jev-1.13.0",
+						"minConfidence": "0.9",
+						"apiKeyEnv": "REVIEW_JEV_API_KEY"
+					}
+				]
 			},
 			{
 				"name": "readResponseCheckInput.options",
 				"type": "ResponseCheckOptions",
-				"required": true
+				"required": true,
+				"description": "The ResponseCheckOptions object; readResponseCheckInput reads request, response, context and criteria and ignores model, minConfidence and apiKeyEnv. request and response must both be set or the call rejects, and context and criteria are file paths that are read only when set.",
+				"examples": [
+					{
+						"request": "evidence/request.txt",
+						"response": "evidence/response.txt",
+						"context": "evidence/context.md",
+						"criteria": "evidence/criteria.json",
+						"model": "jev-1.13.0",
+						"minConfidence": "0.85",
+						"apiKeyEnv": "HARNESS_JEV_API_KEY"
+					},
+					{
+						"request": "reports/checkout/request.txt",
+						"response": "reports/checkout/response.txt",
+						"context": "reports/checkout/context.md",
+						"criteria": "reports/checkout/criteria.json",
+						"model": "jev-1.13.0",
+						"minConfidence": "0.9",
+						"apiKeyEnv": "REVIEW_JEV_API_KEY"
+					}
+				]
 			},
 			{
 				"name": "responseInputHashes.input",
 				"type": "ResponseCheckInput",
-				"required": true
+				"required": true,
+				"description": "The ResponseCheckInput object to hash; each own enumerable property gets its own digest, and the function performs no validation of the values.",
+				"examples": [
+					{
+						"request": "Summarize why the evidence grid check failed.",
+						"response": "The check failed because the table rendered no rows.",
+						"context": "",
+						"criteria": []
+					},
+					{
+						"request": "Does the release note mention the migration?",
+						"response": "Yes, the release note has a migration section.",
+						"context": "Release 4.2 notes for the checkout service.",
+						"criteria": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "responseInputLimit",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported constant 24000, the UTF-8 byte limit for each input file and for the serialized evaluation input. readResponseCheckInput rejects anything larger instead of truncating it.",
+				"examples": [24000]
 			},
 			{
 				"name": "responseCheckSettings",
-				"type": "ResponseCheckSettings"
+				"type": "ResponseCheckSettings",
+				"description": "The validated settings: model is the JEV model name, minConfidence is the numeric threshold greater than 0 and at most 1, and apiKeyEnv is the environment variable name that holds the API key. The object is returned only when all three values pass validation, because responseCheckSettings throws otherwise.",
+				"examples": [
+					{
+						"model": "jev-1.13.0",
+						"minConfidence": 0.85,
+						"apiKeyEnv": "HARNESS_JEV_API_KEY"
+					},
+					{
+						"model": "jev-1.13.0",
+						"minConfidence": 0.9,
+						"apiKeyEnv": "REVIEW_JEV_API_KEY"
+					}
+				]
 			},
 			{
 				"name": "readResponseCheckInput",
-				"type": "Promise<ResponseCheckInput>"
+				"type": "Promise<ResponseCheckInput>",
+				"description": "The promise resolves to the request, response, context and criteria read from the input files, with context set to '' when no context file is given and criteria set to [] when no criteria file is given. It rejects when --request or --response is missing, the request is blank, a file cannot be read, the criteria fail to parse or validate, or the serialized input exceeds 24000 UTF-8 bytes.",
+				"examples": [
+					{
+						"request": "Summarize why the evidence grid check failed.",
+						"response": "The check failed because the table rendered no rows.",
+						"context": "",
+						"criteria": []
+					},
+					{
+						"request": "Does the release note mention the migration?",
+						"response": "Yes, the release note has a migration section.",
+						"context": "Release 4.2 notes for the checkout service.",
+						"criteria": []
+					}
+				]
 			},
 			{
 				"name": "responseInputHashes",
-				"type": "Record<string, string>"
+				"type": "Record<string, string>",
+				"description": "Maps each own enumerable key of the input to the lowercase hexadecimal SHA-256 digest of its value. A string value is hashed as its own text, and any other value is hashed as JSON.stringify of that value.",
+				"examples": [
+					{
+						"request": "4c1f0a9d7b2e583f6a1c94d0e27b5f83a9d6c10e4b7f2a85d3e9c0617b4f2a58",
+						"response": "9b7e2d4f1a6c08e35d7b9f2a4c61e0d8b3f5a7c92e4d6b1f08a3c5e7d9b2f41c",
+						"context": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+						"criteria": "0f3a8c6e2d9b1e47a5c0f83d6e2b9a147d0c5f8be31a6d29c4b8f07a5e9d2c13"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown synchronously by responseCheckSettings with 'Invalid JEV model.' when model is invalid, 'Confidence threshold must be greater than 0 and at most 1.' when minConfidence is invalid, or 'Invalid API key environment variable.' when apiKeyEnv is invalid."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejected by readResponseCheckInput with '--request and --response files are required.' when either path is missing, with 'The user request must be nonempty.' when the request is blank after trimming, or with 'Serialized evaluation input exceeds 24000 UTF-8 bytes; no input was truncated.' when the serialized input is too large."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejected by readResponseCheckInput with 'Cannot read input file: use a regular UTF-8 file of at most 24000 bytes.' when a request, response, context or criteria file cannot be opened or read, is not a regular file, is larger than 24000 bytes, or is not valid UTF-8."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejected by readResponseCheckInput with 'Criteria file must contain valid JSON.' when the criteria file does not parse as JSON, and errors thrown by ResponseCheckInputValidator.validateCriteria are not caught and reject readResponseCheckInput unchanged."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "responseCheckSettings",
@@ -67,22 +179,57 @@
 					{
 						"name": "responseCheckSettings.options",
 						"type": "ResponseCheckOptions",
-						"required": true
+						"required": true,
+						"description": "The ResponseCheckOptions object; responseCheckSettings reads only model, minConfidence and apiKeyEnv, which default to 'jev-1.13.0', '0.85' and 'HARNESS_JEV_API_KEY' when absent. responseCheckSettings throws when model is not 'jev-' followed by one or more letters, digits, dots or hyphens, when minConfidence does not convert to a finite number greater than 0 and at most 1, or when apiKeyEnv is not an uppercase letter followed by uppercase letters, digits or underscores.",
+						"examples": [
+							{
+								"request": "evidence/request.txt",
+								"response": "evidence/response.txt",
+								"context": "evidence/context.md",
+								"criteria": "evidence/criteria.json",
+								"model": "jev-1.13.0",
+								"minConfidence": "0.85",
+								"apiKeyEnv": "HARNESS_JEV_API_KEY"
+							},
+							{
+								"request": "reports/checkout/request.txt",
+								"response": "reports/checkout/response.txt",
+								"context": "reports/checkout/context.md",
+								"criteria": "reports/checkout/criteria.json",
+								"model": "jev-1.13.0",
+								"minConfidence": "0.9",
+								"apiKeyEnv": "REVIEW_JEV_API_KEY"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "responseCheckSettings",
-						"type": "ResponseCheckSettings"
+						"type": "ResponseCheckSettings",
+						"description": "The validated settings: model is the JEV model name, minConfidence is the numeric threshold greater than 0 and at most 1, and apiKeyEnv is the environment variable name that holds the API key. The object is returned only when all three values pass validation, because responseCheckSettings throws otherwise.",
+						"examples": [
+							{
+								"model": "jev-1.13.0",
+								"minConfidence": 0.85,
+								"apiKeyEnv": "HARNESS_JEV_API_KEY"
+							},
+							{
+								"model": "jev-1.13.0",
+								"minConfidence": 0.9,
+								"apiKeyEnv": "REVIEW_JEV_API_KEY"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown synchronously by responseCheckSettings with 'Invalid JEV model.' when model is invalid, 'Confidence threshold must be greater than 0 and at most 1.' when minConfidence is invalid, or 'Invalid API key environment variable.' when apiKeyEnv is invalid."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readResponseCheckInput",
@@ -90,22 +237,69 @@
 					{
 						"name": "readResponseCheckInput.options",
 						"type": "ResponseCheckOptions",
-						"required": true
+						"required": true,
+						"description": "The ResponseCheckOptions object; readResponseCheckInput reads request, response, context and criteria and ignores model, minConfidence and apiKeyEnv. request and response must both be set or the call rejects, and context and criteria are file paths that are read only when set.",
+						"examples": [
+							{
+								"request": "evidence/request.txt",
+								"response": "evidence/response.txt",
+								"context": "evidence/context.md",
+								"criteria": "evidence/criteria.json",
+								"model": "jev-1.13.0",
+								"minConfidence": "0.85",
+								"apiKeyEnv": "HARNESS_JEV_API_KEY"
+							},
+							{
+								"request": "reports/checkout/request.txt",
+								"response": "reports/checkout/response.txt",
+								"context": "reports/checkout/context.md",
+								"criteria": "reports/checkout/criteria.json",
+								"model": "jev-1.13.0",
+								"minConfidence": "0.9",
+								"apiKeyEnv": "REVIEW_JEV_API_KEY"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readResponseCheckInput",
-						"type": "Promise<ResponseCheckInput>"
+						"type": "Promise<ResponseCheckInput>",
+						"description": "The promise resolves to the request, response, context and criteria read from the input files, with context set to '' when no context file is given and criteria set to [] when no criteria file is given. It rejects when --request or --response is missing, the request is blank, a file cannot be read, the criteria fail to parse or validate, or the serialized input exceeds 24000 UTF-8 bytes.",
+						"examples": [
+							{
+								"request": "Summarize why the evidence grid check failed.",
+								"response": "The check failed because the table rendered no rows.",
+								"context": "",
+								"criteria": []
+							},
+							{
+								"request": "Does the release note mention the migration?",
+								"response": "Yes, the release note has a migration section.",
+								"context": "Release 4.2 notes for the checkout service.",
+								"criteria": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejected by readResponseCheckInput with '--request and --response files are required.' when either path is missing, with 'The user request must be nonempty.' when the request is blank after trimming, or with 'Serialized evaluation input exceeds 24000 UTF-8 bytes; no input was truncated.' when the serialized input is too large."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected by readResponseCheckInput with 'Cannot read input file: use a regular UTF-8 file of at most 24000 bytes.' when a request, response, context or criteria file cannot be opened or read, is not a regular file, is larger than 24000 bytes, or is not valid UTF-8."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected by readResponseCheckInput with 'Criteria file must contain valid JSON.' when the criteria file does not parse as JSON, and errors thrown by ResponseCheckInputValidator.validateCriteria are not caught and reject readResponseCheckInput unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "responseInputHashes",
@@ -113,17 +307,41 @@
 					{
 						"name": "responseInputHashes.input",
 						"type": "ResponseCheckInput",
-						"required": true
+						"required": true,
+						"description": "The ResponseCheckInput object to hash; each own enumerable property gets its own digest, and the function performs no validation of the values.",
+						"examples": [
+							{
+								"request": "Summarize why the evidence grid check failed.",
+								"response": "The check failed because the table rendered no rows.",
+								"context": "",
+								"criteria": []
+							},
+							{
+								"request": "Does the release note mention the migration?",
+								"response": "Yes, the release note has a migration section.",
+								"context": "Release 4.2 notes for the checkout service.",
+								"criteria": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "responseInputHashes",
-						"type": "Record<string, string>"
+						"type": "Record<string, string>",
+						"description": "Maps each own enumerable key of the input to the lowercase hexadecimal SHA-256 digest of its value. A string value is hashed as its own text, and any other value is hashed as JSON.stringify of that value.",
+						"examples": [
+							{
+								"request": "4c1f0a9d7b2e583f6a1c94d0e27b5f83a9d6c10e4b7f2a85d3e9c0617b4f2a58",
+								"response": "9b7e2d4f1a6c08e35d7b9f2a4c61e0d8b3f5a7c92e4d6b1f08a3c5e7d9b2f41c",
+								"context": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+								"criteria": "0f3a8c6e2d9b1e47a5c0f83d6e2b9a147d0c5f8be31a6d29c4b8f07a5e9d2c13"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
