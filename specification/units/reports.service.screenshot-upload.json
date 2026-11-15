@@ -21,42 +21,49 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ScreenshotUploadService.constructor.repository",
 				"type": "ReportRepository",
-				"required": true
+				"required": true,
+				"description": "Repository dependency used by upload to run mutateActive(reportId, callback) and provide the active report and its asset directory to that callback."
 			},
 			{
 				"name": "ScreenshotUploadService.constructor.storage",
 				"type": "Pick<R2ScreenshotStoreAdapter, 'put'>",
-				"required": true
+				"required": true,
+				"description": "The supplied object must expose the R2 adapter's put method; upload awaits it for both image buffers, passing the report ID, the names returned by imageAsset, and their MIME types."
 			},
 			{
 				"name": "ScreenshotUploadService.upload.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Report identifier passed to repository.mutateActive and reused as the key argument to both storage.put calls.",
+				"examples": ["report-123"]
 			},
 			{
 				"name": "ScreenshotUploadService.upload.input",
 				"type": "ScreenshotUploadInput",
-				"required": true
+				"required": true,
+				"description": "An object containing title and viewport strings plus before and after File objects; both files are read as bytes and their names are passed to imageAsset. title.trim() is sanitized and must yield 1–120 characters; viewport is checked with in against entries '', mobile, tablet, and desktop (mapped to '', 390px mobile, 920px tablet, and 1440px desktop), and inherited property names also pass that membership check."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ScreenshotUploadService.upload",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The resolved value returned by repository.mutateActive after its callback completes; the callback stores both image buffers, writes their assets to the report directory, appends a before/after evidence pair, and updates report.updatedAt. The service does not inspect or reshape the repository return value."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "This Error is thrown when the sanitized trimmed title is empty or longer than 120 characters (Comparison title must be 1–120 characters), or when the viewport membership check fails (Invalid viewport). File reads, repository and storage calls, and asset writes are awaited without local error wrapping, so their rejections propagate with their original reasons."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ScreenshotUploadService.upload",
@@ -64,27 +71,32 @@
 					{
 						"name": "ScreenshotUploadService.upload.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Report identifier passed to repository.mutateActive and reused as the key argument to both storage.put calls.",
+						"examples": ["report-123"]
 					},
 					{
 						"name": "ScreenshotUploadService.upload.input",
 						"type": "ScreenshotUploadInput",
-						"required": true
+						"required": true,
+						"description": "An object containing title and viewport strings plus before and after File objects; both files are read as bytes and their names are passed to imageAsset. title.trim() is sanitized and must yield 1–120 characters; viewport is checked with in against entries '', mobile, tablet, and desktop (mapped to '', 390px mobile, 920px tablet, and 1440px desktop), and inherited property names also pass that membership check."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ScreenshotUploadService.upload",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The resolved value returned by repository.mutateActive after its callback completes; the callback stores both image buffers, writes their assets to the report directory, appends a before/after evidence pair, and updates report.updatedAt. The service does not inspect or reshape the repository return value."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "This Error is thrown when the sanitized trimmed title is empty or longer than 120 characters (Comparison title must be 1–120 characters), or when the viewport membership check fails (Invalid viewport). File reads, repository and storage calls, and asset writes are awaited without local error wrapping, so their rejections propagate with their original reasons."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -94,22 +106,25 @@
 					{
 						"name": "ScreenshotUploadService.constructor.repository",
 						"type": "ReportRepository",
-						"required": true
+						"required": true,
+						"description": "Repository dependency used by upload to run mutateActive(reportId, callback) and provide the active report and its asset directory to that callback."
 					},
 					{
 						"name": "ScreenshotUploadService.constructor.storage",
 						"type": "Pick<R2ScreenshotStoreAdapter, 'put'>",
-						"required": true
+						"required": true,
+						"description": "The supplied object must expose the R2 adapter's put method; upload awaits it for both image buffers, passing the report ID, the names returned by imageAsset, and their MIME types."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ScreenshotUploadService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The ScreenshotUploadService instance initialized with the supplied repository and storage dependencies."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
