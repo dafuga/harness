@@ -21,47 +21,152 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CloudflareDeployAdapter.constructor.options",
 				"type": "Options",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional overrides for the external calls: execute replaces deploymentCommand for running wrangler through bun, and request replaces the global fetch used for the Cloudflare target check. Defaults to {}, which uses deploymentCommand and fetch.",
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "CloudflareDeployAdapter.discover.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project directory that deploymentConfig reads: it looks for an optional harness.deploy.json and for a Wrangler configuration (wrangler.jsonc, wrangler.json or wrangler.toml). Every file it reads must resolve inside this directory, or the call rejects.",
+				"examples": ["/workspace/acme-storefront", "/workspace/acme-api"]
 			},
 			{
 				"name": "CloudflareDeployAdapter.deploy.target",
 				"type": "CloudflareTarget",
-				"required": true
+				"required": true,
+				"description": "A CloudflareTarget from a discover result: kind 'pages' uses output and branch, and kind 'workers' uses wranglerEnvironment. tokenEnv is the name of the environment variable that holds the API token, not the token itself.",
+				"examples": [
+					{
+						"environment": "prod",
+						"kind": "pages",
+						"config": "wrangler.jsonc",
+						"name": "acme-storefront",
+						"accountId": "4f1c9a0d7b2e4c8a9d3f6e1b0a5c7d28",
+						"tokenEnv": "HARNESS_ACME_STOREFRONT_PROD_CLOUDFLARE_API_TOKEN",
+						"wranglerEnvironment": "",
+						"branch": "main",
+						"output": "dist",
+						"healthUrl": "https://storefront.acme.example/healthz"
+					},
+					{
+						"environment": "stage",
+						"kind": "workers",
+						"config": "wrangler.jsonc",
+						"name": "acme-api-staging",
+						"accountId": "4f1c9a0d7b2e4c8a9d3f6e1b0a5c7d28",
+						"tokenEnv": "HARNESS_ACME_API_STAGE_CLOUDFLARE_API_TOKEN",
+						"wranglerEnvironment": "staging",
+						"branch": "",
+						"output": "",
+						"healthUrl": "https://api-staging.acme.example/health"
+					}
+				]
 			},
 			{
 				"name": "CloudflareDeployAdapter.deploy.source",
 				"type": "{ root: string; commit: string }",
-				"required": true
+				"required": true,
+				"description": "root is the working directory for the wrangler command. commit is passed as --commit-hash only for Pages deployments, and the code does not check its format.",
+				"examples": [
+					{
+						"root": "/workspace/acme-storefront",
+						"commit": "3c1e8f2a9b7d4e60a5c2f1d8e9b3a7c4d0f2e6b1"
+					},
+					{
+						"root": "/workspace/acme-api",
+						"commit": "b7e04d19c2a6f83e5d1b9a07c4e2f6d8a3b5c1e9"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CloudflareDeployAdapter.discover",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolved DeploymentConfig for root: sourceBranch comes from harness.deploy.json or the current git branch (empty when git fails), and targets maps each configured environment to a CloudflareTarget. fingerprint is the hex SHA-256 digest of the harness.deploy.json text and the Wrangler configuration text.",
+				"examples": [
+					{
+						"sourceBranch": "main",
+						"targets": {
+							"prod": {
+								"environment": "prod",
+								"kind": "pages",
+								"config": "wrangler.jsonc",
+								"name": "acme-storefront",
+								"accountId": "4f1c9a0d7b2e4c8a9d3f6e1b0a5c7d28",
+								"tokenEnv": "HARNESS_ACME_STOREFRONT_PROD_CLOUDFLARE_API_TOKEN",
+								"wranglerEnvironment": "",
+								"branch": "main",
+								"output": "dist",
+								"healthUrl": "https://storefront.acme.example/healthz"
+							}
+						},
+						"fingerprint": "5b9e2f7c1a4d8e03b6f9c2a5d7e1b4f8c3a6d9e2b5f8c1a4d7e0b3f6c9a2d5e8"
+					},
+					{
+						"sourceBranch": "main",
+						"targets": {
+							"prod": {
+								"environment": "prod",
+								"kind": "workers",
+								"config": "wrangler.jsonc",
+								"name": "acme-api",
+								"accountId": "4f1c9a0d7b2e4c8a9d3f6e1b0a5c7d28",
+								"tokenEnv": "HARNESS_ACME_API_PROD_CLOUDFLARE_API_TOKEN",
+								"wranglerEnvironment": "production",
+								"branch": "",
+								"output": "",
+								"healthUrl": "https://api.acme.example/health"
+							}
+						},
+						"fingerprint": "a7d1f3e9c5b2a8d4f6e0c1b7a9d3e5f2c8b4a6d0e2f7c9b1a3d5e8f0c2b4a6d8"
+					}
+				]
 			},
 			{
 				"name": "CloudflareDeployAdapter.deploy",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolved result of deploy: url is the first *.pages.dev or *.workers.dev URL printed by the command, or the target's healthUrl when a Workers command prints none. deploymentId is the leading label of that URL for Pages, or the printed Workers Version ID UUID for Workers.",
+				"examples": [
+					{
+						"deploymentId": "3f9a1c2b",
+						"url": "https://3f9a1c2b.acme-storefront.pages.dev"
+					},
+					{
+						"deploymentId": "9d2f4b7e-3a1c-4e8b-b6d5-0f2a9c7e1d43",
+						"url": "https://acme-api-staging.acme-team.workers.dev"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by deploy when the credential named by tokenEnv is unset or empty, the Cloudflare target or account check fails, the Pages production branch is unreadable or conflicts with the environment, or the output has no deployment identity. Thrown by discover, through deploymentConfig and cloudflareSafety, when no Wrangler configuration is found, the JSONC configuration is invalid, a path leaves the project, two Worker targets share an account and name, a target is incomplete or mismatched, a lower Worker environment inherits or overlaps a production route or has a wildcard host, or a route mapping is ambiguous."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when harness.deploy.json is not valid JSON, and by response.json() in deploy when the Pages project lookup returns a body that is not valid JSON."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by the URL constructor in cloudflareSafety when a Worker route pattern does not form a valid host."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CloudflareDeployAdapter.discover",
@@ -69,17 +174,74 @@
 					{
 						"name": "CloudflareDeployAdapter.discover.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project directory that deploymentConfig reads: it looks for an optional harness.deploy.json and for a Wrangler configuration (wrangler.jsonc, wrangler.json or wrangler.toml). Every file it reads must resolve inside this directory, or the call rejects.",
+						"examples": ["/workspace/acme-storefront", "/workspace/acme-api"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CloudflareDeployAdapter.discover",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolved DeploymentConfig for root: sourceBranch comes from harness.deploy.json or the current git branch (empty when git fails), and targets maps each configured environment to a CloudflareTarget. fingerprint is the hex SHA-256 digest of the harness.deploy.json text and the Wrangler configuration text.",
+						"examples": [
+							{
+								"sourceBranch": "main",
+								"targets": {
+									"prod": {
+										"environment": "prod",
+										"kind": "pages",
+										"config": "wrangler.jsonc",
+										"name": "acme-storefront",
+										"accountId": "4f1c9a0d7b2e4c8a9d3f6e1b0a5c7d28",
+										"tokenEnv": "HARNESS_ACME_STOREFRONT_PROD_CLOUDFLARE_API_TOKEN",
+										"wranglerEnvironment": "",
+										"branch": "main",
+										"output": "dist",
+										"healthUrl": "https://storefront.acme.example/healthz"
+									}
+								},
+								"fingerprint": "5b9e2f7c1a4d8e03b6f9c2a5d7e1b4f8c3a6d9e2b5f8c1a4d7e0b3f6c9a2d5e8"
+							},
+							{
+								"sourceBranch": "main",
+								"targets": {
+									"prod": {
+										"environment": "prod",
+										"kind": "workers",
+										"config": "wrangler.jsonc",
+										"name": "acme-api",
+										"accountId": "4f1c9a0d7b2e4c8a9d3f6e1b0a5c7d28",
+										"tokenEnv": "HARNESS_ACME_API_PROD_CLOUDFLARE_API_TOKEN",
+										"wranglerEnvironment": "production",
+										"branch": "",
+										"output": "",
+										"healthUrl": "https://api.acme.example/health"
+									}
+								},
+								"fingerprint": "a7d1f3e9c5b2a8d4f6e0c1b7a9d3e5f2c8b4a6d0e2f7c9b1a3d5e8f0c2b4a6d8"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by deploymentConfig, which discover returns, when no Wrangler configuration is found, the JSONC configuration is invalid, a path leaves the project, two Worker targets share an account and name, a target is incomplete or mismatched, a lower Worker environment inherits or overlaps a production route or has a wildcard host, or a route mapping is ambiguous. Errors from file reads (other than ENOENT), the zod schema check of harness.deploy.json and TOML parsing propagate unchanged."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when harness.deploy.json is not valid JSON."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by the URL constructor in cloudflareSafety when a Worker route pattern does not form a valid host."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CloudflareDeployAdapter.deploy",
@@ -87,27 +249,82 @@
 					{
 						"name": "CloudflareDeployAdapter.deploy.target",
 						"type": "CloudflareTarget",
-						"required": true
+						"required": true,
+						"description": "A CloudflareTarget from a discover result: kind 'pages' uses output and branch, and kind 'workers' uses wranglerEnvironment. tokenEnv is the name of the environment variable that holds the API token, not the token itself.",
+						"examples": [
+							{
+								"environment": "prod",
+								"kind": "pages",
+								"config": "wrangler.jsonc",
+								"name": "acme-storefront",
+								"accountId": "4f1c9a0d7b2e4c8a9d3f6e1b0a5c7d28",
+								"tokenEnv": "HARNESS_ACME_STOREFRONT_PROD_CLOUDFLARE_API_TOKEN",
+								"wranglerEnvironment": "",
+								"branch": "main",
+								"output": "dist",
+								"healthUrl": "https://storefront.acme.example/healthz"
+							},
+							{
+								"environment": "stage",
+								"kind": "workers",
+								"config": "wrangler.jsonc",
+								"name": "acme-api-staging",
+								"accountId": "4f1c9a0d7b2e4c8a9d3f6e1b0a5c7d28",
+								"tokenEnv": "HARNESS_ACME_API_STAGE_CLOUDFLARE_API_TOKEN",
+								"wranglerEnvironment": "staging",
+								"branch": "",
+								"output": "",
+								"healthUrl": "https://api-staging.acme.example/health"
+							}
+						]
 					},
 					{
 						"name": "CloudflareDeployAdapter.deploy.source",
 						"type": "{ root: string; commit: string }",
-						"required": true
+						"required": true,
+						"description": "root is the working directory for the wrangler command. commit is passed as --commit-hash only for Pages deployments, and the code does not check its format.",
+						"examples": [
+							{
+								"root": "/workspace/acme-storefront",
+								"commit": "3c1e8f2a9b7d4e60a5c2f1d8e9b3a7c4d0f2e6b1"
+							},
+							{
+								"root": "/workspace/acme-api",
+								"commit": "b7e04d19c2a6f83e5d1b9a07c4e2f6d8a3b5c1e9"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CloudflareDeployAdapter.deploy",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolved result of deploy: url is the first *.pages.dev or *.workers.dev URL printed by the command, or the target's healthUrl when a Workers command prints none. deploymentId is the leading label of that URL for Pages, or the printed Workers Version ID UUID for Workers.",
+						"examples": [
+							{
+								"deploymentId": "3f9a1c2b",
+								"url": "https://3f9a1c2b.acme-storefront.pages.dev"
+							},
+							{
+								"deploymentId": "9d2f4b7e-3a1c-4e8b-b6d5-0f2a9c7e1d43",
+								"url": "https://acme-api-staging.acme-team.workers.dev"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the credential named by tokenEnv is unset or empty, when the Cloudflare target or account check fails, when the Pages production branch cannot be read, when a Pages branch conflicts with the environment's production status, or when the command output has no deployment identity. Errors from the request (including the 15-second timeout on the target lookup) and execute functions, such as deploymentCommand's failures, pass through unchanged."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by response.json() when the Pages project lookup returns a body that is not valid JSON."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -118,17 +335,22 @@
 						"name": "CloudflareDeployAdapter.constructor.options",
 						"type": "Options",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional overrides for the external calls: execute replaces deploymentCommand for running wrangler through bun, and request replaces the global fetch used for the Cloudflare target check. Defaults to {}, which uses deploymentCommand and fetch.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CloudflareDeployAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new CloudflareDeployAdapter instance, whose readonly id is 'cloudflare' and whose options are stored privately."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
