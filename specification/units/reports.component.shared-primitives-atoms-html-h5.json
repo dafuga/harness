@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native h5 element; native HTML content rules still apply."
+				"description": "The Svelte Snippet that supplies the h5 content; the component calls it with no arguments through `{@render children()}` only when it is truthy, so omitting it leaves the h5 empty. It matters only when the heading needs content, and the component does not validate, wrap, or restrict what the snippet renders."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlH5",
 				"type": "markup",
-				"description": "The actual native h5 element, with forwarded attributes and content and no additional wrapper."
+				"description": "It is the native h5 element the component renders: `<svelte:element this={'h5'}>` fixes the tag to h5, every prop except children is spread onto it, and the children snippet, when provided, renders inside it. The component adds no wrapper element or behavior of its own, so the DOM is exactly that h5 with its attributes and content."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
