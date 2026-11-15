@@ -12,16 +12,17 @@
 		"symbols": ["buildProgram"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "buildProgram",
-				"type": "Command"
+				"type": "Command",
+				"description": "buildProgram returns a fresh Commander Command named \"harness\" with the description \"Opinionated Rails-inspired coding harnesses for humans and agents.\" and version from sdkPackage.version, then applies the imported command registrations. The result is a Command class instance, so it cannot be represented by a JSON example."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "buildProgram",
@@ -29,11 +30,12 @@
 				"outputs": [
 					{
 						"name": "buildProgram",
-						"type": "Command"
+						"type": "Command",
+						"description": "buildProgram returns a fresh Commander Command named \"harness\" with the description \"Opinionated Rails-inspired coding harnesses for humans and agents.\" and version from sdkPackage.version, then applies the imported command registrations. The result is a Command class instance, so it cannot be represented by a JSON example."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
