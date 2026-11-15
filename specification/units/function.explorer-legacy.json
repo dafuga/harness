@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/console-canonical/explorerLegacy.ts",
+			"src/utils/explorerLegacy.ts",
 			"src/utils/projects-sessions/console-canonical/explorerLegacy.ts"
 		],
 		"symbols": ["explorerLegacy", "explorerLegacy"]
@@ -70,11 +70,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/console-canonical/explorerLegacy.ts",
+		"entry": "src/utils/explorerLegacy.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/console-canonical/explorerLegacy.ts"
+				"entry": "src/utils/explorerLegacy.ts"
 			}
 		]
 	},

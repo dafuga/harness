@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { explorerLegacy } from '../../src/utils/console-canonical/explorerLegacy';
+import { explorerLegacy } from '../../src/utils/projects-sessions/console-canonical/explorerLegacy';
+import { explorerLegacy as forwarded } from '../../src/utils/explorerLegacy';
 import {
 	explorerKindCategory,
 	explorerRoutePath,
@@ -129,6 +130,10 @@ test('the tab of a section is kept in the query and only where it exists', () =>
 		})
 	).toBe(`/branch/main/commit/${sha}/pages/reports.page.titles?tab=models`);
 	expectRetainedContracts();
+});
+
+test('a supported public entry forwards the same explorer address function, not a copy', () => {
+	expect(forwarded).toBe(explorerLegacy);
 });
 
 /** Non-page modules retain Contract while Pages canonicalize it to Models. */

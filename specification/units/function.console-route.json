@@ -9,15 +9,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/components/project-activity/consoleRoute.ts",
 			"packages/reports/src/components/projects-sessions/project-activity/consoleRoute.ts",
-			"src/utils/console-canonical/consoleRoute.ts",
+			"src/utils/consoleRoute.ts",
 			"src/utils/projects-sessions/console-canonical/consoleRoute.ts",
 			"src/utils/projects-sessions/consoleRoute.ts",
 			"src/utils/projects-sessions/consoleRoute.types.ts"
 		],
 		"symbols": [
 			"consoleRoutePath",
+			"consoleRoutePath",
 			"consoleRoute",
+			"consoleRoutePath",
+			"consoleViews",
 			"consoleRoute",
 			"consoleViews",
 			"consoleRoute",

@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
-import { consoleRoute } from '../../src/utils/console-canonical/consoleRoute';
+import { consoleRoute } from '../../src/utils/projects-sessions/console-canonical/consoleRoute';
 import { consoleRoutePath } from '../../packages/reports/src/components/projects-sessions/project-activity/consoleRoute';
 import { sourceBranches } from '../../src/repositories/git-source-history/source-history-repository/sourceBranches';
 import { type ListedRef } from '../../src/utils/git-source-history/sourceBranches';
