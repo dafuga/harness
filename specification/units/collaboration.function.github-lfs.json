@@ -9,8 +9,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubLfs.ts",
-			"packages/collaboration/src/utils/githubLfs.ts"
+			"packages/collaboration/src/utils/create-git-hub-source/githubLfs.ts",
+			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubLfs.ts"
 		],
 		"symbols": ["githubLfs", "githubLfs"]
 	},
@@ -98,11 +98,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/githubLfs.ts",
+		"entry": "packages/collaboration/src/utils/create-git-hub-source/githubLfs.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/githubLfs.ts"
+				"entry": "packages/collaboration/src/utils/create-git-hub-source/githubLfs.ts"
 			}
 		]
 	},
