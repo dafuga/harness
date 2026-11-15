@@ -18,23 +18,201 @@
 				"name": "hubSnapshot.input",
 				"type": "{ actor: Actor; source: SourceHistoryAdapter; cache: CollaborationCache; project: ProjectSummary; }",
 				"required": true,
-				"description": "Authenticated actor, source adapter, cache and already-authorized project summary with role."
+				"description": "The actor (its id becomes the cache identity's principalId), the source history adapter, the collaboration cache, and the project summary: its id, name, sourceRepository and role are read, and its collaborationCommit is copied into the identity. This function checks no authorization, so the caller must resolve permissions first; only role decides whether comments are on."
 			},
 			{
 				"name": "hubSnapshot.query",
 				"type": "{ branch: string | null; commit: string | null }",
 				"required": true,
-				"description": "Optional branch and commit. Missing branch prefers main, otherwise the first listed branch; missing commit selects that branch tip."
+				"description": "The branch to read: null or an empty string selects main if it is listed, otherwise the first listed branch, and a non-empty name that no listed branch has fails with not-found. The commit: null selects the branch tip, and any other value must already be the full commit id (a value that the source resolves to a different id, such as a ref name, fails with revision-mismatch).",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null
+					},
+					{
+						"branch": "feature/hosted-catalog",
+						"commit": "a41f0c9e27d5b3816f04e2c7d9a8b5136e0f4d2c"
+					},
+					{
+						"branch": null,
+						"commit": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubSnapshot",
 				"type": "Promise<ProjectSnapshot>",
-				"description": "Snapshot with project, revision, branch/commit lists, listed catalog entities and cache identity. Source editing, agents, planning and approval are off; comments are enabled unless role is viewer."
+				"description": "The ProjectSnapshot for the resolved commit: project (id, name, root ''), revision (branch, commit, tip, atTip), branches with a current flag, commits, and the entities hubCatalog lists. Source editing is off (writable false), agents, planning and approval are off, comments are on unless role is 'viewer', and cache holds the source identity with status 'fresh' and publication 'remote'.",
+				"examples": [
+					{
+						"project": {
+							"id": "3f1c9a8e-2b7d-4e51-9c0a-6d8f2b1e7a43",
+							"name": "Evidence Atlas",
+							"root": ""
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": false,
+							"planning": false,
+							"approval": false,
+							"source": "github"
+						},
+						"cache": {
+							"identity": {
+								"collaborationRevision": "f04d6b2c9e8a1375d0b4e62fa9c8d1703e5b9a46",
+								"principalId": "google-104827319560284716395",
+								"projectId": "3f1c9a8e-2b7d-4e51-9c0a-6d8f2b1e7a43",
+								"repositoryId": 741852963,
+								"requestedRef": "refs/heads/main",
+								"sourceCommit": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+								"sourceTree": "e13a7f92c0b64d85a1f3e9072c4b6d8a5e10f3c7",
+								"notesRef": "refs/notes/harness",
+								"notesRevision": "9c2d4a7e1f6b03d8e5a2c9f47b1e6d0a83c5f921",
+								"evidenceRef": "refs/heads/harness-evidence",
+								"evidenceRevision": null,
+								"historyIndexRevision": null,
+								"artifactHash": null,
+								"profile": null
+							},
+							"status": "fresh",
+							"publication": "remote"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+							"tip": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+								"current": true
+							},
+							{
+								"name": "feature/hosted-catalog",
+								"tip": "c3a91e0f5d7b2648a1e9f03c6d52b8e4a7f19d06",
+								"current": false
+							}
+						],
+						"commits": [
+							{
+								"hash": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+								"subject": "Index plan records by unit id",
+								"authoredAt": "2026-11-12T16:40:21Z"
+							},
+							{
+								"hash": "7d1e9b4c02a6f8e35b9d0c17a4e2f6b8d3c50a91",
+								"subject": "Read hub snapshot through the projection cache",
+								"authoredAt": "2026-11-10T09:15:03Z"
+							}
+						],
+						"entities": [
+							{
+								"id": "reports.component.evidence-grid",
+								"category": "components",
+								"kind": "component",
+								"title": "EvidenceGrid",
+								"summary": "Lays out a unit's verification evidence as a grid of captured images.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "unknown",
+								"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null
+							}
+						],
+						"writable": false
+					},
+					{
+						"project": {
+							"id": "3f1c9a8e-2b7d-4e51-9c0a-6d8f2b1e7a43",
+							"name": "Evidence Atlas",
+							"root": ""
+						},
+						"capabilities": {
+							"comments": false,
+							"agents": false,
+							"planning": false,
+							"approval": false,
+							"source": "github"
+						},
+						"cache": {
+							"identity": {
+								"collaborationRevision": "f04d6b2c9e8a1375d0b4e62fa9c8d1703e5b9a46",
+								"principalId": "google-100593276481290037152",
+								"projectId": "3f1c9a8e-2b7d-4e51-9c0a-6d8f2b1e7a43",
+								"repositoryId": 741852963,
+								"requestedRef": "a41f0c9e27d5b3816f04e2c7d9a8b5136e0f4d2c",
+								"sourceCommit": "a41f0c9e27d5b3816f04e2c7d9a8b5136e0f4d2c",
+								"sourceTree": "0d6f3b8a24e91c7f5a0b3e6d82c4f19a7e5b0c31",
+								"notesRef": "refs/notes/harness",
+								"notesRevision": "9c2d4a7e1f6b03d8e5a2c9f47b1e6d0a83c5f921",
+								"evidenceRef": "refs/heads/harness-evidence",
+								"evidenceRevision": null,
+								"historyIndexRevision": null,
+								"artifactHash": null,
+								"profile": null
+							},
+							"status": "fresh",
+							"publication": "remote"
+						},
+						"revision": {
+							"branch": "feature/hosted-catalog",
+							"commit": "a41f0c9e27d5b3816f04e2c7d9a8b5136e0f4d2c",
+							"tip": "c3a91e0f5d7b2648a1e9f03c6d52b8e4a7f19d06",
+							"atTip": false
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+								"current": false
+							},
+							{
+								"name": "feature/hosted-catalog",
+								"tip": "c3a91e0f5d7b2648a1e9f03c6d52b8e4a7f19d06",
+								"current": true
+							}
+						],
+						"commits": [
+							{
+								"hash": "a41f0c9e27d5b3816f04e2c7d9a8b5136e0f4d2c",
+								"subject": "Keep catalog listing out of route loaders",
+								"authoredAt": "2026-11-09T11:02:47Z"
+							},
+							{
+								"hash": "2c8f57a0e3d1b94f6a08c2e7d5b13f9a4e6c0d28",
+								"subject": "Validate hosted snapshot responses",
+								"authoredAt": "2026-11-07T18:22:44Z"
+							}
+						],
+						"entities": [],
+						"writable": false
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "not-found",
+				"type": "thrown",
+				"description": "Thrown as Error('Harness artifact unavailable') with code 'not-found' when query.branch is non-empty and no listed branch has that name, or when query.branch is null or empty and source.branches lists no branch. The returned promise rejects with it."
+			},
+			{
+				"name": "revision-mismatch",
+				"type": "thrown",
+				"description": "Thrown as Error('Harness artifact unavailable') with code 'revision-mismatch' when the commit that hubSource resolves for the ref (query.commit, or refs/heads/<branch> when it is null) differs from query.commit, or from the listed branch tip when it is null. The returned promise rejects with it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubSnapshot",
@@ -43,24 +221,201 @@
 						"name": "hubSnapshot.input",
 						"type": "{ actor: Actor; source: SourceHistoryAdapter; cache: CollaborationCache; project: ProjectSummary; }",
 						"required": true,
-						"description": "Authenticated actor, source adapter, cache and already-authorized project summary with role."
+						"description": "The actor (its id becomes the cache identity's principalId), the source history adapter, the collaboration cache, and the project summary: its id, name, sourceRepository and role are read, and its collaborationCommit is copied into the identity. This function checks no authorization, so the caller must resolve permissions first; only role decides whether comments are on."
 					},
 					{
 						"name": "hubSnapshot.query",
 						"type": "{ branch: string | null; commit: string | null }",
 						"required": true,
-						"description": "Optional branch and commit. Missing branch prefers main, otherwise the first listed branch; missing commit selects that branch tip."
+						"description": "The branch to read: null or an empty string selects main if it is listed, otherwise the first listed branch, and a non-empty name that no listed branch has fails with not-found. The commit: null selects the branch tip, and any other value must already be the full commit id (a value that the source resolves to a different id, such as a ref name, fails with revision-mismatch).",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": null
+							},
+							{
+								"branch": "feature/hosted-catalog",
+								"commit": "a41f0c9e27d5b3816f04e2c7d9a8b5136e0f4d2c"
+							},
+							{
+								"branch": null,
+								"commit": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubSnapshot",
 						"type": "Promise<ProjectSnapshot>",
-						"description": "Snapshot with project, revision, branch/commit lists, listed catalog entities and cache identity. Source editing, agents, planning and approval are off; comments are enabled unless role is viewer."
+						"description": "The ProjectSnapshot for the resolved commit: project (id, name, root ''), revision (branch, commit, tip, atTip), branches with a current flag, commits, and the entities hubCatalog lists. Source editing is off (writable false), agents, planning and approval are off, comments are on unless role is 'viewer', and cache holds the source identity with status 'fresh' and publication 'remote'.",
+						"examples": [
+							{
+								"project": {
+									"id": "3f1c9a8e-2b7d-4e51-9c0a-6d8f2b1e7a43",
+									"name": "Evidence Atlas",
+									"root": ""
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": false,
+									"planning": false,
+									"approval": false,
+									"source": "github"
+								},
+								"cache": {
+									"identity": {
+										"collaborationRevision": "f04d6b2c9e8a1375d0b4e62fa9c8d1703e5b9a46",
+										"principalId": "google-104827319560284716395",
+										"projectId": "3f1c9a8e-2b7d-4e51-9c0a-6d8f2b1e7a43",
+										"repositoryId": 741852963,
+										"requestedRef": "refs/heads/main",
+										"sourceCommit": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+										"sourceTree": "e13a7f92c0b64d85a1f3e9072c4b6d8a5e10f3c7",
+										"notesRef": "refs/notes/harness",
+										"notesRevision": "9c2d4a7e1f6b03d8e5a2c9f47b1e6d0a83c5f921",
+										"evidenceRef": "refs/heads/harness-evidence",
+										"evidenceRevision": null,
+										"historyIndexRevision": null,
+										"artifactHash": null,
+										"profile": null
+									},
+									"status": "fresh",
+									"publication": "remote"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+									"tip": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+										"current": true
+									},
+									{
+										"name": "feature/hosted-catalog",
+										"tip": "c3a91e0f5d7b2648a1e9f03c6d52b8e4a7f19d06",
+										"current": false
+									}
+								],
+								"commits": [
+									{
+										"hash": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+										"subject": "Index plan records by unit id",
+										"authoredAt": "2026-11-12T16:40:21Z"
+									},
+									{
+										"hash": "7d1e9b4c02a6f8e35b9d0c17a4e2f6b8d3c50a91",
+										"subject": "Read hub snapshot through the projection cache",
+										"authoredAt": "2026-11-10T09:15:03Z"
+									}
+								],
+								"entities": [
+									{
+										"id": "reports.component.evidence-grid",
+										"category": "components",
+										"kind": "component",
+										"title": "EvidenceGrid",
+										"summary": "Lays out a unit's verification evidence as a grid of captured images.",
+										"changed": false,
+										"planned": false,
+										"hasPlan": false,
+										"lifecycle": null,
+										"verification": "unknown",
+										"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+										"latestVersion": null,
+										"approvedVersion": null,
+										"threadCount": 0,
+										"thumbnail": null
+									}
+								],
+								"writable": false
+							},
+							{
+								"project": {
+									"id": "3f1c9a8e-2b7d-4e51-9c0a-6d8f2b1e7a43",
+									"name": "Evidence Atlas",
+									"root": ""
+								},
+								"capabilities": {
+									"comments": false,
+									"agents": false,
+									"planning": false,
+									"approval": false,
+									"source": "github"
+								},
+								"cache": {
+									"identity": {
+										"collaborationRevision": "f04d6b2c9e8a1375d0b4e62fa9c8d1703e5b9a46",
+										"principalId": "google-100593276481290037152",
+										"projectId": "3f1c9a8e-2b7d-4e51-9c0a-6d8f2b1e7a43",
+										"repositoryId": 741852963,
+										"requestedRef": "a41f0c9e27d5b3816f04e2c7d9a8b5136e0f4d2c",
+										"sourceCommit": "a41f0c9e27d5b3816f04e2c7d9a8b5136e0f4d2c",
+										"sourceTree": "0d6f3b8a24e91c7f5a0b3e6d82c4f19a7e5b0c31",
+										"notesRef": "refs/notes/harness",
+										"notesRevision": "9c2d4a7e1f6b03d8e5a2c9f47b1e6d0a83c5f921",
+										"evidenceRef": "refs/heads/harness-evidence",
+										"evidenceRevision": null,
+										"historyIndexRevision": null,
+										"artifactHash": null,
+										"profile": null
+									},
+									"status": "fresh",
+									"publication": "remote"
+								},
+								"revision": {
+									"branch": "feature/hosted-catalog",
+									"commit": "a41f0c9e27d5b3816f04e2c7d9a8b5136e0f4d2c",
+									"tip": "c3a91e0f5d7b2648a1e9f03c6d52b8e4a7f19d06",
+									"atTip": false
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "5b8e1c4f0d9a27e36c81f4b2a90d7e5c13f68a2d",
+										"current": false
+									},
+									{
+										"name": "feature/hosted-catalog",
+										"tip": "c3a91e0f5d7b2648a1e9f03c6d52b8e4a7f19d06",
+										"current": true
+									}
+								],
+								"commits": [
+									{
+										"hash": "a41f0c9e27d5b3816f04e2c7d9a8b5136e0f4d2c",
+										"subject": "Keep catalog listing out of route loaders",
+										"authoredAt": "2026-11-09T11:02:47Z"
+									},
+									{
+										"hash": "2c8f57a0e3d1b94f6a08c2e7d5b13f9a4e6c0d28",
+										"subject": "Validate hosted snapshot responses",
+										"authoredAt": "2026-11-07T18:22:44Z"
+									}
+								],
+								"entities": [],
+								"writable": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "not-found",
+						"type": "thrown",
+						"description": "Thrown as Error('Harness artifact unavailable') with code 'not-found' when query.branch is non-empty and no listed branch has that name, or when query.branch is null or empty and source.branches lists no branch. The returned promise rejects with it."
+					},
+					{
+						"name": "revision-mismatch",
+						"type": "thrown",
+						"description": "Thrown as Error('Harness artifact unavailable') with code 'revision-mismatch' when the commit that hubSource resolves for the ref (query.commit, or refs/heads/<branch> when it is null) differs from query.commit, or from the listed branch tip when it is null. The returned promise rejects with it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
