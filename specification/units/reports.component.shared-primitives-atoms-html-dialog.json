@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native dialog element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet rendered inside the native dialog when provided; it is invoked only when truthy. When omitted, it is undefined and no child content is rendered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlDialog",
 				"type": "markup",
-				"description": "The actual native dialog element, with forwarded attributes and content and no additional wrapper."
+				"description": "The rendered output is the native dialog element, with all remaining props spread onto it. If children is truthy, its snippet is rendered inside; the component adds no wrapper or other behavior."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
