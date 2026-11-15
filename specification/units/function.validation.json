@@ -14,8 +14,7 @@
 			"src/core/development-tooling/fields/validation.ts",
 			"src/core/development-tooling/validation.ts",
 			"src/core/validation.ts",
-			"src/workflows/development-tooling/loop-state/validation.ts",
-			"src/workflows/loop-state/validation.ts"
+			"src/workflows/development-tooling/loop-state/validation.ts"
 		],
 		"symbols": [
 			"validateProjectName",
@@ -37,7 +36,6 @@
 			"validateRouteName",
 			"validateExportName",
 			"validateName",
-			"validateKebabName",
 			"validateKebabName"
 		]
 	},
