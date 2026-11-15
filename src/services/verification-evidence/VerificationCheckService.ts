@@ -1,5 +1,7 @@
 // @harness-uid u_a7rs3z4f6t
 import { videoFlagProofFailures } from './verification-check-service/videoFlagProof';
+import { videoReferenceIntegrity } from './verification-check-service/videoReferenceIntegrity';
+import { recordFiles } from '../../utils/verification-evidence/evidenceManifest';
 import type { CheckReport } from './VerificationCheckService.types';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
@@ -60,6 +62,7 @@ export class VerificationCheckService {
 			...identity,
 			...(recordIntact(record) ? [] : ['record content does not match its id']),
 			...(await this.components(commit, record)),
+			...(await videoReferenceIntegrity(this.root, record)),
 			...this.evidence(record, directory)
 		];
 	}
@@ -123,10 +126,7 @@ export class VerificationCheckService {
 
 	/** Every file this run produced must still exist with the hash the record states. */
 	private evidence(record: VerificationRecord, directory: string): string[] {
-		const captures = record.scenarios
-			.filter((scenario) => scenario.status !== 'referenced')
-			.flatMap((scenario) => scenario.states.flatMap((state) => state.captures));
-		const files = [...captures, ...record.tests.map((test) => test.log)];
+		const files = recordFiles(record);
 		return files.flatMap((file) => {
 			const path = join(directory, file.path);
 			if (!existsSync(path)) return [`evidence ${file.path} is missing`];

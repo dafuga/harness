@@ -10,14 +10,21 @@
 	"owns": {
 		"source": [
 			"src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
-			"src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.types.ts"
+			"src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.types.ts",
+			"src/services/verification-evidence/history-status-service/attached-record-service/recordDescriptor.ts",
+			"src/services/verification-evidence/history-status-service/attached-record-service/recordReferences.ts"
 		],
 		"symbols": [
 			"AttachedRecordService",
 			"AttachedRecordService.constructor",
 			"AttachedRecordService.load",
+			"AttachedRecordService.describe",
 			"AttachedRecord",
-			"AttachedRecord"
+			"AttachedRecord",
+			"AttachedRecordReadOptions",
+			"AttachedRecordDescriptor",
+			"recordDescriptor",
+			"recordReferences"
 		]
 	},
 	"contract": {
@@ -39,6 +46,12 @@
 				"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 			},
 			{
+				"name": "AttachedRecordService.constructor.options",
+				"type": "AttachedRecordReadOptions",
+				"required": false,
+				"default": {}
+			},
+			{
 				"name": "AttachedRecordService.load.pointer",
 				"type": "EvidencePointer",
 				"required": true,
@@ -50,6 +63,41 @@
 						"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 					}
 				]
+			},
+			{
+				"name": "AttachedRecordService.describe.pointer",
+				"type": "EvidencePointer",
+				"required": true
+			},
+			{
+				"name": "recordDescriptor.repository",
+				"type": "EvidenceBranchRepository",
+				"required": true
+			},
+			{
+				"name": "recordDescriptor.pointer",
+				"type": "EvidencePointer",
+				"required": true
+			},
+			{
+				"name": "recordDescriptor.within",
+				"type": "string | null",
+				"required": false
+			},
+			{
+				"name": "recordReferences.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordReferences.loaded",
+				"type": "AttachedRecord",
+				"required": true
+			},
+			{
+				"name": "recordReferences.scope",
+				"type": "{ within?: string | null; options: AttachedRecordReadOptions; }",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -88,6 +136,80 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "AttachedRecordService.describe",
+				"inputs": [
+					{
+						"name": "AttachedRecordService.describe.pointer",
+						"type": "EvidencePointer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AttachedRecordService.describe",
+						"type": "Promise<AttachedRecordDescriptor>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordDescriptor",
+				"inputs": [
+					{
+						"name": "recordDescriptor.repository",
+						"type": "EvidenceBranchRepository",
+						"required": true
+					},
+					{
+						"name": "recordDescriptor.pointer",
+						"type": "EvidencePointer",
+						"required": true
+					},
+					{
+						"name": "recordDescriptor.within",
+						"type": "string | null",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordDescriptor",
+						"type": "Promise<AttachedRecordDescriptor>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordReferences",
+				"inputs": [
+					{
+						"name": "recordReferences.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordReferences.loaded",
+						"type": "AttachedRecord",
+						"required": true
+					},
+					{
+						"name": "recordReferences.scope",
+						"type": "{ within?: string | null; options: AttachedRecordReadOptions; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordReferences",
+						"type": "Promise<AttachedRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -108,6 +230,12 @@
 						"default": "undefined (omitted)",
 						"description": "Optional evidence commit that pins pointer validation to that commit’s history. Null rejects every pointer; when omitted, evidence is unpinned and each stored evidence commit can be followed.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567", null]
+					},
+					{
+						"name": "AttachedRecordService.constructor.options",
+						"type": "AttachedRecordReadOptions",
+						"required": false,
+						"default": {}
 					}
 				],
 				"outputs": [
@@ -154,12 +282,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.function.entity-lens",
+			"unit": "repository.evidence-branch",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "repository.evidence-branch",
+			"unit": "service.verification-evidence-video-reference",
 			"via": "import",
 			"origin": "derived"
 		},

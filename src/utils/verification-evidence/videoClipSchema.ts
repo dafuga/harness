@@ -6,6 +6,40 @@ import type { VideoManifest, VideoDeclaration } from './videoClipSchema.types';
 const id = z.string().regex(/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/);
 const text = z.string().min(1);
 const hash = z.string().regex(/^[a-f0-9]{64}$/);
+const commit = z.string().regex(/^[a-f0-9]{40}$/);
+export const videoBatchPointerSchema = z
+	.strictObject({
+		schemaVersion: z.literal(1),
+		kind: z.literal('harness-video-batch'),
+		batch: hash,
+		evidence: z.strictObject({
+			commit,
+			path: z.string().regex(/^video-batches\/[a-f0-9]{64}$/),
+			manifest: hash
+		})
+	})
+	.refine(
+		(pointer) => pointer.evidence.path === `video-batches/${pointer.batch}`,
+		'batch path must match its hash'
+	);
+
+/** Fresh clips belong to their parent; reused clips name their original attached parent and source together. */
+export const videoReferenceSchema = z
+	.strictObject({ batch: hash, record: hash.optional(), revision: commit.optional() })
+	.refine(
+		(reference) => Boolean(reference.record) === Boolean(reference.revision),
+		'original record and revision must be provided together'
+	);
+export const videoCoverageSchema = z.array(
+	z.strictObject({
+		graph: id,
+		states: z.number().int().nonnegative(),
+		edges: z.number().int().nonnegative(),
+		clips: z.number().int().nonnegative().optional(),
+		complete: z.boolean(),
+		missing: z.array(z.string().min(1))
+	})
+);
 const relativePath = text.refine(
 	(path) =>
 		!path.startsWith('/') &&
@@ -39,7 +73,14 @@ const clip = z.strictObject({
 	exit: id,
 	states: ids.min(1),
 	edges: ids,
-	durationSeconds: z.number().positive().max(15)
+	durationSeconds: z.number().positive().max(15),
+	checkpoints: z
+		.array(z.strictObject({ viewport: id, entrySignature: hash, exitSignature: hash }))
+		.refine(
+			(items) => new Set(items.map((item) => item.viewport)).size === items.length,
+			'checkpoint viewports must be unique'
+		)
+		.optional()
 });
 const graph = z.strictObject({
 	id,
@@ -59,6 +100,7 @@ const graph = z.strictObject({
 /** Raw shape remains separate so inferred types never depend on their own refinements. */
 export const videoManifestBaseSchema = z.strictObject({
 	schemaVersion: z.literal(1),
+	discoveryGaps: z.array(z.strictObject({ unit: id, reason: text })).optional(),
 	viewports: z.array(viewport).min(1).refine(unique, 'viewport ids must be unique'),
 	clips: z.array(clip).refine(unique, 'clip ids must be unique'),
 	graphs: z.array(graph).refine(unique, 'graph ids must be unique'),

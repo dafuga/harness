@@ -11,3 +11,17 @@ export interface AttachedRecord {
 	files: Map<string, Buffer>;
 	problems: string[];
 }
+
+export interface AttachedRecordReadOptions {
+	trail?: string[];
+	notes?: string | null;
+	/** Verify media, then discard it; keeps recursive lineage checks from retaining ancestor media. */
+	retainMedia?: boolean;
+}
+export interface AttachedRecordDescriptor {
+	pointer: EvidencePointer;
+	manifest?: EvidenceManifest;
+	record?: VerificationRecord;
+	problems: string[];
+	integrity: 'metadata-only';
+}

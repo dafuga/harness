@@ -7,12 +7,7 @@ export function videoBindings(manifest: VideoManifest, context: RefinementCtx): 
 	const issues: string[] = [];
 	const viewportIds = new Set(manifest.viewports.map((viewport) => viewport.id));
 	const clips = new Map(manifest.clips.map((clip) => [clip.id, clip]));
-	for (const clip of manifest.clips) {
-		if (clip.viewports.some((viewport) => !viewportIds.has(viewport)))
-			issues.push(`${clip.id}: unknown viewport`);
-		if (![clip.entry, clip.exit].every((state) => clip.states.includes(state)))
-			issues.push(`${clip.id}: checkpoints must be asserted clip states`);
-	}
+	for (const clip of manifest.clips) issues.push(...clipIssues(clip, viewportIds));
 	for (const graph of manifest.graphs) {
 		issues.push(...graphIssues(graph));
 		for (const id of graph.clips) {
@@ -56,4 +51,15 @@ function clipGraphIssues(clip: VideoClip, graph: VideoGraph): string[] {
 		errors.push(`${clip.id}: incompatible graph checkpoint`);
 	if (clip.edges.some((edge) => !edges.has(edge))) errors.push(`${clip.id}: unknown graph edge`);
 	return errors;
+}
+
+function clipIssues(clip: VideoClip, viewportIds: Set<string>): string[] {
+	const issues: string[] = [];
+	if (clip.viewports.some((viewport) => !viewportIds.has(viewport)))
+		issues.push(`${clip.id}: unknown viewport`);
+	if (clip.checkpoints?.some((point) => !clip.viewports.includes(point.viewport)))
+		issues.push(`${clip.id}: checkpoint viewport must be declared for this clip`);
+	if (![clip.entry, clip.exit].every((state) => clip.states.includes(state)))
+		issues.push(`${clip.id}: checkpoints must be asserted clip states`);
+	return issues;
 }

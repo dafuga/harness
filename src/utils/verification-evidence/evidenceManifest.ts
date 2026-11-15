@@ -11,6 +11,7 @@ export function recordFiles(record: VerificationRecord): RecordFile[] {
 	const captures = record.scenarios
 		.filter((scenario) => scenario.status !== 'referenced')
 		.flatMap((scenario) => scenario.states.flatMap((state) => state.captures))
+		.filter((capture) => !capture.videoReference)
 		.flatMap(({ path, sha256, bytes, mediaType, video }) => {
 			const media: RecordFile[] = [{ path, sha256, bytes, mediaType }];
 			if (video)

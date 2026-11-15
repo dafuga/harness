@@ -20,15 +20,27 @@ export function captureVideo(
 	freshness: EvidenceVideo['freshness']
 ): EvidenceVideo | undefined {
 	if (capture.kind !== 'video' || !capture.video) return;
+	const original = originalClipReference(capture, reference);
 	return {
 		...capture.video,
 		sha256: capture.sha256,
 		selectedRevision,
 		freshness,
-		...(/^[a-f0-9]{64}$/.test(reference.record) && /^[a-f0-9]{40}$/.test(reference.revision)
-			? { reference }
+		...(/^[a-f0-9]{64}$/.test(original.record) && /^[a-f0-9]{40}$/.test(original.revision)
+			? { reference: original }
 			: {})
 	};
+}
+
+/** Clip-level lineage takes precedence over a freshly tested enclosing scenario. */
+export function originalClipReference(
+	capture: HarnessCapture,
+	fallback: FrameClipReference
+): FrameClipReference {
+	const origin = capture.videoReference;
+	return origin?.record && origin.revision
+		? { ...fallback, record: origin.record, revision: origin.revision }
+		: fallback;
 }
 
 /** Name of a media file under the console's media path. */
@@ -111,7 +123,7 @@ function reportVideo(
 	if (!descriptor) return;
 	let freshness: EvidenceVideo['freshness'] = 'current';
 	if (!record.valid || capture.status !== 'passed') freshness = 'stale';
-	else if (scenario.inherited) freshness = 'inherited';
+	else if (scenario.inherited || capture.videoReference?.record) freshness = 'inherited';
 	return captureVideo(
 		capture,
 		{

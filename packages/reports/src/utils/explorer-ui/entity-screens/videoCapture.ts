@@ -37,6 +37,6 @@ function originRecord(result: HarnessRecord['scenarios'][number] | undefined, re
 
 function freshness(found: ExplorerCapture, phase: Phase): EvidenceVideo['freshness'] {
 	if (!found.usable) return 'stale';
-	if (found.inheritedFrom) return 'inherited';
+	if (found.inheritedFrom || found.capture.videoReference?.record) return 'inherited';
 	return phase === 'before' ? 'historical' : 'current';
 }

@@ -12,6 +12,7 @@ export interface ResolvedMedia {
 	/** Path of the original bytes in the output, or null when they are not available. */
 	media: string | null;
 	gap?: string;
+	poster?: { media: string | null; gap?: string };
 }
 
 /** Finds the bytes of one capture in the record that produced it. */
@@ -31,7 +32,9 @@ export interface RecordView {
 	tests: Array<DiagnosticTest & { kind: string; target: string; durationMs: number }>;
 	/** Identity of each declared build as compiled for this record, when any is declared. */
 	builds?: VerificationRecord['builds'];
+	videoBatches?: VerificationRecord['videoBatches'];
 	scenarios: Array<{
+		videoCoverage?: Scenario['videoCoverage'];
 		id: string;
 		status: Scenario['status'];
 		testedRevision: string;

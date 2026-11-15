@@ -12,7 +12,13 @@
 			"packages/reports/src/utils/explorer-ui/harnessEvidence.ts",
 			"packages/reports/src/utils/explorer-ui/harnessEvidence.types.ts"
 		],
-		"symbols": ["captureVideo", "mediaFile", "harnessEvidence", "GalleryCaptureContext"]
+		"symbols": [
+			"captureVideo",
+			"originalClipReference",
+			"mediaFile",
+			"harnessEvidence",
+			"GalleryCaptureContext"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,6 +46,16 @@
 				"type": "EvidenceVideo['freshness']",
 				"required": true,
 				"description": "Existing explorer standing for this clip: current, inherited, stale or historical."
+			},
+			{
+				"name": "originalClipReference.capture",
+				"type": "HarnessCapture",
+				"required": true
+			},
+			{
+				"name": "originalClipReference.fallback",
+				"type": "FrameClipReference",
+				"required": true
 			},
 			{
 				"name": "mediaFile.capture",
@@ -565,6 +581,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "originalClipReference",
+				"inputs": [
+					{
+						"name": "originalClipReference.capture",
+						"type": "HarnessCapture",
+						"required": true
+					},
+					{
+						"name": "originalClipReference.fallback",
+						"type": "FrameClipReference",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "originalClipReference",
+						"type": "FrameClipReference"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "mediaFile",

@@ -9,3 +9,12 @@ export interface LineageSource {
 }
 
 export type Soundness = (dependency: VerificationRecord) => string | undefined;
+
+export interface RecordLinks {
+	source: { baseRecord?: string | null };
+	scenarios: Array<{
+		referencedRecord?: string | null;
+		status?: string;
+		states?: Array<{ captures?: Array<{ videoReference?: { record?: string } }> }>;
+	}>;
+}

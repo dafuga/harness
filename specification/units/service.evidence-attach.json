@@ -11,6 +11,7 @@
 		"source": [
 			"src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.ts",
 			"src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.types.ts",
+			"src/services/verification-evidence/evidence-attach-service/attachedClipDependencies.ts",
 			"src/services/verification-evidence/evidence-attach-service/attachedVideoFlagChecks.ts",
 			"src/services/verification-evidence/evidence-attach-service/attachedVideoFlags.ts"
 		],
@@ -20,6 +21,7 @@
 			"EvidenceAttachService.attach",
 			"Attached",
 			"Attached",
+			"attachedClipDependency",
 			"attachedVideoFlagFailure",
 			"resolveAttachedVideoFlags",
 			"resolvedVideoAttachment"
@@ -121,6 +123,21 @@
 						"directory": "/workspace/project/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
 					}
 				]
+			},
+			{
+				"name": "attachedClipDependency.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "attachedClipDependency.record",
+				"type": "VerificationRecord",
+				"required": true
+			},
+			{
+				"name": "attachedClipDependency.id",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "attachedVideoFlagFailure.record",
@@ -323,6 +340,34 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "attachedClipDependency",
+				"inputs": [
+					{
+						"name": "attachedClipDependency.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "attachedClipDependency.record",
+						"type": "VerificationRecord",
+						"required": true
+					},
+					{
+						"name": "attachedClipDependency.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "attachedClipDependency",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "attachedVideoFlagFailure",
@@ -544,6 +589,11 @@
 		},
 		{
 			"unit": "service.verification-evidence-frame-flag",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-reference",
 			"via": "import",
 			"origin": "derived"
 		}

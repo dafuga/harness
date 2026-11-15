@@ -56,6 +56,12 @@
 				]
 			},
 			{
+				"name": "HistoryStatusService.constructor.options",
+				"type": "AttachedRecordReadOptions",
+				"required": false,
+				"default": {}
+			},
+			{
 				"name": "HistoryStatusService.status.commit",
 				"type": "string",
 				"required": true,
@@ -569,6 +575,12 @@
 								"evidence": null
 							}
 						]
+					},
+					{
+						"name": "HistoryStatusService.constructor.options",
+						"type": "AttachedRecordReadOptions",
+						"required": false,
+						"default": {}
 					}
 				],
 				"outputs": [

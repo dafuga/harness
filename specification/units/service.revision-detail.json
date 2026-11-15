@@ -13,6 +13,7 @@
 			"src/services/explorer-ui/revision-detail-service/RevisionDetailService.types.ts",
 			"src/services/explorer-ui/revision-detail-service/projectDependencies.ts",
 			"src/services/explorer-ui/revision-detail-service/projectDependencies.types.ts",
+			"src/services/explorer-ui/revision-detail-service/revisionMedia.ts",
 			"src/services/revision-detail-service/RevisionDetailService.ts"
 		],
 		"symbols": [
@@ -22,6 +23,7 @@
 			"RevisionDetailService.build",
 			"RevisionDetail",
 			"BuiltRevision",
+			"OriginRecordReader",
 			"RevisionDetail",
 			"Stored",
 			"BuiltRevision",
@@ -30,6 +32,7 @@
 			"ProjectDependencies",
 			"DependencyManifest",
 			"DependencySection",
+			"revisionMedia",
 			"revisionSources",
 			"RevisionDetailService"
 		]
@@ -81,6 +84,21 @@
 				"type": "SourceTree",
 				"required": true,
 				"description": "Selected source tree whose recorded paths and manifest contents are inspected. The function reads root package.json or Cargo.toml files and matching workspace manifests, and turns manifest read or parse failures into catalog gaps."
+			},
+			{
+				"name": "revisionMedia.loaded",
+				"type": "AttachedRecord",
+				"required": true
+			},
+			{
+				"name": "revisionMedia.media",
+				"type": "MediaPlacer",
+				"required": true
+			},
+			{
+				"name": "revisionMedia.read",
+				"type": "OriginRecordReader",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -311,6 +329,34 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "revisionMedia",
+				"inputs": [
+					{
+						"name": "revisionMedia.loaded",
+						"type": "AttachedRecord",
+						"required": true
+					},
+					{
+						"name": "revisionMedia.media",
+						"type": "MediaPlacer",
+						"required": true
+					},
+					{
+						"name": "revisionMedia.read",
+						"type": "OriginRecordReader",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "revisionMedia",
+						"type": "Promise<Map<string, ResolvedMedia>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [

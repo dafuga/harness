@@ -11,7 +11,8 @@
 		"source": [
 			"src/services/verification-evidence/VerificationCheckService.ts",
 			"src/services/verification-evidence/VerificationCheckService.types.ts",
-			"src/services/verification-evidence/verification-check-service/videoFlagProof.ts"
+			"src/services/verification-evidence/verification-check-service/videoFlagProof.ts",
+			"src/services/verification-evidence/verification-check-service/videoReferenceIntegrity.ts"
 		],
 		"symbols": [
 			"VerificationCheckService",
@@ -20,7 +21,8 @@
 			"VerificationCheckService.integrity",
 			"CheckReport",
 			"CheckReport",
-			"videoFlagProofFailures"
+			"videoFlagProofFailures",
+			"videoReferenceIntegrity"
 		]
 	},
 	"contract": {
@@ -181,6 +183,16 @@
 				"type": "VerificationRecord",
 				"required": true,
 				"description": "Sealed verification record whose present clip slots are checked against current reviewer standing."
+			},
+			{
+				"name": "videoReferenceIntegrity.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "videoReferenceIntegrity.record",
+				"type": "VerificationRecord",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -427,6 +439,29 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "videoReferenceIntegrity",
+				"inputs": [
+					{
+						"name": "videoReferenceIntegrity.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "videoReferenceIntegrity.record",
+						"type": "VerificationRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoReferenceIntegrity",
+						"type": "Promise<string[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -477,6 +512,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.evidence-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.record-lineage",
 			"via": "import",
 			"origin": "derived"
@@ -508,6 +548,11 @@
 		},
 		{
 			"unit": "service.verification-evidence-frame-flag",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-reference",
 			"via": "import",
 			"origin": "derived"
 		},

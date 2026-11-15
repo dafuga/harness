@@ -1,6 +1,6 @@
 // @harness-uid u_d27vkdvynl
 import { z } from 'zod';
-import { videoCaptureSchema } from '../../utils/verification-evidence/videoClipSchema';
+import { videoCaptureSchema, videoBatchPointerSchema, videoReferenceSchema, videoCoverageSchema } from '../../utils/verification-evidence/videoClipSchema';
 import { browserDiagnosticSchema } from '../development-tooling/browserDiagnostics';
 import { comparisonSchema } from '../development-tooling/comparisonTypes';
 import { explanationSchema } from '../development-tooling/explanationTypes';
@@ -22,6 +22,7 @@ export const captureRegionSchema = z.strictObject({
 
 export const captureSchema = z.strictObject({
 	video: videoCaptureSchema.optional(),
+	videoReference: videoReferenceSchema.optional(),
 	evidence: identifier,
 	kind: z.enum(['screenshot', 'video', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
 	state: identifier,
@@ -41,6 +42,7 @@ export const captureSchema = z.strictObject({
 });
 
 export const scenarioResultSchema = z.strictObject({
+	videoCoverage: videoCoverageSchema.optional(),
 	id: identifier,
 	status: z.enum(['passed', 'failed', 'referenced']),
 	/** Revision whose code produced the captures; differs from the source only when referenced. */
@@ -133,6 +135,7 @@ export const measurementSchema = z.strictObject({
 });
 
 export const verificationRecordSchema = z.strictObject({
+	videoBatches: z.array(videoBatchPointerSchema).optional(),
 	schemaVersion: z.literal(1),
 	/** Source-rederived component contracts; absent legacy formats come from the source registry. */
 	componentSchemaVersion: z.literal(2).optional(),

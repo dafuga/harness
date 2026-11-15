@@ -7,26 +7,247 @@
 	"responsibility": "Validates batch-backed parent captures and preserves their original attached clip lineage.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
-			"src/services/verification-evidence/VideoReferenceService.ts"
+			"src/services/verification-evidence/VideoReferenceService.ts",
+			"src/services/verification-evidence/VideoReferenceService.types.ts",
+			"src/services/verification-evidence/video-reference-service/binding.ts",
+			"src/services/verification-evidence/video-reference-service/candidates.ts",
+			"src/services/verification-evidence/video-reference-service/materialize.ts",
+			"src/services/verification-evidence/video-reference-service/origins.ts",
+			"src/services/verification-evidence/video-reference-service/resolve.ts"
 		],
 		"symbols": [
 			"VideoReferenceService",
-			"VideoReferenceService.run"
+			"VideoReferenceService.constructor",
+			"VideoReferenceService.run",
+			"VideoReferenceService.resolve",
+			"VideoReferenceService.materialize",
+			"VideoReferenceService.candidates",
+			"TrustedVideoReference",
+			"VideoReferenceInput",
+			"VideoReferenceCandidate",
+			"VideoReferenceSelection",
+			"VideoReferenceInput",
+			"TrustedVideoReference",
+			"VideoReferenceSelection",
+			"VideoReferenceCandidate",
+			"VideoReferenceContext",
+			"referencePaths",
+			"safeReferencePath",
+			"bindReference",
+			"currentOwner",
+			"videoReferenceCandidates",
+			"materializeVideoReferences",
+			"referenceScope",
+			"proveOriginal",
+			"resolveVideoReference"
 		]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "VideoReferenceService.constructor.root",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "VideoReferenceService.constructor.pinned",
+				"type": "VideoReferenceContext['pinned']",
+				"required": false
+			},
+			{
+				"name": "VideoReferenceService.constructor.trail",
+				"type": "string[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "VideoReferenceService.resolve.input",
+				"type": "VideoReferenceInput",
+				"required": true
+			},
+			{
+				"name": "VideoReferenceService.materialize.record",
+				"type": "VerificationRecord",
+				"required": true
+			},
+			{
+				"name": "VideoReferenceService.materialize.physical",
+				"type": "string[]",
+				"required": false
+			},
+			{
+				"name": "VideoReferenceService.candidates.selection",
+				"type": "VideoReferenceSelection",
+				"required": true
+			},
+			{
+				"name": "referencePaths.capture",
+				"type": "Capture",
+				"required": true
+			},
+			{
+				"name": "safeReferencePath.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "bindReference.input",
+				"type": "VideoReferenceInput",
+				"required": true
+			},
+			{
+				"name": "bindReference.clip",
+				"type": "VideoArchiveClip",
+				"required": true
+			},
+			{
+				"name": "currentOwner.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "currentOwner.input",
+				"type": "VideoReferenceInput",
+				"required": true
+			},
+			{
+				"name": "videoReferenceCandidates.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "videoReferenceCandidates.selection",
+				"type": "VideoReferenceSelection",
+				"required": true
+			},
+			{
+				"name": "videoReferenceCandidates.context",
+				"type": "VideoReferenceContext",
+				"required": true
+			},
+			{
+				"name": "materializeVideoReferences.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "materializeVideoReferences.record",
+				"type": "VerificationRecord",
+				"required": true
+			},
+			{
+				"name": "materializeVideoReferences.scope",
+				"type": "{ context: VideoReferenceContext; physical?: string[]; }",
+				"required": true
+			},
+			{
+				"name": "referenceScope.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "referenceScope.context",
+				"type": "VideoReferenceContext",
+				"required": true
+			},
+			{
+				"name": "proveOriginal.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "proveOriginal.capture",
+				"type": "Capture",
+				"required": true
+			},
+			{
+				"name": "proveOriginal.context",
+				"type": "VideoReferenceContext",
+				"required": true
+			},
+			{
+				"name": "resolveVideoReference.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "resolveVideoReference.proposed",
+				"type": "VideoReferenceInput",
+				"required": true
+			},
+			{
+				"name": "resolveVideoReference.context",
+				"type": "VideoReferenceContext",
+				"required": true
+			}
+		],
 		"outputs": [
 			{
 				"name": "VideoReferenceService.run",
 				"type": "string"
+			},
+			{
+				"name": "VideoReferenceService.resolve",
+				"type": "Promise<TrustedVideoReference>"
+			},
+			{
+				"name": "VideoReferenceService.materialize",
+				"type": "Promise<Map<string, Buffer>>"
+			},
+			{
+				"name": "VideoReferenceService.candidates",
+				"type": "Promise<VideoReferenceCandidate[]>"
+			},
+			{
+				"name": "referencePaths",
+				"type": "[string, string]"
+			},
+			{
+				"name": "safeReferencePath",
+				"type": "boolean"
+			},
+			{
+				"name": "bindReference",
+				"type": "void"
+			},
+			{
+				"name": "currentOwner",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "videoReferenceCandidates",
+				"type": "Promise<VideoReferenceCandidate[]>"
+			},
+			{
+				"name": "materializeVideoReferences",
+				"type": "Promise<Map<string, Buffer>>"
+			},
+			{
+				"name": "referenceScope",
+				"type": "Promise<PinnedHistory>"
+			},
+			{
+				"name": "proveOriginal",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "resolveVideoReference",
+				"type": "Promise<TrustedVideoReference>"
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "VideoReferenceService.run",
@@ -39,11 +260,403 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "VideoReferenceService.resolve",
+				"inputs": [
+					{
+						"name": "VideoReferenceService.resolve.input",
+						"type": "VideoReferenceInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoReferenceService.resolve",
+						"type": "Promise<TrustedVideoReference>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VideoReferenceService.materialize",
+				"inputs": [
+					{
+						"name": "VideoReferenceService.materialize.record",
+						"type": "VerificationRecord",
+						"required": true
+					},
+					{
+						"name": "VideoReferenceService.materialize.physical",
+						"type": "string[]",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoReferenceService.materialize",
+						"type": "Promise<Map<string, Buffer>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VideoReferenceService.candidates",
+				"inputs": [
+					{
+						"name": "VideoReferenceService.candidates.selection",
+						"type": "VideoReferenceSelection",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoReferenceService.candidates",
+						"type": "Promise<VideoReferenceCandidate[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "referencePaths",
+				"inputs": [
+					{
+						"name": "referencePaths.capture",
+						"type": "Capture",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "referencePaths",
+						"type": "[string, string]"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "safeReferencePath",
+				"inputs": [
+					{
+						"name": "safeReferencePath.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "safeReferencePath",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "bindReference",
+				"inputs": [
+					{
+						"name": "bindReference.input",
+						"type": "VideoReferenceInput",
+						"required": true
+					},
+					{
+						"name": "bindReference.clip",
+						"type": "VideoArchiveClip",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "bindReference",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "currentOwner",
+				"inputs": [
+					{
+						"name": "currentOwner.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "currentOwner.input",
+						"type": "VideoReferenceInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "currentOwner",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "videoReferenceCandidates",
+				"inputs": [
+					{
+						"name": "videoReferenceCandidates.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "videoReferenceCandidates.selection",
+						"type": "VideoReferenceSelection",
+						"required": true
+					},
+					{
+						"name": "videoReferenceCandidates.context",
+						"type": "VideoReferenceContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoReferenceCandidates",
+						"type": "Promise<VideoReferenceCandidate[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "materializeVideoReferences",
+				"inputs": [
+					{
+						"name": "materializeVideoReferences.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "materializeVideoReferences.record",
+						"type": "VerificationRecord",
+						"required": true
+					},
+					{
+						"name": "materializeVideoReferences.scope",
+						"type": "{ context: VideoReferenceContext; physical?: string[]; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "materializeVideoReferences",
+						"type": "Promise<Map<string, Buffer>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "referenceScope",
+				"inputs": [
+					{
+						"name": "referenceScope.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "referenceScope.context",
+						"type": "VideoReferenceContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "referenceScope",
+						"type": "Promise<PinnedHistory>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "proveOriginal",
+				"inputs": [
+					{
+						"name": "proveOriginal.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "proveOriginal.capture",
+						"type": "Capture",
+						"required": true
+					},
+					{
+						"name": "proveOriginal.context",
+						"type": "VideoReferenceContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "proveOriginal",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resolveVideoReference",
+				"inputs": [
+					{
+						"name": "resolveVideoReference.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "resolveVideoReference.proposed",
+						"type": "VideoReferenceInput",
+						"required": true
+					},
+					{
+						"name": "resolveVideoReference.context",
+						"type": "VideoReferenceContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "resolveVideoReference",
+						"type": "Promise<TrustedVideoReference>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "VideoReferenceService.constructor",
+				"inputs": [
+					{
+						"name": "VideoReferenceService.constructor.root",
+						"type": "string",
+						"required": false
+					},
+					{
+						"name": "VideoReferenceService.constructor.pinned",
+						"type": "VideoReferenceContext['pinned']",
+						"required": false
+					},
+					{
+						"name": "VideoReferenceService.constructor.trail",
+						"type": "string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoReferenceService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.evidence-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.record-lineage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-note-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.evidence-branch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.history-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-video-archive",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/verification-evidence/VideoReferenceService.ts",
@@ -59,8 +672,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

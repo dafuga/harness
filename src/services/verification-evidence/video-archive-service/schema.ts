@@ -1,6 +1,7 @@
 // @harness-uid u_qfigvyo5j5
 import { z } from 'zod';
 import { videoCaptureSchema } from '../../../utils/verification-evidence/videoClipSchema';
+export { videoBatchPointerSchema as pointerSchema } from '../../../utils/verification-evidence/videoClipSchema';
 
 export const mediaLimit = 8 * 1024 * 1024;
 export const batchLimit = 512 * 1024 * 1024;
@@ -37,16 +38,6 @@ export const batchSchema = z.strictObject({
 	schemaVersion: z.literal(1),
 	kind: z.literal('harness-video-batch'),
 	clips: z.array(clipSchema).min(1).max(64)
-});
-export const pointerSchema = z.strictObject({
-	schemaVersion: z.literal(1),
-	kind: z.literal('harness-video-batch'),
-	batch: hashSchema,
-	evidence: z.strictObject({
-		commit,
-		path: z.string().regex(/^video-batches\/[a-f0-9]{64}$/),
-		manifest: hashSchema
-	})
 });
 export const manifestSchema = z.strictObject({
 	schemaVersion: z.literal(1),

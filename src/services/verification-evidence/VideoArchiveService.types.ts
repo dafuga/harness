@@ -12,6 +12,7 @@ import type {
 
 export type VideoBatchPointer = z.infer<typeof pointerSchema>;
 export type VideoArchiveSlot = z.infer<typeof slotSchema>;
+export type VideoArchiveSelection = VideoArchiveSlot & { inputHash: string };
 export type VideoArchiveClip = z.infer<typeof clipSchema>;
 export type VideoArchiveBatch = z.infer<typeof batchSchema>;
 export type VideoArchiveManifest = z.infer<typeof manifestSchema>;

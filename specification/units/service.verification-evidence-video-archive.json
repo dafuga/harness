@@ -29,6 +29,8 @@
 			"VideoArchiveService.run",
 			"VideoArchiveService.write",
 			"VideoArchiveService.read",
+			"VideoArchiveService.describe",
+			"VideoArchiveService.readClip",
 			"VideoArchiveService.current",
 			"VideoArchiveService.restore",
 			"VideoArchiveService.fetch",
@@ -41,6 +43,7 @@
 			"VideoBatchPointer",
 			"VideoBatchPointer",
 			"VideoArchiveSlot",
+			"VideoArchiveSelection",
 			"VideoArchiveClip",
 			"VideoArchiveBatch",
 			"VideoArchiveManifest",
@@ -63,15 +66,16 @@
 			"retainedMedia",
 			"inspectMedia",
 			"readVideoBatch",
+			"readVideoBatchClip",
 			"readVideoBatchDescriptor",
 			"restoreVideoBatch",
+			"pointerSchema",
 			"mediaLimit",
 			"batchLimit",
 			"hashSchema",
 			"slotSchema",
 			"clipSchema",
 			"batchSchema",
-			"pointerSchema",
 			"manifestSchema",
 			"sourceBinding",
 			"retainSource",
@@ -99,6 +103,31 @@
 			},
 			{
 				"name": "VideoArchiveService.read.within",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "VideoArchiveService.describe.pointer",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.describe.within",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "VideoArchiveService.readClip.pointer",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.readClip.selection",
+				"type": "VideoArchiveSelection",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.readClip.within",
 				"type": "string",
 				"required": false
 			},
@@ -243,6 +272,26 @@
 				"required": false
 			},
 			{
+				"name": "readVideoBatchClip.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readVideoBatchClip.pointer",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "readVideoBatchClip.selection",
+				"type": "VideoArchiveSelection",
+				"required": true
+			},
+			{
+				"name": "readVideoBatchClip.within",
+				"type": "string",
+				"required": false
+			},
+			{
 				"name": "readVideoBatchDescriptor.root",
 				"type": "string",
 				"required": true
@@ -332,6 +381,14 @@
 				"type": "Promise<VideoArchiveRead>"
 			},
 			{
+				"name": "VideoArchiveService.describe",
+				"type": "Promise<VideoArchiveDescriptor>"
+			},
+			{
+				"name": "VideoArchiveService.readClip",
+				"type": "Promise<VideoArchiveCurrent>"
+			},
+			{
 				"name": "VideoArchiveService.current",
 				"type": "Promise<VideoArchiveCurrent | null>"
 			},
@@ -392,6 +449,10 @@
 				"type": "Promise<VideoArchiveRead>"
 			},
 			{
+				"name": "readVideoBatchClip",
+				"type": "Promise<VideoArchiveCurrent>"
+			},
+			{
 				"name": "readVideoBatchDescriptor",
 				"type": "Promise<VideoArchiveDescriptor>"
 			},
@@ -421,10 +482,6 @@
 			},
 			{
 				"name": "batchSchema",
-				"type": "unknown"
-			},
-			{
-				"name": "pointerSchema",
 				"type": "unknown"
 			},
 			{
@@ -504,6 +561,57 @@
 					{
 						"name": "VideoArchiveService.read",
 						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VideoArchiveService.describe",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.describe.pointer",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.describe.within",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.describe",
+						"type": "Promise<VideoArchiveDescriptor>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VideoArchiveService.readClip",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.readClip.pointer",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.readClip.selection",
+						"type": "VideoArchiveSelection",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.readClip.within",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.readClip",
+						"type": "Promise<VideoArchiveCurrent>"
 					}
 				],
 				"errors": [],
@@ -877,6 +985,44 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readVideoBatchClip",
+				"inputs": [
+					{
+						"name": "readVideoBatchClip.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readVideoBatchClip.pointer",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "readVideoBatchClip.selection",
+						"type": "VideoArchiveSelection",
+						"required": true
+					},
+					{
+						"name": "readVideoBatchClip.within",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readVideoBatchClip",
+						"type": "Promise<VideoArchiveCurrent>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{

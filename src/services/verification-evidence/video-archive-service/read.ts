@@ -1,5 +1,6 @@
 // @harness-uid u_qfigvyo5j5
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
+import { canonicalJson } from '../../../utils/development-tooling/canonicalJson';
 import { EvidenceBranchRepository } from '../../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
 import { LfsAdapter } from '../../../adapters/git-source-history/LfsAdapter';
 import { evidenceMarker } from '../../../core/git-source-history/historyTypes';
@@ -9,6 +10,8 @@ import { batchSchema, manifestSchema, pointerSchema } from './schema';
 import { inspectMedia, retainedMedia } from './media';
 import { sourceBinding } from './source';
 import type {
+	VideoArchiveCurrent,
+	VideoArchiveSelection,
 	VideoArchiveDescriptor,
 	VideoArchiveRead,
 	VideoBatchPointer
@@ -22,6 +25,27 @@ export async function readVideoBatch(
 	const descriptor = await readVideoBatchDescriptor(root, input, within);
 	const files = await loadMedia(root, new EvidenceBranchRepository(root), descriptor);
 	return { ...descriptor, files };
+}
+
+/** Validate only selected clip objects; corrupt unrelated media never forces a healthy clip to re-record. */
+export async function readVideoBatchClip(
+	root: string,
+	pointer: VideoBatchPointer,
+	selection: VideoArchiveSelection,
+	within?: string
+): Promise<VideoArchiveCurrent> {
+	const descriptor = await readVideoBatchDescriptor(root, pointer, within);
+	const { inputHash, ...slot } = selection;
+	const clip = descriptor.batch.clips.find(
+		(item) => canonicalJson(item.slot) === canonicalJson(slot) && item.video.inputHash === inputHash
+	);
+	if (!clip)
+		throw new ExpectedCliError('Selected video clip does not match the archived slot/input hash.');
+	const files = await loadMedia(root, new EvidenceBranchRepository(root), {
+		pointer: descriptor.pointer,
+		batch: { ...descriptor.batch, clips: [clip] }
+	});
+	return { pointer: descriptor.pointer, clip, files };
 }
 
 /** Sealed descriptors can be checked before explicitly fetching their missing source and media. */

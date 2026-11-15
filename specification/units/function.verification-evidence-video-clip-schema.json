@@ -15,12 +15,18 @@
 		],
 		"symbols": [
 			"videoBindings",
+			"videoBatchPointerSchema",
+			"videoReferenceSchema",
+			"videoCoverageSchema",
 			"videoManifestBaseSchema",
 			"videoManifestSchema",
 			"videoCaptureSchema",
 			"videoClipSchema",
 			"VideoManifest",
 			"VideoCapture",
+			"VideoBatchPointer",
+			"VideoReference",
+			"VideoCoverage",
 			"VideoClip",
 			"VideoGraph",
 			"VideoDeclaration"

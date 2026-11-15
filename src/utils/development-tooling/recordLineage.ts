@@ -2,6 +2,7 @@
 import type { LineageSource, Soundness } from './recordLineage.types';
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
 import { canonicalJson } from './canonicalJson';
+import { videoLineage } from './record-lineage/videoLineage';
 
 const short = (id: string): string => id.slice(0, 12);
 
@@ -22,7 +23,11 @@ export function recordLineage(
 			}
 			return checked.get(dependency);
 		};
-		return [...baseProblems(current, source, sound), ...scenarioProblems(current, source, sound)];
+		return [
+			...baseProblems(current, source, sound),
+			...scenarioProblems(current, source, sound),
+			...videoLineage(current, source, sound)
+		];
 	};
 	return visit(record, path);
 }

@@ -1,12 +1,18 @@
 // @harness-uid u_qfigvyo5j5
 import { writeVideoBatches } from './video-archive-service/write';
-import { readVideoBatch } from './video-archive-service/read';
+import {
+	readVideoBatch,
+	readVideoBatchDescriptor,
+	readVideoBatchClip
+} from './video-archive-service/read';
 import { restoreVideoBatch } from './video-archive-service/restore';
 import { fetchVideoBatch } from './video-archive-service/fetch';
 import { hashSchema, slotSchema } from './video-archive-service/schema';
 import { slotKey } from './video-archive-service/batch';
 import type {
 	VideoArchiveCurrent,
+	VideoArchiveDescriptor,
+	VideoArchiveSelection,
 	VideoArchiveInput,
 	VideoArchiveRead,
 	VideoArchiveSlot,
@@ -29,6 +35,19 @@ export class VideoArchiveService {
 
 	read(pointer: VideoBatchPointer, within?: string): Promise<VideoArchiveRead> {
 		return readVideoBatch(this.root, pointer, within);
+	}
+
+	/** Sealed metadata only, not proof that media objects exist or decode. */
+	describe(pointer: VideoBatchPointer, within?: string): Promise<VideoArchiveDescriptor> {
+		return readVideoBatchDescriptor(this.root, pointer, within);
+	}
+
+	readClip(
+		pointer: VideoBatchPointer,
+		selection: VideoArchiveSelection,
+		within?: string
+	): Promise<VideoArchiveCurrent> {
+		return readVideoBatchClip(this.root, pointer, selection, within);
 	}
 
 	/** Caller supplies trusted parent-linked pointers; archive integrity alone grants no parent standing. */

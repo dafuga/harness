@@ -1,7 +1,7 @@
 // @harness-uid u_wwu3xgisul
 import type { VerifyConfig } from './verifyTypes.types';
 import { z } from 'zod';
-import { videoCaptureSchema } from '../../utils/verification-evidence/videoClipSchema';
+import { videoCaptureSchema, videoReferenceSchema } from '../../utils/verification-evidence/videoClipSchema';
 import { posix } from 'node:path';
 import { comparisonSchema } from '../development-tooling/comparisonTypes';
 import { runtimeKinds, unitIdPattern } from '../development-tooling/unitTypes';
@@ -188,6 +188,7 @@ export const defaultVerifyConfig: VerifyConfig = {
 /** One line a check writes to `captures.ndjson` in `HARNESS_EVIDENCE_DIR`. */
 export const captureLineSchema = z.strictObject({
 	video: videoCaptureSchema.optional(),
+	videoReference: videoReferenceSchema.optional(),
 	evidence: identifier,
 	kind: z.enum(['screenshot', 'video', 'audio', 'output', 'assertions', 'trace', 'benchmark']),
 	state: identifier,
