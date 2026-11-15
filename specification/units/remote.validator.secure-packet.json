@@ -20,36 +20,91 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SecurePacketValidator.packet.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "value is the unknown candidate passed to packet. It is accepted only when it is a non-array object with a recognized type, exactly that type's fields, and valid field values.",
+				"examples": [
+					{
+						"type": "hello",
+						"version": 1,
+						"deviceId": "0123456789abcdef0123456789abcdef01234567",
+						"ephemeralKey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+						"nonce": "AAECAwQFBgcICQoLDA0ODw"
+					}
+				]
 			},
 			{
 				"name": "SecurePacketValidator.text.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "text is one JSON text frame passed to text; text.length may not exceed remoteLimits.frameBytes (262,144) before parsing.",
+				"examples": [
+					"{\"type\":\"hello\",\"version\":1,\"deviceId\":\"0123456789abcdef0123456789abcdef01234567\",\"ephemeralKey\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"nonce\":\"AAECAwQFBgcICQoLDA0ODw\"}"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SecurePacketValidator.packet",
-				"type": "SecurePacket"
+				"type": "SecurePacket",
+				"description": "The returned value is the original packet object after it matches exactly one recognized packet shape (hello, accept, reject, or sealed) with no extra fields. Validation fixes version at 1, constrains identifiers, keys, nonces and reject reasons to their patterns or allowed values, requires counters to be nonnegative safe integers, and allows sealed data strings of 22 to 174,788 base64url characters.",
+				"examples": [
+					{
+						"type": "hello",
+						"version": 1,
+						"deviceId": "0123456789abcdef0123456789abcdef01234567",
+						"ephemeralKey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+						"nonce": "AAECAwQFBgcICQoLDA0ODw"
+					},
+					{
+						"type": "reject",
+						"reason": "unknown-device"
+					},
+					{
+						"type": "sealed",
+						"counter": 0,
+						"more": false,
+						"data": "SGVsbG9fY2lwaGVydGV4dF9wYXlsb2Fk"
+					}
+				]
 			},
 			{
 				"name": "SecurePacketValidator.text",
-				"type": "SecurePacket"
+				"type": "SecurePacket",
+				"description": "This is the parsed packet returned after valid JSON and packet validation succeed. It obeys the same shape and value limits as packet, and its source frame is capped at remoteLimits.frameBytes (262,144 as measured by JavaScript text.length).",
+				"examples": [
+					{
+						"type": "hello",
+						"version": 1,
+						"deviceId": "0123456789abcdef0123456789abcdef01234567",
+						"ephemeralKey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+						"nonce": "AAECAwQFBgcICQoLDA0ODw"
+					},
+					{
+						"type": "reject",
+						"reason": "unknown-device"
+					},
+					{
+						"type": "sealed",
+						"counter": 0,
+						"more": false,
+						"data": "SGVsbG9fY2lwaGVydGV4dF9wYXlsb2Fk"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "SecureFailure",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "SecureFailure is thrown with reason packet for invalid packet shapes, fields, or JSON; text throws it with reason size when text.length exceeds 262,144 before parsing. The failure is not answered."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "SecurePacketValidator.packet",
@@ -57,22 +112,53 @@
 					{
 						"name": "SecurePacketValidator.packet.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "value is the unknown candidate passed to packet. It is accepted only when it is a non-array object with a recognized type, exactly that type's fields, and valid field values.",
+						"examples": [
+							{
+								"type": "hello",
+								"version": 1,
+								"deviceId": "0123456789abcdef0123456789abcdef01234567",
+								"ephemeralKey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								"nonce": "AAECAwQFBgcICQoLDA0ODw"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SecurePacketValidator.packet",
-						"type": "SecurePacket"
+						"type": "SecurePacket",
+						"description": "The returned value is the original packet object after it matches exactly one recognized packet shape (hello, accept, reject, or sealed) with no extra fields. Validation fixes version at 1, constrains identifiers, keys, nonces and reject reasons to their patterns or allowed values, requires counters to be nonnegative safe integers, and allows sealed data strings of 22 to 174,788 base64url characters.",
+						"examples": [
+							{
+								"type": "hello",
+								"version": 1,
+								"deviceId": "0123456789abcdef0123456789abcdef01234567",
+								"ephemeralKey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								"nonce": "AAECAwQFBgcICQoLDA0ODw"
+							},
+							{
+								"type": "reject",
+								"reason": "unknown-device"
+							},
+							{
+								"type": "sealed",
+								"counter": 0,
+								"more": false,
+								"data": "SGVsbG9fY2lwaGVydGV4dF9wYXlsb2Fk"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "SecureFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "SecureFailure is thrown with reason packet when value is not a non-array object with a recognized packet type, the exact field set for that type, and valid field values."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SecurePacketValidator.text",
@@ -80,22 +166,47 @@
 					{
 						"name": "SecurePacketValidator.text.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "text is one JSON text frame passed to text; text.length may not exceed remoteLimits.frameBytes (262,144) before parsing.",
+						"examples": [
+							"{\"type\":\"hello\",\"version\":1,\"deviceId\":\"0123456789abcdef0123456789abcdef01234567\",\"ephemeralKey\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"nonce\":\"AAECAwQFBgcICQoLDA0ODw\"}"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SecurePacketValidator.text",
-						"type": "SecurePacket"
+						"type": "SecurePacket",
+						"description": "This is the parsed packet returned after valid JSON and packet validation succeed. It obeys the same shape and value limits as packet, and its source frame is capped at remoteLimits.frameBytes (262,144 as measured by JavaScript text.length).",
+						"examples": [
+							{
+								"type": "hello",
+								"version": 1,
+								"deviceId": "0123456789abcdef0123456789abcdef01234567",
+								"ephemeralKey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								"nonce": "AAECAwQFBgcICQoLDA0ODw"
+							},
+							{
+								"type": "reject",
+								"reason": "unknown-device"
+							},
+							{
+								"type": "sealed",
+								"counter": 0,
+								"more": false,
+								"data": "SGVsbG9fY2lwaGVydGV4dF9wYXlsb2Fk"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "SecureFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "SecureFailure is thrown with reason size when text.length exceeds 262,144 before parsing, or with reason packet when JSON parsing or packet validation fails."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
