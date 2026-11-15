@@ -18,28 +18,33 @@
 				"name": "analyticsDisplay.value",
 				"type": "number | null",
 				"required": true,
-				"description": "Fraction to display as a percentage, or null when no assessments exist."
+				"description": "A numeric assessment fraction is multiplied by 100 and rounded with Math.round; the function does not clamp or range-check it. Passing null selects the “No assessments” label.",
+				"examples": [null, 0, 0.735]
 			},
 			{
 				"name": "analyticsCount.value",
 				"type": "number",
 				"required": true,
-				"description": "Count to format using the runtime locale."
+				"description": "A numeric count passed to analyticsCount is returned via value.toLocaleString() with no locale argument, so formatting follows the runtime's default locale. The function adds no range validation.",
+				"examples": [0, 1234, 1250.5]
 			}
 		],
 		"outputs": [
 			{
 				"name": "analyticsDisplay",
 				"type": "string",
-				"description": "Rounded whole percentage, or No assessments for null."
+				"description": "Text used for an assessment proportion: null produces “No assessments”; otherwise the value is multiplied by 100, rounded with Math.round, and suffixed with %. Numeric values are not range-checked or clamped.",
+				"examples": ["No assessments", "0%", "74%"]
 			},
 			{
 				"name": "analyticsCount",
 				"type": "string",
-				"description": "Locale-formatted count."
+				"description": "String produced by value.toLocaleString() with no locale argument, using the runtime's default locale. The function does not impose a locale or additional formatting rule.",
+				"examples": ["0", "1,234", "1,250.5"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "analyticsDisplay",
@@ -48,18 +53,20 @@
 						"name": "analyticsDisplay.value",
 						"type": "number | null",
 						"required": true,
-						"description": "Fraction to display as a percentage, or null when no assessments exist."
+						"description": "A numeric assessment fraction is multiplied by 100 and rounded with Math.round; the function does not clamp or range-check it. Passing null selects the “No assessments” label.",
+						"examples": [null, 0, 0.735]
 					}
 				],
 				"outputs": [
 					{
 						"name": "analyticsDisplay",
 						"type": "string",
-						"description": "Rounded whole percentage, or No assessments for null."
+						"description": "Text used for an assessment proportion: null produces “No assessments”; otherwise the value is multiplied by 100, rounded with Math.round, and suffixed with %. Numeric values are not range-checked or clamped.",
+						"examples": ["No assessments", "0%", "74%"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "analyticsCount",
@@ -68,18 +75,20 @@
 						"name": "analyticsCount.value",
 						"type": "number",
 						"required": true,
-						"description": "Count to format using the runtime locale."
+						"description": "A numeric count passed to analyticsCount is returned via value.toLocaleString() with no locale argument, so formatting follows the runtime's default locale. The function adds no range validation.",
+						"examples": [0, 1234, 1250.5]
 					}
 				],
 				"outputs": [
 					{
 						"name": "analyticsCount",
 						"type": "string",
-						"description": "Locale-formatted count."
+						"description": "String produced by value.toLocaleString() with no locale argument, using the runtime's default locale. The function does not impose a locale or additional formatting rule.",
+						"examples": ["0", "1,234", "1,250.5"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
