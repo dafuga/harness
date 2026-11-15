@@ -26,28 +26,45 @@
 				"name": "hostedAttestation.stated",
 				"type": "string",
 				"required": true,
-				"description": "The declared media type. Accepts PNG, JPEG, WAV, MPEG, MP4, Ogg, JSON and plain text, case-insensitively. Surrounding whitespace is ignored. Only JSON and plain text may include charset=utf-8; other parameters and aliases are refused."
+				"description": "The declared media type, which decides whether the declaration is accepted and which kind it gets; it is matched case-insensitively after surrounding whitespace is trimmed. It must be one of image/png, image/jpeg, audio/wav, audio/mpeg, audio/mp4, audio/ogg, application/json or text/plain, and only application/json and text/plain may add charset=utf-8; any other parameter or unlisted name such as image/jpg is refused.",
+				"examples": ["image/png", "application/json; charset=utf-8", "audio/mpeg"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unshownHostedArtifact",
 				"type": "unknown",
-				"description": "The shared message for a hosted artifact type the app does not display."
+				"description": "The fixed message string that hostedAttestation passes to the Error it throws for a refused declaration. It is a constant export, so its value never changes with the input.",
+				"examples": ["The hosted service sent a kind this app does not show."]
 			},
 			{
 				"name": "hostedAttestation",
 				"type": "unknown",
-				"description": "An object with the normalized base media type and its category: screenshot, audio or output. This checks the declaration, not the bytes."
+				"description": "The result for an accepted declaration: kind is screenshot for PNG and JPEG, audio for WAV, MPEG, MP4 and Ogg, or output for JSON and plain text, and mediaType is the lowercased base type without parameters. It is derived from the declared string alone and does not inspect the bytes.",
+				"examples": [
+					{
+						"kind": "screenshot",
+						"mediaType": "image/jpeg"
+					},
+					{
+						"kind": "audio",
+						"mediaType": "audio/ogg"
+					},
+					{
+						"kind": "output",
+						"mediaType": "application/json"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws for unsupported types, malformed declarations or parameters not permitted for that type."
+				"description": "Thrown with the message unshownHostedArtifact when the declaration is refused: its type is not in the accepted list, its text is not a type/subtype optionally followed by charset=utf-8, or it has a parameter on a type other than JSON or plain text. It is the only error thrown for a string input, and an accepted declaration returns its result object."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hostedAttestation",
@@ -56,23 +73,39 @@
 						"name": "hostedAttestation.stated",
 						"type": "string",
 						"required": true,
-						"description": "The declared media type. Accepts PNG, JPEG, WAV, MPEG, MP4, Ogg, JSON and plain text, case-insensitively. Surrounding whitespace is ignored. Only JSON and plain text may include charset=utf-8; other parameters and aliases are refused."
+						"description": "The declared media type, which decides whether the declaration is accepted and which kind it gets; it is matched case-insensitively after surrounding whitespace is trimmed. It must be one of image/png, image/jpeg, audio/wav, audio/mpeg, audio/mp4, audio/ogg, application/json or text/plain, and only application/json and text/plain may add charset=utf-8; any other parameter or unlisted name such as image/jpg is refused.",
+						"examples": ["image/png", "application/json; charset=utf-8", "audio/mpeg"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostedAttestation",
 						"type": "unknown",
-						"description": "An object with the normalized base media type and its category: screenshot, audio or output. This checks the declaration, not the bytes."
+						"description": "The result for an accepted declaration: kind is screenshot for PNG and JPEG, audio for WAV, MPEG, MP4 and Ogg, or output for JSON and plain text, and mediaType is the lowercased base type without parameters. It is derived from the declared string alone and does not inspect the bytes.",
+						"examples": [
+							{
+								"kind": "screenshot",
+								"mediaType": "image/jpeg"
+							},
+							{
+								"kind": "audio",
+								"mediaType": "audio/ogg"
+							},
+							{
+								"kind": "output",
+								"mediaType": "application/json"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message unshownHostedArtifact when the declaration is refused: its type is not in the accepted list, its text is not a type/subtype optionally followed by charset=utf-8, or it has a parameter on a type other than JSON or plain text. It is the only error thrown for a string input, and an accepted declaration returns its result object."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
