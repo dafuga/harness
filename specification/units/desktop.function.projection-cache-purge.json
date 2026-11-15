@@ -20,29 +20,48 @@
 				"name": "projectionCachePurge.directory",
 				"type": "string",
 				"required": true,
-				"description": "The directory to scan for lookup and projection JSON cache files with 64-character hexadecimal names."
+				"description": "The directory whose immediate entries are listed (readdir is not recursive); only names exactly matching projection-<64 lowercase hex characters>.json or lookup-<64 lowercase hex characters>.json are read. If the listing fails for any reason, the directory is treated as empty and nothing is removed.",
+				"examples": [
+					"/Users/example/Library/Caches/harness/projection-cache",
+					"/home/example/.cache/harness/projection-cache"
+				]
 			},
 			{
 				"name": "projectionCachePurge.principalId",
 				"type": "string",
 				"required": true,
-				"description": "The principal identity whose cache entries should be removed."
+				"description": "The principal identity whose cache entries should be removed: a file with a usable identity is removed only when its identity.principalId is strictly equal to this value. Recognized files whose identity is missing, falsy, or unparseable are removed regardless of this value.",
+				"examples": ["principal-3f8c21d0", "principal-a94e07b2"]
 			},
 			{
 				"name": "projectionCachePurge.projectId",
 				"type": "string",
 				"required": false,
-				"description": "Optional project identity. If omitted or empty, all matching-principal projects are selected; otherwise that project and the shared project-list entry are selected."
+				"default": "undefined",
+				"description": "Optional project identity: when it is omitted (undefined) or an empty string, every cache file of the matching principal is removed; otherwise only files whose identity.projectId equals this value or is '$projects' (the shared project-list entry) are removed.",
+				"examples": ["project-7a1d3e90", "project-c4e08b15"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectionCachePurge",
 				"type": "unknown",
-				"description": "A promise completing after matching files are removed. Recognized files with missing or unparseable identity are also removed, regardless of principal. A directory-listing failure is treated as no entries; unlink failures propagate."
+				"description": "Resolves to undefined after the scan has removed every file it selects, so callers can await completion but receive no result. Recognized files whose identity is missing, falsy, or unparseable (including files that cannot be read or parsed) are removed regardless of principal; a directory-listing failure is treated as no entries, and any unlink failure rejects the promise."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when a file whose name matches the cache pattern contains the JSON value null, because entry.identity is read without a null check; the promise then rejects and the remaining names in the listing are not processed."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A rejection from unlink on a file selected for removal (a matching file or one with an unusable identity) is not caught, so the promise rejects and the remaining names in the listing are not processed."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "projectionCachePurge",
@@ -51,30 +70,48 @@
 						"name": "projectionCachePurge.directory",
 						"type": "string",
 						"required": true,
-						"description": "The directory to scan for lookup and projection JSON cache files with 64-character hexadecimal names."
+						"description": "The directory whose immediate entries are listed (readdir is not recursive); only names exactly matching projection-<64 lowercase hex characters>.json or lookup-<64 lowercase hex characters>.json are read. If the listing fails for any reason, the directory is treated as empty and nothing is removed.",
+						"examples": [
+							"/Users/example/Library/Caches/harness/projection-cache",
+							"/home/example/.cache/harness/projection-cache"
+						]
 					},
 					{
 						"name": "projectionCachePurge.principalId",
 						"type": "string",
 						"required": true,
-						"description": "The principal identity whose cache entries should be removed."
+						"description": "The principal identity whose cache entries should be removed: a file with a usable identity is removed only when its identity.principalId is strictly equal to this value. Recognized files whose identity is missing, falsy, or unparseable are removed regardless of this value.",
+						"examples": ["principal-3f8c21d0", "principal-a94e07b2"]
 					},
 					{
 						"name": "projectionCachePurge.projectId",
 						"type": "string",
 						"required": false,
-						"description": "Optional project identity. If omitted or empty, all matching-principal projects are selected; otherwise that project and the shared project-list entry are selected."
+						"default": "undefined",
+						"description": "Optional project identity: when it is omitted (undefined) or an empty string, every cache file of the matching principal is removed; otherwise only files whose identity.projectId equals this value or is '$projects' (the shared project-list entry) are removed.",
+						"examples": ["project-7a1d3e90", "project-c4e08b15"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectionCachePurge",
 						"type": "unknown",
-						"description": "A promise completing after matching files are removed. Recognized files with missing or unparseable identity are also removed, regardless of principal. A directory-listing failure is treated as no entries; unlink failures propagate."
+						"description": "Resolves to undefined after the scan has removed every file it selects, so callers can await completion but receive no result. Recognized files whose identity is missing, falsy, or unparseable (including files that cannot be read or parsed) are removed regardless of principal; a directory-listing failure is treated as no entries, and any unlink failure rejects the promise."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when a file whose name matches the cache pattern contains the JSON value null, because entry.identity is read without a null check; the promise then rejects and the remaining names in the listing are not processed."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A rejection from unlink on a file selected for removal (a matching file or one with an unusable identity) is not caught, so the promise rejects and the remaining names in the listing are not processed."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
