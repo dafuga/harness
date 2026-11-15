@@ -12,22 +12,24 @@
 		"symbols": ["GET"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GET.url",
 				"type": "URL",
-				"required": true
+				"required": true,
+				"description": "The request URL passed by SvelteKit to GET. Its hostname gates access: only 127.0.0.1, localhost, and [::1] receive the analytics snapshot; other hostnames receive an unavailable response."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "Resolves to the HTTP Response returned for this request. A non-loopback hostname returns JSON { status: 'unavailable' } with status 403; loopback requests return the siteProcesses snapshot with cache-control: no-store and status 200 when its status is available, or 503 otherwise."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "GET",
@@ -35,17 +37,19 @@
 					{
 						"name": "GET.url",
 						"type": "URL",
-						"required": true
+						"required": true,
+						"description": "The request URL passed by SvelteKit to GET. Its hostname gates access: only 127.0.0.1, localhost, and [::1] receive the analytics snapshot; other hostnames receive an unavailable response."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GET",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "Resolves to the HTTP Response returned for this request. A non-loopback hostname returns JSON { status: 'unavailable' } with status 403; loopback requests return the siteProcesses snapshot with cache-control: no-store and status 200 when its status is available, or 503 otherwise."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
