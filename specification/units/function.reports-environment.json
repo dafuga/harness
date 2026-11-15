@@ -11,10 +11,9 @@
 		"source": [
 			"src/cli/program/run-report/reportsEnvironment.ts",
 			"src/cli/program/run-report/reportsEnvironment.types.ts",
-			"src/utils/reportsEnvironment.ts",
-			"src/workflows/run-report/reportsEnvironment.ts"
+			"src/utils/reportsEnvironment.ts"
 		],
-		"symbols": ["reportsEnvironment", "ReportSettings", "reportsEnvironment", "reportsEnvironment"]
+		"symbols": ["reportsEnvironment", "ReportSettings", "reportsEnvironment"]
 	},
 	"contract": {
 		"origin": "declared",
