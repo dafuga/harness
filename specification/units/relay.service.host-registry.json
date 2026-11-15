@@ -18,50 +18,141 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostRegistryService.constructor.store",
 				"type": "HostStorageAdapter",
-				"required": true
+				"required": true,
+				"description": "The storage adapter that keeps this host object's records: register reads and saves the host record through it, summary lists its devices, and unregister clears every record. The service holds it as a read-only reference and never replaces it."
 			},
 			{
 				"name": "HostRegistryService.constructor.sockets",
 				"type": "HostSocketsAdapter",
-				"required": true
+				"required": true,
+				"description": "The socket adapter that finds this host object's sockets: register looks up the open host socket, summary checks whether the host and each device are connected, and unregister closes every socket the runtime holds. The service holds it as a read-only reference and never replaces it."
 			},
 			{
 				"name": "HostRegistryService.constructor.link",
 				"type": "HostLinkService",
-				"required": true
+				"required": true,
+				"description": "The link service that register uses to end the open host socket with close code 4401 after it saves a registration. The service holds it as a read-only reference and never replaces it."
 			},
 			{
 				"name": "HostRegistryService.register.input",
 				"type": "RelayManageRegister",
-				"required": true
+				"required": true,
+				"description": "The registration request for one host: owner.id is the verified identity of the caller, and hostId, hostKey, credentialHash and name are the values to store as given, without a format check. The request is refused, and register returns undefined, when owner.id is not the owner already on file.",
+				"examples": [
+					{
+						"owner": {
+							"id": "google-108351762394061829473"
+						},
+						"hostId": "7c1e0b9a4d2f58e3a6b1c0d9e8f7a6b5c4d3e2f1",
+						"hostKey": "BHq3Zk1xP8sW0vL7nR2yT9hJ4cM6dK5fGz8Qa3Ub1Ew7Ro0Ip4Sx9Yn2TmdJ6_kW2vN-eA1cQ8gH3pR0sYuB7Lx",
+						"credentialHash": "c4e19a7f0b3d52e8a6f1c9d0e7b2a4f8d61c3e9b5a7f2d0e8c4b1a6f9d3e7c25",
+						"name": "Studio workstation"
+					},
+					{
+						"owner": {
+							"id": "google-114082936517204859136"
+						},
+						"hostId": "b29e4f07c6a1d83e5f0b72c9a4d6e18f3c5b0a97",
+						"hostKey": "BNw4Lp0Rd7Hq2Ty9Mb5Xk1Zc8Vf3egJ0sE6uQ1wK8rN4yXl2TzA9oP3bVm-hD5cY7iF0jS6mU1nW9eG2kR4tO8a",
+						"credentialHash": "7a0f3c95e1d82b64a9c7f0e3d5b18a2c6e4f9d07b3a5c8e1f2d6904b7a3c5e81",
+						"name": "Design laptop"
+					}
+				]
 			},
 			{
 				"name": "HostRegistryService.summary.host",
 				"type": "HostRecord",
-				"required": true
+				"required": true,
+				"description": "The stored host record that summary reports on. summary copies its hostId, name, generation and registeredAt into the result and does not return its ownerId, hostKey or credentialHash.",
+				"examples": [
+					{
+						"hostId": "7c1e0b9a4d2f58e3a6b1c0d9e8f7a6b5c4d3e2f1",
+						"ownerId": "google-108351762394061829473",
+						"hostKey": "BHq3Zk1xP8sW0vL7nR2yT9hJ4cM6dK5fGz8Qa3Ub1Ew7Ro0Ip4Sx9Yn2TmdJ6_kW2vN-eA1cQ8gH3pR0sYuB7Lx",
+						"credentialHash": "c4e19a7f0b3d52e8a6f1c9d0e7b2a4f8d61c3e9b5a7f2d0e8c4b1a6f9d3e7c25",
+						"name": "Studio workstation",
+						"generation": 2,
+						"registeredAt": "2026-11-09T14:22:05.318Z"
+					},
+					{
+						"hostId": "b29e4f07c6a1d83e5f0b72c9a4d6e18f3c5b0a97",
+						"ownerId": "google-114082936517204859136",
+						"hostKey": "BNw4Lp0Rd7Hq2Ty9Mb5Xk1Zc8Vf3egJ0sE6uQ1wK8rN4yXl2TzA9oP3bVm-hD5cY7iF0jS6mU1nW9eG2kR4tO8a",
+						"credentialHash": "7a0f3c95e1d82b64a9c7f0e3d5b18a2c6e4f9d07b3a5c8e1f2d6904b7a3c5e81",
+						"name": "Design laptop",
+						"generation": 1,
+						"registeredAt": "2026-11-15T07:48:31.902Z"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostRegistryService.register",
-				"type": "RelayRegistered | undefined"
+				"type": "RelayRegistered | undefined",
+				"description": "The hostId, generation and registeredAt of the host after the call, or undefined when another owner already keeps it, in which case nothing is saved or changed. A successful call stores the new credential hash, raises generation by one (starting at 1), keeps the first registeredAt, and closes any open host socket with code 4401.",
+				"examples": [
+					{
+						"hostId": "7c1e0b9a4d2f58e3a6b1c0d9e8f7a6b5c4d3e2f1",
+						"generation": 2,
+						"registeredAt": "2026-11-09T14:22:05.318Z"
+					},
+					{
+						"hostId": "b29e4f07c6a1d83e5f0b72c9a4d6e18f3c5b0a97",
+						"generation": 1,
+						"registeredAt": "2026-11-15T07:48:31.902Z"
+					}
+				]
 			},
 			{
 				"name": "HostRegistryService.summary",
-				"type": "RemoteHostSummary"
+				"type": "RemoteHostSummary",
+				"description": "The summary of the host: its hostId, name, online flag (true while its host socket is open), generation, registeredAt and one entry per device. Each device entry says whether that device has an open socket and copies its createdAt and lastSeenAt, which is null when the stored record has none.",
+				"examples": [
+					{
+						"hostId": "7c1e0b9a4d2f58e3a6b1c0d9e8f7a6b5c4d3e2f1",
+						"name": "Studio workstation",
+						"online": true,
+						"generation": 2,
+						"registeredAt": "2026-11-09T14:22:05.318Z",
+						"devices": [
+							{
+								"deviceId": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+								"online": true,
+								"createdAt": "2026-11-10T09:15:44.067Z",
+								"lastSeenAt": "2026-11-15T08:02:17.440Z"
+							},
+							{
+								"deviceId": "5e0d9c8b7a6f5e4d3c2b1a09f8e7d6c5b4a39281",
+								"online": false,
+								"createdAt": "2026-11-12T18:40:09.551Z",
+								"lastSeenAt": null
+							}
+						]
+					},
+					{
+						"hostId": "b29e4f07c6a1d83e5f0b72c9a4d6e18f3c5b0a97",
+						"name": "Design laptop",
+						"online": false,
+						"generation": 1,
+						"registeredAt": "2026-11-15T07:48:31.902Z",
+						"devices": []
+					}
+				]
 			},
 			{
 				"name": "HostRegistryService.unregister",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after every socket the object holds has been closed with code 4401 and its stored records have been cleared. A rejection from the storage clear step is passed on to the caller unchanged."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "HostRegistryService.register",
@@ -69,17 +160,51 @@
 					{
 						"name": "HostRegistryService.register.input",
 						"type": "RelayManageRegister",
-						"required": true
+						"required": true,
+						"description": "The registration request for one host: owner.id is the verified identity of the caller, and hostId, hostKey, credentialHash and name are the values to store as given, without a format check. The request is refused, and register returns undefined, when owner.id is not the owner already on file.",
+						"examples": [
+							{
+								"owner": {
+									"id": "google-108351762394061829473"
+								},
+								"hostId": "7c1e0b9a4d2f58e3a6b1c0d9e8f7a6b5c4d3e2f1",
+								"hostKey": "BHq3Zk1xP8sW0vL7nR2yT9hJ4cM6dK5fGz8Qa3Ub1Ew7Ro0Ip4Sx9Yn2TmdJ6_kW2vN-eA1cQ8gH3pR0sYuB7Lx",
+								"credentialHash": "c4e19a7f0b3d52e8a6f1c9d0e7b2a4f8d61c3e9b5a7f2d0e8c4b1a6f9d3e7c25",
+								"name": "Studio workstation"
+							},
+							{
+								"owner": {
+									"id": "google-114082936517204859136"
+								},
+								"hostId": "b29e4f07c6a1d83e5f0b72c9a4d6e18f3c5b0a97",
+								"hostKey": "BNw4Lp0Rd7Hq2Ty9Mb5Xk1Zc8Vf3egJ0sE6uQ1wK8rN4yXl2TzA9oP3bVm-hD5cY7iF0jS6mU1nW9eG2kR4tO8a",
+								"credentialHash": "7a0f3c95e1d82b64a9c7f0e3d5b18a2c6e4f9d07b3a5c8e1f2d6904b7a3c5e81",
+								"name": "Design laptop"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostRegistryService.register",
-						"type": "RelayRegistered | undefined"
+						"type": "RelayRegistered | undefined",
+						"description": "The hostId, generation and registeredAt of the host after the call, or undefined when another owner already keeps it, in which case nothing is saved or changed. A successful call stores the new credential hash, raises generation by one (starting at 1), keeps the first registeredAt, and closes any open host socket with code 4401.",
+						"examples": [
+							{
+								"hostId": "7c1e0b9a4d2f58e3a6b1c0d9e8f7a6b5c4d3e2f1",
+								"generation": 2,
+								"registeredAt": "2026-11-09T14:22:05.318Z"
+							},
+							{
+								"hostId": "b29e4f07c6a1d83e5f0b72c9a4d6e18f3c5b0a97",
+								"generation": 1,
+								"registeredAt": "2026-11-15T07:48:31.902Z"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostRegistryService.summary",
@@ -87,17 +212,70 @@
 					{
 						"name": "HostRegistryService.summary.host",
 						"type": "HostRecord",
-						"required": true
+						"required": true,
+						"description": "The stored host record that summary reports on. summary copies its hostId, name, generation and registeredAt into the result and does not return its ownerId, hostKey or credentialHash.",
+						"examples": [
+							{
+								"hostId": "7c1e0b9a4d2f58e3a6b1c0d9e8f7a6b5c4d3e2f1",
+								"ownerId": "google-108351762394061829473",
+								"hostKey": "BHq3Zk1xP8sW0vL7nR2yT9hJ4cM6dK5fGz8Qa3Ub1Ew7Ro0Ip4Sx9Yn2TmdJ6_kW2vN-eA1cQ8gH3pR0sYuB7Lx",
+								"credentialHash": "c4e19a7f0b3d52e8a6f1c9d0e7b2a4f8d61c3e9b5a7f2d0e8c4b1a6f9d3e7c25",
+								"name": "Studio workstation",
+								"generation": 2,
+								"registeredAt": "2026-11-09T14:22:05.318Z"
+							},
+							{
+								"hostId": "b29e4f07c6a1d83e5f0b72c9a4d6e18f3c5b0a97",
+								"ownerId": "google-114082936517204859136",
+								"hostKey": "BNw4Lp0Rd7Hq2Ty9Mb5Xk1Zc8Vf3egJ0sE6uQ1wK8rN4yXl2TzA9oP3bVm-hD5cY7iF0jS6mU1nW9eG2kR4tO8a",
+								"credentialHash": "7a0f3c95e1d82b64a9c7f0e3d5b18a2c6e4f9d07b3a5c8e1f2d6904b7a3c5e81",
+								"name": "Design laptop",
+								"generation": 1,
+								"registeredAt": "2026-11-15T07:48:31.902Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostRegistryService.summary",
-						"type": "RemoteHostSummary"
+						"type": "RemoteHostSummary",
+						"description": "The summary of the host: its hostId, name, online flag (true while its host socket is open), generation, registeredAt and one entry per device. Each device entry says whether that device has an open socket and copies its createdAt and lastSeenAt, which is null when the stored record has none.",
+						"examples": [
+							{
+								"hostId": "7c1e0b9a4d2f58e3a6b1c0d9e8f7a6b5c4d3e2f1",
+								"name": "Studio workstation",
+								"online": true,
+								"generation": 2,
+								"registeredAt": "2026-11-09T14:22:05.318Z",
+								"devices": [
+									{
+										"deviceId": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+										"online": true,
+										"createdAt": "2026-11-10T09:15:44.067Z",
+										"lastSeenAt": "2026-11-15T08:02:17.440Z"
+									},
+									{
+										"deviceId": "5e0d9c8b7a6f5e4d3c2b1a09f8e7d6c5b4a39281",
+										"online": false,
+										"createdAt": "2026-11-12T18:40:09.551Z",
+										"lastSeenAt": null
+									}
+								]
+							},
+							{
+								"hostId": "b29e4f07c6a1d83e5f0b72c9a4d6e18f3c5b0a97",
+								"name": "Design laptop",
+								"online": false,
+								"generation": 1,
+								"registeredAt": "2026-11-15T07:48:31.902Z",
+								"devices": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HostRegistryService.unregister",
@@ -105,11 +283,12 @@
 				"outputs": [
 					{
 						"name": "HostRegistryService.unregister",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after every socket the object holds has been closed with code 4401 and its stored records have been cleared. A rejection from the storage clear step is passed on to the caller unchanged."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -119,27 +298,31 @@
 					{
 						"name": "HostRegistryService.constructor.store",
 						"type": "HostStorageAdapter",
-						"required": true
+						"required": true,
+						"description": "The storage adapter that keeps this host object's records: register reads and saves the host record through it, summary lists its devices, and unregister clears every record. The service holds it as a read-only reference and never replaces it."
 					},
 					{
 						"name": "HostRegistryService.constructor.sockets",
 						"type": "HostSocketsAdapter",
-						"required": true
+						"required": true,
+						"description": "The socket adapter that finds this host object's sockets: register looks up the open host socket, summary checks whether the host and each device are connected, and unregister closes every socket the runtime holds. The service holds it as a read-only reference and never replaces it."
 					},
 					{
 						"name": "HostRegistryService.constructor.link",
 						"type": "HostLinkService",
-						"required": true
+						"required": true,
+						"description": "The link service that register uses to end the open host socket with close code 4401 after it saves a registration. The service holds it as a read-only reference and never replaces it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostRegistryService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The HostRegistryService instance, which holds the store, sockets and link references it was given. The constructor does nothing else."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
