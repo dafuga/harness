@@ -24,76 +24,236 @@
 			{
 				"name": "HubEvidenceService.constructor.deps",
 				"type": "HubEvidenceDependencies",
-				"required": true
+				"required": true,
+				"description": "The project API (`api`), the source-history adapter (`source`) and the cache (`cache`) that the service reads through. `api` decides membership and gives each project's repository, and `source` reads branches, commits, refs and notes."
 			},
 			{
 				"name": "HubEvidenceService.evidence.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The verified signed-in account that asks for the evidence, with its id, email, name and emailVerified set to true. It is passed to the project lookup, which refuses an account that is not a member of the project.",
+				"examples": [
+					{
+						"id": "google-108223457816392104478",
+						"email": "riley.chen@example.invalid",
+						"name": "Riley Chen",
+						"emailVerified": true
+					},
+					{
+						"id": "google-100233019475628813301",
+						"email": "sam.okafor@example.invalid",
+						"name": "Sam Okafor",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "HubEvidenceService.evidence.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of the project whose source repository the evidence is read from, a UUID that the collaboration API issued. An empty id is refused as forbidden.",
+				"examples": ["6b1f0d2c-8a47-4e9b-b3d5-1c7e9f0a2b48", "0f9e3c71-2d5b-4a8e-9c10-7b6d4e2a1f35"]
 			},
 			{
 				"name": "HubEvidenceService.evidence.input",
 				"type": "EntityEvidenceQuery",
-				"required": true
+				"required": true,
+				"description": "The entity and revision to read: `entityId` (a unit id of at most 120 characters), `commit` (40 lowercase hex characters), `branch` (at most 255 characters) and `mode` (`current` requires the commit to be the branch tip; `commit` compares it with its first parent). A `projectId` inside it is ignored.",
+				"examples": [
+					{
+						"entityId": "hub.service.hub-evidence",
+						"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+						"branch": "main",
+						"mode": "current"
+					},
+					{
+						"entityId": "hub.service.hub-evidence",
+						"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+						"branch": "main",
+						"mode": "commit"
+					}
+				]
 			},
 			{
 				"name": "HubEvidenceService.artifact.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The verified signed-in account that asks for the evidence, with its id, email, name and emailVerified set to true. It is passed to the project lookup, which refuses an account that is not a member of the project.",
+				"examples": [
+					{
+						"id": "google-108223457816392104478",
+						"email": "riley.chen@example.invalid",
+						"name": "Riley Chen",
+						"emailVerified": true
+					},
+					{
+						"id": "google-100233019475628813301",
+						"email": "sam.okafor@example.invalid",
+						"name": "Sam Okafor",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "HubEvidenceService.artifact.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of the project whose source repository the evidence is read from, a UUID that the collaboration API issued. An empty id is refused as forbidden.",
+				"examples": ["6b1f0d2c-8a47-4e9b-b3d5-1c7e9f0a2b48", "0f9e3c71-2d5b-4a8e-9c10-7b6d4e2a1f35"]
 			},
 			{
 				"name": "HubEvidenceService.artifact.input",
 				"type": "EvidenceArtifactQuery",
-				"required": true
+				"required": true,
+				"description": "The one capture to return, named only by its binding: the entity, commit, branch, mode and side, the record, scenario, state, evidence id, viewport (null where there is none) and SHA-256 that the evidence listed, and the notes and evidence revisions it was pinned to (null where the repository has none). A path or address in the request is dropped.",
+				"examples": [
+					{
+						"entityId": "hub.service.hub-evidence",
+						"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+						"branch": "main",
+						"mode": "current",
+						"side": "after",
+						"recordId": "a4f0e7b2d91c35e8f6a0b7d4c2e9f1a3b5d8c6e0f7a2b9d4c1e8f3a6b0d5c9e2",
+						"scenarioId": "hub-recorded-evidence",
+						"state": "default",
+						"evidenceId": "screens",
+						"viewport": "desktop",
+						"sha256": "3e7a1c9d5b20f8e46a3c9d7b1f0e5a2c8d4b6f93e1a7c0d5b8f2e6a4c9d1b307",
+						"notesRevision": "4d1b7e9a0c3f2865b1d0e7a9c4f3b2e1d0a98765",
+						"evidenceRevision": "c08e5f2a7b9d41e3f6a0b8c2d5e7f9a1b3c4d6e8"
+					},
+					{
+						"entityId": "hub.service.hub-evidence",
+						"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+						"branch": "main",
+						"mode": "commit",
+						"side": "after",
+						"recordId": "d61b8e04f7a293c5e0b6d8f1a4c7e9b2d5f3a0c8e6b1d4f9a7c2e5b8d0f3a6c1",
+						"scenarioId": "hub-recorded-evidence",
+						"state": "default",
+						"evidenceId": "run",
+						"viewport": null,
+						"sha256": "8b2f6d0a4e9c17b35d8f2a6e0c4b9d3f7a1e5c8b2d6f0a4e9c3b7d1f5a8e2c6f",
+						"notesRevision": null,
+						"evidenceRevision": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubEvidenceService.evidence",
-				"type": "Promise<EntityEvidenceResult>"
+				"type": "Promise<EntityEvidenceResult>",
+				"description": "The resolved answer for one entity at one read: its scope in history, the identity it was read at, its evidence on each side and its behaviour between them. It is a fresh copy of a kept answer, returned after the project's source repository is checked again.",
+				"examples": [
+					{
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": null,
+								"category": "services",
+								"entity": "hub.service.hub-evidence"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+							"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+							"atTip": true,
+							"parent": "b04e8d2c7a519f36e0b8d4c2a7f1e9d3c5b06a72",
+							"summary": {
+								"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+								"parents": ["b04e8d2c7a519f36e0b8d4c2a7f1e9d3c5b06a72"],
+								"subject": "Keep evidence answers per principal",
+								"author": "Riley Chen",
+								"committedAt": "2026-11-13T09:27:41Z",
+								"branches": ["main"],
+								"retained": false,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"identity": {
+							"collaborationRevision": "e5d2a9c81f7b04e36a2d9c5f8b1e7a40d3c6b92f",
+							"principalId": "google-108223457816392104478",
+							"projectId": "6b1f0d2c-8a47-4e9b-b3d5-1c7e9f0a2b48",
+							"repositoryId": 418293716,
+							"requestedRef": "main",
+							"sourceCommit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+							"sourceTree": "c1a7e04d9b3f26a8e5d0c7b1f4a9e2d6b8c3f05a",
+							"notesRef": "refs/notes/harness",
+							"notesRevision": "4d1b7e9a0c3f2865b1d0e7a9c4f3b2e1d0a98765",
+							"evidenceRef": "refs/heads/harness-evidence",
+							"evidenceRevision": "c08e5f2a7b9d41e3f6a0b8c2d5e7f9a1b3c4d6e8",
+							"historyIndexRevision": null,
+							"artifactHash": null,
+							"profile": null
+						},
+						"evidence": {
+							"mode": "current",
+							"scenarios": [],
+							"after": {
+								"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+								"detail": null,
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": "Revision 9f2c4a7 is not available here; no other revision is shown in its place."
+							},
+							"before": null,
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "current",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": null,
+							"scenarios": []
+						}
+					}
+				]
 			},
 			{
 				"name": "HubEvidenceService.artifact",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The resolved EvidenceArtifactResult for one listed capture: `bytes` (the stored bytes as a Uint8Array), `mediaType` (what the capture is served as, decided from its kind and bytes) and `sha256` (the hash the capture states)."
 			}
 		],
 		"errors": [
 			{
 				"name": "forbidden",
-				"type": "refused",
-				"description": "No membership of the project."
+				"type": "thrown",
+				"description": "Thrown when the project lookup refuses the actor (not a member, or no such project), when the project id is empty, or when the project's source repository changed during the read."
 			},
 			{
 				"name": "evidence-stale",
-				"type": "refused",
-				"description": "Current mode without the branch tip, or a pinned revision its ref never held."
+				"type": "thrown",
+				"description": "Thrown for a current read whose commit is not the branch tip, and for an artifact whose pinned notes or evidence revision is missing on either side or not reachable from the current ref tip."
 			},
 			{
 				"name": "evidence-unreadable",
-				"type": "refused",
-				"description": "Unknown branch, commit off the branch, or unregistered entity."
+				"type": "thrown",
+				"description": "Thrown when the branch does not exist, when the commit is not reachable from the branch tip, when the repository cannot give the commit's facts, or when the entity is not registered at that commit."
 			},
 			{
 				"name": "artifact-refused",
-				"type": "refused",
-				"description": "The binding is not a listed capture, or its bytes or type fail their checks."
+				"type": "thrown",
+				"description": "Thrown when the binding names no capture the evidence lists at those revisions, when the sealed evidence of its record cannot be loaded or has problems, or, for a focused capture, when no regression note names its record. For a sealed capture it is also thrown when the stored bytes cannot be read, fail their SHA-256 or media-type check, or are larger than 11 MiB."
 			},
 			{
 				"name": "artifact-too-large",
-				"type": "refused",
-				"description": "More than 11 MiB."
+				"type": "thrown",
+				"description": "Thrown for a sealed capture whose recorded size is more than 11 MiB (11534336 bytes), checked before its bytes are read."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An uncoded Error for a request field that fails its format, for an entity whose kind has no category at its commit, for an answer larger than one transport message (16 MiB less 1024 bytes), and, for a focused capture, for stored bytes that are missing, fail their SHA-256 or media-type check, or are larger than 11 MiB."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HubEvidenceService.evidence",
@@ -101,27 +261,153 @@
 					{
 						"name": "HubEvidenceService.evidence.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The verified signed-in account that asks for the evidence, with its id, email, name and emailVerified set to true. It is passed to the project lookup, which refuses an account that is not a member of the project.",
+						"examples": [
+							{
+								"id": "google-108223457816392104478",
+								"email": "riley.chen@example.invalid",
+								"name": "Riley Chen",
+								"emailVerified": true
+							},
+							{
+								"id": "google-100233019475628813301",
+								"email": "sam.okafor@example.invalid",
+								"name": "Sam Okafor",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "HubEvidenceService.evidence.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of the project whose source repository the evidence is read from, a UUID that the collaboration API issued. An empty id is refused as forbidden.",
+						"examples": [
+							"6b1f0d2c-8a47-4e9b-b3d5-1c7e9f0a2b48",
+							"0f9e3c71-2d5b-4a8e-9c10-7b6d4e2a1f35"
+						]
 					},
 					{
 						"name": "HubEvidenceService.evidence.input",
 						"type": "EntityEvidenceQuery",
-						"required": true
+						"required": true,
+						"description": "The entity and revision to read: `entityId` (a unit id of at most 120 characters), `commit` (40 lowercase hex characters), `branch` (at most 255 characters) and `mode` (`current` requires the commit to be the branch tip; `commit` compares it with its first parent). A `projectId` inside it is ignored.",
+						"examples": [
+							{
+								"entityId": "hub.service.hub-evidence",
+								"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+								"branch": "main",
+								"mode": "current"
+							},
+							{
+								"entityId": "hub.service.hub-evidence",
+								"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+								"branch": "main",
+								"mode": "commit"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubEvidenceService.evidence",
-						"type": "Promise<EntityEvidenceResult>"
+						"type": "Promise<EntityEvidenceResult>",
+						"description": "The resolved answer for one entity at one read: its scope in history, the identity it was read at, its evidence on each side and its behaviour between them. It is a fresh copy of a kept answer, returned after the project's source repository is checked again.",
+						"examples": [
+							{
+								"scope": {
+									"location": {
+										"branch": "main",
+										"commit": null,
+										"category": "services",
+										"entity": "hub.service.hub-evidence"
+									},
+									"mode": "current",
+									"branch": "main",
+									"tip": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+									"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+									"atTip": true,
+									"parent": "b04e8d2c7a519f36e0b8d4c2a7f1e9d3c5b06a72",
+									"summary": {
+										"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+										"parents": ["b04e8d2c7a519f36e0b8d4c2a7f1e9d3c5b06a72"],
+										"subject": "Keep evidence answers per principal",
+										"author": "Riley Chen",
+										"committedAt": "2026-11-13T09:27:41Z",
+										"branches": ["main"],
+										"retained": false,
+										"coverage": "unverified",
+										"gaps": [],
+										"records": [],
+										"legacy": []
+									}
+								},
+								"identity": {
+									"collaborationRevision": "e5d2a9c81f7b04e36a2d9c5f8b1e7a40d3c6b92f",
+									"principalId": "google-108223457816392104478",
+									"projectId": "6b1f0d2c-8a47-4e9b-b3d5-1c7e9f0a2b48",
+									"repositoryId": 418293716,
+									"requestedRef": "main",
+									"sourceCommit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+									"sourceTree": "c1a7e04d9b3f26a8e5d0c7b1f4a9e2d6b8c3f05a",
+									"notesRef": "refs/notes/harness",
+									"notesRevision": "4d1b7e9a0c3f2865b1d0e7a9c4f3b2e1d0a98765",
+									"evidenceRef": "refs/heads/harness-evidence",
+									"evidenceRevision": "c08e5f2a7b9d41e3f6a0b8c2d5e7f9a1b3c4d6e8",
+									"historyIndexRevision": null,
+									"artifactHash": null,
+									"profile": null
+								},
+								"evidence": {
+									"mode": "current",
+									"scenarios": [],
+									"after": {
+										"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+										"detail": null,
+										"record": null,
+										"captures": [],
+										"coverage": [],
+										"gap": "Revision 9f2c4a7 is not available here; no other revision is shown in its place."
+									},
+									"before": null,
+									"initial": null,
+									"incomparable": []
+								},
+								"behavior": {
+									"mode": "current",
+									"rows": [],
+									"summary": "not-compared",
+									"reason": null,
+									"scenarios": []
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "forbidden",
+						"type": "thrown",
+						"description": "Thrown when the project lookup refuses the actor (not a member, or no such project), when the project id is empty, or when the project's source repository changed during the read."
+					},
+					{
+						"name": "evidence-stale",
+						"type": "thrown",
+						"description": "Thrown for a current read whose commit is not the branch tip."
+					},
+					{
+						"name": "evidence-unreadable",
+						"type": "thrown",
+						"description": "Thrown when the branch does not exist, when the commit is not reachable from the branch tip, when the repository cannot give the commit's facts, or when the entity is not registered at that commit."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An uncoded Error for a request field that fails its format, for an entity whose kind has no category at its commit, or for an answer larger than one transport message (16 MiB less 1024 bytes)."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubEvidenceService.artifact",
@@ -129,27 +415,112 @@
 					{
 						"name": "HubEvidenceService.artifact.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The verified signed-in account that asks for the evidence, with its id, email, name and emailVerified set to true. It is passed to the project lookup, which refuses an account that is not a member of the project.",
+						"examples": [
+							{
+								"id": "google-108223457816392104478",
+								"email": "riley.chen@example.invalid",
+								"name": "Riley Chen",
+								"emailVerified": true
+							},
+							{
+								"id": "google-100233019475628813301",
+								"email": "sam.okafor@example.invalid",
+								"name": "Sam Okafor",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "HubEvidenceService.artifact.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of the project whose source repository the evidence is read from, a UUID that the collaboration API issued. An empty id is refused as forbidden.",
+						"examples": [
+							"6b1f0d2c-8a47-4e9b-b3d5-1c7e9f0a2b48",
+							"0f9e3c71-2d5b-4a8e-9c10-7b6d4e2a1f35"
+						]
 					},
 					{
 						"name": "HubEvidenceService.artifact.input",
 						"type": "EvidenceArtifactQuery",
-						"required": true
+						"required": true,
+						"description": "The one capture to return, named only by its binding: the entity, commit, branch, mode and side, the record, scenario, state, evidence id, viewport (null where there is none) and SHA-256 that the evidence listed, and the notes and evidence revisions it was pinned to (null where the repository has none). A path or address in the request is dropped.",
+						"examples": [
+							{
+								"entityId": "hub.service.hub-evidence",
+								"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+								"branch": "main",
+								"mode": "current",
+								"side": "after",
+								"recordId": "a4f0e7b2d91c35e8f6a0b7d4c2e9f1a3b5d8c6e0f7a2b9d4c1e8f3a6b0d5c9e2",
+								"scenarioId": "hub-recorded-evidence",
+								"state": "default",
+								"evidenceId": "screens",
+								"viewport": "desktop",
+								"sha256": "3e7a1c9d5b20f8e46a3c9d7b1f0e5a2c8d4b6f93e1a7c0d5b8f2e6a4c9d1b307",
+								"notesRevision": "4d1b7e9a0c3f2865b1d0e7a9c4f3b2e1d0a98765",
+								"evidenceRevision": "c08e5f2a7b9d41e3f6a0b8c2d5e7f9a1b3c4d6e8"
+							},
+							{
+								"entityId": "hub.service.hub-evidence",
+								"commit": "9f2c4a7e1b3d58c06a4e2f9b7d1c3a5e8f0b2d46",
+								"branch": "main",
+								"mode": "commit",
+								"side": "after",
+								"recordId": "d61b8e04f7a293c5e0b6d8f1a4c7e9b2d5f3a0c8e6b1d4f9a7c2e5b8d0f3a6c1",
+								"scenarioId": "hub-recorded-evidence",
+								"state": "default",
+								"evidenceId": "run",
+								"viewport": null,
+								"sha256": "8b2f6d0a4e9c17b35d8f2a6e0c4b9d3f7a1e5c8b2d6f0a4e9c3b7d1f5a8e2c6f",
+								"notesRevision": null,
+								"evidenceRevision": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubEvidenceService.artifact",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The resolved EvidenceArtifactResult for one listed capture: `bytes` (the stored bytes as a Uint8Array), `mediaType` (what the capture is served as, decided from its kind and bytes) and `sha256` (the hash the capture states)."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "forbidden",
+						"type": "thrown",
+						"description": "Thrown when the project lookup refuses the actor (not a member, or no such project), when the project id is empty, or when the project's source repository changed during the read."
+					},
+					{
+						"name": "evidence-stale",
+						"type": "thrown",
+						"description": "Thrown for a current read whose commit is not the branch tip, and for an artifact whose pinned notes or evidence revision is missing on either side or not reachable from the current ref tip."
+					},
+					{
+						"name": "evidence-unreadable",
+						"type": "thrown",
+						"description": "Thrown when the branch does not exist, when the commit is not reachable from the branch tip, when the repository cannot give the commit's facts, or when the entity is not registered at that commit."
+					},
+					{
+						"name": "artifact-refused",
+						"type": "thrown",
+						"description": "Thrown when the binding names no capture the evidence lists at those revisions, when the sealed evidence of its record cannot be loaded or has problems, or, for a focused capture, when no regression note names its record. For a sealed capture it is also thrown when the stored bytes cannot be read, fail their SHA-256 or media-type check, or are larger than 11 MiB."
+					},
+					{
+						"name": "artifact-too-large",
+						"type": "thrown",
+						"description": "Thrown for a sealed capture whose recorded size is more than 11 MiB (11534336 bytes), checked before its bytes are read."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An uncoded Error for a request field that fails its format, for an entity whose kind has no category at its commit, or, for a focused capture, for stored bytes that are missing, fail their SHA-256 or media-type check, or are larger than 11 MiB."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -159,17 +530,19 @@
 					{
 						"name": "HubEvidenceService.constructor.deps",
 						"type": "HubEvidenceDependencies",
-						"required": true
+						"required": true,
+						"description": "The project API (`api`), the source-history adapter (`source`) and the cache (`cache`) that the service reads through. `api` decides membership and gives each project's repository, and `source` reads branches, commits, refs and notes."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubEvidenceService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new HubEvidenceService, holding the dependencies it was given and an empty map of kept answers."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
