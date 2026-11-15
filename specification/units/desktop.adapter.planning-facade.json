@@ -29,127 +29,401 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PlanningFacadeAdapter.open.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root passed to createPlanning; it must resolve to the root of a Git repository or opening rejects.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.plans.revision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit or other revision used to pin the plan snapshot; it is passed to the planning API and must resolve in the repository.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.createPlan.draft",
 				"type": "PlanDraft",
-				"required": true
+				"required": true,
+				"description": "PlanDraft supplies the plural category, title and goal, plus an optional proposed contract; an omitted contract gives empty input, output and error arrays, and the title must produce a non-empty slug of at most 64 characters.",
+				"examples": [
+					{
+						"category": "functions",
+						"title": "Planning message",
+						"goal": "Append user or agent messages to a planning thread."
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.ensurePlan.unit",
 				"type": "ComponentManifest",
-				"required": true
+				"required": true,
+				"description": "Canonical ComponentManifest whose id, kind, title, responsibility and contract seed a plan; an existing plan for the id is returned instead of creating another.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "desktop.function.planning-message",
+						"uid": "u_uicoazlmfj",
+						"kind": "function",
+						"title": "Planning message",
+						"responsibility": "Appends a planning message to its thread.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": [
+								"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts"
+							],
+							"symbols": ["planningMessage"]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts"
+								}
+							]
+						},
+						"scenarios": ["desktop-project-runs"],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.addDesign.draft",
 				"type": "DesignDraft",
-				"required": true
+				"required": true,
+				"description": "DesignDraft supplies an entity, prompt, generator, source revision, state, viewport and image bytes, with optional notes, options and revision anchor; visual plans require images while headless plans require notes.",
+				"examples": [
+					{
+						"entityId": "desktop.function.planning-message",
+						"prompt": "Document the planning message behavior.",
+						"generator": {
+							"provider": "codex",
+							"model": "gpt-6-luna"
+						},
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"state": "default",
+						"viewport": "diagram",
+						"bytes": null,
+						"notes": "Appends one user or agent message to a planning thread."
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.openThread.draft",
 				"type": "ThreadDraft",
-				"required": true
+				"required": true,
+				"description": "ThreadDraft identifies an entity and may anchor a thread to a version image, state, viewport and region; a null version creates an unanchored thread.",
+				"examples": [
+					{
+						"entityId": "desktop.function.planning-message",
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.messages.entityId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Unit id whose plan is read for the requested thread; the thread must belong to this entity.",
+				"examples": ["desktop.function.planning-message"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.messages.threadId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Generated thread record id used to select messages; it must be present in the entity's plan.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.messages.revision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git revision at which the entity and its thread are read; it must resolve in the repository.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.appendMessage.draft",
 				"type": "MessageDraft",
-				"required": true
+				"required": true,
+				"description": "MessageDraft supplies entity and thread ids, author, text, mode and optional provider, model and artifact references; a null mode defaults to plan, while change mode requires a current approval for the same version.",
+				"examples": [
+					{
+						"entityId": "desktop.function.planning-message",
+						"threadId": "550e8400-e29b-41d4-a716-446655440000",
+						"author": "user",
+						"text": "The plan needs a clear message example.",
+						"mode": "plan",
+						"provider": null,
+						"model": null,
+						"version": null,
+						"imageSha256": null
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.approve.draft",
 				"type": "ApprovalDraft",
-				"required": true
+				"required": true,
+				"description": "ApprovalDraft binds a version to its exact image hashes and contract hash, with an optional design option; only the latest design and matching images can be approved.",
+				"examples": [
+					{
+						"entityId": "desktop.function.planning-message",
+						"version": "v001",
+						"imageHashes": ["abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"],
+						"contractHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.image.query",
 				"type": "PlanImageQuery",
-				"required": true
+				"required": true,
+				"description": "PlanImageQuery selects an image by entity, version, SHA-256 and revision, optionally requiring a design option; the image must belong to that entity and version.",
+				"examples": [
+					{
+						"entityId": "desktop.function.planning-message",
+						"version": "v001",
+						"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567",
+						"revision": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.history.entityId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Unit id whose planning history is read at the requested revision.",
+				"examples": ["desktop.function.planning-message"]
 			},
 			{
 				"name": "PlanningFacadeAdapter.history.revision",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git revision used to read the entity's commit history; it must resolve in the repository.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "PlanningFacadeAdapter.open",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Opened PlanningFacadeAdapter instance holding the repository root and initialized PlanningApi; it exists only after the root is accepted as a Git repository."
 			},
 			{
 				"name": "PlanningFacadeAdapter.plans",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "PlanRecord array read from the requested snapshot, with converted contracts, design versions and threads.",
+				"examples": [
+					[
+						{
+							"id": "function.planning-message",
+							"path": "src/functions/planning-message",
+							"category": "functions",
+							"title": "Planning message",
+							"goal": "Append user or agent messages to a planning thread.",
+							"lifecycle": "draft",
+							"contract": {
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"hash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
+							},
+							"versions": [],
+							"threads": []
+						}
+					]
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.createPlan",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "PlanRecord created from the draft; a new record begins with no design versions or threads.",
+				"examples": [
+					{
+						"id": "function.planning-message",
+						"path": "src/functions/planning-message",
+						"category": "functions",
+						"title": "Planning message",
+						"goal": "Append user or agent messages to a planning thread.",
+						"lifecycle": "draft",
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
+						},
+						"versions": [],
+						"threads": []
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.ensurePlan",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "PlanRecord for the canonical manifest id, either read from HEAD when it exists or newly created from the manifest.",
+				"examples": [
+					{
+						"id": "desktop.function.planning-message",
+						"path": "src/functions/desktop-function-planning-message",
+						"category": "functions",
+						"title": "Planning message",
+						"goal": "Append user or agent messages to a planning thread.",
+						"lifecycle": "draft",
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
+						},
+						"versions": [],
+						"threads": []
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.addDesign",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "DesignVersion committed for the requested design, with its stored prompt, optional notes and images.",
+				"examples": [
+					{
+						"version": "v001",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"generator": "codex · gpt-6-luna",
+						"prompt": "Document the planning message behavior.",
+						"notes": "Appends one user or agent message to a planning thread.",
+						"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+						"images": [],
+						"approval": null
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.openThread",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "ThreadInfo for the committed thread, including its generated id and pin; unanchored threads have null version and image fields.",
+				"examples": [
+					{
+						"id": "550e8400-e29b-41d4-a716-446655440000",
+						"pin": 1,
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null,
+						"messageCount": 0
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.messages",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "ThreadMessage array converted from the selected entity thread at the requested revision; the operation rejects if the thread is not part of that entity.",
+				"examples": [
+					[
+						{
+							"id": "7f14e45f-ea3d-4a1f-a112-123456789abc",
+							"at": "2026-11-15T12:00:00.000Z",
+							"author": "user",
+							"text": "The plan needs a clear message example.",
+							"mode": "plan",
+							"provider": null,
+							"model": null,
+							"version": null,
+							"imageSha256": null
+						}
+					]
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.appendMessage",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "ThreadMessage converted from the committed message, including its resolved author, mode and artifact reference.",
+				"examples": [
+					{
+						"id": "7f14e45f-ea3d-4a1f-a112-123456789abc",
+						"at": "2026-11-15T12:00:00.000Z",
+						"author": "user",
+						"text": "The plan needs a clear message example.",
+						"mode": "plan",
+						"provider": null,
+						"model": null,
+						"version": null,
+						"imageSha256": null
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.approve",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "ApprovalInfo for the committed approval, with its version, image hashes, contract hash, timestamp and current flag.",
+				"examples": [
+					{
+						"id": "8e12c0f4-557b-4d1d-a823-45a6b38c9f02",
+						"version": "v001",
+						"imageHashes": ["abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"],
+						"contractHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567",
+						"approvedAt": "2026-11-15T12:00:00.000Z",
+						"current": true
+					}
+				]
 			},
 			{
 				"name": "PlanningFacadeAdapter.image",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Uint8Array containing the selected image bytes; the planning API enforces the optional design-option constraint."
 			},
 			{
 				"name": "PlanningFacadeAdapter.history",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "HistoryEvent array mapped from entity history; each event is represented as a commit with comma-joined event kinds and a null version.",
+				"examples": [
+					[
+						{
+							"id": "0123456789abcdef0123456789abcdef01234567",
+							"at": "2026-11-15T12:00:00.000Z",
+							"kind": "commit",
+							"title": "feat: add desktop.function.planning-message design v001",
+							"detail": "design",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"version": null
+						}
+					]
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The facade propagates Error rejections from its planning helpers and Git-backed PlanningApi; failures include repository initialization, rejected snapshot paths, unusable plan titles, invalid or missing design, thread and image selections, missing threads, approval mismatches, and history-read failures."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PlanningFacadeAdapter.open",
@@ -157,17 +431,28 @@
 					{
 						"name": "PlanningFacadeAdapter.open.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root passed to createPlanning; it must resolve to the root of a Git repository or opening rejects.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-7"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.open",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Opened PlanningFacadeAdapter instance holding the repository root and initialized PlanningApi; it exists only after the root is accepted as a Git repository."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with Error when the repository root cannot be resolved or Git cannot confirm it as the repository root."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PlanningFacadeAdapter.plans",
@@ -175,17 +460,46 @@
 					{
 						"name": "PlanningFacadeAdapter.plans.revision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git commit or other revision used to pin the plan snapshot; it is passed to the planning API and must resolve in the repository.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.plans",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "PlanRecord array read from the requested snapshot, with converted contracts, design versions and threads.",
+						"examples": [
+							[
+								{
+									"id": "function.planning-message",
+									"path": "src/functions/planning-message",
+									"category": "functions",
+									"title": "Planning message",
+									"goal": "Append user or agent messages to a planning thread.",
+									"lifecycle": "draft",
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": [],
+										"hash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
+									},
+									"versions": [],
+									"threads": []
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error when the snapshot reports rejected plan paths, joining each path and its read or parse message with newlines."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PlanningFacadeAdapter.createPlan",
@@ -193,17 +507,50 @@
 					{
 						"name": "PlanningFacadeAdapter.createPlan.draft",
 						"type": "PlanDraft",
-						"required": true
+						"required": true,
+						"description": "PlanDraft supplies the plural category, title and goal, plus an optional proposed contract; an omitted contract gives empty input, output and error arrays, and the title must produce a non-empty slug of at most 64 characters.",
+						"examples": [
+							{
+								"category": "functions",
+								"title": "Planning message",
+								"goal": "Append user or agent messages to a planning thread."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.createPlan",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "PlanRecord created from the draft; a new record begins with no design versions or threads.",
+						"examples": [
+							{
+								"id": "function.planning-message",
+								"path": "src/functions/planning-message",
+								"category": "functions",
+								"title": "Planning message",
+								"goal": "Append user or agent messages to a planning thread.",
+								"lifecycle": "draft",
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
+								},
+								"versions": [],
+								"threads": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error when title normalization produces no letters or numbers; the generated slug is limited to 64 characters."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PlanningFacadeAdapter.ensurePlan",
@@ -211,17 +558,84 @@
 					{
 						"name": "PlanningFacadeAdapter.ensurePlan.unit",
 						"type": "ComponentManifest",
-						"required": true
+						"required": true,
+						"description": "Canonical ComponentManifest whose id, kind, title, responsibility and contract seed a plan; an existing plan for the id is returned instead of creating another.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "desktop.function.planning-message",
+								"uid": "u_uicoazlmfj",
+								"kind": "function",
+								"title": "Planning message",
+								"responsibility": "Appends a planning message to its thread.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts"
+									],
+									"symbols": ["planningMessage"]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts"
+										}
+									]
+								},
+								"scenarios": ["desktop-project-runs"],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.ensurePlan",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "PlanRecord for the canonical manifest id, either read from HEAD when it exists or newly created from the manifest.",
+						"examples": [
+							{
+								"id": "desktop.function.planning-message",
+								"path": "src/functions/desktop-function-planning-message",
+								"category": "functions",
+								"title": "Planning message",
+								"goal": "Append user or agent messages to a planning thread.",
+								"lifecycle": "draft",
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
+								},
+								"versions": [],
+								"threads": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with Error if listing, reading, validating or creating the canonical plan fails in the delegated planning API."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PlanningFacadeAdapter.addDesign",
@@ -229,17 +643,53 @@
 					{
 						"name": "PlanningFacadeAdapter.addDesign.draft",
 						"type": "DesignDraft",
-						"required": true
+						"required": true,
+						"description": "DesignDraft supplies an entity, prompt, generator, source revision, state, viewport and image bytes, with optional notes, options and revision anchor; visual plans require images while headless plans require notes. When expectedLatest is omitted, the planning service uses the plan's latestVersion.",
+						"examples": [
+							{
+								"entityId": "desktop.function.planning-message",
+								"prompt": "Document the planning message behavior.",
+								"generator": {
+									"provider": "codex",
+									"model": "gpt-6-luna"
+								},
+								"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+								"state": "default",
+								"viewport": "diagram",
+								"bytes": null,
+								"notes": "Appends one user or agent message to a planning thread."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.addDesign",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "DesignVersion committed for the requested design, with its stored prompt, optional notes and images.",
+						"examples": [
+							{
+								"version": "v001",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"generator": "codex · gpt-6-luna",
+								"prompt": "Document the planning message behavior.",
+								"notes": "Appends one user or agent message to a planning thread.",
+								"baseRevision": "0123456789abcdef0123456789abcdef01234567",
+								"images": [],
+								"approval": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with Error if the entity cannot be read or the design write fails, including stale latest versions and category-specific image or notes validation."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PlanningFacadeAdapter.openThread",
@@ -247,17 +697,47 @@
 					{
 						"name": "PlanningFacadeAdapter.openThread.draft",
 						"type": "ThreadDraft",
-						"required": true
+						"required": true,
+						"description": "ThreadDraft identifies an entity and may anchor a thread to a version image, state, viewport and region; a null version creates an unanchored thread.",
+						"examples": [
+							{
+								"entityId": "desktop.function.planning-message",
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.openThread",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "ThreadInfo for the committed thread, including its generated id and pin; unanchored threads have null version and image fields.",
+						"examples": [
+							{
+								"id": "550e8400-e29b-41d4-a716-446655440000",
+								"pin": 1,
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null,
+								"messageCount": 0
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error when the requested image anchor is absent or its state or viewport differs; delegated thread-write failures also reject."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PlanningFacadeAdapter.messages",
@@ -265,27 +745,55 @@
 					{
 						"name": "PlanningFacadeAdapter.messages.entityId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Unit id whose plan is read for the requested thread; the thread must belong to this entity.",
+						"examples": ["desktop.function.planning-message"]
 					},
 					{
 						"name": "PlanningFacadeAdapter.messages.threadId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Generated thread record id used to select messages; it must be present in the entity's plan.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 					},
 					{
 						"name": "PlanningFacadeAdapter.messages.revision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git revision at which the entity and its thread are read; it must resolve in the repository.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.messages",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "ThreadMessage array converted from the selected entity thread at the requested revision; the operation rejects if the thread is not part of that entity.",
+						"examples": [
+							[
+								{
+									"id": "7f14e45f-ea3d-4a1f-a112-123456789abc",
+									"at": "2026-11-15T12:00:00.000Z",
+									"author": "user",
+									"text": "The plan needs a clear message example.",
+									"mode": "plan",
+									"provider": null,
+									"model": null,
+									"version": null,
+									"imageSha256": null
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error when the thread does not belong to the entity; delegated plan-read failures also reject."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PlanningFacadeAdapter.appendMessage",
@@ -293,17 +801,51 @@
 					{
 						"name": "PlanningFacadeAdapter.appendMessage.draft",
 						"type": "MessageDraft",
-						"required": true
+						"required": true,
+						"description": "MessageDraft supplies entity and thread ids, author, text, mode and optional provider, model and artifact references; a null mode defaults to plan, while change mode requires a current approval for the same version.",
+						"examples": [
+							{
+								"entityId": "desktop.function.planning-message",
+								"threadId": "550e8400-e29b-41d4-a716-446655440000",
+								"author": "user",
+								"text": "The plan needs a clear message example.",
+								"mode": "plan",
+								"provider": null,
+								"model": null,
+								"version": null,
+								"imageSha256": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.appendMessage",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "ThreadMessage converted from the committed message, including its resolved author, mode and artifact reference.",
+						"examples": [
+							{
+								"id": "7f14e45f-ea3d-4a1f-a112-123456789abc",
+								"at": "2026-11-15T12:00:00.000Z",
+								"author": "user",
+								"text": "The plan needs a clear message example.",
+								"mode": "plan",
+								"provider": null,
+								"model": null,
+								"version": null,
+								"imageSha256": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "For change mode, throws Error when no approval exists or the draft version differs from the approved version; the planning API also rejects invalid change targets or references."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PlanningFacadeAdapter.approve",
@@ -311,17 +853,43 @@
 					{
 						"name": "PlanningFacadeAdapter.approve.draft",
 						"type": "ApprovalDraft",
-						"required": true
+						"required": true,
+						"description": "ApprovalDraft binds a version to its exact image hashes and contract hash, with an optional design option; only the latest design and matching images can be approved.",
+						"examples": [
+							{
+								"entityId": "desktop.function.planning-message",
+								"version": "v001",
+								"imageHashes": ["abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"],
+								"contractHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.approve",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "ApprovalInfo for the committed approval, with its version, image hashes, contract hash, timestamp and current flag.",
+						"examples": [
+							{
+								"id": "8e12c0f4-557b-4d1d-a823-45a6b38c9f02",
+								"version": "v001",
+								"imageHashes": ["abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567"],
+								"contractHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567",
+								"approvedAt": "2026-11-15T12:00:00.000Z",
+								"current": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error for an unknown design version or image hashes that do not match it; the planning API also rejects approvals that do not bind the current design."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PlanningFacadeAdapter.image",
@@ -329,17 +897,33 @@
 					{
 						"name": "PlanningFacadeAdapter.image.query",
 						"type": "PlanImageQuery",
-						"required": true
+						"required": true,
+						"description": "PlanImageQuery selects an image by entity, version, SHA-256 and revision, optionally requiring a design option; the image must belong to that entity and version.",
+						"examples": [
+							{
+								"entityId": "desktop.function.planning-message",
+								"version": "v001",
+								"sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567",
+								"revision": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.image",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Uint8Array containing the selected image bytes; the planning API enforces the optional design-option constraint."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error when the image is absent from the entity or version; delegated image-read failures also reject."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PlanningFacadeAdapter.history",
@@ -347,22 +931,46 @@
 					{
 						"name": "PlanningFacadeAdapter.history.entityId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Unit id whose planning history is read at the requested revision.",
+						"examples": ["desktop.function.planning-message"]
 					},
 					{
 						"name": "PlanningFacadeAdapter.history.revision",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Git revision used to read the entity's commit history; it must resolve in the repository.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.history",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "HistoryEvent array mapped from entity history; each event is represented as a commit with comma-joined event kinds and a null version.",
+						"examples": [
+							[
+								{
+									"id": "0123456789abcdef0123456789abcdef01234567",
+									"at": "2026-11-15T12:00:00.000Z",
+									"kind": "commit",
+									"title": "feat: add desktop.function.planning-message design v001",
+									"detail": "design",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"version": null
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with Error when the delegated planning API cannot resolve the revision or read entity history."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
