@@ -23,17 +23,214 @@
 				"name": "verifyPlan.input",
 				"type": "PlanInput",
 				"required": true,
-				"description": "Selected paths, scenario manifests, verification and workspace configuration, and optional test-timeout override."
+				"description": "The input of one verification plan: the selected test paths, the ScenarioManifest objects whose checks must run for this revision, the VerifyConfig (runner templates, per-file checks and timeouts), and the UnitsConfig that places each path in its workspace. Paths are compared as exact strings with config.checks paths and with each scenario test's cwd-joined target, so they must share one repository-relative form; duplicate selected paths are kept, and the optional testTimeoutMs, when set, replaces config.timeouts.test as the fallback timeout while a check's own timeoutMs still wins.",
+				"examples": [
+					{
+						"selectedTests": [
+							"tests/utils/classifyPath.test.ts",
+							"tests/verification-evidence/verifyPlan.test.ts"
+						],
+						"scenarios": [],
+						"config": {
+							"schemaVersion": 1,
+							"setup": [],
+							"link": ["node_modules"],
+							"outputs": [],
+							"builds": [],
+							"tools": [],
+							"profiles": {},
+							"checks": [],
+							"runners": {
+								"vitest": "bun x vitest run {target}",
+								"playwright": "bun x playwright test {target}"
+							},
+							"timeouts": {
+								"test": 600000
+							}
+						},
+						"unitsConfig": {
+							"schemaVersion": 1,
+							"workspaces": [
+								{
+									"name": "",
+									"root": "."
+								}
+							],
+							"tests": ["test/", "tests/"],
+							"global": [],
+							"ignored": [
+								"**/*.md",
+								"specification/features/",
+								"specification/loops/",
+								".gitignore"
+							],
+							"references": []
+						}
+					},
+					{
+						"selectedTests": [
+							"apps/web/tests/e2e/evidence-grid.spec.ts",
+							"apps/web/tests/format.test.ts",
+							"tests/verification-evidence/verifyPlan.test.ts"
+						],
+						"scenarios": [
+							{
+								"schemaVersion": 1,
+								"id": "evidence-grid.populated",
+								"title": "Evidence grid populated",
+								"kind": "ui",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "populated",
+										"title": "Grid shows recorded evidence",
+										"coverage": "required"
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1280,
+										"height": 800
+									}
+								],
+								"tests": [
+									{
+										"id": "renders",
+										"kind": "e2e",
+										"runner": "playwright",
+										"target": "tests/e2e/evidence-grid.spec.ts",
+										"cwd": "apps/web",
+										"timeoutMs": 240000
+									}
+								],
+								"evidence": [
+									{
+										"id": "grid-screenshot",
+										"kind": "screenshot",
+										"states": ["populated"],
+										"viewports": ["desktop"],
+										"required": true
+									}
+								]
+							}
+						],
+						"config": {
+							"schemaVersion": 1,
+							"setup": [],
+							"link": ["node_modules"],
+							"outputs": [],
+							"builds": [],
+							"tools": [],
+							"profiles": {},
+							"checks": [
+								{
+									"path": "tests/verification-evidence/verifyPlan.test.ts",
+									"command": "bun x vitest run {target}",
+									"timeoutMs": 120000
+								}
+							],
+							"runners": {
+								"vitest": "bun x vitest run {target}",
+								"playwright": "bun x playwright test {target}"
+							},
+							"timeouts": {
+								"test": 600000
+							}
+						},
+						"unitsConfig": {
+							"schemaVersion": 1,
+							"workspaces": [
+								{
+									"name": "",
+									"root": "."
+								},
+								{
+									"name": "web",
+									"root": "apps/web"
+								}
+							],
+							"tests": ["test/", "tests/"],
+							"global": [],
+							"ignored": [
+								"**/*.md",
+								"specification/features/",
+								"specification/loops/",
+								".gitignore"
+							],
+							"references": []
+						},
+						"testTimeoutMs": 300000
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "verifyPlan",
 				"type": "PlannedCheck[]",
-				"description": "Planned checks with ids, runners, targets, workspace cwd, commands and timeouts. Scenario-covered paths are omitted from file checks; per-file/scenario overrides beat defaults, .spec files select Playwright and other files select Vitest. No commands run here."
+				"description": "Planned checks in run order: each selected test file that no scenario test covers, sorted by path, runs from its workspace root with Playwright for .spec files and Vitest otherwise (a config.checks entry for the file supplies its command and timeoutMs), then each scenario test, sorted by target, runs from its cwd (default '.') with its own runner, target, command and timeoutMs. Each command replaces {target} in its runner template (config.runners, falling back to defaultVerifyConfig.runners) or in its config.checks command, using the path relative to the workspace root for file checks and the target as written for scenario tests; a command runner uses its target as the command, checks without their own timeoutMs use testTimeoutMs or config.timeouts.test, and no command runs here.",
+				"examples": [
+					[
+						{
+							"id": "tests/utils/classifyPath.test.ts",
+							"name": "tests/utils/classifyPath.test.ts",
+							"kind": "unit",
+							"runner": "vitest",
+							"target": "tests/utils/classifyPath.test.ts",
+							"cwd": ".",
+							"command": "bun x vitest run tests/utils/classifyPath.test.ts",
+							"timeoutMs": 600000
+						},
+						{
+							"id": "tests/verification-evidence/verifyPlan.test.ts",
+							"name": "tests/verification-evidence/verifyPlan.test.ts",
+							"kind": "unit",
+							"runner": "vitest",
+							"target": "tests/verification-evidence/verifyPlan.test.ts",
+							"cwd": ".",
+							"command": "bun x vitest run tests/verification-evidence/verifyPlan.test.ts",
+							"timeoutMs": 600000
+						}
+					],
+					[
+						{
+							"id": "apps/web/tests/format.test.ts",
+							"name": "apps/web/tests/format.test.ts",
+							"kind": "unit",
+							"runner": "vitest",
+							"target": "apps/web/tests/format.test.ts",
+							"cwd": "apps/web",
+							"command": "bun x vitest run tests/format.test.ts",
+							"timeoutMs": 300000
+						},
+						{
+							"id": "tests/verification-evidence/verifyPlan.test.ts",
+							"name": "tests/verification-evidence/verifyPlan.test.ts",
+							"kind": "unit",
+							"runner": "vitest",
+							"target": "tests/verification-evidence/verifyPlan.test.ts",
+							"cwd": ".",
+							"command": "bun x vitest run tests/verification-evidence/verifyPlan.test.ts",
+							"timeoutMs": 120000
+						},
+						{
+							"id": "evidence-grid.populated:renders",
+							"scenario": "evidence-grid.populated",
+							"name": "renders",
+							"kind": "e2e",
+							"runner": "playwright",
+							"target": "tests/e2e/evidence-grid.spec.ts",
+							"cwd": "apps/web",
+							"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+							"timeoutMs": 240000
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "verifyPlan",
@@ -42,18 +239,214 @@
 						"name": "verifyPlan.input",
 						"type": "PlanInput",
 						"required": true,
-						"description": "Selected paths, scenario manifests, verification and workspace configuration, and optional test-timeout override."
+						"description": "The input of one verification plan: the selected test paths, the ScenarioManifest objects whose checks must run for this revision, the VerifyConfig (runner templates, per-file checks and timeouts), and the UnitsConfig that places each path in its workspace. Paths are compared as exact strings with config.checks paths and with each scenario test's cwd-joined target, so they must share one repository-relative form; duplicate selected paths are kept, and the optional testTimeoutMs, when set, replaces config.timeouts.test as the fallback timeout while a check's own timeoutMs still wins.",
+						"examples": [
+							{
+								"selectedTests": [
+									"tests/utils/classifyPath.test.ts",
+									"tests/verification-evidence/verifyPlan.test.ts"
+								],
+								"scenarios": [],
+								"config": {
+									"schemaVersion": 1,
+									"setup": [],
+									"link": ["node_modules"],
+									"outputs": [],
+									"builds": [],
+									"tools": [],
+									"profiles": {},
+									"checks": [],
+									"runners": {
+										"vitest": "bun x vitest run {target}",
+										"playwright": "bun x playwright test {target}"
+									},
+									"timeouts": {
+										"test": 600000
+									}
+								},
+								"unitsConfig": {
+									"schemaVersion": 1,
+									"workspaces": [
+										{
+											"name": "",
+											"root": "."
+										}
+									],
+									"tests": ["test/", "tests/"],
+									"global": [],
+									"ignored": [
+										"**/*.md",
+										"specification/features/",
+										"specification/loops/",
+										".gitignore"
+									],
+									"references": []
+								}
+							},
+							{
+								"selectedTests": [
+									"apps/web/tests/e2e/evidence-grid.spec.ts",
+									"apps/web/tests/format.test.ts",
+									"tests/verification-evidence/verifyPlan.test.ts"
+								],
+								"scenarios": [
+									{
+										"schemaVersion": 1,
+										"id": "evidence-grid.populated",
+										"title": "Evidence grid populated",
+										"kind": "ui",
+										"units": ["reports.component.evidence-grid"],
+										"states": [
+											{
+												"id": "populated",
+												"title": "Grid shows recorded evidence",
+												"coverage": "required"
+											}
+										],
+										"viewports": [
+											{
+												"id": "desktop",
+												"width": 1280,
+												"height": 800
+											}
+										],
+										"tests": [
+											{
+												"id": "renders",
+												"kind": "e2e",
+												"runner": "playwright",
+												"target": "tests/e2e/evidence-grid.spec.ts",
+												"cwd": "apps/web",
+												"timeoutMs": 240000
+											}
+										],
+										"evidence": [
+											{
+												"id": "grid-screenshot",
+												"kind": "screenshot",
+												"states": ["populated"],
+												"viewports": ["desktop"],
+												"required": true
+											}
+										]
+									}
+								],
+								"config": {
+									"schemaVersion": 1,
+									"setup": [],
+									"link": ["node_modules"],
+									"outputs": [],
+									"builds": [],
+									"tools": [],
+									"profiles": {},
+									"checks": [
+										{
+											"path": "tests/verification-evidence/verifyPlan.test.ts",
+											"command": "bun x vitest run {target}",
+											"timeoutMs": 120000
+										}
+									],
+									"runners": {
+										"vitest": "bun x vitest run {target}",
+										"playwright": "bun x playwright test {target}"
+									},
+									"timeouts": {
+										"test": 600000
+									}
+								},
+								"unitsConfig": {
+									"schemaVersion": 1,
+									"workspaces": [
+										{
+											"name": "",
+											"root": "."
+										},
+										{
+											"name": "web",
+											"root": "apps/web"
+										}
+									],
+									"tests": ["test/", "tests/"],
+									"global": [],
+									"ignored": [
+										"**/*.md",
+										"specification/features/",
+										"specification/loops/",
+										".gitignore"
+									],
+									"references": []
+								},
+								"testTimeoutMs": 300000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyPlan",
 						"type": "PlannedCheck[]",
-						"description": "Planned checks with ids, runners, targets, workspace cwd, commands and timeouts. Scenario-covered paths are omitted from file checks; per-file/scenario overrides beat defaults, .spec files select Playwright and other files select Vitest. No commands run here."
+						"description": "Planned checks in run order: each selected test file that no scenario test covers, sorted by path, runs from its workspace root with Playwright for .spec files and Vitest otherwise (a config.checks entry for the file supplies its command and timeoutMs), then each scenario test, sorted by target, runs from its cwd (default '.') with its own runner, target, command and timeoutMs. Each command replaces {target} in its runner template (config.runners, falling back to defaultVerifyConfig.runners) or in its config.checks command, using the path relative to the workspace root for file checks and the target as written for scenario tests; a command runner uses its target as the command, checks without their own timeoutMs use testTimeoutMs or config.timeouts.test, and no command runs here.",
+						"examples": [
+							[
+								{
+									"id": "tests/utils/classifyPath.test.ts",
+									"name": "tests/utils/classifyPath.test.ts",
+									"kind": "unit",
+									"runner": "vitest",
+									"target": "tests/utils/classifyPath.test.ts",
+									"cwd": ".",
+									"command": "bun x vitest run tests/utils/classifyPath.test.ts",
+									"timeoutMs": 600000
+								},
+								{
+									"id": "tests/verification-evidence/verifyPlan.test.ts",
+									"name": "tests/verification-evidence/verifyPlan.test.ts",
+									"kind": "unit",
+									"runner": "vitest",
+									"target": "tests/verification-evidence/verifyPlan.test.ts",
+									"cwd": ".",
+									"command": "bun x vitest run tests/verification-evidence/verifyPlan.test.ts",
+									"timeoutMs": 600000
+								}
+							],
+							[
+								{
+									"id": "apps/web/tests/format.test.ts",
+									"name": "apps/web/tests/format.test.ts",
+									"kind": "unit",
+									"runner": "vitest",
+									"target": "apps/web/tests/format.test.ts",
+									"cwd": "apps/web",
+									"command": "bun x vitest run tests/format.test.ts",
+									"timeoutMs": 300000
+								},
+								{
+									"id": "tests/verification-evidence/verifyPlan.test.ts",
+									"name": "tests/verification-evidence/verifyPlan.test.ts",
+									"kind": "unit",
+									"runner": "vitest",
+									"target": "tests/verification-evidence/verifyPlan.test.ts",
+									"cwd": ".",
+									"command": "bun x vitest run tests/verification-evidence/verifyPlan.test.ts",
+									"timeoutMs": 120000
+								},
+								{
+									"id": "evidence-grid.populated:renders",
+									"scenario": "evidence-grid.populated",
+									"name": "renders",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "tests/e2e/evidence-grid.spec.ts",
+									"cwd": "apps/web",
+									"command": "bun x playwright test tests/e2e/evidence-grid.spec.ts",
+									"timeoutMs": 240000
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
