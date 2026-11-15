@@ -77,7 +77,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "Thrown when path-safety or clean-worktree checks reject .prettierignore or harness.units.json, or when an existing harness.units.json is invalid JSON or fails unitsConfigSchema.safeParse. Errors from awaited Git reads also propagate."
 			}
@@ -110,7 +110,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Thrown when path-safety or clean-worktree checks reject .prettierignore or harness.units.json, or when an existing harness.units.json is invalid JSON or fails unitsConfigSchema.safeParse. Errors from awaited Git reads also propagate."
 					}

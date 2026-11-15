@@ -195,11 +195,6 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
-				"type": "thrown",
-				"description": "These two files define no ExpectedCliError, so this name is never thrown here. The value actually thrown is the plain Error described in the Error entry, with code invalid-input, invalid-path or the code passed to fail."
-			},
-			{
 				"name": "Error",
 				"type": "thrown",
 				"description": "The plain Error built by fail, with message Collaboration followed by the code and a code property holding that code. parseCollaborationInput throws it with invalid-input, safePath throws it with invalid-path, and fail throws it with whatever code it receives."
@@ -284,11 +279,6 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
-						"type": "thrown",
-						"description": "These files define no ExpectedCliError; parseCollaborationInput actually throws the plain Error from fail with code invalid-input when schema.safeParse does not succeed."
-					},
-					{
 						"name": "Error",
 						"type": "thrown",
 						"description": "The plain Error from fail with code invalid-input, thrown when schema.safeParse does not succeed; its message is Collaboration invalid-input."
@@ -361,11 +351,6 @@
 					}
 				],
 				"errors": [
-					{
-						"name": "ExpectedCliError",
-						"type": "thrown",
-						"description": "These files define no ExpectedCliError; safePath actually throws the plain Error from fail with code invalid-path when the path breaks one of its rules."
-					},
 					{
 						"name": "Error",
 						"type": "thrown",

@@ -284,7 +284,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "The value thrown or rejected is a plain Error, not an ExpectedCliError instance, whose `code` is one of invalid-input, unsafe-path, artifact-tampered, artifact-missing, artifact-corrupt, not-found or git-failed. It is raised for an invalid unit ID, a plan folder or manifest that does not match, a missing, unparseable or non-regular artifact, duplicate plan identities, a unit with no plan, or a Git runner failure; a manifest whose JSON is null makes reading its id throw a TypeError."
 			}
@@ -410,7 +410,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Rejects with a plain Error whose `code` is invalid-input for an invalid unit ID, category or slug or for a manifest whose id or kind differs, unsafe-path for a unit ID that fails the artifact filename rule or for a manifest that is not a regular file, artifact-tampered when `plan.path` is not the derived folder, artifact-missing or artifact-corrupt for an absent or unparseable manifest, or a Git runner error (git-failed when git exits non-zero). A manifest whose JSON is null makes reading its id throw a TypeError."
 					}
@@ -441,7 +441,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Throws a plain Error whose `code` is unsafe-path when the unit ID fails the artifact filename rule, and invalid-input when it is longer than 200 characters or does not have at least two dot-separated segments that each start with a lowercase letter and contain only lowercase letters, digits and hyphens."
 					}
@@ -493,7 +493,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Rejects with a plain Error whose `code` is unsafe-path or invalid-input when the unit ID fails the identity rules, invalid-input when the manifest's id or kind differs from the unit, artifact-missing when `specification/units/<unitId>.json` is absent, unsafe-path when that entry is not a regular file (mode other than 100644 or 100755), artifact-corrupt when it is not valid JSON, or a Git runner error (git-failed when git exits non-zero). A manifest whose JSON is null makes reading its id throw a TypeError."
 					}
@@ -533,7 +533,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Rejects only with the Git runner's error: code git-failed when the `git ls-tree -rz` listing of src exits non-zero, or a system error when git cannot start; the function raises no error of its own."
 					}
@@ -577,7 +577,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Rejects with a plain Error whose `code` is unsafe-path or invalid-input for a unit ID that fails the identity rules, artifact-tampered when two or more plan.json files carry the unit ID, or a Git runner error from listing src. plan.json files that cannot be read or parsed are skipped without raising an error."
 					}
@@ -621,7 +621,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Rejects with a plain Error whose `code` is not-found when findIdentity resolves null; otherwise it rejects with findIdentity's errors: unsafe-path or invalid-input for a unit ID that fails the identity rules, artifact-tampered for duplicate plans, and Git runner errors from listing src."
 					}

@@ -149,11 +149,6 @@
 				"name": "SecureFailure",
 				"type": "thrown",
 				"description": "Thrown for handshake role or state violations, malformed or mismatched packets, out-of-order counters, authentication failures, and message-size or decoded-text violations. Its reason is state, packet, counter, tag, or size; failures detected while opening a packet clear the session keys."
-			},
-			{
-				"name": "ExpectedCliError",
-				"type": "thrown",
-				"description": "An expected CLI error propagated while a channel operation is running. Errors caught during key derivation or authenticated packet opening are converted to SecureFailure."
 			}
 		],
 		"errorStatus": "declared",

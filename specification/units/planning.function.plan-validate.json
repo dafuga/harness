@@ -206,7 +206,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "The fail helper throws a JavaScript Error (name: Error) with a code property and path: null. This unit uses invalid-input (Invalid design version, Expected non-empty text, Invalid slug, Invalid unit identity, Invalid contract fields, Invalid contract list, Invalid viewport, Invalid author), invalid-region (Invalid rectangle, Rectangle is outside image), and unsafe-path (Invalid artifact filename)."
 			}
@@ -233,7 +233,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Throws a JavaScript Error (name: Error) with code: invalid-input, path: null, and message 'Invalid design version' when the value does not match /^v\\d{3,}$/."
 					}
@@ -260,7 +260,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Throws a JavaScript Error (name: Error) with code: invalid-input, path: null, and message 'Expected non-empty text' for a non-string, blank-after-trimming, or over-1,000,000-character value."
 					}
@@ -287,7 +287,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Throws a JavaScript Error (name: Error) with code: invalid-input, path: null, and message 'Invalid slug' when the lowercase slug pattern fails or the value exceeds 64 characters."
 					}
@@ -319,7 +319,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Throws a JavaScript Error with code: invalid-input and path: null: 'Expected non-empty text' for invalid text, 'Invalid slug' for an invalid name, or 'Invalid unit identity' for an unsupported category or extra dot-separated part."
 					}
@@ -366,7 +366,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Throws a JavaScript Error with code: invalid-input and path: null. Messages are 'Expected non-empty text', 'Invalid contract fields', 'Invalid contract list', or 'Invalid viewport' when the corresponding responsibility/list text, inputs/outputs array, unique-list, or viewport validation fails."
 					}
@@ -402,7 +402,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Throws a JavaScript Error with code: invalid-input and path: null: 'Invalid author' for a falsy value or unsupported kind, or 'Expected non-empty text' when the name fails text validation."
 					}
@@ -446,7 +446,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Throws a JavaScript Error with path: null and code: invalid-region: 'Invalid rectangle' for non-finite coordinates, or 'Rectangle is outside image' for negative origins, nonpositive dimensions, or bounds extending past 1."
 					}
@@ -473,7 +473,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Throws a JavaScript Error with code: unsafe-path, path: null, and message 'Invalid artifact filename' when the filename pattern fails or it contains '..'."
 					}

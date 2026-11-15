@@ -126,9 +126,9 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "Error",
 				"type": "thrown",
-				"description": "Strict identity validation and a non-null artifactHash mismatch reject with this expected error; writeCache stops before put when the hash differs from SHA-256(bytes)."
+				"description": "The package's plain Error from fail (message 'Collaboration <code>', with a code property): invalid-input when an identity fails the strict identity schema, and cache-hash-mismatch from writeCache when a non-null artifactHash differs from SHA-256(bytes), before cache.put is called."
 			},
 			{
 				"name": "Error",
@@ -176,9 +176,9 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "Error",
 						"type": "thrown",
-						"description": "Invalid identity rejects with this expected validation error before a key is returned."
+						"description": "Rejects with the package's plain Error from fail, code invalid-input, when the identity fails the strict identity schema; no key is returned."
 					},
 					{
 						"name": "Error",
@@ -232,9 +232,9 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "Error",
 						"type": "thrown",
-						"description": "An invalid requested identity rejects with this expected validation error before lookup; invalid cached identities are caught and the entry is deleted."
+						"description": "Rejects with the package's plain Error from fail, code invalid-input, when the requested identity fails the identity schema, before lookup; invalid cached identities are caught and the entry is deleted."
 					},
 					{
 						"name": "Error",
@@ -293,9 +293,9 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "Error",
 						"type": "thrown",
-						"description": "Invalid identity and a non-null artifactHash mismatch reject with this expected error; the mismatch is detected before cache.put."
+						"description": "Rejects with the package's plain Error from fail: code invalid-input when the identity fails the identity schema, or cache-hash-mismatch when a non-null artifactHash differs from the SHA-256 of bytes; both are detected before cache.put."
 					},
 					{
 						"name": "Error",

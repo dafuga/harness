@@ -149,7 +149,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "Thrown through fail(...) for repository-busy when the lock directory cannot be created, for artifact-dirty when artifact paths have status output, and for conflict when the current revision differs from git.transactionHead or symbolic-ref returns an empty branch name. Other errors from safePath, requireLfsFilters, Git commands and filesystem calls propagate."
 			}
@@ -181,7 +181,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Thrown through fail('repository-busy', ...) when the harness-planning.lock directory cannot be created; errors from revision(git) and work propagate."
 					}
@@ -217,7 +217,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Thrown by the assertClean call through fail('artifact-dirty', ...) when the artifact paths have status output; errors from safePath propagate."
 					}
@@ -258,7 +258,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Thrown through fail('artifact-dirty', ...) when git status prints any output for the artifact paths; errors from safePath propagate."
 					}
@@ -322,7 +322,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Thrown through fail('conflict', ...) when the current revision differs from git.transactionHead or symbolic-ref returns an empty branch name; errors from requireLfsFilters, Git commands and filesystem calls propagate."
 					}

@@ -40,7 +40,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "Raised as invalid-image when bytes are not a Uint8Array, contain fewer than 33 bytes or more than 32 MiB, encode zero dimensions or more than 32,000,000 pixels, or fail CRC-checked PNG decoding."
 			}
@@ -76,7 +76,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised as invalid-image when bytes are not a Uint8Array, contain fewer than 33 bytes or more than 32 MiB, encode zero dimensions or more than 32,000,000 pixels, or fail CRC-checked PNG decoding."
 					}

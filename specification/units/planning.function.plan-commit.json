@@ -127,7 +127,7 @@
 				"description": "Node system errors (for example EACCES) from filesystem calls and spawned Git processes, such as copyFile, rename or a spawn failure, propagate unchanged, and a rollback step that fails replaces the original error."
 			},
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "Error objects whose code property is a planning error code (repository-busy, conflict, unsafe-path or git-failed), created by fail() or by planGit's run; no ExpectedCliError class is thrown."
 			}
@@ -187,7 +187,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Error objects with a planning code in their code property: repository-busy when index.lock cannot be created exclusively (any open failure, including a missing Git directory), conflict when HEAD names a different branch than context.branch, unsafe-path from safePath, and git-failed from a non-zero Git exit such as a failed update-ref compare-and-swap; no ExpectedCliError class is thrown."
 					},
@@ -223,7 +223,7 @@
 						"description": "Node system error from removing the temporary probe directory in the finally block; it replaces a git-failed error that was already being thrown, because every failure inside the probe is converted to git-failed."
 					},
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Error objects with the planning code git-failed for every failure inside the probe: git lfs version failing, no configured clean or process filter, a filter result that differs from the expected pointer, or a failed mkdtemp or writeFile; no ExpectedCliError class is thrown."
 					}

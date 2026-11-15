@@ -263,9 +263,9 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
-				"description": "The declared CLI validation error for invalid design input, stale versions, missing images, changed artifacts, or mismatched approvals. Repository, plan-reading, image-decoding, cleanup, and commit failures can also reject the operation."
+				"description": "A plain Error from the planning fail helper whose code is a PlanningErrorCode, thrown for invalid design input, stale versions, missing images, changed artifacts, or mismatched approvals. Repository, plan-reading, image-decoding, cleanup, and commit failures can also reject the operation."
 			}
 		],
 		"errorStatus": "declared",
@@ -435,7 +435,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Rejects for invalid viewport or image state, category/content mismatch, invalid prompt or notes, stale latest version, or a revision source that does not bind the image; repository, plan-reading, and image-reading failures also propagate."
 					}
@@ -499,7 +499,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Rejects when the requested version is not latest, the selected option is not approvable, the approval does not match the design, or a bound image cannot be read; repository and commit failures also propagate."
 					}
@@ -538,7 +538,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Rejects when version or filename validation fails, the image is absent, the supplied hash differs, or the stored blob hash, dimensions, or byte length fail verification; repository and decode failures also propagate."
 					}

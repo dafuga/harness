@@ -33,7 +33,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "Error",
 				"type": "thrown",
 				"description": "Thrown as an Error with a code property of invalid-input (commit is not a lowercase 40-character hex string), invalid-path (path is empty, absolute, contains a backslash, has an empty segment or a dot or dot-dot segment, or contains a control character), not-found (path is absent from the tree or is not a 100644 or 100755 blob), or blob-integrity (a batch result has no entry for a requested path). Failures inside the GitHub request, including token, fetch, HTTP status, response body, repository identity and blob oid, size or digest checks, surface as github-unavailable, while errors from adapter.tree pass through unchanged, and every rejected batch promise is removed from the shared cache."
 			}

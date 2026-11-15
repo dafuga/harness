@@ -305,7 +305,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "Error",
 				"type": "thrown",
 				"description": "Thrown as a plain Error (not an ExpectedCliError instance) with message 'Collaboration <code>' and a code property: 'invalid-input' for an invalid actor, project id or records, 'forbidden' when the project or the actor's membership is missing or the membership role is not in roles, and 'conflict' after five unsuccessful compare-and-swap writes. Errors from the transaction callback and the repository propagate unchanged."
 			}
@@ -413,7 +413,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "Error",
 						"type": "thrown",
 						"description": "Thrown as a plain Error with code 'invalid-input' when the snapshot's records fail the records schema, such as duplicate identities, unbound records, a project without an owner or duplicate request messages; repository read errors propagate unchanged."
 					}
@@ -593,7 +593,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "Error",
 						"type": "thrown",
 						"description": "Thrown as a plain Error with code 'invalid-input' when the actor fails the actor schema or the projectId is not a UUID, and with code 'forbidden' when no project has that id, the actor has no membership in it, or the membership role is not in roles."
 					}
@@ -625,7 +625,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "Error",
 						"type": "thrown",
 						"description": "Thrown as a plain Error with code 'invalid-input' when the snapshot's records or the records changed by the operation fail the records schema, and with code 'conflict' after five write attempts that return no revision; errors from the operation and the repository propagate unchanged."
 					}

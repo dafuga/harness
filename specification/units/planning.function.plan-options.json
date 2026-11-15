@@ -814,9 +814,9 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
-				"description": "The name the harness gives every fail() call. The planning fail helper actually throws a plain Error whose code is invalid-input for rejected input or text, not-found when heldBy refuses a wanted option that does not own the file, artifact-tampered when stored options do not match the version images, or unsafe-path for an invalid stored prompt file name."
+				"description": "The planning fail helper throws a plain Error whose code is invalid-input for rejected input or text, not-found when heldBy refuses a wanted option that does not own the file, artifact-tampered when stored options do not match the version images, or unsafe-path for an invalid stored prompt file name."
 			}
 		],
 		"errorStatus": "declared",
@@ -951,7 +951,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised with code invalid-input when the design input is malformed: images missing or not an array, options not 1 to 10, a direction empty or over 2000 characters, an option without images, an empty prompt or revised prompt, a missing or empty generator, repeated directions or images, or flat images that differ from the option images."
 					}
@@ -1100,7 +1100,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised with code not-found when the wanted option is not the option holding the file, including when no option holds it."
 					}
@@ -1277,7 +1277,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised with code artifact-tampered when stored options do not claim each version image exactly once with matching sha256 and in-order ids, when there are no options or more than 10, or when an option has no images; invalid-input covers an invalid stored direction, revised prompt or generator, and unsafe-path an invalid prompt file name."
 					}
@@ -1386,7 +1386,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised with code invalid-input when the provider or the model is not non-empty text."
 					}

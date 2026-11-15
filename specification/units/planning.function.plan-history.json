@@ -254,7 +254,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "Raised by commits through fail('invalid-input', 'Invalid history limit') when limit is not an integer from 1 to 500, so planHistory rejects the same way for an invalid limit. Errors from revision, planIdentity and Git command calls propagate unchanged, except that a failed symbolic-ref lookup is ignored."
 			}
@@ -396,7 +396,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Rejects with the invalid-input failure from commits when limit is not an integer from 1 to 500. Errors from revisionInfo, planIdentity and the diff-tree Git calls propagate unchanged."
 					}
@@ -479,7 +479,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised through fail('invalid-input', 'Invalid history limit') when limit is not an integer from 1 to 500. Git command errors from run propagate unchanged."
 					}

@@ -334,7 +334,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "Thrown by the fail helper as a plain Error whose code is a PlanningErrorCode, not as an ExpectedCliError instance: invalid-input, invalid-region, unsafe-path, approval-required, approval-mismatch, not-found and unknown-revision for rejected input; artifact-missing, artifact-corrupt, artifact-tampered, artifact-dirty and invalid-image for unreadable, dirty or invalid stored files; and conflict, repository-busy and git-failed for stale or locked writes and failing Git commands. Other file-system and process-spawn errors are rethrown without a PlanningErrorCode."
 			}
@@ -491,7 +491,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Thrown as a plain Error with a PlanningErrorCode: not-found for a plan missing at HEAD or the viewed revision, or for an image or option that the plan does not hold; unknown-revision for an unresolvable HEAD or viewed revision; invalid-input, unsafe-path, approval-required, approval-mismatch and invalid-region for a bad author, partial or invalid anchor, message, change or changed path; and artifact-missing, artifact-corrupt, artifact-tampered, artifact-dirty, invalid-image, repository-busy, conflict or git-failed for a failed read or write."
 					}
@@ -675,7 +675,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Thrown as a plain Error with a PlanningErrorCode: not-found for a plan or thread that does not exist, unknown-revision for an unresolvable HEAD, unsafe-path for an unsafe threadId or changed path, invalid-input, approval-required and approval-mismatch for a bad author, body, mode, reference or change; and artifact-missing, artifact-corrupt, artifact-tampered, artifact-dirty, invalid-image, repository-busy, conflict or git-failed for a failed read or write."
 					}

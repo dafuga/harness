@@ -192,9 +192,9 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
-				"description": "ExpectedCliError is raised for the domain failures emitted through fail: a non-root repository selection, a missing creation commit, an invalid or unknown revision, a missing or non-regular artifact, a malformed or corrupt LFS pointer, a missing or tampered LFS object, or an unsafe path."
+				"description": "A plain Error whose code is a PlanningErrorCode, raised through the planning fail helper for these domain failures: a non-root repository selection, a missing creation commit, an invalid or unknown revision, a missing or non-regular artifact, a malformed or corrupt LFS pointer, a missing or tampered LFS object, or an unsafe path."
 			}
 		],
 		"errorStatus": "declared",
@@ -219,7 +219,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised as not-a-repository when the canonical selected path differs from Git's reported top level."
 					}
@@ -260,7 +260,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised as artifact-tampered when git log returns no commit that added the requested path."
 					}
@@ -295,7 +295,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised as unknown-revision for rejected revision text or when Git cannot resolve the value to a commit."
 					}
@@ -374,7 +374,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised as artifact-missing when the tree lookup is empty, or unsafe-path when the tree entry is not a regular file."
 					}
@@ -414,7 +414,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised for a missing or non-regular pointer entry, a non-LFS or malformed pointer, missing LFS content, or an LFS object's hash or size mismatch."
 					}
@@ -447,7 +447,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Raised as unsafe-path when the path has an empty, . or .. segment or an existing component is a symbolic link."
 					}

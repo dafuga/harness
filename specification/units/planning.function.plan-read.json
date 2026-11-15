@@ -517,7 +517,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
 				"description": "Rejects with an Error whose code is a PlanningErrorCode (artifact-missing, artifact-corrupt or artifact-tampered for absent, unparsable, changed or mismatched artifacts, broken design sequences and rewritten message history; not-found for an unknown unit; invalid-input or unsafe-path for a bad unit ID, filename, manifest or contract field; invalid-image for a bad PNG; git-failed when a Git command exits non-zero), or with the system error when Git cannot start. A missing image file or Git LFS object does not reject: that image's content is set to 'missing'."
 			}
@@ -1039,7 +1039,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
 						"description": "Rejects with an Error whose code is a PlanningErrorCode (artifact-missing, artifact-corrupt or artifact-tampered for absent, unparsable, changed or mismatched artifacts, broken design sequences and rewritten message history; not-found for an unknown unit; invalid-input or unsafe-path for a bad unit ID, filename, manifest or contract field; invalid-image for a bad PNG; git-failed when a Git command exits non-zero), or with the system error when Git cannot start. A missing image file or Git LFS object does not reject: that image's content is set to 'missing'."
 					}

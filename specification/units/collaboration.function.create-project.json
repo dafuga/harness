@@ -156,7 +156,7 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "Error",
 				"type": "thrown",
 				"description": "The implementation rejects with a plain Error whose name is Error, not ExpectedCliError, and whose code is one of invalid-input, forbidden, not-found, sole-owner or conflict."
 			},

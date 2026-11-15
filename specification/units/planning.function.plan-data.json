@@ -88,9 +88,9 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
+				"name": "PlanningFailure",
 				"type": "thrown",
-				"description": "parse reports artifact-corrupt for invalid JSON; fail throws the supplied code and message."
+				"description": "A plain Error carrying the PlanningFailure fields, not an ExpectedCliError instance: fail throws one with the supplied code and message and path null on every call, and parse throws one with code artifact-corrupt and message Invalid artifact JSON when the bytes are not valid JSON."
 			}
 		],
 		"operations": [
@@ -215,9 +215,9 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "PlanningFailure",
 						"type": "thrown",
-						"description": "parse replaces any JSON parse failure with ExpectedCliError whose code is artifact-corrupt, message is Invalid artifact JSON and path is null."
+						"description": "parse replaces any JSON parse failure with the plain Error from fail whose code is artifact-corrupt, message is Invalid artifact JSON and path is null."
 					}
 				],
 				"errorStatus": "declared"
