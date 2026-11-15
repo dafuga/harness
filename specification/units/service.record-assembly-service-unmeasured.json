@@ -20,23 +20,54 @@
 				"name": "unmeasured.unit",
 				"type": "string",
 				"required": true,
-				"description": "Registered unit whose exact owned source and runtime target define this observation."
+				"description": "Unit identifier attached to each measurement when recording this unit's unmeasured verification evidence. The function copies it unchanged and does not check registration or source ownership.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "unmeasured.testedRevision",
 				"type": "string",
 				"required": true,
-				"description": "Exact source commit associated with these explicit unavailable measurements."
+				"description": "Commit revision attached to each measurement so the verification evidence identifies what was tested. The function copies it unchanged and does not validate its format.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unmeasured",
 				"type": "Measurement[]",
-				"description": "Two entries with null values and explicit unavailable reasons; missing memory or latency is never represented as zero."
+				"description": "Returns two measurements for warm latency and memory, each with a null value and a fixed unavailable reason. The method is 'Not measured.', workload and profile are null, and artifacts is empty, so no benchmark numbers or evidence artifacts are supplied.",
+				"examples": [
+					[
+						{
+							"unit": "reports.component.evidence-grid",
+							"value": null,
+							"method": "Not measured.",
+							"workload": null,
+							"profile": null,
+							"metric": "latency-warm-ms",
+							"unitOfMeasure": "ms",
+							"unavailable": "No benchmark measured this unit in this verification.",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": []
+						},
+						{
+							"unit": "reports.component.evidence-grid",
+							"value": null,
+							"method": "Not measured.",
+							"workload": null,
+							"profile": null,
+							"metric": "memory-bytes",
+							"unitOfMeasure": "bytes",
+							"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+							"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+							"artifacts": []
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "unmeasured",
@@ -45,24 +76,54 @@
 						"name": "unmeasured.unit",
 						"type": "string",
 						"required": true,
-						"description": "Registered unit whose exact owned source and runtime target define this observation."
+						"description": "Unit identifier attached to each measurement when recording this unit's unmeasured verification evidence. The function copies it unchanged and does not check registration or source ownership.",
+						"examples": ["reports.component.evidence-grid"]
 					},
 					{
 						"name": "unmeasured.testedRevision",
 						"type": "string",
 						"required": true,
-						"description": "Exact source commit associated with these explicit unavailable measurements."
+						"description": "Commit revision attached to each measurement so the verification evidence identifies what was tested. The function copies it unchanged and does not validate its format.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unmeasured",
 						"type": "Measurement[]",
-						"description": "Two entries with null values and explicit unavailable reasons; missing memory or latency is never represented as zero."
+						"description": "Returns two measurements for warm latency and memory, each with a null value and a fixed unavailable reason. The method is 'Not measured.', workload and profile are null, and artifacts is empty, so no benchmark numbers or evidence artifacts are supplied.",
+						"examples": [
+							[
+								{
+									"unit": "reports.component.evidence-grid",
+									"value": null,
+									"method": "Not measured.",
+									"workload": null,
+									"profile": null,
+									"metric": "latency-warm-ms",
+									"unitOfMeasure": "ms",
+									"unavailable": "No benchmark measured this unit in this verification.",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": []
+								},
+								{
+									"unit": "reports.component.evidence-grid",
+									"value": null,
+									"method": "Not measured.",
+									"workload": null,
+									"profile": null,
+									"metric": "memory-bytes",
+									"unitOfMeasure": "bytes",
+									"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+									"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+									"artifacts": []
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
