@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "Optional Svelte Snippet that the component destructures out of the props, so it is never spread onto the element. The markup never references it, so passing children has no effect on the rendered output, and the value is undefined when omitted."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputButton",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native input element itself: the tag is always input, every prop other than children is spread onto it, and type is always button because it is set after the spread. No wrapper element is added, and the element body holds only whitespace, so no child content is rendered."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
