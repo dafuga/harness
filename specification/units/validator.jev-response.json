@@ -12,32 +12,218 @@
 		"symbols": ["JevResponseValidator", "JevResponseValidator.validate"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "JevResponseValidator.validate.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The raw Jev response that validate parses, which must be a non-null, non-array object because it is first checked with recordValue. It needs a model string matching /^jev-[a-zA-Z0-9.-]+$/, an answers object with exactly the question keys, and a usage object whose input_tokens and output_tokens are non-negative safe integers.",
+				"examples": [
+					{
+						"model": "jev-2.1",
+						"answers": {
+							"tone": {
+								"type": "choice",
+								"choice": "formal",
+								"confidence": 0.72,
+								"probabilities": {
+									"formal": 0.72,
+									"casual": 0.28
+								}
+							},
+							"length": {
+								"type": "choice",
+								"choice": "short",
+								"confidence": 0.61,
+								"probabilities": {
+									"short": 0.61,
+									"long": 0.39
+								}
+							}
+						},
+						"usage": {
+							"input_tokens": 512,
+							"output_tokens": 48
+						}
+					},
+					{
+						"model": "jev-mini-0.9",
+						"answers": {
+							"tone": {
+								"type": "choice",
+								"choice": "casual",
+								"confidence": 0.55,
+								"probabilities": {
+									"formal": 0.45,
+									"casual": 0.55
+								}
+							},
+							"length": {
+								"type": "choice",
+								"choice": "long",
+								"confidence": 0.6,
+								"probabilities": {
+									"short": 0.4,
+									"long": 0.6
+								}
+							}
+						},
+						"usage": {
+							"input_tokens": 830,
+							"output_tokens": 12
+						}
+					}
+				]
 			},
 			{
 				"name": "JevResponseValidator.validate.questions",
 				"type": "JevQuestions",
-				"required": true
+				"required": true,
+				"description": "The question set that defines the response shape: each key is an answer key that the response must answer, and the keys of each question's criteria are the only choices allowed for that answer. validate reads nothing else from each question, so the answer count must equal the question count and each answer's probabilities must cover exactly the criteria keys.",
+				"examples": [
+					{
+						"tone": {
+							"type": "choice",
+							"instructions": "Choose the option that best describes the register of the reply.",
+							"criteria": {
+								"formal": "The reply uses a formal register throughout.",
+								"casual": "The reply uses a casual, conversational register."
+							}
+						},
+						"length": {
+							"type": "choice",
+							"instructions": "Choose the option that best describes how long the reply is.",
+							"criteria": {
+								"short": "The reply fits within two or three sentences.",
+								"long": "The reply runs to several paragraphs."
+							}
+						}
+					},
+					{
+						"tone": {
+							"type": "choice",
+							"instructions": "Choose the option that best describes the register of the reply for its audience.",
+							"criteria": {
+								"formal": "The reply uses a formal register throughout.",
+								"casual": "The reply uses a casual, conversational register."
+							}
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "JevResponseValidator.validate",
-				"type": "JevEvaluation"
+				"type": "JevEvaluation",
+				"description": "The synchronous result of validate: the model copied from input.model, one JevChoice per question key, and the input_tokens and output_tokens copied from input.usage. Each JevChoice names an option whose probability is the highest of its probabilities, keys those probabilities by exactly the criteria keys so they sum to 1 within 0.01, and has a confidence from 0 to 1.",
+				"examples": [
+					{
+						"model": "jev-2.1",
+						"answers": {
+							"tone": {
+								"type": "choice",
+								"choice": "formal",
+								"confidence": 0.72,
+								"probabilities": {
+									"formal": 0.72,
+									"casual": 0.28
+								}
+							},
+							"length": {
+								"type": "choice",
+								"choice": "short",
+								"confidence": 0.61,
+								"probabilities": {
+									"short": 0.61,
+									"long": 0.39
+								}
+							}
+						},
+						"usage": {
+							"input_tokens": 512,
+							"output_tokens": 48
+						}
+					},
+					{
+						"model": "jev-mini-0.9",
+						"answers": {
+							"tone": {
+								"type": "choice",
+								"choice": "casual",
+								"confidence": 0.55,
+								"probabilities": {
+									"formal": 0.45,
+									"casual": 0.55
+								}
+							},
+							"length": {
+								"type": "choice",
+								"choice": "long",
+								"confidence": 0.6,
+								"probabilities": {
+									"short": 0.4,
+									"long": 0.6
+								}
+							}
+						},
+						"usage": {
+							"input_tokens": 830,
+							"output_tokens": 12
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid Jev response' when the input, its answers, its usage, an answer entry, or an answer's probabilities is undefined, null, not an object, or an array."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid Jev model' when input.model is not a string or does not match /^jev-[a-zA-Z0-9.-]+$/."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Missing Jev answers' when the answers object has a different number of keys than the questions record, whether fewer or more."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid Jev choice' when an answer's type field is not 'choice', its choice is not a string, or its choice is not one of the criteria keys of that question."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid Jev options' when an answer's probabilities object has a different number of keys than the criteria of its question."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid Jev probability' when the confidence or any option probability is not a finite number from 0 to 1, including an option whose probability is missing."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid Jev distribution' when the probabilities of an answer do not add up to 1 within 0.01."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Inconsistent Jev choice' when the chosen option's probability is lower than the highest probability of that answer."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Invalid Jev usage' when input.usage.input_tokens or input.usage.output_tokens is not a non-negative safe integer."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "JevResponseValidator.validate",
@@ -45,27 +231,213 @@
 					{
 						"name": "JevResponseValidator.validate.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The raw Jev response that validate parses, which must be a non-null, non-array object because it is first checked with recordValue. It needs a model string matching /^jev-[a-zA-Z0-9.-]+$/, an answers object with exactly the question keys, and a usage object whose input_tokens and output_tokens are non-negative safe integers.",
+						"examples": [
+							{
+								"model": "jev-2.1",
+								"answers": {
+									"tone": {
+										"type": "choice",
+										"choice": "formal",
+										"confidence": 0.72,
+										"probabilities": {
+											"formal": 0.72,
+											"casual": 0.28
+										}
+									},
+									"length": {
+										"type": "choice",
+										"choice": "short",
+										"confidence": 0.61,
+										"probabilities": {
+											"short": 0.61,
+											"long": 0.39
+										}
+									}
+								},
+								"usage": {
+									"input_tokens": 512,
+									"output_tokens": 48
+								}
+							},
+							{
+								"model": "jev-mini-0.9",
+								"answers": {
+									"tone": {
+										"type": "choice",
+										"choice": "casual",
+										"confidence": 0.55,
+										"probabilities": {
+											"formal": 0.45,
+											"casual": 0.55
+										}
+									},
+									"length": {
+										"type": "choice",
+										"choice": "long",
+										"confidence": 0.6,
+										"probabilities": {
+											"short": 0.4,
+											"long": 0.6
+										}
+									}
+								},
+								"usage": {
+									"input_tokens": 830,
+									"output_tokens": 12
+								}
+							}
+						]
 					},
 					{
 						"name": "JevResponseValidator.validate.questions",
 						"type": "JevQuestions",
-						"required": true
+						"required": true,
+						"description": "The question set that defines the response shape: each key is an answer key that the response must answer, and the keys of each question's criteria are the only choices allowed for that answer. validate reads nothing else from each question, so the answer count must equal the question count and each answer's probabilities must cover exactly the criteria keys.",
+						"examples": [
+							{
+								"tone": {
+									"type": "choice",
+									"instructions": "Choose the option that best describes the register of the reply.",
+									"criteria": {
+										"formal": "The reply uses a formal register throughout.",
+										"casual": "The reply uses a casual, conversational register."
+									}
+								},
+								"length": {
+									"type": "choice",
+									"instructions": "Choose the option that best describes how long the reply is.",
+									"criteria": {
+										"short": "The reply fits within two or three sentences.",
+										"long": "The reply runs to several paragraphs."
+									}
+								}
+							},
+							{
+								"tone": {
+									"type": "choice",
+									"instructions": "Choose the option that best describes the register of the reply for its audience.",
+									"criteria": {
+										"formal": "The reply uses a formal register throughout.",
+										"casual": "The reply uses a casual, conversational register."
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "JevResponseValidator.validate",
-						"type": "JevEvaluation"
+						"type": "JevEvaluation",
+						"description": "The synchronous result of validate: the model copied from input.model, one JevChoice per question key, and the input_tokens and output_tokens copied from input.usage. Each JevChoice names an option whose probability is the highest of its probabilities, keys those probabilities by exactly the criteria keys so they sum to 1 within 0.01, and has a confidence from 0 to 1.",
+						"examples": [
+							{
+								"model": "jev-2.1",
+								"answers": {
+									"tone": {
+										"type": "choice",
+										"choice": "formal",
+										"confidence": 0.72,
+										"probabilities": {
+											"formal": 0.72,
+											"casual": 0.28
+										}
+									},
+									"length": {
+										"type": "choice",
+										"choice": "short",
+										"confidence": 0.61,
+										"probabilities": {
+											"short": 0.61,
+											"long": 0.39
+										}
+									}
+								},
+								"usage": {
+									"input_tokens": 512,
+									"output_tokens": 48
+								}
+							},
+							{
+								"model": "jev-mini-0.9",
+								"answers": {
+									"tone": {
+										"type": "choice",
+										"choice": "casual",
+										"confidence": 0.55,
+										"probabilities": {
+											"formal": 0.45,
+											"casual": 0.55
+										}
+									},
+									"length": {
+										"type": "choice",
+										"choice": "long",
+										"confidence": 0.6,
+										"probabilities": {
+											"short": 0.4,
+											"long": 0.6
+										}
+									}
+								},
+								"usage": {
+									"input_tokens": 830,
+									"output_tokens": 12
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid Jev response' when the input, its answers, its usage, an answer entry, or an answer's probabilities is undefined, null, not an object, or an array."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid Jev model' when input.model is not a string or does not match /^jev-[a-zA-Z0-9.-]+$/."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Missing Jev answers' when the answers object has a different number of keys than the questions record, whether fewer or more."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid Jev choice' when an answer's type field is not 'choice', its choice is not a string, or its choice is not one of the criteria keys of that question."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid Jev options' when an answer's probabilities object has a different number of keys than the criteria of its question."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid Jev probability' when the confidence or any option probability is not a finite number from 0 to 1, including an option whose probability is missing."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid Jev distribution' when the probabilities of an answer do not add up to 1 within 0.01."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Inconsistent Jev choice' when the chosen option's probability is lower than the highest probability of that answer."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Invalid Jev usage' when input.usage.input_tokens or input.usage.output_tokens is not a non-negative safe integer."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
