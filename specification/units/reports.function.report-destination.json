@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/routes/harness/reports/[id]/reportDestination.ts",
-			"packages/reports/src/utils/explorer-ui/reportDestination.ts",
-			"packages/reports/src/utils/reportDestination.ts"
+			"packages/reports/src/utils/explorer-ui/reportDestination.ts"
 		],
-		"symbols": ["reportDestination", "NamedReport", "reportDestination", "reportDestination"]
+		"symbols": ["reportDestination", "NamedReport", "reportDestination"]
 	},
 	"contract": {
 		"origin": "declared",

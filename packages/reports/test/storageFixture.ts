@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { vi } from 'vitest';
 import { ReportRepository } from '../src/repositories/reports-media/report-repository/ReportRepository';
-import { atomicJson } from '../src/utils/reportFiles';
+import { atomicJson } from '../src/utils/reports-media/reportFiles';
 export const fixturePng = Buffer.from(
 	'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a5V8AAAAASUVORK5CYII=',
 	'base64'

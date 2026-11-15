@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import type { Evidence } from '../../src/models/reports-media/Report.types';
 import { audioPairs } from '../../src/utils/reports-media/audioPairs';
-import { galleryEvidence } from '../../src/utils/reportFilter';
+import { galleryEvidence } from '../../src/utils/verification-evidence/reportFilter';
 import { reportFilter } from '../../src/components/verification-evidence/evidence-grid/reportFilter';
 const before: Evidence = {
 	id: 'before',

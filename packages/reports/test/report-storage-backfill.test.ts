@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { ReportCommandService } from '../src/services/report-command-service/ReportCommandService';
 import { R2EvidenceStoreAdapter } from '../src/adapters/R2EvidenceStoreAdapter';
-import { atomicJson } from '../src/utils/reportFiles';
+import { atomicJson } from '../src/utils/reports-media/reportFiles';
 import { configureFixtureCloud, fixtureCloudResponse, storageFixture } from './storageFixture';
 const cloud = vi.hoisted(() => ({ objects: new Map<string, Buffer>(), calls: [] as string[] }));
 vi.mock('@aws-sdk/client-s3', async (load) => ({
