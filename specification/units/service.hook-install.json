@@ -29,40 +29,143 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HookInstallService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository or worktree path passed to `GitAdapter` when the service is constructed. It is used for later Git path lookups; the constructor does not resolve or validate it here.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "HookInstallService.install.command",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Harness command recorded for this worktree for each hook stage, after trimming whitespace and adding a newline. The command is used for the stages this worktree opted into.",
+				"examples": ["harness", "bun run dev --"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HookInstallService.status",
-				"type": "Promise<HookStatus>"
+				"type": "Promise<HookStatus>",
+				"description": "Current status of the pre-push wrapper and each hook stage, read from the hooks directory and this worktree’s opt-in marker files. It reports the resolved hooks directory and the service’s fixed limitations without changing hook state.",
+				"examples": [
+					{
+						"installed": false,
+						"enabled": false,
+						"stage": "pre-push",
+						"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+						"chained": false,
+						"stages": [
+							{
+								"stage": "pre-push",
+								"installed": false,
+								"chained": false,
+								"enabled": false
+							},
+							{
+								"stage": "commit-msg",
+								"installed": false,
+								"chained": false,
+								"enabled": false
+							}
+						],
+						"limitations": [
+							"`git push --no-verify` skips the hook; only CI checks every push.",
+							"The hooks directory is shared: other worktrees of this repository run the hook only after `harness hooks install` is run there.",
+							"A stage acts only where it was opted into: a worktree that ran `harness hooks install` under an earlier Harness keeps the stages it asked for then, until the command is run there again.",
+							"Only pushes of branches are checked; tags and deletions are not.",
+							"Before a commit exists only its message is measured: a commit that does not exist yet cannot be verified exactly.",
+							"`git commit --no-verify` skips the commit-msg hook; verification measures the stored messages again."
+						]
+					}
+				]
 			},
 			{
 				"name": "HookInstallService.install",
-				"type": "Promise<HookStatus>"
+				"type": "Promise<HookStatus>",
+				"description": "Status after writing wrappers for each hook stage and recording this worktree’s trimmed Harness command for both stages. Existing unmanaged hooks are moved aside so the wrappers can chain them, and the returned status reflects the resulting on-disk state.",
+				"examples": [
+					{
+						"installed": true,
+						"enabled": true,
+						"stage": "pre-push",
+						"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+						"chained": false,
+						"stages": [
+							{
+								"stage": "pre-push",
+								"installed": true,
+								"chained": false,
+								"enabled": true
+							},
+							{
+								"stage": "commit-msg",
+								"installed": true,
+								"chained": false,
+								"enabled": true
+							}
+						],
+						"limitations": [
+							"`git push --no-verify` skips the hook; only CI checks every push.",
+							"The hooks directory is shared: other worktrees of this repository run the hook only after `harness hooks install` is run there.",
+							"A stage acts only where it was opted into: a worktree that ran `harness hooks install` under an earlier Harness keeps the stages it asked for then, until the command is run there again.",
+							"Only pushes of branches are checked; tags and deletions are not.",
+							"Before a commit exists only its message is measured: a commit that does not exist yet cannot be verified exactly.",
+							"`git commit --no-verify` skips the commit-msg hook; verification measures the stored messages again."
+						]
+					}
+				]
 			},
 			{
 				"name": "HookInstallService.uninstall",
-				"type": "Promise<HookStatus>"
+				"type": "Promise<HookStatus>",
+				"description": "Status after removing this worktree’s opt-in files and uninstalling wrappers for stages no other worktree uses. A stage another worktree still uses keeps its wrapper, while a chained hook is restored when its wrapper is removed.",
+				"examples": [
+					{
+						"installed": false,
+						"enabled": false,
+						"stage": "pre-push",
+						"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+						"chained": false,
+						"stages": [
+							{
+								"stage": "pre-push",
+								"installed": false,
+								"chained": false,
+								"enabled": false
+							},
+							{
+								"stage": "commit-msg",
+								"installed": false,
+								"chained": false,
+								"enabled": false
+							}
+						],
+						"limitations": [
+							"`git push --no-verify` skips the hook; only CI checks every push.",
+							"The hooks directory is shared: other worktrees of this repository run the hook only after `harness hooks install` is run there.",
+							"A stage acts only where it was opted into: a worktree that ran `harness hooks install` under an earlier Harness keeps the stages it asked for then, until the command is run there again.",
+							"Only pushes of branches are checked; tags and deletions are not.",
+							"Before a commit exists only its message is measured: a commit that does not exist yet cannot be verified exactly.",
+							"`git commit --no-verify` skips the commit-msg hook; verification measures the stored messages again."
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised when Git resolves `core.hooksPath` inside the working tree and outside the common Git directory, because that hooks location belongs to another tool."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HookInstallService.status",
@@ -70,11 +173,49 @@
 				"outputs": [
 					{
 						"name": "HookInstallService.status",
-						"type": "Promise<HookStatus>"
+						"type": "Promise<HookStatus>",
+						"description": "Current status of the pre-push wrapper and each hook stage, read from the hooks directory and this worktree’s opt-in marker files. It reports the resolved hooks directory and the service’s fixed limitations without changing hook state.",
+						"examples": [
+							{
+								"installed": false,
+								"enabled": false,
+								"stage": "pre-push",
+								"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+								"chained": false,
+								"stages": [
+									{
+										"stage": "pre-push",
+										"installed": false,
+										"chained": false,
+										"enabled": false
+									},
+									{
+										"stage": "commit-msg",
+										"installed": false,
+										"chained": false,
+										"enabled": false
+									}
+								],
+								"limitations": [
+									"`git push --no-verify` skips the hook; only CI checks every push.",
+									"The hooks directory is shared: other worktrees of this repository run the hook only after `harness hooks install` is run there.",
+									"A stage acts only where it was opted into: a worktree that ran `harness hooks install` under an earlier Harness keeps the stages it asked for then, until the command is run there again.",
+									"Only pushes of branches are checked; tags and deletions are not.",
+									"Before a commit exists only its message is measured: a commit that does not exist yet cannot be verified exactly.",
+									"`git commit --no-verify` skips the commit-msg hook; verification measures the stored messages again."
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when Git resolves `core.hooksPath` inside the working tree and outside the common Git directory, because that hooks location belongs to another tool."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HookInstallService.install",
@@ -82,17 +223,57 @@
 					{
 						"name": "HookInstallService.install.command",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Harness command recorded for this worktree for each hook stage, after trimming whitespace and adding a newline. The command is used for the stages this worktree opted into.",
+						"examples": ["harness", "bun run dev --"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HookInstallService.install",
-						"type": "Promise<HookStatus>"
+						"type": "Promise<HookStatus>",
+						"description": "Status after writing wrappers for each hook stage and recording this worktree’s trimmed Harness command for both stages. Existing unmanaged hooks are moved aside so the wrappers can chain them, and the returned status reflects the resulting on-disk state.",
+						"examples": [
+							{
+								"installed": true,
+								"enabled": true,
+								"stage": "pre-push",
+								"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+								"chained": false,
+								"stages": [
+									{
+										"stage": "pre-push",
+										"installed": true,
+										"chained": false,
+										"enabled": true
+									},
+									{
+										"stage": "commit-msg",
+										"installed": true,
+										"chained": false,
+										"enabled": true
+									}
+								],
+								"limitations": [
+									"`git push --no-verify` skips the hook; only CI checks every push.",
+									"The hooks directory is shared: other worktrees of this repository run the hook only after `harness hooks install` is run there.",
+									"A stage acts only where it was opted into: a worktree that ran `harness hooks install` under an earlier Harness keeps the stages it asked for then, until the command is run there again.",
+									"Only pushes of branches are checked; tags and deletions are not.",
+									"Before a commit exists only its message is measured: a commit that does not exist yet cannot be verified exactly.",
+									"`git commit --no-verify` skips the commit-msg hook; verification measures the stored messages again."
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when Git resolves `core.hooksPath` inside the working tree and outside the common Git directory, because that hooks location belongs to another tool."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HookInstallService.uninstall",
@@ -100,11 +281,49 @@
 				"outputs": [
 					{
 						"name": "HookInstallService.uninstall",
-						"type": "Promise<HookStatus>"
+						"type": "Promise<HookStatus>",
+						"description": "Status after removing this worktree’s opt-in files and uninstalling wrappers for stages no other worktree uses. A stage another worktree still uses keeps its wrapper, while a chained hook is restored when its wrapper is removed.",
+						"examples": [
+							{
+								"installed": false,
+								"enabled": false,
+								"stage": "pre-push",
+								"hooksDirectory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/.git/hooks",
+								"chained": false,
+								"stages": [
+									{
+										"stage": "pre-push",
+										"installed": false,
+										"chained": false,
+										"enabled": false
+									},
+									{
+										"stage": "commit-msg",
+										"installed": false,
+										"chained": false,
+										"enabled": false
+									}
+								],
+								"limitations": [
+									"`git push --no-verify` skips the hook; only CI checks every push.",
+									"The hooks directory is shared: other worktrees of this repository run the hook only after `harness hooks install` is run there.",
+									"A stage acts only where it was opted into: a worktree that ran `harness hooks install` under an earlier Harness keeps the stages it asked for then, until the command is run there again.",
+									"Only pushes of branches are checked; tags and deletions are not.",
+									"Before a commit exists only its message is measured: a commit that does not exist yet cannot be verified exactly.",
+									"`git commit --no-verify` skips the commit-msg hook; verification measures the stored messages again."
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when Git resolves `core.hooksPath` inside the working tree and outside the common Git directory, because that hooks location belongs to another tool."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -114,17 +333,22 @@
 					{
 						"name": "HookInstallService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository or worktree path passed to `GitAdapter` when the service is constructed. It is used for later Git path lookups; the constructor does not resolve or validate it here.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HookInstallService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed `HookInstallService` instance. It stores the root path and creates a `GitAdapter` for that root; repository paths are resolved later by service methods."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
