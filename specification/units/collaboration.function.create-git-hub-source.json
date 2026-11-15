@@ -21,23 +21,24 @@
 				"name": "createGitHubSource.options",
 				"type": "Options",
 				"required": true,
-				"description": "Scoped token callback and optional fetch implementation; each method receives its repository identity."
+				"description": "Options configures GitHub requests for this source, and the factory combines it with a repository identity before creating a read transport. The repository identity is supplied separately by adapter methods."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createGitHubSource",
 				"type": "SourceHistoryAdapter",
-				"description": "Adapter for resolving refs, reading trees and bytes, validating anchors and querying history. Cached objects and bytes are copied for callers; failed loads are evicted."
+				"description": "A per-request adapter for resolving commits, listing trees, reading raw or LFS-materialized bytes, validating anchors, and querying Git history. It memoizes commit, tree, blob, and materialized reads, returns copied objects and byte arrays, and evicts failed memoized reads."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid refs or paths, denied repositories, incomplete or mismatched trees, missing regular files, blob integrity failures and unavailable source or LFS data."
+				"description": "This error marks explicit source validation failures: commit mismatch, truncated or mismatched tree, unsafe or duplicate paths, missing or non-regular files, and blob integrity failure. Rejections from delegated transport, anchor, history, or LFS helpers follow those implementations."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createGitHubSource",
@@ -46,18 +47,18 @@
 						"name": "createGitHubSource.options",
 						"type": "Options",
 						"required": true,
-						"description": "Scoped token callback and optional fetch implementation; each method receives its repository identity."
+						"description": "Options configures GitHub requests for this source, and the factory combines it with a repository identity before creating a read transport. The repository identity is supplied separately by adapter methods."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createGitHubSource",
 						"type": "SourceHistoryAdapter",
-						"description": "Adapter for resolving refs, reading trees and bytes, validating anchors and querying history. Cached objects and bytes are copied for callers; failed loads are evicted."
+						"description": "A per-request adapter for resolving commits, listing trees, reading raw or LFS-materialized bytes, validating anchors, and querying Git history. It memoizes commit, tree, blob, and materialized reads, returns copied objects and byte arrays, and evicts failed memoized reads."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
