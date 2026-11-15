@@ -36,14 +36,14 @@
 				"name": "ChatAgents.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "The selected project, revision, catalog and bridge used to read live registrations and resolve module links."
+				"description": "The Workspace the panel is created with: the roster store is created from this object once, when the component is created, and calls its bridge's agentActivity method with the current projectId (a reading for another project is not shown), while module links resolve against its snapshot's revision and entity catalog only when the workspace is not busy. Its pinned flag adds the note 'Live activity · independent of this revision' to the panel."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ChatAgents",
 				"type": "markup",
-				"description": "Main session tasks and statuses plus modules grouped by current declared owners. Missing tracking remains unknown; stale readings lose current ownership claims. States: loading: A loading notice appears while the activity bridge responds. unavailable: The panel explains that this host cannot read live agent activity. empty: The roster has no agents and the working count is zero. never-used: Tracking has never been used, so the working count is unknown rather than zero. unreadable: A warning identifies unreadable activity records alongside readable agents. stale-reading: The old sampling time is shown with a warning that the reading is stale. many: The first agents and an overflow control summarize the larger roster. historical: The panel distinguishes current live agents from the pinned historical revision. refresh-error: The prior reading remains visible with a failed-refresh warning."
+				"description": "The Agents panel markup: a header row with the working count, the reading's UTC time and a Refresh button, then Main chats (the first three sessions, with a 'Show all N sessions' toggle when there are more) and the modules being worked on, each with the working agents that claim it, or 'No fresh assignments' when no working agent claims one. Without a reading it shows 'Reading agent activity…' while a read is pending or 'Live agent activity is unavailable for this project.' otherwise, and no session or module lists; with a reading, never-used tracking or a reading older than one minute shows Unknown for the working count (working agents then read 'Not confirmed'), an empty roster says 'No sessions are registered' (or 'No agent has registered here yet' under never-used tracking), unreadable registrations appear only as a count stated as not counted, a failed refresh keeps the last reading beside 'Could not refresh. Showing the last reading.', and the footer states that transcripts are not read; a pinned revision adds 'Live activity · independent of this revision'."
 			}
 		],
 		"errors": [],
