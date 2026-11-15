@@ -39,30 +39,59 @@
 				"name": "GameMechanics.mechanics",
 				"type": "MechanicDefinition[]",
 				"required": true,
-				"description": "Authored mechanic definitions, input names, events and implementation guidance."
+				"description": "The mechanic definitions to show in array order, with each item's title, id, description, inputs and events rendered from it; an empty array shows the empty-state message (No mechanics yet) and no items. The component never mutates this array and never edits an item's id, and every edit is published as a new array through change.",
+				"examples": [
+					[
+						{
+							"id": "mechanic-1",
+							"title": "New mechanic",
+							"description": "",
+							"inputs": [],
+							"events": []
+						}
+					],
+					[
+						{
+							"id": "mechanic-1",
+							"title": "Move the player",
+							"description": "Arrow keys move the player one tile.",
+							"inputs": ["x", "y"],
+							"events": []
+						},
+						{
+							"id": "mechanic-2",
+							"title": "Collect keys",
+							"description": "Stepping onto a key emits key-collected.",
+							"inputs": ["x", "y", "choice"],
+							"events": ["key-collected"]
+						}
+					]
+				]
 			},
 			{
 				"name": "GameMechanics.change",
 				"type": "(list: MechanicDefinition[]) => void",
 				"required": true,
-				"description": "Callback publishing the replacement mechanic list."
+				"description": "Callback that receives a new array holding every mechanic, with the edited item replaced, the new item appended or the removed item dropped, after each edit to a title, description, inputs or events field and after each Add or Remove click. The component keeps no local copy of the list and never calls this callback while readonly is true, so the parent must pass the new list back through mechanics."
 			},
 			{
 				"name": "GameMechanics.readonly",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Disable editing and generation for historical or otherwise immutable views."
+				"description": "Optional flag for historical or otherwise immutable views, defaulting to false. When true, the Add mechanic and Remove buttons are not rendered, the title input, description textarea, inputs field and events field are passed readonly, and the change callback is never called.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameMechanics",
 				"type": "markup",
-				"description": "Edit independent mechanic definitions, inputs and emitted events without changing checkpoints. Renders reactive UI and publishes edits through its callbacks."
+				"description": "The Mechanics section, with a heading and a short note, an Add mechanic button unless readonly is true, the empty-state message (No mechanics yet) when the list is empty, and one list item per mechanic holding a title input, its id, a Remove button unless readonly is true, a description textarea, and inputs and events fields. It renders from the mechanics and readonly props and sends every edit out only through change."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
