@@ -108,6 +108,10 @@ test('a state may name the units it shows, and the stored registry keeps what it
 	expect(reads.filter((path) => path === 'specification/units/page.functions.json')).toHaveLength(
 		1
 	);
+	expect((await stateRegistries(tree, '.')).flatMap((row) => row.states)).toEqual([
+		'catalog',
+		'catalog'
+	]);
 	for (const [changes, error] of brokenSources)
 		expect(
 			(await new ScenarioRepository('.').read(videoEnrollmentTree(enrolled, changes))).errors.join(
