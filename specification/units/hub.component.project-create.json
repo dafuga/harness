@@ -35,17 +35,18 @@
 				"name": "ProjectCreate.created",
 				"type": "(projectId: string) => void",
 				"required": true,
-				"description": "Required callback receiving the new project identifier after creation resolves. A synchronous callback exception is caught by the same failure handler as creation."
+				"description": "Required callback invoked with the new project's id (project.id from projects.create) once creation resolves; it is not called when creation fails. A synchronous exception thrown by the callback is caught by the same handler as a failed creation and shown as the error text, so it does not escape the component."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectCreate",
 				"type": "markup",
-				"description": "Loads GitHub configuration/connection and repositories on mount. Shows setup or connection guidance until usable, then repository and project-name fields. Name is trimmed and limited to 80 characters by the input; repository selection becomes a numeric ID. Blocks missing fields or concurrent saves, reports truncated lists and errors, and invokes created after success. Server remains responsible for checking repository administration."
+				"description": "Renders the New shared project card: on mount it loads the GitHub status and, once GitHub is connected, the repository list; until GitHub is configured and connected it shows a checking message (or the load error), a not-configured notice or a Connect GitHub link, and after that a Repository select and a Project name input with a Create project button. The name is trimmed on submit and capped at 80 characters by the input, the button stays disabled while saving or while no repository or blank name is set, the chosen repository is sent as a numeric id, a truncated repository list and any load or save error are shown as text, and the server still checks repository administration."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
