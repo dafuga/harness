@@ -1,7 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { explorerEntities } from '../../src/utils/explorerEntities';
-import { explorerRelations } from '../../src/utils/explorerRelations';
+import { explorerRelations } from '../../src/utils/explorer-ui/explorerRelations';
 import { complete, declared, record, result, revision, unit } from '../explorerFixture';
 
 const uses = (...ids: string[]) => ({

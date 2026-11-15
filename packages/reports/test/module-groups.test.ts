@@ -4,7 +4,7 @@ import { categorySources, projectPageSources } from './entityPreviewGroups';
 import { expect, test } from 'vitest';
 import { entityCatalog, catalogFilter } from '../src/utils/entityCatalog';
 import { explorerEntities } from '../src/utils/explorerEntities';
-import { explorerRelations } from '../src/utils/explorerRelations';
+import { explorerRelations } from '../src/utils/explorer-ui/explorerRelations';
 import { record, revision } from './entityFixture';
 import { commits, ids } from './entityUnits';
 

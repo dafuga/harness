@@ -3,7 +3,7 @@ import { content, drawn, hostProps, verdicts, words } from '../entityRender';
 import { withRelationGroups } from '../entityRelationFixtures';
 import { entityCatalog } from '../../src/utils/entityCatalog';
 import { explorerEntities } from '../../src/utils/explorerEntities';
-import { explorerRelations } from '../../src/utils/explorerRelations';
+import { explorerRelations } from '../../src/utils/explorer-ui/explorerRelations';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { withGroups } from '../entityPreviewData';
 import { commits, ids } from '../entityUnits';

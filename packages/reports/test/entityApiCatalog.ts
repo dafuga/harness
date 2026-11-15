@@ -1,6 +1,6 @@
 import { expect } from 'vitest';
 import { explorerEntities } from '../src/utils/explorerEntities';
-import { explorerRelations } from '../src/utils/explorerRelations';
+import { explorerRelations } from '../src/utils/explorer-ui/explorerRelations';
 import { revision } from './entityFixture';
 import { commits, ids } from './entityUnits';
 import { withApis, apiIds } from './entityApiFixtures';

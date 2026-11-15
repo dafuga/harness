@@ -5,7 +5,7 @@ import ExplorerUsage from '../../src/components/explorer-ui/ExplorerUsage.svelte
 import { content, hostProps, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 import { withHelpers, withNamedConsumers } from '../entityPreviewHelpers';
-import { explorerRelations } from '../../src/utils/explorerRelations';
+import { explorerRelations } from '../../src/utils/explorer-ui/explorerRelations';
 
 test('usage surfaces an address callback failure while rendering a consumer', () => {
 	const host = hostProps('current');

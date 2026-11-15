@@ -6,7 +6,7 @@ import { entities, reading, shown } from './explorerData';
 import { withApis } from '../../../../test/entityApiFixtures';
 import { platformFixture } from '../../../../test/platformFixture';
 import { explorerEntities } from '../../../../src/utils/explorerEntities';
-import { explorerRelations } from '../../../../src/utils/explorerRelations';
+import { explorerRelations } from '../../../../src/utils/explorer-ui/explorerRelations';
 import { routeIds, routeUnits } from './routeUnits';
 import type { PreviewCases } from './shared';
 

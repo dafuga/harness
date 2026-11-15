@@ -5,7 +5,7 @@ import { catalogUnits } from '../tests/e2e/support/component-previews/catalogUni
 import { entityUsage } from '../src/components/explorer-ui/entity-relations/entityUsage';
 import { explorerCategory, explorerRole } from '../src/utils/explorerCategory';
 import { explorerEntities } from '../src/utils/explorerEntities';
-import { explorerRelations } from '../src/utils/explorerRelations';
+import { explorerRelations } from '../src/utils/explorer-ui/explorerRelations';
 import { categoryIcon } from '../src/utils/harnessIcons';
 import { harnessShell } from '../src/components/explorer-ui/harness-navbar/harnessShell';
 import {

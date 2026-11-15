@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { catalogFilter } from '../../src/components/explorer-ui/explorer-index/entityCatalog';
 import { entityCatalog, listed } from '../../src/utils/entityCatalog';
 import { explorerEntities } from '../../src/utils/explorerEntities';
-import { explorerRelations } from '../../src/utils/explorerRelations';
+import { explorerRelations } from '../../src/utils/explorer-ui/explorerRelations';
 import { record, revision } from '../entityFixture';
 import { privateServiceUsers } from '../entityPreviewHelpers';
 import { invalidServiceClasses, serviceMetadata, admission } from '../entityClassFixtures';

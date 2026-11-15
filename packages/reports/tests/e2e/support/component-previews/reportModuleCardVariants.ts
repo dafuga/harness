@@ -4,7 +4,7 @@ import { picture } from './reportData';
 import { commits, entities, entity, helperRows, reading, shown } from './explorerData';
 import { entityCatalog } from '../../../../src/utils/entityCatalog';
 import { explorerEntities } from '../../../../src/utils/explorerEntities';
-import { explorerRelations } from '../../../../src/utils/explorerRelations';
+import { explorerRelations } from '../../../../src/utils/explorer-ui/explorerRelations';
 import { withApis } from '../../../../test/entityApiFixtures';
 import { routeIds, routeUnits } from './routeUnits';
 import { usageLinkVariant } from './reportUsageLinkVariants';

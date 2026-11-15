@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/utils/explorer-ui/explorerRelations.ts",
-			"packages/reports/src/utils/explorer-ui/explorerRelations.types.ts",
-			"packages/reports/src/utils/explorerRelations.ts"
+			"packages/reports/src/utils/explorer-ui/explorerRelations.types.ts"
 		],
 		"symbols": [
 			"explorerRelationsReader",
@@ -21,9 +20,7 @@
 			"Reached",
 			"Graph",
 			"Entity",
-			"RelationsReader",
-			"explorerRelationsReader",
-			"explorerRelations"
+			"RelationsReader"
 		]
 	},
 	"contract": {

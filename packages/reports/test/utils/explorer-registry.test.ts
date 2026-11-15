@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import type { HarnessScenario, HarnessUnit } from '../../src/models/Harness.types';
-import { explorerRelations } from '../../src/utils/explorerRelations';
+import { explorerRelations } from '../../src/utils/explorer-ui/explorerRelations';
 import { scenarioFor } from '../../src/utils/explorerState';
 import { revision } from '../explorerFixture';
 

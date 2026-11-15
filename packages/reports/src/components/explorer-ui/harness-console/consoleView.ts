@@ -7,7 +7,7 @@ import { correctedLocation } from '../../../utils/correctedLocation';
 import { explorerBehavior } from '../../../utils/explorerBehavior';
 import { explorerEvidence } from '../../../utils/explorerEvidence';
 import { explorerHistory } from '../../../utils/explorer-history/explorerHistory';
-import { explorerRelationsReader } from '../../../utils/explorerRelations';
+import { explorerRelationsReader } from '../../../utils/explorer-ui/explorerRelations';
 
 /** Remount content when its exact selected route changes, including callable and tab identity. */
 export function consoleContentKey(location: ExplorerLocation | undefined): string {

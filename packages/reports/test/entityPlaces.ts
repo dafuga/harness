@@ -7,7 +7,7 @@ import { explorerBehavior } from '../src/utils/explorerBehavior';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { explorerEvidence } from '../src/utils/explorerEvidence';
 import { explorerHistory } from '../src/utils/explorer-history/explorerHistory';
-import { explorerRelations } from '../src/utils/explorerRelations';
+import { explorerRelations } from '../src/utils/explorer-ui/explorerRelations';
 import { index, record, revision } from './entityFixture';
 import { commits } from './entityUnits';
 
