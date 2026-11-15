@@ -15,46 +15,73 @@
 		"symbols": ["loadUnits", "graphOf", "LoadedUnits", "LoadedUnits"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "loadUnits.root",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Repository root used to resolve the source tree and registry paths for this load. Defaults to process.cwd(); resolve() turns it into an absolute path.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+				]
 			},
 			{
 				"name": "loadUnits.tree",
 				"type": "SourceTree",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional readable source snapshot used instead of a WorkingTreeAdapter created from root; it must provide revision, list(), and read(path). Defaults to undefined, so the working tree is used."
 			},
 			{
 				"name": "loadUnits.indexer",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Service that indexes the selected source tree with the loaded UnitsConfig before registry reconciliation. Defaults to new SourceIndexService(); the supplied instance must provide index(source, config)."
 			},
 			{
 				"name": "graphOf.loaded",
 				"type": "LoadedUnits",
-				"required": true
+				"required": true,
+				"description": "Loaded snapshot supplying the source index, stored manifests, and scenarios used to build the graph. It must be a LoadedUnits value, including its UnitRegistryRepository instance."
 			},
 			{
 				"name": "graphOf.manifests",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Manifest list used for graph ownership and dependencies when provided. Defaults to loaded.stored.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "loadUnits",
-				"type": "Promise<LoadedUnits>"
+				"type": "Promise<LoadedUnits>",
+				"description": "Promise that resolves to the absolute root, loaded config and source index, stored manifests and scenarios, indexing result, workflow errors, unformatted ids, and registry repository. The complete value contains a UnitRegistryRepository instance and is not expressible as JSON."
 			},
 			{
 				"name": "graphOf",
-				"type": "SourceGraph"
+				"type": "SourceGraph",
+				"description": "Graph built from the loaded source index, selected manifests, and loaded scenarios. It contains graph nodes, edges, and uncertain source references for the indexed snapshot.",
+				"examples": [
+					{
+						"nodes": [],
+						"edges": [],
+						"uncertain": []
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The returned promise rejects if a source-tree, registry, scenario, or indexing call rejects; loadUnits propagates the rejection without catching or translating it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "loadUnits",
@@ -62,27 +89,41 @@
 					{
 						"name": "loadUnits.root",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The repository root that loadUnits resolves to an absolute path before creating the registry repositories and selecting a working-tree source. It matters when loading a repository other than the process working directory; omission uses process.cwd().",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+						]
 					},
 					{
 						"name": "loadUnits.tree",
 						"type": "SourceTree",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "The optional source snapshot passed to configuration, indexing, registry, and scenario reads. When omitted, loadUnits creates a WorkingTreeAdapter for the resolved root."
 					},
 					{
 						"name": "loadUnits.indexer",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The source index service called with the selected source tree and loaded units config to produce the source index used for the fresh unit index. When omitted, loadUnits creates a SourceIndexService."
 					}
 				],
 				"outputs": [
 					{
 						"name": "loadUnits",
-						"type": "Promise<LoadedUnits>"
+						"type": "Promise<LoadedUnits>",
+						"description": "A promise resolving to the absolute root, config, source index, stored manifests, scenarios, collected workflow errors, unformatted ids, fresh unit-index result, and registry repository. Callers use it to inspect the loaded state; its repository field is a class instance."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The returned promise rejects if a source-tree, registry, scenario, or indexing call rejects; loadUnits propagates the rejection without catching or translating it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "graphOf",
@@ -90,22 +131,35 @@
 					{
 						"name": "graphOf.loaded",
 						"type": "LoadedUnits",
-						"required": true
+						"required": true,
+						"description": "The loaded snapshot whose index and scenarios are passed to SourceGraphService.build, and whose stored manifests are used when no explicit manifests are supplied. It matters whenever a graph is built from a loadUnits result."
 					},
 					{
 						"name": "graphOf.manifests",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The manifest list passed to SourceGraphService.build in place of the snapshot's stored manifests. When omitted, the default is loaded.stored; the loaded index and scenarios still come from loaded.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "graphOf",
-						"type": "SourceGraph"
+						"type": "SourceGraph",
+						"description": "The SourceGraph returned synchronously from the loaded index, selected manifests, and loaded scenarios. Callers use it to inspect source relationships for that loaded snapshot.",
+						"examples": [
+							{
+								"nodes": [],
+								"edges": [],
+								"uncertain": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
