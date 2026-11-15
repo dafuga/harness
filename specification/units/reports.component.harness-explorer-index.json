@@ -50,40 +50,45 @@
 				"name": "ExplorerIndex.category",
 				"type": "ExplorerCategory",
 				"required": true,
-				"description": "Required category used for headings, icon and explanatory text."
+				"description": "The registry category that selects its heading and category-specific content; it also controls whether rows are grouped and whether the component-level selector appears.",
+				"examples": ["components"]
 			},
 			{
 				"name": "ExplorerIndex.rows",
 				"type": "CatalogRow[]",
 				"required": true,
-				"description": "Required complete category rows before filtering."
+				"description": "The complete catalog rows for this category at the shown revision, before this component filters them. An empty array renders the empty-registry state.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerIndex.scope",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional selected branch and revision scope for catalog links."
+				"description": "An optional scope string included in the reset key passed to each HarnessGroup, alongside category, filters, and component composition. Defaults to the empty string.",
+				"examples": [""]
 			},
 			{
 				"name": "ExplorerIndex.list",
 				"type": "Snippet<[CatalogRow[]]>",
 				"required": true,
-				"description": "Required snippet receiving filtered/sorted rows to render as cards or table."
+				"description": "The required Svelte snippet that renders row arrays: it receives each displayed section’s rows when sections are present, or the filtered rows otherwise."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerIndex",
 				"type": "markup",
-				"description": "Searchable alphabetical catalog with one source-file section per config and responsibility sections for other kinds. Retains count status, explicit empty states and a clear-search action. Catalog rows are presented without a standalone proof legend footer. States: search: The entered query filters the registered rows. no-matches: No rows match the selected search or filters and Show all is offered. layouts: Layout groups include guidance about the highlighted child-content slot. configs: Configuration rows are grouped into one source-file section each."
+				"description": "Renders category headings and controls, a count status, and the supplied list, grouping eligible categories into nonempty sections (configs by source file and other grouped categories by responsibility group, with ungrouped rows last). Empty registries and zero matches show separate states; the zero-match state offers Show all, which resets the composition selector and search/filter fields."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback or content error",
 				"type": "propagated",
-				"description": "Errors from supplied list callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"description": "An exception thrown by the supplied list snippet while rendering is not caught by this component and propagates through the render."
 			}
 		],
 		"errorStatus": "declared",
@@ -94,13 +99,21 @@
 					{
 						"name": "configSections.rows",
 						"type": "CatalogRow[]",
-						"required": true
+						"required": true,
+						"description": "The catalog rows to partition into source-file sections. Rows with configFile use its source and title; other rows derive a source from the setting, first owned source path, or entity id, and empty input returns no sections.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "configSections",
-						"type": "CatalogSection[]"
+						"type": "CatalogSection[]",
+						"description": "Source-file sections with their rows, sorted by title and then id; source is optional.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
@@ -112,13 +125,21 @@
 					{
 						"name": "catalogSections.rows",
 						"type": "CatalogRow[]",
-						"required": true
+						"required": true,
+						"description": "Rows assigned to their group id and title, or to the uncategorized section when no group exists; input order is retained within each section.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "catalogSections",
-						"type": "CatalogSection[]"
+						"type": "CatalogSection[]",
+						"description": "One section per group, with input order preserved within each rows array; titles use English base-sensitivity collation and the uncategorized section sorts last.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
@@ -130,13 +151,21 @@
 					{
 						"name": "catalogGroups.rows",
 						"type": "CatalogRow[]",
-						"required": true
+						"required": true,
+						"description": "The rows to group and count. Each count reflects the number of rows in its section, so callers pass the complete catalog when counts should remain available during filtering.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "catalogGroups",
-						"type": "Array<{ id: string; title: string; count: number }>"
+						"type": "Array<{ id: string; title: string; count: number }>",
+						"description": "Section ids and titles with row counts, in catalogSections order; an uncategorized entry appears only when an input row has no group.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
