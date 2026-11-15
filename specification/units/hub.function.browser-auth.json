@@ -31,17 +31,18 @@
 				"name": "browserAuth.api",
 				"type": "BrowserApi",
 				"required": true,
-				"description": "API client carrying same-site requests and failures."
+				"description": "The required BrowserApi client used to send each authentication request. This function does not wrap or translate the client's request failures."
 			}
 		],
 		"outputs": [
 			{
 				"name": "browserAuth",
 				"type": "unknown",
-				"description": "Methods for status, login challenge, Google credential submission, email code send/verification, logout and native handoff polling/approval. Credentials and typed codes travel in request bodies; the server determines identity."
+				"description": "A set of seven methods that delegate to BrowserApi for status and challenge requests, Google and email sign-in, logout, and native handoff polling and approval. Each method returns its API call's typed promise, sends the request fields shown in its endpoint call, and leaves identity decisions to the server."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "browserAuth",
@@ -50,18 +51,18 @@
 						"name": "browserAuth.api",
 						"type": "BrowserApi",
 						"required": true,
-						"description": "API client carrying same-site requests and failures."
+						"description": "The required BrowserApi client used to send each authentication request. This function does not wrap or translate the client's request failures."
 					}
 				],
 				"outputs": [
 					{
 						"name": "browserAuth",
 						"type": "unknown",
-						"description": "Methods for status, login challenge, Google credential submission, email code send/verification, logout and native handoff polling/approval. Credentials and typed codes travel in request bodies; the server determines identity."
+						"description": "A set of seven methods that delegate to BrowserApi for status and challenge requests, Google and email sign-in, logout, and native handoff polling and approval. Each method returns its API call's typed promise, sends the request fields shown in its endpoint call, and leaves identity decisions to the server."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
