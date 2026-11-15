@@ -28,47 +28,544 @@
 				"name": "unitMeasurements.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "Unit manifest whose source, dependencies and runtime targets define the measurement scope."
+				"description": "The unit manifest that sets the measurement scope: its owns.source paths select the files read, its id is written as the unit of every measurement, its dependencies are counted, and its runtime targets of kind wasm or process select the artifact measurements. An owns.source path with no entry in files adds nothing and is not reported as unread.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "function.unit-measurements",
+						"uid": "u_pdrdl3nkuf",
+						"kind": "function",
+						"title": "Static unit measurements",
+						"responsibility": "Measures owned source, complexity, dependencies and emitted target sizes while stating unavailable or partial results.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": [
+								"src/utils/development-tooling/unitMeasurements.ts",
+								"src/utils/development-tooling/unitMeasurements.types.ts",
+								"src/utils/unitMeasurements.ts"
+							],
+							"symbols": [
+								"unitMeasurements",
+								"emittedTargets",
+								"BuiltArtifacts",
+								"Static",
+								"ArtifactEntry"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "unitMeasurements.unit",
+									"type": "ComponentManifest",
+									"required": true
+								},
+								{
+									"name": "unitMeasurements.files",
+									"type": "ReadonlyMap<string, SourceFile>",
+									"required": true
+								},
+								{
+									"name": "unitMeasurements.testedRevision",
+									"type": "string",
+									"required": true
+								},
+								{
+									"name": "unitMeasurements.artifacts",
+									"type": "BuiltArtifacts",
+									"required": false,
+									"default": {}
+								},
+								{
+									"name": "emittedTargets.unit",
+									"type": "ComponentManifest",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "unitMeasurements",
+									"type": "Measurement[]"
+								},
+								{
+									"name": "emittedTargets",
+									"type": "ComponentManifest['runtime']['targets']"
+								}
+							],
+							"errors": [],
+							"errorStatus": "none-found",
+							"operations": [
+								{
+									"name": "unitMeasurements",
+									"inputs": [
+										{
+											"name": "unitMeasurements.unit",
+											"type": "ComponentManifest",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.files",
+											"type": "ReadonlyMap<string, SourceFile>",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.testedRevision",
+											"type": "string",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.artifacts",
+											"type": "BuiltArtifacts",
+											"required": false,
+											"default": {}
+										}
+									],
+									"outputs": [
+										{
+											"name": "unitMeasurements",
+											"type": "Measurement[]"
+										}
+									],
+									"errors": [],
+									"errorStatus": "declared"
+								},
+								{
+									"name": "emittedTargets",
+									"inputs": [
+										{
+											"name": "emittedTargets.unit",
+											"type": "ComponentManifest",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "emittedTargets",
+											"type": "ComponentManifest['runtime']['targets']"
+										}
+									],
+									"errors": [],
+									"errorStatus": "declared"
+								}
+							],
+							"initialization": []
+						},
+						"dependencies": [
+							{
+								"unit": "function.complexity-coverage",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.source-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.verification-types",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/utils/development-tooling/unitMeasurements.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/utils/development-tooling/unitMeasurements.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "unitMeasurements.files",
 				"type": "ReadonlyMap<string, SourceFile>",
 				"required": true,
-				"description": "Source-file facts by owned path, including read/coverage state, blocks and references."
+				"description": "Source-file facts keyed by path and read only for the unit's owns.source paths: bytes, lines, read state, decision-point blocks, decisions, language and references. A file with read set to false leaves the source sizes unavailable, a file with decisions 'unsupported' is left out of the complexity count, which then becomes partial or unavailable, and a path missing from the map is skipped without a note."
 			},
 			{
 				"name": "unitMeasurements.testedRevision",
 				"type": "string",
 				"required": true,
-				"description": "Verified revision attached to every emitted measurement."
+				"description": "The revision that every returned measurement is attributed to, copied unchanged into each testedRevision. The code neither checks nor parses it, and the verification record schema requires each measurement's testedRevision to be a full 40-character lowercase hex commit or tree hash.",
+				"examples": [
+					"8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+					"0d7e4b19a6c2f38e5d01b7a94c6e2f8a3b5d9c71"
+				]
 			},
 			{
 				"name": "unitMeasurements.artifacts",
 				"type": "BuiltArtifacts",
 				"required": false,
 				"default": {},
-				"description": "Optional path-indexed built-artifact sizes and SHA-256 digests, default empty."
+				"description": "Built size and SHA-256 digest of each declared artifact, keyed by its path; it defaults to {}, so every wasm or process target reports an unavailable size. A target's size is the sum of the bytes of its distinct entry paths and is unavailable when any of those paths has no entry, and the digests are copied into the measurement without being checked.",
+				"examples": [
+					{},
+					{
+						"dist/wasm/evidence-grid.wasm": {
+							"bytes": 183402,
+							"sha256": "4e9a1f7c3b8d52e60a9c1d4f7b2e8a35c6d0f1e92b7a4c8d3e5f6a0b1c2d3e4f"
+						},
+						"dist/bin/evidence-grid": {
+							"bytes": 2411872,
+							"sha256": "9f0c3e7a5d1b8e26c4a0f9d3b7e1c52a8d6f4e0b9c3a7d1e5f2b8c6a4d0e9f73"
+						}
+					}
+				]
 			},
 			{
 				"name": "emittedTargets.unit",
 				"type": "ComponentManifest",
 				"required": true,
-				"description": "Unit whose Wasm and process execution targets should be selected."
+				"description": "The unit whose runtime.targets are read: only targets of kind wasm or process are kept, in manifest order, and runtime.kind and runtime.entry are not read. A unit whose targets are all module or http gets an empty list.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "function.unit-measurements",
+						"uid": "u_pdrdl3nkuf",
+						"kind": "function",
+						"title": "Static unit measurements",
+						"responsibility": "Measures owned source, complexity, dependencies and emitted target sizes while stating unavailable or partial results.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": [
+								"src/utils/development-tooling/unitMeasurements.ts",
+								"src/utils/development-tooling/unitMeasurements.types.ts",
+								"src/utils/unitMeasurements.ts"
+							],
+							"symbols": [
+								"unitMeasurements",
+								"emittedTargets",
+								"BuiltArtifacts",
+								"Static",
+								"ArtifactEntry"
+							]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "unitMeasurements.unit",
+									"type": "ComponentManifest",
+									"required": true
+								},
+								{
+									"name": "unitMeasurements.files",
+									"type": "ReadonlyMap<string, SourceFile>",
+									"required": true
+								},
+								{
+									"name": "unitMeasurements.testedRevision",
+									"type": "string",
+									"required": true
+								},
+								{
+									"name": "unitMeasurements.artifacts",
+									"type": "BuiltArtifacts",
+									"required": false,
+									"default": {}
+								},
+								{
+									"name": "emittedTargets.unit",
+									"type": "ComponentManifest",
+									"required": true
+								}
+							],
+							"outputs": [
+								{
+									"name": "unitMeasurements",
+									"type": "Measurement[]"
+								},
+								{
+									"name": "emittedTargets",
+									"type": "ComponentManifest['runtime']['targets']"
+								}
+							],
+							"errors": [],
+							"errorStatus": "none-found",
+							"operations": [
+								{
+									"name": "unitMeasurements",
+									"inputs": [
+										{
+											"name": "unitMeasurements.unit",
+											"type": "ComponentManifest",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.files",
+											"type": "ReadonlyMap<string, SourceFile>",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.testedRevision",
+											"type": "string",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.artifacts",
+											"type": "BuiltArtifacts",
+											"required": false,
+											"default": {}
+										}
+									],
+									"outputs": [
+										{
+											"name": "unitMeasurements",
+											"type": "Measurement[]"
+										}
+									],
+									"errors": [],
+									"errorStatus": "declared"
+								},
+								{
+									"name": "emittedTargets",
+									"inputs": [
+										{
+											"name": "emittedTargets.unit",
+											"type": "ComponentManifest",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "emittedTargets",
+											"type": "ComponentManifest['runtime']['targets']"
+										}
+									],
+									"errors": [],
+									"errorStatus": "declared"
+								}
+							],
+							"initialization": []
+						},
+						"dependencies": [
+							{
+								"unit": "function.complexity-coverage",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.source-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.unit-types",
+								"via": "import",
+								"origin": "derived"
+							},
+							{
+								"unit": "function.verification-types",
+								"via": "import",
+								"origin": "derived"
+							}
+						],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/utils/development-tooling/unitMeasurements.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/utils/development-tooling/unitMeasurements.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitMeasurements",
 				"type": "Measurement[]",
-				"description": "Source bytes/lines, complexity, dependency count and per-target artifact bytes, with null values and unavailable reasons or partial notes where appropriate. Measurements have no workload/profile and are attributed to the supplied revision."
+				"description": "Four source and dependency measurements in fixed order (source-bytes, source-lines, complexity, dependencies), then one artifact-bytes entry per wasm or process target kind with target set to that kind, or one artifact-bytes entry with a null value and no target when the unit has neither. Every entry carries the unit id, null workload and profile, and the supplied testedRevision; a null value always has an unavailable reason, and a partial note says what a number leaves out.",
+				"examples": [
+					[
+						{
+							"unit": "function.unit-measurements",
+							"metric": "source-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 9012,
+							"method": "Sum of the byte sizes of the owned source files.",
+							"workload": null,
+							"profile": null,
+							"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"artifacts": []
+						},
+						{
+							"unit": "function.unit-measurements",
+							"metric": "source-lines",
+							"unitOfMeasure": "lines",
+							"value": 204,
+							"method": "Sum of the line counts of the owned source files.",
+							"workload": null,
+							"profile": null,
+							"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"artifacts": []
+						},
+						{
+							"unit": "function.unit-measurements",
+							"metric": "complexity",
+							"unitOfMeasure": "points",
+							"value": 26,
+							"method": "Decision points in owned source, plus one per function or method.",
+							"workload": null,
+							"profile": null,
+							"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"artifacts": []
+						},
+						{
+							"unit": "function.unit-measurements",
+							"metric": "dependencies",
+							"unitOfMeasure": "count",
+							"value": 4,
+							"method": "Unit dependencies plus distinct external modules referenced.",
+							"workload": null,
+							"profile": null,
+							"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"artifacts": []
+						},
+						{
+							"unit": "function.unit-measurements",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": null,
+							"unavailable": "A module unit emits no separate artifact.",
+							"method": "Not applicable.",
+							"workload": null,
+							"profile": null,
+							"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"artifacts": []
+						}
+					],
+					[
+						{
+							"unit": "reports.component.evidence-grid",
+							"metric": "source-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 15230,
+							"method": "Sum of the byte sizes of the owned source files.",
+							"workload": null,
+							"profile": null,
+							"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"artifacts": []
+						},
+						{
+							"unit": "reports.component.evidence-grid",
+							"metric": "source-lines",
+							"unitOfMeasure": "lines",
+							"value": 412,
+							"method": "Sum of the line counts of the owned source files.",
+							"workload": null,
+							"profile": null,
+							"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"artifacts": []
+						},
+						{
+							"unit": "reports.component.evidence-grid",
+							"metric": "complexity",
+							"unitOfMeasure": "points",
+							"value": 38,
+							"method": "Decision points in owned source, plus one per function or method.",
+							"workload": null,
+							"profile": null,
+							"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"artifacts": []
+						},
+						{
+							"unit": "reports.component.evidence-grid",
+							"metric": "dependencies",
+							"unitOfMeasure": "count",
+							"value": 6,
+							"method": "Unit dependencies plus distinct external modules referenced.",
+							"workload": null,
+							"profile": null,
+							"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"artifacts": []
+						},
+						{
+							"unit": "reports.component.evidence-grid",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 183402,
+							"method": "Byte size of the artifact as built in the verified snapshot.",
+							"workload": null,
+							"profile": null,
+							"target": "wasm",
+							"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"artifacts": [
+								{
+									"path": "dist/wasm/evidence-grid.wasm",
+									"sha256": "4e9a1f7c3b8d52e60a9c1d4f7b2e8a35c6d0f1e92b7a4c8d3e5f6a0b1c2d3e4f",
+									"bytes": 183402
+								}
+							]
+						},
+						{
+							"unit": "reports.component.evidence-grid",
+							"metric": "artifact-bytes",
+							"unitOfMeasure": "bytes",
+							"value": 2411872,
+							"method": "Byte size of the artifact as built in the verified snapshot.",
+							"workload": null,
+							"profile": null,
+							"target": "process",
+							"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"artifacts": [
+								{
+									"path": "dist/bin/evidence-grid",
+									"sha256": "9f0c3e7a5d1b8e26c4a0f9d3b7e1c52a8d6f4e0b9c3a7d1e5f2b8c6a4d0e9f73",
+									"bytes": 2411872
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "emittedTargets",
 				"type": "ComponentManifest['runtime']['targets']",
-				"description": "Only runtime targets of kind wasm or process, in manifest order."
+				"description": "The unit's runtime targets of kind wasm or process, in manifest order and each returned unchanged; module and http targets are dropped, and a unit with neither gets an empty list.",
+				"examples": [
+					[],
+					[
+						{
+							"kind": "wasm",
+							"entry": "dist/wasm/evidence-grid.wasm"
+						},
+						{
+							"kind": "process",
+							"entry": "dist/bin/evidence-grid"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "unitMeasurements",
@@ -77,37 +574,358 @@
 						"name": "unitMeasurements.unit",
 						"type": "ComponentManifest",
 						"required": true,
-						"description": "Unit manifest whose source, dependencies and runtime targets define the measurement scope."
+						"description": "The unit manifest that sets the measurement scope: its owns.source paths select the files read, its id is written as the unit of every measurement, its dependencies are counted, and its runtime targets of kind wasm or process select the artifact measurements. An owns.source path with no entry in files adds nothing and is not reported as unread.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "function.unit-measurements",
+								"uid": "u_pdrdl3nkuf",
+								"kind": "function",
+								"title": "Static unit measurements",
+								"responsibility": "Measures owned source, complexity, dependencies and emitted target sizes while stating unavailable or partial results.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"src/utils/development-tooling/unitMeasurements.ts",
+										"src/utils/development-tooling/unitMeasurements.types.ts",
+										"src/utils/unitMeasurements.ts"
+									],
+									"symbols": [
+										"unitMeasurements",
+										"emittedTargets",
+										"BuiltArtifacts",
+										"Static",
+										"ArtifactEntry"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "unitMeasurements.unit",
+											"type": "ComponentManifest",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.files",
+											"type": "ReadonlyMap<string, SourceFile>",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.testedRevision",
+											"type": "string",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.artifacts",
+											"type": "BuiltArtifacts",
+											"required": false,
+											"default": {}
+										},
+										{
+											"name": "emittedTargets.unit",
+											"type": "ComponentManifest",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "unitMeasurements",
+											"type": "Measurement[]"
+										},
+										{
+											"name": "emittedTargets",
+											"type": "ComponentManifest['runtime']['targets']"
+										}
+									],
+									"errors": [],
+									"errorStatus": "none-found",
+									"operations": [
+										{
+											"name": "unitMeasurements",
+											"inputs": [
+												{
+													"name": "unitMeasurements.unit",
+													"type": "ComponentManifest",
+													"required": true
+												},
+												{
+													"name": "unitMeasurements.files",
+													"type": "ReadonlyMap<string, SourceFile>",
+													"required": true
+												},
+												{
+													"name": "unitMeasurements.testedRevision",
+													"type": "string",
+													"required": true
+												},
+												{
+													"name": "unitMeasurements.artifacts",
+													"type": "BuiltArtifacts",
+													"required": false,
+													"default": {}
+												}
+											],
+											"outputs": [
+												{
+													"name": "unitMeasurements",
+													"type": "Measurement[]"
+												}
+											],
+											"errors": [],
+											"errorStatus": "declared"
+										},
+										{
+											"name": "emittedTargets",
+											"inputs": [
+												{
+													"name": "emittedTargets.unit",
+													"type": "ComponentManifest",
+													"required": true
+												}
+											],
+											"outputs": [
+												{
+													"name": "emittedTargets",
+													"type": "ComponentManifest['runtime']['targets']"
+												}
+											],
+											"errors": [],
+											"errorStatus": "declared"
+										}
+									],
+									"initialization": []
+								},
+								"dependencies": [
+									{
+										"unit": "function.complexity-coverage",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.source-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.verification-types",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/utils/development-tooling/unitMeasurements.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/utils/development-tooling/unitMeasurements.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "unitMeasurements.files",
 						"type": "ReadonlyMap<string, SourceFile>",
 						"required": true,
-						"description": "Source-file facts by owned path, including read/coverage state, blocks and references."
+						"description": "Source-file facts keyed by path and read only for the unit's owns.source paths: bytes, lines, read state, decision-point blocks, decisions, language and references. A file with read set to false leaves the source sizes unavailable, a file with decisions 'unsupported' is left out of the complexity count, which then becomes partial or unavailable, and a path missing from the map is skipped without a note."
 					},
 					{
 						"name": "unitMeasurements.testedRevision",
 						"type": "string",
 						"required": true,
-						"description": "Verified revision attached to every emitted measurement."
+						"description": "The revision that every returned measurement is attributed to, copied unchanged into each testedRevision. The code neither checks nor parses it, and the verification record schema requires each measurement's testedRevision to be a full 40-character lowercase hex commit or tree hash.",
+						"examples": [
+							"8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+							"0d7e4b19a6c2f38e5d01b7a94c6e2f8a3b5d9c71"
+						]
 					},
 					{
 						"name": "unitMeasurements.artifacts",
 						"type": "BuiltArtifacts",
 						"required": false,
 						"default": {},
-						"description": "Optional path-indexed built-artifact sizes and SHA-256 digests, default empty."
+						"description": "Built size and SHA-256 digest of each declared artifact, keyed by its path; it defaults to {}, so every wasm or process target reports an unavailable size. A target's size is the sum of the bytes of its distinct entry paths and is unavailable when any of those paths has no entry, and the digests are copied into the measurement without being checked.",
+						"examples": [
+							{},
+							{
+								"dist/wasm/evidence-grid.wasm": {
+									"bytes": 183402,
+									"sha256": "4e9a1f7c3b8d52e60a9c1d4f7b2e8a35c6d0f1e92b7a4c8d3e5f6a0b1c2d3e4f"
+								},
+								"dist/bin/evidence-grid": {
+									"bytes": 2411872,
+									"sha256": "9f0c3e7a5d1b8e26c4a0f9d3b7e1c52a8d6f4e0b9c3a7d1e5f2b8c6a4d0e9f73"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitMeasurements",
 						"type": "Measurement[]",
-						"description": "Source bytes/lines, complexity, dependency count and per-target artifact bytes, with null values and unavailable reasons or partial notes where appropriate. Measurements have no workload/profile and are attributed to the supplied revision."
+						"description": "Four source and dependency measurements in fixed order (source-bytes, source-lines, complexity, dependencies), then one artifact-bytes entry per wasm or process target kind with target set to that kind, or one artifact-bytes entry with a null value and no target when the unit has neither. Every entry carries the unit id, null workload and profile, and the supplied testedRevision; a null value always has an unavailable reason, and a partial note says what a number leaves out.",
+						"examples": [
+							[
+								{
+									"unit": "function.unit-measurements",
+									"metric": "source-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 9012,
+									"method": "Sum of the byte sizes of the owned source files.",
+									"workload": null,
+									"profile": null,
+									"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+									"artifacts": []
+								},
+								{
+									"unit": "function.unit-measurements",
+									"metric": "source-lines",
+									"unitOfMeasure": "lines",
+									"value": 204,
+									"method": "Sum of the line counts of the owned source files.",
+									"workload": null,
+									"profile": null,
+									"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+									"artifacts": []
+								},
+								{
+									"unit": "function.unit-measurements",
+									"metric": "complexity",
+									"unitOfMeasure": "points",
+									"value": 26,
+									"method": "Decision points in owned source, plus one per function or method.",
+									"workload": null,
+									"profile": null,
+									"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+									"artifacts": []
+								},
+								{
+									"unit": "function.unit-measurements",
+									"metric": "dependencies",
+									"unitOfMeasure": "count",
+									"value": 4,
+									"method": "Unit dependencies plus distinct external modules referenced.",
+									"workload": null,
+									"profile": null,
+									"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+									"artifacts": []
+								},
+								{
+									"unit": "function.unit-measurements",
+									"metric": "artifact-bytes",
+									"unitOfMeasure": "bytes",
+									"value": null,
+									"unavailable": "A module unit emits no separate artifact.",
+									"method": "Not applicable.",
+									"workload": null,
+									"profile": null,
+									"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+									"artifacts": []
+								}
+							],
+							[
+								{
+									"unit": "reports.component.evidence-grid",
+									"metric": "source-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 15230,
+									"method": "Sum of the byte sizes of the owned source files.",
+									"workload": null,
+									"profile": null,
+									"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+									"artifacts": []
+								},
+								{
+									"unit": "reports.component.evidence-grid",
+									"metric": "source-lines",
+									"unitOfMeasure": "lines",
+									"value": 412,
+									"method": "Sum of the line counts of the owned source files.",
+									"workload": null,
+									"profile": null,
+									"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+									"artifacts": []
+								},
+								{
+									"unit": "reports.component.evidence-grid",
+									"metric": "complexity",
+									"unitOfMeasure": "points",
+									"value": 38,
+									"method": "Decision points in owned source, plus one per function or method.",
+									"workload": null,
+									"profile": null,
+									"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+									"artifacts": []
+								},
+								{
+									"unit": "reports.component.evidence-grid",
+									"metric": "dependencies",
+									"unitOfMeasure": "count",
+									"value": 6,
+									"method": "Unit dependencies plus distinct external modules referenced.",
+									"workload": null,
+									"profile": null,
+									"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+									"artifacts": []
+								},
+								{
+									"unit": "reports.component.evidence-grid",
+									"metric": "artifact-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 183402,
+									"method": "Byte size of the artifact as built in the verified snapshot.",
+									"workload": null,
+									"profile": null,
+									"target": "wasm",
+									"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+									"artifacts": [
+										{
+											"path": "dist/wasm/evidence-grid.wasm",
+											"sha256": "4e9a1f7c3b8d52e60a9c1d4f7b2e8a35c6d0f1e92b7a4c8d3e5f6a0b1c2d3e4f",
+											"bytes": 183402
+										}
+									]
+								},
+								{
+									"unit": "reports.component.evidence-grid",
+									"metric": "artifact-bytes",
+									"unitOfMeasure": "bytes",
+									"value": 2411872,
+									"method": "Byte size of the artifact as built in the verified snapshot.",
+									"workload": null,
+									"profile": null,
+									"target": "process",
+									"testedRevision": "8f3a1c9e72b40d5f6a18e4c3b97d02f15e6a4c7b",
+									"artifacts": [
+										{
+											"path": "dist/bin/evidence-grid",
+											"sha256": "9f0c3e7a5d1b8e26c4a0f9d3b7e1c52a8d6f4e0b9c3a7d1e5f2b8c6a4d0e9f73",
+											"bytes": 2411872
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "emittedTargets",
@@ -116,18 +934,193 @@
 						"name": "emittedTargets.unit",
 						"type": "ComponentManifest",
 						"required": true,
-						"description": "Unit whose Wasm and process execution targets should be selected."
+						"description": "The unit whose runtime.targets are read: only targets of kind wasm or process are kept, in manifest order, and runtime.kind and runtime.entry are not read. A unit whose targets are all module or http gets an empty list.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "function.unit-measurements",
+								"uid": "u_pdrdl3nkuf",
+								"kind": "function",
+								"title": "Static unit measurements",
+								"responsibility": "Measures owned source, complexity, dependencies and emitted target sizes while stating unavailable or partial results.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": [
+										"src/utils/development-tooling/unitMeasurements.ts",
+										"src/utils/development-tooling/unitMeasurements.types.ts",
+										"src/utils/unitMeasurements.ts"
+									],
+									"symbols": [
+										"unitMeasurements",
+										"emittedTargets",
+										"BuiltArtifacts",
+										"Static",
+										"ArtifactEntry"
+									]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "unitMeasurements.unit",
+											"type": "ComponentManifest",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.files",
+											"type": "ReadonlyMap<string, SourceFile>",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.testedRevision",
+											"type": "string",
+											"required": true
+										},
+										{
+											"name": "unitMeasurements.artifacts",
+											"type": "BuiltArtifacts",
+											"required": false,
+											"default": {}
+										},
+										{
+											"name": "emittedTargets.unit",
+											"type": "ComponentManifest",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "unitMeasurements",
+											"type": "Measurement[]"
+										},
+										{
+											"name": "emittedTargets",
+											"type": "ComponentManifest['runtime']['targets']"
+										}
+									],
+									"errors": [],
+									"errorStatus": "none-found",
+									"operations": [
+										{
+											"name": "unitMeasurements",
+											"inputs": [
+												{
+													"name": "unitMeasurements.unit",
+													"type": "ComponentManifest",
+													"required": true
+												},
+												{
+													"name": "unitMeasurements.files",
+													"type": "ReadonlyMap<string, SourceFile>",
+													"required": true
+												},
+												{
+													"name": "unitMeasurements.testedRevision",
+													"type": "string",
+													"required": true
+												},
+												{
+													"name": "unitMeasurements.artifacts",
+													"type": "BuiltArtifacts",
+													"required": false,
+													"default": {}
+												}
+											],
+											"outputs": [
+												{
+													"name": "unitMeasurements",
+													"type": "Measurement[]"
+												}
+											],
+											"errors": [],
+											"errorStatus": "declared"
+										},
+										{
+											"name": "emittedTargets",
+											"inputs": [
+												{
+													"name": "emittedTargets.unit",
+													"type": "ComponentManifest",
+													"required": true
+												}
+											],
+											"outputs": [
+												{
+													"name": "emittedTargets",
+													"type": "ComponentManifest['runtime']['targets']"
+												}
+											],
+											"errors": [],
+											"errorStatus": "declared"
+										}
+									],
+									"initialization": []
+								},
+								"dependencies": [
+									{
+										"unit": "function.complexity-coverage",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.source-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.unit-types",
+										"via": "import",
+										"origin": "derived"
+									},
+									{
+										"unit": "function.verification-types",
+										"via": "import",
+										"origin": "derived"
+									}
+								],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/utils/development-tooling/unitMeasurements.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/utils/development-tooling/unitMeasurements.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "emittedTargets",
 						"type": "ComponentManifest['runtime']['targets']",
-						"description": "Only runtime targets of kind wasm or process, in manifest order."
+						"description": "The unit's runtime targets of kind wasm or process, in manifest order and each returned unchanged; module and http targets are dropped, and a unit with neither gets an empty list.",
+						"examples": [
+							[],
+							[
+								{
+									"kind": "wasm",
+									"entry": "dist/wasm/evidence-grid.wasm"
+								},
+								{
+									"kind": "process",
+									"entry": "dist/bin/evidence-grid"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
