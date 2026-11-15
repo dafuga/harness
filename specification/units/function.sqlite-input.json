@@ -18,29 +18,124 @@
 				"name": "sqliteInput.model",
 				"type": "SqliteModel",
 				"required": true,
-				"description": "The table model declaring valid application properties, column names and field types."
+				"description": "The SqliteModel whose fields map is the only part this function reads: it supplies the accepted property names, each field's optional column override, and each field's type and nullable flag. The table and primaryKey members are not read here, and a key is accepted only when model.fields has it as an own property holding a field definition.",
+				"examples": [
+					{
+						"table": "reports",
+						"primaryKey": "id",
+						"fields": {
+							"id": {
+								"type": "number"
+							},
+							"title": {
+								"type": "string"
+							},
+							"isPublished": {
+								"type": "boolean"
+							},
+							"metadata": {
+								"type": "json",
+								"nullable": true
+							},
+							"createdAt": {
+								"type": "string",
+								"default": "timestamp"
+							}
+						}
+					},
+					{
+						"table": "report_runs",
+						"fields": {
+							"reportTitle": {
+								"type": "string",
+								"column": "report_name"
+							},
+							"durationMs": {
+								"type": "number"
+							},
+							"logBytes": {
+								"type": "blob",
+								"nullable": true
+							},
+							"archivedAt": {
+								"type": "string",
+								"nullable": true
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "sqliteInput.input",
 				"type": "Record<string, unknown>",
 				"required": true,
-				"description": "The partial record keyed by model property; keys missing from the model are rejected."
+				"description": "The partial record to bind, keyed by model property: keys it does not contain are skipped, and each key it does contain must name a field in model.fields whose value binds for that field's type. An undefined value never binds, and null becomes SQL NULL only for nullable fields, while a non-nullable json field binds it as the text null and any other non-nullable field rejects it.",
+				"examples": [
+					{
+						"title": "Quarterly sales report",
+						"isPublished": true,
+						"metadata": {
+							"tags": ["q3", "sales"]
+						}
+					},
+					{
+						"reportTitle": "Quarterly sales report",
+						"durationMs": 1250,
+						"archivedAt": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sqliteInput",
 				"type": "Array<{ column: string; value: SqliteValue }>",
-				"description": "One quoted database column and normalized SQLite binding for each input property, preserving input order."
+				"description": "One entry per input key, in the order Object.entries returns, with a column that is the double-quoted column name (field.column, or the snake_case form of the property when no column is declared) and a value that is the string, number, Uint8Array or null produced by sqliteBinding (booleans become 0 or 1 and json values become JSON text). The first key that fails throws, so the array is never partial.",
+				"examples": [
+					[
+						{
+							"column": "\"title\"",
+							"value": "Quarterly sales report"
+						},
+						{
+							"column": "\"is_published\"",
+							"value": 1
+						},
+						{
+							"column": "\"metadata\"",
+							"value": "{\"tags\":[\"q3\",\"sales\"]}"
+						}
+					],
+					[
+						{
+							"column": "\"report_name\"",
+							"value": "Quarterly sales report"
+						},
+						{
+							"column": "\"duration_ms\"",
+							"value": 1250
+						},
+						{
+							"column": "\"archived_at\"",
+							"value": null
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Raised for a property not declared by the model or a value that cannot be bound."
+				"description": "Thrown when a key is not an own property of model.fields holding a field definition (message Unknown SQLite field: <property>), when the column name (field.column, or the snake_case property) is not an identifier of ASCII letters, digits and underscores that starts with a letter or underscore (message Invalid SQLite identifier: <name>), or when a value does not bind for its field type (message Invalid SQLite <type> field value). The first failing key aborts the whole call."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by JSON.stringify inside sqliteBinding when a json field value is circular or includes a bigint anywhere inside it, and the TypeError propagates out of sqliteInput unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sqliteInput",
@@ -49,24 +144,124 @@
 						"name": "sqliteInput.model",
 						"type": "SqliteModel",
 						"required": true,
-						"description": "The table model declaring valid application properties, column names and field types."
+						"description": "The SqliteModel whose fields map is the only part this function reads: it supplies the accepted property names, each field's optional column override, and each field's type and nullable flag. The table and primaryKey members are not read here, and a key is accepted only when model.fields has it as an own property holding a field definition.",
+						"examples": [
+							{
+								"table": "reports",
+								"primaryKey": "id",
+								"fields": {
+									"id": {
+										"type": "number"
+									},
+									"title": {
+										"type": "string"
+									},
+									"isPublished": {
+										"type": "boolean"
+									},
+									"metadata": {
+										"type": "json",
+										"nullable": true
+									},
+									"createdAt": {
+										"type": "string",
+										"default": "timestamp"
+									}
+								}
+							},
+							{
+								"table": "report_runs",
+								"fields": {
+									"reportTitle": {
+										"type": "string",
+										"column": "report_name"
+									},
+									"durationMs": {
+										"type": "number"
+									},
+									"logBytes": {
+										"type": "blob",
+										"nullable": true
+									},
+									"archivedAt": {
+										"type": "string",
+										"nullable": true
+									}
+								}
+							}
+						]
 					},
 					{
 						"name": "sqliteInput.input",
 						"type": "Record<string, unknown>",
 						"required": true,
-						"description": "The partial record keyed by model property; keys missing from the model are rejected."
+						"description": "The partial record to bind, keyed by model property: keys it does not contain are skipped, and each key it does contain must name a field in model.fields whose value binds for that field's type. An undefined value never binds, and null becomes SQL NULL only for nullable fields, while a non-nullable json field binds it as the text null and any other non-nullable field rejects it.",
+						"examples": [
+							{
+								"title": "Quarterly sales report",
+								"isPublished": true,
+								"metadata": {
+									"tags": ["q3", "sales"]
+								}
+							},
+							{
+								"reportTitle": "Quarterly sales report",
+								"durationMs": 1250,
+								"archivedAt": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sqliteInput",
 						"type": "Array<{ column: string; value: SqliteValue }>",
-						"description": "One quoted database column and normalized SQLite binding for each input property, preserving input order."
+						"description": "One entry per input key, in the order Object.entries returns, with a column that is the double-quoted column name (field.column, or the snake_case form of the property when no column is declared) and a value that is the string, number, Uint8Array or null produced by sqliteBinding (booleans become 0 or 1 and json values become JSON text). The first key that fails throws, so the array is never partial.",
+						"examples": [
+							[
+								{
+									"column": "\"title\"",
+									"value": "Quarterly sales report"
+								},
+								{
+									"column": "\"is_published\"",
+									"value": 1
+								},
+								{
+									"column": "\"metadata\"",
+									"value": "{\"tags\":[\"q3\",\"sales\"]}"
+								}
+							],
+							[
+								{
+									"column": "\"report_name\"",
+									"value": "Quarterly sales report"
+								},
+								{
+									"column": "\"duration_ms\"",
+									"value": 1250
+								},
+								{
+									"column": "\"archived_at\"",
+									"value": null
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a key is not an own property of model.fields holding a field definition (message Unknown SQLite field: <property>), when the column name (field.column, or the snake_case property) is not an identifier of ASCII letters, digits and underscores that starts with a letter or underscore (message Invalid SQLite identifier: <name>), or when a value does not bind for its field type (message Invalid SQLite <type> field value). The first failing key aborts the whole call."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by JSON.stringify inside sqliteBinding when a json field value is circular or includes a bigint anywhere inside it, and the TypeError propagates out of sqliteInput unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
