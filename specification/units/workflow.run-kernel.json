@@ -29,81 +29,426 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "parityProblems.report",
 				"type": "ParityReport",
-				"required": true
+				"required": true,
+				"description": "The report kernelParity returns, with one entry per runtime. Each runtime that is unavailable or has mismatches adds one problem line, and a passed report adds none.",
+				"examples": [
+					{
+						"contract": "impact-kernel/1",
+						"cases": 150,
+						"status": "passed",
+						"runtimes": [
+							{
+								"runtime": "wasm",
+								"available": true,
+								"mismatches": 0
+							},
+							{
+								"runtime": "process",
+								"available": true,
+								"mismatches": 0
+							}
+						]
+					},
+					{
+						"contract": "impact-kernel/1",
+						"cases": 150,
+						"status": "incomplete",
+						"runtimes": [
+							{
+								"runtime": "wasm",
+								"available": false,
+								"mismatches": 0
+							},
+							{
+								"runtime": "process",
+								"available": true,
+								"mismatches": 0
+							}
+						]
+					},
+					{
+						"contract": "impact-kernel/1",
+						"cases": 150,
+						"status": "failed",
+						"runtimes": [
+							{
+								"runtime": "wasm",
+								"available": true,
+								"mismatches": 0
+							},
+							{
+								"runtime": "process",
+								"available": true,
+								"mismatches": 3
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "kernelDefault.measurements",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Path to a kernel benchmark file, resolved from the working directory, whose recorded run replaces the one for this machine profile. When omitted, the run for this profile is read from the repository first and then from the shipped measurements.",
+				"examples": [
+					"specification/measurements/impact-kernel/9c4e1a7f03b2d6e8.json",
+					"specification/measurements/impact-kernel/3b7d0e5a91c4f628.json"
+				]
 			},
 			{
 				"name": "renderDefault.report",
 				"type": "DefaultReport",
-				"required": true
+				"required": true,
+				"description": "The default choice as kernelDefault returns it; renderDefault reads only its runtime, basis, rule and evidence. When evidence is null the text says there is no measurement for this machine profile, and otherwise it says whether the calibration came from a clean or an uncommitted tree.",
+				"examples": [
+					{
+						"runtime": "wasm",
+						"basis": "measured",
+						"workload": "graph-1k",
+						"profile": "9c4e1a7f03b2d6e8",
+						"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+						"candidates": [
+							{
+								"runtime": "module",
+								"coldMs": 4.2
+							},
+							{
+								"runtime": "wasm",
+								"coldMs": 3.1
+							}
+						],
+						"excluded": [
+							{
+								"runtime": "process",
+								"reason": "No measurement for this workload and profile."
+							}
+						],
+						"evidence": {
+							"kind": "calibration",
+							"verified": false,
+							"commit": "4f1c9a2e7b8d03c5e6a1f9b4d2c7e0a8b3f5d619",
+							"dirty": false
+						}
+					},
+					{
+						"runtime": "module",
+						"basis": "unmeasured",
+						"workload": "graph-1k",
+						"profile": "3b7d0e5a91c4f628",
+						"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+						"candidates": [],
+						"excluded": [
+							{
+								"runtime": "module",
+								"reason": "No measurement for this workload and profile."
+							},
+							{
+								"runtime": "wasm",
+								"reason": "No measurement for this workload and profile."
+							},
+							{
+								"runtime": "process",
+								"reason": "No measurement for this workload and profile."
+							}
+						],
+						"evidence": null
+					},
+					{
+						"runtime": "process",
+						"basis": "measured",
+						"workload": "graph-1k",
+						"profile": "9c4e1a7f03b2d6e8",
+						"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+						"candidates": [
+							{
+								"runtime": "module",
+								"coldMs": 6.8
+							},
+							{
+								"runtime": "process",
+								"coldMs": 5.9
+							}
+						],
+						"excluded": [
+							{
+								"runtime": "wasm",
+								"reason": "No measurement for this workload and profile."
+							}
+						],
+						"evidence": {
+							"kind": "calibration",
+							"verified": false,
+							"commit": "c0ffee1234567890abcdef1234567890abcdef12",
+							"dirty": true
+						}
+					}
+				]
 			},
 			{
 				"name": "runtimeKind.value",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The runtime name to check. It must match module, wasm, process or http exactly, and any other string makes runtimeKind throw ExpectedCliError.",
+				"examples": ["wasm", "process", "http"]
 			},
 			{
 				"name": "serveKernelRuntime.runtime",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The kernel runtime to serve, checked by runtimeKind so it must be module, wasm, process or http. The http kind also needs HARNESS_KERNEL_URL in the environment, and the served kernel then relays each request to that URL.",
+				"examples": ["module", "wasm", "process"]
 			},
 			{
 				"name": "serveKernelRuntime.port",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The TCP port the kernel server listens on, bound to 127.0.0.1. Port 0 asks the system for a free port, and the returned url carries the port that was actually bound.",
+				"examples": [4100, 8080, 0]
 			},
 			{
 				"name": "kernelSample.options",
 				"type": "{ runtime: string; nodes: number; seed: number; url?: string; }",
-				"required": true
+				"required": true,
+				"description": "The cold call to time: runtime is a kind runtimeKind accepts, nodes and seed build the synthetic impact request through kernelWorkload, and url, when given, becomes HARNESS_KERNEL_URL for this call only. Because url is always assigned, an omitted url makes the http runtime fail even when HARNESS_KERNEL_URL is set in the environment.",
+				"examples": [
+					{
+						"runtime": "process",
+						"nodes": 120,
+						"seed": 7
+					},
+					{
+						"runtime": "wasm",
+						"nodes": 900,
+						"seed": 3
+					},
+					{
+						"runtime": "http",
+						"nodes": 17,
+						"seed": 1,
+						"url": "http://127.0.0.1:4100"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "kernelParity",
-				"type": "Promise<ParityReport>"
+				"type": "Promise<ParityReport>",
+				"description": "The parity report for the built wasm and process kernels against the TypeScript reference, over a fixed set of 150 cases, with one entry per runtime. A runtime that is not built reports available false and zero mismatches, and status is failed if any mismatch exists, incomplete if a runtime is not available, and passed otherwise.",
+				"examples": [
+					{
+						"contract": "impact-kernel/1",
+						"cases": 150,
+						"status": "passed",
+						"runtimes": [
+							{
+								"runtime": "wasm",
+								"available": true,
+								"mismatches": 0
+							},
+							{
+								"runtime": "process",
+								"available": true,
+								"mismatches": 0
+							}
+						]
+					},
+					{
+						"contract": "impact-kernel/1",
+						"cases": 150,
+						"status": "incomplete",
+						"runtimes": [
+							{
+								"runtime": "wasm",
+								"available": false,
+								"mismatches": 0
+							},
+							{
+								"runtime": "process",
+								"available": true,
+								"mismatches": 0
+							}
+						]
+					},
+					{
+						"contract": "impact-kernel/1",
+						"cases": 150,
+						"status": "failed",
+						"runtimes": [
+							{
+								"runtime": "wasm",
+								"available": true,
+								"mismatches": 0
+							},
+							{
+								"runtime": "process",
+								"available": true,
+								"mismatches": 3
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "parityProblems",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "One message per problem runtime, in report order: a runtime that is not built is told to run bun run build:kernel, and a runtime with mismatches is given its mismatch count. The list is empty when the report has no problem.",
+				"examples": [
+					[],
+					["wasm runtime is not built; run bun run build:kernel"],
+					["process runtime disagrees with the reference in 3 cases"]
+				]
 			},
 			{
 				"name": "kernelDefault",
-				"type": "DefaultReport"
+				"type": "DefaultReport",
+				"description": "The default runtime chosen from the recorded measurements: the simplest candidate whose cold latency is within 5% of the fastest, or module when no usable measurement exists. It also carries the basis, workload, profile, rule, candidates and excluded runtimes, and its evidence holds the commit and dirty flag of the calibration run it came from, or is null when there is no recorded run.",
+				"examples": [
+					{
+						"runtime": "wasm",
+						"basis": "measured",
+						"workload": "graph-1k",
+						"profile": "9c4e1a7f03b2d6e8",
+						"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+						"candidates": [
+							{
+								"runtime": "module",
+								"coldMs": 4.2
+							},
+							{
+								"runtime": "wasm",
+								"coldMs": 3.1
+							}
+						],
+						"excluded": [
+							{
+								"runtime": "process",
+								"reason": "No measurement for this workload and profile."
+							}
+						],
+						"evidence": {
+							"kind": "calibration",
+							"verified": false,
+							"commit": "4f1c9a2e7b8d03c5e6a1f9b4d2c7e0a8b3f5d619",
+							"dirty": false
+						}
+					},
+					{
+						"runtime": "module",
+						"basis": "unmeasured",
+						"workload": "graph-1k",
+						"profile": "3b7d0e5a91c4f628",
+						"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+						"candidates": [],
+						"excluded": [
+							{
+								"runtime": "module",
+								"reason": "No measurement for this workload and profile."
+							},
+							{
+								"runtime": "wasm",
+								"reason": "No measurement for this workload and profile."
+							},
+							{
+								"runtime": "process",
+								"reason": "No measurement for this workload and profile."
+							}
+						],
+						"evidence": null
+					},
+					{
+						"runtime": "process",
+						"basis": "measured",
+						"workload": "graph-1k",
+						"profile": "9c4e1a7f03b2d6e8",
+						"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+						"candidates": [
+							{
+								"runtime": "module",
+								"coldMs": 6.8
+							},
+							{
+								"runtime": "process",
+								"coldMs": 5.9
+							}
+						],
+						"excluded": [
+							{
+								"runtime": "wasm",
+								"reason": "No measurement for this workload and profile."
+							}
+						],
+						"evidence": {
+							"kind": "calibration",
+							"verified": false,
+							"commit": "c0ffee1234567890abcdef1234567890abcdef12",
+							"dirty": true
+						}
+					}
+				]
 			},
 			{
 				"name": "renderDefault",
-				"type": "string"
+				"type": "string",
+				"description": "A single line that names the default runtime and its basis, then either notes that the calibration came from a clean or an uncommitted tree and is not verified or says there is no measurement for this machine profile, followed by the selection rule.",
+				"examples": [
+					"Default runtime: wasm (measured; calibration from a clean tree, not verified). Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+					"Default runtime: module (unmeasured; no measurement for this machine profile). Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+					"Default runtime: process (measured; calibration from an uncommitted tree, not verified). Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen."
+				]
 			},
 			{
 				"name": "runtimeKind",
-				"type": "RuntimeKind"
+				"type": "RuntimeKind",
+				"description": "The runtime name unchanged, once it is one of module, wasm, process or http. Other values never reach this output, because runtimeKind throws ExpectedCliError for them.",
+				"examples": ["module", "wasm", "process"]
 			},
 			{
 				"name": "serveKernelRuntime",
-				"type": "Promise<ServedRuntime>"
+				"type": "Promise<ServedRuntime>",
+				"description": "The running kernel server, with its url (http://127.0.0.1 and the bound port) and a close function that closes open connections and stops the server. The promise resolves only once the server is listening."
 			},
 			{
 				"name": "kernelSample",
-				"type": "Promise<{ elapsedMs: number }>"
+				"type": "Promise<{ elapsedMs: number }>",
+				"description": "The resolved time in milliseconds for one cold call, measured from before the runtime is built until one call returns. Generating the request and closing the runtime are not included.",
+				"examples": [
+					{
+						"elapsedMs": 4.317
+					},
+					{
+						"elapsedMs": 218.06
+					},
+					{
+						"elapsedMs": 12.5
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised by fail() when a runtime name is not module, wasm, process or http, when a wasm or process kernel is not built, when an http runtime has no HARNESS_KERNEL_URL, or when a measurement file is missing or malformed. runtimeKind, kernelDefault and serveKernelRuntime throw it synchronously, while kernelSample rejects with it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "kernelSample rejects with a plain Error whose message is '<runtime kind> failed: <error message>' when the timed call returns a failed response. serveKernelRuntime rejects with the HTTP server's error event, such as a failure to listen, passed through unchanged."
+			},
+			{
+				"name": "RuntimeUnavailable",
+				"type": "thrown",
+				"description": "Created by the Wasm runtime adapter when the built module cannot be read or does not export the Harness JSON ABI. kernelParity does not catch it on its raw-text pass, so the whole call rejects instead of reporting wasm as unavailable."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "kernelParity",
@@ -111,11 +456,71 @@
 				"outputs": [
 					{
 						"name": "kernelParity",
-						"type": "Promise<ParityReport>"
+						"type": "Promise<ParityReport>",
+						"description": "The parity report for the built wasm and process kernels against the TypeScript reference, over a fixed set of 150 cases, with one entry per runtime. A runtime that is not built reports available false and zero mismatches, and status is failed if any mismatch exists, incomplete if a runtime is not available, and passed otherwise.",
+						"examples": [
+							{
+								"contract": "impact-kernel/1",
+								"cases": 150,
+								"status": "passed",
+								"runtimes": [
+									{
+										"runtime": "wasm",
+										"available": true,
+										"mismatches": 0
+									},
+									{
+										"runtime": "process",
+										"available": true,
+										"mismatches": 0
+									}
+								]
+							},
+							{
+								"contract": "impact-kernel/1",
+								"cases": 150,
+								"status": "incomplete",
+								"runtimes": [
+									{
+										"runtime": "wasm",
+										"available": false,
+										"mismatches": 0
+									},
+									{
+										"runtime": "process",
+										"available": true,
+										"mismatches": 0
+									}
+								]
+							},
+							{
+								"contract": "impact-kernel/1",
+								"cases": 150,
+								"status": "failed",
+								"runtimes": [
+									{
+										"runtime": "wasm",
+										"available": true,
+										"mismatches": 0
+									},
+									{
+										"runtime": "process",
+										"available": true,
+										"mismatches": 3
+									}
+								]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RuntimeUnavailable",
+						"type": "thrown",
+						"description": "Created by the Wasm runtime adapter when the built module cannot be read or does not export the Harness JSON ABI. kernelParity does not catch it on its raw-text pass, so the whole call rejects instead of reporting wasm as unavailable."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "parityProblems",
@@ -123,17 +528,77 @@
 					{
 						"name": "parityProblems.report",
 						"type": "ParityReport",
-						"required": true
+						"required": true,
+						"description": "The report kernelParity returns, with one entry per runtime. Each runtime that is unavailable or has mismatches adds one problem line, and a passed report adds none.",
+						"examples": [
+							{
+								"contract": "impact-kernel/1",
+								"cases": 150,
+								"status": "passed",
+								"runtimes": [
+									{
+										"runtime": "wasm",
+										"available": true,
+										"mismatches": 0
+									},
+									{
+										"runtime": "process",
+										"available": true,
+										"mismatches": 0
+									}
+								]
+							},
+							{
+								"contract": "impact-kernel/1",
+								"cases": 150,
+								"status": "incomplete",
+								"runtimes": [
+									{
+										"runtime": "wasm",
+										"available": false,
+										"mismatches": 0
+									},
+									{
+										"runtime": "process",
+										"available": true,
+										"mismatches": 0
+									}
+								]
+							},
+							{
+								"contract": "impact-kernel/1",
+								"cases": 150,
+								"status": "failed",
+								"runtimes": [
+									{
+										"runtime": "wasm",
+										"available": true,
+										"mismatches": 0
+									},
+									{
+										"runtime": "process",
+										"available": true,
+										"mismatches": 3
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "parityProblems",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "One message per problem runtime, in report order: a runtime that is not built is told to run bun run build:kernel, and a runtime with mismatches is given its mismatch count. The list is empty when the report has no problem.",
+						"examples": [
+							[],
+							["wasm runtime is not built; run bun run build:kernel"],
+							["process runtime disagrees with the reference in 3 cases"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "kernelDefault",
@@ -141,17 +606,113 @@
 					{
 						"name": "kernelDefault.measurements",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Path to a kernel benchmark file, resolved from the working directory, whose recorded run replaces the one for this machine profile. When omitted, the run for this profile is read from the repository first and then from the shipped measurements.",
+						"examples": [
+							"specification/measurements/impact-kernel/9c4e1a7f03b2d6e8.json",
+							"specification/measurements/impact-kernel/3b7d0e5a91c4f628.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "kernelDefault",
-						"type": "DefaultReport"
+						"type": "DefaultReport",
+						"description": "The default runtime chosen from the recorded measurements: the simplest candidate whose cold latency is within 5% of the fastest, or module when no usable measurement exists. It also carries the basis, workload, profile, rule, candidates and excluded runtimes, and its evidence holds the commit and dirty flag of the calibration run it came from, or is null when there is no recorded run.",
+						"examples": [
+							{
+								"runtime": "wasm",
+								"basis": "measured",
+								"workload": "graph-1k",
+								"profile": "9c4e1a7f03b2d6e8",
+								"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+								"candidates": [
+									{
+										"runtime": "module",
+										"coldMs": 4.2
+									},
+									{
+										"runtime": "wasm",
+										"coldMs": 3.1
+									}
+								],
+								"excluded": [
+									{
+										"runtime": "process",
+										"reason": "No measurement for this workload and profile."
+									}
+								],
+								"evidence": {
+									"kind": "calibration",
+									"verified": false,
+									"commit": "4f1c9a2e7b8d03c5e6a1f9b4d2c7e0a8b3f5d619",
+									"dirty": false
+								}
+							},
+							{
+								"runtime": "module",
+								"basis": "unmeasured",
+								"workload": "graph-1k",
+								"profile": "3b7d0e5a91c4f628",
+								"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+								"candidates": [],
+								"excluded": [
+									{
+										"runtime": "module",
+										"reason": "No measurement for this workload and profile."
+									},
+									{
+										"runtime": "wasm",
+										"reason": "No measurement for this workload and profile."
+									},
+									{
+										"runtime": "process",
+										"reason": "No measurement for this workload and profile."
+									}
+								],
+								"evidence": null
+							},
+							{
+								"runtime": "process",
+								"basis": "measured",
+								"workload": "graph-1k",
+								"profile": "9c4e1a7f03b2d6e8",
+								"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+								"candidates": [
+									{
+										"runtime": "module",
+										"coldMs": 6.8
+									},
+									{
+										"runtime": "process",
+										"coldMs": 5.9
+									}
+								],
+								"excluded": [
+									{
+										"runtime": "wasm",
+										"reason": "No measurement for this workload and profile."
+									}
+								],
+								"evidence": {
+									"kind": "calibration",
+									"verified": false,
+									"commit": "c0ffee1234567890abcdef1234567890abcdef12",
+									"dirty": true
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised by fail() when the file named by measurements does not exist or is malformed, or when the run found for this machine profile is malformed. It is thrown synchronously."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderDefault",
@@ -159,17 +720,107 @@
 					{
 						"name": "renderDefault.report",
 						"type": "DefaultReport",
-						"required": true
+						"required": true,
+						"description": "The default choice as kernelDefault returns it; renderDefault reads only its runtime, basis, rule and evidence. When evidence is null the text says there is no measurement for this machine profile, and otherwise it says whether the calibration came from a clean or an uncommitted tree.",
+						"examples": [
+							{
+								"runtime": "wasm",
+								"basis": "measured",
+								"workload": "graph-1k",
+								"profile": "9c4e1a7f03b2d6e8",
+								"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+								"candidates": [
+									{
+										"runtime": "module",
+										"coldMs": 4.2
+									},
+									{
+										"runtime": "wasm",
+										"coldMs": 3.1
+									}
+								],
+								"excluded": [
+									{
+										"runtime": "process",
+										"reason": "No measurement for this workload and profile."
+									}
+								],
+								"evidence": {
+									"kind": "calibration",
+									"verified": false,
+									"commit": "4f1c9a2e7b8d03c5e6a1f9b4d2c7e0a8b3f5d619",
+									"dirty": false
+								}
+							},
+							{
+								"runtime": "module",
+								"basis": "unmeasured",
+								"workload": "graph-1k",
+								"profile": "3b7d0e5a91c4f628",
+								"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+								"candidates": [],
+								"excluded": [
+									{
+										"runtime": "module",
+										"reason": "No measurement for this workload and profile."
+									},
+									{
+										"runtime": "wasm",
+										"reason": "No measurement for this workload and profile."
+									},
+									{
+										"runtime": "process",
+										"reason": "No measurement for this workload and profile."
+									}
+								],
+								"evidence": null
+							},
+							{
+								"runtime": "process",
+								"basis": "measured",
+								"workload": "graph-1k",
+								"profile": "9c4e1a7f03b2d6e8",
+								"rule": "Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+								"candidates": [
+									{
+										"runtime": "module",
+										"coldMs": 6.8
+									},
+									{
+										"runtime": "process",
+										"coldMs": 5.9
+									}
+								],
+								"excluded": [
+									{
+										"runtime": "wasm",
+										"reason": "No measurement for this workload and profile."
+									}
+								],
+								"evidence": {
+									"kind": "calibration",
+									"verified": false,
+									"commit": "c0ffee1234567890abcdef1234567890abcdef12",
+									"dirty": true
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderDefault",
-						"type": "string"
+						"type": "string",
+						"description": "A single line that names the default runtime and its basis, then either notes that the calibration came from a clean or an uncommitted tree and is not verified or says there is no measurement for this machine profile, followed by the selection rule.",
+						"examples": [
+							"Default runtime: wasm (measured; calibration from a clean tree, not verified). Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+							"Default runtime: module (unmeasured; no measurement for this machine profile). Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen.",
+							"Default runtime: process (measured; calibration from an uncommitted tree, not verified). Lowest median cold end-to-end latency on the representative workload for this profile; within 5% the simpler runtime wins (module, then wasm, then process). Unmeasured or unavailable runtimes are never chosen."
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "runtimeKind",
@@ -177,22 +828,27 @@
 					{
 						"name": "runtimeKind.value",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The runtime name to check. It must match module, wasm, process or http exactly, and any other string makes runtimeKind throw ExpectedCliError.",
+						"examples": ["wasm", "process", "http"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runtimeKind",
-						"type": "RuntimeKind"
+						"type": "RuntimeKind",
+						"description": "The runtime name unchanged, once it is one of module, wasm, process or http. Other values never reach this output, because runtimeKind throws ExpectedCliError for them.",
+						"examples": ["module", "wasm", "process"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised by fail() with a message listing module, wasm, process and http when the value is not one of them. It is thrown synchronously."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "serveKernelRuntime",
@@ -200,22 +856,38 @@
 					{
 						"name": "serveKernelRuntime.runtime",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The kernel runtime to serve, checked by runtimeKind so it must be module, wasm, process or http. The http kind also needs HARNESS_KERNEL_URL in the environment, and the served kernel then relays each request to that URL.",
+						"examples": ["module", "wasm", "process"]
 					},
 					{
 						"name": "serveKernelRuntime.port",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The TCP port the kernel server listens on, bound to 127.0.0.1. Port 0 asks the system for a free port, and the returned url carries the port that was actually bound.",
+						"examples": [4100, 8080, 0]
 					}
 				],
 				"outputs": [
 					{
 						"name": "serveKernelRuntime",
-						"type": "Promise<ServedRuntime>"
+						"type": "Promise<ServedRuntime>",
+						"description": "The running kernel server, with its url (http://127.0.0.1 and the bound port) and a close function that closes open connections and stops the server. The promise resolves only once the server is listening."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised by fail() synchronously when the runtime is not one of the four kinds, when the wasm or process kernel is not built, or when the http runtime has no HARNESS_KERNEL_URL."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the HTTP server's error event when the server cannot start listening on the port, passed through unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "kernelSample",
@@ -223,17 +895,59 @@
 					{
 						"name": "kernelSample.options",
 						"type": "{ runtime: string; nodes: number; seed: number; url?: string; }",
-						"required": true
+						"required": true,
+						"description": "The cold call to time: runtime is a kind runtimeKind accepts, nodes and seed build the synthetic impact request through kernelWorkload, and url, when given, becomes HARNESS_KERNEL_URL for this call only. Because url is always assigned, an omitted url makes the http runtime fail even when HARNESS_KERNEL_URL is set in the environment.",
+						"examples": [
+							{
+								"runtime": "process",
+								"nodes": 120,
+								"seed": 7
+							},
+							{
+								"runtime": "wasm",
+								"nodes": 900,
+								"seed": 3
+							},
+							{
+								"runtime": "http",
+								"nodes": 17,
+								"seed": 1,
+								"url": "http://127.0.0.1:4100"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "kernelSample",
-						"type": "Promise<{ elapsedMs: number }>"
+						"type": "Promise<{ elapsedMs: number }>",
+						"description": "The resolved time in milliseconds for one cold call, measured from before the runtime is built until one call returns. Generating the request and closing the runtime are not included.",
+						"examples": [
+							{
+								"elapsedMs": 4.317
+							},
+							{
+								"elapsedMs": 218.06
+							},
+							{
+								"elapsedMs": 12.5
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised by fail() and delivered as a rejection when the runtime is not one of the four kinds, when the wasm or process kernel is not built, or when the http runtime has no url."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with a plain Error whose message is '<runtime kind> failed: <error message>' when the timed call returns a failed response."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
