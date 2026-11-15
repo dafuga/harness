@@ -12,41 +12,111 @@
 		"symbols": ["apiResources", "apiResource"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "apiResource.client",
 				"type": "HarnessApiService",
-				"required": true
+				"required": true,
+				"description": "The HarnessApiService that performs every lookup through its http.request, call, read, and snapshot methods. Its hosted flag selects a direct projects or threads read instead of snapshot or entity data, its options set the query and commit mode, and rejections from these calls reach the caller unchanged."
 			},
 			{
 				"name": "apiResource.resource",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The exact resource name to resolve, such as 'units' or 'snapshot'. Direct, projects, registry, and catalog names resolve without an id, and any other name throws when no id is given.",
+				"examples": ["units", "snapshot", "history"]
 			},
 			{
 				"name": "apiResource.id",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "The id that addresses the resource: registry, units, contracts, and apis pass it to the registry lookup, and other names that read the server send it as entityId. A missing or empty id makes apiResource throw for names outside the direct, projects, registry, and catalog groups.",
+				"examples": [
+					"reports.component.evidence-grid",
+					"workflow.networking-security-run-api-api-resources"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "apiResources",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported constant object, not a function, that lists the resource names (resources), read names (reads), agent operation names (agents), and the request and permissions rule strings. Its resources list also ends with the explorerCategories values and 'styles', appended when the module loads, and reading it makes no server request.",
+				"examples": [
+					{
+						"resources": [
+							"projects",
+							"snapshot",
+							"entities",
+							"units",
+							"registry",
+							"contracts",
+							"source",
+							"history",
+							"messages",
+							"threads",
+							"evidence",
+							"activity",
+							"build",
+							"agents"
+						],
+						"reads": [
+							"registry",
+							"snapshot",
+							"entity",
+							"source",
+							"history",
+							"messages",
+							"threads",
+							"evidence",
+							"artifact",
+							"image"
+						],
+						"agents": [
+							"providers",
+							"startRun",
+							"events",
+							"cancelRun",
+							"openThread",
+							"approve",
+							"createPlan"
+						],
+						"request": "Use request <METHOD> /api/<path> for every server resource, including future endpoints.",
+						"permissions": "All operations retain the selected server permissions. Agent writes require an available executor and writable branch tip."
+					}
+				]
 			},
 			{
 				"name": "apiResource",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "The resolved value for the named resource: a direct request result, the project list, the snapshot or one of its parts, a filtered entity list for a catalog or entity category, registry results (for apis, only active units of kind endpoint or api), or a server read. It rejects with ExpectedCliError when a name that needs an id has none, or when a history page is not an integer from 1 to 10000.",
+				"examples": [
+					{
+						"project": {},
+						"revision": {
+							"branch": "main",
+							"commit": "b7e41d09c3a5f28e6d1904b7c3e8a25f0d6c9e1a"
+						},
+						"entities": []
+					},
+					[
+						{
+							"category": "styles"
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by the fail helper when a name that needs an id has none, or when a history page is not an integer from 1 to 10000."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "apiResource",
@@ -54,32 +124,58 @@
 					{
 						"name": "apiResource.client",
 						"type": "HarnessApiService",
-						"required": true
+						"required": true,
+						"description": "The HarnessApiService that performs every lookup through its http.request, call, read, and snapshot methods. Its hosted flag selects a direct projects or threads read instead of snapshot or entity data, its options set the query and commit mode, and rejections from these calls reach the caller unchanged."
 					},
 					{
 						"name": "apiResource.resource",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The exact resource name to resolve, such as 'units' or 'snapshot'. Direct, projects, registry, and catalog names resolve without an id, and any other name throws when no id is given.",
+						"examples": ["units", "snapshot", "history"]
 					},
 					{
 						"name": "apiResource.id",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "The id that addresses the resource: registry, units, contracts, and apis pass it to the registry lookup, and other names that read the server send it as entityId. A missing or empty id makes apiResource throw for names outside the direct, projects, registry, and catalog groups.",
+						"examples": [
+							"reports.component.evidence-grid",
+							"workflow.networking-security-run-api-api-resources"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiResource",
-						"type": "Promise<unknown>"
+						"type": "Promise<unknown>",
+						"description": "The resolved value for the named resource: a direct request result, the project list, the snapshot or one of its parts, a filtered entity list for a catalog or entity category, registry results (for apis, only active units of kind endpoint or api), or a server read. It rejects with ExpectedCliError when a name that needs an id has none, or when a history page is not an integer from 1 to 10000.",
+						"examples": [
+							{
+								"project": {},
+								"revision": {
+									"branch": "main",
+									"commit": "b7e41d09c3a5f28e6d1904b7c3e8a25f0d6c9e1a"
+								},
+								"entities": []
+							},
+							[
+								{
+									"category": "styles"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by the fail helper when a name that needs an id has none, or when a history page is not an integer from 1 to 10000."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
