@@ -21,29 +21,43 @@
 				"name": "ModulePackageService.plan.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute project directory containing package.json."
+				"description": "Directory string joined with package.json to read the manifest. The implementation does not require or check that it is absolute.",
+				"examples": ["/workspace/apps/web", "/Users/daniel/projects/example-app"]
 			},
 			{
 				"name": "ModulePackageService.plan.name",
 				"type": "string",
 				"required": true,
-				"description": "Registry package with an exact semantic version, including an optional scope."
+				"description": "Registry package specifier with an optional lowercase scope and an exact numeric major.minor.patch version, optionally followed by a lowercase prerelease suffix. Package segments must start with a lowercase letter or digit and may otherwise contain lowercase letters, digits, dots, underscores, or hyphens; version ranges, tags, uppercase letters, and build metadata do not match.",
+				"examples": ["@acme/ui-kit@2.4.1", "typescript@5.6.3", "@org/snapshot-tool@1.2.0-beta.1"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModulePackageService.plan",
 				"type": "Promise<PlannedFile>",
-				"description": "A package.json write plan preserving unrelated settings."
+				"description": "Resolves to a planned write with path set to package.json and contents holding the serialized manifest. The contents use tab indentation and end with a newline; the requested package version is assigned in dependencies.",
+				"examples": [
+					{
+						"path": "package.json",
+						"contents": "{\n\t\"name\": \"web\",\n\t\"dependencies\": {\n\t\t\"@acme/ui-kit\": \"2.4.1\"\n\t}\n}\n"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid package pins, conflicting existing versions or unreadable manifests reject the plan."
+				"description": "Thrown when the package specifier does not match the accepted registry-name and exact-version pattern, or when the selected existing dependency has a different version. A package.json read failure also rejects with the filesystem error."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when the contents read from package.json are not valid JSON."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModulePackageService.plan",
@@ -52,29 +66,47 @@
 						"name": "ModulePackageService.plan.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute project directory containing package.json."
+						"description": "Directory string joined with package.json to read the manifest. The implementation does not require or check that it is absolute.",
+						"examples": ["/workspace/apps/web", "/Users/daniel/projects/example-app"]
 					},
 					{
 						"name": "ModulePackageService.plan.name",
 						"type": "string",
 						"required": true,
-						"description": "Registry package with an exact semantic version, including an optional scope."
+						"description": "Registry package specifier with an optional lowercase scope and an exact numeric major.minor.patch version, optionally followed by a lowercase prerelease suffix. Package segments must start with a lowercase letter or digit and may otherwise contain lowercase letters, digits, dots, underscores, or hyphens; version ranges, tags, uppercase letters, and build metadata do not match.",
+						"examples": [
+							"@acme/ui-kit@2.4.1",
+							"typescript@5.6.3",
+							"@org/snapshot-tool@1.2.0-beta.1"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModulePackageService.plan",
 						"type": "Promise<PlannedFile>",
-						"description": "A package.json write plan preserving unrelated settings."
+						"description": "Resolves to a planned write with path set to package.json and contents holding the serialized manifest. The contents use tab indentation and end with a newline; the requested package version is assigned in dependencies.",
+						"examples": [
+							{
+								"path": "package.json",
+								"contents": "{\n\t\"name\": \"web\",\n\t\"dependencies\": {\n\t\t\"@acme/ui-kit\": \"2.4.1\"\n\t}\n}\n"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the package specifier does not match the accepted registry-name and exact-version pattern, or when the selected existing dependency has a different version. A package.json read failure also rejects with the filesystem error."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when the contents read from package.json are not valid JSON."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
