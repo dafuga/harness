@@ -7,26 +7,392 @@
 	"responsibility": "Stores bounded sealed video batches without granting verification verdicts.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
-			"src/services/verification-evidence/VideoArchiveService.ts"
+			"src/services/verification-evidence/VideoArchiveService.ts",
+			"src/services/verification-evidence/VideoArchiveService.types.ts",
+			"src/services/verification-evidence/video-archive-service/batch.ts",
+			"src/services/verification-evidence/video-archive-service/media.ts",
+			"src/services/verification-evidence/video-archive-service/read.ts",
+			"src/services/verification-evidence/video-archive-service/restore.ts",
+			"src/services/verification-evidence/video-archive-service/schema.ts",
+			"src/services/verification-evidence/video-archive-service/source.ts",
+			"src/services/verification-evidence/video-archive-service/write.ts"
 		],
 		"symbols": [
 			"VideoArchiveService",
-			"VideoArchiveService.run"
+			"VideoArchiveService.constructor",
+			"VideoArchiveService.run",
+			"VideoArchiveService.write",
+			"VideoArchiveService.read",
+			"VideoArchiveService.current",
+			"VideoArchiveService.restore",
+			"VideoArchiveService.fetch",
+			"VideoArchiveBatch",
+			"VideoArchiveClip",
+			"VideoArchiveCurrent",
+			"VideoArchiveInput",
+			"VideoArchiveRead",
+			"VideoArchiveSlot",
+			"VideoBatchPointer",
+			"VideoBatchPointer",
+			"VideoArchiveSlot",
+			"VideoArchiveClip",
+			"VideoArchiveBatch",
+			"VideoArchiveManifest",
+			"ArchiveVideoFacts",
+			"VideoArchiveSealedValue",
+			"VideoArchiveInput",
+			"VideoArchiveRead",
+			"VideoArchiveCurrent",
+			"AdmittedVideo",
+			"digest",
+			"sealedBytes",
+			"slotKey",
+			"splitVideoBatches",
+			"mediaObjects",
+			"validateBatch",
+			"validateClip",
+			"batchManifest",
+			"retainedMedia",
+			"inspectMedia",
+			"readVideoBatch",
+			"restoreVideoBatch",
+			"mediaLimit",
+			"batchLimit",
+			"hashSchema",
+			"slotSchema",
+			"clipSchema",
+			"batchSchema",
+			"pointerSchema",
+			"manifestSchema",
+			"sourceBinding",
+			"retainSource",
+			"writeVideoBatches"
 		]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "VideoArchiveService.constructor.root",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "VideoArchiveService.write.inputs",
+				"type": "VideoArchiveInput[]",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.read.pointer",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.read.within",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "VideoArchiveService.current.slot",
+				"type": "VideoArchiveSlot",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.current.inputHash",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.current.pointers",
+				"type": "VideoBatchPointer[]",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.current.within",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "VideoArchiveService.restore.pointer",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.restore.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.restore.within",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "VideoArchiveService.fetch.input",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "VideoArchiveService.fetch.remote",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "digest.bytes",
+				"type": "Buffer | string",
+				"required": true
+			},
+			{
+				"name": "sealedBytes.value",
+				"type": "VideoArchiveSealedValue",
+				"required": true
+			},
+			{
+				"name": "slotKey.slot",
+				"type": "VideoArchiveSlot",
+				"required": true
+			},
+			{
+				"name": "splitVideoBatches.clips",
+				"type": "VideoArchiveClip[]",
+				"required": true
+			},
+			{
+				"name": "mediaObjects.clips",
+				"type": "VideoArchiveClip[]",
+				"required": true
+			},
+			{
+				"name": "validateBatch.batch",
+				"type": "VideoArchiveBatch",
+				"required": true
+			},
+			{
+				"name": "validateClip.clip",
+				"type": "VideoArchiveClip",
+				"required": true
+			},
+			{
+				"name": "batchManifest.batch",
+				"type": "VideoArchiveBatch",
+				"required": true
+			},
+			{
+				"name": "batchManifest.bytes",
+				"type": "Buffer",
+				"required": true
+			},
+			{
+				"name": "retainedMedia.lfs",
+				"type": "LfsAdapter",
+				"required": true
+			},
+			{
+				"name": "retainedMedia.object",
+				"type": "VideoArchiveClip['media']",
+				"required": true
+			},
+			{
+				"name": "inspectMedia.clip",
+				"type": "VideoArchiveClip",
+				"required": true
+			},
+			{
+				"name": "inspectMedia.files",
+				"type": "Map<string, Buffer>",
+				"required": true
+			},
+			{
+				"name": "readVideoBatch.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readVideoBatch.input",
+				"type": "VideoBatchPointer",
+				"required": true
+			},
+			{
+				"name": "readVideoBatch.within",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "restoreVideoBatch.read",
+				"type": "VideoArchiveRead",
+				"required": true
+			},
+			{
+				"name": "restoreVideoBatch.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "restoreVideoBatch.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "sourceBinding.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "sourceBinding.clip",
+				"type": "VideoArchiveClip",
+				"required": true
+			},
+			{
+				"name": "retainSource.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "retainSource.revision",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeVideoBatches.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeVideoBatches.inputs",
+				"type": "VideoArchiveInput[]",
+				"required": true
+			}
+		],
 		"outputs": [
 			{
 				"name": "VideoArchiveService.run",
 				"type": "string"
+			},
+			{
+				"name": "VideoArchiveService.write",
+				"type": "Promise<VideoBatchPointer[]>"
+			},
+			{
+				"name": "VideoArchiveService.read",
+				"type": "Promise<VideoArchiveRead>"
+			},
+			{
+				"name": "VideoArchiveService.current",
+				"type": "Promise<VideoArchiveCurrent | null>"
+			},
+			{
+				"name": "VideoArchiveService.restore",
+				"type": "Promise<VideoArchiveRead>"
+			},
+			{
+				"name": "VideoArchiveService.fetch",
+				"type": "Promise<VideoArchiveRead>"
+			},
+			{
+				"name": "digest",
+				"type": "string"
+			},
+			{
+				"name": "sealedBytes",
+				"type": "Buffer"
+			},
+			{
+				"name": "slotKey",
+				"type": "string"
+			},
+			{
+				"name": "splitVideoBatches",
+				"type": "VideoArchiveClip[][]"
+			},
+			{
+				"name": "mediaObjects",
+				"type": "Map<string, VideoArchiveClip['media']>"
+			},
+			{
+				"name": "validateBatch",
+				"type": "void"
+			},
+			{
+				"name": "validateClip",
+				"type": "void"
+			},
+			{
+				"name": "batchManifest",
+				"type": "VideoArchiveManifest"
+			},
+			{
+				"name": "retainedMedia",
+				"type": "Promise<Buffer>"
+			},
+			{
+				"name": "inspectMedia",
+				"type": "void"
+			},
+			{
+				"name": "readVideoBatch",
+				"type": "Promise<VideoArchiveRead>"
+			},
+			{
+				"name": "restoreVideoBatch",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "mediaLimit",
+				"type": "unknown"
+			},
+			{
+				"name": "batchLimit",
+				"type": "unknown"
+			},
+			{
+				"name": "hashSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "slotSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "clipSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "batchSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "pointerSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "manifestSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "sourceBinding",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "retainSource",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "writeVideoBatches",
+				"type": "Promise<VideoBatchPointer[]>"
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "VideoArchiveService.run",
@@ -39,11 +405,591 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "VideoArchiveService.write",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.write.inputs",
+						"type": "VideoArchiveInput[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.write",
+						"type": "Promise<VideoBatchPointer[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VideoArchiveService.read",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.read.pointer",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.read.within",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.read",
+						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VideoArchiveService.current",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.current.slot",
+						"type": "VideoArchiveSlot",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.current.inputHash",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.current.pointers",
+						"type": "VideoBatchPointer[]",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.current.within",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.current",
+						"type": "Promise<VideoArchiveCurrent | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VideoArchiveService.restore",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.restore.pointer",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.restore.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.restore.within",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.restore",
+						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "VideoArchiveService.fetch",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.fetch.input",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "VideoArchiveService.fetch.remote",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.fetch",
+						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "digest",
+				"inputs": [
+					{
+						"name": "digest.bytes",
+						"type": "Buffer | string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "digest",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedBytes",
+				"inputs": [
+					{
+						"name": "sealedBytes.value",
+						"type": "VideoArchiveSealedValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedBytes",
+						"type": "Buffer"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "slotKey",
+				"inputs": [
+					{
+						"name": "slotKey.slot",
+						"type": "VideoArchiveSlot",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "slotKey",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "splitVideoBatches",
+				"inputs": [
+					{
+						"name": "splitVideoBatches.clips",
+						"type": "VideoArchiveClip[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "splitVideoBatches",
+						"type": "VideoArchiveClip[][]"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "mediaObjects",
+				"inputs": [
+					{
+						"name": "mediaObjects.clips",
+						"type": "VideoArchiveClip[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "mediaObjects",
+						"type": "Map<string, VideoArchiveClip['media']>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateBatch",
+				"inputs": [
+					{
+						"name": "validateBatch.batch",
+						"type": "VideoArchiveBatch",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateBatch",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "validateClip",
+				"inputs": [
+					{
+						"name": "validateClip.clip",
+						"type": "VideoArchiveClip",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validateClip",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "batchManifest",
+				"inputs": [
+					{
+						"name": "batchManifest.batch",
+						"type": "VideoArchiveBatch",
+						"required": true
+					},
+					{
+						"name": "batchManifest.bytes",
+						"type": "Buffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "batchManifest",
+						"type": "VideoArchiveManifest"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "retainedMedia",
+				"inputs": [
+					{
+						"name": "retainedMedia.lfs",
+						"type": "LfsAdapter",
+						"required": true
+					},
+					{
+						"name": "retainedMedia.object",
+						"type": "VideoArchiveClip['media']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "retainedMedia",
+						"type": "Promise<Buffer>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inspectMedia",
+				"inputs": [
+					{
+						"name": "inspectMedia.clip",
+						"type": "VideoArchiveClip",
+						"required": true
+					},
+					{
+						"name": "inspectMedia.files",
+						"type": "Map<string, Buffer>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inspectMedia",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readVideoBatch",
+				"inputs": [
+					{
+						"name": "readVideoBatch.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readVideoBatch.input",
+						"type": "VideoBatchPointer",
+						"required": true
+					},
+					{
+						"name": "readVideoBatch.within",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readVideoBatch",
+						"type": "Promise<VideoArchiveRead>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "restoreVideoBatch",
+				"inputs": [
+					{
+						"name": "restoreVideoBatch.read",
+						"type": "VideoArchiveRead",
+						"required": true
+					},
+					{
+						"name": "restoreVideoBatch.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "restoreVideoBatch.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "restoreVideoBatch",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sourceBinding",
+				"inputs": [
+					{
+						"name": "sourceBinding.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "sourceBinding.clip",
+						"type": "VideoArchiveClip",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceBinding",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "retainSource",
+				"inputs": [
+					{
+						"name": "retainSource.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "retainSource.revision",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "retainSource",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeVideoBatches",
+				"inputs": [
+					{
+						"name": "writeVideoBatches.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeVideoBatches.inputs",
+						"type": "VideoArchiveInput[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeVideoBatches",
+						"type": "Promise<VideoBatchPointer[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "VideoArchiveService.constructor",
+				"inputs": [
+					{
+						"name": "VideoArchiveService.constructor.root",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "VideoArchiveService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.evidence-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.lfs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-refs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.lfs-pointer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.media-facts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.evidence-branch",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/verification-evidence/VideoArchiveService.ts",
