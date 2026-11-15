@@ -29,28 +29,33 @@
 			{
 				"name": "CapacitorProjectsService.constructor.config",
 				"type": "CapacitorProjectsServiceConfig",
-				"required": true
+				"required": true,
+				"description": "Contains the phone account bridge as cloud and the paired computer bridge as mac. Project IDs beginning with local- route to mac; all other project IDs route to cloud."
 			}
 		],
 		"outputs": [
 			{
 				"name": "projects",
 				"type": "Promise<DesktopProject[]>",
-				"description": "Deduplicated projects from reachable connections. Hosted IDs stay with the account; local-* IDs stay with the Mac."
+				"description": "Returns deduplicated projects from bridges that expose listProjects, keeping non-local IDs from cloud and local-* IDs from mac. Rejected sides are skipped unless every bridge that exposes listProjects rejects, in which case the promise rejects with the first rejection reason.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "operations",
 				"type": "DesktopBridge",
-				"description": "Routes requests and run cancellation to the connection that owns them, and releases finished run routing entries."
+				"description": "Returns a bridge that routes each project operation using its projectId or the selected project and remembers which bridge started each run so cancellation goes there. Run-event listeners subscribe to both bridges, optional operations are exposed according to bridge availability, and terminal run events remove remembered routes."
 			}
 		],
 		"errors": [
 			{
 				"name": "refused",
-				"type": "Error",
-				"description": "A refused operation is reported from its original connection and never retried with another authority."
+				"type": "thrown",
+				"description": "When the chosen bridge lacks the requested operation, the service throws an Error with message `This operation is not available for this project on this phone.` and code `method-denied`. Rejections from delegated operations propagate; listing ignores individual failures unless every bridge exposing listProjects rejects, then it rethrows the first rejection reason."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CapacitorProjectsService.connect",
@@ -58,11 +63,12 @@
 				"outputs": [
 					{
 						"name": "CapacitorProjectsService.connect",
-						"type": "DesktopBridge"
+						"type": "DesktopBridge",
+						"description": "Returns a bridge whose project listing combines cloud account projects and Mac-local projects. Project operations route by input projectId or the selected project; run-event subscriptions use both bridges, and optional operations are exposed according to bridge availability."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -72,17 +78,19 @@
 					{
 						"name": "CapacitorProjectsService.constructor.config",
 						"type": "CapacitorProjectsServiceConfig",
-						"required": true
+						"required": true,
+						"description": "Contains the phone account bridge as cloud and the paired computer bridge as mac. Project IDs beginning with local- route to mac; all other project IDs route to cloud."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CapacitorProjectsService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a service instance retaining the supplied config, with no selected project and no remembered run routes."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
