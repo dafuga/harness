@@ -8,6 +8,18 @@
 			"status": "deprecated"
 		},
 		{
+			"path": "src/utils/verifyPlan.ts",
+			"target": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan.ts",
+			"uid": "u_sp2yvnpnml",
+			"status": "deprecated"
+		},
+		{
+			"path": "src/workflows/run-verify/TrustedBaseService.ts",
+			"target": "src/workflows/verification-evidence/run-verify/TrustedBaseService.ts",
+			"uid": "u_h3yv5bbvdi",
+			"status": "deprecated"
+		},
+		{
 			"path": "src/workflows/run-verify/runVerify.ts",
 			"target": "src/workflows/verification-evidence/run-verify/runVerify.ts",
 			"uid": "u_srtmrphmgz",
@@ -20,9 +32,39 @@
 			"status": "deprecated"
 		},
 		{
+			"path": "src/workflows/run-verify/verification-service/SnapshotRunService.ts",
+			"target": "src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService.ts",
+			"uid": "u_x7kddegtw2",
+			"status": "deprecated"
+		},
+		{
+			"path": "src/workflows/run-verify/verification-service/VerificationService.ts",
+			"target": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+			"uid": "u_k23ebybqw2",
+			"status": "deprecated"
+		},
+		{
+			"path": "src/workflows/run-verify/verification-service/check-run-service/CheckRunService.ts",
+			"target": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+			"uid": "u_3flwsx2557",
+			"status": "deprecated"
+		},
+		{
+			"path": "src/workflows/run-verify/verification-service/check-run-service/gatherCaptures.ts",
+			"target": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures.ts",
+			"uid": "u_3exag5gqwq",
+			"status": "deprecated"
+		},
+		{
 			"path": "src/workflows/run-verify/verification-service/check-run-service/mediaFacts.ts",
 			"target": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/mediaFacts.ts",
 			"uid": "u_vkj6mnyah7",
+			"status": "deprecated"
+		},
+		{
+			"path": "src/workflows/run-verify/verification-service/check-run-service/readBrowserDiagnostics.ts",
+			"target": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readBrowserDiagnostics.ts",
+			"uid": "u_ofwymwt4ge",
 			"status": "deprecated"
 		},
 		{
@@ -46,6 +88,18 @@
 		{
 			"path": "src/workflows/run-verify/verification-service/record-assembly-service/sealRecord.ts",
 			"target": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord.ts",
+			"uid": "u_ra27dwoz42",
+			"status": "deprecated"
+		},
+		{
+			"path": "src/workflows/run-verify/verification-service/scenarioCoverage.ts",
+			"target": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
+			"uid": "u_lnqhwcablp",
+			"status": "deprecated"
+		},
+		{
+			"path": "src/workflows/run-verify/verification-service/sealRecord.ts",
+			"target": "src/workflows/verification-evidence/run-verify/verification-service/sealRecord.ts",
 			"uid": "u_ra27dwoz42",
 			"status": "deprecated"
 		},
