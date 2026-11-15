@@ -1,6 +1,7 @@
 import { readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
+import { enrollGuidanceVideo } from './support/enrollGuidanceVideo';
 import { runHarness } from './support/cli';
 import { measureWorkload } from './support/measureWorkload';
 import {
@@ -137,6 +138,13 @@ test('guide counts verified shots per state and viewport and reaches DONE', asyn
 	const text = await runHarness(['units', 'guide', entity], root);
 	expect(text.stdout).toContain('ALL DONE');
 	expect(text.stdout).toContain('DONE');
+	await enrollGuidanceVideo(root);
+	await commitGuidance(root);
+	await attachGuidanceShots(root, ['default', 'loading']);
+	const missingVideo = await guidanceJson(root, ['guide', entity]);
+	expect(missingVideo.report.states[0].status).toBe('MISSING');
+	expect(missingVideo.report.proof.gap).toMatch(/video/i);
+
 	await writeGuidanceFile(
 		root,
 		'tests/duplicate/catalog.spec.ts',

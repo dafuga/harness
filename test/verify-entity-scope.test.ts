@@ -12,8 +12,8 @@ import {
 } from '../src/workflows/verification-evidence/run-verify/verification-service/entityScope';
 import { scopedContext } from '../src/workflows/verification-evidence/run-verify/scopedVerify';
 import type { ScenarioManifest } from '../src/core/development-tooling/unitTypes';
+import { twoOwnerVideo } from './support/videoEnrollmentFixture';
 import type { PlannedCheck } from '../src/utils/verification-evidence/verifyPlan';
-
 const badge = 'reports.component.status-badge';
 const catalog = {
 	id: 'catalog',
@@ -25,10 +25,10 @@ const catalog = {
 	],
 	viewports: [{ id: 'desktop' }, { id: 'mobile' }],
 	evidence: [{ id: 'screens', kind: 'screenshot', states: ['badge', 'badge-failed', 'modal'] }],
-	tests: []
+	tests: [],
+	video: twoOwnerVideo(badge, 'badge', 'reports.component.modal', 'modal')
 } as unknown as ScenarioManifest;
 const other = { ...catalog, id: 'other', units: ['x'], states: [], evidence: [] };
-
 test('a scoped run keeps only the scenarios and states that show the entity', () => {
 	const [scoped, ...rest] = scopedScenarios([catalog, other], badge);
 	expect(rest).toEqual([]);
@@ -36,15 +36,15 @@ test('a scoped run keeps only the scenarios and states that show the entity', ()
 	expect(scoped.states.map((state) => state.id)).toEqual(['badge', 'badge-failed']);
 	expect(scoped.evidence?.[0].states).toEqual(['badge', 'badge-failed']);
 	expect(scoped.viewports).toHaveLength(2);
+	expect(scoped.video?.clips.map((clip) => clip.id)).toEqual(['use-feature']);
+	expect(scoped.video?.graphs.map((graph) => graph.id)).toEqual(['feature']);
+	expect(scoped.video?.playlists).toEqual([{ id: 'all', clips: ['use-feature'] }]);
 	const implicit = {
 		...catalog,
 		states: catalog.states.map(({ id }) => ({ id }))
 	} as ScenarioManifest;
 	const [inherited] = scopedScenarios([implicit], badge);
-	expect(
-		inherited.states.map(({ id }) => id),
-		'Legacy membership covers every state when no state names the unit'
-	).toEqual(['badge', 'badge-failed', 'modal']);
+	expect(inherited.states.map(({ id }) => id)).toEqual(['badge', 'badge-failed', 'modal']);
 	// A shared scenario, as explorer-shell is for a verdict: only its unnamed states show it.
 	const mixed = {
 		...catalog,
@@ -55,11 +55,9 @@ test('a scoped run keeps only the scenarios and states that show the entity', ()
 	expect(shared.states.map(({ id }) => id)).toEqual(['bar']);
 	expect(shared.evidence?.[0].states).toEqual([]);
 });
-
 test('an entity no scenario covers is refused', () => {
 	expect(() => scopedScenarios([catalog], 'reports.component.none')).toThrow('No scenario covers');
 });
-
 test('a scoped Playwright check greps the tests named after the entity', () =>
 	measureWorkload(
 		'workflow.verification-evidence-run-verify-verification-service-entity-scope',
@@ -85,7 +83,6 @@ test('a scoped Playwright check greps the tests named after the entity', () =>
 			expect(scopedCheck(page, badge), 'Page scenarios keep their own test names').toBe(page);
 		}
 	));
-
 test('a scoped Playwright check preserves a scenario selector', () => {
 	const check = {
 		scenario: 'component-catalog-previews',
@@ -94,18 +91,15 @@ test('a scoped Playwright check preserves a scenario selector', () => {
 	} as PlannedCheck;
 	expect(scopedCheck(check, badge)).toBe(check);
 });
-
 test('a scoped record states it is partial', () => {
 	expect(scopeFailure(badge)).toContain('partial and never a full pass');
 });
-
 test('a scoped run does not reopen repository-wide gates from an empty base', () => {
 	const base = { name: 'empty' };
 	const head = { name: 'head' };
 	const context = scopedContext({ base, head } as never);
 	expect(context.base).toBe(head);
 });
-
 let baseline: VerifyRepo;
 beforeAll(async () => {
 	baseline = await baselineRepo(async (repo) => {
@@ -116,9 +110,7 @@ beforeAll(async () => {
 	});
 }, 120_000);
 afterAll(() => baseline?.dispose());
-
 const entityFlags = ['--priority', 'agent-test', '--entity'];
-
 async function entityRun(
 	repo: VerifyRepo,
 	env: Record<string, string> = {},
@@ -127,7 +119,6 @@ async function entityRun(
 	const result = await repo.run(['verify', 'run', ...entityFlags, entity, '--json'], env);
 	return { ...result, ...JSON.parse(result.stdout) };
 }
-
 test(
 	'entity verification attaches every state and viewport with its record link',
 	async () =>
@@ -172,7 +163,6 @@ test(
 		}),
 	120_000
 );
-
 test('repeating entity verification keeps one attached record for identical proof', async () => {
 	const repo = await cloneRepo(baseline);
 	try {
@@ -187,7 +177,6 @@ test('repeating entity verification keeps one attached record for identical proo
 		await repo.dispose();
 	}
 }, 120_000);
-
 test("a headless entity's complete evidence is attached with its record", async () => {
 	const repo = await cloneRepo(baseline);
 	try {
@@ -206,7 +195,6 @@ test("a headless entity's complete evidence is attached with its record", async 
 		await repo.dispose();
 	}
 }, 120_000);
-
 test.each([
 	[{ FIXTURE_FAIL: '1' }, 'test page failed'],
 	[{ FIXTURE_SKIP: 'filled-mobile' }, 'missing screenshot for state filled at viewport mobile'],
