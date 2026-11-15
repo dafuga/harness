@@ -35,48 +35,689 @@
 				"name": "screenOptions.scenarios",
 				"type": "HarnessScenario[]",
 				"required": true,
-				"description": "Scenario declarations; only those with viewports become screenshot choices."
+				"description": "Declarations of the scenarios that cover the entity; only a scenario with at least one viewport becomes a choice, and each choice keeps only the states whose coverage is 'required'.",
+				"examples": [
+					[
+						{
+							"id": "evidence-grid",
+							"title": "Evidence grid",
+							"kind": "ui",
+							"units": ["reports.component.evidence-grid"],
+							"states": [
+								{
+									"id": "gallery",
+									"title": "Gallery",
+									"coverage": "required"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1440,
+									"height": 900
+								},
+								{
+									"id": "mobile",
+									"width": 390,
+									"height": 844
+								}
+							],
+							"tests": [
+								{
+									"id": "evidence-grid-visual",
+									"kind": "e2e",
+									"runner": "playwright"
+								}
+							],
+							"evidence": [
+								{
+									"id": "gallery-screen",
+									"kind": "screenshot",
+									"states": ["gallery"],
+									"viewports": ["desktop", "mobile"]
+								}
+							]
+						}
+					],
+					[
+						{
+							"id": "evidence-grid",
+							"title": "Evidence grid",
+							"kind": "ui",
+							"units": ["reports.component.evidence-grid"],
+							"states": [
+								{
+									"id": "gallery",
+									"title": "Gallery",
+									"coverage": "required"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1440,
+									"height": 900
+								},
+								{
+									"id": "mobile",
+									"width": 390,
+									"height": 844
+								}
+							],
+							"tests": [
+								{
+									"id": "evidence-grid-visual",
+									"kind": "e2e",
+									"runner": "playwright"
+								}
+							],
+							"evidence": [
+								{
+									"id": "gallery-screen",
+									"kind": "screenshot",
+									"states": ["gallery"],
+									"viewports": ["desktop", "mobile"]
+								}
+							]
+						},
+						{
+							"id": "evidence-api",
+							"title": "Evidence API",
+							"kind": "headless",
+							"units": ["reports.component.evidence-grid"],
+							"states": [
+								{
+									"id": "response",
+									"coverage": "required"
+								}
+							],
+							"viewports": [],
+							"tests": [
+								{
+									"id": "evidence-api-contract",
+									"kind": "integration",
+									"runner": "vitest"
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "screenPick.options",
 				"type": "ScreenOption[]",
 				"required": true,
-				"description": "Available scenario/state/viewport options."
+				"description": "The scenario choices to pick from, as screenOptions returns them; when no option has the wanted scenario, the first option is used, and an empty list makes screenPick return null.",
+				"examples": [
+					[
+						{
+							"scenario": "evidence-grid",
+							"title": "Evidence grid",
+							"states": ["gallery"],
+							"viewports": [
+								{
+									"id": "desktop",
+									"label": "Desktop",
+									"size": "1440 × 900"
+								},
+								{
+									"id": "mobile",
+									"label": "Mobile",
+									"size": "390 × 844"
+								}
+							]
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "screenPick.wanted",
 				"type": "Partial<ScreenPick>",
 				"required": true,
-				"description": "Partial requested selection; unknown choices fall back to the first available choice at each level."
+				"description": "The requested scenario, state and viewport, each optional; a value that is absent or not among the available choices falls back to the first choice at its level.",
+				"examples": [
+					{
+						"scenario": "evidence-grid",
+						"state": "gallery",
+						"viewport": "mobile"
+					},
+					{
+						"state": "gallery"
+					},
+					{}
+				]
 			},
 			{
 				"name": "entityScreens.evidence",
 				"type": "ExplorerEvidence",
 				"required": true,
-				"description": "Host-selected evidence for the current revision or compared revisions."
+				"description": "The evidence the screen is read from: only `after` in current mode, and in commit mode `before` too, where a null `before` takes `initial` as its gap note when `initial` is set.",
+				"examples": [
+					{
+						"mode": "commit",
+						"scenarios": [
+							{
+								"id": "evidence-grid",
+								"title": "Evidence grid",
+								"kind": "ui",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "gallery",
+										"title": "Gallery",
+										"coverage": "required"
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1440,
+										"height": 900
+									},
+									{
+										"id": "mobile",
+										"width": 390,
+										"height": 844
+									}
+								],
+								"tests": [
+									{
+										"id": "evidence-grid-visual",
+										"kind": "e2e",
+										"runner": "playwright"
+									}
+								],
+								"evidence": [
+									{
+										"id": "gallery-screen",
+										"kind": "screenshot",
+										"states": ["gallery"],
+										"viewports": ["desktop", "mobile"]
+									}
+								]
+							}
+						],
+						"after": {
+							"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+							"detail": null,
+							"record": {
+								"id": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+									"base": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+								},
+								"profile": "linux-x64",
+								"startedAt": "2026-11-14T18:40:55.210Z",
+								"finishedAt": "2026-11-14T18:42:08.914Z",
+								"failures": [],
+								"tests": [
+									{
+										"id": "evidence-grid-visual",
+										"kind": "e2e",
+										"target": "test/evidence-grid.visual.test.ts",
+										"status": "passed",
+										"durationMs": 4120
+									}
+								],
+								"scenarios": [
+									{
+										"id": "evidence-grid",
+										"status": "passed",
+										"testedRevision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+										"inherited": false,
+										"origin": {
+											"record": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+											"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+										},
+										"states": [
+											{
+												"id": "gallery",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "gallery-screen",
+														"kind": "screenshot",
+														"state": "gallery",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+														"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-14T18:42:07.512Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+															"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+														},
+														"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+													}
+												]
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							},
+							"captures": [
+								{
+									"scenario": "evidence-grid",
+									"state": "gallery",
+									"capture": {
+										"evidence": "gallery-screen",
+										"kind": "screenshot",
+										"state": "gallery",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+										"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-14T18:42:07.512Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+											"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+										},
+										"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+									},
+									"standing": "fresh",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							],
+							"coverage": [
+								{
+									"scenario": "evidence-grid",
+									"title": "Evidence grid",
+									"kind": "ui",
+									"standing": "passed",
+									"reasons": [],
+									"tests": [
+										{
+											"id": "evidence-grid-visual",
+											"status": "passed"
+										}
+									],
+									"inheritedFrom": null,
+									"states": [
+										{
+											"state": "gallery",
+											"declared": "required",
+											"standing": "passed",
+											"reasons": [],
+											"slots": [
+												{
+													"evidence": "gallery-screen",
+													"kind": "screenshot",
+													"viewport": "desktop",
+													"capture": {
+														"evidence": "gallery-screen",
+														"kind": "screenshot",
+														"state": "gallery",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+														"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-14T18:42:07.512Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+															"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+														},
+														"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+													},
+													"standing": "passed",
+													"reason": null
+												}
+											]
+										}
+									]
+								}
+							],
+							"gap": null
+						},
+						"before": {
+							"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+							"detail": null,
+							"record": {
+								"id": "7a1d4e9c0b3f6a28d5e1c7b9f04a2d6e8c3b1f5a9d7e2c4b0a6f8d1e3c5b7a92",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+									"base": null
+								},
+								"profile": "linux-x64",
+								"startedAt": "2026-11-12T09:29:10.377Z",
+								"finishedAt": "2026-11-12T09:31:45.630Z",
+								"failures": [],
+								"tests": [
+									{
+										"id": "evidence-grid-visual",
+										"kind": "e2e",
+										"target": "test/evidence-grid.visual.test.ts",
+										"status": "passed",
+										"durationMs": 3985
+									}
+								],
+								"scenarios": [
+									{
+										"id": "evidence-grid",
+										"status": "passed",
+										"testedRevision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+										"inherited": false,
+										"origin": {
+											"record": "7a1d4e9c0b3f6a28d5e1c7b9f04a2d6e8c3b1f5a9d7e2c4b0a6f8d1e3c5b7a92",
+											"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+										},
+										"states": [
+											{
+												"id": "gallery",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "gallery-screen",
+														"kind": "screenshot",
+														"state": "gallery",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d/evidence-grid/evidence-grid-visual/gallery-screen.png",
+														"sha256": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-12T09:31:44.206Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2",
+															"revision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+														},
+														"media": "media/2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png"
+													}
+												]
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							},
+							"captures": [
+								{
+									"scenario": "evidence-grid",
+									"state": "gallery",
+									"capture": {
+										"evidence": "gallery-screen",
+										"kind": "screenshot",
+										"state": "gallery",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "evidence/5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d/evidence-grid/evidence-grid-visual/gallery-screen.png",
+										"sha256": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9",
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-12T09:31:44.206Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2",
+											"revision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+										},
+										"media": "media/2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png"
+									},
+									"standing": "fresh",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							],
+							"coverage": [],
+							"gap": null
+						},
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			},
 			{
 				"name": "entityScreens.pick",
 				"type": "ScreenPick | null",
 				"required": true,
-				"description": "Selected scenario, state and viewport, or null when there is no visual scenario."
+				"description": "The scenario, state and viewport to show from each side; null makes each side's screen a gap with no scenario named.",
+				"examples": [
+					{
+						"scenario": "evidence-grid",
+						"state": "gallery",
+						"viewport": "desktop"
+					},
+					null
+				]
 			},
 			{
 				"name": "catalogShot.evidence",
 				"type": "ExplorerEvidence",
 				"required": true,
-				"description": "The host-selected evidence for one entity at the shown revision. Captures from other states or entities must already be excluded by its declared coverage."
+				"description": "The evidence of one entity at the shown revision; only `after.captures` is read, and without a preview every usable screenshot with media in it is a candidate.",
+				"examples": [
+					{
+						"mode": "current",
+						"scenarios": [
+							{
+								"id": "evidence-grid",
+								"title": "Evidence grid",
+								"kind": "ui",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "gallery",
+										"title": "Gallery",
+										"coverage": "required"
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1440,
+										"height": 900
+									},
+									{
+										"id": "mobile",
+										"width": 390,
+										"height": 844
+									}
+								],
+								"tests": [
+									{
+										"id": "evidence-grid-visual",
+										"kind": "e2e",
+										"runner": "playwright"
+									}
+								],
+								"evidence": [
+									{
+										"id": "gallery-screen",
+										"kind": "screenshot",
+										"states": ["gallery"],
+										"viewports": ["desktop", "mobile"]
+									}
+								]
+							}
+						],
+						"after": {
+							"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+							"detail": null,
+							"record": {
+								"id": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+									"base": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+								},
+								"profile": "linux-x64",
+								"startedAt": "2026-11-14T18:40:55.210Z",
+								"finishedAt": "2026-11-14T18:42:08.914Z",
+								"failures": [],
+								"tests": [
+									{
+										"id": "evidence-grid-visual",
+										"kind": "e2e",
+										"target": "test/evidence-grid.visual.test.ts",
+										"status": "passed",
+										"durationMs": 4120
+									}
+								],
+								"scenarios": [
+									{
+										"id": "evidence-grid",
+										"status": "passed",
+										"testedRevision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+										"inherited": false,
+										"origin": {
+											"record": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+											"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+										},
+										"states": [
+											{
+												"id": "gallery",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "gallery-screen",
+														"kind": "screenshot",
+														"state": "gallery",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+														"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-14T18:42:07.512Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+															"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+														},
+														"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+													}
+												]
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							},
+							"captures": [
+								{
+									"scenario": "evidence-grid",
+									"state": "gallery",
+									"capture": {
+										"evidence": "gallery-screen",
+										"kind": "screenshot",
+										"state": "gallery",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+										"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-14T18:42:07.512Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+											"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+										},
+										"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+									},
+									"standing": "fresh",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							],
+							"coverage": [
+								{
+									"scenario": "evidence-grid",
+									"title": "Evidence grid",
+									"kind": "ui",
+									"standing": "passed",
+									"reasons": [],
+									"tests": [
+										{
+											"id": "evidence-grid-visual",
+											"status": "passed"
+										}
+									],
+									"inheritedFrom": null,
+									"states": [
+										{
+											"state": "gallery",
+											"declared": "required",
+											"standing": "passed",
+											"reasons": [],
+											"slots": [
+												{
+													"evidence": "gallery-screen",
+													"kind": "screenshot",
+													"viewport": "desktop",
+													"capture": {
+														"evidence": "gallery-screen",
+														"kind": "screenshot",
+														"state": "gallery",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+														"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-14T18:42:07.512Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+															"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+														},
+														"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+													},
+													"standing": "passed",
+													"reason": null
+												}
+											]
+										}
+									]
+								}
+							],
+							"gap": null
+						},
+						"before": null,
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			},
 			{
 				"name": "catalogShot.preview",
 				"type": "ScreenPick",
 				"required": false,
-				"description": "Optional exact scenario, state and viewport for the catalog image. If absent, choose usable evidence with fresh captures first. If specified but missing, return no image.",
+				"default": "undefined",
+				"description": "The exact scenario, state and viewport the catalog image must show; when it is absent, any usable screenshot with media qualifies, preferring a capture of the shown commit's build. When it is set and no usable screenshot matches it, the result is null unless allowFocusedDefault permits a focused capture.",
 				"examples": [
 					{
-						"scenario": "agent-settings",
-						"state": "settings",
+						"scenario": "evidence-grid",
+						"state": "gallery",
 						"viewport": "desktop"
+					},
+					{
+						"scenario": "evidence-grid",
+						"state": "gallery",
+						"viewport": "mobile"
 					}
 				]
 			},
@@ -85,43 +726,651 @@
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Allows an unselected default to use a retained focused capture when true; defaults to false."
+				"description": "When true and no usable screenshot matches the preview (or none exists), the usable focused captures are used instead; the default false returns null in that case. A focused capture grants no full verification verdict.",
+				"examples": [false, true]
 			},
 			{
 				"name": "galleryItems.evidence",
 				"type": "ExplorerEvidence",
 				"required": true,
-				"description": "Evidence whose screenshot and audio captures should become gallery items."
+				"description": "The evidence whose captures become gallery items: `after` always, and `before` too in commit mode; only screenshot and audio captures are included.",
+				"examples": [
+					{
+						"mode": "commit",
+						"scenarios": [
+							{
+								"id": "evidence-grid",
+								"title": "Evidence grid",
+								"kind": "ui",
+								"units": ["reports.component.evidence-grid"],
+								"states": [
+									{
+										"id": "gallery",
+										"title": "Gallery",
+										"coverage": "required"
+									}
+								],
+								"viewports": [
+									{
+										"id": "desktop",
+										"width": 1440,
+										"height": 900
+									},
+									{
+										"id": "mobile",
+										"width": 390,
+										"height": 844
+									}
+								],
+								"tests": [
+									{
+										"id": "evidence-grid-visual",
+										"kind": "e2e",
+										"runner": "playwright"
+									}
+								],
+								"evidence": [
+									{
+										"id": "gallery-screen",
+										"kind": "screenshot",
+										"states": ["gallery"],
+										"viewports": ["desktop", "mobile"]
+									}
+								]
+							}
+						],
+						"after": {
+							"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+							"detail": null,
+							"record": {
+								"id": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+									"base": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+								},
+								"profile": "linux-x64",
+								"startedAt": "2026-11-14T18:40:55.210Z",
+								"finishedAt": "2026-11-14T18:42:08.914Z",
+								"failures": [],
+								"tests": [
+									{
+										"id": "evidence-grid-visual",
+										"kind": "e2e",
+										"target": "test/evidence-grid.visual.test.ts",
+										"status": "passed",
+										"durationMs": 4120
+									}
+								],
+								"scenarios": [
+									{
+										"id": "evidence-grid",
+										"status": "passed",
+										"testedRevision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+										"inherited": false,
+										"origin": {
+											"record": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+											"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+										},
+										"states": [
+											{
+												"id": "gallery",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "gallery-screen",
+														"kind": "screenshot",
+														"state": "gallery",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+														"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-14T18:42:07.512Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+															"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+														},
+														"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+													}
+												]
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							},
+							"captures": [
+								{
+									"scenario": "evidence-grid",
+									"state": "gallery",
+									"capture": {
+										"evidence": "gallery-screen",
+										"kind": "screenshot",
+										"state": "gallery",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+										"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-14T18:42:07.512Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+											"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+										},
+										"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+									},
+									"standing": "fresh",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							],
+							"coverage": [
+								{
+									"scenario": "evidence-grid",
+									"title": "Evidence grid",
+									"kind": "ui",
+									"standing": "passed",
+									"reasons": [],
+									"tests": [
+										{
+											"id": "evidence-grid-visual",
+											"status": "passed"
+										}
+									],
+									"inheritedFrom": null,
+									"states": [
+										{
+											"state": "gallery",
+											"declared": "required",
+											"standing": "passed",
+											"reasons": [],
+											"slots": [
+												{
+													"evidence": "gallery-screen",
+													"kind": "screenshot",
+													"viewport": "desktop",
+													"capture": {
+														"evidence": "gallery-screen",
+														"kind": "screenshot",
+														"state": "gallery",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+														"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-14T18:42:07.512Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+															"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+														},
+														"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+													},
+													"standing": "passed",
+													"reason": null
+												}
+											]
+										}
+									]
+								}
+							],
+							"gap": null
+						},
+						"before": {
+							"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+							"detail": null,
+							"record": {
+								"id": "7a1d4e9c0b3f6a28d5e1c7b9f04a2d6e8c3b1f5a9d7e2c4b0a6f8d1e3c5b7a92",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+									"base": null
+								},
+								"profile": "linux-x64",
+								"startedAt": "2026-11-12T09:29:10.377Z",
+								"finishedAt": "2026-11-12T09:31:45.630Z",
+								"failures": [],
+								"tests": [
+									{
+										"id": "evidence-grid-visual",
+										"kind": "e2e",
+										"target": "test/evidence-grid.visual.test.ts",
+										"status": "passed",
+										"durationMs": 3985
+									}
+								],
+								"scenarios": [
+									{
+										"id": "evidence-grid",
+										"status": "passed",
+										"testedRevision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+										"inherited": false,
+										"origin": {
+											"record": "7a1d4e9c0b3f6a28d5e1c7b9f04a2d6e8c3b1f5a9d7e2c4b0a6f8d1e3c5b7a92",
+											"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+										},
+										"states": [
+											{
+												"id": "gallery",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "gallery-screen",
+														"kind": "screenshot",
+														"state": "gallery",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d/evidence-grid/evidence-grid-visual/gallery-screen.png",
+														"sha256": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-12T09:31:44.206Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2",
+															"revision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+														},
+														"media": "media/2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png"
+													}
+												]
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							},
+							"captures": [
+								{
+									"scenario": "evidence-grid",
+									"state": "gallery",
+									"capture": {
+										"evidence": "gallery-screen",
+										"kind": "screenshot",
+										"state": "gallery",
+										"viewport": "desktop",
+										"status": "passed",
+										"path": "evidence/5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d/evidence-grid/evidence-grid-visual/gallery-screen.png",
+										"sha256": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9",
+										"mediaType": "image/png",
+										"capturedAt": "2026-11-12T09:31:44.206Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2",
+											"revision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+										},
+										"media": "media/2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png"
+									},
+									"standing": "fresh",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							],
+							"coverage": [],
+							"gap": null
+						},
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "screenOptions",
 				"type": "ScreenOption[]",
-				"description": "Scenario choices with required states and labeled viewport dimensions."
+				"description": "One choice per scenario with at least one viewport, each with its title, its required states, and its viewports labeled by their capitalized id and sized as `width × height`.",
+				"examples": [
+					[
+						{
+							"scenario": "evidence-grid",
+							"title": "Evidence grid",
+							"states": ["gallery"],
+							"viewports": [
+								{
+									"id": "desktop",
+									"label": "Desktop",
+									"size": "1440 × 900"
+								},
+								{
+									"id": "mobile",
+									"label": "Mobile",
+									"size": "390 × 844"
+								}
+							]
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "screenPick",
 				"type": "ScreenPick | null",
-				"description": "Resolved choice, or null when no scenarios exist. Missing state or viewport choices become an empty string."
+				"description": "The resolved scenario, state and viewport, or null when there are no options; a level with no available choice becomes an empty string.",
+				"examples": [
+					{
+						"scenario": "evidence-grid",
+						"state": "gallery",
+						"viewport": "desktop"
+					},
+					null
+				]
 			},
 			{
 				"name": "entityScreens",
 				"type": "EntityScreens",
-				"description": "Matching after screenshot or gap, plus before at a selected commit. Validated unchanged captures remain visible with their origin and fresh=false; rejected, unvalidated or unavailable captures remain gaps. Matching scenario, state and viewport is required."
+				"description": "`after` is the shown revision's capture or its gap, `before` is the parent's capture or gap in commit mode only, and `fresh` is true only when `after` is a current capture. `origin` names the commit an inherited `after` capture was taken at; an unusable capture is a gap in current mode and an item with its standing in commit mode.",
+				"examples": [
+					{
+						"after": {
+							"id": "current-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
+							"title": "evidence-grid · gallery",
+							"category": "evidence-grid",
+							"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
+							"status": "passed",
+							"source": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+							"capturedAt": "2026-11-14T18:42:07.512Z",
+							"viewport": "desktop",
+							"phase": "current",
+							"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+							"standing": "Fresh capture",
+							"provenance": [
+								{
+									"label": "Standing",
+									"value": "Fresh capture"
+								},
+								{
+									"label": "Captured from",
+									"value": "build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of 9d2c4f0"
+								},
+								{
+									"label": "Provenance",
+									"value": "actual capture of running software"
+								},
+								{
+									"label": "Verification attempt",
+									"value": "record 3f9c2b7e1a4d (passed) targeting 9d2c4f0"
+								}
+							],
+							"note": "Captured from build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of revision 9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2. Provenance: actual capture of running software. Tested at 9d2c4f0 by passing record 3f9c2b7e1a4d.",
+							"missing": false,
+							"mediaType": "image",
+							"mimeType": "image/png"
+						},
+						"fresh": true
+					},
+					{
+						"before": {
+							"id": "before-5b1e8d0-evidence-grid-gallery-gallery-screen-desktop",
+							"title": "evidence-grid · gallery",
+							"category": "evidence-grid",
+							"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
+							"status": "passed",
+							"source": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+							"capturedAt": "2026-11-12T09:31:44.206Z",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+							"standing": "Fresh capture",
+							"provenance": [
+								{
+									"label": "Standing",
+									"value": "Fresh capture"
+								},
+								{
+									"label": "Captured from",
+									"value": "build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of 5b1e8d0"
+								},
+								{
+									"label": "Provenance",
+									"value": "actual capture of running software"
+								},
+								{
+									"label": "Verification attempt",
+									"value": "record 7a1d4e9c0b3f (passed) targeting 5b1e8d0"
+								}
+							],
+							"note": "Captured from build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of revision 5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d. Provenance: actual capture of running software. Tested at 5b1e8d0 by passing record 7a1d4e9c0b3f.",
+							"missing": false,
+							"mediaType": "image",
+							"mimeType": "image/png"
+						},
+						"after": {
+							"id": "after-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
+							"title": "evidence-grid · gallery",
+							"category": "evidence-grid",
+							"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
+							"status": "passed",
+							"source": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+							"capturedAt": "2026-11-12T09:31:44.206Z",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+							"standing": "Inherited capture",
+							"provenance": [
+								{
+									"label": "Standing",
+									"value": "Inherited capture"
+								},
+								{
+									"label": "Captured from",
+									"value": "build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of 5b1e8d0"
+								},
+								{
+									"label": "Provenance",
+									"value": "actual capture of running software"
+								},
+								{
+									"label": "Inherited from",
+									"value": "record 7a1d4e9c0b3f of 5b1e8d0"
+								},
+								{
+									"label": "Verification attempt",
+									"value": "record 3f9c2b7e1a4d (passed) targeting 9d2c4f0"
+								}
+							],
+							"note": "Captured from build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of revision 5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d. Provenance: actual capture of running software. Inherited unchanged from record 7a1d4e9c0b3f of revision 5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d; not captured again for revision 9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2.",
+							"missing": false,
+							"mediaType": "image",
+							"mimeType": "image/png"
+						},
+						"fresh": false,
+						"origin": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+					},
+					{
+						"after": {
+							"id": "current-gap-evidence-grid-gallery-desktop",
+							"title": "evidence-grid · gallery",
+							"category": "evidence-grid",
+							"file": "",
+							"status": "not-proven",
+							"phase": "current",
+							"note": "No capture of gallery at desktop is recorded for 9d2c4f0.",
+							"missing": true,
+							"mediaType": "image"
+						},
+						"fresh": false
+					}
+				]
 			},
 			{
 				"name": "galleryItems",
 				"type": "Evidence[]",
-				"description": "Before media then after media in commit mode, or current media alone, with sequence order, status, provenance and media details. Includes recorded screenshot/audio items even when unusable or inherited, retaining their labels. Source identifies the capture build revision, never the target of inherited proof."
+				"description": "Every screenshot and audio capture of the evidence as an item with its `order`: `before` items first in commit mode, then `after` items, or `current` items alone. Each item carries the standing and provenance its own record gives it, including unusable or inherited captures, and its `source` is the revision its own build names, if any.",
+				"examples": [
+					[
+						{
+							"id": "before-5b1e8d0-evidence-grid-gallery-gallery-screen-desktop",
+							"title": "evidence-grid · gallery",
+							"category": "evidence-grid",
+							"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
+							"status": "passed",
+							"source": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+							"capturedAt": "2026-11-12T09:31:44.206Z",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+							"standing": "Fresh capture",
+							"provenance": [
+								{
+									"label": "Standing",
+									"value": "Fresh capture"
+								},
+								{
+									"label": "Captured from",
+									"value": "build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of 5b1e8d0"
+								},
+								{
+									"label": "Provenance",
+									"value": "actual capture of running software"
+								},
+								{
+									"label": "Verification attempt",
+									"value": "record 7a1d4e9c0b3f (passed) targeting 5b1e8d0"
+								}
+							],
+							"note": "Captured from build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of revision 5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d. Provenance: actual capture of running software. Tested at 5b1e8d0 by passing record 7a1d4e9c0b3f.",
+							"missing": false,
+							"mediaType": "image",
+							"mimeType": "image/png",
+							"order": 0
+						},
+						{
+							"id": "after-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
+							"title": "evidence-grid · gallery",
+							"category": "evidence-grid",
+							"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
+							"status": "passed",
+							"source": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+							"capturedAt": "2026-11-14T18:42:07.512Z",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+							"standing": "Fresh capture",
+							"provenance": [
+								{
+									"label": "Standing",
+									"value": "Fresh capture"
+								},
+								{
+									"label": "Captured from",
+									"value": "build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of 9d2c4f0"
+								},
+								{
+									"label": "Provenance",
+									"value": "actual capture of running software"
+								},
+								{
+									"label": "Verification attempt",
+									"value": "record 3f9c2b7e1a4d (passed) targeting 9d2c4f0"
+								}
+							],
+							"note": "Captured from build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of revision 9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2. Provenance: actual capture of running software. Tested at 9d2c4f0 by passing record 3f9c2b7e1a4d.",
+							"missing": false,
+							"mediaType": "image",
+							"mimeType": "image/png",
+							"order": 1
+						}
+					],
+					[
+						{
+							"id": "current-9d2c4f0-evidence-grid-gallery-gallery-narration-audio",
+							"title": "evidence-grid · gallery",
+							"category": "evidence-grid",
+							"file": "0e6b9d3a5c1f8e27b4d0a6c9e3f1b8d2a7c5e0f4b9d6a1c8e3f7b2d5a9c0e4f6.wav",
+							"status": "passed",
+							"capturedAt": "2026-11-14T18:41:58.733Z",
+							"phase": "current",
+							"comparison": "evidence-grid|gallery|gallery-narration|audio",
+							"standing": "Fresh capture",
+							"provenance": [
+								{
+									"label": "Standing",
+									"value": "Fresh capture"
+								},
+								{
+									"label": "Captured from",
+									"value": "not recorded: the capture names no build or revision"
+								},
+								{
+									"label": "Provenance",
+									"value": "fixture data, not a capture of running software"
+								},
+								{
+									"label": "Verification attempt",
+									"value": "record 3f9c2b7e1a4d (passed) targeting 9d2c4f0"
+								}
+							],
+							"note": "The capture does not record which build or revision produced it. Provenance: fixture data, not a capture of running software. Produced while record 3f9c2b7e1a4d verified revision 9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2.",
+							"missing": false,
+							"mediaType": "audio",
+							"mimeType": "audio/wav",
+							"durationSeconds": 12.4,
+							"transcript": "Your evidence grid shows every capture of this revision.",
+							"order": 0
+						}
+					]
+				]
 			},
 			{
 				"name": "catalogShot",
 				"type": "Evidence | null",
-				"description": "A usable screenshot of the shown version, preferring a fresh capture. Validated unchanged evidence keeps its original captured commit, standing and explanation. Returns null for missing, rejected, unvalidated, wrong-build or unrelated evidence; never borrows from the parent."
+				"description": "The usable screenshot used as the catalog image, preferring a capture of the shown commit's build and otherwise the first usable one, or null when nothing matches the preview and no focused fallback applies. An inherited capture keeps its original standing, source and explanation, and the parent side is never read.",
+				"examples": [
+					{
+						"id": "current-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
+						"title": "evidence-grid · gallery",
+						"category": "evidence-grid",
+						"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
+						"status": "passed",
+						"source": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+						"capturedAt": "2026-11-14T18:42:07.512Z",
+						"viewport": "desktop",
+						"phase": "current",
+						"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+						"standing": "Fresh capture",
+						"provenance": [
+							{
+								"label": "Standing",
+								"value": "Fresh capture"
+							},
+							{
+								"label": "Captured from",
+								"value": "build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of 9d2c4f0"
+							},
+							{
+								"label": "Provenance",
+								"value": "actual capture of running software"
+							},
+							{
+								"label": "Verification attempt",
+								"value": "record 3f9c2b7e1a4d (passed) targeting 9d2c4f0"
+							}
+						],
+						"note": "Captured from build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of revision 9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2. Provenance: actual capture of running software. Tested at 9d2c4f0 by passing record 3f9c2b7e1a4d.",
+						"missing": false,
+						"mediaType": "image",
+						"mimeType": "image/png"
+					},
+					null
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "screenOptions",
@@ -130,18 +1379,146 @@
 						"name": "screenOptions.scenarios",
 						"type": "HarnessScenario[]",
 						"required": true,
-						"description": "Scenario declarations; only those with viewports become screenshot choices."
+						"description": "Declarations of the scenarios that cover the entity; only a scenario with at least one viewport becomes a choice, and each choice keeps only the states whose coverage is 'required'.",
+						"examples": [
+							[
+								{
+									"id": "evidence-grid",
+									"title": "Evidence grid",
+									"kind": "ui",
+									"units": ["reports.component.evidence-grid"],
+									"states": [
+										{
+											"id": "gallery",
+											"title": "Gallery",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1440,
+											"height": 900
+										},
+										{
+											"id": "mobile",
+											"width": 390,
+											"height": 844
+										}
+									],
+									"tests": [
+										{
+											"id": "evidence-grid-visual",
+											"kind": "e2e",
+											"runner": "playwright"
+										}
+									],
+									"evidence": [
+										{
+											"id": "gallery-screen",
+											"kind": "screenshot",
+											"states": ["gallery"],
+											"viewports": ["desktop", "mobile"]
+										}
+									]
+								}
+							],
+							[
+								{
+									"id": "evidence-grid",
+									"title": "Evidence grid",
+									"kind": "ui",
+									"units": ["reports.component.evidence-grid"],
+									"states": [
+										{
+											"id": "gallery",
+											"title": "Gallery",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1440,
+											"height": 900
+										},
+										{
+											"id": "mobile",
+											"width": 390,
+											"height": 844
+										}
+									],
+									"tests": [
+										{
+											"id": "evidence-grid-visual",
+											"kind": "e2e",
+											"runner": "playwright"
+										}
+									],
+									"evidence": [
+										{
+											"id": "gallery-screen",
+											"kind": "screenshot",
+											"states": ["gallery"],
+											"viewports": ["desktop", "mobile"]
+										}
+									]
+								},
+								{
+									"id": "evidence-api",
+									"title": "Evidence API",
+									"kind": "headless",
+									"units": ["reports.component.evidence-grid"],
+									"states": [
+										{
+											"id": "response",
+											"coverage": "required"
+										}
+									],
+									"viewports": [],
+									"tests": [
+										{
+											"id": "evidence-api-contract",
+											"kind": "integration",
+											"runner": "vitest"
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "screenOptions",
 						"type": "ScreenOption[]",
-						"description": "Scenario choices with required states and labeled viewport dimensions."
+						"description": "One choice per scenario with at least one viewport, each with its title, its required states, and its viewports labeled by their capitalized id and sized as `width × height`.",
+						"examples": [
+							[
+								{
+									"scenario": "evidence-grid",
+									"title": "Evidence grid",
+									"states": ["gallery"],
+									"viewports": [
+										{
+											"id": "desktop",
+											"label": "Desktop",
+											"size": "1440 × 900"
+										},
+										{
+											"id": "mobile",
+											"label": "Mobile",
+											"size": "390 × 844"
+										}
+									]
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "screenPick",
@@ -150,24 +1527,65 @@
 						"name": "screenPick.options",
 						"type": "ScreenOption[]",
 						"required": true,
-						"description": "Available scenario/state/viewport options."
+						"description": "The scenario choices to pick from, as screenOptions returns them; when no option has the wanted scenario, the first option is used, and an empty list makes screenPick return null.",
+						"examples": [
+							[
+								{
+									"scenario": "evidence-grid",
+									"title": "Evidence grid",
+									"states": ["gallery"],
+									"viewports": [
+										{
+											"id": "desktop",
+											"label": "Desktop",
+											"size": "1440 × 900"
+										},
+										{
+											"id": "mobile",
+											"label": "Mobile",
+											"size": "390 × 844"
+										}
+									]
+								}
+							],
+							[]
+						]
 					},
 					{
 						"name": "screenPick.wanted",
 						"type": "Partial<ScreenPick>",
 						"required": true,
-						"description": "Partial requested selection; unknown choices fall back to the first available choice at each level."
+						"description": "The requested scenario, state and viewport, each optional; a value that is absent or not among the available choices falls back to the first choice at its level.",
+						"examples": [
+							{
+								"scenario": "evidence-grid",
+								"state": "gallery",
+								"viewport": "mobile"
+							},
+							{
+								"state": "gallery"
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "screenPick",
 						"type": "ScreenPick | null",
-						"description": "Resolved choice, or null when no scenarios exist. Missing state or viewport choices become an empty string."
+						"description": "The resolved scenario, state and viewport, or null when there are no options; a level with no available choice becomes an empty string.",
+						"examples": [
+							{
+								"scenario": "evidence-grid",
+								"state": "gallery",
+								"viewport": "desktop"
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "entityScreens",
@@ -176,24 +1594,456 @@
 						"name": "entityScreens.evidence",
 						"type": "ExplorerEvidence",
 						"required": true,
-						"description": "Host-selected evidence for the current revision or compared revisions."
+						"description": "The evidence the screen is read from: only `after` in current mode, and in commit mode `before` too, where a null `before` takes `initial` as its gap note when `initial` is set.",
+						"examples": [
+							{
+								"mode": "commit",
+								"scenarios": [
+									{
+										"id": "evidence-grid",
+										"title": "Evidence grid",
+										"kind": "ui",
+										"units": ["reports.component.evidence-grid"],
+										"states": [
+											{
+												"id": "gallery",
+												"title": "Gallery",
+												"coverage": "required"
+											}
+										],
+										"viewports": [
+											{
+												"id": "desktop",
+												"width": 1440,
+												"height": 900
+											},
+											{
+												"id": "mobile",
+												"width": 390,
+												"height": 844
+											}
+										],
+										"tests": [
+											{
+												"id": "evidence-grid-visual",
+												"kind": "e2e",
+												"runner": "playwright"
+											}
+										],
+										"evidence": [
+											{
+												"id": "gallery-screen",
+												"kind": "screenshot",
+												"states": ["gallery"],
+												"viewports": ["desktop", "mobile"]
+											}
+										]
+									}
+								],
+								"after": {
+									"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+									"detail": null,
+									"record": {
+										"id": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+											"base": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+										},
+										"profile": "linux-x64",
+										"startedAt": "2026-11-14T18:40:55.210Z",
+										"finishedAt": "2026-11-14T18:42:08.914Z",
+										"failures": [],
+										"tests": [
+											{
+												"id": "evidence-grid-visual",
+												"kind": "e2e",
+												"target": "test/evidence-grid.visual.test.ts",
+												"status": "passed",
+												"durationMs": 4120
+											}
+										],
+										"scenarios": [
+											{
+												"id": "evidence-grid",
+												"status": "passed",
+												"testedRevision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+												"inherited": false,
+												"origin": {
+													"record": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+													"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+												},
+												"states": [
+													{
+														"id": "gallery",
+														"coverage": "required",
+														"captures": [
+															{
+																"evidence": "gallery-screen",
+																"kind": "screenshot",
+																"state": "gallery",
+																"viewport": "desktop",
+																"status": "passed",
+																"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+																"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+																"mediaType": "image/png",
+																"capturedAt": "2026-11-14T18:42:07.512Z",
+																"provenance": "actual-capture",
+																"server": {
+																	"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+																	"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+																},
+																"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+															}
+														]
+													}
+												]
+											}
+										],
+										"measurements": [],
+										"budgets": {
+											"findings": []
+										}
+									},
+									"captures": [
+										{
+											"scenario": "evidence-grid",
+											"state": "gallery",
+											"capture": {
+												"evidence": "gallery-screen",
+												"kind": "screenshot",
+												"state": "gallery",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+												"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-14T18:42:07.512Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+													"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+												},
+												"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+											},
+											"standing": "fresh",
+											"usable": true,
+											"current": true,
+											"inheritedFrom": null
+										}
+									],
+									"coverage": [
+										{
+											"scenario": "evidence-grid",
+											"title": "Evidence grid",
+											"kind": "ui",
+											"standing": "passed",
+											"reasons": [],
+											"tests": [
+												{
+													"id": "evidence-grid-visual",
+													"status": "passed"
+												}
+											],
+											"inheritedFrom": null,
+											"states": [
+												{
+													"state": "gallery",
+													"declared": "required",
+													"standing": "passed",
+													"reasons": [],
+													"slots": [
+														{
+															"evidence": "gallery-screen",
+															"kind": "screenshot",
+															"viewport": "desktop",
+															"capture": {
+																"evidence": "gallery-screen",
+																"kind": "screenshot",
+																"state": "gallery",
+																"viewport": "desktop",
+																"status": "passed",
+																"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+																"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+																"mediaType": "image/png",
+																"capturedAt": "2026-11-14T18:42:07.512Z",
+																"provenance": "actual-capture",
+																"server": {
+																	"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+																	"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+																},
+																"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+															},
+															"standing": "passed",
+															"reason": null
+														}
+													]
+												}
+											]
+										}
+									],
+									"gap": null
+								},
+								"before": {
+									"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+									"detail": null,
+									"record": {
+										"id": "7a1d4e9c0b3f6a28d5e1c7b9f04a2d6e8c3b1f5a9d7e2c4b0a6f8d1e3c5b7a92",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+											"base": null
+										},
+										"profile": "linux-x64",
+										"startedAt": "2026-11-12T09:29:10.377Z",
+										"finishedAt": "2026-11-12T09:31:45.630Z",
+										"failures": [],
+										"tests": [
+											{
+												"id": "evidence-grid-visual",
+												"kind": "e2e",
+												"target": "test/evidence-grid.visual.test.ts",
+												"status": "passed",
+												"durationMs": 3985
+											}
+										],
+										"scenarios": [
+											{
+												"id": "evidence-grid",
+												"status": "passed",
+												"testedRevision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+												"inherited": false,
+												"origin": {
+													"record": "7a1d4e9c0b3f6a28d5e1c7b9f04a2d6e8c3b1f5a9d7e2c4b0a6f8d1e3c5b7a92",
+													"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+												},
+												"states": [
+													{
+														"id": "gallery",
+														"coverage": "required",
+														"captures": [
+															{
+																"evidence": "gallery-screen",
+																"kind": "screenshot",
+																"state": "gallery",
+																"viewport": "desktop",
+																"status": "passed",
+																"path": "evidence/5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d/evidence-grid/evidence-grid-visual/gallery-screen.png",
+																"sha256": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9",
+																"mediaType": "image/png",
+																"capturedAt": "2026-11-12T09:31:44.206Z",
+																"provenance": "actual-capture",
+																"server": {
+																	"buildId": "e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2",
+																	"revision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+																},
+																"media": "media/2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png"
+															}
+														]
+													}
+												]
+											}
+										],
+										"measurements": [],
+										"budgets": {
+											"findings": []
+										}
+									},
+									"captures": [
+										{
+											"scenario": "evidence-grid",
+											"state": "gallery",
+											"capture": {
+												"evidence": "gallery-screen",
+												"kind": "screenshot",
+												"state": "gallery",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d/evidence-grid/evidence-grid-visual/gallery-screen.png",
+												"sha256": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9",
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-12T09:31:44.206Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2",
+													"revision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+												},
+												"media": "media/2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png"
+											},
+											"standing": "fresh",
+											"usable": true,
+											"current": true,
+											"inheritedFrom": null
+										}
+									],
+									"coverage": [],
+									"gap": null
+								},
+								"initial": null,
+								"incomparable": []
+							}
+						]
 					},
 					{
 						"name": "entityScreens.pick",
 						"type": "ScreenPick | null",
 						"required": true,
-						"description": "Selected scenario, state and viewport, or null when there is no visual scenario."
+						"description": "The scenario, state and viewport to show from each side; null makes each side's screen a gap with no scenario named.",
+						"examples": [
+							{
+								"scenario": "evidence-grid",
+								"state": "gallery",
+								"viewport": "desktop"
+							},
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityScreens",
 						"type": "EntityScreens",
-						"description": "Matching after screenshot or gap, plus before at a selected commit. Validated unchanged captures remain visible with their origin and fresh=false; rejected, unvalidated or unavailable captures remain gaps. Matching scenario, state and viewport is required."
+						"description": "`after` is the shown revision's capture or its gap, `before` is the parent's capture or gap in commit mode only, and `fresh` is true only when `after` is a current capture. `origin` names the commit an inherited `after` capture was taken at; an unusable capture is a gap in current mode and an item with its standing in commit mode.",
+						"examples": [
+							{
+								"after": {
+									"id": "current-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
+									"title": "evidence-grid · gallery",
+									"category": "evidence-grid",
+									"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
+									"status": "passed",
+									"source": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+									"capturedAt": "2026-11-14T18:42:07.512Z",
+									"viewport": "desktop",
+									"phase": "current",
+									"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+									"standing": "Fresh capture",
+									"provenance": [
+										{
+											"label": "Standing",
+											"value": "Fresh capture"
+										},
+										{
+											"label": "Captured from",
+											"value": "build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of 9d2c4f0"
+										},
+										{
+											"label": "Provenance",
+											"value": "actual capture of running software"
+										},
+										{
+											"label": "Verification attempt",
+											"value": "record 3f9c2b7e1a4d (passed) targeting 9d2c4f0"
+										}
+									],
+									"note": "Captured from build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of revision 9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2. Provenance: actual capture of running software. Tested at 9d2c4f0 by passing record 3f9c2b7e1a4d.",
+									"missing": false,
+									"mediaType": "image",
+									"mimeType": "image/png"
+								},
+								"fresh": true
+							},
+							{
+								"before": {
+									"id": "before-5b1e8d0-evidence-grid-gallery-gallery-screen-desktop",
+									"title": "evidence-grid · gallery",
+									"category": "evidence-grid",
+									"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
+									"status": "passed",
+									"source": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+									"capturedAt": "2026-11-12T09:31:44.206Z",
+									"viewport": "desktop",
+									"phase": "before",
+									"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+									"standing": "Fresh capture",
+									"provenance": [
+										{
+											"label": "Standing",
+											"value": "Fresh capture"
+										},
+										{
+											"label": "Captured from",
+											"value": "build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of 5b1e8d0"
+										},
+										{
+											"label": "Provenance",
+											"value": "actual capture of running software"
+										},
+										{
+											"label": "Verification attempt",
+											"value": "record 7a1d4e9c0b3f (passed) targeting 5b1e8d0"
+										}
+									],
+									"note": "Captured from build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of revision 5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d. Provenance: actual capture of running software. Tested at 5b1e8d0 by passing record 7a1d4e9c0b3f.",
+									"missing": false,
+									"mediaType": "image",
+									"mimeType": "image/png"
+								},
+								"after": {
+									"id": "after-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
+									"title": "evidence-grid · gallery",
+									"category": "evidence-grid",
+									"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
+									"status": "passed",
+									"source": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+									"capturedAt": "2026-11-12T09:31:44.206Z",
+									"viewport": "desktop",
+									"phase": "after",
+									"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+									"standing": "Inherited capture",
+									"provenance": [
+										{
+											"label": "Standing",
+											"value": "Inherited capture"
+										},
+										{
+											"label": "Captured from",
+											"value": "build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of 5b1e8d0"
+										},
+										{
+											"label": "Provenance",
+											"value": "actual capture of running software"
+										},
+										{
+											"label": "Inherited from",
+											"value": "record 7a1d4e9c0b3f of 5b1e8d0"
+										},
+										{
+											"label": "Verification attempt",
+											"value": "record 3f9c2b7e1a4d (passed) targeting 9d2c4f0"
+										}
+									],
+									"note": "Captured from build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of revision 5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d. Provenance: actual capture of running software. Inherited unchanged from record 7a1d4e9c0b3f of revision 5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d; not captured again for revision 9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2.",
+									"missing": false,
+									"mediaType": "image",
+									"mimeType": "image/png"
+								},
+								"fresh": false,
+								"origin": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+							},
+							{
+								"after": {
+									"id": "current-gap-evidence-grid-gallery-desktop",
+									"title": "evidence-grid · gallery",
+									"category": "evidence-grid",
+									"file": "",
+									"status": "not-proven",
+									"phase": "current",
+									"note": "No capture of gallery at desktop is recorded for 9d2c4f0.",
+									"missing": true,
+									"mediaType": "image"
+								},
+								"fresh": false
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "catalogShot",
@@ -202,18 +2052,220 @@
 						"name": "catalogShot.evidence",
 						"type": "ExplorerEvidence",
 						"required": true,
-						"description": "The host-selected evidence for one entity at the shown revision. Captures from other states or entities must already be excluded by its declared coverage."
+						"description": "The evidence of one entity at the shown revision; only `after.captures` is read, and without a preview every usable screenshot with media in it is a candidate.",
+						"examples": [
+							{
+								"mode": "current",
+								"scenarios": [
+									{
+										"id": "evidence-grid",
+										"title": "Evidence grid",
+										"kind": "ui",
+										"units": ["reports.component.evidence-grid"],
+										"states": [
+											{
+												"id": "gallery",
+												"title": "Gallery",
+												"coverage": "required"
+											}
+										],
+										"viewports": [
+											{
+												"id": "desktop",
+												"width": 1440,
+												"height": 900
+											},
+											{
+												"id": "mobile",
+												"width": 390,
+												"height": 844
+											}
+										],
+										"tests": [
+											{
+												"id": "evidence-grid-visual",
+												"kind": "e2e",
+												"runner": "playwright"
+											}
+										],
+										"evidence": [
+											{
+												"id": "gallery-screen",
+												"kind": "screenshot",
+												"states": ["gallery"],
+												"viewports": ["desktop", "mobile"]
+											}
+										]
+									}
+								],
+								"after": {
+									"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+									"detail": null,
+									"record": {
+										"id": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+											"base": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+										},
+										"profile": "linux-x64",
+										"startedAt": "2026-11-14T18:40:55.210Z",
+										"finishedAt": "2026-11-14T18:42:08.914Z",
+										"failures": [],
+										"tests": [
+											{
+												"id": "evidence-grid-visual",
+												"kind": "e2e",
+												"target": "test/evidence-grid.visual.test.ts",
+												"status": "passed",
+												"durationMs": 4120
+											}
+										],
+										"scenarios": [
+											{
+												"id": "evidence-grid",
+												"status": "passed",
+												"testedRevision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+												"inherited": false,
+												"origin": {
+													"record": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+													"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+												},
+												"states": [
+													{
+														"id": "gallery",
+														"coverage": "required",
+														"captures": [
+															{
+																"evidence": "gallery-screen",
+																"kind": "screenshot",
+																"state": "gallery",
+																"viewport": "desktop",
+																"status": "passed",
+																"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+																"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+																"mediaType": "image/png",
+																"capturedAt": "2026-11-14T18:42:07.512Z",
+																"provenance": "actual-capture",
+																"server": {
+																	"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+																	"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+																},
+																"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+															}
+														]
+													}
+												]
+											}
+										],
+										"measurements": [],
+										"budgets": {
+											"findings": []
+										}
+									},
+									"captures": [
+										{
+											"scenario": "evidence-grid",
+											"state": "gallery",
+											"capture": {
+												"evidence": "gallery-screen",
+												"kind": "screenshot",
+												"state": "gallery",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+												"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-14T18:42:07.512Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+													"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+												},
+												"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+											},
+											"standing": "fresh",
+											"usable": true,
+											"current": true,
+											"inheritedFrom": null
+										}
+									],
+									"coverage": [
+										{
+											"scenario": "evidence-grid",
+											"title": "Evidence grid",
+											"kind": "ui",
+											"standing": "passed",
+											"reasons": [],
+											"tests": [
+												{
+													"id": "evidence-grid-visual",
+													"status": "passed"
+												}
+											],
+											"inheritedFrom": null,
+											"states": [
+												{
+													"state": "gallery",
+													"declared": "required",
+													"standing": "passed",
+													"reasons": [],
+													"slots": [
+														{
+															"evidence": "gallery-screen",
+															"kind": "screenshot",
+															"viewport": "desktop",
+															"capture": {
+																"evidence": "gallery-screen",
+																"kind": "screenshot",
+																"state": "gallery",
+																"viewport": "desktop",
+																"status": "passed",
+																"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+																"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+																"mediaType": "image/png",
+																"capturedAt": "2026-11-14T18:42:07.512Z",
+																"provenance": "actual-capture",
+																"server": {
+																	"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+																	"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+																},
+																"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+															},
+															"standing": "passed",
+															"reason": null
+														}
+													]
+												}
+											]
+										}
+									],
+									"gap": null
+								},
+								"before": null,
+								"initial": null,
+								"incomparable": []
+							}
+						]
 					},
 					{
 						"name": "catalogShot.preview",
 						"type": "ScreenPick",
 						"required": false,
-						"description": "Optional exact scenario, state and viewport for the catalog image. If absent, choose usable evidence with fresh captures first. If specified but missing, return no image.",
+						"default": "undefined",
+						"description": "The exact scenario, state and viewport the catalog image must show; when it is absent, any usable screenshot with media qualifies, preferring a capture of the shown commit's build. When it is set and no usable screenshot matches it, the result is null unless allowFocusedDefault permits a focused capture.",
 						"examples": [
 							{
-								"scenario": "agent-settings",
-								"state": "settings",
+								"scenario": "evidence-grid",
+								"state": "gallery",
 								"viewport": "desktop"
+							},
+							{
+								"scenario": "evidence-grid",
+								"state": "gallery",
+								"viewport": "mobile"
 							}
 						]
 					},
@@ -222,18 +2274,57 @@
 						"type": "boolean",
 						"required": false,
 						"default": false,
-						"description": "Allows an unselected default to use a retained focused capture when true; defaults to false."
+						"description": "When true and no usable screenshot matches the preview (or none exists), the usable focused captures are used instead; the default false returns null in that case. A focused capture grants no full verification verdict.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "catalogShot",
 						"type": "Evidence | null",
-						"description": "A usable screenshot of the shown version, preferring a fresh capture. Validated unchanged evidence keeps its original captured commit, standing and explanation. Returns null for missing, rejected, unvalidated, wrong-build or unrelated evidence; never borrows from the parent."
+						"description": "The usable screenshot used as the catalog image, preferring a capture of the shown commit's build and otherwise the first usable one, or null when nothing matches the preview and no focused fallback applies. An inherited capture keeps its original standing, source and explanation, and the parent side is never read.",
+						"examples": [
+							{
+								"id": "current-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
+								"title": "evidence-grid · gallery",
+								"category": "evidence-grid",
+								"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
+								"status": "passed",
+								"source": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+								"capturedAt": "2026-11-14T18:42:07.512Z",
+								"viewport": "desktop",
+								"phase": "current",
+								"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+								"standing": "Fresh capture",
+								"provenance": [
+									{
+										"label": "Standing",
+										"value": "Fresh capture"
+									},
+									{
+										"label": "Captured from",
+										"value": "build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of 9d2c4f0"
+									},
+									{
+										"label": "Provenance",
+										"value": "actual capture of running software"
+									},
+									{
+										"label": "Verification attempt",
+										"value": "record 3f9c2b7e1a4d (passed) targeting 9d2c4f0"
+									}
+								],
+								"note": "Captured from build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of revision 9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2. Provenance: actual capture of running software. Tested at 9d2c4f0 by passing record 3f9c2b7e1a4d.",
+								"missing": false,
+								"mediaType": "image",
+								"mimeType": "image/png"
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "galleryItems",
@@ -242,18 +2333,424 @@
 						"name": "galleryItems.evidence",
 						"type": "ExplorerEvidence",
 						"required": true,
-						"description": "Evidence whose screenshot and audio captures should become gallery items."
+						"description": "The evidence whose captures become gallery items: `after` always, and `before` too in commit mode; only screenshot and audio captures are included.",
+						"examples": [
+							{
+								"mode": "commit",
+								"scenarios": [
+									{
+										"id": "evidence-grid",
+										"title": "Evidence grid",
+										"kind": "ui",
+										"units": ["reports.component.evidence-grid"],
+										"states": [
+											{
+												"id": "gallery",
+												"title": "Gallery",
+												"coverage": "required"
+											}
+										],
+										"viewports": [
+											{
+												"id": "desktop",
+												"width": 1440,
+												"height": 900
+											},
+											{
+												"id": "mobile",
+												"width": 390,
+												"height": 844
+											}
+										],
+										"tests": [
+											{
+												"id": "evidence-grid-visual",
+												"kind": "e2e",
+												"runner": "playwright"
+											}
+										],
+										"evidence": [
+											{
+												"id": "gallery-screen",
+												"kind": "screenshot",
+												"states": ["gallery"],
+												"viewports": ["desktop", "mobile"]
+											}
+										]
+									}
+								],
+								"after": {
+									"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+									"detail": null,
+									"record": {
+										"id": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+											"base": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+										},
+										"profile": "linux-x64",
+										"startedAt": "2026-11-14T18:40:55.210Z",
+										"finishedAt": "2026-11-14T18:42:08.914Z",
+										"failures": [],
+										"tests": [
+											{
+												"id": "evidence-grid-visual",
+												"kind": "e2e",
+												"target": "test/evidence-grid.visual.test.ts",
+												"status": "passed",
+												"durationMs": 4120
+											}
+										],
+										"scenarios": [
+											{
+												"id": "evidence-grid",
+												"status": "passed",
+												"testedRevision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+												"inherited": false,
+												"origin": {
+													"record": "3f9c2b7e1a4d8c06e5b2f9a0d7c3e18b4a6f2d9c05e8b1a3f7d4c6e2b9a0d5c8",
+													"commit": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+												},
+												"states": [
+													{
+														"id": "gallery",
+														"coverage": "required",
+														"captures": [
+															{
+																"evidence": "gallery-screen",
+																"kind": "screenshot",
+																"state": "gallery",
+																"viewport": "desktop",
+																"status": "passed",
+																"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+																"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+																"mediaType": "image/png",
+																"capturedAt": "2026-11-14T18:42:07.512Z",
+																"provenance": "actual-capture",
+																"server": {
+																	"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+																	"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+																},
+																"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+															}
+														]
+													}
+												]
+											}
+										],
+										"measurements": [],
+										"budgets": {
+											"findings": []
+										}
+									},
+									"captures": [
+										{
+											"scenario": "evidence-grid",
+											"state": "gallery",
+											"capture": {
+												"evidence": "gallery-screen",
+												"kind": "screenshot",
+												"state": "gallery",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+												"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-14T18:42:07.512Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+													"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+												},
+												"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+											},
+											"standing": "fresh",
+											"usable": true,
+											"current": true,
+											"inheritedFrom": null
+										}
+									],
+									"coverage": [
+										{
+											"scenario": "evidence-grid",
+											"title": "Evidence grid",
+											"kind": "ui",
+											"standing": "passed",
+											"reasons": [],
+											"tests": [
+												{
+													"id": "evidence-grid-visual",
+													"status": "passed"
+												}
+											],
+											"inheritedFrom": null,
+											"states": [
+												{
+													"state": "gallery",
+													"declared": "required",
+													"standing": "passed",
+													"reasons": [],
+													"slots": [
+														{
+															"evidence": "gallery-screen",
+															"kind": "screenshot",
+															"viewport": "desktop",
+															"capture": {
+																"evidence": "gallery-screen",
+																"kind": "screenshot",
+																"state": "gallery",
+																"viewport": "desktop",
+																"status": "passed",
+																"path": "evidence/9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2/evidence-grid/evidence-grid-visual/gallery-screen.png",
+																"sha256": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e",
+																"mediaType": "image/png",
+																"capturedAt": "2026-11-14T18:42:07.512Z",
+																"provenance": "actual-capture",
+																"server": {
+																	"buildId": "a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18",
+																	"revision": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2"
+																},
+																"media": "media/c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png"
+															},
+															"standing": "passed",
+															"reason": null
+														}
+													]
+												}
+											]
+										}
+									],
+									"gap": null
+								},
+								"before": {
+									"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+									"detail": null,
+									"record": {
+										"id": "7a1d4e9c0b3f6a28d5e1c7b9f04a2d6e8c3b1f5a9d7e2c4b0a6f8d1e3c5b7a92",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+											"base": null
+										},
+										"profile": "linux-x64",
+										"startedAt": "2026-11-12T09:29:10.377Z",
+										"finishedAt": "2026-11-12T09:31:45.630Z",
+										"failures": [],
+										"tests": [
+											{
+												"id": "evidence-grid-visual",
+												"kind": "e2e",
+												"target": "test/evidence-grid.visual.test.ts",
+												"status": "passed",
+												"durationMs": 3985
+											}
+										],
+										"scenarios": [
+											{
+												"id": "evidence-grid",
+												"status": "passed",
+												"testedRevision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+												"inherited": false,
+												"origin": {
+													"record": "7a1d4e9c0b3f6a28d5e1c7b9f04a2d6e8c3b1f5a9d7e2c4b0a6f8d1e3c5b7a92",
+													"commit": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+												},
+												"states": [
+													{
+														"id": "gallery",
+														"coverage": "required",
+														"captures": [
+															{
+																"evidence": "gallery-screen",
+																"kind": "screenshot",
+																"state": "gallery",
+																"viewport": "desktop",
+																"status": "passed",
+																"path": "evidence/5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d/evidence-grid/evidence-grid-visual/gallery-screen.png",
+																"sha256": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9",
+																"mediaType": "image/png",
+																"capturedAt": "2026-11-12T09:31:44.206Z",
+																"provenance": "actual-capture",
+																"server": {
+																	"buildId": "e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2",
+																	"revision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+																},
+																"media": "media/2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png"
+															}
+														]
+													}
+												]
+											}
+										],
+										"measurements": [],
+										"budgets": {
+											"findings": []
+										}
+									},
+									"captures": [
+										{
+											"scenario": "evidence-grid",
+											"state": "gallery",
+											"capture": {
+												"evidence": "gallery-screen",
+												"kind": "screenshot",
+												"state": "gallery",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d/evidence-grid/evidence-grid-visual/gallery-screen.png",
+												"sha256": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9",
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-12T09:31:44.206Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2",
+													"revision": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d"
+												},
+												"media": "media/2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png"
+											},
+											"standing": "fresh",
+											"usable": true,
+											"current": true,
+											"inheritedFrom": null
+										}
+									],
+									"coverage": [],
+									"gap": null
+								},
+								"initial": null,
+								"incomparable": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "galleryItems",
 						"type": "Evidence[]",
-						"description": "Before media then after media in commit mode, or current media alone, with sequence order, status, provenance and media details. Includes recorded screenshot/audio items even when unusable or inherited, retaining their labels. Source identifies the capture build revision, never the target of inherited proof."
+						"description": "Every screenshot and audio capture of the evidence as an item with its `order`: `before` items first in commit mode, then `after` items, or `current` items alone. Each item carries the standing and provenance its own record gives it, including unusable or inherited captures, and its `source` is the revision its own build names, if any.",
+						"examples": [
+							[
+								{
+									"id": "before-5b1e8d0-evidence-grid-gallery-gallery-screen-desktop",
+									"title": "evidence-grid · gallery",
+									"category": "evidence-grid",
+									"file": "2f8a6d1c9e4b07a3f5d2c8e1b6a94f70d3c5e2b8a1f6d9c4e7b0a3f2d5c8e1b9.png",
+									"status": "passed",
+									"source": "5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d",
+									"capturedAt": "2026-11-12T09:31:44.206Z",
+									"viewport": "desktop",
+									"phase": "before",
+									"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+									"standing": "Fresh capture",
+									"provenance": [
+										{
+											"label": "Standing",
+											"value": "Fresh capture"
+										},
+										{
+											"label": "Captured from",
+											"value": "build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of 5b1e8d0"
+										},
+										{
+											"label": "Provenance",
+											"value": "actual capture of running software"
+										},
+										{
+											"label": "Verification attempt",
+											"value": "record 7a1d4e9c0b3f (passed) targeting 5b1e8d0"
+										}
+									],
+									"note": "Captured from build e4b09c7a2d1f8635c0a9e7d4b2f1c8a6d3e5b0f9a7c2d4e1b8f6a3c9d0e7b5f2 of revision 5b1e8d0c3a7f9e2d4c6b8a0f1e3d5c7b9a2f4e6d. Provenance: actual capture of running software. Tested at 5b1e8d0 by passing record 7a1d4e9c0b3f.",
+									"missing": false,
+									"mediaType": "image",
+									"mimeType": "image/png",
+									"order": 0
+								},
+								{
+									"id": "after-9d2c4f0-evidence-grid-gallery-gallery-screen-desktop",
+									"title": "evidence-grid · gallery",
+									"category": "evidence-grid",
+									"file": "c4e1a9f07d2b8635e0ab1c94d7f2e83a6b5c0d9f4e1a2b7c8d3e6f9a0b1c2d3e.png",
+									"status": "passed",
+									"source": "9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2",
+									"capturedAt": "2026-11-14T18:42:07.512Z",
+									"viewport": "desktop",
+									"phase": "after",
+									"comparison": "evidence-grid|gallery|gallery-screen|desktop",
+									"standing": "Fresh capture",
+									"provenance": [
+										{
+											"label": "Standing",
+											"value": "Fresh capture"
+										},
+										{
+											"label": "Captured from",
+											"value": "build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of 9d2c4f0"
+										},
+										{
+											"label": "Provenance",
+											"value": "actual capture of running software"
+										},
+										{
+											"label": "Verification attempt",
+											"value": "record 3f9c2b7e1a4d (passed) targeting 9d2c4f0"
+										}
+									],
+									"note": "Captured from build a7c3e90b4d61f2285e9c0a7d3b8f4e16c2a5d90b7e3f8c14a6d2b9e05c7f3a18 of revision 9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2. Provenance: actual capture of running software. Tested at 9d2c4f0 by passing record 3f9c2b7e1a4d.",
+									"missing": false,
+									"mediaType": "image",
+									"mimeType": "image/png",
+									"order": 1
+								}
+							],
+							[
+								{
+									"id": "current-9d2c4f0-evidence-grid-gallery-gallery-narration-audio",
+									"title": "evidence-grid · gallery",
+									"category": "evidence-grid",
+									"file": "0e6b9d3a5c1f8e27b4d0a6c9e3f1b8d2a7c5e0f4b9d6a1c8e3f7b2d5a9c0e4f6.wav",
+									"status": "passed",
+									"capturedAt": "2026-11-14T18:41:58.733Z",
+									"phase": "current",
+									"comparison": "evidence-grid|gallery|gallery-narration|audio",
+									"standing": "Fresh capture",
+									"provenance": [
+										{
+											"label": "Standing",
+											"value": "Fresh capture"
+										},
+										{
+											"label": "Captured from",
+											"value": "not recorded: the capture names no build or revision"
+										},
+										{
+											"label": "Provenance",
+											"value": "fixture data, not a capture of running software"
+										},
+										{
+											"label": "Verification attempt",
+											"value": "record 3f9c2b7e1a4d (passed) targeting 9d2c4f0"
+										}
+									],
+									"note": "The capture does not record which build or revision produced it. Provenance: fixture data, not a capture of running software. Produced while record 3f9c2b7e1a4d verified revision 9d2c4f0a7e3b81c5f6a0d2e4b9c7f1a3e5d8b6c2.",
+									"missing": false,
+									"mediaType": "audio",
+									"mimeType": "audio/wav",
+									"durationSeconds": 12.4,
+									"transcript": "Your evidence grid shows every capture of this revision.",
+									"order": 0
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
