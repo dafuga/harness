@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import type { HarnessRevision } from '../src/models/explorer-ui/Harness.types';
 import type { ArtifactFetcher } from '../src/utils/explorer-ui/explorerArtifact';
 import { artifactRun } from '../src/utils/explorer-reading/explorerReading';
-import { mediaFile } from '../src/utils/harnessEvidence';
+import { mediaFile } from '../src/utils/explorer-ui/harnessEvidence';
 
 /** What a synthetic end-to-end run of one state says it did, as a recorded result states it. */
 export function runDocument(state: string, kind: string, takenAt: string) {

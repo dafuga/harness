@@ -2,7 +2,7 @@ import { measureWorkload } from '../../../../test/support/measureWorkload';
 import type { Scenario } from './capture-provenance.test.types';
 import { expect, test } from 'vitest';
 import type { HarnessCapture, HarnessRecord } from '../../src/models/explorer-ui/Harness.types';
-import { harnessEvidence } from '../../src/utils/harnessEvidence';
+import { harnessEvidence } from '../../src/utils/explorer-ui/harnessEvidence';
 import { captureProvenance, scenarioOrigin } from '../../src/utils/reports-media/captureProvenance';
 
 const target = 'a'.repeat(40);
@@ -176,4 +176,13 @@ test('an accepted capture in a failed attempt says the attempt failed', () => {
 		`Accepted on its own, but record 111111111111 failed for revision ${target}.`
 	);
 	expect(accepted.note).not.toContain('Tested at');
+});
+
+test('a gallery item names the media file of its capture, and a capture without media is kept as missing', () => {
+	const items = harnessEvidence(
+		{ registry: { scenarios: [] } } as never,
+		record([scenario([capture(), capture({ media: null })])])
+	);
+	expect(items.map((item) => item.file)).toEqual([`${'c'.repeat(64)}.png`, '']);
+	expect(items.map((item) => item.missing)).toEqual([false, true]);
 });

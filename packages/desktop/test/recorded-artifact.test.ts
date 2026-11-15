@@ -3,7 +3,7 @@ import { afterAll, beforeAll, test } from 'vitest';
 import { readFile } from 'node:fs/promises';
 import { attach, lfsObjectPath } from '../../../test/support/historyRepo';
 import { cloneRepo } from '../../../test/support/verifyRepo';
-import { mediaFile } from '../../reports/src/utils/harnessEvidence';
+import { mediaFile } from '../../reports/src/utils/explorer-ui/harnessEvidence';
 import { artifactQuery } from '../src/utils/reports-media/artifactQuery';
 import { fixture } from './project-fixture';
 import {

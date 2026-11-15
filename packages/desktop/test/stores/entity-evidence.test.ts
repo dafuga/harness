@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { afterEach, expect, test, vi } from 'vitest';
-import { mediaFile } from '../../../reports/src/utils/harnessEvidence';
+import { mediaFile } from '../../../reports/src/utils/explorer-ui/harnessEvidence';
 import {
 	createEntityEvidenceStore,
 	type EntityEvidence

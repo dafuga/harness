@@ -897,8 +897,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/reports-media/artifactQuery.ts",
-			"specifier": "$reports/utils/harnessEvidence",
-			"to": "packages/reports/src/utils/harnessEvidence.ts",
+			"specifier": "$reports/utils/explorer-ui/harnessEvidence",
+			"to": "packages/reports/src/utils/explorer-ui/harnessEvidence.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{

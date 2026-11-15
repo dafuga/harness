@@ -1,7 +1,7 @@
 import { record } from '../../../reports/test/entityFixture';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import { mediaFile } from '../../../reports/src/utils/harnessEvidence';
+import { mediaFile } from '../../../reports/src/utils/explorer-ui/harnessEvidence';
 import { artifactQuery } from '../../src/utils/reports-media/artifactQuery';
 import { commits, data, ids, pinned, scopeOf } from '../evidence-fixture';
 
