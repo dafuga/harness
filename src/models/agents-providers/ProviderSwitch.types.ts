@@ -1,5 +1,5 @@
 // @harness-uid u_oetonmyf76
-import type { SwitchRequest } from '../../core/pickerTypes';
+import type { SwitchRequest } from '../../core/development-tooling/pickerTypes';
 export interface ProviderSwitchAttributes {
 	session: string;
 	id: string;

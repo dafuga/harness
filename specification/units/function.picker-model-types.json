@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"src/core/development-tooling/pickerModelTypes.ts",
-			"src/core/development-tooling/pickerModelTypes.types.ts",
-			"src/core/pickerModelTypes.ts"
+			"src/core/development-tooling/pickerModelTypes.types.ts"
 		],
 		"symbols": [
 			"sameSelection",
@@ -19,9 +18,7 @@
 			"ProviderSelection",
 			"PickerModel",
 			"ProviderSelection",
-			"PickerModel",
-			"sameSelection",
-			"validateSessionId"
+			"PickerModel"
 		]
 	},
 	"contract": {

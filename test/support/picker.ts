@@ -1,6 +1,6 @@
-import type { PickerModel } from '../../src/core/pickerModelTypes';
-import type { SwitchRequest, SwitchStore } from '../../src/core/pickerTypes';
-import { switchRevision } from '../../src/core/pickerTypes';
+import type { PickerModel } from '../../src/core/development-tooling/pickerModelTypes';
+import type { SwitchRequest, SwitchStore } from '../../src/core/development-tooling/pickerTypes';
+import { switchRevision } from '../../src/core/development-tooling/pickerTypes';
 
 export function createPickerFixture() {
 	const records = new Map<string, SwitchRequest>();

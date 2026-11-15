@@ -3,8 +3,8 @@
 <!-- @harness-uid u_7maphq7blx -->
 <script lang="ts">
 	import { formatTime } from '../../helpers/strings/formatTime';
-	import type { SessionObservation, SwitchRequest } from '../../../../../src/core/pickerTypes';
-	import type { PickerModel, ProviderSelection } from '../../../../../src/core/pickerModelTypes';
+	import type { SessionObservation, SwitchRequest } from '../../../../../src/core/development-tooling/pickerTypes';
+	import type { PickerModel, ProviderSelection } from '../../../../../src/core/development-tooling/pickerModelTypes';
 	let {
 		active,
 		request,

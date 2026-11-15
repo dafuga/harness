@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { ImpactInput, ImpactOutput } from '../../src/core/kernelTypes';
+import type { ImpactInput, ImpactOutput } from '../../src/core/execution-runtimes/kernelTypes';
 import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
 import { impactKernelText } from '../../src/workflows/run-kernel/impactKernel';
 import { kernelRequest } from '../../src/utils/impact-kernel/kernelRequest';

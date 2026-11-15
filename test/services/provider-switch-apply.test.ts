@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { ProviderSwitchApplyService } from '../../src/services/ProviderSwitchApplyService';
 import { ProviderSwitchService } from '../../src/services/ProviderSwitchService';
 import { createPickerFixture } from '../support/picker';
-import type { SessionObservation } from '../../src/core/pickerTypes';
+import type { SessionObservation } from '../../src/core/development-tooling/pickerTypes';
 
 test('remains pending with a client open or active turn, then verifies provider/model/effort', async () => {
 	const { store, catalog, target } = createPickerFixture();

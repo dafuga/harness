@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"src/core/development-tooling/pickerTypes.ts",
-			"src/core/development-tooling/pickerTypes.types.ts",
-			"src/core/pickerTypes.ts"
+			"src/core/development-tooling/pickerTypes.types.ts"
 		],
 		"symbols": [
 			"desktopControlUnavailable",
@@ -25,9 +24,7 @@
 			"SwitchStore",
 			"SessionObservation",
 			"SessionControl",
-			"PickerSnapshot",
-			"desktopControlUnavailable",
-			"switchRevision"
+			"PickerSnapshot"
 		]
 	},
 	"contract": {

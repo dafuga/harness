@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"src/core/execution-runtimes/kernelTypes.ts",
-			"src/core/execution-runtimes/kernelTypes.types.ts",
-			"src/core/kernelTypes.ts"
+			"src/core/execution-runtimes/kernelTypes.types.ts"
 		],
 		"symbols": [
 			"kernelContract",
@@ -22,8 +21,7 @@
 			"KernelGraph",
 			"ImpactInput",
 			"AffectedNode",
-			"ImpactOutput",
-			"kernelContract"
+			"ImpactOutput"
 		]
 	},
 	"contract": {

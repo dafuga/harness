@@ -1,7 +1,13 @@
 // @harness-uid u_yckomncarv
 import type { ThrownValue } from '../../../helpers/strings/errorMessage.types';
-import type { PickerModel, ProviderSelection } from '../../../../../../src/core/pickerModelTypes';
-import type { PickerSnapshot, SwitchRequest } from '../../../../../../src/core/pickerTypes';
+import type {
+	PickerModel,
+	ProviderSelection
+} from '../../../../../../src/core/development-tooling/pickerModelTypes';
+import type {
+	PickerSnapshot,
+	SwitchRequest
+} from '../../../../../../src/core/development-tooling/pickerTypes';
 
 /** @pure A picker response is a snapshot when it names the default provider. */
 export function isSnapshot(data: object | null): data is PickerSnapshot {

@@ -9,7 +9,7 @@
 	import { pickerDefault } from './providerPickerDefaults';
 	import { failureText, isSnapshot, readSessions, selectionLabel } from './providerPickerReading';
 	import { type PickerClient } from '../../../utils/agents-providers/providerPickerClient';
-	import type { PickerSnapshot, SwitchRequest } from '../../../../../../src/core/pickerTypes';
+	import type { PickerSnapshot, SwitchRequest } from '../../../../../../src/core/development-tooling/pickerTypes';
 	import '../../../lib/styles/provider-picker.css';
 	let { label = 'Model picker' }: { label?: string } = $props();
 

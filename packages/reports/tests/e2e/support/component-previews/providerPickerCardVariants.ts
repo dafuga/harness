@@ -1,4 +1,7 @@
-import type { SessionObservation, SwitchRequest } from '../../../../../../src/core/pickerTypes';
+import type {
+	SessionObservation,
+	SwitchRequest
+} from '../../../../../../src/core/development-tooling/pickerTypes';
 import type { PreviewCases } from './shared';
 
 /** Vary the observed session and queued switch without changing the picker protocol. */

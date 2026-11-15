@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { test } from 'vitest';
-import type { KernelGraph } from '../src/core/kernelTypes';
+import type { KernelGraph } from '../src/core/execution-runtimes/kernelTypes';
 import { kernelClosure } from '../src/utils/impact-kernel/kernelClosure';
 import { recordCapture } from '../src/utils/record-capture/recordCapture';
 import { expect } from './verificationExpect';
