@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import type { SearchEntry } from '../../src/utils/entitySearch';
+import type { SearchEntry } from '../../src/utils/explorer-ui/entitySearch';
 import { navbarSearch } from '../../src/components/explorer-ui/harness-navbar/navbarSearch';
 import { sha, shellBranch, shellScope } from '../../tests/e2e/support/shellData';
 

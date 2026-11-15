@@ -1,5 +1,5 @@
 import { measureWorkload } from '../../../test/support/measureWorkload';
-import { helperEntity } from '../src/utils/entityShown';
+import { helperEntity } from '../src/utils/explorer-ui/entityShown';
 import { categorySources, projectPageSources } from './entityPreviewGroups';
 import { expect, test } from 'vitest';
 import { entityCatalog, catalogFilter } from '../src/utils/entityCatalog';

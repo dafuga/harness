@@ -8,7 +8,7 @@ import { entityContract } from '../../../../src/utils/explorer-ui/entityContract
 import { desktopData } from './sealedData';
 import { entityBehavior } from '../../../../src/utils/explorer-ui/entityBehavior';
 import { entityMeasure } from '../../../../src/utils/explorer-ui/entityMeasure';
-import { entityReasons } from '../../../../src/utils/entityReasons';
+import { entityReasons } from '../../../../src/utils/explorer-ui/entityReasons';
 import { entityCatalog } from '../../../../src/utils/entityCatalog';
 import { screenOptions } from '../../../../src/utils/explorer-ui/entityScreens';
 import { historyDetail } from '../../../../src/utils/explorerHistory';

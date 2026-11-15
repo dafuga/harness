@@ -1,7 +1,7 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import EntitySearch from '../../src/components/explorer-ui/entity-search/EntitySearch.svelte';
-import type { SearchEntry } from '../../src/utils/entitySearch';
+import type { SearchEntry } from '../../src/utils/explorer-ui/entitySearch';
 
 /**
  * The field of the shared search before anything is typed: a closed combobox that says what it

@@ -1,7 +1,7 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import EntitySearchResults from '../../src/components/explorer-ui/EntitySearchResults.svelte';
-import type { SearchEntry } from '../../src/utils/entitySearch';
+import type { SearchEntry } from '../../src/utils/explorer-ui/entitySearch';
 
 /**
  * The results of the shared search: each one a link with a readable category, its name and its

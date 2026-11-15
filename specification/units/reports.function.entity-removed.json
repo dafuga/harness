@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/components/explorer-ui/entity-tests/entityRemoved.ts",
-			"packages/reports/src/utils/entityRemoved.ts"
-		],
-		"symbols": ["entityRemoved", "entityRemoved"]
+		"source": ["packages/reports/src/components/explorer-ui/entity-tests/entityRemoved.ts"],
+		"symbols": ["entityRemoved"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -65,11 +62,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/reports/src/utils/entityRemoved.ts",
+		"entry": "packages/reports/src/components/explorer-ui/entity-tests/entityRemoved.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/reports/src/utils/entityRemoved.ts"
+				"entry": "packages/reports/src/components/explorer-ui/entity-tests/entityRemoved.ts"
 			}
 		]
 	},

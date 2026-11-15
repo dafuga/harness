@@ -2,7 +2,7 @@ import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import EntityReasons from '../../src/components/explorer-ui/entity-reasons/EntityReasons.svelte';
 import type { HarnessExplanation } from '../../src/models/explorer-ui/Harness.types';
-import { entityReasons } from '../../src/utils/entityReasons';
+import { entityReasons } from '../../src/utils/explorer-ui/entityReasons';
 import { disclosed, words } from '../entityRender';
 
 const tried = 'Registration only; implementation unchanged.';

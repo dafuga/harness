@@ -1,5 +1,5 @@
 // @harness-uid u_ujtuo6zcst
-import type { SearchEntry } from '$reports/utils/entitySearch';
+import type { SearchEntry } from '$reports/utils/explorer-ui/entitySearch';
 
 /** What the search of the top bar is given for the project and revision in view. */
 export interface WorkspaceSearch {

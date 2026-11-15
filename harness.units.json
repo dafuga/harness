@@ -789,8 +789,8 @@
 		},
 		{
 			"from": "packages/desktop/src/components/projects-sessions/nav-bar/workspaceSearch.ts",
-			"specifier": "$reports/utils/entitySearch",
-			"to": "packages/reports/src/utils/entitySearch.ts",
+			"specifier": "$reports/utils/explorer-ui/entitySearch",
+			"to": "packages/reports/src/utils/explorer-ui/entitySearch.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
@@ -813,8 +813,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/projects-sessions/workspaceSearch.ts",
-			"specifier": "$reports/utils/entitySearch",
-			"to": "packages/reports/src/utils/entitySearch.ts",
+			"specifier": "$reports/utils/explorer-ui/entitySearch",
+			"to": "packages/reports/src/utils/explorer-ui/entitySearch.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{

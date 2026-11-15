@@ -1,4 +1,4 @@
-import type { SearchEntry } from '../src/utils/entitySearch';
+import type { SearchEntry } from '../src/utils/explorer-ui/entitySearch';
 
 export type Row = [
 	id: string,

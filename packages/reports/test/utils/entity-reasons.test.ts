@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { writingCount, writingLimits } from '../../../../src/utils/writing-limits/writingLimits';
 import type { HarnessExplanation } from '../../src/models/explorer-ui/Harness.types';
-import { boundedText, entityReasons } from '../../src/utils/entityReasons';
+import { boundedText, entityReasons } from '../../src/utils/explorer-ui/entityReasons';
 import { reasonsTried } from '../../src/components/explorer-ui/entity-history-row/entityReasons';
 import { reasonUses } from '../../src/components/explorer-ui/entity-reasons/entityReasons';
 

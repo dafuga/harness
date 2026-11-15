@@ -1,7 +1,7 @@
 // @harness-uid u_ujtuo6zcst
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import type { WorkspaceSearch } from '../../../utils/projects-sessions/workspaceSearch';
-import type { SearchEntry } from '$reports/utils/entitySearch';
+import type { SearchEntry } from '$reports/utils/explorer-ui/entitySearch';
 import { explorerName } from '$reports/utils/explorer-ui/explorerName';
 import {
 	categories,

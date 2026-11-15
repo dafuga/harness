@@ -1,6 +1,6 @@
 import type { Row } from './entity-search.test.types';
 import { expect, test } from 'vitest';
-import type { SearchEntry } from '../src/utils/entitySearch';
+import type { SearchEntry } from '../src/utils/explorer-ui/entitySearch';
 import { entitySearch } from '../src/components/explorer-ui/entity-search/entitySearch';
 
 /**
