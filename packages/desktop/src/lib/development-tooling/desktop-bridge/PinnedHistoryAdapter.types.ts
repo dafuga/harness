@@ -2,7 +2,7 @@
 import type { HarnessRevisionSummary } from '$reports/models/explorer-ui/Harness.types';
 import type { HarnessRevision } from '$reports/models/explorer-ui/Harness.types';
 import type { RevisionRecords } from '../../../../../../src/utils/development-tooling/revisionSummary';
-import type { HistoryStatusService } from '../../../../../../src/services/history-status-service/HistoryStatusService';
+import type { HistoryStatusService } from '../../../../../../src/services/verification-evidence/history-status-service/HistoryStatusService';
 
 export type CommitFacts = Pick<
 	HarnessRevisionSummary,

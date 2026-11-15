@@ -8,7 +8,7 @@ import type { HubAttachedRecord } from '../../../utils/verification-evidence/hub
 import type {
 	CommitStatus,
 	RecordStatus
-} from '../../../../../../src/services/history-status-service/HistoryStatusService';
+} from '../../../../../../src/services/verification-evidence/history-status-service/HistoryStatusService';
 import type { HubAttachedService } from './hub-attached-service/HubAttachedService';
 /** Request-scoped reader; the caller authorizes before constructing this frozen context. */
 export class HubRecordStatusService {
