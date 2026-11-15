@@ -31,115 +31,323 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sourceFiles.paths",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Repository-relative paths, files or folders, that are passed to git ls-files as pathspecs after '--', so each is read from the repository root; tracked files are listed, and untracked files that Git ignores are skipped. An empty list passes no pathspec, so Git lists every tracked file and every untracked file it does not ignore in the repository.",
+				"examples": [
+					["packages/desktop/ios", "packages/desktop/capacitor.config.ts"],
+					["packages/desktop/src", "packages/desktop/package.json"],
+					["bun.lock"]
+				]
 			},
 			{
 				"name": "tree.folder",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The folder that tree lists recursively, passed on as given, so a relative path is read from the process's working directory rather than the repository. A folder that does not exist gives an empty map, while a path that exists but is a file makes tree throw.",
+				"examples": ["/repo/packages/desktop/ios/App/App", "/repo/packages/reports/src/components"]
 			},
 			{
 				"name": "treeDigest.files",
 				"type": "Map<string, string>",
-				"required": true
+				"required": true,
+				"description": "A map from each file's path to its digest, such as the maps that sourceFiles and tree return. treeDigest hashes the entries in the map's own iteration order, so the same entries inserted in a different order give a different digest.",
+				"examples": [
+					{
+						"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+						"packages/desktop/package.json": "5b1f0c9d2e7a4638c1d05f9e2b7a3c64d8e1f0a25c9b7d3e6f4a1c0b8d2e5f73"
+					},
+					{
+						"packages/desktop/capacitor.config.ts": "c7e2a9d15f30b8e46a1d92c0f7b35e8a4d6c1f9b2e07a53d8c4f1b6e9a20d7c3"
+					}
+				]
 			},
 			{
 				"name": "missing.from",
 				"type": "Map<string, string>",
-				"required": true
+				"required": true,
+				"description": "The set being checked, as a map from path to digest: missing returns each of its paths that missing.held does not hold with the same digest.",
+				"examples": [
+					{
+						"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+						"packages/desktop/package.json": "5b1f0c9d2e7a4638c1d05f9e2b7a3c64d8e1f0a25c9b7d3e6f4a1c0b8d2e5f73"
+					},
+					{
+						"packages/desktop/capacitor.config.ts": "c7e2a9d15f30b8e46a1d92c0f7b35e8a4d6c1f9b2e07a53d8c4f1b6e9a20d7c3",
+						"packages/desktop/svelte.config.js": "0e4d7b2a9c18f365d0b4e7a2c9f1d83b6a5e0c7f2d4b9a1e8c3f6d0b5a7e2c94"
+					}
+				]
 			},
 			{
 				"name": "missing.held",
 				"type": "Map<string, string>",
-				"required": true
+				"required": true,
+				"description": "The set that missing.from is checked against, as a map from path to digest; a path that is absent from this map, or has a different digest in it, counts as missing.",
+				"examples": [
+					{
+						"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+						"packages/desktop/package.json": "7f2a0d5c8e4b13a9c6d2f0e7b5a8c1d4e9f3b6a0c2d8e5f1b7a4c9d3e6f0a825"
+					},
+					{
+						"packages/desktop/capacitor.config.ts": "c7e2a9d15f30b8e46a1d92c0f7b35e8a4d6c1f9b2e07a53d8c4f1b6e9a20d7c3"
+					}
+				]
 			},
 			{
 				"name": "moved.before",
 				"type": "Map<string, string>",
-				"required": true
+				"required": true,
+				"description": "The earlier reading of one set, as a map from path to digest. moved compares it with moved.after and returns the paths that changed, were added or were removed.",
+				"examples": [
+					{
+						"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+						"packages/desktop/package.json": "5b1f0c9d2e7a4638c1d05f9e2b7a3c64d8e1f0a25c9b7d3e6f4a1c0b8d2e5f73"
+					},
+					{
+						"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+						"packages/desktop/svelte.config.js": "0e4d7b2a9c18f365d0b4e7a2c9f1d83b6a5e0c7f2d4b9a1e8c3f6d0b5a7e2c94"
+					}
+				]
 			},
 			{
 				"name": "moved.after",
 				"type": "Map<string, string>",
-				"required": true
+				"required": true,
+				"description": "The later reading of the same set, as a map from path to digest. moved compares it with moved.before and reports the paths on which the two readings disagree.",
+				"examples": [
+					{
+						"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+						"packages/desktop/package.json": "7f2a0d5c8e4b13a9c6d2f0e7b5a8c1d4e9f3b6a0c2d8e5f1b7a4c9d3e6f0a825",
+						"packages/desktop/svelte.config.js": "0e4d7b2a9c18f365d0b4e7a2c9f1d83b6a5e0c7f2d4b9a1e8c3f6d0b5a7e2c94"
+					},
+					{
+						"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30"
+					}
+				]
 			},
 			{
 				"name": "named.files",
 				"type": "Map<string, string>",
-				"required": true
+				"required": true,
+				"description": "The set of files that named describes, as a map from path to digest. named returns the treeDigest of this map as digest and its number of entries as files.",
+				"examples": [
+					{
+						"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+						"packages/desktop/package.json": "5b1f0c9d2e7a4638c1d05f9e2b7a3c64d8e1f0a25c9b7d3e6f4a1c0b8d2e5f73"
+					},
+					{}
+				]
 			},
 			{
 				"name": "movedSources.before",
 				"type": "SourceReading",
-				"required": true
+				"required": true,
+				"description": "The three sets as they were read before what is built from them, each a map from path to digest under renderer, native and fixtureComputer. movedSources compares each set with the same set in movedSources.after."
 			},
 			{
 				"name": "movedSources.after",
 				"type": "SourceReading",
-				"required": true
+				"required": true,
+				"description": "The same three sets, read again after what is built from them, with the same keys as movedSources.before. movedSources reports the paths on which the two readings disagree in any of the sets."
 			}
 		],
 		"outputs": [
 			{
 				"name": "rendererSources",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported constant list of repository-relative paths that the renderer in the products is bundled from, including bun.lock for the versions it depends on. It is a fixed array in the source, not computed or read from disk.",
+				"examples": [
+					[
+						"packages/desktop/src",
+						"packages/desktop/package.json",
+						"packages/desktop/svelte.config.js",
+						"packages/desktop/vite.config.ts",
+						"packages/remote/src",
+						"packages/collaboration/src",
+						"packages/planning/src",
+						"packages/reports/src/components",
+						"bun.lock"
+					]
+				]
 			},
 			{
 				"name": "nativeSources",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported constant list of repository-relative paths that the native shell is built from, beside the renderer that is copied into it. It is a fixed array in the source, not computed or read from disk.",
+				"examples": [
+					["packages/desktop/ios", "packages/desktop/capacitor.config.ts"]
+				]
 			},
 			{
 				"name": "computerSources",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported constant list of repository-relative paths that the TEST ONLY fixture computer runs. It is a fixed array in the source, not computed or read from disk.",
+				"examples": [
+					[
+						"packages/desktop/src",
+						"packages/desktop/scripts",
+						"packages/remote/src",
+						"packages/relay/src"
+					]
+				]
 			},
 			{
 				"name": "sourceFiles",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"description": "Every file under the given paths that Git lists, tracked or untracked but not ignored, and that exists on disk, keyed by repository-relative path in sorted order, each with the SHA-256 hex digest of its bytes. A name that Git prints in quotes, such as one with non-ASCII characters, is not unquoted, so its file is left out.",
+				"examples": [
+					{
+						"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+						"packages/desktop/package.json": "5b1f0c9d2e7a4638c1d05f9e2b7a3c64d8e1f0a25c9b7d3e6f4a1c0b8d2e5f73",
+						"packages/desktop/svelte.config.js": "0e4d7b2a9c18f365d0b4e7a2c9f1d83b6a5e0c7f2d4b9a1e8c3f6d0b5a7e2c94"
+					},
+					{
+						"packages/desktop/capacitor.config.ts": "c7e2a9d15f30b8e46a1d92c0f7b35e8a4d6c1f9b2e07a53d8c4f1b6e9a20d7c3",
+						"packages/desktop/ios/App/App/Info.plist": "1d8f4c2b7e9a0631c5d8b2f7e4a9c0163b5d8e2f7a1c94e0d6b3a8f2c5e7d109"
+					}
+				]
 			},
 			{
 				"name": "tree",
-				"type": "Map<string, string>"
+				"type": "Map<string, string>",
+				"description": "Every regular file under the folder, recursively, keyed by its path relative to that folder in sorted order, each with the SHA-256 hex digest of its bytes. Symbolic links are not included, and a folder that does not exist gives an empty map.",
+				"examples": [
+					{
+						"AppDelegate.swift": "0e4d7b2a9c18f365d0b4e7a2c9f1d83b6a5e0c7f2d4b9a1e8c3f6d0b5a7e2c94",
+						"Info.plist": "1d8f4c2b7e9a0631c5d8b2f7e4a9c0163b5d8e2f7a1c94e0d6b3a8f2c5e7d109"
+					},
+					{}
+				]
 			},
 			{
 				"name": "treeDigest",
-				"type": "string"
+				"type": "string",
+				"description": "The SHA-256 hex digest over one map's entries in iteration order, each hashed as its path, a NUL byte, its digest and a newline. Any change to a path, a digest or the order of the entries gives a different value.",
+				"examples": [
+					"9e3f6a0c2d7b41e8f5a9c3b0d6e2f14a7c8b5d9e0f3a6c1b4d7e2f8a9c0b5d36",
+					"6d0b8e2a5f9c17d3e4a6b0c8f2d5e9a1b7c4f8e3d0a6b2c9f5e1d7a4b8c3e062",
+					"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+				]
 			},
 			{
 				"name": "missing",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The paths of the first map whose digest the second map does not hold with the same value, or does not hold at all, in the first map's order and not sorted. moved uses this check in both directions.",
+				"examples": [
+					["packages/desktop/package.json"],
+					["packages/desktop/svelte.config.js", "bun.lock"]
+				]
 			},
 			{
 				"name": "moved",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The sorted paths on which the two maps do not agree, meaning changed, added or removed. Each path appears once in the result.",
+				"examples": [
+					["packages/desktop/package.json", "packages/desktop/svelte.config.js"],
+					["packages/desktop/svelte.config.js"]
+				]
 			},
 			{
 				"name": "named",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The name of one set of files: the treeDigest of the map as digest and its number of entries as files. It is what a report says of one set of source files.",
+				"examples": [
+					{
+						"digest": "9e3f6a0c2d7b41e8f5a9c3b0d6e2f14a7c8b5d9e0f3a6c1b4d7e2f8a9c0b5d36",
+						"files": 2
+					},
+					{
+						"digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+						"files": 0
+					}
+				]
 			},
 			{
 				"name": "readSources",
-				"type": "SourceReading"
+				"type": "SourceReading",
+				"description": "The three sets read one after another, each a map from repository-relative path to SHA-256 digest: renderer, native and fixtureComputer. Because the sets are read in turn, they are not one atomic snapshot of the working tree."
 			},
 			{
 				"name": "movedSources",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The sorted paths on which the before and after readings disagree in any of the three sets, meaning changed, added or removed. A path that disagrees in more than one set appears once.",
+				"examples": [
+					["packages/desktop/package.json", "packages/desktop/scripts/ios-acceptance-source.ts"],
+					["bun.lock"]
+				]
 			},
 			{
 				"name": "revision",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "An object with revision, the full commit SHA that HEAD resolves to, and branch, the short name of HEAD, which is HEAD when the checkout is detached. differsFromRevision is true when git status --porcelain prints anything.",
+				"examples": [
+					{
+						"revision": "9d41e7b0c2a58f63e1d7b4a09c6f25e8d3b1a7c4",
+						"branch": "main",
+						"differsFromRevision": false
+					},
+					{
+						"revision": "4b7e0a2d9c3f18e56a0d4b7c2e9f13a8d6c5b0e2",
+						"branch": "HEAD",
+						"differsFromRevision": true
+					}
+				]
 			},
 			{
 				"name": "toolsProof",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "An object with xcode, the output of xcodebuild -version, trimmed, with line breaks replaced by ', ' (it is not checked for success, so it can be an error message or empty), node, the process.version of the running Node, and inspector. inspector is the version field of the appium-remote-debugger package.json found under the desktop or repository node_modules, or 'not installed in this workspace' when neither has one.",
+				"examples": [
+					{
+						"xcode": "Xcode 16.2, Build version 16C5032a",
+						"node": "v22.11.0",
+						"inspector": "2.1.0"
+					},
+					{
+						"xcode": "",
+						"node": "v22.11.0",
+						"inspector": "not installed in this workspace"
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by tool when a git command does not end with exit code 0, including when it cannot start or is killed; the message is 'git failed (<code>):' followed by the last 25 lines of its output."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by readFileSync inside fileDigest when a file that exists cannot be read, for example because of a permission error."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by readdirSync inside contents when the folder, or a folder under it, cannot be listed, for example because the path is a file."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by readFileSync inside inspectorPackage when the appium-remote-debugger package.json that it found cannot be read."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse inside inspectorPackage when that package.json is not valid JSON."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown inside inspectorPackage when that package.json parses to null, because its version field is read from null."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sourceFiles",
@@ -147,17 +355,46 @@
 					{
 						"name": "sourceFiles.paths",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Repository-relative paths, files or folders, that are passed to git ls-files as pathspecs after '--', so each is read from the repository root; tracked files are listed, and untracked files that Git ignores are skipped. An empty list passes no pathspec, so Git lists every tracked file and every untracked file it does not ignore in the repository.",
+						"examples": [
+							["packages/desktop/ios", "packages/desktop/capacitor.config.ts"],
+							["packages/desktop/src", "packages/desktop/package.json"],
+							["bun.lock"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceFiles",
-						"type": "Map<string, string>"
+						"type": "Map<string, string>",
+						"description": "Every file under the given paths that Git lists, tracked or untracked but not ignored, and that exists on disk, keyed by repository-relative path in sorted order, each with the SHA-256 hex digest of its bytes. A name that Git prints in quotes, such as one with non-ASCII characters, is not unquoted, so its file is left out.",
+						"examples": [
+							{
+								"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+								"packages/desktop/package.json": "5b1f0c9d2e7a4638c1d05f9e2b7a3c64d8e1f0a25c9b7d3e6f4a1c0b8d2e5f73",
+								"packages/desktop/svelte.config.js": "0e4d7b2a9c18f365d0b4e7a2c9f1d83b6a5e0c7f2d4b9a1e8c3f6d0b5a7e2c94"
+							},
+							{
+								"packages/desktop/capacitor.config.ts": "c7e2a9d15f30b8e46a1d92c0f7b35e8a4d6c1f9b2e07a53d8c4f1b6e9a20d7c3",
+								"packages/desktop/ios/App/App/Info.plist": "1d8f4c2b7e9a0631c5d8b2f7e4a9c0163b5d8e2f7a1c94e0d6b3a8f2c5e7d109"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by tool when a git command does not end with exit code 0, including when it cannot start or is killed; the message is 'git failed (<code>):' followed by the last 25 lines of its output."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by readFileSync inside fileDigest when a file that exists cannot be read, for example because of a permission error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "tree",
@@ -165,17 +402,41 @@
 					{
 						"name": "tree.folder",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The folder that tree lists recursively, passed on as given, so a relative path is read from the process's working directory rather than the repository. A folder that does not exist gives an empty map, while a path that exists but is a file makes tree throw.",
+						"examples": [
+							"/repo/packages/desktop/ios/App/App",
+							"/repo/packages/reports/src/components"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "tree",
-						"type": "Map<string, string>"
+						"type": "Map<string, string>",
+						"description": "Every regular file under the folder, recursively, keyed by its path relative to that folder in sorted order, each with the SHA-256 hex digest of its bytes. Symbolic links are not included, and a folder that does not exist gives an empty map.",
+						"examples": [
+							{
+								"AppDelegate.swift": "0e4d7b2a9c18f365d0b4e7a2c9f1d83b6a5e0c7f2d4b9a1e8c3f6d0b5a7e2c94",
+								"Info.plist": "1d8f4c2b7e9a0631c5d8b2f7e4a9c0163b5d8e2f7a1c94e0d6b3a8f2c5e7d109"
+							},
+							{}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by readdirSync inside contents when the folder, or a folder under it, cannot be listed, for example because the path is a file."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by readFileSync inside fileDigest when a file that exists cannot be read, for example because of a permission error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "treeDigest",
@@ -183,17 +444,33 @@
 					{
 						"name": "treeDigest.files",
 						"type": "Map<string, string>",
-						"required": true
+						"required": true,
+						"description": "A map from each file's path to its digest, such as the maps that sourceFiles and tree return. treeDigest hashes the entries in the map's own iteration order, so the same entries inserted in a different order give a different digest.",
+						"examples": [
+							{
+								"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+								"packages/desktop/package.json": "5b1f0c9d2e7a4638c1d05f9e2b7a3c64d8e1f0a25c9b7d3e6f4a1c0b8d2e5f73"
+							},
+							{
+								"packages/desktop/capacitor.config.ts": "c7e2a9d15f30b8e46a1d92c0f7b35e8a4d6c1f9b2e07a53d8c4f1b6e9a20d7c3"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "treeDigest",
-						"type": "string"
+						"type": "string",
+						"description": "The SHA-256 hex digest over one map's entries in iteration order, each hashed as its path, a NUL byte, its digest and a newline. Any change to a path, a digest or the order of the entries gives a different value.",
+						"examples": [
+							"9e3f6a0c2d7b41e8f5a9c3b0d6e2f14a7c8b5d9e0f3a6c1b4d7e2f8a9c0b5d36",
+							"6d0b8e2a5f9c17d3e4a6b0c8f2d5e9a1b7c4f8e3d0a6b2c9f5e1d7a4b8c3e062",
+							"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "missing",
@@ -201,22 +478,48 @@
 					{
 						"name": "missing.from",
 						"type": "Map<string, string>",
-						"required": true
+						"required": true,
+						"description": "The set being checked, as a map from path to digest: missing returns each of its paths that missing.held does not hold with the same digest.",
+						"examples": [
+							{
+								"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+								"packages/desktop/package.json": "5b1f0c9d2e7a4638c1d05f9e2b7a3c64d8e1f0a25c9b7d3e6f4a1c0b8d2e5f73"
+							},
+							{
+								"packages/desktop/capacitor.config.ts": "c7e2a9d15f30b8e46a1d92c0f7b35e8a4d6c1f9b2e07a53d8c4f1b6e9a20d7c3",
+								"packages/desktop/svelte.config.js": "0e4d7b2a9c18f365d0b4e7a2c9f1d83b6a5e0c7f2d4b9a1e8c3f6d0b5a7e2c94"
+							}
+						]
 					},
 					{
 						"name": "missing.held",
 						"type": "Map<string, string>",
-						"required": true
+						"required": true,
+						"description": "The set that missing.from is checked against, as a map from path to digest; a path that is absent from this map, or has a different digest in it, counts as missing.",
+						"examples": [
+							{
+								"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+								"packages/desktop/package.json": "7f2a0d5c8e4b13a9c6d2f0e7b5a8c1d4e9f3b6a0c2d8e5f1b7a4c9d3e6f0a825"
+							},
+							{
+								"packages/desktop/capacitor.config.ts": "c7e2a9d15f30b8e46a1d92c0f7b35e8a4d6c1f9b2e07a53d8c4f1b6e9a20d7c3"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "missing",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The paths of the first map whose digest the second map does not hold with the same value, or does not hold at all, in the first map's order and not sorted. moved uses this check in both directions.",
+						"examples": [
+							["packages/desktop/package.json"],
+							["packages/desktop/svelte.config.js", "bun.lock"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "moved",
@@ -224,22 +527,49 @@
 					{
 						"name": "moved.before",
 						"type": "Map<string, string>",
-						"required": true
+						"required": true,
+						"description": "The earlier reading of one set, as a map from path to digest. moved compares it with moved.after and returns the paths that changed, were added or were removed.",
+						"examples": [
+							{
+								"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+								"packages/desktop/package.json": "5b1f0c9d2e7a4638c1d05f9e2b7a3c64d8e1f0a25c9b7d3e6f4a1c0b8d2e5f73"
+							},
+							{
+								"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+								"packages/desktop/svelte.config.js": "0e4d7b2a9c18f365d0b4e7a2c9f1d83b6a5e0c7f2d4b9a1e8c3f6d0b5a7e2c94"
+							}
+						]
 					},
 					{
 						"name": "moved.after",
 						"type": "Map<string, string>",
-						"required": true
+						"required": true,
+						"description": "The later reading of the same set, as a map from path to digest. moved compares it with moved.before and reports the paths on which the two readings disagree.",
+						"examples": [
+							{
+								"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+								"packages/desktop/package.json": "7f2a0d5c8e4b13a9c6d2f0e7b5a8c1d4e9f3b6a0c2d8e5f1b7a4c9d3e6f0a825",
+								"packages/desktop/svelte.config.js": "0e4d7b2a9c18f365d0b4e7a2c9f1d83b6a5e0c7f2d4b9a1e8c3f6d0b5a7e2c94"
+							},
+							{
+								"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "moved",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The sorted paths on which the two maps do not agree, meaning changed, added or removed. Each path appears once in the result.",
+						"examples": [
+							["packages/desktop/package.json", "packages/desktop/svelte.config.js"],
+							["packages/desktop/svelte.config.js"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "named",
@@ -247,17 +577,36 @@
 					{
 						"name": "named.files",
 						"type": "Map<string, string>",
-						"required": true
+						"required": true,
+						"description": "The set of files that named describes, as a map from path to digest. named returns the treeDigest of this map as digest and its number of entries as files.",
+						"examples": [
+							{
+								"bun.lock": "a3c9e1f07b52d46e8c1a9f3b0d7e2c58f4a6b1d9e0c3725b8f2a6d4e9c1b7f30",
+								"packages/desktop/package.json": "5b1f0c9d2e7a4638c1d05f9e2b7a3c64d8e1f0a25c9b7d3e6f4a1c0b8d2e5f73"
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "named",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The name of one set of files: the treeDigest of the map as digest and its number of entries as files. It is what a report says of one set of source files.",
+						"examples": [
+							{
+								"digest": "9e3f6a0c2d7b41e8f5a9c3b0d6e2f14a7c8b5d9e0f3a6c1b4d7e2f8a9c0b5d36",
+								"files": 2
+							},
+							{
+								"digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+								"files": 0
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readSources",
@@ -265,11 +614,23 @@
 				"outputs": [
 					{
 						"name": "readSources",
-						"type": "SourceReading"
+						"type": "SourceReading",
+						"description": "The three sets read one after another, each a map from repository-relative path to SHA-256 digest: renderer, native and fixtureComputer. Because the sets are read in turn, they are not one atomic snapshot of the working tree."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by tool when a git command does not end with exit code 0, including when it cannot start or is killed; the message is 'git failed (<code>):' followed by the last 25 lines of its output."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by readFileSync inside fileDigest when a file that exists cannot be read, for example because of a permission error."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "movedSources",
@@ -277,22 +638,32 @@
 					{
 						"name": "movedSources.before",
 						"type": "SourceReading",
-						"required": true
+						"required": true,
+						"description": "The three sets as they were read before what is built from them, each a map from path to digest under renderer, native and fixtureComputer. movedSources compares each set with the same set in movedSources.after."
 					},
 					{
 						"name": "movedSources.after",
 						"type": "SourceReading",
-						"required": true
+						"required": true,
+						"description": "The same three sets, read again after what is built from them, with the same keys as movedSources.before. movedSources reports the paths on which the two readings disagree in any of the sets."
 					}
 				],
 				"outputs": [
 					{
 						"name": "movedSources",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The sorted paths on which the before and after readings disagree in any of the three sets, meaning changed, added or removed. A path that disagrees in more than one set appears once.",
+						"examples": [
+							[
+								"packages/desktop/package.json",
+								"packages/desktop/scripts/ios-acceptance-source.ts"
+							],
+							["bun.lock"]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "revision",
@@ -300,11 +671,30 @@
 				"outputs": [
 					{
 						"name": "revision",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "An object with revision, the full commit SHA that HEAD resolves to, and branch, the short name of HEAD, which is HEAD when the checkout is detached. differsFromRevision is true when git status --porcelain prints anything.",
+						"examples": [
+							{
+								"revision": "9d41e7b0c2a58f63e1d7b4a09c6f25e8d3b1a7c4",
+								"branch": "main",
+								"differsFromRevision": false
+							},
+							{
+								"revision": "4b7e0a2d9c3f18e56a0d4b7c2e9f13a8d6c5b0e2",
+								"branch": "HEAD",
+								"differsFromRevision": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by tool when a git command does not end with exit code 0, including when it cannot start or is killed; the message is 'git failed (<code>):' followed by the last 25 lines of its output."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "toolsProof",
@@ -312,11 +702,40 @@
 				"outputs": [
 					{
 						"name": "toolsProof",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "An object with xcode, the output of xcodebuild -version, trimmed, with line breaks replaced by ', ' (it is not checked for success, so it can be an error message or empty), node, the process.version of the running Node, and inspector. inspector is the version field of the appium-remote-debugger package.json found under the desktop or repository node_modules, or 'not installed in this workspace' when neither has one.",
+						"examples": [
+							{
+								"xcode": "Xcode 16.2, Build version 16C5032a",
+								"node": "v22.11.0",
+								"inspector": "2.1.0"
+							},
+							{
+								"xcode": "",
+								"node": "v22.11.0",
+								"inspector": "not installed in this workspace"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by readFileSync inside inspectorPackage when the appium-remote-debugger package.json that it found cannot be read."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse inside inspectorPackage when that package.json is not valid JSON."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown inside inspectorPackage when that package.json parses to null, because its version field is read from null."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
