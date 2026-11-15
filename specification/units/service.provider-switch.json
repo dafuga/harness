@@ -18,71 +18,177 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProviderSwitchService.constructor.store",
 				"type": "SwitchStore",
-				"required": true
+				"required": true,
+				"description": "The per-session request store used by the service. request and cancel read records with get and replace them with put only when the expected revision matches; this service does not call list."
 			},
 			{
 				"name": "ProviderSwitchService.constructor.catalog",
 				"type": "{ list(): Promise<PickerModel[]> }",
-				"required": true
+				"required": true,
+				"description": "Provides configured picker models through list(). status exposes that list, and request accepts only a provider/model present in it with an effort in that model's efforts list."
 			},
 			{
 				"name": "ProviderSwitchService.constructor.control",
 				"type": "SessionControl",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional desktop session control used by status to inspect a truthy session ID and set controlConnected. This service does not call resume or apply a provider switch; when omitted, active is null and the unavailable message is used."
 			},
 			{
 				"name": "ProviderSwitchService.status.sessionId",
 				"type": "string | null",
 				"required": false,
-				"default": null
+				"default": null,
+				"description": "An optional explicit Codex session ID to validate, inspect when control is available, and use to retrieve its request. Defaults to null; truthy values must be 1–128 ASCII letters, digits, underscores, or hyphens, starting with a letter or digit.",
+				"examples": [null, "session_42"]
 			},
 			{
 				"name": "ProviderSwitchService.request.sessionId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The explicit Codex session ID whose switch request is being queued. It must be 1–128 ASCII letters, digits, underscores, or hyphens, starting with a letter or digit.",
+				"examples": ["session_42"]
 			},
 			{
 				"name": "ProviderSwitchService.request.target",
 				"type": "ProviderSelection",
-				"required": true
+				"required": true,
+				"description": "The provider/model/effort selection to queue. Provider must be openai or harness-claude, and the catalog must contain the provider/model with the requested effort in its efforts list.",
+				"examples": [
+					{
+						"provider": "openai",
+						"model": "catalog-model",
+						"effort": "medium"
+					}
+				]
 			},
 			{
 				"name": "ProviderSwitchService.cancel.sessionId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The explicit Codex session ID whose current request is being cancelled. It must be 1–128 ASCII letters, digits, underscores, or hyphens, starting with a letter or digit.",
+				"examples": ["session_42"]
 			},
 			{
 				"name": "ProviderSwitchService.cancel.requestId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The ID of the request expected to be cancelled. IDs created by this service are UUIDs, and cancellation succeeds only when this ID matches the session's current pending request.",
+				"examples": ["950e8400-e29b-41d4-a716-446655440000"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProviderSwitchService.status",
-				"type": "Promise<PickerSnapshot>"
+				"type": "Promise<PickerSnapshot>",
+				"description": "The resolved picker snapshot for the requested session context, including catalog models and desktop-control availability. A null or empty session ID omits session-specific lookup; active is also null whenever control is absent.",
+				"examples": [
+					{
+						"sessionId": null,
+						"defaultProvider": "openai",
+						"active": null,
+						"request": null,
+						"models": [
+							{
+								"provider": "openai",
+								"model": "catalog-model",
+								"label": "Catalog model",
+								"efforts": ["medium"],
+								"defaultEffort": "medium",
+								"source": "local-catalog"
+							}
+						],
+						"controlConnected": false,
+						"message": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+					}
+				]
 			},
 			{
 				"name": "ProviderSwitchService.request",
-				"type": "Promise<PickerSnapshot>"
+				"type": "Promise<PickerSnapshot>",
+				"description": "The resolved picker snapshot after a target is catalog-validated and stored as a pending request. Requests remain pending for desktop verification; this service does not change provider settings.",
+				"examples": [
+					{
+						"sessionId": "session_42",
+						"defaultProvider": "openai",
+						"active": null,
+						"request": {
+							"id": "950e8400-e29b-41d4-a716-446655440000",
+							"sessionId": "session_42",
+							"target": {
+								"provider": "openai",
+								"model": "catalog-model",
+								"effort": "medium"
+							},
+							"status": "pending",
+							"createdAt": "2026-11-15T12:00:00.000Z",
+							"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+						},
+						"models": [
+							{
+								"provider": "openai",
+								"model": "catalog-model",
+								"label": "Catalog model",
+								"efforts": ["medium"],
+								"defaultEffort": "medium",
+								"source": "local-catalog"
+							}
+						],
+						"controlConnected": false,
+						"message": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+					}
+				]
 			},
 			{
 				"name": "ProviderSwitchService.cancel",
-				"type": "Promise<PickerSnapshot>"
+				"type": "Promise<PickerSnapshot>",
+				"description": "The resolved picker snapshot after the current pending request is marked cancelled with reason Cancelled by the user. It does not change provider settings.",
+				"examples": [
+					{
+						"sessionId": "session_42",
+						"defaultProvider": "openai",
+						"active": null,
+						"request": {
+							"id": "950e8400-e29b-41d4-a716-446655440000",
+							"sessionId": "session_42",
+							"target": {
+								"provider": "openai",
+								"model": "catalog-model",
+								"effort": "medium"
+							},
+							"status": "cancelled",
+							"createdAt": "2026-11-15T12:00:00.000Z",
+							"reason": "Cancelled by the user."
+						},
+						"models": [
+							{
+								"provider": "openai",
+								"model": "catalog-model",
+								"label": "Catalog model",
+								"efforts": ["medium"],
+								"defaultEffort": "medium",
+								"source": "local-catalog"
+							}
+						],
+						"controlConnected": false,
+						"message": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An Error is thrown for invalid session IDs, unavailable catalog selections or efforts, an applying prior request, cancellation of anything other than the current pending request, or a failed revision-checked store write. Errors from catalog, store, and session-control calls also propagate."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProviderSwitchService.status",
@@ -91,17 +197,46 @@
 						"name": "ProviderSwitchService.status.sessionId",
 						"type": "string | null",
 						"required": false,
-						"default": null
+						"default": null,
+						"description": "An optional explicit Codex session ID to validate, inspect when control is available, and use to retrieve its request. Defaults to null; truthy values must be 1–128 ASCII letters, digits, underscores, or hyphens, starting with a letter or digit.",
+						"examples": [null, "session_42"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitchService.status",
-						"type": "Promise<PickerSnapshot>"
+						"type": "Promise<PickerSnapshot>",
+						"description": "The resolved picker snapshot for the requested session context, including catalog models and desktop-control availability. A null or empty session ID omits session-specific lookup; active is also null whenever control is absent.",
+						"examples": [
+							{
+								"sessionId": null,
+								"defaultProvider": "openai",
+								"active": null,
+								"request": null,
+								"models": [
+									{
+										"provider": "openai",
+										"model": "catalog-model",
+										"label": "Catalog model",
+										"efforts": ["medium"],
+										"defaultEffort": "medium",
+										"source": "local-catalog"
+									}
+								],
+								"controlConnected": false,
+								"message": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error('A valid explicit Codex session ID is required.') when a truthy session ID fails validation; the promise also rejects if catalog listing or session inspection rejects."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderSwitchService.request",
@@ -109,27 +244,70 @@
 					{
 						"name": "ProviderSwitchService.request.sessionId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The explicit Codex session ID whose switch request is being queued. It must be 1–128 ASCII letters, digits, underscores, or hyphens, starting with a letter or digit.",
+						"examples": ["session_42"]
 					},
 					{
 						"name": "ProviderSwitchService.request.target",
 						"type": "ProviderSelection",
-						"required": true
+						"required": true,
+						"description": "The provider/model/effort selection to queue. Provider must be openai or harness-claude, and the catalog must contain the provider/model with the requested effort in its efforts list.",
+						"examples": [
+							{
+								"provider": "openai",
+								"model": "catalog-model",
+								"effort": "medium"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitchService.request",
-						"type": "Promise<PickerSnapshot>"
+						"type": "Promise<PickerSnapshot>",
+						"description": "The resolved picker snapshot after a target is catalog-validated and stored as a pending request. Requests remain pending for desktop verification; this service does not change provider settings.",
+						"examples": [
+							{
+								"sessionId": "session_42",
+								"defaultProvider": "openai",
+								"active": null,
+								"request": {
+									"id": "950e8400-e29b-41d4-a716-446655440000",
+									"sessionId": "session_42",
+									"target": {
+										"provider": "openai",
+										"model": "catalog-model",
+										"effort": "medium"
+									},
+									"status": "pending",
+									"createdAt": "2026-11-15T12:00:00.000Z",
+									"reason": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+								},
+								"models": [
+									{
+										"provider": "openai",
+										"model": "catalog-model",
+										"label": "Catalog model",
+										"efforts": ["medium"],
+										"defaultEffort": "medium",
+										"source": "local-catalog"
+									}
+								],
+								"controlConnected": false,
+								"message": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error for an invalid session ID, a target absent from the configured catalog or effort list, a prior request in applying, or a failed revision-checked store write. The promise also rejects when catalog, store, or session-inspection calls reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProviderSwitchService.cancel",
@@ -137,27 +315,64 @@
 					{
 						"name": "ProviderSwitchService.cancel.sessionId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The explicit Codex session ID whose current request is being cancelled. It must be 1–128 ASCII letters, digits, underscores, or hyphens, starting with a letter or digit.",
+						"examples": ["session_42"]
 					},
 					{
 						"name": "ProviderSwitchService.cancel.requestId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The ID of the request expected to be cancelled. IDs created by this service are UUIDs, and cancellation succeeds only when this ID matches the session's current pending request.",
+						"examples": ["950e8400-e29b-41d4-a716-446655440000"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitchService.cancel",
-						"type": "Promise<PickerSnapshot>"
+						"type": "Promise<PickerSnapshot>",
+						"description": "The resolved picker snapshot after the current pending request is marked cancelled with reason Cancelled by the user. It does not change provider settings.",
+						"examples": [
+							{
+								"sessionId": "session_42",
+								"defaultProvider": "openai",
+								"active": null,
+								"request": {
+									"id": "950e8400-e29b-41d4-a716-446655440000",
+									"sessionId": "session_42",
+									"target": {
+										"provider": "openai",
+										"model": "catalog-model",
+										"effort": "medium"
+									},
+									"status": "cancelled",
+									"createdAt": "2026-11-15T12:00:00.000Z",
+									"reason": "Cancelled by the user."
+								},
+								"models": [
+									{
+										"provider": "openai",
+										"model": "catalog-model",
+										"label": "Catalog model",
+										"efforts": ["medium"],
+										"defaultEffort": "medium",
+										"source": "local-catalog"
+									}
+								],
+								"controlConnected": false,
+								"message": "Desktop control connection unavailable. Requests stay pending; no provider settings change."
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error for an invalid session ID, an ID or status that does not match the current pending request, or a failed revision-checked store write. The promise also rejects when store, catalog, or session-inspection calls reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -167,27 +382,32 @@
 					{
 						"name": "ProviderSwitchService.constructor.store",
 						"type": "SwitchStore",
-						"required": true
+						"required": true,
+						"description": "The per-session request store used by the service. request and cancel read records with get and replace them with put only when the expected revision matches; this service does not call list."
 					},
 					{
 						"name": "ProviderSwitchService.constructor.catalog",
 						"type": "{ list(): Promise<PickerModel[]> }",
-						"required": true
+						"required": true,
+						"description": "Provides configured picker models through list(). status exposes that list, and request accepts only a provider/model present in it with an effort in that model's efforts list."
 					},
 					{
 						"name": "ProviderSwitchService.constructor.control",
 						"type": "SessionControl",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional desktop session control used by status to inspect a truthy session ID and set controlConnected. This service does not call resume or apply a provider switch; when omitted, active is null and the unavailable message is used."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProviderSwitchService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed ProviderSwitchService instance holding the supplied store, catalog, and optional control. Construction only assigns those dependencies."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
