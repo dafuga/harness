@@ -10,17 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/stores/networking-security/remoteHost.svelte.ts",
-			"packages/desktop/src/lib/stores/networking-security/remoteHost.svelte.types.ts",
-			"packages/desktop/src/lib/stores/remoteHost.svelte.ts"
+			"packages/desktop/src/lib/stores/networking-security/remoteHost.svelte.types.ts"
 		],
-		"symbols": [
-			"createRemoteHostStore",
-			"RemoteHost",
-			"RemoteHostState",
-			"Approval",
-			"RemoteHost",
-			"createRemoteHostStore"
-		]
+		"symbols": ["createRemoteHostStore", "RemoteHost", "RemoteHostState", "Approval", "RemoteHost"]
 	},
 	"contract": {
 		"origin": "derived",

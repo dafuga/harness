@@ -10,16 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/stores/agents-providers/projectAgent.svelte.ts",
-			"packages/desktop/src/lib/stores/agents-providers/projectAgent.svelte.types.ts",
-			"packages/desktop/src/lib/stores/projectAgent.svelte.ts"
+			"packages/desktop/src/lib/stores/agents-providers/projectAgent.svelte.types.ts"
 		],
-		"symbols": [
-			"createProjectAgentStore",
-			"ProjectAgent",
-			"ProjectAgentState",
-			"ProjectAgent",
-			"createProjectAgentStore"
-		]
+		"symbols": ["createProjectAgentStore", "ProjectAgent", "ProjectAgentState", "ProjectAgent"]
 	},
 	"contract": {
 		"origin": "derived",

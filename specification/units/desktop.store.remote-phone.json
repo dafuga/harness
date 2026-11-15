@@ -10,17 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/stores/networking-security/remotePhone.svelte.ts",
-			"packages/desktop/src/lib/stores/networking-security/remotePhone.svelte.types.ts",
-			"packages/desktop/src/lib/stores/remotePhone.svelte.ts"
+			"packages/desktop/src/lib/stores/networking-security/remotePhone.svelte.types.ts"
 		],
-		"symbols": [
-			"createRemotePhoneStore",
-			"RemotePhone",
-			"RemotePhoneState",
-			"State",
-			"RemotePhone",
-			"createRemotePhoneStore"
-		]
+		"symbols": ["createRemotePhoneStore", "RemotePhone", "RemotePhoneState", "State", "RemotePhone"]
 	},
 	"contract": {
 		"origin": "derived",

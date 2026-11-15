@@ -1,6 +1,6 @@
 import { expect } from '../../../test/verificationExpect';
 import { test, vi } from 'vitest';
-import { createProjectAgentStore } from '../src/lib/stores/projectAgent.svelte';
+import { createProjectAgentStore } from '../src/lib/stores/agents-providers/projectAgent.svelte';
 import type { Workspace } from '../src/lib/stores/workspace.svelte';
 import type { ProjectRunRequest, RunEvent } from '../src/models/DesktopBridge.types';
 

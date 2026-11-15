@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { createRemoteHostStore } from '../../src/lib/stores/remoteHost.svelte';
+import { createRemoteHostStore } from '../../src/lib/stores/networking-security/remoteHost.svelte';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 import type { RemoteHostStatus } from '../../src/models/Environment.types';
 

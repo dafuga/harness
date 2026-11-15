@@ -1,6 +1,6 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import RemoteOfferCode from '../../src/components/networking-security/remote-offer-code/RemoteOfferCode.svelte';
-import type { RemoteHost } from '../../src/lib/stores/remoteHost.svelte';
+import type { RemoteHost } from '../../src/lib/stores/networking-security/remoteHost.svelte';
 import { drawn } from '../evidence-fixture';
 import { decoded, offerVectors } from '../qr-fixture';
 

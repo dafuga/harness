@@ -1,6 +1,6 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { createRemotePhoneStore } from '../src/lib/stores/remotePhone.svelte';
-import { createRemoteHostStore } from '../src/lib/stores/remoteHost.svelte';
+import { createRemotePhoneStore } from '../src/lib/stores/networking-security/remotePhone.svelte';
+import { createRemoteHostStore } from '../src/lib/stores/networking-security/remoteHost.svelte';
 import { createWorkspaceStore } from '../src/lib/stores/workspace.svelte';
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import type { DesktopProject } from '../src/models/ProjectContext.types';

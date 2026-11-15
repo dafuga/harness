@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { createThreadCommentsStore } from '../../src/lib/stores/threadComments.svelte';
+import { createThreadCommentsStore } from '../../src/lib/stores/development-tooling/threadComments.svelte';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 import type { HumanCommentDraft, HumanCommentResult } from '../../src/models/ProjectContext.types';
 
