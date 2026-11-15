@@ -20,29 +20,34 @@
 				"name": "hostedImage.value",
 				"type": "unknown",
 				"required": true,
-				"description": "The cached image encoded as a base64 string. Other value types are refused."
+				"description": "The cached hosted image value to decode. Only strings are accepted; they are decoded as base64, and the resulting bytes must be at most 25,000,000 bytes, match `sha256`, and pass PNG validation.",
+				"examples": [
+					"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+				]
 			},
 			{
 				"name": "hostedImage.sha256",
 				"type": "string",
 				"required": true,
-				"description": "The expected SHA-256 hash, compared with the decoded bytes."
+				"description": "The expected digest for the decoded bytes. It is compared exactly with the lowercase hexadecimal SHA-256 digest produced from those bytes.",
+				"examples": ["431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostedImage",
 				"type": "unknown",
-				"description": "Validated image bytes after base64 decoding and a matching hash, with decoded size at most 25,000,000 bytes. Image-format checks are delegated to the image validator."
+				"description": "The decoded image as the same Uint8Array passed through ImageBytesValidator. The validator requires a complete PNG with nonzero dimensions and at most 32,000,000 pixels; the hosted-image 25,000,000-byte cap is applied first."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws when the input is not text, decoded bytes exceed the limit or the hash differs. Image-validator failures also propagate."
+				"description": "Throws Error('Invalid cached image.') when value is not a string. Throws Error('Hosted image hash mismatch.') when decoded bytes exceed 25,000,000 bytes or their lowercase SHA-256 digest differs; ImageBytesValidator also propagates Errors for invalid PNG data or its size and dimension limits."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hostedImage",
@@ -51,29 +56,34 @@
 						"name": "hostedImage.value",
 						"type": "unknown",
 						"required": true,
-						"description": "The cached image encoded as a base64 string. Other value types are refused."
+						"description": "The cached hosted image value to decode. Only strings are accepted; they are decoded as base64, and the resulting bytes must be at most 25,000,000 bytes, match `sha256`, and pass PNG validation.",
+						"examples": [
+							"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+						]
 					},
 					{
 						"name": "hostedImage.sha256",
 						"type": "string",
 						"required": true,
-						"description": "The expected SHA-256 hash, compared with the decoded bytes."
+						"description": "The expected digest for the decoded bytes. It is compared exactly with the lowercase hexadecimal SHA-256 digest produced from those bytes.",
+						"examples": ["431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostedImage",
 						"type": "unknown",
-						"description": "Validated image bytes after base64 decoding and a matching hash, with decoded size at most 25,000,000 bytes. Image-format checks are delegated to the image validator."
+						"description": "The decoded image as the same Uint8Array passed through ImageBytesValidator. The validator requires a complete PNG with nonzero dimensions and at most 32,000,000 pixels; the hosted-image 25,000,000-byte cap is applied first."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error('Invalid cached image.') when value is not a string. Throws Error('Hosted image hash mismatch.') when decoded bytes exceed 25,000,000 bytes or their lowercase SHA-256 digest differs; ImageBytesValidator also propagates Errors for invalid PNG data or its size and dimension limits."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
