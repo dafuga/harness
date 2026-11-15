@@ -34,11 +34,12 @@
 				"name": "ModuleTaskRunnerAdapter.constructor.execute",
 				"type": "TaskProcessExecutor",
 				"required": false,
-				"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command."
+				"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command. The documented default is the source expression taskProcess, evaluated by the implementation; it is not a literal string value.",
+				"default": "taskProcess"
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.command.selection",
-				"type": "TaskSelection",
+				"type": "TaskSelection & Pick<TaskRunInput, 'images'>",
 				"required": true,
 				"description": "Provider, exact model and intelligence level used to build that provider's CLI argument vector.",
 				"examples": [
@@ -189,7 +190,7 @@
 				"inputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.command.selection",
-						"type": "TaskSelection",
+						"type": "TaskSelection & Pick<TaskRunInput, 'images'>",
 						"required": true,
 						"description": "Provider, exact model and intelligence level used to build that provider's CLI argument vector.",
 						"examples": [
@@ -356,7 +357,8 @@
 						"name": "ModuleTaskRunnerAdapter.constructor.execute",
 						"type": "TaskProcessExecutor",
 						"required": false,
-						"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command."
+						"description": "Optional process executor for CLI calls; when omitted, the adapter uses taskProcess to launch the selected provider command. The documented default is the source expression taskProcess, evaluated by the implementation; it is not a literal string value.",
+						"default": "taskProcess"
 					}
 				],
 				"outputs": [

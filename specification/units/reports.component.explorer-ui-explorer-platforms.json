@@ -103,9 +103,7 @@
 				"type": "ExplorerEntity[]",
 				"required": true,
 				"description": "The entity array accepted by ExplorerScreenProps and provided to child screens within host. ExplorerPlatforms does not read its entries directly.",
-				"examples": [
-					[]
-				]
+				"examples": [[]]
 			},
 			{
 				"name": "ExplorerPlatforms.lens",
@@ -424,7 +422,11 @@
 			}
 		]
 	},
-	"scenarios": ["component-catalog-previews", "explorer-platforms"],
+	"scenarios": [
+		"component-catalog-previews",
+		"explorer-platforms",
+		"platform-interaction-video-pilot"
+	],
 	"preview": {
 		"scenario": "component-catalog-previews",
 		"state": "reports-component-explorer-ui-explorer-platforms",

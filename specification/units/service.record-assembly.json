@@ -60,7 +60,8 @@
 			{
 				"name": "recordVideoBatches.outcomes",
 				"type": "CheckOutcome[]",
-				"required": true
+				"required": true,
+				"description": "Check outcomes whose admitted batch pointers are assembled into the record."
 			}
 		],
 		"outputs": [
@@ -138,9 +139,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Different checks name conflicting pointer descriptors for the same video batch identity."
+				"description": "The same batch identity has conflicting evidence pointers across check outcomes; no inconsistent parent record is assembled."
 			}
 		],
 		"errorStatus": "declared",
@@ -253,20 +254,22 @@
 					{
 						"name": "recordVideoBatches.outcomes",
 						"type": "CheckOutcome[]",
-						"required": true
+						"required": true,
+						"description": "Check outcomes whose admitted batch pointers are assembled into the record."
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordVideoBatches",
-						"type": "{ videoBatches?: VideoBatchPointer[]; }"
+						"type": "{ videoBatches?: VideoBatchPointer[]; }",
+						"description": "The { videoBatches?: VideoBatchPointer[]; } result of recordVideoBatches; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Bounded sidecar descriptors, line bindings, or duplicate child pointer identities are invalid; filesystem and schema errors propagate."
+						"description": "Two check outcomes name different sealed pointers for one video batch ID."
 					}
 				],
 				"errorStatus": "declared"
@@ -303,6 +306,11 @@
 		},
 		{
 			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

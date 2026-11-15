@@ -27,7 +27,8 @@
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-small",
 			"reports.component.shared-primitives-compare-panes",
-			"reports.component.verification-evidence-video-evidence"
+			"reports.component.verification-evidence-video-evidence",
+			"reports.component.verification-evidence-video-graph-navigation"
 		]
 	},
 	"owns": {
@@ -564,6 +565,11 @@
 		},
 		{
 			"unit": "reports.component.verification-evidence-video-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.verification-evidence-video-graph-navigation",
 			"via": "import",
 			"origin": "derived"
 		},

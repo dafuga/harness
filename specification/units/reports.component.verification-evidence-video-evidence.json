@@ -90,18 +90,21 @@
 					{
 						"name": "loadVideoFlags.video",
 						"type": "EvidenceVideo",
-						"required": true
+						"required": true,
+						"description": "Video supplied to loadVideoFlags under its declared EvidenceVideo contract."
 					},
 					{
 						"name": "loadVideoFlags.signal",
 						"type": "AbortSignal",
-						"required": true
+						"required": true,
+						"description": "Signal supplied to loadVideoFlags under its declared AbortSignal contract."
 					}
 				],
 				"outputs": [
 					{
 						"name": "loadVideoFlags",
-						"type": "Promise<FrameFlag[]>"
+						"type": "Promise<FrameFlag[]>",
+						"description": "The Promise<FrameFlag[]> result of loadVideoFlags; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -119,28 +122,33 @@
 					{
 						"name": "submitVideoFlag.video",
 						"type": "EvidenceVideo",
-						"required": true
+						"required": true,
+						"description": "Video supplied to submitVideoFlag under its declared EvidenceVideo contract."
 					},
 					{
 						"name": "submitVideoFlag.frameNumber",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Zero-based decoded frame index within the retained clip interval."
 					},
 					{
 						"name": "submitVideoFlag.note",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Note supplied to submitVideoFlag under its declared string contract."
 					},
 					{
 						"name": "submitVideoFlag.signal",
 						"type": "AbortSignal",
-						"required": true
+						"required": true,
+						"description": "Signal supplied to submitVideoFlag under its declared AbortSignal contract."
 					}
 				],
 				"outputs": [
 					{
 						"name": "submitVideoFlag",
-						"type": "Promise<FrameFlag>"
+						"type": "Promise<FrameFlag>",
+						"description": "The Promise<FrameFlag> result of submitVideoFlag; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -269,6 +277,11 @@
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-video",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.endpoint.verification-evidence-api-video-flags",
+			"via": "http",
 			"origin": "derived"
 		},
 		{

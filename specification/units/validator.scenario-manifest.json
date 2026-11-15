@@ -10,12 +10,21 @@
 	"owns": {
 		"source": [
 			"src/validators/ScenarioManifestValidator.ts",
-			"src/validators/verification-evidence/ScenarioManifestValidator.ts"
+			"src/validators/verification-evidence/ScenarioManifestValidator.ts",
+			"src/validators/verification-evidence/scenario-manifest-validator/videoScenarioRules.ts",
+			"src/validators/verification-evidence/scenario-manifest-validator/videoScenarioSources.ts",
+			"src/validators/verification-evidence/scenario-manifest-validator/videoScenarioSources.types.ts",
+			"src/validators/verification-evidence/scenario-manifest-validator/videoScriptExports.ts"
 		],
 		"symbols": [
 			"ScenarioManifestValidator",
 			"ScenarioManifestValidator",
-			"ScenarioManifestValidator.validate"
+			"ScenarioManifestValidator.validate",
+			"videoScenarioRules",
+			"videoScenarioSourceContext",
+			"videoScenarioSources",
+			"VideoScenarioSourceContext",
+			"videoScriptExports"
 		]
 	},
 	"contract": {
@@ -135,6 +144,55 @@
 					"specification/scenarios/unit-registry-ownership.json",
 					"specification/scenarios/function-examples.json"
 				]
+			},
+			{
+				"name": "videoScenarioRules.scenario",
+				"type": "ScenarioManifest",
+				"required": true,
+				"description": "Scenario states, viewports and evidence declarations being inspected."
+			},
+			{
+				"name": "videoScenarioSourceContext.tree",
+				"type": "SourceTree",
+				"required": true,
+				"description": "Exact read-only source tree; bindings are checked without importing recording scripts."
+			},
+			{
+				"name": "videoScenarioSourceContext.root",
+				"type": "string",
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
+			},
+			{
+				"name": "videoScenarioSourceContext.paths",
+				"type": "string[]",
+				"required": false,
+				"description": "Paths supplied to videoScenarioSourceContext under its declared string[] contract. Omission passes undefined; the implementation applies the documented optional behavior.",
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "videoScenarioSources.context",
+				"type": "VideoScenarioSourceContext",
+				"required": true,
+				"description": "Current operation context and its already established source bindings."
+			},
+			{
+				"name": "videoScenarioSources.scenario",
+				"type": "ScenarioManifest",
+				"required": true,
+				"description": "Scenario states, viewports and evidence declarations being inspected."
+			},
+			{
+				"name": "videoScriptExports.path",
+				"type": "string",
+				"required": true,
+				"description": "Repository-relative source or evidence path used by this operation."
+			},
+			{
+				"name": "videoScriptExports.code",
+				"type": "string",
+				"required": true,
+				"description": "Source text inspected statically without executing it."
 			}
 		],
 		"outputs": [
@@ -201,8 +259,14 @@
 				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Static recording-script inspection rejects invalid source syntax; scenario validation itself returns schema/state diagnostics."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ScenarioManifestValidator.validate",
@@ -389,13 +453,145 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "videoScenarioRules",
+				"inputs": [
+					{
+						"name": "videoScenarioRules.scenario",
+						"type": "ScenarioManifest",
+						"required": true,
+						"description": "Scenario states, viewports and evidence declarations being inspected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoScenarioRules",
+						"type": "string[]",
+						"description": "The string[] result of videoScenarioRules; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "videoScenarioSourceContext",
+				"inputs": [
+					{
+						"name": "videoScenarioSourceContext.tree",
+						"type": "SourceTree",
+						"required": true,
+						"description": "Exact read-only source tree; bindings are checked without importing recording scripts."
+					},
+					{
+						"name": "videoScenarioSourceContext.root",
+						"type": "string",
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
+					},
+					{
+						"name": "videoScenarioSourceContext.paths",
+						"type": "string[]",
+						"required": false,
+						"description": "Paths supplied to videoScenarioSourceContext under its declared string[] contract. Omission passes undefined; the implementation applies the documented optional behavior.",
+						"default": "undefined (omitted)"
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoScenarioSourceContext",
+						"type": "Promise<VideoScenarioSourceContext>",
+						"description": "The Promise<VideoScenarioSourceContext> result of videoScenarioSourceContext; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "Promise rejection",
+						"description": "A Node filesystem operation rejects with its original error/code; this names the existing error interface, not a new runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "videoScenarioSources",
+				"inputs": [
+					{
+						"name": "videoScenarioSources.context",
+						"type": "VideoScenarioSourceContext",
+						"required": true,
+						"description": "Current operation context and its already established source bindings."
+					},
+					{
+						"name": "videoScenarioSources.scenario",
+						"type": "ScenarioManifest",
+						"required": true,
+						"description": "Scenario states, viewports and evidence declarations being inspected."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoScenarioSources",
+						"type": "Promise<string[]>",
+						"description": "The Promise<string[]> result of videoScenarioSources; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "videoScriptExports",
+				"inputs": [
+					{
+						"name": "videoScriptExports.path",
+						"type": "string",
+						"required": true,
+						"description": "Repository-relative source or evidence path used by this operation."
+					},
+					{
+						"name": "videoScriptExports.code",
+						"type": "string",
+						"required": true,
+						"description": "Source text inspected statically without executing it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoScriptExports",
+						"type": "Set<string>",
+						"description": "The Set<string> result of videoScriptExports; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The declared JavaScript/TypeScript script has parse diagnostics; it is never imported or executed."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
 		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
 			"via": "import",
 			"origin": "derived"
 		},

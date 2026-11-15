@@ -178,12 +178,12 @@
 			{
 				"name": "featureSchema",
 				"type": "typeof featureSchema",
-				"description": "Zod schema for a strict feature object with exactly id, goal, and tldr; id uses the unit ID rule and a maximum length of 150, while both text fields are trimmed and limited to 1–16,000 characters. It validates feature records stored in the queue."
+				"description": "Zod schema for a strict feature object with exactly id, goal, and tldr; id uses the unit ID rule and a maximum length of 150, while both text fields are trimmed and limited to 1\u201316,000 characters. It validates feature records stored in the queue."
 			},
 			{
 				"name": "wantedContractSchema",
 				"type": "typeof wantedContractSchema",
-				"description": "Zod schema for a strict contract object with responsibility, inputs, outputs, and errors; text is trimmed and limited to 1–16,000 characters, and outputs must contain at least one contract item. It validates the requested contract saved with a task input."
+				"description": "Zod schema for a strict contract object with responsibility, inputs, outputs, and errors; text is trimmed and limited to 1\u201316,000 characters, and outputs must contain at least one contract item. It validates the requested contract saved with a task input."
 			},
 			{
 				"name": "taskInputSchema",
@@ -216,6 +216,11 @@
 				"name": "ZodError",
 				"type": "thrown",
 				"description": "Thrown when queue data read from Git or candidate data passed to update fails queueSchema validation. Strict objects, schema version, item rules, and queue limits apply."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Changing an existing wanted contract is refused; create a new task rather than rewriting the immutable contract."
 			}
 		],
 		"errorStatus": "declared",
@@ -475,6 +480,11 @@
 		},
 		{
 			"unit": "adapter.process-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

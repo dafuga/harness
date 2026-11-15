@@ -1,0 +1,243 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.endpoint.verification-evidence-api-video-flags",
+	"uid": "u_udyzin5pcn",
+	"kind": "endpoint",
+	"title": "/(verification-evidence)/api/video-flags",
+	"responsibility": "List exact-owner reviewer frame flags and accept bounded same-origin JSON feedback against attached verified clips.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/routes/(verification-evidence)/api/video-flags/+server.ts",
+			"packages/reports/src/routes/(verification-evidence)/api/video-flags/flagRequest.ts"
+		],
+		"symbols": ["GET", "POST", "readFlagRequest"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "GET.url",
+				"type": "URL",
+				"required": true,
+				"description": "Request URL containing the owner/flag query parameters documented by this endpoint."
+			},
+			{
+				"name": "POST.request",
+				"type": "Request",
+				"required": true,
+				"description": "Same-origin JSON request. The actual streamed body is capped at 8192 bytes before parsing."
+			},
+			{
+				"name": "POST.url",
+				"type": "URL",
+				"required": true,
+				"description": "Request URL whose origin is compared with the submitted Origin header."
+			},
+			{
+				"name": "readFlagRequest.request",
+				"type": "Request",
+				"required": true,
+				"description": "JSON request whose Origin, Content-Type and actual streamed length are checked before its input is admitted."
+			},
+			{
+				"name": "readFlagRequest.origin",
+				"type": "string",
+				"required": true,
+				"description": "Exact expected origin from the request URL; cross-origin submissions return a 403 response."
+			}
+		],
+		"outputs": [
+			{
+				"name": "GET",
+				"type": "Promise<Response>",
+				"description": "JSON flags for the requested owner/current slot."
+			},
+			{
+				"name": "POST",
+				"type": "Promise<Response>",
+				"description": "A 201 JSON flag after exact attached-clip validation, or a documented JSON error response."
+			},
+			{
+				"name": "readFlagRequest",
+				"type": "Promise<FrameFlagInput | Response>",
+				"description": "The bounded parsed FrameFlagInput or an explicit HTTP validation response."
+			}
+		],
+		"errors": [
+			{
+				"name": "HTTP 400",
+				"type": "HTTP response",
+				"description": "Invalid owner, current-slot parameters, input JSON or attached evidence/integrity produces a JSON error response."
+			},
+			{
+				"name": "HTTP 403",
+				"type": "HTTP response",
+				"description": "Origin differs from the request URL origin."
+			},
+			{
+				"name": "HTTP 413",
+				"type": "HTTP response",
+				"description": "Declared or streamed request body exceeds 8192 bytes."
+			},
+			{
+				"name": "HTTP 415",
+				"type": "HTTP response",
+				"description": "Content-Type is not application/json."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "GET",
+				"inputs": [
+					{
+						"name": "GET.url",
+						"type": "URL",
+						"required": true,
+						"description": "Request URL containing the owner/flag query parameters documented by this endpoint."
+					}
+				],
+				"outputs": [
+					{
+						"name": "GET",
+						"type": "Promise<Response>",
+						"description": "JSON flags for the requested owner/current slot."
+					}
+				],
+				"errors": [
+					{
+						"name": "HTTP 400",
+						"type": "HTTP response",
+						"description": "Invalid owner, current-slot parameters, input JSON or attached evidence/integrity produces a JSON error response."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "POST",
+				"inputs": [
+					{
+						"name": "POST.request",
+						"type": "Request",
+						"required": true,
+						"description": "Same-origin JSON request. The actual streamed body is capped at 8192 bytes before parsing."
+					},
+					{
+						"name": "POST.url",
+						"type": "URL",
+						"required": true,
+						"description": "Request URL whose origin is compared with the submitted Origin header."
+					}
+				],
+				"outputs": [
+					{
+						"name": "POST",
+						"type": "Promise<Response>",
+						"description": "A 201 JSON flag after exact attached-clip validation, or a documented JSON error response."
+					}
+				],
+				"errors": [
+					{
+						"name": "HTTP 400",
+						"type": "HTTP response",
+						"description": "Invalid owner, current-slot parameters, input JSON or attached evidence/integrity produces a JSON error response."
+					},
+					{
+						"name": "HTTP 403",
+						"type": "HTTP response",
+						"description": "Origin differs from the request URL origin."
+					},
+					{
+						"name": "HTTP 413",
+						"type": "HTTP response",
+						"description": "Declared or streamed request body exceeds 8192 bytes."
+					},
+					{
+						"name": "HTTP 415",
+						"type": "HTTP response",
+						"description": "Content-Type is not application/json."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readFlagRequest",
+				"inputs": [
+					{
+						"name": "readFlagRequest.request",
+						"type": "Request",
+						"required": true,
+						"description": "JSON request whose Origin, Content-Type and actual streamed length are checked before its input is admitted."
+					},
+					{
+						"name": "readFlagRequest.origin",
+						"type": "string",
+						"required": true,
+						"description": "Exact expected origin from the request URL; cross-origin submissions return a 403 response."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readFlagRequest",
+						"type": "Promise<FrameFlagInput | Response>",
+						"description": "The bounded parsed FrameFlagInput or an explicit HTTP validation response."
+					}
+				],
+				"errors": [
+					{
+						"name": "HTTP 400",
+						"type": "HTTP response",
+						"description": "Invalid owner, current-slot parameters, input JSON or attached evidence/integrity produces a JSON error response."
+					},
+					{
+						"name": "HTTP 403",
+						"type": "HTTP response",
+						"description": "Origin differs from the request URL origin."
+					},
+					{
+						"name": "HTTP 413",
+						"type": "HTTP response",
+						"description": "Declared or streamed request body exceeds 8192 bytes."
+					},
+					{
+						"name": "HTTP 415",
+						"type": "HTTP response",
+						"description": "Content-Type is not application/json."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.report-site",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/routes/(verification-evidence)/api/video-flags/+server.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/routes/(verification-evidence)/api/video-flags/+server.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

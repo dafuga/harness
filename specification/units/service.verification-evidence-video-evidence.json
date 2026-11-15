@@ -14,11 +14,15 @@
 		"source": [
 			"src/services/verification-evidence/VideoEvidenceService.ts",
 			"src/services/verification-evidence/VideoEvidenceService.types.ts",
+			"src/services/verification-evidence/video-evidence-service/clipAtomInputs.ts",
+			"src/services/verification-evidence/video-evidence-service/clipConfigInputs.ts",
+			"src/services/verification-evidence/video-evidence-service/clipGeneratedInputs.ts",
 			"src/services/verification-evidence/video-evidence-service/clipInputClosure.ts",
 			"src/services/verification-evidence/video-evidence-service/clipInputFiles.ts",
 			"src/services/verification-evidence/video-evidence-service/clipInputReferences.ts",
 			"src/services/verification-evidence/video-evidence-service/clipInputs.ts",
 			"src/services/verification-evidence/video-evidence-service/clipInputs.types.ts",
+			"src/services/verification-evidence/video-evidence-service/clipStyleInputs.ts",
 			"src/services/verification-evidence/video-evidence-service/graphCoverage.ts",
 			"src/services/verification-evidence/video-evidence-service/selectVideoSlots.ts"
 		],
@@ -32,6 +36,10 @@
 			"VideoObservation",
 			"VideoPlan",
 			"VideoGraphCoverage",
+			"clipAtomInputs",
+			"clipConfigInputs",
+			"clipGeneratedReference",
+			"clipRuntimeInputs",
 			"clipInputClosure",
 			"createClipInputContext",
 			"readClipInput",
@@ -43,7 +51,10 @@
 			"VideoOwner",
 			"ClipInputFile",
 			"ClipInputClosure",
+			"ClipInputReferences",
+			"ClipStyleInputs",
 			"ClipInputContext",
+			"clipStyleInputs",
 			"graphCoverage",
 			"selectVideoSlots"
 		]
@@ -82,6 +93,66 @@
 				"type": "VideoObservation[]",
 				"required": true,
 				"description": "Admitted clip observations; only explicit fresh=true with every required clip state, edge and checkpoint inside its retained interval contributes coverage."
+			},
+			{
+				"name": "clipAtomInputs.code",
+				"type": "string",
+				"required": true,
+				"description": "Source text inspected statically without executing it."
+			},
+			{
+				"name": "clipAtomInputs.references",
+				"type": "SourceReference[]",
+				"required": true,
+				"description": "References supplied to clipAtomInputs under its declared SourceReference[] contract."
+			},
+			{
+				"name": "clipConfigInputs.context",
+				"type": "ClipInputContext",
+				"required": true,
+				"description": "Immutable per-plan source inventory, file hashes, registry bindings and toolchain caches."
+			},
+			{
+				"name": "clipConfigInputs.path",
+				"type": "string",
+				"required": true,
+				"description": "Repository-relative source or evidence path used by this operation."
+			},
+			{
+				"name": "clipGeneratedReference.context",
+				"type": "ClipInputContext",
+				"required": true,
+				"description": "Immutable per-plan source inventory, file hashes, registry bindings and toolchain caches."
+			},
+			{
+				"name": "clipGeneratedReference.from",
+				"type": "string",
+				"required": true,
+				"description": "Source path containing the dependency being resolved."
+			},
+			{
+				"name": "clipGeneratedReference.reference",
+				"type": "SourceReference",
+				"required": true,
+				"description": "Statically discovered import, URL, style or API binding to resolve."
+			},
+			{
+				"name": "clipRuntimeInputs.context",
+				"type": "ClipInputContext",
+				"required": true,
+				"description": "Immutable per-plan source inventory, file hashes, registry bindings and toolchain caches."
+			},
+			{
+				"name": "clipRuntimeInputs.owner",
+				"type": "VideoOwner",
+				"required": true,
+				"description": "Active registered owner whose source and runtime contract establish the dependency."
+			},
+			{
+				"name": "clipRuntimeInputs.entry",
+				"type": "string",
+				"required": true,
+				"description": "Declared entry state or runtime source entry to bind."
 			},
 			{
 				"name": "clipInputClosure.context",
@@ -192,6 +263,18 @@
 				"description": "Declared viewport identity selecting the dimensions hashed into this slot."
 			},
 			{
+				"name": "clipStyleInputs.path",
+				"type": "string",
+				"required": true,
+				"description": "Repository-relative source or evidence path used by this operation."
+			},
+			{
+				"name": "clipStyleInputs.code",
+				"type": "string",
+				"required": true,
+				"description": "Source text inspected statically without executing it."
+			},
+			{
 				"name": "graphCoverage.manifest",
 				"type": "VideoManifest",
 				"required": true,
@@ -206,12 +289,14 @@
 			{
 				"name": "selectVideoSlots.slots",
 				"type": "VideoSlot[]",
-				"required": true
+				"required": true,
+				"description": "Slots supplied to selectVideoSlots under its declared VideoSlot[] contract."
 			},
 			{
 				"name": "selectVideoSlots.previous",
 				"type": "VideoSlot[]",
-				"required": true
+				"required": true,
+				"description": "Previous supplied to selectVideoSlots under its declared VideoSlot[] contract."
 			}
 		],
 		"outputs": [
@@ -364,6 +449,145 @@
 						"name": "ZodError",
 						"type": "thrown",
 						"description": "The JSON declaration is malformed or has invalid graph, clip, viewport or checkpoint references."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "clipAtomInputs",
+				"inputs": [
+					{
+						"name": "clipAtomInputs.code",
+						"type": "string",
+						"required": true,
+						"description": "Source text inspected statically without executing it."
+					},
+					{
+						"name": "clipAtomInputs.references",
+						"type": "SourceReference[]",
+						"required": true,
+						"description": "References supplied to clipAtomInputs under its declared SourceReference[] contract."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipAtomInputs",
+						"type": "SourceReference[]",
+						"description": "The SourceReference[] result of clipAtomInputs; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "clipConfigInputs",
+				"inputs": [
+					{
+						"name": "clipConfigInputs.context",
+						"type": "ClipInputContext",
+						"required": true,
+						"description": "Immutable per-plan source inventory, file hashes, registry bindings and toolchain caches."
+					},
+					{
+						"name": "clipConfigInputs.path",
+						"type": "string",
+						"required": true,
+						"description": "Repository-relative source or evidence path used by this operation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipConfigInputs",
+						"type": "ClipInputReferences",
+						"description": "The ClipInputReferences result of clipConfigInputs; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "A literal config inheritance binding is missing, unsafe, invalid or cyclic."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A tracked package JSON used to prove a known generated producer is malformed."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "clipGeneratedReference",
+				"inputs": [
+					{
+						"name": "clipGeneratedReference.context",
+						"type": "ClipInputContext",
+						"required": true,
+						"description": "Immutable per-plan source inventory, file hashes, registry bindings and toolchain caches."
+					},
+					{
+						"name": "clipGeneratedReference.from",
+						"type": "string",
+						"required": true,
+						"description": "Source path containing the dependency being resolved."
+					},
+					{
+						"name": "clipGeneratedReference.reference",
+						"type": "SourceReference",
+						"required": true,
+						"description": "Statically discovered import, URL, style or API binding to resolve."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipGeneratedReference",
+						"type": "ClipInputReferences | undefined",
+						"description": "The ClipInputReferences | undefined result of clipGeneratedReference; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "A known generated output producer cannot read its exact tracked recipe inputs safely."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "clipRuntimeInputs",
+				"inputs": [
+					{
+						"name": "clipRuntimeInputs.context",
+						"type": "ClipInputContext",
+						"required": true,
+						"description": "Immutable per-plan source inventory, file hashes, registry bindings and toolchain caches."
+					},
+					{
+						"name": "clipRuntimeInputs.owner",
+						"type": "VideoOwner",
+						"required": true,
+						"description": "Active registered owner whose source and runtime contract establish the dependency."
+					},
+					{
+						"name": "clipRuntimeInputs.entry",
+						"type": "string",
+						"required": true,
+						"description": "Declared entry state or runtime source entry to bind."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipRuntimeInputs",
+						"type": "ClipInputReferences",
+						"description": "The ClipInputReferences result of clipRuntimeInputs; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "A declared runtime target is missing without a permitted conservative producer binding."
 					}
 				],
 				"errorStatus": "declared"
@@ -670,6 +894,32 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "clipStyleInputs",
+				"inputs": [
+					{
+						"name": "clipStyleInputs.path",
+						"type": "string",
+						"required": true,
+						"description": "Repository-relative source or evidence path used by this operation."
+					},
+					{
+						"name": "clipStyleInputs.code",
+						"type": "string",
+						"required": true,
+						"description": "Source text inspected statically without executing it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipStyleInputs",
+						"type": "ClipStyleInputs",
+						"description": "The ClipStyleInputs result of clipStyleInputs; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "graphCoverage",
 				"inputs": [
 					{
@@ -701,18 +951,21 @@
 					{
 						"name": "selectVideoSlots.slots",
 						"type": "VideoSlot[]",
-						"required": true
+						"required": true,
+						"description": "Slots supplied to selectVideoSlots under its declared VideoSlot[] contract."
 					},
 					{
 						"name": "selectVideoSlots.previous",
 						"type": "VideoSlot[]",
-						"required": true
+						"required": true,
+						"description": "Previous supplied to selectVideoSlots under its declared VideoSlot[] contract."
 					}
 				],
 				"outputs": [
 					{
 						"name": "selectVideoSlots",
-						"type": "VideoPlan"
+						"type": "VideoPlan",
+						"description": "The VideoPlan result of selectVideoSlots; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [],
@@ -766,6 +1019,11 @@
 		},
 		{
 			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.development-tooling-atomic-syntax",
 			"via": "import",
 			"origin": "derived"
 		}

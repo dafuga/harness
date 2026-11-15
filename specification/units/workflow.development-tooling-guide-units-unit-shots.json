@@ -10,9 +10,10 @@
 	"owns": {
 		"source": [
 			"src/workflows/development-tooling/guide-units/unitShots.ts",
-			"src/workflows/development-tooling/guide-units/unitShots.types.ts"
+			"src/workflows/development-tooling/guide-units/unitShots.types.ts",
+			"src/workflows/development-tooling/guide-units/unitVideoShots.ts"
 		],
-		"symbols": ["unitShots", "UnitShots"]
+		"symbols": ["unitShots", "UnitShots", "unitVideoShots"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,6 +41,24 @@
 					"4c1e9a07b2d8f3e5a6c0917d4b28e1f0a3c5d967",
 					"a93f0c56e2d1b874f09e3a6c5d2b17e84f6a0c3d"
 				]
+			},
+			{
+				"name": "unitVideoShots.captures",
+				"type": "ExplorerCapture[]",
+				"required": true,
+				"description": "Captures supplied to unitVideoShots under its declared ExplorerCapture[] contract."
+			},
+			{
+				"name": "unitVideoShots.scenarios",
+				"type": "ScenarioManifest[]",
+				"required": true,
+				"description": "Selected scenario declarations used to associate evidence with their owners."
+			},
+			{
+				"name": "unitVideoShots.entity",
+				"type": "string",
+				"required": true,
+				"description": "Entity supplied to unitVideoShots under its declared string contract."
 			}
 		],
 		"outputs": [
@@ -121,11 +140,48 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "unitVideoShots",
+				"inputs": [
+					{
+						"name": "unitVideoShots.captures",
+						"type": "ExplorerCapture[]",
+						"required": true,
+						"description": "Captures supplied to unitVideoShots under its declared ExplorerCapture[] contract."
+					},
+					{
+						"name": "unitVideoShots.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": true,
+						"description": "Selected scenario declarations used to associate evidence with their owners."
+					},
+					{
+						"name": "unitVideoShots.entity",
+						"type": "string",
+						"required": true,
+						"description": "Entity supplied to unitVideoShots under its declared string contract."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unitVideoShots",
+						"type": "UnitShots",
+						"description": "The UnitShots result of unitVideoShots; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "adapter.git",
 			"via": "import",
@@ -138,6 +194,16 @@
 		},
 		{
 			"unit": "function.media-place",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -157,12 +223,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.scenario",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.history-status",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "service.revision-detail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.development-tooling-guide-units-contract-states",
 			"via": "import",
 			"origin": "derived"
 		}

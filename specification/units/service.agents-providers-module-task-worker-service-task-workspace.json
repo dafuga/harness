@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/agents-providers/module-task-worker-service/taskWorkspace.ts"],
-		"symbols": ["taskWorkspace", "prepareTaskWorkspace", "snapshotTaskWork"]
+		"symbols": ["taskWorkspace", "prepareTaskWorkspace", "taskFrameInputs", "snapshotTaskWork"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -90,12 +90,38 @@
 			{
 				"name": "prepareTaskWorkspace.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
 			},
 			{
 				"name": "prepareTaskWorkspace.worktree",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Worktree supplied to prepareTaskWorkspace under its declared string contract."
+			},
+			{
+				"name": "taskFrameInputs.root",
+				"type": "string",
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
+			},
+			{
+				"name": "taskFrameInputs.task",
+				"type": "ModuleTask",
+				"required": true,
+				"description": "Task supplied to taskFrameInputs under its declared ModuleTask contract."
+			},
+			{
+				"name": "taskFrameInputs.worktree",
+				"type": "string",
+				"required": true,
+				"description": "Worktree supplied to taskFrameInputs under its declared string contract."
+			},
+			{
+				"name": "taskFrameInputs.prompt",
+				"type": "string",
+				"required": true,
+				"description": "Prompt supplied to taskFrameInputs under its declared string contract."
 			},
 			{
 				"name": "snapshotTaskWork.root",
@@ -336,22 +362,80 @@
 					{
 						"name": "prepareTaskWorkspace.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
 					},
 					{
 						"name": "prepareTaskWorkspace.worktree",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Worktree supplied to prepareTaskWorkspace under its declared string contract."
 					}
 				],
 				"outputs": [
 					{
 						"name": "prepareTaskWorkspace",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The Promise<void> result of prepareTaskWorkspace; it retains the declared source and evidence bindings where applicable."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "Promise rejection",
+						"description": "A Node filesystem operation rejects with its original error/code; this names the existing error interface, not a new runtime error class."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "taskFrameInputs",
+				"inputs": [
+					{
+						"name": "taskFrameInputs.root",
+						"type": "string",
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
+					},
+					{
+						"name": "taskFrameInputs.task",
+						"type": "ModuleTask",
+						"required": true,
+						"description": "Task supplied to taskFrameInputs under its declared ModuleTask contract."
+					},
+					{
+						"name": "taskFrameInputs.worktree",
+						"type": "string",
+						"required": true,
+						"description": "Worktree supplied to taskFrameInputs under its declared string contract."
+					},
+					{
+						"name": "taskFrameInputs.prompt",
+						"type": "string",
+						"required": true,
+						"description": "Prompt supplied to taskFrameInputs under its declared string contract."
+					}
+				],
+				"outputs": [
+					{
+						"name": "taskFrameInputs",
+						"type": "unknown",
+						"description": "The unknown result of taskFrameInputs; it retains the declared source and evidence bindings where applicable."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Pending reviewer media or attached replacement proof is missing, corrupt or mismatched, so feedback assembly is refused."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "Promise rejection",
+						"description": "A Node filesystem operation rejects with its original error/code; this names the existing error interface, not a new runtime error class."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "snapshotTaskWork",
@@ -480,6 +564,11 @@
 		},
 		{
 			"unit": "service.agents-providers-module-task-worker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -97,379 +97,459 @@
 			{
 				"name": "VideoCaptureService.plan.input",
 				"type": "VideoCaptureInput",
-				"required": true
+				"required": true,
+				"description": "Current source commit/tree, active owner, finite library and explicit slot selection. Reuse is proved before script import or browser creation."
 			},
 			{
 				"name": "VideoCaptureService.record.input",
 				"type": "VideoCaptureOptions",
-				"required": true
+				"required": true,
+				"description": "Current source and selected slots plus task-owned output directory and explicit browser factory/script loader. Those capabilities are needed only for stale slots."
 			},
 			{
 				"name": "VideoCaptureService.acknowledge.result",
 				"type": "VideoCaptureResult",
-				"required": true
+				"required": true,
+				"description": "Retained capture result and private raw receipts to bind to the independently admitted attached parent before cleanup."
 			},
 			{
 				"name": "VideoCaptureService.acknowledge.record",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "SHA-256 record ID of the attached parent proving the exact submitted captures; an absent or untrusted parent never authorizes raw cleanup."
 			},
 			{
 				"name": "VideoCaptureService.acknowledgeDirectory.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Task-owned output directory containing the private receipt descriptor; the descriptor alone is not admission proof."
 			},
 			{
 				"name": "VideoCaptureService.acknowledgeDirectory.record",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Attached verification parent ID that must independently prove the captures named by the directory receipt."
 			},
 			{
 				"name": "captureBatch.archive",
 				"type": "NonNullable<VideoCaptureServices['archive']>",
-				"required": true
+				"required": true,
+				"description": "Archive supplied to captureBatch under its declared NonNullable<VideoCaptureServices['archive']> contract."
 			},
 			{
 				"name": "captureBatch.protocol",
 				"type": "ReturnType<typeof captureProtocol>",
-				"required": true
+				"required": true,
+				"description": "Task-owned capture index and sidecar paths."
 			},
 			{
 				"name": "captureBatch.result",
 				"type": "VideoCaptureResult",
-				"required": true
+				"required": true,
+				"description": "Capture lines, sealed child batches and private raw receipt bindings."
 			},
 			{
 				"name": "captureContext.input",
 				"type": "VideoCaptureInput",
-				"required": true
+				"required": true,
+				"description": "Exact source, owner, finite video declaration and explicit selected slots for planning."
 			},
 			{
 				"name": "captureContext.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
 			},
 			{
 				"name": "convertedCapture.input",
 				"type": "VideoCaptureInput",
-				"required": true
+				"required": true,
+				"description": "Exact source, owner, finite video declaration and explicit selected slots for planning."
 			},
 			{
 				"name": "convertedCapture.target",
 				"type": "VideoCaptureScriptInput",
-				"required": true
+				"required": true,
+				"description": "Slot-bound fixture and checkpoint context passed to the declared recording script."
 			},
 			{
 				"name": "convertedCapture.native",
 				"type": "NativeRecording",
-				"required": true
+				"required": true,
+				"description": "Timestamped native recording and its retained encoded media."
 			},
 			{
 				"name": "convertedCapture.context",
 				"type": "CaptureConversionContext",
-				"required": true
+				"required": true,
+				"description": "Current operation context and its already established source bindings."
 			},
 			{
 				"name": "captureDigest.bytes",
 				"type": "string | Buffer",
-				"required": true
+				"required": true,
+				"description": "Retained bytes inspected against their declared type, size and integrity."
 			},
 			{
 				"name": "captureFile.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative source or evidence path used by this operation."
 			},
 			{
 				"name": "captureFile.sha256",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Expected SHA-256 of the retained file bytes."
 			},
 			{
 				"name": "captureText.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative source or evidence path used by this operation."
 			},
 			{
 				"name": "captureText.maximum",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Maximum metadata byte count admitted before parsing."
 			},
 			{
 				"name": "captureProtocol.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Task-owned directory containing the capture or retained receipt files."
 			},
 			{
 				"name": "captureReceipt.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
 			},
 			{
 				"name": "captureReceipt.result",
 				"type": "VideoCaptureResult",
-				"required": true
+				"required": true,
+				"description": "Capture lines, sealed child batches and private raw receipt bindings."
 			},
 			{
 				"name": "captureReceipt.record",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "ID of the attached verification parent whose admitted captures prove the receipt."
 			},
 			{
 				"name": "captureReceipt.services",
 				"type": "VideoCaptureServices",
-				"required": true
+				"required": true,
+				"description": "Caller-provided service adapters; omitted adapters use the standard implementation."
 			},
 			{
 				"name": "captureReceiptStore.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Task-owned directory containing the capture or retained receipt files."
 			},
 			{
 				"name": "captureResult.source",
 				"type": "VideoCaptureSource",
-				"required": true
+				"required": true,
+				"description": "Exact source commit/tree and associated runtime identity."
 			},
 			{
 				"name": "captureResult.plan",
 				"type": "VideoCapturePlan",
-				"required": true
+				"required": true,
+				"description": "Record/reuse selection after current-source and attached candidate proof."
 			},
 			{
 				"name": "captureResult.protocol",
 				"type": "ReturnType<typeof captureProtocol>",
-				"required": true
+				"required": true,
+				"description": "Task-owned capture index and sidecar paths."
 			},
 			{
 				"name": "captureRun.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
 			},
 			{
 				"name": "captureRun.options",
 				"type": "VideoCaptureOptions",
-				"required": true
+				"required": true,
+				"description": "Capture request plus task-owned output and explicit browser/script capabilities."
 			},
 			{
 				"name": "captureRun.plan",
 				"type": "VideoCapturePlan",
-				"required": true
+				"required": true,
+				"description": "Record/reuse selection after current-source and attached candidate proof."
 			},
 			{
 				"name": "captureRun.context",
 				"type": "{ services: VideoCaptureServices; protocol: ReturnType<typeof captureProtocol>; result: VideoCaptureResult; }",
-				"required": true
+				"required": true,
+				"description": "Current operation context and its already established source bindings."
 			},
 			{
 				"name": "recordingAllowed.input",
 				"type": "VideoCaptureInput",
-				"required": true
+				"required": true,
+				"description": "Exact source, owner, finite video declaration and explicit selected slots for planning."
 			},
 			{
 				"name": "captureScriptInput.plan",
 				"type": "VideoCapturePlan",
-				"required": true
+				"required": true,
+				"description": "Record/reuse selection after current-source and attached candidate proof."
 			},
 			{
 				"name": "captureScriptInput.slot",
 				"type": "VideoCaptureScriptInput['slot']",
-				"required": true
+				"required": true,
+				"description": "Slot supplied to captureScriptInput under its declared VideoCaptureScriptInput['slot'] contract."
 			},
 			{
 				"name": "admittedScript.script",
 				"type": "VideoCaptureScript",
-				"required": true
+				"required": true,
+				"description": "Declared recording hooks with callable reset, entry, record and exit behavior."
 			},
 			{
 				"name": "admittedScript.input",
 				"type": "VideoCaptureScriptInput",
-				"required": true
+				"required": true,
+				"description": "Slot-bound fixture and checkpoint context passed to the declared recording script."
 			},
 			{
 				"name": "admittedScript.plan",
 				"type": "VideoCapturePlan",
-				"required": true
+				"required": true,
+				"description": "Record/reuse selection after current-source and attached candidate proof."
 			},
 			{
 				"name": "captureCheckpoint.script",
 				"type": "VideoCaptureScript",
-				"required": true
+				"required": true,
+				"description": "Declared recording hooks with callable reset, entry, record and exit behavior."
 			},
 			{
 				"name": "captureCheckpoint.target",
 				"type": "Pick<VideoCaptureScriptInput, 'clip' | 'viewport'>",
-				"required": true
+				"required": true,
+				"description": "Selected clip and viewport with its exact declared script and fixture bindings."
 			},
 			{
 				"name": "captureCheckpoint.session",
 				"type": "NativeRecordingSession",
-				"required": true
+				"required": true,
+				"description": "Task-owned native capture session for the selected viewport."
 			},
 			{
 				"name": "captureCheckpoint.boundary",
 				"type": "'entry' | 'exit'",
-				"required": true
+				"required": true,
+				"description": "Entry or exit checkpoint being observed."
 			},
 			{
 				"name": "captureSelection.input",
 				"type": "VideoCaptureInput",
-				"required": true
+				"required": true,
+				"description": "Exact source, owner, finite video declaration and explicit selected slots for planning."
 			},
 			{
 				"name": "captureSelection.references",
 				"type": "NonNullable<VideoCaptureServices['references']>",
-				"required": true
+				"required": true,
+				"description": "References supplied to captureSelection under its declared NonNullable<VideoCaptureServices['references']> contract."
 			},
 			{
 				"name": "captureSelection.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project checkout used for immutable source, evidence and tool reads."
 			},
 			{
 				"name": "sameSlot.left",
 				"type": "Pick<VideoSlot, 'unit' | 'clipId' | 'viewport'>",
-				"required": true
+				"required": true,
+				"description": "First value used for the exact slot or identity comparison."
 			},
 			{
 				"name": "sameSlot.right",
 				"type": "Pick<VideoSlot, 'unit' | 'clipId' | 'viewport'>",
-				"required": true
+				"required": true,
+				"description": "Second value used for the exact slot or identity comparison."
 			},
 			{
 				"name": "observedVideo.target",
 				"type": "VideoCaptureScriptInput",
-				"required": true
+				"required": true,
+				"description": "Slot-bound fixture and checkpoint context passed to the declared recording script."
 			},
 			{
 				"name": "observedVideo.native",
 				"type": "NativeRecording",
-				"required": true
+				"required": true,
+				"description": "Timestamped native recording and its retained encoded media."
 			},
 			{
 				"name": "observedVideo.signatures",
 				"type": "{ entry?: string; exit?: string }",
-				"required": true
+				"required": true,
+				"description": "Observed painted entry and exit checkpoint signatures."
 			},
 			{
 				"name": "observedVideo.stem",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Task-owned basename for this capture and its poster."
 			},
 			{
 				"name": "validateVisits.target",
 				"type": "VideoCaptureScriptInput",
-				"required": true
+				"required": true,
+				"description": "Slot-bound fixture and checkpoint context passed to the declared recording script."
 			},
 			{
 				"name": "validateVisits.video",
 				"type": "VideoCapture",
-				"required": true
+				"required": true,
+				"description": "Video supplied to validateVisits under its declared VideoCapture contract."
 			},
 			{
 				"name": "validateVisits.duration",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Actual retained duration bounding every admitted visit."
 			}
 		],
 		"outputs": [
 			{
 				"name": "VideoCaptureService.run",
-				"type": "string"
+				"type": "string",
+				"description": "The string result of VideoCaptureService.run."
 			},
 			{
 				"name": "VideoCaptureService.plan",
-				"type": "Promise<VideoCapturePlan>"
+				"type": "Promise<VideoCapturePlan>",
+				"description": "Current-source record/reuse slot selection; reusable candidates retain their original capture provenance and still require admitted attached proof."
 			},
 			{
 				"name": "VideoCaptureService.record",
-				"type": "Promise<VideoCaptureResult>"
+				"type": "Promise<VideoCaptureResult>",
+				"description": "Capture result with canonical lines, sealed child batches and private raw receipts. Raw attempts remain until an independently attached parent is acknowledged."
 			},
 			{
 				"name": "VideoCaptureService.acknowledge",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves only after the attached parent proves the exact result and raw receipts; only that admitted proof authorizes raw-cache cleanup."
 			},
 			{
 				"name": "VideoCaptureService.acknowledgeDirectory",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after the directory receipt is revalidated against the attached parent; reading a local descriptor alone grants no cleanup authority."
 			},
 			{
 				"name": "captureBatch",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The unknown result of captureBatch."
 			},
 			{
 				"name": "captureContext",
-				"type": "VideoCaptureEnvironment | undefined"
+				"type": "VideoCaptureEnvironment | undefined",
+				"description": "The VideoCaptureEnvironment | undefined result of captureContext."
 			},
 			{
 				"name": "convertedCapture",
-				"type": "ConvertedCapture"
+				"type": "ConvertedCapture",
+				"description": "The ConvertedCapture result of convertedCapture."
 			},
 			{
 				"name": "captureDigest",
-				"type": "string"
+				"type": "string",
+				"description": "The string result of captureDigest."
 			},
 			{
 				"name": "captureFile",
-				"type": "Buffer"
+				"type": "Buffer",
+				"description": "The Buffer result of captureFile."
 			},
 			{
 				"name": "captureText",
-				"type": "string"
+				"type": "string",
+				"description": "The string result of captureText."
 			},
 			{
 				"name": "videoBatchSidecar",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The unknown result of videoBatchSidecar."
 			},
 			{
 				"name": "captureProtocol",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The unknown result of captureProtocol."
 			},
 			{
 				"name": "captureReceipt",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The Promise<void> result of captureReceipt."
 			},
 			{
 				"name": "captureReceiptStore",
-				"type": "VideoCaptureResult"
+				"type": "VideoCaptureResult",
+				"description": "The VideoCaptureResult result of captureReceiptStore."
 			},
 			{
 				"name": "captureResult",
-				"type": "VideoCaptureResult"
+				"type": "VideoCaptureResult",
+				"description": "The VideoCaptureResult result of captureResult."
 			},
 			{
 				"name": "captureRun",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The Promise<void> result of captureRun."
 			},
 			{
 				"name": "recordingAllowed",
-				"type": "void"
+				"type": "void",
+				"description": "The void result of recordingAllowed."
 			},
 			{
 				"name": "captureScriptInput",
-				"type": "VideoCaptureScriptInput"
+				"type": "VideoCaptureScriptInput",
+				"description": "The VideoCaptureScriptInput result of captureScriptInput."
 			},
 			{
 				"name": "admittedScript",
-				"type": "void"
+				"type": "void",
+				"description": "The void result of admittedScript."
 			},
 			{
 				"name": "captureCheckpoint",
-				"type": "Promise<string | undefined>"
+				"type": "Promise<string | undefined>",
+				"description": "The Promise<string | undefined> result of captureCheckpoint."
 			},
 			{
 				"name": "captureSelection",
-				"type": "Promise<VideoCapturePlan>"
+				"type": "Promise<VideoCapturePlan>",
+				"description": "The Promise<VideoCapturePlan> result of captureSelection."
 			},
 			{
 				"name": "sameSlot",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "The boolean result of sameSlot."
 			},
 			{
 				"name": "observedVideo",
-				"type": "VideoCapture"
+				"type": "VideoCapture",
+				"description": "The VideoCapture result of observedVideo."
 			},
 			{
 				"name": "validateVisits",
-				"type": "void"
+				"type": "void",
+				"description": "The void result of validateVisits."
 			}
 		],
 		"errors": [
@@ -492,7 +572,8 @@
 				"outputs": [
 					{
 						"name": "VideoCaptureService.run",
-						"type": "string"
+						"type": "string",
+						"description": "The string result of VideoCaptureService.run; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [],
@@ -504,13 +585,15 @@
 					{
 						"name": "VideoCaptureService.plan.input",
 						"type": "VideoCaptureInput",
-						"required": true
+						"required": true,
+						"description": "Current source commit/tree, active owner, finite library and explicit slot selection. Reuse is proved before script import or browser creation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "VideoCaptureService.plan",
-						"type": "Promise<VideoCapturePlan>"
+						"type": "Promise<VideoCapturePlan>",
+						"description": "Current-source record/reuse slot selection; reusable candidates retain their original capture provenance and still require admitted attached proof."
 					}
 				],
 				"errors": [
@@ -533,13 +616,15 @@
 					{
 						"name": "VideoCaptureService.record.input",
 						"type": "VideoCaptureOptions",
-						"required": true
+						"required": true,
+						"description": "Current source and selected slots plus task-owned output directory and explicit browser factory/script loader. Those capabilities are needed only for stale slots."
 					}
 				],
 				"outputs": [
 					{
 						"name": "VideoCaptureService.record",
-						"type": "Promise<VideoCaptureResult>"
+						"type": "Promise<VideoCaptureResult>",
+						"description": "Capture result with canonical lines, sealed child batches and private raw receipts. Raw attempts remain until an independently attached parent is acknowledged."
 					}
 				],
 				"errors": [
@@ -562,18 +647,21 @@
 					{
 						"name": "VideoCaptureService.acknowledge.result",
 						"type": "VideoCaptureResult",
-						"required": true
+						"required": true,
+						"description": "Retained capture result and private raw receipts to bind to the independently admitted attached parent before cleanup."
 					},
 					{
 						"name": "VideoCaptureService.acknowledge.record",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "SHA-256 record ID of the attached parent proving the exact submitted captures; an absent or untrusted parent never authorizes raw cleanup."
 					}
 				],
 				"outputs": [
 					{
 						"name": "VideoCaptureService.acknowledge",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves only after the attached parent proves the exact result and raw receipts; only that admitted proof authorizes raw-cache cleanup."
 					}
 				],
 				"errors": [
@@ -596,18 +684,21 @@
 					{
 						"name": "VideoCaptureService.acknowledgeDirectory.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Task-owned output directory containing the private receipt descriptor; the descriptor alone is not admission proof."
 					},
 					{
 						"name": "VideoCaptureService.acknowledgeDirectory.record",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Attached verification parent ID that must independently prove the captures named by the directory receipt."
 					}
 				],
 				"outputs": [
 					{
 						"name": "VideoCaptureService.acknowledgeDirectory",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after the directory receipt is revalidated against the attached parent; reading a local descriptor alone grants no cleanup authority."
 					}
 				],
 				"errors": [
@@ -630,23 +721,27 @@
 					{
 						"name": "captureBatch.archive",
 						"type": "NonNullable<VideoCaptureServices['archive']>",
-						"required": true
+						"required": true,
+						"description": "Archive supplied to captureBatch under its declared NonNullable<VideoCaptureServices['archive']> contract."
 					},
 					{
 						"name": "captureBatch.protocol",
 						"type": "ReturnType<typeof captureProtocol>",
-						"required": true
+						"required": true,
+						"description": "Task-owned capture index and sidecar paths."
 					},
 					{
 						"name": "captureBatch.result",
 						"type": "VideoCaptureResult",
-						"required": true
+						"required": true,
+						"description": "Capture lines, sealed child batches and private raw receipt bindings."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureBatch",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The unknown result of captureBatch; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -669,18 +764,21 @@
 					{
 						"name": "captureContext.input",
 						"type": "VideoCaptureInput",
-						"required": true
+						"required": true,
+						"description": "Exact source, owner, finite video declaration and explicit selected slots for planning."
 					},
 					{
 						"name": "captureContext.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureContext",
-						"type": "VideoCaptureEnvironment | undefined"
+						"type": "VideoCaptureEnvironment | undefined",
+						"description": "The VideoCaptureEnvironment | undefined result of captureContext; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -703,28 +801,33 @@
 					{
 						"name": "convertedCapture.input",
 						"type": "VideoCaptureInput",
-						"required": true
+						"required": true,
+						"description": "Exact source, owner, finite video declaration and explicit selected slots for planning."
 					},
 					{
 						"name": "convertedCapture.target",
 						"type": "VideoCaptureScriptInput",
-						"required": true
+						"required": true,
+						"description": "Slot-bound fixture and checkpoint context passed to the declared recording script."
 					},
 					{
 						"name": "convertedCapture.native",
 						"type": "NativeRecording",
-						"required": true
+						"required": true,
+						"description": "Timestamped native recording and its retained encoded media."
 					},
 					{
 						"name": "convertedCapture.context",
 						"type": "CaptureConversionContext",
-						"required": true
+						"required": true,
+						"description": "Current operation context and its already established source bindings."
 					}
 				],
 				"outputs": [
 					{
 						"name": "convertedCapture",
-						"type": "ConvertedCapture"
+						"type": "ConvertedCapture",
+						"description": "The ConvertedCapture result of convertedCapture; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -747,13 +850,15 @@
 					{
 						"name": "captureDigest.bytes",
 						"type": "string | Buffer",
-						"required": true
+						"required": true,
+						"description": "Retained bytes inspected against their declared type, size and integrity."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureDigest",
-						"type": "string"
+						"type": "string",
+						"description": "The string result of captureDigest; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [],
@@ -765,18 +870,21 @@
 					{
 						"name": "captureFile.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative source or evidence path used by this operation."
 					},
 					{
 						"name": "captureFile.sha256",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Expected SHA-256 of the retained file bytes."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureFile",
-						"type": "Buffer"
+						"type": "Buffer",
+						"description": "The Buffer result of captureFile; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -799,18 +907,21 @@
 					{
 						"name": "captureText.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative source or evidence path used by this operation."
 					},
 					{
 						"name": "captureText.maximum",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Maximum metadata byte count admitted before parsing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureText",
-						"type": "string"
+						"type": "string",
+						"description": "The string result of captureText; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -833,13 +944,15 @@
 					{
 						"name": "captureProtocol.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Task-owned directory containing the capture or retained receipt files."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureProtocol",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The unknown result of captureProtocol; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -862,28 +975,33 @@
 					{
 						"name": "captureReceipt.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
 					},
 					{
 						"name": "captureReceipt.result",
 						"type": "VideoCaptureResult",
-						"required": true
+						"required": true,
+						"description": "Capture lines, sealed child batches and private raw receipt bindings."
 					},
 					{
 						"name": "captureReceipt.record",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "ID of the attached verification parent whose admitted captures prove the receipt."
 					},
 					{
 						"name": "captureReceipt.services",
 						"type": "VideoCaptureServices",
-						"required": true
+						"required": true,
+						"description": "Caller-provided service adapters; omitted adapters use the standard implementation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureReceipt",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The Promise<void> result of captureReceipt; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -906,13 +1024,15 @@
 					{
 						"name": "captureReceiptStore.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Task-owned directory containing the capture or retained receipt files."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureReceiptStore",
-						"type": "VideoCaptureResult"
+						"type": "VideoCaptureResult",
+						"description": "The VideoCaptureResult result of captureReceiptStore; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -935,23 +1055,27 @@
 					{
 						"name": "captureResult.source",
 						"type": "VideoCaptureSource",
-						"required": true
+						"required": true,
+						"description": "Exact source commit/tree and associated runtime identity."
 					},
 					{
 						"name": "captureResult.plan",
 						"type": "VideoCapturePlan",
-						"required": true
+						"required": true,
+						"description": "Record/reuse selection after current-source and attached candidate proof."
 					},
 					{
 						"name": "captureResult.protocol",
 						"type": "ReturnType<typeof captureProtocol>",
-						"required": true
+						"required": true,
+						"description": "Task-owned capture index and sidecar paths."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureResult",
-						"type": "VideoCaptureResult"
+						"type": "VideoCaptureResult",
+						"description": "The VideoCaptureResult result of captureResult; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -974,28 +1098,33 @@
 					{
 						"name": "captureRun.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
 					},
 					{
 						"name": "captureRun.options",
 						"type": "VideoCaptureOptions",
-						"required": true
+						"required": true,
+						"description": "Capture request plus task-owned output and explicit browser/script capabilities."
 					},
 					{
 						"name": "captureRun.plan",
 						"type": "VideoCapturePlan",
-						"required": true
+						"required": true,
+						"description": "Record/reuse selection after current-source and attached candidate proof."
 					},
 					{
 						"name": "captureRun.context",
 						"type": "{ services: VideoCaptureServices; protocol: ReturnType<typeof captureProtocol>; result: VideoCaptureResult; }",
-						"required": true
+						"required": true,
+						"description": "Current operation context and its already established source bindings."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureRun",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The Promise<void> result of captureRun; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -1018,13 +1147,15 @@
 					{
 						"name": "recordingAllowed.input",
 						"type": "VideoCaptureInput",
-						"required": true
+						"required": true,
+						"description": "Exact source, owner, finite video declaration and explicit selected slots for planning."
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordingAllowed",
-						"type": "void"
+						"type": "void",
+						"description": "The void result of recordingAllowed; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -1047,18 +1178,21 @@
 					{
 						"name": "captureScriptInput.plan",
 						"type": "VideoCapturePlan",
-						"required": true
+						"required": true,
+						"description": "Record/reuse selection after current-source and attached candidate proof."
 					},
 					{
 						"name": "captureScriptInput.slot",
 						"type": "VideoCaptureScriptInput['slot']",
-						"required": true
+						"required": true,
+						"description": "Slot supplied to captureScriptInput under its declared VideoCaptureScriptInput['slot'] contract."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureScriptInput",
-						"type": "VideoCaptureScriptInput"
+						"type": "VideoCaptureScriptInput",
+						"description": "The VideoCaptureScriptInput result of captureScriptInput; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [],
@@ -1070,23 +1204,27 @@
 					{
 						"name": "admittedScript.script",
 						"type": "VideoCaptureScript",
-						"required": true
+						"required": true,
+						"description": "Declared recording hooks with callable reset, entry, record and exit behavior."
 					},
 					{
 						"name": "admittedScript.input",
 						"type": "VideoCaptureScriptInput",
-						"required": true
+						"required": true,
+						"description": "Slot-bound fixture and checkpoint context passed to the declared recording script."
 					},
 					{
 						"name": "admittedScript.plan",
 						"type": "VideoCapturePlan",
-						"required": true
+						"required": true,
+						"description": "Record/reuse selection after current-source and attached candidate proof."
 					}
 				],
 				"outputs": [
 					{
 						"name": "admittedScript",
-						"type": "void"
+						"type": "void",
+						"description": "The void result of admittedScript; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -1109,28 +1247,33 @@
 					{
 						"name": "captureCheckpoint.script",
 						"type": "VideoCaptureScript",
-						"required": true
+						"required": true,
+						"description": "Declared recording hooks with callable reset, entry, record and exit behavior."
 					},
 					{
 						"name": "captureCheckpoint.target",
 						"type": "Pick<VideoCaptureScriptInput, 'clip' | 'viewport'>",
-						"required": true
+						"required": true,
+						"description": "Selected clip and viewport with its exact declared script and fixture bindings."
 					},
 					{
 						"name": "captureCheckpoint.session",
 						"type": "NativeRecordingSession",
-						"required": true
+						"required": true,
+						"description": "Task-owned native capture session for the selected viewport."
 					},
 					{
 						"name": "captureCheckpoint.boundary",
 						"type": "'entry' | 'exit'",
-						"required": true
+						"required": true,
+						"description": "Entry or exit checkpoint being observed."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureCheckpoint",
-						"type": "Promise<string | undefined>"
+						"type": "Promise<string | undefined>",
+						"description": "The Promise<string | undefined> result of captureCheckpoint; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -1153,23 +1296,27 @@
 					{
 						"name": "captureSelection.input",
 						"type": "VideoCaptureInput",
-						"required": true
+						"required": true,
+						"description": "Exact source, owner, finite video declaration and explicit selected slots for planning."
 					},
 					{
 						"name": "captureSelection.references",
 						"type": "NonNullable<VideoCaptureServices['references']>",
-						"required": true
+						"required": true,
+						"description": "References supplied to captureSelection under its declared NonNullable<VideoCaptureServices['references']> contract."
 					},
 					{
 						"name": "captureSelection.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project checkout used for immutable source, evidence and tool reads."
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureSelection",
-						"type": "Promise<VideoCapturePlan>"
+						"type": "Promise<VideoCapturePlan>",
+						"description": "The Promise<VideoCapturePlan> result of captureSelection; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -1192,18 +1339,21 @@
 					{
 						"name": "sameSlot.left",
 						"type": "Pick<VideoSlot, 'unit' | 'clipId' | 'viewport'>",
-						"required": true
+						"required": true,
+						"description": "First value used for the exact slot or identity comparison."
 					},
 					{
 						"name": "sameSlot.right",
 						"type": "Pick<VideoSlot, 'unit' | 'clipId' | 'viewport'>",
-						"required": true
+						"required": true,
+						"description": "Second value used for the exact slot or identity comparison."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sameSlot",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "The boolean result of sameSlot; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [],
@@ -1215,28 +1365,33 @@
 					{
 						"name": "observedVideo.target",
 						"type": "VideoCaptureScriptInput",
-						"required": true
+						"required": true,
+						"description": "Slot-bound fixture and checkpoint context passed to the declared recording script."
 					},
 					{
 						"name": "observedVideo.native",
 						"type": "NativeRecording",
-						"required": true
+						"required": true,
+						"description": "Timestamped native recording and its retained encoded media."
 					},
 					{
 						"name": "observedVideo.signatures",
 						"type": "{ entry?: string; exit?: string }",
-						"required": true
+						"required": true,
+						"description": "Observed painted entry and exit checkpoint signatures."
 					},
 					{
 						"name": "observedVideo.stem",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Task-owned basename for this capture and its poster."
 					}
 				],
 				"outputs": [
 					{
 						"name": "observedVideo",
-						"type": "VideoCapture"
+						"type": "VideoCapture",
+						"description": "The VideoCapture result of observedVideo; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [],
@@ -1248,23 +1403,27 @@
 					{
 						"name": "validateVisits.target",
 						"type": "VideoCaptureScriptInput",
-						"required": true
+						"required": true,
+						"description": "Slot-bound fixture and checkpoint context passed to the declared recording script."
 					},
 					{
 						"name": "validateVisits.video",
 						"type": "VideoCapture",
-						"required": true
+						"required": true,
+						"description": "Video supplied to validateVisits under its declared VideoCapture contract."
 					},
 					{
 						"name": "validateVisits.duration",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Actual retained duration bounding every admitted visit."
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateVisits",
-						"type": "void"
+						"type": "void",
+						"description": "The void result of validateVisits; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [
@@ -1304,7 +1463,8 @@
 				"outputs": [
 					{
 						"name": "VideoCaptureService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The unknown result of VideoCaptureService.constructor; it retains the declared source and evidence bindings where applicable."
 					}
 				],
 				"errors": [],
