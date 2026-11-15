@@ -7,7 +7,7 @@ import { loaders, manifest, ordinary, rendered, twin } from './catalog-listing-m
 import type { Listing } from './catalog-listing-manifests';
 import type { ComponentManifest } from '../../../src/lib/contracts';
 import type { DesignVersion } from '../src/models/Desktop.types';
-import type { PlanRecord } from '../src/models/PlanningPort.types';
+import type { PlanRecord } from '../src/models/planning-collaboration/PlanningPort.types';
 
 export function previewReads(
 	unit: ComponentManifest,

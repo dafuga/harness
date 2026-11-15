@@ -1,6 +1,6 @@
 // @harness-uid u_qjht6nks2i
 import type { ComponentManifest } from '../../../../../../../src/core/unitTypes';
-import type { PlanRecord } from '../../../../../../desktop/src/models/PlanningPort.types';
+import type { PlanRecord } from '../../../../../../desktop/src/models/planning-collaboration/PlanningPort.types';
 import { hubContractHash } from '../../../../utils/development-tooling/hubJson';
 
 export async function hubEntityContract(

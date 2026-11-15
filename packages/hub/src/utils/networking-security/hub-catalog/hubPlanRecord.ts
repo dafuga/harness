@@ -5,7 +5,7 @@ import { hubJson, hubContractHash } from '../../development-tooling/hubJson';
 import { hubDesigns } from './hubDesigns';
 import type { HubSourceContext } from '../../development-tooling/hubSource';
 import type { HubPlan } from '../../development-tooling/hubSchemas';
-import type { PlanRecord } from '../../../../../desktop/src/models/PlanningPort.types';
+import type { PlanRecord } from '../../../../../desktop/src/models/planning-collaboration/PlanningPort.types';
 import { z } from 'zod';
 import { hubContractSchema } from '../../development-tooling/hubSchemas';
 
