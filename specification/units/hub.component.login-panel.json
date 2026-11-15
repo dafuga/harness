@@ -29,17 +29,23 @@
 				"type": "string",
 				"required": false,
 				"default": "Sign in with Google to open the projects you own and the ones you were invited to.",
-				"description": "Optional introductory text, defaulting to guidance to sign in with Google to open invited projects. Used only in the ordinary sign-in view."
+				"description": "Optional introductory paragraph, rendered as plain text under the 'Sign in to Harness' heading; the default applies only when the value is undefined, so an empty string renders an empty paragraph. It matters only in that view, which appears when a session status is loaded, sign-in is configured and no email proof is pending.",
+				"examples": [
+					"Sign in with Google to open the projects you own and the ones you were invited to.",
+					"Sign in with Google to open the reports your team shared with you.",
+					"Sign in with the Google account that received your project invitation."
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "LoginPanel",
 				"type": "markup",
-				"description": "Shows checking/error state before session status, configuration guidance when disabled, or email confirmation when pending. Otherwise renders a Google button only when a configured client ID, no actor, no pending proof and a holder are available. Obtains a fresh challenge and ignores stale challenge completion; challenge/button failures and session errors become alerts."
+				"description": "Renders, in this precedence order, a 'Checking sign-in…' message (or the session error in its place) while no session status exists; a 'Sign-in is not configured' heading with guidance when status is not configured; the EmailProofPanel while an email proof is pending; and otherwise the 'Sign in to Harness' view. Inside that view a Google button is loaded into the holder only when status is configured, has no actor and a clientId, and no email proof is pending; each load requests a fresh challenge, ignores completions made stale by a re-run or unmount, shows challenge, button and session errors as alerts, and keeps a challenge or button failure set until the component is destroyed."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
