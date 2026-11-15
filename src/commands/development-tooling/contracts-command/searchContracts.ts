@@ -1,3 +1,4 @@
+// @harness-uid u_gbvrpedrgl
 import { fail } from '../../../core/development-tooling/errors';
 import { contractSummary } from './contractSelection';
 import type {

@@ -1,3 +1,4 @@
+// @harness-uid u_k3ea3edvu7
 import { fail } from '../../../core/development-tooling/errors';
 import { readContractCatalog } from './readContractCatalog';
 import { contractSummary, filterContracts, selectContracts } from './contractSelection';

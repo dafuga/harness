@@ -1,3 +1,4 @@
+// @harness-uid u_vjajbndbmw
 import * as fs from 'node:fs/promises';
 import { join } from 'node:path';
 import { fail } from '../../../core/development-tooling/errors';

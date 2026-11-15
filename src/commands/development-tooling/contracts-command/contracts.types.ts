@@ -1,3 +1,4 @@
+// @harness-uid u_pdt5z35y2a
 import type {
 	ComponentManifest,
 	ScenarioManifest

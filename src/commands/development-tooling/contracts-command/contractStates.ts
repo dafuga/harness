@@ -1,3 +1,4 @@
+// @harness-uid u_hf5ptnnuk7
 import { join, relative, resolve } from 'node:path';
 import { scenariosDirectory } from '../../../core/development-tooling/unitsConfig';
 import { scenarioManifestSchema } from '../../../core/development-tooling/unitTypes';

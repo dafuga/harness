@@ -1,3 +1,4 @@
+// @harness-uid u_2mvldqu3ih
 import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { fail } from '../../../core/development-tooling/errors';
 import type { ContractEntry, ContractOptions, ContractSummary } from './contracts.types';

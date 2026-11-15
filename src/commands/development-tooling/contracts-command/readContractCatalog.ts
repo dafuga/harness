@@ -1,3 +1,4 @@
+// @harness-uid u_3wdb3ltytd
 import { join, relative, resolve } from 'node:path';
 import { unitsDirectory } from '../../../core/development-tooling/unitsConfig';
 import { componentManifestSchema } from '../../../core/development-tooling/unitTypes';

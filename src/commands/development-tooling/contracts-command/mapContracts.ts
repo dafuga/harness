@@ -1,3 +1,4 @@
+// @harness-uid u_sdhrrgf2hf
 import { contractSummary } from './contractSelection';
 import type { ContractEntry, ContractMap } from './contracts.types';
 

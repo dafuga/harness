@@ -1,3 +1,4 @@
+// @harness-uid u_t54qlfjow6
 import type { ContractEntry, ContractMap, ContractMatch, ContractSummary } from './contracts.types';
 
 /** Text preserves every stored contract field; compact commands print one row per match. */
