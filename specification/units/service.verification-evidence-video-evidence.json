@@ -14,6 +14,9 @@
 		"source": [
 			"src/services/verification-evidence/VideoEvidenceService.ts",
 			"src/services/verification-evidence/VideoEvidenceService.types.ts",
+			"src/services/verification-evidence/video-evidence-service/clipInputClosure.ts",
+			"src/services/verification-evidence/video-evidence-service/clipInputFiles.ts",
+			"src/services/verification-evidence/video-evidence-service/clipInputReferences.ts",
 			"src/services/verification-evidence/video-evidence-service/clipInputs.ts",
 			"src/services/verification-evidence/video-evidence-service/clipInputs.types.ts",
 			"src/services/verification-evidence/video-evidence-service/graphCoverage.ts"
@@ -28,8 +31,18 @@
 			"VideoObservation",
 			"VideoPlan",
 			"VideoGraphCoverage",
+			"clipInputClosure",
+			"createClipInputContext",
+			"readClipInput",
+			"clipDigest",
+			"clipWorkspace",
+			"clipInputReferences",
 			"clipInputHash",
+			"clipInputSlot",
 			"VideoOwner",
+			"ClipInputFile",
+			"ClipInputClosure",
+			"ClipInputContext",
 			"graphCoverage"
 		]
 	},
@@ -69,10 +82,70 @@
 				"description": "Already admitted clip observations with visible assertion timestamps and freshness supplied by the evidence caller."
 			},
 			{
-				"name": "clipInputHash.root",
+				"name": "clipInputClosure.context",
+				"type": "ClipInputContext",
+				"required": true,
+				"description": "Per-plan source inventory, registered owners, file hashes and dependency caches."
+			},
+			{
+				"name": "clipInputClosure.clip",
+				"type": "VideoClip",
+				"required": true,
+				"description": "One validated clip whose declared and implicit dependencies must be closed."
+			},
+			{
+				"name": "createClipInputContext.root",
 				"type": "string",
 				"required": true,
-				"description": "Root directory containing the source snapshot and registered unit manifests."
+				"description": "Source snapshot directory inventoried once for the complete plan."
+			},
+			{
+				"name": "readClipInput.context",
+				"type": "ClipInputContext",
+				"required": true,
+				"description": "Per-plan cache that admits only files inside the canonical source root."
+			},
+			{
+				"name": "readClipInput.path",
+				"type": "string",
+				"required": true,
+				"description": "Safe repository-relative file path whose bytes are read and hashed once."
+			},
+			{
+				"name": "clipDigest.input",
+				"type": "string | Buffer",
+				"required": true,
+				"description": "Exact UTF-8 string or original binary bytes to hash with SHA-256."
+			},
+			{
+				"name": "clipWorkspace.context",
+				"type": "ClipInputContext",
+				"required": true,
+				"description": "Source inventory containing workspace package manifest paths."
+			},
+			{
+				"name": "clipWorkspace.path",
+				"type": "string",
+				"required": true,
+				"description": "Repository-relative source path used to find its nearest package boundary."
+			},
+			{
+				"name": "clipInputReferences.context",
+				"type": "ClipInputContext",
+				"required": true,
+				"description": "Per-plan file, workspace and resolved-reference caches."
+			},
+			{
+				"name": "clipInputReferences.path",
+				"type": "string",
+				"required": true,
+				"description": "Source file scanned for static imports, APIs, styles and media bindings."
+			},
+			{
+				"name": "clipInputHash.root",
+				"type": "string | ClipInputContext",
+				"required": true,
+				"description": "Source snapshot path or an already created per-plan discovery and hash context."
 			},
 			{
 				"name": "clipInputHash.manifest",
@@ -91,6 +164,30 @@
 				"type": "string",
 				"required": true,
 				"description": "Declared viewport identity included in this independent recording slot."
+			},
+			{
+				"name": "clipInputSlot.context",
+				"type": "ClipInputContext",
+				"required": true,
+				"description": "Shared per-plan registry, dependency, file-hash and recording-tool context."
+			},
+			{
+				"name": "clipInputSlot.manifest",
+				"type": "VideoManifest",
+				"required": true,
+				"description": "Validated clip library containing viewport definitions and relevant graph slices."
+			},
+			{
+				"name": "clipInputSlot.clip",
+				"type": "VideoManifest['clips'][number]",
+				"required": true,
+				"description": "Validated independently recordable clip and checkpoint descriptor."
+			},
+			{
+				"name": "clipInputSlot.viewport",
+				"type": "string",
+				"required": true,
+				"description": "Declared viewport identity selecting the dimensions hashed into this slot."
 			},
 			{
 				"name": "graphCoverage.manifest",
@@ -114,7 +211,7 @@
 			{
 				"name": "VideoEvidenceService.plan",
 				"type": "VideoPlan",
-				"description": "Slots requiring recording and matching reusable candidates; no recorder is started by planning."
+				"description": "Fresh recording obligations with dependency reasons and unchanged reusable candidate objects retaining their original provenance."
 			},
 			{
 				"name": "VideoEvidenceService.coverage",
@@ -124,12 +221,47 @@
 			{
 				"name": "clipInputHash",
 				"type": "string",
-				"description": "SHA-256 over the clip, viewport, owner/dependency sources, contracts, lockfiles and recording toolchain recipe."
+				"description": "SHA-256 over the clip, viewport, graph slice, full owner/import/style/asset/layout closure, contracts, lockfiles and recording recipe."
 			},
 			{
 				"name": "graphCoverage",
 				"type": "VideoGraphCoverage[]",
 				"description": "Per-graph state/edge coverage and explicit missing slots; empty viewport coverage is incomplete."
+			},
+			{
+				"name": "clipInputClosure",
+				"type": "ClipInputClosure",
+				"description": "Source and contract closure with explicit reasons for conservative widening."
+			},
+			{
+				"name": "createClipInputContext",
+				"type": "ClipInputContext",
+				"description": "Canonical source inventory and caches with one registry read and ffmpeg probe per plan."
+			},
+			{
+				"name": "readClipInput",
+				"type": "ClipInputFile",
+				"description": "Cached SHA-256 and UTF-8 source text from the admitted file bytes."
+			},
+			{
+				"name": "clipDigest",
+				"type": "string",
+				"description": "Lowercase SHA-256 digest of the exact supplied bytes."
+			},
+			{
+				"name": "clipWorkspace",
+				"type": "string",
+				"description": "Nearest repository-relative package directory, or an empty string for the root workspace."
+			},
+			{
+				"name": "clipInputReferences",
+				"type": "{ paths: string[]; reasons: string[] }",
+				"description": "Resolved local dependencies and explicit uncertainty requiring conservative source closure."
+			},
+			{
+				"name": "clipInputSlot",
+				"type": "VideoSlot",
+				"description": "Stable slot identity, input hash, dependency paths and conservative invalidation reasons."
 			}
 		],
 		"errors": [
@@ -225,13 +357,216 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "clipInputClosure",
+				"inputs": [
+					{
+						"name": "clipInputClosure.context",
+						"type": "ClipInputContext",
+						"required": true,
+						"description": "Per-plan source inventory, registered owners, file hashes and dependency caches."
+					},
+					{
+						"name": "clipInputClosure.clip",
+						"type": "VideoClip",
+						"required": true,
+						"description": "One validated clip whose declared and implicit dependencies must be closed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipInputClosure",
+						"type": "ClipInputClosure",
+						"description": "Source and contract closure with explicit reasons for conservative widening."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "A required owner, source, local import or asset is missing, unsafe, outside the root, or incompatible with the recording toolchain."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Filesystem discovery or an admitted source read fails at the operating-system boundary."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A registered unit or workspace package manifest contains invalid JSON."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "createClipInputContext",
+				"inputs": [
+					{
+						"name": "createClipInputContext.root",
+						"type": "string",
+						"required": true,
+						"description": "Source snapshot directory inventoried once for the complete plan."
+					}
+				],
+				"outputs": [
+					{
+						"name": "createClipInputContext",
+						"type": "ClipInputContext",
+						"description": "Canonical source inventory and caches with one registry read and ffmpeg probe per plan."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "A required owner, source, local import or asset is missing, unsafe, outside the root, or incompatible with the recording toolchain."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Filesystem discovery or an admitted source read fails at the operating-system boundary."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A registered unit or workspace package manifest contains invalid JSON."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readClipInput",
+				"inputs": [
+					{
+						"name": "readClipInput.context",
+						"type": "ClipInputContext",
+						"required": true,
+						"description": "Per-plan cache that admits only files inside the canonical source root."
+					},
+					{
+						"name": "readClipInput.path",
+						"type": "string",
+						"required": true,
+						"description": "Safe repository-relative file path whose bytes are read and hashed once."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readClipInput",
+						"type": "ClipInputFile",
+						"description": "Cached SHA-256 and UTF-8 source text from the admitted file bytes."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "A required owner, source, local import or asset is missing, unsafe, outside the root, or incompatible with the recording toolchain."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Filesystem discovery or an admitted source read fails at the operating-system boundary."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "clipDigest",
+				"inputs": [
+					{
+						"name": "clipDigest.input",
+						"type": "string | Buffer",
+						"required": true,
+						"description": "Exact UTF-8 string or original binary bytes to hash with SHA-256."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipDigest",
+						"type": "string",
+						"description": "Lowercase SHA-256 digest of the exact supplied bytes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "clipWorkspace",
+				"inputs": [
+					{
+						"name": "clipWorkspace.context",
+						"type": "ClipInputContext",
+						"required": true,
+						"description": "Source inventory containing workspace package manifest paths."
+					},
+					{
+						"name": "clipWorkspace.path",
+						"type": "string",
+						"required": true,
+						"description": "Repository-relative source path used to find its nearest package boundary."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipWorkspace",
+						"type": "string",
+						"description": "Nearest repository-relative package directory, or an empty string for the root workspace."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "clipInputReferences",
+				"inputs": [
+					{
+						"name": "clipInputReferences.context",
+						"type": "ClipInputContext",
+						"required": true,
+						"description": "Per-plan file, workspace and resolved-reference caches."
+					},
+					{
+						"name": "clipInputReferences.path",
+						"type": "string",
+						"required": true,
+						"description": "Source file scanned for static imports, APIs, styles and media bindings."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipInputReferences",
+						"type": "{ paths: string[]; reasons: string[] }",
+						"description": "Resolved local dependencies and explicit uncertainty requiring conservative source closure."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "A required owner, source, local import or asset is missing, unsafe, outside the root, or incompatible with the recording toolchain."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Filesystem discovery or an admitted source read fails at the operating-system boundary."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A registered unit or workspace package manifest contains invalid JSON."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "clipInputHash",
 				"inputs": [
 					{
 						"name": "clipInputHash.root",
-						"type": "string",
+						"type": "string | ClipInputContext",
 						"required": true,
-						"description": "Root directory containing the source snapshot and registered unit manifests."
+						"description": "Source snapshot path or an already created per-plan discovery and hash context."
 					},
 					{
 						"name": "clipInputHash.manifest",
@@ -264,6 +599,60 @@
 						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Video inputs, recording tools, poster media or evidence limits cannot satisfy the declared recording contract."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "clipInputSlot",
+				"inputs": [
+					{
+						"name": "clipInputSlot.context",
+						"type": "ClipInputContext",
+						"required": true,
+						"description": "Shared per-plan registry, dependency, file-hash and recording-tool context."
+					},
+					{
+						"name": "clipInputSlot.manifest",
+						"type": "VideoManifest",
+						"required": true,
+						"description": "Validated clip library containing viewport definitions and relevant graph slices."
+					},
+					{
+						"name": "clipInputSlot.clip",
+						"type": "VideoManifest['clips'][number]",
+						"required": true,
+						"description": "Validated independently recordable clip and checkpoint descriptor."
+					},
+					{
+						"name": "clipInputSlot.viewport",
+						"type": "string",
+						"required": true,
+						"description": "Declared viewport identity selecting the dimensions hashed into this slot."
+					}
+				],
+				"outputs": [
+					{
+						"name": "clipInputSlot",
+						"type": "VideoSlot",
+						"description": "Stable slot identity, input hash, dependency paths and conservative invalidation reasons."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "A required owner, source, local import or asset is missing, unsafe, outside the root, or incompatible with the recording toolchain."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Filesystem discovery or an admitted source read fails at the operating-system boundary."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "A registered unit or workspace package manifest contains invalid JSON."
 					}
 				],
 				"errorStatus": "declared"
@@ -322,6 +711,16 @@
 	"dependencies": [
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resolve-import",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.scan-imports",
 			"via": "import",
 			"origin": "derived"
 		},

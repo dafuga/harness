@@ -1,7 +1,8 @@
 // @harness-uid u_nfctcgnv7g
 import { videoClipSchema } from '../../utils/verification-evidence/videoClipSchema';
 import type { VideoDeclaration } from '../../utils/verification-evidence/videoClipSchema.types';
-import { clipInputHash } from './video-evidence-service/clipInputs';
+import { clipInputSlot } from './video-evidence-service/clipInputs';
+import { createClipInputContext } from './video-evidence-service/clipInputFiles';
 import { graphCoverage } from './video-evidence-service/graphCoverage';
 import type {
 	VideoSlot,
@@ -23,19 +24,17 @@ export class VideoEvidenceService {
 	/** Select before opening any recorder; reuse retains the original record and revision. */
 	plan(declaration: VideoDeclaration, previous: VideoSlot[] = []): VideoPlan {
 		const manifest = videoClipSchema(declaration);
+		if (!manifest.clips.length) return { record: [], reuse: [] };
+		const context = createClipInputContext(this.root);
 		const slots = manifest.clips.flatMap((clip) =>
-			clip.viewports.map((viewport) => ({
-				unit: clip.unit,
-				clipId: clip.id,
-				viewport,
-				inputHash: clipInputHash(this.root, manifest, clip, viewport)
-			}))
+			clip.viewports.map((viewport) => clipInputSlot(context, manifest, clip, viewport))
 		);
 		const record: VideoSlot[] = [],
 			reuse: VideoSlot[] = [];
 		for (const slot of slots) {
 			const match = previous.find(
 				(old) =>
+					!slot.reasons?.some((reason) => reason.includes('recording required')) &&
 					old.unit === slot.unit &&
 					old.clipId === slot.clipId &&
 					old.viewport === slot.viewport &&

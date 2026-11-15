@@ -5,6 +5,8 @@ export interface VideoSlot {
 	viewport: string;
 	inputHash: string;
 	testedRevision?: string;
+	dependencies?: string[];
+	reasons?: string[];
 }
 
 export interface VideoObservation {
