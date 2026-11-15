@@ -34,70 +34,88 @@
 				"type": "ModuleCatalog",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional selected-revision module catalog. Installed resources supply Code tabs; omitted catalogs use included standard modules. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional source catalog used to populate Code resource tabs. Defaults to undefined (omitted); when omitted, harnessShell falls back to standardCodeModules, treating those definitions as installed, and displayed resources must be installed and not marked testing.",
+				"examples": [
+					{
+						"modules": [],
+						"gaps": []
+					}
+				]
 			},
 			{
 				"name": "HarnessNavbar.base",
 				"type": "string",
 				"required": true,
-				"description": "Required explorer mount address. Used for the brand link before a branch is resolved and as the fallback search link."
+				"description": "The explorer mount path used for the brand link when no branch is resolved and as the search link fallback when an entity has no route.",
+				"examples": ["/reports"]
 			},
 			{
 				"name": "HarnessNavbar.repository",
 				"type": "string | null",
 				"required": true,
-				"description": "Required repository label or null. A missing or empty label hides the repository name."
+				"description": "The repository label shown in the header when it is truthy. A null or empty string hides the repository segment.",
+				"examples": ["harness", null]
 			},
 			{
 				"name": "HarnessNavbar.scope",
 				"type": "ExplorerScope | null",
 				"required": true,
-				"description": "Required current explorer location and revision context, or null while unresolved. Null disables category navigation and hides revision controls and search."
+				"description": "The resolved explorer location and revision context used to build category targets, module tabs, revision state and search. When null, module destinations and revision state are absent, and search is not rendered.",
+				"examples": [null]
 			},
 			{
 				"name": "HarnessNavbar.index",
 				"type": "HarnessIndex | null",
 				"required": true,
-				"description": "Required repository index or null. Revision selectors appear only when a scope and index are available."
+				"description": "The repository index passed to revision selectors. The selectors render only when a revision exists and this value is non-null.",
+				"examples": [null]
 			},
 			{
 				"name": "HarnessNavbar.commits",
 				"type": "HarnessRevisionSummary[]",
 				"required": true,
-				"description": "Required branch revision choices in newest-first order. The viewed revision is added if absent from this list."
+				"description": "The branch revision choices in newest-first order. harnessShell prepends the viewed revision summary when its commit is absent from this list.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "HarnessNavbar.href",
 				"type": "(to: ExplorerLocation) => string",
 				"required": true,
-				"description": "Required function producing a complete address, including the mount, for a location."
+				"description": "Formats an explorer location as a complete address including the mount. The shell uses it for navigation links and search uses it for a matching entity destination."
 			},
 			{
 				"name": "HarnessNavbar.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Required callback for ordinary navigation clicks and revision or search selections. Modified links retain normal browser behavior."
+				"description": "Receives locations from plain primary link clicks and selected module, branch, commit or search destinations. Modified, non-primary or already-prevented link clicks retain normal browser behavior."
 			},
 			{
 				"name": "HarnessNavbar.search",
 				"type": "{ entries: SearchEntry[] | null }",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional searchable entities for the viewed revision, or null entries while loading. The search helper excludes entries for a mismatched revision. Defaults to JavaScript undefined (omitted), not the literal string."
+				"description": "Optional entities available to scoped search, or null while the host reads them. Defaults to undefined (omitted); search is rendered only when scope exists and the entries are discarded if any entry commit differs from the current scope commit.",
+				"examples": [
+					{
+						"entries": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessNavbar",
 				"type": "markup",
-				"description": "Pages, Code, Translations and Platforms navigation preserves branch and commit scope. Historical commits have a visible status. Module-declared Code tabs retain a horizontal scroll cue when they overflow. States: no-repository: The bar renders without a repository-name label. long-repository: The repository-name label retains a long name within the navbar. search-open: The repository search dialog is open."
+				"description": "Header markup contains the brand and category navigation, with a repository label, module tabs, revision selectors, historical status and entity search under their respective conditions. Historical status appears only for a viewed revision labeled 'Historical commit'; search requires a scope, and revision selectors also require an index."
 			}
 		],
 		"errors": [
 			{
 				"name": "Caller callback or content error",
-				"type": "propagated",
-				"description": "Errors from supplied href, onroute callbacks or snippets propagate when invoked; this component does not provide an error boundary."
+				"type": "thrown",
+				"description": "Exceptions from supplied href or onroute callbacks propagate when those callbacks are invoked. This component does not catch them or provide an error boundary."
 			}
 		],
 		"errorStatus": "declared",
