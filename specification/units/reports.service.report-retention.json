@@ -18,33 +18,51 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReportRetentionService.constructor.repository",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The repository instance supplies report reads and paths used by retention cleanup. If omitted, the default parameter constructs new ReportRepository()."
 			},
 			{
 				"name": "ReportRetentionService.run.options",
 				"type": "StorageSyncOptions",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "The options select one report when run is truthy and set the effective dry-run flag from Boolean(dryRun). A run-scoped call skips orphan cleanup, and an omitted argument defaults to {}.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportRetentionService.run",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The resolved object contains planned report IDs, expiry paths reported complete outside dry-run mode, cloud and page cleanup counts, the local cleanup count, collected error messages, and the effective dryRun flag. When run selects one report, orphan cleanup is skipped; failures can reject before an object is returned.",
+				"examples": [
+					{
+						"plannedReports": [],
+						"deletedReports": [],
+						"cloudObjects": 0,
+						"pages": 0,
+						"localFiles": 0,
+						"errors": [],
+						"dryRun": false
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The method can reject when a checked cleanup root, export lock, or publication-staging directory is a symbolic link; it also throws for invalid or mismatched publication receipts and invalid publication timestamps. Errors caught per report or during orphan cleanup are returned in errors, while failures before the report loop or in the cleanup log can reject run."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ReportRetentionService.run",
@@ -53,17 +71,39 @@
 						"name": "ReportRetentionService.run.options",
 						"type": "StorageSyncOptions",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "The options select one report when run is truthy and set the effective dry-run flag from Boolean(dryRun). A run-scoped call skips orphan cleanup, and an omitted argument defaults to {}.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportRetentionService.run",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The resolved object contains planned report IDs, expiry paths reported complete outside dry-run mode, cloud and page cleanup counts, the local cleanup count, collected error messages, and the effective dryRun flag. When run selects one report, orphan cleanup is skipped; failures can reject before an object is returned.",
+						"examples": [
+							{
+								"plannedReports": [],
+								"deletedReports": [],
+								"cloudObjects": 0,
+								"pages": 0,
+								"localFiles": 0,
+								"errors": [],
+								"dryRun": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The method can reject when a checked cleanup root, export lock, or publication-staging directory is a symbolic link; it also throws for invalid or mismatched publication receipts and invalid publication timestamps. Errors caught per report or during orphan cleanup are returned in errors, while failures before the report loop or in the cleanup log can reject run."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -73,17 +113,19 @@
 					{
 						"name": "ReportRetentionService.constructor.repository",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The repository instance supplies report reads and paths used by retention cleanup. If omitted, the default parameter constructs new ReportRepository()."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportRetentionService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructor creates a ReportRetentionService instance that retains the repository reference for later reads and directory lookups. If the argument is omitted, the default parameter constructs new ReportRepository()."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
