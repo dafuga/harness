@@ -10,7 +10,7 @@
 	"owns": {
 		"source": [
 			"src/audit/development-tooling/structure-rules/planningArtifactPaths.ts",
-			"src/audit/structure-rules/planningArtifactPaths.ts"
+			"src/utils/planningArtifactPaths.ts"
 		],
 		"symbols": ["planningArtifactPaths", "planningArtifactPaths"]
 	},
@@ -82,11 +82,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/audit/development-tooling/structure-rules/planningArtifactPaths.ts",
+		"entry": "src/utils/planningArtifactPaths.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/audit/development-tooling/structure-rules/planningArtifactPaths.ts"
+				"entry": "src/utils/planningArtifactPaths.ts"
 			}
 		]
 	},

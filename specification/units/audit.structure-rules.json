@@ -10,16 +10,9 @@
 	"owns": {
 		"source": [
 			"src/audit/development-tooling/structure-rules/moduleCategoryFindings.ts",
-			"src/audit/development-tooling/structure-rules/structureRules.ts",
-			"src/audit/structure-rules/moduleCategoryFindings.ts",
-			"src/audit/structure-rules/structureRules.ts"
+			"src/audit/development-tooling/structure-rules/structureRules.ts"
 		],
-		"symbols": [
-			"moduleCategoryFindings",
-			"auditHarnessStructure",
-			"moduleCategoryFindings",
-			"auditHarnessStructure"
-		]
+		"symbols": ["moduleCategoryFindings", "auditHarnessStructure"]
 	},
 	"contract": {
 		"origin": "derived",

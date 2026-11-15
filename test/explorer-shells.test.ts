@@ -11,7 +11,7 @@ import {
 	explorerRoute,
 	explorerRoutePath
 } from '../src/utils/explorerRoute';
-import { planningArtifactPaths } from '../src/audit/structure-rules/planningArtifactPaths';
+import { planningArtifactPaths } from '../src/audit/development-tooling/structure-rules/planningArtifactPaths';
 
 /**
  * Shells: the composition of an app is a category of its own, after Pages. Only a unit declared a

@@ -1,9 +1,10 @@
 import { afterEach, expect, test } from 'vitest';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
-import { auditHarnessStructure } from '../src/audit/structure-rules/structureRules';
+import { auditHarnessStructure } from '../src/audit/development-tooling/structure-rules/structureRules';
 import { auditPath } from '../src/audit/development-tooling/audit';
 import { canonicalJson } from '../src/utils/canonicalJson';
 const roots: string[] = [];
@@ -116,10 +117,8 @@ async function canonicalFixture(category = 'page') {
 	await mkdir(join(value.root, 'specification/units'), { recursive: true });
 	const manifestPath = join(value.root, `specification/units/${unitId}.json`);
 	await writeFile(manifestPath, JSON.stringify(manifest));
-	await writeFile(
-		join(value.root, value.path, 'plan.json'),
-		JSON.stringify({ ...value.plan, unitId })
-	);
+	const planPath = join(value.root, value.path, 'plan.json');
+	await writeFile(planPath, JSON.stringify({ ...value.plan, unitId }));
 	return { ...value, manifest, manifestPath };
 }
 test('a valid plan exempts shared ancestors without admitting unrelated siblings or directories', async () => {
@@ -174,6 +173,12 @@ test.each(['page', 'component', 'function', 'config', 'service'])(
 		}
 	}
 );
+
+test('relocated structure rules leave no stub behind at their former paths', () => {
+	const dir = join(import.meta.dirname, '../src/audit/structure-rules');
+	for (const stub of ['moduleCategoryFindings', 'planningArtifactPaths', 'structureRules'])
+		expect(existsSync(join(dir, `${stub}.ts`)), stub).toBe(false);
+});
 
 test.each(['component', 'function', 'service'])(
 	'missing or corrupt %s plans cannot disable reserved subtree checks',
