@@ -12,32 +12,181 @@
 		"symbols": ["HostedEvidenceValidator", "HostedEvidenceValidator.evidence"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostedEvidenceValidator.evidence.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "An untrusted candidate hosted answer supplied without a static runtime type. It must pass hostedEvidenceSchema and the checks against the query; original sealed-record validation remains the server's responsibility.",
+				"examples": [
+					{
+						"identity": {
+							"principalId": "google-user-12345",
+							"projectId": "harness-shots",
+							"repositoryId": 42,
+							"requestedRef": "main",
+							"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+							"sourceTree": "abcdef0123456789abcdef0123456789abcdef01",
+							"notesRef": "refs/notes/harness",
+							"notesRevision": null,
+							"evidenceRef": "refs/heads/harness-evidence",
+							"evidenceRevision": null,
+							"historyIndexRevision": null,
+							"artifactHash": null,
+							"profile": null
+						},
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"category": "components",
+								"entity": "reports.component.evidence-grid"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "0123456789abcdef0123456789abcdef01234567",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true,
+							"parent": "89abcdef0123456789abcdef0123456789abcdef",
+							"summary": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+								"subject": "Add hosted evidence summaries",
+								"author": "Example Developer",
+								"committedAt": "2026-11-15T12:00:00Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": ["No verification record is available."],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"evidence": {
+							"mode": "current",
+							"scenarios": [],
+							"after": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"detail": null,
+								"record": null,
+								"gap": "No hosted evidence record is available.",
+								"coverage": [],
+								"captures": []
+							},
+							"before": null,
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "current",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": null,
+							"scenarios": []
+						}
+					}
+				]
 			},
 			{
 				"name": "HostedEvidenceValidator.evidence.query",
 				"type": "EntityEvidenceQuery",
-				"required": true
+				"required": true,
+				"description": "The requested project and entity read, with its commit, branch, and current or commit mode; projectId is optional. It binds the answer to the requested read, and current mode also requires a lone branch-tip side at the requested commit.",
+				"examples": [
+					{
+						"projectId": "harness-shots",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"mode": "current"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostedEvidenceValidator.evidence",
-				"type": "EntityEvidenceResult"
+				"type": "EntityEvidenceResult",
+				"description": "The EntityEvidenceResult matching the query, returned as provided after schema and binding checks. The validator also checks current-tip and first-parent placement, while original sealed-record validation remains server-owned.",
+				"examples": [
+					{
+						"identity": {
+							"principalId": "google-user-12345",
+							"projectId": "harness-shots",
+							"repositoryId": 42,
+							"requestedRef": "main",
+							"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+							"sourceTree": "abcdef0123456789abcdef0123456789abcdef01",
+							"notesRef": "refs/notes/harness",
+							"notesRevision": null,
+							"evidenceRef": "refs/heads/harness-evidence",
+							"evidenceRevision": null,
+							"historyIndexRevision": null,
+							"artifactHash": null,
+							"profile": null
+						},
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"category": "components",
+								"entity": "reports.component.evidence-grid"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "0123456789abcdef0123456789abcdef01234567",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true,
+							"parent": "89abcdef0123456789abcdef0123456789abcdef",
+							"summary": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+								"subject": "Add hosted evidence summaries",
+								"author": "Example Developer",
+								"committedAt": "2026-11-15T12:00:00Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": ["No verification record is available."],
+								"records": [],
+								"legacy": []
+							}
+						},
+						"evidence": {
+							"mode": "current",
+							"scenarios": [],
+							"after": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"detail": null,
+								"record": null,
+								"gap": "No hosted evidence record is available.",
+								"coverage": [],
+								"captures": []
+							},
+							"before": null,
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "current",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": null,
+							"scenarios": []
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "A generic Error is thrown when the answer fails hostedEvidenceSchema, a bound answer field differs from the query, or the current-tip or first-parent requirement fails. Its message is either \"This app does not accept the hosted evidence answer.\" or \"The hosted answer is of another evidence read.\""
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HostedEvidenceValidator.evidence",
@@ -45,27 +194,176 @@
 					{
 						"name": "HostedEvidenceValidator.evidence.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "An untrusted candidate hosted answer supplied without a static runtime type. It must pass hostedEvidenceSchema and the checks against the query; original sealed-record validation remains the server's responsibility.",
+						"examples": [
+							{
+								"identity": {
+									"principalId": "google-user-12345",
+									"projectId": "harness-shots",
+									"repositoryId": 42,
+									"requestedRef": "main",
+									"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+									"sourceTree": "abcdef0123456789abcdef0123456789abcdef01",
+									"notesRef": "refs/notes/harness",
+									"notesRevision": null,
+									"evidenceRef": "refs/heads/harness-evidence",
+									"evidenceRevision": null,
+									"historyIndexRevision": null,
+									"artifactHash": null,
+									"profile": null
+								},
+								"scope": {
+									"location": {
+										"branch": "main",
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"category": "components",
+										"entity": "reports.component.evidence-grid"
+									},
+									"mode": "current",
+									"branch": "main",
+									"tip": "0123456789abcdef0123456789abcdef01234567",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"atTip": true,
+									"parent": "89abcdef0123456789abcdef0123456789abcdef",
+									"summary": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+										"subject": "Add hosted evidence summaries",
+										"author": "Example Developer",
+										"committedAt": "2026-11-15T12:00:00Z",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "unverified",
+										"gaps": ["No verification record is available."],
+										"records": [],
+										"legacy": []
+									}
+								},
+								"evidence": {
+									"mode": "current",
+									"scenarios": [],
+									"after": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"detail": null,
+										"record": null,
+										"gap": "No hosted evidence record is available.",
+										"coverage": [],
+										"captures": []
+									},
+									"before": null,
+									"initial": null,
+									"incomparable": []
+								},
+								"behavior": {
+									"mode": "current",
+									"rows": [],
+									"summary": "not-compared",
+									"reason": null,
+									"scenarios": []
+								}
+							}
+						]
 					},
 					{
 						"name": "HostedEvidenceValidator.evidence.query",
 						"type": "EntityEvidenceQuery",
-						"required": true
+						"required": true,
+						"description": "The requested project and entity read, with its commit, branch, and current or commit mode; projectId is optional. It binds the answer to the requested read, and current mode also requires a lone branch-tip side at the requested commit.",
+						"examples": [
+							{
+								"projectId": "harness-shots",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"mode": "current"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedEvidenceValidator.evidence",
-						"type": "EntityEvidenceResult"
+						"type": "EntityEvidenceResult",
+						"description": "The EntityEvidenceResult matching the query, returned as provided after schema and binding checks. The validator also checks current-tip and first-parent placement, while original sealed-record validation remains server-owned.",
+						"examples": [
+							{
+								"identity": {
+									"principalId": "google-user-12345",
+									"projectId": "harness-shots",
+									"repositoryId": 42,
+									"requestedRef": "main",
+									"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+									"sourceTree": "abcdef0123456789abcdef0123456789abcdef01",
+									"notesRef": "refs/notes/harness",
+									"notesRevision": null,
+									"evidenceRef": "refs/heads/harness-evidence",
+									"evidenceRevision": null,
+									"historyIndexRevision": null,
+									"artifactHash": null,
+									"profile": null
+								},
+								"scope": {
+									"location": {
+										"branch": "main",
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"category": "components",
+										"entity": "reports.component.evidence-grid"
+									},
+									"mode": "current",
+									"branch": "main",
+									"tip": "0123456789abcdef0123456789abcdef01234567",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"atTip": true,
+									"parent": "89abcdef0123456789abcdef0123456789abcdef",
+									"summary": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"parents": ["89abcdef0123456789abcdef0123456789abcdef"],
+										"subject": "Add hosted evidence summaries",
+										"author": "Example Developer",
+										"committedAt": "2026-11-15T12:00:00Z",
+										"branches": ["main"],
+										"retained": true,
+										"coverage": "unverified",
+										"gaps": ["No verification record is available."],
+										"records": [],
+										"legacy": []
+									}
+								},
+								"evidence": {
+									"mode": "current",
+									"scenarios": [],
+									"after": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"detail": null,
+										"record": null,
+										"gap": "No hosted evidence record is available.",
+										"coverage": [],
+										"captures": []
+									},
+									"before": null,
+									"initial": null,
+									"incomparable": []
+								},
+								"behavior": {
+									"mode": "current",
+									"rows": [],
+									"summary": "not-compared",
+									"reason": null,
+									"scenarios": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "A generic Error is thrown when the answer fails hostedEvidenceSchema, a bound answer field differs from the query, or the current-tip or first-parent requirement fails. Its message is either \"This app does not accept the hosted evidence answer.\" or \"The hosted answer is of another evidence read.\""
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
