@@ -40,64 +40,199 @@
 				"name": "GameLevelReview.proposal",
 				"type": "LevelProposal",
 				"required": true,
-				"description": "Validated geometry and summary awaiting human review."
+				"description": "The generated level proposal under review. The component reads its layout (drawn in the preview and listed by object), summary, dimension, provider and model (shown in the text and chips), and never reads its id, concept or description; it does not validate the fields it reads.",
+				"examples": [
+					{
+						"id": "5e1f0c9a7b2d43e8a6c0f19d2b7e4c35f8a1d6b0e9c2473a5d8f1e6b0c4a9d72",
+						"concept": "Shrine courtyard",
+						"description": "A small walled courtyard where the player climbs one stone ledge to reach the shrine exit.",
+						"dimension": "2d",
+						"provider": "claude",
+						"model": "claude-opus-5-5",
+						"summary": "A walled courtyard with one raised stone ledge; the shrine exit sits past it on the east side.",
+						"layout": {
+							"width": 12,
+							"depth": 10,
+							"spawn": {
+								"x": 1.5,
+								"z": 5
+							},
+							"objects": [
+								{
+									"id": "west-wall",
+									"kind": "wall",
+									"label": "West wall",
+									"x": 0.5,
+									"z": 5,
+									"width": 1,
+									"depth": 8,
+									"height": 3
+								},
+								{
+									"id": "south-wall",
+									"kind": "wall",
+									"label": "South wall",
+									"x": 6,
+									"z": 0.5,
+									"width": 12,
+									"depth": 1,
+									"height": 3
+								},
+								{
+									"id": "north-wall",
+									"kind": "wall",
+									"label": "North wall",
+									"x": 6,
+									"z": 9.5,
+									"width": 12,
+									"depth": 1,
+									"height": 3
+								},
+								{
+									"id": "stone-ledge",
+									"kind": "platform",
+									"label": "Stone ledge",
+									"x": 5,
+									"z": 5,
+									"width": 3,
+									"depth": 4,
+									"height": 1.5
+								},
+								{
+									"id": "shrine-exit",
+									"kind": "goal",
+									"label": "Shrine exit",
+									"x": 10,
+									"z": 5,
+									"width": 2,
+									"depth": 2,
+									"height": 1
+								},
+								{
+									"id": "clay-urn",
+									"kind": "prop",
+									"label": "Clay urn",
+									"x": 2.5,
+									"z": 7.5,
+									"width": 1,
+									"depth": 1,
+									"height": 1.2
+								}
+							]
+						}
+					}
+				]
 			},
 			{
 				"name": "GameLevelReview.providers",
 				"type": "ProviderState[] | null",
 				"required": true,
-				"description": "Discovered labels for the provider and model that proposed this layout."
+				"description": "The discovered provider list, used only to look up the labels of proposal.provider and proposal.model for the provider and model chip. When it is null, or has no matching provider or model, the chip shows the raw id for whichever is missing, and availability is not checked here.",
+				"examples": [
+					[
+						{
+							"id": "codex",
+							"label": "Codex CLI",
+							"available": false,
+							"reason": "Codex CLI unavailable.",
+							"version": null,
+							"imageGeneration": false,
+							"models": []
+						},
+						{
+							"id": "claude",
+							"label": "Claude CLI",
+							"available": true,
+							"reason": null,
+							"version": "2.1.0",
+							"imageGeneration": false,
+							"models": [
+								{
+									"id": "claude-opus-5-5",
+									"label": "Claude Opus 5.5",
+									"efforts": ["low", "medium", "high", "xhigh", "max"],
+									"defaultEffort": "xhigh",
+									"isDefault": true
+								}
+							]
+						}
+					],
+					null,
+					[]
+				]
 			},
 			{
 				"name": "GameLevelReview.approved",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Whether the human approved this exact proposal."
+				"description": "Whether this exact proposal has been approved; the component never sets it. When true, Approve level is disabled, Build level is enabled unless status.busy is true, and the status note shows the approved message unless a request is busy or the level is built.",
+				"examples": [false, true]
 			},
 			{
 				"name": "GameLevelReview.built",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Whether the approved proposal has been materialized into playable geometry."
+				"description": "Whether the approved proposal has been built into playable geometry; the component never sets it. When true, the built note replaces the requested-changes field and the status note, Regenerate, Approve level and Build level are not rendered, and Edit brief remains unless status.readonly is true.",
+				"examples": [false, true]
 			},
 			{
 				"name": "GameLevelReview.status",
 				"type": "LevelStatus",
 				"required": true,
-				"description": "Availability, pending request and error information."
+				"description": "The generation state: busy disables the requested-changes field, Regenerate, Approve level and Build level; readonly hides the requested-changes field and every action; and a non-empty reason disables Regenerate and is shown as the status note unless busy, approved or built. A non-empty error is shown in a role=alert paragraph, even when built or readonly.",
+				"examples": [
+					{
+						"busy": false,
+						"readonly": false,
+						"reason": "",
+						"error": ""
+					},
+					{
+						"busy": true,
+						"readonly": false,
+						"reason": "",
+						"error": ""
+					},
+					{
+						"busy": false,
+						"readonly": false,
+						"reason": "",
+						"error": "The model returned an invalid level layout. Try refining the brief."
+					}
+				]
 			},
 			{
 				"name": "GameLevelReview.regenerate",
 				"type": "(feedback: string) => void",
 				"required": true,
-				"description": "Request a replacement proposal using the entered changes."
+				"description": "Called with the text of the requested-changes field when Regenerate is clicked, untrimmed and an empty string when the field is empty. The button is disabled while status.busy is true or status.reason is set, and it is not rendered when built or readonly."
 			},
 			{
 				"name": "GameLevelReview.approve",
 				"type": "() => void",
 				"required": true,
-				"description": "Explicitly approve this exact current proposal."
+				"description": "Called when the Approve level button is clicked; the button is disabled while approved or status.busy is true, and it is not rendered when built or readonly. The component stores no approval itself."
 			},
 			{
 				"name": "GameLevelReview.build",
 				"type": "() => void",
 				"required": true,
-				"description": "Build the current approved proposal, unlocking checkpoints."
+				"description": "Called when the Build level button is clicked; the button is enabled only while approved is true and status.busy is false, and it is not rendered when built or readonly. The component builds nothing itself."
 			},
 			{
 				"name": "GameLevelReview.edit",
 				"type": "() => void",
 				"required": true,
-				"description": "Return to the level brief without losing saved geometry."
+				"description": "Called when the Edit brief button is clicked; the button is never disabled and is rendered whenever status.readonly is false, including after the level is built."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameLevelReview",
 				"type": "markup",
-				"description": "Review generated geometry, request revisions and explicitly approve a level. Throws nothing itself: a status error is shown in an alert beside the level, and the approve, build and regenerate callbacks are the parent’s responsibility. Catalog states: default (proposal ready to approve or regenerate), approved (Build level enabled, Approve spent), built (the built note replaces the controls), regenerating (a pending request disables regenerate and the requested-changes field), error (the status error alert), unavailable (a status reason disables regenerate), and no-providers (providers null, so the chip names the raw provider and model ids)."
+				"description": "The rendered review: the level preview beside the summary, the dimension chip, the provider and model chip, the collapsible object list, the requested-changes field, the action buttons, the status note and any status error. Built and readonly change which of these render, and the component throws nothing itself: a status error is shown in a role=alert paragraph."
 			}
 		],
 		"errors": [],
