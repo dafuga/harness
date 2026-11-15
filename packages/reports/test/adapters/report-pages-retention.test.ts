@@ -1,6 +1,6 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import { configureFixtureCloud } from '../storageFixture';
-import { ReportPagesRetentionAdapter } from '../../src/adapters/ReportPagesRetentionAdapter';
+import { ReportPagesRetentionAdapter } from '../../src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter';
 afterEach(() => vi.unstubAllEnvs());
 const receipt = { run: 'old', url: 'https://abcd.project-report-shares.pages.dev' };
 const row = {

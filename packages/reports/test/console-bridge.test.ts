@@ -1,6 +1,6 @@
 import { expect } from '../../../test/verificationExpect';
 import { afterEach, test, vi } from 'vitest';
-import { ConsoleBridgeAdapter } from '../src/adapters/ConsoleBridgeAdapter';
+import { ConsoleBridgeAdapter } from '../src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter';
 afterEach(() => {
 	vi.useRealTimers();
 	vi.unstubAllGlobals();

@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import type { S3Client } from '@aws-sdk/client-s3';
-import { R2ReportRetentionAdapter } from '../../src/adapters/R2ReportRetentionAdapter';
+import { R2ReportRetentionAdapter } from '../../src/services/reports-media/report-command-service/report-retention-service/R2ReportRetentionAdapter';
 const config = {
 	accountId: 'fixture',
 	bucket: 'reports-only',
