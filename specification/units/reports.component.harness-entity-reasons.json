@@ -32,31 +32,84 @@
 				"name": "EntityReasons.reasons",
 				"type": "EntityReasons",
 				"required": true,
-				"description": "Required prepared reasons containing long flag, original notes and attempts with subjects/outcomes."
+				"description": "The prepared reason data for one entity: the long-disclosure flag, original notes, and attempted actions with their uses. The component shows it only when `long` is truthy; it reads each note’s `behavior` and `subjects`, each attempt’s `attempt` and `uses`, and each rendered use’s `kind`, `outcome`, and `subjects`.",
+				"examples": [
+					{
+						"long": true,
+						"behavior": {
+							"text": "Keep the validated response for the detail view.",
+							"cut": true
+						},
+						"simplification": {
+							"text": "Reuse the shared response parser…",
+							"cut": true,
+							"outcomes": ["preserved"]
+						},
+						"performance": {
+							"text": "Avoid parsing the response twice.",
+							"cut": false,
+							"outcomes": ["reduced duplicate work"]
+						},
+						"notes": [
+							{
+								"behavior": "Keep the validated response for the detail view.",
+								"subjects": ["detail view", "validated response"]
+							}
+						],
+						"attempted": [
+							{
+								"attempt": "Reuse the shared response parser.",
+								"uses": []
+							}
+						]
+					},
+					{
+						"long": false,
+						"behavior": {
+							"text": "Keep the validated response for the detail view.",
+							"cut": false
+						},
+						"simplification": {
+							"text": "Reuse the shared response parser.",
+							"cut": false,
+							"outcomes": ["preserved"]
+						},
+						"performance": {
+							"text": "Avoid parsing the response twice.",
+							"cut": false,
+							"outcomes": ["reduced duplicate work"]
+						},
+						"notes": [],
+						"attempted": []
+					}
+				]
 			},
 			{
 				"name": "EntityReasons.open",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional bindable disclosure state, false by default."
+				"description": "The bindable disclosure state passed to `<hx-details>`; it controls whether the full reasons are expanded. Defaults to `false`.",
+				"examples": [false, true]
 			},
 			{
 				"name": "EntityReasons.id",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional ID for the disclosure, allowing callers to focus or link it."
+				"description": "Optional HTML `id` forwarded to the `<hx-details>` element. When omitted, the component supplies no id.",
+				"examples": ["entity-reasons-review-17", "entity-reasons-commit-a1b2"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityReasons",
 				"type": "markup",
-				"description": "Full reasons disclosure only when long is true, with counts and original behavior/attempt text grouped by usage. Otherwise renders nothing; it does not regenerate or shorten originals."
+				"description": "Markup for the full disclosure when `reasons.long` is truthy, including note and attempt counts and the original behavior, subject, attempt, and use text. Otherwise it renders nothing; subjects are joined with comma separators and the text is shown as supplied."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
