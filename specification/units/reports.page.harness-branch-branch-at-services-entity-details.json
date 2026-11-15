@@ -24,41 +24,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The contract of the service; by tab its measurements, an unavailable one with its reason, and its source."
+				"description": "The page markup renders HarnessScreen with the fixed title Service details and EntityDetailsScreen as its content. This page implementation declares no route data or page-level behavior beyond that composition."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Service details · Harness"
+				"description": "The fixed string passed as the title prop to HarnessScreen for this route. It does not vary by branch, revision, or entity in this page implementation.",
+				"examples": ["Service details"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-at-revision",
-				"type": "notice",
-				"description": "A service the shown revision does not hold is said, with the way back to the collection."
-			},
-			{
-				"name": "other-category",
-				"type": "redirect",
-				"description": "A unit that is not a service at this revision is led to the address of its own category."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
