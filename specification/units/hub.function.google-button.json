@@ -30,28 +30,36 @@
 				"name": "googleButton.element",
 				"type": "HTMLElement",
 				"required": true,
-				"description": "DOM element that will receive the button."
+				"description": "The DOM element supplied as the target for Google Identity Services' rendered button. It is passed to renderButton after the identity client initializes, with no selector lookup or element validation."
 			},
 			{
 				"name": "googleButton.options",
 				"type": "GoogleButton",
 				"required": true,
-				"description": "Client ID, fresh challenge nonce and callback receiving the signed credential."
+				"description": "The Google sign-in options: client ID, fresh challenge nonce, and credential callback. The implementation forwards the ID and nonce to initialize and the credential string to the callback, without validating or retaining them."
 			}
 		],
 		"outputs": [
 			{
 				"name": "googleIdentityScript",
 				"type": "unknown",
-				"description": "Fixed Google Identity Services script URL."
+				"description": "The fixed Google Identity Services script URL inserted when no script load is already pending. It always points to https://accounts.google.com/gsi/client.",
+				"examples": ["https://accounts.google.com/gsi/client"]
 			},
 			{
 				"name": "googleButton",
 				"type": "Promise<void>",
-				"description": "Promise resolving after initialization and button rendering; inserts the script once per shared loading promise and forwards credentials to the callback without retaining them."
+				"description": "The promise resolves with no value after the Google identity object loads, initializes, and renders the button. It rejects on script load failure or when the load event exposes no google.accounts.id; only the script-error path clears the shared pending promise for a retry, and credentials are forwarded without being retained."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The returned promise rejects with this error if the script load event completes without google.accounts.id or the script emits an error. The messages are Google sign-in did not load. and Google sign-in could not be loaded.; only the script-error path resets the shared loading promise."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "googleButton",
@@ -60,24 +68,30 @@
 						"name": "googleButton.element",
 						"type": "HTMLElement",
 						"required": true,
-						"description": "DOM element that will receive the button."
+						"description": "The DOM element supplied as the target for Google Identity Services' rendered button. It is passed to renderButton after the identity client initializes, with no selector lookup or element validation."
 					},
 					{
 						"name": "googleButton.options",
 						"type": "GoogleButton",
 						"required": true,
-						"description": "Client ID, fresh challenge nonce and callback receiving the signed credential."
+						"description": "The Google sign-in options: client ID, fresh challenge nonce, and credential callback. The implementation forwards the ID and nonce to initialize and the credential string to the callback, without validating or retaining them."
 					}
 				],
 				"outputs": [
 					{
 						"name": "googleButton",
 						"type": "Promise<void>",
-						"description": "Promise resolving after initialization and button rendering; inserts the script once per shared loading promise and forwards credentials to the callback without retaining them."
+						"description": "The promise resolves with no value after the Google identity object loads, initializes, and renders the button. It rejects on script load failure or when the load event exposes no google.accounts.id; only the script-error path clears the shared pending promise for a retry, and credentials are forwarded without being retained."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The returned promise rejects with this error if the script load event completes without google.accounts.id or the script emits an error. The messages are Google sign-in did not load. and Google sign-in could not be loaded.; only the script-error path resets the shared loading promise."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
