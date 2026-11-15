@@ -10,10 +10,10 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/networking-security/wire-session-service/wireDispatch.ts",
-			"packages/remote/src/services/wire-session-service/wireDispatch.ts",
-			"packages/remote/src/utils/networking-security/wireDispatch.ts"
+			"packages/remote/src/utils/networking-security/wireDispatch.ts",
+			"packages/remote/src/utils/wireDispatch.ts"
 		],
-		"symbols": ["wireDispatch", "wireDispatch", "WireDispatchContext", "wireDispatch"]
+		"symbols": ["wireDispatch", "WireDispatchContext", "wireDispatch", "wireDispatch"]
 	},
 	"contract": {
 		"origin": "declared",

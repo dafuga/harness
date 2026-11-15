@@ -10,7 +10,7 @@ import {
 	remotePatterns
 } from '../../src/utils/remoteIdentity';
 import { pairingCode } from '../../../desktop/src/services/networking-security/remote-host-service/host-pairing-service/remoteIdentity';
-import { requestDigest } from '../../src/services/wire-session-service/remoteIdentity';
+import { requestDigest } from '../../src/services/networking-security/wire-session-service/remoteIdentity';
 import { vectors } from '../support/vectors';
 
 test('an identity is the first 40 hex of the key hash, from bytes or base64url', async () => {
