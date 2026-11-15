@@ -9,7 +9,7 @@ import { ProjectRegistryService } from '../src/services/projects-sessions/Projec
 import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 import { ProviderDiscoveryService } from '../src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import { RepositoryArbiterService } from '../src/services/projects-sessions/RepositoryArbiterService';
-import { desktopBridge } from '../src/utils/desktopBridge';
+import { desktopBridge } from '../src/lib/development-tooling/desktop-bridge/desktopBridge';
 import { PNG } from 'pngjs';
 import { vi } from 'vitest';
 import { bytes, fixture, git } from './run-fixture';

@@ -10,7 +10,7 @@ import type {
 	EvidenceArtifactQuery
 } from '../src/models/verification-evidence/DesktopEvidence.types';
 import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
-import { desktopBridge } from '../src/utils/desktopBridge';
+import { desktopBridge } from '../src/lib/development-tooling/desktop-bridge/desktopBridge';
 
 export const page = 'page.titles';
 export const clock = 'service.clock';

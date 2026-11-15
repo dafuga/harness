@@ -1,6 +1,6 @@
 import { test, expect, vi } from 'vitest';
 import { fixture, git } from '../project-fixture';
-import { desktopBridge } from '../../src/utils/desktopBridge';
+import { desktopBridge } from '../../src/lib/development-tooling/desktop-bridge/desktopBridge';
 import type { ProviderDiscoveryService } from '../../src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService';
 import type { DesktopRunService } from '../../src/services/agents-providers/desktop-run-service/DesktopRunService';
 import type { HumanCommentDraft } from '../../src/models/projects-sessions/ProjectContext.types';

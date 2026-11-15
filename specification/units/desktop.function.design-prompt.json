@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/designPrompt.ts",
-			"packages/desktop/src/utils/planning-collaboration/designPrompt.ts"
-		],
-		"symbols": ["designPrompt", "designPrompt"]
+		"source": ["packages/desktop/src/utils/planning-collaboration/designPrompt.ts"],
+		"symbols": ["designPrompt"]
 	},
 	"contract": {
 		"origin": "declared",

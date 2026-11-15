@@ -1,7 +1,7 @@
 import type { Handler } from './desktop-ipc.test.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
-import { bootstrapChannel } from '../../src/utils/desktopIpc';
+import { bootstrapChannel } from '../../src/utils/agents-providers/desktopIpc';
 import { desktopIpc } from '../../src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopIpc';
 import { trustedSender } from '../../src/lib/development-tooling/desktop-initialization/initialize-desktop/trustedSender';
 function port() {
