@@ -39,85 +39,128 @@
 				"name": "hubEvidenceContext.deps",
 				"type": "HubEvidenceDependencies",
 				"required": true,
-				"description": "Collaboration API, source adapter and cache."
+				"description": "A dependency bundle with the collaboration API, source history adapter, and cache. hubEvidenceContext uses the API for the project lookup and puts the source adapter and cache in the source context."
 			},
 			{
 				"name": "hubEvidenceContext.actor",
 				"type": "Actor",
 				"required": true,
-				"description": "Authenticated actor whose project access is checked."
+				"description": "The authenticated collaboration actor passed to the project lookup; its id is copied to the source identity as the reading principal.",
+				"examples": [
+					{
+						"id": "actor-42",
+						"email": "daniel@example.com",
+						"name": "Daniel",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "hubEvidenceContext.query",
 				"type": "EntityEvidenceQuery",
 				"required": true,
-				"description": "Project, entity, branch, commit and current-or-commit viewing mode."
+				"description": "Identifies the optional hosted project, entity, branch, commit, and view mode; current-mode reads require the selected commit to equal the branch tip, while commit mode may address a reachable historical commit.",
+				"examples": [
+					{
+						"projectId": "project-42",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "5f2a7c91d4e63b8a0c1f2d3e4a5b6c7d8e9f0a1b",
+						"branch": "main",
+						"mode": "current"
+					}
+				]
 			},
 			{
 				"name": "hubEvidencePins.base",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "A source context carrying the adapter, repository, resolved commit, tree entries, cache, and cache identity. Pin operations use its repository and identity to validate and bind hosted evidence revisions."
 			},
 			{
 				"name": "hubEvidencePins.query",
 				"type": "Pick<EvidenceArtifactQuery, 'notesRevision' | 'evidenceRevision'>",
 				"required": true,
-				"description": "Requested notes and evidence revisions, each nullable."
+				"description": "The requested hosted notes and evidence revisions, each a commit string or null. A changed pin is accepted only when both the existing and requested revisions are present and the requested revision is reachable from the existing one.",
+				"examples": [
+					{
+						"notesRevision": "5f2a7c91d4e63b8a0c1f2d3e4a5b6c7d8e9f0a1b",
+						"evidenceRevision": "a9c3f7012b4e6d8c0f1a3b5c7d9e0f2a4c6b8d10"
+					},
+					{
+						"notesRevision": null,
+						"evidenceRevision": null
+					}
+				]
 			},
 			{
 				"name": "hubEvidenceScope.base",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "A source context carrying the adapter, repository, resolved commit, tree entries, cache, and cache identity. Scope reads use its repository and pinned identity to justify the requested evidence view."
 			},
 			{
 				"name": "hubEvidenceScope.query",
 				"type": "EntityEvidenceQuery",
 				"required": true,
-				"description": "Entity, branch, commit and viewing mode."
+				"description": "Identifies the optional project, entity, branch, commit, and view mode. The commit must be reachable from tip, and current mode additionally requires it to equal tip.",
+				"examples": [
+					{
+						"projectId": "project-42",
+						"entityId": "reports.component.evidence-grid",
+						"commit": "a9c3f7012b4e6d8c0f1a3b5c7d9e0f2a4c6b8d10",
+						"branch": "main",
+						"mode": "commit"
+					}
+				]
 			},
 			{
 				"name": "hubEvidenceScope.tip",
 				"type": "string",
 				"required": true,
-				"description": "Known branch tip commit."
+				"description": "The selected branch tip used as the reachability boundary and for current-mode validation.",
+				"examples": ["5f2a7c91d4e63b8a0c1f2d3e4a5b6c7d8e9f0a1b"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEvidenceContext",
 				"type": "unknown",
-				"description": "Authorized source context, branch tip and repository; current-mode requests require the selected commit to remain the tip."
+				"description": "Resolves to { base, tip, repository } after loading the selected project and resolving its requested commit. It refuses a missing project id, a missing branch tip, or a current-mode commit that differs from the tip."
 			},
 			{
 				"name": "hubEvidencePins",
 				"type": "unknown",
-				"description": "Returns nothing after accepting identical pins or reachable older revisions and replacing the context’s notes/evidence identity with the requested pins."
+				"description": "Resolves to undefined after checking both requested revisions. Changed pins must be present and reachable from their current pins; on success, base.identity is replaced with the requested revisions."
 			},
 			{
 				"name": "hubEvidenceScope",
 				"type": "unknown",
-				"description": "Explorer scope, head and optional first-parent revision detail, plus pinned history service. Historical commits must be reachable from the branch tip."
+				"description": "Resolves to { scope, revisions, history } for a registered entity and a commit reachable from tip. revisions.parent is the exact first-parent detail or null, and history reads records under the pinned notes and evidence revisions."
 			}
 		],
 		"errors": [
 			{
 				"name": "forbidden",
-				"type": "refused",
-				"description": "Project ID is missing; project-access failures can also propagate."
+				"type": "thrown",
+				"description": "Thrown when hubEvidenceContext receives a query without projectId before the project lookup."
 			},
 			{
 				"name": "evidence-stale",
-				"type": "refused",
-				"description": "Current branch tip moved, or requested notes/evidence pins cannot be justified from the current pins."
+				"type": "thrown",
+				"description": "Thrown when a current-mode query names a commit other than the selected branch tip, or when a changed notes/evidence pin is absent or cannot be reached from its current pin."
 			},
 			{
 				"name": "evidence-unreadable",
-				"type": "refused",
-				"description": "Branch, commit facts, reachability or entity registration cannot support the requested evidence view."
+				"type": "thrown",
+				"description": "Thrown when the selected branch has no tip, a requested commit cannot be proven reachable from the tip, commit facts are missing or disagree with the requested commit, or the entity has no registered kind."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The scope helper calls recordedScope, which throws a plain Error if a current-mode commit differs from tip or if its kind has no mapped explorer category."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubEvidenceContext",
@@ -126,30 +169,63 @@
 						"name": "hubEvidenceContext.deps",
 						"type": "HubEvidenceDependencies",
 						"required": true,
-						"description": "Collaboration API, source adapter and cache."
+						"description": "A dependency bundle with the collaboration API, source history adapter, and cache. hubEvidenceContext uses the API for the project lookup and puts the source adapter and cache in the source context."
 					},
 					{
 						"name": "hubEvidenceContext.actor",
 						"type": "Actor",
 						"required": true,
-						"description": "Authenticated actor whose project access is checked."
+						"description": "The authenticated collaboration actor passed to the project lookup; its id is copied to the source identity as the reading principal.",
+						"examples": [
+							{
+								"id": "actor-42",
+								"email": "daniel@example.com",
+								"name": "Daniel",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "hubEvidenceContext.query",
 						"type": "EntityEvidenceQuery",
 						"required": true,
-						"description": "Project, entity, branch, commit and current-or-commit viewing mode."
+						"description": "Identifies the optional hosted project, entity, branch, commit, and view mode; current-mode reads require the selected commit to equal the branch tip, while commit mode may address a reachable historical commit.",
+						"examples": [
+							{
+								"projectId": "project-42",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "5f2a7c91d4e63b8a0c1f2d3e4a5b6c7d8e9f0a1b",
+								"branch": "main",
+								"mode": "current"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEvidenceContext",
 						"type": "unknown",
-						"description": "Authorized source context, branch tip and repository; current-mode requests require the selected commit to remain the tip."
+						"description": "Resolves to { base, tip, repository } after loading the selected project and resolving its requested commit. It refuses a missing project id, a missing branch tip, or a current-mode commit that differs from the tip."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "forbidden",
+						"type": "thrown",
+						"description": "Thrown when hubEvidenceContext receives a query without projectId before the project lookup."
+					},
+					{
+						"name": "evidence-stale",
+						"type": "thrown",
+						"description": "Thrown when a current-mode query names a commit other than the selected branch tip, or when a changed notes/evidence pin is absent or cannot be reached from its current pin."
+					},
+					{
+						"name": "evidence-unreadable",
+						"type": "thrown",
+						"description": "Thrown when the selected branch has no tip, a requested commit cannot be proven reachable from the tip, commit facts are missing or disagree with the requested commit, or the entity has no registered kind."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubEvidencePins",
@@ -158,24 +234,40 @@
 						"name": "hubEvidencePins.base",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "A source context carrying the adapter, repository, resolved commit, tree entries, cache, and cache identity. Pin operations use its repository and identity to validate and bind hosted evidence revisions."
 					},
 					{
 						"name": "hubEvidencePins.query",
 						"type": "Pick<EvidenceArtifactQuery, 'notesRevision' | 'evidenceRevision'>",
 						"required": true,
-						"description": "Requested notes and evidence revisions, each nullable."
+						"description": "The requested hosted notes and evidence revisions, each a commit string or null. A changed pin is accepted only when both the existing and requested revisions are present and the requested revision is reachable from the existing one.",
+						"examples": [
+							{
+								"notesRevision": "5f2a7c91d4e63b8a0c1f2d3e4a5b6c7d8e9f0a1b",
+								"evidenceRevision": "a9c3f7012b4e6d8c0f1a3b5c7d9e0f2a4c6b8d10"
+							},
+							{
+								"notesRevision": null,
+								"evidenceRevision": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEvidencePins",
 						"type": "unknown",
-						"description": "Returns nothing after accepting identical pins or reachable older revisions and replacing the context’s notes/evidence identity with the requested pins."
+						"description": "Resolves to undefined after checking both requested revisions. Changed pins must be present and reachable from their current pins; on success, base.identity is replaced with the requested revisions."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "evidence-stale",
+						"type": "thrown",
+						"description": "Thrown when a current-mode query names a commit other than the selected branch tip, or when a changed notes/evidence pin is absent or cannot be reached from its current pin."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubEvidenceScope",
@@ -184,30 +276,51 @@
 						"name": "hubEvidenceScope.base",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "A source context carrying the adapter, repository, resolved commit, tree entries, cache, and cache identity. Scope reads use its repository and pinned identity to justify the requested evidence view."
 					},
 					{
 						"name": "hubEvidenceScope.query",
 						"type": "EntityEvidenceQuery",
 						"required": true,
-						"description": "Entity, branch, commit and viewing mode."
+						"description": "Identifies the optional project, entity, branch, commit, and view mode. The commit must be reachable from tip, and current mode additionally requires it to equal tip.",
+						"examples": [
+							{
+								"projectId": "project-42",
+								"entityId": "reports.component.evidence-grid",
+								"commit": "a9c3f7012b4e6d8c0f1a3b5c7d9e0f2a4c6b8d10",
+								"branch": "main",
+								"mode": "commit"
+							}
+						]
 					},
 					{
 						"name": "hubEvidenceScope.tip",
 						"type": "string",
 						"required": true,
-						"description": "Known branch tip commit."
+						"description": "The selected branch tip used as the reachability boundary and for current-mode validation.",
+						"examples": ["5f2a7c91d4e63b8a0c1f2d3e4a5b6c7d8e9f0a1b"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEvidenceScope",
 						"type": "unknown",
-						"description": "Explorer scope, head and optional first-parent revision detail, plus pinned history service. Historical commits must be reachable from the branch tip."
+						"description": "Resolves to { scope, revisions, history } for a registered entity and a commit reachable from tip. revisions.parent is the exact first-parent detail or null, and history reads records under the pinned notes and evidence revisions."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "evidence-unreadable",
+						"type": "thrown",
+						"description": "Thrown when the selected branch has no tip, a requested commit cannot be proven reachable from the tip, commit facts are missing or disagree with the requested commit, or the entity has no registered kind."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The scope helper calls recordedScope, which throws a plain Error if a current-mode commit differs from tip or if its kind has no mapped explorer category."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
