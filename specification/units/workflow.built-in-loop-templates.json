@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/workflows/development-tooling/loop-templates/builtInLoopTemplates.ts",
-			"src/workflows/loop-templates/builtInLoopTemplates.ts"
-		],
-		"symbols": ["builtInTemplates", "builtInTemplates"]
+		"source": ["src/workflows/development-tooling/loop-templates/builtInLoopTemplates.ts"],
+		"symbols": ["builtInTemplates"]
 	},
 	"contract": {
 		"origin": "derived",
