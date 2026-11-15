@@ -1,5 +1,5 @@
 // @harness-uid u_ofkseawr2w
-import type { AttachedRecord } from '../../../../../src/services/history-status-service/attached-record-service/AttachedRecordService';
+import type { AttachedRecord } from '../../../../../src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService';
 import type { EvidenceFile } from '../../../../../src/core/historyTypes';
 
 export interface HubAttachedRecord extends Omit<AttachedRecord, 'files'> {

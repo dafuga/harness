@@ -14,7 +14,7 @@ import type { MediaPlacer } from '../../../utils/mediaPlace';
 import { recordView, type RecordView, type ResolvedMedia } from '../../../utils/recordView';
 import { revisionReasons, type RevisionReasons } from '../../../utils/revisionReasons';
 import { revisionRegistry, type RevisionRegistry } from '../../../utils/revisionRegistry';
-import type { AttachedRecord } from '../../history-status-service/attached-record-service/AttachedRecordService';
+import type { AttachedRecord } from '../../verification-evidence/history-status-service/attached-record-service/AttachedRecordService';
 import type { HistoryStatusService } from '../../history-status-service/HistoryStatusService';
 import * as sourceImpact from './source-impact-service/SourceImpactService';
 import { RegressionProofRepository } from '../../../repositories/RegressionProofRepository';
