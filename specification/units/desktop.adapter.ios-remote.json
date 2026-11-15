@@ -48,31 +48,66 @@
 		"outputs": [
 			{
 				"name": "bridge",
-				"type": "DesktopBridge over HarnessRemote Capacitor plugin"
+				"type": "DesktopBridge over HarnessRemote Capacitor plugin",
+				"description": "The page-facing Capacitor bridge registered as HarnessRemote, exposing status, scan, disconnect, and request promises plus status and event notifications. Its channel, credential, keys, and saved copies stay in native code.",
+				"examples": [
+					{
+						"plugin": "HarnessRemote",
+						"methods": ["status", "scan", "disconnect", "request"],
+						"events": ["status", "event"]
+					}
+				]
 			},
 			{
 				"name": "status",
-				"type": "RemotePhoneStatus with explicit offline cached state"
+				"type": "RemotePhoneStatus with explicit offline cached state",
+				"description": "A snapshot of connection state and public host, device, grant, reason, last-online time, and attached methods. It remains offline while the computer is away; eligible cached reads are returned by requests with cachedAt, and a known screen lock is included only while online.",
+				"examples": [
+					{
+						"state": "offline",
+						"origin": "https://relay.harness.example",
+						"host": {
+							"id": "0123456789abcdef0123456789abcdef01234567",
+							"name": "Design workstation"
+						},
+						"device": {
+							"id": "89abcdef0123456789abcdef0123456789abcdef",
+							"name": "Daniel's iPhone"
+						},
+						"grant": {
+							"projects": [],
+							"agents": false
+						},
+						"reason": "The computer did not answer in time.",
+						"lastOnlineAt": "2026-11-15T10:30:00Z",
+						"methods": ["listProjects", "snapshot"]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "permission-denied",
-				"type": "refused and protected cache purged"
+				"type": "refused and protected cache purged",
+				"description": "An unavailable method is rejected with method-denied; computer refusals with project-denied, agents-denied, method-denied, or not-attached purge the saved cache and fail waiting reads as superseded. A revoked refusal ends the pairing."
 			},
 			{
 				"name": "uncertain",
-				"type": "disconnected mutation is never re-sent"
+				"type": "disconnected mutation is never re-sent",
+				"description": "When a link ends before a requested change is confirmed, the page receives an offline failure because the phone cannot know whether the computer ran it. The change is never sent again."
 			},
 			{
 				"name": "scan-failure",
-				"type": "camera or offer refusal by its remoteScanFailures code; nothing is sent"
+				"type": "camera or offer refusal by its remoteScanFailures code; nothing is sent",
+				"description": "Camera denial, camera unavailability, cancellation, or an invalid, unsupported, disallowed-environment, or expired offer rejects scanning with its camera-denied, camera-unavailable, scan-cancelled, offer-invalid, offer-unsupported, offer-environment, or offer-expired code. An invalid device name is rejected as invalid-message before scanning starts."
 			},
 			{
 				"name": "scan-ended",
-				"type": "Disconnect ends an open scan; a late camera answer begins no pairing"
+				"type": "Disconnect ends an open scan; a late camera answer begins no pairing",
+				"description": "Disconnect cancels an open camera scan and rejects it as scan-cancelled. Any later camera result is ignored and cannot begin pairing."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
