@@ -28,34 +28,70 @@
 				"name": "invitationLink.origin",
 				"type": "string",
 				"required": true,
-				"description": "Site origin to prefix; supplied text is not normalized here."
+				"description": "The site origin (scheme, host and optional port) that the invite path is appended to; it sets the scheme, host and port of every generated link. It is concatenated as-is, with no trimming, validation or trailing-slash removal, so a trailing '/' yields '//invite'.",
+				"examples": ["https://hub.example.com", "http://localhost:3000"]
 			},
 			{
 				"name": "invitationLink.invitation",
 				"type": "Invitation",
 				"required": true,
-				"description": "Invitation carrying project and invitation IDs; its code is excluded from the link."
+				"description": "The Invitation whose id and projectId become the two encoded path segments; only those fields are read, so the code and expiresAt never appear in the link. Nothing validates the values: a null or undefined invitation throws a TypeError, and a missing projectId or id becomes the text 'undefined' in the path.",
+				"examples": [
+					{
+						"id": "5b1e7d2a-3c4f-4a9b-8e6d-1f2a3b4c5d6e",
+						"projectId": "0d8f3c2e-7a61-4b5d-9c0e-2e4f6a8b1c3d",
+						"expiresAt": "2026-11-16T14:05:31.218Z",
+						"code": "9c41e0b7a25f38d6c0e1f4a7b92d58e3f16a0c4b7d9e2f85a1c3b6d0e4f7a291"
+					},
+					{
+						"id": "e7a2c94f-1b6d-4f83-a0c5-9d3e7b1f2a64",
+						"projectId": "a3c6e1f9-5d2b-4e70-8b4a-7f1c0d9e2b35",
+						"expiresAt": "2026-11-16T22:47:09.904Z",
+						"code": "4e8a1d6c3f0b92e7a5d4c1f8e6b3a0d9c7f2e5b8a1d4c6f9e0b3a7d2c5f8e1b4"
+					}
+				]
 			},
 			{
 				"name": "browserProjects.api",
 				"type": "BrowserApi",
 				"required": true,
-				"description": "Same-site API client."
+				"description": "The client the methods call through; only its get and send members are used, with root-relative /api/ paths. It is read when a method is called, not when browserProjects is called, so a null or undefined value throws a TypeError at that call."
 			}
 		],
 		"outputs": [
 			{
 				"name": "invitationLink",
 				"type": "string",
-				"description": "Invitation URL with encoded project and invitation IDs."
+				"description": "The invitation URL: the origin, then /invite/, the percent-encoded projectId, a slash and the percent-encoded id. Encoding leaves UUIDs unchanged, and the invitation code is never included.",
+				"examples": [
+					"https://hub.example.com/invite/0d8f3c2e-7a61-4b5d-9c0e-2e4f6a8b1c3d/5b1e7d2a-3c4f-4a9b-8e6d-1f2a3b4c5d6e",
+					"http://localhost:3000/invite/a3c6e1f9-5d2b-4e70-8b4a-7f1c0d9e2b35/e7a2c94f-1b6d-4f83-a0c5-9d3e7b1f2a64"
+				]
 			},
 			{
 				"name": "browserProjects",
 				"type": "unknown",
-				"description": "Methods to list/get/create projects, list members, create/accept invitations and read GitHub status/repositories. Server-side checks determine permissions."
+				"description": "An object of eight methods (list, get, create, members, invite, accept, github, repositories) that each return the promise from api.get or api.send for a /api/projects or /api/github route. Permissions are decided by the server, which binds every request to the signed-in person; this object performs no checks of its own."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "URIError",
+				"type": "thrown",
+				"description": "Thrown synchronously by encodeURIComponent when a project or invitation id contains an unpaired UTF-16 surrogate, in invitationLink or in the browserProjects get, members, invite and accept methods; no request is sent."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when invitation is null or undefined in invitationLink, because projectId and id are read from it, or when api is null or undefined in a browserProjects method, because the method then reads api.get or api.send."
+			},
+			{
+				"name": "ApiFailure",
+				"type": "thrown",
+				"description": "A rejection from api.get or api.send that this unit does not catch, so it reaches the caller unchanged; BrowserApi declares ApiFailure with a numeric status and a string code."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "invitationLink",
@@ -64,24 +100,54 @@
 						"name": "invitationLink.origin",
 						"type": "string",
 						"required": true,
-						"description": "Site origin to prefix; supplied text is not normalized here."
+						"description": "The site origin (scheme, host and optional port) that the invite path is appended to; it sets the scheme, host and port of every generated link. It is concatenated as-is, with no trimming, validation or trailing-slash removal, so a trailing '/' yields '//invite'.",
+						"examples": ["https://hub.example.com", "http://localhost:3000"]
 					},
 					{
 						"name": "invitationLink.invitation",
 						"type": "Invitation",
 						"required": true,
-						"description": "Invitation carrying project and invitation IDs; its code is excluded from the link."
+						"description": "The Invitation whose id and projectId become the two encoded path segments; only those fields are read, so the code and expiresAt never appear in the link. Nothing validates the values: a null or undefined invitation throws a TypeError, and a missing projectId or id becomes the text 'undefined' in the path.",
+						"examples": [
+							{
+								"id": "5b1e7d2a-3c4f-4a9b-8e6d-1f2a3b4c5d6e",
+								"projectId": "0d8f3c2e-7a61-4b5d-9c0e-2e4f6a8b1c3d",
+								"expiresAt": "2026-11-16T14:05:31.218Z",
+								"code": "9c41e0b7a25f38d6c0e1f4a7b92d58e3f16a0c4b7d9e2f85a1c3b6d0e4f7a291"
+							},
+							{
+								"id": "e7a2c94f-1b6d-4f83-a0c5-9d3e7b1f2a64",
+								"projectId": "a3c6e1f9-5d2b-4e70-8b4a-7f1c0d9e2b35",
+								"expiresAt": "2026-11-16T22:47:09.904Z",
+								"code": "4e8a1d6c3f0b92e7a5d4c1f8e6b3a0d9c7f2e5b8a1d4c6f9e0b3a7d2c5f8e1b4"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "invitationLink",
 						"type": "string",
-						"description": "Invitation URL with encoded project and invitation IDs."
+						"description": "The invitation URL: the origin, then /invite/, the percent-encoded projectId, a slash and the percent-encoded id. Encoding leaves UUIDs unchanged, and the invitation code is never included.",
+						"examples": [
+							"https://hub.example.com/invite/0d8f3c2e-7a61-4b5d-9c0e-2e4f6a8b1c3d/5b1e7d2a-3c4f-4a9b-8e6d-1f2a3b4c5d6e",
+							"http://localhost:3000/invite/a3c6e1f9-5d2b-4e70-8b4a-7f1c0d9e2b35/e7a2c94f-1b6d-4f83-a0c5-9d3e7b1f2a64"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "URIError",
+						"type": "thrown",
+						"description": "Thrown synchronously by encodeURIComponent when the invitation's projectId or id contains an unpaired UTF-16 surrogate, so no link is returned."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when invitation is null or undefined, because projectId and id are read from it before the link is built."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "browserProjects",
@@ -90,18 +156,18 @@
 						"name": "browserProjects.api",
 						"type": "BrowserApi",
 						"required": true,
-						"description": "Same-site API client."
+						"description": "The client the methods call through; only its get and send members are used, with root-relative /api/ paths. It is read when a method is called, not when browserProjects is called, so a null or undefined value throws a TypeError at that call."
 					}
 				],
 				"outputs": [
 					{
 						"name": "browserProjects",
 						"type": "unknown",
-						"description": "Methods to list/get/create projects, list members, create/accept invitations and read GitHub status/repositories. Server-side checks determine permissions."
+						"description": "An object of eight methods (list, get, create, members, invite, accept, github, repositories) that each return the promise from api.get or api.send for a /api/projects or /api/github route. Permissions are decided by the server, which binds every request to the signed-in person; this object performs no checks of its own."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
