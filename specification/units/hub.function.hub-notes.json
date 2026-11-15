@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubNotes.ts",
-			"packages/hub/src/services/hub-evidence-service/hubNotes.ts",
-			"packages/hub/src/utils/hubNotes.ts"
+			"packages/hub/src/services/hub-evidence-service/hubNotes.ts"
 		],
-		"symbols": ["hubNotes", "hubNotes", "hubNotes"]
+		"symbols": ["hubNotes", "hubNotes"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -98,11 +97,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/utils/hubNotes.ts",
+		"entry": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubNotes.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/utils/hubNotes.ts"
+				"entry": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubNotes.ts"
 			}
 		]
 	},

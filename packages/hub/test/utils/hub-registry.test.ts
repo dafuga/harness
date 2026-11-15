@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { BudgetService } from '../../../../src/services/budget-service/BudgetService';
 import { revisionRegistry } from '../../../../src/utils/revision-registry/revisionRegistry';
 import { hubEvidenceRegistry } from '../../src/utils/hub-evidence-revision/hubEvidenceRegistry';
-import { hubPinnedSource } from '../../src/utils/hubPinnedSource';
+import { hubPinnedSource } from '../../src/utils/verification-evidence/hubPinnedSource';
 import { evidenceFixture, sourceAt, refusal } from '../support/evidenceFixture';
 import { blobId } from '../support/evidenceGit';
 import { clock, json, page, scenarios, sourceFiles, units } from '../support/evidenceRecords';

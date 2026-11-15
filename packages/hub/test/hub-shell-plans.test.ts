@@ -1,5 +1,5 @@
 import { measureWorkload } from '../../../test/support/measureWorkload';
-import { hubPlans } from '../src/utils/hubPlans';
+import { hubPlans } from '../src/utils/networking-security/hubPlans';
 import { hubSource } from '../src/utils/hubSource';
 import { hubContractHash } from '../src/utils/hubJson';
 import { actor, project, commit, projectionFixture } from './support/projectionFixture';

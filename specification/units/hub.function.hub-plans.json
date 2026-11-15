@@ -10,18 +10,10 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/utils/hub-catalog/hubPlanRecord.ts",
-			"packages/hub/src/utils/hubPlans.ts",
 			"packages/hub/src/utils/networking-security/hub-catalog/hubPlanRecord.ts",
 			"packages/hub/src/utils/networking-security/hubPlans.ts"
 		],
-		"symbols": [
-			"hubPlanRecord",
-			"hubPlanRecord",
-			"hubPlans",
-			"hubPlanRecord",
-			"hubPlans",
-			"hubPlanRecord"
-		]
+		"symbols": ["hubPlanRecord", "hubPlanRecord", "hubPlans", "hubPlanRecord"]
 	},
 	"contract": {
 		"origin": "declared",

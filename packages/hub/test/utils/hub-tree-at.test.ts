@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { hubPinnedSource } from '../../src/utils/hubPinnedSource';
+import { hubPinnedSource } from '../../src/utils/verification-evidence/hubPinnedSource';
 import { actor, evidenceFixture, project, sourceAt } from '../support/evidenceFixture';
 
 test('another commit of the repository is read as its own tree, while retaining requesting cache scope', async () => {
