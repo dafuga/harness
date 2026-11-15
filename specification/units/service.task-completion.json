@@ -32,62 +32,288 @@
 				"name": "TaskCompletionService.constructor.root",
 				"type": "string",
 				"required": true,
-				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+				"description": "Project root directory that check() and require() use for Git reads, loop metadata, verification records and the audit record location. The constructor only stores it and does not check that it is a Git repository.",
+				"examples": ["/workspace/luna-pyramid", "/srv/luna-pyramid"]
 			},
 			{
 				"name": "TaskCompletionService.check.input",
 				"type": "TaskAuditInput",
 				"required": true,
-				"description": "Declared task or observation metadata appropriate to the named operation."
+				"description": "Task metadata to audit: kind must be coding or planning, goal must be non-blank, and plan names a committed project-relative proposal that is audited for planning tasks or whenever plan is set; units are checked only for coding tasks and must exist at the audited commit. Uncommitted or untracked changes fail the source check, except the loop.json and trace.ndjson of the named loop when loop is set; with loop set, goal must equal the committed and current loop goal and the kind and plan must match any completion committed in loop.json.",
+				"examples": [
+					{
+						"kind": "coding",
+						"goal": "Add a latency and memory profile to the evidence grid",
+						"loop": "evidence-grid",
+						"units": ["service.task-completion-service-source-audit"]
+					},
+					{
+						"kind": "planning",
+						"goal": "Plan latency and memory evidence for the evidence grid",
+						"plan": "specification/loops/evidence-grid/plan.md"
+					}
+				]
 			},
 			{
 				"name": "TaskCompletionService.requirePlan.proposal",
 				"type": "string",
 				"required": true,
-				"description": "Substantive Markdown proposal to inspect structurally without implementing its planned behavior."
+				"description": "Markdown proposal that planAudit parses but never executes: its sections must have titles matching overview, objective, scope or goal; acceptance or success criteria; dependencies; verification, testing or validation; and performance, each with at least 12 characters of body. The acceptance section needs a bullet item, the performance section must mention a workload (or representative or scenario), latency (or timing or response time) and memory (or RSS), and no line may start with TODO, TBD, FIXME or 'Describe the user-facing outcome' in any letter case, optionally after a list marker.",
+				"examples": [
+					"# Evidence grid latency and memory plan\n\n## Overview\nAdd a latency and memory evidence grid that shows each representative workload for the evidence grid view.\n\n## Acceptance Criteria\n- The grid lists every representative workload with its measured latency.\n- The grid reports resident memory (RSS) beside each latency value.\n\n## Dependencies\nThe grid reads the committed verification record through the existing evidence repository.\n\n## Verification\nRun the automated tests for the grid, then run harness task check against the committed source.\n\n## Performance\nMeasure a representative workload with a declared scenario, recording latency and memory (RSS) for each grid cell. No runtime results are recorded until the code runs."
+				]
 			},
 			{
 				"name": "TaskCompletionService.requirePlan.goal",
 				"type": "string",
 				"required": true,
-				"description": "User-facing task goal used for the committed contract and explicit word-overlap heuristic."
+				"description": "Task goal used by the plan.request check: it must be non-blank, and if it has words of four or more characters other than please, should, could, would, with, that, this, task and plan, at least one of them must appear in the proposal. The match is a case-insensitive substring test.",
+				"examples": [
+					"Plan latency and memory evidence for the evidence grid",
+					"Add a latency and memory profile to the evidence grid"
+				]
 			},
 			{
 				"name": "TaskCompletionService.require.input",
 				"type": "TaskAuditInput",
 				"required": true,
-				"description": "Declared task or observation metadata appropriate to the named operation."
+				"description": "Task metadata to audit: kind must be coding or planning, goal must be non-blank, and plan names a committed project-relative proposal that is audited for planning tasks or whenever plan is set; units are checked only for coding tasks and must exist at the audited commit. Uncommitted or untracked changes fail the source check, except the loop.json and trace.ndjson of the named loop when loop is set; with loop set, goal must equal the committed and current loop goal and the kind and plan must match any completion committed in loop.json.",
+				"examples": [
+					{
+						"kind": "coding",
+						"goal": "Add a latency and memory profile to the evidence grid",
+						"loop": "evidence-grid",
+						"units": ["service.task-completion-service-source-audit"]
+					},
+					{
+						"kind": "planning",
+						"goal": "Plan latency and memory evidence for the evidence grid",
+						"plan": "specification/loops/evidence-grid/plan.md"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "TaskCompletionService.check",
 				"type": "Promise<TaskAudit>",
-				"description": "Persisted audit with explicit failed checks when source, verification, profiling or proposal evidence is unavailable."
+				"description": "The audit record, also written as <id>.json under the Git directory's harness/task-audits (or a temporary directory when Git cannot resolve that path), with passed true only when every check passed. Source, plan, code and verification problems become failed checks instead of being thrown, and commit is null when the first source audit throws.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "6b1f0c8e4d2a9f7b3e5c1a8d6f0b2e4c9a7d5f3b1e8c6a4d2f0b9e7c5a3d1f82",
+						"commit": "c4e8a1f7b2d9036e5a8c1f4b7d2e9a6c0f3b8d51",
+						"kind": "planning",
+						"goal": "Plan latency and memory evidence for the evidence grid",
+						"task": {
+							"plan": "specification/loops/evidence-grid/plan.md",
+							"loop": null,
+							"units": []
+						},
+						"passed": true,
+						"checks": [
+							{
+								"id": "source",
+								"passed": true,
+								"detail": "Committed source at c4e8a1f7b2d9036e5a8c1f4b7d2e9a6c0f3b8d51."
+							},
+							{
+								"id": "plan.overview",
+								"passed": true,
+								"detail": "Provide a substantive overview section, including an explicit explanation when none applies."
+							},
+							{
+								"id": "plan.acceptance",
+								"passed": true,
+								"detail": "Provide a substantive acceptance section, including an explicit explanation when none applies."
+							},
+							{
+								"id": "plan.dependencies",
+								"passed": true,
+								"detail": "Provide a substantive dependencies section, including an explicit explanation when none applies."
+							},
+							{
+								"id": "plan.verification",
+								"passed": true,
+								"detail": "Provide a substantive verification section, including an explicit explanation when none applies."
+							},
+							{
+								"id": "plan.performance",
+								"passed": true,
+								"detail": "Provide a substantive performance section, including an explicit explanation when none applies."
+							},
+							{
+								"id": "plan.acceptance-items",
+								"passed": true,
+								"detail": "List individually assessable acceptance criteria."
+							},
+							{
+								"id": "plan.placeholders",
+								"passed": true,
+								"detail": "Replace unfinished template content before completing the plan."
+							},
+							{
+								"id": "plan.performance-method",
+								"passed": true,
+								"detail": "Name representative workloads, latency and memory measurements; do not invent runtime results for planned code."
+							},
+							{
+								"id": "plan.request",
+								"passed": true,
+								"detail": "The proposal must address the stated request; this word-overlap heuristic still needs human review."
+							}
+						],
+						"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+					},
+					{
+						"schemaVersion": 1,
+						"id": "b7e2d4a90c5f8e136a2d9b74e0f1c3a85d7b9e26a4c1f08d3e9b5a72d6c04f1e",
+						"commit": "9e3b71d4a06f25c8e1b97d03f4a6c2e8d15b7a90",
+						"kind": "coding",
+						"goal": "Add a latency and memory profile to the evidence grid",
+						"task": {
+							"plan": null,
+							"loop": "evidence-grid",
+							"units": ["service.task-completion-service-source-audit"]
+						},
+						"passed": false,
+						"checks": [
+							{
+								"id": "source",
+								"passed": true,
+								"detail": "Committed source at 9e3b71d4a06f25c8e1b97d03f4a6c2e8d15b7a90."
+							},
+							{
+								"id": "evidence",
+								"passed": false,
+								"detail": "Run harness verify run; no verification record proves the task commit."
+							}
+						],
+						"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+					},
+					{
+						"schemaVersion": 1,
+						"id": "0a6d3f9e1b7c4a82d5e0f3b6a9c1d7e4f2b8a5c3d9e6f1a4b7c0d2e5f8a3b961",
+						"commit": null,
+						"kind": "planning",
+						"goal": "Plan latency and memory evidence for the evidence grid",
+						"task": {
+							"plan": "specification/loops/evidence-grid/plan.md",
+							"loop": null,
+							"units": []
+						},
+						"passed": false,
+						"checks": [
+							{
+								"id": "evidence",
+								"passed": false,
+								"detail": "Commit the task source and preserve unrelated edits before its completion audit."
+							}
+						],
+						"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+					}
+				]
 			},
 			{
 				"name": "TaskCompletionService.requirePlan",
 				"type": "void",
-				"description": "Accepts structurally complete, relevant proposal content; otherwise throws a completion-audit error."
+				"description": "Returns nothing and reads no Git data or records: it completes only when every planAudit check passes, and otherwise throws an Error listing the failed check details."
 			},
 			{
 				"name": "TaskCompletionService.require",
 				"type": "Promise<TaskAudit>",
-				"description": "Passed persisted audit; any failed check rejects completion with its recorded details."
+				"description": "The audit that check() persisted, resolved only when its passed field is true; a failed audit rejects with the failed check details instead.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "6b1f0c8e4d2a9f7b3e5c1a8d6f0b2e4c9a7d5f3b1e8c6a4d2f0b9e7c5a3d1f82",
+						"commit": "c4e8a1f7b2d9036e5a8c1f4b7d2e9a6c0f3b8d51",
+						"kind": "planning",
+						"goal": "Plan latency and memory evidence for the evidence grid",
+						"task": {
+							"plan": "specification/loops/evidence-grid/plan.md",
+							"loop": null,
+							"units": []
+						},
+						"passed": true,
+						"checks": [
+							{
+								"id": "source",
+								"passed": true,
+								"detail": "Committed source at c4e8a1f7b2d9036e5a8c1f4b7d2e9a6c0f3b8d51."
+							},
+							{
+								"id": "plan.overview",
+								"passed": true,
+								"detail": "Provide a substantive overview section, including an explicit explanation when none applies."
+							},
+							{
+								"id": "plan.acceptance",
+								"passed": true,
+								"detail": "Provide a substantive acceptance section, including an explicit explanation when none applies."
+							},
+							{
+								"id": "plan.dependencies",
+								"passed": true,
+								"detail": "Provide a substantive dependencies section, including an explicit explanation when none applies."
+							},
+							{
+								"id": "plan.verification",
+								"passed": true,
+								"detail": "Provide a substantive verification section, including an explicit explanation when none applies."
+							},
+							{
+								"id": "plan.performance",
+								"passed": true,
+								"detail": "Provide a substantive performance section, including an explicit explanation when none applies."
+							},
+							{
+								"id": "plan.acceptance-items",
+								"passed": true,
+								"detail": "List individually assessable acceptance criteria."
+							},
+							{
+								"id": "plan.placeholders",
+								"passed": true,
+								"detail": "Replace unfinished template content before completing the plan."
+							},
+							{
+								"id": "plan.performance-method",
+								"passed": true,
+								"detail": "Name representative workloads, latency and memory measurements; do not invent runtime results for planned code."
+							},
+							{
+								"id": "plan.request",
+								"passed": true,
+								"detail": "The proposal must address the stated request; this word-overlap heuristic still needs human review."
+							}
+						],
+						"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+					}
+				]
 			},
 			{
 				"name": "taskCompletionInstructions",
 				"type": "string[]",
-				"description": "Coding and planning guidance that distinguishes evidence gates from semantic acceptance and hypothetical performance plans."
+				"description": "The four fixed guidance strings, returned in the same order on every call: coding profiling, committing with harness verify and harness task check, planning-only sections, and the limits of the heuristic audit.",
+				"examples": [
+					[
+						"Coding tasks require actual representative latency and memory profiling through Harness, independently of budget declarations. Use PerformanceProfileService in standardized tests or harness budget bench with a declared workload; label whole-process memory honestly.",
+						"Commit the task source, run harness verify run --require-performance, then harness task check --loop <loop>. Missing, failed or stale evidence blocks completion; an agent reply or a free-text step claim is not verification.",
+						"Planning tasks remain planning-only: include substantive Overview, Acceptance Criteria, Dependencies, Verification and Performance sections, with representative workloads, latency and memory measurement plans. Run the Harness task audit; do not fabricate runtime results or implement the plan.",
+						"The final audit checks structural and evidence heuristics, not arbitrary semantic correctness. Expose remaining uncertainty and obtain required acceptance review. Do not change source after auditing it or claim completion while the audit fails."
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Incomplete proposals, missing verification, stale source or insufficient runtime evidence reject a required completion audit."
+				"description": "Thrown by requirePlan() and require() as 'Task completion audit failed: ' followed by the failed check details (space-separated for requirePlan(), one per line for require()); check() and require() also reject when the audit record cannot be written."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "TaskCompletionService.check",
@@ -96,23 +322,152 @@
 						"name": "TaskCompletionService.check.input",
 						"type": "TaskAuditInput",
 						"required": true,
-						"description": "Declared task or observation metadata appropriate to the named operation."
+						"description": "Task metadata to audit: kind must be coding or planning, goal must be non-blank, and plan names a committed project-relative proposal that is audited for planning tasks or whenever plan is set; units are checked only for coding tasks and must exist at the audited commit. Uncommitted or untracked changes fail the source check, except the loop.json and trace.ndjson of the named loop when loop is set; with loop set, goal must equal the committed and current loop goal and the kind and plan must match any completion committed in loop.json.",
+						"examples": [
+							{
+								"kind": "coding",
+								"goal": "Add a latency and memory profile to the evidence grid",
+								"loop": "evidence-grid",
+								"units": ["service.task-completion-service-source-audit"]
+							},
+							{
+								"kind": "planning",
+								"goal": "Plan latency and memory evidence for the evidence grid",
+								"plan": "specification/loops/evidence-grid/plan.md"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "TaskCompletionService.check",
 						"type": "Promise<TaskAudit>",
-						"description": "Persisted audit with explicit failed checks when source, verification, profiling or proposal evidence is unavailable."
+						"description": "The audit record, also written as <id>.json under the Git directory's harness/task-audits (or a temporary directory when Git cannot resolve that path), with passed true only when every check passed. Source, plan, code and verification problems become failed checks instead of being thrown, and commit is null when the first source audit throws.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "6b1f0c8e4d2a9f7b3e5c1a8d6f0b2e4c9a7d5f3b1e8c6a4d2f0b9e7c5a3d1f82",
+								"commit": "c4e8a1f7b2d9036e5a8c1f4b7d2e9a6c0f3b8d51",
+								"kind": "planning",
+								"goal": "Plan latency and memory evidence for the evidence grid",
+								"task": {
+									"plan": "specification/loops/evidence-grid/plan.md",
+									"loop": null,
+									"units": []
+								},
+								"passed": true,
+								"checks": [
+									{
+										"id": "source",
+										"passed": true,
+										"detail": "Committed source at c4e8a1f7b2d9036e5a8c1f4b7d2e9a6c0f3b8d51."
+									},
+									{
+										"id": "plan.overview",
+										"passed": true,
+										"detail": "Provide a substantive overview section, including an explicit explanation when none applies."
+									},
+									{
+										"id": "plan.acceptance",
+										"passed": true,
+										"detail": "Provide a substantive acceptance section, including an explicit explanation when none applies."
+									},
+									{
+										"id": "plan.dependencies",
+										"passed": true,
+										"detail": "Provide a substantive dependencies section, including an explicit explanation when none applies."
+									},
+									{
+										"id": "plan.verification",
+										"passed": true,
+										"detail": "Provide a substantive verification section, including an explicit explanation when none applies."
+									},
+									{
+										"id": "plan.performance",
+										"passed": true,
+										"detail": "Provide a substantive performance section, including an explicit explanation when none applies."
+									},
+									{
+										"id": "plan.acceptance-items",
+										"passed": true,
+										"detail": "List individually assessable acceptance criteria."
+									},
+									{
+										"id": "plan.placeholders",
+										"passed": true,
+										"detail": "Replace unfinished template content before completing the plan."
+									},
+									{
+										"id": "plan.performance-method",
+										"passed": true,
+										"detail": "Name representative workloads, latency and memory measurements; do not invent runtime results for planned code."
+									},
+									{
+										"id": "plan.request",
+										"passed": true,
+										"detail": "The proposal must address the stated request; this word-overlap heuristic still needs human review."
+									}
+								],
+								"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+							},
+							{
+								"schemaVersion": 1,
+								"id": "b7e2d4a90c5f8e136a2d9b74e0f1c3a85d7b9e26a4c1f08d3e9b5a72d6c04f1e",
+								"commit": "9e3b71d4a06f25c8e1b97d03f4a6c2e8d15b7a90",
+								"kind": "coding",
+								"goal": "Add a latency and memory profile to the evidence grid",
+								"task": {
+									"plan": null,
+									"loop": "evidence-grid",
+									"units": ["service.task-completion-service-source-audit"]
+								},
+								"passed": false,
+								"checks": [
+									{
+										"id": "source",
+										"passed": true,
+										"detail": "Committed source at 9e3b71d4a06f25c8e1b97d03f4a6c2e8d15b7a90."
+									},
+									{
+										"id": "evidence",
+										"passed": false,
+										"detail": "Run harness verify run; no verification record proves the task commit."
+									}
+								],
+								"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+							},
+							{
+								"schemaVersion": 1,
+								"id": "0a6d3f9e1b7c4a82d5e0f3b6a9c1d7e4f2b8a5c3d9e6f1a4b7c0d2e5f8a3b961",
+								"commit": null,
+								"kind": "planning",
+								"goal": "Plan latency and memory evidence for the evidence grid",
+								"task": {
+									"plan": "specification/loops/evidence-grid/plan.md",
+									"loop": null,
+									"units": []
+								},
+								"passed": false,
+								"checks": [
+									{
+										"id": "evidence",
+										"passed": false,
+										"detail": "Commit the task source and preserve unrelated edits before its completion audit."
+									}
+								],
+								"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects only when the audit record cannot be created or written; source, plan, code and verification problems are caught and recorded as failed checks."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "TaskCompletionService.requirePlan",
@@ -121,29 +476,37 @@
 						"name": "TaskCompletionService.requirePlan.proposal",
 						"type": "string",
 						"required": true,
-						"description": "Substantive Markdown proposal to inspect structurally without implementing its planned behavior."
+						"description": "Markdown proposal that planAudit parses but never executes: its sections must have titles matching overview, objective, scope or goal; acceptance or success criteria; dependencies; verification, testing or validation; and performance, each with at least 12 characters of body. The acceptance section needs a bullet item, the performance section must mention a workload (or representative or scenario), latency (or timing or response time) and memory (or RSS), and no line may start with TODO, TBD, FIXME or 'Describe the user-facing outcome' in any letter case, optionally after a list marker.",
+						"examples": [
+							"# Evidence grid latency and memory plan\n\n## Overview\nAdd a latency and memory evidence grid that shows each representative workload for the evidence grid view.\n\n## Acceptance Criteria\n- The grid lists every representative workload with its measured latency.\n- The grid reports resident memory (RSS) beside each latency value.\n\n## Dependencies\nThe grid reads the committed verification record through the existing evidence repository.\n\n## Verification\nRun the automated tests for the grid, then run harness task check against the committed source.\n\n## Performance\nMeasure a representative workload with a declared scenario, recording latency and memory (RSS) for each grid cell. No runtime results are recorded until the code runs."
+						]
 					},
 					{
 						"name": "TaskCompletionService.requirePlan.goal",
 						"type": "string",
 						"required": true,
-						"description": "User-facing task goal used for the committed contract and explicit word-overlap heuristic."
+						"description": "Task goal used by the plan.request check: it must be non-blank, and if it has words of four or more characters other than please, should, could, would, with, that, this, task and plan, at least one of them must appear in the proposal. The match is a case-insensitive substring test.",
+						"examples": [
+							"Plan latency and memory evidence for the evidence grid",
+							"Add a latency and memory profile to the evidence grid"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "TaskCompletionService.requirePlan",
 						"type": "void",
-						"description": "Accepts structurally complete, relevant proposal content; otherwise throws a completion-audit error."
+						"description": "Returns nothing and reads no Git data or records: it completes only when every planAudit check passes, and otherwise throws an Error listing the failed check details."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as 'Task completion audit failed: ' followed by the details of every failed planAudit check, separated by spaces."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "TaskCompletionService.require",
@@ -152,23 +515,105 @@
 						"name": "TaskCompletionService.require.input",
 						"type": "TaskAuditInput",
 						"required": true,
-						"description": "Declared task or observation metadata appropriate to the named operation."
+						"description": "Task metadata to audit: kind must be coding or planning, goal must be non-blank, and plan names a committed project-relative proposal that is audited for planning tasks or whenever plan is set; units are checked only for coding tasks and must exist at the audited commit. Uncommitted or untracked changes fail the source check, except the loop.json and trace.ndjson of the named loop when loop is set; with loop set, goal must equal the committed and current loop goal and the kind and plan must match any completion committed in loop.json.",
+						"examples": [
+							{
+								"kind": "coding",
+								"goal": "Add a latency and memory profile to the evidence grid",
+								"loop": "evidence-grid",
+								"units": ["service.task-completion-service-source-audit"]
+							},
+							{
+								"kind": "planning",
+								"goal": "Plan latency and memory evidence for the evidence grid",
+								"plan": "specification/loops/evidence-grid/plan.md"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "TaskCompletionService.require",
 						"type": "Promise<TaskAudit>",
-						"description": "Passed persisted audit; any failed check rejects completion with its recorded details."
+						"description": "The audit that check() persisted, resolved only when its passed field is true; a failed audit rejects with the failed check details instead.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "6b1f0c8e4d2a9f7b3e5c1a8d6f0b2e4c9a7d5f3b1e8c6a4d2f0b9e7c5a3d1f82",
+								"commit": "c4e8a1f7b2d9036e5a8c1f4b7d2e9a6c0f3b8d51",
+								"kind": "planning",
+								"goal": "Plan latency and memory evidence for the evidence grid",
+								"task": {
+									"plan": "specification/loops/evidence-grid/plan.md",
+									"loop": null,
+									"units": []
+								},
+								"passed": true,
+								"checks": [
+									{
+										"id": "source",
+										"passed": true,
+										"detail": "Committed source at c4e8a1f7b2d9036e5a8c1f4b7d2e9a6c0f3b8d51."
+									},
+									{
+										"id": "plan.overview",
+										"passed": true,
+										"detail": "Provide a substantive overview section, including an explicit explanation when none applies."
+									},
+									{
+										"id": "plan.acceptance",
+										"passed": true,
+										"detail": "Provide a substantive acceptance section, including an explicit explanation when none applies."
+									},
+									{
+										"id": "plan.dependencies",
+										"passed": true,
+										"detail": "Provide a substantive dependencies section, including an explicit explanation when none applies."
+									},
+									{
+										"id": "plan.verification",
+										"passed": true,
+										"detail": "Provide a substantive verification section, including an explicit explanation when none applies."
+									},
+									{
+										"id": "plan.performance",
+										"passed": true,
+										"detail": "Provide a substantive performance section, including an explicit explanation when none applies."
+									},
+									{
+										"id": "plan.acceptance-items",
+										"passed": true,
+										"detail": "List individually assessable acceptance criteria."
+									},
+									{
+										"id": "plan.placeholders",
+										"passed": true,
+										"detail": "Replace unfinished template content before completing the plan."
+									},
+									{
+										"id": "plan.performance-method",
+										"passed": true,
+										"detail": "Name representative workloads, latency and memory measurements; do not invent runtime results for planned code."
+									},
+									{
+										"id": "plan.request",
+										"passed": true,
+										"detail": "The proposal must address the stated request; this word-overlap heuristic still needs human review."
+									}
+								],
+								"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as 'Task completion audit failed: ' followed by the details of every failed check, one per line, when check() returns a failed audit; a rejection from check() passes through unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "taskCompletionInstructions",
@@ -177,11 +622,19 @@
 					{
 						"name": "taskCompletionInstructions",
 						"type": "string[]",
-						"description": "Coding and planning guidance that distinguishes evidence gates from semantic acceptance and hypothetical performance plans."
+						"description": "The four fixed guidance strings, returned in the same order on every call: coding profiling, committing with harness verify and harness task check, planning-only sections, and the limits of the heuristic audit.",
+						"examples": [
+							[
+								"Coding tasks require actual representative latency and memory profiling through Harness, independently of budget declarations. Use PerformanceProfileService in standardized tests or harness budget bench with a declared workload; label whole-process memory honestly.",
+								"Commit the task source, run harness verify run --require-performance, then harness task check --loop <loop>. Missing, failed or stale evidence blocks completion; an agent reply or a free-text step claim is not verification.",
+								"Planning tasks remain planning-only: include substantive Overview, Acceptance Criteria, Dependencies, Verification and Performance sections, with representative workloads, latency and memory measurement plans. Run the Harness task audit; do not fabricate runtime results or implement the plan.",
+								"The final audit checks structural and evidence heuristics, not arbitrary semantic correctness. Expose remaining uncertainty and obtain required acceptance review. Do not change source after auditing it or claim completion while the audit fails."
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -192,17 +645,19 @@
 						"name": "TaskCompletionService.constructor.root",
 						"type": "string",
 						"required": true,
-						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+						"description": "Project root directory that check() and require() use for Git reads, loop metadata, verification records and the audit record location. The constructor only stores it and does not check that it is a Git repository.",
+						"examples": ["/workspace/luna-pyramid", "/srv/luna-pyramid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "TaskCompletionService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new TaskCompletionService instance, which only stores the root; constructing it reads no files and runs no Git commands."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
