@@ -19,7 +19,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ClaudeCliAdapter.constructor.command",
@@ -28,31 +28,175 @@
 				"default": {
 					"command": "claude",
 					"args": []
-				}
+				},
+				"description": "The Claude CLI executable and the leading arguments that come before the adapter's own flags: `discover` runs `command` with `args` plus `--version`, then `auth status --json`, and each turn runs it with `args` plus `-p` and the turn's flags. The default, `claude` with no arguments, applies only when the argument is omitted or undefined, and a failure to start the command surfaces as `reason` from discover or as a rejection from run.",
+				"examples": [
+					{
+						"command": "claude",
+						"args": []
+					},
+					{
+						"command": "/opt/homebrew/bin/claude",
+						"args": []
+					}
+				]
 			},
 			{
 				"name": "ClaudeCliAdapter.constructor.queue",
 				"type": "ResourceQueueService",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "An optional machine-wide resource queue through which `run` admits each turn under a reservation of 1 CPU and 2048 MiB of memory. When it is omitted, `run` falls back to `resourceWork`, which opens a fresh queue service for that turn, and `discover` never reads it."
 			},
 			{
 				"name": "ClaudeCliAdapter.run.turn",
 				"type": "AgentTurn",
-				"required": true
+				"required": true,
+				"description": "One Claude CLI turn: `model` is passed as `--model` and the run fails unless the CLI reports that same model, `effort` is passed as `--effort` only when it is a non-empty string, `cwd` becomes the CLI process working directory, and `prompt` is written to its stdin. `access: 'read-only'` adds `--tools Read,Glob,Grep`, while any other value adds no tool limit, and every turn passes `--permission-mode bypassPermissions`; `signal` cancels the run with RunCancelled, and `onText`, `onStatus` and `onFile` receive public CLI text, the 'Waiting for resources' status, and the paths of files Claude writes or edits."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ClaudeCliAdapter.discover",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The provider state `discover` resolves to, with `id` 'claude' and `label` 'Claude CLI'. `available` is true, with the single model `claude-opus-5-5`, only when `claude --version` succeeds and `auth status --json` reports `loggedIn` with `authMethod` 'claude.ai'; otherwise `available` is false, `reason` holds the failure message, `version` is set only when the version call succeeded, and `discover` never rejects because every failure is caught into `reason`.",
+				"examples": [
+					{
+						"id": "claude",
+						"label": "Claude CLI",
+						"available": true,
+						"reason": null,
+						"version": "2.0.0 (Claude Code)",
+						"imageGeneration": false,
+						"models": [
+							{
+								"id": "claude-opus-5-5",
+								"label": "Claude Opus 5.5",
+								"efforts": ["low", "medium", "high", "xhigh", "max"],
+								"defaultEffort": "xhigh",
+								"isDefault": true
+							}
+						]
+					},
+					{
+						"id": "claude",
+						"label": "Claude CLI",
+						"available": false,
+						"reason": "Sign in to Claude CLI with a subscription.",
+						"version": "2.0.0 (Claude Code)",
+						"imageGeneration": false,
+						"models": []
+					},
+					{
+						"id": "claude",
+						"label": "Claude CLI",
+						"available": false,
+						"reason": "spawn claude ENOENT",
+						"version": null,
+						"imageGeneration": false,
+						"models": []
+					}
+				]
 			},
 			{
 				"name": "ClaudeCliAdapter.run",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The `AgentResult` that `run` resolves to: `text` is the `result` field of the last `result` event (an empty string when absent), and `model` is the model reported by the `system` `init` event. `run` resolves only after the CLI exits with code 0 and its last `result` event is not an error, so `model` always equals `turn.model` in a resolved value.",
+				"examples": [
+					{
+						"text": "Updated the ClaudeCliAdapter contract in the unit spec.",
+						"model": "claude-opus-5-5"
+					},
+					{
+						"text": "Read the adapter and its delegates; no files were changed.",
+						"model": "claude-opus-5-5"
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "RunCancelled: The run was cancelled.",
+				"type": "thrown",
+				"description": "Thrown when the turn's `signal` is aborted: `managedAgentTurn` replaces any error raised after `turn.signal` is aborted with this class, and `cliProcess` throws it when the signal is already aborted or aborts while the CLI runs."
+			},
+			{
+				"name": "ZodError: <schema validation message>",
+				"type": "thrown",
+				"description": "Thrown by `resourceRequestSchema.parse` in `resourceWork`, the no-queue path, only when an inherited lease is present and `Number(HARNESS_RESOURCE_CPUS)` is not a positive finite number."
+			},
+			{
+				"name": "Error: Cannot establish resource request owner",
+				"type": "thrown",
+				"description": "Thrown by the queue's enqueue step when the identity lookup for this process returns no start time, before the turn is queued."
+			},
+			{
+				"name": "Error: Resource queue is full",
+				"type": "thrown",
+				"description": "Thrown by the queue's enqueue step when the queue already holds 512 or more jobs, so the turn is not queued."
+			},
+			{
+				"name": "Error: Invalid inherited resource lease",
+				"type": "thrown",
+				"description": "Thrown by the enqueue step only when `HARNESS_RESOURCE_LEASE` is non-empty and names a job that is not running or whose identity check fails."
+			},
+			{
+				"name": "Error: Nested work exceeds its parent resource reservation",
+				"type": "thrown",
+				"description": "Thrown by the enqueue step under an inherited lease when the request needs more CPUs or memory than the parent reservation."
+			},
+			{
+				"name": "Error: Resource queue wait timed out; <optional diagnostics>",
+				"type": "thrown",
+				"description": "Thrown from the wait loop once the turn has waited more than 1800000 ms (30 minutes), since no `waitTimeoutMs` is passed; the diagnostics (last wait reason, telemetry, CPU and memory figures) are appended only when available."
+			},
+			{
+				"name": "Error: Resource request exceeds usable capacity after reserves",
+				"type": "thrown",
+				"description": "Thrown from the wait loop when the resource policy reports the request as impossible for the sampled capacity after reserves."
+			},
+			{
+				"name": "Error: Resource request disappeared",
+				"type": "thrown",
+				"description": "Thrown from the wait loop when the scheduled job list no longer contains this turn's job."
+			},
+			{
+				"name": "Error: Parent resource reservation ended",
+				"type": "thrown",
+				"description": "Thrown from the wait loop under an inherited lease when the job's parent reservation is no longer running."
+			},
+			{
+				"name": "Error: CLI request timed out.",
+				"type": "thrown",
+				"description": "Thrown when the CLI runs longer than the default `timeoutMs` of 600000 ms, since claudeTurn sets none; the CLI process is then sent SIGTERM."
+			},
+			{
+				"name": "Error: CLI output exceeded its limit.",
+				"type": "thrown",
+				"description": "Thrown when the CLI's output passes the default `maxBytes` of 16000000 bytes, since claudeTurn sets no limit of its own."
+			},
+			{
+				"name": "Error: <child process error message>",
+				"type": "thrown",
+				"description": "Passed through unchanged from the child process's `error` event (for example when the executable cannot be spawned) or from a stdin write error other than EPIPE."
+			},
+			{
+				"name": "Error: CLI failed (<exit code>): <last 2000 characters of stderr>",
+				"type": "thrown",
+				"description": "Thrown when the CLI exits with a code other than 0, including `null` after a signal; the message carries that code and the last 2000 characters of stderr."
+			},
+			{
+				"name": "Error: Claude did not run the requested model.",
+				"type": "thrown",
+				"description": "Thrown after a successful exit when the model reported by the `system` `init` event differs from `turn.model`, including when no `init` event arrived; no result is returned."
+			},
+			{
+				"name": "Error: <result text reported by Claude, or 'Claude returned no completed result.'>",
+				"type": "thrown",
+				"description": "Thrown after a successful exit when no `result` event arrived or the last one has `is_error` set; the message is that event's `result` text when present, otherwise 'Claude returned no completed result.'"
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ClaudeCliAdapter.discover",
@@ -60,11 +204,49 @@
 				"outputs": [
 					{
 						"name": "ClaudeCliAdapter.discover",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The provider state `discover` resolves to, with `id` 'claude' and `label` 'Claude CLI'. `available` is true, with the single model `claude-opus-5-5`, only when `claude --version` succeeds and `auth status --json` reports `loggedIn` with `authMethod` 'claude.ai'; otherwise `available` is false, `reason` holds the failure message, `version` is set only when the version call succeeded, and `discover` never rejects because every failure is caught into `reason`.",
+						"examples": [
+							{
+								"id": "claude",
+								"label": "Claude CLI",
+								"available": true,
+								"reason": null,
+								"version": "2.0.0 (Claude Code)",
+								"imageGeneration": false,
+								"models": [
+									{
+										"id": "claude-opus-5-5",
+										"label": "Claude Opus 5.5",
+										"efforts": ["low", "medium", "high", "xhigh", "max"],
+										"defaultEffort": "xhigh",
+										"isDefault": true
+									}
+								]
+							},
+							{
+								"id": "claude",
+								"label": "Claude CLI",
+								"available": false,
+								"reason": "Sign in to Claude CLI with a subscription.",
+								"version": "2.0.0 (Claude Code)",
+								"imageGeneration": false,
+								"models": []
+							},
+							{
+								"id": "claude",
+								"label": "Claude CLI",
+								"available": false,
+								"reason": "spawn claude ENOENT",
+								"version": null,
+								"imageGeneration": false,
+								"models": []
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ClaudeCliAdapter.run",
@@ -72,17 +254,110 @@
 					{
 						"name": "ClaudeCliAdapter.run.turn",
 						"type": "AgentTurn",
-						"required": true
+						"required": true,
+						"description": "One Claude CLI turn: `model` is passed as `--model` and the run fails unless the CLI reports that same model, `effort` is passed as `--effort` only when it is a non-empty string, `cwd` becomes the CLI process working directory, and `prompt` is written to its stdin. `access: 'read-only'` adds `--tools Read,Glob,Grep`, while any other value adds no tool limit, and every turn passes `--permission-mode bypassPermissions`; `signal` cancels the run with RunCancelled, and `onText`, `onStatus` and `onFile` receive public CLI text, the 'Waiting for resources' status, and the paths of files Claude writes or edits."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeCliAdapter.run",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The `AgentResult` that `run` resolves to: `text` is the `result` field of the last `result` event (an empty string when absent), and `model` is the model reported by the `system` `init` event. `run` resolves only after the CLI exits with code 0 and its last `result` event is not an error, so `model` always equals `turn.model` in a resolved value.",
+						"examples": [
+							{
+								"text": "Updated the ClaudeCliAdapter contract in the unit spec.",
+								"model": "claude-opus-5-5"
+							},
+							{
+								"text": "Read the adapter and its delegates; no files were changed.",
+								"model": "claude-opus-5-5"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RunCancelled: The run was cancelled.",
+						"type": "thrown",
+						"description": "Thrown when the turn's `signal` is aborted: `managedAgentTurn` replaces any error raised after `turn.signal` is aborted with this class, and `cliProcess` throws it when the signal is already aborted or aborts while the CLI runs."
+					},
+					{
+						"name": "ZodError: <schema validation message>",
+						"type": "thrown",
+						"description": "Thrown by `resourceRequestSchema.parse` in `resourceWork`, the no-queue path, only when an inherited lease is present and `Number(HARNESS_RESOURCE_CPUS)` is not a positive finite number."
+					},
+					{
+						"name": "Error: Cannot establish resource request owner",
+						"type": "thrown",
+						"description": "Thrown by the queue's enqueue step when the identity lookup for this process returns no start time, before the turn is queued."
+					},
+					{
+						"name": "Error: Resource queue is full",
+						"type": "thrown",
+						"description": "Thrown by the queue's enqueue step when the queue already holds 512 or more jobs, so the turn is not queued."
+					},
+					{
+						"name": "Error: Invalid inherited resource lease",
+						"type": "thrown",
+						"description": "Thrown by the enqueue step only when `HARNESS_RESOURCE_LEASE` is non-empty and names a job that is not running or whose identity check fails."
+					},
+					{
+						"name": "Error: Nested work exceeds its parent resource reservation",
+						"type": "thrown",
+						"description": "Thrown by the enqueue step under an inherited lease when the request needs more CPUs or memory than the parent reservation."
+					},
+					{
+						"name": "Error: Resource queue wait timed out; <optional diagnostics>",
+						"type": "thrown",
+						"description": "Thrown from the wait loop once the turn has waited more than 1800000 ms (30 minutes), since no `waitTimeoutMs` is passed; the diagnostics (last wait reason, telemetry, CPU and memory figures) are appended only when available."
+					},
+					{
+						"name": "Error: Resource request exceeds usable capacity after reserves",
+						"type": "thrown",
+						"description": "Thrown from the wait loop when the resource policy reports the request as impossible for the sampled capacity after reserves."
+					},
+					{
+						"name": "Error: Resource request disappeared",
+						"type": "thrown",
+						"description": "Thrown from the wait loop when the scheduled job list no longer contains this turn's job."
+					},
+					{
+						"name": "Error: Parent resource reservation ended",
+						"type": "thrown",
+						"description": "Thrown from the wait loop under an inherited lease when the job's parent reservation is no longer running."
+					},
+					{
+						"name": "Error: CLI request timed out.",
+						"type": "thrown",
+						"description": "Thrown when the CLI runs longer than the default `timeoutMs` of 600000 ms, since claudeTurn sets none; the CLI process is then sent SIGTERM."
+					},
+					{
+						"name": "Error: CLI output exceeded its limit.",
+						"type": "thrown",
+						"description": "Thrown when the CLI's output passes the default `maxBytes` of 16000000 bytes, since claudeTurn sets no limit of its own."
+					},
+					{
+						"name": "Error: <child process error message>",
+						"type": "thrown",
+						"description": "Passed through unchanged from the child process's `error` event (for example when the executable cannot be spawned) or from a stdin write error other than EPIPE."
+					},
+					{
+						"name": "Error: CLI failed (<exit code>): <last 2000 characters of stderr>",
+						"type": "thrown",
+						"description": "Thrown when the CLI exits with a code other than 0, including `null` after a signal; the message carries that code and the last 2000 characters of stderr."
+					},
+					{
+						"name": "Error: Claude did not run the requested model.",
+						"type": "thrown",
+						"description": "Thrown after a successful exit when the model reported by the `system` `init` event differs from `turn.model`, including when no `init` event arrived; no result is returned."
+					},
+					{
+						"name": "Error: <result text reported by Claude, or 'Claude returned no completed result.'>",
+						"type": "thrown",
+						"description": "Thrown after a successful exit when no `result` event arrived or the last one has `is_error` set; the message is that event's `result` text when present, otherwise 'Claude returned no completed result.'"
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -96,22 +371,36 @@
 						"default": {
 							"command": "claude",
 							"args": []
-						}
+						},
+						"description": "The Claude CLI executable and the leading arguments that come before the adapter's own flags: `discover` runs `command` with `args` plus `--version`, then `auth status --json`, and each turn runs it with `args` plus `-p` and the turn's flags. The default, `claude` with no arguments, applies only when the argument is omitted or undefined, and a failure to start the command surfaces as `reason` from discover or as a rejection from run.",
+						"examples": [
+							{
+								"command": "claude",
+								"args": []
+							},
+							{
+								"command": "/opt/homebrew/bin/claude",
+								"args": []
+							}
+						]
 					},
 					{
 						"name": "ClaudeCliAdapter.constructor.queue",
 						"type": "ResourceQueueService",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "An optional machine-wide resource queue through which `run` admits each turn under a reservation of 1 CPU and 2048 MiB of memory. When it is omitted, `run` falls back to `resourceWork`, which opens a fresh queue service for that turn, and `discover` never reads it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeCliAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The `ClaudeCliAdapter` instance, which implements `AgentRunner` and keeps `command` and `queue` as private fields; the constructor starts no process and throws nothing."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
