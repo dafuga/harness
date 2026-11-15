@@ -22,28 +22,73 @@
 				"name": "kernelRequest.input",
 				"type": "unknown",
 				"required": true,
-				"description": "Unknown impact input containing base/head node-and-edge graphs and changed, uncertain and sink id arrays."
+				"description": "The untrusted value to validate as an impact input. It must be a non-array object with `base` and `head` graphs (`nodes` as string arrays and `edges` as arrays of exactly two nonnegative integers), plus string arrays `changed`, `uncertain`, and `sinks`; extra fields are ignored.",
+				"examples": [
+					{
+						"base": {
+							"nodes": ["node-a"],
+							"edges": []
+						},
+						"head": {
+							"nodes": ["node-a", "node-b"],
+							"edges": [
+								[0, 1]
+							]
+						},
+						"changed": ["node-b"],
+						"uncertain": [],
+						"sinks": ["node-b"]
+					}
+				]
 			},
 			{
 				"name": "isObject.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Value to check for a non-null, non-array object."
+				"description": "The value passed to the object guard. It returns false for null, arrays, primitives, and functions, and true for other non-null objects regardless of prototype.",
+				"examples": [
+					{
+						"key": "value"
+					},
+					null,
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "kernelRequest",
 				"type": "Parsed<ImpactInput>",
-				"description": "Validated impact input, or an invalid-request/invalid-graph failure. Graph fields are checked before id lists, then duplicate nodes and out-of-range edges are checked base before head."
+				"description": "A `Parsed<ImpactInput>` result, with `{value}` on success and `{error}` carrying `invalid-request` or `invalid-graph`; successful values keep only `base`, `head`, `changed`, `uncertain`, and `sinks`, and graphs keep only `nodes` and `edges`. Shape checks run for base then head then `changed`, `uncertain`, and `sinks`, followed by base-before-head integrity checks that report repeated nodes before out-of-range edges.",
+				"examples": [
+					{
+						"value": {
+							"base": {
+								"nodes": ["node-a"],
+								"edges": []
+							},
+							"head": {
+								"nodes": ["node-a", "node-b"],
+								"edges": [
+									[0, 1]
+								]
+							},
+							"changed": ["node-b"],
+							"uncertain": [],
+							"sinks": ["node-b"]
+						}
+					}
+				]
 			},
 			{
 				"name": "isObject",
 				"type": "value is Fields",
-				"description": "True for any non-null object except arrays; no plain-object or prototype restriction is applied."
+				"description": "A boolean type guard for `Fields` (`Record<string, unknown>`). It returns true for any non-null, non-array object without checking its prototype, and false for arrays, primitives, functions, and null.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "kernelRequest",
@@ -52,18 +97,54 @@
 						"name": "kernelRequest.input",
 						"type": "unknown",
 						"required": true,
-						"description": "Unknown impact input containing base/head node-and-edge graphs and changed, uncertain and sink id arrays."
+						"description": "The untrusted value to validate as an impact input. It must be a non-array object with `base` and `head` graphs (`nodes` as string arrays and `edges` as arrays of exactly two nonnegative integers), plus string arrays `changed`, `uncertain`, and `sinks`; extra fields are ignored.",
+						"examples": [
+							{
+								"base": {
+									"nodes": ["node-a"],
+									"edges": []
+								},
+								"head": {
+									"nodes": ["node-a", "node-b"],
+									"edges": [
+										[0, 1]
+									]
+								},
+								"changed": ["node-b"],
+								"uncertain": [],
+								"sinks": ["node-b"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "kernelRequest",
 						"type": "Parsed<ImpactInput>",
-						"description": "Validated impact input, or an invalid-request/invalid-graph failure. Graph fields are checked before id lists, then duplicate nodes and out-of-range edges are checked base before head."
+						"description": "A `Parsed<ImpactInput>` result, with `{value}` on success and `{error}` carrying `invalid-request` or `invalid-graph`; successful values keep only `base`, `head`, `changed`, `uncertain`, and `sinks`, and graphs keep only `nodes` and `edges`. Shape checks run for base then head then `changed`, `uncertain`, and `sinks`, followed by base-before-head integrity checks that report repeated nodes before out-of-range edges.",
+						"examples": [
+							{
+								"value": {
+									"base": {
+										"nodes": ["node-a"],
+										"edges": []
+									},
+									"head": {
+										"nodes": ["node-a", "node-b"],
+										"edges": [
+											[0, 1]
+										]
+									},
+									"changed": ["node-b"],
+									"uncertain": [],
+									"sinks": ["node-b"]
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "isObject",
@@ -72,18 +153,26 @@
 						"name": "isObject.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Value to check for a non-null, non-array object."
+						"description": "The value passed to the object guard. It returns false for null, arrays, primitives, and functions, and true for other non-null objects regardless of prototype.",
+						"examples": [
+							{
+								"key": "value"
+							},
+							null,
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isObject",
 						"type": "value is Fields",
-						"description": "True for any non-null object except arrays; no plain-object or prototype restriction is applied."
+						"description": "A boolean type guard for `Fields` (`Record<string, unknown>`). It returns true for any non-null, non-array object without checking its prototype, and false for arrays, primitives, functions, and null.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
