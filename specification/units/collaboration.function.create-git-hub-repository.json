@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/collaboration/src/utils/create-git-hub-repository/createGitHubRepository.ts",
+			"packages/collaboration/src/utils/createGitHubRepository.ts",
 			"packages/collaboration/src/utils/git-source-history/create-git-hub-repository/createGitHubRepository.ts",
 			"packages/collaboration/src/utils/git-source-history/create-git-hub-repository/createGitHubRepository.types.ts"
 		],
@@ -97,11 +97,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/create-git-hub-repository/createGitHubRepository.ts",
+		"entry": "packages/collaboration/src/utils/createGitHubRepository.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/create-git-hub-repository/createGitHubRepository.ts"
+				"entry": "packages/collaboration/src/utils/createGitHubRepository.ts"
 			}
 		]
 	},

@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/collaboration/src/utils/commitRecords.ts",
-			"packages/collaboration/src/utils/create-git-hub-repository/commitRecords.ts",
 			"packages/collaboration/src/utils/git-source-history/create-git-hub-repository/commitRecords.ts"
 		],
-		"symbols": ["commitRecords", "commitRecords", "commitRecords"]
+		"symbols": ["commitRecords", "commitRecords"]
 	},
 	"contract": {
 		"origin": "declared",
