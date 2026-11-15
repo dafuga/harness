@@ -7,7 +7,7 @@ import { atomicComponents } from '../../../src/templates/development-tooling/ato
 import { atomicMarkup } from '../../../src/templates/development-tooling/atomicMarkup';
 import { nativeAtoms } from '../../../src/templates/development-tooling/htmlElements.js';
 import { atomicRuntimeSources } from '../../../src/templates/development-tooling/atomicRuntimeSources';
-import { projectFiles } from '../../../src/templates/project';
+import { projectFiles } from '../../../src/templates/projects-sessions/project';
 import { measureWorkload } from '../measureWorkload';
 
 const native = `<script lang="ts">

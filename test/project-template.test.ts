@@ -1,7 +1,7 @@
 import { format, type Options } from 'prettier';
 import { test } from 'vitest';
 import { expect } from './verificationExpect';
-import { projectFiles } from '../src/templates/project';
+import { projectFiles } from '../src/templates/projects-sessions/project';
 import { measureWorkload } from './support/measureWorkload';
 import { assertFoundationLint } from './support/project-template/foundations';
 import { assertAtomCompiler } from './support/project-template/atoms';

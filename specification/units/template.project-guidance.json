@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/templates/projectGuidance.ts",
-			"src/templates/projects-sessions/projectGuidance.ts"
-		],
-		"symbols": ["agentRules", "skillRules", "agentRules", "skillRules"]
+		"source": ["src/templates/projects-sessions/projectGuidance.ts"],
+		"symbols": ["agentRules", "skillRules"]
 	},
 	"contract": {
 		"origin": "declared",

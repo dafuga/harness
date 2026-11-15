@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/templates/project.ts",
 			"src/templates/projects-sessions/project.ts",
 			"src/templates/projects-sessions/project.types.ts"
 		],
 		"symbols": [
-			"projectFiles",
 			"projectFiles",
 			"ProjectKind",
 			"ProjectTemplateInput",

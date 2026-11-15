@@ -6,7 +6,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { projectFiles } from '../src/templates/project';
+import { projectFiles } from '../src/templates/projects-sessions/project';
 import { pieceFiles } from '../src/templates/pieces';
 import { findGuide } from '../src/guides/development-tooling/guide';
 import { generatePiece } from '../src/workflows/generate-code/generateCode';

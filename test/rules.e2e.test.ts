@@ -82,7 +82,7 @@ async function writeBadRuleFixtures(project: string): Promise<void> {
 	await mkdir(join(project, 'src/lib/checkout'), { recursive: true });
 	await writeFile(join(project, 'src/lib/checkout/payment.ts'), 'export class PaymentService {}\n');
 	await mkdir(join(project, 'src/services'), { recursive: true });
-	await mkdir(join(project, 'src/templates'), { recursive: true });
+	await mkdir(join(project, 'src/templates/projects-sessions'), { recursive: true });
 	await mkdir(join(project, 'src/utils'), { recursive: true });
 
 	await writeFile(join(project, 'src/long-file.ts'), longFileFixture());
@@ -97,12 +97,12 @@ async function writeBadRuleFixtures(project: string): Promise<void> {
 	await writeFile(join(project, 'src/services/BigMethod.ts'), bigMethodFixture());
 	await writeFile(join(project, 'src/services/ManyClasses.ts'), manyClassesFixture());
 	await writeFile(
-		join(project, 'src/templates/project.ts'),
+		join(project, 'src/templates/projects-sessions/project.ts'),
 		"export const templateName = 'bad';\n"
 	);
 	await writeFile(
 		join(project, 'src/core/badBoundary.ts'),
-		"import { templateName } from '../templates/project';\n\nexport const boundaryName = templateName;\n"
+		"import { templateName } from '../templates/projects-sessions/project';\n\nexport const boundaryName = templateName;\n"
 	);
 }
 
