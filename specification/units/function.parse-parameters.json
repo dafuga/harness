@@ -148,9 +148,6 @@
 								"default": 3
 							},
 							{
-								"default": ["ready", false]
-							},
-							{
 								"default": {
 									"retries": 2
 								}
@@ -176,7 +173,7 @@
 						"name": "parameterType",
 						"type": "string",
 						"description": "The inferred type label for a readable literal initializer: the primitive typeof result, null for null, unknown[] for arrays, object for objects, or unknown when no supported literal default is available.",
-						"examples": ["number", "null", "unknown[]", "object", "unknown"]
+						"examples": ["number", "null", "unknown"]
 					}
 				],
 				"errors": [],
