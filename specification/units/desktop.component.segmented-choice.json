@@ -26,29 +26,36 @@
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional bindable selected string, empty by default. Click replaces it. Values outside the options leave all buttons unselected; no fallback is chosen."
+				"description": "Optional bindable selected string; it defaults to the empty string and controls each option's active class and aria-pressed value. Clicking an option assigns that string; when it matches no option, every button is unselected.",
+				"examples": ["", "Monthly"]
 			},
 			{
 				"name": "SegmentedChoice.options",
 				"type": "string[]",
 				"required": true,
-				"description": "Required option strings in display order, serving as both labels and keys. Callers should supply unique strings. Empty renders no buttons."
+				"description": "Required strings rendered in array order as both button text and keyed each-block identities. The keys therefore need to be unique; an empty array renders no buttons.",
+				"examples": [
+					["Daily", "Weekly", "Monthly"],
+					[]
+				]
 			},
 			{
 				"name": "SegmentedChoice.label",
 				"type": "string",
 				"required": true,
-				"description": "Required accessible name of the group."
+				"description": "Required string used as the group's aria-label.",
+				"examples": ["Time period"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SegmentedChoice",
 				"type": "markup",
-				"description": "Buttons with active styling and aria-pressed for the selected value. Selection updates the binding without submitting a form."
+				"description": "Renders an hx-div with role=\"group\" and aria-label from label, with one hx-button type=\"button\" for each option. Each button displays its option and has active class and aria-pressed set when its option equals value; clicking it assigns that option to value."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
