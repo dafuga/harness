@@ -12,12 +12,29 @@
 		"symbols": ["formatConfigFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "formatConfigFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The three planned files that set up a project's formatting config and ignore rules, in order: `.gitignore`, `.prettierrc` and `.prettierignore`, each with its path and fixed contents string. It matters when a scaffold writes these files into a project; the function takes no arguments, always returns these same entries, and writes nothing itself, so callers that need the files on disk must write them.",
+				"examples": [
+					[
+						{
+							"path": ".gitignore",
+							"contents": "node_modules/\ndist/\ncoverage/\n.svelte-kit/\nbuild/\n.cache/\n.env\n.env.*\n"
+						},
+						{
+							"path": ".prettierrc",
+							"contents": "{\n\t\"useTabs\": true,\n\t\"singleQuote\": true,\n\t\"trailingComma\": \"none\",\n\t\"printWidth\": 100\n}\n"
+						},
+						{
+							"path": ".prettierignore",
+							"contents": "node_modules\ndist\ncoverage\n.svelte-kit\nbuild\n.cache\n*.cpp\n*.h\n*.hpp\n*.py\n*.sh\n*.wasm\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
@@ -29,11 +46,28 @@
 				"outputs": [
 					{
 						"name": "formatConfigFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The three planned files that set up a project's formatting config and ignore rules, in order: `.gitignore`, `.prettierrc` and `.prettierignore`, each with its path and fixed contents string. It matters when a scaffold writes these files into a project; the function takes no arguments, always returns these same entries, and writes nothing itself, so callers that need the files on disk must write them.",
+						"examples": [
+							[
+								{
+									"path": ".gitignore",
+									"contents": "node_modules/\ndist/\ncoverage/\n.svelte-kit/\nbuild/\n.cache/\n.env\n.env.*\n"
+								},
+								{
+									"path": ".prettierrc",
+									"contents": "{\n\t\"useTabs\": true,\n\t\"singleQuote\": true,\n\t\"trailingComma\": \"none\",\n\t\"printWidth\": 100\n}\n"
+								},
+								{
+									"path": ".prettierignore",
+									"contents": "node_modules\ndist\ncoverage\n.svelte-kit\nbuild\n.cache\n*.cpp\n*.h\n*.hpp\n*.py\n*.sh\n*.wasm\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
