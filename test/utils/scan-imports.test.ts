@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { assertColdEntries } from '../support/coldEntries';
 import { measureWorkload } from '../support/measureWorkload';
-import { resolveImport } from '../../src/utils/resolveImport';
+import { resolveImport } from '../../src/utils/development-tooling/resolveImport';
 import { scanImports } from '../../src/services/source-index-service/scanImports';
 
 test('scanImports records HTTP requests without reading URL-looking text as calls', () => {

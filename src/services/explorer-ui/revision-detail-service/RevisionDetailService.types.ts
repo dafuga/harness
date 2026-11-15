@@ -5,7 +5,7 @@ import type { PlatformCatalog } from '../../../core/explorer-ui/Platform.types';
 import type { RevisionRegistry } from '../../../utils/revisionRegistry';
 import type { VerificationRecord } from '../../../core/verificationTypes';
 import type * as sourceImpact from './source-impact-service/SourceImpactService';
-import type { RecordView } from '../../../utils/recordView';
+import type { RecordView } from '../../../utils/development-tooling/recordView';
 import type { Explanation } from '../../../core/explanationTypes';
 import type { RegressionView } from '../../../core/regressionTypes';
 import type { BudgetEvent } from '../../../core/budgetTypes';

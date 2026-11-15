@@ -3,7 +3,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { expect, test } from 'vitest';
 import { explorerEntityCategories as explorerCategories } from '../../../../src/utils/explorerRoute';
-import { resolveImport } from '../../../../src/utils/resolveImport';
+import { resolveImport } from '../../../../src/utils/development-tooling/resolveImport';
 import { scanImports } from '../../../../src/services/source-index-service/scanImports';
 
 // The imports of the real source, read and resolved as `harness units index` reads them, so what

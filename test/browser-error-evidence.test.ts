@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { CheckRunService } from '../src/services/check-run-service/CheckRunService';
 import { verificationRecordSchema } from '../src/core/verificationTypes';
-import { recordView } from '../src/utils/recordView';
+import { recordView } from '../src/utils/development-tooling/recordView';
 import { verificationSample } from './support/verificationSample';
 
 const diagnostics = {

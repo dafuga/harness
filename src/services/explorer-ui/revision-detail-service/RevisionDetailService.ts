@@ -11,7 +11,11 @@ import type { VerificationRecord } from '../../../core/verificationTypes';
 import { ScenarioRepository } from '../../../repositories/verification-evidence/ScenarioRepository';
 import { UnitRegistryRepository } from '../../../repositories/UnitRegistryRepository';
 import type { MediaPlacer } from '../../../utils/mediaPlace';
-import { recordView, type RecordView, type ResolvedMedia } from '../../../utils/recordView';
+import {
+	recordView,
+	type RecordView,
+	type ResolvedMedia
+} from '../../../utils/development-tooling/recordView';
 import { revisionReasons, type RevisionReasons } from '../../../utils/revisionReasons';
 import { revisionRegistry, type RevisionRegistry } from '../../../utils/revisionRegistry';
 import type { AttachedRecord } from '../../verification-evidence/history-status-service/attached-record-service/AttachedRecordService';

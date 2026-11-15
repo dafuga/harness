@@ -11,16 +11,9 @@
 		"source": [
 			"src/utils/development-tooling/resolve-import/resolveHttpEndpoint.ts",
 			"src/utils/development-tooling/resolveImport.ts",
-			"src/utils/development-tooling/resolveImport.types.ts",
-			"src/utils/resolveImport.ts"
+			"src/utils/development-tooling/resolveImport.types.ts"
 		],
-		"symbols": [
-			"resolveHttpEndpoint",
-			"resolveImport",
-			"ResolveContext",
-			"ResolveContext",
-			"resolveImport"
-		]
+		"symbols": ["resolveHttpEndpoint", "resolveImport", "ResolveContext", "ResolveContext"]
 	},
 	"contract": {
 		"origin": "declared",

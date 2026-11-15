@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { recordView } from '../../src/utils/recordView';
+import { recordView } from '../../src/utils/development-tooling/recordView';
 import { verificationSample } from '../support/verificationSample';
 
 const resolve = () => ({ media: null, gap: 'not resolved' });

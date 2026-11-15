@@ -2,7 +2,7 @@ import type { Held } from './hub-evidence-parity.test.types';
 import { expect, test } from 'vitest';
 import { BudgetService } from '../../../../src/services/budget-service/BudgetService';
 import { mediaPlace } from '../../../../src/cli/program/history-index-service/history-media-service/mediaPlace';
-import { recordView } from '../../../../src/utils/recordView';
+import { recordView } from '../../../../src/utils/development-tooling/recordView';
 import { revisionRegistry } from '../../../../src/utils/revision-registry/revisionRegistry';
 import { revisionSummary } from '../../../../src/utils/revisionSummary';
 import { recordedAnswer } from '../../../desktop/src/utils/recorded-answer/recordedAnswer';

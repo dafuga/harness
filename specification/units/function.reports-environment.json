@@ -11,7 +11,7 @@
 		"source": [
 			"src/cli/program/run-report/reportsEnvironment.ts",
 			"src/cli/program/run-report/reportsEnvironment.types.ts",
-			"src/utils/reportsEnvironment.ts"
+			"src/workflows/run-report/reportsEnvironment.ts"
 		],
 		"symbols": ["reportsEnvironment", "ReportSettings", "reportsEnvironment"]
 	},
@@ -57,11 +57,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/reportsEnvironment.ts",
+		"entry": "src/cli/program/run-report/reportsEnvironment.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/reportsEnvironment.ts"
+				"entry": "src/cli/program/run-report/reportsEnvironment.ts"
 			}
 		]
 	},

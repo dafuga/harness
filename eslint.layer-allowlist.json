@@ -337,11 +337,6 @@
 			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
 		},
 		{
-			"from": "src/utils/recordedBuilds.ts",
-			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds",
-			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
-		},
-		{
 			"from": "src/utils/reports-media/impactReport.ts",
 			"to": "src/services/reports-media/impact-service/impactReport",
 			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
@@ -360,11 +355,6 @@
 			"from": "src/utils/reports-media/treeChanges.ts",
 			"to": "src/services/reports-media/impact-service/treeChanges",
 			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
-		},
-		{
-			"from": "src/utils/reportsEnvironment.ts",
-			"to": "src/cli/program/run-report/reportsEnvironment",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
 		},
 		{
 			"from": "src/utils/scanComponent.ts",
