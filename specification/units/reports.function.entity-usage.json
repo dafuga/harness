@@ -36,79 +36,1290 @@
 				"name": "usageGroups.items",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Resolved revision-scoped consumers with declared module categories."
+				"description": "Consumers already resolved, each carrying the category that decides its group. An entity whose category is not one of the nine group kinds, such as platforms, is left out, and a repeated id is kept once within its group.",
+				"examples": [
+					[
+						{
+							"id": "reports.page.entity-page",
+							"category": "pages",
+							"role": "Page",
+							"name": "Entity",
+							"purpose": "Shows one entity of the selected revision with its contract, usage and evidence.",
+							"unit": {
+								"id": "reports.page.entity-page",
+								"kind": "page",
+								"status": "active",
+								"title": "/harness/[entity]",
+								"responsibility": "Shows one entity of the selected revision with its contract, usage and evidence.",
+								"dependencies": [
+									{
+										"unit": "reports.function.explorer-entities",
+										"via": "import"
+									}
+								],
+								"scenarios": ["harness-console"],
+								"owns": {
+									"source": ["packages/reports/src/routes/harness/[entity]/+page.svelte"],
+									"symbols": []
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/routes/harness/[entity]/+page.svelte"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "5f0d9b3a7c2e61f8d4a0b9c3e7f25d1a8b6c0e4f9d2a7b3c5e1f8d0a6b4c2e97"
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Evidence missing",
+								"reasons": ["No verification record is attached to this commit."]
+							},
+							"change": null,
+							"appRoute": "/harness/[entity]"
+						},
+						{
+							"id": "reports.function.entity-usage",
+							"category": "functions",
+							"role": "Function",
+							"name": "Entity relationship sections",
+							"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+							"unit": {
+								"id": "reports.function.entity-usage",
+								"kind": "function",
+								"status": "active",
+								"title": "Entity relationship sections",
+								"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+								"dependencies": [
+									{
+										"unit": "reports.function.explorer-entities",
+										"via": "import"
+									}
+								],
+								"scenarios": ["harness-console"],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+									"symbols": ["usageOwners", "helperConsumers"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Evidence missing",
+								"reasons": ["No verification record is attached to this commit."]
+							},
+							"change": null,
+							"appRoute": null
+						}
+					]
+				]
 			},
 			{
 				"name": "entityUsage.relations",
 				"type": "ExplorerRelations",
 				"required": true,
-				"description": "Host-derived pages, consumers, categorized dependencies and support units."
+				"description": "The relations of one entity as the host derived them: pages and usedBy supply its users, the eight kind lists supply what it uses, and support supplies the units that go under other. Each resulting list is deduplicated by id, and a kind list that is absent counts as empty.",
+				"examples": [
+					{
+						"pages": [
+							{
+								"id": "reports.page.entity-page",
+								"category": "pages",
+								"role": "Page",
+								"name": "Entity",
+								"purpose": "Shows one entity of the selected revision with its contract, usage and evidence.",
+								"unit": {
+									"id": "reports.page.entity-page",
+									"kind": "page",
+									"status": "active",
+									"title": "/harness/[entity]",
+									"responsibility": "Shows one entity of the selected revision with its contract, usage and evidence.",
+									"dependencies": [
+										{
+											"unit": "reports.function.explorer-entities",
+											"via": "import"
+										}
+									],
+									"scenarios": ["harness-console"],
+									"owns": {
+										"source": ["packages/reports/src/routes/harness/[entity]/+page.svelte"],
+										"symbols": []
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/routes/harness/[entity]/+page.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5f0d9b3a7c2e61f8d4a0b9c3e7f25d1a8b6c0e4f9d2a7b3c5e1f8d0a6b4c2e97"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Evidence missing",
+									"reasons": ["No verification record is attached to this commit."]
+								},
+								"change": null,
+								"appRoute": "/harness/[entity]"
+							}
+						],
+						"layouts": [],
+						"components": [],
+						"functions": [
+							{
+								"id": "reports.function.explorer-verdict",
+								"category": "functions",
+								"role": "Function",
+								"name": "Explorer verdict",
+								"purpose": "Judges whether a unit is proven at a revision.",
+								"unit": {
+									"id": "reports.function.explorer-verdict",
+									"kind": "function",
+									"status": "active",
+									"title": "Explorer verdict",
+									"responsibility": "Judges whether a unit is proven at a revision.",
+									"dependencies": [],
+									"scenarios": ["harness-console"],
+									"owns": {
+										"source": [
+											"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts"
+										],
+										"symbols": ["explorerVerdict", "verdictRecord"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "0a7e4c1b9d3f6825e0b7a4c9d1f3e6b28c5a0d7f4e9b1c3a6d8f2e5b0c7a9d41"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Evidence missing",
+									"reasons": ["No verification record is attached to this commit."]
+								},
+								"change": null,
+								"appRoute": null
+							}
+						],
+						"configs": [],
+						"services": [],
+						"usedBy": [
+							{
+								"id": "reports.function.entity-usage",
+								"category": "functions",
+								"role": "Function",
+								"name": "Entity relationship sections",
+								"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+								"unit": {
+									"id": "reports.function.entity-usage",
+									"kind": "function",
+									"status": "active",
+									"title": "Entity relationship sections",
+									"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+									"dependencies": [
+										{
+											"unit": "reports.function.explorer-entities",
+											"via": "import"
+										}
+									],
+									"scenarios": ["harness-console"],
+									"owns": {
+										"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+										"symbols": ["usageOwners", "helperConsumers"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Evidence missing",
+									"reasons": ["No verification record is attached to this commit."]
+								},
+								"change": null,
+								"appRoute": null
+							}
+						],
+						"support": [
+							{
+								"id": "reports.audit.explorer-kinds",
+								"role": "Audit rule",
+								"name": "Explorer kinds",
+								"unit": {
+									"id": "reports.audit.explorer-kinds",
+									"kind": "audit",
+									"status": "active",
+									"title": "Explorer kinds",
+									"responsibility": "Lists the unit kinds the explorer categorizes.",
+									"dependencies": [],
+									"scenarios": [],
+									"owns": {
+										"source": ["packages/reports/src/utils/explorer-ui/explorerCategory.ts"],
+										"symbols": []
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": []
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "e3d9a1f7c5b2086e4d1a9c7f3b5e2d80a6c4f1b9e7d3a5c2f8b0e6d4a1c9f7e3"
+								}
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "usageOwners.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Already resolved collection owners used when no full revision is supplied."
+				"description": "Collection entities that seed the owner map under their ids; a repeated id keeps its last entity. With no revision this map is the whole result, and with a revision each active registry unit then replaces or adds its own entry.",
+				"examples": [
+					[
+						{
+							"id": "reports.function.explorer-entities",
+							"category": "functions",
+							"role": "Function",
+							"name": "Explorer entities",
+							"purpose": "Projects a unit at one revision into the entity the explorer lists and opens.",
+							"unit": {
+								"id": "reports.function.explorer-entities",
+								"kind": "function",
+								"status": "active",
+								"title": "Explorer entities",
+								"responsibility": "Projects a unit at one revision into the entity the explorer lists and opens.",
+								"dependencies": [
+									{
+										"unit": "reports.function.explorer-verdict",
+										"via": "import"
+									}
+								],
+								"scenarios": ["harness-console"],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/explorerEntities.ts"],
+									"symbols": ["explorerEntity", "explorerChange"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/explorerEntities.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "1e7a3c9f5b2d08e4a6c1f7b3d9e2a5c8074b6f1d3e9a2c5b8d7f0e4a1c6b3d92"
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Evidence missing",
+								"reasons": ["No verification record is attached to this commit."]
+							},
+							"change": null,
+							"appRoute": null
+						},
+						{
+							"id": "reports.function.entity-usage",
+							"category": "functions",
+							"role": "Function",
+							"name": "Entity relationship sections",
+							"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+							"unit": {
+								"id": "reports.function.entity-usage",
+								"kind": "function",
+								"status": "active",
+								"title": "Entity relationship sections",
+								"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+								"dependencies": [
+									{
+										"unit": "reports.function.explorer-entities",
+										"via": "import"
+									}
+								],
+								"scenarios": ["harness-console"],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+									"symbols": ["usageOwners", "helperConsumers"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Evidence missing",
+								"reasons": ["No verification record is attached to this commit."]
+							},
+							"change": null,
+							"appRoute": null
+						}
+					]
+				]
 			},
 			{
 				"name": "usageOwners.revision",
 				"type": "HarnessRevision",
 				"required": false,
-				"description": "Selected source revision containing active private and public runtime owners."
+				"default": "undefined",
+				"description": "The revision whose registry supplies runtime owners: each unit with status active is projected with private units included, and units of any other status are ignored. When it is omitted (undefined), only the entities collection is used.",
+				"examples": [
+					{
+						"commit": "9d4c2e7a1b8f03c6e5d2a94f7b1c08e3d6a5f2b7",
+						"registry": {
+							"available": true,
+							"units": [
+								{
+									"id": "reports.function.explorer-entities",
+									"kind": "function",
+									"status": "active",
+									"title": "Explorer entities",
+									"responsibility": "Projects a unit at one revision into the entity the explorer lists and opens.",
+									"dependencies": [
+										{
+											"unit": "reports.function.explorer-verdict",
+											"via": "import"
+										}
+									],
+									"scenarios": ["harness-console"],
+									"owns": {
+										"source": ["packages/reports/src/utils/explorer-ui/explorerEntities.ts"],
+										"symbols": ["explorerEntity", "explorerChange"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/explorerEntities.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "1e7a3c9f5b2d08e4a6c1f7b3d9e2a5c8074b6f1d3e9a2c5b8d7f0e4a1c6b3d92"
+								},
+								{
+									"id": "reports.function.entity-usage",
+									"kind": "function",
+									"status": "active",
+									"title": "Entity relationship sections",
+									"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+									"dependencies": [
+										{
+											"unit": "reports.function.explorer-entities",
+											"via": "import"
+										}
+									],
+									"scenarios": ["harness-console"],
+									"owns": {
+										"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+										"symbols": ["usageOwners", "helperConsumers"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+								}
+							],
+							"scenarios": [],
+							"graph": {
+								"edges": [
+									{
+										"from": "reports.function.entity-usage",
+										"to": "reports.function.explorer-entities",
+										"via": "import"
+									}
+								]
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "helperConsumers.helper",
 				"type": "NonNullable<ExplorerEntity['unit']['helpers']>[number]",
 				"required": true,
-				"description": "One callable with source-derived runtime consumer references."
+				"description": "One helper of an owner unit, taken from its helpers list: its consumers array supplies the candidate references, and its name is compared with the resulting name of a consumer from the owner unit itself. A helper without a consumers array yields no consumers.",
+				"examples": [
+					{
+						"name": "explorerEntity",
+						"source": "packages/reports/src/utils/explorer-ui/explorerEntities.ts",
+						"inputs": [
+							{
+								"name": "head",
+								"type": "HarnessRevision",
+								"required": true
+							},
+							{
+								"name": "unit",
+								"type": "HarnessUnit",
+								"required": true
+							},
+							{
+								"name": "includePrivate",
+								"type": "boolean",
+								"required": false,
+								"default": false
+							}
+						],
+						"consumers": [
+							{
+								"unit": "reports.function.entity-usage",
+								"symbol": "usageOwners"
+							},
+							{
+								"unit": "reports.component.evidence-grid"
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "helperConsumers.owners",
 				"type": "Map<string, ExplorerEntity>",
 				"required": true,
-				"description": "Revision-scoped active owner projections, independent of public catalog admission."
+				"description": "Map from unit id to owner entity, looked up by each consumer's unit; a consumer whose owner is missing, whose change is removed, or whose unit status is not active is skipped."
 			},
 			{
 				"name": "helperConsumers.ownerId",
 				"type": "string",
 				"required": true,
-				"description": "Actual owner unit identifier used to exclude the callable itself."
+				"description": "Unit id of the helper's own owner; a consumer from this unit is kept only when it has a caller symbol and its resulting name differs from helper.name.",
+				"examples": ["reports.function.explorer-entities", "reports.page.entity-page"]
 			},
 			{
 				"name": "usageIdentity.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "Resolved consumer with optional recorded caller symbol."
+				"description": "Resolved consumer whose id and optional caller give its identity; only id and caller are read, so a caller with an empty symbol still ends the identity with #.",
+				"examples": [
+					{
+						"id": "reports.function.entity-usage",
+						"caller": {
+							"symbol": "usageOwners",
+							"sourceOnly": true
+						},
+						"category": "functions",
+						"role": "Function",
+						"name": "usageOwners",
+						"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+						"unit": {
+							"id": "reports.function.entity-usage",
+							"kind": "function",
+							"status": "active",
+							"title": "Entity relationship sections",
+							"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+							"dependencies": [
+								{
+									"unit": "reports.function.explorer-entities",
+									"via": "import"
+								}
+							],
+							"scenarios": ["harness-console"],
+							"owns": {
+								"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+								"symbols": ["usageOwners", "helperConsumers"]
+							},
+							"contract": {
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Evidence missing",
+							"reasons": ["No verification record is attached to this commit."]
+						},
+						"change": null,
+						"appRoute": null
+					},
+					{
+						"id": "reports.component.evidence-grid",
+						"category": "components",
+						"role": "Component",
+						"name": "Evidence grid",
+						"purpose": "Lays out the captured evidence of one entity state in a grid.",
+						"unit": {
+							"id": "reports.component.evidence-grid",
+							"kind": "component",
+							"status": "active",
+							"title": "Evidence grid",
+							"responsibility": "Lays out the captured evidence of one entity state in a grid.",
+							"dependencies": [],
+							"scenarios": ["harness-console"],
+							"owns": {
+								"source": [
+									"packages/reports/src/components/explorer-ui/evidence-grid/EvidenceGrid.svelte"
+								],
+								"symbols": []
+							},
+							"contract": {
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/evidence-grid/EvidenceGrid.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "c8a2e6f0d4b1907e3a5c8f2d6b0e9a4c7f1d3b5e8a2c6f0d9b4e7a1c3f5d8b26"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Evidence missing",
+							"reasons": ["No verification record is attached to this commit."]
+						},
+						"change": null,
+						"appRoute": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityUsage",
 				"type": "EntityUsage",
-				"description": "Deduplicated users, nonempty consumer and dependency groups with icons, support units and total dependency count."
+				"description": "What one entity is shown with: usedIn holds its users, pages first and each id once, and usedInGroups groups them by the nine kinds. uses holds the non-empty kind groups, other holds the support units, and count is the entities in uses plus the support units in other.",
+				"examples": [
+					{
+						"usedIn": [
+							{
+								"id": "reports.page.entity-page",
+								"category": "pages",
+								"role": "Page",
+								"name": "Entity",
+								"purpose": "Shows one entity of the selected revision with its contract, usage and evidence.",
+								"unit": {
+									"id": "reports.page.entity-page",
+									"kind": "page",
+									"status": "active",
+									"title": "/harness/[entity]",
+									"responsibility": "Shows one entity of the selected revision with its contract, usage and evidence.",
+									"dependencies": [
+										{
+											"unit": "reports.function.explorer-entities",
+											"via": "import"
+										}
+									],
+									"scenarios": ["harness-console"],
+									"owns": {
+										"source": ["packages/reports/src/routes/harness/[entity]/+page.svelte"],
+										"symbols": []
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/routes/harness/[entity]/+page.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5f0d9b3a7c2e61f8d4a0b9c3e7f25d1a8b6c0e4f9d2a7b3c5e1f8d0a6b4c2e97"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Evidence missing",
+									"reasons": ["No verification record is attached to this commit."]
+								},
+								"change": null,
+								"appRoute": "/harness/[entity]"
+							},
+							{
+								"id": "reports.function.entity-usage",
+								"category": "functions",
+								"role": "Function",
+								"name": "Entity relationship sections",
+								"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+								"unit": {
+									"id": "reports.function.entity-usage",
+									"kind": "function",
+									"status": "active",
+									"title": "Entity relationship sections",
+									"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+									"dependencies": [
+										{
+											"unit": "reports.function.explorer-entities",
+											"via": "import"
+										}
+									],
+									"scenarios": ["harness-console"],
+									"owns": {
+										"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+										"symbols": ["usageOwners", "helperConsumers"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Evidence missing",
+									"reasons": ["No verification record is attached to this commit."]
+								},
+								"change": null,
+								"appRoute": null
+							}
+						],
+						"usedInGroups": [
+							{
+								"title": "Pages",
+								"icon": "pages",
+								"items": [
+									{
+										"id": "reports.page.entity-page",
+										"category": "pages",
+										"role": "Page",
+										"name": "Entity",
+										"purpose": "Shows one entity of the selected revision with its contract, usage and evidence.",
+										"unit": {
+											"id": "reports.page.entity-page",
+											"kind": "page",
+											"status": "active",
+											"title": "/harness/[entity]",
+											"responsibility": "Shows one entity of the selected revision with its contract, usage and evidence.",
+											"dependencies": [
+												{
+													"unit": "reports.function.explorer-entities",
+													"via": "import"
+												}
+											],
+											"scenarios": ["harness-console"],
+											"owns": {
+												"source": ["packages/reports/src/routes/harness/[entity]/+page.svelte"],
+												"symbols": []
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/routes/harness/[entity]/+page.svelte"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "5f0d9b3a7c2e61f8d4a0b9c3e7f25d1a8b6c0e4f9d2a7b3c5e1f8d0a6b4c2e97"
+										},
+										"verdict": {
+											"passed": false,
+											"label": "Evidence missing",
+											"reasons": ["No verification record is attached to this commit."]
+										},
+										"change": null,
+										"appRoute": "/harness/[entity]"
+									}
+								]
+							},
+							{
+								"title": "Functions",
+								"icon": "functions",
+								"items": [
+									{
+										"id": "reports.function.entity-usage",
+										"category": "functions",
+										"role": "Function",
+										"name": "Entity relationship sections",
+										"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+										"unit": {
+											"id": "reports.function.entity-usage",
+											"kind": "function",
+											"status": "active",
+											"title": "Entity relationship sections",
+											"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+											"dependencies": [
+												{
+													"unit": "reports.function.explorer-entities",
+													"via": "import"
+												}
+											],
+											"scenarios": ["harness-console"],
+											"owns": {
+												"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+												"symbols": ["usageOwners", "helperConsumers"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+										},
+										"verdict": {
+											"passed": false,
+											"label": "Evidence missing",
+											"reasons": ["No verification record is attached to this commit."]
+										},
+										"change": null,
+										"appRoute": null
+									}
+								]
+							}
+						],
+						"uses": [
+							{
+								"title": "Functions",
+								"icon": "functions",
+								"items": [
+									{
+										"id": "reports.function.explorer-verdict",
+										"category": "functions",
+										"role": "Function",
+										"name": "Explorer verdict",
+										"purpose": "Judges whether a unit is proven at a revision.",
+										"unit": {
+											"id": "reports.function.explorer-verdict",
+											"kind": "function",
+											"status": "active",
+											"title": "Explorer verdict",
+											"responsibility": "Judges whether a unit is proven at a revision.",
+											"dependencies": [],
+											"scenarios": ["harness-console"],
+											"owns": {
+												"source": [
+													"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts"
+												],
+												"symbols": ["explorerVerdict", "verdictRecord"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "0a7e4c1b9d3f6825e0b7a4c9d1f3e6b28c5a0d7f4e9b1c3a6d8f2e5b0c7a9d41"
+										},
+										"verdict": {
+											"passed": false,
+											"label": "Evidence missing",
+											"reasons": ["No verification record is attached to this commit."]
+										},
+										"change": null,
+										"appRoute": null
+									}
+								]
+							}
+						],
+						"other": [
+							{
+								"id": "reports.audit.explorer-kinds",
+								"role": "Audit rule",
+								"name": "Explorer kinds",
+								"unit": {
+									"id": "reports.audit.explorer-kinds",
+									"kind": "audit",
+									"status": "active",
+									"title": "Explorer kinds",
+									"responsibility": "Lists the unit kinds the explorer categorizes.",
+									"dependencies": [],
+									"scenarios": [],
+									"owns": {
+										"source": ["packages/reports/src/utils/explorer-ui/explorerCategory.ts"],
+										"symbols": []
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": []
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "e3d9a1f7c5b2086e4d1a9c7f3b5e2d80a6c4f1b9e7d3a5c2f8b0e6d4a1c9f7e3"
+								}
+							}
+						],
+						"count": 2
+					}
+				]
 			},
 			{
 				"name": "usageGroups",
 				"type": "UsageGroup[]",
-				"description": "Nonempty navigation-ordered groups with distinct entity identifiers within each category."
+				"description": "The non-empty groups in navigation order (Pages, APIs, Layouts, Components, Functions, Configs, Services, Models, Types), each with its icon and entities whose ids are distinct within the group.",
+				"examples": [
+					[
+						{
+							"title": "Pages",
+							"icon": "pages",
+							"items": [
+								{
+									"id": "reports.page.entity-page",
+									"category": "pages",
+									"role": "Page",
+									"name": "Entity",
+									"purpose": "Shows one entity of the selected revision with its contract, usage and evidence.",
+									"unit": {
+										"id": "reports.page.entity-page",
+										"kind": "page",
+										"status": "active",
+										"title": "/harness/[entity]",
+										"responsibility": "Shows one entity of the selected revision with its contract, usage and evidence.",
+										"dependencies": [
+											{
+												"unit": "reports.function.explorer-entities",
+												"via": "import"
+											}
+										],
+										"scenarios": ["harness-console"],
+										"owns": {
+											"source": ["packages/reports/src/routes/harness/[entity]/+page.svelte"],
+											"symbols": []
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/routes/harness/[entity]/+page.svelte"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "5f0d9b3a7c2e61f8d4a0b9c3e7f25d1a8b6c0e4f9d2a7b3c5e1f8d0a6b4c2e97"
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Evidence missing",
+										"reasons": ["No verification record is attached to this commit."]
+									},
+									"change": null,
+									"appRoute": "/harness/[entity]"
+								}
+							]
+						},
+						{
+							"title": "Functions",
+							"icon": "functions",
+							"items": [
+								{
+									"id": "reports.function.entity-usage",
+									"category": "functions",
+									"role": "Function",
+									"name": "Entity relationship sections",
+									"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+									"unit": {
+										"id": "reports.function.entity-usage",
+										"kind": "function",
+										"status": "active",
+										"title": "Entity relationship sections",
+										"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+										"dependencies": [
+											{
+												"unit": "reports.function.explorer-entities",
+												"via": "import"
+											}
+										],
+										"scenarios": ["harness-console"],
+										"owns": {
+											"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+											"symbols": ["usageOwners", "helperConsumers"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Evidence missing",
+										"reasons": ["No verification record is attached to this commit."]
+									},
+									"change": null,
+									"appRoute": null
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "usageOwners",
 				"type": "Map<string, ExplorerEntity>",
-				"description": "Active runtime owners; unsupported owners open source without an invented entity page."
+				"description": "Owner entities keyed by unit id: the collection entries, with each active registry unit of the revision replacing or adding its own. A unit for which explorerEntity returns nothing gets an entry with appRoute null and a source-only caller, so no entity page is invented for it."
 			},
 			{
 				"name": "helperConsumers",
 				"type": "ExplorerEntity[]",
-				"description": "Distinct active owner/callable consumers, excluding missing owners and true self references."
+				"description": "The distinct consumers of one helper in first-seen order, one per usageIdentity. A consumer that records a symbol and is a function, or of a kind with no category, is renamed to that symbol and given a caller entry; consumers whose owner is missing, removed or not active, and true self references, are left out.",
+				"examples": [
+					[
+						{
+							"id": "reports.function.entity-usage",
+							"caller": {
+								"symbol": "usageOwners",
+								"sourceOnly": true
+							},
+							"category": "functions",
+							"role": "Function",
+							"name": "usageOwners",
+							"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+							"unit": {
+								"id": "reports.function.entity-usage",
+								"kind": "function",
+								"status": "active",
+								"title": "Entity relationship sections",
+								"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+								"dependencies": [
+									{
+										"unit": "reports.function.explorer-entities",
+										"via": "import"
+									}
+								],
+								"scenarios": ["harness-console"],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+									"symbols": ["usageOwners", "helperConsumers"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Evidence missing",
+								"reasons": ["No verification record is attached to this commit."]
+							},
+							"change": null,
+							"appRoute": null
+						},
+						{
+							"id": "reports.component.evidence-grid",
+							"category": "components",
+							"role": "Component",
+							"name": "Evidence grid",
+							"purpose": "Lays out the captured evidence of one entity state in a grid.",
+							"unit": {
+								"id": "reports.component.evidence-grid",
+								"kind": "component",
+								"status": "active",
+								"title": "Evidence grid",
+								"responsibility": "Lays out the captured evidence of one entity state in a grid.",
+								"dependencies": [],
+								"scenarios": ["harness-console"],
+								"owns": {
+									"source": [
+										"packages/reports/src/components/explorer-ui/evidence-grid/EvidenceGrid.svelte"
+									],
+									"symbols": []
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/components/explorer-ui/evidence-grid/EvidenceGrid.svelte"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "c8a2e6f0d4b1907e3a5c8f2d6b0e9a4c7f1d3b5e8a2c6f0d9b4e7a1c3f5d8b26"
+							},
+							"verdict": {
+								"passed": false,
+								"label": "Evidence missing",
+								"reasons": ["No verification record is attached to this commit."]
+							},
+							"change": null,
+							"appRoute": null
+						}
+					]
+				]
 			},
 			{
 				"name": "usageIdentity",
 				"type": "string",
-				"description": "Actual unit identity plus callable identity when recorded."
+				"description": "The identity of a consumer: its unit id followed by # and its caller symbol when it has a caller entry, even one with an empty symbol; without a caller entry it is the unit id alone.",
+				"examples": ["reports.function.entity-usage#usageOwners", "reports.component.evidence-grid"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "usageGroups",
@@ -117,18 +1328,246 @@
 						"name": "usageGroups.items",
 						"type": "ExplorerEntity[]",
 						"required": true,
-						"description": "Resolved revision-scoped consumers with declared module categories."
+						"description": "Consumers already resolved, each carrying the category that decides its group. An entity whose category is not one of the nine group kinds, such as platforms, is left out, and a repeated id is kept once within its group.",
+						"examples": [
+							[
+								{
+									"id": "reports.page.entity-page",
+									"category": "pages",
+									"role": "Page",
+									"name": "Entity",
+									"purpose": "Shows one entity of the selected revision with its contract, usage and evidence.",
+									"unit": {
+										"id": "reports.page.entity-page",
+										"kind": "page",
+										"status": "active",
+										"title": "/harness/[entity]",
+										"responsibility": "Shows one entity of the selected revision with its contract, usage and evidence.",
+										"dependencies": [
+											{
+												"unit": "reports.function.explorer-entities",
+												"via": "import"
+											}
+										],
+										"scenarios": ["harness-console"],
+										"owns": {
+											"source": ["packages/reports/src/routes/harness/[entity]/+page.svelte"],
+											"symbols": []
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/routes/harness/[entity]/+page.svelte"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "5f0d9b3a7c2e61f8d4a0b9c3e7f25d1a8b6c0e4f9d2a7b3c5e1f8d0a6b4c2e97"
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Evidence missing",
+										"reasons": ["No verification record is attached to this commit."]
+									},
+									"change": null,
+									"appRoute": "/harness/[entity]"
+								},
+								{
+									"id": "reports.function.entity-usage",
+									"category": "functions",
+									"role": "Function",
+									"name": "Entity relationship sections",
+									"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+									"unit": {
+										"id": "reports.function.entity-usage",
+										"kind": "function",
+										"status": "active",
+										"title": "Entity relationship sections",
+										"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+										"dependencies": [
+											{
+												"unit": "reports.function.explorer-entities",
+												"via": "import"
+											}
+										],
+										"scenarios": ["harness-console"],
+										"owns": {
+											"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+											"symbols": ["usageOwners", "helperConsumers"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Evidence missing",
+										"reasons": ["No verification record is attached to this commit."]
+									},
+									"change": null,
+									"appRoute": null
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "usageGroups",
 						"type": "UsageGroup[]",
-						"description": "Nonempty navigation-ordered groups with distinct entity identifiers within each category."
+						"description": "The non-empty groups in navigation order (Pages, APIs, Layouts, Components, Functions, Configs, Services, Models, Types), each with its icon and entities whose ids are distinct within the group.",
+						"examples": [
+							[
+								{
+									"title": "Pages",
+									"icon": "pages",
+									"items": [
+										{
+											"id": "reports.page.entity-page",
+											"category": "pages",
+											"role": "Page",
+											"name": "Entity",
+											"purpose": "Shows one entity of the selected revision with its contract, usage and evidence.",
+											"unit": {
+												"id": "reports.page.entity-page",
+												"kind": "page",
+												"status": "active",
+												"title": "/harness/[entity]",
+												"responsibility": "Shows one entity of the selected revision with its contract, usage and evidence.",
+												"dependencies": [
+													{
+														"unit": "reports.function.explorer-entities",
+														"via": "import"
+													}
+												],
+												"scenarios": ["harness-console"],
+												"owns": {
+													"source": ["packages/reports/src/routes/harness/[entity]/+page.svelte"],
+													"symbols": []
+												},
+												"contract": {
+													"inputs": [],
+													"outputs": [],
+													"errors": []
+												},
+												"runtime": {
+													"kind": "module",
+													"targets": [
+														{
+															"kind": "module",
+															"entry": "packages/reports/src/routes/harness/[entity]/+page.svelte"
+														}
+													]
+												},
+												"budgets": {
+													"size": "frozen",
+													"complexity": "frozen",
+													"performance": []
+												},
+												"version": "5f0d9b3a7c2e61f8d4a0b9c3e7f25d1a8b6c0e4f9d2a7b3c5e1f8d0a6b4c2e97"
+											},
+											"verdict": {
+												"passed": false,
+												"label": "Evidence missing",
+												"reasons": ["No verification record is attached to this commit."]
+											},
+											"change": null,
+											"appRoute": "/harness/[entity]"
+										}
+									]
+								},
+								{
+									"title": "Functions",
+									"icon": "functions",
+									"items": [
+										{
+											"id": "reports.function.entity-usage",
+											"category": "functions",
+											"role": "Function",
+											"name": "Entity relationship sections",
+											"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+											"unit": {
+												"id": "reports.function.entity-usage",
+												"kind": "function",
+												"status": "active",
+												"title": "Entity relationship sections",
+												"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+												"dependencies": [
+													{
+														"unit": "reports.function.explorer-entities",
+														"via": "import"
+													}
+												],
+												"scenarios": ["harness-console"],
+												"owns": {
+													"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+													"symbols": ["usageOwners", "helperConsumers"]
+												},
+												"contract": {
+													"inputs": [],
+													"outputs": [],
+													"errors": []
+												},
+												"runtime": {
+													"kind": "module",
+													"targets": [
+														{
+															"kind": "module",
+															"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+														}
+													]
+												},
+												"budgets": {
+													"size": "frozen",
+													"complexity": "frozen",
+													"performance": []
+												},
+												"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+											},
+											"verdict": {
+												"passed": false,
+												"label": "Evidence missing",
+												"reasons": ["No verification record is attached to this commit."]
+											},
+											"change": null,
+											"appRoute": null
+										}
+									]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "entityUsage",
@@ -137,18 +1576,541 @@
 						"name": "entityUsage.relations",
 						"type": "ExplorerRelations",
 						"required": true,
-						"description": "Host-derived pages, consumers, categorized dependencies and support units."
+						"description": "The relations of one entity as the host derived them: pages and usedBy supply its users, the eight kind lists supply what it uses, and support supplies the units that go under other. Each resulting list is deduplicated by id, and a kind list that is absent counts as empty.",
+						"examples": [
+							{
+								"pages": [
+									{
+										"id": "reports.page.entity-page",
+										"category": "pages",
+										"role": "Page",
+										"name": "Entity",
+										"purpose": "Shows one entity of the selected revision with its contract, usage and evidence.",
+										"unit": {
+											"id": "reports.page.entity-page",
+											"kind": "page",
+											"status": "active",
+											"title": "/harness/[entity]",
+											"responsibility": "Shows one entity of the selected revision with its contract, usage and evidence.",
+											"dependencies": [
+												{
+													"unit": "reports.function.explorer-entities",
+													"via": "import"
+												}
+											],
+											"scenarios": ["harness-console"],
+											"owns": {
+												"source": ["packages/reports/src/routes/harness/[entity]/+page.svelte"],
+												"symbols": []
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/routes/harness/[entity]/+page.svelte"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "5f0d9b3a7c2e61f8d4a0b9c3e7f25d1a8b6c0e4f9d2a7b3c5e1f8d0a6b4c2e97"
+										},
+										"verdict": {
+											"passed": false,
+											"label": "Evidence missing",
+											"reasons": ["No verification record is attached to this commit."]
+										},
+										"change": null,
+										"appRoute": "/harness/[entity]"
+									}
+								],
+								"layouts": [],
+								"components": [],
+								"functions": [
+									{
+										"id": "reports.function.explorer-verdict",
+										"category": "functions",
+										"role": "Function",
+										"name": "Explorer verdict",
+										"purpose": "Judges whether a unit is proven at a revision.",
+										"unit": {
+											"id": "reports.function.explorer-verdict",
+											"kind": "function",
+											"status": "active",
+											"title": "Explorer verdict",
+											"responsibility": "Judges whether a unit is proven at a revision.",
+											"dependencies": [],
+											"scenarios": ["harness-console"],
+											"owns": {
+												"source": [
+													"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts"
+												],
+												"symbols": ["explorerVerdict", "verdictRecord"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "0a7e4c1b9d3f6825e0b7a4c9d1f3e6b28c5a0d7f4e9b1c3a6d8f2e5b0c7a9d41"
+										},
+										"verdict": {
+											"passed": false,
+											"label": "Evidence missing",
+											"reasons": ["No verification record is attached to this commit."]
+										},
+										"change": null,
+										"appRoute": null
+									}
+								],
+								"configs": [],
+								"services": [],
+								"usedBy": [
+									{
+										"id": "reports.function.entity-usage",
+										"category": "functions",
+										"role": "Function",
+										"name": "Entity relationship sections",
+										"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+										"unit": {
+											"id": "reports.function.entity-usage",
+											"kind": "function",
+											"status": "active",
+											"title": "Entity relationship sections",
+											"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+											"dependencies": [
+												{
+													"unit": "reports.function.explorer-entities",
+													"via": "import"
+												}
+											],
+											"scenarios": ["harness-console"],
+											"owns": {
+												"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+												"symbols": ["usageOwners", "helperConsumers"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+										},
+										"verdict": {
+											"passed": false,
+											"label": "Evidence missing",
+											"reasons": ["No verification record is attached to this commit."]
+										},
+										"change": null,
+										"appRoute": null
+									}
+								],
+								"support": [
+									{
+										"id": "reports.audit.explorer-kinds",
+										"role": "Audit rule",
+										"name": "Explorer kinds",
+										"unit": {
+											"id": "reports.audit.explorer-kinds",
+											"kind": "audit",
+											"status": "active",
+											"title": "Explorer kinds",
+											"responsibility": "Lists the unit kinds the explorer categorizes.",
+											"dependencies": [],
+											"scenarios": [],
+											"owns": {
+												"source": ["packages/reports/src/utils/explorer-ui/explorerCategory.ts"],
+												"symbols": []
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": []
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "e3d9a1f7c5b2086e4d1a9c7f3b5e2d80a6c4f1b9e7d3a5c2f8b0e6d4a1c9f7e3"
+										}
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityUsage",
 						"type": "EntityUsage",
-						"description": "Deduplicated users, nonempty consumer and dependency groups with icons, support units and total dependency count."
+						"description": "What one entity is shown with: usedIn holds its users, pages first and each id once, and usedInGroups groups them by the nine kinds. uses holds the non-empty kind groups, other holds the support units, and count is the entities in uses plus the support units in other.",
+						"examples": [
+							{
+								"usedIn": [
+									{
+										"id": "reports.page.entity-page",
+										"category": "pages",
+										"role": "Page",
+										"name": "Entity",
+										"purpose": "Shows one entity of the selected revision with its contract, usage and evidence.",
+										"unit": {
+											"id": "reports.page.entity-page",
+											"kind": "page",
+											"status": "active",
+											"title": "/harness/[entity]",
+											"responsibility": "Shows one entity of the selected revision with its contract, usage and evidence.",
+											"dependencies": [
+												{
+													"unit": "reports.function.explorer-entities",
+													"via": "import"
+												}
+											],
+											"scenarios": ["harness-console"],
+											"owns": {
+												"source": ["packages/reports/src/routes/harness/[entity]/+page.svelte"],
+												"symbols": []
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/routes/harness/[entity]/+page.svelte"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "5f0d9b3a7c2e61f8d4a0b9c3e7f25d1a8b6c0e4f9d2a7b3c5e1f8d0a6b4c2e97"
+										},
+										"verdict": {
+											"passed": false,
+											"label": "Evidence missing",
+											"reasons": ["No verification record is attached to this commit."]
+										},
+										"change": null,
+										"appRoute": "/harness/[entity]"
+									},
+									{
+										"id": "reports.function.entity-usage",
+										"category": "functions",
+										"role": "Function",
+										"name": "Entity relationship sections",
+										"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+										"unit": {
+											"id": "reports.function.entity-usage",
+											"kind": "function",
+											"status": "active",
+											"title": "Entity relationship sections",
+											"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+											"dependencies": [
+												{
+													"unit": "reports.function.explorer-entities",
+													"via": "import"
+												}
+											],
+											"scenarios": ["harness-console"],
+											"owns": {
+												"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+												"symbols": ["usageOwners", "helperConsumers"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+										},
+										"verdict": {
+											"passed": false,
+											"label": "Evidence missing",
+											"reasons": ["No verification record is attached to this commit."]
+										},
+										"change": null,
+										"appRoute": null
+									}
+								],
+								"usedInGroups": [
+									{
+										"title": "Pages",
+										"icon": "pages",
+										"items": [
+											{
+												"id": "reports.page.entity-page",
+												"category": "pages",
+												"role": "Page",
+												"name": "Entity",
+												"purpose": "Shows one entity of the selected revision with its contract, usage and evidence.",
+												"unit": {
+													"id": "reports.page.entity-page",
+													"kind": "page",
+													"status": "active",
+													"title": "/harness/[entity]",
+													"responsibility": "Shows one entity of the selected revision with its contract, usage and evidence.",
+													"dependencies": [
+														{
+															"unit": "reports.function.explorer-entities",
+															"via": "import"
+														}
+													],
+													"scenarios": ["harness-console"],
+													"owns": {
+														"source": ["packages/reports/src/routes/harness/[entity]/+page.svelte"],
+														"symbols": []
+													},
+													"contract": {
+														"inputs": [],
+														"outputs": [],
+														"errors": []
+													},
+													"runtime": {
+														"kind": "module",
+														"targets": [
+															{
+																"kind": "module",
+																"entry": "packages/reports/src/routes/harness/[entity]/+page.svelte"
+															}
+														]
+													},
+													"budgets": {
+														"size": "frozen",
+														"complexity": "frozen",
+														"performance": []
+													},
+													"version": "5f0d9b3a7c2e61f8d4a0b9c3e7f25d1a8b6c0e4f9d2a7b3c5e1f8d0a6b4c2e97"
+												},
+												"verdict": {
+													"passed": false,
+													"label": "Evidence missing",
+													"reasons": ["No verification record is attached to this commit."]
+												},
+												"change": null,
+												"appRoute": "/harness/[entity]"
+											}
+										]
+									},
+									{
+										"title": "Functions",
+										"icon": "functions",
+										"items": [
+											{
+												"id": "reports.function.entity-usage",
+												"category": "functions",
+												"role": "Function",
+												"name": "Entity relationship sections",
+												"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+												"unit": {
+													"id": "reports.function.entity-usage",
+													"kind": "function",
+													"status": "active",
+													"title": "Entity relationship sections",
+													"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+													"dependencies": [
+														{
+															"unit": "reports.function.explorer-entities",
+															"via": "import"
+														}
+													],
+													"scenarios": ["harness-console"],
+													"owns": {
+														"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+														"symbols": ["usageOwners", "helperConsumers"]
+													},
+													"contract": {
+														"inputs": [],
+														"outputs": [],
+														"errors": []
+													},
+													"runtime": {
+														"kind": "module",
+														"targets": [
+															{
+																"kind": "module",
+																"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+															}
+														]
+													},
+													"budgets": {
+														"size": "frozen",
+														"complexity": "frozen",
+														"performance": []
+													},
+													"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+												},
+												"verdict": {
+													"passed": false,
+													"label": "Evidence missing",
+													"reasons": ["No verification record is attached to this commit."]
+												},
+												"change": null,
+												"appRoute": null
+											}
+										]
+									}
+								],
+								"uses": [
+									{
+										"title": "Functions",
+										"icon": "functions",
+										"items": [
+											{
+												"id": "reports.function.explorer-verdict",
+												"category": "functions",
+												"role": "Function",
+												"name": "Explorer verdict",
+												"purpose": "Judges whether a unit is proven at a revision.",
+												"unit": {
+													"id": "reports.function.explorer-verdict",
+													"kind": "function",
+													"status": "active",
+													"title": "Explorer verdict",
+													"responsibility": "Judges whether a unit is proven at a revision.",
+													"dependencies": [],
+													"scenarios": ["harness-console"],
+													"owns": {
+														"source": [
+															"packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts"
+														],
+														"symbols": ["explorerVerdict", "verdictRecord"]
+													},
+													"contract": {
+														"inputs": [],
+														"outputs": [],
+														"errors": []
+													},
+													"runtime": {
+														"kind": "module",
+														"targets": [
+															{
+																"kind": "module",
+																"entry": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerVerdict.ts"
+															}
+														]
+													},
+													"budgets": {
+														"size": "frozen",
+														"complexity": "frozen",
+														"performance": []
+													},
+													"version": "0a7e4c1b9d3f6825e0b7a4c9d1f3e6b28c5a0d7f4e9b1c3a6d8f2e5b0c7a9d41"
+												},
+												"verdict": {
+													"passed": false,
+													"label": "Evidence missing",
+													"reasons": ["No verification record is attached to this commit."]
+												},
+												"change": null,
+												"appRoute": null
+											}
+										]
+									}
+								],
+								"other": [
+									{
+										"id": "reports.audit.explorer-kinds",
+										"role": "Audit rule",
+										"name": "Explorer kinds",
+										"unit": {
+											"id": "reports.audit.explorer-kinds",
+											"kind": "audit",
+											"status": "active",
+											"title": "Explorer kinds",
+											"responsibility": "Lists the unit kinds the explorer categorizes.",
+											"dependencies": [],
+											"scenarios": [],
+											"owns": {
+												"source": ["packages/reports/src/utils/explorer-ui/explorerCategory.ts"],
+												"symbols": []
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": []
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "e3d9a1f7c5b2086e4d1a9c7f3b5e2d80a6c4f1b9e7d3a5c2f8b0e6d4a1c9f7e3"
+										}
+									}
+								],
+								"count": 2
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "usageOwners",
@@ -157,24 +2119,232 @@
 						"name": "usageOwners.entities",
 						"type": "ExplorerEntity[]",
 						"required": true,
-						"description": "Already resolved collection owners used when no full revision is supplied."
+						"description": "Collection entities that seed the owner map under their ids; a repeated id keeps its last entity. With no revision this map is the whole result, and with a revision each active registry unit then replaces or adds its own entry.",
+						"examples": [
+							[
+								{
+									"id": "reports.function.explorer-entities",
+									"category": "functions",
+									"role": "Function",
+									"name": "Explorer entities",
+									"purpose": "Projects a unit at one revision into the entity the explorer lists and opens.",
+									"unit": {
+										"id": "reports.function.explorer-entities",
+										"kind": "function",
+										"status": "active",
+										"title": "Explorer entities",
+										"responsibility": "Projects a unit at one revision into the entity the explorer lists and opens.",
+										"dependencies": [
+											{
+												"unit": "reports.function.explorer-verdict",
+												"via": "import"
+											}
+										],
+										"scenarios": ["harness-console"],
+										"owns": {
+											"source": ["packages/reports/src/utils/explorer-ui/explorerEntities.ts"],
+											"symbols": ["explorerEntity", "explorerChange"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/utils/explorer-ui/explorerEntities.ts"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "1e7a3c9f5b2d08e4a6c1f7b3d9e2a5c8074b6f1d3e9a2c5b8d7f0e4a1c6b3d92"
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Evidence missing",
+										"reasons": ["No verification record is attached to this commit."]
+									},
+									"change": null,
+									"appRoute": null
+								},
+								{
+									"id": "reports.function.entity-usage",
+									"category": "functions",
+									"role": "Function",
+									"name": "Entity relationship sections",
+									"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+									"unit": {
+										"id": "reports.function.entity-usage",
+										"kind": "function",
+										"status": "active",
+										"title": "Entity relationship sections",
+										"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+										"dependencies": [
+											{
+												"unit": "reports.function.explorer-entities",
+												"via": "import"
+											}
+										],
+										"scenarios": ["harness-console"],
+										"owns": {
+											"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+											"symbols": ["usageOwners", "helperConsumers"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Evidence missing",
+										"reasons": ["No verification record is attached to this commit."]
+									},
+									"change": null,
+									"appRoute": null
+								}
+							]
+						]
 					},
 					{
 						"name": "usageOwners.revision",
 						"type": "HarnessRevision",
 						"required": false,
-						"description": "Selected source revision containing active private and public runtime owners."
+						"default": "undefined",
+						"description": "The revision whose registry supplies runtime owners: each unit with status active is projected with private units included, and units of any other status are ignored. When it is omitted (undefined), only the entities collection is used.",
+						"examples": [
+							{
+								"commit": "9d4c2e7a1b8f03c6e5d2a94f7b1c08e3d6a5f2b7",
+								"registry": {
+									"available": true,
+									"units": [
+										{
+											"id": "reports.function.explorer-entities",
+											"kind": "function",
+											"status": "active",
+											"title": "Explorer entities",
+											"responsibility": "Projects a unit at one revision into the entity the explorer lists and opens.",
+											"dependencies": [
+												{
+													"unit": "reports.function.explorer-verdict",
+													"via": "import"
+												}
+											],
+											"scenarios": ["harness-console"],
+											"owns": {
+												"source": ["packages/reports/src/utils/explorer-ui/explorerEntities.ts"],
+												"symbols": ["explorerEntity", "explorerChange"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorer-ui/explorerEntities.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "1e7a3c9f5b2d08e4a6c1f7b3d9e2a5c8074b6f1d3e9a2c5b8d7f0e4a1c6b3d92"
+										},
+										{
+											"id": "reports.function.entity-usage",
+											"kind": "function",
+											"status": "active",
+											"title": "Entity relationship sections",
+											"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+											"dependencies": [
+												{
+													"unit": "reports.function.explorer-entities",
+													"via": "import"
+												}
+											],
+											"scenarios": ["harness-console"],
+											"owns": {
+												"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+												"symbols": ["usageOwners", "helperConsumers"]
+											},
+											"contract": {
+												"inputs": [],
+												"outputs": [],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+										}
+									],
+									"scenarios": [],
+									"graph": {
+										"edges": [
+											{
+												"from": "reports.function.entity-usage",
+												"to": "reports.function.explorer-entities",
+												"via": "import"
+											}
+										]
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "usageOwners",
 						"type": "Map<string, ExplorerEntity>",
-						"description": "Active runtime owners; unsupported owners open source without an invented entity page."
+						"description": "Owner entities keyed by unit id: the collection entries, with each active registry unit of the revision replacing or adding its own. A unit for which explorerEntity returns nothing gets an entry with appRoute null and a source-only caller, so no entity page is invented for it."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "helperConsumers",
@@ -183,30 +2353,173 @@
 						"name": "helperConsumers.helper",
 						"type": "NonNullable<ExplorerEntity['unit']['helpers']>[number]",
 						"required": true,
-						"description": "One callable with source-derived runtime consumer references."
+						"description": "One helper of an owner unit, taken from its helpers list: its consumers array supplies the candidate references, and its name is compared with the resulting name of a consumer from the owner unit itself. A helper without a consumers array yields no consumers.",
+						"examples": [
+							{
+								"name": "explorerEntity",
+								"source": "packages/reports/src/utils/explorer-ui/explorerEntities.ts",
+								"inputs": [
+									{
+										"name": "head",
+										"type": "HarnessRevision",
+										"required": true
+									},
+									{
+										"name": "unit",
+										"type": "HarnessUnit",
+										"required": true
+									},
+									{
+										"name": "includePrivate",
+										"type": "boolean",
+										"required": false,
+										"default": false
+									}
+								],
+								"consumers": [
+									{
+										"unit": "reports.function.entity-usage",
+										"symbol": "usageOwners"
+									},
+									{
+										"unit": "reports.component.evidence-grid"
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "helperConsumers.owners",
 						"type": "Map<string, ExplorerEntity>",
 						"required": true,
-						"description": "Revision-scoped active owner projections, independent of public catalog admission."
+						"description": "Map from unit id to owner entity, looked up by each consumer's unit; a consumer whose owner is missing, whose change is removed, or whose unit status is not active is skipped."
 					},
 					{
 						"name": "helperConsumers.ownerId",
 						"type": "string",
 						"required": true,
-						"description": "Actual owner unit identifier used to exclude the callable itself."
+						"description": "Unit id of the helper's own owner; a consumer from this unit is kept only when it has a caller symbol and its resulting name differs from helper.name.",
+						"examples": ["reports.function.explorer-entities", "reports.page.entity-page"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "helperConsumers",
 						"type": "ExplorerEntity[]",
-						"description": "Distinct active owner/callable consumers, excluding missing owners and true self references."
+						"description": "The distinct consumers of one helper in first-seen order, one per usageIdentity. A consumer that records a symbol and is a function, or of a kind with no category, is renamed to that symbol and given a caller entry; consumers whose owner is missing, removed or not active, and true self references, are left out.",
+						"examples": [
+							[
+								{
+									"id": "reports.function.entity-usage",
+									"caller": {
+										"symbol": "usageOwners",
+										"sourceOnly": true
+									},
+									"category": "functions",
+									"role": "Function",
+									"name": "usageOwners",
+									"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+									"unit": {
+										"id": "reports.function.entity-usage",
+										"kind": "function",
+										"status": "active",
+										"title": "Entity relationship sections",
+										"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+										"dependencies": [
+											{
+												"unit": "reports.function.explorer-entities",
+												"via": "import"
+											}
+										],
+										"scenarios": ["harness-console"],
+										"owns": {
+											"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+											"symbols": ["usageOwners", "helperConsumers"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Evidence missing",
+										"reasons": ["No verification record is attached to this commit."]
+									},
+									"change": null,
+									"appRoute": null
+								},
+								{
+									"id": "reports.component.evidence-grid",
+									"category": "components",
+									"role": "Component",
+									"name": "Evidence grid",
+									"purpose": "Lays out the captured evidence of one entity state in a grid.",
+									"unit": {
+										"id": "reports.component.evidence-grid",
+										"kind": "component",
+										"status": "active",
+										"title": "Evidence grid",
+										"responsibility": "Lays out the captured evidence of one entity state in a grid.",
+										"dependencies": [],
+										"scenarios": ["harness-console"],
+										"owns": {
+											"source": [
+												"packages/reports/src/components/explorer-ui/evidence-grid/EvidenceGrid.svelte"
+											],
+											"symbols": []
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/components/explorer-ui/evidence-grid/EvidenceGrid.svelte"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "c8a2e6f0d4b1907e3a5c8f2d6b0e9a4c7f1d3b5e8a2c6f0d9b4e7a1c3f5d8b26"
+									},
+									"verdict": {
+										"passed": false,
+										"label": "Evidence missing",
+										"reasons": ["No verification record is attached to this commit."]
+									},
+									"change": null,
+									"appRoute": null
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "usageIdentity",
@@ -215,18 +2528,129 @@
 						"name": "usageIdentity.entity",
 						"type": "ExplorerEntity",
 						"required": true,
-						"description": "Resolved consumer with optional recorded caller symbol."
+						"description": "Resolved consumer whose id and optional caller give its identity; only id and caller are read, so a caller with an empty symbol still ends the identity with #.",
+						"examples": [
+							{
+								"id": "reports.function.entity-usage",
+								"caller": {
+									"symbol": "usageOwners",
+									"sourceOnly": true
+								},
+								"category": "functions",
+								"role": "Function",
+								"name": "usageOwners",
+								"purpose": "Arranges resolved relations into users and categorized dependencies for display.",
+								"unit": {
+									"id": "reports.function.entity-usage",
+									"kind": "function",
+									"status": "active",
+									"title": "Entity relationship sections",
+									"responsibility": "Arranges resolved relations into users and categorized dependencies for display.",
+									"dependencies": [
+										{
+											"unit": "reports.function.explorer-entities",
+											"via": "import"
+										}
+									],
+									"scenarios": ["harness-console"],
+									"owns": {
+										"source": ["packages/reports/src/utils/explorer-ui/entityUsage.ts"],
+										"symbols": ["usageOwners", "helperConsumers"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/entityUsage.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "b3f1c8e02d7a94c6e5b0f2d18a7c3e96f4d0b8a25c1e7f93d6a2b4c08e5f71a0"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Evidence missing",
+									"reasons": ["No verification record is attached to this commit."]
+								},
+								"change": null,
+								"appRoute": null
+							},
+							{
+								"id": "reports.component.evidence-grid",
+								"category": "components",
+								"role": "Component",
+								"name": "Evidence grid",
+								"purpose": "Lays out the captured evidence of one entity state in a grid.",
+								"unit": {
+									"id": "reports.component.evidence-grid",
+									"kind": "component",
+									"status": "active",
+									"title": "Evidence grid",
+									"responsibility": "Lays out the captured evidence of one entity state in a grid.",
+									"dependencies": [],
+									"scenarios": ["harness-console"],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/explorer-ui/evidence-grid/EvidenceGrid.svelte"
+										],
+										"symbols": []
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/components/explorer-ui/evidence-grid/EvidenceGrid.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "c8a2e6f0d4b1907e3a5c8f2d6b0e9a4c7f1d3b5e8a2c6f0d9b4e7a1c3f5d8b26"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Evidence missing",
+									"reasons": ["No verification record is attached to this commit."]
+								},
+								"change": null,
+								"appRoute": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "usageIdentity",
 						"type": "string",
-						"description": "Actual unit identity plus callable identity when recorded."
+						"description": "The identity of a consumer: its unit id followed by # and its caller symbol when it has a caller entry, even one with an empty symbol; without a caller entry it is the unit id alone.",
+						"examples": [
+							"reports.function.entity-usage#usageOwners",
+							"reports.component.evidence-grid"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
