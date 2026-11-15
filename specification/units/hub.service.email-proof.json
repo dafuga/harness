@@ -41,101 +41,237 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EmailProofService.constructor.options",
 				"type": "EmailProofOptions",
-				"required": true
+				"required": true,
+				"description": "The collaborators the service needs: the `emailProofs` and `emailLedger` store slice, the session repository, the secrets used to hash cookies, codes and addresses, the mail delivery, and a `now` clock. `delivery` is null when none is configured, so a proof can be opened but never started, and `now` returns epoch milliseconds."
 			},
 			{
 				"name": "EmailProofService.proven.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The Google sign-in to check. proven() reads only its `id`, written as `google-<subject>`, and its `email`, which it hashes to compare with the proven address.",
+				"examples": [
+					{
+						"id": "google-108213476590231574862",
+						"email": "riley.morgan@example.com",
+						"name": "Riley Morgan",
+						"emailVerified": true
+					},
+					{
+						"id": "google-113406872215509283461",
+						"email": "sam.ortega@example.org",
+						"name": "Sam Ortega",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "EmailProofService.open.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The Google sign-in that opens a pending proof. open() stores this whole actor on the proof row, and start() and verify() later use that stored copy to mail the code and issue the session.",
+				"examples": [
+					{
+						"id": "google-108213476590231574862",
+						"email": "riley.morgan@example.com",
+						"name": "Riley Morgan",
+						"emailVerified": true
+					},
+					{
+						"id": "google-113406872215509283461",
+						"email": "sam.ortega@example.org",
+						"name": "Sam Ortega",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "EmailProofService.status.cookie",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "The pending proof's cookie, the random token open() returned. A null cookie, or one that names no live pending proof, makes status() resolve null.",
+				"examples": ["Qm9Xk3sV8_pL2mTzR7dYwN4hJ1cGeUaF0iKbXo9ZsQw", null]
 			},
 			{
 				"name": "EmailProofService.start.cookie",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "The pending proof's cookie, the random token open() returned. A null cookie, or one that names no live pending proof, makes start() fail with AuthFailure code email-proof-required, after its delivery check.",
+				"examples": ["h7Lk2QpW9xT4vRz0bNcE8uJ3sYaG6dMfX1oIqVtZ5rA", null]
 			},
 			{
 				"name": "EmailProofService.verify.cookie",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "The pending proof's cookie, the random token open() returned. A null cookie is refused with AuthFailure code email-proof-required before any code is checked, and any other cookie is hashed to find its proof.",
+				"examples": ["Qm9Xk3sV8_pL2mTzR7dYwN4hJ1cGeUaF0iKbXo9ZsQw", null]
 			},
 			{
 				"name": "EmailProofService.verify.code",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The code the person entered, hashed exactly as given together with the proof's hash, so nothing is trimmed or case-folded. Every verify() call spends an attempt, whether or not the code is right, and the limit is MAX_ATTEMPTS.",
+				"examples": ["04829173", "58207716"]
 			},
 			{
 				"name": "EmailProofService.cancel.cookie",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "The cookie of the pending proof to end. A null cookie makes cancel() return at once without changing anything.",
+				"examples": ["h7Lk2QpW9xT4vRz0bNcE8uJ3sYaG6dMfX1oIqVtZ5rA", null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "PENDING_TTL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Milliseconds a pending proof lives after open() sets its expiresAt, after which it no longer counts as pending. Its value is 10 minutes.",
+				"examples": [600000]
 			},
 			{
 				"name": "CODE_TTL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Milliseconds a mailed code stays usable, counted from the send in start(); a newer code replaces the older one. Its value is 10 minutes.",
+				"examples": [600000]
 			},
 			{
 				"name": "MAX_ATTEMPTS",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The attempt limit that every verify() call passes as `limit` to emailProofs.attempt. Its value is 5.",
+				"examples": [5]
 			},
 			{
 				"name": "SEND_INTERVAL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The send window in milliseconds: allowed() passes now minus this value as `since` to the ledger for the Google subject and for the address, which allows one send a minute. Its value is 60000, one minute.",
+				"examples": [60000]
 			},
 			{
 				"name": "DAILY_SENDS",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The daily send cap that allowed() passes as `cap` to the ledger for the Google subject and for the address, counted per UTC day. Its value is 5.",
+				"examples": [5]
 			},
 			{
 				"name": "PROOF_TTL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Milliseconds that a proven address lets its Google subject sign in without a new proof, counted from verify(). Its value is 30 days.",
+				"examples": [2592000000]
 			},
 			{
 				"name": "EmailProofService.proven",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Resolves true only while the Google subject's stored proof is unexpired and its email hash matches the actor's current address; otherwise false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "EmailProofService.open",
-				"type": "Promise<{ cookie: string; status: EmailProofStatus }>"
+				"type": "Promise<{ cookie: string; status: EmailProofStatus }>",
+				"description": "Resolves the new pending proof: cookie is the random token the caller keeps, of which only a keyed hash is stored, and status has sent false and expiresAt null until a code is mailed.",
+				"examples": [
+					{
+						"cookie": "Qm9Xk3sV8_pL2mTzR7dYwN4hJ1cGeUaF0iKbXo9ZsQw",
+						"status": {
+							"email": "riley.morgan@example.com",
+							"sent": false,
+							"expiresAt": null
+						}
+					}
+				]
 			},
 			{
 				"name": "EmailProofService.status",
-				"type": "Promise<EmailProofStatus | null>"
+				"type": "Promise<EmailProofStatus | null>",
+				"description": "Resolves null when the cookie names no live pending proof; otherwise it resolves the proof's status now, where sent is true only while a mailed code is still valid and expiresAt is then that code's expiry.",
+				"examples": [
+					null,
+					{
+						"email": "riley.morgan@example.com",
+						"sent": false,
+						"expiresAt": null
+					},
+					{
+						"email": "riley.morgan@example.com",
+						"sent": true,
+						"expiresAt": "2026-11-15T10:10:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "EmailProofService.start",
-				"type": "Promise<EmailProofStatus>"
+				"type": "Promise<EmailProofStatus>",
+				"description": "Resolves sent true with the mailed code's expiry as an ISO 8601 string, once the code has been delivered and stored; the code itself is never returned.",
+				"examples": [
+					{
+						"email": "riley.morgan@example.com",
+						"sent": true,
+						"expiresAt": "2026-11-15T10:10:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "EmailProofService.verify",
-				"type": "Promise<IssuedSession>"
+				"type": "Promise<IssuedSession>",
+				"description": "Resolves a new browser session for the actor of the claimed proof: credential is shown to its holder once and only its keyed hash is stored, and record is the stored session whose parentHash is the pending proof's hash.",
+				"examples": [
+					{
+						"credential": "Vb3Kq8sLx2NtR7yPc0eWf5uHjD9aZ4mGiT1oSnQe6kE",
+						"record": {
+							"idHash": "a1d4c7e09b3f625d8e1a4c0b7f92d3e65c8a1f04b7d29e3c6a5f0817d4b2e9c0",
+							"kind": "browser",
+							"parentHash": "3e9b1f0c7a52d84e61b0f3c9a7d25e18b4c60f9a2d7e3b15c8a0f4d6e2b971c3",
+							"actor": {
+								"id": "google-108213476590231574862",
+								"email": "riley.morgan@example.com",
+								"name": "Riley Morgan",
+								"emailVerified": true
+							},
+							"resource": "projects",
+							"createdAt": 1794736800000,
+							"expiresAt": 1795341600000,
+							"revokedAt": null
+						}
+					}
+				]
 			},
 			{
 				"name": "EmailProofService.cancel",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with nothing once the pending proof row is removed and the sessions issued from its hash are revoked; a null cookie resolves at once."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "AuthFailure:email-delivery-disabled",
+				"type": "thrown",
+				"description": "Thrown by start() when EmailProofOptions.delivery is null, the configuration in which a proof can be opened but never started. Its HTTP status is 503."
+			},
+			{
+				"name": "AuthFailure:email-proof-required",
+				"type": "thrown",
+				"description": "Thrown by start() or verify() when the cookie is missing or names no live pending proof, by start() when the store refuses the new code, and by verify() when finish() finds the claimed proof gone (the session just issued is revoked first). Its HTTP status is 401."
+			},
+			{
+				"name": "AuthFailure:email-rate-limited",
+				"type": "thrown",
+				"description": "Thrown by start() when the send ledger refuses the send, which counts sends per Google subject and per address: one send a minute, and at most DAILY_SENDS per UTC day. Its HTTP status is 429."
+			},
+			{
+				"name": "AuthFailure:email-delivery-failed",
+				"type": "thrown",
+				"description": "Thrown by start() when delivery.send() rejects; the delivery's own error message is never passed on, and no code is stored because the code is issued only after a successful send. Its HTTP status is 502."
+			},
+			{
+				"name": "AuthFailure:email-code-invalid",
+				"type": "thrown",
+				"description": "Thrown by verify() when the pending proof is still live but the attempt does not claim it, which covers a wrong or spent code. Its HTTP status is 400."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "EmailProofService.proven",
@@ -143,17 +279,34 @@
 					{
 						"name": "EmailProofService.proven.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The Google sign-in to check. proven() reads only its `id`, written as `google-<subject>`, and its `email`, which it hashes to compare with the proven address.",
+						"examples": [
+							{
+								"id": "google-108213476590231574862",
+								"email": "riley.morgan@example.com",
+								"name": "Riley Morgan",
+								"emailVerified": true
+							},
+							{
+								"id": "google-113406872215509283461",
+								"email": "sam.ortega@example.org",
+								"name": "Sam Ortega",
+								"emailVerified": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EmailProofService.proven",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Resolves true only while the Google subject's stored proof is unexpired and its email hash matches the actor's current address; otherwise false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EmailProofService.open",
@@ -161,17 +314,43 @@
 					{
 						"name": "EmailProofService.open.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The Google sign-in that opens a pending proof. open() stores this whole actor on the proof row, and start() and verify() later use that stored copy to mail the code and issue the session.",
+						"examples": [
+							{
+								"id": "google-108213476590231574862",
+								"email": "riley.morgan@example.com",
+								"name": "Riley Morgan",
+								"emailVerified": true
+							},
+							{
+								"id": "google-113406872215509283461",
+								"email": "sam.ortega@example.org",
+								"name": "Sam Ortega",
+								"emailVerified": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EmailProofService.open",
-						"type": "Promise<{ cookie: string; status: EmailProofStatus }>"
+						"type": "Promise<{ cookie: string; status: EmailProofStatus }>",
+						"description": "Resolves the new pending proof: cookie is the random token the caller keeps, of which only a keyed hash is stored, and status has sent false and expiresAt null until a code is mailed.",
+						"examples": [
+							{
+								"cookie": "Qm9Xk3sV8_pL2mTzR7dYwN4hJ1cGeUaF0iKbXo9ZsQw",
+								"status": {
+									"email": "riley.morgan@example.com",
+									"sent": false,
+									"expiresAt": null
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EmailProofService.status",
@@ -179,17 +358,33 @@
 					{
 						"name": "EmailProofService.status.cookie",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "The pending proof's cookie, the random token open() returned. A null cookie, or one that names no live pending proof, makes status() resolve null.",
+						"examples": ["Qm9Xk3sV8_pL2mTzR7dYwN4hJ1cGeUaF0iKbXo9ZsQw", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EmailProofService.status",
-						"type": "Promise<EmailProofStatus | null>"
+						"type": "Promise<EmailProofStatus | null>",
+						"description": "Resolves null when the cookie names no live pending proof; otherwise it resolves the proof's status now, where sent is true only while a mailed code is still valid and expiresAt is then that code's expiry.",
+						"examples": [
+							null,
+							{
+								"email": "riley.morgan@example.com",
+								"sent": false,
+								"expiresAt": null
+							},
+							{
+								"email": "riley.morgan@example.com",
+								"sent": true,
+								"expiresAt": "2026-11-15T10:10:00.000Z"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EmailProofService.start",
@@ -197,17 +392,48 @@
 					{
 						"name": "EmailProofService.start.cookie",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "The pending proof's cookie, the random token open() returned. A null cookie, or one that names no live pending proof, makes start() fail with AuthFailure code email-proof-required, after its delivery check.",
+						"examples": ["h7Lk2QpW9xT4vRz0bNcE8uJ3sYaG6dMfX1oIqVtZ5rA", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EmailProofService.start",
-						"type": "Promise<EmailProofStatus>"
+						"type": "Promise<EmailProofStatus>",
+						"description": "Resolves sent true with the mailed code's expiry as an ISO 8601 string, once the code has been delivered and stored; the code itself is never returned.",
+						"examples": [
+							{
+								"email": "riley.morgan@example.com",
+								"sent": true,
+								"expiresAt": "2026-11-15T10:10:00.000Z"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure:email-delivery-disabled",
+						"type": "thrown",
+						"description": "Thrown by start() when EmailProofOptions.delivery is null, the configuration in which a proof can be opened but never started. Its HTTP status is 503."
+					},
+					{
+						"name": "AuthFailure:email-proof-required",
+						"type": "thrown",
+						"description": "Thrown by start() when the cookie is missing or names no live pending proof, or when the store refuses the new code. Its HTTP status is 401."
+					},
+					{
+						"name": "AuthFailure:email-rate-limited",
+						"type": "thrown",
+						"description": "Thrown by start() when the send ledger refuses the send, which counts sends per Google subject and per address: one send a minute, and at most DAILY_SENDS per UTC day. Its HTTP status is 429."
+					},
+					{
+						"name": "AuthFailure:email-delivery-failed",
+						"type": "thrown",
+						"description": "Thrown by start() when delivery.send() rejects; the delivery's own error message is never passed on, and no code is stored because the code is issued only after a successful send. Its HTTP status is 502."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EmailProofService.verify",
@@ -215,22 +441,58 @@
 					{
 						"name": "EmailProofService.verify.cookie",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "The pending proof's cookie, the random token open() returned. A null cookie is refused with AuthFailure code email-proof-required before any code is checked, and any other cookie is hashed to find its proof.",
+						"examples": ["Qm9Xk3sV8_pL2mTzR7dYwN4hJ1cGeUaF0iKbXo9ZsQw", null]
 					},
 					{
 						"name": "EmailProofService.verify.code",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The code the person entered, hashed exactly as given together with the proof's hash, so nothing is trimmed or case-folded. Every verify() call spends an attempt, whether or not the code is right, and the limit is MAX_ATTEMPTS.",
+						"examples": ["04829173", "58207716"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EmailProofService.verify",
-						"type": "Promise<IssuedSession>"
+						"type": "Promise<IssuedSession>",
+						"description": "Resolves a new browser session for the actor of the claimed proof: credential is shown to its holder once and only its keyed hash is stored, and record is the stored session whose parentHash is the pending proof's hash.",
+						"examples": [
+							{
+								"credential": "Vb3Kq8sLx2NtR7yPc0eWf5uHjD9aZ4mGiT1oSnQe6kE",
+								"record": {
+									"idHash": "a1d4c7e09b3f625d8e1a4c0b7f92d3e65c8a1f04b7d29e3c6a5f0817d4b2e9c0",
+									"kind": "browser",
+									"parentHash": "3e9b1f0c7a52d84e61b0f3c9a7d25e18b4c60f9a2d7e3b15c8a0f4d6e2b971c3",
+									"actor": {
+										"id": "google-108213476590231574862",
+										"email": "riley.morgan@example.com",
+										"name": "Riley Morgan",
+										"emailVerified": true
+									},
+									"resource": "projects",
+									"createdAt": 1794736800000,
+									"expiresAt": 1795341600000,
+									"revokedAt": null
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure:email-proof-required",
+						"type": "thrown",
+						"description": "Thrown by verify() when the cookie is missing or names no live pending proof, or when finish() finds the claimed proof gone, in which case the session just issued is revoked first. Its HTTP status is 401."
+					},
+					{
+						"name": "AuthFailure:email-code-invalid",
+						"type": "thrown",
+						"description": "Thrown by verify() when the pending proof is still live but the attempt does not claim it, which covers a wrong or spent code. Its HTTP status is 400."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "EmailProofService.cancel",
@@ -238,17 +500,20 @@
 					{
 						"name": "EmailProofService.cancel.cookie",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "The cookie of the pending proof to end. A null cookie makes cancel() return at once without changing anything.",
+						"examples": ["h7Lk2QpW9xT4vRz0bNcE8uJ3sYaG6dMfX1oIqVtZ5rA", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EmailProofService.cancel",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with nothing once the pending proof row is removed and the sessions issued from its hash are revoked; a null cookie resolves at once."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -258,17 +523,19 @@
 					{
 						"name": "EmailProofService.constructor.options",
 						"type": "EmailProofOptions",
-						"required": true
+						"required": true,
+						"description": "The collaborators the service needs: the `emailProofs` and `emailLedger` store slice, the session repository, the secrets used to hash cookies, codes and addresses, the mail delivery, and a `now` clock. `delivery` is null when none is configured, so a proof can be opened but never started, and `now` returns epoch milliseconds."
 					}
 				],
 				"outputs": [
 					{
 						"name": "EmailProofService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new EmailProofService instance; its only state is the private options it was constructed with."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
