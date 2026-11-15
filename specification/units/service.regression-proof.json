@@ -196,8 +196,8 @@
 		],
 		"outputs": [
 			{
-				"name": "Result",
-				"type": "Regression result",
+				"name": "RegressionProofService.run",
+				"type": "Promise<RegressionRecord>",
 				"description": "The RegressionRecord that run() resolves with: its phase, status, exit code, assertion and log hash, plus an id that is the SHA-256 of the record without its id. It is saved only after every check passes, and as a focused result it never grants full verification or a budget baseline.",
 				"examples": [
 					{
