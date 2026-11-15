@@ -9,14 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/deriveManifest.ts",
 			"src/utils/development-tooling/deriveManifest.ts",
 			"src/workflows/development-tooling/load-units/unit-index-service/deriveContract.ts",
 			"src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
 			"src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.types.ts"
 		],
 		"symbols": [
-			"deriveManifest",
 			"DeriveInput",
 			"deriveManifest",
 			"deriveContract",

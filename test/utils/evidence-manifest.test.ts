@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
 import { evidenceManifestSchema } from '../../src/core/historyTypes';
 import { evidenceManifest } from '../../src/services/verification-evidence/evidence-attach-service/evidenceManifest';
-import { recordFiles } from '../../src/utils/evidenceManifest';
+import { recordFiles } from '../../src/utils/verification-evidence/evidenceManifest';
 import { verificationSample } from '../support/verificationSample';
 
 const digest = (letter: string) => letter.repeat(64);

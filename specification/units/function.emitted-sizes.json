@@ -10,18 +10,9 @@
 	"owns": {
 		"source": [
 			"src/utils/development-tooling/emittedSizes.ts",
-			"src/utils/development-tooling/emittedSizes.types.ts",
-			"src/utils/emittedSizes.ts"
+			"src/utils/development-tooling/emittedSizes.types.ts"
 		],
-		"symbols": [
-			"emittedMetric",
-			"emittedKey",
-			"emittedSizes",
-			"Sized",
-			"emittedMetric",
-			"emittedKey",
-			"emittedSizes"
-		]
+		"symbols": ["emittedMetric", "emittedKey", "emittedSizes", "Sized"]
 	},
 	"contract": {
 		"origin": "declared",

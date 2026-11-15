@@ -4,7 +4,7 @@ import type { ComponentManifest } from '../../src/core/unitTypes';
 import { BudgetService } from '../../src/services/budget-service/BudgetService';
 import { budgetFindings } from '../../src/services/budget-service/budgetFindings';
 import { type BudgetBaseline } from '../../src/utils/budgetFindings';
-import { emittedKey, emittedSizes } from '../../src/utils/emittedSizes';
+import { emittedKey, emittedSizes } from '../../src/utils/development-tooling/emittedSizes';
 import {
 	unitMeasurements,
 	type BuiltArtifacts
