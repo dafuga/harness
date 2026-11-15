@@ -804,7 +804,7 @@
 				"outputs": [
 					{
 						"name": "SqliteAdapter.constructor",
-						"type": "unknown",
+						"type": "SqliteAdapter",
 						"description": "The constructed adapter holding the supplied database and registered models. Construction validates model declarations but does not open the database."
 					}
 				],

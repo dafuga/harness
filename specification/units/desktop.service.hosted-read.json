@@ -66,7 +66,7 @@
 		"outputs": [
 			{
 				"name": "HostedReadService.read",
-				"type": "unknown",
+				"type": "Promise<{ value: T; cachedAt: string | undefined; offline: boolean }>",
 				"description": "The resolved object { value, cachedAt, offline } of read: value is the loaded value unchecked on a fresh read, or the validate() result on an offline read. cachedAt is the ISO time the cache entry was written or kept, and it is undefined on a fresh read with no identity or no cache; offline is true only when the value was served from the kept entry.",
 				"examples": [
 					{
@@ -167,7 +167,7 @@
 				"outputs": [
 					{
 						"name": "HostedReadService.read",
-						"type": "unknown",
+						"type": "Promise<{ value: T; cachedAt: string | undefined; offline: boolean }>",
 						"description": "The resolved object { value, cachedAt, offline } of read: value is the loaded value unchecked on a fresh read, or the validate() result on an offline read. cachedAt is the ISO time the cache entry was written or kept, and it is undefined on a fresh read with no identity or no cache; offline is true only when the value was served from the kept entry.",
 						"examples": [
 							{
@@ -244,7 +244,7 @@
 				"outputs": [
 					{
 						"name": "HostedReadService.constructor",
-						"type": "unknown",
+						"type": "HostedReadService",
 						"description": "The HostedReadService instance the constructor creates, which keeps options privately and exposes read as its only public method."
 					}
 				],

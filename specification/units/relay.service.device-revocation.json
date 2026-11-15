@@ -106,7 +106,7 @@
 				"outputs": [
 					{
 						"name": "DeviceRevocationService.constructor",
-						"type": "unknown",
+						"type": "DeviceRevocationService",
 						"description": "The constructed DeviceRevocationService instance retains the supplied store, sockets, and link references for later revoke() calls. The constructor performs no validation or other work."
 					}
 				],

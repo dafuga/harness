@@ -48,7 +48,7 @@
 		"outputs": [
 			{
 				"name": "DesktopBridgeService.bridge",
-				"type": "unknown",
+				"type": "ReturnType<typeof desktopBridge>",
 				"description": "The value returned by desktopBridge using the stored services and choice callback. When session.remote is truthy, bridge() returns that value wrapped by HostedProjectService; otherwise it returns the local bridge, and the declared type remains unknown."
 			}
 		],
@@ -61,7 +61,7 @@
 				"outputs": [
 					{
 						"name": "DesktopBridgeService.bridge",
-						"type": "unknown",
+						"type": "ReturnType<typeof desktopBridge>",
 						"description": "The value returned by desktopBridge using the stored services and choice callback. When session.remote is truthy, bridge() returns that value wrapped by HostedProjectService; otherwise it returns the local bridge, and the declared type remains unknown."
 					}
 				],
@@ -101,7 +101,7 @@
 				"outputs": [
 					{
 						"name": "DesktopBridgeService.constructor",
-						"type": "unknown",
+						"type": "DesktopBridgeService",
 						"description": "The newly constructed DesktopBridgeService instance holding the four supplied constructor arguments. Bridge creation is deferred until bridge() is called."
 					}
 				],

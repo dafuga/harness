@@ -368,7 +368,7 @@
 				"outputs": [
 					{
 						"name": "SqliteTableAdapter.constructor",
-						"type": "unknown",
+						"type": "SqliteTableAdapter",
 						"description": "The constructor creates an adapter instance holding the supplied database and model. It caches the table identifier returned by sqliteIdentifier and uses model.primaryKey or id."
 					}
 				],
