@@ -9,13 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/adapters/AgentSettingsAdapter.ts",
 			"packages/desktop/src/lib/agents-providers/agent-settings/AgentSettingsAdapter.ts",
 			"packages/desktop/src/lib/agents-providers/agent-settings/AgentSettingsAdapter.types.ts"
 		],
 		"symbols": [
-			"AgentSettingsAdapter",
-			"AgentSettingsAdapterConfig",
 			"AgentSettingsAdapter",
 			"AgentSettingsAdapter.constructor",
 			"AgentSettingsAdapter.read",

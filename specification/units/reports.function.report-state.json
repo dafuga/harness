@@ -10,18 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/repositories/reports-media/report-repository/reportState.ts",
-			"packages/reports/src/utils/reportState.ts",
 			"packages/reports/src/utils/reports-media/reportState.ts"
 		],
-		"symbols": [
-			"reportState",
-			"reportState",
-			"resultStatus",
-			"interrupted",
-			"resultStatus",
-			"interrupted",
-			"reportState"
-		]
+		"symbols": ["reportState", "resultStatus", "interrupted", "reportState"]
 	},
 	"contract": {
 		"origin": "declared",

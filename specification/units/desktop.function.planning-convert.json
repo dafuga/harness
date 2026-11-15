@@ -9,21 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/utils/planningConvert.ts",
 			"packages/desktop/src/utils/projects-sessions/planning-reads/planningConvert.ts",
 			"packages/desktop/src/utils/projects-sessions/planningConvert.ts"
 		],
-		"symbols": [
-			"planningConvert",
-			"approvalInfo",
-			"threadInfo",
-			"messageInfo",
-			"planningConvert",
-			"approvalInfo",
-			"threadInfo",
-			"messageInfo",
-			"planningConvert"
-		]
+		"symbols": ["planningConvert", "approvalInfo", "threadInfo", "messageInfo", "planningConvert"]
 	},
 	"contract": {
 		"origin": "declared",

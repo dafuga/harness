@@ -9,10 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/lib/console-workspace/consoleWorkspace.svelte.ts",
 			"packages/reports/src/lib/projects-sessions/console-workspace/consoleWorkspace.svelte.ts"
 		],
-		"symbols": ["createConsoleWorkspaceStore", "createConsoleWorkspaceStore"]
+		"symbols": ["createConsoleWorkspaceStore"]
 	},
 	"contract": {
 		"origin": "derived",

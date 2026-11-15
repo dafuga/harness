@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/agents-providers/desktop-run-service/prepareProjectRun.ts",
-			"packages/desktop/src/services/desktop-run-service/prepareProjectRun.ts",
 			"packages/desktop/src/utils/agents-providers/prepareProjectRun.ts"
 		],
-		"symbols": ["prepareProjectRun", "prepareProjectRun", "ProjectRunContext", "prepareProjectRun"]
+		"symbols": ["prepareProjectRun", "ProjectRunContext", "prepareProjectRun"]
 	},
 	"contract": {
 		"origin": "declared",

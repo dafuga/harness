@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntityContract.ts",
-			"packages/hub/src/services/hub-projection-service/hubEntityContract.ts"
-		],
-		"symbols": ["hubEntityContract", "hubEntityContract"]
+		"source": ["packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntityContract.ts"],
+		"symbols": ["hubEntityContract"]
 	},
 	"contract": {
 		"origin": "declared",

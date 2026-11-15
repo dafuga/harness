@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/cli/program/run-report/reportsEnvironment.ts",
-			"src/cli/program/run-report/reportsEnvironment.types.ts",
-			"src/workflows/run-report/reportsEnvironment.ts"
+			"src/cli/program/run-report/reportsEnvironment.types.ts"
 		],
-		"symbols": ["reportsEnvironment", "ReportSettings", "reportsEnvironment"]
+		"symbols": ["reportsEnvironment", "ReportSettings"]
 	},
 	"contract": {
 		"origin": "declared",

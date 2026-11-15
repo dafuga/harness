@@ -9,11 +9,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/components/entity-view/evidenceVerdict.ts",
 			"packages/desktop/src/components/explorer-ui/entity-view/evidenceVerdict.ts",
 			"packages/desktop/src/components/explorer-ui/entity-view/evidenceVerdict.types.ts",
 			"packages/desktop/src/utils/explorer-ui/evidenceVerdict.ts"
 		],
-		"symbols": ["evidenceVerdict", "Judged", "EvidenceRead", "EntityVerdict", "evidenceVerdict"]
+		"symbols": [
+			"evidenceVerdict",
+			"evidenceVerdict",
+			"Judged",
+			"EvidenceRead",
+			"EntityVerdict",
+			"evidenceVerdict"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -9,10 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubReaches.ts",
-			"packages/collaboration/src/utils/githubReaches.ts"
+			"packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubReaches.ts"
 		],
-		"symbols": ["githubReaches", "githubReaches"]
+		"symbols": ["githubReaches"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -82,11 +81,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/collaboration/src/utils/githubReaches.ts",
+		"entry": "packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubReaches.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/collaboration/src/utils/githubReaches.ts"
+				"entry": "packages/collaboration/src/utils/git-source-history/create-git-hub-source/githubReaches.ts"
 			}
 		]
 	},

@@ -10,19 +10,9 @@
 	"owns": {
 		"source": [
 			"src/cli/program/history-index-service/historySeries.ts",
-			"src/cli/program/history-index-service/historySeries.types.ts",
-			"src/utils/historySeries.ts"
+			"src/cli/program/history-index-service/historySeries.types.ts"
 		],
-		"symbols": [
-			"unitGrowth",
-			"historySeries",
-			"Growth",
-			"Point",
-			"Line",
-			"Head",
-			"unitGrowth",
-			"historySeries"
-		]
+		"symbols": ["unitGrowth", "historySeries", "Growth", "Point", "Line", "Head"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -162,11 +152,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/historySeries.ts",
+		"entry": "src/cli/program/history-index-service/historySeries.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/historySeries.ts"
+				"entry": "src/cli/program/history-index-service/historySeries.ts"
 			}
 		]
 	},

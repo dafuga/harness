@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
-			"packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.types.ts",
-			"packages/relay/src/services/PairingOfferService.ts"
+			"packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.types.ts"
 		],
 		"symbols": [
 			"PairingOfferService",
@@ -22,8 +21,7 @@
 			"PairingOfferService.deny",
 			"PairingOfferService.close",
 			"PairingOfferService.sweep",
-			"Approval",
-			"PairingOfferService"
+			"Approval"
 		]
 	},
 	"contract": {

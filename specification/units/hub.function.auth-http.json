@@ -9,7 +9,6 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/controllers/github-connection-controller/authHttp.ts",
 			"packages/hub/src/lib/server/auth/request-session-service/authHttp.ts",
 			"packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/authHttp.ts",
 			"packages/hub/src/lib/verification-evidence/server/auth/request-session-service/authHttp.ts",
@@ -19,7 +18,6 @@
 			"packages/hub/src/utils/verification-evidence/authHttp.types.ts"
 		],
 		"symbols": [
-			"authRedirect",
 			"sameOrigin",
 			"bearerToken",
 			"authRedirect",

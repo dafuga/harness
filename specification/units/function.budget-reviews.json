@@ -10,16 +10,12 @@
 	"owns": {
 		"source": [
 			"src/cli/program/history-index-service/budgetReviews.ts",
-			"src/utils/budgetReviews.ts",
 			"src/utils/revision-registry/frozenLimits.ts",
 			"src/utils/verification-evidence/budgetReviews.ts",
 			"src/utils/verification-evidence/revision-registry/frozenLimits.ts"
 		],
 		"symbols": [
 			"budgetReviews",
-			"budgetReviews",
-			"frozenLimits",
-			"emittedLimits",
 			"frozenLimits",
 			"emittedLimits",
 			"BudgetReview",

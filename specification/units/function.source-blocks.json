@@ -11,9 +11,10 @@
 		"source": [
 			"src/services/development-tooling/source-index-service/sourceBlocks.ts",
 			"src/services/development-tooling/source-index-service/sourceBlocks.types.ts",
+			"src/services/source-index-service/sourceBlocks.ts",
 			"src/utils/development-tooling/sourceBlocks.ts"
 		],
-		"symbols": ["sourceBlocks", "Region", "SourceBlock", "sourceBlocks"]
+		"symbols": ["sourceBlocks", "Region", "sourceBlocks", "SourceBlock", "sourceBlocks"]
 	},
 	"contract": {
 		"origin": "declared",

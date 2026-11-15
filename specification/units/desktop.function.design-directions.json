@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/utils/planning-collaboration/plan-design/designDirections.ts"],
-		"symbols": ["designDirections"]
+		"source": [
+			"packages/desktop/src/utils/designDirections.ts",
+			"packages/desktop/src/utils/planning-collaboration/plan-design/designDirections.ts"
+		],
+		"symbols": ["designDirections", "designDirections"]
 	},
 	"contract": {
 		"origin": "declared",

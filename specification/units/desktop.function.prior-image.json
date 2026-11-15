@@ -9,11 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/design-panel/priorImage.ts",
 			"packages/desktop/src/components/planning-collaboration/design-panel/priorImage.ts",
 			"packages/desktop/src/utils/planning-collaboration/priorImage.ts"
 		],
-		"symbols": ["priorImage", "priorImage", "PriorImage", "priorImage"]
+		"symbols": ["priorImage", "PriorImage", "priorImage"]
 	},
 	"contract": {
 		"origin": "declared",

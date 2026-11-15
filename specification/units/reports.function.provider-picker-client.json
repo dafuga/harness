@@ -10,15 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/agents-providers/provider-picker/providerPickerClient.ts",
-			"packages/reports/src/components/provider-picker/providerPickerClient.ts",
 			"packages/reports/src/utils/agents-providers/providerPickerClient.ts"
 		],
-		"symbols": [
-			"providerPickerClient",
-			"providerPickerClient",
-			"PickerClient",
-			"providerPickerClient"
-		]
+		"symbols": ["providerPickerClient", "PickerClient", "providerPickerClient"]
 	},
 	"contract": {
 		"origin": "declared",

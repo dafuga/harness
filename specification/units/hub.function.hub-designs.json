@@ -10,19 +10,11 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesigns.ts",
-			"packages/hub/src/utils/hub-catalog/hubDesigns.ts",
 			"packages/hub/src/utils/hubDesigns.ts",
 			"packages/hub/src/utils/networking-security/hub-catalog/hubDesigns.ts",
 			"packages/hub/src/utils/networking-security/hub-designs/design.ts"
 		],
-		"symbols": [
-			"hubDesignImage",
-			"hubDesigns",
-			"hubDesigns",
-			"hubDesignImage",
-			"hubDesigns",
-			"design"
-		]
+		"symbols": ["hubDesignImage", "hubDesigns", "hubDesignImage", "hubDesigns", "design"]
 	},
 	"contract": {
 		"origin": "declared",
