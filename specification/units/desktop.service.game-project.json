@@ -18,55 +18,257 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameProjectService.constructor.session",
 				"type": "ProjectSessionService",
-				"required": true
+				"required": true,
+				"description": "The project session this service delegates to: create checks this.session.busy and this.session.pending and calls this.session.open(target), read calls this.session.assertProject and this.session.requireProject, and save calls this.session.assertProject and this.session.mutable, checks this.session.busy, and uses this.session.arbiter.exclusive. The constructor stores the reference it is given."
 			},
 			{
 				"name": "GameProjectService.constructor.projectsRoot",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The folder that create uses as the parent of each new project folder; create creates it recursively when it is missing. Defaults to join(homedir(), 'projects'): the 'projects' folder inside the user's home directory.",
+				"examples": ["/Users/example/projects", "/home/example/projects"]
 			},
 			{
 				"name": "GameProjectService.create.input",
 				"type": "Parameters<NonNullable<DesktopBridge['gameCreate']>>[0]",
-				"required": true
+				"required": true,
+				"description": "The options for a new project: create calls validateProjectName on input.name, uses that name as the folder under projectsRoot, passes the whole object to createProject as { ...input, parent }, and calls initializePlanning only when input.kind is 'game'. input.kind is also written into the initial commit message 'feat: initialize <kind> project'.",
+				"examples": [
+					{
+						"name": "moon-runner",
+						"kind": "game",
+						"dimension": "2d"
+					},
+					{
+						"name": "Harbor Lights",
+						"kind": "game",
+						"dimension": "3d"
+					}
+				]
 			},
 			{
 				"name": "GameProjectService.read.input",
 				"type": "Parameters<NonNullable<DesktopBridge['gameRead']>>[0]",
-				"required": true
+				"required": true,
+				"description": "The request to read a project document: read calls this.session.assertProject with input.projectId, then this.session.requireProject(), and passes input.commit to a new GameDocumentRepository(root).read call without checking it in this service.",
+				"examples": [
+					{
+						"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+						"commit": "3b7e9d1f0c4a6e2b8d5f7a9c1e3b5d7f9a1c3e5b"
+					},
+					{
+						"projectId": "local-b41d7e0c9a3f25816e4bd0a7c39f1e62d85a4c7b0e93f16a2d5c8b4e7f09a3c1"
+					}
+				]
 			},
 			{
 				"name": "GameProjectService.save.input",
 				"type": "Parameters<NonNullable<DesktopBridge['gameSave']>>[0]",
-				"required": true
+				"required": true,
+				"description": "The request to save a project document: save calls this.session.assertProject with input.projectId, awaits this.session.mutable(), and then runs a new GameDocumentRepository(root).save(input.document, input.expectedRevision) call inside this.session.arbiter.exclusive for the project root.",
+				"examples": [
+					{
+						"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+						"document": {
+							"version": 1,
+							"views": [
+								{
+									"id": "main",
+									"title": "Main level",
+									"dimension": "2d",
+									"style": "bright pixel art",
+									"checkpoints": [
+										{
+											"id": "start",
+											"title": "Start",
+											"description": "The player begins here.",
+											"x": 120,
+											"y": 340,
+											"requires": [],
+											"conditions": [],
+											"actions": []
+										}
+									]
+								}
+							],
+							"mechanics": []
+						},
+						"expectedRevision": "a7f3c91e5b2d08f46c1e9a3b7d5f2c8e0b4a6d9f1c3e7b5a2d8f0c6e4b9a1d37"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameProjectService.create",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The resolved value of create: whatever this.session.open(target) returns for the new project folder. It resolves only after createProject, the initializePlanning step for kind 'game', and the initialize steps (git init, git add, git commit) have succeeded; if one of those steps throws, the target folder is removed and the call rejects.",
+				"examples": [
+					{
+						"project": {
+							"name": "moon-runner",
+							"root": "/Users/example/projects/moon-runner",
+							"id": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+							"kind": "game",
+							"dimension": "2d"
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": true,
+							"planning": true,
+							"approval": true,
+							"source": "local",
+							"reason": "Comments are saved as local pending drafts until connected."
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "e2c4a8f16d0b9573a1e8c2f4d6b0a9e7c3f5d1b8",
+							"tip": "e2c4a8f16d0b9573a1e8c2f4d6b0a9e7c3f5d1b8",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "e2c4a8f16d0b9573a1e8c2f4d6b0a9e7c3f5d1b8",
+								"current": true
+							}
+						],
+						"commits": [
+							{
+								"hash": "e2c4a8f16d0b9573a1e8c2f4d6b0a9e7c3f5d1b8",
+								"subject": "feat: initialize game project",
+								"authoredAt": "2026-11-15T09:12:44+01:00",
+								"committedAt": "2026-11-15T09:12:44+01:00"
+							}
+						],
+						"entities": [],
+						"writable": true
+					}
+				]
 			},
 			{
 				"name": "GameProjectService.read",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The resolved value of read: the result of new GameDocumentRepository(root).read(input.commit) for the open project root, returned without change. The call rejects when this.session.requireProject() throws or when this.session.assertProject throws synchronously.",
+				"examples": [
+					{
+						"document": {
+							"version": 1,
+							"views": [
+								{
+									"id": "main",
+									"title": "Main level",
+									"dimension": "2d",
+									"style": "bright pixel art",
+									"checkpoints": [
+										{
+											"id": "start",
+											"title": "Start",
+											"description": "The player begins here.",
+											"x": 120,
+											"y": 340,
+											"requires": [],
+											"conditions": [],
+											"actions": []
+										}
+									]
+								}
+							],
+							"mechanics": []
+						},
+						"revision": "a7f3c91e5b2d08f46c1e9a3b7d5f2c8e0b4a6d9f1c3e7b5a2d8f0c6e4b9a1d37"
+					}
+				]
 			},
 			{
 				"name": "GameProjectService.save",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The resolved value of save: whatever this.session.arbiter.exclusive resolves for the new GameDocumentRepository(root).save(input.document, input.expectedRevision) call, returned without change. The call rejects when this.session.mutable() rejects, when the busy check throws, or when the exclusive run rejects.",
+				"examples": [
+					{
+						"revision": "4d91e0b7c3a5f826e1d9b4c0a7f3e5d2b8c6a1f9e4d7b0c3a5f8e2d6b1c9a40f"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Propagates any error from homedir(), which the default for projectsRoot calls whenever the projectsRoot argument is undefined, since the constructor does not catch it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Wait for the current project operation.' when this.session.busy or this.session.pending is set. This check runs before validateProjectName, so no folder is created."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'A project with that name already exists.' when mkdir of the target folder fails with code EEXIST. The existing folder is left in place because this call did not create it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rethrows any other error from mkdir of the target folder, unchanged."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Propagates any error from mkdir of the projects root, which runs with recursive: true and is not caught."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Propagates any error from validateProjectName(input.name), which runs before the projects root or the target folder is created."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Propagates any error from the try block: createProject, initializePlanning when input.kind is 'game', and initialize with a GitAdapter for the target, including a Git failure such as a missing commit identity, which fails as Git reports it. The target folder is removed with rm before the error is rethrown."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Propagates any error from this.session.open(target), which runs after the try block. The created project folder is not removed in that case."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "this.session.assertProject(input.projectId) is called without await or return, so only a synchronous throw from it reaches the caller."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with any error from this.session.requireProject(), which read calls right after assertProject."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with any error from new GameDocumentRepository(root).read(input.commit), which read returns without catching."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with any error from this.session.mutable(), which save awaits after assertProject."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown with the message 'Wait for the current run.' when this.session.busy is set after this.session.mutable() resolves."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Propagates any error from this.session.arbiter.exclusive(root, ...), whose callback constructs GameDocumentRepository(root) and calls save(input.document, input.expectedRevision)."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GameProjectService.create",
@@ -74,22 +276,109 @@
 					{
 						"name": "GameProjectService.create.input",
 						"type": "Parameters<NonNullable<DesktopBridge['gameCreate']>>[0]",
-						"required": true
+						"required": true,
+						"description": "The options for a new project: create calls validateProjectName on input.name, uses that name as the folder under projectsRoot, passes the whole object to createProject as { ...input, parent }, and calls initializePlanning only when input.kind is 'game'. input.kind is also written into the initial commit message 'feat: initialize <kind> project'.",
+						"examples": [
+							{
+								"name": "moon-runner",
+								"kind": "game",
+								"dimension": "2d"
+							},
+							{
+								"name": "Harbor Lights",
+								"kind": "game",
+								"dimension": "3d"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameProjectService.create",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The resolved value of create: whatever this.session.open(target) returns for the new project folder. It resolves only after createProject, the initializePlanning step for kind 'game', and the initialize steps (git init, git add, git commit) have succeeded; if one of those steps throws, the target folder is removed and the call rejects.",
+						"examples": [
+							{
+								"project": {
+									"name": "moon-runner",
+									"root": "/Users/example/projects/moon-runner",
+									"id": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+									"kind": "game",
+									"dimension": "2d"
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": true,
+									"planning": true,
+									"approval": true,
+									"source": "local",
+									"reason": "Comments are saved as local pending drafts until connected."
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "e2c4a8f16d0b9573a1e8c2f4d6b0a9e7c3f5d1b8",
+									"tip": "e2c4a8f16d0b9573a1e8c2f4d6b0a9e7c3f5d1b8",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "e2c4a8f16d0b9573a1e8c2f4d6b0a9e7c3f5d1b8",
+										"current": true
+									}
+								],
+								"commits": [
+									{
+										"hash": "e2c4a8f16d0b9573a1e8c2f4d6b0a9e7c3f5d1b8",
+										"subject": "feat: initialize game project",
+										"authoredAt": "2026-11-15T09:12:44+01:00",
+										"committedAt": "2026-11-15T09:12:44+01:00"
+									}
+								],
+								"entities": [],
+								"writable": true
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'Wait for the current project operation.' when this.session.busy or this.session.pending is set. This check runs before validateProjectName, so no folder is created."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'A project with that name already exists.' when mkdir of the target folder fails with code EEXIST. The existing folder is left in place because this call did not create it."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rethrows any other error from mkdir of the target folder, unchanged."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagates any error from mkdir of the projects root, which runs with recursive: true and is not caught."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagates any error from validateProjectName(input.name), which runs before the projects root or the target folder is created."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagates any error from the try block: createProject, initializePlanning when input.kind is 'game', and initialize with a GitAdapter for the target, including a Git failure such as a missing commit identity, which fails as Git reports it. The target folder is removed with rm before the error is rethrown."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagates any error from this.session.open(target), which runs after the try block. The created project folder is not removed in that case."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GameProjectService.read",
@@ -97,17 +386,73 @@
 					{
 						"name": "GameProjectService.read.input",
 						"type": "Parameters<NonNullable<DesktopBridge['gameRead']>>[0]",
-						"required": true
+						"required": true,
+						"description": "The request to read a project document: read calls this.session.assertProject with input.projectId, then this.session.requireProject(), and passes input.commit to a new GameDocumentRepository(root).read call without checking it in this service.",
+						"examples": [
+							{
+								"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+								"commit": "3b7e9d1f0c4a6e2b8d5f7a9c1e3b5d7f9a1c3e5b"
+							},
+							{
+								"projectId": "local-b41d7e0c9a3f25816e4bd0a7c39f1e62d85a4c7b0e93f16a2d5c8b4e7f09a3c1"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameProjectService.read",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The resolved value of read: the result of new GameDocumentRepository(root).read(input.commit) for the open project root, returned without change. The call rejects when this.session.requireProject() throws or when this.session.assertProject throws synchronously.",
+						"examples": [
+							{
+								"document": {
+									"version": 1,
+									"views": [
+										{
+											"id": "main",
+											"title": "Main level",
+											"dimension": "2d",
+											"style": "bright pixel art",
+											"checkpoints": [
+												{
+													"id": "start",
+													"title": "Start",
+													"description": "The player begins here.",
+													"x": 120,
+													"y": 340,
+													"requires": [],
+													"conditions": [],
+													"actions": []
+												}
+											]
+										}
+									],
+									"mechanics": []
+								},
+								"revision": "a7f3c91e5b2d08f46c1e9a3b7d5f2c8e0b4a6d9f1c3e7b5a2d8f0c6e4b9a1d37"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "this.session.assertProject(input.projectId) is called without await or return, so only a synchronous throw from it reaches the caller."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with any error from this.session.requireProject(), which read calls right after assertProject."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with any error from new GameDocumentRepository(root).read(input.commit), which read returns without catching."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GameProjectService.save",
@@ -115,22 +460,75 @@
 					{
 						"name": "GameProjectService.save.input",
 						"type": "Parameters<NonNullable<DesktopBridge['gameSave']>>[0]",
-						"required": true
+						"required": true,
+						"description": "The request to save a project document: save calls this.session.assertProject with input.projectId, awaits this.session.mutable(), and then runs a new GameDocumentRepository(root).save(input.document, input.expectedRevision) call inside this.session.arbiter.exclusive for the project root.",
+						"examples": [
+							{
+								"projectId": "local-5e9c1f7a3b2d8e04c6f1a9b7d3e5c2f8a0b4d6e9c1f3a7b5d2e8c0f4a6b9d1e3",
+								"document": {
+									"version": 1,
+									"views": [
+										{
+											"id": "main",
+											"title": "Main level",
+											"dimension": "2d",
+											"style": "bright pixel art",
+											"checkpoints": [
+												{
+													"id": "start",
+													"title": "Start",
+													"description": "The player begins here.",
+													"x": 120,
+													"y": 340,
+													"requires": [],
+													"conditions": [],
+													"actions": []
+												}
+											]
+										}
+									],
+									"mechanics": []
+								},
+								"expectedRevision": "a7f3c91e5b2d08f46c1e9a3b7d5f2c8e0b4a6d9f1c3e7b5a2d8f0c6e4b9a1d37"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameProjectService.save",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The resolved value of save: whatever this.session.arbiter.exclusive resolves for the new GameDocumentRepository(root).save(input.document, input.expectedRevision) call, returned without change. The call rejects when this.session.mutable() rejects, when the busy check throws, or when the exclusive run rejects.",
+						"examples": [
+							{
+								"revision": "4d91e0b7c3a5f826e1d9b4c0a7f3e5d2b8c6a1f9e4d7b0c3a5f8e2d6b1c9a40f"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "this.session.assertProject(input.projectId) is called without await or return, so only a synchronous throw from it reaches the caller."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with any error from this.session.mutable(), which save awaits after assertProject."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown with the message 'Wait for the current run.' when this.session.busy is set after this.session.mutable() resolves."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagates any error from this.session.arbiter.exclusive(root, ...), whose callback constructs GameDocumentRepository(root) and calls save(input.document, input.expectedRevision)."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -140,22 +538,32 @@
 					{
 						"name": "GameProjectService.constructor.session",
 						"type": "ProjectSessionService",
-						"required": true
+						"required": true,
+						"description": "The project session this service delegates to: create checks this.session.busy and this.session.pending and calls this.session.open(target), read calls this.session.assertProject and this.session.requireProject, and save calls this.session.assertProject and this.session.mutable, checks this.session.busy, and uses this.session.arbiter.exclusive. The constructor stores the reference it is given."
 					},
 					{
 						"name": "GameProjectService.constructor.projectsRoot",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The folder that create uses as the parent of each new project folder; create creates it recursively when it is missing. Defaults to join(homedir(), 'projects'): the 'projects' folder inside the user's home directory.",
+						"examples": ["/Users/example/projects", "/home/example/projects"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameProjectService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The GameProjectService instance that the constructor creates; it keeps the session and projectsRoot it was given."
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Propagates any error from homedir(), which the default for projectsRoot calls whenever the projectsRoot argument is undefined, since the constructor does not catch it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
