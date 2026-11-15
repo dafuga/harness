@@ -26,7 +26,7 @@
 		"outputs": [
 			{
 				"name": "hubEvidenceRegistry",
-				"type": "unknown",
+				"type": "Promise<import('../../../../../../src/utils/verification-evidence/revision-registry/revisionRegistry.types').RevisionRegistry>",
 				"description": "The resolved value is a revision registry of sorted unit and scenario views plus dependency and coverage graph; available is false and gap is added when no unit manifests exist. Every matching scenario path is schema-checked and must match its declared id, and a present ledger must contain valid UTF-8 NDJSON budget events or the call rejects.",
 				"examples": [
 					{
@@ -74,7 +74,7 @@
 				"outputs": [
 					{
 						"name": "hubEvidenceRegistry",
-						"type": "unknown",
+						"type": "Promise<import('../../../../../../src/utils/verification-evidence/revision-registry/revisionRegistry.types').RevisionRegistry>",
 						"description": "The resolved value is a revision registry of sorted unit and scenario views plus dependency and coverage graph; available is false and gap is added when no unit manifests exist. Every matching scenario path is schema-checked and must match its declared id, and a present ledger must contain valid UTF-8 NDJSON budget events or the call rejects.",
 						"examples": [
 							{

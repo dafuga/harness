@@ -71,7 +71,7 @@
 		"outputs": [
 			{
 				"name": "ConsoleAgentService.open",
-				"type": "unknown",
+				"type": "Promise<import('../../../../../desktop/src/models/development-tooling/Desktop.types').ProjectSnapshot>",
 				"description": "The local project snapshot returned by opening reportSite().root, used to initialize the chat session. Its value is forwarded from ProjectSessionService.open without reshaping."
 			},
 			{
@@ -126,7 +126,7 @@
 				"outputs": [
 					{
 						"name": "ConsoleAgentService.open",
-						"type": "unknown",
+						"type": "Promise<import('../../../../../desktop/src/models/development-tooling/Desktop.types').ProjectSnapshot>",
 						"description": "The local project snapshot returned by opening reportSite().root, used to initialize the chat session. Its value is forwarded from ProjectSessionService.open without reshaping."
 					}
 				],

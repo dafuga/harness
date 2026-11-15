@@ -121,7 +121,7 @@
 		"outputs": [
 			{
 				"name": "hubEntityContract",
-				"type": "unknown",
+				"type": "Promise<PlanRecord['contract'] | (ComponentManifest['contract'] & { hash: string })>",
 				"description": "The value the function resolves to: `plan.contract` unchanged when `plan` is truthy, otherwise the unit's `contract` spread with a `hash` field, or `{ inputs: [], outputs: [], errors: [], hash: null }` when both `plan` and `unit` are absent. The added `hash` is a 64-character lowercase hex SHA-256 of the unit contract serialized by canonicalJson, which sorts object keys at every depth and drops undefined fields.",
 				"examples": [
 					{
@@ -303,7 +303,7 @@
 				"outputs": [
 					{
 						"name": "hubEntityContract",
-						"type": "unknown",
+						"type": "Promise<PlanRecord['contract'] | (ComponentManifest['contract'] & { hash: string })>",
 						"description": "The value the function resolves to: `plan.contract` unchanged when `plan` is truthy, otherwise the unit's `contract` spread with a `hash` field, or `{ inputs: [], outputs: [], errors: [], hash: null }` when both `plan` and `unit` are absent. The added `hash` is a 64-character lowercase hex SHA-256 of the unit contract serialized by canonicalJson, which sorts object keys at every depth and drops undefined fields.",
 						"examples": [
 							{
