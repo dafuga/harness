@@ -12,16 +12,27 @@
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by run() when a spawned command does not exit with code 0: the pinned cargo or rustc from rust(), or wasm-opt --version from optimize(). The message is the command joined with spaces and then the word failed, and nothing in this file catches it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by pinnedToolchain(), which rust() calls before each cargo or rustc run, when the current directory is not an existing directory, no rust-toolchain.toml is found from it upward, the rust-toolchain.toml cannot be parsed or has no usable toolchain.channel, or rustup cannot select the pinned tool; nothing in this file catches it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A Node.js file-system Error from readFile, copyFile, readdir, mkdir or writeFile when the call fails, for example on a missing file or directory; the error carries a code such as ENOENT, and this file does not catch it. pinnedToolchain() also rethrows a read of rust-toolchain.toml that fails with a code other than ENOENT."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
