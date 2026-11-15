@@ -6,7 +6,7 @@ import { content, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 import { withGroups } from '../entityPreviewData';
 import { sourceAdmission } from '../entitySourceAdmissionFixture';
-import { explorerEntities } from '../../src/utils/explorerEntities';
+import { explorerEntities } from '../../src/utils/explorer-ui/explorerEntities';
 
 const page = { category: 'pages' as const, entity: ids.page, section: 'details' as const };
 const owned = /src\/|\+page\.svelte|\.ts\b|OrdersPage|OrderStore\b/;

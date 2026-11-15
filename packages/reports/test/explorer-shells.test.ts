@@ -4,7 +4,7 @@ import type { HarnessRevision, HarnessUnit } from '../src/models/explorer-ui/Har
 import { catalogUnits } from '../tests/e2e/support/component-previews/catalogUnits';
 import { entityUsage } from '../src/components/explorer-ui/entity-relations/entityUsage';
 import { explorerCategory, explorerRole } from '../src/utils/explorer-ui/explorerCategory';
-import { explorerEntities } from '../src/utils/explorerEntities';
+import { explorerEntities } from '../src/utils/explorer-ui/explorerEntities';
 import { explorerRelations } from '../src/utils/explorer-ui/explorerRelations';
 import { categoryIcon } from '../src/utils/harnessIcons';
 import { harnessShell } from '../src/components/explorer-ui/harness-navbar/harnessShell';

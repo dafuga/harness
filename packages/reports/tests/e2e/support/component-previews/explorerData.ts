@@ -3,7 +3,7 @@ import { platformFixture } from '../../../../test/platformFixture';
 import { index, record, revision } from '../../../../test/entityFixture';
 import { place, scope, lens, nav } from '../../../../test/entityPlaces';
 import { commits, ids } from '../../../../test/entityUnits';
-import { explorerEntities } from '../../../../src/utils/explorerEntities';
+import { explorerEntities } from '../../../../src/utils/explorer-ui/explorerEntities';
 import { entityContract } from '../../../../src/utils/explorer-ui/entityContract';
 import { desktopData } from './sealedData';
 import { entityBehavior } from '../../../../src/utils/explorer-ui/entityBehavior';

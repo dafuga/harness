@@ -8,18 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/reports/src/utils/explorer-ui/explorerEntities.ts",
-			"packages/reports/src/utils/explorerEntities.ts"
-		],
-		"symbols": [
-			"explorerChange",
-			"explorerEntity",
-			"explorerEntities",
-			"explorerChange",
-			"explorerEntity",
-			"explorerEntities"
-		]
+		"source": ["packages/reports/src/utils/explorer-ui/explorerEntities.ts"],
+		"symbols": ["explorerChange", "explorerEntity", "explorerEntities"]
 	},
 	"contract": {
 		"origin": "declared",

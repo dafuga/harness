@@ -7,7 +7,7 @@ import type { HarnessIndex } from '../src/models/explorer-ui/Harness.types';
 import ExplorerContent from '../src/components/explorer-ui/ExplorerContent.svelte';
 import EntityTests from '../src/components/explorer-ui/entity-tests/EntityTests.svelte';
 import { explorerRoutePath } from '../../../src/utils/explorerRoute';
-import { explorerEntities } from '../src/utils/explorerEntities';
+import { explorerEntities } from '../src/utils/explorer-ui/explorerEntities';
 import { index } from './entityFixture';
 import { lens, place, view, type View } from './entityPlaces';
 

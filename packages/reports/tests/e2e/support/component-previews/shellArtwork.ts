@@ -5,7 +5,7 @@ import type {
 	ExplorerSide
 } from '../../../../src/models/explorer-ui/Explorer.types';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
-import { explorerEntities } from '../../../../src/utils/explorerEntities';
+import { explorerEntities } from '../../../../src/utils/explorer-ui/explorerEntities';
 import {
 	ids,
 	commits,

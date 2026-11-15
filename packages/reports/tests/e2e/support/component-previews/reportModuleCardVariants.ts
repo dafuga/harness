@@ -3,7 +3,7 @@ import type { CatalogRow } from '../../../../src/utils/explorer-ui/entityCatalog
 import { picture } from './reportData';
 import { commits, entities, entity, helperRows, reading, shown } from './explorerData';
 import { entityCatalog } from '../../../../src/utils/entityCatalog';
-import { explorerEntities } from '../../../../src/utils/explorerEntities';
+import { explorerEntities } from '../../../../src/utils/explorer-ui/explorerEntities';
 import { explorerRelations } from '../../../../src/utils/explorer-ui/explorerRelations';
 import { withApis } from '../../../../test/entityApiFixtures';
 import { routeIds, routeUnits } from './routeUnits';

@@ -4,7 +4,7 @@ import { createRawSnippet } from 'svelte';
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import EntitySections from '../../src/components/explorer-ui/entity-sections/EntitySections.svelte';
-import { explorerEntities } from '../../src/utils/explorerEntities';
+import { explorerEntities } from '../../src/utils/explorer-ui/explorerEntities';
 import { disclosed, hostProps, words } from '../entityRender';
 import { nav } from '../entityPlaces';
 import { ids } from '../entityUnits';

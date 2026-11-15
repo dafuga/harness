@@ -1,5 +1,5 @@
 import { consumerModels } from '../../../../test/entityClassFixtures';
-import { explorerEntities } from '../../../../src/utils/explorerEntities';
+import { explorerEntities } from '../../../../src/utils/explorer-ui/explorerEntities';
 import { entityCatalog, type CatalogRow } from '../../../../src/utils/entityCatalog';
 import { entities, entity, reading, shown } from './explorerData';
 import type { PreviewCases } from './shared';

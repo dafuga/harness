@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { explorerEntities } from '../src/utils/explorerEntities';
+import { explorerEntities } from '../src/utils/explorer-ui/explorerEntities';
 import { explorerSearchEntries } from '../src/utils/explorer-ui/explorerSearchEntries';
 import { revision, sha, unit } from './explorerFixture';
 

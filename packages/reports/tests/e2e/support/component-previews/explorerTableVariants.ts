@@ -5,7 +5,7 @@ import { entityCatalog } from '../../../../src/utils/explorer-ui/entityCatalog';
 import { entities, reading, shown } from './explorerData';
 import { withApis } from '../../../../test/entityApiFixtures';
 import { platformFixture } from '../../../../test/platformFixture';
-import { explorerEntities } from '../../../../src/utils/explorerEntities';
+import { explorerEntities } from '../../../../src/utils/explorer-ui/explorerEntities';
 import { explorerRelations } from '../../../../src/utils/explorer-ui/explorerRelations';
 import { routeIds, routeUnits } from './routeUnits';
 import type { PreviewCases } from './shared';
