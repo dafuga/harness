@@ -18,23 +18,180 @@
 				"name": "hubEntityContract.unit",
 				"type": "Pick<ComponentManifest, 'contract'>",
 				"required": false,
-				"description": "Optional unit contract."
+				"default": "undefined",
+				"description": "The unit's ComponentManifest `contract`, which is hashed with hubContractHash only when `plan` is falsy; a truthy `plan` takes precedence and leaves it unused. The code does not validate it: a missing `contract` yields the SHA-256 of empty input, while a BigInt or circular value makes the call reject.",
+				"examples": [
+					{
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "value",
+									"type": "string",
+									"required": true,
+									"description": "File name checked against letters, digits, dot, underscore and hyphen, starting with a letter or digit, at most 200 characters, with no '..' sequence."
+								}
+							],
+							"outputs": [
+								{
+									"name": "hubFile",
+									"type": "string",
+									"description": "The same file name, returned unchanged."
+								}
+							],
+							"errors": [
+								{
+									"name": "Error",
+									"type": "thrown",
+									"description": "Thrown with code invalid-path when the name fails the pattern or contains '..'."
+								}
+							],
+							"errorStatus": "declared"
+						}
+					},
+					{
+						"contract": {
+							"origin": "declared",
+							"inputs": [
+								{
+									"name": "bytes",
+									"type": "Uint8Array",
+									"required": true,
+									"description": "Committed artifact bytes, decoded as strict UTF-8 before parsing."
+								}
+							],
+							"outputs": [
+								{
+									"name": "hubJson",
+									"type": "unknown",
+									"description": "The parsed JSON value."
+								}
+							],
+							"errors": [
+								{
+									"name": "Error",
+									"type": "thrown",
+									"description": "Thrown with code artifact-corrupt when the bytes are not strict UTF-8 JSON."
+								}
+							],
+							"errorStatus": "declared"
+						}
+					}
+				]
 			},
 			{
 				"name": "hubEntityContract.plan",
 				"type": "Pick<PlanRecord, 'contract'>",
 				"required": false,
-				"description": "Optional plan contract, which takes precedence."
+				"default": "undefined",
+				"description": "The plan's `contract`, returned unchanged whenever `plan` is truthy, so it takes precedence over `unit`. The code neither computes nor checks its `hash`; the EntityContract type documents that field as the SHA-256 of the contract an approval binds, or null when the entity has no contract yet.",
+				"examples": [
+					{
+						"contract": {
+							"inputs": [
+								{
+									"name": "rows",
+									"type": "EvidenceRow[]",
+									"required": true,
+									"description": "Evidence rows, drawn in the order given."
+								}
+							],
+							"outputs": [
+								{
+									"name": "EvidenceGrid",
+									"type": "JSX.Element",
+									"description": "The rendered grid."
+								}
+							],
+							"errors": [],
+							"hash": "c0a4e7f19b3d2a86e5f0c4b7d1a9e2f83c6b5d4a7e1f0c9b8a7d6e5f4c3b2a10"
+						}
+					},
+					{
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": null
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEntityContract",
 				"type": "unknown",
-				"description": "Plan contract unchanged, or unit contract with a computed hash; when neither exists, empty input/output/error lists with hash null."
+				"description": "The value the function resolves to: `plan.contract` unchanged when `plan` is truthy, otherwise the unit's `contract` spread with a `hash` field, or `{ inputs: [], outputs: [], errors: [], hash: null }` when both `plan` and `unit` are absent. The added `hash` is a 64-character lowercase hex SHA-256 of the unit contract serialized by canonicalJson, which sorts object keys at every depth and drops undefined fields.",
+				"examples": [
+					{
+						"origin": "declared",
+						"inputs": [
+							{
+								"name": "value",
+								"type": "string",
+								"required": true,
+								"description": "File name checked against letters, digits, dot, underscore and hyphen, starting with a letter or digit, at most 200 characters, with no '..' sequence."
+							}
+						],
+						"outputs": [
+							{
+								"name": "hubFile",
+								"type": "string",
+								"description": "The same file name, returned unchanged."
+							}
+						],
+						"errors": [
+							{
+								"name": "Error",
+								"type": "thrown",
+								"description": "Thrown with code invalid-path when the name fails the pattern or contains '..'."
+							}
+						],
+						"errorStatus": "declared",
+						"hash": "7d3e9a1c4f0b58e26a9d1c7f3b04e8a52c6d9f1b7e3a0c8d4f2b6e9a1c5d7f03"
+					},
+					{
+						"inputs": [
+							{
+								"name": "rows",
+								"type": "EvidenceRow[]",
+								"required": true,
+								"description": "Evidence rows, drawn in the order given."
+							}
+						],
+						"outputs": [
+							{
+								"name": "EvidenceGrid",
+								"type": "JSX.Element",
+								"description": "The rendered grid."
+							}
+						],
+						"errors": [],
+						"hash": "c0a4e7f19b3d2a86e5f0c4b7d1a9e2f83c6b5d4a7e1f0c9b8a7d6e5f4c3b2a10"
+					},
+					{
+						"inputs": [],
+						"outputs": [],
+						"errors": [],
+						"hash": null
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by JSON.stringify inside canonicalJson when `unit.contract` contains a BigInt, a value the ComponentManifest type does not allow; hubEntityContract rejects with it."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Thrown when `unit.contract` contains a circular reference, which the ComponentManifest type does not allow, because the recursion in canonicalJson's `sorted` never ends and exhausts the call stack; hubEntityContract rejects with it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubEntityContract",
@@ -43,24 +200,180 @@
 						"name": "hubEntityContract.unit",
 						"type": "Pick<ComponentManifest, 'contract'>",
 						"required": false,
-						"description": "Optional unit contract."
+						"default": "undefined",
+						"description": "The unit's ComponentManifest `contract`, which is hashed with hubContractHash only when `plan` is falsy; a truthy `plan` takes precedence and leaves it unused. The code does not validate it: a missing `contract` yields the SHA-256 of empty input, while a BigInt or circular value makes the call reject.",
+						"examples": [
+							{
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "value",
+											"type": "string",
+											"required": true,
+											"description": "File name checked against letters, digits, dot, underscore and hyphen, starting with a letter or digit, at most 200 characters, with no '..' sequence."
+										}
+									],
+									"outputs": [
+										{
+											"name": "hubFile",
+											"type": "string",
+											"description": "The same file name, returned unchanged."
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "thrown",
+											"description": "Thrown with code invalid-path when the name fails the pattern or contains '..'."
+										}
+									],
+									"errorStatus": "declared"
+								}
+							},
+							{
+								"contract": {
+									"origin": "declared",
+									"inputs": [
+										{
+											"name": "bytes",
+											"type": "Uint8Array",
+											"required": true,
+											"description": "Committed artifact bytes, decoded as strict UTF-8 before parsing."
+										}
+									],
+									"outputs": [
+										{
+											"name": "hubJson",
+											"type": "unknown",
+											"description": "The parsed JSON value."
+										}
+									],
+									"errors": [
+										{
+											"name": "Error",
+											"type": "thrown",
+											"description": "Thrown with code artifact-corrupt when the bytes are not strict UTF-8 JSON."
+										}
+									],
+									"errorStatus": "declared"
+								}
+							}
+						]
 					},
 					{
 						"name": "hubEntityContract.plan",
 						"type": "Pick<PlanRecord, 'contract'>",
 						"required": false,
-						"description": "Optional plan contract, which takes precedence."
+						"default": "undefined",
+						"description": "The plan's `contract`, returned unchanged whenever `plan` is truthy, so it takes precedence over `unit`. The code neither computes nor checks its `hash`; the EntityContract type documents that field as the SHA-256 of the contract an approval binds, or null when the entity has no contract yet.",
+						"examples": [
+							{
+								"contract": {
+									"inputs": [
+										{
+											"name": "rows",
+											"type": "EvidenceRow[]",
+											"required": true,
+											"description": "Evidence rows, drawn in the order given."
+										}
+									],
+									"outputs": [
+										{
+											"name": "EvidenceGrid",
+											"type": "JSX.Element",
+											"description": "The rendered grid."
+										}
+									],
+									"errors": [],
+									"hash": "c0a4e7f19b3d2a86e5f0c4b7d1a9e2f83c6b5d4a7e1f0c9b8a7d6e5f4c3b2a10"
+								}
+							},
+							{
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": null
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEntityContract",
 						"type": "unknown",
-						"description": "Plan contract unchanged, or unit contract with a computed hash; when neither exists, empty input/output/error lists with hash null."
+						"description": "The value the function resolves to: `plan.contract` unchanged when `plan` is truthy, otherwise the unit's `contract` spread with a `hash` field, or `{ inputs: [], outputs: [], errors: [], hash: null }` when both `plan` and `unit` are absent. The added `hash` is a 64-character lowercase hex SHA-256 of the unit contract serialized by canonicalJson, which sorts object keys at every depth and drops undefined fields.",
+						"examples": [
+							{
+								"origin": "declared",
+								"inputs": [
+									{
+										"name": "value",
+										"type": "string",
+										"required": true,
+										"description": "File name checked against letters, digits, dot, underscore and hyphen, starting with a letter or digit, at most 200 characters, with no '..' sequence."
+									}
+								],
+								"outputs": [
+									{
+										"name": "hubFile",
+										"type": "string",
+										"description": "The same file name, returned unchanged."
+									}
+								],
+								"errors": [
+									{
+										"name": "Error",
+										"type": "thrown",
+										"description": "Thrown with code invalid-path when the name fails the pattern or contains '..'."
+									}
+								],
+								"errorStatus": "declared",
+								"hash": "7d3e9a1c4f0b58e26a9d1c7f3b04e8a52c6d9f1b7e3a0c8d4f2b6e9a1c5d7f03"
+							},
+							{
+								"inputs": [
+									{
+										"name": "rows",
+										"type": "EvidenceRow[]",
+										"required": true,
+										"description": "Evidence rows, drawn in the order given."
+									}
+								],
+								"outputs": [
+									{
+										"name": "EvidenceGrid",
+										"type": "JSX.Element",
+										"description": "The rendered grid."
+									}
+								],
+								"errors": [],
+								"hash": "c0a4e7f19b3d2a86e5f0c4b7d1a9e2f83c6b5d4a7e1f0c9b8a7d6e5f4c3b2a10"
+							},
+							{
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"hash": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by JSON.stringify inside canonicalJson when `unit.contract` contains a BigInt, a value the ComponentManifest type does not allow; hubEntityContract rejects with it."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown when `unit.contract` contains a circular reference, which the ComponentManifest type does not allow, because the recursion in canonicalJson's `sorted` never ends and exhausts the call stack; hubEntityContract rejects with it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
