@@ -18,40 +18,170 @@
 				"name": "resourceIdentity.job",
 				"type": "ResourceJob",
 				"required": true,
-				"description": "One lease with its owner PID, start identity, reservation and heartbeat."
+				"description": "The lease whose owner is tested against this process's ancestry: only ownerPid and ownerStarted are read, and the process-table row whose pid is ownerPid must have a start time equal to ownerStarted once runs of whitespace are collapsed. Its other fields, such as workerPid and heartbeatAt, are not read.",
+				"examples": [
+					{
+						"id": "6f1c2b9e-3a7d-4e5b-8c10-9d2e4f6a7b81",
+						"sequence": 41,
+						"priority": "coding",
+						"cpus": 2,
+						"memoryMiB": 2048,
+						"label": "Managed work",
+						"ownerPid": 48213,
+						"ownerStarted": "Sun Nov 15 08:02:11 2026",
+						"workerPid": 48977,
+						"workerStarted": "Sun Nov 15 08:02:14 2026",
+						"state": "running",
+						"createdAt": 1794729734000,
+						"heartbeatAt": 1794731995000,
+						"notice": null
+					},
+					{
+						"id": "0d9a7e15-c4b2-4f83-a6e1-5b7c9d2f8a40",
+						"sequence": 39,
+						"priority": "coding",
+						"cpus": 1,
+						"memoryMiB": 1024,
+						"label": "Managed work",
+						"ownerPid": 47102,
+						"ownerStarted": "Sun Nov 15 07:41:58 2026",
+						"workerPid": 47155,
+						"workerStarted": "Sun Nov 15 07:42:01 2026",
+						"state": "running",
+						"createdAt": 1794728521000,
+						"heartbeatAt": 1794731940000,
+						"notice": null
+					}
+				]
 			},
 			{
 				"name": "abandonedResources.jobs",
 				"type": "ResourceJob[]",
 				"required": true,
-				"description": "Ordered shared queued and running reservations, including each parent identity and requested budget."
+				"description": "The leases to examine, in the order given: the returned ids follow this array's order. Only id, heartbeatAt, ownerPid, ownerStarted, workerPid and workerStarted are read, so state, cpus, memoryMiB, priority and the other fields do not change the result.",
+				"examples": [
+					[
+						{
+							"id": "0d9a7e15-c4b2-4f83-a6e1-5b7c9d2f8a40",
+							"sequence": 39,
+							"priority": "coding",
+							"cpus": 1,
+							"memoryMiB": 1024,
+							"label": "Managed work",
+							"ownerPid": 47102,
+							"ownerStarted": "Sun Nov 15 07:41:58 2026",
+							"workerPid": 47155,
+							"workerStarted": "Sun Nov 15 07:42:01 2026",
+							"state": "running",
+							"createdAt": 1794728521000,
+							"heartbeatAt": 1794731940000,
+							"notice": null
+						}
+					],
+					[
+						{
+							"id": "6f1c2b9e-3a7d-4e5b-8c10-9d2e4f6a7b81",
+							"sequence": 41,
+							"priority": "coding",
+							"cpus": 2,
+							"memoryMiB": 2048,
+							"label": "Managed work",
+							"ownerPid": 48213,
+							"ownerStarted": "Sun Nov 15 08:02:11 2026",
+							"workerPid": 48977,
+							"workerStarted": "Sun Nov 15 08:02:14 2026",
+							"state": "running",
+							"createdAt": 1794729734000,
+							"heartbeatAt": 1794731995000,
+							"notice": null
+						},
+						{
+							"id": "b2e4a6c8-1d3f-4a5b-9c7e-0f1a2b3c4d5e",
+							"parentId": "6f1c2b9e-3a7d-4e5b-8c10-9d2e4f6a7b81",
+							"sequence": 42,
+							"priority": "coding",
+							"cpus": 1,
+							"memoryMiB": 512,
+							"label": "Managed work",
+							"ownerPid": 48213,
+							"ownerStarted": "Sun Nov 15 08:02:11 2026",
+							"state": "queued",
+							"createdAt": 1794731400000,
+							"heartbeatAt": 1794731990000,
+							"notice": null
+						}
+					]
+				]
 			},
 			{
 				"name": "abandonedResources.rows",
 				"type": "ProcessRow[]",
 				"required": true,
-				"description": "Observed process rows with parent relationships and start identities; unavailable identity is never assumed valid."
+				"description": "The process snapshot used to test whether each owner and worker is still running: only pid and started are read, and a process with no matching row counts as absent. The function does not check that the snapshot is complete, so an empty array counts every owner and worker as absent.",
+				"examples": [
+					[
+						{
+							"pid": 1,
+							"started": "Sun Nov 15 06:00:02 2026",
+							"parent": 0,
+							"group": 1
+						},
+						{
+							"pid": 48213,
+							"started": "Sun Nov 15 08:02:11 2026",
+							"parent": 1,
+							"group": 48213
+						},
+						{
+							"pid": 48977,
+							"started": "Sun Nov 15 08:02:14 2026",
+							"parent": 48213,
+							"group": 48213
+						}
+					],
+					[
+						{
+							"pid": 1,
+							"started": "Sun Nov 15 06:00:02 2026",
+							"parent": 0,
+							"group": 1
+						},
+						{
+							"pid": 48213,
+							"started": "Sun Nov 15 08:02:11 2026",
+							"parent": 1,
+							"group": 48213
+						}
+					]
+				]
 			},
 			{
 				"name": "abandonedResources.now",
 				"type": "number",
 				"required": false,
-				"description": "Current epoch time in milliseconds for telemetry freshness, queue ordering or lease expiry."
+				"description": "Current time in epoch milliseconds: a job's heartbeat is stale when now minus its heartbeatAt is greater than 30000. Defaults to Date.now(): the epoch time in milliseconds when the call is made.",
+				"examples": [1794732000000, 1794732030000]
 			}
 		],
 		"outputs": [
 			{
 				"name": "resourceIdentity",
 				"type": "Promise<boolean>",
-				"description": "Whether this process descends from the still-current owner PID and start identity."
+				"description": "The resolved value is true when the owner pid is this process's own pid or one of its ancestors in one process-table read, and the owner's start time equals ownerStarted once runs of whitespace are collapsed. It is false when the table is unreadable or lacks this process, when the owner is missing or has another start time, and when neither this process nor any of its ancestors has the owner pid.",
+				"examples": [true, false]
 			},
 			{
 				"name": "abandonedResources",
 				"type": "string[]",
-				"description": "IDs with stale heartbeats whose owner and tracked worker are both proven absent."
+				"description": "The ids, in the order of jobs, of each job whose heartbeatAt is more than 30000 ms before now, whose owner (matched by pid and start time) is missing from rows, and whose worker, if it has a workerPid, is also missing from rows. A worker with workerStarted must match on pid and start time, and a worker without it only on pid.",
+				"examples": [
+					["0d9a7e15-c4b2-4f83-a6e1-5b7c9d2f8a40"],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "resourceIdentity",
@@ -60,18 +190,53 @@
 						"name": "resourceIdentity.job",
 						"type": "ResourceJob",
 						"required": true,
-						"description": "One lease with its owner PID, start identity, reservation and heartbeat."
+						"description": "The lease whose owner is tested against this process's ancestry: only ownerPid and ownerStarted are read, and the process-table row whose pid is ownerPid must have a start time equal to ownerStarted once runs of whitespace are collapsed. Its other fields, such as workerPid and heartbeatAt, are not read.",
+						"examples": [
+							{
+								"id": "6f1c2b9e-3a7d-4e5b-8c10-9d2e4f6a7b81",
+								"sequence": 41,
+								"priority": "coding",
+								"cpus": 2,
+								"memoryMiB": 2048,
+								"label": "Managed work",
+								"ownerPid": 48213,
+								"ownerStarted": "Sun Nov 15 08:02:11 2026",
+								"workerPid": 48977,
+								"workerStarted": "Sun Nov 15 08:02:14 2026",
+								"state": "running",
+								"createdAt": 1794729734000,
+								"heartbeatAt": 1794731995000,
+								"notice": null
+							},
+							{
+								"id": "0d9a7e15-c4b2-4f83-a6e1-5b7c9d2f8a40",
+								"sequence": 39,
+								"priority": "coding",
+								"cpus": 1,
+								"memoryMiB": 1024,
+								"label": "Managed work",
+								"ownerPid": 47102,
+								"ownerStarted": "Sun Nov 15 07:41:58 2026",
+								"workerPid": 47155,
+								"workerStarted": "Sun Nov 15 07:42:01 2026",
+								"state": "running",
+								"createdAt": 1794728521000,
+								"heartbeatAt": 1794731940000,
+								"notice": null
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resourceIdentity",
 						"type": "Promise<boolean>",
-						"description": "Whether this process descends from the still-current owner PID and start identity."
+						"description": "The resolved value is true when the owner pid is this process's own pid or one of its ancestors in one process-table read, and the owner's start time equals ownerStarted once runs of whitespace are collapsed. It is false when the table is unreadable or lacks this process, when the owner is missing or has another start time, and when neither this process nor any of its ancestors has the owner pid.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "abandonedResources",
@@ -80,30 +245,124 @@
 						"name": "abandonedResources.jobs",
 						"type": "ResourceJob[]",
 						"required": true,
-						"description": "Ordered shared queued and running reservations, including each parent identity and requested budget."
+						"description": "The leases to examine, in the order given: the returned ids follow this array's order. Only id, heartbeatAt, ownerPid, ownerStarted, workerPid and workerStarted are read, so state, cpus, memoryMiB, priority and the other fields do not change the result.",
+						"examples": [
+							[
+								{
+									"id": "0d9a7e15-c4b2-4f83-a6e1-5b7c9d2f8a40",
+									"sequence": 39,
+									"priority": "coding",
+									"cpus": 1,
+									"memoryMiB": 1024,
+									"label": "Managed work",
+									"ownerPid": 47102,
+									"ownerStarted": "Sun Nov 15 07:41:58 2026",
+									"workerPid": 47155,
+									"workerStarted": "Sun Nov 15 07:42:01 2026",
+									"state": "running",
+									"createdAt": 1794728521000,
+									"heartbeatAt": 1794731940000,
+									"notice": null
+								}
+							],
+							[
+								{
+									"id": "6f1c2b9e-3a7d-4e5b-8c10-9d2e4f6a7b81",
+									"sequence": 41,
+									"priority": "coding",
+									"cpus": 2,
+									"memoryMiB": 2048,
+									"label": "Managed work",
+									"ownerPid": 48213,
+									"ownerStarted": "Sun Nov 15 08:02:11 2026",
+									"workerPid": 48977,
+									"workerStarted": "Sun Nov 15 08:02:14 2026",
+									"state": "running",
+									"createdAt": 1794729734000,
+									"heartbeatAt": 1794731995000,
+									"notice": null
+								},
+								{
+									"id": "b2e4a6c8-1d3f-4a5b-9c7e-0f1a2b3c4d5e",
+									"parentId": "6f1c2b9e-3a7d-4e5b-8c10-9d2e4f6a7b81",
+									"sequence": 42,
+									"priority": "coding",
+									"cpus": 1,
+									"memoryMiB": 512,
+									"label": "Managed work",
+									"ownerPid": 48213,
+									"ownerStarted": "Sun Nov 15 08:02:11 2026",
+									"state": "queued",
+									"createdAt": 1794731400000,
+									"heartbeatAt": 1794731990000,
+									"notice": null
+								}
+							]
+						]
 					},
 					{
 						"name": "abandonedResources.rows",
 						"type": "ProcessRow[]",
 						"required": true,
-						"description": "Observed process rows with parent relationships and start identities; unavailable identity is never assumed valid."
+						"description": "The process snapshot used to test whether each owner and worker is still running: only pid and started are read, and a process with no matching row counts as absent. The function does not check that the snapshot is complete, so an empty array counts every owner and worker as absent.",
+						"examples": [
+							[
+								{
+									"pid": 1,
+									"started": "Sun Nov 15 06:00:02 2026",
+									"parent": 0,
+									"group": 1
+								},
+								{
+									"pid": 48213,
+									"started": "Sun Nov 15 08:02:11 2026",
+									"parent": 1,
+									"group": 48213
+								},
+								{
+									"pid": 48977,
+									"started": "Sun Nov 15 08:02:14 2026",
+									"parent": 48213,
+									"group": 48213
+								}
+							],
+							[
+								{
+									"pid": 1,
+									"started": "Sun Nov 15 06:00:02 2026",
+									"parent": 0,
+									"group": 1
+								},
+								{
+									"pid": 48213,
+									"started": "Sun Nov 15 08:02:11 2026",
+									"parent": 1,
+									"group": 48213
+								}
+							]
+						]
 					},
 					{
 						"name": "abandonedResources.now",
 						"type": "number",
 						"required": false,
-						"description": "Current epoch time in milliseconds for telemetry freshness, queue ordering or lease expiry."
+						"description": "Current time in epoch milliseconds: a job's heartbeat is stale when now minus its heartbeatAt is greater than 30000. Defaults to Date.now(): the epoch time in milliseconds when the call is made.",
+						"examples": [1794732000000, 1794732030000]
 					}
 				],
 				"outputs": [
 					{
 						"name": "abandonedResources",
 						"type": "string[]",
-						"description": "IDs with stale heartbeats whose owner and tracked worker are both proven absent."
+						"description": "The ids, in the order of jobs, of each job whose heartbeatAt is more than 30000 ms before now, whose owner (matched by pid and start time) is missing from rows, and whose worker, if it has a workerPid, is also missing from rows. A worker with workerStarted must match on pid and start time, and a worker without it only on pid.",
+						"examples": [
+							["0d9a7e15-c4b2-4f83-a6e1-5b7c9d2f8a40"],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
