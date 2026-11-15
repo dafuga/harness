@@ -51,62 +51,412 @@
 				"name": "EntityHistory.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "Required entity identity/name used for revision details and navigation. Caller is expected to recreate this view for a new entity or commit."
+				"description": "The entity whose history is shown: its id selects its benchmarks, revision details and links, and its name labels the history panel and table. The component expects to be recreated for another entity, because its detail map is seeded once when it is created.",
+				"examples": [
+					{
+						"id": "reports.component.harness-entity-history",
+						"category": "components",
+						"role": "Component",
+						"name": "Entity history",
+						"purpose": "Lists the commits that changed this component, with their size, complexity and latency.",
+						"unit": {
+							"id": "reports.component.harness-entity-history",
+							"kind": "component",
+							"status": "active",
+							"title": "Entity history",
+							"responsibility": "Shows the commits that changed this component, with their size, complexity and latency.",
+							"dependencies": [
+								{
+									"unit": "reports.component.harness-entity-history-row",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.select",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+									"packages/reports/src/components/explorer-ui/entity-history/entityHistory.css"
+								],
+								"symbols": ["EntityHistory", "EntityHistory.header", "EntityHistory.children"]
+							},
+							"contract": {
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "a94c2e7f01d3b86e"
+						},
+						"verdict": {
+							"passed": false,
+							"label": "Evidence missing",
+							"reasons": ["No verification record is attached at this commit."]
+						},
+						"change": "direct",
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "EntityHistory.rows",
 				"type": "ExplorerHistoryRow[]",
 				"required": true,
-				"description": "Required newest-first history through the shown commit, including known changes and unread candidates."
+				"description": "The newest-first commits through the shown commit, including changed rows and unknown candidates: a changed row is listed at once, while an unknown row is listed only after its revision is read and records the entity as direct, added or removed. Unknown rows not yet read are counted in the note with their gap reasons, and a commit the history records as not changing the entity has no row.",
+				"examples": [
+					[
+						{
+							"commit": "8f3c2b71d9e04a6c5b1f7e2d3a9c8b0f6e5d4c31",
+							"subject": "Show regression links in entity history",
+							"author": "Mira Chen",
+							"committedAt": "2026-11-09T16:05:42+01:00",
+							"coverage": "unverified",
+							"previous": "2a6d0e9f4c7b1853e0d2a7c6f9b4e1d8a3c5f702",
+							"standing": "changed",
+							"change": "direct",
+							"gap": null,
+							"measured": null,
+							"sizeChange": null,
+							"complexityChange": null,
+							"reviews": []
+						},
+						{
+							"commit": "2a6d0e9f4c7b1853e0d2a7c6f9b4e1d8a3c5f702",
+							"subject": "Trim unread commit reads",
+							"author": "Tomas Berg",
+							"committedAt": "2026-11-04T10:12:03+01:00",
+							"coverage": "unverified",
+							"previous": "c41f9a7e2b6d0835f1a4e9c7b2d6f08e3a5c19d4",
+							"standing": "unknown",
+							"change": null,
+							"gap": "no unit registry is stored at this revision",
+							"measured": null,
+							"sizeChange": null,
+							"complexityChange": null,
+							"reviews": []
+						}
+					],
+					[
+						{
+							"commit": "c41f9a7e2b6d0835f1a4e9c7b2d6f08e3a5c19d4",
+							"subject": "Add entity history component",
+							"author": "Mira Chen",
+							"committedAt": "2026-10-30T18:47:21+01:00",
+							"coverage": "unverified",
+							"previous": "9d4b2e6a1f8c7035b2e9d4f6a0c8e1b7d3f25a96",
+							"standing": "changed",
+							"change": "added",
+							"gap": null,
+							"measured": null,
+							"sizeChange": null,
+							"complexityChange": null,
+							"reviews": []
+						}
+					]
+				]
 			},
 			{
 				"name": "EntityHistory.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Required index used to derive historical timings and profiles."
+				"description": "The harness index whose benchmark series give the latency of each listed commit: only this entity's benchmark series measured in ms, us, μs, ns or s produce timings, and each timing is paired with the value its series has at the next older listed commit when that commit has one. The Performance profile selector offers the profiles of those timings, and a series with no value at a listed commit contributes no timing there.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "e7b0c45d1a92f83b6c0e4d7a5f1b9c2e8d3a6f04"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "e7b0c45d1a92f83b6c0e4d7a5f1b9c2e8d3a6f04",
+								"parents": ["8f3c2b71d9e04a6c5b1f7e2d3a9c8b0f6e5d4c31"],
+								"subject": "Tighten history row spacing",
+								"author": "Tomas Berg",
+								"committedAt": "2026-11-12T08:30:19+01:00",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							},
+							{
+								"commit": "8f3c2b71d9e04a6c5b1f7e2d3a9c8b0f6e5d4c31",
+								"parents": ["2a6d0e9f4c7b1853e0d2a7c6f9b4e1d8a3c5f702"],
+								"subject": "Show regression links in entity history",
+								"author": "Mira Chen",
+								"committedAt": "2026-11-09T16:05:42+01:00",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							},
+							{
+								"commit": "2a6d0e9f4c7b1853e0d2a7c6f9b4e1d8a3c5f702",
+								"parents": ["c41f9a7e2b6d0835f1a4e9c7b2d6f08e3a5c19d4"],
+								"subject": "Trim unread commit reads",
+								"author": "Tomas Berg",
+								"committedAt": "2026-11-04T10:12:03+01:00",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "EntityHistory.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Required viewed commit used for labels and preferred initial selection."
+				"description": "The viewed commit: its short id labels the history subtitle, the row for this exact commit is marked as viewed, and its read revision's regressions feed the regression proof above the history. Nothing in the component selects an initial row from it.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": "8f3c2b71d9e04a6c5b1f7e2d3a9c8b0f6e5d4c31",
+							"category": "components",
+							"entity": "reports.component.harness-entity-history",
+							"section": "history"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "e7b0c45d1a92f83b6c0e4d7a5f1b9c2e8d3a6f04",
+						"commit": "8f3c2b71d9e04a6c5b1f7e2d3a9c8b0f6e5d4c31",
+						"atTip": false,
+						"parent": "2a6d0e9f4c7b1853e0d2a7c6f9b4e1d8a3c5f702",
+						"summary": {
+							"commit": "8f3c2b71d9e04a6c5b1f7e2d3a9c8b0f6e5d4c31",
+							"parents": ["2a6d0e9f4c7b1853e0d2a7c6f9b4e1d8a3c5f702"],
+							"subject": "Show regression links in entity history",
+							"author": "Mira Chen",
+							"committedAt": "2026-11-09T16:05:42+01:00",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "unverified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "EntityHistory.known",
 				"type": "HarnessRevision[]",
 				"required": true,
-				"description": "Required revisions already read, used to seed the detail map once at creation. Later prop replacements do not reseed it."
+				"description": "Revisions already read, which the component expects to be the shown commit and, at a selected commit, its parent. Each becomes the entity's detail for its commit when the component is created, and later replacements of this prop do not reseed the detail map.",
+				"examples": [
+					[
+						{
+							"commit": "8f3c2b71d9e04a6c5b1f7e2d3a9c8b0f6e5d4c31",
+							"registry": {
+								"available": true,
+								"units": [
+									{
+										"id": "reports.component.harness-entity-history",
+										"kind": "component",
+										"status": "active",
+										"title": "Entity history",
+										"responsibility": "Shows the commits that changed this component, with their size, complexity and latency.",
+										"dependencies": [
+											{
+												"unit": "reports.component.harness-entity-history-row",
+												"via": "import"
+											},
+											{
+												"unit": "reports.component.select",
+												"via": "import"
+											}
+										],
+										"scenarios": [],
+										"owns": {
+											"source": [
+												"packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+												"packages/reports/src/components/explorer-ui/entity-history/entityHistory.css"
+											],
+											"symbols": ["EntityHistory", "EntityHistory.header", "EntityHistory.children"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "a94c2e7f01d3b86e"
+									}
+								],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						}
+					],
+					[
+						{
+							"commit": "8f3c2b71d9e04a6c5b1f7e2d3a9c8b0f6e5d4c31",
+							"registry": {
+								"available": true,
+								"units": [
+									{
+										"id": "reports.component.harness-entity-history",
+										"kind": "component",
+										"status": "active",
+										"title": "Entity history",
+										"responsibility": "Shows the commits that changed this component, with their size, complexity and latency.",
+										"dependencies": [
+											{
+												"unit": "reports.component.harness-entity-history-row",
+												"via": "import"
+											},
+											{
+												"unit": "reports.component.select",
+												"via": "import"
+											}
+										],
+										"scenarios": [],
+										"owns": {
+											"source": [
+												"packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte",
+												"packages/reports/src/components/explorer-ui/entity-history/entityHistory.css"
+											],
+											"symbols": ["EntityHistory", "EntityHistory.header", "EntityHistory.children"]
+										},
+										"contract": {
+											"inputs": [],
+											"outputs": [],
+											"errors": []
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "a94c2e7f01d3b86e"
+									}
+								],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						},
+						{
+							"commit": "2a6d0e9f4c7b1853e0d2a7c6f9b4e1d8a3c5f702",
+							"registry": {
+								"available": false,
+								"gap": "no unit registry is stored at this revision",
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"records": [],
+							"explanations": []
+						}
+					]
+				]
 			},
 			{
 				"name": "EntityHistory.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Required revision reader. Promise rejections are swallowed, leaving revision detail unknown; synchronous exceptions propagate."
+				"description": "The revision reader, a pick of HarnessClient: its revision(commit) is called for each listed commit that has no detail yet and for the first ten unread commits on each Read the next commits click. A rejected promise from it is swallowed, while a synchronous exception propagates."
 			},
 			{
 				"name": "EntityHistory.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Required context for links to this entity at historical commits."
+				"description": "Navigation context for this entity at historical commits: route is the base location from which entityLens builds each history row's link, and href and go build and follow the tests-tab location of each regression commit in the regression proof. The same object is passed on to every history row."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityHistory",
 				"type": "markup",
-				"description": "Shows changed commits with direct links, relative dates, source size, complexity and profile-scoped latency. Phone rows stack under visible field labels; longer change reasons remain in an inline disclosure. States: empty: The history list shows that no commit has been read so far. reading: The next-history read is pending and the Reading control is disabled. long: The history entries retain long change explanations in expandable details."
+				"description": "The History card of this entity: a table with one EntityHistoryRow per listed commit and the columns Date, Commit, Behavior change, Size, Complexity and Latency (the latency header names the selected profile), or a 'No recorded change' notice when no commit is listed, with a Performance profile select when timings exist for more than one profile. While earlier commits are unread, a note below the table states how many are unread and gives their gap reasons, with a 'Read the next commits' button that is disabled and reads 'Reading…' while a read is pending; at 800px or narrower the table header is visually hidden, each row stacks under visible field labels, and the viewed commit's cells, except complexity, get an inset gold edge."
 			}
 		],
 		"errors": [
 			{
 				"name": "Revision read rejection",
 				"type": "handled",
-				"description": "A rejected revision request leaves that commit unread while retaining previously read history; no fabricated change or measurement is shown."
+				"description": "A rejected client.revision promise is swallowed: that commit gets no detail, so no change or measurement is invented for it, previously read details are kept, and a later Read the next commits click requests an unread commit again while it is among the first ten unread commits."
 			},
 			{
 				"name": "Caller reader or navigation error",
 				"type": "propagated",
-				"description": "Synchronous errors in supplied revision readers, navigation or rendered dependencies propagate."
+				"description": "A synchronous client.revision exception escapes the listing effect, or rejects readMore and leaves reading true so the Reading control stays disabled. Exceptions from nav, entityLens and rendered components are not caught here either."
+			},
+			{
+				"name": "Revision detail mapping error",
+				"type": "thrown",
+				"description": "An exception from historyDetail, such as a revision without a registry, is not caught: a known revision whose mapping throws stops the component from being created, and a read revision whose mapping throws rejects that read. That rejection leaves reading true when it comes from readMore, and it is an unhandled promise rejection when it comes from the listing effect."
+			},
+			{
+				"name": "Listing or timing derivation error",
+				"type": "thrown",
+				"description": "An exception from historyListed, entityHistory or historyProfiles, such as an index without benchmarks, is not caught and propagates out of the component's rendering."
 			}
 		],
 		"errorStatus": "declared",
