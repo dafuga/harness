@@ -19,31 +19,91 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "nextLoopStep.input",
 				"type": "NextLoopStepInput",
-				"required": true
+				"required": true,
+				"description": "The object identifies the loop whose state should be read; root optionally selects the repository root and otherwise the current working directory is used. The inherited now callback is unused by this read operation, and the loop must have a readable, valid loop.json.",
+				"examples": [
+					{
+						"loop": "contract-audit",
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+					}
+				]
 			},
 			{
 				"name": "renderNextLoopStep.result",
 				"type": "NextLoopStepResult",
-				"required": true
+				"required": true,
+				"description": "The value supplies the loop name and relative trace path, with an optional step and evaluator. The renderer prints the loop, step id and title when present, and evaluator command when present; it omits the trace path and other metadata.",
+				"examples": [
+					{
+						"loop": "contract-audit",
+						"tracePath": "specification/loops/contract-audit/trace.ndjson"
+					},
+					{
+						"loop": "contract-audit",
+						"tracePath": "specification/loops/contract-audit/trace.ndjson",
+						"step": {
+							"id": "review-contract",
+							"title": "Review the workflow contract",
+							"status": "pending"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "nextLoopStep",
-				"type": "Promise<NextLoopStepResult>"
+				"type": "Promise<NextLoopStepResult>",
+				"description": "The promise resolves to the loop name and relative trace path, plus the first pending step in the stored steps array when one exists. Its evaluator is included only when one is configured for that step.",
+				"examples": [
+					{
+						"loop": "contract-audit",
+						"tracePath": "specification/loops/contract-audit/trace.ndjson"
+					},
+					{
+						"loop": "contract-audit",
+						"tracePath": "specification/loops/contract-audit/trace.ndjson",
+						"step": {
+							"id": "review-contract",
+							"title": "Review the workflow contract",
+							"status": "pending"
+						}
+					}
+				]
 			},
 			{
 				"name": "renderNextLoopStep",
-				"type": "string"
+				"type": "string",
+				"description": "The returned text contains the loop line and either the next step line or a complete line. It adds an evaluator line only when an evaluator is present.",
+				"examples": [
+					"Loop: contract-audit\nNext: complete",
+					"Loop: contract-audit\nNext: review-contract - Review the workflow contract"
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Raised when loop.json is missing or its parsed object fails the loop-state schema."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Propagated when loop.json contains invalid JSON."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Filesystem read errors other than a missing-file error are rethrown by readLoop."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "nextLoopStep",
@@ -51,17 +111,56 @@
 					{
 						"name": "nextLoopStep.input",
 						"type": "NextLoopStepInput",
-						"required": true
+						"required": true,
+						"description": "The object identifies the loop whose state should be read; root optionally selects the repository root and otherwise the current working directory is used. The inherited now callback is unused by this read operation, and the loop must have a readable, valid loop.json.",
+						"examples": [
+							{
+								"loop": "contract-audit",
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "nextLoopStep",
-						"type": "Promise<NextLoopStepResult>"
+						"type": "Promise<NextLoopStepResult>",
+						"description": "The promise resolves to the loop name and relative trace path, plus the first pending step in the stored steps array when one exists. Its evaluator is included only when one is configured for that step.",
+						"examples": [
+							{
+								"loop": "contract-audit",
+								"tracePath": "specification/loops/contract-audit/trace.ndjson"
+							},
+							{
+								"loop": "contract-audit",
+								"tracePath": "specification/loops/contract-audit/trace.ndjson",
+								"step": {
+									"id": "review-contract",
+									"title": "Review the workflow contract",
+									"status": "pending"
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised when loop.json is missing or its parsed object fails the loop-state schema."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Propagated when loop.json contains invalid JSON."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Filesystem read errors other than a missing-file error are rethrown by readLoop."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderNextLoopStep",
@@ -69,17 +168,38 @@
 					{
 						"name": "renderNextLoopStep.result",
 						"type": "NextLoopStepResult",
-						"required": true
+						"required": true,
+						"description": "The value supplies the loop name and relative trace path, with an optional step and evaluator. The renderer prints the loop, step id and title when present, and evaluator command when present; it omits the trace path and other metadata.",
+						"examples": [
+							{
+								"loop": "contract-audit",
+								"tracePath": "specification/loops/contract-audit/trace.ndjson"
+							},
+							{
+								"loop": "contract-audit",
+								"tracePath": "specification/loops/contract-audit/trace.ndjson",
+								"step": {
+									"id": "review-contract",
+									"title": "Review the workflow contract",
+									"status": "pending"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderNextLoopStep",
-						"type": "string"
+						"type": "string",
+						"description": "The returned text contains the loop line and either the next step line or a complete line. It adds an evaluator line only when an evaluator is present.",
+						"examples": [
+							"Loop: contract-audit\nNext: complete",
+							"Loop: contract-audit\nNext: review-contract - Review the workflow contract"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
