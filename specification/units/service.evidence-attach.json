@@ -21,37 +21,135 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EvidenceAttachService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root used to construct the verification store, evidence branch, history-note repository, LFS adapter, and checker.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+				]
 			},
 			{
 				"name": "EvidenceAttachService.attach.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The source revision checked with the stored record and used for its evidence directory, history note, and archive ref; the record must match this revision for integrity checks to pass.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "EvidenceAttachService.attach.stored",
 				"type": "StoredRecord",
-				"required": true
+				"required": true,
+				"description": "The stored verification record and the directory containing its record.json, evidence, and logs; integrity checks inspect the record and its files, then dependency resolution uses the record fields.",
+				"examples": [
+					{
+						"record": {
+							"id": "bf46f2cf6af18fe825e90b63bb15f0cac31bbb39ec43a02b302d7bd29e639815",
+							"schemaVersion": 1,
+							"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+							"source": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"tree": "89abcdef0123456789abcdef0123456789abcdef",
+								"base": "fedcba9876543210fedcba9876543210fedcba98"
+							},
+							"profile": {
+								"id": "node-linux-x64",
+								"platform": "linux",
+								"arch": "x64",
+								"cpu": "x86_64",
+								"cores": 8,
+								"memoryBytes": 8589934592,
+								"runtime": "Node.js 22"
+							},
+							"startedAt": "2026-11-15T12:00:00.000Z",
+							"finishedAt": "2026-11-15T12:02:00.000Z",
+							"status": "passed",
+							"components": [
+								{
+									"unit": "service.evidence-attach",
+									"change": "modified",
+									"target": "module",
+									"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+									"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+									"files": [
+										{
+											"path": "src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.ts",
+											"hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+										}
+									]
+								}
+							],
+							"measurements": [],
+							"impact": {
+								"runtime": "module",
+								"expanded": false,
+								"changed": [
+									{
+										"path": "src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.ts",
+										"status": "modified",
+										"classification": "source"
+									}
+								],
+								"units": {
+									"direct": ["service.evidence-attach"],
+									"indirect": [],
+									"added": [],
+									"removed": []
+								},
+								"uncertain": []
+							},
+							"tests": [],
+							"scenarios": [],
+							"budgets": {
+								"status": "passed",
+								"findings": []
+							},
+							"reasons": {
+								"status": "passed",
+								"missing": []
+							},
+							"failures": []
+						},
+						"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceAttachService.attach",
-				"type": "Promise<Attached>"
+				"type": "Promise<Attached>",
+				"description": "Resolves to the record id, outcome, source commit, evidence pointer, note ref, archive ref, and whether the evidence commit was newly created. The created flag is false when the exact record was already attached.",
+				"examples": [
+					{
+						"record": "bf46f2cf6af18fe825e90b63bb15f0cac31bbb39ec43a02b302d7bd29e639815",
+						"status": "passed",
+						"source": "0123456789abcdef0123456789abcdef01234567",
+						"evidence": {
+							"commit": "13579bdf2468ace013579bdf2468ace013579bdf",
+							"path": "records/0123456789abcdef0123456789abcdef01234567/bf46f2cf6af18fe825e90b63bb15f0cac31bbb39ec43a02b302d7bd29e639815",
+							"manifest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+						},
+						"note": "refs/notes/harness",
+						"archive": "refs/harness/source/0123456789abcdef0123456789abcdef01234567",
+						"created": true
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised when record integrity has problems, an inherited record is unavailable, or the source commit cannot be kept reachable at its archive ref. Awaited filesystem and adapter operations may also reject with their own errors."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "EvidenceAttachService.attach",
@@ -59,27 +157,121 @@
 					{
 						"name": "EvidenceAttachService.attach.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The source revision checked with the stored record and used for its evidence directory, history note, and archive ref; the record must match this revision for integrity checks to pass.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					},
 					{
 						"name": "EvidenceAttachService.attach.stored",
 						"type": "StoredRecord",
-						"required": true
+						"required": true,
+						"description": "The stored verification record and the directory containing its record.json, evidence, and logs; integrity checks inspect the record and its files, then dependency resolution uses the record fields.",
+						"examples": [
+							{
+								"record": {
+									"id": "bf46f2cf6af18fe825e90b63bb15f0cac31bbb39ec43a02b302d7bd29e639815",
+									"schemaVersion": 1,
+									"repository": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+									"source": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"tree": "89abcdef0123456789abcdef0123456789abcdef",
+										"base": "fedcba9876543210fedcba9876543210fedcba98"
+									},
+									"profile": {
+										"id": "node-linux-x64",
+										"platform": "linux",
+										"arch": "x64",
+										"cpu": "x86_64",
+										"cores": 8,
+										"memoryBytes": 8589934592,
+										"runtime": "Node.js 22"
+									},
+									"startedAt": "2026-11-15T12:00:00.000Z",
+									"finishedAt": "2026-11-15T12:02:00.000Z",
+									"status": "passed",
+									"components": [
+										{
+											"unit": "service.evidence-attach",
+											"change": "modified",
+											"target": "module",
+											"manifest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+											"source": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+											"contract": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+											"runtime": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+											"files": [
+												{
+													"path": "src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.ts",
+													"hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+												}
+											]
+										}
+									],
+									"measurements": [],
+									"impact": {
+										"runtime": "module",
+										"expanded": false,
+										"changed": [
+											{
+												"path": "src/services/verification-evidence/evidence-attach-service/EvidenceAttachService.ts",
+												"status": "modified",
+												"classification": "source"
+											}
+										],
+										"units": {
+											"direct": ["service.evidence-attach"],
+											"indirect": [],
+											"added": [],
+											"removed": []
+										},
+										"uncertain": []
+									},
+									"tests": [],
+									"scenarios": [],
+									"budgets": {
+										"status": "passed",
+										"findings": []
+									},
+									"reasons": {
+										"status": "passed",
+										"missing": []
+									},
+									"failures": []
+								},
+								"directory": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.cache/harness/verifications/0123456789abcdef0123456789abcdef01234567/20261115120000000"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceAttachService.attach",
-						"type": "Promise<Attached>"
+						"type": "Promise<Attached>",
+						"description": "Resolves to the record id, outcome, source commit, evidence pointer, note ref, archive ref, and whether the evidence commit was newly created. The created flag is false when the exact record was already attached.",
+						"examples": [
+							{
+								"record": "bf46f2cf6af18fe825e90b63bb15f0cac31bbb39ec43a02b302d7bd29e639815",
+								"status": "passed",
+								"source": "0123456789abcdef0123456789abcdef01234567",
+								"evidence": {
+									"commit": "13579bdf2468ace013579bdf2468ace013579bdf",
+									"path": "records/0123456789abcdef0123456789abcdef01234567/bf46f2cf6af18fe825e90b63bb15f0cac31bbb39ec43a02b302d7bd29e639815",
+									"manifest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+								},
+								"note": "refs/notes/harness",
+								"archive": "refs/harness/source/0123456789abcdef0123456789abcdef01234567",
+								"created": true
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised when record integrity has problems, an inherited record is unavailable, or the source commit cannot be kept reachable at its archive ref. Awaited filesystem and adapter operations may also reject with their own errors."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -89,17 +281,22 @@
 					{
 						"name": "EvidenceAttachService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root used to construct the verification store, evidence branch, history-note repository, LFS adapter, and checker.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "EvidenceAttachService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructor returns a new EvidenceAttachService instance with its repositories, LFS adapter, checker, and per-instance attached-record cache initialized."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
