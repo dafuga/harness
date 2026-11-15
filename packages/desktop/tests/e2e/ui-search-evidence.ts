@@ -5,7 +5,7 @@ import { buildStamp } from '../../../../src/utils/buildStamp';
 import {
 	evidenceRequested,
 	recordCapture
-} from '../../../../src/utils/record-capture/recordCapture';
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 
 const scenario = scenarioData as ScenarioManifest;
 const note =

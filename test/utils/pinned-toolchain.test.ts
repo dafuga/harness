@@ -7,7 +7,7 @@ import { afterAll, expect, test, vi } from 'vitest';
 import { pinnedToolchain } from '../../scripts/build-kernel/pinnedToolchain';
 import { type ToolRun } from '../../src/utils/development-tooling/pinnedToolchain';
 import { pinnedToolchain as relocated } from '../../src/utils/development-tooling/pinnedToolchain';
-import { recordCapture } from '../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../src/utils/reports-media/record-capture/recordCapture';
 
 /**
  * Which Rust tool an entry point of this project runs. It is the one of the toolchain that

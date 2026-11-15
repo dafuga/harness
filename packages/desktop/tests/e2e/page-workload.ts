@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { ScenarioManifest, ComponentManifest } from '../../../../src/core/unitTypes';
-import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 
 /** Observe a document navigation and its settled renderer heap for the matching page. */
 export async function pageWorkload(

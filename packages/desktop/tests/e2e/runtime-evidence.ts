@@ -6,7 +6,7 @@ import { buildStamp } from '../../../../src/utils/buildStamp';
 import {
 	evidenceRequested,
 	recordCapture
-} from '../../../../src/utils/record-capture/recordCapture';
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { evidencePlayed, recordedClip } from './ui-evidence-fixture';
 
 const scenario: ScenarioManifest = scenarioData as ScenarioManifest;

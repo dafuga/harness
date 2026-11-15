@@ -1,4 +1,4 @@
-import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../src/utils/reports-media/record-capture/recordCapture';
 
 /** One normal in-memory registry reconciliation; memory includes the entire Vitest process. */
 export function recordIndexWorkload(elapsedMs: number): void {

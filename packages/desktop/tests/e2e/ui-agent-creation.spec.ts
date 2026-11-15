@@ -10,7 +10,7 @@ import { creationFixture } from './ui-agent-creation-fixture';
 import {
 	evidenceRequested,
 	recordCapture
-} from '../../../../src/utils/record-capture/recordCapture';
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { buildStamp } from '../../../../src/utils/buildStamp';
 import scenario from '../../../../specification/scenarios/agent-creation.json' with { type: 'json' };
 

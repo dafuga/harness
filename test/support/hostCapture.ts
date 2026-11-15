@@ -5,7 +5,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { ScenarioManifest } from '../../src/core/unitTypes';
 import { gatherCaptures } from '../../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures';
-import { recordCapture } from '../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../src/utils/reports-media/record-capture/recordCapture';
 import { scenarioCoverage } from '../../src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage';
 import { sessions } from './consoleHost';
 import type { LocalWorker } from './workers';

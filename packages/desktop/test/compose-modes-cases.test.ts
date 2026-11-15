@@ -1,5 +1,5 @@
 import { test } from 'vitest';
-import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../src/utils/reports-media/record-capture/recordCapture';
 import { expect } from '../../../test/verificationExpect';
 import type { ProjectCapabilities } from '../src/models/projects-sessions/ProjectContext.types';
 import { composeModes } from '../src/components/explorer-ui/thread-panel/composeModes';

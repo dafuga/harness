@@ -1,7 +1,10 @@
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
 import { indexFiles, unitOf } from '../support/memoryTree';
 import { afterAll, expect, test } from 'vitest';
-import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../src/utils/reports-media/record-capture/recordCapture';
 import { unitIdentity } from '../../src/utils/development-tooling/classify-path/unitIdentity';
 import { assertIdentityEntries } from './unitIdentityEntries';
 

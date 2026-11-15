@@ -6,7 +6,10 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { evidenceRequested, recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../src/utils/reports-media/record-capture/recordCapture';
 import type { CommandResult } from '../cli';
 
 /** Observe successful standard CLI workloads without changing their output or verification context. */

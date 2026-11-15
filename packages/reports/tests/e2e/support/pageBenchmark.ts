@@ -2,7 +2,7 @@ import { expect, type Page } from '@playwright/test';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { servedBuild } from './harnessCapture';
-import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../../../src/utils/reports-media/record-capture/recordCapture';
 import { benchmarkCaptureSchema } from '../../../../../src/core/verification-evidence/verifyTypes';
 import type { Gathered } from '../../../../../src/utils/verification-evidence/gatherCaptures';
 

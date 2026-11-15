@@ -7,7 +7,7 @@ import { BuildIdentityService } from '../../../../../src/services/verification-e
 import {
 	evidenceRequested,
 	recordCapture
-} from '../../../../../src/utils/record-capture/recordCapture';
+} from '../../../../../src/utils/reports-media/record-capture/recordCapture';
 
 /** The address the fixture pages are opened at; nothing listens there. */
 export const shellOrigin = 'http://shell.fixture';

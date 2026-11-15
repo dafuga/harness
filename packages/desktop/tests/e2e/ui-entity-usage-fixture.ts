@@ -7,7 +7,7 @@ import { buildStamp } from '../../../../src/utils/buildStamp';
 import {
 	evidenceRequested,
 	recordCapture
-} from '../../../../src/utils/record-capture/recordCapture';
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { ids } from './ui-evidence-fixture';
 
 /**

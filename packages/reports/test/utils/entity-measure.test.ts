@@ -2,7 +2,7 @@ import { afterAll, expect, test } from 'vitest';
 import {
 	evidenceRequested,
 	recordCapture
-} from '../../../../src/utils/record-capture/recordCapture';
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { byteSize, notMeasured } from '../../src/utils/explorer-ui/entityMeasure';
 import { entityMeasure } from '../../src/components/explorer-ui/entity-sections/entityMeasure';
 import { record } from '../entityFixture';

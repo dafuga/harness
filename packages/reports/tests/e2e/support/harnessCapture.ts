@@ -2,7 +2,7 @@ import type { Viewport } from './harnessCapture.types';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../../../src/utils/reports-media/record-capture/recordCapture';
 import { home } from './harnessHistory';
 import { pageBenchmark, pageUnit } from './pageBenchmark';
 

@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/record-capture/recordCapture.ts",
+			"src/utils/recordCapture.ts",
 			"src/utils/reports-media/record-capture/recordCapture.ts",
 			"src/utils/reports-media/record-capture/recordCapture.types.ts"
 		],
@@ -127,11 +127,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/record-capture/recordCapture.ts",
+		"entry": "src/utils/recordCapture.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/record-capture/recordCapture.ts"
+				"entry": "src/utils/recordCapture.ts"
 			}
 		]
 	},

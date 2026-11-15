@@ -1,5 +1,8 @@
 import { afterAll, expect, test } from 'vitest';
-import { evidenceRequested, recordCapture } from '../src/utils/record-capture/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../src/utils/reports-media/record-capture/recordCapture';
 import { toCamelCase, toKebabCase, toPascalCase, toSnakeCase } from '../src/core/case';
 
 test('normalizes names across common code shapes', () => {

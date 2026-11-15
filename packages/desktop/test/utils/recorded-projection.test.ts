@@ -4,7 +4,7 @@ import { afterAll, expect, test } from 'vitest';
 import {
 	evidenceRequested,
 	recordCapture
-} from '../../../../src/utils/record-capture/recordCapture';
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { explorerEvidence } from '../../../reports/src/utils/explorer-ui/explorerEvidence';
 import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';
 import { recordedProjection } from '../../src/utils/recorded-answer/recordedProjection';

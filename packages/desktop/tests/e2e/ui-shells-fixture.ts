@@ -6,7 +6,7 @@ import { buildStamp } from '../../../../src/utils/buildStamp';
 import {
 	evidenceRequested,
 	recordCapture
-} from '../../../../src/utils/record-capture/recordCapture';
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { projectFixture } from './ui-project-fixture';
 
 export const shell = 'desktop.component.workspace-shell';

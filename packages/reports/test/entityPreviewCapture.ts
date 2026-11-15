@@ -3,7 +3,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import { BuildIdentityService } from '../../../src/services/verification-evidence/BuildIdentityService';
-import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../src/utils/reports-media/record-capture/recordCapture';
 import { unitIdPattern } from '../../../src/core/unitTypes';
 import { previewHome } from './entityPreviewSetup';
 import { capturePlatformEvidence } from './entityPreviewPlatformEvidence';

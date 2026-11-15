@@ -1,6 +1,9 @@
 import { randomUUID } from 'node:crypto';
 import { benchmarkCaptureSchema } from '../../src/core/verifyTypes';
-import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../src/utils/reports-media/record-capture/recordCapture';
 
 /** Observe a normal behavior case, including its fixtures and assertions, without replaying it. */
 export async function measureWorkload<T>(

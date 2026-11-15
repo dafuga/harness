@@ -1,4 +1,4 @@
-import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../src/utils/reports-media/record-capture/recordCapture';
 import { sourceText, sourceTestPath } from './entitySourceFixture';
 import type { Page, TestInfo } from '@playwright/test';
 import { expect } from '../../../test/support/browserTest';

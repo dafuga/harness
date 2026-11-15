@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 import { performance } from 'node:perf_hooks';
 import { median } from '../../../../../../src/utils/benchSamples';
-import { recordCapture } from '../../../../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../../../../src/utils/reports-media/record-capture/recordCapture';
 import { readyPreview } from './previewPage';
 import { previewState } from './catalogUnits';
 import { prepareProviderPickerState } from './providerPickerActions';

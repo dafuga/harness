@@ -6,7 +6,7 @@ import type { PreviewCaptureTarget } from './previewPage.types';
 import { expect, type Page } from '@playwright/test';
 import { join } from 'node:path';
 import { mkdirSync } from 'node:fs';
-import { evidenceRequested } from '../../../../../../src/utils/record-capture/recordCapture';
+import { evidenceRequested } from '../../../../../../src/utils/reports-media/record-capture/recordCapture';
 import { previewOrigin, servePreview } from './previewApi';
 import { catalogUnits, previewState } from './catalogUnits';
 import { previewNavigation } from './previewNavigation';

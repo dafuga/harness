@@ -5,7 +5,7 @@ import { buildStamp } from '../../../../src/utils/buildStamp';
 import {
 	evidenceRequested,
 	recordCapture
-} from '../../../../src/utils/record-capture/recordCapture';
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import scenario from '../../../../specification/scenarios/shared-test-cases.json' with { type: 'json' };
 
 const note =

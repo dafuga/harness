@@ -4,7 +4,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { recordCapture } from '../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../src/utils/reports-media/record-capture/recordCapture';
 import { runHarness } from './support/cli';
 
 /**

@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
-import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { recordedValue } from '../../src/components/shared-primitives/recorded-value/recordedValue';
 
 test('a bounded preview leaves its input intact and makes shortening explicit', () => {

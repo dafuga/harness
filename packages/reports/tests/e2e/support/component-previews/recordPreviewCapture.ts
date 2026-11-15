@@ -1,5 +1,5 @@
 import { BuildIdentityService } from '../../../../../../src/services/verification-evidence/BuildIdentityService';
-import { recordCapture } from '../../../../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../../../../src/utils/reports-media/record-capture/recordCapture';
 import { desktopCaptureEvidence } from './desktopStateActions';
 import { previewCaptureNote } from './previewCapturePolicy';
 import { previewState } from './catalogUnits';

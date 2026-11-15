@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { buildStamp } from '../../../../src/utils/development-tooling/buildStamp';
 import { gameRuntimeMeasurements, gameSourceMeasurements } from './game-measurements-fixture';
 

@@ -1,4 +1,7 @@
-import { recordCapture, evidenceRequested } from '../src/utils/record-capture/recordCapture';
+import {
+	recordCapture,
+	evidenceRequested
+} from '../src/utils/reports-media/record-capture/recordCapture';
 import { randomUUID } from 'node:crypto';
 import { spawn, type ChildProcess } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';

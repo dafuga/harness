@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { recordCapture } from '../../../../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../../../../src/utils/reports-media/record-capture/recordCapture';
 import { previewState } from './catalogUnits';
 
 /** The actual document that mounted this route, never a preceding soft-navigation document. */

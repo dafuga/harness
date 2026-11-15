@@ -1,7 +1,10 @@
 import type { Page } from '@playwright/test';
 import { benchmarkCaptureSchema } from '../../../src/core/verifyTypes';
 import { BuildIdentityService } from '../../../src/services/verification-evidence/BuildIdentityService';
-import { evidenceRequested, recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../../src/utils/reports-media/record-capture/recordCapture';
 import { previewHome } from './entityPreviewSetup';
 
 /** Start a measured client route transition immediately before its normal user action. */

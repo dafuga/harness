@@ -2,7 +2,7 @@ import type { Case } from './plan-reads-port.test.types';
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
 import { Buffer } from 'node:buffer';
-import { recordCapture } from '../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../src/utils/reports-media/record-capture/recordCapture';
 import type { Git } from '../src/utils/planning-collaboration/planGit';
 import { planReads } from '../src/lib/planning-collaboration/planning/planning-service/planReads';
 

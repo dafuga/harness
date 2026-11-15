@@ -1,5 +1,8 @@
 import type { Helper, HelperCall } from './unit-documentation.test.types';
-import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../src/utils/reports-media/record-capture/recordCapture';
 import { readdir, readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';

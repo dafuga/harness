@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { pageBenchmark, pageUnit } from './pageBenchmark';
 import { home, short } from './harnessHistory';
 import { settled, servedBuild } from './harnessCapture';
-import { recordCapture } from '../../../../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../../../../src/utils/reports-media/record-capture/recordCapture';
 export const explorer = (): SeededExplorer =>
 	JSON.parse(readFileSync(join(home, 'meta.json'), 'utf8')) as SeededExplorer;
 

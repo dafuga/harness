@@ -1,5 +1,5 @@
 import type { CatalogCheckContext } from './catalogChecks.types';
-import { evidenceRequested } from '../../../../../../src/utils/record-capture/recordCapture';
+import { evidenceRequested } from '../../../../../../src/utils/reports-media/record-capture/recordCapture';
 import { assertRecordedCompatibility } from './compatibilityPreviewAssertions';
 import { expect } from '../../../../../../test/support/browserTest';
 import * as picker from './translationsPreviewAssertions';

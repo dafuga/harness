@@ -12,7 +12,7 @@ import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';
 import { kernelMutations } from '../../src/workflows/run-kernel/kernelWorkload';
 import { kernelWorkload } from '../../src/utils/kernelWorkload';
-import { recordCapture } from '../../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../../src/utils/reports-media/record-capture/recordCapture';
 import { kernelVectors, vectorText } from '../support/kernelVectors';
 
 const artifacts = kernelArtifacts();

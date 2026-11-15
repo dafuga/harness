@@ -5,7 +5,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { expect, test } from 'vitest';
 import { scenarioManifestSchema, type ComponentManifest } from '../src/core/unitTypes';
-import { recordCapture } from '../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../src/utils/reports-media/record-capture/recordCapture';
 import { HistoryIndexService } from '../src/cli/program/history-index-service/HistoryIndexService';
 import { fixtureSources } from './support/verifyFixture';
 import { unitProject } from './support/unitProject';

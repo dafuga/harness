@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
 import { kernelArtifacts } from '../src/utils/kernelArtifacts';
-import { recordCapture } from '../src/utils/record-capture/recordCapture';
+import { recordCapture } from '../src/utils/reports-media/record-capture/recordCapture';
 import { runCommand } from './support/cli';
 import { measureProcess } from './support/cli-measurement/measureProcess';
 import { expectPackagedSqlite } from './support/packagedSqliteConsumer';

@@ -4,7 +4,10 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { attach, harnessJson } from './historyRepo';
 import { baselineRepo, cloneRepo, type VerifyOutcome, type VerifyRepo } from './verifyRepo';
-import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
+import {
+	evidenceRequested,
+	recordCapture
+} from '../../src/utils/reports-media/record-capture/recordCapture';
 
 export const build = (target: VerifyRepo, out: string, env = {}) =>
 	harnessJson<Built>(target, ['history', 'build', '--out', out], env);

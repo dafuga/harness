@@ -9,7 +9,7 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { box } from './support/shellChecks';
 import { shellMount, shellCategories } from './support/shellData';
-import { evidenceRequested } from '../../../../src/utils/record-capture/recordCapture';
+import { evidenceRequested } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import {
 	buildShellFixture,
 	captureShell,

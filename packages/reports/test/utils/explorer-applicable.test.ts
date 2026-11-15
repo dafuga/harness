@@ -2,7 +2,7 @@ import { afterAll, expect, test } from 'vitest';
 import {
 	evidenceRequested,
 	recordCapture
-} from '../../../../src/utils/record-capture/recordCapture';
+} from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { scenarioFor } from '../../src/utils/explorer-ui/explorerState';
 import type { ExplorerScope } from '../../src/models/explorer-ui/Explorer.types';
 import { explorerEvidence } from '../../src/utils/explorer-ui/explorerEvidence';
