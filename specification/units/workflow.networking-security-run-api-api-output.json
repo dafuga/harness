@@ -12,32 +12,86 @@
 		"symbols": ["apiOutput"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "apiOutput.result",
 				"type": "ApiResponse | unknown",
-				"required": true
+				"required": true,
+				"description": "The Harness API result that apiOutput prints, either an ApiResponse or any other value. A binary ApiResponse (bytes is a Uint8Array and mediaType does not start with text/ and does not include json) is written as raw bytes, a non-binary ApiResponse with Uint8Array bytes prints only its data field, and any other value, including an object whose bytes are not a Uint8Array, prints the value itself as JSON; BigInt and circular values make the call fail, and undefined is written as the text undefined.",
+				"examples": [
+					{
+						"status": "ok",
+						"count": 2,
+						"items": [
+							{
+								"name": "edge-gateway",
+								"state": "active"
+							},
+							{
+								"name": "vpn-tunnel",
+								"state": "inactive"
+							}
+						]
+					},
+					{
+						"data": {
+							"count": 3,
+							"items": [
+								{
+									"name": "edge-gateway",
+									"state": "active"
+								}
+							]
+						}
+					},
+					["edge-gateway", "vpn-tunnel"]
+				]
 			},
 			{
 				"name": "apiOutput.options",
 				"type": "HarnessApiOptions",
-				"required": true
+				"required": true,
+				"description": "The output settings for this call: output is the file to create exclusively, so an existing file is never replaced, while '-' writes to standard output, and for a JSON response an empty or missing output also writes to standard output; select is a dot-separated path of own properties that narrows the printed data, and an empty select is ignored. A binary response requires a non-empty output and cannot be combined with a non-empty select.",
+				"examples": [
+					{
+						"output": "out/run-api/response.json"
+					},
+					{
+						"select": "data.count"
+					},
+					{
+						"output": "-",
+						"select": "data.items.0.name"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "apiOutput",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves to undefined after the response is written to the output file or to standard output, as raw bytes for a binary response or as 2-space-indented JSON followed by a newline for any other response. If a check fails, the value cannot be serialized, or the file cannot be created, it rejects with one of the errors listed for this operation instead."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown through fail() with a message when a binary response has a non-empty select, when a binary response has no output, or when the select path does not reach an own property of an object at every segment."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejected by writeFile with a Node.js file system error, such as EEXIST, when the output path already exists because the file is opened with the 'wx' flag, or when the file cannot be created for another file system reason."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by JSON.stringify inside apiOutput when the value to print contains a BigInt or a circular reference."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "apiOutput",
@@ -45,27 +99,81 @@
 					{
 						"name": "apiOutput.result",
 						"type": "ApiResponse | unknown",
-						"required": true
+						"required": true,
+						"description": "The Harness API result that apiOutput prints, either an ApiResponse or any other value. A binary ApiResponse (bytes is a Uint8Array and mediaType does not start with text/ and does not include json) is written as raw bytes, a non-binary ApiResponse with Uint8Array bytes prints only its data field, and any other value, including an object whose bytes are not a Uint8Array, prints the value itself as JSON; BigInt and circular values make the call fail, and undefined is written as the text undefined.",
+						"examples": [
+							{
+								"status": "ok",
+								"count": 2,
+								"items": [
+									{
+										"name": "edge-gateway",
+										"state": "active"
+									},
+									{
+										"name": "vpn-tunnel",
+										"state": "inactive"
+									}
+								]
+							},
+							{
+								"data": {
+									"count": 3,
+									"items": [
+										{
+											"name": "edge-gateway",
+											"state": "active"
+										}
+									]
+								}
+							},
+							["edge-gateway", "vpn-tunnel"]
+						]
 					},
 					{
 						"name": "apiOutput.options",
 						"type": "HarnessApiOptions",
-						"required": true
+						"required": true,
+						"description": "The output settings for this call: output is the file to create exclusively, so an existing file is never replaced, while '-' writes to standard output, and for a JSON response an empty or missing output also writes to standard output; select is a dot-separated path of own properties that narrows the printed data, and an empty select is ignored. A binary response requires a non-empty output and cannot be combined with a non-empty select.",
+						"examples": [
+							{
+								"output": "out/run-api/response.json"
+							},
+							{
+								"select": "data.count"
+							},
+							{
+								"output": "-",
+								"select": "data.items.0.name"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "apiOutput",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves to undefined after the response is written to the output file or to standard output, as raw bytes for a binary response or as 2-space-indented JSON followed by a newline for any other response. If a check fails, the value cannot be serialized, or the file cannot be created, it rejects with one of the errors listed for this operation instead."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through fail() with a message when a binary response has a non-empty select, when a binary response has no output, or when the select path does not reach an own property of an object at every segment."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejected by writeFile with a Node.js file system error, such as EEXIST, when the output path already exists because the file is opened with the 'wx' flag, or when the file cannot be created for another file system reason."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by JSON.stringify inside apiOutput when the value to print contains a BigInt or a circular reference."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
