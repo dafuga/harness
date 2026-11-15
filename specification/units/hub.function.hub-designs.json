@@ -23,64 +23,176 @@
 				"name": "hubDesignImage.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "Source context used by hubRead to read committed files. hubDesigns also uses its tree entries to select this plan's versioned design metadata; the context contains source and cache adapters with methods that JSON cannot express."
 			},
 			{
 				"name": "hubDesignImage.plan",
 				"type": "HubPlan",
 				"required": true,
-				"description": "Plan owning the requested image."
+				"description": "Parsed plan data that identifies the owning unit and repository-relative path. The path selects the design files, while unitId is checked against each parsed design.",
+				"examples": [
+					{
+						"unitId": "hub.function.hub-designs",
+						"category": "function",
+						"slug": "hub-designs",
+						"title": "Read hosted design versions",
+						"goal": "Read and validate committed design metadata.",
+						"path": "packages/hub/src/routes/api/[...path]/hub-projection-service",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"baseRevision": "82bec7955b6cddc4dd3a34ffe1770d3e6060521b",
+						"contract": {
+							"responsibility": "Read hosted design versions.",
+							"inputs": [
+								{
+									"name": "version",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "versions",
+									"type": "DesignVersion[]"
+								}
+							],
+							"errors": ["Error"],
+							"states": [],
+							"viewports": []
+						},
+						"contractHash": "3c98015dbb5d13a23045c563196243eb9f2d18098d32b65bdda79d7762502270"
+					}
+				]
 			},
 			{
 				"name": "hubDesignImage.input",
 				"type": "{ version: string; sha256: string }",
 				"required": true,
-				"description": "Version and expected image SHA-256."
+				"description": "Selects the design version and image by version label and expected SHA-256 digest. The design schema accepts versions beginning with v and at least three digits, and the digest must match one of that version's images.",
+				"examples": [
+					{
+						"version": "v001",
+						"sha256": "98e1852a46b6cc3348bdbcf17566a89f04cd91df437a30fa6ccbe045ed32fcca"
+					}
+				]
 			},
 			{
 				"name": "hubDesigns.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "Source context used by hubRead to read committed files. hubDesigns also uses its tree entries to select this plan's versioned design metadata; the context contains source and cache adapters with methods that JSON cannot express."
 			},
 			{
 				"name": "hubDesigns.plan",
 				"type": "HubPlan",
 				"required": true,
-				"description": "Plan identity and path whose versions are read."
+				"description": "Parsed plan data that identifies the owning unit and repository-relative path. The path selects the design files, while unitId is checked against each parsed design.",
+				"examples": [
+					{
+						"unitId": "hub.function.hub-designs",
+						"category": "function",
+						"slug": "hub-designs",
+						"title": "Read hosted design versions",
+						"goal": "Read and validate committed design metadata.",
+						"path": "packages/hub/src/routes/api/[...path]/hub-projection-service",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"baseRevision": "82bec7955b6cddc4dd3a34ffe1770d3e6060521b",
+						"contract": {
+							"responsibility": "Read hosted design versions.",
+							"inputs": [
+								{
+									"name": "version",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "versions",
+									"type": "DesignVersion[]"
+								}
+							],
+							"errors": ["Error"],
+							"states": [],
+							"viewports": []
+						},
+						"contractHash": "3c98015dbb5d13a23045c563196243eb9f2d18098d32b65bdda79d7762502270"
+					}
+				]
 			},
 			{
 				"name": "design.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context bound to the requested repository and revision."
+				"description": "Source context used by hubRead to read committed files. hubDesigns also uses its tree entries to select this plan's versioned design metadata; the context contains source and cache adapters with methods that JSON cannot express."
 			},
 			{
 				"name": "design.plan",
 				"type": "HubPlan",
 				"required": true,
-				"description": "Committed plan whose design metadata and image bindings are requested."
+				"description": "Parsed plan data that identifies the owning unit and repository-relative path. The path selects the design files, while unitId is checked against each parsed design.",
+				"examples": [
+					{
+						"unitId": "hub.function.hub-designs",
+						"category": "function",
+						"slug": "hub-designs",
+						"title": "Read hosted design versions",
+						"goal": "Read and validate committed design metadata.",
+						"path": "packages/hub/src/routes/api/[...path]/hub-projection-service",
+						"createdAt": "2026-11-15T12:00:00.000Z",
+						"baseRevision": "82bec7955b6cddc4dd3a34ffe1770d3e6060521b",
+						"contract": {
+							"responsibility": "Read hosted design versions.",
+							"inputs": [
+								{
+									"name": "version",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "versions",
+									"type": "DesignVersion[]"
+								}
+							],
+							"errors": ["Error"],
+							"states": [],
+							"viewports": []
+						},
+						"contractHash": "3c98015dbb5d13a23045c563196243eb9f2d18098d32b65bdda79d7762502270"
+					}
+				]
 			},
 			{
 				"name": "design.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative design metadata path to read and validate."
+				"description": "Repository-relative path passed to hubRead for the design JSON. It must equal the plan path joined with designs/<version>/design.json, and the parsed unitId and contractHash are validated.",
+				"examples": [
+					"packages/hub/src/routes/api/[...path]/hub-projection-service/designs/v001/design.json"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubDesigns",
 				"type": "unknown",
-				"description": "Sequentially numbered versions with prompt/notes, images, option metadata and matching approvals; only the latest version’s approval is marked current, and creation commit is initially null."
+				"description": "Returns the committed design versions in numeric version order and requires a gapless sequence starting at v001. Each version includes the decoded prompt, optional notes, image, approval, option and revision data; commit is null, and only an approval for the newest version is marked current.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "hubDesignImage",
 				"type": "unknown",
-				"description": "PNG bytes for the matching hash after content hash, length and dimensions are checked."
+				"description": "Returns the original PNG bytes for the image selected by the SHA-256 digest after content hash, stored byte length and decoded dimensions are verified. Missing design/image records fail with not-found, while mismatched image length or dimensions fail with artifact-corrupt."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with code not-found when a requested committed design or image is absent, or code artifact-corrupt when design JSON, schema, identity/path/hash, option, version-sequence, image-length or PNG-dimension validation fails."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubDesignImage",
@@ -89,30 +201,73 @@
 						"name": "hubDesignImage.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "Source context used by hubRead to read committed files. hubDesigns also uses its tree entries to select this plan's versioned design metadata; the context contains source and cache adapters with methods that JSON cannot express."
 					},
 					{
 						"name": "hubDesignImage.plan",
 						"type": "HubPlan",
 						"required": true,
-						"description": "Plan owning the requested image."
+						"description": "Parsed plan data that identifies the owning unit and repository-relative path. The path selects the design files, while unitId is checked against each parsed design.",
+						"examples": [
+							{
+								"unitId": "hub.function.hub-designs",
+								"category": "function",
+								"slug": "hub-designs",
+								"title": "Read hosted design versions",
+								"goal": "Read and validate committed design metadata.",
+								"path": "packages/hub/src/routes/api/[...path]/hub-projection-service",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"baseRevision": "82bec7955b6cddc4dd3a34ffe1770d3e6060521b",
+								"contract": {
+									"responsibility": "Read hosted design versions.",
+									"inputs": [
+										{
+											"name": "version",
+											"type": "string"
+										}
+									],
+									"outputs": [
+										{
+											"name": "versions",
+											"type": "DesignVersion[]"
+										}
+									],
+									"errors": ["Error"],
+									"states": [],
+									"viewports": []
+								},
+								"contractHash": "3c98015dbb5d13a23045c563196243eb9f2d18098d32b65bdda79d7762502270"
+							}
+						]
 					},
 					{
 						"name": "hubDesignImage.input",
 						"type": "{ version: string; sha256: string }",
 						"required": true,
-						"description": "Version and expected image SHA-256."
+						"description": "Selects the design version and image by version label and expected SHA-256 digest. The design schema accepts versions beginning with v and at least three digits, and the digest must match one of that version's images.",
+						"examples": [
+							{
+								"version": "v001",
+								"sha256": "98e1852a46b6cc3348bdbcf17566a89f04cd91df437a30fa6ccbe045ed32fcca"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubDesignImage",
 						"type": "unknown",
-						"description": "PNG bytes for the matching hash after content hash, length and dimensions are checked."
+						"description": "Returns the original PNG bytes for the image selected by the SHA-256 digest after content hash, stored byte length and decoded dimensions are verified. Missing design/image records fail with not-found, while mismatched image length or dimensions fail with artifact-corrupt."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with code not-found when the requested image hash or stored blob is absent, or code artifact-corrupt when design metadata, image byte length or decoded PNG dimensions fail validation."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubDesigns",
@@ -121,24 +276,64 @@
 						"name": "hubDesigns.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "Source context used by hubRead to read committed files. hubDesigns also uses its tree entries to select this plan's versioned design metadata; the context contains source and cache adapters with methods that JSON cannot express."
 					},
 					{
 						"name": "hubDesigns.plan",
 						"type": "HubPlan",
 						"required": true,
-						"description": "Plan identity and path whose versions are read."
+						"description": "Parsed plan data that identifies the owning unit and repository-relative path. The path selects the design files, while unitId is checked against each parsed design.",
+						"examples": [
+							{
+								"unitId": "hub.function.hub-designs",
+								"category": "function",
+								"slug": "hub-designs",
+								"title": "Read hosted design versions",
+								"goal": "Read and validate committed design metadata.",
+								"path": "packages/hub/src/routes/api/[...path]/hub-projection-service",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"baseRevision": "82bec7955b6cddc4dd3a34ffe1770d3e6060521b",
+								"contract": {
+									"responsibility": "Read hosted design versions.",
+									"inputs": [
+										{
+											"name": "version",
+											"type": "string"
+										}
+									],
+									"outputs": [
+										{
+											"name": "versions",
+											"type": "DesignVersion[]"
+										}
+									],
+									"errors": ["Error"],
+									"states": [],
+									"viewports": []
+								},
+								"contractHash": "3c98015dbb5d13a23045c563196243eb9f2d18098d32b65bdda79d7762502270"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubDesigns",
 						"type": "unknown",
-						"description": "Sequentially numbered versions with prompt/notes, images, option metadata and matching approvals; only the latest version’s approval is marked current, and creation commit is initially null."
+						"description": "Returns the committed design versions in numeric version order and requires a gapless sequence starting at v001. Each version includes the decoded prompt, optional notes, image, approval, option and revision data; commit is null, and only an approval for the newest version is marked current.",
+						"examples": [
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with code not-found for a missing design, prompt, notes or image blob, or code artifact-corrupt for invalid design data, option assignments, or a version sequence that does not start at v001 and increase without gaps."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "design",
@@ -147,29 +342,107 @@
 						"name": "design.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context bound to the requested repository and revision."
+						"description": "Source context used by hubRead to read committed files. hubDesigns also uses its tree entries to select this plan's versioned design metadata; the context contains source and cache adapters with methods that JSON cannot express."
 					},
 					{
 						"name": "design.plan",
 						"type": "HubPlan",
 						"required": true,
-						"description": "Committed plan whose design metadata and image bindings are requested."
+						"description": "Parsed plan data that identifies the owning unit and repository-relative path. The path selects the design files, while unitId is checked against each parsed design.",
+						"examples": [
+							{
+								"unitId": "hub.function.hub-designs",
+								"category": "function",
+								"slug": "hub-designs",
+								"title": "Read hosted design versions",
+								"goal": "Read and validate committed design metadata.",
+								"path": "packages/hub/src/routes/api/[...path]/hub-projection-service",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"baseRevision": "82bec7955b6cddc4dd3a34ffe1770d3e6060521b",
+								"contract": {
+									"responsibility": "Read hosted design versions.",
+									"inputs": [
+										{
+											"name": "version",
+											"type": "string"
+										}
+									],
+									"outputs": [
+										{
+											"name": "versions",
+											"type": "DesignVersion[]"
+										}
+									],
+									"errors": ["Error"],
+									"states": [],
+									"viewports": []
+								},
+								"contractHash": "3c98015dbb5d13a23045c563196243eb9f2d18098d32b65bdda79d7762502270"
+							}
+						]
 					},
 					{
 						"name": "design.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative design metadata path to read and validate."
+						"description": "Repository-relative path passed to hubRead for the design JSON. It must equal the plan path joined with designs/<version>/design.json, and the parsed unitId and contractHash are validated.",
+						"examples": [
+							"packages/hub/src/routes/api/[...path]/hub-projection-service/designs/v001/design.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "design",
-						"type": "Promise<HubDesign>"
+						"type": "Promise<HubDesign>",
+						"description": "Returns schema-validated design metadata after checking that unitId matches the plan, path matches the versioned design location and contractHash matches the contract contents. If options are present, their ids must be ordered from o1, their directions must be distinct after trimming and case-folding, and they must assign each image exactly once without sharing images across options.",
+						"examples": [
+							{
+								"unitId": "hub.function.hub-designs",
+								"version": "v001",
+								"createdAt": "2026-11-15T12:00:00.000Z",
+								"generator": {
+									"provider": "openai",
+									"model": "gpt-6"
+								},
+								"prompt": {
+									"file": "prompt.md",
+									"sha256": "b71e69f97612f3933fc17d595a3bdb9bb37a9511768691239d1b0c8fb74ce57d"
+								},
+								"notes": null,
+								"baseRevision": "3fe501aba942b50915a8c24524024f9a829a4b1a",
+								"contract": {
+									"responsibility": "Read hosted design versions.",
+									"inputs": [
+										{
+											"name": "version",
+											"type": "string"
+										}
+									],
+									"outputs": [
+										{
+											"name": "versions",
+											"type": "DesignVersion[]"
+										}
+									],
+									"errors": ["Error"],
+									"states": [],
+									"viewports": []
+								},
+								"contractHash": "3c98015dbb5d13a23045c563196243eb9f2d18098d32b65bdda79d7762502270",
+								"images": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with code not-found for a missing design artifact, or code artifact-corrupt for invalid JSON/schema, unitId or path mismatch, contract-hash mismatch, or invalid option assignments."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
