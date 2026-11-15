@@ -32,20 +32,35 @@
 			{
 				"name": "consoleDirectory",
 				"type": "string | undefined",
-				"description": "Resolved history directory from the trimmed console-data environment setting, or undefined when unset."
+				"description": "The absolute path returned by resolve for the trimmed HARNESS_CONSOLE_DATA value, or undefined when that value is unset or blank. It selects the directory for console history reads but is not checked for existence.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.harness/console"
+				]
 			},
 			{
 				"name": "consoleData",
 				"type": "ConsoleData",
-				"description": "Disk-backed guarded readers. Older revision JSON is enriched with source metrics from its exact Git commit when the configured project checkout is available; immutable files and verdict records are not changed. Cache contains at most four immutable revision observations. Missing files remain undefined."
+				"description": "An object with async json(path) and media(name) methods that read JSON text and media bytes beneath the resolved console directory; missing, unreadable, and out-of-directory file reads resolve undefined. For a matching revisions/<40-lowercase-hex>.json path, json can derive missing source measurements from that commit only when HARNESS_SITE_ROOT is nonblank and measurements are available; resolved-root/commit observations are cached with at most four entries."
 			},
 			{
 				"name": "consoleServer",
 				"type": "ConsoleAccess",
-				"description": "Lazily cached ConsoleAccess configured from owner mode, bind address and address-header settings, with local data and portable export support."
+				"description": "Returns the module-cached ConsoleAccess object with guard, entry, json, and media handlers backed by consoleData. On first call, it captures HARNESS_OWNER_MODE, HARNESS_BIND (falling back to HOST), and ADDRESS_HEADER; its policy admits only explicit loopback owner mode, a loopback bind address, no nonblank address-header setting, and a loopback peer, and a policy exception denies the request."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "A nonempty malformed JSON string from a matching revisions/<40-hex>.json path rejects consoleData.json; a nonempty malformed index.json rejects the returned ConsoleAccess.entry handler while it parses data for canonical routing."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A valid revision JSON document with a null root fails when selectedRevision reads commit, and index JSON without the arrays expected by canonical routing can fail as consoleCanonical traverses them."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "consoleDirectory",
@@ -54,11 +69,14 @@
 					{
 						"name": "consoleDirectory",
 						"type": "string | undefined",
-						"description": "Resolved history directory from the trimmed console-data environment setting, or undefined when unset."
+						"description": "The absolute path returned by resolve for the trimmed HARNESS_CONSOLE_DATA value, or undefined when that value is unset or blank. It selects the directory for console history reads but is not checked for existence.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/.harness/console"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "consoleServer",
@@ -67,11 +85,11 @@
 					{
 						"name": "consoleServer",
 						"type": "ConsoleAccess",
-						"description": "Lazily cached ConsoleAccess configured from owner mode, bind address and address-header settings, with local data and portable export support."
+						"description": "Returns the module-cached ConsoleAccess object with guard, entry, json, and media handlers backed by consoleData. On first call, it captures HARNESS_OWNER_MODE, HARNESS_BIND (falling back to HOST), and ADDRESS_HEADER; its policy admits only explicit loopback owner mode, a loopback bind address, no nonblank address-header setting, and a loopback peer."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
