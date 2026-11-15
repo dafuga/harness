@@ -30,70 +30,120 @@
 				"name": "EntitySearchResults.id",
 				"type": "string",
 				"required": true,
-				"description": "Required list ID and prefix for indexed option IDs."
+				"description": "The id of the result list, which is also the prefix of each option's id: the option at index n is {id}-n. The list is in the DOM only while the query is non-empty, and the host passes its own id with -list appended.",
+				"examples": ["entity-search-list", "project-search-list"]
 			},
 			{
 				"name": "EntitySearchResults.found",
 				"type": "SearchEntry[]",
 				"required": true,
-				"description": "Required results in supplied order, with category, name, purpose and identity."
+				"description": "The SearchEntry results shown in the order given, each keyed by its id, with its category's singular label, its name and its purpose when that is non-empty. The component does not sort, filter or limit them, and they are rendered only while the query is non-empty.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "reports.component.entity-search-results",
+							"category": "components",
+							"name": "EntitySearchResults",
+							"purpose": "Shows ranked entity links inside the project search modal.",
+							"terms": [
+								"EntitySearchResults.id",
+								"EntitySearchResults.found",
+								"EntitySearchResults.active",
+								"EntitySearchResults.loading",
+								"EntitySearchResults.query",
+								"EntitySearchResults.scope",
+								"EntitySearchResults.href",
+								"EntitySearchResults.choose",
+								"EntitySearchResults",
+								"href callback error",
+								"choose callback error",
+								"unknown category error"
+							],
+							"commit": "dea2a61576e8be4fb70a4126b942d0c0fd165683"
+						},
+						{
+							"id": "reports.function.entity-search",
+							"category": "functions",
+							"name": "entitySearch",
+							"purpose": "Ranks revision-bound entity search results using names, identifiers, purpose and contract terms.",
+							"terms": [
+								"entitySearch.entries",
+								"entitySearch.query",
+								"entitySearch.limit",
+								"entitySearch"
+							],
+							"commit": "dea2a61576e8be4fb70a4126b942d0c0fd165683"
+						}
+					]
+				]
 			},
 			{
 				"name": "EntitySearchResults.active",
 				"type": "number",
 				"required": true,
-				"description": "Required zero-based active position for aria-selected; an out-of-range value selects none."
+				"description": "The zero-based index of the option that is given aria-selected and scrolled into view. A value no option has, such as one past the last result or a negative number, selects none, and the options exist only while the query is non-empty.",
+				"examples": [0, 1]
 			},
 			{
 				"name": "EntitySearchResults.loading",
 				"type": "boolean",
 				"required": true,
-				"description": "Required flag showing Loading entities regardless of current result count."
+				"description": "True while the host has nothing of the shown revision to search: a Loading entities… status line then shows below the results whenever the query is non-empty, even when some results are listed. When it is false and no results are listed, the no-match status line shows instead.",
+				"examples": [false, true]
 			},
 			{
 				"name": "EntitySearchResults.query",
 				"type": "string",
 				"required": true,
-				"description": "Required query text used in the empty-result message."
+				"description": "The search text: a non-empty value shows the results list and is quoted in the no-match message, while an empty value shows the typing hint instead. The component uses it exactly as given, and the host passes it already trimmed, so a whitespace-only query arrives as an empty string.",
+				"examples": ["entity", "purpose"]
 			},
 			{
 				"name": "EntitySearchResults.scope",
 				"type": "string",
 				"required": true,
-				"description": "Required human-readable revision/search scope displayed above results."
+				"description": "The revision or search scope in words, shown as the first note of the panel exactly as given, whether or not a query is typed.",
+				"examples": ["At the tip of main", "At commit dea2a61"]
 			},
 			{
 				"name": "EntitySearchResults.href",
 				"type": "(entry: SearchEntry) => string",
 				"required": true,
-				"description": "Required callback supplying each result’s actual link target."
+				"description": "Called with each listed result while the list renders, and its return value becomes that result's link href. It runs only while the query is non-empty, because the list is rendered only then."
 			},
 			{
 				"name": "EntitySearchResults.choose",
 				"type": "(entry: SearchEntry) => void",
 				"required": true,
-				"description": "Required callback for ordinary primary-button clicks. Modified or other-button clicks retain native link behavior."
+				"description": "Called with the result on an ordinary click, meaning the primary button with no Ctrl, Meta, Shift or Alt key, after the link's default navigation has been prevented. Other clicks are not passed to it and keep the browser's normal link behavior."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySearchResults",
 				"type": "markup",
-				"description": "A scrollable list of ranked entity links, their categories and purposes, with loading or no-match feedback. Modified clicks preserve normal browser link behavior."
+				"description": "A scrollable panel that shows the scope note, then either a listbox of result links in the order given, each with its category badge, name and purpose when non-empty, with a Loading entities… or no-match status line beneath them when one applies, or, with no query, a hint and reminders of the arrow, Enter and Esc keys. Modified and non-primary clicks keep the browser's normal link behavior, and the key reminders are hidden on coarse pointers."
 			}
 		],
 		"errors": [
 			{
 				"name": "href callback error",
 				"type": "thrown",
-				"description": "Any value thrown by the caller-supplied href callback propagates when a result link renders."
+				"description": "Any value thrown by the href callback propagates out of the component's render, because the callback is called for each listed result while the list renders."
 			},
 			{
 				"name": "choose callback error",
 				"type": "thrown",
-				"description": "Any value thrown by the caller-supplied choose callback propagates on an ordinary result click."
+				"description": "Any value thrown by the choose callback propagates out of the click handler on an ordinary click, after the link's default navigation has already been prevented."
+			},
+			{
+				"name": "unknown category error",
+				"type": "thrown",
+				"description": "A TypeError is thrown while the list renders if a listed result's category has no entityLabels entry, because its badge reads that entry's label without a check."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
