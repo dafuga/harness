@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "An optional Svelte Snippet prop that the component removes from the rest props by destructuring, so it is never forwarded to the input as an attribute. The markup never renders it and the input is a void element, so passing it has no effect on the output."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputHidden",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "The rendered native input element: every prop other than children is spread onto it, and type is set to 'hidden' after the spread, so a passed type is overridden. It has no child content and no wrapper element."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
