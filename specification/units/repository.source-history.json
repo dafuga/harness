@@ -24,41 +24,176 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SourceHistoryRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root path that the constructor passes to the GitAdapter it creates, and through which every git command of this repository runs. The constructor does not check the path; it only stores the adapter.",
+				"examples": [
+					"/workspace/harness-app",
+					"/home/dev/src/billing-service",
+					"/srv/repos/inventory-api"
+				]
 			},
 			{
 				"name": "SourceHistoryRepository.read.limit",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The most revisions that read returns; read asks git for one commit more than this so it can set truncated when history continues past the limit. The value is not validated.",
+				"examples": [20, 50, 100]
 			},
 			{
 				"name": "SourceHistoryRepository.revision.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The commit to look up: any revision that git peels to a commit, such as a full or abbreviated hash, or a branch or tag name. It comes after --end-of-options, so a value that starts with a dash cannot be read as a git option.",
+				"examples": [
+					"8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2",
+					"f3b6c0d9a2e5714f8b9c3d0a6e2f1b7c4d8e9a05",
+					"b0d5f8a2c7e1490d6b3f2a8c5e7d1b9f4a0c6e23"
+				]
 			},
 			{
 				"name": "SourceHistoryRepository.revision.branches",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "The branch names the caller already knows reach the commit; revision returns this list unchanged as the commit's branches and does not check it against the repository. An empty list makes the returned revision retained.",
+				"examples": [
+					["main"],
+					["main", "release/2.4"],
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SourceHistoryRepository.read",
-				"type": "Promise<SourceHistory>"
+				"type": "Promise<SourceHistory>",
+				"description": "Resolves to the branches (the local ones and those from remotes) and up to limit revisions, the commits reachable from the branch heads and archive refs in git's --date-order. truncated is true when more commits exist than limit, and a repository with no branch and no archive ref resolves with no revisions and truncated false.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2"
+							},
+							{
+								"name": "release/2.4",
+								"head": "f3b6c0d9a2e5714f8b9c3d0a6e2f1b7c4d8e9a05"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2",
+								"tree": "a71d3f5e0c9b2d8e4f6a1c7b3e5d9f0a2c8b4e61",
+								"parents": ["2d7a9e0c4b1f85a3d6e2c9b7f0a4e8d1c5b3a697"],
+								"subject": "Add invoice export button",
+								"author": "Maria Chen",
+								"authoredAt": "2026-11-12T10:14:55+01:00",
+								"committedAt": "2026-11-12T10:20:31+01:00",
+								"branches": ["main"],
+								"retained": false
+							},
+							{
+								"commit": "f3b6c0d9a2e5714f8b9c3d0a6e2f1b7c4d8e9a05",
+								"tree": "d4b8e2a6c0f3917d5e8a2b4c6f0d9e3a1b7c5f28",
+								"parents": ["2d7a9e0c4b1f85a3d6e2c9b7f0a4e8d1c5b3a697"],
+								"subject": "Prepare 2.4.1 release notes",
+								"author": "Maria Chen",
+								"authoredAt": "2026-11-11T18:02:40+01:00",
+								"committedAt": "2026-11-11T18:05:12+01:00",
+								"branches": ["release/2.4"],
+								"retained": false
+							},
+							{
+								"commit": "2d7a9e0c4b1f85a3d6e2c9b7f0a4e8d1c5b3a697",
+								"tree": "0e9c4b7a1d3f6e8c2a5b9d0f7e4c1a3b6d8e2f94",
+								"parents": [],
+								"subject": "Fix rounding in line totals",
+								"author": "Sam Okafor",
+								"authoredAt": "2026-11-09T09:41:03-05:00",
+								"committedAt": "2026-11-09T09:58:47-05:00",
+								"branches": ["main", "release/2.4"],
+								"retained": false
+							}
+						],
+						"truncated": false
+					},
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2",
+								"tree": "a71d3f5e0c9b2d8e4f6a1c7b3e5d9f0a2c8b4e61",
+								"parents": ["2d7a9e0c4b1f85a3d6e2c9b7f0a4e8d1c5b3a697"],
+								"subject": "Add invoice export button",
+								"author": "Maria Chen",
+								"authoredAt": "2026-11-12T10:14:55+01:00",
+								"committedAt": "2026-11-12T10:20:31+01:00",
+								"branches": ["main"],
+								"retained": false
+							},
+							{
+								"commit": "b0d5f8a2c7e1490d6b3f2a8c5e7d1b9f4a0c6e23",
+								"tree": "6e1b9d4c7a0f23e8b5d1c9a6f4e2b0d7a3c8e516",
+								"parents": ["3a8f2c6e9d1b7054f2e8a6c3d9b1f7e0a5c2d4b8"],
+								"subject": "Record tested build for release candidate",
+								"author": "Sam Okafor",
+								"authoredAt": "2026-11-10T08:12:44+00:00",
+								"committedAt": "2026-11-10T08:15:30+00:00",
+								"branches": [],
+								"retained": true
+							}
+						],
+						"truncated": true
+					}
+				]
 			},
 			{
 				"name": "SourceHistoryRepository.revision",
-				"type": "Promise<SourceRevision | undefined>"
+				"type": "Promise<SourceRevision | undefined>",
+				"description": "Resolves to the commit as a SourceRevision, with its full hash and with branches set to the list the caller passed, or to undefined when the repository holds no such commit. Unlike read, it trims nothing itself: GitAdapter.attempt trims the whole output before it is split into fields, so subject loses any trailing whitespace.",
+				"examples": [
+					{
+						"commit": "8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2",
+						"tree": "a71d3f5e0c9b2d8e4f6a1c7b3e5d9f0a2c8b4e61",
+						"parents": ["2d7a9e0c4b1f85a3d6e2c9b7f0a4e8d1c5b3a697"],
+						"subject": "Add invoice export button",
+						"author": "Maria Chen",
+						"authoredAt": "2026-11-12T10:14:55+01:00",
+						"committedAt": "2026-11-12T10:20:31+01:00",
+						"branches": ["main"],
+						"retained": false
+					},
+					{
+						"commit": "b0d5f8a2c7e1490d6b3f2a8c5e7d1b9f4a0c6e23",
+						"tree": "6e1b9d4c7a0f23e8b5d1c9a6f4e2b0d7a3c8e516",
+						"parents": ["3a8f2c6e9d1b7054f2e8a6c3d9b1f7e0a5c2d4b8"],
+						"subject": "Record tested build for release candidate",
+						"author": "Sam Okafor",
+						"authoredAt": "2026-11-10T08:12:44+00:00",
+						"committedAt": "2026-11-10T08:15:30+00:00",
+						"branches": [],
+						"retained": true
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "GitAdapter.run failure",
+				"type": "thrown",
+				"description": "Rejects with the error the GitAdapter run call raises when one of read's git commands (for-each-ref, rev-list or log) fails; read does not catch it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "SourceHistoryRepository.read",
@@ -66,17 +201,109 @@
 					{
 						"name": "SourceHistoryRepository.read.limit",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The most revisions that read returns; read asks git for one commit more than this so it can set truncated when history continues past the limit. The value is not validated.",
+						"examples": [20, 50, 100]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceHistoryRepository.read",
-						"type": "Promise<SourceHistory>"
+						"type": "Promise<SourceHistory>",
+						"description": "Resolves to the branches (the local ones and those from remotes) and up to limit revisions, the commits reachable from the branch heads and archive refs in git's --date-order. truncated is true when more commits exist than limit, and a repository with no branch and no archive ref resolves with no revisions and truncated false.",
+						"examples": [
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2"
+									},
+									{
+										"name": "release/2.4",
+										"head": "f3b6c0d9a2e5714f8b9c3d0a6e2f1b7c4d8e9a05"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2",
+										"tree": "a71d3f5e0c9b2d8e4f6a1c7b3e5d9f0a2c8b4e61",
+										"parents": ["2d7a9e0c4b1f85a3d6e2c9b7f0a4e8d1c5b3a697"],
+										"subject": "Add invoice export button",
+										"author": "Maria Chen",
+										"authoredAt": "2026-11-12T10:14:55+01:00",
+										"committedAt": "2026-11-12T10:20:31+01:00",
+										"branches": ["main"],
+										"retained": false
+									},
+									{
+										"commit": "f3b6c0d9a2e5714f8b9c3d0a6e2f1b7c4d8e9a05",
+										"tree": "d4b8e2a6c0f3917d5e8a2b4c6f0d9e3a1b7c5f28",
+										"parents": ["2d7a9e0c4b1f85a3d6e2c9b7f0a4e8d1c5b3a697"],
+										"subject": "Prepare 2.4.1 release notes",
+										"author": "Maria Chen",
+										"authoredAt": "2026-11-11T18:02:40+01:00",
+										"committedAt": "2026-11-11T18:05:12+01:00",
+										"branches": ["release/2.4"],
+										"retained": false
+									},
+									{
+										"commit": "2d7a9e0c4b1f85a3d6e2c9b7f0a4e8d1c5b3a697",
+										"tree": "0e9c4b7a1d3f6e8c2a5b9d0f7e4c1a3b6d8e2f94",
+										"parents": [],
+										"subject": "Fix rounding in line totals",
+										"author": "Sam Okafor",
+										"authoredAt": "2026-11-09T09:41:03-05:00",
+										"committedAt": "2026-11-09T09:58:47-05:00",
+										"branches": ["main", "release/2.4"],
+										"retained": false
+									}
+								],
+								"truncated": false
+							},
+							{
+								"branches": [
+									{
+										"name": "main",
+										"head": "8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2"
+									}
+								],
+								"revisions": [
+									{
+										"commit": "8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2",
+										"tree": "a71d3f5e0c9b2d8e4f6a1c7b3e5d9f0a2c8b4e61",
+										"parents": ["2d7a9e0c4b1f85a3d6e2c9b7f0a4e8d1c5b3a697"],
+										"subject": "Add invoice export button",
+										"author": "Maria Chen",
+										"authoredAt": "2026-11-12T10:14:55+01:00",
+										"committedAt": "2026-11-12T10:20:31+01:00",
+										"branches": ["main"],
+										"retained": false
+									},
+									{
+										"commit": "b0d5f8a2c7e1490d6b3f2a8c5e7d1b9f4a0c6e23",
+										"tree": "6e1b9d4c7a0f23e8b5d1c9a6f4e2b0d7a3c8e516",
+										"parents": ["3a8f2c6e9d1b7054f2e8a6c3d9b1f7e0a5c2d4b8"],
+										"subject": "Record tested build for release candidate",
+										"author": "Sam Okafor",
+										"authoredAt": "2026-11-10T08:12:44+00:00",
+										"committedAt": "2026-11-10T08:15:30+00:00",
+										"branches": [],
+										"retained": true
+									}
+								],
+								"truncated": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "GitAdapter.run failure",
+						"type": "thrown",
+						"description": "Rejects with the error the GitAdapter run call raises when one of read's git commands (for-each-ref, rev-list or log) fails; read does not catch it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SourceHistoryRepository.revision",
@@ -84,22 +311,59 @@
 					{
 						"name": "SourceHistoryRepository.revision.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The commit to look up: any revision that git peels to a commit, such as a full or abbreviated hash, or a branch or tag name. It comes after --end-of-options, so a value that starts with a dash cannot be read as a git option.",
+						"examples": [
+							"8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2",
+							"f3b6c0d9a2e5714f8b9c3d0a6e2f1b7c4d8e9a05",
+							"b0d5f8a2c7e1490d6b3f2a8c5e7d1b9f4a0c6e23"
+						]
 					},
 					{
 						"name": "SourceHistoryRepository.revision.branches",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "The branch names the caller already knows reach the commit; revision returns this list unchanged as the commit's branches and does not check it against the repository. An empty list makes the returned revision retained.",
+						"examples": [
+							["main"],
+							["main", "release/2.4"],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceHistoryRepository.revision",
-						"type": "Promise<SourceRevision | undefined>"
+						"type": "Promise<SourceRevision | undefined>",
+						"description": "Resolves to the commit as a SourceRevision, with its full hash and with branches set to the list the caller passed, or to undefined when the repository holds no such commit. Unlike read, it trims nothing itself: GitAdapter.attempt trims the whole output before it is split into fields, so subject loses any trailing whitespace.",
+						"examples": [
+							{
+								"commit": "8c4f1e2a9b3d7065e1f0a4c2d9b8e7f6a5c4d3b2",
+								"tree": "a71d3f5e0c9b2d8e4f6a1c7b3e5d9f0a2c8b4e61",
+								"parents": ["2d7a9e0c4b1f85a3d6e2c9b7f0a4e8d1c5b3a697"],
+								"subject": "Add invoice export button",
+								"author": "Maria Chen",
+								"authoredAt": "2026-11-12T10:14:55+01:00",
+								"committedAt": "2026-11-12T10:20:31+01:00",
+								"branches": ["main"],
+								"retained": false
+							},
+							{
+								"commit": "b0d5f8a2c7e1490d6b3f2a8c5e7d1b9f4a0c6e23",
+								"tree": "6e1b9d4c7a0f23e8b5d1c9a6f4e2b0d7a3c8e516",
+								"parents": ["3a8f2c6e9d1b7054f2e8a6c3d9b1f7e0a5c2d4b8"],
+								"subject": "Record tested build for release candidate",
+								"author": "Sam Okafor",
+								"authoredAt": "2026-11-10T08:12:44+00:00",
+								"committedAt": "2026-11-10T08:15:30+00:00",
+								"branches": [],
+								"retained": true
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -109,17 +373,24 @@
 					{
 						"name": "SourceHistoryRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root path that the constructor passes to the GitAdapter it creates, and through which every git command of this repository runs. The constructor does not check the path; it only stores the adapter.",
+						"examples": [
+							"/workspace/harness-app",
+							"/home/dev/src/billing-service",
+							"/srv/repos/inventory-api"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceHistoryRepository.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new SourceHistoryRepository instance, which holds the GitAdapter created from root."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
