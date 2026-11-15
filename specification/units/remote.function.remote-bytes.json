@@ -53,161 +53,210 @@
 				"name": "stableJson.value",
 				"type": "unknown",
 				"required": true,
-				"description": "JSON-like value to serialize with recursively sorted object keys."
+				"description": "Any JSON-like value to serialize deterministically: object keys are sorted by UTF-16 code unit at every depth, undefined object properties are dropped, and objects are read from their own enumerable keys, so toJSON is never called on them. BigInt values and cyclic structures throw, functions and symbols become null, and sparse array holes become empty elements, which is not valid JSON.",
+				"examples": [
+					{
+						"type": "ping",
+						"seq": 7,
+						"headers": {
+							"b": true,
+							"a": null
+						}
+					},
+					[3, "two", false],
+					"heartbeat"
+				]
 			},
 			{
 				"name": "cryptoSource.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Byte array to expose to WebCrypto without copying."
+				"description": "The Uint8Array handed to WebCrypto; cryptoSource returns this same object with a type-only cast, so nothing is copied or checked at runtime. sha256 is the only caller in this unit, and it rejects when the value is not a BufferSource."
 			},
 			{
 				"name": "remoteBytes.text",
 				"type": "string",
 				"required": true,
-				"description": "Text to encode as UTF-8."
+				"description": "Text to encode as UTF-8 with TextEncoder; lone surrogates become U+FFFD instead of throwing. Non-ASCII characters take two or more bytes, so the byte length differs from the text length.",
+				"examples": ["hello", "héllo", "{\"type\":\"ping\",\"seq\":7}"]
 			},
 			{
 				"name": "bytesText.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Bytes to decode as strict UTF-8."
+				"description": "Bytes to decode with a fatal UTF-8 decoder, so malformed sequences throw a TypeError instead of becoming U+FFFD; a leading byte order mark is removed from the result."
 			},
 			{
 				"name": "toBase64.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Bytes to encode as padded standard base64."
+				"description": "Bytes to encode as padded standard base64 with + and / characters; the conversion works in 32768-byte chunks, and an empty array gives an empty string."
 			},
 			{
 				"name": "fromBase64.text",
 				"type": "string",
 				"required": true,
-				"description": "Strict standard base64 with valid padding and no whitespace."
+				"description": "Standard base64 text that may use only A-Z, a-z, 0-9, + and /, must have a length that is a multiple of four, and may carry = padding only at the end; whitespace, unpadded text and other characters throw Error. Non-canonical trailing bits are accepted, and an empty string decodes to an empty array.",
+				"examples": ["aGVsbG8=", "AAEC/w==", "+/8="]
 			},
 			{
 				"name": "toBase64Url.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Bytes to encode as unpadded URL-safe base64."
+				"description": "Bytes to encode as URL-safe base64 as in RFC 4648 section 5, with + and / replaced by - and _ and all = padding removed; an empty array gives an empty string."
 			},
 			{
 				"name": "fromBase64Url.text",
 				"type": "string",
 				"required": true,
-				"description": "Unpadded URL-safe base64 text; a length congruent to one modulo four is rejected."
+				"description": "Unpadded URL-safe base64 that may use only A-Z, a-z, 0-9, - and _; text with = padding, + or /, or a length of 1 modulo 4 throws Error. Padding is restored before the strict standard decoder runs, and an empty string decodes to an empty array.",
+				"examples": ["aGVsbG8", "AAEC_w", "-_8"]
 			},
 			{
 				"name": "toHex.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Bytes to encode as lowercase hexadecimal."
+				"description": "Bytes to encode as lowercase hexadecimal, where each byte becomes exactly two characters from 00 to ff; an empty array gives an empty string."
 			},
 			{
 				"name": "concatBytes.parts",
 				"type": "Uint8Array[]",
 				"required": false,
-				"description": "Byte arrays to concatenate in argument order."
+				"description": "Byte arrays joined in argument order; with no arguments the rest parameter is an empty array, and every part is copied so the result shares no memory with its inputs."
 			},
 			{
 				"name": "sha256.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Bytes whose SHA-256 digest is requested."
+				"description": "Bytes to hash with SHA-256 through crypto.subtle.digest; the returned promise rejects when crypto.subtle is unavailable or the value is not a BufferSource."
 			},
 			{
 				"name": "randomBytes.length",
 				"type": "number",
 				"required": true,
-				"description": "Requested byte-array length, subject to typed-array and WebCrypto limits."
+				"description": "Number of random bytes to create; fractional values are truncated, negative or infinite values throw RangeError from the Uint8Array constructor, and values above 65536 make crypto.getRandomValues throw QuotaExceededError.",
+				"examples": [12, 16, 32]
 			},
 			{
 				"name": "safeEqual.left",
 				"type": "string",
 				"required": true,
-				"description": "First string to compare."
+				"description": "First string to compare by UTF-16 code units; when the two lengths differ, the function returns false before it reads any character.",
+				"examples": ["3f9ac1d0", "session-token-42"]
 			},
 			{
 				"name": "safeEqual.right",
 				"type": "string",
 				"required": true,
-				"description": "Second string to compare."
+				"description": "Second string to compare; equal-length strings are checked over every character without stopping at the first difference.",
+				"examples": ["3f9ac1d0", "session-token-43"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "cryptoSource",
 				"type": "CryptoSource",
-				"description": "The same byte array with a WebCrypto-compatible type."
+				"description": "The same Uint8Array object typed as CryptoSource, the BufferSource type that WebCrypto accepts; no bytes are copied and no runtime check runs."
 			},
 			{
 				"name": "remoteBytes",
 				"type": "Uint8Array",
-				"description": "New UTF-8 byte array."
+				"description": "A new Uint8Array with the UTF-8 encoding of the text, allocated on every call; empty text gives a zero-length array."
 			},
 			{
 				"name": "bytesText",
 				"type": "string",
-				"description": "Decoded text; malformed UTF-8 rejects."
+				"description": "The decoded text with any leading byte order mark removed; malformed UTF-8 throws a TypeError instead of returning replacement characters.",
+				"examples": ["hello", "héllo", "{\"type\":\"ping\",\"seq\":7}"]
 			},
 			{
 				"name": "toBase64",
 				"type": "string",
-				"description": "Padded standard base64 text."
+				"description": "Padded standard base64 text with + and / and = padding to a multiple of four characters; an empty array gives an empty string.",
+				"examples": ["aGVsbG8=", "AAEC/w==", "+/8="]
 			},
 			{
 				"name": "fromBase64",
 				"type": "Uint8Array",
-				"description": "Decoded byte array."
+				"description": "A new Uint8Array of the bytes decoded from text that already passed the strict base64 check; an empty string gives a zero-length array."
 			},
 			{
 				"name": "toBase64Url",
 				"type": "string",
-				"description": "URL-safe base64 without padding."
+				"description": "URL-safe base64 text with - and _ in place of + and / and no = padding; an empty array gives an empty string.",
+				"examples": ["aGVsbG8", "AAEC_w", "-_8"]
 			},
 			{
 				"name": "fromBase64Url",
 				"type": "Uint8Array",
-				"description": "Decoded byte array."
+				"description": "A new Uint8Array of the bytes decoded from the unpadded URL-safe text after its padding is restored; an empty string gives a zero-length array."
 			},
 			{
 				"name": "toHex",
 				"type": "string",
-				"description": "Two lowercase hexadecimal characters per byte."
+				"description": "Lowercase hexadecimal text with exactly two characters per byte, so its length is twice the byte length; an empty array gives an empty string.",
+				"examples": ["68656c6c6f", "000102ff", "fbff"]
 			},
 			{
 				"name": "concatBytes",
 				"type": "Uint8Array",
-				"description": "New array containing all supplied parts in order."
+				"description": "A new Uint8Array holding all parts in argument order, with a length equal to the sum of the part lengths; no arguments give a zero-length array."
 			},
 			{
 				"name": "sha256",
 				"type": "Promise<Uint8Array>",
-				"description": "32-byte SHA-256 digest."
+				"description": "A promise that resolves to the 32-byte SHA-256 digest of the input and rejects instead when crypto.subtle.digest fails."
 			},
 			{
 				"name": "randomBytes",
 				"type": "Uint8Array",
-				"description": "New byte array filled with cryptographic random values."
+				"description": "A new Uint8Array of the requested length, filled in place by crypto.getRandomValues with cryptographically random values; the call is synchronous."
 			},
 			{
 				"name": "safeEqual",
 				"type": "boolean",
-				"description": "True only for equal strings; unequal lengths return early, while equal lengths compare every character."
+				"description": "True only when both strings have the same length and identical UTF-16 code units; a length mismatch returns false before any character is compared.",
+				"examples": [true, false]
 			},
 			{
 				"name": "stableJson",
 				"type": "string",
-				"description": "JSON text with sorted object keys and undefined object properties omitted; unsupported primitive values become null."
+				"description": "JSON text of the value with object keys sorted at every depth and undefined object properties omitted, while undefined array elements, functions, symbols, NaN and Infinity are written as null. BigInt and cyclic input throw instead of producing text.",
+				"examples": [
+					"{\"seq\":7,\"type\":\"ping\"}",
+					"[3,\"two\",false]",
+					"{\"alpha\":{\"adam\":null,\"beta\":true},\"zeta\":1}"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects malformed encodings or UTF-8; invalid random lengths, unsupported JSON values such as BigInt, circular structures and WebCrypto failures may also throw."
+				"description": "Thrown by fromBase64 for text that is not strict standard base64, and by fromBase64Url for text outside the URL-safe alphabet or with a length of 1 modulo 4."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by bytesText for malformed UTF-8 and by stableJson for a BigInt value, which JSON.stringify refuses; sha256 rejects with it when its argument is not a BufferSource or crypto.subtle is unavailable."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Thrown by randomBytes for a negative or infinite length, from the Uint8Array constructor, and by stableJson for a cyclic structure, where the recursion exhausts the call stack."
+			},
+			{
+				"name": "QuotaExceededError",
+				"type": "thrown",
+				"description": "DOMException thrown by crypto.getRandomValues inside randomBytes when the requested length is above 65536 bytes."
+			},
+			{
+				"name": "OperationError",
+				"type": "thrown",
+				"description": "DOMException that sha256 rejects with when the WebCrypto digest operation itself fails; the code does not catch or translate it."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "stableJson",
@@ -216,18 +265,46 @@
 						"name": "stableJson.value",
 						"type": "unknown",
 						"required": true,
-						"description": "JSON-like value to serialize with recursively sorted object keys."
+						"description": "Any JSON-like value to serialize deterministically: object keys are sorted by UTF-16 code unit at every depth, undefined object properties are dropped, and objects are read from their own enumerable keys, so toJSON is never called on them. BigInt values and cyclic structures throw, functions and symbols become null, and sparse array holes become empty elements, which is not valid JSON.",
+						"examples": [
+							{
+								"type": "ping",
+								"seq": 7,
+								"headers": {
+									"b": true,
+									"a": null
+								}
+							},
+							[3, "two", false],
+							"heartbeat"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "stableJson",
 						"type": "string",
-						"description": "JSON text with sorted object keys and undefined object properties omitted; unsupported primitive values become null."
+						"description": "JSON text of the value with object keys sorted at every depth and undefined object properties omitted, while undefined array elements, functions, symbols, NaN and Infinity are written as null. BigInt and cyclic input throw instead of producing text.",
+						"examples": [
+							"{\"seq\":7,\"type\":\"ping\"}",
+							"[3,\"two\",false]",
+							"{\"alpha\":{\"adam\":null,\"beta\":true},\"zeta\":1}"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by JSON.stringify when the input contains a BigInt value."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown when the input contains a cyclic structure, because the recursion exhausts the call stack."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "cryptoSource",
@@ -236,18 +313,18 @@
 						"name": "cryptoSource.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Byte array to expose to WebCrypto without copying."
+						"description": "The Uint8Array handed to WebCrypto; cryptoSource returns this same object with a type-only cast, so nothing is copied or checked at runtime. sha256 is the only caller in this unit, and it rejects when the value is not a BufferSource."
 					}
 				],
 				"outputs": [
 					{
 						"name": "cryptoSource",
 						"type": "CryptoSource",
-						"description": "The same byte array with a WebCrypto-compatible type."
+						"description": "The same Uint8Array object typed as CryptoSource, the BufferSource type that WebCrypto accepts; no bytes are copied and no runtime check runs."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "remoteBytes",
@@ -256,18 +333,19 @@
 						"name": "remoteBytes.text",
 						"type": "string",
 						"required": true,
-						"description": "Text to encode as UTF-8."
+						"description": "Text to encode as UTF-8 with TextEncoder; lone surrogates become U+FFFD instead of throwing. Non-ASCII characters take two or more bytes, so the byte length differs from the text length.",
+						"examples": ["hello", "héllo", "{\"type\":\"ping\",\"seq\":7}"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "remoteBytes",
 						"type": "Uint8Array",
-						"description": "New UTF-8 byte array."
+						"description": "A new Uint8Array with the UTF-8 encoding of the text, allocated on every call; empty text gives a zero-length array."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "bytesText",
@@ -276,18 +354,25 @@
 						"name": "bytesText.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Bytes to decode as strict UTF-8."
+						"description": "Bytes to decode with a fatal UTF-8 decoder, so malformed sequences throw a TypeError instead of becoming U+FFFD; a leading byte order mark is removed from the result."
 					}
 				],
 				"outputs": [
 					{
 						"name": "bytesText",
 						"type": "string",
-						"description": "Decoded text; malformed UTF-8 rejects."
+						"description": "The decoded text with any leading byte order mark removed; malformed UTF-8 throws a TypeError instead of returning replacement characters.",
+						"examples": ["hello", "héllo", "{\"type\":\"ping\",\"seq\":7}"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown for malformed UTF-8, because the decoder is created with fatal set to true."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "toBase64",
@@ -296,18 +381,19 @@
 						"name": "toBase64.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Bytes to encode as padded standard base64."
+						"description": "Bytes to encode as padded standard base64 with + and / characters; the conversion works in 32768-byte chunks, and an empty array gives an empty string."
 					}
 				],
 				"outputs": [
 					{
 						"name": "toBase64",
 						"type": "string",
-						"description": "Padded standard base64 text."
+						"description": "Padded standard base64 text with + and / and = padding to a multiple of four characters; an empty array gives an empty string.",
+						"examples": ["aGVsbG8=", "AAEC/w==", "+/8="]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "fromBase64",
@@ -316,23 +402,25 @@
 						"name": "fromBase64.text",
 						"type": "string",
 						"required": true,
-						"description": "Strict standard base64 with valid padding and no whitespace."
+						"description": "Standard base64 text that may use only A-Z, a-z, 0-9, + and /, must have a length that is a multiple of four, and may carry = padding only at the end; whitespace, unpadded text and other characters throw Error. Non-canonical trailing bits are accepted, and an empty string decodes to an empty array.",
+						"examples": ["aGVsbG8=", "AAEC/w==", "+/8="]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fromBase64",
 						"type": "Uint8Array",
-						"description": "Decoded byte array."
+						"description": "A new Uint8Array of the bytes decoded from text that already passed the strict base64 check; an empty string gives a zero-length array."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown for text that is not strict standard base64, such as a character outside the alphabet, whitespace, unpadded input, or misplaced padding."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "toBase64Url",
@@ -341,18 +429,19 @@
 						"name": "toBase64Url.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Bytes to encode as unpadded URL-safe base64."
+						"description": "Bytes to encode as URL-safe base64 as in RFC 4648 section 5, with + and / replaced by - and _ and all = padding removed; an empty array gives an empty string."
 					}
 				],
 				"outputs": [
 					{
 						"name": "toBase64Url",
 						"type": "string",
-						"description": "URL-safe base64 without padding."
+						"description": "URL-safe base64 text with - and _ in place of + and / and no = padding; an empty array gives an empty string.",
+						"examples": ["aGVsbG8", "AAEC_w", "-_8"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "fromBase64Url",
@@ -361,23 +450,25 @@
 						"name": "fromBase64Url.text",
 						"type": "string",
 						"required": true,
-						"description": "Unpadded URL-safe base64 text; a length congruent to one modulo four is rejected."
+						"description": "Unpadded URL-safe base64 that may use only A-Z, a-z, 0-9, - and _; text with = padding, + or /, or a length of 1 modulo 4 throws Error. Padding is restored before the strict standard decoder runs, and an empty string decodes to an empty array.",
+						"examples": ["aGVsbG8", "AAEC_w", "-_8"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fromBase64Url",
 						"type": "Uint8Array",
-						"description": "Decoded byte array."
+						"description": "A new Uint8Array of the bytes decoded from the unpadded URL-safe text after its padding is restored; an empty string gives a zero-length array."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown for a character outside the URL-safe alphabet, including = padding, or for a length of 1 modulo 4."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "toHex",
@@ -386,18 +477,19 @@
 						"name": "toHex.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Bytes to encode as lowercase hexadecimal."
+						"description": "Bytes to encode as lowercase hexadecimal, where each byte becomes exactly two characters from 00 to ff; an empty array gives an empty string."
 					}
 				],
 				"outputs": [
 					{
 						"name": "toHex",
 						"type": "string",
-						"description": "Two lowercase hexadecimal characters per byte."
+						"description": "Lowercase hexadecimal text with exactly two characters per byte, so its length is twice the byte length; an empty array gives an empty string.",
+						"examples": ["68656c6c6f", "000102ff", "fbff"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "concatBytes",
@@ -406,18 +498,18 @@
 						"name": "concatBytes.parts",
 						"type": "Uint8Array[]",
 						"required": false,
-						"description": "Byte arrays to concatenate in argument order."
+						"description": "Byte arrays joined in argument order; with no arguments the rest parameter is an empty array, and every part is copied so the result shares no memory with its inputs."
 					}
 				],
 				"outputs": [
 					{
 						"name": "concatBytes",
 						"type": "Uint8Array",
-						"description": "New array containing all supplied parts in order."
+						"description": "A new Uint8Array holding all parts in argument order, with a length equal to the sum of the part lengths; no arguments give a zero-length array."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sha256",
@@ -426,18 +518,29 @@
 						"name": "sha256.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Bytes whose SHA-256 digest is requested."
+						"description": "Bytes to hash with SHA-256 through crypto.subtle.digest; the returned promise rejects when crypto.subtle is unavailable or the value is not a BufferSource."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sha256",
 						"type": "Promise<Uint8Array>",
-						"description": "32-byte SHA-256 digest."
+						"description": "A promise that resolves to the 32-byte SHA-256 digest of the input and rejects instead when crypto.subtle.digest fails."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Rejects when crypto.subtle is unavailable or the argument is not a BufferSource."
+					},
+					{
+						"name": "OperationError",
+						"type": "thrown",
+						"description": "Rejects when the WebCrypto digest operation itself fails."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "randomBytes",
@@ -446,18 +549,30 @@
 						"name": "randomBytes.length",
 						"type": "number",
 						"required": true,
-						"description": "Requested byte-array length, subject to typed-array and WebCrypto limits."
+						"description": "Number of random bytes to create; fractional values are truncated, negative or infinite values throw RangeError from the Uint8Array constructor, and values above 65536 make crypto.getRandomValues throw QuotaExceededError.",
+						"examples": [12, 16, 32]
 					}
 				],
 				"outputs": [
 					{
 						"name": "randomBytes",
 						"type": "Uint8Array",
-						"description": "New byte array filled with cryptographic random values."
+						"description": "A new Uint8Array of the requested length, filled in place by crypto.getRandomValues with cryptographically random values; the call is synchronous."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "Thrown for a negative or infinite length by the Uint8Array constructor."
+					},
+					{
+						"name": "QuotaExceededError",
+						"type": "thrown",
+						"description": "DOMException thrown by crypto.getRandomValues when the length is above 65536 bytes."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "safeEqual",
@@ -466,24 +581,27 @@
 						"name": "safeEqual.left",
 						"type": "string",
 						"required": true,
-						"description": "First string to compare."
+						"description": "First string to compare by UTF-16 code units; when the two lengths differ, the function returns false before it reads any character.",
+						"examples": ["3f9ac1d0", "session-token-42"]
 					},
 					{
 						"name": "safeEqual.right",
 						"type": "string",
 						"required": true,
-						"description": "Second string to compare."
+						"description": "Second string to compare; equal-length strings are checked over every character without stopping at the first difference.",
+						"examples": ["3f9ac1d0", "session-token-43"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "safeEqual",
 						"type": "boolean",
-						"description": "True only for equal strings; unequal lengths return early, while equal lengths compare every character."
+						"description": "True only when both strings have the same length and identical UTF-16 code units; a length mismatch returns false before any character is compared.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
