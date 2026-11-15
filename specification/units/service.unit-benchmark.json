@@ -23,42 +23,211 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "UnitBenchmarkService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository root that the runtime service resolves module, Wasm and process entries that contain a slash against; the constructor stores it unchanged and this unit never checks that it exists.",
+				"examples": ["/workspace/evidence-reports", "/srv/ci/checkouts/evidence-reports"]
 			},
 			{
 				"name": "UnitBenchmarkService.measure.manifest",
 				"type": "ComponentManifest",
-				"required": true
+				"required": true,
+				"description": "The unit to measure, as declared in its manifest: its id labels every measurement and failure message, and its runtime.targets select the execution target that runs. If runtime.targets has no target of the requested kind, measure throws ExpectedCliError.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "reports.component.evidence-grid",
+						"uid": "u_k3w7qz2na5",
+						"kind": "component",
+						"title": "Evidence grid",
+						"responsibility": "Renders verification evidence as a grid of captured results.",
+						"responsibilityOrigin": "declared",
+						"status": "active",
+						"owns": {
+							"source": ["src/reports/component/evidence-grid/runtime.ts"],
+							"symbols": ["invoke", "renderEvidenceGrid"]
+						},
+						"contract": {
+							"origin": "derived",
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/reports/component/evidence-grid/runtime.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/reports/component/evidence-grid/runtime.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "UnitBenchmarkService.measure.workload",
 				"type": "Workload",
-				"required": true
+				"required": true,
+				"description": "The request and sampling to measure: workload.request is sent on every call, and rounds and iterations set the timed sampling after three warm-up calls, so rounds times iterations samples are recorded. The workload schema accepts 1 to 50 rounds and 1 to 100000 iterations, and measure does not check those limits itself; the workload id labels each measurement.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "evidence-grid.render-small",
+						"request": {
+							"operation": "render",
+							"input": {
+								"rows": 40
+							}
+						},
+						"rounds": 5,
+						"iterations": 200
+					},
+					{
+						"schemaVersion": 1,
+						"id": "evidence-grid.render-large",
+						"request": {
+							"operation": "render",
+							"input": {
+								"rows": 2000
+							}
+						},
+						"rounds": 10,
+						"iterations": 50
+					}
+				]
 			},
 			{
 				"name": "UnitBenchmarkService.measure.kind",
 				"type": "RuntimeKind",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "The execution target kind to measure, one of module, wasm, process or http, which the manifest must declare in runtime.targets. Defaults to manifest.runtime.kind when omitted, which UnitRuntimeService.forUnit applies because measure passes an omitted kind through as undefined; the kind that ran is reported as target.",
+				"examples": ["module", "wasm", "process"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "UnitBenchmarkService.measure",
-				"type": "Promise<UnitBenchmark>"
+				"type": "Promise<UnitBenchmark>",
+				"description": "The benchmark of the unit through its selected target: a responseDigest, the SHA-256 hex digest of the stable JSON of the first response, and measurements for latency floor, warm latency and throughput, plus peak process RSS only when the target is module. Every measurement repeats the unit, workload, target, sample count and comparison context, and the promise rejects with the errors listed for this operation.",
+				"examples": [
+					{
+						"unit": "reports.component.evidence-grid",
+						"workload": "evidence-grid.render-small",
+						"target": "module",
+						"responseDigest": "c04e87a9d2b61f35e08c4a7d19b6f2e5d3a7c08b4e91f6d2a8350c7e4b19d6f3",
+						"measurements": [
+							{
+								"unit": "reports.component.evidence-grid",
+								"workload": "evidence-grid.render-small",
+								"target": "module",
+								"samples": 1000,
+								"comparison": {
+									"request": "3f9a1c7e5b2d8046e1a4c9f07b35d2e8a6c10f4d9e7b2a5c83d1f6e09a4b7c21",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 200
+									}
+								},
+								"metric": "latency-floor-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.0384,
+								"method": "Fastest of 5 rounds of 200 end-to-end calls through the declared module target, including request validation, serialization and response parsing."
+							},
+							{
+								"unit": "reports.component.evidence-grid",
+								"workload": "evidence-grid.render-small",
+								"target": "module",
+								"samples": 1000,
+								"comparison": {
+									"request": "3f9a1c7e5b2d8046e1a4c9f07b35d2e8a6c10f4d9e7b2a5c83d1f6e09a4b7c21",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 200
+									}
+								},
+								"metric": "latency-warm-ms",
+								"unitOfMeasure": "ms",
+								"value": 0.0461,
+								"method": "Median of the round medians over 5 rounds of 200 end-to-end calls through the declared module target, including request validation, serialization and response parsing."
+							},
+							{
+								"unit": "reports.component.evidence-grid",
+								"workload": "evidence-grid.render-small",
+								"target": "module",
+								"samples": 1000,
+								"comparison": {
+									"request": "3f9a1c7e5b2d8046e1a4c9f07b35d2e8a6c10f4d9e7b2a5c83d1f6e09a4b7c21",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 200
+									}
+								},
+								"metric": "throughput-ops",
+								"unitOfMeasure": "ops/s",
+								"value": 21691.97,
+								"method": "Calls per second at the median over 5 rounds of 200 end-to-end calls through the declared module target, including request validation, serialization and response parsing."
+							},
+							{
+								"unit": "reports.component.evidence-grid",
+								"workload": "evidence-grid.render-small",
+								"target": "module",
+								"samples": 1000,
+								"comparison": {
+									"request": "3f9a1c7e5b2d8046e1a4c9f07b35d2e8a6c10f4d9e7b2a5c83d1f6e09a4b7c21",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 200
+									}
+								},
+								"metric": "process-peak-rss-bytes",
+								"unitOfMeasure": "bytes",
+								"value": 187695104,
+								"method": "Peak RSS of the Harness benchmark process, normalized to bytes for this runtime, including runner overhead and earlier work; excludes separate target processes and is not callable-attributed memory."
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when the manifest declares no execution target of the requested kind, or when the first workload call returns a failed response; its message names the unit and, for a failed call, the response code and message."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A plain Error thrown by the benchmark timing loop when a warm-up or timed call returns a failed response after the first call succeeded; its message names the runtime kind and the failure message."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "UnitBenchmarkService.measure",
@@ -66,32 +235,199 @@
 					{
 						"name": "UnitBenchmarkService.measure.manifest",
 						"type": "ComponentManifest",
-						"required": true
+						"required": true,
+						"description": "The unit to measure, as declared in its manifest: its id labels every measurement and failure message, and its runtime.targets select the execution target that runs. If runtime.targets has no target of the requested kind, measure throws ExpectedCliError.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "reports.component.evidence-grid",
+								"uid": "u_k3w7qz2na5",
+								"kind": "component",
+								"title": "Evidence grid",
+								"responsibility": "Renders verification evidence as a grid of captured results.",
+								"responsibilityOrigin": "declared",
+								"status": "active",
+								"owns": {
+									"source": ["src/reports/component/evidence-grid/runtime.ts"],
+									"symbols": ["invoke", "renderEvidenceGrid"]
+								},
+								"contract": {
+									"origin": "derived",
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/reports/component/evidence-grid/runtime.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/reports/component/evidence-grid/runtime.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					},
 					{
 						"name": "UnitBenchmarkService.measure.workload",
 						"type": "Workload",
-						"required": true
+						"required": true,
+						"description": "The request and sampling to measure: workload.request is sent on every call, and rounds and iterations set the timed sampling after three warm-up calls, so rounds times iterations samples are recorded. The workload schema accepts 1 to 50 rounds and 1 to 100000 iterations, and measure does not check those limits itself; the workload id labels each measurement.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "evidence-grid.render-small",
+								"request": {
+									"operation": "render",
+									"input": {
+										"rows": 40
+									}
+								},
+								"rounds": 5,
+								"iterations": 200
+							},
+							{
+								"schemaVersion": 1,
+								"id": "evidence-grid.render-large",
+								"request": {
+									"operation": "render",
+									"input": {
+										"rows": 2000
+									}
+								},
+								"rounds": 10,
+								"iterations": 50
+							}
+						]
 					},
 					{
 						"name": "UnitBenchmarkService.measure.kind",
 						"type": "RuntimeKind",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "The execution target kind to measure, one of module, wasm, process or http, which the manifest must declare in runtime.targets. Defaults to manifest.runtime.kind when omitted, which UnitRuntimeService.forUnit applies because measure passes an omitted kind through as undefined; the kind that ran is reported as target.",
+						"examples": ["module", "wasm", "process"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitBenchmarkService.measure",
-						"type": "Promise<UnitBenchmark>"
+						"type": "Promise<UnitBenchmark>",
+						"description": "The benchmark of the unit through its selected target: a responseDigest, the SHA-256 hex digest of the stable JSON of the first response, and measurements for latency floor, warm latency and throughput, plus peak process RSS only when the target is module. Every measurement repeats the unit, workload, target, sample count and comparison context, and the promise rejects with the errors listed for this operation.",
+						"examples": [
+							{
+								"unit": "reports.component.evidence-grid",
+								"workload": "evidence-grid.render-small",
+								"target": "module",
+								"responseDigest": "c04e87a9d2b61f35e08c4a7d19b6f2e5d3a7c08b4e91f6d2a8350c7e4b19d6f3",
+								"measurements": [
+									{
+										"unit": "reports.component.evidence-grid",
+										"workload": "evidence-grid.render-small",
+										"target": "module",
+										"samples": 1000,
+										"comparison": {
+											"request": "3f9a1c7e5b2d8046e1a4c9f07b35d2e8a6c10f4d9e7b2a5c83d1f6e09a4b7c21",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 200
+											}
+										},
+										"metric": "latency-floor-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.0384,
+										"method": "Fastest of 5 rounds of 200 end-to-end calls through the declared module target, including request validation, serialization and response parsing."
+									},
+									{
+										"unit": "reports.component.evidence-grid",
+										"workload": "evidence-grid.render-small",
+										"target": "module",
+										"samples": 1000,
+										"comparison": {
+											"request": "3f9a1c7e5b2d8046e1a4c9f07b35d2e8a6c10f4d9e7b2a5c83d1f6e09a4b7c21",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 200
+											}
+										},
+										"metric": "latency-warm-ms",
+										"unitOfMeasure": "ms",
+										"value": 0.0461,
+										"method": "Median of the round medians over 5 rounds of 200 end-to-end calls through the declared module target, including request validation, serialization and response parsing."
+									},
+									{
+										"unit": "reports.component.evidence-grid",
+										"workload": "evidence-grid.render-small",
+										"target": "module",
+										"samples": 1000,
+										"comparison": {
+											"request": "3f9a1c7e5b2d8046e1a4c9f07b35d2e8a6c10f4d9e7b2a5c83d1f6e09a4b7c21",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 200
+											}
+										},
+										"metric": "throughput-ops",
+										"unitOfMeasure": "ops/s",
+										"value": 21691.97,
+										"method": "Calls per second at the median over 5 rounds of 200 end-to-end calls through the declared module target, including request validation, serialization and response parsing."
+									},
+									{
+										"unit": "reports.component.evidence-grid",
+										"workload": "evidence-grid.render-small",
+										"target": "module",
+										"samples": 1000,
+										"comparison": {
+											"request": "3f9a1c7e5b2d8046e1a4c9f07b35d2e8a6c10f4d9e7b2a5c83d1f6e09a4b7c21",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 200
+											}
+										},
+										"metric": "process-peak-rss-bytes",
+										"unitOfMeasure": "bytes",
+										"value": 187695104,
+										"method": "Peak RSS of the Harness benchmark process, normalized to bytes for this runtime, including runner overhead and earlier work; excludes separate target processes and is not callable-attributed memory."
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the manifest declares no execution target of the requested kind, or when the first workload call returns a failed response; its message names the unit and, for a failed call, the response code and message."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A plain Error thrown by the benchmark timing loop when a warm-up or timed call returns a failed response after the first call succeeded; its message names the runtime kind and the failure message."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -101,17 +437,20 @@
 					{
 						"name": "UnitBenchmarkService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository root that the runtime service resolves module, Wasm and process entries that contain a slash against; the constructor stores it unchanged and this unit never checks that it exists.",
+						"examples": ["/workspace/evidence-reports", "/srv/ci/checkouts/evidence-reports"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "UnitBenchmarkService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The UnitBenchmarkService instance, which holds only the repository root it was given; constructing it does no other work and cannot throw."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
