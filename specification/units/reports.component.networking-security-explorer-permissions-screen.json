@@ -74,94 +74,383 @@
 				"name": "ExplorerPermissionsScreen.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Project and branch history supplied by the Explorer host."
+				"description": "Project and branch history supplied by the Explorer host: branches with their heads, revisions, units, benchmarks, profiles, legacy reports, a truncated flag and problems. This screen and the shared frame it renders never read it, so it does not change what is shown.",
+				"examples": [
+					{
+						"branches": [
+							{
+								"name": "main",
+								"head": "3f8a1c95d2e47b6019ac5e2d8f4b7a1c6e903d52"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "3f8a1c95d2e47b6019ac5e2d8f4b7a1c6e903d52",
+								"parents": ["b7e20d4c91fa3e85a6d07c2b4e9f1a38d5c60e17"],
+								"subject": "Declare the member permission profile",
+								"author": "Jordan Lee",
+								"committedAt": "2026-11-12T09:30:00Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							},
+							{
+								"commit": "b7e20d4c91fa3e85a6d07c2b4e9f1a38d5c60e17",
+								"parents": ["0a64c9e7f2d15b83e0c4a7d6f19e2b5c8a37d40f"],
+								"subject": "Add the report audio comparison endpoint",
+								"author": "Jordan Lee",
+								"committedAt": "2026-11-10T16:42:08Z",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "unverified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerPermissionsScreen.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Selected immutable revision; its permission catalog supplies the displayed profiles and grants."
+				"description": "The selected immutable revision, whose permissions catalog supplies every profile and grant shown. An absent catalog is reported as 'No permission catalog is indexed', which is not the same as a catalog with no profiles; no declaration is borrowed from another revision.",
+				"examples": [
+					{
+						"commit": "3f8a1c95d2e47b6019ac5e2d8f4b7a1c6e903d52",
+						"permissions": {
+							"profiles": [
+								{
+									"schemaVersion": 1,
+									"id": "member",
+									"title": "Member",
+									"description": "Signed-in members who upload audio comparisons and read their own reports.",
+									"grants": [
+										{
+											"kind": "api",
+											"resource": "reports.endpoint.api-report-audio-comparison",
+											"actions": ["POST"],
+											"data": [
+												{
+													"resource": "reports.model.report-types",
+													"actions": ["create"],
+													"fields": ["id", "title"],
+													"scope": "own"
+												}
+											]
+										},
+										{
+											"kind": "page",
+											"resource": "reports.page.harness-reports",
+											"actions": ["view"]
+										},
+										{
+											"kind": "data",
+											"resource": "reports.model.report-types",
+											"actions": ["read"],
+											"fields": ["id", "title"],
+											"scope": "own"
+										}
+									],
+									"source": "specification/permissions/member.json"
+								}
+							],
+							"gaps": []
+						},
+						"registry": {
+							"available": false,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					},
+					{
+						"commit": "0a64c9e7f2d15b83e0c4a7d6f19e2b5c8a37d40f",
+						"registry": {
+							"available": false,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerPermissionsScreen.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "First parent used by the shared Explorer frame; null at a branch tip or first commit."
+				"description": "The first parent of the selected commit, or null at a branch tip or for a first commit. This screen and the shared frame it renders never read it.",
+				"examples": [
+					null,
+					{
+						"commit": "b7e20d4c91fa3e85a6d07c2b4e9f1a38d5c60e17",
+						"registry": {
+							"available": false,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "ExplorerPermissionsScreen.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch, commit and availability context used by the shared frame."
+				"description": "The resolved position of the shown page: its location, mode ('current' follows the branch tip, 'commit' stays on the named commit), branch, tip, commit, whether it is at the tip, first parent and summary. The shared frame reads its commit and mode; this screen does not read it directly.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": null,
+							"category": "pages",
+							"screen": "permissions"
+						},
+						"mode": "current",
+						"branch": "main",
+						"tip": "3f8a1c95d2e47b6019ac5e2d8f4b7a1c6e903d52",
+						"commit": "3f8a1c95d2e47b6019ac5e2d8f4b7a1c6e903d52",
+						"atTip": true,
+						"parent": "b7e20d4c91fa3e85a6d07c2b4e9f1a38d5c60e17",
+						"summary": {
+							"commit": "3f8a1c95d2e47b6019ac5e2d8f4b7a1c6e903d52",
+							"parents": ["b7e20d4c91fa3e85a6d07c2b4e9f1a38d5c60e17"],
+							"subject": "Declare the member permission profile",
+							"author": "Jordan Lee",
+							"committedAt": "2026-11-12T09:30:00Z",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "unverified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					},
+					{
+						"location": {
+							"branch": "main",
+							"commit": "b7e20d4c91fa3e85a6d07c2b4e9f1a38d5c60e17",
+							"category": "pages",
+							"screen": "permissions",
+							"entity": "member"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "3f8a1c95d2e47b6019ac5e2d8f4b7a1c6e903d52",
+						"commit": "b7e20d4c91fa3e85a6d07c2b4e9f1a38d5c60e17",
+						"atTip": false,
+						"parent": "0a64c9e7f2d15b83e0c4a7d6f19e2b5c8a37d40f",
+						"summary": {
+							"commit": "b7e20d4c91fa3e85a6d07c2b4e9f1a38d5c60e17",
+							"parents": ["0a64c9e7f2d15b83e0c4a7d6f19e2b5c8a37d40f"],
+							"subject": "Add the report audio comparison endpoint",
+							"author": "Jordan Lee",
+							"committedAt": "2026-11-10T16:42:08Z",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "unverified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "ExplorerPermissionsScreen.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current permissions index or profile address, including selected branch and commit."
+				"description": "The address being shown: the permissions index, or a profile address whose entity is the profile id. Its branch and commit are carried into every link this screen builds, and its entity chooses between the index and one profile.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "pages",
+						"screen": "permissions"
+					},
+					{
+						"branch": "main",
+						"commit": "b7e20d4c91fa3e85a6d07c2b4e9f1a38d5c60e17",
+						"category": "pages",
+						"screen": "permissions",
+						"entity": "member"
+					}
+				]
 			},
 			{
 				"name": "ExplorerPermissionsScreen.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Revision-scoped entity catalog used to link declared API, page and data resources."
+				"description": "The units the explorer lists for this revision; a declared API, page or data resource links only when an entry here has the same id, and any other id is shown as plain code.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "reports.endpoint.api-report-audio-comparison",
+							"category": "apis",
+							"role": "Endpoint",
+							"name": "Report audio comparison upload",
+							"purpose": "Accepts a same-origin paired audio upload while preserving comparison validation and failure responses.",
+							"unit": {
+								"id": "reports.endpoint.api-report-audio-comparison",
+								"kind": "endpoint",
+								"status": "active",
+								"title": "/api/report-audio-comparison",
+								"responsibility": "Accepts a same-origin paired audio upload while preserving comparison validation and failure responses.",
+								"dependencies": [
+									{
+										"unit": "reports.function.report-http",
+										"via": "import"
+									},
+									{
+										"unit": "reports.function.reports-media-admit-upload-request",
+										"via": "import"
+									},
+									{
+										"unit": "reports.service.audio-upload",
+										"via": "import"
+									}
+								],
+								"scenarios": ["upload-request-admission"],
+								"owns": {
+									"source": ["packages/reports/src/routes/api/report-audio-comparison/+server.ts"],
+									"symbols": ["POST"]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "POST.request",
+											"type": "Request",
+											"required": true,
+											"description": "Required incoming HTTP request, admitted before reading multipart data."
+										},
+										{
+											"name": "POST.url",
+											"type": "URL",
+											"required": true,
+											"description": "Required server-resolved URL; its origin defines the accepted upload origin."
+										}
+									],
+									"outputs": [
+										{
+											"name": "POST",
+											"type": "Promise<Response>",
+											"description": "A 201 JSON report on success, or an explicit JSON admission, media, report-state or storage error response. Parsing/storage exceptions are translated into responses."
+										}
+									],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/routes/api/report-audio-comparison/+server.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "5b8e0f3c9a7d41e26f0b8c53a9d17e4f2c6b08d9e1a374f5c2d8b6e0a9f31c74"
+							},
+							"verdict": {
+								"passed": true,
+								"label": "Proven",
+								"reasons": []
+							},
+							"change": null,
+							"appRoute": null
+						}
+					]
+				]
 			},
 			{
 				"name": "ExplorerPermissionsScreen.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Host readers for entity contracts, measurements and captured evidence."
+				"description": "The host's entity lens. This screen and the shared frame read only its href function, which builds the address of each link; its relations, evidence, behavior and history functions are not read here."
 			},
 			{
 				"name": "ExplorerPermissionsScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Revision loader used by the shared Explorer frame for historical navigation."
+				"description": "The revision loader (HarnessClient's revision method), which the props reserve for the commits a history lists. This screen and the shared frame it renders never call it."
 			},
 			{
 				"name": "ExplorerPermissionsScreen.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Base URL from which the shared frame resolves captured media."
+				"description": "Base URL that the shared frame prefixes to the stored name of an archived source file when that file is opened, which this screen never does. The value is concatenated unchanged, so it must end in a slash.",
+				"examples": ["/media/", "/reports/media/"]
 			},
 			{
 				"name": "ExplorerPermissionsScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Requests navigation while preserving the selected explorer scope."
+				"description": "Called with the target ExplorerLocation when a permission link is followed by a plain click. The targets this screen builds keep the route's branch and commit and carry no helper, section or tab."
 			},
 			{
 				"name": "ExplorerPermissionsScreen.endpoint",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional API unit ID restricting the screen to that endpoint. Defaults to JavaScript undefined, which shows the profile index or selected profile instead."
+				"description": "Optional API unit ID that limits the screen to the API grants naming that endpoint across all profiles. Defaults to JavaScript undefined, which shows the profile index or the selected profile instead.",
+				"examples": ["reports.endpoint.api-report-audio-comparison"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerPermissionsScreen",
 				"type": "markup",
-				"description": "Profile index, one profile detail page or endpoint permission panel with method, data action, field and scope declarations; missing declarations remain explicit."
+				"description": "Renders the profile index, one profile's detail page, a 'Profile not found' page inside the shared frame, or, when endpoint is set, the endpoint's permission panel without a frame of its own. API and data declarations list their models, actions, fields and scope, API declarations also show their HTTP methods, and a missing declaration stays visible as an explicit empty state."
 			}
 		],
 		"errors": [
 			{
 				"name": "lens.href callback error",
 				"type": "thrown",
-				"description": "An error supplied by the URL callback propagates while rendering permission links."
+				"description": "An error thrown by the lens href function propagates while rendering, because each permission link reads its address when it is rendered."
 			},
 			{
 				"name": "onroute callback error",
 				"type": "thrown",
-				"description": "An error supplied by the navigation callback propagates when a permission link is activated."
+				"description": "An error thrown by onroute propagates out of the click handler when a permission link is followed by a plain click."
 			},
 			{
 				"name": "each_key_duplicate",
 				"type": "thrown",
-				"description": "Duplicate profile source paths throw when the keyed profile index is mounted or updated."
+				"description": "Two profiles with the same source throw Svelte's each_key_duplicate error when the keyed profile index mounts or updates."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
