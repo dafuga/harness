@@ -34,77 +34,516 @@
 				"name": "CatalogEntity.id",
 				"type": "string",
 				"required": true,
-				"description": "Stored row identity; the model passes it to the adapter without generating a key."
+				"description": "Row identity passed to the adapter unchanged; the model never generates it. CatalogWriteService sets it to the SHA-256 hex digest of the stable JSON of the registry unit it stores.",
+				"examples": [
+					"6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+					"c2d94a7e1b06f385d3e8a1b9c04f72e6a5d10b8c93f6e27d4a0b15c8e9f3d762"
+				]
 			},
 			{
 				"name": "CatalogEntity.unitId",
 				"type": "string",
 				"required": true,
-				"description": "Stable registered unit ID represented by this entity."
+				"description": "Id of the registry unit the row was built from, in the lowercase dotted or dashed form such as model.catalog-entity. The model passes it on unchanged and does not check it against the registry.",
+				"examples": ["model.catalog-entity", "function.revision-registry"]
 			},
 			{
 				"name": "CatalogEntity.version",
 				"type": "string",
 				"required": true,
-				"description": "Content-derived version of the stored entity."
+				"description": "Version of the registry unit, passed on unchanged. The revision registry sets it to the first 16 hex characters of a SHA-256 digest over the canonical JSON of the unit manifest and its owned source paths with their blobs.",
+				"examples": ["5b0e7c2d9a41f863", "e41d08a7c3f926b5"]
 			},
 			{
 				"name": "CatalogEntity.kind",
 				"type": "string",
 				"required": true,
-				"description": "Registered entity kind at the recorded revision."
+				"description": "Kind of the registry unit, passed on unchanged; the model does not check it against any list of kinds.",
+				"examples": ["model", "function"]
 			},
 			{
 				"name": "CatalogEntity.title",
 				"type": "string",
 				"required": true,
-				"description": "Source-revision display title."
+				"description": "Title of the registry unit, passed on unchanged. The model does not trim, normalize, or check it.",
+				"examples": ["CatalogEntity", "CatalogRevision"]
 			},
 			{
 				"name": "CatalogEntity.responsibility",
 				"type": "string",
 				"required": true,
-				"description": "Authored or derived responsibility at the recorded revision."
+				"description": "Responsibility text of the registry unit, passed on unchanged. The model does not trim, normalize, or check it.",
+				"examples": [
+					"Stores versioned unit metadata in catalog_entities through a supplied persistence adapter."
+				]
 			},
 			{
 				"name": "CatalogEntity.data",
 				"type": "json",
 				"required": true,
-				"description": "Structured payload retained by the adapter; no model code is executed to describe it."
+				"description": "The registry unit view carried in the data field, typed as RevisionRegistry['units'][number]. The model copies only the top-level attribute object, so data is forwarded by reference and never read or validated.",
+				"examples": [
+					{
+						"id": "model.catalog-entity",
+						"kind": "model",
+						"status": "active",
+						"title": "CatalogEntity",
+						"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+						"dependencies": [
+							{
+								"unit": "function.revision-registry",
+								"via": "import"
+							},
+							{
+								"unit": "function.sqlite-types",
+								"via": "import"
+							}
+						],
+						"scenarios": [],
+						"owns": {
+							"source": [
+								"src/models/git-source-history/CatalogEntity.ts",
+								"src/models/git-source-history/CatalogEntity.types.ts"
+							],
+							"symbols": [
+								"CatalogEntity",
+								"CatalogEntity.find",
+								"CatalogEntity.findBy",
+								"CatalogEntity.create",
+								"CatalogEntity.update",
+								"CatalogEntity.delete",
+								"CatalogEntityAttributes",
+								"CatalogEntityCreateInput",
+								"CatalogEntityUpdateInput"
+							]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "CatalogEntity.kind",
+									"type": "string",
+									"required": true,
+									"description": "Kind of the registry unit, passed on unchanged; the model does not check it against any list of kinds."
+								}
+							],
+							"outputs": [
+								{
+									"name": "CatalogEntity.delete",
+									"type": "Promise<boolean>",
+									"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged."
+								}
+							],
+							"errors": [
+								{
+									"name": "Persistence operation failure",
+									"type": "propagated",
+									"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged; the model adds no catch, retry, or wrapping."
+								}
+							]
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/models/git-source-history/CatalogEntity.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "5b0e7c2d9a41f863"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogEntity.find",
 				"type": "Promise<CatalogEntityAttributes | null>",
-				"description": "Promise of the matching catalog_entities row, or null according to the adapter lookup result."
+				"description": "Resolves with the row the adapter returns for the table and id, or null when the adapter resolves null. The model returns the adapter's promise without changing the row.",
+				"examples": [
+					{
+						"id": "6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+						"unitId": "model.catalog-entity",
+						"version": "5b0e7c2d9a41f863",
+						"kind": "model",
+						"title": "CatalogEntity",
+						"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+						"data": {
+							"id": "model.catalog-entity",
+							"kind": "model",
+							"status": "active",
+							"title": "CatalogEntity",
+							"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+							"dependencies": [
+								{
+									"unit": "function.revision-registry",
+									"via": "import"
+								},
+								{
+									"unit": "function.sqlite-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"src/models/git-source-history/CatalogEntity.ts",
+									"src/models/git-source-history/CatalogEntity.types.ts"
+								],
+								"symbols": [
+									"CatalogEntity",
+									"CatalogEntity.find",
+									"CatalogEntity.findBy",
+									"CatalogEntity.create",
+									"CatalogEntity.update",
+									"CatalogEntity.delete",
+									"CatalogEntityAttributes",
+									"CatalogEntityCreateInput",
+									"CatalogEntityUpdateInput"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "CatalogEntity.kind",
+										"type": "string",
+										"required": true,
+										"description": "Kind of the registry unit, passed on unchanged; the model does not check it against any list of kinds."
+									}
+								],
+								"outputs": [
+									{
+										"name": "CatalogEntity.delete",
+										"type": "Promise<boolean>",
+										"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged."
+									}
+								],
+								"errors": [
+									{
+										"name": "Persistence operation failure",
+										"type": "propagated",
+										"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged; the model adds no catch, retry, or wrapping."
+									}
+								]
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/models/git-source-history/CatalogEntity.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "5b0e7c2d9a41f863"
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "CatalogEntity.findBy",
 				"type": "Promise<CatalogEntityAttributes[]>",
-				"description": "Promise of catalog_entities rows matching the supplied attribute filters."
+				"description": "Resolves with the array of catalog_entities rows the adapter returns for the filter object. The model returns the adapter's array unchanged, so ordering and matching are the adapter's responsibility.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+							"unitId": "model.catalog-entity",
+							"version": "5b0e7c2d9a41f863",
+							"kind": "model",
+							"title": "CatalogEntity",
+							"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+							"data": {
+								"id": "model.catalog-entity",
+								"kind": "model",
+								"status": "active",
+								"title": "CatalogEntity",
+								"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+								"dependencies": [
+									{
+										"unit": "function.revision-registry",
+										"via": "import"
+									},
+									{
+										"unit": "function.sqlite-types",
+										"via": "import"
+									}
+								],
+								"scenarios": [],
+								"owns": {
+									"source": [
+										"src/models/git-source-history/CatalogEntity.ts",
+										"src/models/git-source-history/CatalogEntity.types.ts"
+									],
+									"symbols": [
+										"CatalogEntity",
+										"CatalogEntity.find",
+										"CatalogEntity.findBy",
+										"CatalogEntity.create",
+										"CatalogEntity.update",
+										"CatalogEntity.delete",
+										"CatalogEntityAttributes",
+										"CatalogEntityCreateInput",
+										"CatalogEntityUpdateInput"
+									]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "CatalogEntity.kind",
+											"type": "string",
+											"required": true,
+											"description": "Kind of the registry unit, passed on unchanged; the model does not check it against any list of kinds."
+										}
+									],
+									"outputs": [
+										{
+											"name": "CatalogEntity.delete",
+											"type": "Promise<boolean>",
+											"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged."
+										}
+									],
+									"errors": [
+										{
+											"name": "Persistence operation failure",
+											"type": "propagated",
+											"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged; the model adds no catch, retry, or wrapping."
+										}
+									]
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/models/git-source-history/CatalogEntity.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "5b0e7c2d9a41f863"
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "CatalogEntity.create",
 				"type": "Promise<CatalogEntityAttributes>",
-				"description": "Promise of the catalog_entities row returned by the adapter after creation."
+				"description": "Resolves with the row the adapter returns after creating the copied input. The model adds no defaults and does not check that all fields are present.",
+				"examples": [
+					{
+						"id": "6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+						"unitId": "model.catalog-entity",
+						"version": "5b0e7c2d9a41f863",
+						"kind": "model",
+						"title": "CatalogEntity",
+						"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+						"data": {
+							"id": "model.catalog-entity",
+							"kind": "model",
+							"status": "active",
+							"title": "CatalogEntity",
+							"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+							"dependencies": [
+								{
+									"unit": "function.revision-registry",
+									"via": "import"
+								},
+								{
+									"unit": "function.sqlite-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"src/models/git-source-history/CatalogEntity.ts",
+									"src/models/git-source-history/CatalogEntity.types.ts"
+								],
+								"symbols": [
+									"CatalogEntity",
+									"CatalogEntity.find",
+									"CatalogEntity.findBy",
+									"CatalogEntity.create",
+									"CatalogEntity.update",
+									"CatalogEntity.delete",
+									"CatalogEntityAttributes",
+									"CatalogEntityCreateInput",
+									"CatalogEntityUpdateInput"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "CatalogEntity.kind",
+										"type": "string",
+										"required": true,
+										"description": "Kind of the registry unit, passed on unchanged; the model does not check it against any list of kinds."
+									}
+								],
+								"outputs": [
+									{
+										"name": "CatalogEntity.delete",
+										"type": "Promise<boolean>",
+										"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged."
+									}
+								],
+								"errors": [
+									{
+										"name": "Persistence operation failure",
+										"type": "propagated",
+										"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged; the model adds no catch, retry, or wrapping."
+									}
+								]
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/models/git-source-history/CatalogEntity.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "5b0e7c2d9a41f863"
+						}
+					}
+				]
 			},
 			{
 				"name": "CatalogEntity.update",
 				"type": "Promise<CatalogEntityAttributes | null>",
-				"description": "Promise of the updated catalog_entities row, or null according to the adapter update result."
+				"description": "Resolves with the row the adapter returns for the update of the given id, or null when the adapter resolves null. The model does not merge the partial input into a stored row.",
+				"examples": [
+					{
+						"id": "6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+						"unitId": "model.catalog-entity",
+						"version": "5b0e7c2d9a41f863",
+						"kind": "model",
+						"title": "CatalogEntity",
+						"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+						"data": {
+							"id": "model.catalog-entity",
+							"kind": "model",
+							"status": "active",
+							"title": "CatalogEntity",
+							"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+							"dependencies": [
+								{
+									"unit": "function.revision-registry",
+									"via": "import"
+								},
+								{
+									"unit": "function.sqlite-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"src/models/git-source-history/CatalogEntity.ts",
+									"src/models/git-source-history/CatalogEntity.types.ts"
+								],
+								"symbols": [
+									"CatalogEntity",
+									"CatalogEntity.find",
+									"CatalogEntity.findBy",
+									"CatalogEntity.create",
+									"CatalogEntity.update",
+									"CatalogEntity.delete",
+									"CatalogEntityAttributes",
+									"CatalogEntityCreateInput",
+									"CatalogEntityUpdateInput"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "CatalogEntity.kind",
+										"type": "string",
+										"required": true,
+										"description": "Kind of the registry unit, passed on unchanged; the model does not check it against any list of kinds."
+									}
+								],
+								"outputs": [
+									{
+										"name": "CatalogEntity.delete",
+										"type": "Promise<boolean>",
+										"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged."
+									}
+								],
+								"errors": [
+									{
+										"name": "Persistence operation failure",
+										"type": "propagated",
+										"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged; the model adds no catch, retry, or wrapping."
+									}
+								]
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/models/git-source-history/CatalogEntity.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "5b0e7c2d9a41f863"
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "CatalogEntity.delete",
 				"type": "Promise<boolean>",
-				"description": "Promise of the adapter deletion result for the requested catalog_entities row."
+				"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Persistence operation failure",
 				"type": "propagated",
-				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+				"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged; the model adds no catch, retry, or wrapping."
+			},
+			{
+				"name": "Caller field getter exception",
+				"type": "thrown",
+				"description": "For findBy, create and update, a getter on the caller's fields or input object that throws during the top-level copy propagates synchronously out of the static method."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown synchronously when the adapter is null or undefined, lacks the called method, or a static method runs without CatalogEntity as its receiver, because the model reads the adapter's method and this.definition without guards."
 			}
 		],
 		"errorStatus": "declared",
@@ -116,27 +555,121 @@
 						"name": "CatalogEntity.find.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_entities table; the model owns no connection lifecycle."
+						"description": "Persistence adapter for the catalog_entities table; the model calls only its find method and owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogEntity.find.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Row identity passed unchanged to the adapter's find; the model does not generate or validate it.",
+						"examples": [
+							"6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+							"c2d94a7e1b06f385d3e8a1b9c04f72e6a5d10b8c93f6e27d4a0b15c8e9f3d762"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogEntity.find",
 						"type": "Promise<CatalogEntityAttributes | null>",
-						"description": "Promise of the matching catalog_entities row, or null according to the adapter lookup result."
+						"description": "Resolves with the row the adapter returns for the table and id, or null when the adapter resolves null. The model returns the adapter's promise without changing the row.",
+						"examples": [
+							{
+								"id": "6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+								"unitId": "model.catalog-entity",
+								"version": "5b0e7c2d9a41f863",
+								"kind": "model",
+								"title": "CatalogEntity",
+								"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+								"data": {
+									"id": "model.catalog-entity",
+									"kind": "model",
+									"status": "active",
+									"title": "CatalogEntity",
+									"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+									"dependencies": [
+										{
+											"unit": "function.revision-registry",
+											"via": "import"
+										},
+										{
+											"unit": "function.sqlite-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"src/models/git-source-history/CatalogEntity.ts",
+											"src/models/git-source-history/CatalogEntity.types.ts"
+										],
+										"symbols": [
+											"CatalogEntity",
+											"CatalogEntity.find",
+											"CatalogEntity.findBy",
+											"CatalogEntity.create",
+											"CatalogEntity.update",
+											"CatalogEntity.delete",
+											"CatalogEntityAttributes",
+											"CatalogEntityCreateInput",
+											"CatalogEntityUpdateInput"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "CatalogEntity.kind",
+												"type": "string",
+												"required": true,
+												"description": "Kind of the registry unit, passed on unchanged; the model does not check it against any list of kinds."
+											}
+										],
+										"outputs": [
+											{
+												"name": "CatalogEntity.delete",
+												"type": "Promise<boolean>",
+												"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged."
+											}
+										],
+										"errors": [
+											{
+												"name": "Persistence operation failure",
+												"type": "propagated",
+												"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged; the model adds no catch, retry, or wrapping."
+											}
+										]
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/models/git-source-history/CatalogEntity.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5b0e7c2d9a41f863"
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Synchronous exceptions and promise rejections from the adapter's find reach the caller unchanged; the model adds no catch, retry, or wrapping."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously when the adapter is null or undefined, lacks a find method, or find runs without CatalogEntity as its receiver."
 					}
 				],
 				"errorStatus": "declared"
@@ -148,27 +681,136 @@
 						"name": "CatalogEntity.findBy.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_entities table; the model owns no connection lifecycle."
+						"description": "Persistence adapter for the catalog_entities table; the model calls only its findBy method and owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogEntity.findBy.fields",
 						"type": "Partial<CatalogEntityAttributes>",
 						"required": true,
-						"description": "Partial stored attributes used as equality filters for catalog_entities."
+						"description": "Attribute values copied into a new object and forwarded as the adapter's findBy filter; null or undefined copies to an empty filter object.",
+						"examples": [
+							{
+								"unitId": "model.catalog-entity"
+							},
+							{
+								"unitId": "model.catalog-entity",
+								"version": "5b0e7c2d9a41f863"
+							},
+							{
+								"kind": "function"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogEntity.findBy",
 						"type": "Promise<CatalogEntityAttributes[]>",
-						"description": "Promise of catalog_entities rows matching the supplied attribute filters."
+						"description": "Resolves with the array of catalog_entities rows the adapter returns for the filter object. The model returns the adapter's array unchanged, so ordering and matching are the adapter's responsibility.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+									"unitId": "model.catalog-entity",
+									"version": "5b0e7c2d9a41f863",
+									"kind": "model",
+									"title": "CatalogEntity",
+									"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+									"data": {
+										"id": "model.catalog-entity",
+										"kind": "model",
+										"status": "active",
+										"title": "CatalogEntity",
+										"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+										"dependencies": [
+											{
+												"unit": "function.revision-registry",
+												"via": "import"
+											},
+											{
+												"unit": "function.sqlite-types",
+												"via": "import"
+											}
+										],
+										"scenarios": [],
+										"owns": {
+											"source": [
+												"src/models/git-source-history/CatalogEntity.ts",
+												"src/models/git-source-history/CatalogEntity.types.ts"
+											],
+											"symbols": [
+												"CatalogEntity",
+												"CatalogEntity.find",
+												"CatalogEntity.findBy",
+												"CatalogEntity.create",
+												"CatalogEntity.update",
+												"CatalogEntity.delete",
+												"CatalogEntityAttributes",
+												"CatalogEntityCreateInput",
+												"CatalogEntityUpdateInput"
+											]
+										},
+										"contract": {
+											"inputs": [
+												{
+													"name": "CatalogEntity.kind",
+													"type": "string",
+													"required": true,
+													"description": "Kind of the registry unit, passed on unchanged; the model does not check it against any list of kinds."
+												}
+											],
+											"outputs": [
+												{
+													"name": "CatalogEntity.delete",
+													"type": "Promise<boolean>",
+													"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged."
+												}
+											],
+											"errors": [
+												{
+													"name": "Persistence operation failure",
+													"type": "propagated",
+													"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged; the model adds no catch, retry, or wrapping."
+												}
+											]
+										},
+										"runtime": {
+											"kind": "module",
+											"targets": [
+												{
+													"kind": "module",
+													"entry": "src/models/git-source-history/CatalogEntity.ts"
+												}
+											]
+										},
+										"budgets": {
+											"size": "frozen",
+											"complexity": "frozen",
+											"performance": []
+										},
+										"version": "5b0e7c2d9a41f863"
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Synchronous exceptions and promise rejections from the adapter's findBy reach the caller unchanged; the model adds no catch, retry, or wrapping."
+					},
+					{
+						"name": "Caller field getter exception",
+						"type": "thrown",
+						"description": "A getter on the fields object that throws during the top-level copy propagates synchronously out of findBy."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously when the adapter is null or undefined, lacks a findBy method, or findBy runs without CatalogEntity as its receiver."
 					}
 				],
 				"errorStatus": "declared"
@@ -180,27 +822,205 @@
 						"name": "CatalogEntity.create.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_entities table; the model owns no connection lifecycle."
+						"description": "Persistence adapter for the catalog_entities table; the model calls only its create method and owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogEntity.create.input",
 						"type": "CatalogEntityCreateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_entities; omitted update fields remain the adapter's responsibility."
+						"description": "All seven row attributes, including id and data, copied into a new object and forwarded to the adapter's create; the model does not check that each field is present.",
+						"examples": [
+							{
+								"id": "6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+								"unitId": "model.catalog-entity",
+								"version": "5b0e7c2d9a41f863",
+								"kind": "model",
+								"title": "CatalogEntity",
+								"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+								"data": {
+									"id": "model.catalog-entity",
+									"kind": "model",
+									"status": "active",
+									"title": "CatalogEntity",
+									"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+									"dependencies": [
+										{
+											"unit": "function.revision-registry",
+											"via": "import"
+										},
+										{
+											"unit": "function.sqlite-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"src/models/git-source-history/CatalogEntity.ts",
+											"src/models/git-source-history/CatalogEntity.types.ts"
+										],
+										"symbols": [
+											"CatalogEntity",
+											"CatalogEntity.find",
+											"CatalogEntity.findBy",
+											"CatalogEntity.create",
+											"CatalogEntity.update",
+											"CatalogEntity.delete",
+											"CatalogEntityAttributes",
+											"CatalogEntityCreateInput",
+											"CatalogEntityUpdateInput"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "CatalogEntity.kind",
+												"type": "string",
+												"required": true,
+												"description": "Kind of the registry unit, passed on unchanged; the model does not check it against any list of kinds."
+											}
+										],
+										"outputs": [
+											{
+												"name": "CatalogEntity.delete",
+												"type": "Promise<boolean>",
+												"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged."
+											}
+										],
+										"errors": [
+											{
+												"name": "Persistence operation failure",
+												"type": "propagated",
+												"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged; the model adds no catch, retry, or wrapping."
+											}
+										]
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/models/git-source-history/CatalogEntity.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5b0e7c2d9a41f863"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogEntity.create",
 						"type": "Promise<CatalogEntityAttributes>",
-						"description": "Promise of the catalog_entities row returned by the adapter after creation."
+						"description": "Resolves with the row the adapter returns after creating the copied input. The model adds no defaults and does not check that all fields are present.",
+						"examples": [
+							{
+								"id": "6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+								"unitId": "model.catalog-entity",
+								"version": "5b0e7c2d9a41f863",
+								"kind": "model",
+								"title": "CatalogEntity",
+								"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+								"data": {
+									"id": "model.catalog-entity",
+									"kind": "model",
+									"status": "active",
+									"title": "CatalogEntity",
+									"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+									"dependencies": [
+										{
+											"unit": "function.revision-registry",
+											"via": "import"
+										},
+										{
+											"unit": "function.sqlite-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"src/models/git-source-history/CatalogEntity.ts",
+											"src/models/git-source-history/CatalogEntity.types.ts"
+										],
+										"symbols": [
+											"CatalogEntity",
+											"CatalogEntity.find",
+											"CatalogEntity.findBy",
+											"CatalogEntity.create",
+											"CatalogEntity.update",
+											"CatalogEntity.delete",
+											"CatalogEntityAttributes",
+											"CatalogEntityCreateInput",
+											"CatalogEntityUpdateInput"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "CatalogEntity.kind",
+												"type": "string",
+												"required": true,
+												"description": "Kind of the registry unit, passed on unchanged; the model does not check it against any list of kinds."
+											}
+										],
+										"outputs": [
+											{
+												"name": "CatalogEntity.delete",
+												"type": "Promise<boolean>",
+												"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged."
+											}
+										],
+										"errors": [
+											{
+												"name": "Persistence operation failure",
+												"type": "propagated",
+												"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged; the model adds no catch, retry, or wrapping."
+											}
+										]
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/models/git-source-history/CatalogEntity.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5b0e7c2d9a41f863"
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Synchronous exceptions and promise rejections from the adapter's create reach the caller unchanged; the model adds no catch, retry, or wrapping."
+					},
+					{
+						"name": "Caller field getter exception",
+						"type": "thrown",
+						"description": "A getter on the input object that throws during the top-level copy propagates synchronously out of create."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously when the adapter is null or undefined, lacks a create method, or create runs without CatalogEntity as its receiver."
 					}
 				],
 				"errorStatus": "declared"
@@ -212,33 +1032,141 @@
 						"name": "CatalogEntity.update.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_entities table; the model owns no connection lifecycle."
+						"description": "Persistence adapter for the catalog_entities table; the model calls only its update method and owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogEntity.update.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Row identity passed unchanged to the adapter's update; the model does not generate or validate it.",
+						"examples": [
+							"6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+							"c2d94a7e1b06f385d3e8a1b9c04f72e6a5d10b8c93f6e27d4a0b15c8e9f3d762"
+						]
 					},
 					{
 						"name": "CatalogEntity.update.input",
 						"type": "CatalogEntityUpdateInput",
 						"required": true,
-						"description": "Create attributes or update patch forwarded to catalog_entities; omitted update fields remain the adapter's responsibility."
+						"description": "Partial row attributes typed without id, copied into a new object and forwarded to the adapter's update; the model does not merge omitted fields with the stored row.",
+						"examples": [
+							{
+								"version": "e41d08a7c3f926b5"
+							},
+							{
+								"title": "CatalogEntity",
+								"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogEntity.update",
 						"type": "Promise<CatalogEntityAttributes | null>",
-						"description": "Promise of the updated catalog_entities row, or null according to the adapter update result."
+						"description": "Resolves with the row the adapter returns for the update of the given id, or null when the adapter resolves null. The model does not merge the partial input into a stored row.",
+						"examples": [
+							{
+								"id": "6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+								"unitId": "model.catalog-entity",
+								"version": "5b0e7c2d9a41f863",
+								"kind": "model",
+								"title": "CatalogEntity",
+								"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+								"data": {
+									"id": "model.catalog-entity",
+									"kind": "model",
+									"status": "active",
+									"title": "CatalogEntity",
+									"responsibility": "Stores versioned unit metadata in catalog_entities through a supplied persistence adapter.",
+									"dependencies": [
+										{
+											"unit": "function.revision-registry",
+											"via": "import"
+										},
+										{
+											"unit": "function.sqlite-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"src/models/git-source-history/CatalogEntity.ts",
+											"src/models/git-source-history/CatalogEntity.types.ts"
+										],
+										"symbols": [
+											"CatalogEntity",
+											"CatalogEntity.find",
+											"CatalogEntity.findBy",
+											"CatalogEntity.create",
+											"CatalogEntity.update",
+											"CatalogEntity.delete",
+											"CatalogEntityAttributes",
+											"CatalogEntityCreateInput",
+											"CatalogEntityUpdateInput"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "CatalogEntity.kind",
+												"type": "string",
+												"required": true,
+												"description": "Kind of the registry unit, passed on unchanged; the model does not check it against any list of kinds."
+											}
+										],
+										"outputs": [
+											{
+												"name": "CatalogEntity.delete",
+												"type": "Promise<boolean>",
+												"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged."
+											}
+										],
+										"errors": [
+											{
+												"name": "Persistence operation failure",
+												"type": "propagated",
+												"description": "Synchronous exceptions and promise rejections from the adapter reach the caller unchanged; the model adds no catch, retry, or wrapping."
+											}
+										]
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/models/git-source-history/CatalogEntity.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5b0e7c2d9a41f863"
+								}
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Synchronous exceptions and promise rejections from the adapter's update reach the caller unchanged; the model adds no catch, retry, or wrapping."
+					},
+					{
+						"name": "Caller field getter exception",
+						"type": "thrown",
+						"description": "A getter on the input object that throws during the top-level copy propagates synchronously out of update."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously when the adapter is null or undefined, lacks an update method, or update runs without CatalogEntity as its receiver."
 					}
 				],
 				"errorStatus": "declared"
@@ -250,27 +1178,37 @@
 						"name": "CatalogEntity.delete.adapter",
 						"type": "PersistenceAdapter",
 						"required": true,
-						"description": "Persistence adapter used for the catalog_entities table; the model owns no connection lifecycle."
+						"description": "Persistence adapter for the catalog_entities table; the model calls only its delete method and owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogEntity.delete.id",
 						"type": "string",
 						"required": true,
-						"description": "Stored row identity; the model passes it to the adapter without generating a key."
+						"description": "Row identity passed unchanged to the adapter's delete; the model does not generate or validate it.",
+						"examples": [
+							"6f3a9c1e0d872b54a6e19f2c7d843b05e1c6a92f7d4b8e0c35a1f9d26b7e4c81",
+							"c2d94a7e1b06f385d3e8a1b9c04f72e6a5d10b8c93f6e27d4a0b15c8e9f3d762"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogEntity.delete",
 						"type": "Promise<boolean>",
-						"description": "Promise of the adapter deletion result for the requested catalog_entities row."
+						"description": "Resolves with the boolean the adapter returns for deleting the given id; the model passes that value through unchanged.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [
 					{
 						"name": "Persistence operation failure",
 						"type": "propagated",
-						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+						"description": "Synchronous exceptions and promise rejections from the adapter's delete reach the caller unchanged; the model adds no catch, retry, or wrapping."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown synchronously when the adapter is null or undefined, lacks a delete method, or delete runs without CatalogEntity as its receiver."
 					}
 				],
 				"errorStatus": "declared"
