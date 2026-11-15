@@ -21,23 +21,24 @@
 				"name": "providerPickerClient.receive",
 				"type": "(data: PickerSnapshot) => void",
 				"required": true,
-				"description": "Callback receiving picker snapshots from preview initialization or qualifying host tool results."
+				"description": "Receives the preview response from `open_model_picker`, or the `structuredContent` of a host result only when it is an object containing `defaultProvider`; other host results are ignored. Preview responses are cast to `PickerSnapshot` without validation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "providerPickerClient",
 				"type": "Promise<PickerClient>",
-				"description": "Client with preview flag, async tool call and close. Standalone preview requires both the body marker and a top-level window, posts JSON to /tools and loads open_model_picker immediately. Otherwise connects an MCP App and forwards structured results."
+				"description": "Resolves to a `PickerClient` using standalone preview only when `document.body.dataset.pickerPreview === 'true'` and `window.parent === window`; otherwise it connects an MCP App client. Its `call` accepts a tool name and optional argument record defaulting to `{}`, posts to `/tools` and returns parsed JSON in preview, or calls the host tool and returns `structuredContent`; preview initialization immediately calls `open_model_picker`, qualifying host results reach `receive`, and `close` is a no-op in preview or closes the app."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects preview HTTP failures and MCP tool error results with guidance; connection, request and JSON errors can also propagate."
+				"description": "Rejects with `Error('Preview request rejected.')` for a non-OK preview response and with `Error('Selection rejected. Refresh the panel and check the session ID.')` when an MCP tool result sets `isError`; fetch, response JSON parsing, or app connection errors also propagate."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "providerPickerClient",
@@ -46,18 +47,24 @@
 						"name": "providerPickerClient.receive",
 						"type": "(data: PickerSnapshot) => void",
 						"required": true,
-						"description": "Callback receiving picker snapshots from preview initialization or qualifying host tool results."
+						"description": "Receives the preview response from `open_model_picker`, or the `structuredContent` of a host result only when it is an object containing `defaultProvider`; other host results are ignored. Preview responses are cast to `PickerSnapshot` without validation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "providerPickerClient",
 						"type": "Promise<PickerClient>",
-						"description": "Client with preview flag, async tool call and close. Standalone preview requires both the body marker and a top-level window, posts JSON to /tools and loads open_model_picker immediately. Otherwise connects an MCP App and forwards structured results."
+						"description": "Resolves to a `PickerClient` using standalone preview only when `document.body.dataset.pickerPreview === 'true'` and `window.parent === window`; otherwise it connects an MCP App client. Its `call` accepts a tool name and optional argument record defaulting to `{}`, posts to `/tools` and returns parsed JSON in preview, or calls the host tool and returns `structuredContent`; preview initialization immediately calls `open_model_picker`, qualifying host results reach `receive`, and `close` is a no-op in preview or closes the app."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with `Error('Preview request rejected.')` for a non-OK preview response and with `Error('Selection rejected. Refresh the panel and check the session ID.')` when an MCP tool result sets `isError`; fetch, response JSON parsing, or app connection errors also propagate."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
