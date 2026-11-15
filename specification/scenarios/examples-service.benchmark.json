@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "examples-service.benchmark",
+	"title": "Recorded calls of BenchmarkService: what each operation was given and what it printed or rejected with",
+	"kind": "headless",
+	"units": ["service.benchmark"],
+	"states": [
+		{
+			"id": "validate-definition",
+			"title": "execute called with validate on a definition file prints its preview with the revision, runner version and trial count",
+			"coverage": "required"
+		},
+		{
+			"id": "results-table",
+			"title": "execute called with results for a persisted run prints the run and a table comparing its candidates",
+			"coverage": "required"
+		},
+		{
+			"id": "results-json",
+			"title": "execute called with results and json output prints the persisted run and its comparison as JSON",
+			"coverage": "required"
+		},
+		{
+			"id": "invalid-run-id",
+			"title": "execute called with results for a target that is not a run ID rejects with an expected CLI error",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "examples",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun test/verification-output.ts vitest test/examples/service.benchmark.test.ts",
+			"cwd": ".",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "examples-output",
+			"kind": "output",
+			"states": ["validate-definition", "results-table", "results-json", "invalid-run-id"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-assertions",
+			"kind": "assertions",
+			"states": ["validate-definition", "results-table", "results-json", "invalid-run-id"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "examples-cases",
+			"kind": "trace",
+			"states": ["validate-definition", "results-table", "results-json", "invalid-run-id"],
+			"viewports": [],
+			"required": true
+		}
+	]
+}
