@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { DevicePairingService } from '../../src/services/device-pairing-service/DevicePairingService';
+import { DevicePairingService } from '../../src/services/networking-security/device-pairing-service/DevicePairingService';
 import { HostPairingService } from '../../src/services/host-pairing-service/HostPairingService';
 import { toBase64Url } from '../../src/utils/remoteBytes';
 import { remoteIdentity, remotePatterns } from '../../src/utils/remoteIdentity';

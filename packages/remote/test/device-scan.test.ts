@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { DevicePairingService } from '../src/services/device-pairing-service/DevicePairingService';
+import { DevicePairingService } from '../src/services/networking-security/device-pairing-service/DevicePairingService';
 import { HostPairingService } from '../src/services/host-pairing-service/HostPairingService';
 import { pairingOffer } from '../../desktop/src/services/networking-security/remote-host-service/pairingOffer';
 import type { OfferEnvironment } from '../src/utils/networking-security/pairingOffer';

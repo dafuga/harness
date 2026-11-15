@@ -3,7 +3,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { offerRules } from '../../src/utils/networking-security/pairingOffer';
 import { pairingOffer } from '../../../desktop/src/services/networking-security/remote-host-service/pairingOffer';
-import { readPairingOffer } from '../../src/services/device-pairing-service/pairingOffer';
+import { readPairingOffer } from '../../src/services/networking-security/device-pairing-service/pairingOffer';
 import type { OfferEnvironment } from '../../src/utils/networking-security/pairingOffer';
 const file = new URL('../support/offer-vectors.json', import.meta.url);
 const vectors = JSON.parse(readFileSync(file, 'utf8')) as OfferVectors;

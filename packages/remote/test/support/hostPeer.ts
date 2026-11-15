@@ -1,5 +1,5 @@
 import type { SecurePacket } from '../../src/models/networking-security/RemoteSecure.types';
-import type { DeviceCredentials } from '../../src/services/device-pairing-service/DevicePairingService';
+import type { DeviceCredentials } from '../../src/services/networking-security/device-pairing-service/DevicePairingService';
 import { SecureChannelService } from '../../src/services/secure-channel-service/SecureChannelService';
 import type { WireLink } from '../../src/services/wire-session-service/WireSessionService';
 import { toBase64Url } from '../../src/utils/remoteBytes';
