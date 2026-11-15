@@ -38,28 +38,74 @@
 				"name": "harnessShell.input",
 				"type": "HarnessNavbarInput",
 				"required": true,
-				"description": "Navigation context with base, optional resolved scope/index, commits and address builder."
+				"description": "The host's navigation context for the bar: harnessShell reads base, scope, index, commits, href and modules, and does not read repository, onroute or search. The scope is null while the index loads or the address names nothing, and then the view has no revision, Code destinations or active categories; a scope whose branch is null leaves the brand linking to base."
 			},
 			{
 				"name": "plainClick.event",
 				"type": "MouseEvent",
 				"required": true,
-				"description": "Mouse event to test for application-handled navigation."
+				"description": "The DOM MouseEvent of a click; plainClick reads only its button, metaKey, ctrlKey, shiftKey, altKey and defaultPrevented and does not change the event. Only a button of 0 with none of the four modifier keys set and defaultPrevented false makes plainClick return true."
 			}
 		],
 		"outputs": [
 			{
 				"name": "plainClick",
 				"type": "boolean",
-				"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
+				"description": "True when the click is one the application follows itself: the primary button (button 0), no metaKey, ctrlKey, shiftKey or altKey, and defaultPrevented false. Any other click gives false, and the function only reads the event.",
+				"examples": [true, false]
 			},
 			{
 				"name": "harnessShell",
 				"type": "HarnessShellView",
-				"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
+				"description": "What the explorer bar shows for an address: home (the brand link, to the tip of the scope's branch when the scope has one, otherwise base), categories (Pages, Code, Translations and Platforms, each with icon, active flag, href and to), modules (the Code destinations, sorted by each definition's order, 100 when unset) and revision (the branch and commit controls for the viewed commit, or null without a scope). Without a scope the categories are inactive with null href and to, modules is empty, revision is null and home links to base.",
+				"examples": [
+					{
+						"home": {
+							"href": "/reports",
+							"to": null
+						},
+						"categories": [
+							{
+								"id": "pages",
+								"label": "Pages",
+								"icon": "pages",
+								"active": false,
+								"href": null,
+								"to": null
+							},
+							{
+								"id": "modules",
+								"label": "Code",
+								"icon": "layers",
+								"active": false,
+								"href": null,
+								"to": null
+							},
+							{
+								"id": "translations",
+								"label": "Translations",
+								"icon": "web",
+								"active": false,
+								"href": null,
+								"to": null
+							},
+							{
+								"id": "platforms",
+								"label": "Platforms",
+								"icon": "platforms",
+								"active": false,
+								"href": null,
+								"to": null
+							}
+						],
+						"modules": [],
+						"revision": null
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "harnessShell",
@@ -68,18 +114,62 @@
 						"name": "harnessShell.input",
 						"type": "HarnessNavbarInput",
 						"required": true,
-						"description": "Navigation context with base, optional resolved scope/index, commits and address builder."
+						"description": "The host's navigation context for the bar: harnessShell reads base, scope, index, commits, href and modules, and does not read repository, onroute or search. The scope is null while the index loads or the address names nothing, and then the view has no revision, Code destinations or active categories; a scope whose branch is null leaves the brand linking to base."
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessShell",
 						"type": "HarnessShellView",
-						"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
+						"description": "What the explorer bar shows for an address: home (the brand link, to the tip of the scope's branch when the scope has one, otherwise base), categories (Pages, Code, Translations and Platforms, each with icon, active flag, href and to), modules (the Code destinations, sorted by each definition's order, 100 when unset) and revision (the branch and commit controls for the viewed commit, or null without a scope). Without a scope the categories are inactive with null href and to, modules is empty, revision is null and home links to base.",
+						"examples": [
+							{
+								"home": {
+									"href": "/reports",
+									"to": null
+								},
+								"categories": [
+									{
+										"id": "pages",
+										"label": "Pages",
+										"icon": "pages",
+										"active": false,
+										"href": null,
+										"to": null
+									},
+									{
+										"id": "modules",
+										"label": "Code",
+										"icon": "layers",
+										"active": false,
+										"href": null,
+										"to": null
+									},
+									{
+										"id": "translations",
+										"label": "Translations",
+										"icon": "web",
+										"active": false,
+										"href": null,
+										"to": null
+									},
+									{
+										"id": "platforms",
+										"label": "Platforms",
+										"icon": "platforms",
+										"active": false,
+										"href": null,
+										"to": null
+									}
+								],
+								"modules": [],
+								"revision": null
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "plainClick",
@@ -88,18 +178,19 @@
 						"name": "plainClick.event",
 						"type": "MouseEvent",
 						"required": true,
-						"description": "Mouse event to test for application-handled navigation."
+						"description": "The DOM MouseEvent of a click; plainClick reads only its button, metaKey, ctrlKey, shiftKey, altKey and defaultPrevented and does not change the event. Only a button of 0 with none of the four modifier keys set and defaultPrevented false makes plainClick return true."
 					}
 				],
 				"outputs": [
 					{
 						"name": "plainClick",
 						"type": "boolean",
-						"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
+						"description": "True when the click is one the application follows itself: the primary button (button 0), no metaKey, ctrlKey, shiftKey or altKey, and defaultPrevented false. Any other click gives false, and the function only reads the event.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
