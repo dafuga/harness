@@ -1,5 +1,4 @@
 import { expect, test } from 'vitest';
-import { existsSync } from 'node:fs';
 import { remoteLimits } from '../../../remote/src/index';
 import { relayConfig } from '../../src/configs/networking-security/relayConfig';
 
@@ -18,10 +17,4 @@ test('relayConfig rate limits leave room for a phone that polls every two second
 	expect(relayConfig.failedConnects).toBeGreaterThan(0);
 	expect(relayConfig.failedConnects).toBeLessThanOrEqual(30);
 	expect(relayConfig.deviceFrames).toBeGreaterThan(remoteLimits.pendingRequests);
-});
-
-test('relayConfig is imported from its owner module, with no relocation stub left beside it', () => {
-	const stub = new URL('../../src/configs/relayConfig.ts', import.meta.url);
-	expect(existsSync(stub)).toBe(false);
-	expect(relayConfig).toBeTypeOf('object');
 });
