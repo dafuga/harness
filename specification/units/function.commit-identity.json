@@ -18,17 +18,38 @@
 				"name": "commitIdentity.git",
 				"type": "GitAdapter",
 				"required": true,
-				"description": "Git adapter for the repository whose user.name and user.email should be read."
+				"description": "Git adapter passed for the repository whose identity is used on evidence and notes commits. The function queries only `git config user.name` and `git config user.email` through it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "commitIdentity",
 				"type": "Promise<Record<string, string>>",
-				"description": "Author and committer name/email environment entries. Missing or empty settings fall back to Harness and harness@localhost."
+				"description": "The resolved record contains exactly the four environment keys `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_NAME`, and `GIT_COMMITTER_EMAIL`. Each name and email uses its configured value, falling back to `Harness` or `harness@localhost` when missing or empty; Git configuration is not changed.",
+				"examples": [
+					{
+						"GIT_AUTHOR_NAME": "Morgan Lee",
+						"GIT_AUTHOR_EMAIL": "morgan.lee@example.com",
+						"GIT_COMMITTER_NAME": "Morgan Lee",
+						"GIT_COMMITTER_EMAIL": "morgan.lee@example.com"
+					},
+					{
+						"GIT_AUTHOR_NAME": "Harness",
+						"GIT_AUTHOR_EMAIL": "harness@localhost",
+						"GIT_COMMITTER_NAME": "Harness",
+						"GIT_COMMITTER_EMAIL": "harness@localhost"
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "git.attempt rejection",
+				"type": "thrown",
+				"description": "If either `git.attempt` call throws or rejects, `commitIdentity` rejects with that failure; the function does not catch or translate it, and this implementation specifies no error class."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "commitIdentity",
@@ -37,18 +58,38 @@
 						"name": "commitIdentity.git",
 						"type": "GitAdapter",
 						"required": true,
-						"description": "Git adapter for the repository whose user.name and user.email should be read."
+						"description": "Git adapter passed for the repository whose identity is used on evidence and notes commits. The function queries only `git config user.name` and `git config user.email` through it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "commitIdentity",
 						"type": "Promise<Record<string, string>>",
-						"description": "Author and committer name/email environment entries. Missing or empty settings fall back to Harness and harness@localhost."
+						"description": "The resolved record contains exactly the four environment keys `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_NAME`, and `GIT_COMMITTER_EMAIL`. Each name and email uses its configured value, falling back to `Harness` or `harness@localhost` when missing or empty; Git configuration is not changed.",
+						"examples": [
+							{
+								"GIT_AUTHOR_NAME": "Morgan Lee",
+								"GIT_AUTHOR_EMAIL": "morgan.lee@example.com",
+								"GIT_COMMITTER_NAME": "Morgan Lee",
+								"GIT_COMMITTER_EMAIL": "morgan.lee@example.com"
+							},
+							{
+								"GIT_AUTHOR_NAME": "Harness",
+								"GIT_AUTHOR_EMAIL": "harness@localhost",
+								"GIT_COMMITTER_NAME": "Harness",
+								"GIT_COMMITTER_EMAIL": "harness@localhost"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "git.attempt rejection",
+						"type": "thrown",
+						"description": "If either `git.attempt` call throws or rejects, `commitIdentity` rejects with that failure; the function does not catch or translate it, and this implementation specifies no error class."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
