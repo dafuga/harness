@@ -29,40 +29,134 @@
 				"name": "captureProvenance.record",
 				"type": "HarnessRecord",
 				"required": true,
-				"description": "Record supplying validity, outcome and target revision."
+				"description": "The record supplies its identifier, validity, outcome, and target commit for the standing and verification wording. An invalid record is reported as unvalidated.",
+				"examples": [
+					{
+						"id": "record_01J9Q0A1B2C3D4E5F6G7H8J9K",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"base": null
+						},
+						"profile": "default",
+						"startedAt": "2026-11-15T18:40:00.000Z",
+						"finishedAt": "2026-11-15T18:42:00.000Z",
+						"failures": [],
+						"tests": [],
+						"scenarios": [],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					}
+				]
 			},
 			{
 				"name": "captureProvenance.scenario",
 				"type": "Scenario",
 				"required": true,
-				"description": "Scenario supplying tested revision, inheritance and original record."
+				"description": "The scenario supplies inheritance and the tested revision; inherited scenarios also supply the originating record and commit. The tested revision is verification context, not the capture's source.",
+				"examples": [
+					{
+						"id": "capture-provenance-review",
+						"status": "passed",
+						"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+						"inherited": false,
+						"origin": {
+							"record": "record_01J9Q0A1B2C3D4E5F6G7H8J9K",
+							"commit": "89abcdef0123456789abcdef0123456789abcdef"
+						},
+						"states": []
+					}
+				]
 			},
 			{
 				"name": "captureProvenance.capture",
 				"type": "HarnessCapture",
 				"required": true,
-				"description": "Capture supplying status, source build and optional provenance."
+				"description": "The capture supplies status and optional server build and revision, while kind and provenance determine whether a build stamp is expected. A rejected capture is labeled as from another revision when its recorded server revision differs from the scenario's tested revision.",
+				"examples": [
+					{
+						"evidence": "capture-provenance-screenshot",
+						"kind": "screenshot",
+						"state": "overview",
+						"viewport": "desktop",
+						"status": "passed",
+						"path": "packages/reports/src/utils/reports-media/captureProvenance.ts",
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"mediaType": "image/png",
+						"capturedAt": "2026-11-15T18:42:00.000Z",
+						"provenance": "actual-capture",
+						"server": {
+							"buildId": "build-2026-11-15-1842",
+							"revision": "0123456789abcdef0123456789abcdef01234567"
+						},
+						"media": "media/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png"
+					}
+				]
 			},
 			{
 				"name": "scenarioOrigin.scenario",
 				"type": "Scenario",
 				"required": true,
-				"description": "Scenario whose result origin should be summarized."
+				"description": "The scenario supplies inheritance, tested revision, status, and capture revisions. Capture revisions affect the wording only for a failed, non-inherited scenario, where distinct revisions other than the tested revision are listed.",
+				"examples": [
+					{
+						"id": "capture-provenance-review",
+						"status": "passed",
+						"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+						"inherited": false,
+						"origin": {
+							"record": "record_01J9Q0A1B2C3D4E5F6G7H8J9K",
+							"commit": "89abcdef0123456789abcdef0123456789abcdef"
+						},
+						"states": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "captureProvenance",
 				"type": "CaptureProvenance",
-				"description": "Standing, label, facts and full-revision note. Invalid records take precedence over failed captures; otherwise captures are rejected, inherited or fresh. Rejection labels distinguish a different recorded build from a required build stamp that is missing."
+				"description": "The result contains the capture's standing, display label, labeled facts, and a sentence note. Record validity takes precedence over capture failure; a rejected label can identify a different recorded revision or a missing required build stamp.",
+				"examples": [
+					{
+						"standing": "fresh",
+						"label": "Fresh capture",
+						"facts": [
+							{
+								"label": "Standing",
+								"value": "Fresh capture"
+							},
+							{
+								"label": "Captured from",
+								"value": "build build-2026-11-15-1842 of 0123456"
+							},
+							{
+								"label": "Provenance",
+								"value": "actual capture of running software"
+							},
+							{
+								"label": "Verification attempt",
+								"value": "record record_01J9Q (passed) targeting 0123456"
+							}
+						],
+						"note": "Captured from build build-2026-11-15-1842 of revision 0123456789abcdef0123456789abcdef01234567. Provenance: actual capture of running software. Tested at 0123456 by passing record record_01J9Q."
+					}
+				]
 			},
 			{
 				"name": "scenarioOrigin",
 				"type": "string",
-				"description": "Inherited origin, tested revision for a passed scenario, or failed-attempt revision plus distinct other capture revisions when present."
+				"description": "The result summarizes an inherited origin, a passed tested revision, or a failed attempt. For failed non-inherited scenarios it appends distinct recorded capture revisions that differ from the tested revision.",
+				"examples": ["Tested at 0123456"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "captureProvenance",
@@ -71,30 +165,109 @@
 						"name": "captureProvenance.record",
 						"type": "HarnessRecord",
 						"required": true,
-						"description": "Record supplying validity, outcome and target revision."
+						"description": "The record supplies its identifier, validity, outcome, and target commit for the standing and verification wording. An invalid record is reported as unvalidated.",
+						"examples": [
+							{
+								"id": "record_01J9Q0A1B2C3D4E5F6G7H8J9K",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"base": null
+								},
+								"profile": "default",
+								"startedAt": "2026-11-15T18:40:00.000Z",
+								"finishedAt": "2026-11-15T18:42:00.000Z",
+								"failures": [],
+								"tests": [],
+								"scenarios": [],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							}
+						]
 					},
 					{
 						"name": "captureProvenance.scenario",
 						"type": "Scenario",
 						"required": true,
-						"description": "Scenario supplying tested revision, inheritance and original record."
+						"description": "The scenario supplies inheritance and the tested revision; inherited scenarios also supply the originating record and commit. The tested revision is verification context, not the capture's source.",
+						"examples": [
+							{
+								"id": "capture-provenance-review",
+								"status": "passed",
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"inherited": false,
+								"origin": {
+									"record": "record_01J9Q0A1B2C3D4E5F6G7H8J9K",
+									"commit": "89abcdef0123456789abcdef0123456789abcdef"
+								},
+								"states": []
+							}
+						]
 					},
 					{
 						"name": "captureProvenance.capture",
 						"type": "HarnessCapture",
 						"required": true,
-						"description": "Capture supplying status, source build and optional provenance."
+						"description": "The capture supplies status and optional server build and revision, while kind and provenance determine whether a build stamp is expected. A rejected capture is labeled as from another revision when its recorded server revision differs from the scenario's tested revision.",
+						"examples": [
+							{
+								"evidence": "capture-provenance-screenshot",
+								"kind": "screenshot",
+								"state": "overview",
+								"viewport": "desktop",
+								"status": "passed",
+								"path": "packages/reports/src/utils/reports-media/captureProvenance.ts",
+								"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-15T18:42:00.000Z",
+								"provenance": "actual-capture",
+								"server": {
+									"buildId": "build-2026-11-15-1842",
+									"revision": "0123456789abcdef0123456789abcdef01234567"
+								},
+								"media": "media/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "captureProvenance",
 						"type": "CaptureProvenance",
-						"description": "Standing, label, facts and full-revision note. Invalid records take precedence over failed captures; otherwise captures are rejected, inherited or fresh. Rejection labels distinguish a different recorded build from a required build stamp that is missing."
+						"description": "The result contains the capture's standing, display label, labeled facts, and a sentence note. Record validity takes precedence over capture failure; a rejected label can identify a different recorded revision or a missing required build stamp.",
+						"examples": [
+							{
+								"standing": "fresh",
+								"label": "Fresh capture",
+								"facts": [
+									{
+										"label": "Standing",
+										"value": "Fresh capture"
+									},
+									{
+										"label": "Captured from",
+										"value": "build build-2026-11-15-1842 of 0123456"
+									},
+									{
+										"label": "Provenance",
+										"value": "actual capture of running software"
+									},
+									{
+										"label": "Verification attempt",
+										"value": "record record_01J9Q (passed) targeting 0123456"
+									}
+								],
+								"note": "Captured from build build-2026-11-15-1842 of revision 0123456789abcdef0123456789abcdef01234567. Provenance: actual capture of running software. Tested at 0123456 by passing record record_01J9Q."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scenarioOrigin",
@@ -103,18 +276,32 @@
 						"name": "scenarioOrigin.scenario",
 						"type": "Scenario",
 						"required": true,
-						"description": "Scenario whose result origin should be summarized."
+						"description": "The scenario supplies inheritance, tested revision, status, and capture revisions. Capture revisions affect the wording only for a failed, non-inherited scenario, where distinct revisions other than the tested revision are listed.",
+						"examples": [
+							{
+								"id": "capture-provenance-review",
+								"status": "passed",
+								"testedRevision": "0123456789abcdef0123456789abcdef01234567",
+								"inherited": false,
+								"origin": {
+									"record": "record_01J9Q0A1B2C3D4E5F6G7H8J9K",
+									"commit": "89abcdef0123456789abcdef0123456789abcdef"
+								},
+								"states": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scenarioOrigin",
 						"type": "string",
-						"description": "Inherited origin, tested revision for a passed scenario, or failed-attempt revision plus distinct other capture revisions when present."
+						"description": "The result summarizes an inherited origin, a passed tested revision, or a failed attempt. For failed non-inherited scenarios it appends distinct recorded capture revisions that differ from the tested revision.",
+						"examples": ["Tested at 0123456"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
