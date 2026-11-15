@@ -8,24 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/planning/src/utils/planData.ts",
-			"packages/planning/src/utils/planning-collaboration/planData.ts"
-		],
-		"symbols": [
-			"planData",
-			"hash",
-			"fail",
-			"json",
-			"now",
-			"parse",
-			"planData",
-			"hash",
-			"fail",
-			"json",
-			"now",
-			"parse"
-		]
+		"source": ["packages/planning/src/utils/planning-collaboration/planData.ts"],
+		"symbols": ["planData", "hash", "fail", "json", "now", "parse"]
 	},
 	"contract": {
 		"origin": "declared",

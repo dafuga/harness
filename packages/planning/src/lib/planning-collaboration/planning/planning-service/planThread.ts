@@ -17,8 +17,8 @@ import type {
 	ApprovalRecord,
 	HostFileChange
 } from '../../../../models/planning-collaboration/Planning.types';
-import type { Git } from '../../../../utils/planGit';
-import { blob, revision } from '../../../../utils/planGit';
+import type { Git } from '../../../../utils/planning-collaboration/planGit';
+import { blob, revision } from '../../../../utils/planning-collaboration/planGit';
 import { planRead } from '../../../../utils/planning-collaboration/plan-read/planRead';
 import { readImage } from '../../../../utils/plan-design/readImage';
 import { optionOf } from '../../../../utils/planOptions';
@@ -27,7 +27,7 @@ import {
 	commitFiles,
 	type Files
 } from '../../../../utils/planning-collaboration/plan-write/clean';
-import { fail, hash, json, now, planData } from '../../../../utils/planData';
+import { fail, hash, json, now, planData } from '../../../../utils/planning-collaboration/planData';
 import { author, filename, region, text } from '../../../../utils/planValidate';
 function messageValue(
 	input: MessageDraft,

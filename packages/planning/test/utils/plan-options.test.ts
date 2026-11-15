@@ -10,7 +10,7 @@ import type {
 	DesignImage,
 	DesignVersion
 } from '../../src/models/planning-collaboration/Planning.types';
-import { hash } from '../../src/utils/planData';
+import { hash } from '../../src/utils/planning-collaboration/planData';
 import { approvable, optionOf, type WriteImages } from '../../src/utils/planOptions';
 import { checkOptions } from '../../src/utils/planning-collaboration/plan-read/checkOptions';
 import { planOptions } from '../../src/lib/planning-collaboration/planning/planning-service/planOptions';
