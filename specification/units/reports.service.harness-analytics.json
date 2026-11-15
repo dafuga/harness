@@ -20,22 +20,238 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HarnessAnalyticsService.snapshot.params",
 				"type": "URLSearchParams",
-				"required": true
+				"required": true,
+				"description": "The query parameters passed to snapshot. Only the first value of each of loop, task, model, since and until is read, and each non-empty value becomes a --<key> argument for the analytics CLI; other keys are ignored, and the project is never taken from them because the site is fixed when the server starts. The values are passed through without validation by this service."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessAnalyticsService.snapshot",
-				"type": "Promise<AnalyticsSnapshot>"
+				"type": "Promise<AnalyticsSnapshot>",
+				"description": "The resolved AnalyticsSnapshot is the JSON that `analytics events --json` prints on standard output, parsed with JSON.parse and cast to AnalyticsSnapshot without a runtime check. The promise resolves only when the CLI exits with code 0 and its output is valid JSON.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"generatedAt": "2026-11-15T08:12:55.031Z",
+						"filters": {
+							"loop": "analytics-backfill"
+						},
+						"summary": {
+							"events": 2,
+							"projects": 1,
+							"commands": {},
+							"loops": 1,
+							"completedLoops": 1,
+							"evaluatorOutcomes": {},
+							"templates": {
+								"custom": 1
+							},
+							"daily": {
+								"2026-11-14": 2
+							}
+						},
+						"loops": [
+							{
+								"project": "/Users/example/projects/harness-app",
+								"name": "analytics-backfill",
+								"agentModel": "claude-sonnet-5-5",
+								"status": "complete",
+								"createdAt": "2026-11-14T09:00:03.418Z",
+								"completedAt": "2026-11-14T10:23:44.418Z",
+								"durationMs": 5021000,
+								"evaluations": 0
+							}
+						],
+						"jev": {
+							"response": {
+								"checks": 0,
+								"outcomes": {},
+								"excluded": 0,
+								"firstTry": {
+									"numerator": 0,
+									"denominator": 0,
+									"rate": null
+								},
+								"tasks": []
+							},
+							"cleanCode": {
+								"checks": 0,
+								"outcomes": {},
+								"excluded": 0,
+								"firstTry": {
+									"numerator": 0,
+									"denominator": 0,
+									"rate": null
+								},
+								"tasks": []
+							}
+						},
+						"models": {
+							"authors": {},
+							"loopAuthors": {
+								"claude-sonnet-5-5": 1
+							},
+							"evaluators": {},
+							"inputTokens": 0,
+							"outputTokens": 0,
+							"firstTryByAuthor": {},
+							"taskWorkers": []
+						},
+						"tasks": {
+							"tasks": 0,
+							"executions": 0,
+							"submissions": 0,
+							"accepted": 0,
+							"bounces": 0,
+							"reviewed": 0,
+							"bounceRate": null,
+							"executionFailures": 0,
+							"inputTokens": null,
+							"outputTokens": null,
+							"cacheReadTokens": null,
+							"cacheWriteTokens": null,
+							"apiCostUsd": null,
+							"apiCostRangeUsd": {
+								"minimum": null,
+								"maximum": null
+							},
+							"unpricedExecutions": 0,
+							"unreportedUsage": 0,
+							"byModel": []
+						},
+						"benchmarks": [],
+						"events": [
+							{
+								"id": "6f1d2c3a-8b4e-4d7f-9a2c-5e8b1f0d3c74",
+								"timestamp": "2026-11-14T09:00:03.418Z",
+								"project": "/Users/example/projects/harness-app",
+								"kind": "loop",
+								"action": "created",
+								"loop": "analytics-backfill",
+								"agentModel": "claude-sonnet-5-5"
+							},
+							{
+								"id": "c1a0e7b5-3f92-4e6a-b8d4-0a7c2e9f15d3",
+								"timestamp": "2026-11-14T10:23:44.418Z",
+								"project": "/Users/example/projects/harness-app",
+								"kind": "loop",
+								"action": "completed",
+								"loop": "analytics-backfill"
+							}
+						]
+					},
+					{
+						"schemaVersion": 1,
+						"generatedAt": "2026-11-15T08:14:02.770Z",
+						"filters": {
+							"since": "2026-11-01T00:00:00.000Z",
+							"until": "2026-11-07T23:59:59.999Z"
+						},
+						"summary": {
+							"events": 0,
+							"projects": 0,
+							"commands": {},
+							"loops": 0,
+							"completedLoops": 0,
+							"evaluatorOutcomes": {},
+							"templates": {},
+							"daily": {}
+						},
+						"loops": [],
+						"jev": {
+							"response": {
+								"checks": 0,
+								"outcomes": {},
+								"excluded": 0,
+								"firstTry": {
+									"numerator": 0,
+									"denominator": 0,
+									"rate": null
+								},
+								"tasks": []
+							},
+							"cleanCode": {
+								"checks": 0,
+								"outcomes": {},
+								"excluded": 0,
+								"firstTry": {
+									"numerator": 0,
+									"denominator": 0,
+									"rate": null
+								},
+								"tasks": []
+							}
+						},
+						"models": {
+							"authors": {},
+							"loopAuthors": {},
+							"evaluators": {},
+							"inputTokens": 0,
+							"outputTokens": 0,
+							"firstTryByAuthor": {},
+							"taskWorkers": []
+						},
+						"tasks": {
+							"tasks": 0,
+							"executions": 0,
+							"submissions": 0,
+							"accepted": 0,
+							"bounces": 0,
+							"reviewed": 0,
+							"bounceRate": null,
+							"executionFailures": 0,
+							"inputTokens": null,
+							"outputTokens": null,
+							"cacheReadTokens": null,
+							"cacheWriteTokens": null,
+							"apiCostUsd": null,
+							"apiCostRangeUsd": {
+								"minimum": null,
+								"maximum": null
+							},
+							"unpricedExecutions": 0,
+							"unreportedUsage": 0,
+							"byModel": []
+						},
+						"benchmarks": [],
+						"events": []
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "fileURLToPath throws a TypeError when a file:// Git remote is not a valid local path (inside repositoryIdentity(), reached through reportSite()) or when reportRuntimeRoot() runs from a module URL that is not a file: URL while HARNESS_REPORTS_RUNTIME_ROOT is unset. The query rejects with it before the CLI starts."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "process.cwd() throws when HARNESS_SITE_ROOT is empty or unset and the working directory no longer exists, and realpathSync throws when the Git store of a checkout with no remote cannot be resolved (both reached through reportSite()). The query rejects with that Error before the CLI starts."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The child process emits an Error when Bun cannot be started, such as ENOENT when HARNESS_BUN_PATH or bun on PATH does not exist. The query rejects with that error unchanged."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An Error with the message 'Harness analytics query failed.' is created when the CLI process closes with any code other than 0, including null when a signal ends it. The query rejects with it."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "JSON.parse throws a SyntaxError when the CLI exits with code 0 but its standard output is not valid JSON, including empty output. The query rejects with it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HarnessAnalyticsService.snapshot",
@@ -43,17 +259,233 @@
 					{
 						"name": "HarnessAnalyticsService.snapshot.params",
 						"type": "URLSearchParams",
-						"required": true
+						"required": true,
+						"description": "The query parameters passed to snapshot. Only the first value of each of loop, task, model, since and until is read, and each non-empty value becomes a --<key> argument for the analytics CLI; other keys are ignored, and the project is never taken from them because the site is fixed when the server starts. The values are passed through without validation by this service."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HarnessAnalyticsService.snapshot",
-						"type": "Promise<AnalyticsSnapshot>"
+						"type": "Promise<AnalyticsSnapshot>",
+						"description": "The resolved AnalyticsSnapshot is the JSON that `analytics events --json` prints on standard output, parsed with JSON.parse and cast to AnalyticsSnapshot without a runtime check. The promise resolves only when the CLI exits with code 0 and its output is valid JSON.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"generatedAt": "2026-11-15T08:12:55.031Z",
+								"filters": {
+									"loop": "analytics-backfill"
+								},
+								"summary": {
+									"events": 2,
+									"projects": 1,
+									"commands": {},
+									"loops": 1,
+									"completedLoops": 1,
+									"evaluatorOutcomes": {},
+									"templates": {
+										"custom": 1
+									},
+									"daily": {
+										"2026-11-14": 2
+									}
+								},
+								"loops": [
+									{
+										"project": "/Users/example/projects/harness-app",
+										"name": "analytics-backfill",
+										"agentModel": "claude-sonnet-5-5",
+										"status": "complete",
+										"createdAt": "2026-11-14T09:00:03.418Z",
+										"completedAt": "2026-11-14T10:23:44.418Z",
+										"durationMs": 5021000,
+										"evaluations": 0
+									}
+								],
+								"jev": {
+									"response": {
+										"checks": 0,
+										"outcomes": {},
+										"excluded": 0,
+										"firstTry": {
+											"numerator": 0,
+											"denominator": 0,
+											"rate": null
+										},
+										"tasks": []
+									},
+									"cleanCode": {
+										"checks": 0,
+										"outcomes": {},
+										"excluded": 0,
+										"firstTry": {
+											"numerator": 0,
+											"denominator": 0,
+											"rate": null
+										},
+										"tasks": []
+									}
+								},
+								"models": {
+									"authors": {},
+									"loopAuthors": {
+										"claude-sonnet-5-5": 1
+									},
+									"evaluators": {},
+									"inputTokens": 0,
+									"outputTokens": 0,
+									"firstTryByAuthor": {},
+									"taskWorkers": []
+								},
+								"tasks": {
+									"tasks": 0,
+									"executions": 0,
+									"submissions": 0,
+									"accepted": 0,
+									"bounces": 0,
+									"reviewed": 0,
+									"bounceRate": null,
+									"executionFailures": 0,
+									"inputTokens": null,
+									"outputTokens": null,
+									"cacheReadTokens": null,
+									"cacheWriteTokens": null,
+									"apiCostUsd": null,
+									"apiCostRangeUsd": {
+										"minimum": null,
+										"maximum": null
+									},
+									"unpricedExecutions": 0,
+									"unreportedUsage": 0,
+									"byModel": []
+								},
+								"benchmarks": [],
+								"events": [
+									{
+										"id": "6f1d2c3a-8b4e-4d7f-9a2c-5e8b1f0d3c74",
+										"timestamp": "2026-11-14T09:00:03.418Z",
+										"project": "/Users/example/projects/harness-app",
+										"kind": "loop",
+										"action": "created",
+										"loop": "analytics-backfill",
+										"agentModel": "claude-sonnet-5-5"
+									},
+									{
+										"id": "c1a0e7b5-3f92-4e6a-b8d4-0a7c2e9f15d3",
+										"timestamp": "2026-11-14T10:23:44.418Z",
+										"project": "/Users/example/projects/harness-app",
+										"kind": "loop",
+										"action": "completed",
+										"loop": "analytics-backfill"
+									}
+								]
+							},
+							{
+								"schemaVersion": 1,
+								"generatedAt": "2026-11-15T08:14:02.770Z",
+								"filters": {
+									"since": "2026-11-01T00:00:00.000Z",
+									"until": "2026-11-07T23:59:59.999Z"
+								},
+								"summary": {
+									"events": 0,
+									"projects": 0,
+									"commands": {},
+									"loops": 0,
+									"completedLoops": 0,
+									"evaluatorOutcomes": {},
+									"templates": {},
+									"daily": {}
+								},
+								"loops": [],
+								"jev": {
+									"response": {
+										"checks": 0,
+										"outcomes": {},
+										"excluded": 0,
+										"firstTry": {
+											"numerator": 0,
+											"denominator": 0,
+											"rate": null
+										},
+										"tasks": []
+									},
+									"cleanCode": {
+										"checks": 0,
+										"outcomes": {},
+										"excluded": 0,
+										"firstTry": {
+											"numerator": 0,
+											"denominator": 0,
+											"rate": null
+										},
+										"tasks": []
+									}
+								},
+								"models": {
+									"authors": {},
+									"loopAuthors": {},
+									"evaluators": {},
+									"inputTokens": 0,
+									"outputTokens": 0,
+									"firstTryByAuthor": {},
+									"taskWorkers": []
+								},
+								"tasks": {
+									"tasks": 0,
+									"executions": 0,
+									"submissions": 0,
+									"accepted": 0,
+									"bounces": 0,
+									"reviewed": 0,
+									"bounceRate": null,
+									"executionFailures": 0,
+									"inputTokens": null,
+									"outputTokens": null,
+									"cacheReadTokens": null,
+									"cacheWriteTokens": null,
+									"apiCostUsd": null,
+									"apiCostRangeUsd": {
+										"minimum": null,
+										"maximum": null
+									},
+									"unpricedExecutions": 0,
+									"unreportedUsage": 0,
+									"byModel": []
+								},
+								"benchmarks": [],
+								"events": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "fileURLToPath throws a TypeError when a file:// Git remote is not a valid local path (inside repositoryIdentity(), reached through reportSite()) or when reportRuntimeRoot() runs from a module URL that is not a file: URL while HARNESS_REPORTS_RUNTIME_ROOT is unset. The query rejects with it before the CLI starts."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "process.cwd() throws when HARNESS_SITE_ROOT is empty or unset and the working directory no longer exists, and realpathSync throws when the Git store of a checkout with no remote cannot be resolved (both reached through reportSite()). The query rejects with that Error before the CLI starts."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The child process emits an Error when Bun cannot be started, such as ENOENT when HARNESS_BUN_PATH or bun on PATH does not exist. The query rejects with that error unchanged."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An Error with the message 'Harness analytics query failed.' is created when the CLI process closes with any code other than 0, including null when a signal ends it. The query rejects with it."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse throws a SyntaxError when the CLI exits with code 0 but its standard output is not valid JSON, including empty output. The query rejects with it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
