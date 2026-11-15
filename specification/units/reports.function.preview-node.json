@@ -21,16 +21,9 @@
 				"name": "previewNode.args",
 				"type": "string[]",
 				"required": true,
-				"description": "Preview root, optional Vite config, host and port arguments forwarded unchanged.",
+				"description": "Argument strings that previewArguments parses into the managed preview identity and port, then forwards unchanged to PreviewWorkerService. This function adds no argument schema validation before parsing.",
 				"examples": [
-					[
-						"--port",
-						"5688",
-						"--config",
-						"/projects/harness/packages/reports/vite.config.ts",
-						"--host",
-						"127.0.0.1"
-					]
+					["--port", "5688", "--config", "packages/reports/vite.config.ts", "--host", "127.0.0.1"]
 				]
 			}
 		],
@@ -38,18 +31,18 @@
 			{
 				"name": "previewNode",
 				"type": "Promise<number>",
-				"description": "Exit code of the managed Node process; signals are forwarded and its temporary launcher is removed.",
-				"examples": [0]
+				"description": "The promise resolves to 0 when the owner reports reuse or a signal-driven shutdown completes, and to 1 if that shutdown's cleanup fails. A newly started preview stays pending until SIGTERM or SIGINT; setup and startup failures reject instead.",
+				"examples": [0, 1]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Fails without starting a second preview when launcher compilation or process startup is unavailable.",
-				"examples": ["Could not prepare the managed preview runtime."]
+				"description": "Throws Error('Invalid preview ownership port.') when the selected owner port does not convert to an integer from 1024 through 65535, and Error('Could not prepare the managed preview runtime.') when Bun.build reports failure. Errors from argument parsing, owner or worker calls, Bun.build, filesystem setup or removal, and cleanup also propagate as rejections."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "previewNode",
@@ -58,13 +51,13 @@
 						"name": "previewNode.args",
 						"type": "string[]",
 						"required": true,
-						"description": "Preview root, optional Vite config, host and port arguments forwarded unchanged.",
+						"description": "Argument strings that previewArguments parses into the managed preview identity and port, then forwards unchanged to PreviewWorkerService. This function adds no argument schema validation before parsing.",
 						"examples": [
 							[
 								"--port",
 								"5688",
 								"--config",
-								"/projects/harness/packages/reports/vite.config.ts",
+								"packages/reports/vite.config.ts",
 								"--host",
 								"127.0.0.1"
 							]
@@ -75,17 +68,18 @@
 					{
 						"name": "previewNode",
 						"type": "Promise<number>",
-						"description": "Exit code of the managed Node process; signals are forwarded and its temporary launcher is removed.",
-						"examples": [0]
+						"description": "The promise resolves to 0 when the owner reports reuse or a signal-driven shutdown completes, and to 1 if that shutdown's cleanup fails. A newly started preview stays pending until SIGTERM or SIGINT; setup and startup failures reject instead.",
+						"examples": [0, 1]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error('Invalid preview ownership port.') when the selected owner port does not convert to an integer from 1024 through 65535, and Error('Could not prepare the managed preview runtime.') when Bun.build reports failure. Errors from argument parsing, owner or worker calls, Bun.build, filesystem setup or removal, and cleanup also propagate as rejections."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
