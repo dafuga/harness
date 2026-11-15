@@ -18,7 +18,45 @@
 			{
 				"name": "discoverTokens",
 				"type": "StyleToken[]",
-				"description": "The custom properties published by the :root rules of the page stylesheets, in declared order, each with its declared and resolved value and its group."
+				"description": "The --hx- custom properties that :root rules (selector exactly ':root') of the document's stylesheets, including imported ones, declare, in the order each is first declared, each with its declared value (whitespace collapsed; the value from the first :root declaration wins), its resolved value from the root element's computed style (the declared value when that is empty), and its group from groupFor, which falls back to 'Unclassified tokens'. Legacy aliases in appStyleTokensConfig.legacyAliases are left out, stylesheets whose rules cannot be read (such as cross-origin ones) contribute nothing and raise no error, and the array is a snapshot taken at call time that is empty when no such property is found.",
+				"examples": [
+					[
+						{
+							"name": "--hx-color-primary",
+							"value": "#1d4ed8",
+							"resolved": "#1d4ed8",
+							"group": "Colors"
+						},
+						{
+							"name": "--hx-color-primary-soft",
+							"value": "color-mix(in srgb, var(--hx-color-primary) 12%, transparent)",
+							"resolved": "color-mix(in srgb, #1d4ed8 12%, transparent)",
+							"group": "Colors"
+						}
+					],
+					[
+						{
+							"name": "--hx-font-family-body",
+							"value": "Inter, system-ui, sans-serif",
+							"resolved": "Inter, system-ui, sans-serif",
+							"group": "Typography"
+						},
+						{
+							"name": "--hx-space-inline",
+							"value": "8px",
+							"resolved": "8px",
+							"group": "Spacing and corners"
+						}
+					],
+					[
+						{
+							"name": "--hx-radius-panel",
+							"value": "12px",
+							"resolved": "12px",
+							"group": "Spacing and corners"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
@@ -31,7 +69,45 @@
 					{
 						"name": "discoverTokens",
 						"type": "StyleToken[]",
-						"description": "The custom properties published by the :root rules of the page stylesheets, in declared order, each with its declared and resolved value and its group."
+						"description": "The --hx- custom properties that :root rules (selector exactly ':root') of the document's stylesheets, including imported ones, declare, in the order each is first declared, each with its declared value (whitespace collapsed; the value from the first :root declaration wins), its resolved value from the root element's computed style (the declared value when that is empty), and its group from groupFor, which falls back to 'Unclassified tokens'. Legacy aliases in appStyleTokensConfig.legacyAliases are left out, stylesheets whose rules cannot be read (such as cross-origin ones) contribute nothing and raise no error, and the array is a snapshot taken at call time that is empty when no such property is found.",
+						"examples": [
+							[
+								{
+									"name": "--hx-color-primary",
+									"value": "#1d4ed8",
+									"resolved": "#1d4ed8",
+									"group": "Colors"
+								},
+								{
+									"name": "--hx-color-primary-soft",
+									"value": "color-mix(in srgb, var(--hx-color-primary) 12%, transparent)",
+									"resolved": "color-mix(in srgb, #1d4ed8 12%, transparent)",
+									"group": "Colors"
+								}
+							],
+							[
+								{
+									"name": "--hx-font-family-body",
+									"value": "Inter, system-ui, sans-serif",
+									"resolved": "Inter, system-ui, sans-serif",
+									"group": "Typography"
+								},
+								{
+									"name": "--hx-space-inline",
+									"value": "8px",
+									"resolved": "8px",
+									"group": "Spacing and corners"
+								}
+							],
+							[
+								{
+									"name": "--hx-radius-panel",
+									"value": "12px",
+									"resolved": "12px",
+									"group": "Spacing and corners"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
