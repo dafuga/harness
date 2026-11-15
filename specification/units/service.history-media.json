@@ -18,37 +18,65 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HistoryMediaService.constructor.out",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Root directory for placed media. When matching bytes are stored, the service writes their content-addressed file beneath this directory; the constructor does not validate the path.",
+				"examples": ["out/history"]
 			},
 			{
 				"name": "HistoryMediaService.place.bytes",
 				"type": "Buffer | undefined",
-				"required": true
+				"required": true,
+				"description": "Original capture bytes, or undefined when they are unavailable. Matching bytes are written once per content-addressed media path; missing or hash-mismatched bytes produce the supplied gap result."
 			},
 			{
 				"name": "HistoryMediaService.place.file",
 				"type": "MediaFile",
-				"required": true
+				"required": true,
+				"description": "Metadata for a capture file, with its path and SHA-256 digest. The digest is compared with the supplied bytes; the path's final alphanumeric extension is lowercased for the output name, or bin is used when there is no matching extension.",
+				"examples": [
+					{
+						"path": "src/cli/program/history-index-service/history-media-service/HistoryMediaService.ts",
+						"sha256": "0af600f2ee338cab8de6b87dffcf7e0181748081df8362b28bbc213dcf64669d"
+					}
+				]
 			},
 			{
 				"name": "HistoryMediaService.place.gap",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Caller-supplied reason text for unavailable or hash-mismatched bytes. The service returns it unchanged when the bytes are missing or their digest differs from the file digest.",
+				"examples": ["capture bytes are unavailable"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HistoryMediaService.place",
-				"type": "Promise<ResolvedMedia>"
+				"type": "Promise<ResolvedMedia>",
+				"description": "Resolved media result for the capture. Matching bytes produce a relative media/<sha256>.<extension> path; missing or mismatched bytes produce media: null with the supplied gap, and paths without a matching extension use bin.",
+				"examples": [
+					{
+						"media": "media/0af600f2ee338cab8de6b87dffcf7e0181748081df8362b28bbc213dcf64669d.ts"
+					},
+					{
+						"media": null,
+						"gap": "capture bytes are unavailable"
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The asynchronous operation rejects with the filesystem error if creating a destination directory or writing a media file fails; the service does not catch it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HistoryMediaService.place",
@@ -56,27 +84,53 @@
 					{
 						"name": "HistoryMediaService.place.bytes",
 						"type": "Buffer | undefined",
-						"required": true
+						"required": true,
+						"description": "Original capture bytes, or undefined when they are unavailable. Matching bytes are written once per content-addressed media path; missing or hash-mismatched bytes produce the supplied gap result."
 					},
 					{
 						"name": "HistoryMediaService.place.file",
 						"type": "MediaFile",
-						"required": true
+						"required": true,
+						"description": "Metadata for a capture file, with its path and SHA-256 digest. The digest is compared with the supplied bytes; the path's final alphanumeric extension is lowercased for the output name, or bin is used when there is no matching extension.",
+						"examples": [
+							{
+								"path": "src/cli/program/history-index-service/history-media-service/HistoryMediaService.ts",
+								"sha256": "0af600f2ee338cab8de6b87dffcf7e0181748081df8362b28bbc213dcf64669d"
+							}
+						]
 					},
 					{
 						"name": "HistoryMediaService.place.gap",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Caller-supplied reason text for unavailable or hash-mismatched bytes. The service returns it unchanged when the bytes are missing or their digest differs from the file digest.",
+						"examples": ["capture bytes are unavailable"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HistoryMediaService.place",
-						"type": "Promise<ResolvedMedia>"
+						"type": "Promise<ResolvedMedia>",
+						"description": "Resolved media result for the capture. Matching bytes produce a relative media/<sha256>.<extension> path; missing or mismatched bytes produce media: null with the supplied gap, and paths without a matching extension use bin.",
+						"examples": [
+							{
+								"media": "media/0af600f2ee338cab8de6b87dffcf7e0181748081df8362b28bbc213dcf64669d.ts"
+							},
+							{
+								"media": null,
+								"gap": "capture bytes are unavailable"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The asynchronous operation rejects with the filesystem error if creating a destination directory or writing a media file fails; the service does not catch it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -86,17 +140,20 @@
 					{
 						"name": "HistoryMediaService.constructor.out",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Root directory for placed media. When matching bytes are stored, the service writes their content-addressed file beneath this directory; the constructor does not validate the path.",
+						"examples": ["out/history"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HistoryMediaService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A HistoryMediaService instance. Its counts start at zero and it starts with no remembered media paths; it writes files only when place receives matching bytes."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
