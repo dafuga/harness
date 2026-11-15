@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { videoArchiveFixture } from './videoArchiveFixture';
+import { videoReferenceOwner } from './videoReferenceOwner';
 import { verificationSample } from './verificationSample';
 import { hash } from './frameFlagFixture';
 import { VideoArchiveService } from '../../src/services/verification-evidence/VideoArchiveService';
@@ -14,6 +15,9 @@ import type {
 /** Canonical admitted synthetic media, backed by a real archive and parent cache without media copies. */
 export async function videoReferenceFixture(root: string, git: (...args: string[]) => string) {
 	const input = await videoArchiveFixture(root, git);
+	const owner = await videoReferenceOwner(root, git);
+	input.original.revision = owner.commit;
+	input.original.tree = owner.tree;
 	const pointers = await new VideoArchiveService(root).write([input]);
 	const capture: Capture = {
 		evidence: 'motion',
@@ -32,7 +36,7 @@ export async function videoReferenceFixture(root: string, git: (...args: string[
 		videoReference: { batch: pointers[0].batch }
 	};
 	const source = { commit: input.original.revision, tree: input.original.tree, base: null };
-	const record = referenceRecord({ source, capture, pointers });
+	const record = referenceRecord({ source, capture, pointers, components: owner.components });
 	return { input, pointers, capture, record, stored: await saveVideoParent(root, record) };
 }
 
@@ -41,12 +45,21 @@ export function referenceRecord(input: {
 	capture: Capture;
 	pointers: NonNullable<VerificationRecord['videoBatches']>;
 	failures?: string[];
+	components?: VerificationRecord['components'];
+	startedAt?: string;
 }): VerificationRecord {
-	const { id: _id, ...sample } = verificationSample();
+	const { id, ...sample } = verificationSample();
+	void id;
+	const offset =
+		parseInt(hash(Buffer.from((input.failures ?? []).join('|'))).slice(0, 4), 16) % 500;
+	const startedAt =
+		input.startedAt ?? new Date(Date.parse(input.capture.capturedAt) - 1000 + offset).toISOString();
 	return sealRecord({
 		...sample,
+		startedAt,
+		finishedAt: new Date(Date.parse(startedAt) + 5000).toISOString(),
 		source: input.source,
-		components: [],
+		components: input.components ?? [],
 		measurements: [],
 		status: input.failures?.length ? 'failed' : 'passed',
 		failures: input.failures ?? [],
@@ -81,7 +94,7 @@ export function referenceRecord(input: {
 
 export async function saveVideoParent(root: string, record: VerificationRecord) {
 	const store = new VerificationStoreRepository(root);
-	const directory = join(store.directoryFor(record.source.commit, record.startedAt), record.id);
+	const directory = store.directoryFor(record.source.commit, record.startedAt);
 	await mkdir(directory, { recursive: true });
 	await writeFile(join(directory, 'check.log'), 'passed');
 	await store.save(record, directory);
@@ -101,12 +114,18 @@ export async function reusedVideoParent(
 		tree: git('rev-parse', 'HEAD^{tree}'),
 		base: null
 	};
-	const capture = structuredClone(original.scenarios[0].states[0].captures[0]);
+	const capture = globalThis.structuredClone(original.scenarios[0].states[0].captures[0]);
 	capture.videoReference = {
 		...capture.videoReference!,
 		record: original.id,
 		revision: original.source.commit
 	};
-	const record = referenceRecord({ source, capture, pointers: original.videoBatches! });
+	const record = referenceRecord({
+		source,
+		capture,
+		pointers: original.videoBatches!,
+		components: original.components,
+		startedAt: new Date(Date.parse(original.startedAt) + 10_000).toISOString()
+	});
 	return { capture, record, stored: await saveVideoParent(root, record) };
 }

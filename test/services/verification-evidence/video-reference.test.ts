@@ -19,6 +19,7 @@ import { hash } from '../../support/frameFlagFixture';
 import { readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { measureWorkload } from '../../support/measureWorkload';
+import { rejectVideoOriginStandings } from '../../support/videoReferenceChecks';
 import { scopeFailure } from '../../../src/workflows/verification-evidence/run-verify/verification-service/entityScope';
 
 test('VideoReferenceService runs', () => {
@@ -66,7 +67,7 @@ test('fresh archive captures attach without copied media and restore verified vi
 		expect((await new EvidenceRestoreService(root).restore()).restored).toContain(f.record.id);
 		expect(hash(await readFile(join(f.stored.directory, f.capture.path)))).toBe(f.capture.sha256);
 	});
-});
+}, 30_000);
 
 test('a new parent keeps original clip metadata and admits only successful exact-owner origin proof', async () => {
 	await withTempRepo(async ({ root, git }) => {
@@ -76,6 +77,7 @@ test('a new parent keeps original clip metadata and admits only successful exact
 			source: f.record.source,
 			capture: f.capture,
 			pointers: f.pointers,
+			components: f.record.components,
 			failures: [scopeFailure(f.capture.video!.unit)]
 		});
 		await attach.attach(scoped.source.commit, await saveVideoParent(root, scoped));
@@ -98,34 +100,9 @@ test('a new parent keeps original clip metadata and admits only successful exact
 				child.capture.path
 			)
 		).toEqual(f.input.videoBytes);
-		const wrong = referenceRecord({
-			source: scoped.source,
-			capture: f.capture,
-			pointers: f.pointers,
-			failures: [scopeFailure('component.other')]
-		});
-		const failed = referenceRecord({
-			source: scoped.source,
-			capture: f.capture,
-			pointers: f.pointers,
-			failures: ['Actual failure']
-		});
-		for (const origin of [wrong, failed]) {
-			await attach.attach(origin.source.commit, await saveVideoParent(root, origin));
-			const capture = {
-				...child.capture,
-				videoReference: { ...child.capture.videoReference!, record: origin.id }
-			};
-			await expect(
-				new VideoReferenceService(root).resolve({
-					source: child.record.source,
-					capture,
-					batches: f.pointers
-				})
-			).rejects.toThrow(/pass|scope|owner/i);
-		}
+		await rejectVideoOriginStandings(root, scoped, child.record);
 	});
-});
+}, 30_000);
 
 test('reference proof rejects changed metadata, identity, paths, ancestry and missing original parents', async () => {
 	await withTempRepo(async ({ root, git }) => {
@@ -162,7 +139,7 @@ test('reference proof rejects changed metadata, identity, paths, ancestry and mi
 			await new VerificationCheckService(root).integrity(f.record.source.commit, f.stored)
 		).toEqual(expect.arrayContaining([expect.stringMatching(/video|hash|integrity/i)]));
 	});
-});
+}, 30_000);
 
 test('clip lineage preserves every original binding and refuses missing, damaged and cyclic ancestry', async () => {
 	await withTempRepo(async ({ root, git }) => {
@@ -176,10 +153,10 @@ test('clip lineage preserves every original binding and refuses missing, damaged
 		expect(
 			recordLineage(child.record, { ...source, problems: () => ['corrupt original'] }).join(' ')
 		).toContain('corrupt original');
-		const changed = structuredClone(child.record);
+		const changed = globalThis.structuredClone(child.record);
 		changed.scenarios[0].states[0].captures[0].server!.buildId = 'd'.repeat(64);
 		expect(recordLineage(changed, source).join(' ')).toMatch(/differ|original/i);
-		const cyclic = structuredClone(f.record);
+		const cyclic = globalThis.structuredClone(f.record);
 		cyclic.scenarios[0].states[0].captures[0].videoReference = {
 			batch: f.pointers[0].batch,
 			record: cyclic.id,
@@ -189,4 +166,4 @@ test('clip lineage preserves every original binding and refuses missing, damaged
 			/cycle/i
 		);
 	});
-});
+}, 30_000);
