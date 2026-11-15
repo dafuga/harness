@@ -21,45 +21,138 @@
 				"name": "reportState.input",
 				"type": "BeginInput",
 				"required": true,
-				"description": "Project, title and feature/suite mode, with optional environment, revision, historical flag, summary and acceptance."
+				"description": "Data used to start a report: a project path, title, mode, and optional environment, revision, historical flag, summary, and acceptance list. Project and title must be truthy and mode must be feature or suite; project is resolved, historical is coerced to boolean, and falsy environment, summary, and acceptance values fall back to local, empty string, and empty array while revision passes through.",
+				"examples": [
+					{
+						"project": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15",
+						"title": "Build report-state coverage",
+						"mode": "feature",
+						"environment": "local",
+						"revision": "0123456789abcdef0123456789abcdef01234567",
+						"historical": false,
+						"summary": "Initialized for feature review.",
+						"acceptance": []
+					}
+				]
 			},
 			{
 				"name": "resultStatus.report",
 				"type": "Report",
 				"required": true,
-				"description": "Report whose checks, findings, coverage and evidence determine the result."
+				"description": "Report record whose checks, findings, coverage, and evidence item statuses are combined; check count and whether every check is skipped also affect the result. The value is read as supplied.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "ba1d6649-2c40-44d8-a4df-9b43f075c71e",
+						"project": {
+							"id": "f25545e39debcb86",
+							"name": "slot-15",
+							"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+						},
+						"title": "Build report-state coverage",
+						"mode": "feature",
+						"environment": "local",
+						"revision": "0123456789abcdef0123456789abcdef01234567",
+						"historical": false,
+						"startedAt": "2026-11-15T12:00:00.000Z",
+						"updatedAt": "2026-11-15T12:00:00.000Z",
+						"summary": "Initialized for feature review.",
+						"acceptance": [],
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": []
+					}
+				]
 			},
 			{
 				"name": "interrupted.report",
 				"type": "Report",
 				"required": true,
-				"description": "Report whose unfinished inactivity should be detected."
+				"description": "Report record whose state and updatedAt timestamp are checked against the current clock. It is considered interrupted only when state is not finalized and the elapsed time is greater than 15 minutes.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "ba1d6649-2c40-44d8-a4df-9b43f075c71e",
+						"project": {
+							"id": "f25545e39debcb86",
+							"name": "slot-15",
+							"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+						},
+						"title": "Build report-state coverage",
+						"mode": "feature",
+						"environment": "local",
+						"revision": "0123456789abcdef0123456789abcdef01234567",
+						"historical": false,
+						"startedAt": "2020-01-01T00:00:00.000Z",
+						"updatedAt": "2020-01-01T00:00:00.000Z",
+						"summary": "Initialized for feature review.",
+						"acceptance": [],
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "reportState",
 				"type": "Report",
-				"description": "Sanitized new report with UUID, project identity derived from the resolved path, matching creation/update timestamps, running/active state and empty result arrays. Environment defaults to local, summary to empty and acceptance to an empty array."
+				"description": "A sanitized Report created when reportState starts a report, with a generated UUID, a project id derived from the resolved path, and identical ISO start and update times. It starts running and active with empty checks, evidence, findings, and coverage; falsy environment, summary, and acceptance values use the code fallbacks local, empty string, and empty array, while historical is coerced to boolean.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "ba1d6649-2c40-44d8-a4df-9b43f075c71e",
+						"project": {
+							"id": "f25545e39debcb86",
+							"name": "slot-15",
+							"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+						},
+						"title": "Build report-state coverage",
+						"mode": "feature",
+						"environment": "local",
+						"revision": "0123456789abcdef0123456789abcdef01234567",
+						"historical": false,
+						"startedAt": "2026-11-15T12:00:00.000Z",
+						"updatedAt": "2026-11-15T12:00:00.000Z",
+						"summary": "Initialized for feature review.",
+						"acceptance": [],
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [],
+						"findings": [],
+						"coverage": []
+					}
+				]
 			},
 			{
 				"name": "resultStatus",
 				"type": "Status",
-				"description": "Failed if any item failed; otherwise blocked if any item is blocked, not-proven, interrupted or running. With no checks returns not-proven; all skipped checks return skipped; otherwise passed."
+				"description": "The aggregate Status for checks, findings, coverage, and evidence, with any failed item taking precedence and blocked, not-proven, interrupted, or running items producing blocked. With no checks it returns not-proven; otherwise all skipped checks produce skipped and the remaining cases produce passed.",
+				"examples": ["failed", "blocked", "passed"]
 			},
 			{
 				"name": "interrupted",
 				"type": "unknown",
-				"description": "True for a nonfinalized report whose last update was more than fifteen minutes ago, using the current clock."
+				"description": "A boolean indicating whether a report outside the finalized state has an updatedAt time more than 15 minutes before the current clock. A finalized report returns false, and an invalid timestamp also fails the age comparison.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws when project or title is falsy, or mode is neither feature nor suite."
+				"description": "Throws Error(\"Project, title and valid mode are required\") when project or title is falsy, or mode is neither feature nor suite."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportState",
@@ -68,23 +161,62 @@
 						"name": "reportState.input",
 						"type": "BeginInput",
 						"required": true,
-						"description": "Project, title and feature/suite mode, with optional environment, revision, historical flag, summary and acceptance."
+						"description": "Data used to start a report: a project path, title, mode, and optional environment, revision, historical flag, summary, and acceptance list. Project and title must be truthy and mode must be feature or suite; project is resolved, historical is coerced to boolean, and falsy environment, summary, and acceptance values fall back to local, empty string, and empty array while revision passes through.",
+						"examples": [
+							{
+								"project": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15",
+								"title": "Build report-state coverage",
+								"mode": "feature",
+								"environment": "local",
+								"revision": "0123456789abcdef0123456789abcdef01234567",
+								"historical": false,
+								"summary": "Initialized for feature review.",
+								"acceptance": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportState",
 						"type": "Report",
-						"description": "Sanitized new report with UUID, project identity derived from the resolved path, matching creation/update timestamps, running/active state and empty result arrays. Environment defaults to local, summary to empty and acceptance to an empty array."
+						"description": "A sanitized Report created when reportState starts a report, with a generated UUID, a project id derived from the resolved path, and identical ISO start and update times. It starts running and active with empty checks, evidence, findings, and coverage; falsy environment, summary, and acceptance values use the code fallbacks local, empty string, and empty array, while historical is coerced to boolean.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "ba1d6649-2c40-44d8-a4df-9b43f075c71e",
+								"project": {
+									"id": "f25545e39debcb86",
+									"name": "slot-15",
+									"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+								},
+								"title": "Build report-state coverage",
+								"mode": "feature",
+								"environment": "local",
+								"revision": "0123456789abcdef0123456789abcdef01234567",
+								"historical": false,
+								"startedAt": "2026-11-15T12:00:00.000Z",
+								"updatedAt": "2026-11-15T12:00:00.000Z",
+								"summary": "Initialized for feature review.",
+								"acceptance": [],
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error(\"Project, title and valid mode are required\") when project or title is falsy, or mode is neither feature nor suite."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resultStatus",
@@ -93,18 +225,45 @@
 						"name": "resultStatus.report",
 						"type": "Report",
 						"required": true,
-						"description": "Report whose checks, findings, coverage and evidence determine the result."
+						"description": "Report record whose checks, findings, coverage, and evidence item statuses are combined; check count and whether every check is skipped also affect the result. The value is read as supplied.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "ba1d6649-2c40-44d8-a4df-9b43f075c71e",
+								"project": {
+									"id": "f25545e39debcb86",
+									"name": "slot-15",
+									"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+								},
+								"title": "Build report-state coverage",
+								"mode": "feature",
+								"environment": "local",
+								"revision": "0123456789abcdef0123456789abcdef01234567",
+								"historical": false,
+								"startedAt": "2026-11-15T12:00:00.000Z",
+								"updatedAt": "2026-11-15T12:00:00.000Z",
+								"summary": "Initialized for feature review.",
+								"acceptance": [],
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "resultStatus",
 						"type": "Status",
-						"description": "Failed if any item failed; otherwise blocked if any item is blocked, not-proven, interrupted or running. With no checks returns not-proven; all skipped checks return skipped; otherwise passed."
+						"description": "The aggregate Status for checks, findings, coverage, and evidence, with any failed item taking precedence and blocked, not-proven, interrupted, or running items producing blocked. With no checks it returns not-proven; otherwise all skipped checks produce skipped and the remaining cases produce passed.",
+						"examples": ["failed", "blocked", "passed"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "interrupted",
@@ -113,18 +272,45 @@
 						"name": "interrupted.report",
 						"type": "Report",
 						"required": true,
-						"description": "Report whose unfinished inactivity should be detected."
+						"description": "Report record whose state and updatedAt timestamp are checked against the current clock. It is considered interrupted only when state is not finalized and the elapsed time is greater than 15 minutes.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "ba1d6649-2c40-44d8-a4df-9b43f075c71e",
+								"project": {
+									"id": "f25545e39debcb86",
+									"name": "slot-15",
+									"path": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-15"
+								},
+								"title": "Build report-state coverage",
+								"mode": "feature",
+								"environment": "local",
+								"revision": "0123456789abcdef0123456789abcdef01234567",
+								"historical": false,
+								"startedAt": "2020-01-01T00:00:00.000Z",
+								"updatedAt": "2020-01-01T00:00:00.000Z",
+								"summary": "Initialized for feature review.",
+								"acceptance": [],
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [],
+								"findings": [],
+								"coverage": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "interrupted",
 						"type": "unknown",
-						"description": "True for a nonfinalized report whose last update was more than fifteen minutes ago, using the current clock."
+						"description": "A boolean indicating whether a report outside the finalized state has an updatedAt time more than 15 minutes before the current clock. A finalized report returns false, and an invalid timestamp also fails the age comparison.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
