@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/utils/consoleDocument.ts",
 			"src/utils/development-tooling/consoleDocument.ts",
 			"src/utils/development-tooling/consoleDocument.types.ts"
 		],
 		"symbols": [
-			"consoleDocument",
 			"consoleDocument",
 			"ConsoleAssets",
 			"ConsoleDocumentOptions",

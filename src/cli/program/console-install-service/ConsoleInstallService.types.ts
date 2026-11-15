@@ -2,7 +2,7 @@
 import type { ConsoleChange } from '../../../utils/consoleManifest';
 import type { ConsoleStorage } from '../../../utils/consoleManifest';
 import type { ConsoleFileEntry } from '../../../utils/consoleManifest';
-import type { BundledSize } from '../../../utils/consoleDataModules';
+import type { BundledSize } from '../../../utils/development-tooling/consoleDataModules';
 import type { FileState } from '../../../services/projects-sessions/ConsoleChangeService';
 
 export interface ConsoleInstallOptions {

@@ -3,7 +3,7 @@ import {
 	consolePolicy,
 	loopbackAddress
 } from '../../packages/reports/src/utils/explorer-ui/console-server/consolePolicy';
-import { denyAll } from '../../src/utils/consolePolicy';
+import { denyAll } from '../../src/utils/explorer-ui/consolePolicy';
 
 const event = (peer: string | undefined, headers: Record<string, string> = {}) => ({
 	request: new Request('http://localhost/harness', { headers }),

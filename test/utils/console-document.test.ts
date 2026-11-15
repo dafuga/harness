@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { consoleDocument } from '../../src/utils/consoleDocument';
+import { consoleDocument } from '../../src/utils/development-tooling/consoleDocument';
 
 const assets = {
 	script: 'const tag = "</script><script>alert(1)</script>"; const note = "<!--<script>";',

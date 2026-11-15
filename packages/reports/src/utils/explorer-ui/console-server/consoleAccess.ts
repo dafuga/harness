@@ -10,7 +10,10 @@ import {
 	consoleCanonical,
 	type IndexedHistory
 } from '../../../../../../src/utils/console-canonical/consoleCanonical';
-import type { ConsolePolicy, ConsoleRequest } from '../../../../../../src/utils/consolePolicy';
+import type {
+	ConsolePolicy,
+	ConsoleRequest
+} from '../../../../../../src/utils/explorer-ui/consolePolicy';
 
 const jsonPath = /^(index|activity|revisions\/[0-9a-f]{40}|sides\/[0-9a-f]{40})\.json$/;
 

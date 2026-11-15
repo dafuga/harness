@@ -7,9 +7,9 @@ import type {
 } from './ConsoleInstallService.types';
 import { fail } from '../../../core/errors';
 import { bundledSize, consoleDataModules } from './consoleDataModules';
-import { type IndexFile } from '../../../utils/consoleDataModules';
+import { type IndexFile } from '../../../utils/development-tooling/consoleDataModules';
 import { consoleHostFiles } from './consoleHostFiles';
-import { type HostFile } from '../../../utils/consoleHostFiles';
+import { type HostFile } from '../../../utils/development-tooling/consoleHostFiles';
 import {
 	consoleManifest,
 	writeConsoleManifest,
