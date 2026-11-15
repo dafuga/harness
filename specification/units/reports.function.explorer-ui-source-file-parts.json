@@ -21,30 +21,39 @@
 				"name": "sourceFileParts.path",
 				"type": "string",
 				"required": true,
-				"description": "Required committed source path. Retains its spelling and accepts the same string operations as the renderer."
+				"description": "The path string whose folder and filename are returned. Its exact spelling is preserved except for an exact leading relativeTo prefix; no path normalization occurs.",
+				"examples": [
+					"packages/reports/src/components/explorer-ui/sourceFileParts.ts",
+					"packages/reports/src/components/explorer-ui/sourceFileParts.types.ts"
+				]
 			},
 			{
 				"name": "sourceFileParts.relativeTo",
 				"type": "string",
 				"required": true,
-				"description": "Required literal owner prefix; removed only when the path starts with it."
+				"description": "The literal prefix conditionally removed from path. It is matched case-sensitively at the beginning of the string, with no directory-boundary check.",
+				"examples": ["packages/reports/src/", "packages/reports/src/components/explorer-ui/"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceFileParts",
 				"type": "SourceFileParts",
-				"description": "Folder and filename from the displayed path. Empty paths and trailing separators retain empty parts."
+				"description": "The returned folder and name from the path after the exact leading prefix is conditionally removed. Splitting occurs at the last slash; a path without a slash has an empty folder, while an empty path or trailing slash has an empty name.",
+				"examples": [
+					{
+						"folder": "components/explorer-ui",
+						"name": "sourceFileParts.ts"
+					},
+					{
+						"folder": "components/explorer-ui",
+						"name": "sourceFileParts.types.ts"
+					}
+				]
 			}
 		],
-		"errors": [
-			{
-				"name": "Input access error",
-				"type": "propagated",
-				"description": "Errors from supplied property or string-operation access propagate unchanged."
-			}
-		],
-		"errorStatus": "declared",
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "sourceFileParts",
@@ -53,29 +62,38 @@
 						"name": "sourceFileParts.path",
 						"type": "string",
 						"required": true,
-						"description": "Required committed source path. Retains its spelling and accepts the same string operations as the renderer."
+						"description": "The path string whose folder and filename are returned. Its exact spelling is preserved except for an exact leading relativeTo prefix; no path normalization occurs.",
+						"examples": [
+							"packages/reports/src/components/explorer-ui/sourceFileParts.ts",
+							"packages/reports/src/components/explorer-ui/sourceFileParts.types.ts"
+						]
 					},
 					{
 						"name": "sourceFileParts.relativeTo",
 						"type": "string",
 						"required": true,
-						"description": "Required literal owner prefix; removed only when the path starts with it."
+						"description": "The literal prefix conditionally removed from path. It is matched case-sensitively at the beginning of the string, with no directory-boundary check.",
+						"examples": ["packages/reports/src/", "packages/reports/src/components/explorer-ui/"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceFileParts",
 						"type": "SourceFileParts",
-						"description": "Folder and filename from the displayed path. Empty paths and trailing separators retain empty parts."
+						"description": "The returned folder and name from the path after the exact leading prefix is conditionally removed. Splitting occurs at the last slash; a path without a slash has an empty folder, while an empty path or trailing slash has an empty name.",
+						"examples": [
+							{
+								"folder": "components/explorer-ui",
+								"name": "sourceFileParts.ts"
+							},
+							{
+								"folder": "components/explorer-ui",
+								"name": "sourceFileParts.types.ts"
+							}
+						]
 					}
 				],
-				"errors": [
-					{
-						"name": "Input access error",
-						"type": "propagated",
-						"description": "Errors from supplied property or string-operation access propagate unchanged."
-					}
-				],
+				"errors": [],
 				"errorStatus": "declared"
 			}
 		],
