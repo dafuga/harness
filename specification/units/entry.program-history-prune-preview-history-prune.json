@@ -30,53 +30,105 @@
 				"name": "previewHistoryPrune.root",
 				"type": "string",
 				"required": true,
-				"description": "Repository root used to resolve the verification cache and query the current Git HEAD."
+				"description": "Pass the repository root; the function resolves it for the verification-cache scan and Git HEAD lookup.",
+				"examples": ["/Users/danielfugere/projects/example-repo"]
 			},
 			{
 				"name": "previewHistoryPrune.keepLast",
 				"type": "number",
 				"required": true,
-				"description": "Maximum number of newest valid records retained regardless of age; must be a safe integer from 0 through 100000."
+				"description": "Number of newest valid cache records excluded from age matches. Must be a safe integer from 0 through 100000.",
+				"examples": [0, 3, 100000]
 			},
 			{
 				"name": "previewHistoryPrune.olderThanDays",
 				"type": "number",
 				"required": true,
-				"description": "Age threshold for inventory matches; must be a safe integer from 1 through 36500 days."
+				"description": "Age cutoff in whole days before now. Must be a safe integer from 1 through 36500, and a record matches only when it is older than the cutoff and outside keep-last.",
+				"examples": [1, 30, 36500]
 			},
 			{
 				"name": "previewHistoryPrune.now",
 				"type": "Date",
 				"required": false,
-				"description": "Clock value used to calculate the cutoff; defaults to the current time."
+				"description": "Date used to compute the cutoff by subtracting olderThanDays in milliseconds. Defaults to new Date() when omitted."
 			},
 			{
 				"name": "renderPrune.result",
 				"type": "PruneInventory",
 				"required": true,
-				"description": "Report-only inventory returned by previewHistoryPrune, including protected entries and scan problems."
+				"description": "Report-only inventory returned by previewHistoryPrune, including entries, the cutoff, the resolved HEAD when available, and scan problems.",
+				"examples": [
+					{
+						"mode": "report-only",
+						"applySupported": false,
+						"keepLast": 0,
+						"olderThanDays": 30,
+						"cutoff": "2026-10-15T12:00:00.000Z",
+						"headCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entries": [
+							{
+								"path": ".harness/verification-evidence/records/2026-10-01T09-00-00.000Z.json",
+								"sourceCommit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"startedAt": "2026-10-01T09:00:00.000Z",
+								"bytes": 1842,
+								"retentionMatch": true,
+								"protectionReasons": [
+									"local record may still be needed for attachment or concurrent use; no durable deletion proof or use lock is checked"
+								]
+							}
+						],
+						"problems": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "previewHistoryPrune",
 				"type": "Promise<PruneInventory>",
-				"description": "Retention inventory with matching records marked protected; no cache files are modified and apply is unsupported."
+				"description": "Resolves to a report-only inventory with sorted entries, the cutoff, and scan problems; matching rows remain protected and no cache files are changed. The result has applySupported false, and headCommit is omitted when Git HEAD cannot be resolved.",
+				"examples": [
+					{
+						"mode": "report-only",
+						"applySupported": false,
+						"keepLast": 0,
+						"olderThanDays": 30,
+						"cutoff": "2026-10-15T12:00:00.000Z",
+						"headCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entries": [
+							{
+								"path": ".harness/verification-evidence/records/2026-10-01T09-00-00.000Z.json",
+								"sourceCommit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"startedAt": "2026-10-01T09:00:00.000Z",
+								"bytes": 1842,
+								"retentionMatch": true,
+								"protectionReasons": [
+									"local record may still be needed for attachment or concurrent use; no durable deletion proof or use lock is checked"
+								]
+							}
+						],
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "renderPrune",
 				"type": "string",
-				"description": "Human-readable summary of matching protected records and scan problems."
+				"description": "Human-readable report with a count of retention matches, each matching protected entry, and any scan problems.",
+				"examples": [
+					"Report-only inventory: 1 records match keep-last 0 and older-than 30 days.\nNo files were changed. Deletion is not supported; no --apply mode exists.\n  .harness/verification-evidence/records/2026-10-01T09-00-00.000Z.json (1842 bytes): protected — local record may still be needed for attachment or concurrent use; no durable deletion proof or use lock is checked"
+				]
 			}
 		],
 		"errors": [
 			{
-				"name": "Invalid retention bounds or cache inventory failure",
+				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid keep-last or age bounds throw; underlying Git or filesystem operations may also reject."
+				"description": "Invalid keep-last values throw Error('--keep-last must be a whole number between 0 and 100000.'); invalid age values throw Error('--older-than must be between 1 and 36500 whole days.'). Git lookup or cache scanning may also reject if an underlying operation fails."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "previewHistoryPrune",
@@ -85,39 +137,65 @@
 						"name": "previewHistoryPrune.root",
 						"type": "string",
 						"required": true,
-						"description": "Repository root used to resolve the verification cache and query the current Git HEAD."
+						"description": "Pass the repository root; the function resolves it for the verification-cache scan and Git HEAD lookup.",
+						"examples": ["/Users/danielfugere/projects/example-repo"]
 					},
 					{
 						"name": "previewHistoryPrune.keepLast",
 						"type": "number",
 						"required": true,
-						"description": "Maximum number of newest valid records retained regardless of age; must be a safe integer from 0 through 100000."
+						"description": "Number of newest valid cache records excluded from age matches. Must be a safe integer from 0 through 100000.",
+						"examples": [0, 3, 100000]
 					},
 					{
 						"name": "previewHistoryPrune.olderThanDays",
 						"type": "number",
 						"required": true,
-						"description": "Age threshold for inventory matches; must be a safe integer from 1 through 36500 days."
+						"description": "Age cutoff in whole days before now. Must be a safe integer from 1 through 36500, and a record matches only when it is older than the cutoff and outside keep-last.",
+						"examples": [1, 30, 36500]
 					},
 					{
 						"name": "previewHistoryPrune.now",
 						"type": "Date",
 						"required": false,
-						"description": "Clock value used to calculate the cutoff; defaults to the current time."
+						"description": "Date used to compute the cutoff by subtracting olderThanDays in milliseconds. Defaults to new Date() when omitted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "previewHistoryPrune",
 						"type": "Promise<PruneInventory>",
-						"description": "Retention inventory with matching records marked protected; no cache files are modified and apply is unsupported."
+						"description": "Resolves to a report-only inventory with sorted entries, the cutoff, and scan problems; matching rows remain protected and no cache files are changed. The result has applySupported false, and headCommit is omitted when Git HEAD cannot be resolved.",
+						"examples": [
+							{
+								"mode": "report-only",
+								"applySupported": false,
+								"keepLast": 0,
+								"olderThanDays": 30,
+								"cutoff": "2026-10-15T12:00:00.000Z",
+								"headCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"entries": [
+									{
+										"path": ".harness/verification-evidence/records/2026-10-01T09-00-00.000Z.json",
+										"sourceCommit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"startedAt": "2026-10-01T09:00:00.000Z",
+										"bytes": 1842,
+										"retentionMatch": true,
+										"protectionReasons": [
+											"local record may still be needed for attachment or concurrent use; no durable deletion proof or use lock is checked"
+										]
+									}
+								],
+								"problems": []
+							}
+						]
 					}
 				],
 				"errors": [
 					{
-						"name": "Invalid retention bounds or cache inventory failure",
+						"name": "Error",
 						"type": "thrown",
-						"description": "Invalid retention bounds throw before scanning; Git adapter or cache-scan failures can reject the promise."
+						"description": "Invalid keep-last values throw Error('--keep-last must be a whole number between 0 and 100000.'); invalid age values throw Error('--older-than must be between 1 and 36500 whole days.') before scanning. Git lookup or cache scanning may also reject the promise if an underlying operation fails."
 					}
 				],
 				"errorStatus": "declared"
@@ -129,14 +207,40 @@
 						"name": "renderPrune.result",
 						"type": "PruneInventory",
 						"required": true,
-						"description": "Report-only inventory returned by previewHistoryPrune, including protected entries and scan problems."
+						"description": "Report-only inventory returned by previewHistoryPrune, including entries, the cutoff, the resolved HEAD when available, and scan problems.",
+						"examples": [
+							{
+								"mode": "report-only",
+								"applySupported": false,
+								"keepLast": 0,
+								"olderThanDays": 30,
+								"cutoff": "2026-10-15T12:00:00.000Z",
+								"headCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"entries": [
+									{
+										"path": ".harness/verification-evidence/records/2026-10-01T09-00-00.000Z.json",
+										"sourceCommit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+										"startedAt": "2026-10-01T09:00:00.000Z",
+										"bytes": 1842,
+										"retentionMatch": true,
+										"protectionReasons": [
+											"local record may still be needed for attachment or concurrent use; no durable deletion proof or use lock is checked"
+										]
+									}
+								],
+								"problems": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderPrune",
 						"type": "string",
-						"description": "Human-readable summary of matching protected records and scan problems."
+						"description": "Human-readable summary of matching protected records and scan problems.",
+						"examples": [
+							"Report-only inventory: 1 records match keep-last 0 and older-than 30 days.\nNo files were changed. Deletion is not supported; no --apply mode exists.\n  .harness/verification-evidence/records/2026-10-01T09-00-00.000Z.json (1842 bytes): protected — local record may still be needed for attachment or concurrent use; no durable deletion proof or use lock is checked"
+						]
 					}
 				],
 				"errors": [],
