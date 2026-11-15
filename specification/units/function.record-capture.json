@@ -21,40 +21,79 @@
 				"name": "evidenceRequested.env",
 				"type": "Environment",
 				"required": false,
-				"description": "Environment to check, default process.env; HARNESS_EVIDENCE_DIR must be nonempty and TAKE_SCREENSHOT exactly 1."
+				"description": "The environment to inspect; a nonempty HARNESS_EVIDENCE_DIR and TAKE_SCREENSHOT equal to \"1\" are both required. Defaults to process.env.",
+				"examples": [
+					{
+						"HARNESS_EVIDENCE_DIR": ".cache/harness/evidence",
+						"TAKE_SCREENSHOT": "1"
+					},
+					{
+						"HARNESS_EVIDENCE_DIR": ".cache/harness/evidence",
+						"TAKE_SCREENSHOT": "true"
+					}
+				]
 			},
 			{
 				"name": "recordCapture.line",
 				"type": "CaptureLine",
 				"required": true,
-				"description": "Capture metadata whose file names the output under the evidence directory."
+				"description": "The capture metadata serialized to the index; its file member supplies the path passed to writeFileSync beneath the evidence directory. This function does not validate the object.",
+				"examples": [
+					{
+						"evidence": "reports.component.evidence-grid",
+						"kind": "output",
+						"state": "reports.capture-grid.ready",
+						"file": "verification-output.txt",
+						"mediaType": "text/plain"
+					}
+				]
 			},
 			{
 				"name": "recordCapture.bytes",
 				"type": "Uint8Array | string",
 				"required": true,
-				"description": "Raw bytes or text to write as the capture."
+				"description": "The string or byte array written to the path selected by line.file when recording is requested. Strings are written as text and Uint8Array values as bytes.",
+				"examples": ["Rendered verification output.\n"]
 			},
 			{
 				"name": "recordCapture.env",
 				"type": "Environment",
 				"required": false,
-				"description": "Optional environment supplying the evidence directory and opt-in flag."
+				"description": "The environment used to select the evidence directory and opt in; recording is skipped unless HARNESS_EVIDENCE_DIR is nonempty and TAKE_SCREENSHOT equals \"1\". Defaults to process.env.",
+				"examples": [
+					{
+						"HARNESS_EVIDENCE_DIR": ".cache/harness/evidence",
+						"TAKE_SCREENSHOT": "1"
+					},
+					{
+						"HARNESS_EVIDENCE_DIR": ".cache/harness/evidence",
+						"TAKE_SCREENSHOT": "true"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidenceRequested",
 				"type": "boolean",
-				"description": "True only when both evidence directory and screenshot flag request evidence."
+				"description": "True only when HARNESS_EVIDENCE_DIR is truthy and TAKE_SCREENSHOT equals \"1\".",
+				"examples": [true, false]
 			},
 			{
 				"name": "recordCapture",
 				"type": "boolean",
-				"description": "False with no writes when evidence is not requested; otherwise creates the evidence directory, writes the file, appends its JSON index line and returns true."
+				"description": "Returns false without writing when evidence is not requested; otherwise it creates the directory recursively, writes the capture, appends JSON.stringify(line) and a newline to captures.ndjson, and returns true.",
+				"examples": [false, true]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A synchronous failure from directory creation, capture writing, JSON serialization, or index appending propagates to the caller; recordCapture does not catch it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "evidenceRequested",
@@ -63,18 +102,29 @@
 						"name": "evidenceRequested.env",
 						"type": "Environment",
 						"required": false,
-						"description": "Environment to check, default process.env; HARNESS_EVIDENCE_DIR must be nonempty and TAKE_SCREENSHOT exactly 1."
+						"description": "The environment to inspect; a nonempty HARNESS_EVIDENCE_DIR and TAKE_SCREENSHOT equal to \"1\" are both required. Defaults to process.env.",
+						"examples": [
+							{
+								"HARNESS_EVIDENCE_DIR": ".cache/harness/evidence",
+								"TAKE_SCREENSHOT": "1"
+							},
+							{
+								"HARNESS_EVIDENCE_DIR": ".cache/harness/evidence",
+								"TAKE_SCREENSHOT": "true"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "evidenceRequested",
 						"type": "boolean",
-						"description": "True only when both evidence directory and screenshot flag request evidence."
+						"description": "True only when HARNESS_EVIDENCE_DIR is truthy and TAKE_SCREENSHOT equals \"1\".",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordCapture",
@@ -83,30 +133,57 @@
 						"name": "recordCapture.line",
 						"type": "CaptureLine",
 						"required": true,
-						"description": "Capture metadata whose file names the output under the evidence directory."
+						"description": "The capture metadata serialized to the index; its file member supplies the path passed to writeFileSync beneath the evidence directory. This function does not validate the object.",
+						"examples": [
+							{
+								"evidence": "reports.component.evidence-grid",
+								"kind": "output",
+								"state": "reports.capture-grid.ready",
+								"file": "verification-output.txt",
+								"mediaType": "text/plain"
+							}
+						]
 					},
 					{
 						"name": "recordCapture.bytes",
 						"type": "Uint8Array | string",
 						"required": true,
-						"description": "Raw bytes or text to write as the capture."
+						"description": "The string or byte array written to the path selected by line.file when recording is requested. Strings are written as text and Uint8Array values as bytes.",
+						"examples": ["Rendered verification output.\n"]
 					},
 					{
 						"name": "recordCapture.env",
 						"type": "Environment",
 						"required": false,
-						"description": "Optional environment supplying the evidence directory and opt-in flag."
+						"description": "The environment used to select the evidence directory and opt in; recording is skipped unless HARNESS_EVIDENCE_DIR is nonempty and TAKE_SCREENSHOT equals \"1\". Defaults to process.env.",
+						"examples": [
+							{
+								"HARNESS_EVIDENCE_DIR": ".cache/harness/evidence",
+								"TAKE_SCREENSHOT": "1"
+							},
+							{
+								"HARNESS_EVIDENCE_DIR": ".cache/harness/evidence",
+								"TAKE_SCREENSHOT": "true"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordCapture",
 						"type": "boolean",
-						"description": "False with no writes when evidence is not requested; otherwise creates the evidence directory, writes the file, appends its JSON index line and returns true."
+						"description": "Returns false without writing when evidence is not requested; otherwise it creates the directory recursively, writes the capture, appends JSON.stringify(line) and a newline to captures.ndjson, and returns true.",
+						"examples": [false, true]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A synchronous failure from directory creation, capture writing, JSON serialization, or index appending propagates to the caller; recordCapture does not catch it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
