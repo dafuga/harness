@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/templates/adapterTypes.ts",
-			"src/templates/development-tooling/adapterTypes.ts"
-		],
-		"symbols": ["adapterTypeFiles", "adapterTypeFiles"]
+		"source": ["src/templates/development-tooling/adapterTypes.ts"],
+		"symbols": ["adapterTypeFiles"]
 	},
 	"contract": {
 		"origin": "derived",

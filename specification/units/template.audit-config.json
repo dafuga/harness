@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/auditConfig.ts", "src/templates/development-tooling/auditConfig.ts"],
-		"symbols": ["auditConfigFiles", "auditConfigFiles"]
+		"source": ["src/templates/development-tooling/auditConfig.ts"],
+		"symbols": ["auditConfigFiles"]
 	},
 	"contract": {
 		"origin": "derived",

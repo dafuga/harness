@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/auditRunner.ts", "src/templates/development-tooling/auditRunner.ts"],
-		"symbols": ["auditRunnerFiles", "auditRunnerFiles"]
+		"source": ["src/templates/development-tooling/auditRunner.ts"],
+		"symbols": ["auditRunnerFiles"]
 	},
 	"contract": {
 		"origin": "derived",
