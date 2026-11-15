@@ -32,82 +32,331 @@
 				"name": "EntityBehaviorScreen.index",
 				"type": "HarnessIndex",
 				"required": true,
-				"description": "Prepared history index for the selected repository and its recorded revisions."
+				"description": "The harness history index the explorer reads. The source tab reads only its `sourceRepository`, a `https://github.com/owner/repo` URL that its file links are built from, and a value of any other shape gives no link.",
+				"examples": [
+					{
+						"sourceRepository": "https://github.com/example-org/example-app",
+						"branches": [
+							{
+								"name": "main",
+								"head": "4f2a9c1d7e8b3a60f5d2c9e1b7a4f8d03c6e2b19"
+							}
+						],
+						"revisions": [
+							{
+								"commit": "4f2a9c1d7e8b3a60f5d2c9e1b7a4f8d03c6e2b19",
+								"parents": ["9d1c5e7a2b4f8069c3e1d7a5b2f4e6c8a0d9b713"],
+								"subject": "Show recorded end-to-end behavior on function pages",
+								"author": "example-author",
+								"committedAt": "2026-11-12T16:40:00+00:00",
+								"branches": ["main"],
+								"retained": true,
+								"coverage": "verified",
+								"gaps": [],
+								"records": [],
+								"legacy": []
+							}
+						],
+						"units": [],
+						"benchmarks": [],
+						"profiles": [],
+						"legacy": [],
+						"truncated": false,
+						"problems": []
+					}
+				]
 			},
 			{
 				"name": "EntityBehaviorScreen.head",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Exact selected source revision supplying every displayed contract, measurement and capture."
+				"description": "The revision every contract, measurement and capture on the page is bound to. Its registry supplies the entity this screen opens, and its explanations give what the shown commit says it changed in that entity.",
+				"examples": [
+					{
+						"commit": "4f2a9c1d7e8b3a60f5d2c9e1b7a4f8d03c6e2b19",
+						"registry": {
+							"available": true,
+							"units": [
+								{
+									"id": "reports.function.entity-behavior",
+									"kind": "function",
+									"status": "active",
+									"title": "entityBehavior",
+									"responsibility": "The headless results the host found for an entity, arranged for reading: one group for each state.",
+									"dependencies": [],
+									"scenarios": [],
+									"owns": {
+										"source": ["packages/reports/src/utils/explorer-ui/entityBehavior.ts"],
+										"symbols": ["entityBehavior", "behaviorDuration"]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "entityBehavior.behavior",
+												"type": "ExplorerBehavior",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "entityBehavior",
+												"type": "EntityBehavior"
+											}
+										],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/entityBehavior.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "a3f1c8e5d7b2094f6e1a8c3d5b7f2e9a4c6d8b1f0e3a5c7d9b2f4e6a8c0d1b3e"
+								}
+							],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					},
+					{
+						"commit": "c7e3a91f5d0b2846e9f1a3c7b5d08e2f4a6c9b10",
+						"registry": {
+							"available": false,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "EntityBehaviorScreen.parent",
 				"type": "HarnessRevision | null",
 				"required": true,
-				"description": "First parent of the selected commit, or null at a branch tip or first commit."
+				"description": "The first parent of the selected commit, or null at the branch tip and for a first commit. EntityFrame reads it only to show a unit the shown commit removed, as that unit's contract last was at the parent.",
+				"examples": [
+					null,
+					{
+						"commit": "e1b8f0c4a7d29635b08c1f7e4a2d9c6b3f5e8a04",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "EntityBehaviorScreen.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Selected branch, commit and comparison scope shared by the explorer host."
+				"description": "Where the page is in history: `commit` is the revision its results are bound to, `mode` is `current` when it follows the branch tip or `commit` when it stays on that commit, and `parent` is the commit a `commit` page compares it with, null for a commit with no parent. `atTip` is true when the shown commit is the tip, in either mode.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": null,
+							"category": "functions",
+							"entity": "reports.function.entity-behavior"
+						},
+						"mode": "current",
+						"branch": "main",
+						"tip": "4f2a9c1d7e8b3a60f5d2c9e1b7a4f8d03c6e2b19",
+						"commit": "4f2a9c1d7e8b3a60f5d2c9e1b7a4f8d03c6e2b19",
+						"atTip": true,
+						"parent": "9d1c5e7a2b4f8069c3e1d7a5b2f4e6c8a0d9b713",
+						"summary": {
+							"commit": "4f2a9c1d7e8b3a60f5d2c9e1b7a4f8d03c6e2b19",
+							"parents": ["9d1c5e7a2b4f8069c3e1d7a5b2f4e6c8a0d9b713"],
+							"subject": "Show recorded end-to-end behavior on function pages",
+							"author": "example-author",
+							"committedAt": "2026-11-12T16:40:00+00:00",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					},
+					{
+						"location": {
+							"branch": "main",
+							"commit": "9d1c5e7a2b4f8069c3e1d7a5b2f4e6c8a0d9b713",
+							"category": "functions",
+							"entity": "reports.function.entity-behavior"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "4f2a9c1d7e8b3a60f5d2c9e1b7a4f8d03c6e2b19",
+						"commit": "9d1c5e7a2b4f8069c3e1d7a5b2f4e6c8a0d9b713",
+						"atTip": false,
+						"parent": "e1b8f0c4a7d29635b08c1f7e4a2d9c6b3f5e8a04",
+						"summary": {
+							"commit": "9d1c5e7a2b4f8069c3e1d7a5b2f4e6c8a0d9b713",
+							"parents": ["e1b8f0c4a7d29635b08c1f7e4a2d9c6b3f5e8a04"],
+							"subject": "Record end-to-end results for each function state",
+							"author": "example-author",
+							"committedAt": "2026-11-10T09:15:00+00:00",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "verified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "EntityBehaviorScreen.route",
 				"type": "ExplorerLocation",
 				"required": true,
-				"description": "Current explorer location, including category, entity, section and tab."
+				"description": "The address shown: `category` and `entity` choose the unit that EntityFrame looks up, `helper` names a callable inside that unit, and `tab` names a tab other than the default. `commit` is null when the address names only a branch, which shows that branch at its tip.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": null,
+						"category": "functions",
+						"entity": "reports.function.entity-behavior"
+					},
+					{
+						"branch": "main",
+						"commit": "9d1c5e7a2b4f8069c3e1d7a5b2f4e6c8a0d9b713",
+						"category": "services",
+						"entity": "reports.service.evidence-storage",
+						"tab": "tests"
+					}
+				]
 			},
 			{
 				"name": "EntityBehaviorScreen.entities",
 				"type": "ExplorerEntity[]",
 				"required": true,
-				"description": "Units projected from the selected revision, including entities removed by the shown commit."
+				"description": "The units of `head` as the explorer lists them, including the ones the shown commit removed. EntityFrame looks the routed entity up in this list before it reads the revision's registry.",
+				"examples": [
+					[
+						{
+							"id": "reports.function.entity-behavior",
+							"category": "functions",
+							"role": "Function",
+							"name": "entityBehavior",
+							"purpose": "The headless results the host found for an entity, arranged for reading: one group for each state.",
+							"unit": {
+								"id": "reports.function.entity-behavior",
+								"kind": "function",
+								"status": "active",
+								"title": "entityBehavior",
+								"responsibility": "The headless results the host found for an entity, arranged for reading: one group for each state.",
+								"dependencies": [],
+								"scenarios": [],
+								"owns": {
+									"source": ["packages/reports/src/utils/explorer-ui/entityBehavior.ts"],
+									"symbols": ["entityBehavior", "behaviorDuration"]
+								},
+								"contract": {
+									"inputs": [
+										{
+											"name": "entityBehavior.behavior",
+											"type": "ExplorerBehavior",
+											"required": true
+										}
+									],
+									"outputs": [
+										{
+											"name": "entityBehavior",
+											"type": "EntityBehavior"
+										}
+									],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "packages/reports/src/utils/explorer-ui/entityBehavior.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "a3f1c8e5d7b2094f6e1a8c3d5b7f2e9a4c6d8b1f0e3a5c7d9b2f4e6a8c0d1b3e"
+							},
+							"verdict": {
+								"passed": true,
+								"label": "Full coverage passed",
+								"reasons": []
+							},
+							"change": null,
+							"appRoute": null
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "EntityBehaviorScreen.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Host-provided readers for entity relationships, history and selected-revision details."
+				"description": "The host's readers for an entity: `evidence(unit)` and `behavior(unit)` give the captures and recorded end-to-end results shown here, `relations(id)` gives what an entity contains and what contains it, and `href(to)` builds its links. The screen works none of this out itself."
 			},
 			{
 				"name": "EntityBehaviorScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
 				"required": true,
-				"description": "Revision reader used only for commits the displayed history requests."
+				"description": "The host's revision reader, exposed only as `revision(commit)`, which the type says is read only for commits a history lists. This screen's own markup never reads it; it reaches the children only inside `host`."
 			},
 			{
 				"name": "EntityBehaviorScreen.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Base URL for retained recorded evidence media."
+				"description": "The prefix each recorded media file name is appended to, which the harness sets to `/harness/media/`, so every retained capture, clip and archived source file is fetched from it.",
+				"examples": ["/harness/media/"]
 			},
 			{
 				"name": "EntityBehaviorScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"required": true,
-				"description": "Receives the requested explorer destination for host-controlled navigation."
+				"description": "The host's navigation callback, which a link on this screen calls through `nav.go` with the destination `ExplorerLocation`. The host performs the navigation, and the screen itself changes no address."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityBehaviorScreen.endToEndOverview",
 				"type": "markup",
-				"description": "A function or a service with its summary and recorded end-to-end results: one run at the tip, both sides at a commit. Relationships and tests by tab."
+				"description": "The entity's frame and tab sections for a function, service or API: on the overview tab, its summary, its recorded end-to-end behavior (both sides at a commit that has a parent, otherwise one run) and any recorded audio. Other tabs show relations, permissions, tests, examples, source or contract instead of the overview, and a revision with no registry or an entity it does not hold shows a 'No registry at this revision' or 'Not at this revision' notice instead of the entity."
 			}
 		],
-		"errors": [
-			{
-				"name": "no-registry",
-				"type": "stated",
-				"description": "A revision that stores no unit registry says so; nothing of another revision is shown."
-			},
-			{
-				"name": "entity-missing",
-				"type": "stated",
-				"description": "An entity the shown revision does not hold is said to be missing, with the way back to its collection."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
