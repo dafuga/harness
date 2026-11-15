@@ -3,8 +3,8 @@ import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/reports-media/report-repository/ReportRepository';
-import { ScreenshotUploadService } from '../../src/services/ScreenshotUploadService';
-import { ScreenshotRetentionService } from '../../src/services/ScreenshotRetentionService';
+import { ScreenshotUploadService } from '../../src/routes/api/report-screenshot-upload/ScreenshotUploadService';
+import { ScreenshotRetentionService } from '../../src/services/reports-media/ScreenshotRetentionService';
 import type { Report } from '../../src/models/reports-media/Report.types';
 
 const roots: string[] = [];

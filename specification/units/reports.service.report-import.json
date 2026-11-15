@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/services/ReportImportService.ts",
 			"packages/reports/src/services/report-command-service/ReportImportService.ts",
 			"packages/reports/src/services/reports-media/report-command-service/ReportImportService.ts"
 		],
 		"symbols": [
-			"ReportImportService",
 			"ReportImportService",
 			"ReportImportService",
 			"ReportImportService.constructor",

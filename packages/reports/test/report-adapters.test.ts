@@ -3,7 +3,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ReportRepository } from '../src/repositories/reports-media/report-repository/ReportRepository';
-import { ReportImportService } from '../src/services/ReportImportService';
+import { ReportImportService } from '../src/services/reports-media/report-command-service/ReportImportService';
 const roots: string[] = [];
 async function fixture() {
 	const root = await mkdtemp(join(tmpdir(), 'report-adapter-'));

@@ -3,7 +3,7 @@ import { expect, test, type APIRequestContext } from '../../../../test/support/b
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/reports-media/report-repository/ReportRepository';
-import { ScreenshotRetentionService } from '../../src/services/ScreenshotRetentionService';
+import { ScreenshotRetentionService } from '../../src/services/reports-media/ScreenshotRetentionService';
 import { fixtures, seededId } from './support/fixtures';
 import { expectRetired } from './support/retiredAddress';
 

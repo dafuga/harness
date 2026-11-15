@@ -3,7 +3,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/reports-media/report-repository/ReportRepository';
-import { ScreenshotUploadService } from '../../src/services/ScreenshotUploadService';
+import { ScreenshotUploadService } from '../../src/routes/api/report-screenshot-upload/ScreenshotUploadService';
 
 const roots: string[] = [];
 const png = Buffer.from(
