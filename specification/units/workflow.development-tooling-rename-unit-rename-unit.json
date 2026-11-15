@@ -21,37 +21,67 @@
 				"name": "renameUnit.from",
 				"type": "string",
 				"required": true,
-				"description": "The current id of an active unit."
+				"description": "The current id of the unit to rename; it must exactly match a stored unit whose status is active, and that unit's spec file is then renamed to the new id. An unknown or retired id throws ExpectedCliError before the first specification file is rewritten or renamed.",
+				"examples": [
+					"workflow.development-tooling-rename-unit-rename-unit",
+					"workflow.load-units",
+					"function.stable-json"
+				]
 			},
 			{
 				"name": "renameUnit.to",
 				"type": "string",
 				"required": true,
-				"description": "The new id; a lowercase dotted or dashed identifier no unit has ever used."
+				"description": "The new id: lowercase letters and digits, with single dots or dashes allowed only between them, and it must not equal the id of any stored unit, whatever its status, because ids are never reused. A malformed or already-used id throws ExpectedCliError before the first specification file is rewritten or renamed.",
+				"examples": [
+					"workflow.rename-unit",
+					"function.stable-stringify",
+					"reports.component.evidence-grid"
+				]
 			},
 			{
 				"name": "renameUnit.options",
 				"type": "RenameOptions",
 				"required": false,
 				"default": {},
-				"description": "The project root and the clock used for the tombstone time."
+				"description": "Optional settings: root is the project root passed to loadUnits and defaults to process.cwd(), and now is the clock whose result is recorded as retired.at on the old id's tombstone and defaults to new Date().toISOString(). When the whole object is omitted (default {}), both fallbacks apply.",
+				"examples": [
+					{},
+					{
+						"root": "/workspace/harness"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "renameUnit",
 				"type": "Promise<RenameReport>",
-				"description": "A report of the old and new id and the specification files rewritten."
+				"description": "Resolves to a RenameReport: from and to repeat the ids passed in, and rewritten lists, in sorted order and relative to the project root, each spec file under specification/units that had the old id in its dependencies, composition uses or contract primitives. The list is empty when no spec file had it.",
+				"examples": [
+					{
+						"from": "workflow.development-tooling-rename-unit-rename-unit",
+						"to": "workflow.rename-unit",
+						"rewritten": []
+					},
+					{
+						"from": "function.stable-json",
+						"to": "function.stable-stringify",
+						"rewritten": [
+							"specification/units/workflow.development-tooling-rename-unit-rename-unit.json"
+						]
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Raised when the unit is unknown or retired, the new id is invalid, or the new id exists already."
+				"description": "Thrown through fail() when from is unknown or retired, when to is not a valid unit id, or when a stored unit already has the id to, whatever its status. All three checks run before the first specification file is rewritten or renamed."
 			}
 		],
-		"errorStatus": "none-found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "renameUnit",
@@ -60,33 +90,64 @@
 						"name": "renameUnit.from",
 						"type": "string",
 						"required": true,
-						"description": "The current id of an active unit."
+						"description": "The current id of the unit to rename; it must exactly match a stored unit whose status is active, and that unit's spec file is then renamed to the new id. An unknown or retired id throws ExpectedCliError before the first specification file is rewritten or renamed.",
+						"examples": [
+							"workflow.development-tooling-rename-unit-rename-unit",
+							"workflow.load-units",
+							"function.stable-json"
+						]
 					},
 					{
 						"name": "renameUnit.to",
 						"type": "string",
 						"required": true,
-						"description": "The new id; a lowercase dotted or dashed identifier no unit has ever used."
+						"description": "The new id: lowercase letters and digits, with single dots or dashes allowed only between them, and it must not equal the id of any stored unit, whatever its status, because ids are never reused. A malformed or already-used id throws ExpectedCliError before the first specification file is rewritten or renamed.",
+						"examples": [
+							"workflow.rename-unit",
+							"function.stable-stringify",
+							"reports.component.evidence-grid"
+						]
 					},
 					{
 						"name": "renameUnit.options",
 						"type": "RenameOptions",
 						"required": false,
 						"default": {},
-						"description": "The project root and the clock used for the tombstone time."
+						"description": "Optional settings: root is the project root passed to loadUnits and defaults to process.cwd(), and now is the clock whose result is recorded as retired.at on the old id's tombstone and defaults to new Date().toISOString(). When the whole object is omitted (default {}), both fallbacks apply.",
+						"examples": [
+							{},
+							{
+								"root": "/workspace/harness"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renameUnit",
 						"type": "Promise<RenameReport>",
-						"description": "A report of the old and new id and the specification files rewritten."
+						"description": "Resolves to a RenameReport: from and to repeat the ids passed in, and rewritten lists, in sorted order and relative to the project root, each spec file under specification/units that had the old id in its dependencies, composition uses or contract primitives. The list is empty when no spec file had it.",
+						"examples": [
+							{
+								"from": "workflow.development-tooling-rename-unit-rename-unit",
+								"to": "workflow.rename-unit",
+								"rewritten": []
+							},
+							{
+								"from": "function.stable-json",
+								"to": "function.stable-stringify",
+								"rewritten": [
+									"specification/units/workflow.development-tooling-rename-unit-rename-unit.json"
+								]
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown through fail() when from is unknown or retired, when to is not a valid unit id, or when a stored unit already has the id to, whatever its status. All three checks run before the first specification file is rewritten or renamed."
 					}
 				],
 				"errorStatus": "declared"
