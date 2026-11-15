@@ -18,29 +18,32 @@
 				"name": "AuthFailure.constructor.code",
 				"type": "AuthFailureCode",
 				"required": true,
-				"description": "Declared authentication failure code used for the error message and status."
+				"description": "The stable authentication failure code used by the constructor. Its `AuthFailureCode` value selects the HTTP status from the local status table.",
+				"examples": ["auth-disabled", "email-code-invalid", "not-found"]
 			},
 			{
 				"name": "authFail.code",
 				"type": "AuthFailureCode",
 				"required": true,
-				"description": "Declared authentication failure code to throw."
+				"description": "The stable authentication failure code passed to `authFail`. Its `AuthFailureCode` value selects the HTTP status from the local status table.",
+				"examples": ["auth-disabled", "email-code-invalid", "not-found"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "authFail",
 				"type": "never",
-				"description": "Never returns; throws AuthFailure for the supplied code."
+				"description": "This function has no return value; it throws an `AuthFailure` carrying the supplied code, generic message, and mapped HTTP status."
 			}
 		],
 		"errors": [
 			{
 				"name": "AuthFailure",
 				"type": "thrown",
-				"description": "Error named AuthFailure with code, mapped status and a generic Hub auth message rather than provider details."
+				"description": "The function throws an `Error` named `AuthFailure` with the supplied code, status selected from the local table, and message `Hub auth ${code}`. The message does not include provider detail."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "authFail",
@@ -49,23 +52,25 @@
 						"name": "authFail.code",
 						"type": "AuthFailureCode",
 						"required": true,
-						"description": "Declared authentication failure code to throw."
+						"description": "The stable authentication failure code passed to `authFail`. Its `AuthFailureCode` value selects the HTTP status from the local status table.",
+						"examples": ["auth-disabled", "email-code-invalid", "not-found"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "authFail",
 						"type": "never",
-						"description": "Never returns; throws AuthFailure for the supplied code."
+						"description": "This function has no return value; it throws an `AuthFailure` carrying the supplied code, generic message, and mapped HTTP status."
 					}
 				],
 				"errors": [
 					{
 						"name": "AuthFailure",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The function throws an `Error` named `AuthFailure` with the supplied code, status selected from the local table, and message `Hub auth ${code}`. The message does not include provider detail."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -76,17 +81,19 @@
 						"name": "AuthFailure.constructor.code",
 						"type": "AuthFailureCode",
 						"required": true,
-						"description": "Declared authentication failure code used for the error message and status."
+						"description": "The stable authentication failure code used by the constructor. Its `AuthFailureCode` value selects the HTTP status from the local status table.",
+						"examples": ["auth-disabled", "email-code-invalid", "not-found"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "AuthFailure.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "An `AuthFailure` instance with the supplied readonly code, a `Hub auth ${code}` message, name `AuthFailure`, and the status mapped for that code. Its status is an HTTP status from the local `AuthFailureCode` map."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
