@@ -80,9 +80,9 @@ test('archive partitions at 64 clips and 512 MiB of unique media without relabel
 		const clips = Array.from({ length: 33 }, (_, i) => ({
 			...clip,
 			slot: { ...clip.slot, viewport: `view-${i}` },
-			media: { ...clip.media, sha256: String(i * 2).padStart(64, '0'), bytes: 8 * 1024 * 1024 },
+			media: { path: `media/${String(i * 2).padStart(64, '0')}.mp4`, sha256: String(i * 2).padStart(64, '0'), bytes: 8 * 1024 * 1024 },
 			poster: {
-				...clip.poster,
+				path: `media/${String(i * 2 + 1).padStart(64, '0')}.png`,
 				sha256: String(i * 2 + 1).padStart(64, '0'),
 				bytes: 8 * 1024 * 1024
 			}
@@ -186,12 +186,11 @@ test('archive reads never fetch and explicit fetch verifies the received evidenc
 		await service.read(pointer);
 		expect(fetch).not.toHaveBeenCalled();
 		git('update-ref', 'refs/remotes/archive-fixture/evidence', pointer.evidence.commit);
-		const original = run.getMockImplementation();
 		run.mockRestore();
 		const actualRun = GitAdapter.prototype.run;
 		const explicit = vi
 			.spyOn(GitAdapter.prototype, 'run')
-			.mockImplementation(function (args, options) {
+			.mockImplementation(function (this: GitAdapter, args, options) {
 				if (args[0] === 'fetch') return Promise.resolve('');
 				if (args[0] === 'rev-parse' && args[1] === 'FETCH_HEAD^{commit}')
 					return Promise.resolve(pointer.evidence.commit);
@@ -206,7 +205,6 @@ test('archive reads never fetch and explicit fetch verifies the received evidenc
 			'archive-fixture',
 			evidenceRef
 		]);
-		void original;
 		explicit.mockRestore();
 		fetch.mockRestore();
 	});
