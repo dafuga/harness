@@ -36,44 +36,100 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RelayLinkService.constructor.options",
 				"type": "RelayLinkOptions",
-				"required": true
+				"required": true,
+				"description": "The link configuration: `open(url, headers)` creates the socket with the URL built from `origin` and `hostId` and an Authorization Bearer header made from `credential` plus the host role header; `onFrame` receives each relay frame that is neither a pong nor an ack, and `onState` receives each state change. The optional `retryMs` (reconnect delays, the last one repeating, default [1000, 2000, 5000, 15000, 30000]), `pingMs` (ping interval, default 25000), `idleMs` (silence allowed before the socket is closed with code 4408, default 90000) and `ackMs` (wait for each command's ack, default 10000) fall back to these defaults when omitted."
 			},
 			{
 				"name": "RelayLinkService.send.command",
 				"type": "RelayHostCommand",
-				"required": true
+				"required": true,
+				"description": "The command `send` serializes with JSON.stringify and writes to the relay socket as one text message, adding no `ref`. It is written only while the state is 'online' and a socket exists; otherwise `send` returns false and writes nothing.",
+				"examples": [
+					{
+						"type": "device-drop",
+						"deviceId": "a3f81c0e6d92b47f15e0c8a7d9b36e2f4c1a07d5",
+						"connectionId": "0c9e4b71d2a85f36e8b04d17a6c9f2e5",
+						"code": 4401
+					},
+					{
+						"type": "device-drop",
+						"deviceId": "b71e4d09c26a58f3e0d4917ba5c6f2e8d03a94b1",
+						"connectionId": "3b8f0d2e9a47c15f6e02d8b1a9c4f73e",
+						"code": 4400
+					}
+				]
 			},
 			{
 				"name": "RelayLinkService.command.input",
 				"type": "RelayCommandInput",
-				"required": true
+				"required": true,
+				"description": "A command the relay acknowledges, typed as the RelayHostCommand members that have a string `ref`, with that field removed. `command` adds a new `ref` from `randomId(8)` before sending it and resolves once the relay acks that `ref` with `ok` set.",
+				"examples": [
+					{
+						"type": "pairing-open",
+						"pairingId": "5e0b7c2a91d44f83a6c1e09b27d4f5a8",
+						"expiresAt": "2026-11-15T12:05:00.000Z"
+					},
+					{
+						"type": "device-revoke",
+						"deviceId": "a3f81c0e6d92b47f15e0c8a7d9b36e2f4c1a07d5"
+					},
+					{
+						"type": "pairing-approve",
+						"pairingId": "9f2c6a1e44b0d87c35e1a9f06d2b8c47",
+						"deviceId": "b71e4d09c26a58f3e0d4917ba5c6f2e8d03a94b1",
+						"sealed": "k3Jx9Qe1TzVb6Lr0MhW8sYp2NcAu4DfG7oXiE5wRtS-ZlQv3aBdHy0Kc_mJ8WqT1nZeRf6Uo2Ls",
+						"challenge": "w5Yq8LhJ2nRk0XbT6vZcE9pM3sUa1dGfHiKo4NyQ7Rt"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "RelayLinkService.start",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing. When not already running, it sets `running` and starts a connection, moving the state to 'connecting'; while running, it does nothing."
 			},
 			{
 				"name": "RelayLinkService.stop",
-				"type": "void"
+				"type": "void",
+				"description": "Returns nothing. It clears `running`, cancels a pending retry, closes the current socket with code 1000, rejects every command still awaiting an ack with 'The relay is not connected.', and sets the state to 'offline' so nothing reconnects."
 			},
 			{
 				"name": "RelayLinkService.send",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "true when the command was written to the relay socket; false when the state is not 'online' or there is no socket, and then nothing is written.",
+				"examples": [true, false]
 			},
 			{
 				"name": "RelayLinkService.command",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value when the relay acks the command's `ref` with `ok` set; rejects with one of the errors listed for it when the command cannot be sent, no ack arrives within `ackMs`, the ack is refused, or the link goes offline first."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "The relay is not connected.",
+				"type": "thrown",
+				"description": "Rejection of `command` when `send` returns false, which happens when the state is not 'online' or no socket exists at the call. The same message rejects every command still awaiting an ack when the link goes offline through `stop` or a lost socket (close, failed open or idle timeout)."
+			},
+			{
+				"name": "The relay did not answer.",
+				"type": "thrown",
+				"description": "Rejection of `command` when no ack for its `ref` arrives within `ackMs` (default 10000 milliseconds) after the command was sent."
+			},
+			{
+				"name": "refused",
+				"type": "thrown",
+				"description": "Rejection of `command` when the relay acks its `ref` with a falsy `ok`; the message is the ack's `error` when that is not null or undefined, and 'refused' otherwise."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "RelayLinkService.start",
@@ -81,11 +137,12 @@
 				"outputs": [
 					{
 						"name": "RelayLinkService.start",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing. When not already running, it sets `running` and starts a connection, moving the state to 'connecting'; while running, it does nothing."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RelayLinkService.stop",
@@ -93,11 +150,12 @@
 				"outputs": [
 					{
 						"name": "RelayLinkService.stop",
-						"type": "void"
+						"type": "void",
+						"description": "Returns nothing. It clears `running`, cancels a pending retry, closes the current socket with code 1000, rejects every command still awaiting an ack with 'The relay is not connected.', and sets the state to 'offline' so nothing reconnects."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RelayLinkService.send",
@@ -105,17 +163,34 @@
 					{
 						"name": "RelayLinkService.send.command",
 						"type": "RelayHostCommand",
-						"required": true
+						"required": true,
+						"description": "The command `send` serializes with JSON.stringify and writes to the relay socket as one text message, adding no `ref`. It is written only while the state is 'online' and a socket exists; otherwise `send` returns false and writes nothing.",
+						"examples": [
+							{
+								"type": "device-drop",
+								"deviceId": "a3f81c0e6d92b47f15e0c8a7d9b36e2f4c1a07d5",
+								"connectionId": "0c9e4b71d2a85f36e8b04d17a6c9f2e5",
+								"code": 4401
+							},
+							{
+								"type": "device-drop",
+								"deviceId": "b71e4d09c26a58f3e0d4917ba5c6f2e8d03a94b1",
+								"connectionId": "3b8f0d2e9a47c15f6e02d8b1a9c4f73e",
+								"code": 4400
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelayLinkService.send",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "true when the command was written to the relay socket; false when the state is not 'online' or there is no socket, and then nothing is written.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RelayLinkService.command",
@@ -123,17 +198,53 @@
 					{
 						"name": "RelayLinkService.command.input",
 						"type": "RelayCommandInput",
-						"required": true
+						"required": true,
+						"description": "A command the relay acknowledges, typed as the RelayHostCommand members that have a string `ref`, with that field removed. `command` adds a new `ref` from `randomId(8)` before sending it and resolves once the relay acks that `ref` with `ok` set.",
+						"examples": [
+							{
+								"type": "pairing-open",
+								"pairingId": "5e0b7c2a91d44f83a6c1e09b27d4f5a8",
+								"expiresAt": "2026-11-15T12:05:00.000Z"
+							},
+							{
+								"type": "device-revoke",
+								"deviceId": "a3f81c0e6d92b47f15e0c8a7d9b36e2f4c1a07d5"
+							},
+							{
+								"type": "pairing-approve",
+								"pairingId": "9f2c6a1e44b0d87c35e1a9f06d2b8c47",
+								"deviceId": "b71e4d09c26a58f3e0d4917ba5c6f2e8d03a94b1",
+								"sealed": "k3Jx9Qe1TzVb6Lr0MhW8sYp2NcAu4DfG7oXiE5wRtS-ZlQv3aBdHy0Kc_mJ8WqT1nZeRf6Uo2Ls",
+								"challenge": "w5Yq8LhJ2nRk0XbT6vZcE9pM3sUa1dGfHiKo4NyQ7Rt"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelayLinkService.command",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value when the relay acks the command's `ref` with `ok` set; rejects with one of the errors listed for it when the command cannot be sent, no ack arrives within `ackMs`, the ack is refused, or the link goes offline first."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "The relay is not connected.",
+						"type": "thrown",
+						"description": "Rejection of `command` when `send` returns false, which happens when the state is not 'online' or no socket exists at the call. The same message rejects every command still awaiting an ack when the link goes offline through `stop` or a lost socket (close, failed open or idle timeout)."
+					},
+					{
+						"name": "The relay did not answer.",
+						"type": "thrown",
+						"description": "Rejection of `command` when no ack for its `ref` arrives within `ackMs` (default 10000 milliseconds) after the command was sent."
+					},
+					{
+						"name": "refused",
+						"type": "thrown",
+						"description": "Rejection of `command` when the relay acks its `ref` with a falsy `ok`; the message is the ack's `error` when that is not null or undefined, and 'refused' otherwise."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -143,17 +254,19 @@
 					{
 						"name": "RelayLinkService.constructor.options",
 						"type": "RelayLinkOptions",
-						"required": true
+						"required": true,
+						"description": "The link configuration: `open(url, headers)` creates the socket with the URL built from `origin` and `hostId` and an Authorization Bearer header made from `credential` plus the host role header; `onFrame` receives each relay frame that is neither a pong nor an ack, and `onState` receives each state change. The optional `retryMs` (reconnect delays, the last one repeating, default [1000, 2000, 5000, 15000, 30000]), `pingMs` (ping interval, default 25000), `idleMs` (silence allowed before the socket is closed with code 4408, default 90000) and `ackMs` (wait for each command's ack, default 10000) fall back to these defaults when omitted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RelayLinkService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A RelayLinkService instance in state 'offline' with no socket and `running` false; constructing it creates no socket or timer until `start` is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
