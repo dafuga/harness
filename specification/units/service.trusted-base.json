@@ -21,36 +21,60 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "TrustedBaseService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root passed to the Git adapter, verification store, and verification checker for later lookups. The constructor stores this string without validating or normalizing it.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "TrustedBaseService.nearest.from",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "Git revision whose history is searched for a passing, intact verification record. The starting revision is included; null or an empty string resolves to no trusted base, while an invalid revision can make the Git lookup fail.",
+				"examples": ["7c3f1d8a9b2e4c6f0a1d3e5b7c9f2a4d6e8b0c1f", null]
 			},
 			{
 				"name": "TrustedBaseService.nearestRecord.from",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "Git revision whose history is searched for a passing, intact verification record. The starting revision is included; null or an empty string resolves to no trusted base, while an invalid revision can make the Git lookup fail.",
+				"examples": ["7c3f1d8a9b2e4c6f0a1d3e5b7c9f2a4d6e8b0c1f", null]
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrustedBaseService.nearest",
-				"type": "Promise<string | null>"
+				"type": "Promise<string | null>",
+				"description": "The closest revision in the searched history whose latest verification record is passed and whose integrity check passes, or null if none is proven. The result is only the commit that may serve as a verification base.",
+				"examples": ["7c3f1d8a9b2e4c6f0a1d3e5b7c9f2a4d6e8b0c1f", null]
 			},
 			{
 				"name": "TrustedBaseService.nearestRecord",
-				"type": "Promise<{ commit: string; record: string } | null>"
+				"type": "Promise<{ commit: string; record: string } | null>",
+				"description": "The closest proven revision together with the ID of the record that proves it, or null if none is proven. A record is returned only when its latest entry passed and the verification checker accepts it.",
+				"examples": [
+					{
+						"commit": "7c3f1d8a9b2e4c6f0a1d3e5b7c9f2a4d6e8b0c1f",
+						"record": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"
+					},
+					null
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "GitAdapter.run throws Error when a Git command exits unsuccessfully, and this service lets lookup failures reject the promise. Ordinary no-match cases resolve to null."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "TrustedBaseService.nearest",
@@ -58,17 +82,27 @@
 					{
 						"name": "TrustedBaseService.nearest.from",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "Git revision whose history is searched for a passing, intact verification record. The starting revision is included; null or an empty string resolves to no trusted base, while an invalid revision can make the Git lookup fail.",
+						"examples": ["7c3f1d8a9b2e4c6f0a1d3e5b7c9f2a4d6e8b0c1f", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "TrustedBaseService.nearest",
-						"type": "Promise<string | null>"
+						"type": "Promise<string | null>",
+						"description": "The closest revision in the searched history whose latest verification record is passed and whose integrity check passes, or null if none is proven. The result is only the commit that may serve as a verification base.",
+						"examples": ["7c3f1d8a9b2e4c6f0a1d3e5b7c9f2a4d6e8b0c1f", null]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The delegated lookup can reject with Error when revision enumeration or verification checking fails; nearest does not catch that rejection. Ordinary no-match cases resolve to null."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "TrustedBaseService.nearestRecord",
@@ -76,17 +110,33 @@
 					{
 						"name": "TrustedBaseService.nearestRecord.from",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "Git revision whose history is searched for a passing, intact verification record. The starting revision is included; null or an empty string resolves to no trusted base, while an invalid revision can make the Git lookup fail.",
+						"examples": ["7c3f1d8a9b2e4c6f0a1d3e5b7c9f2a4d6e8b0c1f", null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "TrustedBaseService.nearestRecord",
-						"type": "Promise<{ commit: string; record: string } | null>"
+						"type": "Promise<{ commit: string; record: string } | null>",
+						"description": "The closest proven revision together with the ID of the record that proves it, or null if none is proven. A record is returned only when its latest entry passed and the verification checker accepts it.",
+						"examples": [
+							{
+								"commit": "7c3f1d8a9b2e4c6f0a1d3e5b7c9f2a4d6e8b0c1f",
+								"record": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"
+							},
+							null
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A Git command failure during revision enumeration or commit checking throws Error, and nearestRecord does not catch it. Malformed individual record files are skipped by the store."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -96,17 +146,22 @@
 					{
 						"name": "TrustedBaseService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root passed to the Git adapter, verification store, and verification checker for later lookups. The constructor stores this string without validating or normalizing it.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "TrustedBaseService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed TrustedBaseService instance, which retains the supplied repository root for later lookups."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
