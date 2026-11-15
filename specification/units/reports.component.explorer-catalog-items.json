@@ -30,102 +30,230 @@
 				"name": "ExplorerCatalogItems.category",
 				"type": "ExplorerCategory | null",
 				"required": true,
-				"description": "Collection category, or null for support dependencies. Modules use the shared card; config setting rows retain their value table."
+				"description": "The collection the rows are listed in, or null for a dependency that no collection lists. It is passed to each module card and selects the ex-page-grid class for pages, and the configs table is used only when it is configs and every row is a setting.",
+				"examples": ["components", "configs", null]
 			},
 			{
 				"name": "ExplorerCatalogItems.rows",
 				"type": "Row[]",
 				"required": true,
-				"description": "Required revision-scoped rows to render in their supplied order."
+				"description": "The rows to render, in the order given: the component neither sorts nor filters them, and with batch above 0 it shows only the leading rows. Each row.id keys its card or table row, so two rows with the same id throw.",
+				"examples": [
+					[
+						{
+							"entity": {
+								"id": "reports.component.explorer-catalog-items",
+								"category": "components",
+								"role": "Component",
+								"name": "ExplorerCatalogItems",
+								"purpose": "Renders module collections and relationships through one shared card, retaining tables only for config variable values.",
+								"unit": {
+									"id": "reports.component.explorer-catalog-items",
+									"kind": "component",
+									"status": "active",
+									"title": "ExplorerCatalogItems",
+									"responsibility": "Renders module collections and relationships through one shared card, retaining tables only for config variable values.",
+									"dependencies": [
+										{
+											"unit": "reports.component.explorer-ui-explorer-module-card",
+											"via": "import"
+										},
+										{
+											"unit": "reports.component.harness-explorer-table",
+											"via": "import"
+										},
+										{
+											"unit": "reports.component.harness-harness-action",
+											"via": "import"
+										},
+										{
+											"unit": "reports.component.shared-primitives-atoms-html-div",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.entity-catalog",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.entity-lens",
+											"via": "import"
+										},
+										{
+											"unit": "reports.function.entity-usage",
+											"via": "import"
+										},
+										{
+											"unit": "reports.model.explorer-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/explorer-ui/ExplorerCatalogItems.svelte",
+											"packages/reports/src/components/explorer-ui/ExplorerCatalogItems.types.ts"
+										],
+										"symbols": ["ExplorerCatalogItems", "ExplorerCatalogItems.items", "Row"]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "ExplorerCatalogItems.category",
+												"type": "ExplorerCategory | null",
+												"required": true
+											},
+											{
+												"name": "ExplorerCatalogItems.rows",
+												"type": "Row[]",
+												"required": true
+											}
+										],
+										"outputs": [
+											{
+												"name": "ExplorerCatalogItems",
+												"type": "markup"
+											}
+										],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/components/explorer-ui/ExplorerCatalogItems.svelte"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "5f0c2a9d7e1b4c83a6d9f2e0b7c14a58d3e6f9b2c0a7d4e1f8b5c2a9d6e3f0b7"
+								},
+								"verdict": {
+									"passed": false,
+									"label": "Coverage incomplete",
+									"reasons": [
+										"No scenario covers this unit; tests alone do not show how it behaves."
+									]
+								},
+								"change": null,
+								"appRoute": null
+							},
+							"id": "reports.component.explorer-catalog-items",
+							"name": "ExplorerCatalogItems",
+							"summary": "Renders module collections and relationships through one shared card, retaining tables only for config variable values.",
+							"changed": false,
+							"shared": true,
+							"verdict": {
+								"passed": false,
+								"label": "Coverage incomplete",
+								"reasons": ["No scenario covers this unit; tests alone do not show how it behaves."]
+							},
+							"usedOn": [],
+							"usedBy": ["EntityRelations", "ExplorerCatalogScreen"],
+							"contains": ["ExplorerModuleCard", "ExplorerTable", "HarnessAction"],
+							"targets": ["module"],
+							"components": 3
+						}
+					]
+				]
 			},
 			{
 				"name": "ExplorerCatalogItems.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Required entity navigation retaining the selected branch and revision."
+				"description": "Navigation for every link: route is the current location, from which each link keeps the branch and, unless it names one, the commit. href gives a link's address, go runs when a plain click follows the link, and source, when given, opens a consumer's owned file from its source button."
 			},
 			{
 				"name": "ExplorerCatalogItems.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Required evidence lens supplying screenshots for each visual entity."
+				"description": "The evidence lens: evidence(unit) supplies the captures that each visual card (pages, components or layouts) takes its screenshot from, and an open preview of a visual consumer takes its image from it. It is never called for a dependency or a non-visual row."
 			},
 			{
 				"name": "ExplorerCatalogItems.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Required URL prefix used to resolve captured screenshot assets."
+				"description": "The URL prefix joined in front of a capture's file name, as mediaBase + file, for each card image and consumer preview. It is concatenated exactly as given, with no separator added.",
+				"examples": ["/media/", "/reports/media/"]
 			},
 			{
 				"name": "ExplorerCatalogItems.verification",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Optional verification visibility, defaulting to true; relationship tabs pass false."
+				"description": "It is passed only to ExplorerTable, which reads it only for non-configs categories to show a Verification column. This component renders that table only for configs, so the value changes no output here.",
+				"examples": [true, false]
 			},
 			{
 				"name": "ExplorerCatalogItems.batch",
 				"type": "number",
 				"required": false,
 				"default": 0,
-				"description": "Optional rows shown per View More step, defaulting to 0 for all rows; relationship tabs pass 4."
+				"description": "Rows shown at first and added per View More press; 0, the default, and any value not above 0 (including NaN) show every row with no group or View More action, and a fractional value is truncated by slice.",
+				"examples": [0, 4]
 			},
 			{
 				"name": "ExplorerCatalogItems.label",
 				"type": "string",
 				"required": false,
-				"description": "Optional accessible name of a batched group and its View More action; defaults to the category or Other when null."
+				"description": "Accessible name of the batched group, used only when batch is above 0; the View More action is labelled 'View more' followed by the label's first word. Defaults to category ?? 'Other' when not given: the category, or Other when category is null.",
+				"examples": ["Components", "Other"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerCatalogItems",
 				"type": "markup",
-				"description": "Ordered shared module cards, with optional four-entry batching and focus handling; config setting values retain their table."
+				"description": "The rows in their supplied order: module cards inside an hx-div with class ex-page-grid for pages or ex-catalog-grid otherwise, or one configs table when category is configs and every row is a setting. With batch above 0 they sit in a role=group hx-div labelled by label, and View More focuses the first a[href] of the first newly shown article or tbody tr."
 			}
 		],
 		"errors": [
 			{
 				"name": "TypeError",
 				"type": "thrown",
-				"description": "Function-card argument examples cannot serialize BigInt or circular values."
+				"description": "A function card serializes its documented example arguments with JSON.stringify, which throws a TypeError for a BigInt or a circular reference, and the error propagates out of the card's rendering."
 			},
 			{
 				"name": "RangeError",
 				"type": "thrown",
-				"description": "Serializing a deeply nested function argument example can exceed the runtime stack."
+				"description": "A deeply nested example argument can exceed the call stack while JSON.stringify serializes it for a function card, throwing a RangeError that propagates out of the card's rendering."
 			},
 			{
 				"name": "Example serialization callback error",
 				"type": "thrown",
-				"description": "A getter, proxy or toJSON method on an example can throw while a function invocation is serialized."
+				"description": "A getter, proxy trap or toJSON method on an example argument can throw during that JSON.stringify, and the error propagates out of the function card's rendering."
 			},
 			{
 				"name": "nav.href callback error",
 				"type": "thrown",
-				"description": "An address callback error propagates while rendering a card, table or consumer link."
+				"description": "An error thrown by nav.href propagates while a module card, a configs table row or a consumer link renders its address."
 			},
 			{
 				"name": "nav.go callback error",
 				"type": "thrown",
-				"description": "A navigation callback error propagates when a card, table or consumer link is activated."
+				"description": "An error thrown by nav.go propagates out of the click handler when a module card, a configs table row or a consumer link is followed by a plain click."
 			},
 			{
 				"name": "nav.source callback error",
 				"type": "thrown",
-				"description": "A source-opening callback error propagates when a consumer source button is activated."
+				"description": "An error thrown by nav.source propagates out of the click handler when a consumer's source button is activated."
 			},
 			{
 				"name": "lens.evidence callback error",
 				"type": "thrown",
-				"description": "An evidence callback error propagates while resolving a card image or consumer preview."
+				"description": "An error thrown by lens.evidence propagates while a visual module card resolves its screenshot or a visual consumer's preview opens."
 			},
 			{
 				"name": "each_key_duplicate",
 				"type": "thrown",
-				"description": "Duplicate row identifiers throw when a keyed card list is mounted or updated."
+				"description": "Two rows with the same id make Svelte's keyed each block throw each_key_duplicate when the module-card list or the configs table is mounted or updated."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
