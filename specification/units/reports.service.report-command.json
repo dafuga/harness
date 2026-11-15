@@ -20,32 +20,54 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ReportCommandService.constructor.repository",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The persistence repository used by command workflows. Defaults to new ReportRepository(), which the constructor creates when no repository is supplied."
 			},
 			{
 				"name": "ReportCommandService.execute.argv",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "The command-line argument vector parsed to select a report operation and its flags. It must contain an operation and the flags accepted by that command; command-specific required flags are read by the selected branch.",
+				"examples": [
+					[
+						"begin",
+						"--project",
+						"reports",
+						"--title",
+						"CLI smoke report",
+						"--mode",
+						"feature",
+						"--environment",
+						"local"
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ReportCommandService.execute",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A Promise resolving to the selected command branch result. Import returns an object formed as { run: id, ...result }; other shapes are delegated to repositories or services and remain unknown."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when dispatch reaches an unsupported operation, or when import has no --run value and the format is not mira."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown when begin receives a truthy --acceptance value that is not valid JSON."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ReportCommandService.execute",
@@ -53,22 +75,43 @@
 					{
 						"name": "ReportCommandService.execute.argv",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "The command-line argument vector parsed to select a report operation and its flags. It must contain an operation and the flags accepted by that command; command-specific required flags are read by the selected branch.",
+						"examples": [
+							[
+								"begin",
+								"--project",
+								"reports",
+								"--title",
+								"CLI smoke report",
+								"--mode",
+								"feature",
+								"--environment",
+								"local"
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportCommandService.execute",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A Promise resolving to the selected command branch result. Import returns an object formed as { run: id, ...result }; other shapes are delegated to repositories or services and remain unknown."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when dispatch reaches an unsupported operation, or when import has no --run value and the format is not mira."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown when begin receives a truthy --acceptance value that is not valid JSON."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -78,17 +121,19 @@
 					{
 						"name": "ReportCommandService.constructor.repository",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The persistence repository used by command workflows. Defaults to new ReportRepository(), which the constructor creates when no repository is supplied."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ReportCommandService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The initialized ReportCommandService instance holding the selected repository. This class instance cannot be represented as JSON."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
