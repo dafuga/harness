@@ -1,4 +1,5 @@
 import { mkdtempSync, existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { chromium, type Browser } from '@playwright/test';
@@ -70,10 +71,35 @@ test('NativeVideoRecorderService record finalizes mapped native frames and reuse
 	const start = performance.now();
 	const result = await service.record({
 		...options('success'),
+		addressedFlags: ['flag-demo'],
 		reset: async () => {
 			resets++;
 		}
 	});
+	expect(result.metadata.addressedFlags).toEqual(['flag-demo']);
+	const pixels = decodedRgbFrames(result.video.path);
+	const sourcePixels = new Map<number, Buffer>();
+	for (const sample of result.metadata.mapping) {
+		if (!sourcePixels.has(sample.sourceFrame))
+			sourcePixels.set(
+				sample.sourceFrame,
+				decodedRgbFrames(
+					join(result.directory, result.metadata.native.frames[sample.sourceFrame].file)
+				)
+			);
+		const actual = pixels.subarray(sample.frameNumber * 3, sample.frameNumber * 3 + 3);
+		const expected = sourcePixels.get(sample.sourceFrame)!;
+		expect(
+			Math.max(...actual.map((channel, index) => Math.abs(channel - expected[index])))
+		).toBeLessThan(45);
+	}
+	expect(
+		new Set(
+			result.metadata.mapping.map((sample) =>
+				pixels.subarray(sample.frameNumber * 3, sample.frameNumber * 3 + 3).toString('hex')
+			)
+		).size
+	).toBeGreaterThan(3);
 	expect(resets).toBe(1);
 	expect(browser.contexts()).toHaveLength(0);
 	expect(result.metadata.facts).toMatchObject({
@@ -183,3 +209,17 @@ test('NativeVideoRecorderService record refuses overlapping slot ownership', asy
 		await first;
 	}
 }, 30_000);
+
+function decodedRgbFrames(path: string): Buffer {
+	const child = spawnSync(
+		'ffmpeg',
+		[
+			...['-v', 'error', '-threads', '1', '-i', path, '-vf', 'format=rgb24,crop=1:1:75:75'],
+			...['-frames:v', '450', '-threads', '1', '-filter_threads', '1', '-fps_mode', 'passthrough'],
+			...['-f', 'rawvideo', '-pix_fmt', 'rgb24', 'pipe:1']
+		],
+		{ timeout: 20_000, maxBuffer: 10_000 }
+	);
+	expect(child.status, child.stderr?.toString()).toBe(0);
+	return child.stdout;
+}
