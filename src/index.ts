@@ -187,3 +187,5 @@ export { BoundedCommandAdapter } from './adapters/execution-runtimes/BoundedComm
 export { staleBuild } from './utils/development-tooling/staleBuild';
 export { scenarioHealth } from './utils/verification-evidence/scenarioHealth';
 export { ContractsCommand } from './commands/development-tooling/ContractsCommand';
+export { VideoEvidenceService } from './services/verification-evidence/VideoEvidenceService';
+export { videoClipSchema } from './utils/verification-evidence/videoClipSchema';

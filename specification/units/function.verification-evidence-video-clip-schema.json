@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "function.verification-evidence-video-clip-schema",
+	"uid": "u_o2djhpwgs7",
+	"kind": "function",
+	"title": "videoClipSchema",
+	"responsibility": "Validate modular video clip contracts and recorded video provenance",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/verification-evidence/videoClipSchema.ts"],
+		"symbols": ["videoClipSchema"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "videoClipSchema.value",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "videoClipSchema",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "videoClipSchema",
+				"inputs": [
+					{
+						"name": "videoClipSchema.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoClipSchema",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/verification-evidence/videoClipSchema.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/verification-evidence/videoClipSchema.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
