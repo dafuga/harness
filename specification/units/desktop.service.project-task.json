@@ -14,31 +14,43 @@
 		"symbols": ["ProjectTaskService", "ProjectTaskService.run"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectTaskService.run.context",
 				"type": "ProjectTaskContext",
-				"required": true
+				"required": true,
+				"description": "The ProjectTaskContext of one run: a ProjectTaskRequest (branch, text, mode 'ask' or 'change', optional environment and conversation), the project root used as the agent's working directory, the revision, and the session, runner, abort signal and emit callback. run calls session.atBranch(request.branch) before the agent run and again after the recording step, runs the agent with read-only access for mode 'ask' and write access otherwise, and throws RunCancelled if the signal is aborted when the agent returns."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectTaskService.run",
-				"type": "Promise<{ summary: string }>"
+				"type": "Promise<{ summary: string }>",
+				"description": "The summary that run resolves with: 'Answer complete.' for mode 'ask', the value promoteChange returns when the mode is 'change' and environment is set, and otherwise 'Changes recorded. Verification is still required.' It resolves only when nothing is thrown, including by the recording step and the final atBranch call.",
+				"examples": [
+					{
+						"summary": "Answer complete."
+					},
+					{
+						"summary": "Changes recorded. Verification is still required."
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by the recording step when an ask request changed files or observed host operations, with the message 'The read-only agent changed files. Changes were preserved for review.' Because the recording step runs in the finally block, this Error replaces any error the run raised first, including RunCancelled."
 			},
 			{
 				"name": "RunCancelled",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when the run's abort signal is already aborted once the agent run resolves, with the message 'The run was cancelled.'; a rejection from the agent run itself propagates before this check. The recording step still runs before the error reaches the caller, and if that step throws the Error described above, that Error replaces this one."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProjectTaskService.run",
@@ -46,22 +58,38 @@
 					{
 						"name": "ProjectTaskService.run.context",
 						"type": "ProjectTaskContext",
-						"required": true
+						"required": true,
+						"description": "The ProjectTaskContext of one run: a ProjectTaskRequest (branch, text, mode 'ask' or 'change', optional environment and conversation), the project root used as the agent's working directory, the revision, and the session, runner, abort signal and emit callback. run calls session.atBranch(request.branch) before the agent run and again after the recording step, runs the agent with read-only access for mode 'ask' and write access otherwise, and throws RunCancelled if the signal is aborted when the agent returns."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectTaskService.run",
-						"type": "Promise<{ summary: string }>"
+						"type": "Promise<{ summary: string }>",
+						"description": "The summary that run resolves with: 'Answer complete.' for mode 'ask', the value promoteChange returns when the mode is 'change' and environment is set, and otherwise 'Changes recorded. Verification is still required.' It resolves only when nothing is thrown, including by the recording step and the final atBranch call.",
+						"examples": [
+							{
+								"summary": "Answer complete."
+							},
+							{
+								"summary": "Changes recorded. Verification is still required."
+							}
+						]
 					}
 				],
 				"errors": [
 					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by the recording step when an ask request changed files or observed host operations, with the message 'The read-only agent changed files. Changes were preserved for review.' Because the recording step runs in the finally block, this Error replaces any error the run raised first, including RunCancelled."
+					},
+					{
 						"name": "RunCancelled",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the run's abort signal is already aborted once the agent run resolves, with the message 'The run was cancelled.'; a rejection from the agent run itself propagates before this check. The recording step still runs before the error reaches the caller, and if that step throws the Error described above, that Error replaces this one."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
