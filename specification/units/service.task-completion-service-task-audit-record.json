@@ -18,23 +18,126 @@
 				"name": "taskAuditRecord.root",
 				"type": "string",
 				"required": true,
-				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+				"description": "Project filesystem root that is the working directory of the Git probe `rev-parse --path-format=absolute --git-path harness/task-audits` and whose resolved path is hashed to name the temporary fallback directory. The root is not checked for existence or repository status here, and a probe failure or empty result selects the temporary fallback.",
+				"examples": ["/workspace/harness-app", "/srv/ci/payments-service"]
 			},
 			{
 				"name": "taskAuditRecord.input",
 				"type": "TaskAuditInput & { commit: string | null; checks: TaskCheck[] }",
 				"required": true,
-				"description": "Declared task, exact or unavailable commit, and the actual individual check outcomes to persist."
+				"description": "Declared task (kind and goal, plus optional plan, loop and units), the commit to record or null, and the individual check outcomes to persist. Units are de-duplicated and sorted, the checks array is stored unchanged, and passed is derived as true only when at least one check exists and every check passed.",
+				"examples": [
+					{
+						"kind": "planning",
+						"goal": "Plan retries for the webhook consumer",
+						"plan": "docs/plans/webhook-retry.md",
+						"commit": "a31f7c5e09d2b84f16c3e7a0d95b2f48c6e1d30a",
+						"checks": [
+							{
+								"id": "source",
+								"passed": true,
+								"detail": "Committed source at a31f7c5e09d2b84f16c3e7a0d95b2f48c6e1d30a."
+							},
+							{
+								"id": "plan.overview",
+								"passed": true,
+								"detail": "Provide a substantive overview section, including an explicit explanation when none applies."
+							}
+						]
+					},
+					{
+						"kind": "coding",
+						"goal": "Persist task audits under a content-addressed id",
+						"units": ["adapter.git", "service.task-completion-service-task-audit-record"],
+						"commit": "4b8e1f02c9a7d36e5f1028b4a7c93d6e0f5a2b19",
+						"checks": [
+							{
+								"id": "source",
+								"passed": true,
+								"detail": "Committed source at 4b8e1f02c9a7d36e5f1028b4a7c93d6e0f5a2b19."
+							}
+						]
+					},
+					{
+						"kind": "coding",
+						"goal": "Persist task audits under a content-addressed id",
+						"units": ["service.task-completion-service-task-audit-record"],
+						"commit": null,
+						"checks": [
+							{
+								"id": "evidence",
+								"passed": false,
+								"detail": "Task evidence could not be read."
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "taskAuditRecord",
 				"type": "Promise<TaskAudit>",
-				"description": "Content-addressed audit stored under the repository Git path or a project-isolated temporary fallback."
+				"description": "The resolved TaskAudit, whose id is the SHA-256 hex digest of the JSON serialization of every field except id. It is returned only after `<id>.json` is written to the Git-path or temporary fallback directory, and the returned object does not report that location.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "9e4c1a7f3b85d206e1c9f47a2d6b03e8c5f1a9d24b7e608c3f1d5a2e9b47c061",
+						"commit": "a31f7c5e09d2b84f16c3e7a0d95b2f48c6e1d30a",
+						"kind": "planning",
+						"goal": "Plan retries for the webhook consumer",
+						"task": {
+							"plan": "docs/plans/webhook-retry.md",
+							"loop": null,
+							"units": []
+						},
+						"passed": true,
+						"checks": [
+							{
+								"id": "source",
+								"passed": true,
+								"detail": "Committed source at a31f7c5e09d2b84f16c3e7a0d95b2f48c6e1d30a."
+							},
+							{
+								"id": "plan.overview",
+								"passed": true,
+								"detail": "Provide a substantive overview section, including an explicit explanation when none applies."
+							}
+						],
+						"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+					},
+					{
+						"schemaVersion": 1,
+						"id": "5a0d7c3e18f4b9e2c76a3d0f9e5b1247d8a0f6c32b9e7158ea64d0b93f2c8e15",
+						"commit": null,
+						"kind": "coding",
+						"goal": "Persist task audits under a content-addressed id",
+						"task": {
+							"plan": null,
+							"loop": null,
+							"units": ["service.task-completion-service-task-audit-record"]
+						},
+						"passed": false,
+						"checks": [
+							{
+								"id": "evidence",
+								"passed": false,
+								"detail": "Task evidence could not be read."
+							}
+						],
+						"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "thrown",
+				"description": "Filesystem failure rejected by the `mkdir` call (with `recursive: true`) that creates the audit directory or by the `writeFile` call that writes `<id>.json`. Nothing in the function catches it, so the rejection reaches the caller and no audit is returned."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "taskAuditRecord",
@@ -43,24 +146,126 @@
 						"name": "taskAuditRecord.root",
 						"type": "string",
 						"required": true,
-						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+						"description": "Project filesystem root that is the working directory of the Git probe `rev-parse --path-format=absolute --git-path harness/task-audits` and whose resolved path is hashed to name the temporary fallback directory. The root is not checked for existence or repository status here, and a probe failure or empty result selects the temporary fallback.",
+						"examples": ["/workspace/harness-app", "/srv/ci/payments-service"]
 					},
 					{
 						"name": "taskAuditRecord.input",
 						"type": "TaskAuditInput & { commit: string | null; checks: TaskCheck[] }",
 						"required": true,
-						"description": "Declared task, exact or unavailable commit, and the actual individual check outcomes to persist."
+						"description": "Declared task (kind and goal, plus optional plan, loop and units), the commit to record or null, and the individual check outcomes to persist. Units are de-duplicated and sorted, the checks array is stored unchanged, and passed is derived as true only when at least one check exists and every check passed.",
+						"examples": [
+							{
+								"kind": "planning",
+								"goal": "Plan retries for the webhook consumer",
+								"plan": "docs/plans/webhook-retry.md",
+								"commit": "a31f7c5e09d2b84f16c3e7a0d95b2f48c6e1d30a",
+								"checks": [
+									{
+										"id": "source",
+										"passed": true,
+										"detail": "Committed source at a31f7c5e09d2b84f16c3e7a0d95b2f48c6e1d30a."
+									},
+									{
+										"id": "plan.overview",
+										"passed": true,
+										"detail": "Provide a substantive overview section, including an explicit explanation when none applies."
+									}
+								]
+							},
+							{
+								"kind": "coding",
+								"goal": "Persist task audits under a content-addressed id",
+								"units": ["adapter.git", "service.task-completion-service-task-audit-record"],
+								"commit": "4b8e1f02c9a7d36e5f1028b4a7c93d6e0f5a2b19",
+								"checks": [
+									{
+										"id": "source",
+										"passed": true,
+										"detail": "Committed source at 4b8e1f02c9a7d36e5f1028b4a7c93d6e0f5a2b19."
+									}
+								]
+							},
+							{
+								"kind": "coding",
+								"goal": "Persist task audits under a content-addressed id",
+								"units": ["service.task-completion-service-task-audit-record"],
+								"commit": null,
+								"checks": [
+									{
+										"id": "evidence",
+										"passed": false,
+										"detail": "Task evidence could not be read."
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskAuditRecord",
 						"type": "Promise<TaskAudit>",
-						"description": "Content-addressed audit stored under the repository Git path or a project-isolated temporary fallback."
+						"description": "The resolved TaskAudit, whose id is the SHA-256 hex digest of the JSON serialization of every field except id. It is returned only after `<id>.json` is written to the Git-path or temporary fallback directory, and the returned object does not report that location.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "9e4c1a7f3b85d206e1c9f47a2d6b03e8c5f1a9d24b7e608c3f1d5a2e9b47c061",
+								"commit": "a31f7c5e09d2b84f16c3e7a0d95b2f48c6e1d30a",
+								"kind": "planning",
+								"goal": "Plan retries for the webhook consumer",
+								"task": {
+									"plan": "docs/plans/webhook-retry.md",
+									"loop": null,
+									"units": []
+								},
+								"passed": true,
+								"checks": [
+									{
+										"id": "source",
+										"passed": true,
+										"detail": "Committed source at a31f7c5e09d2b84f16c3e7a0d95b2f48c6e1d30a."
+									},
+									{
+										"id": "plan.overview",
+										"passed": true,
+										"detail": "Provide a substantive overview section, including an explicit explanation when none applies."
+									}
+								],
+								"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+							},
+							{
+								"schemaVersion": 1,
+								"id": "5a0d7c3e18f4b9e2c76a3d0f9e5b1247d8a0f6c32b9e7158ea64d0b93f2c8e15",
+								"commit": null,
+								"kind": "coding",
+								"goal": "Persist task audits under a content-addressed id",
+								"task": {
+									"plan": null,
+									"loop": null,
+									"units": ["service.task-completion-service-task-audit-record"]
+								},
+								"passed": false,
+								"checks": [
+									{
+										"id": "evidence",
+										"passed": false,
+										"detail": "Task evidence could not be read."
+									}
+								],
+								"limitation": "Structural and evidence heuristics cannot prove arbitrary semantic correctness; review acceptance criteria and remaining uncertainty."
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Filesystem failure rejected by the `mkdir` call (with `recursive: true`) that creates the audit directory or by the `writeFile` call that writes `<id>.json`. Nothing in the function catches it, so the rejection reaches the caller and no audit is returned."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
