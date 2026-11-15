@@ -1,7 +1,7 @@
 import type { AuthFixture } from './authFixture.types';
 import type { Actor } from 'collaboration';
 import { SessionRepository } from '../../src/repositories/projects-sessions/SessionRepository';
-import { authSecrets } from '../../src/lib/server/auth/authSecrets';
+import { authSecrets } from '../../src/lib/verification-evidence/server/auth/authSecrets';
 import { START } from './googleFixture';
 import { memoryAuthStore } from './memoryAuthStore';
 

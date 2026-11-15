@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { authSecrets } from '../../src/lib/server/auth/authSecrets';
+import { authSecrets } from '../../src/lib/verification-evidence/server/auth/authSecrets';
 import { emailCode } from '../../src/services/verification-evidence/email-proof-service/authSecrets';
 import { normalizeCode, userCode } from '../../src/services/native-handoff-service/authSecrets';
 import { randomToken, safeEqual, sha256Url } from '../../src/utils/authSecrets';

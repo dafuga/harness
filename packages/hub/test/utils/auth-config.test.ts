@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { authConfig } from '../../src/lib/server/auth/authConfig';
+import { authConfig } from '../../src/lib/verification-evidence/server/auth/authConfig';
 
 const google = {
 	HARNESS_GOOGLE_CLIENT_ID: 'synthetic-client.apps.googleusercontent.com',
