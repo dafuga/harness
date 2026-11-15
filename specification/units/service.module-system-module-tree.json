@@ -21,17 +21,27 @@
 				"name": "moduleTree.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute project directory containing the package manifest and module metadata."
+				"description": "Directory used as the base for read(path) and list(); list() scans its specification/modules child. The implementation does not validate that it is absolute or that a package manifest exists.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "moduleTree",
 				"type": "unknown",
-				"description": "Filesystem-backed read and list operations restricted to module metadata."
+				"description": "An object with read(path) and list() methods bound to root. read reads the path formed by join(root, path) as UTF-8; list returns {path} records for immediate directories under specification/modules whose module.json reads succeed, returns an empty list for a missing module directory, omits missing module files, and propagates other filesystem errors."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Filesystem failures rejected by read() or thrown while list() scans directories or reads module files are propagated unless handled as ENOENT; a missing module directory yields an empty list, and a missing module file is omitted."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "moduleTree",
@@ -40,18 +50,21 @@
 						"name": "moduleTree.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute project directory containing the package manifest and module metadata."
+						"description": "Directory used as the base for read(path) and list(); list() scans its specification/modules child. The implementation does not validate that it is absolute or that a package manifest exists.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-12"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "moduleTree",
 						"type": "unknown",
-						"description": "Filesystem-backed read and list operations restricted to module metadata."
+						"description": "An object with read(path) and list() methods bound to root. read reads the path formed by join(root, path) as UTF-8; list returns {path} records for immediate directories under specification/modules whose module.json reads succeed, returns an empty list for a missing module directory, omits missing module files, and propagates other filesystem errors."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
