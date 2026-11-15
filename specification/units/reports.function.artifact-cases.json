@@ -22,28 +22,127 @@
 				"name": "artifactCases.document",
 				"type": "unknown",
 				"required": true,
-				"description": "Parsed artifact document of unknown shape."
+				"description": "Any artifact value passed to the reader; a non-object produces a gap. A `function-invocations` document must use schema version 1, nonempty `unitId` and `symbol` strings of at most 200 characters, 1–64 calls, and nonempty call names of at most 160 characters, with each call containing `input` and exactly one of `output` or `error`; other kinds yield one observation only when at least one of `input`/`inputs`/`request` and one of `output`/`outputs`/`response` is present.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"kind": "function-invocations",
+						"unitId": "reports.component.evidence-grid",
+						"symbol": "artifactCases",
+						"cases": [
+							{
+								"name": "read saved evidence",
+								"input": {
+									"unitId": "reports.component.evidence-grid"
+								},
+								"output": {
+									"count": 1
+								}
+							},
+							{
+								"name": "read unavailable artifact",
+								"input": {
+									"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+								},
+								"error": {
+									"name": "Error",
+									"message": "Artifact is unavailable"
+								}
+							}
+						]
+					},
+					{
+						"request": {
+							"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+						},
+						"response": {
+							"rows": []
+						}
+					}
+				]
 			},
 			{
 				"name": "artifactCases.unit",
 				"type": "string",
 				"required": false,
-				"description": "Optional expected unit identifier. When supplied, recorded invocations must name that unit."
+				"default": "undefined",
+				"description": "Optional unit identifier used only to filter recorded-invocation documents; a different `unitId` produces a gap, while legacy observations are not filtered. Defaults to undefined, so omitting it leaves valid recorded invocations unfiltered.",
+				"examples": ["reports.component.evidence-grid"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "caseForm",
 				"type": "unknown",
-				"description": "Supported form: schema version 1, function-invocations kind, at most 64 cases and case names up to 160 characters."
+				"description": "The reader's recorded-call format constants. They set schema version 1, kind `function-invocations`, a 64-case maximum, and a 160-character case-name maximum.",
+				"examples": [
+					{
+						"version": 1,
+						"kind": "function-invocations",
+						"most": 64,
+						"name": 160
+					}
+				]
 			},
 			{
 				"name": "artifactCases",
 				"type": "ExplorerArtifactCases",
-				"description": "Returns invocation cases only when every case has a nonempty bounded name, input and exactly one of output or error, with valid unit/symbol metadata. Otherwise returns a stated gap. Legacy top-level input/inputs/request plus output/outputs/response become one observation row; false, zero, null and empty values are retained."
+				"description": "Tagged result containing either an explanatory gap, rows for valid recorded calls, or one legacy observation row. Recorded documents require schema version 1, 1–64 calls, nonempty unit and symbol strings up to 200 characters, and call names from 1–160 characters with `input` plus exactly one of `output` or `error`; legacy fields use the first present alias in `input`/`inputs`/`request` and `output`/`outputs`/`response`, retaining values such as false, zero, null, and empty arrays.",
+				"examples": [
+					{
+						"kind": "cases",
+						"source": "invocations",
+						"symbol": "artifactCases",
+						"cases": [
+							{
+								"name": "read saved evidence",
+								"input": {
+									"unitId": "reports.component.evidence-grid"
+								},
+								"output": {
+									"count": 1
+								},
+								"failed": false
+							},
+							{
+								"name": "read unavailable artifact",
+								"input": {
+									"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+								},
+								"error": {
+									"name": "Error",
+									"message": "Artifact is unavailable"
+								},
+								"failed": true
+							}
+						]
+					},
+					{
+						"kind": "gap",
+						"why": "Its cases are not in the recorded form."
+					},
+					{
+						"kind": "cases",
+						"source": "observation",
+						"symbol": null,
+						"cases": [
+							{
+								"name": "Test observation",
+								"input": {
+									"requestId": "request-42"
+								},
+								"output": {
+									"count": 0
+								},
+								"failed": false
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "artifactCases",
@@ -52,24 +151,114 @@
 						"name": "artifactCases.document",
 						"type": "unknown",
 						"required": true,
-						"description": "Parsed artifact document of unknown shape."
+						"description": "Any artifact value passed to the reader; a non-object produces a gap. A `function-invocations` document must use schema version 1, nonempty `unitId` and `symbol` strings of at most 200 characters, 1–64 calls, and nonempty call names of at most 160 characters, with each call containing `input` and exactly one of `output` or `error`; other kinds yield one observation only when at least one of `input`/`inputs`/`request` and one of `output`/`outputs`/`response` is present.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"kind": "function-invocations",
+								"unitId": "reports.component.evidence-grid",
+								"symbol": "artifactCases",
+								"cases": [
+									{
+										"name": "read saved evidence",
+										"input": {
+											"unitId": "reports.component.evidence-grid"
+										},
+										"output": {
+											"count": 1
+										}
+									},
+									{
+										"name": "read unavailable artifact",
+										"input": {
+											"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+										},
+										"error": {
+											"name": "Error",
+											"message": "Artifact is unavailable"
+										}
+									}
+								]
+							},
+							{
+								"request": {
+									"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+								},
+								"response": {
+									"rows": []
+								}
+							}
+						]
 					},
 					{
 						"name": "artifactCases.unit",
 						"type": "string",
 						"required": false,
-						"description": "Optional expected unit identifier. When supplied, recorded invocations must name that unit."
+						"default": "undefined",
+						"description": "Optional unit identifier used only to filter recorded-invocation documents; a different `unitId` produces a gap, while legacy observations are not filtered. Defaults to undefined, so omitting it leaves valid recorded invocations unfiltered.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "artifactCases",
 						"type": "ExplorerArtifactCases",
-						"description": "Returns invocation cases only when every case has a nonempty bounded name, input and exactly one of output or error, with valid unit/symbol metadata. Otherwise returns a stated gap. Legacy top-level input/inputs/request plus output/outputs/response become one observation row; false, zero, null and empty values are retained."
+						"description": "Tagged result containing either an explanatory gap, rows for valid recorded calls, or one legacy observation row. Recorded documents require schema version 1, 1–64 calls, nonempty unit and symbol strings up to 200 characters, and call names from 1–160 characters with `input` plus exactly one of `output` or `error`; legacy fields use the first present alias in `input`/`inputs`/`request` and `output`/`outputs`/`response`, retaining values such as false, zero, null, and empty arrays.",
+						"examples": [
+							{
+								"kind": "cases",
+								"source": "invocations",
+								"symbol": "artifactCases",
+								"cases": [
+									{
+										"name": "read saved evidence",
+										"input": {
+											"unitId": "reports.component.evidence-grid"
+										},
+										"output": {
+											"count": 1
+										},
+										"failed": false
+									},
+									{
+										"name": "read unavailable artifact",
+										"input": {
+											"path": "packages/reports/src/components/explorer-ui/entity-cases/artifactCases.ts"
+										},
+										"error": {
+											"name": "Error",
+											"message": "Artifact is unavailable"
+										},
+										"failed": true
+									}
+								]
+							},
+							{
+								"kind": "gap",
+								"why": "Its cases are not in the recorded form."
+							},
+							{
+								"kind": "cases",
+								"source": "observation",
+								"symbol": null,
+								"cases": [
+									{
+										"name": "Test observation",
+										"input": {
+											"requestId": "request-42"
+										},
+										"output": {
+											"count": 0
+										},
+										"failed": false
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
