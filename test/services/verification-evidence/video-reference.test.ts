@@ -66,6 +66,24 @@ test('fresh archive captures attach without copied media and restore verified vi
 		await rm(join(root, '.cache/harness/verifications'), { recursive: true, force: true });
 		expect((await new EvidenceRestoreService(root).restore()).restored).toContain(f.record.id);
 		expect(hash(await readFile(join(f.stored.directory, f.capture.path)))).toBe(f.capture.sha256);
+		await rm(await new LfsAdapter(root).path(f.capture.sha256));
+		const proposals = await new VideoReferenceService(root).candidates({
+			unit: f.capture.video!.unit,
+			clipId: f.capture.video!.clipId,
+			viewport: f.capture.viewport!,
+			inputHash: f.input.video.inputHash
+		});
+		expect(proposals[0].capture.videoReference).toMatchObject({
+			record: f.record.id,
+			revision: f.record.source.commit
+		});
+		await expect(
+			new VideoReferenceService(root).resolve({
+				source: f.record.source,
+				capture: proposals[0].capture,
+				batches: proposals[0].batches
+			})
+		).rejects.toThrow(/missing|integrity/i);
 	});
 }, 30_000);
 
@@ -100,14 +118,39 @@ test('a new parent keeps original clip metadata and admits only successful exact
 				child.capture.path
 			)
 		).toEqual(f.input.videoBytes);
+		const candidates = await new VideoReferenceService(root).candidates({
+			unit: f.capture.video!.unit,
+			clipId: f.capture.video!.clipId,
+			viewport: f.capture.viewport!,
+			inputHash: f.input.video.inputHash
+		});
+		expect(candidates[0].parent.record).toBe(child.record.id);
 		await rejectVideoOriginStandings(root, scoped, child.record);
 	});
 }, 30_000);
 
 test('reference proof rejects changed metadata, identity, paths, ancestry and missing original parents', async () => {
 	await withTempRepo(async ({ root, git }) => {
-		const f = await videoReferenceFixture(root, git),
+		const f = await videoReferenceFixture(root, git, true),
 			service = new VideoReferenceService(root);
+		await writeFile(
+			await new LfsAdapter(root).path(hash(f.input.alternateVideo)),
+			'corrupt sibling'
+		);
+		expect(
+			(await service.resolve({ source: f.record.source, capture: f.capture, batches: f.pointers }))
+				.inputHash
+		).toBe(f.input.video.inputHash);
+		for (const record of [
+			{ ...f.record, components: [] },
+			{ ...f.record, builds: [] }
+		]) {
+			const result = await service.materialize(record).then(
+				() => 'accepted',
+				(error: unknown) => (error instanceof Error ? error.message : 'unknown failure')
+			);
+			expect(result).toMatch(/owner|component|build/i);
+		}
 		for (const capture of [
 			{ ...f.capture, path: '../escape.mp4' },
 			{ ...f.capture, bytes: f.capture.bytes + 1 },
@@ -147,6 +190,13 @@ test('clip lineage preserves every original binding and refuses missing, damaged
 			child = await reusedVideoParent(root, git, f.record);
 		const source = { find: () => f.record, problems: () => [] };
 		expect(recordLineage(child.record, source)).toEqual([]);
+		for (const origin of [
+			{ ...f.record, components: [] },
+			{ ...f.record, builds: [] }
+		])
+			expect(recordLineage(child.record, { ...source, find: () => origin }).join(' ')).toMatch(
+				/owner|original|build/i
+			);
 		expect(recordLineage(child.record, { ...source, find: () => undefined }).join(' ')).toMatch(
 			/clip.*available/i
 		);

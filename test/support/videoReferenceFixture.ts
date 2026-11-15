@@ -13,12 +13,34 @@ import type {
 } from '../../src/core/verification-evidence/verificationTypes';
 
 /** Canonical admitted synthetic media, backed by a real archive and parent cache without media copies. */
-export async function videoReferenceFixture(root: string, git: (...args: string[]) => string) {
+export async function videoReferenceFixture(
+	root: string,
+	git: (...args: string[]) => string,
+	withSibling = false
+) {
 	const input = await videoArchiveFixture(root, git);
 	const owner = await videoReferenceOwner(root, git);
 	input.original.revision = owner.commit;
 	input.original.tree = owner.tree;
-	const pointers = await new VideoArchiveService(root).write([input]);
+	const sibling = {
+		...input,
+		slot: { ...input.slot, clipId: 'sibling' },
+		sha256: hash(input.alternateVideo),
+		videoBytes: input.alternateVideo,
+		posterBytes: input.alternatePoster,
+		video: {
+			...input.video,
+			clipId: 'sibling',
+			poster: {
+				...input.video.poster,
+				sha256: hash(input.alternatePoster),
+				bytes: input.alternatePoster.length
+			}
+		}
+	};
+	const pointers = await new VideoArchiveService(root).write(
+		withSibling ? [input, sibling] : [input]
+	);
 	const capture: Capture = {
 		evidence: 'motion',
 		kind: 'video',

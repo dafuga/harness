@@ -63,7 +63,7 @@ test('an origin that cannot be read leaves its checks unstated, and a fresh scen
 	expect(fresh.scenarios.every((scenario) => !('originTests' in scenario))).toBe(true);
 	const withCoverage = ranHere();
 	const coverage = [
-		{ graph: 'page', states: 2, edges: 1, complete: false, missing: ['edge:return'] }
+		{ graph: 'page', states: 0.5, edges: 1, complete: false, missing: ['edge:return'] }
 	];
 	Object.assign(withCoverage.scenarios[0], { videoCoverage: coverage });
 	expect(

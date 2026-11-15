@@ -32,6 +32,7 @@ export async function videoArchiveFixture(root: string, git: (...args: string[])
 	git('commit', '-qm', 'feat: register disposable archive owner');
 	return {
 		...archiveInput(git, f.original, archivePoster(f.original)),
+		alternateVideo: f.replacement,
 		alternatePoster: archivePoster(f.replacement)
 	};
 }
