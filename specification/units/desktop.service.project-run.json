@@ -24,35 +24,69 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectRunService.run.context",
 				"type": "ProjectRunContext",
-				"required": true
+				"required": true,
+				"description": "The creation run's context before anything is planned: the run id, project root, revision, runner, abort signal, emit callback, request, preparation, project session and mutable project. The run asks the runner once, read-only, and plans nothing if the signal is aborted before planning starts or the source revision advanced during the run."
 			}
 		],
 		"outputs": [
 			{
 				"name": "plannedBefore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "An exported module-level WeakMap that maps the Error a failed or cancelled run rejects with to a copy of the CreatedEntity of the draft that run had already created. It is set only when a draft existed before that error, and setting it never removes the draft."
 			},
 			{
 				"name": "ProjectRunService.run",
-				"type": "Promise<{ summary: string; created: CreatedEntity }>"
+				"type": "Promise<{ summary: string; created: CreatedEntity }>",
+				"description": "The resolved result of a creation run: a summary naming the proposal title and the saved design version, and the created entity naming the new plan and its thread. It resolves only after the design version is saved; a run that fails or is cancelled rejects instead.",
+				"examples": [
+					{
+						"summary": "Planned Evidence grid. Saved v001 for review.",
+						"created": {
+							"category": "components",
+							"entityId": "component.evidence-grid",
+							"threadId": "5d1e8a3c-2b7f-4c9e-a6d0-8f3b1e7c9a24",
+							"requestSaved": true
+						}
+					},
+					{
+						"summary": "Planned Status pill. Saved v001 for review.",
+						"created": {
+							"category": "components",
+							"entityId": "component.status-pill",
+							"threadId": "0f6a2d9e-7c41-4b8a-9e35-2d1c6f0a8b71",
+							"requestSaved": true
+						}
+					},
+					{
+						"summary": "Planned Order export. Saved v001 for review.",
+						"created": {
+							"category": "functions",
+							"entityId": "function.order-export",
+							"threadId": "c3b7e1f4-9a20-4d6e-b8c1-5e4a7f2d0963",
+							"requestSaved": true
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when the source revision advanced during the run, when the agent changed files although it was asked not to, or when its answer is not a checked proposal. An agent failure is rethrown unchanged, or as an Error that also names the files it changed, and a failure of a planning step is rethrown unchanged."
 			},
 			{
 				"name": "RunCancelled",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when the run's signal is aborted at one of its checks: after the agent answers, before planning starts, while design options are generated, or before the design version is saved. A cancellation reported by the agent's run is passed on unchanged; the error is an Error whose name is RunCancelled, and a draft created before it is kept and copied into plannedBefore."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProjectRunService.run",
@@ -60,17 +94,59 @@
 					{
 						"name": "ProjectRunService.run.context",
 						"type": "ProjectRunContext",
-						"required": true
+						"required": true,
+						"description": "The creation run's context before anything is planned: the run id, project root, revision, runner, abort signal, emit callback, request, preparation, project session and mutable project. The run asks the runner once, read-only, and plans nothing if the signal is aborted before planning starts or the source revision advanced during the run."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectRunService.run",
-						"type": "Promise<{ summary: string; created: CreatedEntity }>"
+						"type": "Promise<{ summary: string; created: CreatedEntity }>",
+						"description": "The resolved result of a creation run: a summary naming the proposal title and the saved design version, and the created entity naming the new plan and its thread. It resolves only after the design version is saved; a run that fails or is cancelled rejects instead.",
+						"examples": [
+							{
+								"summary": "Planned Evidence grid. Saved v001 for review.",
+								"created": {
+									"category": "components",
+									"entityId": "component.evidence-grid",
+									"threadId": "5d1e8a3c-2b7f-4c9e-a6d0-8f3b1e7c9a24",
+									"requestSaved": true
+								}
+							},
+							{
+								"summary": "Planned Status pill. Saved v001 for review.",
+								"created": {
+									"category": "components",
+									"entityId": "component.status-pill",
+									"threadId": "0f6a2d9e-7c41-4b8a-9e35-2d1c6f0a8b71",
+									"requestSaved": true
+								}
+							},
+							{
+								"summary": "Planned Order export. Saved v001 for review.",
+								"created": {
+									"category": "functions",
+									"entityId": "function.order-export",
+									"threadId": "c3b7e1f4-9a20-4d6e-b8c1-5e4a7f2d0963",
+									"requestSaved": true
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when the source revision advanced during the run, when the agent changed files although it was asked not to, or when its answer is not a checked proposal. An agent failure is rethrown unchanged, or as an Error that also names the files it changed, and a failure of a planning step is rethrown unchanged."
+					},
+					{
+						"name": "RunCancelled",
+						"type": "thrown",
+						"description": "Thrown when the run's signal is aborted at one of its checks: after the agent answers, before planning starts, while design options are generated, or before the design version is saved. A cancellation reported by the agent's run is passed on unchanged; the error is an Error whose name is RunCancelled, and a draft created before it is kept and copied into plannedBefore."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
