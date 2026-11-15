@@ -28,66 +28,250 @@
 				"name": "EntityDetails.entity",
 				"type": "ExplorerEntity",
 				"required": true,
-				"description": "Required entity supplying the accessible name and unit passed to source/measurement panels."
+				"description": "The current explorer entity provides the name, unit, and category used by the detail panel and its child views. The name labels the tabpanel; the unit and category are passed to the relevant detail panels.",
+				"examples": [
+					{
+						"id": "reports.component.harness-entity-details",
+						"category": "components",
+						"role": "Component",
+						"name": "Entity details",
+						"purpose": "Chooses contract summary, measurements or source within entity details.",
+						"unit": {
+							"id": "reports.component.harness-entity-details",
+							"kind": "component",
+							"status": "active",
+							"title": "Entity details",
+							"responsibility": "Chooses contract summary, measurements or source within entity details.",
+							"dependencies": [
+								{
+									"unit": "reports.component.entity-contract",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-entity-measures",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-entity-source",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.harness-entity-summary",
+									"via": "import"
+								},
+								{
+									"unit": "reports.component.shared-primitives-atoms-html-div",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-contract",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-lens",
+									"via": "import"
+								},
+								{
+									"unit": "reports.function.entity-measure",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.explorer-types",
+									"via": "import"
+								},
+								{
+									"unit": "reports.model.harness-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": ["packages/reports/src/components/explorer-ui/EntityDetails.svelte"],
+								"symbols": ["EntityDetails"]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "EntityDetails.entity",
+										"type": "ExplorerEntity",
+										"required": true
+									},
+									{
+										"name": "EntityDetails.contract",
+										"type": "ContractRow[]",
+										"required": true
+									},
+									{
+										"name": "EntityDetails.measure",
+										"type": "EntityMeasure",
+										"required": true
+									},
+									{
+										"name": "EntityDetails.record",
+										"type": "HarnessRecord | null",
+										"required": true
+									},
+									{
+										"name": "EntityDetails.tab",
+										"type": "ExplorerTab | 'summary'",
+										"required": false
+									},
+									{
+										"name": "EntityDetails.repository",
+										"type": "string",
+										"required": false
+									},
+									{
+										"name": "EntityDetails.commit",
+										"type": "string",
+										"required": true
+									},
+									{
+										"name": "EntityDetails.nav",
+										"type": "EntityNav",
+										"required": false
+									}
+								],
+								"outputs": [
+									{
+										"name": "EntityDetails",
+										"type": "markup"
+									}
+								],
+								"errors": [
+									{
+										"name": "Source navigation callback error",
+										"type": "thrown"
+									}
+								]
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/components/explorer-ui/EntityDetails.svelte"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "1"
+						},
+						"verdict": {
+							"passed": true,
+							"label": "Proven",
+							"reasons": []
+						},
+						"change": null,
+						"appRoute": null
+					}
+				]
 			},
 			{
 				"name": "EntityDetails.contract",
 				"type": "ContractRow[]",
 				"required": true,
-				"description": "Required prepared contract rows passed to the default summary view."
+				"description": "Prepared contract summary rows passed to EntityContract in the default branch. The source, measurements, and summary tabs do not render this value.",
+				"examples": [
+					[
+						{
+							"label": "Props",
+							"value": "Entity",
+							"items": [
+								{
+									"name": "Entity",
+									"text": "Provides the entity identity and associated HarnessUnit to the detail panels."
+								}
+							]
+						}
+					]
+				]
 			},
 			{
 				"name": "EntityDetails.measure",
 				"type": "EntityMeasure",
 				"required": true,
-				"description": "Required prepared entity measure passed to the default summary view."
+				"description": "Precomputed size and performance rows passed to EntitySummary in the default contract branch and the summary tab. The source and measurements tabs do not render it.",
+				"examples": [
+					{
+						"size": [
+							{
+								"label": "Source size",
+								"value": "32.8 KB",
+								"rawValue": 32768,
+								"unitOfMeasure": "bytes"
+							}
+						],
+						"performance": [
+							{
+								"workload": "Dashboard load",
+								"metric": "Page navigation time",
+								"target": "browser",
+								"profile": "Chromium",
+								"value": "150 ms",
+								"rawValue": 150,
+								"unitOfMeasure": "ms",
+								"tolerance": "5%",
+								"over": false
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "EntityDetails.record",
 				"type": "HarnessRecord | null",
 				"required": true,
-				"description": "Required verification record or null, used only by the measurements panel."
+				"description": "A verification record for the entity, or null when none is available; it is passed to EntityMeasures only on the measurements tab. With null, that panel says no verification record measured this revision.",
+				"examples": [null]
 			},
 			{
 				"name": "EntityDetails.tab",
 				"type": "ExplorerTab | 'summary'",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional. Defaults to JavaScript undefined and shows the contract with its measurement summary. source selects source files; measurements selects measured detail; summary selects only the performance summary."
+				"description": "When undefined, the component renders the contract with its measurement summary; 'source', 'measurements', and 'summary' select their corresponding panels. Other ExplorerTab values follow the default contract branch.",
+				"examples": ["summary"]
 			},
 			{
 				"name": "EntityDetails.repository",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional. Defaults to JavaScript undefined. Source files then remain plain paths without GitHub links."
+				"description": "Optional GitHub repository base URL used to create source links. Links require the exact github.com owner/repository pattern, a lowercase 40- or 64-character hexadecimal commit, and a safe relative file path; otherwise the files remain unlinked.",
+				"examples": ["https://github.com/octocat/Hello-World"]
 			},
 			{
 				"name": "EntityDetails.commit",
 				"type": "string",
 				"required": true,
-				"description": "Full commit hash of the viewed entity."
+				"description": "The revision commit passed to EntitySource for source links. It must be a lowercase 40- or 64-character hexadecimal hash, and a link is produced only when repository and file path validation also pass.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "EntityDetails.nav",
 				"type": "EntityNav",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional. Defaults to JavaScript undefined. Without revision-scoped navigation, the Source tab omits code-opening actions."
+				"description": "Optional revision-scoped navigation object passed to EntitySource on the Source tab. File actions are omitted when it is undefined, and an action has no callback unless nav.source is supplied."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityDetails",
 				"type": "markup",
-				"description": "Renders source files, measured detail, the standalone performance summary, or the default contract with its summary. On phones, measurement fields stack with visible labels and whole-word values. States: unmeasured: The measurements tab explains missing observations without inventing zero values."
+				"description": "Renders an accessible tabpanel with source files, measured detail, summary alone, or the default contract-plus-summary view according to tab. At viewport widths up to 480px, measurement rows stack with visible Measured, Limit, and Note labels; this value is markup, not JSON."
 			}
 		],
 		"errors": [
 			{
 				"name": "Source navigation callback error",
-				"type": "propagated",
-				"description": "On the Source tab, an error from nav.source propagates when a file code action is activated; other tabs do not invoke it."
+				"type": "thrown",
+				"description": "When the Source tab renders an enabled file action, its event handler invokes nav.source without catching exceptions, so a thrown value propagates. This path is unavailable when nav.source is absent and is not used on the other tabs."
 			}
 		],
 		"errorStatus": "declared",
