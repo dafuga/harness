@@ -13,7 +13,11 @@
 	import { createThreadRunStore } from '../../../lib/stores/development-tooling/threadRun.svelte';
 	import { pendingEntries, requestEntry, threadInfo } from './commentEntries';
 	import type { ThreadEntry } from '../../../utils/explorer-ui/commentEntries';
-	import { composeModes, visualCategory, type RunDraft } from '../../../utils/composeModes';
+	import {
+		composeModes,
+		visualCategory,
+		type RunDraft
+	} from '../../../utils/explorer-ui/composeModes';
 	import { designTarget, otherOption, shownApproval, threadAnchor } from './threadAnchor';
 	import type { ThreadTarget } from '../../../utils/explorer-ui/threadAnchor';
 	import ApprovalButton from '../../shared-primitives/ApprovalButton.svelte';

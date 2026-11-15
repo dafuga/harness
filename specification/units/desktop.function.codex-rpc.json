@@ -10,7 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts",
-			"packages/desktop/src/utils/codexRpc.ts"
+			"packages/desktop/src/utils/codex-rpc/codexRpc.ts"
 		],
 		"symbols": ["codexRpc", "codexRpc"]
 	},
@@ -121,11 +121,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/codexRpc.ts",
+		"entry": "packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/codexRpc.ts"
+				"entry": "packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts"
 			}
 		]
 	},

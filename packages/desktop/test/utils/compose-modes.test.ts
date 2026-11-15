@@ -1,7 +1,11 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { composeModes } from '../../src/components/explorer-ui/thread-panel/composeModes';
-import { defaultDesignCount, designCounts, visualCategory } from '../../src/utils/composeModes';
+import {
+	defaultDesignCount,
+	designCounts,
+	visualCategory
+} from '../../src/utils/explorer-ui/composeModes';
 import type { ProjectCapabilities } from '../../src/models/projects-sessions/ProjectContext.types';
 
 const local: ProjectCapabilities = {
