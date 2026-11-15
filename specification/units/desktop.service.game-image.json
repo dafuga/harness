@@ -21,46 +21,111 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GameImageService.constructor.session",
 				"type": "ProjectSessionService",
-				"required": true
+				"required": true,
+				"description": "The project-session service used to validate the requested project and obtain mutable or required project state. It must be supplied when constructing the service."
 			},
 			{
 				"name": "GameImageService.constructor.adapter",
 				"type": "Pick<GptImageAdapter, 'generate'>",
-				"required": false
+				"required": false,
+				"description": "The adapter whose generate method receives the project API key and assembled image prompt. Defaults to new GptImageAdapter()."
 			},
 			{
 				"name": "GameImageService.generate.input",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "A game-image request; the service reads its projectId, document, viewId, checkpointId, and expectedRevision. Generation requires a selected checkpoint in a ready view and a saved revision equal to expectedRevision.",
+				"examples": [
+					{
+						"projectId": "local-eb2550296df60349f873e96b4ce1dc657b286b209e3688a90f73348bbef047d2",
+						"document": {
+							"version": 1,
+							"views": [
+								{
+									"id": "view-forest",
+									"title": "Forest Crossing",
+									"dimension": "2d",
+									"style": "hand-painted pixel art",
+									"checkpoints": [
+										{
+											"imagePrompt": "Warm sunrise filtering through pine trees.",
+											"id": "checkpoint-bridge",
+											"title": "Old Bridge",
+											"description": "Reach the weathered bridge at the forest edge.",
+											"x": 4,
+											"y": 2,
+											"requires": [],
+											"conditions": [],
+											"actions": []
+										}
+									]
+								}
+							],
+							"mechanics": []
+						},
+						"viewId": "view-forest",
+						"checkpointId": "checkpoint-bridge",
+						"expectedRevision": "1dac9c48ebc7f9172354b0bdd83b67d18d6ea5ce635eaa78e6c9ecb5deec9d66"
+					}
+				]
 			},
 			{
 				"name": "GameImageService.read.input",
 				"type": "Parameters<NonNullable<GameDesktopBridge['gameImageRead']>>[0]",
-				"required": true
+				"required": true,
+				"description": "A game-image read request; the service validates projectId and forwards path and commit to the checkpoint-image repository. The full request shape comes from GameDesktopBridge.",
+				"examples": [
+					{
+						"projectId": "local-eb2550296df60349f873e96b4ce1dc657b286b209e3688a90f73348bbef047d2",
+						"path": "static/game/checkpoints/841fbe7f2395cf73003b90cf8d27f883342c727a0463c9efb5bb543ea0431f12.png"
+					},
+					{
+						"projectId": "local-eb2550296df60349f873e96b4ce1dc657b286b209e3688a90f73348bbef047d2",
+						"path": "static/game/checkpoints/841fbe7f2395cf73003b90cf8d27f883342c727a0463c9efb5bb543ea0431f12.png",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GameImageService.generate",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to an image record and a PNG data URL. The image record has path, model (fixed to gpt-image-2), prompt, and ISO createdAt; the assembled prompt is limited to 20,000 characters.",
+				"examples": [
+					{
+						"image": {
+							"path": "static/game/checkpoints/841fbe7f2395cf73003b90cf8d27f883342c727a0463c9efb5bb543ea0431f12.png",
+							"model": "gpt-image-2",
+							"prompt": "Create a polished gameplay checkpoint image, a visual target for a game.\nKeep consistent characters, environment and art direction. Show the checkpoint state. No HUD, text labels or UI.\nView: Forest Crossing (2d). Style: hand-painted pixel art\nCheckpoint: Old Bridge. Guidance: Reach the weathered bridge at the forest edge.\nVisual direction: Warm sunrise filtering through pine trees.\nPrerequisites: []\nConditions: []\nConsequences: []",
+							"createdAt": "2026-11-15T12:34:56.000Z"
+						},
+						"dataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGOQm5DyHwAD9AISxJ7C2gAAAABJRU5ErkJggg=="
+					}
+				]
 			},
 			{
 				"name": "GameImageService.read",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the value returned by CheckpointImageRepository.read for the supplied path and commit; this service does not define that value's shape.",
+				"examples": [
+					"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGOQm5DyHwAD9AISxJ7C2gAAAABJRU5ErkJggg=="
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An Error is thrown when the document or selected checkpoint is invalid, the view is not ready, the saved game revision is stale, another game operation is active, or the assembled prompt exceeds 20,000 characters."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GameImageService.generate",
@@ -68,22 +133,69 @@
 					{
 						"name": "GameImageService.generate.input",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "A game-image request; the service reads its projectId, document, viewId, checkpointId, and expectedRevision. Generation requires a selected checkpoint in a ready view and a saved revision equal to expectedRevision.",
+						"examples": [
+							{
+								"projectId": "local-eb2550296df60349f873e96b4ce1dc657b286b209e3688a90f73348bbef047d2",
+								"document": {
+									"version": 1,
+									"views": [
+										{
+											"id": "view-forest",
+											"title": "Forest Crossing",
+											"dimension": "2d",
+											"style": "hand-painted pixel art",
+											"checkpoints": [
+												{
+													"imagePrompt": "Warm sunrise filtering through pine trees.",
+													"id": "checkpoint-bridge",
+													"title": "Old Bridge",
+													"description": "Reach the weathered bridge at the forest edge.",
+													"x": 4,
+													"y": 2,
+													"requires": [],
+													"conditions": [],
+													"actions": []
+												}
+											]
+										}
+									],
+									"mechanics": []
+								},
+								"viewId": "view-forest",
+								"checkpointId": "checkpoint-bridge",
+								"expectedRevision": "1dac9c48ebc7f9172354b0bdd83b67d18d6ea5ce635eaa78e6c9ecb5deec9d66"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameImageService.generate",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to an image record and a PNG data URL. The image record has path, model (fixed to gpt-image-2), prompt, and ISO createdAt; the assembled prompt is limited to 20,000 characters.",
+						"examples": [
+							{
+								"image": {
+									"path": "static/game/checkpoints/841fbe7f2395cf73003b90cf8d27f883342c727a0463c9efb5bb543ea0431f12.png",
+									"model": "gpt-image-2",
+									"prompt": "Create a polished gameplay checkpoint image, a visual target for a game.\nKeep consistent characters, environment and art direction. Show the checkpoint state. No HUD, text labels or UI.\nView: Forest Crossing (2d). Style: hand-painted pixel art\nCheckpoint: Old Bridge. Guidance: Reach the weathered bridge at the forest edge.\nVisual direction: Warm sunrise filtering through pine trees.\nPrerequisites: []\nConditions: []\nConsequences: []",
+									"createdAt": "2026-11-15T12:34:56.000Z"
+								},
+								"dataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGOQm5DyHwAD9AISxJ7C2gAAAABJRU5ErkJggg=="
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "An Error is thrown when the document or selected checkpoint is invalid, the view is not ready, the saved game revision is stale, another game operation is active, or the assembled prompt exceeds 20,000 characters."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GameImageService.read",
@@ -91,17 +203,33 @@
 					{
 						"name": "GameImageService.read.input",
 						"type": "Parameters<NonNullable<GameDesktopBridge['gameImageRead']>>[0]",
-						"required": true
+						"required": true,
+						"description": "A game-image read request; the service validates projectId and forwards path and commit to the checkpoint-image repository. The full request shape comes from GameDesktopBridge.",
+						"examples": [
+							{
+								"projectId": "local-eb2550296df60349f873e96b4ce1dc657b286b209e3688a90f73348bbef047d2",
+								"path": "static/game/checkpoints/841fbe7f2395cf73003b90cf8d27f883342c727a0463c9efb5bb543ea0431f12.png"
+							},
+							{
+								"projectId": "local-eb2550296df60349f873e96b4ce1dc657b286b209e3688a90f73348bbef047d2",
+								"path": "static/game/checkpoints/841fbe7f2395cf73003b90cf8d27f883342c727a0463c9efb5bb543ea0431f12.png",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameImageService.read",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the value returned by CheckpointImageRepository.read for the supplied path and commit; this service does not define that value's shape.",
+						"examples": [
+							"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGOQm5DyHwAD9AISxJ7C2gAAAABJRU5ErkJggg=="
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -111,22 +239,25 @@
 					{
 						"name": "GameImageService.constructor.session",
 						"type": "ProjectSessionService",
-						"required": true
+						"required": true,
+						"description": "The project-session service used to validate the requested project and obtain mutable or required project state. It must be supplied when constructing the service."
 					},
 					{
 						"name": "GameImageService.constructor.adapter",
 						"type": "Pick<GptImageAdapter, 'generate'>",
-						"required": false
+						"required": false,
+						"description": "The adapter whose generate method receives the project API key and assembled image prompt. Defaults to new GptImageAdapter()."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GameImageService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a GameImageService instance retaining the supplied session and adapter; the adapter defaults to new GptImageAdapter()."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
