@@ -32,69 +32,126 @@
 				"name": "imageAnchor.image",
 				"type": "HTMLImageElement",
 				"required": true,
-				"description": "Image whose rendered rectangle supplies coordinates."
+				"description": "Image element whose getBoundingClientRect() supplies the rendered left, top, width and height used to normalize each pointer position. A zero-width or zero-height rectangle is not guarded, so the division can yield NaN."
 			},
 			{
 				"name": "imageAnchor.pointer",
 				"type": "Point",
 				"required": true,
-				"description": "Pointer position in viewport coordinates."
+				"description": "Pointer position in viewport coordinates, compared with the rendered left and top edges of the image. Positions outside the image are clamped to the nearest edge rather than rejected.",
+				"examples": [
+					{
+						"x": 412.5,
+						"y": 268
+					},
+					{
+						"x": 96,
+						"y": 144.25
+					},
+					{
+						"x": 1024,
+						"y": 612
+					}
+				]
 			},
 			{
 				"name": "keepPointerInPlace.viewport",
 				"type": "HTMLElement",
 				"required": true,
-				"description": "Scrolling viewport to adjust."
+				"description": "Scrolling element whose scrollLeft and scrollTop are each adjusted by its own computed offset, which can be negative. The function does not check that the element can scroll, and the browser clamps the assigned offsets to its scrollable range."
 			},
 			{
 				"name": "keepPointerInPlace.image",
 				"type": "HTMLImageElement",
 				"required": true,
-				"description": "Image after its size has changed."
+				"description": "Image element measured with getBoundingClientRect() at the moment of the call, so a size change must already be applied before the call. A zero-width or zero-height rectangle places the anchor on the left or top edge of that axis."
 			},
 			{
 				"name": "keepPointerInPlace.anchor",
 				"type": "Point",
 				"required": true,
-				"description": "Normalized image point to preserve."
+				"description": "Normalized image point, with x and y as fractions of the rendered width and height, that should be kept under the pointer. The function does not clamp it, so values outside zero through one place the anchor outside the rendered image.",
+				"examples": [
+					{
+						"x": 0.25,
+						"y": 0.5
+					},
+					{
+						"x": 0.8125,
+						"y": 0.1875
+					},
+					{
+						"x": 0,
+						"y": 1
+					}
+				]
 			},
 			{
 				"name": "keepPointerInPlace.pointer",
 				"type": "Point",
 				"required": true,
-				"description": "Pointer location that should remain over that image point."
+				"description": "Pointer location in viewport coordinates where the anchor should appear after the scroll change. The function does not validate it and uses it only in the scroll offset calculation.",
+				"examples": [
+					{
+						"x": 640,
+						"y": 360
+					},
+					{
+						"x": 128,
+						"y": 96
+					},
+					{
+						"x": 1024,
+						"y": 612
+					}
+				]
 			},
 			{
 				"name": "trackpadZoom.node",
 				"type": "HTMLElement",
 				"required": true,
-				"description": "Element receiving wheel and gesture listeners."
+				"description": "Element that receives the wheel, gesturestart, gesturechange and gestureend listeners until destroy() is called. The center of its bounding rectangle stands in for the pointer when an event lacks clientX or clientY, and its clientHeight is the page height used for wheel deltas in page delta mode."
 			},
 			{
 				"name": "trackpadZoom.controls",
 				"type": "() => ZoomControls | null",
 				"required": true,
-				"description": "Function returning current/minimum/maximum zoom and an apply callback, or null when zoom is unavailable."
+				"description": "Function called on each zoom step that returns the current, minimum and maximum zoom and an apply(next, point) callback, or null when zoom is unavailable. Exceptions thrown by it or by apply are not caught, and a null result applies no zoom while still preventing the event's default action."
 			}
 		],
 		"outputs": [
 			{
 				"name": "imageAnchor",
 				"type": "Point",
-				"description": "Normalized image coordinates clamped to zero through one."
+				"description": "Normalized image coordinates with x and y each clamped to zero through one, where zero is the rendered left or top edge and one is the right or bottom edge. Positions outside the image return the nearest edge value, but an axis with zero rendered size yields NaN when the pointer lies exactly on the starting edge of that axis.",
+				"examples": [
+					{
+						"x": 0.42,
+						"y": 0.61
+					},
+					{
+						"x": 0,
+						"y": 1
+					},
+					{
+						"x": 1,
+						"y": 0.5
+					}
+				]
 			},
 			{
 				"name": "keepPointerInPlace",
 				"type": "unknown",
-				"description": "Adjusts horizontal and vertical scroll offsets to keep the specified image point under the pointer; returns no value."
+				"description": "No value is returned; the function adds a computed offset to each of viewport.scrollLeft and viewport.scrollTop. The browser clamps the new offsets to the viewport's scrollable range, so the anchor may not reach the pointer near the scroll limits."
 			},
 			{
 				"name": "trackpadZoom",
 				"type": "unknown",
-				"description": "Installs nonpassive Ctrl-wheel and Safari gesture listeners and returns destroy for cleanup. Zoom is clamped to supplied bounds, with null passed for fitted size. Ordinary wheel scrolling is untouched; active Safari gestures suppress duplicate Ctrl-wheel zoom."
+				"description": "Installs nonpassive wheel, gesturestart and gesturechange listeners and a gestureend listener on the node, and returns an object whose destroy() method removes all four. Plain wheel scrolling is left untouched, Ctrl-wheel, gesturestart and gesturechange events are default-prevented, each Ctrl-wheel step scales zoom by a factor between about 0.61 and 1.65 and does not zoom during an active Safari gesture, and zoom is clamped to the supplied minimum and maximum with null passed to apply when the result is at or within rounding of the minimum."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "imageAnchor",
@@ -103,24 +160,52 @@
 						"name": "imageAnchor.image",
 						"type": "HTMLImageElement",
 						"required": true,
-						"description": "Image whose rendered rectangle supplies coordinates."
+						"description": "Image element whose getBoundingClientRect() supplies the rendered left, top, width and height used to normalize each pointer position. A zero-width or zero-height rectangle is not guarded, so the division can yield NaN."
 					},
 					{
 						"name": "imageAnchor.pointer",
 						"type": "Point",
 						"required": true,
-						"description": "Pointer position in viewport coordinates."
+						"description": "Pointer position in viewport coordinates, compared with the rendered left and top edges of the image. Positions outside the image are clamped to the nearest edge rather than rejected.",
+						"examples": [
+							{
+								"x": 412.5,
+								"y": 268
+							},
+							{
+								"x": 96,
+								"y": 144.25
+							},
+							{
+								"x": 1024,
+								"y": 612
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "imageAnchor",
 						"type": "Point",
-						"description": "Normalized image coordinates clamped to zero through one."
+						"description": "Normalized image coordinates with x and y each clamped to zero through one, where zero is the rendered left or top edge and one is the right or bottom edge. Positions outside the image return the nearest edge value, but an axis with zero rendered size yields NaN when the pointer lies exactly on the starting edge of that axis.",
+						"examples": [
+							{
+								"x": 0.42,
+								"y": 0.61
+							},
+							{
+								"x": 0,
+								"y": 1
+							},
+							{
+								"x": 1,
+								"y": 0.5
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "keepPointerInPlace",
@@ -129,36 +214,64 @@
 						"name": "keepPointerInPlace.viewport",
 						"type": "HTMLElement",
 						"required": true,
-						"description": "Scrolling viewport to adjust."
+						"description": "Scrolling element whose scrollLeft and scrollTop are each adjusted by its own computed offset, which can be negative. The function does not check that the element can scroll, and the browser clamps the assigned offsets to its scrollable range."
 					},
 					{
 						"name": "keepPointerInPlace.image",
 						"type": "HTMLImageElement",
 						"required": true,
-						"description": "Image after its size has changed."
+						"description": "Image element measured with getBoundingClientRect() at the moment of the call, so a size change must already be applied before the call. A zero-width or zero-height rectangle places the anchor on the left or top edge of that axis."
 					},
 					{
 						"name": "keepPointerInPlace.anchor",
 						"type": "Point",
 						"required": true,
-						"description": "Normalized image point to preserve."
+						"description": "Normalized image point, with x and y as fractions of the rendered width and height, that should be kept under the pointer. The function does not clamp it, so values outside zero through one place the anchor outside the rendered image.",
+						"examples": [
+							{
+								"x": 0.25,
+								"y": 0.5
+							},
+							{
+								"x": 0.8125,
+								"y": 0.1875
+							},
+							{
+								"x": 0,
+								"y": 1
+							}
+						]
 					},
 					{
 						"name": "keepPointerInPlace.pointer",
 						"type": "Point",
 						"required": true,
-						"description": "Pointer location that should remain over that image point."
+						"description": "Pointer location in viewport coordinates where the anchor should appear after the scroll change. The function does not validate it and uses it only in the scroll offset calculation.",
+						"examples": [
+							{
+								"x": 640,
+								"y": 360
+							},
+							{
+								"x": 128,
+								"y": 96
+							},
+							{
+								"x": 1024,
+								"y": 612
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "keepPointerInPlace",
 						"type": "unknown",
-						"description": "Adjusts horizontal and vertical scroll offsets to keep the specified image point under the pointer; returns no value."
+						"description": "No value is returned; the function adds a computed offset to each of viewport.scrollLeft and viewport.scrollTop. The browser clamps the new offsets to the viewport's scrollable range, so the anchor may not reach the pointer near the scroll limits."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "trackpadZoom",
@@ -167,24 +280,24 @@
 						"name": "trackpadZoom.node",
 						"type": "HTMLElement",
 						"required": true,
-						"description": "Element receiving wheel and gesture listeners."
+						"description": "Element that receives the wheel, gesturestart, gesturechange and gestureend listeners until destroy() is called. The center of its bounding rectangle stands in for the pointer when an event lacks clientX or clientY, and its clientHeight is the page height used for wheel deltas in page delta mode."
 					},
 					{
 						"name": "trackpadZoom.controls",
 						"type": "() => ZoomControls | null",
 						"required": true,
-						"description": "Function returning current/minimum/maximum zoom and an apply callback, or null when zoom is unavailable."
+						"description": "Function called on each zoom step that returns the current, minimum and maximum zoom and an apply(next, point) callback, or null when zoom is unavailable. Exceptions thrown by it or by apply are not caught, and a null result applies no zoom while still preventing the event's default action."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackpadZoom",
 						"type": "unknown",
-						"description": "Installs nonpassive Ctrl-wheel and Safari gesture listeners and returns destroy for cleanup. Zoom is clamped to supplied bounds, with null passed for fitted size. Ordinary wheel scrolling is untouched; active Safari gestures suppress duplicate Ctrl-wheel zoom."
+						"description": "Installs nonpassive wheel, gesturestart and gesturechange listeners and a gestureend listener on the node, and returns an object whose destroy() method removes all four. Plain wheel scrolling is left untouched, Ctrl-wheel, gesturestart and gesturechange events are default-prevented, each Ctrl-wheel step scales zoom by a factor between about 0.61 and 1.65 and does not zoom during an active Safari gesture, and zoom is clamped to the supplied minimum and maximum with null passed to apply when the result is at or within rounding of the minimum."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
