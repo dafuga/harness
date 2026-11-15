@@ -34,33 +34,51 @@
 				"name": "loopbackAddress.address",
 				"type": "string | undefined",
 				"required": true,
-				"description": "Possible loopback address; undefined becomes empty, then whitespace is trimmed and casing normalized."
+				"description": "The address to test; undefined is read as the empty string and never matches. After trimming and lowercasing, the value must equal localhost, ::1, 127.x.y.z or ::ffff:127.x.y.z, with each of x, y and z one to three digits and no range check (127.999.0.1 matches; 0:0:0:0:0:0:0:1 does not).",
+				"examples": ["127.0.0.1", "::ffff:127.0.0.1", "10.0.0.5"]
 			},
 			{
 				"name": "consolePolicy.owner",
 				"type": "OwnerMode",
 				"required": true,
-				"description": "Owner configuration: mode must be loopback, bind must match a loopback address, and no nonblank addressHeader may be configured."
+				"description": "The owner configuration, read once when consolePolicy is called, so later edits to the object have no effect. The policy is enabled only when mode is exactly 'loopback', bind passes the loopbackAddress check, and addressHeader is absent or blank after trimming; a nonblank addressHeader disables it entirely.",
+				"examples": [
+					{
+						"mode": "loopback",
+						"bind": "127.0.0.1"
+					},
+					{
+						"mode": "loopback",
+						"bind": "::1"
+					},
+					{
+						"mode": "loopback",
+						"bind": "127.0.0.1",
+						"addressHeader": "X-Forwarded-For"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "loopbackAddress",
 				"type": "boolean",
-				"description": "True for localhost, ::1, and supported 127.* IPv4 or IPv4-mapped forms after normalization."
+				"description": "True when the trimmed, lowercased address is localhost, ::1, 127.x.y.z or ::ffff:127.x.y.z (one to three digits per octet, no range check), and false otherwise, including when the input is undefined. consolePolicy applies this same check to the address returned by getClientAddress.",
+				"examples": [true, false]
 			},
 			{
 				"name": "consolePolicy",
 				"type": "ConsolePolicy",
-				"description": "Policy returning true only for an enabled loopback owner server whose request supplies a matching getClientAddress result. Missing or throwing address lookup denies access; client headers are ignored."
+				"description": "The per-request policy: each call returns true only when the owner configuration was enabled at construction and event.getClientAddress is present and returns a loopback address, and false otherwise, including when getClientAddress is missing or throws. It returns a plain boolean synchronously, never a Promise, and reads no request header, Host value or URL."
 			},
 			{
 				"name": "denyAll",
 				"type": "ConsolePolicy",
-				"description": "Policy that always returns false."
+				"description": "The default policy for any host that has not supplied one; it ignores its argument and always returns false, synchronously."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "loopbackAddress",
@@ -69,18 +87,20 @@
 						"name": "loopbackAddress.address",
 						"type": "string | undefined",
 						"required": true,
-						"description": "Possible loopback address; undefined becomes empty, then whitespace is trimmed and casing normalized."
+						"description": "The address to test; undefined is read as the empty string and never matches. After trimming and lowercasing, the value must equal localhost, ::1, 127.x.y.z or ::ffff:127.x.y.z, with each of x, y and z one to three digits and no range check (127.999.0.1 matches; 0:0:0:0:0:0:0:1 does not).",
+						"examples": ["127.0.0.1", "::ffff:127.0.0.1", "10.0.0.5"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "loopbackAddress",
 						"type": "boolean",
-						"description": "True for localhost, ::1, and supported 127.* IPv4 or IPv4-mapped forms after normalization."
+						"description": "True when the trimmed, lowercased address is localhost, ::1, 127.x.y.z or ::ffff:127.x.y.z (one to three digits per octet, no range check), and false otherwise, including when the input is undefined. consolePolicy applies this same check to the address returned by getClientAddress.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "consolePolicy",
@@ -89,18 +109,33 @@
 						"name": "consolePolicy.owner",
 						"type": "OwnerMode",
 						"required": true,
-						"description": "Owner configuration: mode must be loopback, bind must match a loopback address, and no nonblank addressHeader may be configured."
+						"description": "The owner configuration, read once when consolePolicy is called, so later edits to the object have no effect. The policy is enabled only when mode is exactly 'loopback', bind passes the loopbackAddress check, and addressHeader is absent or blank after trimming; a nonblank addressHeader disables it entirely.",
+						"examples": [
+							{
+								"mode": "loopback",
+								"bind": "127.0.0.1"
+							},
+							{
+								"mode": "loopback",
+								"bind": "::1"
+							},
+							{
+								"mode": "loopback",
+								"bind": "127.0.0.1",
+								"addressHeader": "X-Forwarded-For"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "consolePolicy",
 						"type": "ConsolePolicy",
-						"description": "Policy returning true only for an enabled loopback owner server whose request supplies a matching getClientAddress result. Missing or throwing address lookup denies access; client headers are ignored."
+						"description": "The per-request policy: each call returns true only when the owner configuration was enabled at construction and event.getClientAddress is present and returns a loopback address, and false otherwise, including when getClientAddress is missing or throws. It returns a plain boolean synchronously, never a Promise, and reads no request header, Host value or URL."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "denyAll",
@@ -109,11 +144,11 @@
 					{
 						"name": "denyAll",
 						"type": "ConsolePolicy",
-						"description": "Policy that always returns false."
+						"description": "The default policy for any host that has not supplied one; it ignores its argument and always returns false, synchronously."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
