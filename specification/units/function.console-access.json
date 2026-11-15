@@ -28,17 +28,29 @@
 				"name": "consoleAccess.options",
 				"type": "{ policy: ConsolePolicy; data: ConsoleSource; host?: ConsoleHost; }",
 				"required": true,
-				"description": "Host policy and data source, with optional build identity. Data may be shared or opened from each admitted request; policy must return exactly true to admit it."
+				"description": "Creates request handlers from a policy and a console data source, with optional host build metadata used by `build.json`. The policy may be synchronous or asynchronous but admits a request only when it resolves to exactly `true`; request-scoped data is opened only after admission."
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleAccess",
 				"type": "ConsoleAccess",
-				"description": "Guard, page entry, JSON and media handlers. Denials return 403, absent or invalid resources return 404, legacy addresses may redirect with 308, and media supports byte-range 206 or 416 responses. Policy exceptions deny access; data is opened only after admission."
+				"description": "Returns `guard`, `entry`, `json` and `media` handlers; each applies the policy and returns a 403 response unless it resolves exactly to `true`, and the data source is opened only for admitted requests. `entry` can return a 308 redirect or `undefined`, while JSON and media handlers return responses, including 404 for missing or disallowed resources and 206/416 for media range responses."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "A malformed `index.json` string returned for a root or query entry request makes `JSON.parse` throw. The `entry` handler does not catch this syntax error."
+			},
+			{
+				"name": "Source error",
+				"type": "thrown",
+				"description": "A synchronous error from the request-scoped `ConsoleSource`, or a rejection from `ConsoleData.json` or `ConsoleData.media`, propagates from its handler unchanged. The injected source determines the actual error name and value; the handler does not normalize it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "consoleAccess",
@@ -47,18 +59,18 @@
 						"name": "consoleAccess.options",
 						"type": "{ policy: ConsolePolicy; data: ConsoleSource; host?: ConsoleHost; }",
 						"required": true,
-						"description": "Host policy and data source, with optional build identity. Data may be shared or opened from each admitted request; policy must return exactly true to admit it."
+						"description": "Creates request handlers from a policy and a console data source, with optional host build metadata used by `build.json`. The policy may be synchronous or asynchronous but admits a request only when it resolves to exactly `true`; request-scoped data is opened only after admission."
 					}
 				],
 				"outputs": [
 					{
 						"name": "consoleAccess",
 						"type": "ConsoleAccess",
-						"description": "Guard, page entry, JSON and media handlers. Denials return 403, absent or invalid resources return 404, legacy addresses may redirect with 308, and media supports byte-range 206 or 416 responses. Policy exceptions deny access; data is opened only after admission."
+						"description": "Returns `guard`, `entry`, `json` and `media` handlers; each applies the policy and returns a 403 response unless it resolves exactly to `true`, and the data source is opened only for admitted requests. `entry` can return a 308 redirect or `undefined`, while JSON and media handlers return responses, including 404 for missing or disallowed resources and 206/416 for media range responses."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
