@@ -35,21 +35,21 @@
 				"name": "ProjectSwitcher.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace supplying current project, project list, snapshot and navigation operations. After switchProject resolves, the listbox resets to the resulting workspace project identifier."
+				"description": "The workspace store instance (type Workspace, a WorkspaceState class instance) whose projectId, projects, snapshot, busy, bridge and local the switcher reads and whose switchProject(projectId) and openProject() it calls. The select resets to workspace.projectId only after switchProject resolves, so a rejected switch skips that reset."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectSwitcher",
 				"type": "markup",
-				"description": "Project name and an icon opening a grouped listbox of local-device/connected-computer and Shared projects. With no projects, the dialog shows a normal No projects yet notice without a choice field. Busy state shows Loading project and disables opening choices and Add local project. Selection calls switchProject, then resets to the resulting project id. Local Add is shown only with a local bridge. States: open: The project menu is expanded with the available project choices. empty: No project is selected or available and the switcher offers its empty-project actions. long: The selected long project name stays within the switcher control."
+				"description": "The switcher bar holds a ChoiceDialog labelled 'Choose workbench' with a workbench icon, disabled while workspace.busy, whose content is a 'Project' select of the projects (the shown project is appended when the bridge does not list it), grouped as 'On this device' or 'On your computer' for local projects and 'Shared' for shared ones, or a 'No projects yet' notice when there are none, followed by the shown project's name when one exists (cut with an ellipsis when long, with the full name as its title). Choosing a project closes the dialog, calls workspace.switchProject with the chosen id and resets the select to workspace.projectId once that resolves; the 'Add local project' button (shown only when workspace.bridge is set and workspace.local is true, disabled while workspace.busy) calls workspace.openProject(), a 'Loading project…' status shows while workspace.busy, and this component never displays workspace.error."
 			}
 		],
 		"errors": [
 			{
 				"name": "Workspace operation failure",
 				"type": "propagated",
-				"description": "Synchronous errors and rejected promises from the supplied workspace navigation or project operations are not caught by this component."
+				"description": "Errors and rejected promises from workspace.switchProject (reached through choose, which the select's change handler calls) and from workspace.openProject (the Add button) are not caught by this component. Both handlers discard the returned promise with void, and a switchProject rejection ends choose before the select resets to workspace.projectId."
 			}
 		],
 		"errorStatus": "declared",
