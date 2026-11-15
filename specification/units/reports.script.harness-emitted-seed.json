@@ -15,32 +15,45 @@
 		"symbols": ["seedEmitted", "EmittedSeed", "EmittedSeed"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "seedEmitted.repo",
 				"type": "VerifyRepo",
-				"required": true
+				"required": true,
+				"description": "Provides the synthetic repository that this seed mutates. It must support the writes, Harness commands, target setup, verification, and commits performed by the routine."
 			},
 			{
 				"name": "seedEmitted.verified",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Callback invoked whenever the seed needs a verification result from the synthetic repository. It receives the same VerifyRepo and resolves to a VerifyOutcome whose record ID is used by budget commands."
 			},
 			{
 				"name": "seedEmitted.explain",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Callback used to describe the behavior changes added to the unit history. It receives the VerifyRepo and a behavior string, and the awaited return value is ignored."
 			}
 		],
 		"outputs": [
 			{
 				"name": "seedEmitted",
-				"type": "Promise<Record<'emitting' | 'packed' | 'swapped' | 'repacked' | 'vanished', string>>"
+				"type": "Promise<Record<'emitting' | 'packed' | 'swapped' | 'repacked' | 'vanished', string>>",
+				"description": "Resolves to the commit IDs created for the emitting, packed, swapped, repacked, and vanished stages, in that order. Each value is the string returned by repo.commit for that stage.",
+				"examples": [
+					{
+						"emitting": "85ea1e762adc16498e111f858653025b04297978",
+						"packed": "1c0b7f4f20e5d343851c913eefa11df708ef15ac",
+						"swapped": "5aef467c7342563efc2eef75440a88c153396a56",
+						"repacked": "d544c6d2c9a974e585b312188b02c7108d482d08",
+						"vanished": "99317af4eaafa83f3959677372080162668d7bda"
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "seedEmitted",
@@ -48,27 +61,40 @@
 					{
 						"name": "seedEmitted.repo",
 						"type": "VerifyRepo",
-						"required": true
+						"required": true,
+						"description": "Provides the synthetic repository that this seed mutates. It must support the writes, Harness commands, target setup, verification, and commits performed by the routine."
 					},
 					{
 						"name": "seedEmitted.verified",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Callback invoked whenever the seed needs a verification result from the synthetic repository. It receives the same VerifyRepo and resolves to a VerifyOutcome whose record ID is used by budget commands."
 					},
 					{
 						"name": "seedEmitted.explain",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Callback used to describe the behavior changes added to the unit history. It receives the VerifyRepo and a behavior string, and the awaited return value is ignored."
 					}
 				],
 				"outputs": [
 					{
 						"name": "seedEmitted",
-						"type": "Promise<Record<'emitting' | 'packed' | 'swapped' | 'repacked' | 'vanished', string>>"
+						"type": "Promise<Record<'emitting' | 'packed' | 'swapped' | 'repacked' | 'vanished', string>>",
+						"description": "Resolves to the commit IDs created for the emitting, packed, swapped, repacked, and vanished stages, in that order. Each value is the string returned by repo.commit for that stage.",
+						"examples": [
+							{
+								"emitting": "85ea1e762adc16498e111f858653025b04297978",
+								"packed": "1c0b7f4f20e5d343851c913eefa11df708ef15ac",
+								"swapped": "5aef467c7342563efc2eef75440a88c153396a56",
+								"repacked": "d544c6d2c9a974e585b312188b02c7108d482d08",
+								"vanished": "99317af4eaafa83f3959677372080162668d7bda"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
