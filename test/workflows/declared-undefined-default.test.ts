@@ -25,17 +25,24 @@ test('an authored undefined default survives a scanned optional input with no li
 			expect(contractWith(authored, input('Chips.commit'))).toMatchObject({
 				default: 'undefined'
 			});
-			// A scanned literal default stays authoritative.
-			expect(contractWith(authored, input('Chips.commit', { default: 'none' }))).toMatchObject({
-				default: 'none'
-			});
-			// Required inputs and other authored defaults keep the scanned shape.
+			const objectDefault = { density: 'compact', pages: [1, 2] };
+			expect(
+				contractWith(input('Chips.options', { default: objectDefault }), input('Chips.options'))
+			).toHaveProperty('default', objectDefault);
+			// A scanned literal default stays authoritative over an authored object default.
+			expect(
+				contractWith(
+					input('Chips.options', { default: objectDefault }),
+					input('Chips.options', { default: 'none' })
+				)
+			).toMatchObject({ default: 'none' });
+			// Required inputs still keep the scanned shape.
 			const required = { ...authored, required: true };
 			expect(contractWith(required, input('Chips.commit', { required: true }))).not.toHaveProperty(
 				'default'
 			);
 			expect(
 				contractWith(input('Chips.size', { default: 'span' }), input('Chips.size'))
-			).not.toHaveProperty('default');
+			).toHaveProperty('default', 'span');
 		}
 	));

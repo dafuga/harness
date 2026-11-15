@@ -146,13 +146,15 @@ function explainedItem(
 	if (previous.type === 'unknown' && inherited) previous.type = inherited.type;
 	const documentation = { ...previous };
 	delete documentation.default;
-	// An optional prop without a source literal is undefined; the authored default says so.
-	const keepsUndefined =
-		previous.default === 'undefined' && item.required === false && !Object.hasOwn(item, 'default');
+	// Preserve authored defaults when an optional prop has no source literal.
+	const keepsAuthoredDefault =
+		Object.hasOwn(previous, 'default') &&
+		item.required === false &&
+		!Object.hasOwn(item, 'default');
 	return {
 		...documentation,
 		...item,
-		...(keepsUndefined ? { default: 'undefined' } : {}),
+		...(keepsAuthoredDefault ? { default: previous.default } : {}),
 		...(item.type === 'unknown' && previous.type ? { type: previous.type } : {})
 	};
 }
