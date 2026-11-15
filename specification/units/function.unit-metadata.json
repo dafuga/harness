@@ -62,109 +62,179 @@
 				"name": "configValueStructure.value",
 				"type": "ts.Expression",
 				"required": true,
-				"description": "Source expression to describe structurally without executing configuration."
+				"description": "The syntax node to describe, read only as syntax and never evaluated, with its source text kept verbatim. Parentheses, type assertions and identifiers found in bindings are followed to reach an object or array literal or a z.object or z.array schema, while other calls and unbound identifiers stay opaque expression nodes."
 			},
 			{
 				"name": "configValueStructure.bindings",
 				"type": "Bindings",
 				"required": true,
-				"description": "Local expression bindings that can be followed during static inspection."
+				"description": "A map from local identifier names to their initializer expressions, consulted only when an identifier is reached while resolving the value. Each name is followed at most once along a single resolution chain, and a name missing from the map stays an opaque expression node."
 			},
 			{
 				"name": "configValueStructure.depth",
 				"type": "number",
 				"required": false,
 				"default": 0,
-				"description": "Current recursion depth used to bound structural inspection; defaults to zero."
+				"description": "The current nesting level, increased by one for each nested entry or schema item, and it defaults to 0 for a top-level value. At 10 or more the value is returned as an opaque expression node without being inspected.",
+				"examples": [0, 1, 3]
 			},
 			{
 				"name": "configValues.text",
 				"type": "string",
 				"required": true,
-				"description": "Committed configuration source text or JSON document to inspect."
+				"description": "The committed config source, parsed as TypeScript without being executed, or a JSON document that is first wrapped as a default export when the source path ends in .json. Only exported variable declarations and the default export are read, and a value without a literal keeps its text and source, plus a structure when one is known.",
+				"examples": [
+					"export const reportLimits = { pageSize: 50, retries: 3 };",
+					"export default defineConfig({ groups: ['explorer', 'services'] });",
+					"{ \"name\": \"reports\", \"enabled\": true }"
+				]
 			},
 			{
 				"name": "configValues.source",
 				"type": "string",
 				"required": true,
-				"description": "Source path used for syntax selection and source-preserving provenance."
+				"description": "The repository path of the config file, used to choose JSON wrapping for paths ending in .json, to name a default export after its base name without extension, and to record every value's source unchanged. The path only labels the text, because this function never opens the file.",
+				"examples": [
+					"src/configs/development-tooling/moduleGroupsConfig.ts",
+					"src/configs/development-tooling/moduleGroups.json"
+				]
 			},
 			{
 				"name": "declarationRole.kind",
 				"type": "string",
 				"required": true,
-				"description": "Source-declared export/declaration kind, independent of the unit ID and folder-derived kind."
+				"description": "The export or declaration kind as written in the source, matched exactly against type, interface, class, reexport, function, method, component and snippet. Any other kind, such as const, is classified as runtime-support rather than rejected.",
+				"examples": ["class", "function", "reexport"]
 			},
 			{
 				"name": "declarationRole.stored",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Whether this class owns source-declared storage, including unresolved schema syntax; defaults to false."
+				"description": "Whether the class owns source-declared storage, as decided by the caller. It only changes the result for the class kind, where true yields persisted-model and false yields runtime-support, and every other kind ignores it.",
+				"examples": [false, true]
 			},
 			{
 				"name": "modelDefinitions.text",
 				"type": "string",
 				"required": true,
-				"description": "Committed source text containing exported model or type declarations."
+				"description": "The committed module source, parsed as TypeScript without being imported, where only top-level exported classes, interfaces and type aliases become model definitions. Private and protected members, static fields and members with computed names are left out of the fields and methods, and a type alias whose type is a type literal contributes that literal's members.",
+				"examples": [
+					"export interface ConfigSource { file: ts.SourceFile; source: string; bindings: Map<string, ts.Expression>; values: Map<string, ConfigVariable>; ancestors: Set<ts.Expression>; }",
+					"export type Bindings = Map<string, ts.Expression>;",
+					"export interface ConfigVariable { structure?: ConfigValueNode; name: string; value: string; source: string; literal?: unknown; }"
+				]
 			},
 			{
 				"name": "modelDefinitions.source",
 				"type": "string",
 				"required": true,
-				"description": "Selected-revision source path used to parse and attribute model definitions."
+				"description": "The selected-revision path of the module, passed to the parser as its file name and recorded on every definition so each model is attributed to the file that declares it. The path only labels the text, because the module is never opened or imported.",
+				"examples": [
+					"src/services/explorer-ui/revision-detail-service/configValues.types.ts",
+					"src/utils/explorer-ui/unitMetadata.types.ts"
+				]
 			},
 			{
 				"name": "modelTable.node",
 				"type": "ts.ClassDeclaration",
 				"required": true,
-				"description": "Model class declaration whose static storage schema is inspected."
+				"description": "The model class whose static property named definition is decoded as the SQLite table, and only that property's literal initializer is read. A class without a static definition property produces neither a table nor a table gap."
 			},
 			{
 				"name": "modelTable.file",
 				"type": "ts.SourceFile",
 				"required": true,
-				"description": "Parsed source containing the model and source text for unresolved schema expressions."
+				"description": "The source file that contains the class, used to read member names from its text. It must be the file the class was parsed from, because the node positions only map onto that file's text."
 			},
 			{
 				"name": "pureHelperCalls.node",
 				"type": "ts.CallExpression",
 				"required": true,
-				"description": "Call expression whose target is checked against admitted pure operations."
+				"description": "The call expression whose callee is checked by name only, so a listed method name is admitted on any receiver. Bare names are checked against pureGlobals and the local set, Math, JSON, Number, Array and Object members against their own lists, and any other callee shape, such as element access, is rejected."
 			},
 			{
 				"name": "pureHelperCalls.local",
 				"type": "Set<string>",
 				"required": true,
-				"description": "Locally declared callable names already proven pure."
+				"description": "The names of locally declared callables already proven pure, consulted only when the callee is a bare identifier. A bare name found in neither this set nor pureGlobals is rejected, and property calls never read this set."
 			},
 			{
 				"name": "pureHelpers.code",
 				"type": "string",
 				"required": true,
-				"description": "Source text containing explicitly declared pure helper candidates."
+				"description": "The module source text, parsed as TypeScript and never executed, where only top-level function declarations and variable statements initialized with a function, and tagged with a JSDoc @pure tag, are candidates. A candidate survives only if its body has no assignment, delete, increment, decrement, this, await, yield, async or new expression other than new Date with one argument, and every call it makes is a pure global, an admitted method or another surviving candidate.",
+				"examples": [
+					"/** @pure */\nexport function slugify(value: string): string {\n\treturn value.trim().toLowerCase();\n}",
+					"/** @pure */\nexport const isBlank = (text: string): boolean => text.trim().length === 0;"
+				]
 			},
 			{
 				"name": "unitMetadata.tree",
 				"type": "HelperTree",
 				"required": true,
-				"description": "Reads files from the exact Git revision being viewed."
+				"description": "The source tree of the selected revision, whose read(path) resolves to the committed text of one file. A path that fails to read is caught in the helper, service, model, config and canonical-group lookups, so a file missing at that revision adds no service, model or config facts, and a missing shared helper file is recorded as a gap instead of an error."
 			},
 			{
 				"name": "unitMetadata.units",
 				"type": "Unit[]",
 				"required": true,
-				"description": "Registered entities enriched with revision-bound config values, documentation, helpers, service facts and model definitions."
+				"description": "The registered units, enriched in place rather than replaced: every unit has its group, helpers and service fields recomputed, config units get configValues, and model units get modelDefinitions. Helpers are read only from units whose kind is function, helper, shared-function or module, and the array itself is not returned.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "config.module-groups",
+							"uid": "u_q7w2n8e4ra",
+							"kind": "config",
+							"title": "Module groups",
+							"responsibility": "Declares the module groups used to categorize source modules.",
+							"responsibilityOrigin": "declared",
+							"status": "active",
+							"owns": {
+								"source": ["src/configs/development-tooling/moduleGroupsConfig.ts"],
+								"symbols": []
+							},
+							"contract": {
+								"origin": "declared",
+								"inputs": [],
+								"outputs": [],
+								"errors": [],
+								"errorStatus": "none-found",
+								"operations": [],
+								"initialization": []
+							},
+							"dependencies": [],
+							"runtime": {
+								"kind": "module",
+								"entry": "src/configs/development-tooling/moduleGroupsConfig.ts",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/configs/development-tooling/moduleGroupsConfig.ts"
+									}
+								]
+							},
+							"scenarios": [],
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							}
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitMetadata",
 				"type": "Promise<void>",
-				"description": "Attaches selected-revision model methods, fields and literal database schemas alongside config structures, helper contracts and service facts. Source modules and live databases are never executed."
+				"description": "Resolves to nothing once each unit has been enriched in place from the selected revision, and source modules and live databases are never imported or executed. A file missing at that revision adds no facts, and a missing shared helper file is recorded as the unit's helperGap."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "configValueStructure",
@@ -173,30 +243,74 @@
 						"name": "configValueStructure.value",
 						"type": "ts.Expression",
 						"required": true,
-						"description": "Source expression to describe structurally without executing configuration."
+						"description": "The syntax node to describe, read only as syntax and never evaluated, with its source text kept verbatim. Parentheses, type assertions and identifiers found in bindings are followed to reach an object or array literal or a z.object or z.array schema, while other calls and unbound identifiers stay opaque expression nodes."
 					},
 					{
 						"name": "configValueStructure.bindings",
 						"type": "Bindings",
 						"required": true,
-						"description": "Local expression bindings that can be followed during static inspection."
+						"description": "A map from local identifier names to their initializer expressions, consulted only when an identifier is reached while resolving the value. Each name is followed at most once along a single resolution chain, and a name missing from the map stays an opaque expression node."
 					},
 					{
 						"name": "configValueStructure.depth",
 						"type": "number",
 						"required": false,
 						"default": 0,
-						"description": "Current recursion depth used to bound structural inspection; defaults to zero."
+						"description": "The current nesting level, increased by one for each nested entry or schema item, and it defaults to 0 for a top-level value. At 10 or more the value is returned as an opaque expression node without being inspected.",
+						"examples": [0, 1, 3]
 					}
 				],
 				"outputs": [
 					{
 						"name": "configValueStructure",
-						"type": "ConfigValueNode"
+						"type": "ConfigValueNode",
+						"description": "The structural description of one value: an opaque expression node keeps only its source text, while object and array literals and z.object or z.array schemas expose their entries. Only syntax is read, so count appears only when the length is known from the literal, schema is true for z schemas, and a spread or a depth of 10 or more removes the count or makes the node opaque.",
+						"examples": [
+							{
+								"kind": "expression",
+								"source": "buildLimits()"
+							},
+							{
+								"kind": "object",
+								"source": "{ pageSize: 50, retries: 3 }",
+								"entries": [
+									{
+										"name": "pageSize",
+										"node": {
+											"kind": "expression",
+											"source": "50"
+										}
+									},
+									{
+										"name": "retries",
+										"node": {
+											"kind": "expression",
+											"source": "3"
+										}
+									}
+								],
+								"count": 2
+							},
+							{
+								"kind": "object",
+								"source": "z.object({ name: z.string() })",
+								"entries": [
+									{
+										"name": "name",
+										"node": {
+											"kind": "expression",
+											"source": "z.string()"
+										}
+									}
+								],
+								"count": 1,
+								"schema": true
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "configValues",
@@ -205,23 +319,92 @@
 						"name": "configValues.text",
 						"type": "string",
 						"required": true,
-						"description": "Committed configuration source text or JSON document to inspect."
+						"description": "The committed config source, parsed as TypeScript without being executed, or a JSON document that is first wrapped as a default export when the source path ends in .json. Only exported variable declarations and the default export are read, and a value without a literal keeps its text and source, plus a structure when one is known.",
+						"examples": [
+							"export const reportLimits = { pageSize: 50, retries: 3 };",
+							"export default defineConfig({ groups: ['explorer', 'services'] });",
+							"{ \"name\": \"reports\", \"enabled\": true }"
+						]
 					},
 					{
 						"name": "configValues.source",
 						"type": "string",
 						"required": true,
-						"description": "Source path used for syntax selection and source-preserving provenance."
+						"description": "The repository path of the config file, used to choose JSON wrapping for paths ending in .json, to name a default export after its base name without extension, and to record every value's source unchanged. The path only labels the text, because this function never opens the file.",
+						"examples": [
+							"src/configs/development-tooling/moduleGroupsConfig.ts",
+							"src/configs/development-tooling/moduleGroups.json"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "configValues",
-						"type": "ConfigVariable[]"
+						"type": "ConfigVariable[]",
+						"description": "The config values read from one module, one per exported variable or default export, with non-empty object literals that have no spreads expanded into dotted property paths. Each value keeps its committed source text and, only when the syntax supports them, a structure and a decoded literal, and nothing is evaluated.",
+						"examples": [
+							[
+								{
+									"name": "reportLimits.pageSize",
+									"value": "50",
+									"source": "src/configs/development-tooling/moduleGroupsConfig.ts",
+									"literal": 50
+								},
+								{
+									"name": "reportLimits.retries",
+									"value": "3",
+									"source": "src/configs/development-tooling/moduleGroupsConfig.ts",
+									"literal": 3
+								}
+							],
+							[
+								{
+									"name": "moduleGroupsConfig.groups",
+									"value": "['explorer', 'services']",
+									"source": "src/configs/development-tooling/moduleGroupsConfig.ts",
+									"structure": {
+										"kind": "array",
+										"source": "['explorer', 'services']",
+										"count": 2,
+										"entries": [
+											{
+												"name": "0",
+												"node": {
+													"kind": "expression",
+													"source": "'explorer'"
+												}
+											},
+											{
+												"name": "1",
+												"node": {
+													"kind": "expression",
+													"source": "'services'"
+												}
+											}
+										]
+									},
+									"literal": ["explorer", "services"]
+								}
+							],
+							[
+								{
+									"name": "moduleGroups.name",
+									"value": "\"reports\"",
+									"source": "src/configs/development-tooling/moduleGroups.json",
+									"literal": "reports"
+								},
+								{
+									"name": "moduleGroups.enabled",
+									"value": "true",
+									"source": "src/configs/development-tooling/moduleGroups.json",
+									"literal": true
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "declarationRole",
@@ -230,25 +413,28 @@
 						"name": "declarationRole.kind",
 						"type": "string",
 						"required": true,
-						"description": "Source-declared export/declaration kind, independent of the unit ID and folder-derived kind."
+						"description": "The export or declaration kind as written in the source, matched exactly against type, interface, class, reexport, function, method, component and snippet. Any other kind, such as const, is classified as runtime-support rather than rejected.",
+						"examples": ["class", "function", "reexport"]
 					},
 					{
 						"name": "declarationRole.stored",
 						"type": "boolean",
 						"required": false,
 						"default": false,
-						"description": "Whether this class owns source-declared storage, including unresolved schema syntax; defaults to false."
+						"description": "Whether the class owns source-declared storage, as decided by the caller. It only changes the result for the class kind, where true yields persisted-model and false yields runtime-support, and every other kind ignores it.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "declarationRole",
 						"type": "DeclarationRole",
-						"description": "Declaration role: persisted model, type, operation, compatibility export or runtime support."
+						"description": "The classification of one declaration: persisted-model for a stored class, type for a type or interface, operation for a function, method, component or snippet, compatibility for a reexport, and runtime-support for everything else. It depends only on the source-declared kind and storage flag, so neither the unit ID nor the folder can change the result.",
+						"examples": ["persisted-model", "operation", "runtime-support"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "modelDefinitions",
@@ -257,23 +443,115 @@
 						"name": "modelDefinitions.text",
 						"type": "string",
 						"required": true,
-						"description": "Committed source text containing exported model or type declarations."
+						"description": "The committed module source, parsed as TypeScript without being imported, where only top-level exported classes, interfaces and type aliases become model definitions. Private and protected members, static fields and members with computed names are left out of the fields and methods, and a type alias whose type is a type literal contributes that literal's members.",
+						"examples": [
+							"export interface ConfigSource { file: ts.SourceFile; source: string; bindings: Map<string, ts.Expression>; values: Map<string, ConfigVariable>; ancestors: Set<ts.Expression>; }",
+							"export type Bindings = Map<string, ts.Expression>;",
+							"export interface ConfigVariable { structure?: ConfigValueNode; name: string; value: string; source: string; literal?: unknown; }"
+						]
 					},
 					{
 						"name": "modelDefinitions.source",
 						"type": "string",
 						"required": true,
-						"description": "Selected-revision source path used to parse and attribute model definitions."
+						"description": "The selected-revision path of the module, passed to the parser as its file name and recorded on every definition so each model is attributed to the file that declares it. The path only labels the text, because the module is never opened or imported.",
+						"examples": [
+							"src/services/explorer-ui/revision-detail-service/configValues.types.ts",
+							"src/utils/explorer-ui/unitMetadata.types.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "modelDefinitions",
-						"type": "ModelDefinition[]"
+						"type": "ModelDefinition[]",
+						"description": "One record for each top-level exported class, interface or type alias, with its name, kind, source path, the fields and methods that are not private or protected (static fields are excluded), and a type text for a non-literal type alias. Class records also carry table or tableGap from their static definition property, and nothing is imported or executed to build them.",
+						"examples": [
+							[
+								{
+									"name": "ConfigSource",
+									"kind": "interface",
+									"source": "src/services/explorer-ui/revision-detail-service/configValues.types.ts",
+									"fields": [
+										{
+											"name": "file",
+											"type": "ts.SourceFile",
+											"optional": false
+										},
+										{
+											"name": "source",
+											"type": "string",
+											"optional": false
+										},
+										{
+											"name": "bindings",
+											"type": "Map<string, ts.Expression>",
+											"optional": false
+										},
+										{
+											"name": "values",
+											"type": "Map<string, ConfigVariable>",
+											"optional": false
+										},
+										{
+											"name": "ancestors",
+											"type": "Set<ts.Expression>",
+											"optional": false
+										}
+									],
+									"methods": []
+								}
+							],
+							[
+								{
+									"name": "Bindings",
+									"kind": "type",
+									"source": "src/services/explorer-ui/revision-detail-service/configValueStructure.types.ts",
+									"type": "Map<string, ts.Expression>",
+									"fields": [],
+									"methods": []
+								}
+							],
+							[
+								{
+									"name": "ConfigVariable",
+									"kind": "interface",
+									"source": "src/utils/explorer-ui/unitMetadata.types.ts",
+									"fields": [
+										{
+											"name": "structure",
+											"type": "ConfigValueNode",
+											"optional": true
+										},
+										{
+											"name": "name",
+											"type": "string",
+											"optional": false
+										},
+										{
+											"name": "value",
+											"type": "string",
+											"optional": false
+										},
+										{
+											"name": "source",
+											"type": "string",
+											"optional": false
+										},
+										{
+											"name": "literal",
+											"type": "unknown",
+											"optional": true
+										}
+									],
+									"methods": []
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "modelTable",
@@ -282,23 +560,33 @@
 						"name": "modelTable.node",
 						"type": "ts.ClassDeclaration",
 						"required": true,
-						"description": "Model class declaration whose static storage schema is inspected."
+						"description": "The model class whose static property named definition is decoded as the SQLite table, and only that property's literal initializer is read. A class without a static definition property produces neither a table nor a table gap."
 					},
 					{
 						"name": "modelTable.file",
 						"type": "ts.SourceFile",
 						"required": true,
-						"description": "Parsed source containing the model and source text for unresolved schema expressions."
+						"description": "The source file that contains the class, used to read member names from its text. It must be the file the class was parsed from, because the node positions only map onto that file's text."
 					}
 				],
 				"outputs": [
 					{
 						"name": "modelTable",
-						"type": "Pick<ModelDefinition, 'table' | 'tableGap'>"
+						"type": "Pick<ModelDefinition, 'table' | 'tableGap'>",
+						"description": "The table facts of a model class: table is set when its literal definition is readable and passes the SQLite schema check, and tableGap explains why it is not. A class without a static definition property returns an empty object, so neither key is set.",
+						"examples": [
+							{},
+							{
+								"tableGap": "The table definition is not statically readable at this revision."
+							},
+							{
+								"tableGap": "The declared table does not satisfy the SQLite model schema."
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "pureHelperCalls",
@@ -307,23 +595,25 @@
 						"name": "pureHelperCalls.node",
 						"type": "ts.CallExpression",
 						"required": true,
-						"description": "Call expression whose target is checked against admitted pure operations."
+						"description": "The call expression whose callee is checked by name only, so a listed method name is admitted on any receiver. Bare names are checked against pureGlobals and the local set, Math, JSON, Number, Array and Object members against their own lists, and any other callee shape, such as element access, is rejected."
 					},
 					{
 						"name": "pureHelperCalls.local",
 						"type": "Set<string>",
 						"required": true,
-						"description": "Locally declared callable names already proven pure."
+						"description": "The names of locally declared callables already proven pure, consulted only when the callee is a bare identifier. A bare name found in neither this set nor pureGlobals is rejected, and property calls never read this set."
 					}
 				],
 				"outputs": [
 					{
 						"name": "pureHelperCalls",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the call may be treated as pure, meaning its callee is a bare name in pureGlobals or the local set, a listed Math, JSON, Number, Array or Object member, or a listed method name on any receiver. Callees that are neither bare names nor property accesses, such as element access, return false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "pureHelpers",
@@ -332,17 +622,22 @@
 						"name": "pureHelpers.code",
 						"type": "string",
 						"required": true,
-						"description": "Source text containing explicitly declared pure helper candidates."
+						"description": "The module source text, parsed as TypeScript and never executed, where only top-level function declarations and variable statements initialized with a function, and tagged with a JSDoc @pure tag, are candidates. A candidate survives only if its body has no assignment, delete, increment, decrement, this, await, yield, async or new expression other than new Date with one argument, and every call it makes is a pure global, an admitted method or another surviving candidate.",
+						"examples": [
+							"/** @pure */\nexport function slugify(value: string): string {\n\treturn value.trim().toLowerCase();\n}",
+							"/** @pure */\nexport const isBlank = (text: string): boolean => text.trim().length === 0;"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pureHelpers",
-						"type": "Set<string>"
+						"type": "Set<string>",
+						"description": "The names of top-level @pure functions and variables that still pass the effect check once unsupported candidates are removed. A candidate is removed when its body is unsupported, and a candidate that calls a removed one is removed in a later pass."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "unitMetadata",
@@ -351,24 +646,68 @@
 						"name": "unitMetadata.tree",
 						"type": "HelperTree",
 						"required": true,
-						"description": "Reads files from the exact Git revision being viewed."
+						"description": "The source tree of the selected revision, whose read(path) resolves to the committed text of one file. A path that fails to read is caught in the helper, service, model, config and canonical-group lookups, so a file missing at that revision adds no service, model or config facts, and a missing shared helper file is recorded as a gap instead of an error."
 					},
 					{
 						"name": "unitMetadata.units",
 						"type": "Unit[]",
 						"required": true,
-						"description": "Registered entities enriched with revision-bound config values, documentation, helpers, service facts and model definitions."
+						"description": "The registered units, enriched in place rather than replaced: every unit has its group, helpers and service fields recomputed, config units get configValues, and model units get modelDefinitions. Helpers are read only from units whose kind is function, helper, shared-function or module, and the array itself is not returned.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "config.module-groups",
+									"uid": "u_q7w2n8e4ra",
+									"kind": "config",
+									"title": "Module groups",
+									"responsibility": "Declares the module groups used to categorize source modules.",
+									"responsibilityOrigin": "declared",
+									"status": "active",
+									"owns": {
+										"source": ["src/configs/development-tooling/moduleGroupsConfig.ts"],
+										"symbols": []
+									},
+									"contract": {
+										"origin": "declared",
+										"inputs": [],
+										"outputs": [],
+										"errors": [],
+										"errorStatus": "none-found",
+										"operations": [],
+										"initialization": []
+									},
+									"dependencies": [],
+									"runtime": {
+										"kind": "module",
+										"entry": "src/configs/development-tooling/moduleGroupsConfig.ts",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/configs/development-tooling/moduleGroupsConfig.ts"
+											}
+										]
+									},
+									"scenarios": [],
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitMetadata",
 						"type": "Promise<void>",
-						"description": "Attaches selected-revision model methods, fields and literal database schemas alongside config structures, helper contracts and service facts. Source modules and live databases are never executed."
+						"description": "Resolves to nothing once each unit has been enriched in place from the selected revision, and source modules and live databases are never imported or executed. A file missing at that revision adds no facts, and a missing shared helper file is recorded as the unit's helperGap."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
