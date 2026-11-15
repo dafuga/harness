@@ -19,12 +19,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The page's only output: a HarnessScreen titled Models whose content is ExplorerCatalogScreen, which the route displays whenever the page is rendered. The markup is hard-coded in this file, which declares no props and reads no route parameters, so the branch and path segments do not change it."
 			}
 		],
 		"errors": [],
