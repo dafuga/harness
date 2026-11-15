@@ -9,8 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/explorer-ui/revision-detail-service/source-impact-service/SourceImpactService.ts",
-			"src/services/revision-detail-service/source-impact-service/SourceImpactService.ts"
+			"src/services/explorer-ui/revision-detail-service/source-impact-service/SourceImpactService.ts"
 		],
 		"symbols": [
 			"SourceImpact",
@@ -20,8 +19,7 @@
 			"SourceImpactService.reasons",
 			"SourceImpactService.parent",
 			"SourceImpactService.stored",
-			"SourceImpactService.measurements",
-			"SourceImpactService"
+			"SourceImpactService.measurements"
 		]
 	},
 	"contract": {
