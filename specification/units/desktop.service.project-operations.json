@@ -22,70 +22,215 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectOperationsService.constructor.session",
 				"type": "ProjectSessionService",
-				"required": true
+				"required": true,
+				"description": "The project session used to read the registry, inspect the selected project, and open projects. This is a ProjectSessionService instance."
 			},
 			{
 				"name": "ProjectOperationsService.constructor.outbox",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The outbox that persists pending comment drafts and lists them for the selected project. Defaults to session.outbox when omitted."
 			},
 			{
 				"name": "ProjectOperationsService.selectProject.input",
 				"type": "{ projectId: string }",
-				"required": true
+				"required": true,
+				"description": "Identifies a registered local project by the ID used by ProjectRegistryService. If the project is already selected and no switch is underway, the service returns its current snapshot.",
+				"examples": [
+					{
+						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+					}
+				]
 			},
 			{
 				"name": "ProjectOperationsService.capabilities.input",
 				"type": "ProjectContext",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Provides an optional project ID for checking the selected project's context. Defaults to {}; omitting projectId leaves the current selection check unchanged.",
+				"examples": [
+					{},
+					{
+						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+					}
+				]
 			},
 			{
 				"name": "ProjectOperationsService.addComment.input",
 				"type": "HumanCommentDraft",
-				"required": true
+				"required": true,
+				"description": "Carries requestId, a revision anchor, and comment text; projectId and threadId are optional. The project discussion entity must have no thread or visual anchor details, while other anchors are checked against the project catalog.",
+				"examples": [
+					{
+						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+						"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
+						"anchor": {
+							"branch": "main",
+							"commit": "4f3c2a1908b7e6d5c4a3928170605f4e3d2c1b0a",
+							"entityId": "harness.project.discussion",
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null
+						},
+						"text": "Please review the project discussion."
+					}
+				]
 			},
 			{
 				"name": "ProjectOperationsService.pendingComments.input",
 				"type": "ProjectContext",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Provides an optional project ID for checking the selected project's context. Defaults to {}; omitting projectId leaves the current selection check unchanged.",
+				"examples": [
+					{},
+					{
+						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectOperationsService.listProjects",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the registered local projects from session.registry.list(). Each item has a local- ID containing the SHA-256 of its canonical root, its basename, kind local, and the root path; invalid registry data rejects.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+							"name": "slot-11",
+							"kind": "local",
+							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+						}
+					]
+				]
 			},
 			{
 				"name": "ProjectOperationsService.selectProject",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the project snapshot from session.snapshot() or session.open(). An already selected project with no switch in progress is snapshotted using branch null and commit null; otherwise the registered project root is opened.",
+				"examples": [
+					{
+						"project": {
+							"name": "slot-11",
+							"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+							"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": true,
+							"planning": true,
+							"approval": true,
+							"source": "local",
+							"reason": "Comments are saved as local pending drafts until connected."
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "4f3c2a1908b7e6d5c4a3928170605f4e3d2c1b0a",
+							"tip": "4f3c2a1908b7e6d5c4a3928170605f4e3d2c1b0a",
+							"atTip": true
+						},
+						"branches": [],
+						"commits": [],
+						"entities": [],
+						"writable": true
+					}
+				]
 			},
 			{
 				"name": "ProjectOperationsService.capabilities",
-				"type": "Promise<ProjectCapabilities>"
+				"type": "Promise<ProjectCapabilities>",
+				"description": "Reports local-project capabilities after checking the requested context and requiring an open project. The returned capabilities currently enable comments, agents, planning, and approval with source local.",
+				"examples": [
+					{
+						"comments": true,
+						"agents": true,
+						"planning": true,
+						"approval": true,
+						"source": "local",
+						"reason": "Human comments are local pending drafts, not synced."
+					}
+				]
 			},
 			{
 				"name": "ProjectOperationsService.addComment",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the pending comment record saved by the local outbox. Non-discussion anchors are checked against the current revision and catalog, and any referenced image or thread must match.",
+				"examples": [
+					{
+						"kind": "pending",
+						"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+						"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
+						"savedAt": "2026-11-15T12:00:00.000Z",
+						"input": {
+							"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+							"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
+							"anchor": {
+								"branch": "main",
+								"commit": "4f3c2a1908b7e6d5c4a3928170605f4e3d2c1b0a",
+								"entityId": "harness.project.discussion",
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null
+							},
+							"text": "Please review the project discussion."
+						},
+						"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+					}
+				]
 			},
 			{
 				"name": "ProjectOperationsService.pendingComments",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the selected project's pending local comment records from the outbox. It requires a fully open project and does not publish or sync these drafts.",
+				"examples": [
+					[],
+					[
+						{
+							"kind": "pending",
+							"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+							"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
+							"savedAt": "2026-11-15T12:00:00.000Z",
+							"input": {
+								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+								"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
+								"anchor": {
+									"branch": "main",
+									"commit": "4f3c2a1908b7e6d5c4a3928170605f4e3d2c1b0a",
+									"entityId": "harness.project.discussion",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"text": "Please review the project discussion."
+							},
+							"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Methods throw or reject with Error for registry, selection, switching, comment-anchor, and outbox failures. Rejections from the delegated revision, catalog, registry, and storage calls also propagate."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ProjectOperationsService.listProjects",
@@ -93,11 +238,29 @@
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.listProjects",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the registered local projects from session.registry.list(). Each item has a local- ID containing the SHA-256 of its canonical root, its basename, kind local, and the root path; invalid registry data rejects.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+									"name": "slot-11",
+									"kind": "local",
+									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with Error('Invalid project registry.') when stored registry entries fail local-project validation."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectOperationsService.selectProject",
@@ -105,17 +268,57 @@
 					{
 						"name": "ProjectOperationsService.selectProject.input",
 						"type": "{ projectId: string }",
-						"required": true
+						"required": true,
+						"description": "Identifies a registered local project by the ID used by ProjectRegistryService. If the project is already selected and no switch is underway, the service returns its current snapshot.",
+						"examples": [
+							{
+								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.selectProject",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the project snapshot from session.snapshot() or session.open(). An already selected project with no switch in progress is snapshotted using branch null and commit null; otherwise the registered project root is opened.",
+						"examples": [
+							{
+								"project": {
+									"name": "slot-11",
+									"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11",
+									"id": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": true,
+									"planning": true,
+									"approval": true,
+									"source": "local",
+									"reason": "Comments are saved as local pending drafts until connected."
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "4f3c2a1908b7e6d5c4a3928170605f4e3d2c1b0a",
+									"tip": "4f3c2a1908b7e6d5c4a3928170605f4e3d2c1b0a",
+									"atTip": true
+								},
+								"branches": [],
+								"commits": [],
+								"entities": [],
+								"writable": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with Error('Invalid project registry.') or Error('Unknown project.') when registry listing or lookup fails. Opening also throws Error('Cancel or finish the current run before switching projects.') while a run is busy, work is pending, or another switch is opening."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectOperationsService.capabilities",
@@ -124,17 +327,41 @@
 						"name": "ProjectOperationsService.capabilities.input",
 						"type": "ProjectContext",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Provides an optional project ID for checking the selected project's context. Defaults to {}; omitting projectId leaves the current selection check unchanged.",
+						"examples": [
+							{},
+							{
+								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.capabilities",
-						"type": "Promise<ProjectCapabilities>"
+						"type": "Promise<ProjectCapabilities>",
+						"description": "Reports local-project capabilities after checking the requested context and requiring an open project. The returned capabilities currently enable comments, agents, planning, and approval with source local.",
+						"examples": [
+							{
+								"comments": true,
+								"agents": true,
+								"planning": true,
+								"approval": true,
+								"source": "local",
+								"reason": "Human comments are local pending drafts, not synced."
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error('The requested project is not selected.') when an explicit projectId differs from the session. It throws Error('Open a project first.') unless the project is fully open."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectOperationsService.addComment",
@@ -142,22 +369,66 @@
 					{
 						"name": "ProjectOperationsService.addComment.input",
 						"type": "HumanCommentDraft",
-						"required": true
+						"required": true,
+						"description": "Carries requestId, a revision anchor, and comment text; projectId and threadId are optional. The project discussion entity must have no thread or visual anchor details, while other anchors are checked against the project catalog.",
+						"examples": [
+							{
+								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+								"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
+								"anchor": {
+									"branch": "main",
+									"commit": "4f3c2a1908b7e6d5c4a3928170605f4e3d2c1b0a",
+									"entityId": "harness.project.discussion",
+									"version": null,
+									"imageSha256": null,
+									"state": null,
+									"viewport": null,
+									"region": null
+								},
+								"text": "Please review the project discussion."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.addComment",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the pending comment record saved by the local outbox. Non-discussion anchors are checked against the current revision and catalog, and any referenced image or thread must match.",
+						"examples": [
+							{
+								"kind": "pending",
+								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+								"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
+								"savedAt": "2026-11-15T12:00:00.000Z",
+								"input": {
+									"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+									"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
+									"anchor": {
+										"branch": "main",
+										"commit": "4f3c2a1908b7e6d5c4a3928170605f4e3d2c1b0a",
+										"entityId": "harness.project.discussion",
+										"version": null,
+										"imageSha256": null,
+										"state": null,
+										"viewport": null,
+										"region": null
+									},
+									"text": "Please review the project discussion."
+								},
+								"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error('The requested project is not selected.') or Error('Open a project first.') when session checks fail, and throws Error('Invalid project discussion anchor.'), Error('Unknown comment image anchor.'), or Error('Unknown comment thread.') for invalid anchors. Revision, catalog, and outbox rejections propagate, including Error('A comment needs a project.') and Error('Conflicting comment request.') from the outbox."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ProjectOperationsService.pendingComments",
@@ -166,17 +437,58 @@
 						"name": "ProjectOperationsService.pendingComments.input",
 						"type": "ProjectContext",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Provides an optional project ID for checking the selected project's context. Defaults to {}; omitting projectId leaves the current selection check unchanged.",
+						"examples": [
+							{},
+							{
+								"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.pendingComments",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the selected project's pending local comment records from the outbox. It requires a fully open project and does not publish or sync these drafts.",
+						"examples": [
+							[],
+							[
+								{
+									"kind": "pending",
+									"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+									"draftId": "92f25f28-7cb0-4f6e-a073-c2da8cbf2ae1",
+									"savedAt": "2026-11-15T12:00:00.000Z",
+									"input": {
+										"projectId": "local-b465b73b87325fa92663503b88a433353c1092c72a1d2380789714f2d079afbe",
+										"requestId": "de7a3f4d-a61a-4d15-8b68-55fbd24e3c17",
+										"anchor": {
+											"branch": "main",
+											"commit": "4f3c2a1908b7e6d5c4a3928170605f4e3d2c1b0a",
+											"entityId": "harness.project.discussion",
+											"version": null,
+											"imageSha256": null,
+											"state": null,
+											"viewport": null,
+											"region": null
+										},
+										"text": "Please review the project discussion."
+									},
+									"reason": "Saved locally; not synced. Connect a verified shared project to publish."
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Throws Error('The requested project is not selected.') when an explicit projectId differs from the session. It throws Error('Open a project first.') unless the project is fully open."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -186,22 +498,25 @@
 					{
 						"name": "ProjectOperationsService.constructor.session",
 						"type": "ProjectSessionService",
-						"required": true
+						"required": true,
+						"description": "The project session used to read the registry, inspect the selected project, and open projects. This is a ProjectSessionService instance."
 					},
 					{
 						"name": "ProjectOperationsService.constructor.outbox",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The outbox that persists pending comment drafts and lists them for the selected project. Defaults to session.outbox when omitted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ProjectOperationsService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed ProjectOperationsService instance, which retains the supplied session and outbox. The outbox defaults to session.outbox when omitted."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
