@@ -21,38 +21,210 @@
 				"name": "measurementLocation.row",
 				"type": "PerformanceRow",
 				"required": true,
-				"description": "Required performance observation with its own target and profile."
+				"description": "The performance observation whose target and profile are the only fields read to build the location. An empty target or profile is left out of the location, and when both are empty the result is the em dash ('—').",
+				"examples": [
+					{
+						"workload": "Open entity panel",
+						"metric": "Navigation",
+						"target": "chromium-headless",
+						"profile": "ci-4-core",
+						"value": "182 ms",
+						"tolerance": "3%",
+						"over": false
+					},
+					{
+						"workload": "Open entity panel",
+						"metric": "Heap used",
+						"target": "",
+						"profile": "",
+						"value": "Not measured",
+						"note": "Nothing was measured for this run.",
+						"tolerance": "5%",
+						"over": false
+					},
+					{
+						"workload": "Load entity graph",
+						"metric": "p95 latency",
+						"target": "",
+						"profile": "ci-2-core",
+						"value": "1.4 s",
+						"tolerance": "12%",
+						"over": true
+					}
+				]
 			},
 			{
 				"name": "entitySummaryFacts.measure",
 				"type": "EntityMeasure",
 				"required": true,
-				"description": "Required source and runtime measurements in their original order."
+				"description": "Size rows keep their original order, and rows whose target is 'none' are skipped. Performance rows are only searched: the primary row is the first whose metric contains latency, navigation, duration, or time (or starts with p and a digit) and whose value is not 'Not measured', and the memory row is the first whose metric contains memory, heap, or rss and, when a primary row exists, shares its workload, target, and profile.",
+				"examples": [
+					{
+						"size": [
+							{
+								"label": "Script bundle",
+								"value": "412 KB",
+								"target": "browser",
+								"note": "Gzip size is not included."
+							},
+							{
+								"label": "Server bundle",
+								"value": "1.2 MB",
+								"target": "node"
+							}
+						],
+						"performance": [
+							{
+								"workload": "Open entity panel",
+								"metric": "Navigation",
+								"target": "chromium-headless",
+								"profile": "ci-4-core",
+								"value": "182 ms",
+								"tolerance": "3%",
+								"over": false
+							},
+							{
+								"workload": "Open entity panel",
+								"metric": "Heap used",
+								"target": "chromium-headless",
+								"profile": "ci-4-core",
+								"value": "96 MB",
+								"tolerance": "3%",
+								"over": false
+							}
+						]
+					},
+					{
+						"size": [
+							{
+								"label": "Source map",
+								"value": "Not measured",
+								"target": "browser",
+								"note": "The build did not emit a source map."
+							}
+						],
+						"performance": []
+					},
+					{
+						"size": [
+							{
+								"label": "Types",
+								"value": "Not measured",
+								"target": "none",
+								"note": "No output-size metric applies."
+							}
+						],
+						"performance": [
+							{
+								"workload": "Load entity graph",
+								"metric": "p95 latency",
+								"target": "",
+								"profile": "ci-2-core",
+								"value": "1.4 s",
+								"tolerance": "12%",
+								"over": true
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "entitySummaryFacts.compact",
 				"type": "boolean",
 				"required": true,
-				"description": "Required overview flag; true selects matching latency and memory, false retains detailed workload facts."
+				"description": "When true, the result ends with Latency and Memory facts from the matched rows, and the note field of a size row is set only when its value is unmeasured. When false, the result ends with detailed workload facts only if exactly one performance row exists; with no performance rows it ends with unmeasured Latency and Memory facts, and with two or more it adds no performance facts.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "measurementLocation",
 				"type": "string",
-				"description": "Declared target and profile joined with a middle dot, or an em dash when both are absent."
+				"description": "The target and profile joined with ' · ' when both are non-empty, or whichever one is non-empty when only one is. The em dash ('—') is returned when neither is non-empty.",
+				"examples": ["chromium-headless · ci-4-core", "ci-2-core", "—"]
 			},
 			{
 				"name": "entitySummaryFacts",
 				"type": "SummaryFact[]",
-				"description": "Ordered visible size and performance facts, including explicit missing values and notes."
+				"description": "Size rows whose target is not 'none' come first, followed by Latency and Memory facts when compact is true or there are no performance rows, or by Workload, Environment, metric, and Tolerance facts when compact is false and exactly one performance row exists; with compact false and two or more performance rows, nothing follows the size rows. Unmeasured size rows and facts are kept with the 'unmeasured' className rather than removed.",
+				"examples": [
+					[
+						{
+							"label": "Script bundle",
+							"value": "412 KB",
+							"title": "Gzip size is not included.",
+							"className": ""
+						},
+						{
+							"label": "Server bundle",
+							"value": "1.2 MB",
+							"className": ""
+						},
+						{
+							"label": "Latency",
+							"value": "182 ms",
+							"className": ""
+						},
+						{
+							"label": "Memory",
+							"value": "96 MB",
+							"className": ""
+						}
+					],
+					[
+						{
+							"label": "Workload",
+							"value": "Load entity graph",
+							"className": ""
+						},
+						{
+							"label": "Environment",
+							"value": "ci-2-core",
+							"className": ""
+						},
+						{
+							"label": "p95 latency",
+							"value": "1.4 s",
+							"className": ""
+						},
+						{
+							"label": "Tolerance",
+							"value": "12% · above the 5% policy",
+							"className": "over"
+						}
+					],
+					[
+						{
+							"label": "Source map",
+							"value": "Not measured",
+							"title": "The build did not emit a source map.",
+							"note": "The build did not emit a source map.",
+							"className": "unmeasured"
+						},
+						{
+							"label": "Latency",
+							"value": "Not measured",
+							"className": "unmeasured"
+						},
+						{
+							"label": "Memory",
+							"value": "Not measured",
+							"className": "unmeasured"
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Input access error",
 				"type": "propagated",
-				"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+				"description": "An error thrown by a getter on a supplied object propagates out of the function unchanged, because the function reads properties directly. The function does not catch, wrap, clone, or serialize the input, so the caller receives the getter's own error."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when the row argument, measure, measure.size, or measure.performance is null or undefined, or when a size or performance entry the function reads is null or undefined, because the function reads their properties without a guard. The function does not check for these values, so the TypeError is not caught or converted."
 			}
 		],
 		"errorStatus": "declared",
@@ -64,21 +236,57 @@
 						"name": "measurementLocation.row",
 						"type": "PerformanceRow",
 						"required": true,
-						"description": "Required performance observation with its own target and profile."
+						"description": "The performance observation whose target and profile are the only fields read to build the location. An empty target or profile is left out of the location, and when both are empty the result is the em dash ('—').",
+						"examples": [
+							{
+								"workload": "Open entity panel",
+								"metric": "Navigation",
+								"target": "chromium-headless",
+								"profile": "ci-4-core",
+								"value": "182 ms",
+								"tolerance": "3%",
+								"over": false
+							},
+							{
+								"workload": "Open entity panel",
+								"metric": "Heap used",
+								"target": "",
+								"profile": "",
+								"value": "Not measured",
+								"note": "Nothing was measured for this run.",
+								"tolerance": "5%",
+								"over": false
+							},
+							{
+								"workload": "Load entity graph",
+								"metric": "p95 latency",
+								"target": "",
+								"profile": "ci-2-core",
+								"value": "1.4 s",
+								"tolerance": "12%",
+								"over": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "measurementLocation",
 						"type": "string",
-						"description": "Declared target and profile joined with a middle dot, or an em dash when both are absent."
+						"description": "The target and profile joined with ' · ' when both are non-empty, or whichever one is non-empty when only one is. The em dash ('—') is returned when neither is non-empty.",
+						"examples": ["chromium-headless · ci-4-core", "ci-2-core", "—"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Input access error",
 						"type": "propagated",
-						"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+						"description": "An error thrown by a getter on a supplied object propagates out of the function unchanged, because the function reads properties directly. The function does not catch, wrap, clone, or serialize the input, so the caller receives the getter's own error."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when the row argument is null or undefined, because measurementLocation reads row.target and row.profile without a guard."
 					}
 				],
 				"errorStatus": "declared"
@@ -90,27 +298,168 @@
 						"name": "entitySummaryFacts.measure",
 						"type": "EntityMeasure",
 						"required": true,
-						"description": "Required source and runtime measurements in their original order."
+						"description": "Size rows keep their original order, and rows whose target is 'none' are skipped. Performance rows are only searched: the primary row is the first whose metric contains latency, navigation, duration, or time (or starts with p and a digit) and whose value is not 'Not measured', and the memory row is the first whose metric contains memory, heap, or rss and, when a primary row exists, shares its workload, target, and profile.",
+						"examples": [
+							{
+								"size": [
+									{
+										"label": "Script bundle",
+										"value": "412 KB",
+										"target": "browser",
+										"note": "Gzip size is not included."
+									},
+									{
+										"label": "Server bundle",
+										"value": "1.2 MB",
+										"target": "node"
+									}
+								],
+								"performance": [
+									{
+										"workload": "Open entity panel",
+										"metric": "Navigation",
+										"target": "chromium-headless",
+										"profile": "ci-4-core",
+										"value": "182 ms",
+										"tolerance": "3%",
+										"over": false
+									},
+									{
+										"workload": "Open entity panel",
+										"metric": "Heap used",
+										"target": "chromium-headless",
+										"profile": "ci-4-core",
+										"value": "96 MB",
+										"tolerance": "3%",
+										"over": false
+									}
+								]
+							},
+							{
+								"size": [
+									{
+										"label": "Source map",
+										"value": "Not measured",
+										"target": "browser",
+										"note": "The build did not emit a source map."
+									}
+								],
+								"performance": []
+							},
+							{
+								"size": [
+									{
+										"label": "Types",
+										"value": "Not measured",
+										"target": "none",
+										"note": "No output-size metric applies."
+									}
+								],
+								"performance": [
+									{
+										"workload": "Load entity graph",
+										"metric": "p95 latency",
+										"target": "",
+										"profile": "ci-2-core",
+										"value": "1.4 s",
+										"tolerance": "12%",
+										"over": true
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "entitySummaryFacts.compact",
 						"type": "boolean",
 						"required": true,
-						"description": "Required overview flag; true selects matching latency and memory, false retains detailed workload facts."
+						"description": "When true, the result ends with Latency and Memory facts from the matched rows, and the note field of a size row is set only when its value is unmeasured. When false, the result ends with detailed workload facts only if exactly one performance row exists; with no performance rows it ends with unmeasured Latency and Memory facts, and with two or more it adds no performance facts.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entitySummaryFacts",
 						"type": "SummaryFact[]",
-						"description": "Ordered visible size and performance facts, including explicit missing values and notes."
+						"description": "Size rows whose target is not 'none' come first, followed by Latency and Memory facts when compact is true or there are no performance rows, or by Workload, Environment, metric, and Tolerance facts when compact is false and exactly one performance row exists; with compact false and two or more performance rows, nothing follows the size rows. Unmeasured size rows and facts are kept with the 'unmeasured' className rather than removed.",
+						"examples": [
+							[
+								{
+									"label": "Script bundle",
+									"value": "412 KB",
+									"title": "Gzip size is not included.",
+									"className": ""
+								},
+								{
+									"label": "Server bundle",
+									"value": "1.2 MB",
+									"className": ""
+								},
+								{
+									"label": "Latency",
+									"value": "182 ms",
+									"className": ""
+								},
+								{
+									"label": "Memory",
+									"value": "96 MB",
+									"className": ""
+								}
+							],
+							[
+								{
+									"label": "Workload",
+									"value": "Load entity graph",
+									"className": ""
+								},
+								{
+									"label": "Environment",
+									"value": "ci-2-core",
+									"className": ""
+								},
+								{
+									"label": "p95 latency",
+									"value": "1.4 s",
+									"className": ""
+								},
+								{
+									"label": "Tolerance",
+									"value": "12% · above the 5% policy",
+									"className": "over"
+								}
+							],
+							[
+								{
+									"label": "Source map",
+									"value": "Not measured",
+									"title": "The build did not emit a source map.",
+									"note": "The build did not emit a source map.",
+									"className": "unmeasured"
+								},
+								{
+									"label": "Latency",
+									"value": "Not measured",
+									"className": "unmeasured"
+								},
+								{
+									"label": "Memory",
+									"value": "Not measured",
+									"className": "unmeasured"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Input access error",
 						"type": "propagated",
-						"description": "Errors from supplied property getters propagate without cloning, serializing or replacing the input."
+						"description": "An error thrown by a getter on a supplied object propagates out of the function unchanged, because the function reads properties directly. The function does not catch, wrap, clone, or serialize the input, so the caller receives the getter's own error."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when measure, measure.size, or measure.performance is null or undefined, or when a size or performance entry the function reads is null or undefined, because entitySummaryFacts reads their properties without a guard."
 					}
 				],
 				"errorStatus": "declared"
