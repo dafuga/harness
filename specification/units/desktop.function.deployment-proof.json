@@ -18,80 +18,199 @@
 				"name": "deploymentProof.config",
 				"type": "DeploymentConfig",
 				"required": true,
-				"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
+				"description": "Configuration object whose JSON serialization is hashed to bind deployment state to a specific mapping. The digest covers JSON.stringify output, so property order and JSON serialization limits affect the result.",
+				"examples": [
+					{
+						"sourceBranch": "main",
+						"targets": {
+							"dev": {
+								"environment": "dev",
+								"kind": "workers",
+								"config": "wrangler.jsonc",
+								"name": "desktop-demo-dev",
+								"accountId": "0123456789abcdef0123456789abcdef",
+								"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+								"wranglerEnvironment": "dev",
+								"branch": "",
+								"output": "",
+								"healthUrl": "https://desktop-demo.example.com/health"
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "deploymentBlockers.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+				"description": "Project directory passed to Git and deployment receipt lookups. Uncaught Git or receipt read failures can reject the check; the symbolic branch lookup alone is caught and treated as empty.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "deploymentBlockers.query",
 				"type": "{ commit: string; environment: DeploymentEnvironment }",
 				"required": true,
-				"description": "Requested immutable source commit and destination environment."
+				"description": "Requested source commit and destination environment used for blocker and promotion checks. Environment must be one of dev, stage, preprod, or prod; prod uses the separate production comparison.",
+				"examples": [
+					{
+						"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f901234abcd",
+						"environment": "prod"
+					}
+				]
 			},
 			{
 				"name": "deploymentBlockers.config",
 				"type": "DeploymentConfig",
 				"required": true,
-				"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
+				"description": "Configuration supplying the source branch and available environment targets for blocker checks. Production comparisons bind stored receipts to deploymentProof(config), and the function does not validate the config.",
+				"examples": [
+					{
+						"sourceBranch": "main",
+						"targets": {
+							"dev": {
+								"environment": "dev",
+								"kind": "workers",
+								"config": "wrangler.jsonc",
+								"name": "desktop-demo-dev",
+								"accountId": "0123456789abcdef0123456789abcdef",
+								"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+								"wranglerEnvironment": "dev",
+								"branch": "",
+								"output": "",
+								"healthUrl": "https://desktop-demo.example.com/health"
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "deploymentHealth.target",
 				"type": "CloudflareTarget",
 				"required": true,
-				"description": "Configured destination identity and health URL; credentials are never exposed in the UI."
+				"description": "Cloudflare target whose healthUrl is fetched to check availability after deployment. Redirects, non-ok responses, timeouts, and fetch errors all resolve to false; the request timeout is 20 seconds.",
+				"examples": [
+					{
+						"environment": "dev",
+						"kind": "workers",
+						"config": "wrangler.jsonc",
+						"name": "desktop-demo-dev",
+						"accountId": "0123456789abcdef0123456789abcdef",
+						"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+						"wranglerEnvironment": "dev",
+						"branch": "",
+						"output": "",
+						"healthUrl": "https://desktop-demo.example.com/health"
+					}
+				]
 			},
 			{
 				"name": "deploymentCurrent.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+				"description": "Project directory passed to plugin discovery, Git checks, and deployment receipt lookups. Discovery or uncaught repository/state read failures reject the check.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+				]
 			},
 			{
 				"name": "deploymentCurrent.plan",
 				"type": "DeploymentPlan",
 				"required": true,
-				"description": "Reviewed immutable source and destination with expiry and blocking conditions."
+				"description": "Reviewed deployment plan whose branch, commit, and environment are rechecked, with its promotion comparison also checked for prod. This function does not inspect the plan's expiry or its own blockers.",
+				"examples": [
+					{
+						"id": "7f8c1e2a-4b6d-4c89-a012-3456789abcde",
+						"environment": "dev",
+						"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f901234abcd",
+						"branch": "main",
+						"adapter": "cloudflare",
+						"target": "workers · desktop-demo-dev · dev · account 0123456789abcdef0123456789abcdef · https://desktop-demo.example.com/health",
+						"steps": [
+							"Prepare source",
+							"Run checks",
+							"Build source",
+							"Deploy to Cloudflare",
+							"Verify health"
+						],
+						"blockers": [],
+						"expiresAt": "2026-11-15T04:40:30.000Z"
+					}
+				]
 			},
 			{
 				"name": "deploymentCurrent.guard",
 				"type": "{ plugin: DeploymentPlugin; fingerprint: string; phase?: string }",
 				"required": true,
-				"description": "Reviewed configuration or destination proof that must still match before the next step."
+				"description": "Guard containing a DeploymentPlugin, the expected deploymentProof digest, and optional phase text for an in-progress recheck. The plugin has methods that JSON cannot represent; phase is appended to fingerprint-change errors and selects the in-progress blocker error."
 			}
 		],
 		"outputs": [
 			{
 				"name": "deploymentProof",
 				"type": "string",
-				"description": "SHA-256 digest of the serialized deployment configuration."
+				"description": "Lowercase hexadecimal SHA-256 digest of JSON.stringify(config), used to detect deployment configuration changes. It hashes the serialized representation without normalizing property order.",
+				"examples": ["032e63cd4500b5755274248b9bd7428833e767c69c974e6a23eeccf5aa8b8ec1"]
 			},
 			{
 				"name": "deploymentBlockers",
 				"type": "unknown",
-				"description": "Blocking reasons, source branch and, for production, preprod/production comparison."
+				"description": "For non-prod, returns blocker strings, the current branch, and promotion as undefined; for prod, forwards blockers, branch, and the preprod/production comparison. It reports state and target issues but does not perform a deployment.",
+				"examples": [
+					{
+						"blockers": [
+							"Configure both preprod and production deployment targets.",
+							"Deploy a verified source commit to preprod first."
+						],
+						"branch": "main",
+						"promotion": {
+							"preprod": null,
+							"production": null,
+							"commitsBehind": null
+						}
+					}
+				]
 			},
 			{
 				"name": "deploymentHealth",
 				"type": "Promise<boolean>",
-				"description": "True only when the health endpoint returns a successful response without redirects."
+				"description": "Promise resolving to true only when the health request returns an ok response without redirects. Fetch failures and the 20-second timeout resolve to false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "deploymentCurrent",
 				"type": "unknown",
-				"description": "Current validated configuration; rejects if source, configuration or promotion changed."
+				"description": "Returns the discovered DeploymentConfig, filling an empty sourceBranch from plan.branch. It throws when the fingerprint, production comparison, or blocker state changed; discovery and blocker-check failures also propagate.",
+				"examples": [
+					{
+						"sourceBranch": "main",
+						"targets": {
+							"dev": {
+								"environment": "dev",
+								"kind": "workers",
+								"config": "wrangler.jsonc",
+								"name": "desktop-demo-dev",
+								"accountId": "0123456789abcdef0123456789abcdef",
+								"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+								"wranglerEnvironment": "dev",
+								"branch": "",
+								"output": "",
+								"healthUrl": "https://desktop-demo.example.com/health"
+							}
+						}
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
+				"description": "deploymentBlockers can reject on uncaught Git or deployment receipt reads. deploymentCurrent throws when the fingerprint, production comparison, or blocker state changed and propagates plugin discovery or blocker-check failures."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "deploymentProof",
@@ -100,18 +219,38 @@
 						"name": "deploymentProof.config",
 						"type": "DeploymentConfig",
 						"required": true,
-						"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
+						"description": "Configuration object whose JSON serialization is hashed to bind deployment state to a specific mapping. The digest covers JSON.stringify output, so property order and JSON serialization limits affect the result.",
+						"examples": [
+							{
+								"sourceBranch": "main",
+								"targets": {
+									"dev": {
+										"environment": "dev",
+										"kind": "workers",
+										"config": "wrangler.jsonc",
+										"name": "desktop-demo-dev",
+										"accountId": "0123456789abcdef0123456789abcdef",
+										"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+										"wranglerEnvironment": "dev",
+										"branch": "",
+										"output": "",
+										"healthUrl": "https://desktop-demo.example.com/health"
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "deploymentProof",
 						"type": "string",
-						"description": "SHA-256 digest of the serialized deployment configuration."
+						"description": "Lowercase hexadecimal SHA-256 digest of JSON.stringify(config), used to detect deployment configuration changes. It hashes the serialized representation without normalizing property order.",
+						"examples": ["032e63cd4500b5755274248b9bd7428833e767c69c974e6a23eeccf5aa8b8ec1"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "deploymentBlockers",
@@ -120,30 +259,78 @@
 						"name": "deploymentBlockers.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+						"description": "Project directory passed to Git and deployment receipt lookups. Uncaught Git or receipt read failures can reject the check; the symbolic branch lookup alone is caught and treated as empty.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					},
 					{
 						"name": "deploymentBlockers.query",
 						"type": "{ commit: string; environment: DeploymentEnvironment }",
 						"required": true,
-						"description": "Requested immutable source commit and destination environment."
+						"description": "Requested source commit and destination environment used for blocker and promotion checks. Environment must be one of dev, stage, preprod, or prod; prod uses the separate production comparison.",
+						"examples": [
+							{
+								"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f901234abcd",
+								"environment": "prod"
+							}
+						]
 					},
 					{
 						"name": "deploymentBlockers.config",
 						"type": "DeploymentConfig",
 						"required": true,
-						"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
+						"description": "Configuration supplying the source branch and available environment targets for blocker checks. Production comparisons bind stored receipts to deploymentProof(config), and the function does not validate the config.",
+						"examples": [
+							{
+								"sourceBranch": "main",
+								"targets": {
+									"dev": {
+										"environment": "dev",
+										"kind": "workers",
+										"config": "wrangler.jsonc",
+										"name": "desktop-demo-dev",
+										"accountId": "0123456789abcdef0123456789abcdef",
+										"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+										"wranglerEnvironment": "dev",
+										"branch": "",
+										"output": "",
+										"healthUrl": "https://desktop-demo.example.com/health"
+									}
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "deploymentBlockers",
 						"type": "unknown",
-						"description": "Blocking reasons, source branch and, for production, preprod/production comparison."
+						"description": "For non-prod, returns blocker strings, the current branch, and promotion as undefined; for prod, forwards blockers, branch, and the preprod/production comparison. It reports state and target issues but does not perform a deployment.",
+						"examples": [
+							{
+								"blockers": [
+									"Configure both preprod and production deployment targets.",
+									"Deploy a verified source commit to preprod first."
+								],
+								"branch": "main",
+								"promotion": {
+									"preprod": null,
+									"production": null,
+									"commitsBehind": null
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects when an uncaught Git command or deployment receipt lookup fails; the symbolic branch lookup is caught and treated as an empty branch."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "deploymentHealth",
@@ -152,18 +339,33 @@
 						"name": "deploymentHealth.target",
 						"type": "CloudflareTarget",
 						"required": true,
-						"description": "Configured destination identity and health URL; credentials are never exposed in the UI."
+						"description": "Cloudflare target whose healthUrl is fetched to check availability after deployment. Redirects, non-ok responses, timeouts, and fetch errors all resolve to false; the request timeout is 20 seconds.",
+						"examples": [
+							{
+								"environment": "dev",
+								"kind": "workers",
+								"config": "wrangler.jsonc",
+								"name": "desktop-demo-dev",
+								"accountId": "0123456789abcdef0123456789abcdef",
+								"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+								"wranglerEnvironment": "dev",
+								"branch": "",
+								"output": "",
+								"healthUrl": "https://desktop-demo.example.com/health"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "deploymentHealth",
 						"type": "Promise<boolean>",
-						"description": "True only when the health endpoint returns a successful response without redirects."
+						"description": "Promise resolving to true only when the health request returns an ok response without redirects. Fetch failures and the 20-second timeout resolve to false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "deploymentCurrent",
@@ -172,35 +374,77 @@
 						"name": "deploymentCurrent.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+						"description": "Project directory passed to plugin discovery, Git checks, and deployment receipt lookups. Discovery or uncaught repository/state read failures reject the check.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-6"
+						]
 					},
 					{
 						"name": "deploymentCurrent.plan",
 						"type": "DeploymentPlan",
 						"required": true,
-						"description": "Reviewed immutable source and destination with expiry and blocking conditions."
+						"description": "Reviewed deployment plan whose branch, commit, and environment are rechecked, with its promotion comparison also checked for prod. This function does not inspect the plan's expiry or its own blockers.",
+						"examples": [
+							{
+								"id": "7f8c1e2a-4b6d-4c89-a012-3456789abcde",
+								"environment": "dev",
+								"commit": "a1b2c3d4e5f60718293a4b5c6d7e8f901234abcd",
+								"branch": "main",
+								"adapter": "cloudflare",
+								"target": "workers · desktop-demo-dev · dev · account 0123456789abcdef0123456789abcdef · https://desktop-demo.example.com/health",
+								"steps": [
+									"Prepare source",
+									"Run checks",
+									"Build source",
+									"Deploy to Cloudflare",
+									"Verify health"
+								],
+								"blockers": [],
+								"expiresAt": "2026-11-15T04:40:30.000Z"
+							}
+						]
 					},
 					{
 						"name": "deploymentCurrent.guard",
 						"type": "{ plugin: DeploymentPlugin; fingerprint: string; phase?: string }",
 						"required": true,
-						"description": "Reviewed configuration or destination proof that must still match before the next step."
+						"description": "Guard containing a DeploymentPlugin, the expected deploymentProof digest, and optional phase text for an in-progress recheck. The plugin has methods that JSON cannot represent; phase is appended to fingerprint-change errors and selects the in-progress blocker error."
 					}
 				],
 				"outputs": [
 					{
 						"name": "deploymentCurrent",
 						"type": "unknown",
-						"description": "Current validated configuration; rejects if source, configuration or promotion changed."
+						"description": "Returns the discovered DeploymentConfig, filling an empty sourceBranch from plan.branch. It throws when the fingerprint, production comparison, or blocker state changed; discovery and blocker-check failures also propagate.",
+						"examples": [
+							{
+								"sourceBranch": "main",
+								"targets": {
+									"dev": {
+										"environment": "dev",
+										"kind": "workers",
+										"config": "wrangler.jsonc",
+										"name": "desktop-demo-dev",
+										"accountId": "0123456789abcdef0123456789abcdef",
+										"tokenEnv": "HARNESS_DESKTOP_DEV_CLOUDFLARE_API_TOKEN",
+										"wranglerEnvironment": "dev",
+										"branch": "",
+										"output": "",
+										"healthUrl": "https://desktop-demo.example.com/health"
+									}
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws when the configuration fingerprint or production comparison differs, or when blockers remain. Rejections from plugin discovery and blocker checks propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
