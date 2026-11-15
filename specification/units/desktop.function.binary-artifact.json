@@ -18,23 +18,33 @@
 				"name": "binaryArtifact.value",
 				"type": "RemoteBinary",
 				"required": true,
-				"description": "A transported binary answer with base64 data, encoding, byte length, hash and a string media type."
+				"description": "A transported binary record with base64 data, its encoding, decoded byte length, SHA-256 digest, and media type. Decoding accepts only the base64 encoding and string data, then checks the decoded length and lowercase SHA-256 digest; the wrapper also requires a string media type.",
+				"examples": [
+					{
+						"encoding": "base64",
+						"data": "",
+						"byteLength": 0,
+						"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+						"mediaType": "application/octet-stream"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "binaryArtifact",
 				"type": "Promise<EvidenceArtifactResult>",
-				"description": "A promise for decoded bytes with the supplied media type and hash after the transport checks pass. The media label is retained, not independently inferred from the bytes."
+				"description": "Resolves to the decoded Uint8Array together with the supplied media type and SHA-256 digest. The result is returned only after the decoded length and digest match the transported values."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects a non-string media type, unsupported encoding or unreadable base64, and bytes whose length or SHA-256 differs from the supplied values."
+				"description": "Throws Error(\"The computer sent media this app cannot read.\") when the encoding or data cannot be decoded, or when mediaType is not a string. Throws Error(\"The media arrived damaged and is not shown.\") when the decoded byte length or SHA-256 digest differs from the supplied value."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "binaryArtifact",
@@ -43,23 +53,33 @@
 						"name": "binaryArtifact.value",
 						"type": "RemoteBinary",
 						"required": true,
-						"description": "A transported binary answer with base64 data, encoding, byte length, hash and a string media type."
+						"description": "A transported binary record with base64 data, its encoding, decoded byte length, SHA-256 digest, and media type. Decoding accepts only the base64 encoding and string data, then checks the decoded length and lowercase SHA-256 digest; the wrapper also requires a string media type.",
+						"examples": [
+							{
+								"encoding": "base64",
+								"data": "",
+								"byteLength": 0,
+								"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+								"mediaType": "application/octet-stream"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "binaryArtifact",
 						"type": "Promise<EvidenceArtifactResult>",
-						"description": "A promise for decoded bytes with the supplied media type and hash after the transport checks pass. The media label is retained, not independently inferred from the bytes."
+						"description": "Resolves to the decoded Uint8Array together with the supplied media type and SHA-256 digest. The result is returned only after the decoded length and digest match the transported values."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws Error(\"The computer sent media this app cannot read.\") when the encoding or data cannot be decoded, or when mediaType is not a string. Throws Error(\"The media arrived damaged and is not shown.\") when the decoded byte length or SHA-256 digest differs from the supplied value."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
