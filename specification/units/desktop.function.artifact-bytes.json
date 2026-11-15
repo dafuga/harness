@@ -22,9 +22,7 @@
 				"type": "Pick<DesktopBridge, 'artifact'>",
 				"required": true,
 				"description": "The connection the capture is read through; only its optional `artifact` reader is used, and it is called with the query as its only argument. A connection without `artifact` is refused before anything is read, with the `unreadArtifact` message.",
-				"examples": [
-					{}
-				]
+				"examples": [{}]
 			},
 			{
 				"name": "artifactBytes.query",
@@ -68,13 +66,13 @@
 		"outputs": [
 			{
 				"name": "unreadArtifact",
-				"type": "unknown",
+				"type": "string",
 				"description": "The fixed text of the Error thrown when the bridge has no `artifact` reader; it is the same string on every call and is exported from the utils module next to `damagedArtifact`.",
 				"examples": ["Recorded bytes cannot be read on this connection."]
 			},
 			{
 				"name": "damagedArtifact",
-				"type": "unknown",
+				"type": "string",
 				"description": "The fixed text of the Error thrown when the bytes the reader returned do not hash to `query.sha256`, the same string on every call. When it is thrown, no bytes are returned, so a caller never receives bytes that were not checked.",
 				"examples": ["The bytes that were read do not have the recorded SHA-256."]
 			},
@@ -101,9 +99,7 @@
 						"type": "Pick<DesktopBridge, 'artifact'>",
 						"required": true,
 						"description": "The connection the capture is read through; only its optional `artifact` reader is used, and it is called with the query as its only argument. A connection without `artifact` is refused before anything is read, with the `unreadArtifact` message.",
-						"examples": [
-							{}
-						]
+						"examples": [{}]
 					},
 					{
 						"name": "artifactBytes.query",

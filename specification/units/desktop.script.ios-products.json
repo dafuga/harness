@@ -182,19 +182,19 @@
 		"outputs": [
 			{
 				"name": "desktopRoot",
-				"type": "unknown",
+				"type": "string",
 				"description": "The absolute desktop package directory resolved from the script module location. Other exported paths are based on this directory.",
 				"examples": ["/workspace/project/packages/desktop"]
 			},
 			{
 				"name": "derivedData",
-				"type": "unknown",
+				"type": "string",
 				"description": "The absolute Xcode DerivedData directory at desktopRoot/.cache/ios/DerivedData. builtProduct places configuration-specific simulator products beneath it.",
 				"examples": ["/workspace/project/packages/desktop/.cache/ios/DerivedData"]
 			},
 			{
 				"name": "fixtureProduct",
-				"type": "unknown",
+				"type": "string",
 				"description": "The absolute fixture app bundle path at desktopRoot/.cache/ios/fixture/App.app. The script exports this location but does not create it during module initialization.",
 				"examples": ["/workspace/project/packages/desktop/.cache/ios/fixture/App.app"]
 			},
@@ -271,7 +271,7 @@
 			},
 			{
 				"name": "productFacts",
-				"type": "unknown",
+				"type": "{ path: string; executable: string; signature: string; localNetworking: boolean; inspectable: boolean; }",
 				"description": "Returns exactly path, executable, signature, localNetworking, and inspectable fields; path is relative to desktopRoot and executable is a SHA-256 digest. Signature validation must pass before the object is returned.",
 				"examples": [
 					{
@@ -632,7 +632,7 @@
 				"outputs": [
 					{
 						"name": "productFacts",
-						"type": "unknown",
+						"type": "{ path: string; executable: string; signature: string; localNetworking: boolean; inspectable: boolean; }",
 						"description": "Returns exactly path, executable, signature, localNetworking, and inspectable fields; path is relative to desktopRoot and executable is a SHA-256 digest. Signature validation must pass before the object is returned.",
 						"examples": [
 							{
