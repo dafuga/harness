@@ -18,34 +18,187 @@
 				"name": "auditTypePlacement.file",
 				"type": "AuditFile",
 				"required": true,
-				"description": "Source contents, extension and repository path; Svelte script blocks are inspected together."
+				"description": "The file to inspect: `contents` is parsed with the TypeScript parser (script kind from `relativePath`), but when `extension` is exactly '.svelte' only the joined `<script>` blocks are parsed. `relativePath` is also the path reported in findings and decides the '.d.ts' and '.types.ts' cases; only `relativePath`, `extension` and `contents` are read, so `absolutePath`, `lines`, `structuralLines`, `limits` and `size` have no effect.",
+				"examples": [
+					{
+						"absolutePath": "/srv/app/src/core/reports.ts",
+						"relativePath": "src/core/reports.ts",
+						"extension": ".ts",
+						"contents": "export interface ReportOptions {\n\tlimit: number;\n}\n\nexport function reportLimit(options: ReportOptions): number {\n\treturn options.limit;\n}\n",
+						"lines": [
+							"export interface ReportOptions {",
+							"\tlimit: number;",
+							"}",
+							"",
+							"export function reportLimit(options: ReportOptions): number {",
+							"\treturn options.limit;",
+							"}",
+							""
+						],
+						"structuralLines": [
+							"export interface ReportOptions {",
+							"\tlimit: number;",
+							"}",
+							"",
+							"export function reportLimit(options: ReportOptions): number {",
+							"\treturn options.limit;",
+							"}",
+							""
+						],
+						"limits": {
+							"maxFileLines": 220,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						},
+						"size": 139
+					},
+					{
+						"absolutePath": "/srv/app/src/components/explorer/StatusBadge.svelte",
+						"relativePath": "src/components/explorer/StatusBadge.svelte",
+						"extension": ".svelte",
+						"contents": "<script lang=\"ts\">\n\tinterface Props {\n\t\tlabel: string;\n\t}\n\n\tlet { label }: Props = $props();\n</script>\n\n<span>{label}</span>\n",
+						"lines": [
+							"<script lang=\"ts\">",
+							"\tinterface Props {",
+							"\t\tlabel: string;",
+							"\t}",
+							"",
+							"\tlet { label }: Props = $props();",
+							"</script>",
+							"",
+							"<span>{label}</span>",
+							""
+						],
+						"structuralLines": [
+							"<script lang=\"ts\">",
+							"\tinterface Props {",
+							"\t\tlabel: string;",
+							"\t}",
+							"",
+							"\tlet { label }: Props = $props();",
+							"</script>",
+							"",
+							"<span>{label}</span>",
+							""
+						],
+						"limits": {
+							"maxFileLines": 220,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						},
+						"size": 125
+					}
+				]
 			},
 			{
 				"name": "auditArchitecture.path",
 				"type": "string",
 				"required": true,
-				"description": "Repository-relative path whose directional imports are checked."
+				"description": "Repository-relative path of the importing file, using forward slashes such as 'src/core/files.ts'; only paths starting with 'src/core/', 'src/templates/' or 'src/commands/' are checked, relative specifiers are resolved from its folder, and every finding repeats this value as its `path`. Other paths produce no findings.",
+				"examples": [
+					"src/core/files.ts",
+					"src/commands/module-system/ModuleCommand.ts",
+					"src/templates/development-tooling/scaffoldTypes.ts"
+				]
 			},
 			{
 				"name": "auditArchitecture.lines",
 				"type": "string[]",
 				"required": true,
-				"description": "Structural source lines used to inspect import boundaries."
+				"description": "The importing file's source lines in order, where the element at index i is reported as line i + 1; only the first quoted `from` specifier on each line is checked, so side-effect `import`, `require()` and `import()` specifiers are never inspected. The TypeScript adapter passes `AuditFile.structuralLines`, which replaces template-literal text with spaces, so a `from` clause inside a backtick string is not seen.",
+				"examples": [
+					[
+						"import { renderTemplate } from '../templates/render';",
+						"",
+						"export function writeReport(name: string): string {",
+						"\treturn renderTemplate(name);",
+						"}"
+					],
+					[
+						"import { loadFiles } from '../../core/files';",
+						"",
+						"export function runModule(): void {",
+						"\tloadFiles();",
+						"}"
+					],
+					[
+						"import { runWorkflow } from '../../workflows/runWorkflow';",
+						"",
+						"export const templateNames: string[] = [];"
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "auditArchitecture",
 				"type": "AuditFinding[]",
-				"description": "Import-boundary violations for core, templates and thin command modules."
+				"description": "Findings in line order, at most one per line, for core modules importing templates, workflows or commands, template modules importing workflows or commands, and command modules importing templates, core/files or core/fields; an empty array means no finding. Matching uses those folder names anywhere in the resolved import path, and the core and template rules also need a path segment after the folder, so a bare '../templates' specifier is not reported by them.",
+				"examples": [
+					[
+						{
+							"path": "src/core/files.ts",
+							"rule": "architecture-boundaries",
+							"message": "Core modules cannot import templates, workflows, or commands. Import starts near line 1."
+						}
+					],
+					[
+						{
+							"path": "src/commands/module-system/ModuleCommand.ts",
+							"rule": "thin-command-modules",
+							"message": "Command modules should delegate instead of importing templates or file-generation helpers. Import starts near line 1."
+						}
+					],
+					[
+						{
+							"path": "src/templates/development-tooling/scaffoldTypes.ts",
+							"rule": "architecture-boundaries",
+							"message": "Template modules cannot import workflows or commands. Import starts near line 1."
+						}
+					]
+				]
 			},
 			{
 				"name": "auditTypePlacement",
 				"type": "AuditFinding[]",
-				"description": "Findings for named interfaces or type aliases mixed with executable declarations; separate type modules and declaration files are accepted."
+				"description": "Empty for '.d.ts' files and for files with no top-level runtime statement (class, function, variable, enum, expression or export assignment; statements with a `declare` modifier do not count). A '.types.ts' file with runtime code gets one file-level finding, and any other file with runtime code gets one finding per interface or type alias at any depth.",
+				"examples": [
+					[
+						{
+							"path": "src/core/reports.ts",
+							"rule": "separate-type-declarations",
+							"message": "Move ReportOptions to a sibling .types.ts file and import its type."
+						}
+					],
+					[
+						{
+							"path": "src/components/explorer/StatusBadge.svelte",
+							"rule": "separate-type-declarations",
+							"message": "Move Props to a sibling .types.ts file and import its type."
+						}
+					],
+					[
+						{
+							"path": "src/core/reports.types.ts",
+							"rule": "separate-type-declarations",
+							"message": "Keep runtime implementations outside type files; retain type-only declarations and compatibility re-exports here."
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "auditTypePlacement",
@@ -54,18 +207,121 @@
 						"name": "auditTypePlacement.file",
 						"type": "AuditFile",
 						"required": true,
-						"description": "Source contents, extension and repository path; Svelte script blocks are inspected together."
+						"description": "The file to inspect: `contents` is parsed with the TypeScript parser (script kind from `relativePath`), but when `extension` is exactly '.svelte' only the joined `<script>` blocks are parsed. `relativePath` is also the path reported in findings and decides the '.d.ts' and '.types.ts' cases; only `relativePath`, `extension` and `contents` are read, so `absolutePath`, `lines`, `structuralLines`, `limits` and `size` have no effect.",
+						"examples": [
+							{
+								"absolutePath": "/srv/app/src/core/reports.ts",
+								"relativePath": "src/core/reports.ts",
+								"extension": ".ts",
+								"contents": "export interface ReportOptions {\n\tlimit: number;\n}\n\nexport function reportLimit(options: ReportOptions): number {\n\treturn options.limit;\n}\n",
+								"lines": [
+									"export interface ReportOptions {",
+									"\tlimit: number;",
+									"}",
+									"",
+									"export function reportLimit(options: ReportOptions): number {",
+									"\treturn options.limit;",
+									"}",
+									""
+								],
+								"structuralLines": [
+									"export interface ReportOptions {",
+									"\tlimit: number;",
+									"}",
+									"",
+									"export function reportLimit(options: ReportOptions): number {",
+									"\treturn options.limit;",
+									"}",
+									""
+								],
+								"limits": {
+									"maxFileLines": 220,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								},
+								"size": 139
+							},
+							{
+								"absolutePath": "/srv/app/src/components/explorer/StatusBadge.svelte",
+								"relativePath": "src/components/explorer/StatusBadge.svelte",
+								"extension": ".svelte",
+								"contents": "<script lang=\"ts\">\n\tinterface Props {\n\t\tlabel: string;\n\t}\n\n\tlet { label }: Props = $props();\n</script>\n\n<span>{label}</span>\n",
+								"lines": [
+									"<script lang=\"ts\">",
+									"\tinterface Props {",
+									"\t\tlabel: string;",
+									"\t}",
+									"",
+									"\tlet { label }: Props = $props();",
+									"</script>",
+									"",
+									"<span>{label}</span>",
+									""
+								],
+								"structuralLines": [
+									"<script lang=\"ts\">",
+									"\tinterface Props {",
+									"\t\tlabel: string;",
+									"\t}",
+									"",
+									"\tlet { label }: Props = $props();",
+									"</script>",
+									"",
+									"<span>{label}</span>",
+									""
+								],
+								"limits": {
+									"maxFileLines": 220,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								},
+								"size": 125
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditTypePlacement",
 						"type": "AuditFinding[]",
-						"description": "Findings for named interfaces or type aliases mixed with executable declarations; separate type modules and declaration files are accepted."
+						"description": "Empty for '.d.ts' files and for files with no top-level runtime statement (class, function, variable, enum, expression or export assignment; statements with a `declare` modifier do not count). A '.types.ts' file with runtime code gets one file-level finding, and any other file with runtime code gets one finding per interface or type alias at any depth.",
+						"examples": [
+							[
+								{
+									"path": "src/core/reports.ts",
+									"rule": "separate-type-declarations",
+									"message": "Move ReportOptions to a sibling .types.ts file and import its type."
+								}
+							],
+							[
+								{
+									"path": "src/components/explorer/StatusBadge.svelte",
+									"rule": "separate-type-declarations",
+									"message": "Move Props to a sibling .types.ts file and import its type."
+								}
+							],
+							[
+								{
+									"path": "src/core/reports.types.ts",
+									"rule": "separate-type-declarations",
+									"message": "Keep runtime implementations outside type files; retain type-only declarations and compatibility re-exports here."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "auditArchitecture",
@@ -74,24 +330,73 @@
 						"name": "auditArchitecture.path",
 						"type": "string",
 						"required": true,
-						"description": "Repository-relative path whose directional imports are checked."
+						"description": "Repository-relative path of the importing file, using forward slashes such as 'src/core/files.ts'; only paths starting with 'src/core/', 'src/templates/' or 'src/commands/' are checked, relative specifiers are resolved from its folder, and every finding repeats this value as its `path`. Other paths produce no findings.",
+						"examples": [
+							"src/core/files.ts",
+							"src/commands/module-system/ModuleCommand.ts",
+							"src/templates/development-tooling/scaffoldTypes.ts"
+						]
 					},
 					{
 						"name": "auditArchitecture.lines",
 						"type": "string[]",
 						"required": true,
-						"description": "Structural source lines used to inspect import boundaries."
+						"description": "The importing file's source lines in order, where the element at index i is reported as line i + 1; only the first quoted `from` specifier on each line is checked, so side-effect `import`, `require()` and `import()` specifiers are never inspected. The TypeScript adapter passes `AuditFile.structuralLines`, which replaces template-literal text with spaces, so a `from` clause inside a backtick string is not seen.",
+						"examples": [
+							[
+								"import { renderTemplate } from '../templates/render';",
+								"",
+								"export function writeReport(name: string): string {",
+								"\treturn renderTemplate(name);",
+								"}"
+							],
+							[
+								"import { loadFiles } from '../../core/files';",
+								"",
+								"export function runModule(): void {",
+								"\tloadFiles();",
+								"}"
+							],
+							[
+								"import { runWorkflow } from '../../workflows/runWorkflow';",
+								"",
+								"export const templateNames: string[] = [];"
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditArchitecture",
 						"type": "AuditFinding[]",
-						"description": "Import-boundary violations for core, templates and thin command modules."
+						"description": "Findings in line order, at most one per line, for core modules importing templates, workflows or commands, template modules importing workflows or commands, and command modules importing templates, core/files or core/fields; an empty array means no finding. Matching uses those folder names anywhere in the resolved import path, and the core and template rules also need a path segment after the folder, so a bare '../templates' specifier is not reported by them.",
+						"examples": [
+							[
+								{
+									"path": "src/core/files.ts",
+									"rule": "architecture-boundaries",
+									"message": "Core modules cannot import templates, workflows, or commands. Import starts near line 1."
+								}
+							],
+							[
+								{
+									"path": "src/commands/module-system/ModuleCommand.ts",
+									"rule": "thin-command-modules",
+									"message": "Command modules should delegate instead of importing templates or file-generation helpers. Import starts near line 1."
+								}
+							],
+							[
+								{
+									"path": "src/templates/development-tooling/scaffoldTypes.ts",
+									"rule": "architecture-boundaries",
+									"message": "Template modules cannot import workflows or commands. Import starts near line 1."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
