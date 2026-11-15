@@ -28,41 +28,75 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "InstallationTokenService.constructor.options",
 				"type": "InstallationTokenOptions",
-				"required": true
+				"required": true,
+				"description": "Provides the GitHub App configuration, GitHub API adapter, in-memory token cache, and clock used by the service. Expired cache entries are pruned; when the cache has at least 256 entries, the service clears it before adding a token."
 			},
 			{
 				"name": "InstallationTokenService.token.input",
 				"type": "InstallationTokenInput",
-				"required": true
+				"required": true,
+				"description": "Requests an installation token for repository IDs and a contents permission. The installation ID and each repository ID must be positive safe integers; the request must contain 1–10 distinct repository IDs and exactly one contents permission set to read or write. Write is allowed only for the configured collaboration repository on its configured installation.",
+				"examples": [
+					{
+						"installationId": 12345678,
+						"repositoryIds": [987654321],
+						"permissions": {
+							"contents": "read"
+						}
+					}
+				]
 			},
 			{
 				"name": "InstallationTokenService.resolve.installationId",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Identifies the GitHub App installation for the metadata-only repository lookup. The service passes this number into the token request without a local range check.",
+				"examples": [12345678]
 			},
 			{
 				"name": "InstallationTokenService.resolve.repositoryId",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Identifies the single repository in the metadata-only token request. The service passes this number into the token request without a local range check.",
+				"examples": [987654321]
 			}
 		],
 		"outputs": [
 			{
 				"name": "InstallationTokenService.token",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves to the minted installation token string after GitHub grants exactly the requested repositories and permissions. A cached token is reused only when it expires more than five minutes from the configured clock.",
+				"examples": ["ghs_0123456789abcdef0123456789abcdef01"]
 			},
 			{
 				"name": "InstallationTokenService.resolve",
-				"type": "Promise<RepositoryIdentity | null>"
+				"type": "Promise<RepositoryIdentity | null>",
+				"description": "Resolves to the repository identity returned by GitHub when the installation grants exactly that repository with metadata read, or null when there is no exact grant. The returned identity contains the granted repository ID, owner, name, privacy flag, and requested installation ID.",
+				"examples": [
+					{
+						"id": 987654321,
+						"owner": "acme",
+						"name": "example-repository",
+						"private": true,
+						"installationId": 12345678
+					},
+					null
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The operation rejects when a called helper, configured clock or cache, or GitHub API adapter throws or rejects; the service does not catch or translate that failure."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "InstallationTokenService.token",
@@ -70,17 +104,35 @@
 					{
 						"name": "InstallationTokenService.token.input",
 						"type": "InstallationTokenInput",
-						"required": true
+						"required": true,
+						"description": "Requests an installation token for repository IDs and a contents permission. The installation ID and each repository ID must be positive safe integers; the request must contain 1–10 distinct repository IDs and exactly one contents permission set to read or write. Write is allowed only for the configured collaboration repository on its configured installation.",
+						"examples": [
+							{
+								"installationId": 12345678,
+								"repositoryIds": [987654321],
+								"permissions": {
+									"contents": "read"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "InstallationTokenService.token",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves to the minted installation token string after GitHub grants exactly the requested repositories and permissions. A cached token is reused only when it expires more than five minutes from the configured clock.",
+						"examples": ["ghs_0123456789abcdef0123456789abcdef01"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The promise rejects with failures raised by authFail for token-scope-denied (invalid or disallowed scope, or a grant that differs from the request) or repository-denied (no grant), and propagates failures from key creation, JWT creation, the configured clock or cache, and the GitHub API adapter without catching them."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "InstallationTokenService.resolve",
@@ -88,22 +140,43 @@
 					{
 						"name": "InstallationTokenService.resolve.installationId",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Identifies the GitHub App installation for the metadata-only repository lookup. The service passes this number into the token request without a local range check.",
+						"examples": [12345678]
 					},
 					{
 						"name": "InstallationTokenService.resolve.repositoryId",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Identifies the single repository in the metadata-only token request. The service passes this number into the token request without a local range check.",
+						"examples": [987654321]
 					}
 				],
 				"outputs": [
 					{
 						"name": "InstallationTokenService.resolve",
-						"type": "Promise<RepositoryIdentity | null>"
+						"type": "Promise<RepositoryIdentity | null>",
+						"description": "Resolves to the repository identity returned by GitHub when the installation grants exactly that repository with metadata read, or null when there is no exact grant. The returned identity contains the granted repository ID, owner, name, privacy flag, and requested installation ID.",
+						"examples": [
+							{
+								"id": 987654321,
+								"owner": "acme",
+								"name": "example-repository",
+								"private": true,
+								"installationId": 12345678
+							},
+							null
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The promise rejects if key creation, JWT creation, the configured clock, or the GitHub API adapter throws or rejects; the service does not catch or translate that failure."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -113,17 +186,19 @@
 					{
 						"name": "InstallationTokenService.constructor.options",
 						"type": "InstallationTokenOptions",
-						"required": true
+						"required": true,
+						"description": "Provides the GitHub App configuration, GitHub API adapter, in-memory token cache, and clock used by the service. Expired cache entries are pruned; when the cache already has 256 entries, the service clears it before adding a token."
 					}
 				],
 				"outputs": [
 					{
 						"name": "InstallationTokenService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Constructs an InstallationTokenService instance with the supplied options. The constructor performs no validation or other initialization work."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
