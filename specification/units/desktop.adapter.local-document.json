@@ -17,36 +17,84 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "LocalDocumentAdapter.constructor.file",
 				"type": "string | undefined",
-				"required": true
+				"required": true,
+				"description": "Path of the JSON document: read() reads it with readFile, and each update() creates missing parent directories with mode 0o700, writes a temporary file beside it with mode 0o600, and renames that file over it. Undefined or an empty string keeps the document in memory only, and the adapter is for private app-data only, never session credentials or canonical artifacts.",
+				"examples": [
+					"/Users/example/Library/Application Support/reports-media/document.json",
+					"/home/example/.local/share/reports-media/document.json"
+				]
 			},
 			{
 				"name": "LocalDocumentAdapter.constructor.empty",
 				"type": "() => T",
-				"required": true
+				"required": true,
+				"description": "Callback that returns the initial document: the constructor calls it once and keeps the result as the in-memory copy. When a configured file does not exist (ENOENT), read() and update() call it again and use its result without validation."
 			},
 			{
 				"name": "LocalDocumentAdapter.update.change",
 				"type": "(value: T) => R",
-				"required": true
+				"required": true,
+				"description": "Callback that receives the current document, read from the file or from memory, and may mutate it; the mutated value is what gets written, and a synchronous throw skips the write. Its return value resolves update(), but a returned promise is not awaited before the write, so the write can happen before it settles."
 			}
 		],
 		"outputs": [
 			{
 				"name": "LocalDocumentAdapter.read",
-				"type": "Promise<T>"
+				"type": "Promise<T>",
+				"description": "The document: the parsed file content cast to T without validation, the value from empty() when the configured file does not exist (ENOENT), or a structured clone of the in-memory copy when no file is set. read() does not wait for pending update() calls, so it returns the document as of the last completed write.",
+				"examples": [
+					{},
+					[]
+				]
 			},
 			{
 				"name": "LocalDocumentAdapter.update",
-				"type": "Promise<R>"
+				"type": "Promise<R>",
+				"description": "The value that change returned, resolved only after the document has been written. Updates run one at a time in call order, and a failed update does not block later updates.",
+				"examples": [
+					true,
+					{}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "empty() error",
+				"type": "thrown",
+				"description": "Any value thrown by the empty callback; the constructor throws it, and read() or update() rejects with it when a configured file does not exist (ENOENT)."
+			},
+			{
+				"name": "DataCloneError",
+				"type": "thrown",
+				"description": "Thrown by structuredClone when no file is set and the document, or a value that change adds to it, cannot be copied, such as a function; read() or update() rejects with it and the in-memory copy is unchanged."
+			},
+			{
+				"name": "NodeJS.ErrnoException",
+				"type": "thrown",
+				"description": "A readFile error other than ENOENT, or an error from mkdir, writeFile or rename while writing; read() or update() rejects with it, and the existing document file is not replaced."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when the configured file exists but does not contain valid JSON, including an empty file; read() or update() rejects with it."
+			},
+			{
+				"name": "change() error",
+				"type": "thrown",
+				"description": "The value thrown synchronously by change, or the reason of a promise it returns that rejects; update() rejects with it. A synchronous throw skips the write, but a returned promise is not awaited first, so the write still runs before the rejection."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown in file mode when the document cannot be turned into JSON text, such as a circular reference or a BigInt; update() rejects with it, and the existing document file is not replaced."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "LocalDocumentAdapter.read",
@@ -54,11 +102,37 @@
 				"outputs": [
 					{
 						"name": "LocalDocumentAdapter.read",
-						"type": "Promise<T>"
+						"type": "Promise<T>",
+						"description": "The document: the parsed file content cast to T without validation, the value from empty() when the configured file does not exist (ENOENT), or a structured clone of the in-memory copy when no file is set. read() does not wait for pending update() calls, so it returns the document as of the last completed write.",
+						"examples": [
+							{},
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "DataCloneError",
+						"type": "thrown",
+						"description": "Thrown by structuredClone when no file is set and the in-memory document contains something it cannot copy, such as a function; read() rejects with it."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "Any readFile error other than ENOENT; read() rejects with it, while ENOENT returns the empty() value instead."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when the configured file exists but does not contain valid JSON, including an empty file; read() rejects with it."
+					},
+					{
+						"name": "empty() error",
+						"type": "thrown",
+						"description": "Any value thrown by the empty callback when the configured file does not exist (ENOENT); read() rejects with it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LocalDocumentAdapter.update",
@@ -66,17 +140,54 @@
 					{
 						"name": "LocalDocumentAdapter.update.change",
 						"type": "(value: T) => R",
-						"required": true
+						"required": true,
+						"description": "Callback that receives the current document, read from the file or from memory, and may mutate it; the mutated value is what gets written, and a synchronous throw skips the write. Its return value resolves update(), but a returned promise is not awaited before the write, so the write can happen before it settles."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalDocumentAdapter.update",
-						"type": "Promise<R>"
+						"type": "Promise<R>",
+						"description": "The value that change returned, resolved only after the document has been written. Updates run one at a time in call order, and a failed update does not block later updates.",
+						"examples": [
+							true,
+							{}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "change() error",
+						"type": "thrown",
+						"description": "The value thrown synchronously by change, or the reason of a promise it returns that rejects; update() rejects with it. A synchronous throw skips the write, but a returned promise is not awaited first, so the write still runs before the rejection."
+					},
+					{
+						"name": "DataCloneError",
+						"type": "thrown",
+						"description": "Thrown by structuredClone when no file is set and the document, or a value that change adds to it, cannot be copied, such as a function; update() rejects with it and the in-memory copy is unchanged."
+					},
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "A readFile error other than ENOENT, or an error from mkdir, writeFile or rename while writing; update() rejects with it, and the existing document file is not replaced."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when the configured file exists but does not contain valid JSON, including an empty file; update() rejects with it before change runs, so the file is not rewritten."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown in file mode when the document cannot be turned into JSON text, such as a circular reference or a BigInt; update() rejects with it, and the existing document file is not replaced."
+					},
+					{
+						"name": "empty() error",
+						"type": "thrown",
+						"description": "Any value thrown by the empty callback when the configured file does not exist (ENOENT); update() rejects with it before change runs."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -86,22 +197,35 @@
 					{
 						"name": "LocalDocumentAdapter.constructor.file",
 						"type": "string | undefined",
-						"required": true
+						"required": true,
+						"description": "Path of the JSON document: read() reads it with readFile, and each update() creates missing parent directories with mode 0o700, writes a temporary file beside it with mode 0o600, and renames that file over it. Undefined or an empty string keeps the document in memory only, and the adapter is for private app-data only, never session credentials or canonical artifacts.",
+						"examples": [
+							"/Users/example/Library/Application Support/reports-media/document.json",
+							"/home/example/.local/share/reports-media/document.json"
+						]
 					},
 					{
 						"name": "LocalDocumentAdapter.constructor.empty",
 						"type": "() => T",
-						"required": true
+						"required": true,
+						"description": "Callback that returns the initial document: the constructor calls it once and keeps the result as the in-memory copy. When a configured file does not exist (ENOENT), read() and update() call it again and use its result without validation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LocalDocumentAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new LocalDocumentAdapter instance; the constructor performs no file access and only stores the result of empty() as the in-memory copy."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "empty() error",
+						"type": "thrown",
+						"description": "Any value thrown by the empty callback, which the constructor calls to create the in-memory copy; the same value is thrown and no instance is created."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
