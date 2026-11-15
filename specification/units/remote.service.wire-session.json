@@ -192,7 +192,7 @@
 				"outputs": [
 					{
 						"name": "WireSessionService.constructor",
-						"type": "unknown",
+						"type": "WireSessionService",
 						"description": "Creates a service with a client event log, response ledger, validators, no current connection, and an active session state. Event-log capacity and ledger capacity and TTL use the merged limits, while the event log receives the supplied epoch."
 					}
 				],

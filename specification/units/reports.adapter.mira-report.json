@@ -56,7 +56,7 @@
 		"outputs": [
 			{
 				"name": "MiraReportAdapter.ingest",
-				"type": "unknown",
+				"type": "Promise<{ evidence: number; }>",
 				"description": "The resolved result reports the number of entries in the parsed assets array as evidence. It is returned after the asset records, optional findings and coverage, and import check have been recorded.",
 				"examples": [
 					{
@@ -119,7 +119,7 @@
 				"outputs": [
 					{
 						"name": "MiraReportAdapter.ingest",
-						"type": "unknown",
+						"type": "Promise<{ evidence: number; }>",
 						"description": "The resolved result reports the number of entries in the parsed assets array as evidence. It is returned after the asset records, optional findings and coverage, and import check have been recorded.",
 						"examples": [
 							{

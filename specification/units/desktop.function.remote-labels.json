@@ -255,7 +255,7 @@
 		"outputs": [
 			{
 				"name": "lockNote",
-				"type": "unknown",
+				"type": "string",
 				"description": "Fixed guidance that approved phones work while the computer is locked and awake, and that a sleeping computer is offline.",
 				"examples": [
 					"Approved phones keep working while this Mac is locked and awake. A sleeping Mac is offline."
@@ -263,37 +263,37 @@
 			},
 			{
 				"name": "awakeNote",
-				"type": "unknown",
+				"type": "string",
 				"description": "Fixed wording used when the computer’s lock state was not reported.",
 				"examples": ["Computer awake · works while its screen is locked"]
 			},
 			{
 				"name": "lockedNote",
-				"type": "unknown",
+				"type": "string",
 				"description": "Fixed wording used when the computer reported that it is locked and awake.",
 				"examples": ["Computer locked · awake"]
 			},
 			{
 				"name": "unlockedNote",
-				"type": "unknown",
+				"type": "string",
 				"description": "Fixed wording used when the computer reported that it is unlocked and awake.",
 				"examples": ["Computer unlocked · awake"]
 			},
 			{
 				"name": "approveNote",
-				"type": "unknown",
+				"type": "string",
 				"description": "Fixed instruction shown while a phone awaits approval on the computer.",
 				"examples": ["Approve this phone in Harness on your computer."]
 			},
 			{
 				"name": "awayNote",
-				"type": "unknown",
+				"type": "string",
 				"description": "Fixed explanation used when an offline status has no reason text.",
 				"examples": ["It is asleep or has no network. Nothing is sent until it is back."]
 			},
 			{
 				"name": "revokedNote",
-				"type": "unknown",
+				"type": "string",
 				"description": "Fixed instruction shown after the computer removes the phone’s access.",
 				"examples": ["Pair again from your computer to continue."]
 			},
@@ -656,7 +656,7 @@
 				"outputs": [
 					{
 						"name": "plural",
-						"type": "unknown",
+						"type": "string",
 						"description": "The count followed by the supplied word, with s appended unless count is exactly 1.",
 						"examples": ["1 phone", "2 phones"]
 					}

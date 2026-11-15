@@ -63,7 +63,7 @@
 		"outputs": [
 			{
 				"name": "ReportImportService.ingest",
-				"type": "unknown",
+				"type": "Promise<{ checks: number; } | { evidence: number; } | { records: number; }>",
 				"description": "Resolves to the selected adapter's result, `{records: number}` for a manual import, or `{checks: 1}` for a command import. This service does not define the adapters' result shapes.",
 				"examples": [
 					{
@@ -132,7 +132,7 @@
 				"outputs": [
 					{
 						"name": "ReportImportService.ingest",
-						"type": "unknown",
+						"type": "Promise<{ checks: number; } | { evidence: number; } | { records: number; }>",
 						"description": "Resolves to the selected adapter's result, `{records: number}` for a manual import, or `{checks: 1}` for a command import. This service does not define the adapters' result shapes.",
 						"examples": [
 							{
@@ -178,7 +178,7 @@
 				"outputs": [
 					{
 						"name": "ReportImportService.constructor",
-						"type": "unknown",
+						"type": "ReportImportService",
 						"description": "The newly constructed `ReportImportService` instance holding the supplied repository or its default repository."
 					}
 				],

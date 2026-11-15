@@ -58,7 +58,7 @@
 		"outputs": [
 			{
 				"name": "ClaudeCliAdapter.discover",
-				"type": "unknown",
+				"type": "ReturnType<typeof claudeState>",
 				"description": "The provider state `discover` resolves to, with `id` 'claude' and `label` 'Claude CLI'. `available` is true, with the single model `claude-opus-5-5`, only when `claude --version` succeeds and `auth status --json` reports `loggedIn` with `authMethod` 'claude.ai'; otherwise `available` is false, `reason` holds the failure message, `version` is set only when the version call succeeded, and `discover` never rejects because every failure is caught into `reason`.",
 				"examples": [
 					{
@@ -100,7 +100,7 @@
 			},
 			{
 				"name": "ClaudeCliAdapter.run",
-				"type": "unknown",
+				"type": "Promise<{ text: string; model: string; }>",
 				"description": "The `AgentResult` that `run` resolves to: `text` is the `result` field of the last `result` event (an empty string when absent), and `model` is the model reported by the `system` `init` event. `run` resolves only after the CLI exits with code 0 and its last `result` event is not an error, so `model` always equals `turn.model` in a resolved value.",
 				"examples": [
 					{
@@ -204,7 +204,7 @@
 				"outputs": [
 					{
 						"name": "ClaudeCliAdapter.discover",
-						"type": "unknown",
+						"type": "ReturnType<typeof claudeState>",
 						"description": "The provider state `discover` resolves to, with `id` 'claude' and `label` 'Claude CLI'. `available` is true, with the single model `claude-opus-5-5`, only when `claude --version` succeeds and `auth status --json` reports `loggedIn` with `authMethod` 'claude.ai'; otherwise `available` is false, `reason` holds the failure message, `version` is set only when the version call succeeded, and `discover` never rejects because every failure is caught into `reason`.",
 						"examples": [
 							{
@@ -261,7 +261,7 @@
 				"outputs": [
 					{
 						"name": "ClaudeCliAdapter.run",
-						"type": "unknown",
+						"type": "Promise<{ text: string; model: string; }>",
 						"description": "The `AgentResult` that `run` resolves to: `text` is the `result` field of the last `result` event (an empty string when absent), and `model` is the model reported by the `system` `init` event. `run` resolves only after the CLI exits with code 0 and its last `result` event is not an error, so `model` always equals `turn.model` in a resolved value.",
 						"examples": [
 							{
@@ -395,7 +395,7 @@
 				"outputs": [
 					{
 						"name": "ClaudeCliAdapter.constructor",
-						"type": "unknown",
+						"type": "ClaudeCliAdapter",
 						"description": "The `ClaudeCliAdapter` instance, which implements `AgentRunner` and keeps `command` and `queue` as private fields; the constructor starts no process and throws nothing."
 					}
 				],

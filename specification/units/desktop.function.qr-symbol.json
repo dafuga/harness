@@ -29,7 +29,7 @@
 		"outputs": [
 			{
 				"name": "qrLimits",
-				"type": "unknown",
+				"type": "typeof qrLimits",
 				"description": "The shared limits used by QR encoding and drawing: maxBytes is 320, the quiet margin is 4 modules, the maximum width is 77 modules, and error correction is level M.",
 				"examples": [
 					{

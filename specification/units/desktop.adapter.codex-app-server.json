@@ -61,12 +61,12 @@
 		"outputs": [
 			{
 				"name": "CodexAppServerAdapter.discover",
-				"type": "unknown",
+				"type": "ReturnType<typeof codexState>",
 				"description": "The value returned by codexState for the configured base command and derived server command. The adapter returns that value without transformation."
 			},
 			{
 				"name": "CodexAppServerAdapter.run",
-				"type": "unknown",
+				"type": "Promise<{ text: string; model: string; }>",
 				"description": "An object containing text and model copied from codexTurn's result. The adapter returns no other fields from that result."
 			},
 			{
@@ -90,7 +90,7 @@
 				"outputs": [
 					{
 						"name": "CodexAppServerAdapter.discover",
-						"type": "unknown",
+						"type": "ReturnType<typeof codexState>",
 						"description": "The value returned by codexState for the configured base command and derived server command. The adapter returns that value without transformation."
 					}
 				],
@@ -110,7 +110,7 @@
 				"outputs": [
 					{
 						"name": "CodexAppServerAdapter.run",
-						"type": "unknown",
+						"type": "Promise<{ text: string; model: string; }>",
 						"description": "An object containing text and model copied from codexTurn's result. The adapter returns no other fields from that result."
 					}
 				],
@@ -175,7 +175,7 @@
 				"outputs": [
 					{
 						"name": "CodexAppServerAdapter.constructor",
-						"type": "unknown",
+						"type": "CodexAppServerAdapter",
 						"description": "A constructed CodexAppServerAdapter instance holding the selected command and optional resource queue. The command defaults to { command: 'codex', args: [] }, and an omitted queue is undefined."
 					}
 				],
