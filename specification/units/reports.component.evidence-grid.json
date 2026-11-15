@@ -43,36 +43,96 @@
 				"name": "EvidenceGrid.items",
 				"type": "Evidence[]",
 				"required": true,
-				"description": "Required evidence list. Helpers pair related audio and choose gallery entries; screenshot-only lists feed image navigation."
+				"description": "Full evidence list for the report, including audio and screenshot entries, each an Evidence with required id, title, category, file and status. The grid derives paired audio, the browsable gallery and the media counts from it and passes its screenshot entries to the viewer; when filtering leaves no entries it shows the empty-result message.",
+				"examples": [
+					[
+						{
+							"id": "6f1d3c2a-8b7e-4d9f-a1c0-5e2b9d7f4a13-before",
+							"title": "Checkout summary before",
+							"category": "Uploaded comparison",
+							"file": "c4a1e7f09b2d36587a1c0e4f2b9d7c3a5e8f1b6d4c2a9e7f0b3d5c8a1e6f4b29.png",
+							"status": "not-proven",
+							"source": "Manual upload · Cloudflare R2",
+							"capturedAt": "2026-11-12T16:08:31.504Z",
+							"viewport": "390px mobile",
+							"phase": "before",
+							"comparison": "6f1d3c2a-8b7e-4d9f-a1c0-5e2b9d7f4a13",
+							"storage": "r2"
+						},
+						{
+							"id": "6f1d3c2a-8b7e-4d9f-a1c0-5e2b9d7f4a13-after",
+							"title": "Checkout summary after",
+							"category": "Uploaded comparison",
+							"file": "d7e2a9c41f0b6e3d8a5c2f9e4b1d7a0c3e6f9b2d5a8c1e4f7b0d3a6e2c9f5b8d.png",
+							"status": "not-proven",
+							"source": "Manual upload · Cloudflare R2",
+							"capturedAt": "2026-11-12T16:08:31.504Z",
+							"viewport": "390px mobile",
+							"phase": "after",
+							"comparison": "6f1d3c2a-8b7e-4d9f-a1c0-5e2b9d7f4a13",
+							"storage": "r2"
+						}
+					],
+					[
+						{
+							"id": "3f9c2a1b-home-page-filled-mobile-0",
+							"title": "home-page · filled",
+							"category": "home-page",
+							"file": "5b1e8d0c3a7f2e9b4d6a1c8e0f3b5d7a9c2e4f6b8d0a1c3e5f7b9d2a4c6e8f01.png",
+							"status": "passed",
+							"capturedAt": "2026-11-10T14:22:05.917Z",
+							"viewport": "390px mobile",
+							"mediaType": "image",
+							"mimeType": "image/png",
+							"order": 0
+						},
+						{
+							"id": "3f9c2a1b-home-page-filled-audio-1",
+							"title": "home-page · filled",
+							"category": "home-page",
+							"file": "e0a4c7f2b9d1e5a8c3f6b0d4e7a2c9f1b5d8e3a6c0f4b7d2e9a1c5f8b3d6e0a4.wav",
+							"status": "passed",
+							"capturedAt": "2026-11-10T14:22:09.402Z",
+							"mediaType": "audio",
+							"mimeType": "audio/wav",
+							"durationSeconds": 6.4,
+							"transcript": "Filled the form and submitted it.",
+							"order": 1
+						}
+					]
+				]
 			},
 			{
 				"name": "EvidenceGrid.assetBase",
 				"type": "string",
 				"required": true,
-				"description": "Required asset prefix forwarded to cards and viewers."
+				"description": "Asset URL prefix the grid forwards unchanged to EvidenceCard, EvidenceViewer and AudioComparisonViewer. The cards and viewers that receive it build each file URL by plain concatenation with item.file, so the value must end with the separator the URL needs.",
+				"examples": ["/harness/media/"]
 			},
 			{
 				"name": "EvidenceGrid.idPrefix",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Optional prefix, empty by default, keeping the gallery heading ID unique on pages with multiple galleries. Does not prefix individual evidence-card IDs."
+				"description": "Prefix added to the gallery heading id and to its aria-labelledby reference, so a page with a second gallery keeps those ids unique; it defaults to the empty string. It is not applied to the evidence card ids, which stay 'evidence-' followed by the item id.",
+				"examples": ["", "entity-"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceGrid",
 				"type": "markup",
-				"description": "Gallery with search/category/status and screenshot-size filters, plus media tabs when audio exists. Shows filtered counts and an empty-result message. Paired audio opens a dedicated viewer; screenshots open a zoom/comparison viewer. Selecting another viewport can adjust filters to reveal it. Audio mode clears the viewport filter."
+				"description": "Gallery section with a search input, category tabs, a status select, viewport tabs (all, mobile, tablet, desktop; hidden in audio mode) and, when audio exists, media tabs; it shows filtered counts and an empty-result message when nothing matches. Paired audio opens AudioComparisonViewer and screenshots open EvidenceViewer, whose size switch moves the viewport filter to the chosen screenshot's size (cleared for 'other') and clears search, category and status when they would hide it; the audio tab clears the viewport filter."
 			}
 		],
 		"errors": [
 			{
 				"name": "each_key_duplicate",
 				"type": "thrown",
-				"description": "Rendering throws if filtered gallery entries have duplicate evidence IDs."
+				"description": "Rendering throws this error when two entries in the filtered gallery share an evidence id, because the gallery keys its each block by item.id. Duplicates that the active search, category, status, media or viewport filters remove from the list do not throw."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
