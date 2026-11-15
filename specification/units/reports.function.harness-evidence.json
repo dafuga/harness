@@ -8,12 +8,39 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/utils/explorer-ui/harnessEvidence.ts"],
-		"symbols": ["mediaFile", "harnessEvidence"]
+		"source": [
+			"packages/reports/src/utils/explorer-ui/harnessEvidence.ts",
+			"packages/reports/src/utils/explorer-ui/harnessEvidence.types.ts"
+		],
+		"symbols": ["captureVideo", "mediaFile", "harnessEvidence", "GalleryCaptureContext"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "captureVideo.capture",
+				"type": "HarnessCapture",
+				"required": true,
+				"description": "Validated capture whose video descriptor and SHA-256 are projected without changing recorded provenance. Non-video captures return undefined."
+			},
+			{
+				"name": "captureVideo.reference",
+				"type": "FrameClipReference",
+				"required": true,
+				"description": "Original verification record, tested source revision, clip owner, clip ID and viewport. Invalid record or revision identities omit flagging capability."
+			},
+			{
+				"name": "captureVideo.selectedRevision",
+				"type": "string",
+				"required": true,
+				"description": "Revision the gallery currently displays, kept separately from the original tested source revision."
+			},
+			{
+				"name": "captureVideo.freshness",
+				"type": "EvidenceVideo['freshness']",
+				"required": true,
+				"description": "Existing explorer standing for this clip: current, inherited, stale or historical."
+			},
 			{
 				"name": "mediaFile.capture",
 				"type": "HarnessCapture",
@@ -502,6 +529,43 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "captureVideo",
+				"inputs": [
+					{
+						"name": "captureVideo.capture",
+						"type": "HarnessCapture",
+						"required": true,
+						"description": "Validated capture whose video descriptor and SHA-256 are projected without changing recorded provenance. Non-video captures return undefined."
+					},
+					{
+						"name": "captureVideo.reference",
+						"type": "FrameClipReference",
+						"required": true,
+						"description": "Original verification record, tested source revision, clip owner, clip ID and viewport. Invalid record or revision identities omit flagging capability."
+					},
+					{
+						"name": "captureVideo.selectedRevision",
+						"type": "string",
+						"required": true,
+						"description": "Revision the gallery currently displays, kept separately from the original tested source revision."
+					},
+					{
+						"name": "captureVideo.freshness",
+						"type": "EvidenceVideo['freshness']",
+						"required": true,
+						"description": "Existing explorer standing for this clip: current, inherited, stale or historical."
+					}
+				],
+				"outputs": [
+					{
+						"name": "captureVideo",
+						"type": "EvidenceVideo | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "mediaFile",
 				"inputs": [
@@ -1018,12 +1082,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.function.evidence-media",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -1,0 +1,306 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.verification-evidence-video-evidence",
+	"uid": "u_ytdcym5zkw",
+	"kind": "component",
+	"title": "VideoEvidence",
+	"responsibility": "Plays one retained video clip and lets reviewers seek, flag and inspect exact frame feedback.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.evidence-provenance",
+			"reports.component.harness-harness-verdict",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-article",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-details",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-figcaption",
+			"reports.component.shared-primitives-atoms-html-figure",
+			"reports.component.shared-primitives-atoms-html-form",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-img",
+			"reports.component.shared-primitives-atoms-html-input-range",
+			"reports.component.shared-primitives-atoms-html-label",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-output",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-summary",
+			"reports.component.shared-primitives-atoms-html-textarea",
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-atoms-html-video"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/verification-evidence/VideoEvidence.svelte",
+			"packages/reports/src/components/verification-evidence/VideoEvidence.types.ts",
+			"packages/reports/src/components/verification-evidence/video-evidence/videoEvidence.css",
+			"packages/reports/src/components/verification-evidence/video-evidence/videoFeedback.ts"
+		],
+		"symbols": ["VideoEvidence", "VideoEvidenceProps", "loadVideoFlags", "submitVideoFlag"]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": ["reports.component.harness-harness-verdict"],
+		"inputs": [
+			{
+				"name": "VideoEvidence.item",
+				"type": "Evidence",
+				"required": true,
+				"description": "Retained video evidence with original clip identity, viewport, optional poster URL and selected revision. Missing files show an explicit gap."
+			},
+			{
+				"name": "VideoEvidence.assetBase",
+				"type": "string",
+				"required": true,
+				"description": "Prefix for relative clip and poster URLs; absolute and data URLs are used unchanged."
+			},
+			{
+				"name": "VideoEvidence.initialFlags",
+				"type": "FrameFlag[]",
+				"required": false,
+				"default": [],
+				"description": "Optional initial frame feedback shown before the owner-protected list request completes; defaults to an empty list."
+			}
+		],
+		"outputs": [
+			{
+				"name": "VideoEvidence",
+				"type": "markup",
+				"description": "User-controlled video, frame timeline, active, stale and resolved feedback markers, note submission and original provenance; no autoplay."
+			}
+		],
+		"errors": [
+			{
+				"name": "FrameFeedbackFailure",
+				"type": "FrameFeedbackFailure { message: string }",
+				"description": "Failed feedback requests and invalid response shapes become visible alerts; playback errors show a download explanation."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "loadVideoFlags",
+				"inputs": [
+					{
+						"name": "loadVideoFlags.video",
+						"type": "EvidenceVideo",
+						"required": true
+					},
+					{
+						"name": "loadVideoFlags.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "loadVideoFlags",
+						"type": "Promise<FrameFlag[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "FrameFeedbackFailure",
+						"type": "FrameFeedbackFailure { message: string }",
+						"description": "Rejects failed HTTP requests or a response without a flags array; the player displays the error."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "submitVideoFlag",
+				"inputs": [
+					{
+						"name": "submitVideoFlag.video",
+						"type": "EvidenceVideo",
+						"required": true
+					},
+					{
+						"name": "submitVideoFlag.frameNumber",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "submitVideoFlag.note",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "submitVideoFlag.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "submitVideoFlag",
+						"type": "Promise<FrameFlag>"
+					}
+				],
+				"errors": [
+					{
+						"name": "FrameFeedbackFailure",
+						"type": "FrameFeedbackFailure { message: string }",
+						"description": "Rejects absent references, failed HTTP requests or a response without a saved flag; the player displays the error."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.evidence-provenance",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.harness-harness-verdict",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-article",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-details",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-figcaption",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-figure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-form",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-img",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input-range",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-output",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-summary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-textarea",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-video",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/verification-evidence/VideoEvidence.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/verification-evidence/VideoEvidence.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-verification-evidence-video-evidence",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

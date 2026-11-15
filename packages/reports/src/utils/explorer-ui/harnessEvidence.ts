@@ -1,13 +1,35 @@
 // @harness-uid u_p5thuojtbt
-import type { Evidence } from '../../models/reports-media/Report.types';
+import type { Evidence, EvidenceVideo } from '../../models/reports-media/Report.types';
+import type { FrameClipReference } from '../../../../../src/services/verification-evidence/FrameFlagService.types';
 import type {
 	HarnessCapture,
 	HarnessRecord,
 	HarnessRevision
 } from '../../models/explorer-ui/Harness.types';
+import type { GalleryCaptureContext } from './harnessEvidence.types';
+import { evidenceMedia } from '../verification-evidence/evidenceMedia';
 import { captureProvenance } from '../reports-media/captureProvenance';
 
-const mediaKinds = ['screenshot', 'audio'];
+const mediaKinds = ['screenshot', 'audio', 'video'];
+
+/** Preserve the original attached clip identity separately from the selected revision. */
+export function captureVideo(
+	capture: HarnessCapture,
+	reference: FrameClipReference,
+	selectedRevision: string,
+	freshness: EvidenceVideo['freshness']
+): EvidenceVideo | undefined {
+	if (capture.kind !== 'video' || !capture.video) return;
+	return {
+		...capture.video,
+		sha256: capture.sha256,
+		selectedRevision,
+		freshness,
+		...(/^[a-f0-9]{64}$/.test(reference.record) && /^[a-f0-9]{40}$/.test(reference.revision)
+			? { reference }
+			: {})
+	};
+}
 
 /** Name of a media file under the console's media path. */
 export function mediaFile(capture: HarnessCapture): string {
@@ -32,31 +54,72 @@ export function harnessEvidence(detail: HarnessRevision, record: HarnessRecord):
 	for (const scenario of record.scenarios) {
 		for (const state of scenario.states) {
 			for (const capture of state.captures.filter((item) => mediaKinds.includes(item.kind))) {
-				const audio = capture.kind === 'audio';
-				const origin = captureProvenance(record, scenario, capture);
-				items.push({
-					// Two captures may share a state and a viewport; the running number keeps each its own.
-					id: `${record.id.slice(0, 8)}-${scenario.id}-${state.id}-${capture.viewport ?? capture.kind}-${items.length}`,
-					title: `${scenario.id} · ${state.id}`,
-					category: scenario.id,
-					file: mediaFile(capture),
-					status: origin.standing === 'unvalidated' ? 'not-proven' : capture.status,
-					capturedAt: capture.capturedAt,
-					viewport: capture.viewport
-						? viewports.get(scenario.id)?.get(capture.viewport)
-						: undefined,
-					standing: origin.label,
-					provenance: origin.facts,
-					note: `${origin.note}${capture.gap ? ` ${capture.gap}` : ''}`,
-					missing: capture.media === null,
-					mediaType: audio ? 'audio' : 'image',
-					mimeType: capture.mediaType,
-					durationSeconds: capture.durationSeconds,
-					transcript: capture.transcript,
-					order: items.length
-				});
+				items.push(
+					galleryEntry(
+						detail,
+						record,
+						{ scenario, state: state.id, capture, order: items.length },
+						viewports
+					)
+				);
 			}
 		}
 	}
 	return items;
+}
+
+function galleryEntry(
+	detail: HarnessRevision,
+	record: HarnessRecord,
+	context: GalleryCaptureContext,
+	viewports: Map<string, Map<string, string>>
+): Evidence {
+	const { capture, scenario, state, order } = context;
+	const origin = captureProvenance(record, scenario, capture);
+	return {
+		// Two captures may share a state and a viewport; the running number keeps each its own.
+		id: `${record.id.slice(0, 8)}-${scenario.id}-${state}-${capture.viewport ?? capture.kind}-${order}`,
+		title: `${scenario.id} · ${state}`,
+		category: scenario.id,
+		state: state,
+		file: mediaFile(capture),
+		status: origin.standing === 'unvalidated' ? 'not-proven' : capture.status,
+		capturedAt: capture.capturedAt,
+		viewport: capture.viewport ? viewports.get(scenario.id)?.get(capture.viewport) : undefined,
+		standing: origin.label,
+		provenance: origin.facts,
+		note: `${origin.note}${capture.gap ? ` ${capture.gap}` : ''}`,
+		missing: capture.media === null,
+		mediaType: evidenceMedia({ file: capture.path, mimeType: capture.mediaType }),
+		video: reportVideo(capture, record, scenario, detail.commit),
+		mimeType: capture.mediaType,
+		durationSeconds: capture.durationSeconds,
+		transcript: capture.transcript,
+		order: order
+	};
+}
+
+function reportVideo(
+	capture: HarnessCapture,
+	record: HarnessRecord,
+	scenario: HarnessRecord['scenarios'][number],
+	selectedRevision: string
+) {
+	const descriptor = capture.video;
+	if (!descriptor) return;
+	let freshness: EvidenceVideo['freshness'] = 'current';
+	if (!record.valid || capture.status !== 'passed') freshness = 'stale';
+	else if (scenario.inherited) freshness = 'inherited';
+	return captureVideo(
+		capture,
+		{
+			record: scenario.origin.record,
+			revision: scenario.testedRevision,
+			unit: descriptor.unit,
+			clipId: descriptor.clipId,
+			viewport: capture.viewport ?? ''
+		},
+		selectedRevision,
+		freshness
+	);
 }

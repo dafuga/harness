@@ -38,7 +38,7 @@
 			},
 			{
 				"name": "evidenceMedia.item",
-				"type": "Pick<Evidence, 'mediaType' | 'file'>",
+				"type": "Pick<Evidence, 'mediaType' | 'file' | 'mimeType'>",
 				"required": true,
 				"description": "Evidence item with an optional explicit mediaType ('image' or 'audio') and its file address. The file is read only when mediaType is falsy, so a set mediaType is returned without touching file.",
 				"examples": [
@@ -150,7 +150,7 @@
 				"inputs": [
 					{
 						"name": "evidenceMedia.item",
-						"type": "Pick<Evidence, 'mediaType' | 'file'>",
+						"type": "Pick<Evidence, 'mediaType' | 'file' | 'mimeType'>",
 						"required": true,
 						"description": "Evidence item with an optional explicit mediaType ('image' or 'audio') and its file address. The file is read only when mediaType is falsy, so a set mediaType is returned without touching file.",
 						"examples": [
@@ -171,7 +171,7 @@
 				"outputs": [
 					{
 						"name": "evidenceMedia",
-						"type": "'image' | 'audio'",
+						"type": "'image' | 'audio' | 'video'",
 						"description": "Media kind the evidence views use to split audio from image items: the item's mediaType when it is set (returned without further checks), otherwise 'audio' for .wav, .mp3, .m4a and .ogg files and data:audio/ addresses. Without a set mediaType, every other file, including .mp4, .pdf, .zip and .html files, is 'image'.",
 						"examples": ["image", "audio"]
 					}

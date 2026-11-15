@@ -4,7 +4,6 @@
 <script lang="ts">
 	import EmptyState from '../../explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { Media } from './EvidenceGrid.types';
-
 	import type { Evidence } from '../../../models/reports-media/Report.types';
 	import { evidenceMedia } from '../../../utils/verification-evidence/evidenceMedia';
 	import { audioPairs } from '../../../utils/reports-media/audioPairs';
@@ -18,6 +17,7 @@
 	import AudioComparisonViewer from '../../reports-media/AudioComparisonViewer.svelte';
 	import EvidenceCard from '../EvidenceCard.svelte';
 	import EvidenceViewer from '../EvidenceViewer.svelte';
+	import VideoEvidence from '../VideoEvidence.svelte';
 	import Select from '../../shared-primitives/Select.svelte';
 	let {
 		items,
@@ -40,8 +40,8 @@
 	let browsable = $derived(galleryEvidence(items, pairs));
 	let imageCount = $derived(browsable.filter((item) => evidenceMedia(item) === 'image').length);
 	let audioCount = $derived(items.filter((item) => evidenceMedia(item) === 'audio').length);
-	// Screenshot-only galleries keep the original gallery exactly as before.
-	let showMedia = $derived(audioCount > 0);
+	let videoCount = $derived(items.filter((item) => evidenceMedia(item) === 'video').length);
+	let showMedia = $derived(audioCount + videoCount > 0);
 	let mediaMode = $derived<Media>(showMedia ? media : '');
 	let inMedia = $derived(
 		mediaMode ? browsable.filter((item) => evidenceMedia(item) === mediaMode) : browsable
@@ -60,11 +60,9 @@
 			(item) => !viewport || screenSize(item) === viewport
 		)
 	);
-	// The viewer stays screenshot-only: audio never reaches ImageZoom or arrow-key navigation.
 	let images = $derived(items.filter((item) => evidenceMedia(item) === 'image'));
 	let filteredImages = $derived(filtered.filter((item) => evidenceMedia(item) === 'image'));
 	let selectedImage = $derived(selected && evidenceMedia(selected) === 'image' ? selected : null);
-	// Paired audio opens its own viewer; only screenshots ever reach EvidenceViewer.
 	function openItem(item: Evidence) {
 		const before = pairs.get(item.id);
 		if (before) selectedPair = { before, after: item };
@@ -121,6 +119,12 @@
 				onclick={() => setMedia('audio')}
 				>{$t('audio')} <hx-span class="media-count">{audioCount}</hx-span></hx-button
 			>
+			{#if videoCount}<hx-button
+					class:active={mediaMode === 'video'}
+					aria-pressed={mediaMode === 'video'}
+					onclick={() => setMedia('video')}
+					>Videos <hx-span class="media-count">{videoCount}</hx-span></hx-button
+				>{/if}
 		</hx-div>
 	{/if}
 	<hx-div class="gallery-filters" class:audio-mode={mediaMode === 'audio'}>
@@ -167,12 +171,15 @@
 		</hx-div>
 	</hx-div>
 	<hx-div class="evidence-grid">
-		{#each filtered as item (item.id)}<EvidenceCard
-				{item}
-				before={pairs.get(item.id)}
-				{assetBase}
-				onopen={() => openItem(item)}
-			/>{/each}
+		{#each filtered as item (item.id)}{#if evidenceMedia(item) === 'video'}<VideoEvidence
+					{item}
+					{assetBase}
+				/>{:else}<EvidenceCard
+					{item}
+					before={pairs.get(item.id)}
+					{assetBase}
+					onopen={() => openItem(item)}
+				/>{/if}{/each}
 	</hx-div>
 	{#if !filtered.length}<EmptyState as="p" className="empty evidence-grid-empty"
 			>{$t('noEvidence')}</EmptyState

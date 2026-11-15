@@ -8,7 +8,8 @@
 
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
-	import { entityScreens } from '../../utils/explorer-ui/entityScreens';
+	import { entityScreens, galleryItems } from '../../utils/explorer-ui/entityScreens';
+	import VideoEvidence from '../verification-evidence/VideoEvidence.svelte';
 	import EvidenceCard from '../verification-evidence/EvidenceCard.svelte';
 	import EvidenceViewer from '../verification-evidence/EvidenceViewer.svelte';
 	import Select from '../shared-primitives/Select.svelte';
@@ -57,6 +58,7 @@
 		})
 	);
 	let items = $derived(rows.flatMap((row) => row.items));
+	let videos = $derived(galleryItems(evidence).filter((item) => item.mediaType === 'video'));
 	let assetBase = $derived(resolveImage ? '' : mediaBase);
 	function prepared(item: Evidence): Evidence {
 		if (!resolveImage || item.missing) return item;
@@ -185,6 +187,9 @@
 							{/if}
 						{/snippet}
 					</ComparePanes>{/if}
+				{#each videos.filter((clip) => clip.category === scenario.id && clip.state === row.state.id && clip.viewport === screen?.id) as clip (clip.id)}
+					<VideoEvidence item={clip} assetBase={mediaBase} />
+				{/each}
 			</hx-article>
 		{/each}
 	</hx-div>

@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/utils/explorer-ui/entity-screens/videoCapture.ts",
 			"packages/reports/src/utils/explorer-ui/entityScreens.ts",
 			"packages/reports/src/utils/explorer-ui/entityScreens.types.ts"
 		],
 		"symbols": [
+			"videoCapture",
 			"screenOptions",
 			"screenPick",
 			"entityScreens",
@@ -31,6 +33,24 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "videoCapture.side",
+				"type": "ExplorerSide",
+				"required": true,
+				"description": "Selected explorer side carrying records, source revision and capture standing."
+			},
+			{
+				"name": "videoCapture.found",
+				"type": "ExplorerCapture",
+				"required": true,
+				"description": "One admitted capture with its original scenario and record identity."
+			},
+			{
+				"name": "videoCapture.phase",
+				"type": "Phase",
+				"required": true,
+				"description": "Gallery side being shown: before, after or current."
+			},
 			{
 				"name": "screenOptions.scenarios",
 				"type": "HarnessScenario[]",
@@ -1372,6 +1392,37 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [
+			{
+				"name": "videoCapture",
+				"inputs": [
+					{
+						"name": "videoCapture.side",
+						"type": "ExplorerSide",
+						"required": true,
+						"description": "Selected explorer side carrying records, source revision and capture standing."
+					},
+					{
+						"name": "videoCapture.found",
+						"type": "ExplorerCapture",
+						"required": true,
+						"description": "One admitted capture with its original scenario and record identity."
+					},
+					{
+						"name": "videoCapture.phase",
+						"type": "Phase",
+						"required": true,
+						"description": "Gallery side being shown: before, after or current."
+					}
+				],
+				"outputs": [
+					{
+						"name": "videoCapture",
+						"type": "EvidenceVideo | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "screenOptions",
 				"inputs": [
@@ -2763,6 +2814,11 @@
 		},
 		{
 			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.evidence-media",
 			"via": "import",
 			"origin": "derived"
 		},

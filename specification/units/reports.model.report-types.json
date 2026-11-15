@@ -10,6 +10,7 @@
 	"owns": {
 		"source": ["packages/reports/src/models/reports-media/Report.types.ts"],
 		"symbols": [
+			"EvidenceVideo",
 			"Status",
 			"Check",
 			"Evidence",
@@ -30,7 +31,18 @@
 		"operations": [],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.verification-evidence-video-clip-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-frame-flag",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/models/reports-media/Report.types.ts",

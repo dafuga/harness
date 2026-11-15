@@ -1,0 +1,94 @@
+/* @harness-uid u_ytdcym5zkw */
+.video-evidence {
+	display: grid;
+	gap: var(--hx-space-12);
+	padding: var(--hx-space-16);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius);
+	min-width: 0;
+}
+header,
+.frame-flags li {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: var(--hx-space-10);
+}
+video,
+figure img {
+	display: block;
+	width: 100%;
+	max-height: 70vh;
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-background);
+}
+label,
+form,
+.video-timeline {
+	display: grid;
+	gap: var(--hx-space-8);
+}
+input,
+textarea {
+	width: 100%;
+	box-sizing: border-box;
+	accent-color: var(--hx-color-primary);
+}
+textarea {
+	padding: var(--hx-space-8);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
+	font: inherit;
+}
+button {
+	padding: var(--hx-space-8) var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
+	font: inherit;
+	cursor: pointer;
+}
+button:disabled {
+	opacity: var(--hx-opacity-disabled);
+	cursor: default;
+}
+.flag-track {
+	position: relative;
+	height: var(--hx-space-16);
+	margin-inline: var(--hx-space-8);
+}
+.flag-track button {
+	position: absolute;
+	top: 0;
+	transform: translateX(-50%);
+	width: var(--hx-space-12);
+	height: var(--hx-space-12);
+	padding: 0;
+	border-radius: var(--hx-radius-round);
+	background: var(--hx-color-primary);
+}
+.flag-track button.stale {
+	background: var(--hx-color-surface);
+	border-style: dashed;
+}
+.frame-flags {
+	display: grid;
+	gap: var(--hx-space-8);
+	padding: 0;
+	list-style: none;
+	overflow-wrap: anywhere;
+}
+[role='alert'] {
+	color: var(--hx-color-text);
+	border-inline-start: var(--hx-border-thick) solid var(--hx-color-primary);
+	padding-inline-start: var(--hx-space-10);
+}
+output,
+figcaption,
+.muted {
+	font-size: var(--hx-type-size-xs);
+	color: var(--hx-color-text-muted);
+}
