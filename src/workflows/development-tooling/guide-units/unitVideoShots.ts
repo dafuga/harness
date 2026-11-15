@@ -65,6 +65,7 @@ function captureForSlot(
 		item.usable &&
 		item.capture.status === 'passed' &&
 		item.capture.kind === 'video' &&
+		item.capture.provenance === 'actual-capture' &&
 		item.scenario === scenario &&
 		item.capture.viewport === viewport &&
 		unitStateName(clip.unit, item.state) === unitStateName(clip.unit, clip.state)
