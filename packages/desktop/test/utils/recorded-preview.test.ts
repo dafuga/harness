@@ -2,7 +2,7 @@ import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { afterEach, beforeEach, test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
-import { recordedPreview } from '../../src/components/recorded-preview/recordedPreview';
+import { recordedPreview } from '../../src/components/shared-primitives/recorded-preview/recordedPreview';
 import { commits, data, evidenceBridge, ids, scopeOf } from '../evidence-fixture';
 
 const scope = scopeOf(ids.page);

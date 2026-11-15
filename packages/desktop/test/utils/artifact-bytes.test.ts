@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
 import type { EvidenceArtifactQuery } from '../../src/models/DesktopEvidence.types';
-import { artifactBytes } from '../../src/components/recorded-preview/artifactBytes';
+import { artifactBytes } from '../../src/components/shared-primitives/recorded-preview/artifactBytes';
 import {
 	artifactBytes as relocatedArtifactBytes,
 	damagedArtifact,
