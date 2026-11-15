@@ -18,23 +18,29 @@
 				"name": "POST.request",
 				"type": "Request",
 				"required": true,
-				"description": "Required incoming HTTP request, admitted before reading multipart data."
+				"description": "The incoming Request destructured from the POST argument; it is passed to admitUploadRequest with url.origin and 51_000_000 before request.formData() reads the body. A truthy admitUploadRequest result is returned directly, so the body is read only when that result is falsy."
 			},
 			{
 				"name": "POST.url",
 				"type": "URL",
 				"required": true,
-				"description": "Required server-resolved URL; its origin defines the accepted upload origin."
+				"description": "The URL destructured from the POST argument; only url.origin is read, and it is passed to admitUploadRequest as its second argument before any body is read. The path and query are not used anywhere in this file."
 			}
 		],
 		"outputs": [
 			{
 				"name": "POST",
 				"type": "Promise<Response>",
-				"description": "A 201 JSON report on success, or an explicit JSON admission, media, report-state or storage error response. Parsing/storage exceptions are translated into responses."
+				"description": "Resolves to a 201 JSON response of the report from the AudioUploadService upload call (Cache-Control: no-store) on success, or, when admitUploadRequest returns a truthy value, to that value unchanged. Exceptions inside the try block become JSON {error} responses: 409 when the message contains 'finaliz', 404 'Report not found' when it contains 'ENOENT', 400 with the message when it matches /audio|format|WAV|title|size/i, and otherwise 500 'Audio upload failed; no evidence was added'."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown inside POST when the 'audio' form field is missing or is not a File instance. POST's catch block turns it into a 400 JSON {error: 'Choose an audio file'} response, so POST resolves rather than rejecting with it."
+			}
+		],
 		"errorStatus": "declared",
 		"operations": [
 			{
@@ -44,23 +50,29 @@
 						"name": "POST.request",
 						"type": "Request",
 						"required": true,
-						"description": "Required incoming HTTP request, admitted before reading multipart data."
+						"description": "The incoming Request destructured from the POST argument; it is passed to admitUploadRequest with url.origin and 51_000_000 before request.formData() reads the body. A truthy admitUploadRequest result is returned directly, so the body is read only when that result is falsy."
 					},
 					{
 						"name": "POST.url",
 						"type": "URL",
 						"required": true,
-						"description": "Required server-resolved URL; its origin defines the accepted upload origin."
+						"description": "The URL destructured from the POST argument; only url.origin is read, and it is passed to admitUploadRequest as its second argument before any body is read. The path and query are not used anywhere in this file."
 					}
 				],
 				"outputs": [
 					{
 						"name": "POST",
 						"type": "Promise<Response>",
-						"description": "A 201 JSON report on success, or an explicit JSON admission, media, report-state or storage error response. Parsing/storage exceptions are translated into responses."
+						"description": "Resolves to a 201 JSON response of the report from the AudioUploadService upload call (Cache-Control: no-store) on success, or, when admitUploadRequest returns a truthy value, to that value unchanged. Exceptions inside the try block become JSON {error} responses: 409 when the message contains 'finaliz', 404 'Report not found' when it contains 'ENOENT', 400 with the message when it matches /audio|format|WAV|title|size/i, and otherwise 500 'Audio upload failed; no evidence was added'."
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown inside POST when the 'audio' form field is missing or is not a File instance. POST's catch block turns it into a 400 JSON {error: 'Choose an audio file'} response, so POST resolves rather than rejecting with it."
+					}
+				],
 				"errorStatus": "declared"
 			}
 		],
