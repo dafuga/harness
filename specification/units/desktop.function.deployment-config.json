@@ -18,40 +18,71 @@
 				"name": "deploymentPath.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+				"description": "Project directory used to resolve the path; the result must be a nonempty descendant of this root.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+				]
 			},
 			{
 				"name": "deploymentPath.path",
 				"type": "string",
 				"required": true,
-				"description": "Project-relative configuration path; absolute paths and repository escapes are rejected."
+				"description": "Path resolved against root; a resolved path equal to the root or outside it throws.",
+				"examples": ["packages/desktop/src/utils/deploymentConfig.ts"]
 			},
 			{
 				"name": "deploymentConfig.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+				"description": "Project root from which deployment settings and Wrangler files are read; its Git branch is used only when harness.deploy.json does not provide sourceBranch.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "deploymentPath",
 				"type": "string",
-				"description": "Resolved path inside the repository; invalid paths throw."
+				"description": "Resolved absolute filesystem path inside the project; paths resolving to the root itself or outside it throw.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/packages/desktop/src/utils/deploymentConfig.ts"
+				]
 			},
 			{
 				"name": "deploymentConfig",
 				"type": "Promise<DeploymentConfig>",
-				"description": "Validated adapter configuration with source branch and explicitly isolated targets."
+				"description": "Configuration result with sourceBranch, configured or detected targets, and a SHA-256 fingerprint of deployment-settings text followed by Wrangler-file text. Target candidates that fail schema parsing are omitted, and the call rejects when configuration or safety checks fail.",
+				"examples": [
+					{
+						"sourceBranch": "main",
+						"targets": {
+							"dev": {
+								"wranglerEnvironment": "dev",
+								"branch": "",
+								"tokenEnv": "HARNESS_SHOP_WORKER_DEV_CLOUDFLARE_API_TOKEN",
+								"healthUrl": "https://api.example.com/health",
+								"accountId": "0123456789abcdef0123456789abcdef",
+								"name": "shop-worker-dev",
+								"environment": "dev",
+								"kind": "workers",
+								"config": "wrangler.jsonc",
+								"output": ""
+							}
+						},
+						"fingerprint": "5c8be192fa81c7b18cc8265a671a188eac01faababfb9f45f1168e937e1af333"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
+				"description": "Thrown or propagated when settings or Wrangler data cannot be read or parsed, project paths fail containment, explicit target or safety checks fail, or Worker account/name pairs are not distinct."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "deploymentPath",
@@ -60,29 +91,37 @@
 						"name": "deploymentPath.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+						"description": "Project directory used to resolve the path; the result must be a nonempty descendant of this root.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+						]
 					},
 					{
 						"name": "deploymentPath.path",
 						"type": "string",
 						"required": true,
-						"description": "Project-relative configuration path; absolute paths and repository escapes are rejected."
+						"description": "Path resolved against root; a resolved path equal to the root or outside it throws.",
+						"examples": ["packages/desktop/src/utils/deploymentConfig.ts"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "deploymentPath",
 						"type": "string",
-						"description": "Resolved path inside the repository; invalid paths throw."
+						"description": "Resolved absolute filesystem path inside the project; paths resolving to the root itself or outside it throw.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10/packages/desktop/src/utils/deploymentConfig.ts"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when the resolved path is the project root or lies outside it."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "deploymentConfig",
@@ -91,23 +130,47 @@
 						"name": "deploymentConfig.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+						"description": "Project root from which deployment settings and Wrangler files are read; its Git branch is used only when harness.deploy.json does not provide sourceBranch.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "deploymentConfig",
 						"type": "Promise<DeploymentConfig>",
-						"description": "Validated adapter configuration with source branch and explicitly isolated targets."
+						"description": "Configuration result with sourceBranch, configured or detected targets, and a SHA-256 fingerprint of deployment-settings text followed by Wrangler-file text. Target candidates that fail schema parsing are omitted, and the call rejects when configuration or safety checks fail.",
+						"examples": [
+							{
+								"sourceBranch": "main",
+								"targets": {
+									"dev": {
+										"wranglerEnvironment": "dev",
+										"branch": "",
+										"tokenEnv": "HARNESS_SHOP_WORKER_DEV_CLOUDFLARE_API_TOKEN",
+										"healthUrl": "https://api.example.com/health",
+										"accountId": "0123456789abcdef0123456789abcdef",
+										"name": "shop-worker-dev",
+										"environment": "dev",
+										"kind": "workers",
+										"config": "wrangler.jsonc",
+										"output": ""
+									}
+								},
+								"fingerprint": "5c8be192fa81c7b18cc8265a671a188eac01faababfb9f45f1168e937e1af333"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown or propagated when settings or Wrangler data cannot be read or parsed, project paths fail containment, explicit target or safety checks fail, or Worker account/name pairs are not distinct."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
