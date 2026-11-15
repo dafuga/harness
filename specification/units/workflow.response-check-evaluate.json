@@ -15,46 +15,119 @@
 		"symbols": ["assessResponse", "responseStatus", "Evaluate"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "assessResponse.input",
 				"type": "ResponseCheckInput",
-				"required": true
+				"required": true,
+				"description": "Carries the response text and criteria used to select rubric checks. A blank or whitespace-only response bypasses evaluation and produces predefined results for those checks.",
+				"examples": [
+					{
+						"request": "What is 6 multiplied by 7?",
+						"response": "6 × 7 = 42.",
+						"context": "No additional context.",
+						"criteria": [
+							{
+								"id": "include-result",
+								"description": "State the numeric result of the multiplication."
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "assessResponse.settings",
 				"type": "ResponseCheckSettings",
-				"required": true
+				"required": true,
+				"description": "Selects the model, confidence threshold, and environment variable used by credentialed evaluation. For blank responses these settings are bypassed and the empty-response path uses a fixed 0.85 confidence threshold.",
+				"examples": [
+					{
+						"model": "jev-response-check",
+						"minConfidence": 0.85,
+						"apiKeyEnv": "JEV_API_KEY"
+					}
+				]
 			},
 			{
 				"name": "assessResponse.evaluate",
 				"type": "Evaluate",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional evaluator that receives a JevRequest and resolves to a JevEvaluation. When supplied it replaces credentialed JEV evaluation; blank responses bypass evaluation."
 			},
 			{
 				"name": "responseStatus.checks",
 				"type": "ResponseAssessment[]",
-				"required": true
+				"required": true,
+				"description": "The assessments whose statuses are aggregated. Any violation takes precedence over needs-review, and an empty array yields satisfied.",
+				"examples": [
+					[
+						{
+							"type": "choice",
+							"choice": "meets",
+							"confidence": 0.97,
+							"probabilities": {
+								"meets": 0.97,
+								"violates": 0.01,
+								"insufficient_context": 0.02
+							},
+							"id": "fulfillment",
+							"title": "Fulfillment",
+							"guidance": "The response fulfills the requested task.",
+							"status": "meets"
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "assessResponse",
-				"type": "Promise<Pick<ResponseCheckReport, 'checks' | 'status' | 'model' | 'usage'>>"
+				"type": "Promise<Pick<ResponseCheckReport, 'checks' | 'status' | 'model' | 'usage'>>",
+				"description": "Resolves to the checks, aggregate status, evaluator model, and usage for a nonblank response. Blank responses skip evaluation and return checks, status, and usage without a model.",
+				"examples": [
+					{
+						"checks": [
+							{
+								"type": "choice",
+								"choice": "meets",
+								"confidence": 0.97,
+								"probabilities": {
+									"meets": 0.97,
+									"violates": 0.01,
+									"insufficient_context": 0.02
+								},
+								"id": "fulfillment",
+								"title": "Fulfillment",
+								"guidance": "The response fulfills the requested task.",
+								"status": "meets"
+							}
+						],
+						"status": "satisfied",
+						"model": "jev-response-check",
+						"usage": {
+							"input_tokens": 128,
+							"output_tokens": 24
+						}
+					}
+				]
 			},
 			{
 				"name": "responseStatus",
-				"type": "ResponseCheckReport['status']"
+				"type": "ResponseCheckReport['status']",
+				"description": "The aggregate response-check status. It is violations if any check violates, needs-review if none violate and at least one needs review, and satisfied otherwise.",
+				"examples": ["satisfied", "needs-review", "violations"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown when a nonblank response uses credentialed evaluation and the selected environment variable is missing or whitespace; failures from the selected evaluator also propagate."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "assessResponse",
@@ -62,27 +135,84 @@
 					{
 						"name": "assessResponse.input",
 						"type": "ResponseCheckInput",
-						"required": true
+						"required": true,
+						"description": "Carries the response text and criteria used to select rubric checks. A blank or whitespace-only response bypasses evaluation and produces predefined results for those checks.",
+						"examples": [
+							{
+								"request": "What is 6 multiplied by 7?",
+								"response": "6 × 7 = 42.",
+								"context": "No additional context.",
+								"criteria": [
+									{
+										"id": "include-result",
+										"description": "State the numeric result of the multiplication."
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "assessResponse.settings",
 						"type": "ResponseCheckSettings",
-						"required": true
+						"required": true,
+						"description": "Selects the model, confidence threshold, and environment variable used by credentialed evaluation. For blank responses these settings are bypassed and the empty-response path uses a fixed 0.85 confidence threshold.",
+						"examples": [
+							{
+								"model": "jev-response-check",
+								"minConfidence": 0.85,
+								"apiKeyEnv": "JEV_API_KEY"
+							}
+						]
 					},
 					{
 						"name": "assessResponse.evaluate",
 						"type": "Evaluate",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional evaluator that receives a JevRequest and resolves to a JevEvaluation. When supplied it replaces credentialed JEV evaluation; blank responses bypass evaluation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "assessResponse",
-						"type": "Promise<Pick<ResponseCheckReport, 'checks' | 'status' | 'model' | 'usage'>>"
+						"type": "Promise<Pick<ResponseCheckReport, 'checks' | 'status' | 'model' | 'usage'>>",
+						"description": "Resolves to the checks, aggregate status, evaluator model, and usage for a nonblank response. Blank responses skip evaluation and return checks, status, and usage without a model.",
+						"examples": [
+							{
+								"checks": [
+									{
+										"type": "choice",
+										"choice": "meets",
+										"confidence": 0.97,
+										"probabilities": {
+											"meets": 0.97,
+											"violates": 0.01,
+											"insufficient_context": 0.02
+										},
+										"id": "fulfillment",
+										"title": "Fulfillment",
+										"guidance": "The response fulfills the requested task.",
+										"status": "meets"
+									}
+								],
+								"status": "satisfied",
+								"model": "jev-response-check",
+								"usage": {
+									"input_tokens": 128,
+									"output_tokens": 24
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown when a nonblank response uses credentialed evaluation and the selected environment variable is missing or whitespace; failures from the selected evaluator also propagate."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "responseStatus",
@@ -90,17 +220,38 @@
 					{
 						"name": "responseStatus.checks",
 						"type": "ResponseAssessment[]",
-						"required": true
+						"required": true,
+						"description": "The assessments whose statuses are aggregated. Any violation takes precedence over needs-review, and an empty array yields satisfied.",
+						"examples": [
+							[
+								{
+									"type": "choice",
+									"choice": "meets",
+									"confidence": 0.97,
+									"probabilities": {
+										"meets": 0.97,
+										"violates": 0.01,
+										"insufficient_context": 0.02
+									},
+									"id": "fulfillment",
+									"title": "Fulfillment",
+									"guidance": "The response fulfills the requested task.",
+									"status": "meets"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "responseStatus",
-						"type": "ResponseCheckReport['status']"
+						"type": "ResponseCheckReport['status']",
+						"description": "The aggregate response-check status. It is violations if any check violates, needs-review if none violate and at least one needs review, and satisfied otherwise.",
+						"examples": ["satisfied", "needs-review", "violations"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
