@@ -63,62 +63,63 @@
 				"name": "ExplorerTable.category",
 				"type": "Kind",
 				"required": true,
-				"description": "Required table category: functions, configs, services, models, types, layouts, APIs or platforms. Configs keep only Variable and Value columns; layout rows also show their descriptions."
+				"description": "Selects the catalog heading, columns, and row rendering. Configs use only Variable and Value columns; other categories use their configured columns.",
+				"examples": ["configs", "services"]
 			},
 			{
 				"name": "ExplorerTable.rows",
 				"type": "CatalogRow[]",
 				"required": true,
-				"description": "Required rows in display order. A config table receives one source file with committed expressions, decoded literals and static collection structures. Row identifiers must be distinct."
+				"description": "Rows render in input order and are keyed by `row.id`; an empty array renders `No rows to display.` The selected category determines which row fields are read.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "ExplorerTable.nav",
 				"type": "EntityNav",
 				"required": true,
-				"description": "Required navigation context for entity links and actions."
+				"description": "Provides the current route and navigation methods used by entity links and open actions. It matters when a row link or open action is rendered."
 			},
 			{
 				"name": "ExplorerTable.lens",
 				"type": "EntityLens",
 				"required": true,
-				"description": "Revision-scoped screenshot evidence for linked consumers."
+				"description": "A lens object forwarded to `ExplorerUsage` with usage cells; this table does not call its methods directly. It matters only for categories that render a usage cell."
 			},
 			{
 				"name": "ExplorerTable.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "URL prefix resolving consumer screenshots."
+				"description": "A string forwarded to `ExplorerUsage` with usage cells. It matters only for categories that render a usage cell.",
+				"examples": ["/media"]
 			},
 			{
 				"name": "ExplorerTable.verification",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Defaults to true for module catalogs. Configs always show only Variable and Value columns; relationship tabs omit verification indicators."
+				"description": "Defaults to true. For non-config categories, it controls whether the Verification column and each row verdict are rendered; configs always use only Variable and Value columns.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ExplorerTable",
 				"type": "markup",
-				"description": "A source-named Variable/Value table with typed scalar/array presentation, icon controls and expandable read-only inspection. Links retain the selected revision. Empty categories show a body cell spanning all columns; overflowing columns retain an explicit horizontal scroll hint."
+				"description": "Renders a category-labeled table whose heading, columns, and row content depend on `category`; empty `rows` render `No rows to display.` The config view has only Variable and Value columns and can inspect a value in a modal, while other categories use their configured columns and show Verification when `verification` is true."
 			},
 			{
 				"name": "ConfigValue",
 				"type": "markup",
-				"description": "Owned private renderer, not another public component unit. Required props: name: string identifies the variable and inspection action; source: string is the exact committed initializer; onview: (event: MouseEvent) => void handles the inspection action. Optional literal: unknown and structure: ConfigValueNode both default to undefined. It renders typed scalar or short-array marks, collection counts, strings with preserved line breaks, or clipped single-line text. It does not execute initializers. onview callback failures propagate."
+				"description": "Renders supported scalar literals as typed marks and literal arrays as chips only when they contain at most 10 scalar items whose displayed text totals at most 96 characters. Other values show the initializer as text unless a structured-collection mark offers read-only inspection; the initializer is never executed."
 			}
 		],
 		"errors": [
 			{
 				"name": "Duplicate row key",
-				"type": "Svelte keyed-each error",
-				"description": "Duplicate row identifiers are rejected by Svelte keyed-list updates."
-			},
-			{
-				"name": "ConfigValue onview callback error",
 				"type": "thrown",
-				"description": "The owned ConfigValue renderer forwards inspection events to its required onview callback; callback failures propagate. ExplorerTable supplies its normal internal view handler."
+				"description": "The keyed row loop uses `row.id`, so duplicate ids can cause a Svelte keyed-each error. Row ids must be unique within the displayed rows."
 			}
 		],
 		"errorStatus": "declared",
