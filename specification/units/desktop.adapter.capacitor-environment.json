@@ -32,31 +32,40 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CapacitorEnvironmentAdapter.constructor.config",
 				"type": "CapacitorEnvironmentAdapterConfig",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "The optional configuration: a `plugin` that is not null or undefined is used in place of registering the 'HarnessRemote' native plugin, and an `account` key, whatever its value, skips the native 'HarnessAccount' lookup, so `account: undefined` turns the account off. Defaults to {}, which registers 'HarnessRemote', and registers 'HarnessAccount' only where Capacitor reports that plugin available.",
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "remotePluginName",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported constant 'HarnessRemote', the name the constructor registers as the native remote plugin when `config.plugin` is null or undefined. It is a const, so its value does not change at runtime.",
+				"examples": ["HarnessRemote"]
 			},
 			{
 				"name": "accountPluginName",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The exported constant 'HarnessAccount', the name the constructor checks with Capacitor.isPluginAvailable and registers as the native account plugin, but only when the config has no `account` key. Where the shell does not provide that plugin, the adapter has no account and connect() returns an environment without the `account` field.",
+				"examples": ["HarnessAccount"]
 			},
 			{
 				"name": "CapacitorEnvironmentAdapter.connect",
-				"type": "Environment"
+				"type": "Environment",
+				"description": "The Environment that connect() returns: `kind` is always 'capacitor', `local` is always false, and `phone` holds status, scan, disconnect and onStatus for the remote plugin, with each status passed to the computer bridge's allow before the caller receives it and a rejection from the plugin's status, scan or disconnect call reaching the caller unchanged. `bridge` is the computer connection, or with a configured account the CapacitorProjectsService that joins that account with the computer, and `account: true` is present only in that case."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "CapacitorEnvironmentAdapter.connect",
@@ -64,11 +73,12 @@
 				"outputs": [
 					{
 						"name": "CapacitorEnvironmentAdapter.connect",
-						"type": "Environment"
+						"type": "Environment",
+						"description": "The Environment that connect() returns: `kind` is always 'capacitor', `local` is always false, and `phone` holds status, scan, disconnect and onStatus for the remote plugin, with each status passed to the computer bridge's allow before the caller receives it and a rejection from the plugin's status, scan or disconnect call reaching the caller unchanged. `bridge` is the computer connection, or with a configured account the CapacitorProjectsService that joins that account with the computer, and `account: true` is present only in that case."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -79,17 +89,22 @@
 						"name": "CapacitorEnvironmentAdapter.constructor.config",
 						"type": "CapacitorEnvironmentAdapterConfig",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "The optional configuration: a `plugin` that is not null or undefined is used in place of registering the 'HarnessRemote' native plugin, and an `account` key, whatever its value, skips the native 'HarnessAccount' lookup, so `account: undefined` turns the account off. Defaults to {}, which registers 'HarnessRemote', and registers 'HarnessAccount' only where Capacitor reports that plugin available.",
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "CapacitorEnvironmentAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The CapacitorEnvironmentAdapter instance that the constructor builds, holding the remote plugin (the config's `plugin` when it is not null or undefined, otherwise the registered 'HarnessRemote' plugin) and the account (the config's `account` value when that key is present, otherwise the native 'HarnessAccount' plugin where available, otherwise undefined). The config object itself is not kept, so changes to it after construction have no effect."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
