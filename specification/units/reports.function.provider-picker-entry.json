@@ -18,10 +18,11 @@
 			{
 				"name": "providerPickerEntry",
 				"type": "unknown",
-				"description": "Svelte mount result for the picker in the element named app. The module also invokes this function immediately on import."
+				"description": "The Svelte mount result for ProviderPicker, mounted into the element with id app and returned as is by providerPickerEntry(). The module calls the function once on import and discards this result, and the element is not checked for null, so a page without an element whose id is app passes null as the target to mount."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "providerPickerEntry",
@@ -30,11 +31,11 @@
 					{
 						"name": "providerPickerEntry",
 						"type": "unknown",
-						"description": "Svelte mount result for the picker in the element named app. The module also invokes this function immediately on import."
+						"description": "The Svelte mount result for ProviderPicker, mounted into the element with id app and returned as is by providerPickerEntry(). The module calls the function once on import and discards this result, and the element is not checked for null, so a page without an element whose id is app passes null as the target to mount."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
