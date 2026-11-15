@@ -16,33 +16,39 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostedFailureValidator.constructor.category",
 				"type": "'offline' | 'denied' | 'failed'",
-				"required": true
+				"required": true,
+				"description": "The failure category stored on the readonly category property, which the class doc comment says is what cache policy needs from a transport error. classify() passes 'offline' only for an Error whose cause.code is one of its listed network codes and 'failed' otherwise, never 'denied'; the constructor does not check the value at runtime.",
+				"examples": ["offline", "denied", "failed"]
 			},
 			{
 				"name": "HostedFailureValidator.constructor.status",
 				"type": "number",
 				"required": false,
-				"default": 0
+				"default": 0,
+				"description": "The number stored unchanged on the readonly status property, and the constructor does not check its range or meaning. It defaults to 0 when omitted, and classify() never passes it, so the instances classify() creates have status 0.",
+				"examples": [0, 403, 503]
 			},
 			{
 				"name": "HostedFailureValidator.classify.error",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "The caught value that classify() inspects: a HostedFailureValidator is returned unchanged, an Error has its cause.code compared with the listed network codes, and any other value becomes a new 'failed' instance. classify() reads only that cause and its code, so the error's message and stack never affect the result."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostedFailureValidator.classify",
-				"type": "HostedFailureValidator"
+				"type": "HostedFailureValidator",
+				"description": "The HostedFailureValidator that classify() returns: the same instance when its argument already is one, otherwise a new instance with category 'offline' or 'failed' and status 0. The new instance keeps no reference to the original value, and its message is always 'Hosted request failed or access was refused.'"
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "HostedFailureValidator.classify",
@@ -50,17 +56,19 @@
 					{
 						"name": "HostedFailureValidator.classify.error",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "The caught value that classify() inspects: a HostedFailureValidator is returned unchanged, an Error has its cause.code compared with the listed network codes, and any other value becomes a new 'failed' instance. classify() reads only that cause and its code, so the error's message and stack never affect the result."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedFailureValidator.classify",
-						"type": "HostedFailureValidator"
+						"type": "HostedFailureValidator",
+						"description": "The HostedFailureValidator that classify() returns: the same instance when its argument already is one, otherwise a new instance with category 'offline' or 'failed' and status 0. The new instance keeps no reference to the original value, and its message is always 'Hosted request failed or access was refused.'"
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -70,23 +78,28 @@
 					{
 						"name": "HostedFailureValidator.constructor.category",
 						"type": "'offline' | 'denied' | 'failed'",
-						"required": true
+						"required": true,
+						"description": "The failure category stored on the readonly category property, which the class doc comment says is what cache policy needs from a transport error. classify() passes 'offline' only for an Error whose cause.code is one of its listed network codes and 'failed' otherwise, never 'denied'; the constructor does not check the value at runtime.",
+						"examples": ["offline", "denied", "failed"]
 					},
 					{
 						"name": "HostedFailureValidator.constructor.status",
 						"type": "number",
 						"required": false,
-						"default": 0
+						"default": 0,
+						"description": "The number stored unchanged on the readonly status property, and the constructor does not check its range or meaning. It defaults to 0 when omitted, and classify() never passes it, so the instances classify() creates have status 0.",
+						"examples": [0, 403, 503]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HostedFailureValidator.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The new HostedFailureValidator instance that the constructor creates, which extends Error and exposes the readonly category and status properties. Its message is always 'Hosted request failed or access was refused.', whatever category or status is passed."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
