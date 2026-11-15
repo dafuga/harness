@@ -18,23 +18,13 @@
 				"name": "projectAgentActions.agent",
 				"type": "ProjectAgent",
 				"required": true,
-				"description": "The current project conversation and the bridge allowed to send its requests.",
-				"examples": [
-					{
-						"workspace": {
-							"projectId": "local-demo"
-						},
-						"runId": "run-1",
-						"messages": [],
-						"said": ""
-					}
-				]
+				"description": "Mutable project-agent state with the workspace, permissions, bridge, conversation, and run lifecycle fields used by this action. Starting a run requires an inactive, allowed agent with a project ID; saving a comment requires a snapshot, comment capability, and comment method."
 			},
 			{
 				"name": "projectAgentActions.draft",
 				"type": "RunDraft",
 				"required": true,
-				"description": "The selected Plan, Ask or Change mode, the message and the exact discovered model.",
+				"description": "The selected mode, provider, model, effort, message text, and optional design settings used to build a project request. Plan mode uses intent create and includes design settings only when supplied; other modes use the current snapshot revision and up to the last 20 messages, truncated to 4,000 characters each.",
 				"examples": [
 					{
 						"mode": "ask",
@@ -49,23 +39,13 @@
 				"name": "projectAgentComment.agent",
 				"type": "ProjectAgent",
 				"required": true,
-				"description": "The conversation and verified comment permission of the selected project.",
-				"examples": [
-					{
-						"workspace": {
-							"projectId": "local-demo"
-						},
-						"runId": "run-1",
-						"messages": [],
-						"said": ""
-					}
-				]
+				"description": "Mutable project-agent state with the workspace, permissions, bridge, conversation, and run lifecycle fields used by this action. Starting a run requires an inactive, allowed agent with a project ID; saving a comment requires a snapshot, comment capability, and comment method."
 			},
 			{
 				"name": "projectAgentComment.text",
 				"type": "string",
 				"required": true,
-				"description": "Human comment to save at the entity or project revision currently in view.",
+				"description": "The comment text passed to the bridge and appended to the local conversation after a successful save. It is anchored to the current snapshot revision and entity ID, or harness.project.discussion when no entity ID is available.",
 				"examples": ["The toolbar looks good."]
 			}
 		],
@@ -73,17 +53,18 @@
 			{
 				"name": "projectAgentActions",
 				"type": "Promise<boolean>",
-				"description": "True when a request completes or leaves a saved plan holding its request; false when refused, cancelled or failed.",
-				"examples": [true]
+				"description": "Resolves to the value supplied through the agent settlement callback after the run is accepted; it returns false when the agent is active, disallowed, missing a project ID, or a caught request step fails. This function has no timeout for the settlement callback.",
+				"examples": [true, false]
 			},
 			{
 				"name": "projectAgentComment",
 				"type": "Promise<boolean>",
-				"description": "True after saving the human comment; false if permission or saving fails.",
-				"examples": [true]
+				"description": "Resolves true after the bridge comment call succeeds and the comment is added to local conversation history; status distinguishes GitHub-shared from device-only saves. Resolves false when a required snapshot, project ID, comment capability, or bridge method is absent, or a caught save step fails.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "projectAgentActions",
@@ -92,23 +73,13 @@
 						"name": "projectAgentActions.agent",
 						"type": "ProjectAgent",
 						"required": true,
-						"description": "The current project conversation and the bridge allowed to send its requests.",
-						"examples": [
-							{
-								"workspace": {
-									"projectId": "local-demo"
-								},
-								"runId": "run-1",
-								"messages": [],
-								"said": ""
-							}
-						]
+						"description": "Mutable project-agent state with the workspace, permissions, bridge, conversation, and run lifecycle fields used by this action. Starting a run requires an inactive, allowed agent with a project ID; saving a comment requires a snapshot, comment capability, and comment method."
 					},
 					{
 						"name": "projectAgentActions.draft",
 						"type": "RunDraft",
 						"required": true,
-						"description": "The selected Plan, Ask or Change mode, the message and the exact discovered model.",
+						"description": "The selected mode, provider, model, effort, message text, and optional design settings used to build a project request. Plan mode uses intent create and includes design settings only when supplied; other modes use the current snapshot revision and up to the last 20 messages, truncated to 4,000 characters each.",
 						"examples": [
 							{
 								"mode": "ask",
@@ -124,12 +95,12 @@
 					{
 						"name": "projectAgentActions",
 						"type": "Promise<boolean>",
-						"description": "True when a request completes or leaves a saved plan holding its request; false when refused, cancelled or failed.",
-						"examples": [true]
+						"description": "Resolves to the value supplied through the agent settlement callback after the run is accepted; it returns false when the agent is active, disallowed, missing a project ID, or a caught request step fails. This function has no timeout for the settlement callback.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "projectAgentComment",
@@ -138,23 +109,13 @@
 						"name": "projectAgentComment.agent",
 						"type": "ProjectAgent",
 						"required": true,
-						"description": "The conversation and verified comment permission of the selected project.",
-						"examples": [
-							{
-								"workspace": {
-									"projectId": "local-demo"
-								},
-								"runId": "run-1",
-								"messages": [],
-								"said": ""
-							}
-						]
+						"description": "Mutable project-agent state with the workspace, permissions, bridge, conversation, and run lifecycle fields used by this action. Starting a run requires an inactive, allowed agent with a project ID; saving a comment requires a snapshot, comment capability, and comment method."
 					},
 					{
 						"name": "projectAgentComment.text",
 						"type": "string",
 						"required": true,
-						"description": "Human comment to save at the entity or project revision currently in view.",
+						"description": "The comment text passed to the bridge and appended to the local conversation after a successful save. It is anchored to the current snapshot revision and entity ID, or harness.project.discussion when no entity ID is available.",
 						"examples": ["The toolbar looks good."]
 					}
 				],
@@ -162,12 +123,12 @@
 					{
 						"name": "projectAgentComment",
 						"type": "Promise<boolean>",
-						"description": "True after saving the human comment; false if permission or saving fails.",
-						"examples": [true]
+						"description": "Resolves true after the bridge comment call succeeds and the comment is added to local conversation history; status distinguishes GitHub-shared from device-only saves. Resolves false when a required snapshot, project ID, comment capability, or bridge method is absent, or a caught save step fails.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
