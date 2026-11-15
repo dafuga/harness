@@ -18,10 +18,17 @@
 			{
 				"name": "authDisabled",
 				"type": "HubAuth",
-				"description": "Authentication interface: actor resolves to null; GET status routes report disabled; other owned routes return auth-disabled with 503; unrelated routes return null. Repository authorization and token calls reject with github-disabled."
+				"description": "The HubAuth used when sign-in is not configured: actor() always resolves to null, and authorizeRepository() and token() always reject with an AuthFailure whose code is github-disabled. handle() returns a 200 body reporting configured: false for GET /api/auth/status and GET /api/github/status, returns HTTP 503 with the error code auth-disabled for any other request under /api/auth/ or /api/github/, and returns null for any path outside those prefixes."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "authorizeRepository() and token() reject with an AuthFailure whose code is github-disabled, status 503 and message 'Hub auth github-disabled'. actor() and handle() never reject."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "authDisabled",
@@ -30,11 +37,11 @@
 					{
 						"name": "authDisabled",
 						"type": "HubAuth",
-						"description": "Authentication interface: actor resolves to null; GET status routes report disabled; other owned routes return auth-disabled with 503; unrelated routes return null. Repository authorization and token calls reject with github-disabled."
+						"description": "The HubAuth used when sign-in is not configured: actor() always resolves to null, and authorizeRepository() and token() always reject with an AuthFailure whose code is github-disabled. handle() returns a 200 body reporting configured: false for GET /api/auth/status and GET /api/github/status, returns HTTP 503 with the error code auth-disabled for any other request under /api/auth/ or /api/github/, and returns null for any path outside those prefixes."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
