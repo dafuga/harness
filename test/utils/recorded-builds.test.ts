@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -6,7 +7,7 @@ import type { VerificationRecord } from '../../src/core/verificationTypes';
 import { VerificationStoreRepository } from '../../src/repositories/VerificationStoreRepository';
 import { BuildIdentityService } from '../../src/services/verification-evidence/BuildIdentityService';
 import { emptyBuildStamp } from '../../src/utils/buildStamp';
-import { recordedBuilds } from '../../src/services/record-assembly-service/recordedBuilds';
+import { recordedBuilds } from '../../src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds';
 import { recordIntact, sealRecord } from '../../src/utils/sealRecord';
 import { VerificationRecordValidator } from '../../src/validators/verification-evidence/VerificationRecordValidator';
 import { verificationSample } from '../support/verificationSample';
@@ -139,4 +140,10 @@ test('a build entry with an unknown field is still refused beside skippedBuilds,
 	expect(judged.errors[0]).toContain('builds.0');
 	expect(judged.errors[0]).toContain('note');
 	expect(await kept(record, 'unknown-run')).toEqual([]);
+});
+
+test('the retired stub path stays deleted, and the projection is imported from the module it moved to', () => {
+	const repository = join(import.meta.dirname, '../..');
+	const retired = join(repository, 'src/services/record-assembly-service/recordedBuilds.ts');
+	expect(existsSync(retired)).toBe(false);
 });

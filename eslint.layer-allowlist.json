@@ -107,11 +107,6 @@
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
 		},
 		{
-			"from": "src/services/record-assembly-service/recordedBuilds.ts",
-			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds",
-			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/unit-index-service/UnitIndexService.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService",
 			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
