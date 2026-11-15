@@ -25,51 +25,232 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AudioUploadService.constructor.repository",
 				"type": "ReportRepository",
-				"required": true
+				"required": true,
+				"description": "The ReportRepository that the service keeps as its private readonly repository field; upload and uploadComparison call its mutateActive method for the report they update. The constructor does not check the value."
 			},
 			{
 				"name": "AudioUploadService.upload.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of the report whose evidence list receives the audio, passed unchanged to repository.mutateActive; it must be 1 to 100 letters, digits, underscores or hyphens, otherwise the call rejects with 'Invalid report or asset ID'. reportState assigns report ids as randomUUID() values, and the report must be in state 'active' for the update to be written.",
+				"examples": ["6b1f0e52-3c9a-4d7e-8f21-5a9c2e7b4d10", "0c9d7a41-5e2b-4f38-a6d1-93b8e4c2f7a5"]
 			},
 			{
 				"name": "AudioUploadService.upload.input",
 				"type": "AudioUploadInput",
-				"required": true
+				"required": true,
+				"description": "The audio File and the evidence details stored with it: audio must be 1 to 50,000,000 bytes and have a .wav, .mp3, .m4a or .ogg name whose content matches that format. title must be 1 to 120 characters after trimming and sanitizing, note may be up to 2000 characters and source up to 200 characters before trimming, and a source that is empty after trimming is stored as 'Manual audio upload · recording date not supplied'."
 			},
 			{
 				"name": "AudioUploadService.uploadComparison.reportId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The id of the report whose evidence list receives both comparison entries, passed unchanged to repository.mutateActive; it must be 1 to 100 letters, digits, underscores or hyphens, otherwise the call rejects with 'Invalid report or asset ID'. reportState assigns report ids as randomUUID() values, and the report must be in state 'active' for the update to be written.",
+				"examples": ["6b1f0e52-3c9a-4d7e-8f21-5a9c2e7b4d10", "0c9d7a41-5e2b-4f38-a6d1-93b8e4c2f7a5"]
 			},
 			{
 				"name": "AudioUploadService.uploadComparison.input",
 				"type": "AudioComparisonInput",
-				"required": true
+				"required": true,
+				"description": "The before and after audio Files and the title, note and source shared by both new evidence entries; each file must be 1 to 50,000,000 bytes with a .wav, .mp3, .m4a or .ogg name and matching content, and both are read and validated before the report is changed. The title, note and source follow the same limits as upload.input."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AudioUploadService.upload",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the Report that repository.mutateActive returns, after the update has appended the new evidence entry with category 'Uploaded audio' and status 'not-proven' and set updatedAt; the manifest is written to disk before the promise resolves.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "6b1f0e52-3c9a-4d7e-8f21-5a9c2e7b4d10",
+						"project": {
+							"id": "9f2c4b1d8e7a0c35",
+							"name": "checkout-web",
+							"path": "/srv/checkout-web"
+						},
+						"title": "Checkout flow audio evidence",
+						"mode": "feature",
+						"environment": "staging",
+						"historical": false,
+						"startedAt": "2026-11-14T09:12:40.118Z",
+						"updatedAt": "2026-11-15T10:03:27.406Z",
+						"summary": "Support call recordings for the checkout regression.",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [
+							{
+								"id": "d4a7e1c9-2f63-4b08-9e5d-7c1a3f8b6e20",
+								"title": "Support call recording",
+								"category": "Uploaded audio",
+								"file": "3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b.mp3",
+								"status": "not-proven",
+								"source": "Support line export",
+								"note": "Recorded on the support line; background noise is audible.",
+								"mediaType": "audio",
+								"mimeType": "audio/mpeg"
+							}
+						],
+						"findings": [],
+						"coverage": [],
+						"acceptance": ["Support call audio plays back in the report viewer"]
+					}
+				]
 			},
 			{
 				"name": "AudioUploadService.uploadComparison",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the Report that repository.mutateActive returns, after the update has appended the 'before' and 'after' evidence entries, which share one comparison id and have category 'Uploaded audio' and status 'not-proven'; the manifest is written to disk before the promise resolves.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "a71d4e09-6c2f-4b53-8e17-f0a9d3c5b628",
+						"project": {
+							"id": "1d8e6a3f0b9c4572",
+							"name": "checkout-web",
+							"path": "/srv/checkout-web"
+						},
+						"title": "Login latency comparison",
+						"mode": "suite",
+						"environment": "staging",
+						"historical": false,
+						"startedAt": "2026-11-12T16:45:03.927Z",
+						"updatedAt": "2026-11-15T10:20:11.552Z",
+						"summary": "Before and after audio from the login latency fix.",
+						"status": "running",
+						"state": "active",
+						"checks": [],
+						"evidence": [
+							{
+								"id": "2e7a9c10-4b6d-4f1e-9a3c-7d5b8e2f1a64",
+								"title": "Login call before fix",
+								"category": "Uploaded audio",
+								"file": "e41c9a07d6b25f38c1a0e9d47b2f6c85a3e0d19f7b6c4a2e8d5f3b1c0a9e7d64.wav",
+								"status": "not-proven",
+								"source": "Support line export",
+								"note": "Before the connection pool change.",
+								"comparison": "b8d3f6a2-1c7e-4e5b-8d9a-0f2c6e4b3a17",
+								"phase": "before",
+								"mediaType": "audio",
+								"mimeType": "audio/wav",
+								"durationSeconds": 12.48
+							},
+							{
+								"id": "e03f5b7d-8a21-4c96-b4e0-63d9a1f2c8e5",
+								"title": "Login call after fix",
+								"category": "Uploaded audio",
+								"file": "5f0d8b2e91c4a7631e9b0d5c2a8f4e6b7d1c3a0e9f25b8d4c6a1e7f3b9d0c2a1.wav",
+								"status": "not-proven",
+								"source": "Support line export",
+								"note": "After the connection pool change.",
+								"comparison": "b8d3f6a2-1c7e-4e5b-8d9a-0f2c6e4b3a17",
+								"phase": "after",
+								"mediaType": "audio",
+								"mimeType": "audio/wav",
+								"durationSeconds": 9.31
+							}
+						],
+						"findings": [],
+						"coverage": [],
+						"acceptance": []
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by inputDetails when the title is empty after trimming and sanitizing or is longer than 120 characters, with the message 'Audio title must be 1–120 characters'."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by inputDetails when the raw note is longer than 2000 characters or the raw source is longer than 200 characters, with the message 'Audio notes or source exceed size limit'."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by readAudio with 'Audio file must be 1 byte to 50 MB' when the File is empty or larger than 50,000,000 bytes, and by audioAsset with 'Invalid audio file or size' when the bytes read are empty or larger than that."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by audioAsset with 'Unsupported audio format' when the filename extension does not map to an audio/* MIME type; only .wav, .mp3, .m4a and .ogg do."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by audioAsset with 'Audio content does not match its filename' when .mp3, .m4a or .ogg bytes fail their header check; .wav bytes are checked by wavInfo instead."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by wavInfo for a .wav file whose RIFF/WAVE container, chunk layout, fmt encoding, sample format or data length is invalid or unsupported, with messages such as 'Invalid WAV audio' and 'Unsupported WAV audio format'."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Raised by mkdir or writeFile in writeImageAsset when the audio is written into the report's assets directory; the service does not catch it, so no evidence entry is added."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by safeId, reached through repository.directory, when reportId is not 1 to 100 letters, digits, underscores or hyphens, with the message 'Invalid report or asset ID'."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Raised by reportLock's own file-system calls, which it does not catch: opening the .lock file (ENOENT when the report directory does not exist), writing the process id into it, closing it, and removing it with any code other than ENOENT."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by reportLock with the message 'Report is busy; retry this update' when the .lock file is still present after 200 attempts, each followed by a 25 millisecond wait."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by ReportRepository.get with the message 'Invalid report directory' when the report directory is a symbolic link; lstat and readFile failures on the directory or manifest.json, such as a missing manifest, pass through unchanged."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse in readJson when manifest.json is not valid JSON."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by ReportRepository.mutateActive with the message 'Cannot update finalizing or finalized report' when the report's state is not 'active'."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by EvidenceStorageService.store, which mutateActive awaits after the update, with 'Report expired after 30 days; create a new report' when startedAt is at least 30 days before now, or with 'Invalid report retention timestamp' when startedAt does not parse; the new entry is always pending, so every upload reaches this check."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "After the retention check, store calls R2EvidenceStoreAdapter.fromEnvironment() without a catch, and when that returns an adapter, registeredAsset throws 'Invalid asset' for a symbolic link or non-regular file or 'Invalid asset path' when the real path leaves the assets directory; readFile, lstat and realpath errors pass through unchanged."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "R2EvidenceStoreAdapter.put throws 'Invalid R2 evidence name' when the file name is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg, and a failed S3 PutObject rejects with the S3 client's own error."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Raised by mkdir, writeFile or rename in atomicJson when mutateActive writes the updated manifest.json; the service does not catch it, so the promise rejects instead of resolving."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "AudioUploadService.upload",
@@ -77,22 +258,152 @@
 					{
 						"name": "AudioUploadService.upload.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of the report whose evidence list receives the audio, passed unchanged to repository.mutateActive; it must be 1 to 100 letters, digits, underscores or hyphens, otherwise the call rejects with 'Invalid report or asset ID'. reportState assigns report ids as randomUUID() values, and the report must be in state 'active' for the update to be written.",
+						"examples": [
+							"6b1f0e52-3c9a-4d7e-8f21-5a9c2e7b4d10",
+							"0c9d7a41-5e2b-4f38-a6d1-93b8e4c2f7a5"
+						]
 					},
 					{
 						"name": "AudioUploadService.upload.input",
 						"type": "AudioUploadInput",
-						"required": true
+						"required": true,
+						"description": "The audio File and the evidence details stored with it: audio must be 1 to 50,000,000 bytes and have a .wav, .mp3, .m4a or .ogg name whose content matches that format. title must be 1 to 120 characters after trimming and sanitizing, note may be up to 2000 characters and source up to 200 characters before trimming, and a source that is empty after trimming is stored as 'Manual audio upload · recording date not supplied'."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AudioUploadService.upload",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the Report that repository.mutateActive returns, after the update has appended the new evidence entry with category 'Uploaded audio' and status 'not-proven' and set updatedAt; the manifest is written to disk before the promise resolves.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "6b1f0e52-3c9a-4d7e-8f21-5a9c2e7b4d10",
+								"project": {
+									"id": "9f2c4b1d8e7a0c35",
+									"name": "checkout-web",
+									"path": "/srv/checkout-web"
+								},
+								"title": "Checkout flow audio evidence",
+								"mode": "feature",
+								"environment": "staging",
+								"historical": false,
+								"startedAt": "2026-11-14T09:12:40.118Z",
+								"updatedAt": "2026-11-15T10:03:27.406Z",
+								"summary": "Support call recordings for the checkout regression.",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [
+									{
+										"id": "d4a7e1c9-2f63-4b08-9e5d-7c1a3f8b6e20",
+										"title": "Support call recording",
+										"category": "Uploaded audio",
+										"file": "3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b.mp3",
+										"status": "not-proven",
+										"source": "Support line export",
+										"note": "Recorded on the support line; background noise is audible.",
+										"mediaType": "audio",
+										"mimeType": "audio/mpeg"
+									}
+								],
+								"findings": [],
+								"coverage": [],
+								"acceptance": ["Support call audio plays back in the report viewer"]
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by inputDetails when the title is empty after trimming and sanitizing or is longer than 120 characters, with the message 'Audio title must be 1–120 characters'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by inputDetails when the raw note is longer than 2000 characters or the raw source is longer than 200 characters, with the message 'Audio notes or source exceed size limit'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by readAudio with 'Audio file must be 1 byte to 50 MB' when the File is empty or larger than 50,000,000 bytes, and by audioAsset with 'Invalid audio file or size' when the bytes read are empty or larger than that."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by audioAsset with 'Unsupported audio format' when the filename extension does not map to an audio/* MIME type; only .wav, .mp3, .m4a and .ogg do."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by audioAsset with 'Audio content does not match its filename' when .mp3, .m4a or .ogg bytes fail their header check; .wav bytes are checked by wavInfo instead."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by wavInfo for a .wav file whose RIFF/WAVE container, chunk layout, fmt encoding, sample format or data length is invalid or unsupported, with messages such as 'Invalid WAV audio' and 'Unsupported WAV audio format'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Raised by mkdir or writeFile in writeImageAsset when the audio is written into the report's assets directory; the service does not catch it, so no evidence entry is added."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by safeId, reached through repository.directory, when reportId is not 1 to 100 letters, digits, underscores or hyphens, with the message 'Invalid report or asset ID'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Raised by reportLock's own file-system calls, which it does not catch: opening the .lock file (ENOENT when the report directory does not exist), writing the process id into it, closing it, and removing it with any code other than ENOENT."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by reportLock with the message 'Report is busy; retry this update' when the .lock file is still present after 200 attempts, each followed by a 25 millisecond wait."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by ReportRepository.get with the message 'Invalid report directory' when the report directory is a symbolic link; lstat and readFile failures on the directory or manifest.json, such as a missing manifest, pass through unchanged."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse in readJson when manifest.json is not valid JSON."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by ReportRepository.mutateActive with the message 'Cannot update finalizing or finalized report' when the report's state is not 'active'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by EvidenceStorageService.store, which mutateActive awaits after the update, with 'Report expired after 30 days; create a new report' when startedAt is at least 30 days before now, or with 'Invalid report retention timestamp' when startedAt does not parse; the new entry is always pending, so every upload reaches this check."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "After the retention check, store calls R2EvidenceStoreAdapter.fromEnvironment() without a catch, and when that returns an adapter, registeredAsset throws 'Invalid asset' for a symbolic link or non-regular file or 'Invalid asset path' when the real path leaves the assets directory; readFile, lstat and realpath errors pass through unchanged."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "R2EvidenceStoreAdapter.put throws 'Invalid R2 evidence name' when the file name is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg, and a failed S3 PutObject rejects with the S3 client's own error."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Raised by mkdir, writeFile or rename in atomicJson when mutateActive writes the updated manifest.json; the service does not catch it, so the promise rejects instead of resolving."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AudioUploadService.uploadComparison",
@@ -100,22 +411,169 @@
 					{
 						"name": "AudioUploadService.uploadComparison.reportId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The id of the report whose evidence list receives both comparison entries, passed unchanged to repository.mutateActive; it must be 1 to 100 letters, digits, underscores or hyphens, otherwise the call rejects with 'Invalid report or asset ID'. reportState assigns report ids as randomUUID() values, and the report must be in state 'active' for the update to be written.",
+						"examples": [
+							"6b1f0e52-3c9a-4d7e-8f21-5a9c2e7b4d10",
+							"0c9d7a41-5e2b-4f38-a6d1-93b8e4c2f7a5"
+						]
 					},
 					{
 						"name": "AudioUploadService.uploadComparison.input",
 						"type": "AudioComparisonInput",
-						"required": true
+						"required": true,
+						"description": "The before and after audio Files and the title, note and source shared by both new evidence entries; each file must be 1 to 50,000,000 bytes with a .wav, .mp3, .m4a or .ogg name and matching content, and both are read and validated before the report is changed. The title, note and source follow the same limits as upload.input."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AudioUploadService.uploadComparison",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the Report that repository.mutateActive returns, after the update has appended the 'before' and 'after' evidence entries, which share one comparison id and have category 'Uploaded audio' and status 'not-proven'; the manifest is written to disk before the promise resolves.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "a71d4e09-6c2f-4b53-8e17-f0a9d3c5b628",
+								"project": {
+									"id": "1d8e6a3f0b9c4572",
+									"name": "checkout-web",
+									"path": "/srv/checkout-web"
+								},
+								"title": "Login latency comparison",
+								"mode": "suite",
+								"environment": "staging",
+								"historical": false,
+								"startedAt": "2026-11-12T16:45:03.927Z",
+								"updatedAt": "2026-11-15T10:20:11.552Z",
+								"summary": "Before and after audio from the login latency fix.",
+								"status": "running",
+								"state": "active",
+								"checks": [],
+								"evidence": [
+									{
+										"id": "2e7a9c10-4b6d-4f1e-9a3c-7d5b8e2f1a64",
+										"title": "Login call before fix",
+										"category": "Uploaded audio",
+										"file": "e41c9a07d6b25f38c1a0e9d47b2f6c85a3e0d19f7b6c4a2e8d5f3b1c0a9e7d64.wav",
+										"status": "not-proven",
+										"source": "Support line export",
+										"note": "Before the connection pool change.",
+										"comparison": "b8d3f6a2-1c7e-4e5b-8d9a-0f2c6e4b3a17",
+										"phase": "before",
+										"mediaType": "audio",
+										"mimeType": "audio/wav",
+										"durationSeconds": 12.48
+									},
+									{
+										"id": "e03f5b7d-8a21-4c96-b4e0-63d9a1f2c8e5",
+										"title": "Login call after fix",
+										"category": "Uploaded audio",
+										"file": "5f0d8b2e91c4a7631e9b0d5c2a8f4e6b7d1c3a0e9f25b8d4c6a1e7f3b9d0c2a1.wav",
+										"status": "not-proven",
+										"source": "Support line export",
+										"note": "After the connection pool change.",
+										"comparison": "b8d3f6a2-1c7e-4e5b-8d9a-0f2c6e4b3a17",
+										"phase": "after",
+										"mediaType": "audio",
+										"mimeType": "audio/wav",
+										"durationSeconds": 9.31
+									}
+								],
+								"findings": [],
+								"coverage": [],
+								"acceptance": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by inputDetails when the title is empty after trimming and sanitizing or is longer than 120 characters, with the message 'Audio title must be 1–120 characters'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by inputDetails when the raw note is longer than 2000 characters or the raw source is longer than 200 characters, with the message 'Audio notes or source exceed size limit'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by readAudio with 'Audio file must be 1 byte to 50 MB' when the File is empty or larger than 50,000,000 bytes, and by audioAsset with 'Invalid audio file or size' when the bytes read are empty or larger than that."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by audioAsset with 'Unsupported audio format' when the filename extension does not map to an audio/* MIME type; only .wav, .mp3, .m4a and .ogg do."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by audioAsset with 'Audio content does not match its filename' when .mp3, .m4a or .ogg bytes fail their header check; .wav bytes are checked by wavInfo instead."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by wavInfo for a .wav file whose RIFF/WAVE container, chunk layout, fmt encoding, sample format or data length is invalid or unsupported, with messages such as 'Invalid WAV audio' and 'Unsupported WAV audio format'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Raised by mkdir or writeFile in writeImageAsset when the audio is written into the report's assets directory; the service does not catch it, so no evidence entry is added."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by safeId, reached through repository.directory, when reportId is not 1 to 100 letters, digits, underscores or hyphens, with the message 'Invalid report or asset ID'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Raised by reportLock's own file-system calls, which it does not catch: opening the .lock file (ENOENT when the report directory does not exist), writing the process id into it, closing it, and removing it with any code other than ENOENT."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by reportLock with the message 'Report is busy; retry this update' when the .lock file is still present after 200 attempts, each followed by a 25 millisecond wait."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by ReportRepository.get with the message 'Invalid report directory' when the report directory is a symbolic link; lstat and readFile failures on the directory or manifest.json, such as a missing manifest, pass through unchanged."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse in readJson when manifest.json is not valid JSON."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by ReportRepository.mutateActive with the message 'Cannot update finalizing or finalized report' when the report's state is not 'active'."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by EvidenceStorageService.store, which mutateActive awaits after the update, with 'Report expired after 30 days; create a new report' when startedAt is at least 30 days before now, or with 'Invalid report retention timestamp' when startedAt does not parse; the new entry is always pending, so every upload reaches this check."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "After the retention check, store calls R2EvidenceStoreAdapter.fromEnvironment() without a catch, and when that returns an adapter, registeredAsset throws 'Invalid asset' for a symbolic link or non-regular file or 'Invalid asset path' when the real path leaves the assets directory; readFile, lstat and realpath errors pass through unchanged."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "R2EvidenceStoreAdapter.put throws 'Invalid R2 evidence name' when the file name is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg, and a failed S3 PutObject rejects with the S3 client's own error."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Raised by mkdir, writeFile or rename in atomicJson when mutateActive writes the updated manifest.json; the service does not catch it, so the promise rejects instead of resolving."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -125,17 +583,19 @@
 					{
 						"name": "AudioUploadService.constructor.repository",
 						"type": "ReportRepository",
-						"required": true
+						"required": true,
+						"description": "The ReportRepository that the service keeps as its private readonly repository field; upload and uploadComparison call its mutateActive method for the report they update. The constructor does not check the value."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AudioUploadService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The AudioUploadService instance that the constructor creates; the constructor only stores the repository as a private readonly field."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
