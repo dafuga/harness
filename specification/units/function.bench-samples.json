@@ -39,103 +39,196 @@
 				"name": "benchSamples.runtime",
 				"type": "UnitRuntime",
 				"required": true,
-				"description": "Initialized runtime used for three warm-up calls and then every measured call."
+				"description": "An initialized runtime with an invoke method and a kind used in failure messages. The benchmark calls invoke three times for warm-up and then once per iterations loop pass; it does not initialize or close the runtime."
 			},
 			{
 				"name": "benchSamples.request",
 				"type": "RuntimeRequest",
 				"required": true,
-				"description": "Operation and optional input repeated for warm-up and measurement."
+				"description": "The RuntimeRequest passed unchanged to each warm-up and measured invocation. This helper does not inspect or validate its operation or input.",
+				"examples": [
+					{
+						"operation": "echo",
+						"input": {
+							"message": "hello"
+						}
+					},
+					{
+						"operation": "run"
+					}
+				]
 			},
 			{
 				"name": "benchSamples.iterations",
 				"type": "number",
 				"required": true,
-				"description": "Number of timed calls after warm-up; callers should supply a positive integer."
+				"description": "The loop bound for measured calls after three warm-up calls; it is not validated. Nonpositive values produce no measured samples, while positive fractional values can execute a rounded-up number of calls.",
+				"examples": [1, 10]
 			},
 			{
 				"name": "median.values",
 				"type": "number[]",
 				"required": true,
-				"description": "Numeric samples to sort on a copy; meaningful medians require a nonempty array."
+				"description": "Numeric samples whose copied array is sorted before selecting the middle value or middle-pair average. An empty array returns NaN, and the input array is not mutated.",
+				"examples": [
+					[2, 4, 8],
+					[1.5, 2.5]
+				]
 			},
 			{
 				"name": "timeCall.runtime",
 				"type": "UnitRuntime",
 				"required": true,
-				"description": "Initialized runtime whose invoke method performs the whole operation being timed."
+				"description": "An initialized runtime with invoke and kind properties. The elapsed time covers awaiting invoke; a response with ok false is rejected as an Error."
 			},
 			{
 				"name": "timeCall.request",
 				"type": "RuntimeRequest",
 				"required": true,
-				"description": "Operation and optional input to pass unchanged to the runtime."
+				"description": "The RuntimeRequest passed unchanged to one runtime invocation. Its operation and optional input are not inspected by this helper.",
+				"examples": [
+					{
+						"operation": "echo",
+						"input": {
+							"message": "hello"
+						}
+					},
+					{
+						"operation": "run"
+					}
+				]
 			},
 			{
 				"name": "benchRounds.runtime",
 				"type": "UnitRuntime",
 				"required": true,
-				"description": "Initialized runtime used for warm-up and all measured rounds."
+				"description": "An initialized runtime used for warmupCalls warm-up invocations and every measured invocation. The helper does not initialize or close it."
 			},
 			{
 				"name": "benchRounds.request",
 				"type": "RuntimeRequest",
 				"required": true,
-				"description": "Operation and optional input repeated in every call."
+				"description": "The RuntimeRequest passed unchanged to each warm-up and measured invocation. Its operation and optional input are not inspected by this helper.",
+				"examples": [
+					{
+						"operation": "echo",
+						"input": {
+							"message": "hello"
+						}
+					},
+					{
+						"operation": "run"
+					}
+				]
 			},
 			{
 				"name": "benchRounds.shape",
 				"type": "{ rounds: number; iterations: number }",
 				"required": true,
-				"description": "Positive integer round and per-round call counts. This helper does not validate them."
+				"description": "The rounds and iterations loop bounds used for measured samples after warmupCalls warm-up calls. Neither value is validated; nonpositive values skip the corresponding loop, and fractional values can execute a rounded-up number of passes.",
+				"examples": [
+					{
+						"rounds": 2,
+						"iterations": 3
+					}
+				]
 			},
 			{
 				"name": "roundMeasurements.result",
 				"type": "RoundResult",
 				"required": true,
-				"description": "Round summary containing the fastest call, median of round medians, throughput and total sample count."
+				"description": "A RoundResult whose floorMs, warmMs, and opsPerSecond become the three measurement values. The samples field is not read by this function.",
+				"examples": [
+					{
+						"floorMs": 1,
+						"warmMs": 2,
+						"opsPerSecond": 500,
+						"samples": 4
+					}
+				]
 			},
 			{
 				"name": "roundMeasurements.where",
 				"type": "string",
 				"required": true,
-				"description": "Human-readable description of where calls were timed, included in each measurement method."
+				"description": "The boundary description interpolated into each measurement method string. The helper appends a fixed note about request validation, serialization, and response parsing.",
+				"examples": ["runtime.invoke"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "median",
 				"type": "number",
-				"description": "Middle sorted value, or the average of the two middle values. An empty input yields NaN."
+				"description": "The middle value of a sorted copy for odd-length input, or the average of the two middle values for even-length input. Empty input returns NaN.",
+				"examples": [2, 2.5]
 			},
 			{
 				"name": "timeCall",
 				"type": "Promise<number>",
-				"description": "Elapsed milliseconds for one successful whole invocation, including the runtime transport work."
+				"description": "Resolved elapsed milliseconds from performance.now() around one successful awaited runtime.invoke call. A response with ok false rejects with an Error instead of returning a duration.",
+				"examples": [2.1, 14.6]
 			},
 			{
 				"name": "benchSamples",
 				"type": "Promise<WarmResult>",
-				"description": "Median call latency, calls per second based on total measured duration, and the requested iteration count after three warm-up calls."
+				"description": "A WarmResult with median measured-call latency, throughput computed as iterations times 1000 divided by the sum of measured durations, and the requested iterations value. Three warm-up calls always run; iterations is not validated, so an empty measurement set can yield NaN fields.",
+				"examples": [
+					{
+						"medianMs": 2,
+						"opsPerSecond": 500,
+						"iterations": 1
+					}
+				]
 			},
 			{
 				"name": "benchRounds",
 				"type": "Promise<RoundResult>",
-				"description": "Fastest single call, median of round medians, calls per second derived from that median, and rounds times iterations samples."
+				"description": "A RoundResult with the fastest single measured call, the median of round medians, throughput computed as 1000 divided by that median, and samples set to rounds times iterations. Counts are not validated, so empty or zero-duration measurements can yield non-finite results.",
+				"examples": [
+					{
+						"floorMs": 1,
+						"warmMs": 2,
+						"opsPerSecond": 500,
+						"samples": 4
+					}
+				]
 			},
 			{
 				"name": "roundMeasurements",
 				"type": "unknown",
-				"description": "Three entries for latency-floor-ms, latency-warm-ms and throughput-ops, each with its value, unit and boundary description."
+				"description": "Three records in latency-floor-ms, latency-warm-ms, then throughput-ops order. Each record contains metric, unitOfMeasure, value, and a method string describing the timing boundary.",
+				"examples": [
+					[
+						{
+							"metric": "latency-floor-ms",
+							"unitOfMeasure": "ms",
+							"value": 1,
+							"method": "Fastest of runtime.invoke, including request validation, serialization and response parsing."
+						},
+						{
+							"metric": "latency-warm-ms",
+							"unitOfMeasure": "ms",
+							"value": 2,
+							"method": "Median of the round medians over runtime.invoke, including request validation, serialization and response parsing."
+						},
+						{
+							"metric": "throughput-ops",
+							"unitOfMeasure": "ops/s",
+							"value": 500,
+							"method": "Calls per second at the median over runtime.invoke, including request validation, serialization and response parsing."
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Thrown when an invocation returns ok: false, naming the runtime kind and failure message. Invocation promise rejections also propagate."
+				"description": "timeCall throws an Error when invoke resolves with ok false, using the runtime kind and response error message; benchSamples and benchRounds propagate that failure. Any rejection from invoke also propagates unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "benchSamples",
@@ -144,30 +237,55 @@
 						"name": "benchSamples.runtime",
 						"type": "UnitRuntime",
 						"required": true,
-						"description": "Initialized runtime used for three warm-up calls and then every measured call."
+						"description": "An initialized runtime with an invoke method and a kind used in failure messages. The benchmark calls invoke three times for warm-up and then once per iterations loop pass; it does not initialize or close the runtime."
 					},
 					{
 						"name": "benchSamples.request",
 						"type": "RuntimeRequest",
 						"required": true,
-						"description": "Operation and optional input repeated for warm-up and measurement."
+						"description": "The RuntimeRequest passed unchanged to each warm-up and measured invocation. This helper does not inspect or validate its operation or input.",
+						"examples": [
+							{
+								"operation": "echo",
+								"input": {
+									"message": "hello"
+								}
+							},
+							{
+								"operation": "run"
+							}
+						]
 					},
 					{
 						"name": "benchSamples.iterations",
 						"type": "number",
 						"required": true,
-						"description": "Number of timed calls after warm-up; callers should supply a positive integer."
+						"description": "The loop bound for measured calls after three warm-up calls; it is not validated. Nonpositive values produce no measured samples, while positive fractional values can execute a rounded-up number of calls.",
+						"examples": [1, 10]
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchSamples",
 						"type": "Promise<WarmResult>",
-						"description": "Median call latency, calls per second based on total measured duration, and the requested iteration count after three warm-up calls."
+						"description": "A WarmResult with median measured-call latency, throughput computed as iterations times 1000 divided by the sum of measured durations, and the requested iterations value. Three warm-up calls always run; iterations is not validated, so an empty measurement set can yield NaN fields.",
+						"examples": [
+							{
+								"medianMs": 2,
+								"opsPerSecond": 500,
+								"iterations": 1
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "timeCall throws an Error when invoke resolves with ok false, using the runtime kind and response error message. A rejected invoke promise also propagates unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "median",
@@ -176,18 +294,23 @@
 						"name": "median.values",
 						"type": "number[]",
 						"required": true,
-						"description": "Numeric samples to sort on a copy; meaningful medians require a nonempty array."
+						"description": "Numeric samples whose copied array is sorted before selecting the middle value or middle-pair average. An empty array returns NaN, and the input array is not mutated.",
+						"examples": [
+							[2, 4, 8],
+							[1.5, 2.5]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "median",
 						"type": "number",
-						"description": "Middle sorted value, or the average of the two middle values. An empty input yields NaN."
+						"description": "The middle value of a sorted copy for odd-length input, or the average of the two middle values for even-length input. Empty input returns NaN.",
+						"examples": [2, 2.5]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "timeCall",
@@ -196,29 +319,42 @@
 						"name": "timeCall.runtime",
 						"type": "UnitRuntime",
 						"required": true,
-						"description": "Initialized runtime whose invoke method performs the whole operation being timed."
+						"description": "An initialized runtime with invoke and kind properties. The elapsed time covers awaiting invoke; a response with ok false is rejected as an Error."
 					},
 					{
 						"name": "timeCall.request",
 						"type": "RuntimeRequest",
 						"required": true,
-						"description": "Operation and optional input to pass unchanged to the runtime."
+						"description": "The RuntimeRequest passed unchanged to one runtime invocation. Its operation and optional input are not inspected by this helper.",
+						"examples": [
+							{
+								"operation": "echo",
+								"input": {
+									"message": "hello"
+								}
+							},
+							{
+								"operation": "run"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "timeCall",
 						"type": "Promise<number>",
-						"description": "Elapsed milliseconds for one successful whole invocation, including the runtime transport work."
+						"description": "Resolved elapsed milliseconds from performance.now() around one successful awaited runtime.invoke call. A response with ok false rejects with an Error instead of returning a duration.",
+						"examples": [2.1, 14.6]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "timeCall throws an Error when invoke resolves with ok false, using the runtime kind and response error message. A rejected invoke promise also propagates unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "benchRounds",
@@ -227,30 +363,61 @@
 						"name": "benchRounds.runtime",
 						"type": "UnitRuntime",
 						"required": true,
-						"description": "Initialized runtime used for warm-up and all measured rounds."
+						"description": "An initialized runtime used for warmupCalls warm-up invocations and every measured invocation. The helper does not initialize or close it."
 					},
 					{
 						"name": "benchRounds.request",
 						"type": "RuntimeRequest",
 						"required": true,
-						"description": "Operation and optional input repeated in every call."
+						"description": "The RuntimeRequest passed unchanged to each warm-up and measured invocation. Its operation and optional input are not inspected by this helper.",
+						"examples": [
+							{
+								"operation": "echo",
+								"input": {
+									"message": "hello"
+								}
+							},
+							{
+								"operation": "run"
+							}
+						]
 					},
 					{
 						"name": "benchRounds.shape",
 						"type": "{ rounds: number; iterations: number }",
 						"required": true,
-						"description": "Positive integer round and per-round call counts. This helper does not validate them."
+						"description": "The rounds and iterations loop bounds used for measured samples after warmupCalls warm-up calls. Neither value is validated; nonpositive values skip the corresponding loop, and fractional values can execute a rounded-up number of passes.",
+						"examples": [
+							{
+								"rounds": 2,
+								"iterations": 3
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "benchRounds",
 						"type": "Promise<RoundResult>",
-						"description": "Fastest single call, median of round medians, calls per second derived from that median, and rounds times iterations samples."
+						"description": "A RoundResult with the fastest single measured call, the median of round medians, throughput computed as 1000 divided by that median, and samples set to rounds times iterations. Counts are not validated, so empty or zero-duration measurements can yield non-finite results.",
+						"examples": [
+							{
+								"floorMs": 1,
+								"warmMs": 2,
+								"opsPerSecond": 500,
+								"samples": 4
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "timeCall throws an Error when invoke resolves with ok false, using the runtime kind and response error message. A rejected invoke promise also propagates unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "roundMeasurements",
@@ -259,24 +426,55 @@
 						"name": "roundMeasurements.result",
 						"type": "RoundResult",
 						"required": true,
-						"description": "Round summary containing the fastest call, median of round medians, throughput and total sample count."
+						"description": "A RoundResult whose floorMs, warmMs, and opsPerSecond become the three measurement values. The samples field is not read by this function.",
+						"examples": [
+							{
+								"floorMs": 1,
+								"warmMs": 2,
+								"opsPerSecond": 500,
+								"samples": 4
+							}
+						]
 					},
 					{
 						"name": "roundMeasurements.where",
 						"type": "string",
 						"required": true,
-						"description": "Human-readable description of where calls were timed, included in each measurement method."
+						"description": "The boundary description interpolated into each measurement method string. The helper appends a fixed note about request validation, serialization, and response parsing.",
+						"examples": ["runtime.invoke"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "roundMeasurements",
 						"type": "unknown",
-						"description": "Three entries for latency-floor-ms, latency-warm-ms and throughput-ops, each with its value, unit and boundary description."
+						"description": "Three records in latency-floor-ms, latency-warm-ms, then throughput-ops order. Each record contains metric, unitOfMeasure, value, and a method string describing the timing boundary.",
+						"examples": [
+							[
+								{
+									"metric": "latency-floor-ms",
+									"unitOfMeasure": "ms",
+									"value": 1,
+									"method": "Fastest of runtime.invoke, including request validation, serialization and response parsing."
+								},
+								{
+									"metric": "latency-warm-ms",
+									"unitOfMeasure": "ms",
+									"value": 2,
+									"method": "Median of the round medians over runtime.invoke, including request validation, serialization and response parsing."
+								},
+								{
+									"metric": "throughput-ops",
+									"unitOfMeasure": "ops/s",
+									"value": 500,
+									"method": "Calls per second at the median over runtime.invoke, including request validation, serialization and response parsing."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
