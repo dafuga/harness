@@ -21,17 +21,49 @@
 				"name": "sessionKeys.input",
 				"type": "SessionKeyInput",
 				"required": true,
-				"description": "Host or device role, both identities, generation, local static and ephemeral pairs, peer public keys and both session nonces."
+				"description": "One side's session context: role ('device' selects the device branch, any other value the host branch), hostId, deviceId, generation and both nonces (all hashed into the salt), its own staticKey and ephemeralKey pairs, and the other side's peerStatic and peerEphemeral public points. Both peers must pass the same identities, generation and nonces, and their peer points must be each other's actual public keys, or the derived keys will not match; a peer point that is not 65 bytes starting with 0x04 makes the call reject, and the identities, generation and nonces are not length- or format-checked."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sessionKeys",
 				"type": "Promise<SessionKeys>",
-				"description": "Nonextractable AES-256-GCM send and receive keys; opposite roles derive matching keys for each direction."
+				"description": "Two AES-256-GCM CryptoKeys, send and receive, that are nonextractable and allow only encrypt and decrypt. The device's send key matches the host's receive key and the device's receive key matches the host's send key, which holds only when both peers agree on the identities, generation, nonces and public keys.",
+				"examples": [
+					{
+						"send": {
+							"algorithm": {
+								"name": "AES-GCM"
+							},
+							"extractable": false,
+							"type": "secret",
+							"usages": ["encrypt", "decrypt"]
+						},
+						"receive": {
+							"algorithm": {
+								"name": "AES-GCM"
+							},
+							"extractable": false,
+							"type": "secret",
+							"usages": ["encrypt", "decrypt"]
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Thrown by the point check that sharedSecret runs before ECDH when peerStatic or peerEphemeral is not 65 bytes starting with 0x04 (message 'Invalid P-256 public key.'), and sessionKeys rejects with it because nothing in secrets() or sessionKeys catches it."
+			},
+			{
+				"name": "DOMException",
+				"type": "thrown",
+				"description": "Rejected by WebCrypto and not caught here: crypto.subtle.importKey refuses a 65-byte peer point that is off the P-256 curve, and any failure from deriveBits, importKey or digest reaches the caller unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sessionKeys",
@@ -40,18 +72,49 @@
 						"name": "sessionKeys.input",
 						"type": "SessionKeyInput",
 						"required": true,
-						"description": "Host or device role, both identities, generation, local static and ephemeral pairs, peer public keys and both session nonces."
+						"description": "One side's session context: role ('device' selects the device branch, any other value the host branch), hostId, deviceId, generation and both nonces (all hashed into the salt), its own staticKey and ephemeralKey pairs, and the other side's peerStatic and peerEphemeral public points. Both peers must pass the same identities, generation and nonces, and their peer points must be each other's actual public keys, or the derived keys will not match; a peer point that is not 65 bytes starting with 0x04 makes the call reject, and the identities, generation and nonces are not length- or format-checked."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sessionKeys",
 						"type": "Promise<SessionKeys>",
-						"description": "Nonextractable AES-256-GCM send and receive keys; opposite roles derive matching keys for each direction."
+						"description": "Two AES-256-GCM CryptoKeys, send and receive, that are nonextractable and allow only encrypt and decrypt. The device's send key matches the host's receive key and the device's receive key matches the host's send key, which holds only when both peers agree on the identities, generation, nonces and public keys.",
+						"examples": [
+							{
+								"send": {
+									"algorithm": {
+										"name": "AES-GCM"
+									},
+									"extractable": false,
+									"type": "secret",
+									"usages": ["encrypt", "decrypt"]
+								},
+								"receive": {
+									"algorithm": {
+										"name": "AES-GCM"
+									},
+									"extractable": false,
+									"type": "secret",
+									"usages": ["encrypt", "decrypt"]
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Thrown by the point check that sharedSecret runs before ECDH when peerStatic or peerEphemeral is not 65 bytes starting with 0x04 (message 'Invalid P-256 public key.'), and sessionKeys rejects with it because nothing in secrets() or sessionKeys catches it."
+					},
+					{
+						"name": "DOMException",
+						"type": "thrown",
+						"description": "Rejected by WebCrypto and not caught here: crypto.subtle.importKey refuses a 65-byte peer point that is off the P-256 curve, and any failure from deriveBits, importKey or digest reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
