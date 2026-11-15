@@ -5,7 +5,7 @@
 	import { tick } from 'svelte';
 	import type { ExplorerCategory } from '../../models/Explorer.types';
 	import type { CatalogRow } from '../../utils/entityCatalog';
-	import type { EntityLens, EntityNav } from '../../utils/entityLens';
+	import type { EntityLens, EntityNav } from '../../utils/explorer-ui/entityLens';
 	import type { Row } from './ExplorerCatalogItems.types';
 	import ExplorerModuleCard from './ExplorerModuleCard.svelte';
 	import ExplorerTable from './ExplorerTable.svelte';

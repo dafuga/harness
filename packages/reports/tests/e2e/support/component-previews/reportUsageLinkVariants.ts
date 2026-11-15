@@ -1,5 +1,5 @@
 import type { ExplorerEvidence } from '../../../../src/models/explorer-ui/Explorer.types';
-import type { EntityLens, EntityNav } from '../../../../src/utils/entityLens';
+import type { EntityLens, EntityNav } from '../../../../src/utils/explorer-ui/entityLens';
 import type { PreviewCases } from './shared';
 import { commits, entities, entity, ids } from './explorerData';
 import { orderListImage } from './reportEntityStatesVariants';

@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import { entityLabels, entityLens } from '../../src/utils/entityLens';
+import { entityLabels, entityLens } from '../../src/utils/explorer-ui/entityLens';
 import { place } from '../entityPlaces';
 import { commits, ids } from '../entityUnits';
 

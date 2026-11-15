@@ -2,7 +2,7 @@
 import type { ViewInput } from './consoleView.types';
 import type { ExplorerEntity, ExplorerLocation } from '../../../models/Explorer.types';
 import type { HarnessRevision, HarnessUnit } from '../../../models/Harness.types';
-import type { EntityLens } from '../../../utils/entityLens';
+import type { EntityLens } from '../../../utils/explorer-ui/entityLens';
 import { correctedLocation } from '../../../utils/correctedLocation';
 import { explorerBehavior } from '../../../utils/explorerBehavior';
 import { explorerEvidence } from '../../../utils/explorerEvidence';

@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import { explorerRoute, explorerRoutePath } from '../../../src/utils/explorerRoute';
 import EntityRelations from '../src/components/explorer-ui/entity-relations/EntityRelations.svelte';
 import type { ExplorerRelations } from '../src/models/Explorer.types';
-import type { EntityNav } from '../src/utils/entityLens';
+import type { EntityNav } from '../src/utils/explorer-ui/entityLens';
 import { content, hostProps, sectionWords as card, words } from './entityRender';
 import { commits, ids } from './entityUnits';
 

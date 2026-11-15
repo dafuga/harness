@@ -4,7 +4,7 @@
 <script lang="ts">
 	import type { ExplorerEntity } from '../../models/Explorer.types';
 	import { catalogShot } from '../../utils/explorer-ui/entityScreens';
-	import { entityLens, shortCommit, type EntityLens, type EntityNav } from '../../utils/entityLens';
+	import { entityLens, shortCommit, type EntityLens, type EntityNav } from '../../utils/explorer-ui/entityLens';
 	import EntityLink from './EntityLink.svelte';
 	import { usagePreviewStyle } from './usagePreviewStyle';
 	let {

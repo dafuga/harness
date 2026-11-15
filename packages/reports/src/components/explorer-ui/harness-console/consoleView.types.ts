@@ -6,7 +6,7 @@ import type { ExplorerEntity } from '../../../models/Explorer.types';
 import type { ExplorerLocation } from '../../../models/Explorer.types';
 import type { HarnessIndex } from '../../../models/Harness.types';
 import type { HarnessRevision } from '../../../models/Harness.types';
-import type { EntityLens } from '../../../utils/entityLens';
+import type { EntityLens } from '../../../utils/explorer-ui/entityLens';
 
 export type ConsoleAnswer = { evidence: ExplorerEvidence; behavior: ExplorerBehavior };
 

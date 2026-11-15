@@ -1,7 +1,7 @@
 import { entities, entity } from './explorerData';
 import type { PreviewCases } from './shared';
 import { usageLinkVariant } from './reportUsageLinkVariants';
-import type { EntityLens } from '../../../../src/utils/entityLens';
+import type { EntityLens } from '../../../../src/utils/explorer-ui/entityLens';
 
 /** Different consumer counts and limits exercise the same real footer component. */
 export function explorerUsageVariant(props: PreviewCases[string], variant: string) {

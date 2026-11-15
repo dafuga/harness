@@ -2,7 +2,7 @@ import type { View } from './entityPlaces.types';
 import { explorerRoutePath } from '../../../src/utils/explorerRoute';
 import type { ExplorerLocation, ExplorerScope } from '../src/models/Explorer.types';
 import type { HarnessIndex, HarnessRevision } from '../src/models/Harness.types';
-import type { EntityLens, EntityNav } from '../src/utils/entityLens';
+import type { EntityLens, EntityNav } from '../src/utils/explorer-ui/entityLens';
 import { explorerBehavior } from '../src/utils/explorerBehavior';
 import { explorerEntities } from '../src/utils/explorerEntities';
 import { explorerEvidence } from '../src/utils/explorerEvidence';

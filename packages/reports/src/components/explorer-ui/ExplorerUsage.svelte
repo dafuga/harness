@@ -3,7 +3,7 @@
 <!-- @harness-uid u_ltygitqdsc -->
 <script lang="ts">
 	import type { ExplorerEntity } from '../../models/Explorer.types';
-	import type { EntityLens, EntityNav } from '../../utils/entityLens';
+	import type { EntityLens, EntityNav } from '../../utils/explorer-ui/entityLens';
 	import ExplorerUsageLink from './ExplorerUsageLink.svelte';
 	import { usageIdentity } from '../../utils/explorer-ui/entityUsage';
 	let {

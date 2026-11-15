@@ -1,4 +1,4 @@
-import type { EntityLens } from '../../../../src/utils/entityLens';
+import type { EntityLens } from '../../../../src/utils/explorer-ui/entityLens';
 import { entityCatalog } from '../../../../src/utils/entityCatalog';
 import { configRows, entities, entity, helperRows, ids, reading, rows } from './explorerData';
 import { orderListImage } from './reportEntityStatesVariants';

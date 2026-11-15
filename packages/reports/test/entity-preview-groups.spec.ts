@@ -8,7 +8,7 @@ import {
 	reviewPrivateFunctions,
 	reviewServiceFolders
 } from './entityPreviewFunctions';
-import { entityLabels } from '../src/utils/entityLens';
+import { entityLabels } from '../src/utils/explorer-ui/entityLens';
 import { reviewGroupDisclosure } from './entityPreviewDisclosure';
 
 test.setTimeout(90_000);

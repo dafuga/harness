@@ -3,7 +3,7 @@ import {
 	evidenceRequested,
 	recordCapture
 } from '../../../../src/utils/record-capture/recordCapture';
-import { byteSize, notMeasured } from '../../src/utils/entityMeasure';
+import { byteSize, notMeasured } from '../../src/utils/explorer-ui/entityMeasure';
 import { entityMeasure } from '../../src/components/explorer-ui/entity-sections/entityMeasure';
 import { record } from '../entityFixture';
 import { commits, ids, units } from '../entityUnits';
