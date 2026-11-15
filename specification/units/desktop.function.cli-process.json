@@ -21,41 +21,64 @@
 				"name": "killOwnedProcess.pid",
 				"type": "number | undefined",
 				"required": true,
-				"description": "The owned process ID to terminate, or undefined to do nothing. On Windows it targets that process; elsewhere it targets the process group with that ID."
+				"description": "The process ID to signal, or undefined to do nothing. On Windows the process itself is targeted; on other platforms the process group with that ID is targeted.",
+				"examples": [54821]
 			},
 			{
 				"name": "cliProcess.command",
 				"type": "CliCommand",
 				"required": true,
-				"description": "The executable and arguments to spawn directly with the prepared CLI environment and piped input and output."
+				"description": "The executable name or path and argument array passed directly to spawn. The process runs with the prepared CLI environment and piped standard input, output and error.",
+				"examples": [
+					{
+						"command": "git",
+						"args": ["status", "--short"]
+					}
+				]
 			},
 			{
 				"name": "cliProcess.options",
 				"type": "ProcessOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional working directory, input text, cancellation signal, output-line callback and limits. Defaults are empty input, ten minutes and 16,000,000 output bytes. An already-aborted signal prevents the process from starting."
+				"description": "Optional working directory, stdin text, abort signal, per-line callback, timeout and output byte limit. Defaults are empty stdin, 600000 ms and 16000000 bytes; an already-aborted signal rejects before spawning.",
+				"examples": [
+					{},
+					{
+						"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"input": "status\n",
+						"timeoutMs": 30000,
+						"maxBytes": 4096
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "killOwnedProcess",
 				"type": "void",
-				"description": "No return value. Sends SIGTERM to the owned target; termination errors, including an already-exited process, are ignored."
+				"description": "Returns no value. It sends SIGTERM to the target when a truthy PID is supplied and ignores signaling errors."
 			},
 			{
 				"name": "cliProcess",
 				"type": "Promise<string>",
-				"description": "A promise for UTF-8 standard output when the process exits with code zero. Rejects for startup failures, cancellation, timeout, excessive output or nonzero exit. Nonzero-exit messages include up to the last 2,000 characters of standard error."
+				"description": "Resolves to decoded UTF-8 stdout when the process exits with code zero. It rejects on cancellation, timeout, output overflow, process or stdin errors, or nonzero exit; nonzero-exit errors include at most the final 2000 stderr characters.",
+				"examples": [" M src/index.ts\n", ""]
 			}
 		],
 		"errors": [
 			{
 				"name": "RunCancelled",
 				"type": "thrown",
-				"description": "Rejects with RunCancelled when the supplied signal is already aborted or is aborted while the process runs. Active cancellation also sends termination to the owned process or process group."
+				"description": "Rejects with a RunCancelled instance when the supplied signal is already aborted or is aborted while the process runs. Active cancellation also sends SIGTERM to the owned process or process group."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with an Error for timeout, output overflow, nonzero exit, process errors, or stdin errors other than EPIPE. Timeout and output-limit errors have fixed messages; nonzero-exit errors include the exit code and up to the final 2000 stderr characters."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "killOwnedProcess",
@@ -64,18 +87,19 @@
 						"name": "killOwnedProcess.pid",
 						"type": "number | undefined",
 						"required": true,
-						"description": "The owned process ID to terminate, or undefined to do nothing. On Windows it targets that process; elsewhere it targets the process group with that ID."
+						"description": "The process ID to signal, or undefined to do nothing. On Windows the process itself is targeted; on other platforms the process group with that ID is targeted.",
+						"examples": [54821]
 					}
 				],
 				"outputs": [
 					{
 						"name": "killOwnedProcess",
 						"type": "void",
-						"description": "No return value. Sends SIGTERM to the owned target; termination errors, including an already-exited process, are ignored."
+						"description": "Returns no value. It sends SIGTERM to the target when a truthy PID is supplied and ignores signaling errors."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "cliProcess",
@@ -84,30 +108,52 @@
 						"name": "cliProcess.command",
 						"type": "CliCommand",
 						"required": true,
-						"description": "The executable and arguments to spawn directly with the prepared CLI environment and piped input and output."
+						"description": "The executable name or path and argument array passed directly to spawn. The process runs with the prepared CLI environment and piped standard input, output and error.",
+						"examples": [
+							{
+								"command": "git",
+								"args": ["status", "--short"]
+							}
+						]
 					},
 					{
 						"name": "cliProcess.options",
 						"type": "ProcessOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional working directory, input text, cancellation signal, output-line callback and limits. Defaults are empty input, ten minutes and 16,000,000 output bytes. An already-aborted signal prevents the process from starting."
+						"description": "Optional working directory, stdin text, abort signal, per-line callback, timeout and output byte limit. Defaults are empty stdin, 600000 ms and 16000000 bytes; an already-aborted signal rejects before spawning.",
+						"examples": [
+							{},
+							{
+								"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"input": "status\n",
+								"timeoutMs": 30000,
+								"maxBytes": 4096
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "cliProcess",
 						"type": "Promise<string>",
-						"description": "A promise for UTF-8 standard output when the process exits with code zero. Rejects for startup failures, cancellation, timeout, excessive output or nonzero exit. Nonzero-exit messages include up to the last 2,000 characters of standard error."
+						"description": "Resolves to decoded UTF-8 stdout when the process exits with code zero. It rejects on cancellation, timeout, output overflow, process or stdin errors, or nonzero exit; nonzero-exit errors include at most the final 2000 stderr characters.",
+						"examples": [" M src/index.ts\n", ""]
 					}
 				],
 				"errors": [
 					{
 						"name": "RunCancelled",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects with a RunCancelled instance when the supplied signal is already aborted or is aborted while the process runs. Active cancellation also sends SIGTERM to the owned process or process group."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with an Error for timeout, output overflow, nonzero exit, process errors, or stdin errors other than EPIPE. Timeout and output-limit errors have fixed messages; nonzero-exit errors include the exit code and up to the final 2000 stderr characters."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
