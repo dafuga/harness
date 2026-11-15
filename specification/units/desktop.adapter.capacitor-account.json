@@ -50,89 +50,190 @@
 			{
 				"name": "CapacitorAccountAdapter.constructor.config",
 				"type": "CapacitorAccountAdapterConfig",
-				"required": true
+				"required": true,
+				"description": "Configuration containing the native account plugin used for status, connect, disconnect, and Hub API requests. The plugin keeps authentication and credentials on the phone."
 			},
 			{
 				"name": "failure.status",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "HTTP-like status attached to the returned Error for callers to classify. The function accepts the supplied number without range validation.",
+				"examples": [401, 413]
 			},
 			{
 				"name": "failure.code",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Public code attached to the returned Error. The function stores the supplied string without validating it against a code list.",
+				"examples": ["request-refused", "unreadable"]
 			},
 			{
 				"name": "failure.message",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Optional message for the returned Error. When omitted, it defaults to browserError(code, status).",
+				"examples": ["The account request was refused."]
 			},
 			{
 				"name": "refusal.cause",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Value rejected by the native plugin; a nonempty string code and message are retained when present. Missing or empty values become code failed and a generated message.",
+				"examples": [
+					{
+						"code": "session-required",
+						"message": "Sign in is required."
+					}
+				]
 			},
 			{
 				"name": "decoded.data",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Base64 string containing the answer bytes. Non-string or invalid base64 data is unreadable, and data exceeding limit is refused.",
+				"examples": ["SGVsbG8="]
 			},
 			{
 				"name": "decoded.limit",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Maximum decoded byte length accepted for the answer; the encoded length is also checked before decoding. Values over the limit are refused.",
+				"examples": [16777216]
 			},
 			{
 				"name": "json.reply",
 				"type": "AccountNativeReply",
-				"required": true
+				"required": true,
+				"description": "Native plugin reply whose base64 data must decode to UTF-8 JSON. The payload is limited to replyLimit, which is 16 MiB.",
+				"examples": [
+					{
+						"status": 200,
+						"data": "eyJvayI6dHJ1ZX0=",
+						"contentType": "application/json"
+					}
+				]
 			},
 			{
 				"name": "refused.reply",
 				"type": "AccountNativeReply",
-				"required": true
+				"required": true,
+				"description": "Native plugin reply converted to an Error using its status and a public error code parsed from its body. At most the first 8192 data characters are decoded for that code.",
+				"examples": [
+					{
+						"status": 403,
+						"data": "eyJlcnJvciI6ImZvcmJpZGRlbiJ9",
+						"contentType": "application/json"
+					}
+				]
 			},
 			{
 				"name": "fields.query",
 				"type": "Query",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Query parameters for a Hub read; entries with falsy values are omitted and remaining entries are returned as text fields. Defaults to {}.",
+				"examples": [
+					{
+						"page": "2",
+						"state": "open"
+					}
+				]
 			},
 			{
 				"name": "plain.body",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Value to pass across the native bridge as plain JSON data; null or undefined is first replaced by {}. Values that JSON serialization cannot represent may fail.",
+				"examples": [
+					{
+						"title": "Site visit",
+						"count": 2
+					}
+				]
 			},
 			{
 				"name": "publicStatus.value",
 				"type": "AccountNativeStatus",
-				"required": true
+				"required": true,
+				"description": "Status returned by the native plugin. The public status keeps configured and a recognized state, adding actor only for signed-in and handoff only for pending.",
+				"examples": [
+					{
+						"configured": true,
+						"state": "signed-in",
+						"actor": {
+							"id": "hub-user-42",
+							"name": "Jordan Lee",
+							"email": "jordan@example.com"
+						}
+					},
+					{
+						"configured": true,
+						"state": "pending",
+						"handoff": {
+							"userCode": "ABCD-EFGH",
+							"verificationUrl": "https://hub.example/device",
+							"expiresAt": "2026-11-15T12:00:00Z",
+							"interval": 5
+						}
+					}
+				]
 			},
 			{
 				"name": "accountIdentity.status",
 				"type": "NativeHostedStatus | null",
-				"required": true
+				"required": true,
+				"description": "Public account status, or null when no status is known. The identity string contains only the state and actor id, so other fields do not change it.",
+				"examples": [
+					{
+						"configured": true,
+						"state": "signed-in",
+						"actor": {
+							"id": "hub-user-42",
+							"name": "Jordan Lee",
+							"email": "jordan@example.com"
+						}
+					},
+					null
+				]
 			},
 			{
 				"name": "principal.status",
 				"type": "NativeHostedStatus | null",
-				"required": true
+				"required": true,
+				"description": "Public account status, or null when no status is known. A signed-in status returns its actor id (or an empty string if absent); every other state returns null.",
+				"examples": [
+					{
+						"configured": true,
+						"state": "signed-in",
+						"actor": {
+							"id": "hub-user-42",
+							"name": "Jordan Lee",
+							"email": "jordan@example.com"
+						}
+					},
+					{
+						"configured": true,
+						"state": "signed-out"
+					},
+					null
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "bridge",
 				"type": "DesktopBridge",
-				"description": "Owned and accepted-invitation projects, with native account status and authorized project operations. Session refusal clears protected views immediately."
+				"description": "DesktopBridge combining the hosted page's shared project operations with native account status and connect/disconnect operations. Account changes invalidate prior project results and protected views."
 			}
 		],
 		"errors": [
 			{
 				"name": "unavailable",
 				"type": "Error & { status: number; code: string }",
-				"description": "Network, permission and decoding failures retain their public error status. No request falls back to the Mac."
+				"description": "Native account or Hub operations can reject with an Error carrying numeric status and string code. Known plugin refusal codes map to 401, 400, or 413; unmapped plugin codes use status 0, while a 401 clears the account or returns an empty project list."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CapacitorAccountAdapter.connect",
@@ -140,11 +241,12 @@
 				"outputs": [
 					{
 						"name": "CapacitorAccountAdapter.connect",
-						"type": "DesktopBridge"
+						"type": "DesktopBridge",
+						"description": "DesktopBridge combining the hosted page's shared project operations with native account status and connect/disconnect operations. Account changes invalidate prior project results and protected views."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "failure",
@@ -152,27 +254,34 @@
 					{
 						"name": "failure.status",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "HTTP-like status attached to the returned Error for callers to classify. The function accepts the supplied number without range validation.",
+						"examples": [401, 413]
 					},
 					{
 						"name": "failure.code",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Public code attached to the returned Error. The function stores the supplied string without validating it against a code list.",
+						"examples": ["request-refused", "unreadable"]
 					},
 					{
 						"name": "failure.message",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Optional message for the returned Error. When omitted, it defaults to browserError(code, status).",
+						"examples": ["The account request was refused."]
 					}
 				],
 				"outputs": [
 					{
 						"name": "failure",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Error carrying the supplied status and code; its message is the supplied message or the browserError result when omitted."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "refusal",
@@ -180,17 +289,25 @@
 					{
 						"name": "refusal.cause",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Value rejected by the native plugin; a nonempty string code and message are retained when present. Missing or empty values become code failed and a generated message.",
+						"examples": [
+							{
+								"code": "session-required",
+								"message": "Sign in is required."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "refusal",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Error derived from a native plugin rejection, with its code preserved or set to failed and a status mapped from known codes. Unmapped codes receive status 0."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "decoded",
@@ -198,22 +315,38 @@
 					{
 						"name": "decoded.data",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Base64 string containing the answer bytes. Non-string or invalid base64 data is unreadable, and data exceeding limit is refused.",
+						"examples": ["SGVsbG8="]
 					},
 					{
 						"name": "decoded.limit",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Maximum decoded byte length accepted for the answer; the encoded length is also checked before decoding. Values over the limit are refused.",
+						"examples": [16777216]
 					}
 				],
 				"outputs": [
 					{
 						"name": "decoded",
-						"type": "Uint8Array"
+						"type": "Uint8Array",
+						"description": "Uint8Array containing the decoded base64 answer bytes. The returned byte count does not exceed limit."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unreadable",
+						"type": "thrown",
+						"description": "Thrown with status 0 and code unreadable when data is not a string or cannot be decoded as base64."
+					},
+					{
+						"name": "too-large",
+						"type": "thrown",
+						"description": "Thrown with status 413 and code too-large when the encoded or decoded answer exceeds limit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "json",
@@ -221,17 +354,42 @@
 					{
 						"name": "json.reply",
 						"type": "AccountNativeReply",
-						"required": true
+						"required": true,
+						"description": "Native plugin reply whose base64 data must decode to UTF-8 JSON. The payload is limited to replyLimit, which is 16 MiB.",
+						"examples": [
+							{
+								"status": 200,
+								"data": "eyJvayI6dHJ1ZX0=",
+								"contentType": "application/json"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "json",
-						"type": "T"
+						"type": "T",
+						"description": "Parsed JSON value from the decoded reply body. Invalid JSON, unreadable data, or a payload over replyLimit is rejected.",
+						"examples": [
+							{
+								"ok": true
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unreadable",
+						"type": "thrown",
+						"description": "Thrown with status 0 and code unreadable when the decoded bytes are not valid JSON or cannot be read."
+					},
+					{
+						"name": "too-large",
+						"type": "thrown",
+						"description": "Thrown with status 413 and code too-large when reply data exceeds the 16 MiB replyLimit."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "refused",
@@ -239,17 +397,26 @@
 					{
 						"name": "refused.reply",
 						"type": "AccountNativeReply",
-						"required": true
+						"required": true,
+						"description": "Native plugin reply converted to an Error using its status and a public error code parsed from its body. At most the first 8192 data characters are decoded for that code.",
+						"examples": [
+							{
+								"status": 403,
+								"data": "eyJlcnJvciI6ImZvcmJpZGRlbiJ9",
+								"contentType": "application/json"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "refused",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Error carrying the native reply status and the public error code parsed from its JSON body, if readable. Invalid or unreadable bodies produce an empty code."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "fields",
@@ -258,17 +425,31 @@
 						"name": "fields.query",
 						"type": "Query",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Query parameters for a Hub read; entries with falsy values are omitted and remaining entries are returned as text fields. Defaults to {}.",
+						"examples": [
+							{
+								"page": "2",
+								"state": "open"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "fields",
-						"type": "Record<string, string>"
+						"type": "Record<string, string>",
+						"description": "Record containing only truthy query entries, with values retained as strings. Empty query values are omitted.",
+						"examples": [
+							{
+								"page": "2",
+								"state": "open"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "plain",
@@ -276,17 +457,42 @@
 					{
 						"name": "plain.body",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Value to pass across the native bridge as plain JSON data; null or undefined is first replaced by {}. Values that JSON serialization cannot represent may fail.",
+						"examples": [
+							{
+								"title": "Site visit",
+								"count": 2
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "plain",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "JSON-normalized representation of the input, with nullish input represented as {}. It contains only data surviving JSON stringify/parse.",
+						"examples": [
+							{
+								"title": "Site visit",
+								"count": 2
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Can be thrown by JSON.stringify for values such as cyclic objects or BigInt."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Can be thrown by JSON.parse when the input serializes to a value that is not valid JSON text."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "publicStatus",
@@ -294,17 +500,51 @@
 					{
 						"name": "publicStatus.value",
 						"type": "AccountNativeStatus",
-						"required": true
+						"required": true,
+						"description": "Status returned by the native plugin. The public status keeps configured and a recognized state, adding actor only for signed-in and handoff only for pending.",
+						"examples": [
+							{
+								"configured": true,
+								"state": "signed-in",
+								"actor": {
+									"id": "hub-user-42",
+									"name": "Jordan Lee",
+									"email": "jordan@example.com"
+								}
+							},
+							{
+								"configured": true,
+								"state": "pending",
+								"handoff": {
+									"userCode": "ABCD-EFGH",
+									"verificationUrl": "https://hub.example/device",
+									"expiresAt": "2026-11-15T12:00:00Z",
+									"interval": 5
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "publicStatus",
-						"type": "NativeHostedStatus"
+						"type": "NativeHostedStatus",
+						"description": "Public account status containing configured and a recognized state, with normalized actor fields for signed-in or handoff fields for pending. Unrecognized state values become signed-out.",
+						"examples": [
+							{
+								"configured": true,
+								"state": "signed-in",
+								"actor": {
+									"id": "hub-user-42",
+									"name": "Jordan Lee",
+									"email": "jordan@example.com"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "accountIdentity",
@@ -312,17 +552,32 @@
 					{
 						"name": "accountIdentity.status",
 						"type": "NativeHostedStatus | null",
-						"required": true
+						"required": true,
+						"description": "Public account status, or null when no status is known. The identity string contains only the state and actor id, so other fields do not change it.",
+						"examples": [
+							{
+								"configured": true,
+								"state": "signed-in",
+								"actor": {
+									"id": "hub-user-42",
+									"name": "Jordan Lee",
+									"email": "jordan@example.com"
+								}
+							},
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "accountIdentity",
-						"type": "string"
+						"type": "string",
+						"description": "JSON string containing the status state and actor id. A null status serializes those missing values as null entries.",
+						"examples": ["[\"signed-in\",\"hub-user-42\"]", "[null,null]"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "principal",
@@ -330,17 +585,36 @@
 					{
 						"name": "principal.status",
 						"type": "NativeHostedStatus | null",
-						"required": true
+						"required": true,
+						"description": "Public account status, or null when no status is known. A signed-in status returns its actor id (or an empty string if absent); every other state returns null.",
+						"examples": [
+							{
+								"configured": true,
+								"state": "signed-in",
+								"actor": {
+									"id": "hub-user-42",
+									"name": "Jordan Lee",
+									"email": "jordan@example.com"
+								}
+							},
+							{
+								"configured": true,
+								"state": "signed-out"
+							},
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "principal",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "Actor id for a signed-in status, or null for every other status. A signed-in status without an actor id yields an empty string.",
+						"examples": ["hub-user-42", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -350,17 +624,19 @@
 					{
 						"name": "CapacitorAccountAdapter.constructor.config",
 						"type": "CapacitorAccountAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "Configuration containing the native account plugin used for status, connect, disconnect, and Hub API requests. The plugin keeps authentication and credentials on the phone."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CapacitorAccountAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "New adapter instance retaining the supplied native plugin configuration. The instance starts without a known account status."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
