@@ -36,51 +36,208 @@
 				"name": "artifactBehavior.document",
 				"type": "unknown",
 				"required": true,
-				"description": "Parsed document to interpret as run observations."
+				"description": "The document value to inspect for recorded run observations. Null, arrays, and other non-object values return null; object fields are normalized into the behavior result.",
+				"examples": [
+					{
+						"scenario": "quarterly-export",
+						"environment": "staging",
+						"fixture": "demo-report",
+						"steps": [
+							"Open the report",
+							{
+								"action": "export",
+								"format": "csv"
+							}
+						],
+						"request": {
+							"range": "quarter"
+						},
+						"response": {
+							"rows": 12
+						},
+						"assertions": [
+							{
+								"title": "rows present",
+								"status": "passed",
+								"expected": "> 0",
+								"actual": 12
+							}
+						],
+						"trace": [
+							{
+								"event": "download",
+								"status": 200
+							}
+						]
+					},
+					null
+				]
 			},
 			{
 				"name": "explorerArtifact.capture",
 				"type": "HarnessCapture",
 				"required": true,
-				"description": "Recorded capture with media location, expected SHA-256 and optional gap explanation."
+				"description": "A HarnessCapture with a stored media path or null, the recorded SHA-256, and optional gap text. Null media returns the gap or a missing-artifact message; a stored path has only a leading media/ removed before fetching.",
+				"examples": [
+					{
+						"evidence": "report-export",
+						"kind": "output",
+						"state": "artifact-read",
+						"status": "passed",
+						"path": "packages/reports/src/utils/explorer-ui/explorer-reading/explorerArtifact.ts",
+						"sha256": "083793f47fff5e55c215c63ad12af62f0d945d1581c5395028fed8845cf4cfcf",
+						"mediaType": "application/json",
+						"capturedAt": "2026-11-15T12:00:00.000Z",
+						"media": "media/artifacts/quarterly-export.json"
+					}
+				]
 			},
 			{
 				"name": "explorerArtifact.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Address prefix prepended to the capture media filename."
+				"description": "The prefix for the protected media address, concatenated directly with the capture filename. Include any needed trailing separator because the function does not insert one.",
+				"examples": ["https://console.example.test/protected-media/"]
 			},
 			{
 				"name": "explorerArtifact.fetcher",
 				"type": "ArtifactFetcher",
 				"required": false,
-				"description": "Optional byte-fetching function, defaulting to browser fetch."
+				"description": "An optional function that receives the resolved media address and returns ok, status, and arrayBuffer. When omitted, it uses (address) => fetch(address)."
 			},
 			{
 				"name": "artifactText.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Recorded value to render as text."
+				"description": "The recorded value to turn into display text. Strings pass through, undefined becomes Not recorded, and other values are passed to JSON.stringify with two-space indentation.",
+				"examples": [
+					null,
+					"Export complete",
+					{
+						"status": "passed",
+						"rows": 12
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "artifactText",
 				"type": "string",
-				"description": "Not recorded for undefined, strings unchanged, otherwise indented JSON."
+				"description": "Display text for one recorded value: strings are unchanged, undefined becomes Not recorded, and other values are passed to JSON.stringify with two-space indentation. Cyclic values and BigInt values can make JSON.stringify throw TypeError.",
+				"examples": [
+					"Not recorded",
+					"Export complete",
+					"{\n  \"status\": \"passed\",\n  \"rows\": 12\n}"
+				]
 			},
 			{
 				"name": "artifactBehavior",
 				"type": "ExplorerArtifactBehavior | null",
-				"description": "Structured scenario/environment/fixture, steps, input/output, assertions, trace and remaining fields, or null for a non-object or array. Uses the first recognized input and output aliases; assertions retain named status and additional details."
+				"description": "Returns null for null, arrays, and primitives; otherwise it returns string scenario/environment/fixture values or null, array-valued steps/assertions/trace, and remaining document fields in other. It selects the first present request key (input, inputs, request) and response key (output, outputs, response, actual); assertion names and pass values are derived from recorded fields, with remaining assertion fields placed in detail.",
+				"examples": [
+					{
+						"scenario": "quarterly-export",
+						"environment": "staging",
+						"fixture": "demo-report",
+						"steps": [
+							"Open the report",
+							{
+								"action": "export",
+								"format": "csv"
+							}
+						],
+						"input": {
+							"range": "quarter"
+						},
+						"output": {
+							"rows": 12
+						},
+						"assertions": [
+							{
+								"name": "rows present",
+								"passed": true,
+								"detail": {
+									"expected": "> 0",
+									"actual": 12
+								}
+							}
+						],
+						"trace": [
+							{
+								"event": "download",
+								"status": 200
+							}
+						],
+						"other": {}
+					},
+					null
+				]
 			},
 			{
 				"name": "explorerArtifact",
 				"type": "Promise<ExplorerArtifact>",
-				"description": "Resolves to verified text/document/behavior when bytes match the hash. Missing media, unsuccessful HTTP responses and hash mismatches return an unverified result with a problem; mismatched bytes remain text only. Non-JSON text may still be hash-verified."
+				"description": "Resolves with response text and parses JSON only after its SHA-256 matches capture.sha256; parsed object documents also receive extracted behavior. Missing media, non-OK HTTP responses, and hash mismatches resolve as unverified artifacts with a problem; mismatched bytes remain text and are not parsed.",
+				"examples": [
+					{
+						"verified": true,
+						"problem": null,
+						"text": "{\"scenario\":\"quarterly-export\",\"input\":{\"range\":\"quarter\"},\"output\":{\"rows\":12}}",
+						"document": {
+							"scenario": "quarterly-export",
+							"input": {
+								"range": "quarter"
+							},
+							"output": {
+								"rows": 12
+							}
+						},
+						"behavior": {
+							"scenario": "quarterly-export",
+							"environment": null,
+							"fixture": null,
+							"steps": [],
+							"input": {
+								"range": "quarter"
+							},
+							"output": {
+								"rows": 12
+							},
+							"assertions": [],
+							"trace": [],
+							"other": {}
+						}
+					},
+					{
+						"verified": false,
+						"problem": "The bytes that were read do not have the recorded SHA-256.",
+						"text": "unexpected bytes",
+						"document": null,
+						"behavior": null
+					},
+					{
+						"verified": false,
+						"problem": "The artifact is not stored.",
+						"text": "",
+						"document": null,
+						"behavior": null
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "artifactText propagates TypeError from JSON.stringify for cyclic values or BigInt values. The default browser fetch can also reject with TypeError when a request fails."
+			},
+			{
+				"name": "explorerArtifact rejection",
+				"type": "thrown",
+				"description": "Rejections from a supplied fetcher, response.arrayBuffer(), or crypto.subtle.digest() propagate unchanged because the reader does not catch them. HTTP non-OK responses and hash mismatches resolve as unverified results instead."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "artifactBehavior",
@@ -89,18 +246,91 @@
 						"name": "artifactBehavior.document",
 						"type": "unknown",
 						"required": true,
-						"description": "Parsed document to interpret as run observations."
+						"description": "The document value to inspect for recorded run observations. Null, arrays, and other non-object values return null; object fields are normalized into the behavior result.",
+						"examples": [
+							{
+								"scenario": "quarterly-export",
+								"environment": "staging",
+								"fixture": "demo-report",
+								"steps": [
+									"Open the report",
+									{
+										"action": "export",
+										"format": "csv"
+									}
+								],
+								"request": {
+									"range": "quarter"
+								},
+								"response": {
+									"rows": 12
+								},
+								"assertions": [
+									{
+										"title": "rows present",
+										"status": "passed",
+										"expected": "> 0",
+										"actual": 12
+									}
+								],
+								"trace": [
+									{
+										"event": "download",
+										"status": 200
+									}
+								]
+							},
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "artifactBehavior",
 						"type": "ExplorerArtifactBehavior | null",
-						"description": "Structured scenario/environment/fixture, steps, input/output, assertions, trace and remaining fields, or null for a non-object or array. Uses the first recognized input and output aliases; assertions retain named status and additional details."
+						"description": "Returns null for null, arrays, and primitives; otherwise it returns string scenario/environment/fixture values or null, array-valued steps/assertions/trace, and remaining document fields in other. It selects the first present request key (input, inputs, request) and response key (output, outputs, response, actual); assertion names and pass values are derived from recorded fields, with remaining assertion fields placed in detail.",
+						"examples": [
+							{
+								"scenario": "quarterly-export",
+								"environment": "staging",
+								"fixture": "demo-report",
+								"steps": [
+									"Open the report",
+									{
+										"action": "export",
+										"format": "csv"
+									}
+								],
+								"input": {
+									"range": "quarter"
+								},
+								"output": {
+									"rows": 12
+								},
+								"assertions": [
+									{
+										"name": "rows present",
+										"passed": true,
+										"detail": {
+											"expected": "> 0",
+											"actual": 12
+										}
+									}
+								],
+								"trace": [
+									{
+										"event": "download",
+										"status": 200
+									}
+								],
+								"other": {}
+							},
+							null
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerArtifact",
@@ -109,30 +339,95 @@
 						"name": "explorerArtifact.capture",
 						"type": "HarnessCapture",
 						"required": true,
-						"description": "Recorded capture with media location, expected SHA-256 and optional gap explanation."
+						"description": "A HarnessCapture with a stored media path or null, the recorded SHA-256, and optional gap text. Null media returns the gap or a missing-artifact message; a stored path has only a leading media/ removed before fetching.",
+						"examples": [
+							{
+								"evidence": "report-export",
+								"kind": "output",
+								"state": "artifact-read",
+								"status": "passed",
+								"path": "packages/reports/src/utils/explorer-ui/explorer-reading/explorerArtifact.ts",
+								"sha256": "083793f47fff5e55c215c63ad12af62f0d945d1581c5395028fed8845cf4cfcf",
+								"mediaType": "application/json",
+								"capturedAt": "2026-11-15T12:00:00.000Z",
+								"media": "media/artifacts/quarterly-export.json"
+							}
+						]
 					},
 					{
 						"name": "explorerArtifact.mediaBase",
 						"type": "string",
 						"required": true,
-						"description": "Address prefix prepended to the capture media filename."
+						"description": "The prefix for the protected media address, concatenated directly with the capture filename. Include any needed trailing separator because the function does not insert one.",
+						"examples": ["https://console.example.test/protected-media/"]
 					},
 					{
 						"name": "explorerArtifact.fetcher",
 						"type": "ArtifactFetcher",
 						"required": false,
-						"description": "Optional byte-fetching function, defaulting to browser fetch."
+						"description": "An optional function that receives the resolved media address and returns ok, status, and arrayBuffer. When omitted, it uses (address) => fetch(address)."
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerArtifact",
 						"type": "Promise<ExplorerArtifact>",
-						"description": "Resolves to verified text/document/behavior when bytes match the hash. Missing media, unsuccessful HTTP responses and hash mismatches return an unverified result with a problem; mismatched bytes remain text only. Non-JSON text may still be hash-verified."
+						"description": "Resolves with response text and parses JSON only after its SHA-256 matches capture.sha256; parsed object documents also receive extracted behavior. Missing media, non-OK HTTP responses, and hash mismatches resolve as unverified artifacts with a problem; mismatched bytes remain text and are not parsed.",
+						"examples": [
+							{
+								"verified": true,
+								"problem": null,
+								"text": "{\"scenario\":\"quarterly-export\",\"input\":{\"range\":\"quarter\"},\"output\":{\"rows\":12}}",
+								"document": {
+									"scenario": "quarterly-export",
+									"input": {
+										"range": "quarter"
+									},
+									"output": {
+										"rows": 12
+									}
+								},
+								"behavior": {
+									"scenario": "quarterly-export",
+									"environment": null,
+									"fixture": null,
+									"steps": [],
+									"input": {
+										"range": "quarter"
+									},
+									"output": {
+										"rows": 12
+									},
+									"assertions": [],
+									"trace": [],
+									"other": {}
+								}
+							},
+							{
+								"verified": false,
+								"problem": "The bytes that were read do not have the recorded SHA-256.",
+								"text": "unexpected bytes",
+								"document": null,
+								"behavior": null
+							},
+							{
+								"verified": false,
+								"problem": "The artifact is not stored.",
+								"text": "",
+								"document": null,
+								"behavior": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "explorerArtifact rejection",
+						"type": "thrown",
+						"description": "Rejections from a supplied fetcher, response.arrayBuffer(), or crypto.subtle.digest() propagate unchanged; the default browser fetch can reject with TypeError. HTTP non-OK responses and hash mismatches resolve as unverified results instead."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "artifactText",
@@ -141,18 +436,37 @@
 						"name": "artifactText.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Recorded value to render as text."
+						"description": "The recorded value to turn into display text. Strings pass through, undefined becomes Not recorded, and other values are passed to JSON.stringify with two-space indentation.",
+						"examples": [
+							null,
+							"Export complete",
+							{
+								"status": "passed",
+								"rows": 12
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "artifactText",
 						"type": "string",
-						"description": "Not recorded for undefined, strings unchanged, otherwise indented JSON."
+						"description": "Display text for one recorded value: strings are unchanged, undefined becomes Not recorded, and other values are passed to JSON.stringify with two-space indentation. Cyclic values and BigInt values can make JSON.stringify throw TypeError.",
+						"examples": [
+							"Not recorded",
+							"Export complete",
+							"{\n  \"status\": \"passed\",\n  \"rows\": 12\n}"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "JSON.stringify throws TypeError for cyclic values or BigInt values; strings and undefined return before stringification."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
