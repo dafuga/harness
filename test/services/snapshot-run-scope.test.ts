@@ -18,6 +18,7 @@ import {
 	type CheckOutcome
 } from '../../src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService';
 import { SnapshotRunService } from '../../src/workflows/verification-evidence/run-verify/verification-service/SnapshotRunService';
+import * as resourceAdmission from '../../src/utils/execution-runtimes/resourceWork';
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -89,6 +90,10 @@ test.each([undefined, 'all'] as const)(
 );
 
 test('enrolled snapshots expose only pending owning slots from original repository evidence', async () => {
+	// The case tests real child-process transport; shared host queue admission has its own suite.
+	vi.spyOn(resourceAdmission, 'resourceWork').mockImplementation(async (_request, action) =>
+		action({ id: 'snapshot-capture-fixture', env: {}, track: () => undefined })
+	);
 	await measureWorkload(
 		'service.snapshot-run',
 		'pending-original-evidence-capture-environment',
