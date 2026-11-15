@@ -11,7 +11,7 @@ import {
 	shownApproval,
 	threadAnchor
 } from '../../src/components/thread-panel/threadAnchor';
-import { sameImage } from '../../src/components/thread-links/threadAnchor';
+import { sameImage } from '../../src/components/explorer-ui/thread-links/threadAnchor';
 import { versionOption } from '../../src/components/entity-view/threadAnchor';
 import type { DesignVersion } from '../../src/models/Desktop.types';
 
@@ -57,6 +57,13 @@ test('threads belong to one image by version and hash', () => {
 	expect(sameImage(target, entityTarget)).toBe(false);
 	expect(sameImage(null, target)).toBe(false);
 	expect(sameImage(entityTarget, entityTarget)).toBe(false);
+});
+
+test('a thread on one image does not belong to another image of the same version', () => {
+	const target = imageTarget('v002', image, null);
+	const other = imageTarget('v002', { ...image, sha256: 'd'.repeat(64) }, null);
+	expect(sameImage(target, other)).toBe(false);
+	expect(sameImage(other, target)).toBe(false);
 });
 
 /** Two options of one version: o2 holds a desktop and a phone image. */
