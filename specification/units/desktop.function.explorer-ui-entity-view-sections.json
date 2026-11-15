@@ -21,33 +21,51 @@
 				"name": "entityViewSections.context",
 				"type": "EntitySectionsContext",
 				"required": true,
-				"description": "Entity category context; its entity and category getters are read only for the APIs section, after the existing headless and visual checks."
+				"description": "Provides optional entity metadata used to decide whether the APIs label is retained. The implementation reads entity?.category only for that label, and APIs is kept only when the category is exactly pages.",
+				"examples": [
+					{
+						"entity": {
+							"category": "pages"
+						}
+					},
+					{},
+					{
+						"entity": null
+					}
+				]
 			},
 			{
 				"name": "entityViewSections.headless",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether this entity uses a plan instead of designs; supplied from the existing owner state."
+				"description": "Selects the pair of section labels removed by the headless checks: true excludes Designs and Evidence, while false excludes Plan and Examples. The visual check can independently exclude Evidence or States as well.",
+				"examples": [true, false]
 			},
 			{
 				"name": "entityViewSections.visual",
 				"type": "boolean",
 				"required": true,
-				"description": "Whether this entity uses States instead of Evidence; supplied from the existing owner state."
+				"description": "Selects one label for exclusion: true removes Evidence, and false removes States. Other exclusions still apply independently.",
+				"examples": [true, false]
 			}
 		],
 		"outputs": [
 			{
 				"name": "entityViewSections",
 				"type": "Section[]",
-				"description": "A fresh list in canonical section order, preserving existing feature and category exclusions. No context or section table is changed."
+				"description": "Returns the remaining section labels as a new array in the canonical order of workspaceSections. The filters remove one of Designs/Plan, one of Evidence/States, and one of Evidence/Examples; APIs remains only when the category is exactly pages.",
+				"examples": [
+					["Overview", "APIs", "Designs", "Used In", "Uses", "States", "History", "Source"],
+					["Overview", "Plan", "Used In", "Uses", "Examples", "History", "Source"],
+					["Overview", "APIs", "Plan", "Used In", "Uses", "Examples", "States", "History", "Source"]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Context access failure",
-				"type": "propagated",
-				"description": "Errors from supplied entity/category getters or proxy traps propagate unchanged."
+				"type": "thrown",
+				"description": "An exception thrown while reading context.entity or its category escapes unchanged; the category access is evaluated only for the APIs label. The function does not catch or transform exceptions from those property accesses."
 			}
 		],
 		"errorStatus": "declared",
@@ -59,33 +77,61 @@
 						"name": "entityViewSections.context",
 						"type": "EntitySectionsContext",
 						"required": true,
-						"description": "Entity category context; its entity and category getters are read only for the APIs section, after the existing headless and visual checks."
+						"description": "Provides optional entity metadata used to decide whether the APIs label is retained. The implementation reads entity?.category only for that label, and APIs is kept only when the category is exactly pages.",
+						"examples": [
+							{
+								"entity": {
+									"category": "pages"
+								}
+							},
+							{},
+							{
+								"entity": null
+							}
+						]
 					},
 					{
 						"name": "entityViewSections.headless",
 						"type": "boolean",
 						"required": true,
-						"description": "Whether this entity uses a plan instead of designs; supplied from the existing owner state."
+						"description": "Selects the pair of section labels removed by the headless checks: true excludes Designs and Evidence, while false excludes Plan and Examples. The visual check can independently exclude Evidence or States as well.",
+						"examples": [true, false]
 					},
 					{
 						"name": "entityViewSections.visual",
 						"type": "boolean",
 						"required": true,
-						"description": "Whether this entity uses States instead of Evidence; supplied from the existing owner state."
+						"description": "Selects one label for exclusion: true removes Evidence, and false removes States. Other exclusions still apply independently.",
+						"examples": [true, false]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityViewSections",
 						"type": "Section[]",
-						"description": "A fresh list in canonical section order, preserving existing feature and category exclusions. No context or section table is changed."
+						"description": "Returns the remaining section labels as a new array in the canonical order of workspaceSections. The filters remove one of Designs/Plan, one of Evidence/States, and one of Evidence/Examples; APIs remains only when the category is exactly pages.",
+						"examples": [
+							["Overview", "APIs", "Designs", "Used In", "Uses", "States", "History", "Source"],
+							["Overview", "Plan", "Used In", "Uses", "Examples", "History", "Source"],
+							[
+								"Overview",
+								"APIs",
+								"Plan",
+								"Used In",
+								"Uses",
+								"Examples",
+								"States",
+								"History",
+								"Source"
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Context access failure",
-						"type": "propagated",
-						"description": "Errors from supplied entity/category getters or proxy traps propagate unchanged."
+						"type": "thrown",
+						"description": "An exception thrown while reading context.entity or its category escapes unchanged; the category access is evaluated only for the APIs label. The function does not catch or transform exceptions from those property accesses."
 					}
 				],
 				"errorStatus": "declared"
