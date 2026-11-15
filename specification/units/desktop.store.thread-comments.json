@@ -22,27 +22,30 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createThreadCommentsStore.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "The live Workspace that backs this store, supplying its bridge, current project id, and context. Loading does nothing without the bridge's pendingComments method, posting returns null without addComment or while busy, and load discards a fetched result if the project changes during the read."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createThreadCommentsStore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A new ThreadCommentsState instance bound to the supplied workspace. It tracks pending drafts, the last acknowledged collaboration commit, an error string, and whether a comment submission is busy."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown inside post when the current context has a projectId and the bridge returns a result for a different project; post catches it, stores its string form in error, and returns null."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createThreadCommentsStore",
@@ -50,17 +53,19 @@
 					{
 						"name": "createThreadCommentsStore.workspace",
 						"type": "Workspace",
-						"required": true
+						"required": true,
+						"description": "The live Workspace that backs this store, supplying its bridge, current project id, and context. Loading does nothing without the bridge's pendingComments method, posting returns null without addComment or while busy, and load discards a fetched result if the project changes during the read."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createThreadCommentsStore",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A new ThreadCommentsState instance bound to the supplied workspace. It tracks pending drafts, the last acknowledged collaboration commit, an error string, and whether a comment submission is busy."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
