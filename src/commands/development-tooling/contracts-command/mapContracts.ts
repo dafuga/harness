@@ -49,7 +49,7 @@ function traverse(
 	const found = new Set<string>();
 	let frontier = [...roots];
 	for (let hop = 0; hop < depth; hop++) {
-		const next = frontier.flatMap(neighbors).filter((id) => !seen.has(id));
+		const next = [...new Set(frontier.flatMap(neighbors))].filter((id) => !seen.has(id));
 		for (const id of next) {
 			seen.add(id);
 			found.add(id);
