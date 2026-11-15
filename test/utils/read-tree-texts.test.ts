@@ -1,5 +1,5 @@
 import { test, vi } from 'vitest';
-import { readTreeTexts } from '../../src/utils/readTreeTexts';
+import { readTreeTexts } from '../../src/utils/development-tooling/readTreeTexts';
 import { recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { expect } from '../verificationExpect';
 

@@ -3,7 +3,7 @@ import type { Context, VerificationNote } from './HubRecordStatusService.types';
 import { verificationNoteIdentity } from '../../../../../../src/utils/verificationNoteIdentity';
 import type { VerificationRecord } from '../../../../../../src/core/verificationTypes';
 import type { ReadNote } from '../../../../../../src/utils/note-lines/noteCommit';
-import { recordLineage } from '../../../../../../src/utils/recordLineage';
+import { recordLineage } from '../../../../../../src/utils/development-tooling/recordLineage';
 import type { HubAttachedRecord } from '../../../utils/verification-evidence/hubAttachedRecord';
 import type {
 	CommitStatus,

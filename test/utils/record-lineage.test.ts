@@ -1,7 +1,7 @@
 import type { Scenario } from './record-lineage.test.types';
 import { expect, test } from 'vitest';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
-import { recordLineage } from '../../src/utils/recordLineage';
+import { recordLineage } from '../../src/utils/development-tooling/recordLineage';
 import { verificationSample } from '../support/verificationSample';
 import { evidenceHistory } from '../../packages/hub/test/support/evidenceHistory';
 import { recordIntact, sealRecord } from '../../src/utils/sealRecord';

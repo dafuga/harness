@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/utils/development-tooling/recordLineage.ts",
-			"src/utils/development-tooling/recordLineage.types.ts",
-			"src/utils/recordLineage.ts"
+			"src/utils/development-tooling/recordLineage.types.ts"
 		],
-		"symbols": ["recordLineage", "LineageSource", "LineageSource", "Soundness", "recordLineage"]
+		"symbols": ["recordLineage", "LineageSource", "LineageSource", "Soundness"]
 	},
 	"contract": {
 		"origin": "declared",
