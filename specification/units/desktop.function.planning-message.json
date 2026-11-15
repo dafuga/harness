@@ -9,8 +9,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
-			"packages/desktop/src/utils/planningMessage.ts"
+			"packages/desktop/src/services/project-session-service/planning-facade-adapter/planningMessage.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts"
 		],
 		"symbols": ["planningMessage", "planningMessage"]
 	},
@@ -103,11 +103,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/planningMessage.ts",
+		"entry": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningMessage.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/planningMessage.ts"
+				"entry": "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningMessage.ts"
 			}
 		]
 	},

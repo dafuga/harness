@@ -6,8 +6,8 @@ import { categories, type ProjectSnapshot } from '../src/models/Desktop.types';
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import { categoryOf } from '../src/utils/shared-primitives/categoryOf';
 import { ipcPayload } from '../src/utils/ipc-payload/ipcPayload';
-import type { Preparation } from '../src/utils/prepareRun';
-import { imageModel } from '../src/utils/prepareRun';
+import type { Preparation } from '../src/utils/agents-providers/prepareRun';
+import { imageModel } from '../src/utils/agents-providers/prepareRun';
 import { isWorkspacePath, workspacePath, workspaceRoute } from '../src/utils/workspaceRoute';
 
 /**
