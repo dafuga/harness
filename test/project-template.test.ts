@@ -37,6 +37,9 @@ test('app projects include SvelteKit and specification files', () =>
 			'harness info scaffolds --json'
 		);
 		for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+			expect(fileContents(files, path)).toContain('harness contracts map');
+			expect(fileContents(files, path)).toContain('harness contracts search');
+			expect(fileContents(files, path)).toContain('harness contracts show');
 			expect(fileContents(files, path)).toContain('Callable usage examples');
 			expect(fileContents(files, path)).toContain('General text helpers belong in Strings');
 			expect(fileContents(files, path)).toContain(
@@ -88,6 +91,9 @@ test('library projects include Bun TypeScript test structure', () => {
 	expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain('bun run check');
 	expect(auditConfig(files).limits.maxFileLines).toBe(220);
 	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+		expect(fileContents(files, path)).toContain('harness contracts map');
+		expect(fileContents(files, path)).toContain('harness contracts search');
+		expect(fileContents(files, path)).toContain('harness contracts show');
 		expect(fileContents(files, path)).toContain('harness info naming');
 		expect(fileContents(files, path)).toContain('<PascalName>Service.ts');
 		expect(fileContents(files, path)).toContain('<camelName>.ts');

@@ -113,7 +113,14 @@ test('the real entry runs no sqlite or git worktree work for --help, --version a
 		stderr: ''
 	});
 	for (const entry of [cli, join(process.cwd(), 'src/cli/index.ts')])
-		for (const args of [['--help'], ['--version'], ['info', 'activity'], ['loop', '--help']])
+		for (const args of [
+			['--help'],
+			['--version'],
+			['info', 'activity'],
+			['loop', '--help'],
+			['contracts', 'list', '--json'],
+			['contracts', 'search', 'Money', '--json']
+		])
 			await runCommand(['bun', entry, ...args], scratch, true, env);
 	await runCommand(
 		['bun', join(process.cwd(), 'src/cli/index.ts'), 'loop', 'list', '--json'],
