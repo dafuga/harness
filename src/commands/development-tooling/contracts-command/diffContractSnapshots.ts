@@ -20,9 +20,10 @@ export function diffContractSnapshots(
 	validateHistoryFields(options.field);
 	const byUid = new Map(before.filter((entry) => entry.uid).map((entry) => [entry.uid, entry]));
 	const byId = new Map(before.map((entry) => [entry.id, entry]));
+	const reservedUids = new Set(after.flatMap((entry) => (entry.uid ? [entry.uid] : [])));
 	const used = new Set<StoredContract>();
 	const pairs = after.map((entry) => {
-		const matched = previousIdentity(entry, byUid, byId);
+		const matched = previousIdentity(entry, byUid, byId, reservedUids);
 		const previous = matched && !used.has(matched) ? matched : undefined;
 		if (previous) used.add(previous);
 		return [previous, entry];
@@ -128,11 +129,13 @@ function matchesHistoryIdentity(entry: StoredContract, unit?: string): boolean {
 function previousIdentity(
 	entry: StoredContract,
 	byUid: Map<string | undefined, StoredContract>,
-	byId: Map<string, StoredContract>
+	byId: Map<string, StoredContract>,
+	reservedUids: Set<string>
 ): StoredContract | undefined {
 	const uidMatch = entry.uid ? byUid.get(entry.uid) : undefined;
 	if (uidMatch) return uidMatch;
 	const idMatch = byId.get(entry.id);
+	if (idMatch?.uid && reservedUids.has(idMatch.uid)) return undefined;
 	return idMatch && (!entry.uid || !idMatch.uid) ? idMatch : undefined;
 }
 
