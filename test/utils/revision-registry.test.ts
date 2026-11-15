@@ -2,6 +2,7 @@ import { expect, test, vi } from 'vitest';
 import { scenarioManifestSchema } from '../../src/core/unitTypes';
 import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { ScenarioManifestValidator } from '../../src/validators/ScenarioManifestValidator';
+import { stateRegistries } from '../../src/workflows/development-tooling/guide-units/stateRegistries';
 import { ScenarioRepository } from '../../src/repositories/verification-evidence/ScenarioRepository';
 import { videoEnrollment, videoEnrollmentTree } from '../support/videoEnrollmentFixture';
 
