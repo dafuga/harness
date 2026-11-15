@@ -22,31 +22,38 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The pages of the shown revision as cards, each with its current screenshot and verdict, to search, order and open."
+				"description": "The pages of the revision shown as cards, in sections by group (sorted by title, Uncategorized last) and by name within each, each with its recorded screenshot (or a note that none is recorded at this revision, or that it could not be loaded) and a link to its own explorer view. A search field narrows them by name, title, responsibility or group; with a selected commit, the pages that commit removed are listed too, from the first parent of that commit, and a revision with no pages says so."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Pages · Harness"
+				"description": "The document title that HarnessScreen sets for this page: the screen title \"Pages\" followed by \" · Harness\". The page always passes \"Pages\", so the title is the same at every revision and address.",
+				"examples": ["Pages · Harness"]
 			}
 		],
 		"errors": [
 			{
 				"name": "not-in-history",
 				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
+				"description": "The alert notice above the content that says why the address names nothing in this history: a branch the history does not hold, a branch whose tip commit the history does not hold, a commit the history does not hold, a commit the named branch does not contain, an address that names no explorer page, or a history with no commit. No revision is shown with it, and when the history has a home, a link labelled \"Open the newest commit\" leads there."
 			},
 			{
 				"name": "no-registry",
 				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
+				"description": "The notice that replaces the cards when the shown revision stores no unit registry: it is titled \"No registry at this revision\", reads the registry's stored gap or, when there is none, \"No unit registry is stored at\" and the short commit, and offers \"Stay on this revision\". No other revision's registry is shown in its place."
 			},
 			{
 				"name": "not-admitted",
 				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
+				"description": "The owner policy refuses, before the page or any history is read, each request it does not admit or whose policy throws: the response is 403 with the plain text \"Forbidden\", and the policy admits only when owner mode is loopback, the server is bound to a loopback address with no address header set, and the client connects from loopback. The page's own request then gets only that response, and a refused data request is handled as described under could-not-be-loaded."
+			},
+			{
+				"name": "could-not-be-loaded",
+				"type": "thrown",
+				"description": "The rejection the history client gives when a history file (the index, the activity or a revision) cannot be read: an Error whose message reads \"<path> could not be loaded (<status>)\" for a response outside 200 to 299, and a request that fails or a body that is not JSON rejects too. The page shows \"The history could not be loaded. Refresh the page to try again.\" or \"This revision could not be loaded. Refresh the page to try again.\" in place of the content when the index or the shown revision fails, and reads a failed activity or first parent as absent without a notice."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
