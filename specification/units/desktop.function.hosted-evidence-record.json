@@ -18,10 +18,17 @@
 			{
 				"name": "hostedEvidenceRecord",
 				"type": "unknown",
-				"description": "A strict validation schema for record identity, passed/failed status, validity and problems; source commit and optional base; profile and timestamps; optional gate statuses; failures; tests; scenarios and captures; measurements; and budget findings. Test and scenario status values are constrained, numeric values must be finite, and shared list and text limits apply to the surrounding record fields. The schema does not establish that a record is truthful. Tests and inherited origin-test summaries may include optional browserErrors arrays validated by the shared browser-diagnostic schema."
+				"description": "A Zod strict-object schema that defines the accepted shape for validating hosted verification records, but does not attest that recorded evidence is truthful. It uses declared status enums, lowercase 40-character hexadecimal commit hashes and finite numbers, rejects unknown keys on strict objects, and applies 1,000,000-character string, 1–300-character name and 5,000-item array limits where the shared helpers are used; optional browser diagnostics use the imported diagnostic schema."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Calling parse() on this schema throws a ZodError when a value violates the declared record shape or field constraints."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
