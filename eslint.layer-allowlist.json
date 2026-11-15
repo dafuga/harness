@@ -112,11 +112,6 @@
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
 		},
 		{
-			"from": "src/services/history-media-service/mediaPlace.ts",
-			"to": "src/cli/program/history-index-service/history-media-service/mediaPlace",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/hook-install-service/HookInstallService.ts",
 			"to": "src/cli/program/hook-install-service/HookInstallService",
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
