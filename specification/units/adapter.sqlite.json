@@ -27,178 +27,337 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SqliteAdapter.constructor.db",
 				"type": "SqliteDatabase",
-				"required": true
+				"required": true,
+				"description": "A caller-supplied synchronous SQLite database handle used by the adapter for prepared statements and exec calls. Construction only registers the models; the caller opens and owns the handle."
 			},
 			{
 				"name": "SqliteAdapter.constructor.models",
 				"type": "readonly SqliteModel[]",
-				"required": true
+				"required": true,
+				"description": "The declared tables and fields this adapter may address. Each model is validated and registered by table name at construction; its primary key defaults to id, and duplicate model table names throw Error.",
+				"examples": [
+					[
+						{
+							"table": "tasks",
+							"primaryKey": "id",
+							"fields": {
+								"id": {
+									"type": "number"
+								},
+								"name": {
+									"type": "string"
+								},
+								"active": {
+									"type": "boolean"
+								},
+								"metadata": {
+									"type": "json"
+								},
+								"updatedAt": {
+									"type": "string",
+									"default": "timestamp"
+								}
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "SqliteAdapter.find.table",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The registered model table whose row is looked up by its primary key. A table without a registered model cannot be used.",
+				"examples": ["tasks"]
 			},
 			{
 				"name": "SqliteAdapter.find.id",
 				"type": "number | string",
-				"required": true
+				"required": true,
+				"description": "The number or string compared with the model primary key, which defaults to id, to find one row.",
+				"examples": [17, "task-17"]
 			},
 			{
 				"name": "SqliteAdapter.findBy.table",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The registered model table whose rows are filtered by the supplied model fields.",
+				"examples": ["tasks"]
 			},
 			{
 				"name": "SqliteAdapter.findBy.fields",
 				"type": "Record<string, SqliteFieldValue>",
-				"required": true
+				"required": true,
+				"description": "A map of declared model fields to filter values. Values are converted and bound using each field declaration; nullable null values use IS NULL, and an empty map selects all rows.",
+				"examples": [
+					{
+						"active": true,
+						"metadata": {
+							"tier": "free"
+						}
+					},
+					{}
+				]
 			},
 			{
 				"name": "SqliteAdapter.create.table",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The registered model table into which the input row is inserted.",
+				"examples": ["tasks"]
 			},
 			{
 				"name": "SqliteAdapter.create.input",
 				"type": "Record<string, SqliteFieldValue>",
-				"required": true
+				"required": true,
+				"description": "A map of declared model fields and values for the new row. Values are converted and bound using the model; an empty map requests SQLite DEFAULT VALUES.",
+				"examples": [
+					{
+						"name": "Ada",
+						"active": true,
+						"metadata": {
+							"tier": "free"
+						}
+					},
+					{}
+				]
 			},
 			{
 				"name": "SqliteAdapter.update.table",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The registered model table containing the row to update.",
+				"examples": ["tasks"]
 			},
 			{
 				"name": "SqliteAdapter.update.id",
 				"type": "number | string",
-				"required": true
+				"required": true,
+				"description": "The number or string compared with the model primary key, which defaults to id, to choose the row to update.",
+				"examples": [17, "task-17"]
 			},
 			{
 				"name": "SqliteAdapter.update.input",
 				"type": "Record<string, SqliteFieldValue>",
-				"required": true
+				"required": true,
+				"description": "A map of declared model fields and replacement values. An own property matching the primary key throws Error; an empty map returns the current row, and an updatedAt field with the timestamp default is refreshed to the current ISO time.",
+				"examples": [
+					{
+						"active": false
+					},
+					{
+						"id": 17
+					},
+					{}
+				]
 			},
 			{
 				"name": "SqliteAdapter.delete.table",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The registered model table from which a row is removed.",
+				"examples": ["tasks"]
 			},
 			{
 				"name": "SqliteAdapter.delete.id",
 				"type": "number | string",
-				"required": true
+				"required": true,
+				"description": "The number or string compared with the model primary key, which defaults to id, to choose the row to remove.",
+				"examples": [17, "task-17"]
 			},
 			{
 				"name": "SqliteAdapter.insert.table",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The registered model table into which the input row is inserted synchronously. This method can be used from a transaction callback.",
+				"examples": ["tasks"]
 			},
 			{
 				"name": "SqliteAdapter.insert.input",
 				"type": "Record<string, SqliteFieldValue>",
-				"required": true
+				"required": true,
+				"description": "A map of declared model fields and values for the new row. Values are converted and bound using the model; an empty map requests SQLite DEFAULT VALUES.",
+				"examples": [
+					{
+						"name": "Ada",
+						"active": true,
+						"metadata": {
+							"tier": "free"
+						}
+					},
+					{}
+				]
 			},
 			{
 				"name": "SqliteAdapter.query.sql",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The SQL prepared on the supplied database and executed with all(). Use this for caller-defined read queries that are not expressed by the model-based lookup methods.",
+				"examples": ["SELECT id, name FROM tasks WHERE id = ?", "SELECT id, name FROM tasks"]
 			},
 			{
 				"name": "SqliteAdapter.query.bindings",
 				"type": "SqliteValue[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Values bound positionally to the query SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
+				"examples": [[17], []]
 			},
 			{
 				"name": "SqliteAdapter.execute.sql",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The SQL prepared on the supplied database and executed with run(), typically for caller-defined writes or commands.",
+				"examples": [
+					"UPDATE tasks SET active = ? WHERE id = ?",
+					"DELETE FROM tasks WHERE id = ?",
+					"DELETE FROM tasks"
+				]
 			},
 			{
 				"name": "SqliteAdapter.execute.bindings",
 				"type": "SqliteValue[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Values bound positionally to the execute SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
+				"examples": [[0, 17], [17], []]
 			},
 			{
 				"name": "SqliteAdapter.transaction.write",
 				"type": "() => T",
-				"required": true
+				"required": true,
+				"description": "A synchronous callback whose writes run inside a SQLite savepoint and whose return value is returned after release. Async functions and any callback result with a then method are rejected so the transaction cannot commit before writes finish."
 			},
 			{
 				"name": "createSqliteAdapter.db",
 				"type": "SqliteDatabase",
-				"required": true
+				"required": true,
+				"description": "A caller-supplied synchronous SQLite database handle used by the adapter for prepared statements and exec calls. The factory passes it through and does not open or close it."
 			},
 			{
 				"name": "createSqliteAdapter.models",
 				"type": "readonly SqliteModel[]",
-				"required": true
+				"required": true,
+				"description": "The declared tables and fields the adapter may address. Each model is validated and registered by table name during construction; its primary key defaults to id, and duplicate model table names throw Error.",
+				"examples": [
+					[
+						{
+							"table": "tasks",
+							"primaryKey": "id",
+							"fields": {
+								"id": {
+									"type": "number"
+								},
+								"name": {
+									"type": "string"
+								},
+								"active": {
+									"type": "boolean"
+								},
+								"metadata": {
+									"type": "json"
+								},
+								"updatedAt": {
+									"type": "string",
+									"default": "timestamp"
+								}
+							}
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "SqliteAdapter.find",
-				"type": "Promise<T | null>"
+				"type": "Promise<T | null>",
+				"description": "The requested row mapped from the SQLite result, or null when no row matches the supplied primary-key value."
 			},
 			{
 				"name": "SqliteAdapter.findBy",
-				"type": "Promise<T[]>"
+				"type": "Promise<T[]>",
+				"description": "The rows matching the supplied declared-field filters, mapped to application properties. An empty filter map returns all rows."
 			},
 			{
 				"name": "SqliteAdapter.create",
-				"type": "Promise<T>"
+				"type": "Promise<T>",
+				"description": "The inserted row returned by the table adapter after SQLite INSERT ... RETURNING * and row mapping."
 			},
 			{
 				"name": "SqliteAdapter.update",
-				"type": "Promise<T | null>"
+				"type": "Promise<T | null>",
+				"description": "The updated row returned by SQLite and mapped to application properties, or null when no row is returned. An empty input map instead returns the current result of find."
 			},
 			{
 				"name": "SqliteAdapter.delete",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "True when SQLite reports that at least one row was removed; otherwise false.",
+				"examples": [true, false]
 			},
 			{
 				"name": "SqliteAdapter.insert",
-				"type": "T"
+				"type": "T",
+				"description": "The inserted row returned by SQLite INSERT ... RETURNING * and row mapping. This call is synchronous and can run inside transaction."
 			},
 			{
 				"name": "SqliteAdapter.query",
-				"type": "T[]"
+				"type": "T[]",
+				"description": "All rows returned by the prepared statement's all() call, typed as T[] for the caller.",
+				"examples": [
+					[
+						{
+							"id": 17,
+							"name": "Ada"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "SqliteAdapter.execute",
-				"type": "unknown"
+				"type": "{ changes: number | bigint; lastInsertRowid: number | bigint }",
+				"description": "The value returned by the prepared statement's run() call, such as its changes count and last inserted row id.",
+				"examples": [
+					{
+						"changes": 1,
+						"lastInsertRowid": 18
+					}
+				]
 			},
 			{
 				"name": "SqliteAdapter.createTables",
-				"type": "void"
+				"type": "void",
+				"description": "No value. Executes CREATE TABLE IF NOT EXISTS for every registered model on the supplied database."
 			},
 			{
 				"name": "SqliteAdapter.transaction",
-				"type": "T"
+				"type": "T",
+				"description": "The exact value returned by the synchronous callback after the savepoint is released.",
+				"examples": [42]
 			},
 			{
 				"name": "SqliteAdapter.assertModels",
-				"type": "void"
+				"type": "void",
+				"description": "No value when every non-internal application table and each declared model column match; otherwise the method throws Error."
 			},
 			{
 				"name": "createSqliteAdapter",
-				"type": "SqliteAdapter"
+				"type": "SqliteAdapter",
+				"description": "A SqliteAdapter bound to the supplied database and validated model declarations; the factory does not open a database."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Model validation, table lookup, field conversion, schema checks and transaction guards can throw Error. Driver and callback failures propagate without translation; a failed rollback can replace the callback failure."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "SqliteAdapter.find",
@@ -206,18 +365,23 @@
 					{
 						"name": "SqliteAdapter.find.table",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The registered model table whose row is looked up by its primary key. A table without a registered model cannot be used.",
+						"examples": ["tasks"]
 					},
 					{
 						"name": "SqliteAdapter.find.id",
 						"type": "number | string",
-						"required": true
+						"required": true,
+						"description": "The number or string compared with the model primary key, which defaults to id, to find one row.",
+						"examples": [17, "task-17"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.find",
-						"type": "Promise<T | null>"
+						"type": "Promise<T | null>",
+						"description": "The requested row mapped from the SQLite result, or null when no row matches the supplied primary-key value."
 					}
 				],
 				"errors": [],
@@ -229,18 +393,31 @@
 					{
 						"name": "SqliteAdapter.findBy.table",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The registered model table whose rows are filtered by the supplied model fields.",
+						"examples": ["tasks"]
 					},
 					{
 						"name": "SqliteAdapter.findBy.fields",
 						"type": "Record<string, SqliteFieldValue>",
-						"required": true
+						"required": true,
+						"description": "A map of declared model fields to filter values. Values are converted and bound using each field declaration; nullable null values use IS NULL, and an empty map selects all rows.",
+						"examples": [
+							{
+								"active": true,
+								"metadata": {
+									"tier": "free"
+								}
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.findBy",
-						"type": "Promise<T[]>"
+						"type": "Promise<T[]>",
+						"description": "The rows matching the supplied declared-field filters, mapped to application properties. An empty filter map returns all rows."
 					}
 				],
 				"errors": [],
@@ -252,18 +429,32 @@
 					{
 						"name": "SqliteAdapter.create.table",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The registered model table into which the input row is inserted.",
+						"examples": ["tasks"]
 					},
 					{
 						"name": "SqliteAdapter.create.input",
 						"type": "Record<string, SqliteFieldValue>",
-						"required": true
+						"required": true,
+						"description": "A map of declared model fields and values for the new row. Values are converted and bound using the model; an empty map requests SQLite DEFAULT VALUES.",
+						"examples": [
+							{
+								"name": "Ada",
+								"active": true,
+								"metadata": {
+									"tier": "free"
+								}
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.create",
-						"type": "Promise<T>"
+						"type": "Promise<T>",
+						"description": "The inserted row returned by the table adapter after SQLite INSERT ... RETURNING * and row mapping."
 					}
 				],
 				"errors": [],
@@ -275,23 +466,38 @@
 					{
 						"name": "SqliteAdapter.update.table",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The registered model table containing the row to update.",
+						"examples": ["tasks"]
 					},
 					{
 						"name": "SqliteAdapter.update.id",
 						"type": "number | string",
-						"required": true
+						"required": true,
+						"description": "The number or string compared with the model primary key, which defaults to id, to choose the row to update.",
+						"examples": [17, "task-17"]
 					},
 					{
 						"name": "SqliteAdapter.update.input",
 						"type": "Record<string, SqliteFieldValue>",
-						"required": true
+						"required": true,
+						"description": "A map of declared model fields and replacement values. An own property matching the primary key throws Error; an empty map returns the current row, and an updatedAt field with the timestamp default is refreshed to the current ISO time.",
+						"examples": [
+							{
+								"active": false
+							},
+							{
+								"id": 17
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.update",
-						"type": "Promise<T | null>"
+						"type": "Promise<T | null>",
+						"description": "The updated row returned by SQLite and mapped to application properties, or null when no row is returned. An empty input map instead returns the current result of find."
 					}
 				],
 				"errors": [],
@@ -303,18 +509,24 @@
 					{
 						"name": "SqliteAdapter.delete.table",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The registered model table from which a row is removed.",
+						"examples": ["tasks"]
 					},
 					{
 						"name": "SqliteAdapter.delete.id",
 						"type": "number | string",
-						"required": true
+						"required": true,
+						"description": "The number or string compared with the model primary key, which defaults to id, to choose the row to remove.",
+						"examples": [17, "task-17"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.delete",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "True when SQLite reports that at least one row was removed; otherwise false.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
@@ -326,18 +538,32 @@
 					{
 						"name": "SqliteAdapter.insert.table",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The registered model table into which the input row is inserted synchronously. This method can be used from a transaction callback.",
+						"examples": ["tasks"]
 					},
 					{
 						"name": "SqliteAdapter.insert.input",
 						"type": "Record<string, SqliteFieldValue>",
-						"required": true
+						"required": true,
+						"description": "A map of declared model fields and values for the new row. Values are converted and bound using the model; an empty map requests SQLite DEFAULT VALUES.",
+						"examples": [
+							{
+								"name": "Ada",
+								"active": true,
+								"metadata": {
+									"tier": "free"
+								}
+							},
+							{}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.insert",
-						"type": "T"
+						"type": "T",
+						"description": "The inserted row returned by SQLite INSERT ... RETURNING * and row mapping. This call is synchronous and can run inside transaction."
 					}
 				],
 				"errors": [],
@@ -349,19 +575,33 @@
 					{
 						"name": "SqliteAdapter.query.sql",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The SQL prepared on the supplied database and executed with all(). Use this for caller-defined read queries that are not expressed by the model-based lookup methods.",
+						"examples": ["SELECT id, name FROM tasks WHERE id = ?", "SELECT id, name FROM tasks"]
 					},
 					{
 						"name": "SqliteAdapter.query.bindings",
 						"type": "SqliteValue[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Values bound positionally to the query SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
+						"examples": [[17], []]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.query",
-						"type": "T[]"
+						"type": "T[]",
+						"description": "All rows returned by the prepared statement's all() call, typed as T[] for the caller.",
+						"examples": [
+							[
+								{
+									"id": 17,
+									"name": "Ada"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
@@ -373,19 +613,34 @@
 					{
 						"name": "SqliteAdapter.execute.sql",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The SQL prepared on the supplied database and executed with run(), typically for caller-defined writes or commands.",
+						"examples": [
+							"UPDATE tasks SET active = ? WHERE id = ?",
+							"DELETE FROM tasks WHERE id = ?",
+							"DELETE FROM tasks"
+						]
 					},
 					{
 						"name": "SqliteAdapter.execute.bindings",
 						"type": "SqliteValue[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Values bound positionally to the execute SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
+						"examples": [[0, 17], [17], []]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.execute",
-						"type": "unknown"
+						"type": "{ changes: number | bigint; lastInsertRowid: number | bigint }",
+						"description": "The value returned by the prepared statement's run() call, such as its changes count and last inserted row id.",
+						"examples": [
+							{
+								"changes": 1,
+								"lastInsertRowid": 18
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -397,7 +652,8 @@
 				"outputs": [
 					{
 						"name": "SqliteAdapter.createTables",
-						"type": "void"
+						"type": "void",
+						"description": "No value. Executes CREATE TABLE IF NOT EXISTS for every registered model on the supplied database."
 					}
 				],
 				"errors": [],
@@ -409,22 +665,26 @@
 					{
 						"name": "SqliteAdapter.transaction.write",
 						"type": "() => T",
-						"required": true
+						"required": true,
+						"description": "A synchronous callback whose writes run inside a SQLite savepoint and whose return value is returned after release. Async functions and any callback result with a then method are rejected so the transaction cannot commit before writes finish."
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.transaction",
-						"type": "T"
+						"type": "T",
+						"description": "The exact value returned by the synchronous callback after the savepoint is released.",
+						"examples": [42]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Async functions and thenable results throw Error with the message SQLite transactions require a synchronous callback. Other callback failures are rethrown after rollback succeeds; database failures propagate."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SqliteAdapter.assertModels",
@@ -432,16 +692,18 @@
 				"outputs": [
 					{
 						"name": "SqliteAdapter.assertModels",
-						"type": "void"
+						"type": "void",
+						"description": "No value when every non-internal application table and each declared model column match; otherwise the method throws Error."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when a non-internal application table has no registered model or when a model’s declared columns differ from the table columns. The error identifies the missing table or mismatched model table."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "createSqliteAdapter",
@@ -449,18 +711,47 @@
 					{
 						"name": "createSqliteAdapter.db",
 						"type": "SqliteDatabase",
-						"required": true
+						"required": true,
+						"description": "A caller-supplied synchronous SQLite database handle used by the adapter for prepared statements and exec calls. The factory passes it through and does not open or close it."
 					},
 					{
 						"name": "createSqliteAdapter.models",
 						"type": "readonly SqliteModel[]",
-						"required": true
+						"required": true,
+						"description": "The declared tables and fields the adapter may address. Each model is validated and registered by table name during construction; its primary key defaults to id, and duplicate model table names throw Error.",
+						"examples": [
+							[
+								{
+									"table": "tasks",
+									"primaryKey": "id",
+									"fields": {
+										"id": {
+											"type": "number"
+										},
+										"name": {
+											"type": "string"
+										},
+										"active": {
+											"type": "boolean"
+										},
+										"metadata": {
+											"type": "json"
+										},
+										"updatedAt": {
+											"type": "string",
+											"default": "timestamp"
+										}
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "createSqliteAdapter",
-						"type": "SqliteAdapter"
+						"type": "SqliteAdapter",
+						"description": "A SqliteAdapter bound to the supplied database and validated model declarations; the factory does not open a database."
 					}
 				],
 				"errors": [],
@@ -474,27 +765,57 @@
 					{
 						"name": "SqliteAdapter.constructor.db",
 						"type": "SqliteDatabase",
-						"required": true
+						"required": true,
+						"description": "A caller-supplied synchronous SQLite database handle used by the adapter for prepared statements and exec calls. Construction only registers the models; the caller opens and owns the handle."
 					},
 					{
 						"name": "SqliteAdapter.constructor.models",
 						"type": "readonly SqliteModel[]",
-						"required": true
+						"required": true,
+						"description": "The declared tables and fields this adapter may address. Each model is validated and registered by table name at construction; its primary key defaults to id, and duplicate model table names throw Error.",
+						"examples": [
+							[
+								{
+									"table": "tasks",
+									"primaryKey": "id",
+									"fields": {
+										"id": {
+											"type": "number"
+										},
+										"name": {
+											"type": "string"
+										},
+										"active": {
+											"type": "boolean"
+										},
+										"metadata": {
+											"type": "json"
+										},
+										"updatedAt": {
+											"type": "string",
+											"default": "timestamp"
+										}
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SqliteAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed adapter holding the supplied database and registered models. Construction validates model declarations but does not open the database."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown when a model declaration fails SQLite table validation, including a missing primary-key field, duplicate declared columns, unsupported field type, or invalid table/column identifier, and when two models declare the same table. These are standard Errors from model validation or the duplicate-table check."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},

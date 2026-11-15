@@ -25,68 +25,108 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PairingOfferService.constructor.store",
 				"type": "HostStorageAdapter",
-				"required": true
+				"required": true,
+				"description": "The host's HostStorageAdapter, which this service uses to read, save and remove pairing records and enumerate offers. The constructor retains it without validation; storage and alarm operations occur when methods run."
 			},
 			{
 				"name": "PairingOfferService.live.pairingId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The pairing identifier used unchanged to read the pairing:<pairingId> record. This service does not validate its format; if the record has expired, live removes it and returns undefined.",
+				"examples": ["7c1f04e9a2b35d86e0f4c7a19b2d3e58", "b0d6a3f51e8c94027a6db1c3f9e5d812"]
 			},
 			{
 				"name": "PairingOfferService.open.pairingId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The identifier used as the key for the new pairing offer and to check for an existing live offer. It is passed to storage unchanged and is not format-checked here.",
+				"examples": ["7c1f04e9a2b35d86e0f4c7a19b2d3e58", "b0d6a3f51e8c94027a6db1c3f9e5d812"]
 			},
 			{
 				"name": "PairingOfferService.open.expiresAt",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The requested expiry as a string accepted by Date.parse. open returns invalid-input unless it is in the future, then caps the stored expiry at five minutes from this call.",
+				"examples": ["2027-01-12T09:30:00.000Z"]
 			},
 			{
 				"name": "PairingOfferService.approve.approval",
 				"type": "Approval",
-				"required": true
+				"required": true,
+				"description": "The approved request's pairingId, deviceId, sealed payload and challenge. Approval is accepted only for a live requested pairing with a matching challenge; the deviceId and sealed payload are then stored.",
+				"examples": [
+					{
+						"pairingId": "7c1f04e9a2b35d86e0f4c7a19b2d3e58",
+						"deviceId": "0123456789abcdef0123456789abcdef01234567",
+						"sealed": "Qx7vL0aTnE9hWcR3pKbYuZ5sGd2MfJoI8eBlN4QrtV1",
+						"challenge": "Yx3bq9R0kVZp2nLs8TcWmD4eHfJa7uGoEi1Ny6CpQ5w"
+					}
+				]
 			},
 			{
 				"name": "PairingOfferService.deny.pairingId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The identifier of the offer to deny, used unchanged to read and update its stored record. Only a live open or requested pairing can be denied.",
+				"examples": ["7c1f04e9a2b35d86e0f4c7a19b2d3e58", "b0d6a3f51e8c94027a6db1c3f9e5d812"]
 			},
 			{
 				"name": "PairingOfferService.close.pairingId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The identifier of the offer to remove, passed unchanged to storage. Closing also recalculates the next alarm and is harmless when no matching record exists.",
+				"examples": ["7c1f04e9a2b35d86e0f4c7a19b2d3e58", "b0d6a3f51e8c94027a6db1c3f9e5d812"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "PairingOfferService.live",
-				"type": "PairingRecord | undefined"
+				"type": "PairingRecord | undefined",
+				"description": "The stored pairing record while its expiry is in the future. An expired record is removed before undefined is returned; a missing record also returns undefined.",
+				"examples": [
+					{
+						"pairingId": "7c1f04e9a2b35d86e0f4c7a19b2d3e58",
+						"state": "approved",
+						"expiresAt": 1800000000000,
+						"attempts": 1,
+						"challenge": "Yx3bq9R0kVZp2nLs8TcWmD4eHfJa7uGoEi1Ny6CpQ5w",
+						"deviceId": "0123456789abcdef0123456789abcdef01234567",
+						"approval": "Qx7vL0aTnE9hWcR3pKbYuZ5sGd2MfJoI8eBlN4QrtV1"
+					}
+				]
 			},
 			{
 				"name": "PairingOfferService.open",
-				"type": "Promise<RelayErrorCode | undefined>"
+				"type": "Promise<RelayErrorCode | undefined>",
+				"description": "Resolves with no value after saving an open offer and scheduling its alarm. It returns invalid-input for a non-future expiry, pairing-unavailable for an existing live offer, or rate-limited at the configured open-offer limit; expiry is capped at five minutes.",
+				"examples": ["invalid-input", "pairing-unavailable", "rate-limited"]
 			},
 			{
 				"name": "PairingOfferService.approve",
-				"type": "RelayErrorCode | undefined"
+				"type": "RelayErrorCode | undefined",
+				"description": "Returns undefined when a live requested offer has the same challenge as approval.challenge, after saving its approved state, deviceId and sealed payload. It returns not-found for a missing or expired offer and pairing-unavailable for any other state or challenge mismatch.",
+				"examples": ["not-found", "pairing-unavailable"]
 			},
 			{
 				"name": "PairingOfferService.deny",
-				"type": "RelayErrorCode | undefined"
+				"type": "RelayErrorCode | undefined",
+				"description": "Returns undefined after changing a live open or requested offer to denied while retaining its expiry and attempts. It returns not-found for a missing or expired record and pairing-unavailable for other states.",
+				"examples": ["not-found", "pairing-unavailable"]
 			},
 			{
 				"name": "PairingOfferService.close",
-				"type": "Promise<undefined>"
+				"type": "Promise<undefined>",
+				"description": "Resolves with no value after removing the record for the supplied id and scheduling the next expiry alarm, or clearing the alarm when no offers remain."
 			},
 			{
 				"name": "PairingOfferService.sweep",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value after deleting records expired by at least the configured sweep delay, then schedules an alarm for the next offer to expire or clears it when none remain."
 			}
 		],
 		"errors": [],
@@ -98,13 +138,27 @@
 					{
 						"name": "PairingOfferService.live.pairingId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The pairing identifier used unchanged to read the pairing:<pairingId> record. This service does not validate its format; if the record has expired, live removes it and returns undefined.",
+						"examples": ["7c1f04e9a2b35d86e0f4c7a19b2d3e58", "b0d6a3f51e8c94027a6db1c3f9e5d812"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingOfferService.live",
-						"type": "PairingRecord | undefined"
+						"type": "PairingRecord | undefined",
+						"description": "The stored pairing record while its expiry is in the future. An expired record is removed before undefined is returned; a missing record also returns undefined.",
+						"examples": [
+							{
+								"pairingId": "7c1f04e9a2b35d86e0f4c7a19b2d3e58",
+								"state": "approved",
+								"expiresAt": 1800000000000,
+								"attempts": 1,
+								"challenge": "Yx3bq9R0kVZp2nLs8TcWmD4eHfJa7uGoEi1Ny6CpQ5w",
+								"deviceId": "0123456789abcdef0123456789abcdef01234567",
+								"approval": "Qx7vL0aTnE9hWcR3pKbYuZ5sGd2MfJoI8eBlN4QrtV1"
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -116,18 +170,24 @@
 					{
 						"name": "PairingOfferService.open.pairingId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The identifier used as the key for the new pairing offer and to check for an existing live offer. It is passed to storage unchanged and is not format-checked here.",
+						"examples": ["7c1f04e9a2b35d86e0f4c7a19b2d3e58", "b0d6a3f51e8c94027a6db1c3f9e5d812"]
 					},
 					{
 						"name": "PairingOfferService.open.expiresAt",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The requested expiry as a string accepted by Date.parse. open returns invalid-input unless it is in the future, then caps the stored expiry at five minutes from this call.",
+						"examples": ["2027-01-12T09:30:00.000Z"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingOfferService.open",
-						"type": "Promise<RelayErrorCode | undefined>"
+						"type": "Promise<RelayErrorCode | undefined>",
+						"description": "Resolves with no value after saving an open offer and scheduling its alarm. It returns invalid-input for a non-future expiry, pairing-unavailable for an existing live offer, or rate-limited at the configured open-offer limit; expiry is capped at five minutes.",
+						"examples": ["invalid-input", "pairing-unavailable", "rate-limited"]
 					}
 				],
 				"errors": [],
@@ -139,13 +199,24 @@
 					{
 						"name": "PairingOfferService.approve.approval",
 						"type": "Approval",
-						"required": true
+						"required": true,
+						"description": "The approved request's pairingId, deviceId, sealed payload and challenge. Approval is accepted only for a live requested pairing with a matching challenge; the deviceId and sealed payload are then stored.",
+						"examples": [
+							{
+								"pairingId": "7c1f04e9a2b35d86e0f4c7a19b2d3e58",
+								"deviceId": "0123456789abcdef0123456789abcdef01234567",
+								"sealed": "Qx7vL0aTnE9hWcR3pKbYuZ5sGd2MfJoI8eBlN4QrtV1",
+								"challenge": "Yx3bq9R0kVZp2nLs8TcWmD4eHfJa7uGoEi1Ny6CpQ5w"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingOfferService.approve",
-						"type": "RelayErrorCode | undefined"
+						"type": "RelayErrorCode | undefined",
+						"description": "Returns undefined when a live requested offer has the same challenge as approval.challenge, after saving its approved state, deviceId and sealed payload. It returns not-found for a missing or expired offer and pairing-unavailable for any other state or challenge mismatch.",
+						"examples": ["not-found", "pairing-unavailable"]
 					}
 				],
 				"errors": [],
@@ -157,13 +228,17 @@
 					{
 						"name": "PairingOfferService.deny.pairingId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The identifier of the offer to deny, used unchanged to read and update its stored record. Only a live open or requested pairing can be denied.",
+						"examples": ["7c1f04e9a2b35d86e0f4c7a19b2d3e58", "b0d6a3f51e8c94027a6db1c3f9e5d812"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingOfferService.deny",
-						"type": "RelayErrorCode | undefined"
+						"type": "RelayErrorCode | undefined",
+						"description": "Returns undefined after changing a live open or requested offer to denied while retaining its expiry and attempts. It returns not-found for a missing or expired record and pairing-unavailable for other states.",
+						"examples": ["not-found", "pairing-unavailable"]
 					}
 				],
 				"errors": [],
@@ -175,13 +250,16 @@
 					{
 						"name": "PairingOfferService.close.pairingId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The identifier of the offer to remove, passed unchanged to storage. Closing also recalculates the next alarm and is harmless when no matching record exists.",
+						"examples": ["7c1f04e9a2b35d86e0f4c7a19b2d3e58", "b0d6a3f51e8c94027a6db1c3f9e5d812"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingOfferService.close",
-						"type": "Promise<undefined>"
+						"type": "Promise<undefined>",
+						"description": "Resolves with no value after removing the record for the supplied id and scheduling the next expiry alarm, or clearing the alarm when no offers remain."
 					}
 				],
 				"errors": [],
@@ -193,7 +271,8 @@
 				"outputs": [
 					{
 						"name": "PairingOfferService.sweep",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value after deleting records expired by at least the configured sweep delay, then schedules an alarm for the next offer to expire or clears it when none remain."
 					}
 				],
 				"errors": [],
@@ -207,13 +286,15 @@
 					{
 						"name": "PairingOfferService.constructor.store",
 						"type": "HostStorageAdapter",
-						"required": true
+						"required": true,
+						"description": "The host's HostStorageAdapter, which this service uses to read, save and remove pairing records and enumerate offers. The constructor retains it without validation; storage and alarm operations occur when methods run."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PairingOfferService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed service instance, which retains the supplied store adapter. Construction performs no storage reads or writes."
 					}
 				],
 				"errors": [],
