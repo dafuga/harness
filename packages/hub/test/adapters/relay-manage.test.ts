@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { RelayManageAdapter } from '../../src/adapters/RelayManageAdapter';
+import { RelayManageAdapter } from '../../src/routes/api/[...path]/RelayManageAdapter';
 import { DEVICE_ID, hostIdentity, registration } from '../support/remoteFixture';
 import { REGISTERED_AT, remoteHostsFake } from '../support/remoteHostsFake';
 

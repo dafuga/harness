@@ -9,13 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/adapters/RelayManageAdapter.ts",
 			"packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
 			"packages/hub/src/routes/api/[...path]/RelayManageAdapter.types.ts"
 		],
 		"symbols": [
-			"RelayManageAdapter",
-			"RelayManageAdapterConfig",
 			"RelayManageAdapter",
 			"RelayManageAdapter.constructor",
 			"RelayManageAdapter.register",
