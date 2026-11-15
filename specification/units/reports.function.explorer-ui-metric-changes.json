@@ -30,23 +30,287 @@
 				"name": "metricChanges.before",
 				"type": "EntityMeasure",
 				"required": true,
-				"description": "The earlier entity profile: source-size and complexity rows, raw values, and runtime workload, target, profile and unit context."
+				"description": "The earlier entity profile, used as the baseline for every delta: its size rows whose target is not 'none', its first performance row whose metric names latency, navigation, a name starting with p and a digit, duration or time and whose value is not 'Not measured', and its first memory, heap or rss row, which must share that latency row's workload, target and profile when a latency row exists. A side with no matching key or a null rawValue makes the row 'Not comparable', never zero.",
+				"examples": [
+					{
+						"size": [
+							{
+								"label": "Source size",
+								"value": "48.3 KB",
+								"rawValue": 48300,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Emitted size · process (native)",
+								"target": "process",
+								"value": "2.4 MB",
+								"rawValue": 2400000,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Complexity",
+								"value": "17",
+								"rawValue": 17
+							}
+						],
+						"performance": [
+							{
+								"workload": "explorer open",
+								"metric": "Warm latency per call",
+								"target": "process",
+								"profile": "linux-x64-ci",
+								"value": "184 ms",
+								"rawValue": 184,
+								"unitOfMeasure": "ms",
+								"tolerance": "5%",
+								"over": false
+							},
+							{
+								"workload": "explorer open",
+								"metric": "Benchmark process peak RSS",
+								"target": "process",
+								"profile": "linux-x64-ci",
+								"value": "38.2 MB",
+								"rawValue": 38200000,
+								"unitOfMeasure": "bytes",
+								"tolerance": "10%",
+								"over": true
+							}
+						]
+					},
+					{
+						"size": [
+							{
+								"label": "Source size",
+								"value": "Not measured",
+								"rawValue": null,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Emitted size",
+								"target": "none",
+								"value": "Not measured",
+								"rawValue": null,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Complexity",
+								"value": "Not measured",
+								"rawValue": null
+							}
+						],
+						"performance": [
+							{
+								"workload": "explorer open",
+								"metric": "Warm latency per call",
+								"target": "",
+								"profile": "",
+								"value": "Not measured",
+								"rawValue": null,
+								"tolerance": "5%",
+								"over": false
+							},
+							{
+								"workload": "explorer open",
+								"metric": "Benchmark process peak RSS",
+								"target": "",
+								"profile": "",
+								"value": "Not measured",
+								"rawValue": null,
+								"tolerance": "10%",
+								"over": true
+							}
+						]
+					}
+				]
 			},
 			{
 				"name": "metricChanges.after",
 				"type": "EntityMeasure",
 				"required": true,
-				"description": "The later entity profile whose source-size, complexity, latency and compatible memory samples are matched with the earlier profile by metric key."
+				"description": "The later entity profile, matched with the earlier one by metric key and read by the same rules (size rows whose target is not 'none', the first latency-like performance row and the first memory-like one). A key present only in this profile is shown against 'Not measured' for the earlier side and reported as 'Not comparable'.",
+				"examples": [
+					{
+						"size": [
+							{
+								"label": "Source size",
+								"value": "52.1 KB",
+								"rawValue": 52100,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Emitted size · process (native)",
+								"target": "process",
+								"value": "2.4 MB",
+								"rawValue": 2388000,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Complexity",
+								"value": "19",
+								"rawValue": 19
+							}
+						],
+						"performance": [
+							{
+								"workload": "explorer open",
+								"metric": "Warm latency per call",
+								"target": "process",
+								"profile": "linux-x64-ci",
+								"value": "201 ms",
+								"rawValue": 201,
+								"unitOfMeasure": "ms",
+								"tolerance": "5%",
+								"over": false
+							},
+							{
+								"workload": "explorer open",
+								"metric": "Benchmark process peak RSS",
+								"target": "process",
+								"profile": "linux-x64-ci",
+								"value": "40.9 MB",
+								"rawValue": 40900000,
+								"unitOfMeasure": "bytes",
+								"tolerance": "10%",
+								"over": true
+							}
+						]
+					},
+					{
+						"size": [
+							{
+								"label": "Source size",
+								"value": "Not measured",
+								"rawValue": null,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Emitted size · process (native)",
+								"target": "process",
+								"value": "Not measured",
+								"rawValue": null,
+								"unitOfMeasure": "bytes"
+							},
+							{
+								"label": "Complexity",
+								"value": "Not measured",
+								"rawValue": null
+							}
+						],
+						"performance": [
+							{
+								"workload": "explorer open",
+								"metric": "Warm latency per call",
+								"target": "process",
+								"profile": "linux-arm64-ci",
+								"value": "151 ms",
+								"rawValue": 151,
+								"unitOfMeasure": "ms",
+								"tolerance": "5%",
+								"over": false
+							},
+							{
+								"workload": "explorer open",
+								"metric": "Benchmark process peak RSS",
+								"target": "process",
+								"profile": "",
+								"value": "Not measured",
+								"rawValue": null,
+								"tolerance": "10%",
+								"over": true
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "metricChanges",
 				"type": "MetricChangeRow[]",
-				"description": "Ordered source-size, complexity, latency and memory display rows with before/after text and a signed delta or explicit missing/incompatible-evidence message; changed workload, target or profile context is retained."
+				"description": "One row per metric key, in the earlier profile's order (its compared size rows, then 'Latency' and 'Memory', which always appear even when unmeasured) followed by keys only the later profile has. Each row's change is a signed delta such as '+3.8 KB' or '−12 KB' (negative deltas use the Unicode minus sign), 'No change', or one of 'Not comparable', 'Unit changed', 'Workload changed', 'Target changed' or 'Profile changed'; only the last three add beforeContext and afterContext, each the non-empty parts of workload, target and profile joined by ' · '.",
+				"examples": [
+					[
+						{
+							"key": "size:Source size:",
+							"label": "Source size",
+							"before": "48.3 KB",
+							"after": "52.1 KB",
+							"change": "+3.8 KB"
+						},
+						{
+							"key": "size:Emitted size · process (native):process",
+							"label": "Emitted size · process (native)",
+							"before": "2.4 MB",
+							"after": "2.4 MB",
+							"change": "−12 KB"
+						},
+						{
+							"key": "size:Complexity:",
+							"label": "Complexity",
+							"before": "17",
+							"after": "19",
+							"change": "+2"
+						},
+						{
+							"key": "performance:Latency",
+							"label": "Latency",
+							"before": "184 ms",
+							"after": "201 ms",
+							"change": "+17 ms"
+						},
+						{
+							"key": "performance:Memory",
+							"label": "Memory",
+							"before": "38.2 MB",
+							"after": "40.9 MB",
+							"change": "+2.7 MB"
+						}
+					],
+					[
+						{
+							"key": "size:Source size:",
+							"label": "Source size",
+							"before": "48.3 KB",
+							"after": "Not measured",
+							"change": "Not comparable"
+						},
+						{
+							"key": "size:Emitted size · process (native):process",
+							"label": "Emitted size · process (native)",
+							"before": "2.4 MB",
+							"after": "Not measured",
+							"change": "Not comparable"
+						},
+						{
+							"key": "size:Complexity:",
+							"label": "Complexity",
+							"before": "17",
+							"after": "Not measured",
+							"change": "Not comparable"
+						},
+						{
+							"key": "performance:Latency",
+							"label": "Latency",
+							"before": "184 ms",
+							"after": "151 ms",
+							"change": "Profile changed",
+							"beforeContext": "explorer open · process · linux-x64-ci",
+							"afterContext": "explorer open · process · linux-arm64-ci"
+						},
+						{
+							"key": "performance:Memory",
+							"label": "Memory",
+							"before": "38.2 MB",
+							"after": "Not measured",
+							"change": "Not comparable"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "metricChanges",
@@ -55,24 +319,287 @@
 						"name": "metricChanges.before",
 						"type": "EntityMeasure",
 						"required": true,
-						"description": "The earlier entity profile: source-size and complexity rows, raw values, and runtime workload, target, profile and unit context."
+						"description": "The earlier entity profile, used as the baseline for every delta: its size rows whose target is not 'none', its first performance row whose metric names latency, navigation, a name starting with p and a digit, duration or time and whose value is not 'Not measured', and its first memory, heap or rss row, which must share that latency row's workload, target and profile when a latency row exists. A side with no matching key or a null rawValue makes the row 'Not comparable', never zero.",
+						"examples": [
+							{
+								"size": [
+									{
+										"label": "Source size",
+										"value": "48.3 KB",
+										"rawValue": 48300,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Emitted size · process (native)",
+										"target": "process",
+										"value": "2.4 MB",
+										"rawValue": 2400000,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Complexity",
+										"value": "17",
+										"rawValue": 17
+									}
+								],
+								"performance": [
+									{
+										"workload": "explorer open",
+										"metric": "Warm latency per call",
+										"target": "process",
+										"profile": "linux-x64-ci",
+										"value": "184 ms",
+										"rawValue": 184,
+										"unitOfMeasure": "ms",
+										"tolerance": "5%",
+										"over": false
+									},
+									{
+										"workload": "explorer open",
+										"metric": "Benchmark process peak RSS",
+										"target": "process",
+										"profile": "linux-x64-ci",
+										"value": "38.2 MB",
+										"rawValue": 38200000,
+										"unitOfMeasure": "bytes",
+										"tolerance": "10%",
+										"over": true
+									}
+								]
+							},
+							{
+								"size": [
+									{
+										"label": "Source size",
+										"value": "Not measured",
+										"rawValue": null,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Emitted size",
+										"target": "none",
+										"value": "Not measured",
+										"rawValue": null,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Complexity",
+										"value": "Not measured",
+										"rawValue": null
+									}
+								],
+								"performance": [
+									{
+										"workload": "explorer open",
+										"metric": "Warm latency per call",
+										"target": "",
+										"profile": "",
+										"value": "Not measured",
+										"rawValue": null,
+										"tolerance": "5%",
+										"over": false
+									},
+									{
+										"workload": "explorer open",
+										"metric": "Benchmark process peak RSS",
+										"target": "",
+										"profile": "",
+										"value": "Not measured",
+										"rawValue": null,
+										"tolerance": "10%",
+										"over": true
+									}
+								]
+							}
+						]
 					},
 					{
 						"name": "metricChanges.after",
 						"type": "EntityMeasure",
 						"required": true,
-						"description": "The later entity profile whose source-size, complexity, latency and compatible memory samples are matched with the earlier profile by metric key."
+						"description": "The later entity profile, matched with the earlier one by metric key and read by the same rules (size rows whose target is not 'none', the first latency-like performance row and the first memory-like one). A key present only in this profile is shown against 'Not measured' for the earlier side and reported as 'Not comparable'.",
+						"examples": [
+							{
+								"size": [
+									{
+										"label": "Source size",
+										"value": "52.1 KB",
+										"rawValue": 52100,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Emitted size · process (native)",
+										"target": "process",
+										"value": "2.4 MB",
+										"rawValue": 2388000,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Complexity",
+										"value": "19",
+										"rawValue": 19
+									}
+								],
+								"performance": [
+									{
+										"workload": "explorer open",
+										"metric": "Warm latency per call",
+										"target": "process",
+										"profile": "linux-x64-ci",
+										"value": "201 ms",
+										"rawValue": 201,
+										"unitOfMeasure": "ms",
+										"tolerance": "5%",
+										"over": false
+									},
+									{
+										"workload": "explorer open",
+										"metric": "Benchmark process peak RSS",
+										"target": "process",
+										"profile": "linux-x64-ci",
+										"value": "40.9 MB",
+										"rawValue": 40900000,
+										"unitOfMeasure": "bytes",
+										"tolerance": "10%",
+										"over": true
+									}
+								]
+							},
+							{
+								"size": [
+									{
+										"label": "Source size",
+										"value": "Not measured",
+										"rawValue": null,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Emitted size · process (native)",
+										"target": "process",
+										"value": "Not measured",
+										"rawValue": null,
+										"unitOfMeasure": "bytes"
+									},
+									{
+										"label": "Complexity",
+										"value": "Not measured",
+										"rawValue": null
+									}
+								],
+								"performance": [
+									{
+										"workload": "explorer open",
+										"metric": "Warm latency per call",
+										"target": "process",
+										"profile": "linux-arm64-ci",
+										"value": "151 ms",
+										"rawValue": 151,
+										"unitOfMeasure": "ms",
+										"tolerance": "5%",
+										"over": false
+									},
+									{
+										"workload": "explorer open",
+										"metric": "Benchmark process peak RSS",
+										"target": "process",
+										"profile": "",
+										"value": "Not measured",
+										"rawValue": null,
+										"tolerance": "10%",
+										"over": true
+									}
+								]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "metricChanges",
 						"type": "MetricChangeRow[]",
-						"description": "Ordered source-size, complexity, latency and memory display rows with before/after text and a signed delta or explicit missing/incompatible-evidence message; changed workload, target or profile context is retained."
+						"description": "One row per metric key, in the earlier profile's order (its compared size rows, then 'Latency' and 'Memory', which always appear even when unmeasured) followed by keys only the later profile has. Each row's change is a signed delta such as '+3.8 KB' or '−12 KB' (negative deltas use the Unicode minus sign), 'No change', or one of 'Not comparable', 'Unit changed', 'Workload changed', 'Target changed' or 'Profile changed'; only the last three add beforeContext and afterContext, each the non-empty parts of workload, target and profile joined by ' · '.",
+						"examples": [
+							[
+								{
+									"key": "size:Source size:",
+									"label": "Source size",
+									"before": "48.3 KB",
+									"after": "52.1 KB",
+									"change": "+3.8 KB"
+								},
+								{
+									"key": "size:Emitted size · process (native):process",
+									"label": "Emitted size · process (native)",
+									"before": "2.4 MB",
+									"after": "2.4 MB",
+									"change": "−12 KB"
+								},
+								{
+									"key": "size:Complexity:",
+									"label": "Complexity",
+									"before": "17",
+									"after": "19",
+									"change": "+2"
+								},
+								{
+									"key": "performance:Latency",
+									"label": "Latency",
+									"before": "184 ms",
+									"after": "201 ms",
+									"change": "+17 ms"
+								},
+								{
+									"key": "performance:Memory",
+									"label": "Memory",
+									"before": "38.2 MB",
+									"after": "40.9 MB",
+									"change": "+2.7 MB"
+								}
+							],
+							[
+								{
+									"key": "size:Source size:",
+									"label": "Source size",
+									"before": "48.3 KB",
+									"after": "Not measured",
+									"change": "Not comparable"
+								},
+								{
+									"key": "size:Emitted size · process (native):process",
+									"label": "Emitted size · process (native)",
+									"before": "2.4 MB",
+									"after": "Not measured",
+									"change": "Not comparable"
+								},
+								{
+									"key": "size:Complexity:",
+									"label": "Complexity",
+									"before": "17",
+									"after": "Not measured",
+									"change": "Not comparable"
+								},
+								{
+									"key": "performance:Latency",
+									"label": "Latency",
+									"before": "184 ms",
+									"after": "151 ms",
+									"change": "Profile changed",
+									"beforeContext": "explorer open · process · linux-x64-ci",
+									"afterContext": "explorer open · process · linux-arm64-ci"
+								},
+								{
+									"key": "performance:Memory",
+									"label": "Memory",
+									"before": "38.2 MB",
+									"after": "Not measured",
+									"change": "Not comparable"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
