@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feDistantLight element; native HTML content rules still apply."
+				"description": "Optional Svelte Snippet rendered inside the feDistantLight element with {@render children()} only when it is truthy. When it is omitted (undefined), the element renders with no child content, and any value passed must be a Snippet, since the code calls it as a function."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeDistantLight",
 				"type": "markup",
-				"description": "The actual native feDistantLight element, with forwarded attributes and content and no additional wrapper."
+				"description": "The rendered native feDistantLight element in the svg namespace, with every prop other than children passed through the {...attributes} spread and the children snippet rendered inside it. The component adds no wrapper element around it and does not validate attribute names or values."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
