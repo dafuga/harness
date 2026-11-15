@@ -12,37 +12,105 @@
 		"symbols": ["ClaudeQueryService", "ClaudeQueryService.constructor", "ClaudeQueryService.run"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ClaudeQueryService.constructor.repository",
 				"type": "CodexSessionRepository",
-				"required": true
+				"required": true,
+				"description": "The session repository that the constructor stores as the private readonly repository field without checking it. run passes it to ClaudeToolsSerializer for the tools server and calls its cancel(session) method from the catch block whenever run catches an error."
 			},
 			{
 				"name": "ClaudeQueryService.run.request",
 				"type": "GatewayRequest",
-				"required": true
+				"required": true,
+				"description": "The Codex gateway request that run serves: its tools are passed to ClaudeToolsSerializer.server to build the codex MCP server, its instructions replace the default system prompt when they are not null or undefined, and its input is passed to gatewayMessages to build the user prompt. gatewayMessages throws for audio, video, file and binary resource items and for more than 20 images or 20 MiB of image data, and run reports those throws as error events; model and stream are not read by run or the helpers it calls.",
+				"examples": [
+					{
+						"model": "claude-opus-5-5",
+						"stream": true,
+						"input": [
+							{
+								"type": "message",
+								"role": "user",
+								"content": [
+									{
+										"type": "input_text",
+										"text": "Rename formatDate to formatCalendarDate in src/utils/format.ts."
+									}
+								]
+							}
+						],
+						"tools": []
+					},
+					{
+						"model": "claude-opus-5-5",
+						"stream": true,
+						"input": [
+							{
+								"type": "message",
+								"role": "user",
+								"content": [
+									{
+										"type": "input_text",
+										"text": "Run the test suite and report the result."
+									}
+								]
+							},
+							{
+								"type": "function_call",
+								"call_id": "call_6f1c0a52-3b9e-4d7a-8e21-0c5b9f4a7d13",
+								"name": "shell",
+								"arguments": "{\"command\":\"npm test\"}"
+							},
+							{
+								"type": "function_call_output",
+								"call_id": "call_6f1c0a52-3b9e-4d7a-8e21-0c5b9f4a7d13",
+								"output": "12 tests passed; exit code 0"
+							}
+						],
+						"tools": [
+							{
+								"type": "function",
+								"name": "shell",
+								"description": "Runs a shell command in the workspace and returns its output.",
+								"parameters": {
+									"type": "object",
+									"properties": {
+										"command": {
+											"type": "string"
+										}
+									},
+									"required": ["command"]
+								}
+							}
+						],
+						"instructions": "Report the exit code first, then a one-line summary."
+					}
+				]
 			},
 			{
 				"name": "ClaudeQueryService.run.session",
 				"type": "GatewaySession",
-				"required": true
+				"required": true,
+				"description": "The live gateway session for this call: run sets its running flag to true until the call ends, sends text, done and error events through its optional emit callback, and reads its controller signal to choose the error message. The same session is also passed to gatewayOptions and to the tools server, and repository.cancel receives it when a query fails."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ClaudeQueryService.run",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "The promise resolves with no value when the Claude stream ends or after the catch block has emitted its error event. It rejects only if the catch block itself throws, for example when repository.cancel throws."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown with the message 'Claude query failed' by the private forward method when a Claude result message has a subtype other than 'success'. run catches it and reports it as an error event, so run does not reject with this error."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ClaudeQueryService.run",
@@ -50,22 +118,88 @@
 					{
 						"name": "ClaudeQueryService.run.request",
 						"type": "GatewayRequest",
-						"required": true
+						"required": true,
+						"description": "The Codex gateway request that run serves: its tools are passed to ClaudeToolsSerializer.server to build the codex MCP server, its instructions replace the default system prompt when they are not null or undefined, and its input is passed to gatewayMessages to build the user prompt. gatewayMessages throws for audio, video, file and binary resource items and for more than 20 images or 20 MiB of image data, and run reports those throws as error events; model and stream are not read by run or the helpers it calls.",
+						"examples": [
+							{
+								"model": "claude-opus-5-5",
+								"stream": true,
+								"input": [
+									{
+										"type": "message",
+										"role": "user",
+										"content": [
+											{
+												"type": "input_text",
+												"text": "Rename formatDate to formatCalendarDate in src/utils/format.ts."
+											}
+										]
+									}
+								],
+								"tools": []
+							},
+							{
+								"model": "claude-opus-5-5",
+								"stream": true,
+								"input": [
+									{
+										"type": "message",
+										"role": "user",
+										"content": [
+											{
+												"type": "input_text",
+												"text": "Run the test suite and report the result."
+											}
+										]
+									},
+									{
+										"type": "function_call",
+										"call_id": "call_6f1c0a52-3b9e-4d7a-8e21-0c5b9f4a7d13",
+										"name": "shell",
+										"arguments": "{\"command\":\"npm test\"}"
+									},
+									{
+										"type": "function_call_output",
+										"call_id": "call_6f1c0a52-3b9e-4d7a-8e21-0c5b9f4a7d13",
+										"output": "12 tests passed; exit code 0"
+									}
+								],
+								"tools": [
+									{
+										"type": "function",
+										"name": "shell",
+										"description": "Runs a shell command in the workspace and returns its output.",
+										"parameters": {
+											"type": "object",
+											"properties": {
+												"command": {
+													"type": "string"
+												}
+											},
+											"required": ["command"]
+										}
+									}
+								],
+								"instructions": "Report the exit code first, then a one-line summary."
+							}
+						]
 					},
 					{
 						"name": "ClaudeQueryService.run.session",
 						"type": "GatewaySession",
-						"required": true
+						"required": true,
+						"description": "The live gateway session for this call: run sets its running flag to true until the call ends, sends text, done and error events through its optional emit callback, and reads its controller signal to choose the error message. The same session is also passed to gatewayOptions and to the tools server, and repository.cancel receives it when a query fails."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeQueryService.run",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "The promise resolves with no value when the Claude stream ends or after the catch block has emitted its error event. It rejects only if the catch block itself throws, for example when repository.cancel throws."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -75,17 +209,19 @@
 					{
 						"name": "ClaudeQueryService.constructor.repository",
 						"type": "CodexSessionRepository",
-						"required": true
+						"required": true,
+						"description": "The session repository that the constructor stores as the private readonly repository field without checking it. run passes it to ClaudeToolsSerializer for the tools server and calls its cancel(session) method from the catch block whenever run catches an error."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ClaudeQueryService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The ClaudeQueryService instance returned by the new expression; its private readonly repository field holds the injected repository."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
