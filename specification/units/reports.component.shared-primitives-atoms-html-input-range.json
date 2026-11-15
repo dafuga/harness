@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "An optional Svelte Snippet prop separated from the remaining props before they are spread onto the input. It defaults to undefined when omitted and is not rendered by this void input element."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputRange",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "Renders one native input element with type range and spreads the remaining props onto it. It adds no wrapper and does not render the children prop."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
