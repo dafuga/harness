@@ -21,33 +21,49 @@
 				"name": "unitShots.root",
 				"type": "string",
 				"required": true,
-				"description": "Project directory used for external inventory paths or read-only Git evidence access."
+				"description": "Directory passed unchanged as the first argument to GitAdapter, HistoryStatusService and RevisionDetailService, which run the ref listing and the revision reads against it. This function makes no check of the directory itself.",
+				"examples": ["/workspace/product-site", "/srv/checkouts/design-system"]
 			},
 			{
 				"name": "unitShots.entity",
 				"type": "string",
 				"required": true,
-				"description": "Exact registered entity identity; a catalog slot prefix for this identity alone can be removed."
+				"description": "The unit id passed unchanged as { id: entity } to explorerEvidence, which uses it to select the scenarios and captures that cover this unit at the commit. This function does no lookup or normalization, so a unit that no scenario covers gets the gap explorerEvidence reports for that case, such as 'No scenario covers this unit at this commit.' when a record is present.",
+				"examples": ["reports.component.evidence-grid", "reports.function.explorer-evidence"]
 			},
 			{
 				"name": "unitShots.commit",
 				"type": "string",
 				"required": true,
-				"description": "Exact source commit whose evidence is requested; the proof reader validates tree identity and retained bytes."
+				"description": "The source commit passed unchanged to RevisionDetailService.build and to explorerEvidence as the scope commit. explorerEvidence refuses any revision whose commit differs from this value and returns a gap saying that revision is not available, and this function does no format check of the value itself.",
+				"examples": [
+					"4c1e9a07b2d8f3e5a6c0917d4b28e1f0a3c5d967",
+					"a93f0c56e2d1b874f09e3a6c5d2b17e84f6a0c3d"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "unitShots",
 				"type": "Promise<UnitShots>",
-				"description": "Original captures and gaps projected from pinned root HistoryStatusService and RevisionDetailService reads using the same evidence selector as the screenshot API; absent refs return no captures."
+				"description": "The resolved UnitShots: its captures field lists every capture explorerEvidence selects for the unit on the commit's side, each with its usable flag, and its gap field is null exactly when at least one of those captures is usable. When notesRef or evidenceRef is absent from the ref listing, it resolves to captures [] and the fixed gap 'No attached Harness verification evidence at this revision.' without calling HistoryStatusService or RevisionDetailService.",
+				"examples": [
+					{
+						"captures": [],
+						"gap": "No attached Harness verification evidence at this revision."
+					},
+					{
+						"captures": [],
+						"gap": "The record of this commit holds no capture for this unit."
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Dependency failure",
 				"type": "thrown",
-				"description": "Propagates Git, filesystem, source-reader and evidence-validation failures from the invoked operation."
+				"description": "This function has no try/catch, so errors thrown or rejected by the GitAdapter, HistoryStatusService, RevisionDetailService or explorerEvidence calls reach the caller as a rejection of the returned promise, unchanged. No fallback value replaces them, and missing notesRef or evidenceRef is a normal return, not an error."
 			}
 		],
 		"errorStatus": "declared",
@@ -59,33 +75,49 @@
 						"name": "unitShots.root",
 						"type": "string",
 						"required": true,
-						"description": "Project directory used for external inventory paths or read-only Git evidence access."
+						"description": "Directory passed unchanged as the first argument to GitAdapter, HistoryStatusService and RevisionDetailService, which run the ref listing and the revision reads against it. This function makes no check of the directory itself.",
+						"examples": ["/workspace/product-site", "/srv/checkouts/design-system"]
 					},
 					{
 						"name": "unitShots.entity",
 						"type": "string",
 						"required": true,
-						"description": "Exact registered entity identity; a catalog slot prefix for this identity alone can be removed."
+						"description": "The unit id passed unchanged as { id: entity } to explorerEvidence, which uses it to select the scenarios and captures that cover this unit at the commit. This function does no lookup or normalization, so a unit that no scenario covers gets the gap explorerEvidence reports for that case, such as 'No scenario covers this unit at this commit.' when a record is present.",
+						"examples": ["reports.component.evidence-grid", "reports.function.explorer-evidence"]
 					},
 					{
 						"name": "unitShots.commit",
 						"type": "string",
 						"required": true,
-						"description": "Exact source commit whose evidence is requested; the proof reader validates tree identity and retained bytes."
+						"description": "The source commit passed unchanged to RevisionDetailService.build and to explorerEvidence as the scope commit. explorerEvidence refuses any revision whose commit differs from this value and returns a gap saying that revision is not available, and this function does no format check of the value itself.",
+						"examples": [
+							"4c1e9a07b2d8f3e5a6c0917d4b28e1f0a3c5d967",
+							"a93f0c56e2d1b874f09e3a6c5d2b17e84f6a0c3d"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitShots",
 						"type": "Promise<UnitShots>",
-						"description": "Original captures and gaps projected from pinned root HistoryStatusService and RevisionDetailService reads using the same evidence selector as the screenshot API; absent refs return no captures."
+						"description": "The resolved UnitShots: its captures field lists every capture explorerEvidence selects for the unit on the commit's side, each with its usable flag, and its gap field is null exactly when at least one of those captures is usable. When notesRef or evidenceRef is absent from the ref listing, it resolves to captures [] and the fixed gap 'No attached Harness verification evidence at this revision.' without calling HistoryStatusService or RevisionDetailService.",
+						"examples": [
+							{
+								"captures": [],
+								"gap": "No attached Harness verification evidence at this revision."
+							},
+							{
+								"captures": [],
+								"gap": "The record of this commit holds no capture for this unit."
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Dependency failure",
 						"type": "thrown",
-						"description": "Propagates failures from Git, source loading, filesystem access or evidence validation; does not replace them with passing proof."
+						"description": "This function has no try/catch, so errors thrown or rejected by the GitAdapter, HistoryStatusService, RevisionDetailService or explorerEvidence calls reach the caller as a rejection of the returned promise, unchanged. No fallback value replaces them, and missing notesRef or evidenceRef is a normal return, not an error."
 					}
 				],
 				"errorStatus": "declared"
