@@ -20,20 +20,28 @@
 				"name": "evidenceDirectoryFailure.directory",
 				"type": "string",
 				"required": true,
-				"description": "Evidence directory to inspect, lexically beneath the trusted root."
+				"description": "The evidence directory whose ancestry is checked; a relative value is resolved against the process working directory, and it must be root or a path beneath root, because any other location (such as a parent or sibling of root) returns the failure message. A path that does not exist yet reports no failure, because the walk stops at the first missing component.",
+				"examples": [
+					"/tmp/harness-verify-9c2e/evidence/captures",
+					"/tmp/harness-verify-9c2e/evidence"
+				]
 			},
 			{
 				"name": "evidenceDirectoryFailure.root",
 				"type": "string",
 				"required": true,
-				"description": "Trusted scratch directory that anchors the evidence path."
+				"description": "The trusted scratch directory that anchors the check; only root itself and the components beneath it are inspected with lstatSync, so symlinks above root are not checked. A root that is a symlink or a non-directory returns the failure message, and a missing root returns undefined unless the directory lies outside root.",
+				"examples": ["/tmp/harness-verify-9c2e", "/tmp/harness-verify-4b71"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "evidenceDirectoryFailure",
 				"type": "string | undefined",
-				"description": "An ancestry failure message when the path escapes the root or a component is missing/not a directory/symlink; undefined when the existing path is safe or not yet created."
+				"description": "It is the ancestry failure message when the directory lies outside root, when an existing component is not a real directory (such as a file or a symlink), or when lstatSync fails with an error other than ENOENT. It is undefined when every component that exists is a real directory or the walk reaches a component that does not exist yet.",
+				"examples": [
+					"capture directory ancestry must contain regular directories beneath the run root"
+				]
 			}
 		],
 		"errors": [],
@@ -46,20 +54,28 @@
 						"name": "evidenceDirectoryFailure.directory",
 						"type": "string",
 						"required": true,
-						"description": "Evidence directory to inspect, lexically beneath the trusted root."
+						"description": "The evidence directory whose ancestry is checked; a relative value is resolved against the process working directory, and it must be root or a path beneath root, because any other location (such as a parent or sibling of root) returns the failure message. A path that does not exist yet reports no failure, because the walk stops at the first missing component.",
+						"examples": [
+							"/tmp/harness-verify-9c2e/evidence/captures",
+							"/tmp/harness-verify-9c2e/evidence"
+						]
 					},
 					{
 						"name": "evidenceDirectoryFailure.root",
 						"type": "string",
 						"required": true,
-						"description": "Trusted scratch directory that anchors the evidence path."
+						"description": "The trusted scratch directory that anchors the check; only root itself and the components beneath it are inspected with lstatSync, so symlinks above root are not checked. A root that is a symlink or a non-directory returns the failure message, and a missing root returns undefined unless the directory lies outside root.",
+						"examples": ["/tmp/harness-verify-9c2e", "/tmp/harness-verify-4b71"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "evidenceDirectoryFailure",
 						"type": "string | undefined",
-						"description": "An ancestry failure message when the path escapes the root or a component is missing/not a directory/symlink; undefined when the existing path is safe or not yet created."
+						"description": "It is the ancestry failure message when the directory lies outside root, when an existing component is not a real directory (such as a file or a symlink), or when lstatSync fails with an error other than ENOENT. It is undefined when every component that exists is a real directory or the walk reaches a component that does not exist yet.",
+						"examples": [
+							"capture directory ancestry must contain regular directories beneath the run root"
+						]
 					}
 				],
 				"errors": [],
