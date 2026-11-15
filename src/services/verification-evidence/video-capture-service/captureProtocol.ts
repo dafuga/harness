@@ -12,7 +12,7 @@ import {
 	renameSync,
 	writeFileSync
 } from 'node:fs';
-import { join, basename } from 'node:path';
+import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { captureIndex, captureLineSchema } from '../../../core/verification-evidence/verifyTypes';
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
@@ -20,6 +20,7 @@ import { canonicalJson } from '../../../utils/development-tooling/canonicalJson'
 import type { Capture } from '../../../core/verification-evidence/verificationTypes';
 import type { VideoBatchPointer } from '../VideoArchiveService.types';
 import type { VideoCaptureSidecar } from '../VideoCaptureService.types';
+import { captureDigest } from './captureFiles';
 
 export const videoBatchSidecar = 'video-batches.json';
 /** The parent transports descriptors only; canonical objects remain in their bounded child batch. */
@@ -39,11 +40,12 @@ export function captureProtocol(directory: string) {
 	return {
 		append(capture: Capture, batches: VideoBatchPointer[]) {
 			const { path: originalPath, status, sha256, bytes, capturedAt, ...wire } = capture;
+			void originalPath;
 			void status;
 			void sha256;
 			void bytes;
 			void capturedAt;
-			const file = basename(originalPath);
+			const file = captureWireFile(capture);
 			const line = captureLineSchema.parse({ ...wire, file });
 			const old = sidecar.captures.find((row) => row.file === file);
 			if (old) {
@@ -73,6 +75,12 @@ export function captureProtocol(directory: string) {
 			appendCaptureIndex(index, written);
 		}
 	};
+}
+/** Transport names identify slots; the full original path remains authoritative in the sidecar. */
+function captureWireFile(capture: Capture): string {
+	if (capture.kind !== 'video' || !capture.video || !capture.viewport)
+		throw new ExpectedCliError('Video protocol requires a complete video slot.');
+	return `${captureDigest(JSON.stringify([capture.video.unit, capture.video.clipId, capture.viewport]))}.mp4`;
 }
 function appendCaptureIndex(path: string, text: string): void {
 	const fd = openSync(

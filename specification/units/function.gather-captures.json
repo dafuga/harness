@@ -99,49 +99,58 @@
 			{
 				"name": "gatherLine.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "One captures.ndjson JSON line produced by a check. It is parsed as the existing capture-line schema; malformed input becomes an admission failure."
 			},
 			{
 				"name": "gatherLine.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Absolute check-owned evidence directory whose ordinary capture files are inspected. The enclosing gather call must establish directory containment first."
 			},
 			{
 				"name": "gatherLine.scope",
 				"type": "{ recordPath: string; limits: CaptureLimits; budget: RecordBudget }",
-				"required": true
+				"required": true,
+				"description": "Current parent record path, effective byte limits and shared parent budget. Accepted ordinary media consumes this budget after complete pair admission."
 			},
 			{
 				"name": "indexLines.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Absolute path to captures.ndjson. Missing indexes return no rows; non-regular or oversized indexes are refused without loading their named media."
 			},
 			{
 				"name": "indexLines.result",
 				"type": "GatherResult",
-				"required": true
+				"required": true,
+				"description": "Mutable gather report receiving bounded-index failures. Previously gathered items and failures are preserved while index diagnostics are appended."
 			},
 			{
 				"name": "gatherVerificationCaptures.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Absolute evidence directory for one completed check. Directory and index admission precede ordinary file inspection or referenced-child reads."
 			},
 			{
 				"name": "gatherVerificationCaptures.recordPath",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Safe parent record path prefix for fresh captures. Reused child captures preserve their original full paths rather than receiving this prefix."
 			},
 			{
 				"name": "gatherVerificationCaptures.limits",
 				"type": "CaptureLimits",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional ordinary capture and parent-record byte limits. Omission uses {}; fixed video and metadata bounds still apply and references must validate before budget exemption."
 			},
 			{
 				"name": "gatherVerificationCaptures.scope",
 				"type": "CaptureGatherScope",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional shared parent budget, containing output root and enrolled video proof context. Omission isolates the budget to this gather and rejects child references without current snapshot proof."
 			},
 			{
 				"name": "posterBudget.line",
@@ -182,52 +191,62 @@
 			{
 				"name": "videoRunReaders.context",
 				"type": "Pick<VideoGatherContext, 'repository' | 'pinned' | 'references'>",
-				"required": true
+				"required": true,
+				"description": "Original repository, immutable reuse pins and optional injected resolver factory. Existing injected readers are retained; otherwise two lazy metadata-memoized readers serve fresh and reused scopes."
 			},
 			{
 				"name": "videoSidecar.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Absolute check-owned directory containing video-batches.json. The sidecar is bounded to one MiB, 64 pointers and 4096 full capture descriptors before use."
 			},
 			{
 				"name": "sidecarCapture.sidecar",
 				"type": "GatherVideoSidecar",
-				"required": true
+				"required": true,
+				"description": "Parsed bounded sidecar with full original capture descriptors and child pointers. Each transport alias must select one unambiguous descriptor."
 			},
 			{
 				"name": "sidecarCapture.line",
 				"type": "CaptureLine",
-				"required": true
+				"required": true,
+				"description": "Parsed capture line carrying an opaque transport alias. Every transported metadata field must agree with its full descriptor before any reference is trusted."
 			},
 			{
 				"name": "sidecarCapture.recordPath",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Current record path prefix applied only to fresh descriptor basenames. Historical capture paths are preserved exactly for original-parent proof and media materialization."
 			},
 			{
 				"name": "admitVideoReference.item",
 				"type": "Gathered",
-				"required": true
+				"required": true,
+				"description": "Parent-process gathered object whose canonical media, original parent and independent current input hash have already passed admission. Its identity and complete capture, line and fact fields are sealed in memory."
 			},
 			{
 				"name": "admitVideoReference.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Full SHA-1 of the current verified source snapshot. It identifies the current admission decision and does not relabel the historical renderer revision."
 			},
 			{
 				"name": "admitVideoReference.inputHash",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Current slot SHA-256 independently computed before snapshot setup. It must equal the authoritative resolved clip hash before this in-process proof is minted."
 			},
 			{
 				"name": "trustedVideoReference.input",
 				"type": "CoverageInput",
-				"required": true
+				"required": true,
+				"description": "Scenario coverage input containing the current source revision and independently computed enrolled slot hashes. Other media, graph, build-declaration and reviewer gates remain applicable."
 			},
 			{
 				"name": "trustedVideoReference.item",
 				"type": "Gathered",
-				"required": true
+				"required": true,
+				"description": "The original admitted gathered object, with unchanged capture, line and decoded facts. Serialized copies or later metadata mutations carry no historical-stamp exception."
 			}
 		],
 		"outputs": [
@@ -484,17 +503,20 @@
 					{
 						"name": "gatherLine.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "One captures.ndjson JSON line produced by a check. It is parsed as the existing capture-line schema; malformed input becomes an admission failure."
 					},
 					{
 						"name": "gatherLine.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Absolute check-owned evidence directory whose ordinary capture files are inspected. The enclosing gather call must establish directory containment first."
 					},
 					{
 						"name": "gatherLine.scope",
 						"type": "{ recordPath: string; limits: CaptureLimits; budget: RecordBudget }",
-						"required": true
+						"required": true,
+						"description": "Current parent record path, effective byte limits and shared parent budget. Accepted ordinary media consumes this budget after complete pair admission."
 					}
 				],
 				"outputs": [
@@ -512,12 +534,14 @@
 					{
 						"name": "indexLines.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Absolute path to captures.ndjson. Missing indexes return no rows; non-regular or oversized indexes are refused without loading their named media."
 					},
 					{
 						"name": "indexLines.result",
 						"type": "GatherResult",
-						"required": true
+						"required": true,
+						"description": "Mutable gather report receiving bounded-index failures. Previously gathered items and failures are preserved while index diagnostics are appended."
 					}
 				],
 				"outputs": [
@@ -541,24 +565,28 @@
 					{
 						"name": "gatherVerificationCaptures.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Absolute evidence directory for one completed check. Directory and index admission precede ordinary file inspection or referenced-child reads."
 					},
 					{
 						"name": "gatherVerificationCaptures.recordPath",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Safe parent record path prefix for fresh captures. Reused child captures preserve their original full paths rather than receiving this prefix."
 					},
 					{
 						"name": "gatherVerificationCaptures.limits",
 						"type": "CaptureLimits",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional ordinary capture and parent-record byte limits. Omission uses {}; fixed video and metadata bounds still apply and references must validate before budget exemption."
 					},
 					{
 						"name": "gatherVerificationCaptures.scope",
 						"type": "CaptureGatherScope",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional shared parent budget, containing output root and enrolled video proof context. Omission isolates the budget to this gather and rejects child references without current snapshot proof."
 					}
 				],
 				"outputs": [
@@ -652,7 +680,8 @@
 					{
 						"name": "videoRunReaders.context",
 						"type": "Pick<VideoGatherContext, 'repository' | 'pinned' | 'references'>",
-						"required": true
+						"required": true,
+						"description": "Original repository, immutable reuse pins and optional injected resolver factory. Existing injected readers are retained; otherwise two lazy metadata-memoized readers serve fresh and reused scopes."
 					}
 				],
 				"outputs": [
@@ -670,7 +699,8 @@
 					{
 						"name": "videoSidecar.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Absolute check-owned directory containing video-batches.json. The sidecar is bounded to one MiB, 64 pointers and 4096 full capture descriptors before use."
 					}
 				],
 				"outputs": [
@@ -694,17 +724,20 @@
 					{
 						"name": "sidecarCapture.sidecar",
 						"type": "GatherVideoSidecar",
-						"required": true
+						"required": true,
+						"description": "Parsed bounded sidecar with full original capture descriptors and child pointers. Each transport alias must select one unambiguous descriptor."
 					},
 					{
 						"name": "sidecarCapture.line",
 						"type": "CaptureLine",
-						"required": true
+						"required": true,
+						"description": "Parsed capture line carrying an opaque transport alias. Every transported metadata field must agree with its full descriptor before any reference is trusted."
 					},
 					{
 						"name": "sidecarCapture.recordPath",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Current record path prefix applied only to fresh descriptor basenames. Historical capture paths are preserved exactly for original-parent proof and media materialization."
 					}
 				],
 				"outputs": [
@@ -728,17 +761,20 @@
 					{
 						"name": "admitVideoReference.item",
 						"type": "Gathered",
-						"required": true
+						"required": true,
+						"description": "Parent-process gathered object whose canonical media, original parent and independent current input hash have already passed admission. Its identity and complete capture, line and fact fields are sealed in memory."
 					},
 					{
 						"name": "admitVideoReference.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Full SHA-1 of the current verified source snapshot. It identifies the current admission decision and does not relabel the historical renderer revision."
 					},
 					{
 						"name": "admitVideoReference.inputHash",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Current slot SHA-256 independently computed before snapshot setup. It must equal the authoritative resolved clip hash before this in-process proof is minted."
 					}
 				],
 				"outputs": [
@@ -756,12 +792,14 @@
 					{
 						"name": "trustedVideoReference.input",
 						"type": "CoverageInput",
-						"required": true
+						"required": true,
+						"description": "Scenario coverage input containing the current source revision and independently computed enrolled slot hashes. Other media, graph, build-declaration and reviewer gates remain applicable."
 					},
 					{
 						"name": "trustedVideoReference.item",
 						"type": "Gathered",
-						"required": true
+						"required": true,
+						"description": "The original admitted gathered object, with unchanged capture, line and decoded facts. Serialized copies or later metadata mutations carry no historical-stamp exception."
 					}
 				],
 				"outputs": [

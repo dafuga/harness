@@ -17,7 +17,7 @@ const schema = z.strictObject({
 				cacheRoot: z.string(),
 				slotKey: z.string(),
 				inputHash: hash,
-				addressedFlags: z.array(hash).max(256),
+				addressedFlags: z.array(z.string().min(1).max(200)).max(256),
 				directory: z.string(),
 				videoSha256: hash,
 				posterSha256: hash,

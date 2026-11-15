@@ -1,5 +1,5 @@
 // @harness-uid u_3exag5gqwq
-import { join, basename } from 'node:path';
+import { join } from 'node:path';
 import { canonicalJson } from '../../../../../utils/development-tooling/canonicalJson';
 import { captureSchema } from '../../../../../core/verification-evidence/verificationTypes';
 import { videoBatchPointerSchema } from '../../../../../utils/verification-evidence/videoClipSchema';
@@ -30,7 +30,7 @@ export function videoSidecar(directory: string): GatherVideoSidecar {
 
 export function sidecarCapture(sidecar: GatherVideoSidecar, line: CaptureLine, recordPath: string) {
 	const capture = sidecar.captures.find((row) => row.file === line.file)?.capture;
-	if (!capture || basename(capture.path) !== line.file || capture.status !== 'passed')
+	if (capture?.status !== 'passed')
 		throw new Error('Video reference has no matching full capture sidecar.');
 	const { path, capturedAt, status, sha256, bytes, ...wire } = capture;
 	void capturedAt;
