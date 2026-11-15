@@ -6,7 +6,6 @@ import { mkdir, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
-
 afterEach(() => vi.restoreAllMocks());
 vi.mock('node:fs', { spy: true });
 vi.mock('node:child_process', { spy: true });
@@ -33,7 +32,6 @@ const manifest = {
 	graphs: [],
 	playlists: [{ id: 'all', clips: ['first', 'second'] }]
 };
-
 async function fixture(root: string) {
 	for (const directory of ['src', 'test', 'specification/units'])
 		await mkdir(join(root, directory), { recursive: true });
@@ -55,59 +53,60 @@ async function fixture(root: string) {
 		);
 	}
 }
-
 test('VideoEvidenceService runs', () => {
 	expect(new VideoEvidenceService().run()).toBe('video-evidence');
 });
-
 test('clip planning reuses unchanged inputs and invalidates only actual consumers', async () => {
-	await withTempDir('harness-video-', async (root) => {
-		await fixture(root);
-		const service = new VideoEvidenceService(root);
-		await writeFile(join(root, 'src/first.ts'), "import './private.ts';");
-		await writeFile(join(root, 'src/private.ts'), 'export const answer = 1;');
-		const reads = vi.spyOn(files, 'readFileSync'),
-			tools = vi.spyOn(processes, 'spawnSync');
-		const first = service.plan(manifest);
-		expect(first.record).toHaveLength(4);
-		expect(first.reuse).toEqual([]);
-		expect(tools.mock.calls.filter(([command]) => command === 'ffmpeg')).toHaveLength(1);
-		const inputReads = reads.mock.calls.map(([path]) => String(path));
-		expect(inputReads.filter((path) => path.includes('specification/units/'))).toHaveLength(2);
-		expect(new Set(inputReads).size).toBe(inputReads.length);
-		const previous = first.record.map((slot) => ({ ...slot, testedRevision: 'a'.repeat(40) }));
-		await writeFile(join(root, 'src/unrelated.ts'), 'unrelated change');
-		const warm = service.plan(manifest, previous);
-		expect(warm.record).toEqual([]);
-		expect(warm.reuse).toEqual(previous);
-		expect(warm.reuse[0]).toBe(previous[0]);
-		await writeFile(join(root, 'src/private.ts'), 'export const answer = 2;');
-		expect(service.plan(manifest, previous).record.map((slot) => slot.clipId)).toEqual([
-			'first',
-			'first'
-		]);
-		const reordered = { ...manifest, playlists: [{ id: 'all', clips: ['second', 'first'] }] };
-		expect(service.plan(reordered, previous).reuse.map((slot) => slot.clipId)).toEqual([
-			'second',
-			'second'
-		]);
-		await writeFile(join(root, 'src/private.ts'), 'export const answer = 1;');
-		await writeFile(join(root, 'src/second.ts'), 'changed independent source');
-		expect(service.plan(manifest, previous).record.map((slot) => slot.clipId)).toEqual([
-			'second',
-			'second'
-		]);
-		await writeFile(join(root, 'src/first.ts'), 'import(target);');
-		const uncertain = service.plan(manifest).record;
-		expect(uncertain[0]).toMatchObject({ reasons: [expect.stringMatching(/dynamic|non-literal/)] });
-		await writeFile(join(root, 'src/unrelated.ts'), 'changed dynamic candidate');
-		expect(service.plan(manifest, uncertain).record.map((slot) => slot.clipId)).toEqual([
-			'first',
-			'first'
-		]);
-	});
+	await measureWorkload('service.verification-evidence-video-evidence', 'plan-input-closure', () =>
+		withTempDir('harness-video-', async (root) => {
+			await fixture(root);
+			const service = new VideoEvidenceService(root);
+			await writeFile(join(root, 'src/first.ts'), "import './private.ts';");
+			await writeFile(join(root, 'src/private.ts'), 'export const answer = 1;');
+			const reads = vi.spyOn(files, 'readFileSync'),
+				tools = vi.spyOn(processes, 'spawnSync');
+			const first = service.plan(manifest);
+			expect(first.record).toHaveLength(4);
+			expect(first.reuse).toEqual([]);
+			expect(tools.mock.calls.filter(([command]) => command === 'ffmpeg')).toHaveLength(1);
+			const inputReads = reads.mock.calls.map(([path]) => String(path));
+			expect(inputReads.filter((path) => path.includes('specification/units/'))).toHaveLength(2);
+			expect(new Set(inputReads).size).toBe(inputReads.length);
+			const previous = first.record.map((slot) => ({ ...slot, testedRevision: 'a'.repeat(40) }));
+			await writeFile(join(root, 'src/unrelated.ts'), 'unrelated change');
+			const warm = service.plan(manifest, previous);
+			expect(warm.record).toEqual([]);
+			expect(warm.reuse).toEqual(previous);
+			expect(warm.reuse[0]).toBe(previous[0]);
+			await writeFile(join(root, 'src/private.ts'), 'export const answer = 2;');
+			expect(service.plan(manifest, previous).record.map((slot) => slot.clipId)).toEqual([
+				'first',
+				'first'
+			]);
+			const reordered = { ...manifest, playlists: [{ id: 'all', clips: ['second', 'first'] }] };
+			expect(service.plan(reordered, previous).reuse.map((slot) => slot.clipId)).toEqual([
+				'second',
+				'second'
+			]);
+			await writeFile(join(root, 'src/private.ts'), 'export const answer = 1;');
+			await writeFile(join(root, 'src/second.ts'), 'changed independent source');
+			expect(service.plan(manifest, previous).record.map((slot) => slot.clipId)).toEqual([
+				'second',
+				'second'
+			]);
+			await writeFile(join(root, 'src/first.ts'), 'import(target);');
+			const uncertain = service.plan(manifest).record;
+			expect(uncertain[0]).toMatchObject({
+				reasons: [expect.stringMatching(/dynamic|non-literal/)]
+			});
+			await writeFile(join(root, 'src/unrelated.ts'), 'changed dynamic candidate');
+			expect(service.plan(manifest, uncertain).record.map((slot) => slot.clipId)).toEqual([
+				'first',
+				'first'
+			]);
+		})
+	);
 });
-
 test('clip planning follows shared dependencies and rejects missing source bindings', async () => {
 	await withTempDir('harness-video-', async (root) => {
 		await fixture(root);
@@ -162,7 +161,6 @@ test('clip planning follows shared dependencies and rejects missing source bindi
 		).toThrow(/missing/i);
 	});
 });
-
 test('graph coverage counts only asserted timestamped states and real edges', async () => {
 	await measureWorkload('service.video-evidence', 'judge-clip-coverage', () => {
 		const graph = {
