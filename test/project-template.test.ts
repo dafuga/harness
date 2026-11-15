@@ -54,7 +54,7 @@ test('app projects include SvelteKit and specification files', () =>
 			expect(fileContents(files, path)).toContain('src/helpers/<responsibility>/<camelName>.ts');
 			expect(fileContents(files, path)).toContain('selected callable implementation');
 		}
-		expectContractAndRenameGuidance(files);
+		expectAgentGuidance(files);
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 		expect(packageJson.harness.kind).toBe('app');
 		expect(packageJson.scripts['test:e2e']).toBe('playwright test');
@@ -94,7 +94,7 @@ test('library projects include Bun TypeScript test structure', () => {
 		expect(fileContents(files, path)).toContain('<camelName>.ts');
 		expect(fileContents(files, path)).toContain('instantiated classes');
 	}
-	expectContractAndRenameGuidance(files);
+	expectAgentGuidance(files);
 	expect(packageJson.harness.kind).toBe('lib');
 	expect(packageJson.scripts.audit).toContain('harness-audit');
 	expect(packageJson.scripts.check).toContain('format:check');
@@ -159,7 +159,7 @@ function expectResourceGuidance(files: ReturnType<typeof projectFiles>): void {
 	expect(fileContents(files, 'AGENTS.md')).toContain('Finish current tests under pressure');
 }
 
-function expectContractAndRenameGuidance(files: Parameters<typeof fileContents>[0]): void {
+function expectAgentGuidance(files: Parameters<typeof fileContents>[0]): void {
 	expectRenameGuidance(files);
 	assertHarnessCliGuidance(files);
 	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md'])
