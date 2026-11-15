@@ -12,22 +12,49 @@
 		"symbols": ["runReport"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "runReport.args",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Arguments forwarded unchanged after the reports CLI entry script in the child process's argv. runReport does not parse or validate them, and an element containing a null byte makes the returned promise reject before the child starts.",
+				"examples": [
+					[],
+					["--help"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "runReport",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves with no value once the child process emits 'exit'; the exit code is not returned but stored in process.exitCode, using 1 when the code is null (for example after a signal). A child that exits with a non-zero code therefore does not reject the promise."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown with code ERR_INVALID_URL_SCHEME by fileURLToPath when import.meta.url is not a file: URL, or with code ERR_INVALID_ARG_VALUE by spawn when an args element or environment value contains a null byte; either one makes the returned promise reject."
+			},
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "Any error thrown by reportsEnvironment() while the child environment is built is not caught here, so it makes the returned promise reject; this file does not define that error's class."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An Error with an errno code such as ENOENT or EACCES is emitted as an 'error' event when the child process cannot be started. runReport attaches no 'error' listener, so the event is thrown asynchronously as an uncaught exception, and the 'exit' listener that resolves the promise never runs."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A start failure that spawn reports by throwing synchronously, instead of by an 'error' event, is an Error with an errno code and makes the returned promise reject."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "runReport",
@@ -35,17 +62,44 @@
 					{
 						"name": "runReport.args",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Arguments forwarded unchanged after the reports CLI entry script in the child process's argv. runReport does not parse or validate them, and an element containing a null byte makes the returned promise reject before the child starts.",
+						"examples": [
+							[],
+							["--help"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "runReport",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves with no value once the child process emits 'exit'; the exit code is not returned but stored in process.exitCode, using 1 when the code is null (for example after a signal). A child that exits with a non-zero code therefore does not reject the promise."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown with code ERR_INVALID_URL_SCHEME by fileURLToPath when import.meta.url is not a file: URL, or with code ERR_INVALID_ARG_VALUE by spawn when an args element or environment value contains a null byte; either one makes the returned promise reject."
+					},
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Any error thrown by reportsEnvironment() while the child environment is built is not caught here, so it makes the returned promise reject; this file does not define that error's class."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An Error with an errno code such as ENOENT or EACCES is emitted as an 'error' event when the child process cannot be started. runReport attaches no 'error' listener, so the event is thrown asynchronously as an uncaught exception, and the 'exit' listener that resolves the promise never runs."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A start failure that spawn reports by throwing synchronously, instead of by an 'error' event, is an Error with an errno code and makes the returned promise reject."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
