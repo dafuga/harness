@@ -28,30 +28,89 @@
 				"name": "PluginResourceCard.entry",
 				"type": "ModuleEntry",
 				"required": true,
-				"description": "The plugin as read at this revision: its definition, source and whether it is installed."
+				"description": "The module entry supplies definition.id for the generate command and installed for the command label. This component does not read its source, instances, or other definition fields.",
+				"examples": [
+					{
+						"definition": {
+							"schemaVersion": 1,
+							"id": "components",
+							"version": "1.0.0",
+							"title": "Components",
+							"includedByDefault": true,
+							"visibility": "internal",
+							"order": 2,
+							"description": "Components used by this project's code.",
+							"instructions": [
+								"Included from the start. Browse Components through Code; existing addresses and source identities are preserved.",
+								"Generate a component through this module and use --group for its responsibility category."
+							],
+							"setup": [],
+							"dependencies": {},
+							"resources": [
+								{
+									"id": "component",
+									"title": "Components",
+									"singular": "Component",
+									"kind": "component",
+									"instructions": [
+										"Use the existing Harness scaffold rules, implement the declared responsibility and run the generated tests."
+									],
+									"files": [],
+									"catalog": "components",
+									"primary": true,
+									"generator": {
+										"kind": "scaffold",
+										"scaffold": "component"
+									}
+								}
+							]
+						},
+						"source": "builtin",
+						"installed": true,
+						"instances": []
+					}
+				]
 			},
 			{
 				"name": "PluginResourceCard.resource",
 				"type": "ModuleResource",
 				"required": true,
-				"description": "The resource type to describe."
+				"description": "The module resource supplies instructions for PluginSteps and id for the generate command. The card does not read its other resource fields.",
+				"examples": [
+					{
+						"id": "component",
+						"title": "Components",
+						"singular": "Component",
+						"kind": "component",
+						"instructions": [
+							"Use the existing Harness scaffold rules, implement the declared responsibility and run the generated tests."
+						],
+						"files": [],
+						"catalog": "components",
+						"primary": true,
+						"generator": {
+							"kind": "scaffold",
+							"scaffold": "component"
+						}
+					}
+				]
 			},
 			{
 				"name": "PluginResourceCard.title",
 				"type": "Snippet",
 				"required": true,
-				"description": "The resource title, linked to its list when the plugin is installed."
+				"description": "The snippet renders the card heading. The component calls it once and does not construct or link its contents."
 			}
 		],
 		"outputs": [
 			{
 				"name": "PluginResourceCard",
 				"type": "markup",
-				"description": "A card for the resource type grid."
+				"description": "The rendered card contains the heading snippet, instruction steps, and a generate command block. The command is harness plugin generate <entry.definition.id> <resource.id> Example; its label is Generate when entry.installed is true and Generate, once installed otherwise."
 			}
 		],
 		"errors": [],
-		"errorStatus": "declared",
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
