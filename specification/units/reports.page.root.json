@@ -18,16 +18,17 @@
 			{
 				"name": "load",
 				"type": "never",
-				"description": "Does not return; throws the permanent redirect to the explorer."
+				"description": "The return value of load(), typed never: every call throws at redirect(308, '/harness') and never returns, so no page data is produced. It matters to anything expecting page data from this route, since none is ever returned."
 			}
 		],
 		"errors": [
 			{
 				"name": "Redirect",
-				"type": "SvelteKit redirect",
-				"description": "Throws HTTP 308 to /harness."
+				"type": "thrown",
+				"description": "A SvelteKit redirect thrown by redirect(308, '/harness') from @sveltejs/kit, with status 308 to /harness. The throw is unconditional, because load() has no branch that skips the call, so it applies to every request that runs this load."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "load",
@@ -36,16 +37,17 @@
 					{
 						"name": "load",
 						"type": "never",
-						"description": "Does not return; throws the permanent redirect to the explorer."
+						"description": "The return value of load(), typed never: every call throws at redirect(308, '/harness') and never returns, so no page data is produced. It matters to anything expecting page data from this route, since none is ever returned."
 					}
 				],
 				"errors": [
 					{
 						"name": "Redirect 308",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The SvelteKit redirect thrown by redirect(308, '/harness') from @sveltejs/kit, which is unconditional. It is the only error load() throws, since that call is the only statement in its body."
 					}
 				],
-				"errorStatus": "found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
