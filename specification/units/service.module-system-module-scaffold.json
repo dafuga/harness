@@ -21,35 +21,70 @@
 				"name": "ModuleScaffoldService.generate.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute destination project directory."
+				"description": "Project directory passed to the selected scaffold workflow as its root for project detection and file generation. The service forwards this string unchanged.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+				]
 			},
 			{
 				"name": "ModuleScaffoldService.generate.resource",
 				"type": "ModuleResource",
 				"required": true,
-				"description": "Validated resource declaring a standard scaffold generator."
+				"description": "Module resource containing the generator declaration. The service proceeds only when generator.kind is scaffold; a scaffold value of model selects generateModel, and every other declared scaffold selects generatePiece with its level.",
+				"examples": [
+					{
+						"id": "invoice-test",
+						"title": "Invoice test",
+						"singular": "invoice test",
+						"kind": "test",
+						"instructions": ["Generate a focused test file."],
+						"files": [],
+						"generator": {
+							"kind": "scaffold",
+							"scaffold": "test"
+						}
+					}
+				]
 			},
 			{
 				"name": "ModuleScaffoldService.generate.request",
 				"type": "ModuleResourceRequest",
 				"required": true,
-				"description": "Validated resource name and optional responsibility group."
+				"description": "The service forwards name as the scaffold name and group as the optional responsibility-group identifier. If omitted, group is passed as undefined.",
+				"examples": [
+					{
+						"name": "Invoice"
+					},
+					{
+						"name": "Invoice",
+						"group": "billing"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleScaffoldService.generate",
 				"type": "Promise<string[]>",
-				"description": "Relative paths processed by the existing scaffold workflow."
+				"description": "Resolves to the path strings from the delegated workflow’s write results, in workflow order. The returned array includes skipped paths and omits write status, file contents, and export-update metadata.",
+				"examples": [
+					["test/invoice.test.ts"]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid names, ineligible scaffold kinds, groups or source conflicts reject generation."
+				"description": "The service throws a plain Error with message 'A scaffold generator is required.' when resource.generator?.kind is not scaffold; native errors from delegated filesystem operations also propagate through the promise."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Delegated generators reject with ExpectedCliError for invalid names or group identifiers, mismatched component levels, ineligible project/scaffold combinations, ambiguous group selection, duplicate grouped names, or refused overwrites. The service propagates these failures as promise rejections."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleScaffoldService.generate",
@@ -58,35 +93,70 @@
 						"name": "ModuleScaffoldService.generate.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute destination project directory."
+						"description": "Project directory passed to the selected scaffold workflow as its root for project detection and file generation. The service forwards this string unchanged.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
+						]
 					},
 					{
 						"name": "ModuleScaffoldService.generate.resource",
 						"type": "ModuleResource",
 						"required": true,
-						"description": "Validated resource declaring a standard scaffold generator."
+						"description": "Module resource containing the generator declaration. The service proceeds only when generator.kind is scaffold; a scaffold value of model selects generateModel, and every other declared scaffold selects generatePiece with its level.",
+						"examples": [
+							{
+								"id": "invoice-test",
+								"title": "Invoice test",
+								"singular": "invoice test",
+								"kind": "test",
+								"instructions": ["Generate a focused test file."],
+								"files": [],
+								"generator": {
+									"kind": "scaffold",
+									"scaffold": "test"
+								}
+							}
+						]
 					},
 					{
 						"name": "ModuleScaffoldService.generate.request",
 						"type": "ModuleResourceRequest",
 						"required": true,
-						"description": "Validated resource name and optional responsibility group."
+						"description": "The service forwards name as the scaffold name and group as the optional responsibility-group identifier. If omitted, group is passed as undefined.",
+						"examples": [
+							{
+								"name": "Invoice"
+							},
+							{
+								"name": "Invoice",
+								"group": "billing"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleScaffoldService.generate",
 						"type": "Promise<string[]>",
-						"description": "Relative paths processed by the existing scaffold workflow."
+						"description": "Resolves to the path strings from the delegated workflow’s write results, in workflow order. The returned array includes skipped paths and omits write status, file contents, and export-update metadata.",
+						"examples": [
+							["test/invoice.test.ts"]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The service throws a plain Error with message 'A scaffold generator is required.' when resource.generator?.kind is not scaffold; native errors from delegated filesystem operations also propagate through the promise."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Delegated generators reject with ExpectedCliError for invalid names or group identifiers, mismatched component levels, ineligible project/scaffold combinations, ambiguous group selection, duplicate grouped names, or refused overwrites. The service propagates these failures as promise rejections."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
