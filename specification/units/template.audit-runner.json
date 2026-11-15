@@ -12,22 +12,39 @@
 		"symbols": ["auditRunnerFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "auditRunnerFiles.kind",
 				"type": "ProjectKind",
-				"required": true
+				"required": true,
+				"description": "The ProjectKind of the project being scaffolded. It is inserted verbatim inside single quotes as the --profile value of the generated scripts/harness-audit.ts, which selects the audit profile that script runs; the function does not validate or escape it at runtime.",
+				"examples": ["app", "lib"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "auditRunnerFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "The file plan that auditRunnerFiles returns, which project.ts spreads into its app and lib file plans: a one-element array holding a PlannedFile at scripts/harness-audit.ts whose contents are a script that spawns `harness audit . --profile <kind>` (through `bun` on HARNESS_CLI_PATH when that variable is set, otherwise through the `harness` command) and exits with the child's exit code. The function only returns this array and performs no file I/O.",
+				"examples": [
+					[
+						{
+							"path": "scripts/harness-audit.ts",
+							"contents": "const harnessCliPath = process.env.HARNESS_CLI_PATH;\nconst args = harnessCliPath\n\t? ['bun', harnessCliPath, 'audit', '.', '--profile', 'app']\n\t: ['harness', 'audit', '.', '--profile', 'app'];\n\nconst result = Bun.spawnSync(args, {\n\tstdout: 'inherit',\n\tstderr: 'inherit'\n});\n\nprocess.exit(result.exitCode);\n"
+						}
+					],
+					[
+						{
+							"path": "scripts/harness-audit.ts",
+							"contents": "const harnessCliPath = process.env.HARNESS_CLI_PATH;\nconst args = harnessCliPath\n\t? ['bun', harnessCliPath, 'audit', '.', '--profile', 'lib']\n\t: ['harness', 'audit', '.', '--profile', 'lib'];\n\nconst result = Bun.spawnSync(args, {\n\tstdout: 'inherit',\n\tstderr: 'inherit'\n});\n\nprocess.exit(result.exitCode);\n"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "auditRunnerFiles",
@@ -35,17 +52,34 @@
 					{
 						"name": "auditRunnerFiles.kind",
 						"type": "ProjectKind",
-						"required": true
+						"required": true,
+						"description": "The ProjectKind of the project being scaffolded. It is inserted verbatim inside single quotes as the --profile value of the generated scripts/harness-audit.ts, which selects the audit profile that script runs; the function does not validate or escape it at runtime.",
+						"examples": ["app", "lib"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditRunnerFiles",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "The file plan that auditRunnerFiles returns, which project.ts spreads into its app and lib file plans: a one-element array holding a PlannedFile at scripts/harness-audit.ts whose contents are a script that spawns `harness audit . --profile <kind>` (through `bun` on HARNESS_CLI_PATH when that variable is set, otherwise through the `harness` command) and exits with the child's exit code. The function only returns this array and performs no file I/O.",
+						"examples": [
+							[
+								{
+									"path": "scripts/harness-audit.ts",
+									"contents": "const harnessCliPath = process.env.HARNESS_CLI_PATH;\nconst args = harnessCliPath\n\t? ['bun', harnessCliPath, 'audit', '.', '--profile', 'app']\n\t: ['harness', 'audit', '.', '--profile', 'app'];\n\nconst result = Bun.spawnSync(args, {\n\tstdout: 'inherit',\n\tstderr: 'inherit'\n});\n\nprocess.exit(result.exitCode);\n"
+								}
+							],
+							[
+								{
+									"path": "scripts/harness-audit.ts",
+									"contents": "const harnessCliPath = process.env.HARNESS_CLI_PATH;\nconst args = harnessCliPath\n\t? ['bun', harnessCliPath, 'audit', '.', '--profile', 'lib']\n\t: ['harness', 'audit', '.', '--profile', 'lib'];\n\nconst result = Bun.spawnSync(args, {\n\tstdout: 'inherit',\n\tstderr: 'inherit'\n});\n\nprocess.exit(result.exitCode);\n"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
