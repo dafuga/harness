@@ -35,23 +35,87 @@
 				"name": "EntityCard.entity",
 				"type": "CatalogEntity",
 				"required": true,
-				"description": "The project item to show, including its summary, preview and recorded verification status."
+				"description": "The catalog entity to show, one item of the shown project's catalog. Its category sets the layout, and the card reads its id, title, summary, kind, latestVersion, hasPlan, verification, verificationNote and thumbnail: a functions entity never shows a picture, and a null thumbnail on any other entity shows a text placeholder in place of the picture.",
+				"examples": [
+					{
+						"id": "desktop.component.plan-badge",
+						"category": "components",
+						"kind": "component",
+						"title": "PlanBadge",
+						"summary": "Shows the Plan marker that a catalog entity carries when it has a design proposal.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null
+					},
+					{
+						"id": "desktop.page.catalog",
+						"category": "pages",
+						"kind": "page",
+						"title": "Harness catalog",
+						"summary": "Lists the catalog of the shown project, one card for each entity.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": {
+							"source": "recorded",
+							"scenario": "desktop-renderer",
+							"state": "default",
+							"viewport": "desktop"
+						}
+					},
+					{
+						"id": "reports.component.evidence-grid",
+						"category": "components",
+						"kind": "component",
+						"title": "EvidenceGrid",
+						"summary": "Shows the screenshots of a unit's states and viewports in one grid.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": true,
+						"lifecycle": "review",
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+						"latestVersion": "v002",
+						"approvedVersion": null,
+						"threadCount": 1,
+						"thumbnail": {
+							"version": "v002",
+							"sha256": "b1d4e7a09f3c2e85d6a1f0b7c4e9d2a5b8c3f6e1d0a7b4c9e2f5a8d1b6c3e0f7",
+							"state": "default",
+							"viewport": "desktop"
+						}
+					}
+				]
 			},
 			{
 				"name": "EntityCard.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "The selected project and revision, used to load the preview and open the item."
+				"description": "The workspace store of the shown project, a WorkspaceState instance: its loaded revision commit is the commit that design images are read at, and its path() builds every link on the card. Until a snapshot is loaded, path() returns '/' and no design image is requested, and no image is requested while no bridge is connected."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityCard",
 				"type": "markup",
-				"description": "Pages use one title-and-image navigation link. Other entities retain their summary, plan marker, verification and open action. Recorded screenshots and planned designs keep separate identity and accessible labels."
+				"description": "The card article, with class entity-card and also planned when the entity has a plan: a function without a plan is one link around its title, a page is one link around its explorer name and thumbnail, and any other entity shows its explorer name, its plan badge if it has a plan, its summary, a picture (none for a function), its version or kind label, a verification icon and a review or open link. Recorded previews are labelled 'Recorded preview of <name>' with the image alt 'Screenshot of <name>', where <name> is the explorer name, and loaded design images carry the alt text '<title> design <version>'."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
