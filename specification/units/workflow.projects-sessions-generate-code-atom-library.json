@@ -12,41 +12,58 @@
 		"symbols": ["atomLibrary", "useAtomLibrary"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "atomLibrary.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root used to locate src and compute the selected library path. If src is absent, the workflow returns src/components/atoms; it recognizes only Svelte files with a parseable @harness-atoms declaration whose target contains HtmlButton.svelte.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+				]
 			},
 			{
 				"name": "useAtomLibrary.files",
 				"type": "PlannedFile[]",
-				"required": true
+				"required": true,
+				"description": "Planned files to transform. When the directory is not src/components/atoms, each entry is shallow-copied and .svelte entries use path and contents for import and declaration rewriting; an empty array is accepted.",
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "useAtomLibrary.directory",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative atom library directory, typically the path returned by atomLibrary. The exact value src/components/atoms skips rewriting; any other string is used as the replacement directory without checking that it exists.",
+				"examples": ["src/components/atoms", "src/lib/atoms"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "atomLibrary",
-				"type": "string"
+				"type": "string",
+				"description": "Repository-relative path to the single recognized native atom library. It defaults to src/components/atoms when src is absent or no qualifying declaration exists, and fails when more than one distinct qualifying directory is found.",
+				"examples": ["src/components/atoms"]
 			},
 			{
 				"name": "useAtomLibrary",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Files returned for generation. If directory is src/components/atoms, the original array is returned; otherwise each file object is shallow-copied and only .svelte contents are rewritten for atom imports and the @harness-atoms marker.",
+				"examples": [
+					[]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown by atomLibrary when it finds more than one qualifying native atom library directory; the error message asks to reconcile the shared library before generating UI."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "atomLibrary",
@@ -54,22 +71,29 @@
 					{
 						"name": "atomLibrary.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root used to locate src and compute the selected library path. If src is absent, the workflow returns src/components/atoms; it recognizes only Svelte files with a parseable @harness-atoms declaration whose target contains HtmlButton.svelte.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-8"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "atomLibrary",
-						"type": "string"
+						"type": "string",
+						"description": "Repository-relative path to the single recognized native atom library. It defaults to src/components/atoms when src is absent or no qualifying declaration exists, and fails when more than one distinct qualifying directory is found.",
+						"examples": ["src/components/atoms"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown by atomLibrary when it finds more than one qualifying native atom library directory; the error message asks to reconcile the shared library before generating UI."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "useAtomLibrary",
@@ -77,22 +101,32 @@
 					{
 						"name": "useAtomLibrary.files",
 						"type": "PlannedFile[]",
-						"required": true
+						"required": true,
+						"description": "Planned files to transform. When the directory is not src/components/atoms, each entry is shallow-copied and .svelte entries use path and contents for import and declaration rewriting; an empty array is accepted.",
+						"examples": [
+							[]
+						]
 					},
 					{
 						"name": "useAtomLibrary.directory",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative atom library directory, typically the path returned by atomLibrary. The exact value src/components/atoms skips rewriting; any other string is used as the replacement directory without checking that it exists.",
+						"examples": ["src/components/atoms", "src/lib/atoms"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "useAtomLibrary",
-						"type": "PlannedFile[]"
+						"type": "PlannedFile[]",
+						"description": "Files returned for generation. If directory is src/components/atoms, the original array is returned; otherwise each file object is shallow-copied and only .svelte contents are rewritten for atom imports and the @harness-atoms marker.",
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
