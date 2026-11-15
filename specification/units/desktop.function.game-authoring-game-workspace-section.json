@@ -20,27 +20,49 @@
 				"name": "gameWorkspaceSection.view",
 				"type": "GameView | undefined",
 				"required": true,
-				"description": "Current level; undefined means no plan. No default is supplied."
+				"description": "The current level; undefined is treated the same as a level whose planning is unset. Only view.planning decides whether the plan branch applies, and LevelValidator.isReady(view) runs only for a planned level's section that is neither Level nor Mechanics.",
+				"examples": [
+					{
+						"id": "courtyard",
+						"title": "The courtyard",
+						"dimension": "2d",
+						"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+						"checkpoints": []
+					},
+					{
+						"id": "courtyard",
+						"title": "The courtyard",
+						"dimension": "3d",
+						"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+						"checkpoints": [],
+						"planning": {
+							"concept": "Walled garden with the key on a raised ledge",
+							"description": "The player climbs to the key, then reaches the door on the far wall."
+						}
+					}
+				]
 			},
 			{
 				"name": "gameWorkspaceSection.tab",
 				"type": "GameSection",
 				"required": true,
-				"description": "Requested workspace section; no default is supplied."
+				"description": "The section the caller requests. With no plan only Level changes, to Checkpoints; with a plan, Mechanics and Level are kept, and any other section is kept only when LevelValidator.isReady(view) is true, otherwise it becomes Level.",
+				"examples": ["Level", "Checkpoints", "Mechanics"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gameWorkspaceSection",
 				"type": "GameSection",
-				"description": "Requested section when allowed, otherwise Level for an unfinished plan or Checkpoints for an unplanned Level tab."
+				"description": "The section the workspace shows: the requested tab when it is kept; with a plan, Level for a Level request or for any non-Mechanics tab while LevelValidator.isReady(view) is false; with no plan, Checkpoints for a Level request.",
+				"examples": ["Level", "Checkpoints", "Mechanics"]
 			}
 		],
 		"errors": [
 			{
 				"name": "Input access failure",
 				"type": "propagated",
-				"description": "Errors from supplied planning getters or LevelValidator access propagate unchanged."
+				"description": "Any exception raised while reading view.planning or inside LevelValidator.isReady(view) is not caught and propagates unchanged."
 			}
 		],
 		"errorStatus": "declared",
@@ -52,27 +74,49 @@
 						"name": "gameWorkspaceSection.view",
 						"type": "GameView | undefined",
 						"required": true,
-						"description": "Current level; undefined means no plan. No default is supplied."
+						"description": "The current level; undefined is treated the same as a level whose planning is unset. Only view.planning decides whether the plan branch applies, and LevelValidator.isReady(view) runs only for a planned level's section that is neither Level nor Mechanics.",
+						"examples": [
+							{
+								"id": "courtyard",
+								"title": "The courtyard",
+								"dimension": "2d",
+								"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+								"checkpoints": []
+							},
+							{
+								"id": "courtyard",
+								"title": "The courtyard",
+								"dimension": "3d",
+								"style": "Lush illustrated garden, warm stone, soft sunlight. Preserve the player, key and door positions.",
+								"checkpoints": [],
+								"planning": {
+									"concept": "Walled garden with the key on a raised ledge",
+									"description": "The player climbs to the key, then reaches the door on the far wall."
+								}
+							}
+						]
 					},
 					{
 						"name": "gameWorkspaceSection.tab",
 						"type": "GameSection",
 						"required": true,
-						"description": "Requested workspace section; no default is supplied."
+						"description": "The section the caller requests. With no plan only Level changes, to Checkpoints; with a plan, Mechanics and Level are kept, and any other section is kept only when LevelValidator.isReady(view) is true, otherwise it becomes Level.",
+						"examples": ["Level", "Checkpoints", "Mechanics"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gameWorkspaceSection",
 						"type": "GameSection",
-						"description": "Requested section when allowed, otherwise Level for an unfinished plan or Checkpoints for an unplanned Level tab."
+						"description": "The section the workspace shows: the requested tab when it is kept; with a plan, Level for a Level request or for any non-Mechanics tab while LevelValidator.isReady(view) is false; with no plan, Checkpoints for a Level request.",
+						"examples": ["Level", "Checkpoints", "Mechanics"]
 					}
 				],
 				"errors": [
 					{
 						"name": "Input access failure",
 						"type": "propagated",
-						"description": "Errors from supplied planning getters or LevelValidator access propagate unchanged."
+						"description": "Any exception raised while reading view.planning or inside LevelValidator.isReady(view) is not caught and propagates unchanged."
 					}
 				],
 				"errorStatus": "declared"
