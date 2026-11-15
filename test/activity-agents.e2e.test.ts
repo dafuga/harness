@@ -5,7 +5,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { AgentRegistryRepository } from '../src/repositories/AgentRegistryRepository';
+import { AgentRegistryRepository } from '../src/services/agents-providers/agent-activity-service/AgentRegistryRepository';
 import { runHarness } from './support/cli';
 /** What a live agent allows between heartbeats here, in seconds: far longer than a case runs. */
 const allowed = 600;

@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/repositories/BudgetLedgerRepository.ts",
 			"src/repositories/verification-evidence/BudgetLedgerRepository.ts",
 			"src/repositories/verification-evidence/BudgetLedgerRepository.types.ts"
 		],
 		"symbols": [
-			"BudgetLedgerRepository",
 			"BudgetLedgerRepository",
 			"BudgetLedgerRepository.constructor",
 			"BudgetLedgerRepository.read",

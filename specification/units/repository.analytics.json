@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/repositories/AnalyticsRepository.ts",
-			"src/repositories/reports-media/AnalyticsRepository.ts"
-		],
+		"source": ["src/repositories/reports-media/AnalyticsRepository.ts"],
 		"symbols": [
-			"AnalyticsRepository",
 			"AnalyticsRepository",
 			"AnalyticsRepository.constructor",
 			"AnalyticsRepository.open",

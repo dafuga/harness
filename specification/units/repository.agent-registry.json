@@ -9,14 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/repositories/AgentRegistryRepository.ts",
 			"src/services/agent-activity-service/AgentRegistryRepository.ts",
 			"src/services/agents-providers/agent-activity-service/AgentRegistryRepository.ts",
 			"src/services/agents-providers/agent-activity-service/AgentRegistryRepository.types.ts"
 		],
 		"symbols": [
-			"AgentRegistryRepository",
-			"StoredAgent",
 			"AgentRegistryRepository",
 			"AgentRegistryRepository",
 			"AgentRegistryRepository.constructor",

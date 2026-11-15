@@ -31,7 +31,10 @@ test('dashboard consumes a complete large analytics response before parsing', as
 	vi.stubEnv('HARNESS_ANALYTICS_HOME', root);
 	vi.stubEnv('HARNESS_ANALYTICS_DISABLED', '1');
 	try {
-		const repository = join(process.cwd(), '../../src/repositories/AnalyticsRepository.ts');
+		const repository = join(
+			process.cwd(),
+			'../../src/repositories/reports-media/AnalyticsRepository.ts'
+		);
 		await writeFile(
 			cli,
 			`import {AnalyticsRepository} from ${JSON.stringify(repository)}; const r=new AnalyticsRepository(); for(let i=0;i<4000;i++) r.record({id:String(i),timestamp:"2026-10-01T00:00:00.000Z",project:${JSON.stringify(process.cwd())},kind:"command",action:"x".repeat(512)}); r.close();`

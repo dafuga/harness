@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/repositories/ExplanationRepository.ts",
-			"src/repositories/verification-evidence/ExplanationRepository.ts"
-		],
+		"source": ["src/repositories/verification-evidence/ExplanationRepository.ts"],
 		"symbols": [
-			"ExplanationRepository",
 			"ExplanationRepository",
 			"ExplanationRepository.constructor",
 			"ExplanationRepository.all",

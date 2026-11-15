@@ -3,7 +3,7 @@ import { PermissionCatalogService } from '../../networking-security/PermissionCa
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
 import { translationCatalog } from './translationCatalog';
 import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailService.types';
-import { BudgetLedgerRepository } from '../../../repositories/BudgetLedgerRepository';
+import { BudgetLedgerRepository } from '../../../repositories/verification-evidence/BudgetLedgerRepository';
 import { BudgetService } from '../../budget-service/BudgetService';
 import { CommitTreeAdapter } from '../../../adapters/git-source-history/CommitTreeAdapter';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
