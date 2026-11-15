@@ -22,37 +22,67 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "MiraReportAdapter.ingest.store",
 				"type": "ReportRepository",
-				"required": true
+				"required": true,
+				"description": "The ReportRepository receiving records emitted during the import. It must provide the record operation that the adapter awaits for each record."
 			},
 			{
 				"name": "MiraReportAdapter.ingest.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The report identifier passed to each repository record call. The adapter forwards it unchanged and does not validate its format.",
+				"examples": ["report-123"]
 			},
 			{
 				"name": "MiraReportAdapter.ingest.file",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The UTF-8 JSON file parsed as a MiraAsset array; each asset file path is resolved relative to this file's directory. The parsed JSON is type-asserted without runtime validation.",
+				"examples": ["packages/reports/fixtures/mira-assets.json"]
 			},
 			{
 				"name": "MiraReportAdapter.ingest.findingsFile",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "An optional UTF-8 JSON file read when this value is truthy; its issues are imported and its scene counts determine coverage status. The parsed JSON is type-asserted without runtime validation.",
+				"examples": ["packages/reports/fixtures/mira-findings.json"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "MiraReportAdapter.ingest",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The resolved result reports the number of entries in the parsed assets array as evidence. It is returned after the asset records, optional findings and coverage, and import check have been recorded.",
+				"examples": [
+					{
+						"evidence": 2
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "JSON.parse rejects with SyntaxError when the assets file or a supplied findings file contains malformed JSON."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Parsed JSON is cast without runtime validation, so incompatible array or record shapes can cause TypeError during iteration, field access, or path construction."
+			},
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "Filesystem read failures and throws or rejected values from ReportRepository.record propagate through ingest without being translated."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "MiraReportAdapter.ingest",
@@ -60,32 +90,62 @@
 					{
 						"name": "MiraReportAdapter.ingest.store",
 						"type": "ReportRepository",
-						"required": true
+						"required": true,
+						"description": "The ReportRepository receiving records emitted during the import. It must provide the record operation that the adapter awaits for each record."
 					},
 					{
 						"name": "MiraReportAdapter.ingest.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The report identifier passed to each repository record call. The adapter forwards it unchanged and does not validate its format.",
+						"examples": ["report-123"]
 					},
 					{
 						"name": "MiraReportAdapter.ingest.file",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The UTF-8 JSON file parsed as a MiraAsset array; each asset file path is resolved relative to this file's directory. The parsed JSON is type-asserted without runtime validation.",
+						"examples": ["packages/reports/fixtures/mira-assets.json"]
 					},
 					{
 						"name": "MiraReportAdapter.ingest.findingsFile",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "An optional UTF-8 JSON file read when this value is truthy; its issues are imported and its scene counts determine coverage status. The parsed JSON is type-asserted without runtime validation.",
+						"examples": ["packages/reports/fixtures/mira-findings.json"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "MiraReportAdapter.ingest",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The resolved result reports the number of entries in the parsed assets array as evidence. It is returned after the asset records, optional findings and coverage, and import check have been recorded.",
+						"examples": [
+							{
+								"evidence": 2
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse rejects with SyntaxError when the assets file or a supplied findings file contains malformed JSON."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Parsed JSON is cast without runtime validation, so incompatible array or record shapes can cause TypeError during iteration, field access, or path construction."
+					},
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Filesystem read failures and throws or rejected values from ReportRepository.record propagate through ingest without being translated."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
