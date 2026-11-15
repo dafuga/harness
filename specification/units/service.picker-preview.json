@@ -16,42 +16,54 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PickerPreviewService.constructor.service",
 				"type": "ProviderSwitchService",
-				"required": true
+				"required": true,
+				"description": "The provider-switch service instance passed to the tool dispatcher for POST `/tools` requests. It is not used for GET `/preview`."
 			},
 			{
 				"name": "PickerPreviewService.constructor.html",
 				"type": "string | (() => Promise<string>)",
-				"required": true
+				"required": true,
+				"description": "Static markup or an asynchronous supplier of markup used for GET `/preview`. The service uses it only on that route and replaces the first exact `<body>` with a body carrying the `data-picker-preview` attribute with value `true`."
 			},
 			{
 				"name": "PickerPreviewService.constructor.origin",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The configured URL origin compared by exact string equality with each request URL origin and with the Origin header for POST `/tools`. A mismatch returns HTTP 403.",
+				"examples": ["http://localhost"]
 			},
 			{
 				"name": "PickerPreviewService.fetch.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "The Fetch API request to dispatch. Its URL origin is checked first; only GET `/preview` and POST `/tools` are handled, and POST `/tools` also requires an Origin header exactly equal to the configured origin."
 			}
 		],
 		"outputs": [
 			{
 				"name": "PickerPreviewService.fetch",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "Resolves to the HTTP response for the request. Matching-origin GET `/preview` returns no-store HTML with a Content Security Policy; matching-origin POST `/tools` returns tool JSON or a 400 JSON error, while rejected hosts or origins get 403 and unmatched methods or paths get 404."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "For POST `/tools`, the handler throws `Error('Request too large')` when the body string length exceeds 16,000 and `Error('The preview only accepts its synthetic session.')` for a truthy `arguments.session_id` other than `preview-session`; `respond` catches these and returns HTTP 400 JSON with `error: Invalid preview request.`."
+			},
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "If the asynchronous HTML supplier rejects while GET `/preview` is handled, `fetch` propagates that rejection unchanged; the implementation does not constrain its name or value."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PickerPreviewService.fetch",
@@ -59,17 +71,25 @@
 					{
 						"name": "PickerPreviewService.fetch.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "The Fetch API request to dispatch. Its URL origin is checked first; only GET `/preview` and POST `/tools` are handled, and POST `/tools` also requires an Origin header exactly equal to the configured origin."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PickerPreviewService.fetch",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "Resolves to the HTTP response for the request. Matching-origin GET `/preview` returns no-store HTML with a Content Security Policy; matching-origin POST `/tools` returns tool JSON or a 400 JSON error, while rejected hosts or origins get 403 and unmatched methods or paths get 404."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "If the asynchronous HTML supplier rejects while GET `/preview` is handled, `fetch` propagates that rejection unchanged; the implementation does not constrain its name or value. Failures inside POST `/tools` handling are caught and returned as HTTP 400 JSON."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -79,27 +99,32 @@
 					{
 						"name": "PickerPreviewService.constructor.service",
 						"type": "ProviderSwitchService",
-						"required": true
+						"required": true,
+						"description": "The provider-switch service instance passed to the tool dispatcher for POST `/tools` requests. It is not used for GET `/preview`."
 					},
 					{
 						"name": "PickerPreviewService.constructor.html",
 						"type": "string | (() => Promise<string>)",
-						"required": true
+						"required": true,
+						"description": "Static markup or an asynchronous supplier of markup used for GET `/preview`. The service uses it only on that route and replaces the first exact `<body>` with a body carrying the `data-picker-preview` attribute with value `true`."
 					},
 					{
 						"name": "PickerPreviewService.constructor.origin",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The configured URL origin compared by exact string equality with each request URL origin and with the Origin header for POST `/tools`. A mismatch returns HTTP 403.",
+						"examples": ["http://localhost"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "PickerPreviewService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed PickerPreviewService instance, which stores the provider-switch service, HTML source or supplier, and configured origin."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
