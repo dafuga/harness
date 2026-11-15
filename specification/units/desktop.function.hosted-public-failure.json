@@ -20,17 +20,18 @@
 				"name": "hostedPublicFailure.response",
 				"type": "Response",
 				"required": true,
-				"description": "The HTTP response to inspect. At most 4,096 body bytes are read as JSON to look for a recognized public error code."
+				"description": "The Response whose status selects the public failure state and whose bounded body may supply a public error code. The function requests at most 4,096 bytes through hostedResponse."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostedPublicFailure",
 				"type": "unknown",
-				"description": "A promise for a HostedFailureValidator error object, marked denied for status 401 or 403 and failed otherwise. A recognized code is included in the message; malformed, oversized or unrecognized bodies fall back to the HTTP status. The error object is returned, not thrown here."
+				"description": "A promise resolving to a HostedFailureValidator instance: status 401 or 403 produces state denied, and every other status produces failed. Its message includes a parsed string error only when that code is allowlisted; otherwise it reports the HTTP status without exposing server prose."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "hostedPublicFailure",
@@ -39,18 +40,18 @@
 						"name": "hostedPublicFailure.response",
 						"type": "Response",
 						"required": true,
-						"description": "The HTTP response to inspect. At most 4,096 body bytes are read as JSON to look for a recognized public error code."
+						"description": "The Response whose status selects the public failure state and whose bounded body may supply a public error code. The function requests at most 4,096 bytes through hostedResponse."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostedPublicFailure",
 						"type": "unknown",
-						"description": "A promise for a HostedFailureValidator error object, marked denied for status 401 or 403 and failed otherwise. A recognized code is included in the message; malformed, oversized or unrecognized bodies fall back to the HTTP status. The error object is returned, not thrown here."
+						"description": "A promise resolving to a HostedFailureValidator instance: status 401 or 403 produces state denied, and every other status produces failed. Its message includes a parsed string error only when that code is allowlisted; otherwise it reports the HTTP status without exposing server prose."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
