@@ -18,34 +18,489 @@
 				"name": "mediaFile.capture",
 				"type": "HarnessCapture",
 				"required": true,
-				"description": "Capture whose media name is requested."
+				"description": "The stored capture whose media name is read; only its media field is used. A null or undefined media gives an empty name, and a media value that is neither null, undefined nor a string makes the call throw a TypeError.",
+				"examples": [
+					{
+						"evidence": "checkout-review-screens",
+						"kind": "screenshot",
+						"state": "cart-with-items",
+						"viewport": "desktop",
+						"status": "passed",
+						"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-desktop.png",
+						"sha256": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f",
+						"mediaType": "image/png",
+						"capturedAt": "2026-11-10T14:32:08.114Z",
+						"provenance": "actual-capture",
+						"server": {
+							"buildId": "4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4",
+							"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+						},
+						"media": "media/a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png"
+					},
+					{
+						"evidence": "checkout-review-walkthrough",
+						"kind": "audio",
+						"state": "cart-with-items",
+						"status": "passed",
+						"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-walkthrough.wav",
+						"sha256": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39",
+						"mediaType": "audio/wav",
+						"capturedAt": "2026-11-10T14:35:41.902Z",
+						"durationSeconds": 42.5,
+						"transcript": "Opened the cart and confirmed the total updates.",
+						"media": "media/2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav"
+					},
+					{
+						"evidence": "checkout-review-screens",
+						"kind": "screenshot",
+						"state": "cart-with-items",
+						"viewport": "mobile",
+						"status": "passed",
+						"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png",
+						"sha256": "5d0e8b3af61c9274b0d5e8a17c3f6920e4b1d7a508f3c6e29b4a1d70c6e5f283",
+						"mediaType": "image/png",
+						"capturedAt": "2026-11-10T14:33:02.557Z",
+						"provenance": "actual-capture",
+						"server": {
+							"buildId": "4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4",
+							"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+						},
+						"media": null,
+						"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d"
+					}
+				]
 			},
 			{
 				"name": "harnessEvidence.detail",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Revision supplying scenario viewport labels."
+				"description": "The revision whose registry scenarios and their viewports supply the viewport labels, formatted as '<width>px <id>' (for example '1280px desktop'); it matters only for each item's viewport field. A capture with no viewport, or whose scenario or viewport id is absent from the registry, gets an undefined viewport instead of an error.",
+				"examples": [
+					{
+						"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [
+								{
+									"id": "checkout-review",
+									"title": "Checkout review",
+									"kind": "ui",
+									"units": ["reports.component.evidence-grid"],
+									"states": [
+										{
+											"id": "cart-with-items",
+											"title": "Cart with items",
+											"coverage": "required"
+										},
+										{
+											"id": "cart-empty",
+											"title": "Empty cart",
+											"coverage": "missing",
+											"reason": "No capture of the empty cart exists yet."
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										},
+										{
+											"id": "mobile",
+											"width": 390,
+											"height": 844
+										}
+									],
+									"tests": [
+										{
+											"id": "cart-review",
+											"kind": "e2e",
+											"runner": "playwright"
+										}
+									]
+								}
+							],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					},
+					{
+						"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [
+								{
+									"id": "checkout-review",
+									"title": "Checkout review",
+									"kind": "ui",
+									"units": ["reports.component.evidence-grid"],
+									"states": [
+										{
+											"id": "cart-with-items",
+											"title": "Cart with items",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										}
+									],
+									"tests": [
+										{
+											"id": "cart-review",
+											"kind": "e2e",
+											"runner": "playwright"
+										}
+									]
+								},
+								{
+									"id": "login",
+									"title": "Sign in",
+									"kind": "ui",
+									"units": ["reports.component.login-form"],
+									"states": [
+										{
+											"id": "signed-out",
+											"title": "Signed out",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "mobile",
+											"width": 390,
+											"height": 844
+										}
+									],
+									"tests": [
+										{
+											"id": "sign-in",
+											"kind": "e2e",
+											"runner": "playwright"
+										}
+									]
+								}
+							],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"records": [],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "harnessEvidence.record",
 				"type": "HarnessRecord",
 				"required": true,
-				"description": "Record whose screenshot and audio captures should appear."
+				"description": "The stored verification record whose scenarios, states and captures are walked in order, and only captures of kind screenshot or audio become items. Its id is read only when such a capture exists, and its first eight characters start every item id.",
+				"examples": [
+					{
+						"id": "c41f0e9a7b2d5836f1e0a4c9b7d2e5f8a1c3b6d9e0f4a7b2c5d8e1f3a6b9c2d5",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+							"base": null
+						},
+						"profile": "5e0b7c1d9a4f2836",
+						"startedAt": "2026-11-10T14:31:55.420Z",
+						"finishedAt": "2026-11-10T14:36:12.078Z",
+						"failures": [],
+						"tests": [],
+						"scenarios": [
+							{
+								"id": "checkout-review",
+								"status": "passed",
+								"testedRevision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+								"inherited": false,
+								"origin": {
+									"record": "c41f0e9a7b2d5836f1e0a4c9b7d2e5f8a1c3b6d9e0f4a7b2c5d8e1f3a6b9c2d5",
+									"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+								},
+								"states": [
+									{
+										"id": "cart-with-items",
+										"coverage": "required",
+										"captures": [
+											{
+												"evidence": "checkout-review-screens",
+												"kind": "screenshot",
+												"state": "cart-with-items",
+												"viewport": "desktop",
+												"status": "passed",
+												"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-desktop.png",
+												"sha256": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f",
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-10T14:32:08.114Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4",
+													"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+												},
+												"media": "media/a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png"
+											},
+											{
+												"evidence": "checkout-review-screens",
+												"kind": "screenshot",
+												"state": "cart-with-items",
+												"viewport": "mobile",
+												"status": "passed",
+												"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png",
+												"sha256": "5d0e8b3af61c9274b0d5e8a17c3f6920e4b1d7a508f3c6e29b4a1d70c6e5f283",
+												"mediaType": "image/png",
+												"capturedAt": "2026-11-10T14:33:02.557Z",
+												"provenance": "actual-capture",
+												"server": {
+													"buildId": "4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4",
+													"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+												},
+												"media": null,
+												"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d"
+											},
+											{
+												"evidence": "checkout-review-walkthrough",
+												"kind": "audio",
+												"state": "cart-with-items",
+												"status": "passed",
+												"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-walkthrough.wav",
+												"sha256": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39",
+												"mediaType": "audio/wav",
+												"capturedAt": "2026-11-10T14:35:41.902Z",
+												"durationSeconds": 42.5,
+												"transcript": "Opened the cart and confirmed the total updates.",
+												"media": "media/2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav"
+											}
+										]
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					},
+					{
+						"id": "b81e0d4c6a27f93d8d150c7e2a9f3b61e4d7a0c5f2b8e6d19a3c7f0b4e8d2a61",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+							"base": null
+						},
+						"profile": "5e0b7c1d9a4f2836",
+						"startedAt": "2026-11-10T15:02:17.906Z",
+						"finishedAt": "2026-11-10T15:04:40.311Z",
+						"failures": [],
+						"tests": [],
+						"scenarios": [
+							{
+								"id": "checkout-review",
+								"status": "passed",
+								"testedRevision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+								"inherited": false,
+								"origin": {
+									"record": "b81e0d4c6a27f93d8d150c7e2a9f3b61e4d7a0c5f2b8e6d19a3c7f0b4e8d2a61",
+									"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+								},
+								"states": [
+									{
+										"id": "cart-empty",
+										"coverage": "missing",
+										"reason": "No capture of the empty cart was recorded.",
+										"captures": []
+									}
+								]
+							}
+						],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "mediaFile",
 				"type": "string",
-				"description": "Media name without a leading media/ prefix, or an empty string for null media."
+				"description": "The name of a media file under the console's media path, with one leading 'media/' prefix removed. A name without that prefix comes back unchanged, and a null or undefined media gives an empty string.",
+				"examples": [
+					"a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png",
+					"2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav",
+					""
+				]
 			},
 			{
 				"name": "harnessEvidence",
 				"type": "Evidence[]",
-				"description": "Ordered screenshot/audio gallery items retaining missing media and provenance. Invalid records produce not-proven item statuses; each capture has a unique sequence-based identifier."
+				"description": "One gallery item per screenshot or audio capture, in record order (scenario, then state, then capture), marked missing only when media is null, with status 'not-proven' when provenance standing is 'unvalidated' and the capture's own status otherwise. Each id ends with the item's zero-based position in the array, so ids are unique within the returned array, and a record with no such captures yields an empty array.",
+				"examples": [
+					[
+						{
+							"id": "c41f0e9a-checkout-review-cart-with-items-desktop-0",
+							"title": "checkout-review · cart-with-items",
+							"category": "checkout-review",
+							"file": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png",
+							"status": "passed",
+							"capturedAt": "2026-11-10T14:32:08.114Z",
+							"viewport": "1280px desktop",
+							"standing": "Fresh capture",
+							"provenance": [
+								{
+									"label": "Standing",
+									"value": "Fresh capture"
+								},
+								{
+									"label": "Captured from",
+									"value": "build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of 9d2e4f1"
+								},
+								{
+									"label": "Provenance",
+									"value": "actual capture of running software"
+								},
+								{
+									"label": "Verification attempt",
+									"value": "record c41f0e9a7b2d (passed) targeting 9d2e4f1"
+								}
+							],
+							"note": "Captured from build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b. Provenance: actual capture of running software. Tested at 9d2e4f1 by passing record c41f0e9a7b2d.",
+							"missing": false,
+							"mediaType": "image",
+							"mimeType": "image/png",
+							"order": 0
+						},
+						{
+							"id": "c41f0e9a-checkout-review-cart-with-items-mobile-1",
+							"title": "checkout-review · cart-with-items",
+							"category": "checkout-review",
+							"file": "",
+							"status": "passed",
+							"capturedAt": "2026-11-10T14:33:02.557Z",
+							"viewport": "390px mobile",
+							"standing": "Fresh capture",
+							"provenance": [
+								{
+									"label": "Standing",
+									"value": "Fresh capture"
+								},
+								{
+									"label": "Captured from",
+									"value": "build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of 9d2e4f1"
+								},
+								{
+									"label": "Provenance",
+									"value": "actual capture of running software"
+								},
+								{
+									"label": "Verification attempt",
+									"value": "record c41f0e9a7b2d (passed) targeting 9d2e4f1"
+								}
+							],
+							"note": "Captured from build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b. Provenance: actual capture of running software. Tested at 9d2e4f1 by passing record c41f0e9a7b2d. evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d",
+							"missing": true,
+							"mediaType": "image",
+							"mimeType": "image/png",
+							"order": 1
+						},
+						{
+							"id": "c41f0e9a-checkout-review-cart-with-items-audio-2",
+							"title": "checkout-review · cart-with-items",
+							"category": "checkout-review",
+							"file": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav",
+							"status": "passed",
+							"capturedAt": "2026-11-10T14:35:41.902Z",
+							"standing": "Fresh capture",
+							"provenance": [
+								{
+									"label": "Standing",
+									"value": "Fresh capture"
+								},
+								{
+									"label": "Captured from",
+									"value": "not recorded: the capture names no build or revision"
+								},
+								{
+									"label": "Verification attempt",
+									"value": "record c41f0e9a7b2d (passed) targeting 9d2e4f1"
+								}
+							],
+							"note": "The capture does not record which build or revision produced it. Produced while record c41f0e9a7b2d verified revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b.",
+							"missing": false,
+							"mediaType": "audio",
+							"mimeType": "audio/wav",
+							"durationSeconds": 42.5,
+							"transcript": "Opened the cart and confirmed the total updates.",
+							"order": 2
+						}
+					],
+					[
+						{
+							"id": "e02b7d4c-checkout-review-cart-with-items-desktop-0",
+							"title": "checkout-review · cart-with-items",
+							"category": "checkout-review",
+							"file": "7a1c4e903f8b5d26e0c9a7f16b2d8e54a9f03c7bd4e8b1a25c6f9e03b7d2a8c4.png",
+							"status": "not-proven",
+							"capturedAt": "2026-11-12T09:12:44.630Z",
+							"viewport": "1280px desktop",
+							"standing": "Unvalidated capture",
+							"provenance": [
+								{
+									"label": "Standing",
+									"value": "Unvalidated capture"
+								},
+								{
+									"label": "Captured from",
+									"value": "build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of 9d2e4f1"
+								},
+								{
+									"label": "Provenance",
+									"value": "actual capture of running software"
+								},
+								{
+									"label": "Verification attempt",
+									"value": "record e02b7d4c9a1f (not validated) targeting 9d2e4f1"
+								}
+							],
+							"note": "Captured from build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b. Provenance: actual capture of running software. Record e02b7d4c9a1f could not be validated, so this proves nothing about revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b.",
+							"missing": false,
+							"mediaType": "image",
+							"mimeType": "image/png",
+							"order": 0
+						}
+					],
+					[]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when an input or a nested field the code reads or iterates is null, undefined or of the wrong shape, for example detail.registry.scenarios, a registry scenario's viewports, record.scenarios, a record scenario's states, a state's captures or any capture entry in them, or record.id for a media capture, and when a non-null media value is not a string."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by captureProvenance, which this file calls for each screenshot or audio capture, when a record, scenario or capture field it reads is null, undefined or of the wrong shape; this file does not catch it, so it reaches the caller unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "mediaFile",
@@ -54,18 +509,79 @@
 						"name": "mediaFile.capture",
 						"type": "HarnessCapture",
 						"required": true,
-						"description": "Capture whose media name is requested."
+						"description": "The stored capture whose media name is read; only its media field is used. A null or undefined media gives an empty name, and a media value that is neither null, undefined nor a string makes the call throw a TypeError.",
+						"examples": [
+							{
+								"evidence": "checkout-review-screens",
+								"kind": "screenshot",
+								"state": "cart-with-items",
+								"viewport": "desktop",
+								"status": "passed",
+								"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-desktop.png",
+								"sha256": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f",
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-10T14:32:08.114Z",
+								"provenance": "actual-capture",
+								"server": {
+									"buildId": "4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4",
+									"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+								},
+								"media": "media/a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png"
+							},
+							{
+								"evidence": "checkout-review-walkthrough",
+								"kind": "audio",
+								"state": "cart-with-items",
+								"status": "passed",
+								"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-walkthrough.wav",
+								"sha256": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39",
+								"mediaType": "audio/wav",
+								"capturedAt": "2026-11-10T14:35:41.902Z",
+								"durationSeconds": 42.5,
+								"transcript": "Opened the cart and confirmed the total updates.",
+								"media": "media/2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav"
+							},
+							{
+								"evidence": "checkout-review-screens",
+								"kind": "screenshot",
+								"state": "cart-with-items",
+								"viewport": "mobile",
+								"status": "passed",
+								"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png",
+								"sha256": "5d0e8b3af61c9274b0d5e8a17c3f6920e4b1d7a508f3c6e29b4a1d70c6e5f283",
+								"mediaType": "image/png",
+								"capturedAt": "2026-11-10T14:33:02.557Z",
+								"provenance": "actual-capture",
+								"server": {
+									"buildId": "4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4",
+									"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+								},
+								"media": null,
+								"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "mediaFile",
 						"type": "string",
-						"description": "Media name without a leading media/ prefix, or an empty string for null media."
+						"description": "The name of a media file under the console's media path, with one leading 'media/' prefix removed. A name without that prefix comes back unchanged, and a null or undefined media gives an empty string.",
+						"examples": [
+							"a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png",
+							"2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav",
+							""
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when capture is null or undefined, or when its media is neither null, undefined nor a string, because the code reads capture.media and calls replace on it."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "harnessEvidence",
@@ -74,24 +590,423 @@
 						"name": "harnessEvidence.detail",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Revision supplying scenario viewport labels."
+						"description": "The revision whose registry scenarios and their viewports supply the viewport labels, formatted as '<width>px <id>' (for example '1280px desktop'); it matters only for each item's viewport field. A capture with no viewport, or whose scenario or viewport id is absent from the registry, gets an undefined viewport instead of an error.",
+						"examples": [
+							{
+								"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [
+										{
+											"id": "checkout-review",
+											"title": "Checkout review",
+											"kind": "ui",
+											"units": ["reports.component.evidence-grid"],
+											"states": [
+												{
+													"id": "cart-with-items",
+													"title": "Cart with items",
+													"coverage": "required"
+												},
+												{
+													"id": "cart-empty",
+													"title": "Empty cart",
+													"coverage": "missing",
+													"reason": "No capture of the empty cart exists yet."
+												}
+											],
+											"viewports": [
+												{
+													"id": "desktop",
+													"width": 1280,
+													"height": 800
+												},
+												{
+													"id": "mobile",
+													"width": 390,
+													"height": 844
+												}
+											],
+											"tests": [
+												{
+													"id": "cart-review",
+													"kind": "e2e",
+													"runner": "playwright"
+												}
+											]
+										}
+									],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							},
+							{
+								"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [
+										{
+											"id": "checkout-review",
+											"title": "Checkout review",
+											"kind": "ui",
+											"units": ["reports.component.evidence-grid"],
+											"states": [
+												{
+													"id": "cart-with-items",
+													"title": "Cart with items",
+													"coverage": "required"
+												}
+											],
+											"viewports": [
+												{
+													"id": "desktop",
+													"width": 1280,
+													"height": 800
+												}
+											],
+											"tests": [
+												{
+													"id": "cart-review",
+													"kind": "e2e",
+													"runner": "playwright"
+												}
+											]
+										},
+										{
+											"id": "login",
+											"title": "Sign in",
+											"kind": "ui",
+											"units": ["reports.component.login-form"],
+											"states": [
+												{
+													"id": "signed-out",
+													"title": "Signed out",
+													"coverage": "required"
+												}
+											],
+											"viewports": [
+												{
+													"id": "mobile",
+													"width": 390,
+													"height": 844
+												}
+											],
+											"tests": [
+												{
+													"id": "sign-in",
+													"kind": "e2e",
+													"runner": "playwright"
+												}
+											]
+										}
+									],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"records": [],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "harnessEvidence.record",
 						"type": "HarnessRecord",
 						"required": true,
-						"description": "Record whose screenshot and audio captures should appear."
+						"description": "The stored verification record whose scenarios, states and captures are walked in order, and only captures of kind screenshot or audio become items. Its id is read only when such a capture exists, and its first eight characters start every item id.",
+						"examples": [
+							{
+								"id": "c41f0e9a7b2d5836f1e0a4c9b7d2e5f8a1c3b6d9e0f4a7b2c5d8e1f3a6b9c2d5",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+									"base": null
+								},
+								"profile": "5e0b7c1d9a4f2836",
+								"startedAt": "2026-11-10T14:31:55.420Z",
+								"finishedAt": "2026-11-10T14:36:12.078Z",
+								"failures": [],
+								"tests": [],
+								"scenarios": [
+									{
+										"id": "checkout-review",
+										"status": "passed",
+										"testedRevision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+										"inherited": false,
+										"origin": {
+											"record": "c41f0e9a7b2d5836f1e0a4c9b7d2e5f8a1c3b6d9e0f4a7b2c5d8e1f3a6b9c2d5",
+											"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+										},
+										"states": [
+											{
+												"id": "cart-with-items",
+												"coverage": "required",
+												"captures": [
+													{
+														"evidence": "checkout-review-screens",
+														"kind": "screenshot",
+														"state": "cart-with-items",
+														"viewport": "desktop",
+														"status": "passed",
+														"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-desktop.png",
+														"sha256": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-10T14:32:08.114Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4",
+															"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+														},
+														"media": "media/a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png"
+													},
+													{
+														"evidence": "checkout-review-screens",
+														"kind": "screenshot",
+														"state": "cart-with-items",
+														"viewport": "mobile",
+														"status": "passed",
+														"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png",
+														"sha256": "5d0e8b3af61c9274b0d5e8a17c3f6920e4b1d7a508f3c6e29b4a1d70c6e5f283",
+														"mediaType": "image/png",
+														"capturedAt": "2026-11-10T14:33:02.557Z",
+														"provenance": "actual-capture",
+														"server": {
+															"buildId": "4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4",
+															"revision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+														},
+														"media": null,
+														"gap": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d"
+													},
+													{
+														"evidence": "checkout-review-walkthrough",
+														"kind": "audio",
+														"state": "cart-with-items",
+														"status": "passed",
+														"path": "evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-walkthrough.wav",
+														"sha256": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39",
+														"mediaType": "audio/wav",
+														"capturedAt": "2026-11-10T14:35:41.902Z",
+														"durationSeconds": 42.5,
+														"transcript": "Opened the cart and confirmed the total updates.",
+														"media": "media/2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav"
+													}
+												]
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							},
+							{
+								"id": "b81e0d4c6a27f93d8d150c7e2a9f3b61e4d7a0c5f2b8e6d19a3c7f0b4e8d2a61",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+									"base": null
+								},
+								"profile": "5e0b7c1d9a4f2836",
+								"startedAt": "2026-11-10T15:02:17.906Z",
+								"finishedAt": "2026-11-10T15:04:40.311Z",
+								"failures": [],
+								"tests": [],
+								"scenarios": [
+									{
+										"id": "checkout-review",
+										"status": "passed",
+										"testedRevision": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b",
+										"inherited": false,
+										"origin": {
+											"record": "b81e0d4c6a27f93d8d150c7e2a9f3b61e4d7a0c5f2b8e6d19a3c7f0b4e8d2a61",
+											"commit": "9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b"
+										},
+										"states": [
+											{
+												"id": "cart-empty",
+												"coverage": "missing",
+												"reason": "No capture of the empty cart was recorded.",
+												"captures": []
+											}
+										]
+									}
+								],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessEvidence",
 						"type": "Evidence[]",
-						"description": "Ordered screenshot/audio gallery items retaining missing media and provenance. Invalid records produce not-proven item statuses; each capture has a unique sequence-based identifier."
+						"description": "One gallery item per screenshot or audio capture, in record order (scenario, then state, then capture), marked missing only when media is null, with status 'not-proven' when provenance standing is 'unvalidated' and the capture's own status otherwise. Each id ends with the item's zero-based position in the array, so ids are unique within the returned array, and a record with no such captures yields an empty array.",
+						"examples": [
+							[
+								{
+									"id": "c41f0e9a-checkout-review-cart-with-items-desktop-0",
+									"title": "checkout-review · cart-with-items",
+									"category": "checkout-review",
+									"file": "a3f1c9e07b52d84f6c1e9a0b3d5f7e21c4a8b6d09e2f5c7a1b3d4e6f8a0c2e4f.png",
+									"status": "passed",
+									"capturedAt": "2026-11-10T14:32:08.114Z",
+									"viewport": "1280px desktop",
+									"standing": "Fresh capture",
+									"provenance": [
+										{
+											"label": "Standing",
+											"value": "Fresh capture"
+										},
+										{
+											"label": "Captured from",
+											"value": "build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of 9d2e4f1"
+										},
+										{
+											"label": "Provenance",
+											"value": "actual capture of running software"
+										},
+										{
+											"label": "Verification attempt",
+											"value": "record c41f0e9a7b2d (passed) targeting 9d2e4f1"
+										}
+									],
+									"note": "Captured from build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b. Provenance: actual capture of running software. Tested at 9d2e4f1 by passing record c41f0e9a7b2d.",
+									"missing": false,
+									"mediaType": "image",
+									"mimeType": "image/png",
+									"order": 0
+								},
+								{
+									"id": "c41f0e9a-checkout-review-cart-with-items-mobile-1",
+									"title": "checkout-review · cart-with-items",
+									"category": "checkout-review",
+									"file": "",
+									"status": "passed",
+									"capturedAt": "2026-11-10T14:33:02.557Z",
+									"viewport": "390px mobile",
+									"standing": "Fresh capture",
+									"provenance": [
+										{
+											"label": "Standing",
+											"value": "Fresh capture"
+										},
+										{
+											"label": "Captured from",
+											"value": "build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of 9d2e4f1"
+										},
+										{
+											"label": "Provenance",
+											"value": "actual capture of running software"
+										},
+										{
+											"label": "Verification attempt",
+											"value": "record c41f0e9a7b2d (passed) targeting 9d2e4f1"
+										}
+									],
+									"note": "Captured from build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b. Provenance: actual capture of running software. Tested at 9d2e4f1 by passing record c41f0e9a7b2d. evidence/9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b/checkout-review/cart-review/checkout-review-mobile.png is not part of record c41f0e9a7b2d",
+									"missing": true,
+									"mediaType": "image",
+									"mimeType": "image/png",
+									"order": 1
+								},
+								{
+									"id": "c41f0e9a-checkout-review-cart-with-items-audio-2",
+									"title": "checkout-review · cart-with-items",
+									"category": "checkout-review",
+									"file": "2e9b47c1a86d0f35d1c7e4b9f0a2836d5c4e1b7a93d8f6e0b2a5c18f4d7e0a39.wav",
+									"status": "passed",
+									"capturedAt": "2026-11-10T14:35:41.902Z",
+									"standing": "Fresh capture",
+									"provenance": [
+										{
+											"label": "Standing",
+											"value": "Fresh capture"
+										},
+										{
+											"label": "Captured from",
+											"value": "not recorded: the capture names no build or revision"
+										},
+										{
+											"label": "Verification attempt",
+											"value": "record c41f0e9a7b2d (passed) targeting 9d2e4f1"
+										}
+									],
+									"note": "The capture does not record which build or revision produced it. Produced while record c41f0e9a7b2d verified revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b.",
+									"missing": false,
+									"mediaType": "audio",
+									"mimeType": "audio/wav",
+									"durationSeconds": 42.5,
+									"transcript": "Opened the cart and confirmed the total updates.",
+									"order": 2
+								}
+							],
+							[
+								{
+									"id": "e02b7d4c-checkout-review-cart-with-items-desktop-0",
+									"title": "checkout-review · cart-with-items",
+									"category": "checkout-review",
+									"file": "7a1c4e903f8b5d26e0c9a7f16b2d8e54a9f03c7bd4e8b1a25c6f9e03b7d2a8c4.png",
+									"status": "not-proven",
+									"capturedAt": "2026-11-12T09:12:44.630Z",
+									"viewport": "1280px desktop",
+									"standing": "Unvalidated capture",
+									"provenance": [
+										{
+											"label": "Standing",
+											"value": "Unvalidated capture"
+										},
+										{
+											"label": "Captured from",
+											"value": "build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of 9d2e4f1"
+										},
+										{
+											"label": "Provenance",
+											"value": "actual capture of running software"
+										},
+										{
+											"label": "Verification attempt",
+											"value": "record e02b7d4c9a1f (not validated) targeting 9d2e4f1"
+										}
+									],
+									"note": "Captured from build 4f0a9c2e7d1b8f36a5e0c9d4b7f2a1e8c6d3b0f9a4e7c2d5b8f1a6e3c0d9b7f4 of revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b. Provenance: actual capture of running software. Record e02b7d4c9a1f could not be validated, so this proves nothing about revision 9d2e4f1a7c3b8e05d6f1a2b3c4d5e6f708192a3b.",
+									"missing": false,
+									"mediaType": "image",
+									"mimeType": "image/png",
+									"order": 0
+								}
+							],
+							[]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown when an input or a nested field the code reads or iterates is null, undefined or of the wrong shape, for example detail.registry.scenarios, a registry scenario's viewports, record.scenarios, a record scenario's states, a state's captures or any capture entry in them, or record.id for a media capture, and when a non-null media value is not a string."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by captureProvenance, which this file calls for each screenshot or audio capture, when a record, scenario or capture field it reads is null, undefined or of the wrong shape; this file does not catch it, so it reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
