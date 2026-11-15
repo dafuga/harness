@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/hostedEvidenceRecord.ts",
-			"packages/desktop/src/utils/verification-evidence/hostedEvidenceRecord.ts"
-		],
-		"symbols": ["hostedEvidenceRecord", "hostedEvidenceRecord"]
+		"source": ["packages/desktop/src/utils/verification-evidence/hostedEvidenceRecord.ts"],
+		"symbols": ["hostedEvidenceRecord"]
 	},
 	"contract": {
 		"origin": "declared",
