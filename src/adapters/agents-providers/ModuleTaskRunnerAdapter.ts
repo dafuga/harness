@@ -12,7 +12,7 @@ import { taskUsage } from './module-task-runner-adapter/taskUsage';
 /** Run the installed CLIs with saved login, exact model/effort and public output only. */
 export class ModuleTaskRunnerAdapter implements TaskRunner {
 	constructor(private readonly execute: TaskProcessExecutor = taskProcess) {}
-	command(selection: TaskSelection): string[] {
+	command(selection: TaskSelection & Pick<TaskRunInput, 'images'>): string[] {
 		if (selection.provider === 'claude') return claudeTaskCommand(selection);
 		return [
 			'codex',
@@ -29,11 +29,12 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			'model_provider="openai"',
 			'-c',
 			'approval_policy="never"',
+			...(selection.images ?? []).flatMap((path) => ['-i', path]),
 			'-'
 		];
 	}
 	async run(input: TaskRunInput): Promise<TaskRunResult> {
-		const process = await this.execute(this.command(input), input);
+		const process = await this.execute(this.command(input), taskImageInput(input));
 		const events = process.stdout
 			.trim()
 			.split('\n')
@@ -90,6 +91,16 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 				.slice(-16000)
 		};
 	}
+}
+function taskImageInput(input: TaskRunInput): TaskRunInput {
+	if (input.provider !== 'claude' || !input.images?.length) return input;
+	return {
+		...input,
+		prompt:
+			input.prompt +
+			'\n\nRead these extracted frame images before editing:\n' +
+			input.images.map((path) => JSON.stringify(path)).join('\n')
+	};
 }
 function claudeTaskCommand(selection: TaskSelection): string[] {
 	return [

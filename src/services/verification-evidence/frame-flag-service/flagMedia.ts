@@ -162,10 +162,7 @@ export async function materializeFlagFrame(
 	flag: FrameFlag,
 	directory: string
 ): Promise<string> {
-	const bytes = await new LfsAdapter(root).read(flag.frame.sha256);
-	if (bytes?.length !== flag.frame.bytes || frameHash(bytes) !== flag.frame.sha256)
-		throw new ExpectedCliError('Retained frame hash/integrity is corrupt or unavailable.');
-	inspectFlagPng(bytes);
+	const bytes = await retainedFlagFrame(root, flag);
 	const target = resolve(directory);
 	await mkdir(target, { recursive: true });
 	if (!(await lstat(target)).isDirectory())
@@ -175,6 +172,15 @@ export async function materializeFlagFrame(
 	if (!(await lstat(path)).isFile() || frameHash(await readFile(path)) !== flag.frame.sha256)
 		throw new ExpectedCliError('Materialized feedback frame hash/integrity failed.');
 	return path;
+}
+
+/** Serve and attach only the exact retained, hash-verified PNG. */
+export async function retainedFlagFrame(root: string, flag: FrameFlag): Promise<Buffer> {
+	const bytes = await new LfsAdapter(root).read(flag.frame.sha256);
+	if (bytes?.length !== flag.frame.bytes || frameHash(bytes) !== flag.frame.sha256)
+		throw new ExpectedCliError('Retained frame hash/integrity is corrupt or unavailable.');
+	inspectFlagPng(bytes);
+	return bytes;
 }
 
 async function writeFrameInput(path: string, bytes: Buffer): Promise<void> {

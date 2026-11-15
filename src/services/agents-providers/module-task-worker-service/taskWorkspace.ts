@@ -9,6 +9,7 @@ import { resolve, join } from 'node:path';
 import { existsSync } from 'node:fs';
 import { symlink } from 'node:fs/promises';
 import { pendingTaskResult, taskWrites } from './taskClaim';
+import { FrameFlagService } from '../../verification-evidence/FrameFlagService';
 export async function taskWorkspace(root: string, task: ModuleTask, selection: TaskSelection) {
 	const worktree = resolve(root, '.cache/harness/task-worktrees', task.claim!.token);
 	return {
@@ -23,6 +24,27 @@ export async function prepareTaskWorkspace(root: string, worktree: string): Prom
 	const source = join(root, 'node_modules'),
 		target = join(worktree, 'node_modules');
 	if (existsSync(source) && !existsSync(target)) await symlink(source, target, 'dir');
+}
+
+/** Pending frame feedback follows ownership into each isolated attempt. */
+export async function taskFrameInputs(
+	root: string,
+	task: ModuleTask,
+	worktree: string,
+	prompt: string
+) {
+	const feedback = await new FrameFlagService(root).feedback(
+		task.module.id,
+		join(worktree, '.cache/harness/frame-inputs')
+	);
+	return {
+		images: feedback.images,
+		prompt: feedback.text
+			? prompt +
+				'\n\nReview every flagged frame. Address each pending flag in the replacement recording.\n' +
+				feedback.text
+			: prompt
+	};
 }
 export async function snapshotTaskWork(
 	root: string,

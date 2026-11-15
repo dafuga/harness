@@ -5,7 +5,8 @@ import {
 	defaultAttachedReader,
 	extractFlagFrame,
 	inspectFrameClip,
-	materializeFlagFrame
+	materializeFlagFrame,
+	retainedFlagFrame
 } from './frame-flag-service/flagMedia';
 import {
 	addressedFlags,
@@ -97,6 +98,12 @@ export class FrameFlagService {
 			images,
 			flags: flags.map((flag) => flag.id)
 		};
+	}
+
+	async frame(unit: string, id: string): Promise<Buffer> {
+		const flag = (await this.list(unit)).find((item) => item.id === id);
+		if (!flag) throw new ExpectedCliError('Frame flag was not found for this owner.');
+		return retainedFlagFrame(this.root, flag);
 	}
 
 	async address(reference: FrameClipReference): Promise<FrameFlag[]> {

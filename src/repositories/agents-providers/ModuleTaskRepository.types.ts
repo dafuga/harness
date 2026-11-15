@@ -21,6 +21,8 @@ export type TaskSelection = { provider: 'claude' | 'codex'; model: string; intel
 export interface TaskRunInput extends TaskSelection {
 	cwd: string;
 	prompt: string;
+	/** Verified extracted frames for this unit; passed as native image inputs. */
+	images?: string[];
 	signal: AbortSignal;
 }
 export interface TaskRunResult extends TaskSelection {

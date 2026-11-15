@@ -6,7 +6,8 @@ import { dispatchTaskAttempt } from './module-task-worker-service/dispatchTaskAt
 import {
 	taskWorkspace,
 	snapshotTaskWork,
-	prepareTaskWorkspace
+	prepareTaskWorkspace,
+	taskFrameInputs
 } from './module-task-worker-service/taskWorkspace';
 import type {
 	ModuleTask,
@@ -43,9 +44,10 @@ export class ModuleTaskWorkerService {
 		try {
 			await new GitAdapter(this.root).run(['worktree', 'add', '--detach', worktree, sourceCommit]);
 			await prepareTaskWorkspace(this.root, worktree);
+			const inputs = await taskFrameInputs(this.root, task, worktree, prompt);
 			const execution = await this.run(
 				task,
-				{ ...selection, cwd: worktree, prompt, signal },
+				{ ...selection, cwd: worktree, ...inputs, signal },
 				(choice) => {
 					result = { ...result, ...choice, fallback: true };
 				},
@@ -70,7 +72,7 @@ export class ModuleTaskWorkerService {
 	}
 	private async run(
 		task: ModuleTask,
-		input: TaskSelection & { cwd: string; prompt: string; signal: AbortSignal },
+		input: TaskSelection & { cwd: string; prompt: string; images?: string[]; signal: AbortSignal },
 		onFallback: (selection: TaskSelection) => void,
 		executions: TaskExecution[]
 	) {
