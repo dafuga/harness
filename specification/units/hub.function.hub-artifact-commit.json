@@ -18,23 +18,34 @@
 				"name": "hubArtifactCommit.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "The context object supplying source.historyPage, repository, and commit for the history request. If source.historyPage is absent, the function returns null without making a request."
 			},
 			{
 				"name": "hubArtifactCommit.path",
 				"type": "string",
 				"required": true,
-				"description": "Artifact path to inspect in the pinned history."
+				"description": "The artifact path passed as the only entry in the history request paths array. The implementation does not validate or normalize the path.",
+				"examples": [
+					"packages/hub/src/routes/api/[...path]/hub-projection-service/hubArtifactCommit.ts"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubArtifactCommit",
 				"type": "Promise<string | null>",
-				"description": "The sole history commit hash when the two-entry history request is complete and contains exactly one commit; otherwise null, including adapters without history support."
+				"description": "The history hash is returned only when the result is complete and contains exactly one commit; otherwise the result is null. The request uses this path, page 1, and a limit of two entries, and missing history support also returns null.",
+				"examples": ["4f3c2a1b0e9d8c7b6a5f4e3d2c1b0a9876543210", null]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "source.historyPage rejection",
+				"type": "thrown",
+				"description": "An error thrown by source.historyPage or a rejection from its returned promise rejects hubArtifactCommit; the function does not catch or transform the failure."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubArtifactCommit",
@@ -43,24 +54,34 @@
 						"name": "hubArtifactCommit.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "The context object supplying source.historyPage, repository, and commit for the history request. If source.historyPage is absent, the function returns null without making a request."
 					},
 					{
 						"name": "hubArtifactCommit.path",
 						"type": "string",
 						"required": true,
-						"description": "Artifact path to inspect in the pinned history."
+						"description": "The artifact path passed as the only entry in the history request paths array. The implementation does not validate or normalize the path.",
+						"examples": [
+							"packages/hub/src/routes/api/[...path]/hub-projection-service/hubArtifactCommit.ts"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubArtifactCommit",
 						"type": "Promise<string | null>",
-						"description": "The sole history commit hash when the two-entry history request is complete and contains exactly one commit; otherwise null, including adapters without history support."
+						"description": "The history hash is returned only when the result is complete and contains exactly one commit; otherwise the result is null. The request uses this path, page 1, and a limit of two entries, and missing history support also returns null.",
+						"examples": ["4f3c2a1b0e9d8c7b6a5f4e3d2c1b0a9876543210", null]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "source.historyPage rejection",
+						"type": "thrown",
+						"description": "An error thrown by source.historyPage or a rejection from its returned promise rejects hubArtifactCommit; the function does not catch or transform the failure."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
