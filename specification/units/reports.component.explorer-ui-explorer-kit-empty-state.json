@@ -23,61 +23,68 @@
 				"type": "'p' | 'div'",
 				"required": false,
 				"default": "p",
-				"description": "Optional semantic element. Defaults to p, with div for block content."
+				"description": "Selects the native element used to render the empty state. Defaults to `p`; `div` is the only alternative.",
+				"examples": ["p", "div"]
 			},
 			{
 				"name": "EmptyState.className",
 				"type": "string",
 				"required": false,
 				"default": "ex-empty",
-				"description": "Optional existing owner classes. Defaults to ex-empty."
+				"description": "Sets the rendered element's `class` attribute. Defaults to `ex-empty`, which enables the component's descendant-link spacing rule.",
+				"examples": ["ex-empty", "ex-empty text-muted"]
 			},
 			{
 				"name": "EmptyState.role",
 				"type": "'note' | 'status' | 'alert'",
 				"required": false,
-				"description": "Optional semantic role. Defaults to JavaScript undefined, omitting role."
+				"default": "undefined",
+				"description": "Sets the optional semantic role on the rendered element. Defaults to JavaScript `undefined`, which omits the role; accepted values are `note`, `status`, and `alert`.",
+				"examples": ["note", "status", "alert"]
 			},
 			{
 				"name": "EmptyState.id",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional native id. Defaults to JavaScript undefined."
+				"description": "Sets the rendered element's native `id`. Defaults to JavaScript `undefined` (omitted).",
+				"examples": ["reports-empty-state"]
 			},
 			{
 				"name": "EmptyState.label",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional accessible name. Defaults to JavaScript undefined, omitting aria-label."
+				"description": "Sets the rendered element's `aria-label`. Defaults to JavaScript `undefined`, which omits the attribute.",
+				"examples": ["No reports available"]
 			},
 			{
 				"name": "EmptyState.component",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional owner attribution. Defaults to JavaScript undefined."
+				"description": "Sets the rendered element's `data-harness-component` owner attribution. Defaults to JavaScript `undefined`.",
+				"examples": ["ReportList"]
 			},
 			{
 				"name": "EmptyState.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "Required caller content. Rendering errors propagate without replacing or suppressing its values."
+				"description": "Provides the required Svelte snippet rendered inside the selected element. Errors from rendering the snippet propagate to the owner."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EmptyState",
 				"type": "markup",
-				"description": "Semantic EmptyState markup retaining caller content, native accessibility and the selected existing treatment."
+				"description": "Renders a `p` or `div` with the selected `class`, optional `role`, `id`, `aria-label`, and `data-harness-component`, and the required snippet as its content. Descendant links under `.ex-empty` receive `display: inline-block` and a `var(--hx-space-8)` inline-start margin."
 			}
 		],
 		"errors": [
 			{
 				"name": "Content rendering error",
-				"type": "propagated",
-				"description": "Errors from the required content snippet propagate to the owner."
+				"type": "thrown",
+				"description": "An error thrown while rendering the required `children` snippet propagates to the owner."
 			}
 		],
 		"errorStatus": "declared",
