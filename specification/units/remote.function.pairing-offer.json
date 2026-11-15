@@ -42,68 +42,155 @@
 				"name": "pairingOffer.offer",
 				"type": "PairingOffer",
 				"required": true,
-				"description": "Relay origin, host and pairing IDs, human pairing code and expiry time to serialize."
+				"description": "The offer to write as QR text: origin, hostId, pairingId, code and expiresAt. pairingOffer throws unless origin is a permitted relay origin, hostId is 40 lowercase hex characters, pairingId is 32 lowercase hex characters, the code once normalized is 8 characters from A-H, J-N, P-Z and 2-9, expiresAt parses to a date whose whole-second Unix time has 10 digits, and the written text is at most 320 characters with an origin of at most 200 characters.",
+				"examples": [
+					{
+						"origin": "https://relay.example.com",
+						"hostId": "9c1f4e7a0b2d385f6e1a4c9b07d3e8f2a5b61c40",
+						"pairingId": "5e0b7d2a9c4f1e83b6d0a2f7c9e1b405",
+						"code": "K7Q2M9TH",
+						"expiresAt": "2026-11-15T12:05:00.000Z"
+					},
+					{
+						"origin": "http://127.0.0.1:8787",
+						"hostId": "b3d7e1f0a92c4685d1e0f7a3c9b28e4d6f1a0c57",
+						"pairingId": "a14c9e06f2d8b35e7c01f9a4d6b28e3f",
+						"code": "4WXHP6RD",
+						"expiresAt": "2026-11-15T12:04:30.000Z"
+					}
+				]
 			},
 			{
 				"name": "readPairingOffer.text",
 				"type": "string",
 				"required": true,
-				"description": "Scanned offer text in the fixed protocol field order."
+				"description": "The scanned QR text, exactly as scanned: it must start with harness-pair:v, a version of one to three digits and a semicolon, then carry the fields aud, env, exp, host, pairing, code and origin in that order and nothing else. Nothing is trimmed, decoded or normalized: a text longer than 320 characters or without the version prefix is refused as invalid, a version other than 1 as unsupported, and any other text outside the field shape as invalid.",
+				"examples": [
+					"harness-pair:v1;aud=harness-phone;env=production;exp=1794744300;host=9c1f4e7a0b2d385f6e1a4c9b07d3e8f2a5b61c40;pairing=5e0b7d2a9c4f1e83b6d0a2f7c9e1b405;code=K7Q2M9TH;origin=https://relay.example.com",
+					"harness-pair:v1;aud=harness-phone;env=local;exp=1794744270;host=b3d7e1f0a92c4685d1e0f7a3c9b28e4d6f1a0c57;pairing=a14c9e06f2d8b35e7c01f9a4d6b28e3f;code=4WXHP6RD;origin=http://127.0.0.1:8787"
+				]
 			},
 			{
 				"name": "readPairingOffer.reading",
 				"type": "OfferReading",
 				"required": true,
-				"description": "Current time in milliseconds and allowed local or production environments."
+				"description": "The clock and the accepted environments of this read: now is the current time in epoch milliseconds, and environments lists which of production and local this build accepts. An accepted expiry must be later than now and no more than remoteLimits.pairingTtlMs (300000) plus offerRules.skewMs (60000), 360000 milliseconds, after now.",
+				"examples": [
+					{
+						"now": 1794744000000,
+						"environments": ["production"]
+					},
+					{
+						"now": 1794744000000,
+						"environments": ["production", "local"]
+					},
+					{
+						"now": 1794744000000,
+						"environments": ["local"]
+					}
+				]
 			},
 			{
 				"name": "offerEnvironment.origin",
 				"type": "string",
 				"required": true,
-				"description": "Exact relay origin with no path; supported forms are named HTTPS origins or HTTP loopback origins."
+				"description": "The exact origin text to classify, with no path, query or trailing slash. Only an https:// named relay origin, whose labels are lowercase letters, digits and single inner hyphens with the last label starting with a letter, or an http:// origin of 127.0.0.1, localhost or [::1] can be classified, and either form may carry a port.",
+				"examples": [
+					"https://relay.example.com",
+					"https://relay.example.com:8443",
+					"http://localhost:3000"
+				]
 			},
 			{
 				"name": "written.offer",
 				"type": "PairingOffer",
 				"required": true,
-				"description": "Validated pairing offer containing host, origin, pairing id, code and expiry."
+				"description": "The offer whose fields are written into the text as given: origin, hostId, pairingId, code and expiresAt. written checks none of them, so only pairingOffer applies the length and shape checks.",
+				"examples": [
+					{
+						"origin": "https://relay.example.com",
+						"hostId": "9c1f4e7a0b2d385f6e1a4c9b07d3e8f2a5b61c40",
+						"pairingId": "5e0b7d2a9c4f1e83b6d0a2f7c9e1b405",
+						"code": "K7Q2M9TH",
+						"expiresAt": "2026-11-15T12:05:00.000Z"
+					},
+					{
+						"origin": "http://127.0.0.1:8787",
+						"hostId": "b3d7e1f0a92c4685d1e0f7a3c9b28e4d6f1a0c57",
+						"pairingId": "a14c9e06f2d8b35e7c01f9a4d6b28e3f",
+						"code": "4WXHP6RD",
+						"expiresAt": "2026-11-15T12:04:30.000Z"
+					}
+				]
 			},
 			{
 				"name": "written.environment",
 				"type": "string",
 				"required": true,
-				"description": "Environment identifier embedded in the QR offer audience boundary."
+				"description": "The environment name written after env=, taken as given and not checked; pairingOffer passes only a non-null offerEnvironment result, which is production or local.",
+				"examples": ["production", "local"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "offerRules",
 				"type": "unknown",
-				"description": "Protocol version 1, harness-phone audience, 320-character limit and 60-second clock-skew allowance."
+				"description": "The bounds of an offer text: version '1', audience 'harness-phone', maxLength 320 characters, and skewMs 60000 milliseconds, the allowance for how far a phone clock may run behind.",
+				"examples": [
+					{
+						"version": "1",
+						"audience": "harness-phone",
+						"maxLength": 320,
+						"skewMs": 60000
+					}
+				]
 			},
 			{
 				"name": "offerEnvironment",
 				"type": "OfferEnvironment | null",
-				"description": "Production for a permitted named HTTPS origin, local for permitted HTTP loopback, otherwise null."
+				"description": "'production' for an https:// named relay origin that is not localhost, with no port or a port from 1 to 65535 other than 443; 'local' for an http:// origin of 127.0.0.1, localhost or [::1], with no port or a port from 1 to 65535 other than 80; null for any other origin.",
+				"examples": ["production", "local", null]
 			},
 			{
 				"name": "pairingOffer",
 				"type": "string",
-				"description": "Canonical offer text with normalized code and expiry rounded down to whole seconds."
+				"description": "The QR text in the fixed field order harness-pair:v1, aud, env, exp, host, pairing, code and origin, with exp as whole seconds rounded down and the code uppercased with every character other than A-Z and 0-9 removed. It is returned only when it is at most 320 characters and matches the protocol shape.",
+				"examples": [
+					"harness-pair:v1;aud=harness-phone;env=production;exp=1794744300;host=9c1f4e7a0b2d385f6e1a4c9b07d3e8f2a5b61c40;pairing=5e0b7d2a9c4f1e83b6d0a2f7c9e1b405;code=K7Q2M9TH;origin=https://relay.example.com",
+					"harness-pair:v1;aud=harness-phone;env=local;exp=1794744270;host=b3d7e1f0a92c4685d1e0f7a3c9b28e4d6f1a0c57;pairing=a14c9e06f2d8b35e7c01f9a4d6b28e3f;code=4WXHP6RD;origin=http://127.0.0.1:8787"
+				]
 			},
 			{
 				"name": "readPairingOffer",
 				"type": "OfferRead",
-				"description": "Parsed offer or invalid, unsupported, environment or expired refusal; accepted expiry must be within the pairing TTL plus clock allowance."
+				"description": "The offer, with expiresAt as an ISO time, when every check passes; otherwise { refused } with 'invalid', 'unsupported', 'environment' or 'expired', taken from the first check that fails. 'invalid' covers a text longer than 320 characters, a text without the version prefix or outside the shape, an origin that offerEnvironment refuses, an env that does not match the origin, and an expiry more than pairingTtlMs plus skewMs (360000 milliseconds) after reading.now; 'unsupported' covers a version other than 1 and an audience other than harness-phone; 'environment' covers an env other than production or local and an origin kind that reading.environments does not list; 'expired' covers an expiry at or before reading.now.",
+				"examples": [
+					{
+						"offer": {
+							"origin": "https://relay.example.com",
+							"hostId": "9c1f4e7a0b2d385f6e1a4c9b07d3e8f2a5b61c40",
+							"pairingId": "5e0b7d2a9c4f1e83b6d0a2f7c9e1b405",
+							"code": "K7Q2M9TH",
+							"expiresAt": "2026-11-15T12:05:00.000Z"
+						}
+					},
+					{
+						"refused": "expired"
+					},
+					{
+						"refused": "invalid"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "The writer throws Invalid pairing offer for an unsupported origin or malformed or oversized serialized fields."
+				"description": "pairingOffer throws an Error with the message 'Invalid pairing offer.' when the origin is not a permitted relay origin, when the text is longer than 320 characters, or when the text does not match the protocol shape. No other export throws for inputs of their declared types: readPairingOffer returns every refusal as a value."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "pairingOffer",
@@ -112,23 +199,44 @@
 						"name": "pairingOffer.offer",
 						"type": "PairingOffer",
 						"required": true,
-						"description": "Relay origin, host and pairing IDs, human pairing code and expiry time to serialize."
+						"description": "The offer to write as QR text: origin, hostId, pairingId, code and expiresAt. pairingOffer throws unless origin is a permitted relay origin, hostId is 40 lowercase hex characters, pairingId is 32 lowercase hex characters, the code once normalized is 8 characters from A-H, J-N, P-Z and 2-9, expiresAt parses to a date whose whole-second Unix time has 10 digits, and the written text is at most 320 characters with an origin of at most 200 characters.",
+						"examples": [
+							{
+								"origin": "https://relay.example.com",
+								"hostId": "9c1f4e7a0b2d385f6e1a4c9b07d3e8f2a5b61c40",
+								"pairingId": "5e0b7d2a9c4f1e83b6d0a2f7c9e1b405",
+								"code": "K7Q2M9TH",
+								"expiresAt": "2026-11-15T12:05:00.000Z"
+							},
+							{
+								"origin": "http://127.0.0.1:8787",
+								"hostId": "b3d7e1f0a92c4685d1e0f7a3c9b28e4d6f1a0c57",
+								"pairingId": "a14c9e06f2d8b35e7c01f9a4d6b28e3f",
+								"code": "4WXHP6RD",
+								"expiresAt": "2026-11-15T12:04:30.000Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pairingOffer",
 						"type": "string",
-						"description": "Canonical offer text with normalized code and expiry rounded down to whole seconds."
+						"description": "The QR text in the fixed field order harness-pair:v1, aud, env, exp, host, pairing, code and origin, with exp as whole seconds rounded down and the code uppercased with every character other than A-Z and 0-9 removed. It is returned only when it is at most 320 characters and matches the protocol shape.",
+						"examples": [
+							"harness-pair:v1;aud=harness-phone;env=production;exp=1794744300;host=9c1f4e7a0b2d385f6e1a4c9b07d3e8f2a5b61c40;pairing=5e0b7d2a9c4f1e83b6d0a2f7c9e1b405;code=K7Q2M9TH;origin=https://relay.example.com",
+							"harness-pair:v1;aud=harness-phone;env=local;exp=1794744270;host=b3d7e1f0a92c4685d1e0f7a3c9b28e4d6f1a0c57;pairing=a14c9e06f2d8b35e7c01f9a4d6b28e3f;code=4WXHP6RD;origin=http://127.0.0.1:8787"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "pairingOffer throws an Error with the message 'Invalid pairing offer.' when the origin is not a permitted relay origin, when the text is longer than 320 characters, or when the text does not match the protocol shape. No other export throws for inputs of their declared types: readPairingOffer returns every refusal as a value."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readPairingOffer",
@@ -137,24 +245,59 @@
 						"name": "readPairingOffer.text",
 						"type": "string",
 						"required": true,
-						"description": "Scanned offer text in the fixed protocol field order."
+						"description": "The scanned QR text, exactly as scanned: it must start with harness-pair:v, a version of one to three digits and a semicolon, then carry the fields aud, env, exp, host, pairing, code and origin in that order and nothing else. Nothing is trimmed, decoded or normalized: a text longer than 320 characters or without the version prefix is refused as invalid, a version other than 1 as unsupported, and any other text outside the field shape as invalid.",
+						"examples": [
+							"harness-pair:v1;aud=harness-phone;env=production;exp=1794744300;host=9c1f4e7a0b2d385f6e1a4c9b07d3e8f2a5b61c40;pairing=5e0b7d2a9c4f1e83b6d0a2f7c9e1b405;code=K7Q2M9TH;origin=https://relay.example.com",
+							"harness-pair:v1;aud=harness-phone;env=local;exp=1794744270;host=b3d7e1f0a92c4685d1e0f7a3c9b28e4d6f1a0c57;pairing=a14c9e06f2d8b35e7c01f9a4d6b28e3f;code=4WXHP6RD;origin=http://127.0.0.1:8787"
+						]
 					},
 					{
 						"name": "readPairingOffer.reading",
 						"type": "OfferReading",
 						"required": true,
-						"description": "Current time in milliseconds and allowed local or production environments."
+						"description": "The clock and the accepted environments of this read: now is the current time in epoch milliseconds, and environments lists which of production and local this build accepts. An accepted expiry must be later than now and no more than remoteLimits.pairingTtlMs (300000) plus offerRules.skewMs (60000), 360000 milliseconds, after now.",
+						"examples": [
+							{
+								"now": 1794744000000,
+								"environments": ["production"]
+							},
+							{
+								"now": 1794744000000,
+								"environments": ["production", "local"]
+							},
+							{
+								"now": 1794744000000,
+								"environments": ["local"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readPairingOffer",
 						"type": "OfferRead",
-						"description": "Parsed offer or invalid, unsupported, environment or expired refusal; accepted expiry must be within the pairing TTL plus clock allowance."
+						"description": "The offer, with expiresAt as an ISO time, when every check passes; otherwise { refused } with 'invalid', 'unsupported', 'environment' or 'expired', taken from the first check that fails. 'invalid' covers a text longer than 320 characters, a text without the version prefix or outside the shape, an origin that offerEnvironment refuses, an env that does not match the origin, and an expiry more than pairingTtlMs plus skewMs (360000 milliseconds) after reading.now; 'unsupported' covers a version other than 1 and an audience other than harness-phone; 'environment' covers an env other than production or local and an origin kind that reading.environments does not list; 'expired' covers an expiry at or before reading.now.",
+						"examples": [
+							{
+								"offer": {
+									"origin": "https://relay.example.com",
+									"hostId": "9c1f4e7a0b2d385f6e1a4c9b07d3e8f2a5b61c40",
+									"pairingId": "5e0b7d2a9c4f1e83b6d0a2f7c9e1b405",
+									"code": "K7Q2M9TH",
+									"expiresAt": "2026-11-15T12:05:00.000Z"
+								}
+							},
+							{
+								"refused": "expired"
+							},
+							{
+								"refused": "invalid"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "offerEnvironment",
@@ -163,18 +306,24 @@
 						"name": "offerEnvironment.origin",
 						"type": "string",
 						"required": true,
-						"description": "Exact relay origin with no path; supported forms are named HTTPS origins or HTTP loopback origins."
+						"description": "The exact origin text to classify, with no path, query or trailing slash. Only an https:// named relay origin, whose labels are lowercase letters, digits and single inner hyphens with the last label starting with a letter, or an http:// origin of 127.0.0.1, localhost or [::1] can be classified, and either form may carry a port.",
+						"examples": [
+							"https://relay.example.com",
+							"https://relay.example.com:8443",
+							"http://localhost:3000"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "offerEnvironment",
 						"type": "OfferEnvironment | null",
-						"description": "Production for a permitted named HTTPS origin, local for permitted HTTP loopback, otherwise null."
+						"description": "'production' for an https:// named relay origin that is not localhost, with no port or a port from 1 to 65535 other than 443; 'local' for an http:// origin of 127.0.0.1, localhost or [::1], with no port or a port from 1 to 65535 other than 80; null for any other origin.",
+						"examples": ["production", "local", null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "written",
@@ -183,23 +332,45 @@
 						"name": "written.offer",
 						"type": "PairingOffer",
 						"required": true,
-						"description": "Validated pairing offer containing host, origin, pairing id, code and expiry."
+						"description": "The offer whose fields are written into the text as given: origin, hostId, pairingId, code and expiresAt. written checks none of them, so only pairingOffer applies the length and shape checks.",
+						"examples": [
+							{
+								"origin": "https://relay.example.com",
+								"hostId": "9c1f4e7a0b2d385f6e1a4c9b07d3e8f2a5b61c40",
+								"pairingId": "5e0b7d2a9c4f1e83b6d0a2f7c9e1b405",
+								"code": "K7Q2M9TH",
+								"expiresAt": "2026-11-15T12:05:00.000Z"
+							},
+							{
+								"origin": "http://127.0.0.1:8787",
+								"hostId": "b3d7e1f0a92c4685d1e0f7a3c9b28e4d6f1a0c57",
+								"pairingId": "a14c9e06f2d8b35e7c01f9a4d6b28e3f",
+								"code": "4WXHP6RD",
+								"expiresAt": "2026-11-15T12:04:30.000Z"
+							}
+						]
 					},
 					{
 						"name": "written.environment",
 						"type": "string",
 						"required": true,
-						"description": "Environment identifier embedded in the QR offer audience boundary."
+						"description": "The environment name written after env=, taken as given and not checked; pairingOffer passes only a non-null offerEnvironment result, which is production or local.",
+						"examples": ["production", "local"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "written",
-						"type": "string"
+						"type": "string",
+						"description": "The offer text built from the fields in the same fixed order, with exp in whole seconds rounded down and the code normalized, returned without a length or shape check: an unparsable expiresAt is written as NaN, and a malformed or over-long text is returned unchanged.",
+						"examples": [
+							"harness-pair:v1;aud=harness-phone;env=production;exp=1794744300;host=9c1f4e7a0b2d385f6e1a4c9b07d3e8f2a5b61c40;pairing=5e0b7d2a9c4f1e83b6d0a2f7c9e1b405;code=K7Q2M9TH;origin=https://relay.example.com",
+							"harness-pair:v1;aud=harness-phone;env=local;exp=1794744270;host=b3d7e1f0a92c4685d1e0f7a3c9b28e4d6f1a0c57;pairing=a14c9e06f2d8b35e7c01f9a4d6b28e3f;code=4WXHP6RD;origin=http://127.0.0.1:8787"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
