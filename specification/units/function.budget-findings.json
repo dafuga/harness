@@ -46,56 +46,234 @@
 				"name": "budgetFindings.input",
 				"type": "BudgetInput",
 				"required": true,
-				"description": "Unit, current profile, default target, performance budgets and measurements, optional reviewed baseline, and whether source size and complexity should be checked."
+				"description": "The unit to judge, with its machine profile, default execution target, performance budgets, measurements and reviewed baseline (undefined when none was reviewed). Only this unit's measurements are judged: emitted sizes always are, source-bytes, complexity and dependencies only when checkSize is true, and performance is compared only within the profile.",
+				"examples": [
+					{
+						"unit": "function.budget-findings",
+						"profile": "5a1c9e0d7b3f2648",
+						"defaultTarget": "module",
+						"budgets": [
+							{
+								"workload": "graph-10k",
+								"metric": "latency-warm-ms",
+								"tolerance": 0.05
+							}
+						],
+						"measurements": [
+							{
+								"unit": "function.budget-findings",
+								"metric": "source-bytes",
+								"value": 4096,
+								"workload": null,
+								"profile": null
+							},
+							{
+								"unit": "function.budget-findings",
+								"metric": "complexity",
+								"value": 12,
+								"workload": null,
+								"profile": null
+							},
+							{
+								"unit": "function.budget-findings",
+								"metric": "dependencies",
+								"value": 5,
+								"workload": null,
+								"profile": null
+							},
+							{
+								"unit": "function.budget-findings",
+								"metric": "artifact-bytes",
+								"value": 20480,
+								"target": "module",
+								"workload": null,
+								"profile": null
+							},
+							{
+								"unit": "function.budget-findings",
+								"metric": "latency-warm-ms",
+								"value": 12.4,
+								"target": "module",
+								"workload": "graph-10k",
+								"profile": "5a1c9e0d7b3f2648",
+								"unitOfMeasure": "ms",
+								"method": "Median of 5 batches of 1000 awaited representative calls after 3 warmups; includes await overhead.",
+								"comparison": {
+									"request": "3c9e5a1f7b2d8e4065a1c3f9d7b2e8a46f0c1d9b5e3a7f2c8d4b6e1a9f0c3d57",
+									"boundary": "public-invocation",
+									"protocol": "harness-rounds/1",
+									"sampling": {
+										"warmup": 3,
+										"rounds": 5,
+										"iterations": 1000
+									}
+								}
+							}
+						],
+						"baseline": {
+							"metrics": {
+								"source-bytes": 4096,
+								"complexity": 12,
+								"dependencies": 5,
+								"artifact-bytes:module": 20480
+							},
+							"performance": [
+								{
+									"workload": "graph-10k",
+									"metric": "latency-warm-ms",
+									"target": "module",
+									"profile": "5a1c9e0d7b3f2648",
+									"value": 12.5,
+									"unitOfMeasure": "ms",
+									"method": "Median of 5 batches of 1000 awaited representative calls after 3 warmups; includes await overhead.",
+									"comparison": {
+										"request": "3c9e5a1f7b2d8e4065a1c3f9d7b2e8a46f0c1d9b5e3a7f2c8d4b6e1a9f0c3d57",
+										"boundary": "public-invocation",
+										"protocol": "harness-rounds/1",
+										"sampling": {
+											"warmup": 3,
+											"rounds": 5,
+											"iterations": 1000
+										}
+									}
+								}
+							]
+						},
+						"checkSize": true
+					},
+					{
+						"unit": "function.emitted-sizes",
+						"profile": "c04e8b2f91d6a375",
+						"defaultTarget": "module",
+						"budgets": [],
+						"measurements": [
+							{
+								"unit": "function.emitted-sizes",
+								"metric": "artifact-bytes",
+								"value": 9216,
+								"target": "wasm",
+								"workload": null,
+								"profile": null
+							}
+						],
+						"baseline": {
+							"metrics": {},
+							"performance": []
+						},
+						"checkSize": false
+					}
+				]
 			},
 			{
 				"name": "isFrozen.metric",
 				"type": "string",
 				"required": true,
-				"description": "Metric name to test for a frozen size, complexity, dependency or emitted-artifact limit."
+				"description": "The metric name to test. It is frozen when it is source-bytes, complexity or dependencies, or when it begins with artifact-bytes, and every other name, including each performance metric, is not frozen.",
+				"examples": ["source-bytes", "artifact-bytes:wasm", "latency-warm-ms"]
 			},
 			{
 				"name": "performanceLimit.metric",
 				"type": "string",
 				"required": true,
-				"description": "Metric whose worse direction determines the tolerated limit; only throughput-ops treats larger values as better."
+				"description": "The metric whose direction decides the limit. Only throughput-ops is better when larger, and every other metric, such as latency-warm-ms or memory-bytes, is better when smaller.",
+				"examples": ["latency-warm-ms", "throughput-ops", "memory-bytes"]
 			},
 			{
 				"name": "performanceLimit.baseline",
 				"type": "number",
 				"required": true,
-				"description": "Reviewed numeric value in the same unit as the measurement."
+				"description": "The reviewed value that the tolerance is applied to, in the unit of measure of its metric: ms for the latency metrics, ops/s for throughput-ops and bytes for memory-bytes. Nothing checks its range, so a baseline of 0 gives a limit of 0.",
+				"examples": [12.5, 2400, 1048576]
 			},
 			{
 				"name": "performanceLimit.tolerance",
 				"type": "number",
 				"required": true,
-				"description": "Allowed fractional regression, such as 0.05 for five percent."
+				"description": "The allowed fractional regression: 0.05 allows five percent, and 0 makes the baseline itself the limit. Performance budgets accept tolerances only from 0 to 0.05 (performanceTolerance), but this function applies any number it is given.",
+				"examples": [0.05, 0.02, 0]
 			}
 		],
 		"outputs": [
 			{
 				"name": "frozenMetrics",
 				"type": "unknown",
-				"description": "The source metrics source-bytes, complexity and dependencies whose limits never allow unreviewed growth."
+				"description": "The readonly list of frozen source metric names, in this order: source-bytes, complexity and dependencies. Each is checked only when checkSize is true, and a measured value above its reviewed baseline is exceeded.",
+				"examples": [
+					["source-bytes", "complexity", "dependencies"]
+				]
 			},
 			{
 				"name": "isFrozen",
 				"type": "boolean",
-				"description": "True for those source metrics or any metric beginning with artifact-bytes."
+				"description": "True when the metric is source-bytes, complexity or dependencies, or begins with artifact-bytes, and false for every other metric.",
+				"examples": [true, false]
 			},
 			{
 				"name": "budgetFindings",
 				"type": "BudgetFinding[]",
-				"description": "Findings for requested source checks, measured emitted targets and each performance budget. Each reports passed, exceeded, missing-baseline, missing-measurement, unavailable, incomplete or incompatible as supported by the evidence."
+				"description": "One finding for each frozen source metric when checkSize is true, one for each emitted size of this unit and one for each performance budget, in that order. Each status is passed, exceeded, missing-baseline, missing-measurement, unavailable, incomplete or incompatible, and only emitted-size findings name a target.",
+				"examples": [
+					[
+						{
+							"unit": "function.budget-findings",
+							"metric": "source-bytes",
+							"status": "passed",
+							"baseline": 4096,
+							"measured": 4096
+						},
+						{
+							"unit": "function.budget-findings",
+							"metric": "complexity",
+							"status": "passed",
+							"baseline": 12,
+							"measured": 12
+						},
+						{
+							"unit": "function.budget-findings",
+							"metric": "dependencies",
+							"status": "passed",
+							"baseline": 5,
+							"measured": 5
+						},
+						{
+							"unit": "function.budget-findings",
+							"metric": "artifact-bytes",
+							"status": "passed",
+							"baseline": 20480,
+							"measured": 20480,
+							"target": "module"
+						},
+						{
+							"unit": "function.budget-findings",
+							"metric": "latency-warm-ms",
+							"status": "passed",
+							"baseline": 12.5,
+							"measured": 12.4,
+							"detail": "graph-10k on the module target"
+						}
+					],
+					[
+						{
+							"unit": "function.emitted-sizes",
+							"metric": "artifact-bytes",
+							"status": "missing-baseline",
+							"baseline": null,
+							"measured": 9216,
+							"target": "wasm",
+							"detail": "no-limit-for-output"
+						}
+					]
+				]
 			},
 			{
 				"name": "performanceLimit",
 				"type": "number",
-				"description": "Baseline decreased by tolerance for throughput, otherwise increased by tolerance, rounded to twelve significant digits. A value exactly at the limit remains acceptable."
+				"description": "The baseline moved by the tolerance in the worse direction, decreased for throughput-ops and increased for every other metric, and rounded to twelve significant digits. A measured value exactly at this limit is still acceptable.",
+				"examples": [13.125, 2280, 1069547.52]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "budgetFindings",
@@ -104,18 +282,186 @@
 						"name": "budgetFindings.input",
 						"type": "BudgetInput",
 						"required": true,
-						"description": "Unit, current profile, default target, performance budgets and measurements, optional reviewed baseline, and whether source size and complexity should be checked."
+						"description": "The unit to judge, with its machine profile, default execution target, performance budgets, measurements and reviewed baseline (undefined when none was reviewed). Only this unit's measurements are judged: emitted sizes always are, source-bytes, complexity and dependencies only when checkSize is true, and performance is compared only within the profile.",
+						"examples": [
+							{
+								"unit": "function.budget-findings",
+								"profile": "5a1c9e0d7b3f2648",
+								"defaultTarget": "module",
+								"budgets": [
+									{
+										"workload": "graph-10k",
+										"metric": "latency-warm-ms",
+										"tolerance": 0.05
+									}
+								],
+								"measurements": [
+									{
+										"unit": "function.budget-findings",
+										"metric": "source-bytes",
+										"value": 4096,
+										"workload": null,
+										"profile": null
+									},
+									{
+										"unit": "function.budget-findings",
+										"metric": "complexity",
+										"value": 12,
+										"workload": null,
+										"profile": null
+									},
+									{
+										"unit": "function.budget-findings",
+										"metric": "dependencies",
+										"value": 5,
+										"workload": null,
+										"profile": null
+									},
+									{
+										"unit": "function.budget-findings",
+										"metric": "artifact-bytes",
+										"value": 20480,
+										"target": "module",
+										"workload": null,
+										"profile": null
+									},
+									{
+										"unit": "function.budget-findings",
+										"metric": "latency-warm-ms",
+										"value": 12.4,
+										"target": "module",
+										"workload": "graph-10k",
+										"profile": "5a1c9e0d7b3f2648",
+										"unitOfMeasure": "ms",
+										"method": "Median of 5 batches of 1000 awaited representative calls after 3 warmups; includes await overhead.",
+										"comparison": {
+											"request": "3c9e5a1f7b2d8e4065a1c3f9d7b2e8a46f0c1d9b5e3a7f2c8d4b6e1a9f0c3d57",
+											"boundary": "public-invocation",
+											"protocol": "harness-rounds/1",
+											"sampling": {
+												"warmup": 3,
+												"rounds": 5,
+												"iterations": 1000
+											}
+										}
+									}
+								],
+								"baseline": {
+									"metrics": {
+										"source-bytes": 4096,
+										"complexity": 12,
+										"dependencies": 5,
+										"artifact-bytes:module": 20480
+									},
+									"performance": [
+										{
+											"workload": "graph-10k",
+											"metric": "latency-warm-ms",
+											"target": "module",
+											"profile": "5a1c9e0d7b3f2648",
+											"value": 12.5,
+											"unitOfMeasure": "ms",
+											"method": "Median of 5 batches of 1000 awaited representative calls after 3 warmups; includes await overhead.",
+											"comparison": {
+												"request": "3c9e5a1f7b2d8e4065a1c3f9d7b2e8a46f0c1d9b5e3a7f2c8d4b6e1a9f0c3d57",
+												"boundary": "public-invocation",
+												"protocol": "harness-rounds/1",
+												"sampling": {
+													"warmup": 3,
+													"rounds": 5,
+													"iterations": 1000
+												}
+											}
+										}
+									]
+								},
+								"checkSize": true
+							},
+							{
+								"unit": "function.emitted-sizes",
+								"profile": "c04e8b2f91d6a375",
+								"defaultTarget": "module",
+								"budgets": [],
+								"measurements": [
+									{
+										"unit": "function.emitted-sizes",
+										"metric": "artifact-bytes",
+										"value": 9216,
+										"target": "wasm",
+										"workload": null,
+										"profile": null
+									}
+								],
+								"baseline": {
+									"metrics": {},
+									"performance": []
+								},
+								"checkSize": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "budgetFindings",
 						"type": "BudgetFinding[]",
-						"description": "Findings for requested source checks, measured emitted targets and each performance budget. Each reports passed, exceeded, missing-baseline, missing-measurement, unavailable, incomplete or incompatible as supported by the evidence."
+						"description": "One finding for each frozen source metric when checkSize is true, one for each emitted size of this unit and one for each performance budget, in that order. Each status is passed, exceeded, missing-baseline, missing-measurement, unavailable, incomplete or incompatible, and only emitted-size findings name a target.",
+						"examples": [
+							[
+								{
+									"unit": "function.budget-findings",
+									"metric": "source-bytes",
+									"status": "passed",
+									"baseline": 4096,
+									"measured": 4096
+								},
+								{
+									"unit": "function.budget-findings",
+									"metric": "complexity",
+									"status": "passed",
+									"baseline": 12,
+									"measured": 12
+								},
+								{
+									"unit": "function.budget-findings",
+									"metric": "dependencies",
+									"status": "passed",
+									"baseline": 5,
+									"measured": 5
+								},
+								{
+									"unit": "function.budget-findings",
+									"metric": "artifact-bytes",
+									"status": "passed",
+									"baseline": 20480,
+									"measured": 20480,
+									"target": "module"
+								},
+								{
+									"unit": "function.budget-findings",
+									"metric": "latency-warm-ms",
+									"status": "passed",
+									"baseline": 12.5,
+									"measured": 12.4,
+									"detail": "graph-10k on the module target"
+								}
+							],
+							[
+								{
+									"unit": "function.emitted-sizes",
+									"metric": "artifact-bytes",
+									"status": "missing-baseline",
+									"baseline": null,
+									"measured": 9216,
+									"target": "wasm",
+									"detail": "no-limit-for-output"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "isFrozen",
@@ -124,18 +470,20 @@
 						"name": "isFrozen.metric",
 						"type": "string",
 						"required": true,
-						"description": "Metric name to test for a frozen size, complexity, dependency or emitted-artifact limit."
+						"description": "The metric name to test. It is frozen when it is source-bytes, complexity or dependencies, or when it begins with artifact-bytes, and every other name, including each performance metric, is not frozen.",
+						"examples": ["source-bytes", "artifact-bytes:wasm", "latency-warm-ms"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "isFrozen",
 						"type": "boolean",
-						"description": "True for those source metrics or any metric beginning with artifact-bytes."
+						"description": "True when the metric is source-bytes, complexity or dependencies, or begins with artifact-bytes, and false for every other metric.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "performanceLimit",
@@ -144,30 +492,34 @@
 						"name": "performanceLimit.metric",
 						"type": "string",
 						"required": true,
-						"description": "Metric whose worse direction determines the tolerated limit; only throughput-ops treats larger values as better."
+						"description": "The metric whose direction decides the limit. Only throughput-ops is better when larger, and every other metric, such as latency-warm-ms or memory-bytes, is better when smaller.",
+						"examples": ["latency-warm-ms", "throughput-ops", "memory-bytes"]
 					},
 					{
 						"name": "performanceLimit.baseline",
 						"type": "number",
 						"required": true,
-						"description": "Reviewed numeric value in the same unit as the measurement."
+						"description": "The reviewed value that the tolerance is applied to, in the unit of measure of its metric: ms for the latency metrics, ops/s for throughput-ops and bytes for memory-bytes. Nothing checks its range, so a baseline of 0 gives a limit of 0.",
+						"examples": [12.5, 2400, 1048576]
 					},
 					{
 						"name": "performanceLimit.tolerance",
 						"type": "number",
 						"required": true,
-						"description": "Allowed fractional regression, such as 0.05 for five percent."
+						"description": "The allowed fractional regression: 0.05 allows five percent, and 0 makes the baseline itself the limit. Performance budgets accept tolerances only from 0 to 0.05 (performanceTolerance), but this function applies any number it is given.",
+						"examples": [0.05, 0.02, 0]
 					}
 				],
 				"outputs": [
 					{
 						"name": "performanceLimit",
 						"type": "number",
-						"description": "Baseline decreased by tolerance for throughput, otherwise increased by tolerance, rounded to twelve significant digits. A value exactly at the limit remains acceptable."
+						"description": "The baseline moved by the tolerance in the worse direction, decreased for throughput-ops and increased for every other metric, and rounded to twelve significant digits. A measured value exactly at this limit is still acceptable.",
+						"examples": [13.125, 2280, 1069547.52]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
