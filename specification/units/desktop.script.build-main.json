@@ -17,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "desktopNodeOptions",
-				"type": "{ target: \"node\"; format: \"cjs\"; external: string[]; plugins: Bun.BunPlugin[]; outdir: string; sourcemap: \"external\"; }",
+				"type": "{ target: \"node\"; format: \"cjs\"; external: string[]; plugins: import('bun').BunPlugin[]; outdir: string; sourcemap: \"external\"; }",
 				"description": "Shared Bun.build options (target node, format cjs, electron external, the jsonc-parser resolve plugin, outdir dist, external sourcemaps) that buildDesktopMain spreads into the main.cjs and preload.cjs builds, adding only entrypoints and naming. The plugin includes an executable setup callback, so the complete options value cannot be represented as JSON."
 			}
 		],
