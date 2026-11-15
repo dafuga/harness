@@ -18,62 +18,108 @@
 				"name": "hubJson.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "Strict UTF-8 JSON bytes."
+				"description": "Bytes containing one UTF-8 JSON document to decode. UTF-8 decoding is fatal, and invalid UTF-8 or JSON syntax throws Error with code artifact-corrupt."
 			},
 			{
 				"name": "hubHash.value",
 				"type": "Uint8Array | string",
 				"required": true,
-				"description": "Text or bytes to hash."
+				"description": "Bytes to hash directly, or a string encoded as UTF-8 before hashing. The function computes a SHA-256 digest of the resulting bytes.",
+				"examples": ["hello"]
 			},
 			{
 				"name": "hubContractHash.value",
 				"type": "unknown",
 				"required": true,
-				"description": "JSON-compatible contract value to serialize consistently before hashing."
+				"description": "A value passed to canonicalJson so its serialization can be hashed. Accepted shapes and serialization limits follow canonicalJson.",
+				"examples": [
+					{
+						"id": "hub.function.hub-json",
+						"version": 1
+					}
+				]
 			},
 			{
 				"name": "hubFail.code",
 				"type": "string",
 				"required": false,
 				"default": "artifact-corrupt",
-				"description": "Failure code; defaults to artifact-corrupt."
+				"description": "Code attached to the Error thrown by this helper. When omitted, it defaults to artifact-corrupt.",
+				"examples": ["artifact-corrupt", "invalid-path"]
 			},
 			{
 				"name": "hubFile.value",
 				"type": "string",
 				"required": true,
-				"description": "Artifact filename of 1 to 200 letters, digits, dots, underscores or hyphens, starting alphanumeric and containing no double dot."
+				"description": "A filename of 1 to 200 ASCII letters, digits, periods, underscores or hyphens, beginning with a letter or digit and containing no double period. Invalid values throw Error with code invalid-path.",
+				"examples": ["artifact.json", "report_2026-11.txt"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubJson",
 				"type": "unknown",
-				"description": "Parsed JSON; malformed text or encoding throws artifact-corrupt."
+				"description": "The JSON value returned by JSON.parse after fatal UTF-8 decoding. Any valid JSON root value is returned without schema validation.",
+				"examples": [
+					{
+						"ok": true,
+						"count": 2
+					},
+					null
+				]
 			},
 			{
 				"name": "hubHash",
 				"type": "Promise<string>",
-				"description": "Lowercase SHA-256 hexadecimal digest."
+				"description": "A Promise resolving to the lowercase 64-character hexadecimal SHA-256 digest of the input bytes; string inputs are UTF-8 encoded first.",
+				"examples": ["2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"]
 			},
 			{
 				"name": "hubContractHash",
 				"type": "unknown",
-				"description": "SHA-256 of canonical contract JSON."
+				"description": "A Promise resolving to the lowercase 64-character hexadecimal SHA-256 digest of canonicalJson(value). Serialization behavior and accepted values follow canonicalJson.",
+				"examples": ["44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"]
 			},
 			{
 				"name": "hubFail",
 				"type": "never",
-				"description": "Never returns; throws a generic artifact-unavailable Error with the supplied code."
+				"description": "Does not return; it throws an Error with message Harness artifact unavailable and a code property set to the supplied value. The code defaults to artifact-corrupt."
 			},
 			{
 				"name": "hubFile",
 				"type": "unknown",
-				"description": "Unchanged accepted filename; invalid names throw invalid-path."
+				"description": "The original filename string when the value passes the filename rule. Invalid names throw Error with code invalid-path.",
+				"examples": ["artifact.json", "report_2026-11.txt"]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Invalid UTF-8 decoding or JSON parsing throws Error with message Invalid committed artifact and code artifact-corrupt."
+			},
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "If crypto.subtle.digest throws or rejects, the returned Promise rejects with that failure unchanged. This implementation does not specify a stable error name or message."
+			},
+			{
+				"name": "unknown",
+				"type": "thrown",
+				"description": "Errors from canonicalJson(value) or rejection from hubHash propagate through the returned Promise unchanged. This implementation does not specify a stable error name or message."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Calling this helper always throws Error with message Harness artifact unavailable and a code property equal to the supplied code, defaulting to artifact-corrupt."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "A value that fails the filename rule throws Error with message Harness artifact unavailable and code invalid-path via hubFail."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubJson",
@@ -82,18 +128,31 @@
 						"name": "hubJson.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "Strict UTF-8 JSON bytes."
+						"description": "Bytes containing one UTF-8 JSON document to decode. UTF-8 decoding is fatal, and invalid UTF-8 or JSON syntax throws Error with code artifact-corrupt."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubJson",
 						"type": "unknown",
-						"description": "Parsed JSON; malformed text or encoding throws artifact-corrupt."
+						"description": "The JSON value returned by JSON.parse after fatal UTF-8 decoding. Any valid JSON root value is returned without schema validation.",
+						"examples": [
+							{
+								"ok": true,
+								"count": 2
+							},
+							null
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Invalid UTF-8 decoding or JSON parsing throws Error with message Invalid committed artifact and code artifact-corrupt."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubHash",
@@ -102,18 +161,26 @@
 						"name": "hubHash.value",
 						"type": "Uint8Array | string",
 						"required": true,
-						"description": "Text or bytes to hash."
+						"description": "Bytes to hash directly, or a string encoded as UTF-8 before hashing. The function computes a SHA-256 digest of the resulting bytes.",
+						"examples": ["hello"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubHash",
 						"type": "Promise<string>",
-						"description": "Lowercase SHA-256 hexadecimal digest."
+						"description": "A Promise resolving to the lowercase 64-character hexadecimal SHA-256 digest of the input bytes; string inputs are UTF-8 encoded first.",
+						"examples": ["2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "If crypto.subtle.digest throws or rejects, the returned Promise rejects with that failure unchanged. This implementation does not specify a stable error name or message."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubContractHash",
@@ -122,18 +189,31 @@
 						"name": "hubContractHash.value",
 						"type": "unknown",
 						"required": true,
-						"description": "JSON-compatible contract value to serialize consistently before hashing."
+						"description": "A value passed to canonicalJson so its serialization can be hashed. Accepted shapes and serialization limits follow canonicalJson.",
+						"examples": [
+							{
+								"id": "hub.function.hub-json",
+								"version": 1
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubContractHash",
 						"type": "unknown",
-						"description": "SHA-256 of canonical contract JSON."
+						"description": "A Promise resolving to the lowercase 64-character hexadecimal SHA-256 digest of canonicalJson(value). Serialization behavior and accepted values follow canonicalJson.",
+						"examples": ["44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unknown",
+						"type": "thrown",
+						"description": "Errors from canonicalJson(value) or rejection from hubHash propagate through the returned Promise unchanged. This implementation does not specify a stable error name or message."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubFail",
@@ -143,18 +223,25 @@
 						"type": "string",
 						"required": false,
 						"default": "artifact-corrupt",
-						"description": "Failure code; defaults to artifact-corrupt."
+						"description": "Code attached to the Error thrown by this helper. When omitted, it defaults to artifact-corrupt.",
+						"examples": ["artifact-corrupt", "invalid-path"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubFail",
 						"type": "never",
-						"description": "Never returns; throws a generic artifact-unavailable Error with the supplied code."
+						"description": "Does not return; it throws an Error with message Harness artifact unavailable and a code property set to the supplied value. The code defaults to artifact-corrupt."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Calling this helper always throws Error with message Harness artifact unavailable and a code property equal to the supplied code, defaulting to artifact-corrupt."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubFile",
@@ -163,18 +250,26 @@
 						"name": "hubFile.value",
 						"type": "string",
 						"required": true,
-						"description": "Artifact filename of 1 to 200 letters, digits, dots, underscores or hyphens, starting alphanumeric and containing no double dot."
+						"description": "A filename of 1 to 200 ASCII letters, digits, periods, underscores or hyphens, beginning with a letter or digit and containing no double period. Invalid values throw Error with code invalid-path.",
+						"examples": ["artifact.json", "report_2026-11.txt"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubFile",
 						"type": "unknown",
-						"description": "Unchanged accepted filename; invalid names throw invalid-path."
+						"description": "The original filename string when the value passes the filename rule. Invalid names throw Error with code invalid-path.",
+						"examples": ["artifact.json", "report_2026-11.txt"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "A value that fails the filename rule throws Error with message Harness artifact unavailable and code invalid-path via hubFail."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
