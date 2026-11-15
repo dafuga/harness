@@ -22,23 +22,137 @@
 				"name": "sourceBranches.refs",
 				"type": "ListedRef[]",
 				"required": true,
-				"description": "Listed Git refs with heads and optional symbolic targets."
+				"description": "Refs as Git lists them: `ref` is the full ref name, `head` its tip, and `symbolic` the ref a symbolic ref points to (checked only for remote refs). Refs under refs/heads/ (except refs/heads/harness-evidence) and refs/remotes/ (except symbolic refs, remote HEAD and harness-evidence) become branches or remote tips, and every other ref is ignored.",
+				"examples": [
+					[
+						{
+							"ref": "refs/heads/main",
+							"head": "4c1e7b09a2d35f8e6b1a0c9d7e2f4a6b8c0d1e3f"
+						},
+						{
+							"ref": "refs/remotes/origin/main",
+							"head": "4c1e7b09a2d35f8e6b1a0c9d7e2f4a6b8c0d1e3f"
+						}
+					],
+					[
+						{
+							"ref": "refs/heads/main",
+							"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+						},
+						{
+							"ref": "refs/heads/feature/login",
+							"head": "a41e0c7d25b9f38e61d4a0c85b7e9f2d3c6a1b48"
+						},
+						{
+							"ref": "refs/remotes/origin/feature/login",
+							"head": "e83b5f0a1c7d9e2b4f6a8c0d3e5b7f9a1c2d4e6b"
+						},
+						{
+							"ref": "refs/remotes/origin/release/2.1",
+							"head": "5d07a9c3e1f8b2046a7d9c5e3f1b8a2d4c6e0f97"
+						},
+						{
+							"ref": "refs/remotes/upstream/release/2.1",
+							"head": "5d07a9c3e1f8b2046a7d9c5e3f1b8a2d4c6e0f97"
+						}
+					],
+					[
+						{
+							"ref": "refs/heads/main",
+							"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+						},
+						{
+							"ref": "refs/heads/harness-evidence",
+							"head": "7b2e9d41c0a6f83e5d1b7c9a0e4f2d6b8c3a1e57"
+						},
+						{
+							"ref": "refs/notes/harness",
+							"head": "2e6a0f8d4c1b9a7e3d5f0c2b8a6e4d1f9c7b3a05"
+						},
+						{
+							"ref": "refs/tags/v2.0.0",
+							"head": "c0f4e9a1b7d2836e5f1a9c4b0d7e2f8a3b6c1d5e"
+						},
+						{
+							"ref": "refs/harness/source/9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f",
+							"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+						},
+						{
+							"ref": "refs/remotes/origin/main",
+							"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+						},
+						{
+							"ref": "refs/remotes/upstream/main",
+							"head": "e83b5f0a1c7d9e2b4f6a8c0d3e5b7f9a1c2d4e6b"
+						},
+						{
+							"ref": "refs/remotes/origin/feature/login",
+							"head": "a41e0c7d25b9f38e61d4a0c85b7e9f2d3c6a1b48"
+						}
+					]
+				]
 			},
 			{
 				"name": "sourceBranches.remotes",
 				"type": "string[]",
 				"required": true,
-				"description": "Configured remote names, used to disambiguate tracking prefixes by longest match."
+				"description": "Names of the configured remotes, used to split each refs/remotes/<remote>/<branch> ref: the longest configured name that the path starts with, followed by a slash, wins, and when none matches the first path segment is the remote.",
+				"examples": [
+					["origin"],
+					["origin", "upstream"],
+					["origin", "upstream", "fork"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceBranches",
 				"type": "SourceBranch[]",
-				"description": "Branches sorted by name. Local branches keep their tips; a remote-only agreed tip keeps the plain branch name, while conflicting tips use remote:branch. Evidence, notes, archives, tags and remote HEAD/symbolic refs are excluded."
+				"description": "Branches sorted by name: a local branch keeps its name and tip; a branch that only remotes have keeps its plain name when every remote that has it agrees on its tip, and otherwise each of its remote tips is listed as `<remote>:<branch>`; a remote tip that differs from the local branch of the same name is listed as `<remote>:<branch>`. Evidence, notes, archives, tags, internal refs, remote HEAD and remote symbolic refs, and every other ref are never listed.",
+				"examples": [
+					[
+						{
+							"name": "main",
+							"head": "4c1e7b09a2d35f8e6b1a0c9d7e2f4a6b8c0d1e3f"
+						}
+					],
+					[
+						{
+							"name": "feature/login",
+							"head": "a41e0c7d25b9f38e61d4a0c85b7e9f2d3c6a1b48"
+						},
+						{
+							"name": "main",
+							"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+						},
+						{
+							"name": "origin:feature/login",
+							"head": "e83b5f0a1c7d9e2b4f6a8c0d3e5b7f9a1c2d4e6b"
+						},
+						{
+							"name": "release/2.1",
+							"head": "5d07a9c3e1f8b2046a7d9c5e3f1b8a2d4c6e0f97"
+						}
+					],
+					[
+						{
+							"name": "feature/login",
+							"head": "a41e0c7d25b9f38e61d4a0c85b7e9f2d3c6a1b48"
+						},
+						{
+							"name": "main",
+							"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+						},
+						{
+							"name": "upstream:main",
+							"head": "e83b5f0a1c7d9e2b4f6a8c0d3e5b7f9a1c2d4e6b"
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "sourceBranches",
@@ -47,24 +161,137 @@
 						"name": "sourceBranches.refs",
 						"type": "ListedRef[]",
 						"required": true,
-						"description": "Listed Git refs with heads and optional symbolic targets."
+						"description": "Refs as Git lists them: `ref` is the full ref name, `head` its tip, and `symbolic` the ref a symbolic ref points to (checked only for remote refs). Refs under refs/heads/ (except refs/heads/harness-evidence) and refs/remotes/ (except symbolic refs, remote HEAD and harness-evidence) become branches or remote tips, and every other ref is ignored.",
+						"examples": [
+							[
+								{
+									"ref": "refs/heads/main",
+									"head": "4c1e7b09a2d35f8e6b1a0c9d7e2f4a6b8c0d1e3f"
+								},
+								{
+									"ref": "refs/remotes/origin/main",
+									"head": "4c1e7b09a2d35f8e6b1a0c9d7e2f4a6b8c0d1e3f"
+								}
+							],
+							[
+								{
+									"ref": "refs/heads/main",
+									"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+								},
+								{
+									"ref": "refs/heads/feature/login",
+									"head": "a41e0c7d25b9f38e61d4a0c85b7e9f2d3c6a1b48"
+								},
+								{
+									"ref": "refs/remotes/origin/feature/login",
+									"head": "e83b5f0a1c7d9e2b4f6a8c0d3e5b7f9a1c2d4e6b"
+								},
+								{
+									"ref": "refs/remotes/origin/release/2.1",
+									"head": "5d07a9c3e1f8b2046a7d9c5e3f1b8a2d4c6e0f97"
+								},
+								{
+									"ref": "refs/remotes/upstream/release/2.1",
+									"head": "5d07a9c3e1f8b2046a7d9c5e3f1b8a2d4c6e0f97"
+								}
+							],
+							[
+								{
+									"ref": "refs/heads/main",
+									"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+								},
+								{
+									"ref": "refs/heads/harness-evidence",
+									"head": "7b2e9d41c0a6f83e5d1b7c9a0e4f2d6b8c3a1e57"
+								},
+								{
+									"ref": "refs/notes/harness",
+									"head": "2e6a0f8d4c1b9a7e3d5f0c2b8a6e4d1f9c7b3a05"
+								},
+								{
+									"ref": "refs/tags/v2.0.0",
+									"head": "c0f4e9a1b7d2836e5f1a9c4b0d7e2f8a3b6c1d5e"
+								},
+								{
+									"ref": "refs/harness/source/9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f",
+									"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+								},
+								{
+									"ref": "refs/remotes/origin/main",
+									"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+								},
+								{
+									"ref": "refs/remotes/upstream/main",
+									"head": "e83b5f0a1c7d9e2b4f6a8c0d3e5b7f9a1c2d4e6b"
+								},
+								{
+									"ref": "refs/remotes/origin/feature/login",
+									"head": "a41e0c7d25b9f38e61d4a0c85b7e9f2d3c6a1b48"
+								}
+							]
+						]
 					},
 					{
 						"name": "sourceBranches.remotes",
 						"type": "string[]",
 						"required": true,
-						"description": "Configured remote names, used to disambiguate tracking prefixes by longest match."
+						"description": "Names of the configured remotes, used to split each refs/remotes/<remote>/<branch> ref: the longest configured name that the path starts with, followed by a slash, wins, and when none matches the first path segment is the remote.",
+						"examples": [
+							["origin"],
+							["origin", "upstream"],
+							["origin", "upstream", "fork"]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceBranches",
 						"type": "SourceBranch[]",
-						"description": "Branches sorted by name. Local branches keep their tips; a remote-only agreed tip keeps the plain branch name, while conflicting tips use remote:branch. Evidence, notes, archives, tags and remote HEAD/symbolic refs are excluded."
+						"description": "Branches sorted by name: a local branch keeps its name and tip; a branch that only remotes have keeps its plain name when every remote that has it agrees on its tip, and otherwise each of its remote tips is listed as `<remote>:<branch>`; a remote tip that differs from the local branch of the same name is listed as `<remote>:<branch>`. Evidence, notes, archives, tags, internal refs, remote HEAD and remote symbolic refs, and every other ref are never listed.",
+						"examples": [
+							[
+								{
+									"name": "main",
+									"head": "4c1e7b09a2d35f8e6b1a0c9d7e2f4a6b8c0d1e3f"
+								}
+							],
+							[
+								{
+									"name": "feature/login",
+									"head": "a41e0c7d25b9f38e61d4a0c85b7e9f2d3c6a1b48"
+								},
+								{
+									"name": "main",
+									"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+								},
+								{
+									"name": "origin:feature/login",
+									"head": "e83b5f0a1c7d9e2b4f6a8c0d3e5b7f9a1c2d4e6b"
+								},
+								{
+									"name": "release/2.1",
+									"head": "5d07a9c3e1f8b2046a7d9c5e3f1b8a2d4c6e0f97"
+								}
+							],
+							[
+								{
+									"name": "feature/login",
+									"head": "a41e0c7d25b9f38e61d4a0c85b7e9f2d3c6a1b48"
+								},
+								{
+									"name": "main",
+									"head": "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+								},
+								{
+									"name": "upstream:main",
+									"head": "e83b5f0a1c7d9e2b4f6a8c0d3e5b7f9a1c2d4e6b"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
