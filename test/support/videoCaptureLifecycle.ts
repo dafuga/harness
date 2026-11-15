@@ -34,8 +34,12 @@ export async function assertCaptureLifecycle(repo: TemporaryRepo) {
 	expect(independent.recorded.map((s) => s.clipId)).toEqual(['first']);
 	expect(independent.reused.map((s) => s.clipId)).toEqual(['second']);
 	f.publish(independent);
-	writeFileSync(join(repo.root, 'src/player.ts'), 'export const player = 2;');
+	writeFileSync(
+		join(repo.root, 'src/player.ts'),
+		'// @harness-uid u_abcdefghij\nexport const player = 2;'
+	);
 	f.commit();
 	const shared = await f.service.record(f.options());
 	expect(shared.recorded).toHaveLength(2);
+	return f.registry.manifests.map((unit) => unit.id);
 }

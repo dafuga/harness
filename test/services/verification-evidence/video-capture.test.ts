@@ -31,7 +31,7 @@ test('capture orchestration retains original clips without creating warm browser
 	await measureWorkload(
 		'service.verification-evidence-video-capture',
 		'cold-warm-input-lifecycle',
-		() => withTempRepo(assertCaptureLifecycle)
+		async () => expect(await withTempRepo(assertCaptureLifecycle)).toEqual(['component.player'])
 	);
 }, 30_000);
 
@@ -158,7 +158,10 @@ test('capture orchestration re-records a corrupt sibling and bypasses old native
 		const repaired = await f.service.record(f.options());
 		expect(repaired.recorded.map((s) => s.clipId)).toEqual(['first']);
 		expect(repaired.reused.map((s) => s.clipId)).toEqual(['second']);
-		writeFileSync(join(repo.root, 'src/player.ts'), 'import(variable);');
+		writeFileSync(
+			join(repo.root, 'src/player.ts'),
+			'// @harness-uid u_abcdefghij\nimport(variable);'
+		);
 		f.commit();
 		const unknown = await f.service.record(f.options());
 		f.publish(unknown);
