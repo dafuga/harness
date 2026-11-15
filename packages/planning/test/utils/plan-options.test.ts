@@ -6,7 +6,7 @@ import type { AddDesignInput, DesignImageInput } from '../../src/models/Planning
 import type { DesignImage, DesignVersion } from '../../src/models/Planning.types';
 import { hash } from '../../src/utils/planData';
 import { approvable, optionOf, type WriteImages } from '../../src/utils/planOptions';
-import { checkOptions } from '../../src/utils/plan-read/checkOptions';
+import { checkOptions } from '../../src/utils/planning-collaboration/plan-read/checkOptions';
 import { planOptions } from '../../src/services/planning-service/planOptions';
 
 /**
@@ -19,7 +19,7 @@ test.each([
 	['src/utils/planOptions.ts', 'planOptions'],
 	['src/services/planning-service/planOptions.ts', 'planOptions'],
 	['src/utils/planOptions.ts', 'checkOptions'],
-	['src/utils/plan-read/checkOptions.ts', 'checkOptions'],
+	['src/utils/planning-collaboration/plan-read/checkOptions.ts', 'checkOptions'],
 	['src/utils/planOptions.ts', 'heldBy'],
 	['src/utils/plan-design/heldBy.ts', 'heldBy']
 ])('design option runtime cold-imports %s and calls %s', (entry, symbol) => {

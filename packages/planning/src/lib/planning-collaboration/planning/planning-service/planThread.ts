@@ -12,7 +12,7 @@ import type {
 } from '../../../../models/Planning.types';
 import type { Git } from '../../../../utils/planGit';
 import { blob, revision } from '../../../../utils/planGit';
-import { planRead } from '../../../../utils/plan-read/planRead';
+import { planRead } from '../../../../utils/planning-collaboration/plan-read/planRead';
 import { readImage } from '../../../../utils/plan-design/readImage';
 import { optionOf } from '../../../../utils/planOptions';
 import { clean, commitFiles, type Files } from '../../../../utils/plan-write/clean';

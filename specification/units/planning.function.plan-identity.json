@@ -9,13 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/planning/src/utils/plan-read/validateIdentity.ts",
 			"packages/planning/src/utils/planIdentity.ts",
 			"packages/planning/src/utils/planning-collaboration/plan-read/validateIdentity.ts",
 			"packages/planning/src/utils/planning-collaboration/planIdentity.ts"
 		],
 		"symbols": [
-			"validateIdentity",
 			"validateIdentity",
 			"identity",
 			"attest",

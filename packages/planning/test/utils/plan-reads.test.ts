@@ -7,7 +7,7 @@ import { planningService } from '../../src/services/planning-service/PlanningSer
 import { readImage } from '../../src/utils/plan-design/readImage';
 import { planGit } from '../../src/lib/planning-collaboration/planning/planGit';
 import { revision, type Git } from '../../src/utils/planGit';
-import { planRead } from '../../src/utils/plan-read/planRead';
+import { planRead } from '../../src/utils/planning-collaboration/plan-read/planRead';
 import { author, contract, fixture, git as shell } from '../planFixture';
 import { recordCapture } from '../../../../src/utils/record-capture/recordCapture';
 
