@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { browserProjects } from '../../src/routes/browserProjects';
-import { invitationLink } from '../../src/components/invitation-form/browserProjects';
+import { invitationLink } from '../../src/components/projects-sessions/invitation-form/browserProjects';
 import type { BrowserApi } from '../../src/utils/browserApi';
 
 const project = '6f1d2c3b-4a59-4e68-9f70-8a1b2c3d4e5f';
@@ -45,4 +45,14 @@ test('an invitation link holds two identifiers and never the code', () => {
 	});
 	expect(link).toBe(`https://hub.example.invalid/invite/${project}/${invitation}`);
 	expect(link).not.toContain('one-time-code');
+});
+
+test('an invitation link percent-encodes both identifiers it carries', () => {
+	const link = invitationLink('https://hub.example.invalid', {
+		id: 'link/2',
+		projectId: 'team one',
+		expiresAt: '2026-10-19T00:00:00.000Z',
+		code: 'one-time-code'
+	});
+	expect(link).toBe('https://hub.example.invalid/invite/team%20one/link%2F2');
 });
