@@ -41,52 +41,45 @@
 				"name": "previewHealth.token",
 				"type": "string",
 				"required": true,
-				"description": "Per-worker probe secret shared only through the child environment and request header.",
-				"examples": ["example-worker-token"]
+				"description": "Token expected in the `x-harness-worker` header for this plugin instance. It is checked only for GET requests whose URL exactly equals `/__harness_worker__`; a missing or nonmatching value is denied with HTTP 403.",
+				"examples": ["preview-secret-6f2a"]
 			},
 			{
 				"name": "readPreviewHealth.url",
 				"type": "string",
 				"required": true,
-				"description": "Exact loopback address of the worker spawned by the supervisor.",
+				"description": "Base URL used to form the probe request; `/__harness_worker__` is concatenated directly before calling `fetch`. The function does not normalize the URL, so any trailing slash remains part of the requested URL.",
 				"examples": ["http://127.0.0.1:5688"]
 			},
 			{
 				"name": "readPreviewHealth.token",
 				"type": "string",
 				"required": true,
-				"description": "Probe secret for this worker generation.",
-				"examples": ["example-worker-token"]
+				"description": "Value sent in the `x-harness-worker` header for this probe. It must match the token passed to the worker's `previewHealth` plugin or the endpoint responds with HTTP 403, which causes this reader to reject.",
+				"examples": ["preview-secret-6f2a"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "closePreviewSessions",
 				"type": "void",
-				"description": "Cancels the current worker’s owned project requests before normal shutdown.",
-				"examples": [null]
+				"description": "Calls `close()` on every value in the shared session map at `Symbol.for('harness.console.agents')`, if the map exists. It returns no value and does not await any subsequent cancellation."
 			},
 			{
 				"name": "previewHealth",
 				"type": "Plugin",
-				"description": "Vite middleware exposing authenticated health and counting server failures.",
-				"examples": [
-					{
-						"name": "harness-preview-health",
-						"enforce": "pre"
-					}
-				]
+				"description": "Creates a Vite pre middleware for the exact `/__harness_worker__` URL and reports the process id, a per-plugin count of 5xx responses on other URLs, and whether any shared agent session is busy. Only GET requests with the exact `x-harness-worker` token receive no-store JSON; other methods or tokens receive 403, and the failure count resets to one after a 30-second gap."
 			},
 			{
 				"name": "readPreviewHealth",
 				"type": "Promise<PreviewHealth>",
-				"description": "Worker identity, recent error count and active-agent flag.",
+				"description": "Resolves to the worker's JSON health object with protocol marker `harness-worker-v1`, process id, observed 5xx count, and busy flag. It accepts only an OK response with that protocol marker and does not runtime-validate the other field values.",
 				"examples": [
 					{
 						"protocol": "harness-worker-v1",
-						"pid": 1234,
-						"errors": 0,
-						"busy": false
+						"pid": 48321,
+						"errors": 2,
+						"busy": true
 					}
 				]
 			}
@@ -95,10 +88,10 @@
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects a failed or unexpected health response; network errors and probe timeouts propagate to the supervisor.",
-				"examples": ["Worker not ready."]
+				"description": "Throws `Error('Worker not ready.')` when the response is not OK or its protocol is not `harness-worker-v1`. Fetch, redirect, 750 ms timeout, and JSON parsing failures also reject the promise; the remaining health fields are not runtime-validated."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "closePreviewSessions",
@@ -107,12 +100,11 @@
 					{
 						"name": "closePreviewSessions",
 						"type": "void",
-						"description": "Cancels the current worker’s owned project requests before normal shutdown.",
-						"examples": [null]
+						"description": "Calls `close()` on every value in the shared session map at `Symbol.for('harness.console.agents')`, if the map exists. It returns no value and does not await any subsequent cancellation."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "previewHealth",
@@ -121,25 +113,19 @@
 						"name": "previewHealth.token",
 						"type": "string",
 						"required": true,
-						"description": "Per-worker probe secret shared only through the child environment and request header.",
-						"examples": ["example-worker-token"]
+						"description": "Token expected in the `x-harness-worker` header for this plugin instance. It is checked only for GET requests whose URL exactly equals `/__harness_worker__`; a missing or nonmatching value is denied with HTTP 403.",
+						"examples": ["preview-secret-6f2a"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "previewHealth",
 						"type": "Plugin",
-						"description": "Vite middleware exposing authenticated health and counting server failures.",
-						"examples": [
-							{
-								"name": "harness-preview-health",
-								"enforce": "pre"
-							}
-						]
+						"description": "Creates a Vite pre middleware for the exact `/__harness_worker__` URL and reports the process id, a per-plugin count of 5xx responses on other URLs, and whether any shared agent session is busy. Only GET requests with the exact `x-harness-worker` token receive no-store JSON; other methods or tokens receive 403, and the failure count resets to one after a 30-second gap."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readPreviewHealth",
@@ -148,28 +134,28 @@
 						"name": "readPreviewHealth.url",
 						"type": "string",
 						"required": true,
-						"description": "Exact loopback address of the worker spawned by the supervisor.",
+						"description": "Base URL used to form the probe request; `/__harness_worker__` is concatenated directly before calling `fetch`. The function does not normalize the URL, so any trailing slash remains part of the requested URL.",
 						"examples": ["http://127.0.0.1:5688"]
 					},
 					{
 						"name": "readPreviewHealth.token",
 						"type": "string",
 						"required": true,
-						"description": "Probe secret for this worker generation.",
-						"examples": ["example-worker-token"]
+						"description": "Value sent in the `x-harness-worker` header for this probe. It must match the token passed to the worker's `previewHealth` plugin or the endpoint responds with HTTP 403, which causes this reader to reject.",
+						"examples": ["preview-secret-6f2a"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readPreviewHealth",
 						"type": "Promise<PreviewHealth>",
-						"description": "Worker identity, recent error count and active-agent flag.",
+						"description": "Resolves to the worker's JSON health object with protocol marker `harness-worker-v1`, process id, observed 5xx count, and busy flag. It accepts only an OK response with that protocol marker and does not runtime-validate the other field values.",
 						"examples": [
 							{
 								"protocol": "harness-worker-v1",
-								"pid": 1234,
-								"errors": 0,
-								"busy": false
+								"pid": 48321,
+								"errors": 2,
+								"busy": true
 							}
 						]
 					}
@@ -177,10 +163,11 @@
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws `Error('Worker not ready.')` when the response is not OK or its protocol is not `harness-worker-v1`. Fetch, redirect, 750 ms timeout, and JSON parsing failures also reject the promise; the remaining health fields are not runtime-validated."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
