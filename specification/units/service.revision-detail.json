@@ -35,60 +35,145 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "revisionSources.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root passed directly to the source-impact service created for the shared context. This function does not normalize or validate the path.",
+				"examples": ["/Users/danielfugere/projects/example"]
 			},
 			{
 				"name": "RevisionDetailService.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository root used to construct the Git adapter and, when no shared context is supplied, the default source context. The constructor does not normalize or validate the path.",
+				"examples": ["/Users/danielfugere/projects/example"]
 			},
 			{
 				"name": "RevisionDetailService.constructor.history",
 				"type": "HistoryStatusService",
-				"required": true
+				"required": true,
+				"description": "History service used to load commit status, attached evidence, verification history, and commit notes while building a revision. It must provide the history operations called by the build path."
 			},
 			{
 				"name": "RevisionDetailService.constructor.kept",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map."
 			},
 			{
 				"name": "RevisionDetailService.build.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Commit revision string used to load history and inspect the selected Git tree for revision metadata, evidence, source impact, and reasons. Registry reuse is keyed by the resolved tree when available and otherwise by this string.",
+				"examples": ["9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"]
 			},
 			{
 				"name": "RevisionDetailService.build.media",
 				"type": "MediaPlacer",
-				"required": true
+				"required": true,
+				"description": "Media placement service called for each capture with its available bytes, capture metadata, and a message describing any source gap. Its resolved result is used to build the record views and regression proofs."
 			},
 			{
 				"name": "projectDependencies.tree",
 				"type": "SourceTree",
-				"required": true
+				"required": true,
+				"description": "Selected source tree whose recorded paths and manifest contents are inspected. The function reads root package.json or Cargo.toml files and matching workspace manifests, and turns manifest read or parse failures into catalog gaps."
 			}
 		],
 		"outputs": [
 			{
 				"name": "revisionSources",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Shared source context containing a SourceImpactService and an initially empty Map of stored revision registries. The map is reused by tree hash when available and by commit string when the tree cannot be resolved."
 			},
 			{
 				"name": "RevisionDetailService.build",
-				"type": "Promise<BuiltRevision>"
+				"type": "Promise<BuiltRevision>",
+				"description": "Resolved BuiltRevision containing the assembled revision detail, commit status, intact attached records, frozen budget ledger, and a stored side only when one exists. The method awaits its history, Git, source, catalog, media, and regression-proof collaborators and returns their assembled revision data.",
+				"examples": [
+					{
+						"detail": {
+							"schemaVersion": 1,
+							"commit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+							"projectDependencies": {
+								"entries": [],
+								"gaps": ["No package manifests are recorded at this revision."]
+							},
+							"registry": {
+								"available": false,
+								"gap": "no unit registry is stored at this revision",
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"nodes": [],
+									"edges": []
+								}
+							},
+							"comparison": null,
+							"sourceImpact": null,
+							"side": null,
+							"records": [],
+							"explanations": [],
+							"rangeReasons": 0
+						},
+						"status": {
+							"commit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+							"verified": false,
+							"records": [],
+							"problems": []
+						},
+						"sound": [],
+						"ledger": []
+					}
+				]
 			},
 			{
 				"name": "projectDependencies",
-				"type": "Promise<ProjectDependencies>"
+				"type": "Promise<ProjectDependencies>",
+				"description": "Catalog of direct dependency declarations from committed npm and Cargo manifests, with gaps for manifests or declarations that cannot be read. Entries are sorted by ecosystem, name, source, and kind; installed packages and manifest scripts are not inspected or executed.",
+				"examples": [
+					{
+						"entries": [
+							{
+								"name": "typescript",
+								"version": "^5.7.0",
+								"kind": "development",
+								"ecosystem": "npm",
+								"workspace": "@example/app",
+								"source": "packages/app/package.json"
+							}
+						],
+						"gaps": []
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "unspecified",
+				"type": "thrown",
+				"description": "Creating the SourceImpactService can propagate a construction failure. This implementation does not establish a specific error name or shape."
+			},
+			{
+				"name": "unspecified",
+				"type": "thrown",
+				"description": "An awaited history, Git, source-impact, repository, catalog, media-placement, or regression-proof collaborator can reject, and build does not catch those failures. This implementation does not establish a specific rejection name or shape."
+			},
+			{
+				"name": "unspecified",
+				"type": "thrown",
+				"description": "A failure from listing the source tree rejects the operation because tree.list() is outside the manifest-read catch. Individual manifest read and parse failures are caught and recorded as gaps."
+			},
+			{
+				"name": "unspecified",
+				"type": "thrown",
+				"description": "Construction can propagate a failure from creating the GitAdapter or, when kept is omitted, from creating revisionSources(root). This implementation does not establish a specific error name or shape."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "revisionSources",
@@ -96,17 +181,26 @@
 					{
 						"name": "revisionSources.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root passed directly to the source-impact service created for the shared context. This function does not normalize or validate the path.",
+						"examples": ["/Users/danielfugere/projects/example"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "revisionSources",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Shared source context containing a SourceImpactService and an initially empty Map of stored revision registries. The map is reused by tree hash when available and by commit string when the tree cannot be resolved."
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "unspecified",
+						"type": "thrown",
+						"description": "Creating the SourceImpactService can propagate a construction failure. This implementation does not establish a specific error name or shape."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "RevisionDetailService.build",
@@ -114,22 +208,68 @@
 					{
 						"name": "RevisionDetailService.build.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Commit revision string used to load history and inspect the selected Git tree for revision metadata, evidence, source impact, and reasons. Registry reuse is keyed by the resolved tree when available and otherwise by this string.",
+						"examples": ["9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"]
 					},
 					{
 						"name": "RevisionDetailService.build.media",
 						"type": "MediaPlacer",
-						"required": true
+						"required": true,
+						"description": "Media placement service called for each capture with its available bytes, capture metadata, and a message describing any source gap. Its resolved result is used to build the record views and regression proofs."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RevisionDetailService.build",
-						"type": "Promise<BuiltRevision>"
+						"type": "Promise<BuiltRevision>",
+						"description": "Resolved BuiltRevision containing the assembled revision detail, commit status, intact attached records, frozen budget ledger, and a stored side only when one exists. The method awaits its history, Git, source, catalog, media, and regression-proof collaborators and returns their assembled revision data.",
+						"examples": [
+							{
+								"detail": {
+									"schemaVersion": 1,
+									"commit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+									"projectDependencies": {
+										"entries": [],
+										"gaps": ["No package manifests are recorded at this revision."]
+									},
+									"registry": {
+										"available": false,
+										"gap": "no unit registry is stored at this revision",
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"nodes": [],
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"sourceImpact": null,
+									"side": null,
+									"records": [],
+									"explanations": [],
+									"rangeReasons": 0
+								},
+								"status": {
+									"commit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+									"verified": false,
+									"records": [],
+									"problems": []
+								},
+								"sound": [],
+								"ledger": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unspecified",
+						"type": "thrown",
+						"description": "An awaited history, Git, source-impact, repository, catalog, media-placement, or regression-proof collaborator can reject, and build does not catch those failures. This implementation does not establish a specific rejection name or shape."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "projectDependencies",
@@ -137,17 +277,40 @@
 					{
 						"name": "projectDependencies.tree",
 						"type": "SourceTree",
-						"required": true
+						"required": true,
+						"description": "Selected source tree whose recorded paths and manifest contents are inspected. The function reads root package.json or Cargo.toml files and matching workspace manifests, and turns manifest read or parse failures into catalog gaps."
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectDependencies",
-						"type": "Promise<ProjectDependencies>"
+						"type": "Promise<ProjectDependencies>",
+						"description": "Catalog of direct dependency declarations from committed npm and Cargo manifests, with gaps for manifests or declarations that cannot be read. Entries are sorted by ecosystem, name, source, and kind; installed packages and manifest scripts are not inspected or executed.",
+						"examples": [
+							{
+								"entries": [
+									{
+										"name": "typescript",
+										"version": "^5.7.0",
+										"kind": "development",
+										"ecosystem": "npm",
+										"workspace": "@example/app",
+										"source": "packages/app/package.json"
+									}
+								],
+								"gaps": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unspecified",
+						"type": "thrown",
+						"description": "A failure from listing the source tree rejects the operation because tree.list() is outside the manifest-read catch. Individual manifest read and parse failures are caught and recorded as gaps."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -157,27 +320,38 @@
 					{
 						"name": "RevisionDetailService.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository root used to construct the Git adapter and, when no shared context is supplied, the default source context. The constructor does not normalize or validate the path.",
+						"examples": ["/Users/danielfugere/projects/example"]
 					},
 					{
 						"name": "RevisionDetailService.constructor.history",
 						"type": "HistoryStatusService",
-						"required": true
+						"required": true,
+						"description": "History service used to load commit status, attached evidence, verification history, and commit notes while building a revision. It must provide the history operations called by the build path."
 					},
 					{
 						"name": "RevisionDetailService.constructor.kept",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Optional shared source context containing a source-impact service and a registry cache, reused across revisions. Defaults to revisionSources(root), which creates a source-impact service for this root and an empty registry Map."
 					}
 				],
 				"outputs": [
 					{
 						"name": "RevisionDetailService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Constructed RevisionDetailService instance bound to the repository root, history service, and shared source context. It creates a GitAdapter and does not load a revision until build is called."
 					}
 				],
-				"errors": [],
-				"errorStatus": "none-found"
+				"errors": [
+					{
+						"name": "unspecified",
+						"type": "thrown",
+						"description": "Construction can propagate a failure from creating the GitAdapter or, when kept is omitted, from creating revisionSources(root). This implementation does not establish a specific error name or shape."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		]
 	},
