@@ -21,10 +21,17 @@
 			{
 				"name": "builtinModules",
 				"type": "unknown",
-				"description": "Declarative capability definitions, source templates, tests and setup instructions."
+				"description": "builtinModules is the array of bundled capability definitions in this order: all of standardCodeModules, all of testingPlugins, then emailModule, offlineModule, rustWasmModule and rustBackendModule, each replaced by its moduleDefinitionSchema.parse result, which is the same admission contract project modules use. It is computed once at module evaluation, and a definition that fails parsing makes that evaluation throw, so importers never receive a partial array."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "moduleDefinitionSchema.parse error",
+				"type": "thrown",
+				"description": "Thrown during module evaluation when moduleDefinitionSchema.parse throws for any entry in the bundled list, so the builtinModules export is never assigned. The file has no try/catch, so the error propagates to every module that imports builtinModules."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
