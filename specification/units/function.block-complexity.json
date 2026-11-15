@@ -21,34 +21,46 @@
 				"name": "templateComplexity.markup",
 				"type": "string",
 				"required": true,
-				"description": "Markup to scan for Svelte if, each and await blocks and else-if branches."
+				"description": "Markup string scanned for decision markers. The matcher recognizes `{#if`, `{#each`, or `{#await` followed by a word boundary, and `{:else if` followed by a word boundary; other constructs do not add to the count.",
+				"examples": [
+					"{#if ready}{:else if fallback}{/if}{#each items as item}{/each}{#await promise}{/await}",
+					"plain text"
+				]
 			},
 			{
 				"name": "blockComplexity.masked",
 				"type": "string",
 				"required": true,
-				"description": "Source with comments and string contents already masked; matching keywords and operators are counted textually."
+				"description": "Source text after comments and string contents have been masked. Matching is textual; this function does not mask or parse the source itself.",
+				"examples": [
+					"if (ready && fallback) return value ?? defaultValue; return active ? yes : no;",
+					"const value = ready || fallback;"
+				]
 			},
 			{
 				"name": "blockComplexity.base",
 				"type": "0 | 1",
 				"required": true,
-				"description": "Initial count: 1 for a function, or 0 when no function base is needed."
+				"description": "Initial count added for the function being measured, or zero when no function base is needed. The type permits only 0 or 1.",
+				"examples": [0, 1]
 			}
 		],
 		"outputs": [
 			{
 				"name": "blockComplexity",
 				"type": "number",
-				"description": "Base plus occurrences of if, for, while, case, catch, logical-and, logical-or, nullish-coalescing and recognized conditional question marks."
+				"description": "Number equal to `base` plus matches of whole-word `if`, `for`, `while`, `case`, `catch`, `&&`, `||`, `??`, and eligible `?` characters in `masked`. A lone `?` is skipped after `?` or before `?`, `.`, `:`, `,`, `)`, `]`, `=`, `>`, or `;`.",
+				"examples": [5, 1]
 			},
 			{
 				"name": "templateComplexity",
 				"type": "number",
-				"description": "Number of recognized Svelte block and else-if decision markers, or zero when there are none."
+				"description": "Number of occurrences matched by the template decision-marker regex. It counts each matching marker once and returns zero when none are present; it does not parse or validate the markup.",
+				"examples": [4, 0]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "templateComplexity",
@@ -57,18 +69,23 @@
 						"name": "templateComplexity.markup",
 						"type": "string",
 						"required": true,
-						"description": "Markup to scan for Svelte if, each and await blocks and else-if branches."
+						"description": "Markup string scanned for decision markers. The matcher recognizes `{#if`, `{#each`, or `{#await` followed by a word boundary, and `{:else if` followed by a word boundary; other constructs do not add to the count.",
+						"examples": [
+							"{#if ready}{:else if fallback}{/if}{#each items as item}{/each}{#await promise}{/await}",
+							"plain text"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "templateComplexity",
 						"type": "number",
-						"description": "Number of recognized Svelte block and else-if decision markers, or zero when there are none."
+						"description": "Number of occurrences matched by the template decision-marker regex. It counts each matching marker once and returns zero when none are present; it does not parse or validate the markup.",
+						"examples": [4, 0]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "blockComplexity",
@@ -77,24 +94,30 @@
 						"name": "blockComplexity.masked",
 						"type": "string",
 						"required": true,
-						"description": "Source with comments and string contents already masked; matching keywords and operators are counted textually."
+						"description": "Source text after comments and string contents have been masked. Matching is textual; this function does not mask or parse the source itself.",
+						"examples": [
+							"if (ready && fallback) return value ?? defaultValue; return active ? yes : no;",
+							"const value = ready || fallback;"
+						]
 					},
 					{
 						"name": "blockComplexity.base",
 						"type": "0 | 1",
 						"required": true,
-						"description": "Initial count: 1 for a function, or 0 when no function base is needed."
+						"description": "Initial count added for the function being measured, or zero when no function base is needed. The type permits only 0 or 1.",
+						"examples": [0, 1]
 					}
 				],
 				"outputs": [
 					{
 						"name": "blockComplexity",
 						"type": "number",
-						"description": "Base plus occurrences of if, for, while, case, catch, logical-and, logical-or, nullish-coalescing and recognized conditional question marks."
+						"description": "Number equal to `base` plus matches of whole-word `if`, `for`, `while`, `case`, `catch`, `&&`, `||`, `??`, and eligible `?` characters in `masked`. A lone `?` is skipped after `?` or before `?`, `.`, `:`, `,`, `)`, `]`, `=`, `>`, or `;`.",
+						"examples": [5, 1]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
