@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/commandAction.ts", "src/utils/development-tooling/commandAction.ts"],
-		"symbols": ["commandAction", "commandAction"]
+		"source": ["src/utils/development-tooling/commandAction.ts"],
+		"symbols": ["commandAction"]
 	},
 	"contract": {
 		"origin": "declared",

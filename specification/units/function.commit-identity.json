@@ -8,8 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/commitIdentity.ts", "src/utils/git-source-history/commitIdentity.ts"],
-		"symbols": ["commitIdentity", "commitIdentity"]
+		"source": ["src/utils/git-source-history/commitIdentity.ts"],
+		"symbols": ["commitIdentity"]
 	},
 	"contract": {
 		"origin": "declared",

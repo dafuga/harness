@@ -3,7 +3,7 @@ import {
 	commitMessage,
 	writtenMessage
 } from '../../src/services/commit-message-service/commitMessage';
-import { commitPrefixes } from '../../src/utils/commitMessage';
+import { commitPrefixes } from '../../src/utils/git-source-history/commitMessage';
 
 const words = (count: number, word = 'word') => Array.from({ length: count }, () => word).join(' ');
 /** A subject of exactly this many characters, with its prefix. */

@@ -8,7 +8,10 @@ import { assertIdentityEntries } from './unitIdentityEntries';
 test('unitIdentity derives kind and name from Harness scaffold folders', () => {
 	const cases: Array<[string, string]> = [
 		['src/services/AnalyticsService.ts', 'service.analytics'],
-		['src/utils/commandAction.ts', 'function.command-action'],
+		[
+			'src/utils/development-tooling/commandAction.ts',
+			'function.development-tooling-command-action'
+		],
 		['src/core/files.ts', 'function.files'],
 		['src/configs/downloadsConfig.ts', 'config.downloads'],
 		['src/configs/downloads/transferConfig.ts', 'config.downloads-transfer'],
