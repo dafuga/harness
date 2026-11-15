@@ -34,7 +34,7 @@ export async function resolveAttachedVideoFlags(
 	for (const capture of captures) assertAttachedVideoFlags(record, capture, flags);
 	const service = new FrameFlagService(root);
 	for (const capture of captures)
-		if (capture.video!.addressedFlags?.length)
+		if (!capture.videoReference?.record && capture.video!.addressedFlags?.length)
 			await service.address({
 				record: record.id,
 				revision: record.source.commit,
