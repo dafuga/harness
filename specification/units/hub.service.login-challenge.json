@@ -25,40 +25,65 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "LoginChallengeService.constructor.options",
 				"type": "LoginChallengeOptions",
-				"required": true
+				"required": true,
+				"description": "Options required to construct the service: a one-time challenge store, an AuthSecrets implementation for hashing, and a clock returning epoch milliseconds. The clock sets challenge expiry and supplies claim time."
 			},
 			{
 				"name": "LoginChallengeService.consume.cookie",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "The raw challenge cookie returned by issue, or null when it is absent; the service hashes a present value to claim its one-time record. A missing, expired, already claimed, or otherwise unclaimable cookie fails with AuthFailure code challenge-invalid.",
+				"examples": ["AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8", null]
 			},
 			{
 				"name": "LoginChallengeService.consume.csrf",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The raw CSRF value returned in issue's challenge; consume hashes it and compares that hash with the claimed record's csrfHash. A mismatch fails with AuthFailure code challenge-invalid.",
+				"examples": ["ICEiIyQlJicoKSorLC0uLzAxMjM0NTY3ODk6Ozw9Pj8"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "CHALLENGE_TTL",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Challenge lifetime in milliseconds; fixed at five minutes (5 * 60 * 1000). issue adds this duration to now() for the stored record's expiresAt.",
+				"examples": [300000]
 			},
 			{
 				"name": "LoginChallengeService.issue",
-				"type": "Promise<IssuedChallenge>"
+				"type": "Promise<IssuedChallenge>",
+				"description": "Resolves to the generated cookie token and an AuthChallenge with nonce and csrf values after saving the hashed cookie and CSRF values with a five-minute expiry. The cookie is intended for an HttpOnly cookie, while the nonce is passed to Google Identity Services.",
+				"examples": [
+					{
+						"cookie": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8",
+						"challenge": {
+							"nonce": "ICEiIyQlJicoKSorLC0uLzAxMjM0NTY3ODk6Ozw9Pj8",
+							"csrf": "QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl8"
+						}
+					}
+				]
 			},
 			{
 				"name": "LoginChallengeService.consume",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Resolves to the claimed record's nonce when the cookie and CSRF value match. The claim is single-use, and a missing cookie, unavailable record, or CSRF mismatch throws AuthFailure with code challenge-invalid.",
+				"examples": ["ICEiIyQlJicoKSorLC0uLzAxMjM0NTY3ODk6Ozw9Pj8"]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "Thrown by consume with code challenge-invalid and HTTP status 401 when the cookie is absent, the one-time record cannot be claimed, or the CSRF hash does not match."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "LoginChallengeService.issue",
@@ -66,11 +91,21 @@
 				"outputs": [
 					{
 						"name": "LoginChallengeService.issue",
-						"type": "Promise<IssuedChallenge>"
+						"type": "Promise<IssuedChallenge>",
+						"description": "Resolves to the generated cookie token and an AuthChallenge with nonce and csrf values after saving the hashed cookie and CSRF values with a five-minute expiry. The cookie is intended for an HttpOnly cookie, while the nonce is passed to Google Identity Services.",
+						"examples": [
+							{
+								"cookie": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8",
+								"challenge": {
+									"nonce": "ICEiIyQlJicoKSorLC0uLzAxMjM0NTY3ODk6Ozw9Pj8",
+									"csrf": "QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl8"
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "LoginChallengeService.consume",
@@ -78,22 +113,34 @@
 					{
 						"name": "LoginChallengeService.consume.cookie",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "The raw challenge cookie returned by issue, or null when it is absent; the service hashes a present value to claim its one-time record. A missing, expired, already claimed, or otherwise unclaimable cookie fails with AuthFailure code challenge-invalid.",
+						"examples": ["AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8", null]
 					},
 					{
 						"name": "LoginChallengeService.consume.csrf",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The raw CSRF value returned in issue's challenge; consume hashes it and compares that hash with the claimed record's csrfHash. A mismatch fails with AuthFailure code challenge-invalid.",
+						"examples": ["ICEiIyQlJicoKSorLC0uLzAxMjM0NTY3ODk6Ozw9Pj8"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "LoginChallengeService.consume",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Resolves to the claimed record's nonce when the cookie and CSRF value match. The claim is single-use, and a missing cookie, unavailable record, or CSRF mismatch throws AuthFailure with code challenge-invalid.",
+						"examples": ["ICEiIyQlJicoKSorLC0uLzAxMjM0NTY3ODk6Ozw9Pj8"]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "Thrown with code challenge-invalid and HTTP status 401 when the cookie is absent, the one-time record cannot be claimed, or the CSRF hash does not match."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -103,17 +150,19 @@
 					{
 						"name": "LoginChallengeService.constructor.options",
 						"type": "LoginChallengeOptions",
-						"required": true
+						"required": true,
+						"description": "Options required to construct the service: a one-time challenge store, an AuthSecrets implementation for hashing, and a clock returning epoch milliseconds. The clock sets challenge expiry and supplies claim time."
 					}
 				],
 				"outputs": [
 					{
 						"name": "LoginChallengeService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a LoginChallengeService that retains the required options. It performs no store or hashing work until issue or consume is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
