@@ -10,15 +10,15 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/networking-security/secure-channel-service/sealPacket.ts",
-			"packages/remote/src/services/secure-channel-service/sealPacket.ts",
-			"packages/remote/src/utils/networking-security/sealPacket.ts"
+			"packages/remote/src/utils/networking-security/sealPacket.ts",
+			"packages/remote/src/utils/sealPacket.ts"
 		],
 		"symbols": [
 			"sealPacket",
 			"openPacket",
+			"SealContext",
 			"sealPacket",
 			"openPacket",
-			"SealContext",
 			"sealPacket",
 			"openPacket"
 		]

@@ -2,7 +2,11 @@ import { expect, test } from 'vitest';
 import { SecureFailure } from '../../src/models/networking-security/RemoteSecure.types';
 import { bytesText, fromBase64Url, remoteBytes } from '../../src/utils/remoteBytes';
 import { aesKey } from '../../src/utils/remoteKeys';
-import { openPacket, sealPacket } from '../../src/services/secure-channel-service/sealPacket';
+import {
+	openPacket,
+	sealPacket
+} from '../../src/services/networking-security/secure-channel-service/sealPacket';
+import * as utilsSealPacket from '../../src/utils/networking-security/sealPacket';
 import type { SealContext } from '../../src/utils/networking-security/sealPacket';
 
 const context = async (fill = 7): Promise<SealContext> => ({
@@ -39,4 +43,8 @@ test('the ciphertext is the plaintext plus a 16-byte tag and differs per counter
 	expect(fromBase64Url(data)).toHaveLength(plain.length + 16);
 	expect(await sealPacket({ ...base, counter: 6 }, plain)).not.toBe(data);
 	expect(await sealPacket(base, plain)).toBe(data);
+});
+test('the utils entry forwards the declaration sealPacket and openPacket', () => {
+	expect(utilsSealPacket.sealPacket).toBe(sealPacket);
+	expect(utilsSealPacket.openPacket).toBe(openPacket);
 });

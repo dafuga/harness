@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { SecureFailure } from '../../src/models/networking-security/RemoteSecure.types';
 import type { SecurePacket } from '../../src/models/networking-security/RemoteSecure.types';
-import { SecureChannelService } from '../../src/services/secure-channel-service/SecureChannelService';
+import { SecureChannelService } from '../../src/services/networking-security/secure-channel-service/SecureChannelService';
 import { fromBase64Url } from '../../src/utils/remoteBytes';
 import { importRemoteKeys, remoteKeys } from '../../src/utils/remoteKeys';
 import { channelPair, sealed } from '../support/channelPair';

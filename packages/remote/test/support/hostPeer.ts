@@ -1,6 +1,6 @@
 import type { SecurePacket } from '../../src/models/networking-security/RemoteSecure.types';
 import type { DeviceCredentials } from '../../src/services/networking-security/device-pairing-service/DevicePairingService';
-import { SecureChannelService } from '../../src/services/secure-channel-service/SecureChannelService';
+import { SecureChannelService } from '../../src/services/networking-security/secure-channel-service/SecureChannelService';
 import type { WireLink } from '../../src/services/networking-security/wire-session-service/WireSessionService';
 import { toBase64Url } from '../../src/utils/remoteBytes';
 import { randomCredential, remoteIdentity } from '../../src/utils/remoteIdentity';
