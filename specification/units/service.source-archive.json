@@ -29,56 +29,260 @@
 				"name": "SourceArchiveService.constructor.root",
 				"type": "string",
 				"required": true,
-				"description": "Git repository containing the selected immutable commit."
+				"description": "Git repository containing the selected immutable commit.",
+				"examples": ["./fixture-repository"]
 			},
 			{
 				"name": "SourceArchiveService.constructor.out",
 				"type": "string",
 				"required": true,
-				"description": "History output directory; existing protected media carries source text."
+				"description": "History output directory; existing protected media carries source text.",
+				"examples": ["./fixture-history/source"]
 			},
 			{
 				"name": "SourceArchiveService.archive.commit",
 				"type": "string",
 				"required": true,
-				"description": "Selected Git commit, never a working tree or latest-ref fallback."
+				"description": "Selected Git commit, never a working tree or latest-ref fallback.",
+				"examples": ["1234567890abcdef1234567890abcdef12345678"]
 			},
 			{
 				"name": "SourceArchiveService.archive.units",
 				"type": "Unit[]",
 				"required": true,
-				"description": "Registry units to enrich; inactive units archive no source."
+				"description": "Registry units to enrich; inactive units archive no source.",
+				"examples": [
+					[
+						{
+							"id": "service.source-archive",
+							"kind": "service",
+							"status": "active",
+							"title": "SourceArchiveService",
+							"responsibility": "Archives committed source and associated tests.",
+							"dependencies": [],
+							"scenarios": ["source-archive-tests"],
+							"owns": {
+								"source": ["src/cli/program/history-index-service/SourceArchiveService.ts"],
+								"symbols": ["SourceArchiveService"]
+							},
+							"contract": {
+								"inputs": [],
+								"outputs": [],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "src/cli/program/history-index-service/SourceArchiveService.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "0123456789abcdef"
+						}
+					]
+				]
 			},
 			{
 				"name": "SourceArchiveService.archive.side",
 				"type": "StoredSide",
 				"required": false,
-				"description": "Selected revision graph and authored scenarios for direct test imports and declared test coverage; absent historical graphs provide no inferred tests."
+				"description": "Selected revision graph and authored scenarios for direct test imports and declared test coverage; absent historical graphs provide no inferred tests.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"config": {
+							"schemaVersion": 1,
+							"workspaces": [
+								{
+									"name": "",
+									"root": "."
+								}
+							],
+							"tests": ["test/", "tests/"],
+							"global": [],
+							"ignored": [],
+							"references": []
+						},
+						"files": [
+							[
+								"src/cli/program/history-index-service/SourceArchiveService.ts",
+								"0123456789abcdef0123456789abcdef01234567"
+							],
+							["test/services/source-archive.test.ts", "89abcdef0123456789abcdef0123456789abcdef"]
+						],
+						"units": [
+							{
+								"id": "service.source-archive",
+								"status": "active",
+								"source": ["src/cli/program/history-index-service/SourceArchiveService.ts"]
+							}
+						],
+						"scenarios": [],
+						"nodes": [
+							["test:test/services/source-archive.test.ts", "test"],
+							["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
+						],
+						"edges": [[0, 1]],
+						"uncertain": []
+					}
+				]
 			},
 			{
 				"name": "associatedTests.unit",
 				"type": "Unit",
-				"required": true
+				"required": true,
+				"description": "The revision registry unit whose id and scenario ids select authored coverage; its owned files determine direct-import matches when tests are associated with that unit.",
+				"examples": [
+					{
+						"id": "service.source-archive",
+						"kind": "service",
+						"status": "active",
+						"title": "SourceArchiveService",
+						"responsibility": "Archives committed source and associated tests.",
+						"dependencies": [],
+						"scenarios": ["source-archive-tests"],
+						"owns": {
+							"source": ["src/cli/program/history-index-service/SourceArchiveService.ts"],
+							"symbols": ["SourceArchiveService"]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/cli/program/history-index-service/SourceArchiveService.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "0123456789abcdef"
+					}
+				]
 			},
 			{
 				"name": "associatedTests.owned",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Repo-relative source paths owned by the unit; direct test imports of these files seed its associated test paths.",
+				"examples": [
+					[
+						"src/cli/program/history-index-service/SourceArchiveService.ts",
+						"src/cli/program/history-index-service/SourceArchiveService.types.ts",
+						"src/cli/program/history-index-service/associatedTests.ts"
+					]
+				]
 			},
 			{
 				"name": "associatedTests.side",
 				"type": "StoredSide",
-				"required": true
+				"required": true,
+				"description": "The compact graph and authored scenarios for the selected revision; scenario test targets are resolved against its tracked test nodes when collecting coverage.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"config": {
+							"schemaVersion": 1,
+							"workspaces": [
+								{
+									"name": "",
+									"root": "."
+								}
+							],
+							"tests": ["test/", "tests/"],
+							"global": [],
+							"ignored": [],
+							"references": []
+						},
+						"files": [
+							[
+								"src/cli/program/history-index-service/SourceArchiveService.ts",
+								"0123456789abcdef0123456789abcdef01234567"
+							],
+							["test/services/source-archive.test.ts", "89abcdef0123456789abcdef0123456789abcdef"]
+						],
+						"units": [
+							{
+								"id": "service.source-archive",
+								"status": "active",
+								"source": ["src/cli/program/history-index-service/SourceArchiveService.ts"]
+							}
+						],
+						"scenarios": [],
+						"nodes": [
+							["test:test/services/source-archive.test.ts", "test"],
+							["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
+						],
+						"edges": [[0, 1]],
+						"uncertain": []
+					}
+				]
 			},
 			{
 				"name": "associatedTests.imports",
 				"type": "Map<string, string[]>",
-				"required": true
+				"required": true,
+				"description": "An index from each imported source path to its direct test importer paths, produced once from the selected revision graph for reuse across units."
 			},
 			{
 				"name": "testImporters.side",
 				"type": "StoredSide",
-				"required": false
+				"required": false,
+				"description": "Optional compact graph for the selected revision; without it there are no direct-import edges to index.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"config": {
+							"schemaVersion": 1,
+							"workspaces": [
+								{
+									"name": "",
+									"root": "."
+								}
+							],
+							"tests": ["test/", "tests/"],
+							"global": [],
+							"ignored": [],
+							"references": []
+						},
+						"files": [
+							[
+								"src/cli/program/history-index-service/SourceArchiveService.ts",
+								"0123456789abcdef0123456789abcdef01234567"
+							],
+							["test/services/source-archive.test.ts", "89abcdef0123456789abcdef0123456789abcdef"]
+						],
+						"units": [
+							{
+								"id": "service.source-archive",
+								"status": "active",
+								"source": ["src/cli/program/history-index-service/SourceArchiveService.ts"]
+							}
+						],
+						"scenarios": [],
+						"nodes": [
+							["test:test/services/source-archive.test.ts", "test"],
+							["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
+						],
+						"edges": [[0, 1]],
+						"uncertain": []
+					}
+				]
 			}
 		],
 		"outputs": [
@@ -88,7 +292,13 @@
 				"description": "Adds sourceFiles and revision-bound testFiles to units. Owned folders expand to tracked files; unreadable contents retain explicit gaps. Never reads working-copy files."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SourceArchiveService.archive",
+				"type": "thrown",
+				"description": "Rejects when the committed tree cannot be opened or listed, or when the media output directory cannot be created. Individual source-read and media-write failures are retained as unavailable source gaps instead."
+			}
+		],
 		"operations": [
 			{
 				"name": "SourceArchiveService.archive",
@@ -97,19 +307,99 @@
 						"name": "SourceArchiveService.archive.commit",
 						"type": "string",
 						"required": true,
-						"description": "Selected Git commit, never a working tree or latest-ref fallback."
+						"description": "Selected Git commit, never a working tree or latest-ref fallback.",
+						"examples": ["1234567890abcdef1234567890abcdef12345678"]
 					},
 					{
 						"name": "SourceArchiveService.archive.units",
 						"type": "Unit[]",
 						"required": true,
-						"description": "Registry units to enrich; inactive units archive no source."
+						"description": "Registry units to enrich; inactive units archive no source.",
+						"examples": [
+							[
+								{
+									"id": "service.source-archive",
+									"kind": "service",
+									"status": "active",
+									"title": "SourceArchiveService",
+									"responsibility": "Archives committed source and associated tests.",
+									"dependencies": [],
+									"scenarios": ["source-archive-tests"],
+									"owns": {
+										"source": ["src/cli/program/history-index-service/SourceArchiveService.ts"],
+										"symbols": ["SourceArchiveService"]
+									},
+									"contract": {
+										"inputs": [],
+										"outputs": [],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "src/cli/program/history-index-service/SourceArchiveService.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "0123456789abcdef"
+								}
+							]
+						]
 					},
 					{
 						"name": "SourceArchiveService.archive.side",
 						"type": "StoredSide",
 						"required": false,
-						"description": "Selected revision graph and authored scenarios for direct test imports and declared test coverage; absent historical graphs provide no inferred tests."
+						"description": "Selected revision graph and authored scenarios for direct test imports and declared test coverage; absent historical graphs provide no inferred tests.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"config": {
+									"schemaVersion": 1,
+									"workspaces": [
+										{
+											"name": "",
+											"root": "."
+										}
+									],
+									"tests": ["test/", "tests/"],
+									"global": [],
+									"ignored": [],
+									"references": []
+								},
+								"files": [
+									[
+										"src/cli/program/history-index-service/SourceArchiveService.ts",
+										"0123456789abcdef0123456789abcdef01234567"
+									],
+									[
+										"test/services/source-archive.test.ts",
+										"89abcdef0123456789abcdef0123456789abcdef"
+									]
+								],
+								"units": [
+									{
+										"id": "service.source-archive",
+										"status": "active",
+										"source": ["src/cli/program/history-index-service/SourceArchiveService.ts"]
+									}
+								],
+								"scenarios": [],
+								"nodes": [
+									["test:test/services/source-archive.test.ts", "test"],
+									["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
+								],
+								"edges": [[0, 1]],
+								"uncertain": []
+							}
+						]
 					}
 				],
 				"outputs": [
@@ -119,8 +409,14 @@
 						"description": "Adds sourceFiles and revision-bound testFiles to units. Owned folders expand to tracked files; unreadable contents retain explicit gaps. Never reads working-copy files."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SourceArchiveService.archive",
+						"type": "thrown",
+						"description": "Rejects when the committed tree cannot be opened or listed, or when the media output directory cannot be created. Individual source-read and media-write failures are retained as unavailable source gaps instead."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "associatedTests",
@@ -128,32 +424,122 @@
 					{
 						"name": "associatedTests.unit",
 						"type": "Unit",
-						"required": true
+						"required": true,
+						"description": "The revision registry unit whose id and scenario ids select authored coverage; its owned files determine direct-import matches when tests are associated with that unit.",
+						"examples": [
+							{
+								"id": "service.source-archive",
+								"kind": "service",
+								"status": "active",
+								"title": "SourceArchiveService",
+								"responsibility": "Archives committed source and associated tests.",
+								"dependencies": [],
+								"scenarios": ["source-archive-tests"],
+								"owns": {
+									"source": ["src/cli/program/history-index-service/SourceArchiveService.ts"],
+									"symbols": ["SourceArchiveService"]
+								},
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"runtime": {
+									"kind": "module",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/cli/program/history-index-service/SourceArchiveService.ts"
+										}
+									]
+								},
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								},
+								"version": "0123456789abcdef"
+							}
+						]
 					},
 					{
 						"name": "associatedTests.owned",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Repo-relative source paths owned by the unit; direct test imports of these files seed its associated test paths.",
+						"examples": [
+							[
+								"src/cli/program/history-index-service/SourceArchiveService.ts",
+								"src/cli/program/history-index-service/SourceArchiveService.types.ts",
+								"src/cli/program/history-index-service/associatedTests.ts"
+							]
+						]
 					},
 					{
 						"name": "associatedTests.side",
 						"type": "StoredSide",
-						"required": true
+						"required": true,
+						"description": "The compact graph and authored scenarios for the selected revision; scenario test targets are resolved against its tracked test nodes when collecting coverage.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"config": {
+									"schemaVersion": 1,
+									"workspaces": [
+										{
+											"name": "",
+											"root": "."
+										}
+									],
+									"tests": ["test/", "tests/"],
+									"global": [],
+									"ignored": [],
+									"references": []
+								},
+								"files": [
+									[
+										"src/cli/program/history-index-service/SourceArchiveService.ts",
+										"0123456789abcdef0123456789abcdef01234567"
+									],
+									[
+										"test/services/source-archive.test.ts",
+										"89abcdef0123456789abcdef0123456789abcdef"
+									]
+								],
+								"units": [
+									{
+										"id": "service.source-archive",
+										"status": "active",
+										"source": ["src/cli/program/history-index-service/SourceArchiveService.ts"]
+									}
+								],
+								"scenarios": [],
+								"nodes": [
+									["test:test/services/source-archive.test.ts", "test"],
+									["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
+								],
+								"edges": [[0, 1]],
+								"uncertain": []
+							}
+						]
 					},
 					{
 						"name": "associatedTests.imports",
 						"type": "Map<string, string[]>",
-						"required": true
+						"required": true,
+						"description": "An index from each imported source path to its direct test importer paths, produced once from the selected revision graph for reuse across units."
 					}
 				],
 				"outputs": [
 					{
 						"name": "associatedTests",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Sorted unique repo-relative test paths that directly import an owned file or are declared by a selected-revision scenario covering the unit.",
+						"examples": [["test/services/source-archive.test.ts"]]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "testImporters",
@@ -161,17 +547,61 @@
 					{
 						"name": "testImporters.side",
 						"type": "StoredSide",
-						"required": false
+						"required": false,
+						"description": "Optional compact graph for the selected revision; without it there are no direct-import edges to index.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"config": {
+									"schemaVersion": 1,
+									"workspaces": [
+										{
+											"name": "",
+											"root": "."
+										}
+									],
+									"tests": ["test/", "tests/"],
+									"global": [],
+									"ignored": [],
+									"references": []
+								},
+								"files": [
+									[
+										"src/cli/program/history-index-service/SourceArchiveService.ts",
+										"0123456789abcdef0123456789abcdef01234567"
+									],
+									[
+										"test/services/source-archive.test.ts",
+										"89abcdef0123456789abcdef0123456789abcdef"
+									]
+								],
+								"units": [
+									{
+										"id": "service.source-archive",
+										"status": "active",
+										"source": ["src/cli/program/history-index-service/SourceArchiveService.ts"]
+									}
+								],
+								"scenarios": [],
+								"nodes": [
+									["test:test/services/source-archive.test.ts", "test"],
+									["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
+								],
+								"edges": [[0, 1]],
+								"uncertain": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "testImporters",
-						"type": "Map<string, string[]>"
+						"type": "Map<string, string[]>",
+						"description": "A map from repo-relative source paths to importing test paths, with only recognized test nodes and file graph targets retained in edge order."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -182,25 +612,29 @@
 						"name": "SourceArchiveService.constructor.root",
 						"type": "string",
 						"required": true,
-						"description": "Git repository containing the selected immutable commit."
+						"description": "Git repository containing the selected immutable commit.",
+						"examples": ["./fixture-repository"]
 					},
 					{
 						"name": "SourceArchiveService.constructor.out",
 						"type": "string",
 						"required": true,
-						"description": "History output directory; existing protected media carries source text."
+						"description": "History output directory; existing protected media carries source text.",
+						"examples": ["./fixture-history/source"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceArchiveService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A service instance bound to the repository root and output directory; its instance-local write map coalesces concurrent writes of identical archived media."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
-		]
+		],
+		"errorStatus": "declared"
 	},
 	"dependencies": [
 		{

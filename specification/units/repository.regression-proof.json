@@ -35,9 +35,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Filesystem root of the Git repository whose source history, notes, and evidence refs this instance reads or writes. The adapters use this path for repository operations.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "RegressionProofRepository.constructor.within",
@@ -465,9 +463,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Filesystem root of the Git repository whose source history, notes, and evidence refs this instance reads or writes. The adapters use this path for repository operations.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "RegressionProofRepository.constructor.within",

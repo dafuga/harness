@@ -41,9 +41,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The repository root string passed to planGit to produce the Git context used to create the planning API. Path and repository validation are delegated to planGit.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "handlePlanningRequest.api",
@@ -107,9 +105,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The repository root string passed to planGit to produce the Git context used to create the planning API. Path and repository validation are delegated to planGit.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-13"
-						]
+						"examples": ["/workspace/project"]
 					}
 				],
 				"outputs": [

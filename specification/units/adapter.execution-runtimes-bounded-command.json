@@ -63,9 +63,7 @@
 				"required": false,
 				"default": [],
 				"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
-				"examples": [
-					["--version"]
-				]
+				"examples": [["--version"]]
 			},
 			{
 				"name": "BoundedCommandAdapter.checked.options",
@@ -75,7 +73,7 @@
 				"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
 				"examples": [
 					{
-						"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"cwd": "/workspace/project",
 						"env": {
 							"CI": "1"
 						},
@@ -98,9 +96,7 @@
 				"required": false,
 				"default": [],
 				"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
-				"examples": [
-					["rev-parse", "--show-toplevel"]
-				]
+				"examples": [["rev-parse", "--show-toplevel"]]
 			},
 			{
 				"name": "BoundedCommandAdapter.run.options",
@@ -110,7 +106,7 @@
 				"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
 				"examples": [
 					{
-						"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"cwd": "/workspace/project",
 						"env": {
 							"CI": "1"
 						},
@@ -133,9 +129,7 @@
 				"required": false,
 				"default": [],
 				"description": "Arguments passed directly to the executable, subject to the runSync direct-probe allowlist.",
-				"examples": [
-					["--version"]
-				]
+				"examples": [["--version"]]
 			},
 			{
 				"name": "BoundedCommandAdapter.runSync.options",
@@ -145,7 +139,7 @@
 				"description": "Sets the synchronous child's cwd, environment extras, stdin, timeout, output buffer limit, and abort signal. Defaults are 60 seconds and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647, and maxBuffer is passed to spawnSync.",
 				"examples": [
 					{
-						"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+						"cwd": "/workspace/project",
 						"env": {
 							"CI": "1"
 						},
@@ -305,9 +299,7 @@
 						"required": false,
 						"default": [],
 						"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
-						"examples": [
-							["--version"]
-						]
+						"examples": [["--version"]]
 					},
 					{
 						"name": "BoundedCommandAdapter.checked.options",
@@ -317,7 +309,7 @@
 						"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
 						"examples": [
 							{
-								"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"cwd": "/workspace/project",
 								"env": {
 									"CI": "1"
 								},
@@ -370,9 +362,7 @@
 						"required": false,
 						"default": [],
 						"description": "Arguments passed directly to the executable as separate strings, without shell parsing.",
-						"examples": [
-							["rev-parse", "--show-toplevel"]
-						]
+						"examples": [["rev-parse", "--show-toplevel"]]
 					},
 					{
 						"name": "BoundedCommandAdapter.run.options",
@@ -382,7 +372,7 @@
 						"description": "Sets the child's cwd, environment extras, stdin, timeout, combined stdout/stderr cap, abort signal, and optional spawn observer. The async defaults are six hours and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647.",
 						"examples": [
 							{
-								"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"cwd": "/workspace/project",
 								"env": {
 									"CI": "1"
 								},
@@ -440,9 +430,7 @@
 						"required": false,
 						"default": [],
 						"description": "Arguments passed directly to the executable, subject to the runSync direct-probe allowlist.",
-						"examples": [
-							["--version"]
-						]
+						"examples": [["--version"]]
 					},
 					{
 						"name": "BoundedCommandAdapter.runSync.options",
@@ -452,7 +440,7 @@
 						"description": "Sets the synchronous child's cwd, environment extras, stdin, timeout, output buffer limit, and abort signal. Defaults are 60 seconds and 8 MiB; timeoutMs and maxBuffer must be positive safe integers no greater than 2,147,483,647, and maxBuffer is passed to spawnSync.",
 						"examples": [
 							{
-								"cwd": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5",
+								"cwd": "/workspace/project",
 								"env": {
 									"CI": "1"
 								},

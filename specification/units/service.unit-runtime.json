@@ -31,9 +31,7 @@
 				"type": "unknown",
 				"required": false,
 				"description": "Filesystem root used to resolve relative target entries and to locate recorded measurements. Defaults to process.cwd().",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-				]
+				"examples": ["/workspace/project"]
 			},
 			{
 				"name": "UnitRuntimeService.constructor.options",
@@ -366,9 +364,7 @@
 						"type": "unknown",
 						"required": false,
 						"description": "Filesystem root used to resolve relative target entries and to locate recorded measurements. Defaults to process.cwd().",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-11"
-						]
+						"examples": ["/workspace/project"]
 					},
 					{
 						"name": "UnitRuntimeService.constructor.options",

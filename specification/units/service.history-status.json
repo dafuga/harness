@@ -36,7 +36,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Path of the Git repository whose notes, evidence branch and LFS objects are read; it is the working directory of every Git command the service runs. The constructor does not check that the path exists or is a repository.",
-				"examples": ["/home/ci/checkouts/luna-pyramid", "/srv/git/harness-app"]
+				"examples": ["/workspace/project", "/workspace/another-project"]
 			},
 			{
 				"name": "HistoryStatusService.constructor.pinned",
@@ -551,7 +551,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Path of the Git repository whose notes, evidence branch and LFS objects are read; it is the working directory of every Git command the service runs. The constructor does not check that the path exists or is a repository.",
-						"examples": ["/home/ci/checkouts/luna-pyramid", "/srv/git/harness-app"]
+						"examples": ["/workspace/project", "/workspace/another-project"]
 					},
 					{
 						"name": "HistoryStatusService.constructor.pinned",
