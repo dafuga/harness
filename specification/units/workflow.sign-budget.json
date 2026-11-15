@@ -12,36 +12,115 @@
 		"symbols": ["budgetEstablish", "budgetApprove"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "budgetEstablish.input",
 				"type": "SignedInput",
-				"required": true
+				"required": true,
+				"description": "Repository, verification record, reviewer, reason, and unit selection used to establish baselines. When all is true, the workflow selects measured units without baselines; otherwise it uses units, and the reviewer and reason must be nonblank.",
+				"examples": [
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
+						"reviewer": "Morgan Lee",
+						"reason": "Reviewed passing verification gates before updating limits",
+						"all": true,
+						"units": []
+					},
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
+						"reviewer": "Morgan Lee",
+						"reason": "Reviewed passing verification gates before updating limits",
+						"all": false,
+						"units": ["workflow.sign-budget"]
+					}
+				]
 			},
 			{
 				"name": "budgetApprove.input",
 				"type": "SignedInput",
-				"required": true
+				"required": true,
+				"description": "Repository, verification record, reviewer, reason, and units whose baselines are being approved. Each selected unit must already have a baseline, and the reviewer and reason must be nonblank.",
+				"examples": [
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+						"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
+						"reviewer": "Morgan Lee",
+						"reason": "Reviewed passing verification gates before updating limits",
+						"all": false,
+						"units": ["workflow.sign-budget"]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "budgetEstablish",
-				"type": "Promise<BudgetEvent[]>"
+				"type": "Promise<BudgetEvent[]>",
+				"description": "The resolved array contains a baseline ledger event for each selected unit without an existing or inherited baseline. Each event records measured metrics, unavailable measurements when present, performance limits, and the reviewer signature.",
+				"examples": [
+					[
+						{
+							"type": "baseline",
+							"unit": "workflow.sign-budget",
+							"metrics": {
+								"size": 1280,
+								"complexity": 3
+							},
+							"performance": [],
+							"record": {
+								"id": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"tree": "89abcdef0123456789abcdef0123456789abcdef"
+							},
+							"reviewer": "Morgan Lee",
+							"reason": "Reviewed passing verification gates before updating limits",
+							"at": "2026-11-15T12:00:00.000Z"
+						}
+					]
+				]
 			},
 			{
 				"name": "budgetApprove",
-				"type": "Promise<BudgetEvent[]>"
+				"type": "Promise<BudgetEvent[]>",
+				"description": "The resolved array contains an approval ledger event for each explicitly selected unit, including its prior and newly measured frozen metrics. Each selected unit must already have a baseline; unavailable measurements are included when present.",
+				"examples": [
+					[
+						{
+							"type": "approval",
+							"unit": "workflow.sign-budget",
+							"before": {
+								"size": 1280,
+								"complexity": 3
+							},
+							"after": {
+								"size": 1408,
+								"complexity": 3
+							},
+							"performance": [],
+							"record": {
+								"id": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"tree": "89abcdef0123456789abcdef0123456789abcdef"
+							},
+							"reviewer": "Morgan Lee",
+							"reason": "Reviewed passing verification gates before updating limits",
+							"at": "2026-11-15T12:00:00.000Z"
+						}
+					]
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Raised for expected validation failures, including a blank reviewer or reason, a missing or failed verification record, the record author acting as reviewer, incomplete measurements, unusable performance comparison data, an unknown unit, or a baseline state that disallows the requested event."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "budgetEstablish",
@@ -49,22 +128,64 @@
 					{
 						"name": "budgetEstablish.input",
 						"type": "SignedInput",
-						"required": true
+						"required": true,
+						"description": "Repository, verification record, reviewer, reason, and unit selection used to establish baselines. When all is true, the workflow selects measured units without baselines; otherwise it uses units, and the reviewer and reason must be nonblank.",
+						"examples": [
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
+								"reviewer": "Morgan Lee",
+								"reason": "Reviewed passing verification gates before updating limits",
+								"all": true,
+								"units": []
+							},
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
+								"reviewer": "Morgan Lee",
+								"reason": "Reviewed passing verification gates before updating limits",
+								"all": false,
+								"units": ["workflow.sign-budget"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "budgetEstablish",
-						"type": "Promise<BudgetEvent[]>"
+						"type": "Promise<BudgetEvent[]>",
+						"description": "The resolved array contains a baseline ledger event for each selected unit without an existing or inherited baseline. Each event records measured metrics, unavailable measurements when present, performance limits, and the reviewer signature.",
+						"examples": [
+							[
+								{
+									"type": "baseline",
+									"unit": "workflow.sign-budget",
+									"metrics": {
+										"size": 1280,
+										"complexity": 3
+									},
+									"performance": [],
+									"record": {
+										"id": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"tree": "89abcdef0123456789abcdef0123456789abcdef"
+									},
+									"reviewer": "Morgan Lee",
+									"reason": "Reviewed passing verification gates before updating limits",
+									"at": "2026-11-15T12:00:00.000Z"
+								}
+							]
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Raised for expected validation failures, including a blank reviewer or reason, a missing or failed verification record, the record author acting as reviewer, incomplete measurements, unusable performance comparison data, an unknown unit, or a baseline state that disallows the requested event."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "budgetApprove",
@@ -72,17 +193,60 @@
 					{
 						"name": "budgetApprove.input",
 						"type": "SignedInput",
-						"required": true
+						"required": true,
+						"description": "Repository, verification record, reviewer, reason, and units whose baselines are being approved. Each selected unit must already have a baseline, and the reviewer and reason must be nonblank.",
+						"examples": [
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10",
+								"record": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
+								"reviewer": "Morgan Lee",
+								"reason": "Reviewed passing verification gates before updating limits",
+								"all": false,
+								"units": ["workflow.sign-budget"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "budgetApprove",
-						"type": "Promise<BudgetEvent[]>"
+						"type": "Promise<BudgetEvent[]>",
+						"description": "The resolved array contains an approval ledger event for each explicitly selected unit, including its prior and newly measured frozen metrics. Each selected unit must already have a baseline; unavailable measurements are included when present.",
+						"examples": [
+							[
+								{
+									"type": "approval",
+									"unit": "workflow.sign-budget",
+									"before": {
+										"size": 1280,
+										"complexity": 3
+									},
+									"after": {
+										"size": 1408,
+										"complexity": 3
+									},
+									"performance": [],
+									"record": {
+										"id": "6e6d8ad8-2914-4f2a-b44c-22f31fb24c8e",
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"tree": "89abcdef0123456789abcdef0123456789abcdef"
+									},
+									"reviewer": "Morgan Lee",
+									"reason": "Reviewed passing verification gates before updating limits",
+									"at": "2026-11-15T12:00:00.000Z"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Raised for expected validation failures, including a blank reviewer or reason, a missing or failed verification record, the record author acting as reviewer, incomplete measurements, unusable performance comparison data, an unknown unit, or a baseline state that disallows the requested event."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
