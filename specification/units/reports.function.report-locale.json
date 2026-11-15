@@ -22,10 +22,12 @@
 			{
 				"name": "reportLocale",
 				"type": "'en'",
-				"description": "Returns en. Importing the module registers English and French report dictionaries and initializes English as fallback and initial locale."
+				"description": "Every call returns the literal string 'en' without taking arguments or reading the svelte-i18n locale, so the value stays 'en' even if the active locale is later set to 'fr'. Importing the module, not calling this function, registers the English and French messages and passes 'en' as both fallbackLocale and initialLocale to svelte-i18n init, which makes English the runtime default.",
+				"examples": ["en"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "reportLocale",
@@ -34,7 +36,8 @@
 					{
 						"name": "reportLocale",
 						"type": "'en'",
-						"description": "Returns en. Importing the module registers English and French report dictionaries and initializes English as fallback and initial locale."
+						"description": "Every call returns the literal string 'en' without taking arguments or reading the svelte-i18n locale, so the value stays 'en' even if the active locale is later set to 'fr'. Importing the module, not calling this function, registers the English and French messages and passes 'en' as both fallbackLocale and initialLocale to svelte-i18n init, which makes English the runtime default.",
+						"examples": ["en"]
 					}
 				],
 				"errors": [],
