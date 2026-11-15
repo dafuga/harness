@@ -28,189 +28,677 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubProjectionService.constructor.context",
 				"type": "Dependencies",
-				"required": true
+				"required": true,
+				"description": "The request-scoped collaboration API, source-history adapter, and cache used by the service. The constructor gives the same dependencies to the evidence reader and later methods use them to load projects, resolve source revisions, and cache projections."
 			},
 			{
 				"name": "HubProjectionService.evidence.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+				"examples": [
+					{
+						"id": "actor-17",
+						"email": "ari@example.com",
+						"name": "Ari Example",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.evidence.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+				"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 			},
 			{
 				"name": "HubProjectionService.evidence.query",
 				"type": "EntityEvidenceQuery",
-				"required": true
+				"required": true,
+				"description": "Selects recorded evidence for one entity at a branch and commit. The mode is current or commit; current requires the commit to be the branch tip, while commit compares the named revision with its exact first parent.",
+				"examples": [
+					{
+						"entityId": "hub.service.hub-projection",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"mode": "commit"
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.artifact.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+				"examples": [
+					{
+						"id": "actor-17",
+						"email": "ari@example.com",
+						"name": "Ari Example",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.artifact.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+				"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 			},
 			{
 				"name": "HubProjectionService.artifact.query",
 				"type": "EvidenceArtifactQuery",
-				"required": true
+				"required": true,
+				"description": "Binds a request to one before or after capture by entity, record, scenario, state, evidence, viewport, digest, and pinned revisions. The backend accepts only a capture listed by that evidence and reads at most 11 MiB of artifact bytes; the query carries no path or address.",
+				"examples": [
+					{
+						"entityId": "hub.service.hub-projection",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main",
+						"mode": "commit",
+						"side": "after",
+						"recordId": "record-2026-11-15-001",
+						"scenarioId": "hub-recorded-evidence",
+						"state": "loaded",
+						"evidenceId": "hub-recorded-evidence",
+						"viewport": "desktop",
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"notesRevision": "fedcba9876543210fedcba9876543210fedcba98",
+						"evidenceRevision": "fedcba9876543210fedcba9876543210fedcba98"
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.snapshot.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+				"examples": [
+					{
+						"id": "actor-17",
+						"email": "ari@example.com",
+						"name": "Ari Example",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.snapshot.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+				"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 			},
 			{
 				"name": "HubProjectionService.snapshot.query",
 				"type": "{ branch: string | null; commit: string | null }",
-				"required": true
+				"required": true,
+				"description": "Selects a branch and optional commit for a read-only project snapshot. A null branch falls back to main or the first listed branch, and a null commit selects the chosen branch tip.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.registry.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+				"examples": [
+					{
+						"id": "actor-17",
+						"email": "ari@example.com",
+						"name": "Ari Example",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.registry.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+				"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 			},
 			{
 				"name": "HubProjectionService.registry.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The Git reference used to resolve the source tree whose committed unit records are returned. The resolved commit is included in the registry result.",
+				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
 			{
 				"name": "HubProjectionService.entity.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+				"examples": [
+					{
+						"id": "actor-17",
+						"email": "ari@example.com",
+						"name": "Ari Example",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.entity.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+				"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 			},
 			{
 				"name": "HubProjectionService.entity.query",
 				"type": "{ entityId: string; commit: string; branch: string }",
-				"required": true
+				"required": true,
+				"description": "Selects an entity at a source commit and supplies the branch label forwarded to its history projection. The entity must appear in the loaded catalog or the operation returns not-found.",
+				"examples": [
+					{
+						"entityId": "hub.service.hub-projection",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"branch": "main"
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.history.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+				"examples": [
+					{
+						"id": "actor-17",
+						"email": "ari@example.com",
+						"name": "Ari Example",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.history.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+				"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 			},
 			{
 				"name": "HubProjectionService.history.query",
 				"type": "{ entityId: string; commit: string; page: number; branch: string }",
-				"required": true
+				"required": true,
+				"description": "Selects a unit or plan and a page of source history at a commit. The history adapter is asked for 20 entries per page, and an entity absent from both the unit and plan catalogs returns not-found.",
+				"examples": [
+					{
+						"entityId": "hub.service.hub-projection",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"page": 1,
+						"branch": "main"
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.source.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+				"examples": [
+					{
+						"id": "actor-17",
+						"email": "ari@example.com",
+						"name": "Ari Example",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.source.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+				"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 			},
 			{
 				"name": "HubProjectionService.source.query",
 				"type": "{ entityId: string; commit: string; path: string }",
-				"required": true
+				"required": true,
+				"description": "Names a unit and source path to read at a commit. The path must be an owned source path of that unit and exist as a regular 100644 or 100755 blob.",
+				"examples": [
+					{
+						"entityId": "hub.service.hub-projection",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts"
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.image.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+				"examples": [
+					{
+						"id": "actor-17",
+						"email": "ari@example.com",
+						"name": "Ari Example",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.image.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+				"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 			},
 			{
 				"name": "HubProjectionService.image.query",
 				"type": "{ entityId: string; commit: string; version: string; sha256: string; }",
-				"required": true
+				"required": true,
+				"description": "Selects a design image by unit, commit, version, and SHA-256 digest. The version must use v followed by at least three digits, the digest must be 64 lowercase hexadecimal characters, and a matching plan and image must exist.",
+				"examples": [
+					{
+						"entityId": "reports.component.evidence-grid",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"version": "v001",
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.messages.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+				"examples": [
+					{
+						"id": "actor-17",
+						"email": "ari@example.com",
+						"name": "Ari Example",
+						"emailVerified": true
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.messages.projectId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+				"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 			},
 			{
 				"name": "HubProjectionService.messages.query",
 				"type": "{ entityId: string; commit: string; threadId: string }",
-				"required": true
+				"required": true,
+				"description": "Selects messages from a collaboration thread for one entity and source commit. The thread must be present in the collaboration API response for that project, entity, and commit.",
+				"examples": [
+					{
+						"entityId": "hub.service.hub-projection",
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"threadId": "550e8400-e29b-41d4-a716-446655440000"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubProjectionService.evidence",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the recorded scope, cache identity, entity evidence, and behavior projection for the selected entity and revision. Current mode reports the branch tip alone; commit mode compares the selected commit with its exact first parent, and answers over 16 MiB are rejected rather than truncated.",
+				"examples": [
+					{
+						"scope": {
+							"location": {
+								"branch": "main",
+								"commit": null,
+								"category": "services",
+								"entity": "hub.service.hub-projection"
+							},
+							"mode": "current",
+							"branch": "main",
+							"tip": "0123456789abcdef0123456789abcdef01234567",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true,
+							"parent": null,
+							"summary": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"parents": [],
+								"subject": "Initial commit",
+								"author": "Ari Example",
+								"committedAt": "2026-11-15T12:00:00.000Z",
+								"coverage": "unverified",
+								"gaps": ["No verification record is attached to this commit."],
+								"records": [],
+								"branches": ["main"],
+								"retained": false,
+								"legacy": []
+							}
+						},
+						"identity": {
+							"principalId": "actor-17",
+							"projectId": "b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa",
+							"repositoryId": 17,
+							"requestedRef": "main",
+							"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+							"sourceTree": "fedcba9876543210fedcba9876543210fedcba98",
+							"notesRef": "refs/notes/harness",
+							"notesRevision": null,
+							"evidenceRef": "refs/heads/harness-evidence",
+							"evidenceRevision": null,
+							"historyIndexRevision": null,
+							"collaborationRevision": null,
+							"artifactHash": null,
+							"profile": null
+						},
+						"evidence": {
+							"mode": "current",
+							"scenarios": [],
+							"after": {
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"detail": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"registry": {
+										"available": false,
+										"gap": "No unit registry is stored at this revision.",
+										"units": [],
+										"scenarios": [],
+										"graph": {
+											"edges": []
+										}
+									},
+									"comparison": null,
+									"sourceImpact": null,
+									"records": [],
+									"explanations": []
+								},
+								"record": null,
+								"captures": [],
+								"coverage": [],
+								"gap": "No verification record is attached to this commit."
+							},
+							"before": null,
+							"initial": null,
+							"incomparable": []
+						},
+						"behavior": {
+							"mode": "current",
+							"rows": [],
+							"summary": "not-compared",
+							"reason": null,
+							"scenarios": []
+						}
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.artifact",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the verified capture bytes, media type, and SHA-256 named by the evidence query. The bytes are binary and limited to 11 MiB, so no JSON example is supplied."
 			},
 			{
 				"name": "HubProjectionService.snapshot",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to a read-only snapshot containing the selected project revision, branch and commit lists, catalog entities, capabilities, and remote cache provenance. A missing branch or a commit that does not resolve to the requested revision is rejected.",
+				"examples": [
+					{
+						"project": {
+							"id": "b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa",
+							"name": "Evidence project",
+							"root": ""
+						},
+						"capabilities": {
+							"comments": true,
+							"agents": false,
+							"planning": false,
+							"approval": false,
+							"source": "github"
+						},
+						"cache": {
+							"identity": {
+								"principalId": "actor-17",
+								"projectId": "b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa",
+								"repositoryId": 17,
+								"requestedRef": "main",
+								"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+								"sourceTree": "fedcba9876543210fedcba9876543210fedcba98",
+								"notesRef": "refs/notes/harness",
+								"notesRevision": null,
+								"evidenceRef": "refs/heads/harness-evidence",
+								"evidenceRevision": null,
+								"historyIndexRevision": null,
+								"collaborationRevision": null,
+								"artifactHash": null,
+								"profile": null
+							},
+							"status": "fresh",
+							"publication": "remote"
+						},
+						"revision": {
+							"branch": "main",
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"tip": "0123456789abcdef0123456789abcdef01234567",
+							"atTip": true
+						},
+						"branches": [
+							{
+								"name": "main",
+								"tip": "0123456789abcdef0123456789abcdef01234567",
+								"current": true
+							}
+						],
+						"commits": [
+							{
+								"hash": "0123456789abcdef0123456789abcdef01234567",
+								"subject": "Initial commit",
+								"authoredAt": "2026-11-15T12:00:00.000Z"
+							}
+						],
+						"entities": [],
+						"writable": false
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.registry",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the source commit and the unit records parsed from that committed tree. Invalid or duplicate unit records are rejected.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"units": []
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.entity",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the catalog entity detail for a unit or plan, with its contract, documentation, owned source paths, relationships, design versions, threads, and one-page history. Shared thread count is calculated from the collaboration API response for the same entity and commit.",
+				"examples": [
+					{
+						"id": "hub.service.hub-projection",
+						"category": "services",
+						"kind": "service",
+						"title": "HubProjectionService",
+						"summary": "Owns the HubProjectionService service workflow.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null,
+						"contract": {
+							"inputs": [],
+							"outputs": [],
+							"errors": [],
+							"hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+						},
+						"relationships": [],
+						"versions": [],
+						"threads": [],
+						"historyCoverage": {
+							"complete": true,
+							"nextPage": null,
+							"loadedPages": 1
+						},
+						"history": [
+							{
+								"id": "0123456789abcdef0123456789abcdef01234567",
+								"at": "2026-11-15T12:00:00.000Z",
+								"kind": "commit",
+								"title": "Initial commit",
+								"detail": "Committed change. Measurements and verification are recorded separately.",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"version": null
+							}
+						],
+						"sources": [
+							"packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+							"packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.types.ts",
+							"packages/hub/src/services/hub-projection-service/HubProjectionService.ts"
+						],
+						"size": {
+							"available": false,
+							"text": "Not measured: source size unavailable"
+						},
+						"performance": {
+							"available": false,
+							"text": "Not measured"
+						}
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.history",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to one page of commit history for the selected unit source paths and plan path, with completeness and next-page metadata. The history adapter supplies at most 20 commits per page.",
+				"examples": [
+					{
+						"entries": [
+							{
+								"id": "0123456789abcdef0123456789abcdef01234567",
+								"at": "2026-11-15T12:00:00.000Z",
+								"kind": "commit",
+								"title": "Initial commit",
+								"detail": "Committed change. Measurements and verification are recorded separately.",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"version": null
+							}
+						],
+						"complete": true,
+						"nextPage": null
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.source",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to the requested owned repository path and the UTF-8 text read from its committed blob. The path is accepted only when it belongs to the selected unit and names a regular blob.",
+				"examples": [
+					{
+						"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+						"text": "export class HubProjectionService {"
+					}
+				]
 			},
 			{
 				"name": "HubProjectionService.image",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Resolves to binary PNG bytes for the requested plan version and image digest after the stored byte length, PNG structure, and dimensions are checked. The decoded scanline limit is 32 MiB, and the binary bytes have no JSON example."
 			},
 			{
 				"name": "HubProjectionService.messages",
-				"type": "Promise<ThreadMessage[]>"
+				"type": "Promise<ThreadMessage[]>",
+				"description": "Resolves to the messages in the selected committed collaboration thread, mapped to ThreadMessage fields. It rejects when the thread ID is absent from the project, entity, and commit result.",
+				"examples": [
+					[
+						{
+							"id": "550e8400-e29b-41d4-a716-446655440000",
+							"at": "2026-11-15T12:00:00.000Z",
+							"author": "user",
+							"actorId": "actor-17",
+							"authorName": "Ari Example",
+							"text": "The source link opens the committed file.",
+							"mode": null,
+							"provider": null,
+							"model": null,
+							"version": null,
+							"imageSha256": null
+						}
+					]
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "hubFail throws an Error with code forbidden when the evidence project is missing or a source path is not owned, and the evidence reader also rejects if the authorized repository changes during the request."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "hubHistory throws an Error with code history-unavailable when the source adapter has no historyPage reader."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "hubSnapshot throws an Error with code revision-mismatch when resolving the requested commit does not return that commit."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The evidence reader throws an Error with code evidence-unreadable when the selected branch tip, source revision, or registered entity cannot be read."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The evidence reader throws an Error with code evidence-stale when current evidence no longer names the branch tip or its pinned notes and evidence revisions are no longer valid."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The artifact reader throws an Error with code artifact-refused when the requested capture has no validated origin or cannot be safely served."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The artifact reader throws an Error with code artifact-too-large when the capture exceeds the 11 MiB artifact limit."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "recordedAnswer throws an Error when the evidence JSON exceeds the 16 MiB transport allowance; the answer is rejected without truncation."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "The artifact helpers throw an Error when the capture is not listed by the pinned evidence, its bytes are absent, or the bytes do not match the recorded SHA-256."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HubProjectionService.evidence",
@@ -218,27 +706,158 @@
 					{
 						"name": "HubProjectionService.evidence.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+						"examples": [
+							{
+								"id": "actor-17",
+								"email": "ari@example.com",
+								"name": "Ari Example",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "HubProjectionService.evidence.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+						"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 					},
 					{
 						"name": "HubProjectionService.evidence.query",
 						"type": "EntityEvidenceQuery",
-						"required": true
+						"required": true,
+						"description": "Selects recorded evidence for one entity at a branch and commit. The mode is current or commit; current requires the commit to be the branch tip, while commit compares the named revision with its exact first parent.",
+						"examples": [
+							{
+								"entityId": "hub.service.hub-projection",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"mode": "commit"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubProjectionService.evidence",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the recorded scope, cache identity, entity evidence, and behavior projection for the selected entity and revision. Current mode reports the branch tip alone; commit mode compares the selected commit with its exact first parent, and answers over 16 MiB are rejected rather than truncated.",
+						"examples": [
+							{
+								"scope": {
+									"location": {
+										"branch": "main",
+										"commit": null,
+										"category": "services",
+										"entity": "hub.service.hub-projection"
+									},
+									"mode": "current",
+									"branch": "main",
+									"tip": "0123456789abcdef0123456789abcdef01234567",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"atTip": true,
+									"parent": null,
+									"summary": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"parents": [],
+										"subject": "Initial commit",
+										"author": "Ari Example",
+										"committedAt": "2026-11-15T12:00:00.000Z",
+										"coverage": "unverified",
+										"gaps": ["No verification record is attached to this commit."],
+										"records": [],
+										"branches": ["main"],
+										"retained": false,
+										"legacy": []
+									}
+								},
+								"identity": {
+									"principalId": "actor-17",
+									"projectId": "b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa",
+									"repositoryId": 17,
+									"requestedRef": "main",
+									"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+									"sourceTree": "fedcba9876543210fedcba9876543210fedcba98",
+									"notesRef": "refs/notes/harness",
+									"notesRevision": null,
+									"evidenceRef": "refs/heads/harness-evidence",
+									"evidenceRevision": null,
+									"historyIndexRevision": null,
+									"collaborationRevision": null,
+									"artifactHash": null,
+									"profile": null
+								},
+								"evidence": {
+									"mode": "current",
+									"scenarios": [],
+									"after": {
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"detail": {
+											"commit": "0123456789abcdef0123456789abcdef01234567",
+											"registry": {
+												"available": false,
+												"gap": "No unit registry is stored at this revision.",
+												"units": [],
+												"scenarios": [],
+												"graph": {
+													"edges": []
+												}
+											},
+											"comparison": null,
+											"sourceImpact": null,
+											"records": [],
+											"explanations": []
+										},
+										"record": null,
+										"captures": [],
+										"coverage": [],
+										"gap": "No verification record is attached to this commit."
+									},
+									"before": null,
+									"initial": null,
+									"incomparable": []
+								},
+								"behavior": {
+									"mode": "current",
+									"rows": [],
+									"summary": "not-compared",
+									"reason": null,
+									"scenarios": []
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubFail throws an Error with code forbidden when the evidence project is missing or a source path is not owned, and the evidence reader also rejects if the authorized repository changes during the request."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The evidence reader throws an Error with code evidence-unreadable when the selected branch tip, source revision, or registered entity cannot be read."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The evidence reader throws an Error with code evidence-stale when current evidence no longer names the branch tip or its pinned notes and evidence revisions are no longer valid."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "recordedAnswer throws an Error when the evidence JSON exceeds the 16 MiB transport allowance; the answer is rejected without truncation."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubProjectionService.artifact",
@@ -246,27 +865,93 @@
 					{
 						"name": "HubProjectionService.artifact.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+						"examples": [
+							{
+								"id": "actor-17",
+								"email": "ari@example.com",
+								"name": "Ari Example",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "HubProjectionService.artifact.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+						"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 					},
 					{
 						"name": "HubProjectionService.artifact.query",
 						"type": "EvidenceArtifactQuery",
-						"required": true
+						"required": true,
+						"description": "Binds a request to one before or after capture by entity, record, scenario, state, evidence, viewport, digest, and pinned revisions. The backend accepts only a capture listed by that evidence and reads at most 11 MiB of artifact bytes; the query carries no path or address.",
+						"examples": [
+							{
+								"entityId": "hub.service.hub-projection",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main",
+								"mode": "commit",
+								"side": "after",
+								"recordId": "record-2026-11-15-001",
+								"scenarioId": "hub-recorded-evidence",
+								"state": "loaded",
+								"evidenceId": "hub-recorded-evidence",
+								"viewport": "desktop",
+								"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"notesRevision": "fedcba9876543210fedcba9876543210fedcba98",
+								"evidenceRevision": "fedcba9876543210fedcba9876543210fedcba98"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubProjectionService.artifact",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the verified capture bytes, media type, and SHA-256 named by the evidence query. The bytes are binary and limited to 11 MiB, so no JSON example is supplied."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubFail throws an Error with code forbidden when the evidence project is missing or a source path is not owned, and the evidence reader also rejects if the authorized repository changes during the request."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The evidence reader throws an Error with code evidence-unreadable when the selected branch tip, source revision, or registered entity cannot be read."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The evidence reader throws an Error with code evidence-stale when current evidence no longer names the branch tip or its pinned notes and evidence revisions are no longer valid."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The artifact reader throws an Error with code artifact-refused when the requested capture has no validated origin or cannot be safely served."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The artifact reader throws an Error with code artifact-too-large when the capture exceeds the 11 MiB artifact limit."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The artifact helpers throw an Error when the capture is not listed by the pinned evidence, its bytes are absent, or the bytes do not match the recorded SHA-256."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubProjectionService.snapshot",
@@ -274,27 +959,120 @@
 					{
 						"name": "HubProjectionService.snapshot.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+						"examples": [
+							{
+								"id": "actor-17",
+								"email": "ari@example.com",
+								"name": "Ari Example",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "HubProjectionService.snapshot.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+						"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 					},
 					{
 						"name": "HubProjectionService.snapshot.query",
 						"type": "{ branch: string | null; commit: string | null }",
-						"required": true
+						"required": true,
+						"description": "Selects a branch and optional commit for a read-only project snapshot. A null branch falls back to main or the first listed branch, and a null commit selects the chosen branch tip.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubProjectionService.snapshot",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to a read-only snapshot containing the selected project revision, branch and commit lists, catalog entities, capabilities, and remote cache provenance. A missing branch or a commit that does not resolve to the requested revision is rejected.",
+						"examples": [
+							{
+								"project": {
+									"id": "b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa",
+									"name": "Evidence project",
+									"root": ""
+								},
+								"capabilities": {
+									"comments": true,
+									"agents": false,
+									"planning": false,
+									"approval": false,
+									"source": "github"
+								},
+								"cache": {
+									"identity": {
+										"principalId": "actor-17",
+										"projectId": "b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa",
+										"repositoryId": 17,
+										"requestedRef": "main",
+										"sourceCommit": "0123456789abcdef0123456789abcdef01234567",
+										"sourceTree": "fedcba9876543210fedcba9876543210fedcba98",
+										"notesRef": "refs/notes/harness",
+										"notesRevision": null,
+										"evidenceRef": "refs/heads/harness-evidence",
+										"evidenceRevision": null,
+										"historyIndexRevision": null,
+										"collaborationRevision": null,
+										"artifactHash": null,
+										"profile": null
+									},
+									"status": "fresh",
+									"publication": "remote"
+								},
+								"revision": {
+									"branch": "main",
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"tip": "0123456789abcdef0123456789abcdef01234567",
+									"atTip": true
+								},
+								"branches": [
+									{
+										"name": "main",
+										"tip": "0123456789abcdef0123456789abcdef01234567",
+										"current": true
+									}
+								],
+								"commits": [
+									{
+										"hash": "0123456789abcdef0123456789abcdef01234567",
+										"subject": "Initial commit",
+										"authoredAt": "2026-11-15T12:00:00.000Z"
+									}
+								],
+								"entities": [],
+								"writable": false
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubSnapshot throws an Error with code revision-mismatch when resolving the requested commit does not return that commit."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubProjectionService.registry",
@@ -302,27 +1080,53 @@
 					{
 						"name": "HubProjectionService.registry.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+						"examples": [
+							{
+								"id": "actor-17",
+								"email": "ari@example.com",
+								"name": "Ari Example",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "HubProjectionService.registry.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+						"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 					},
 					{
 						"name": "HubProjectionService.registry.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The Git reference used to resolve the source tree whose committed unit records are returned. The resolved commit is included in the registry result.",
+						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubProjectionService.registry",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the source commit and the unit records parsed from that committed tree. Invalid or duplicate unit records are rejected.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"units": []
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubProjectionService.entity",
@@ -330,27 +1134,120 @@
 					{
 						"name": "HubProjectionService.entity.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+						"examples": [
+							{
+								"id": "actor-17",
+								"email": "ari@example.com",
+								"name": "Ari Example",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "HubProjectionService.entity.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+						"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 					},
 					{
 						"name": "HubProjectionService.entity.query",
 						"type": "{ entityId: string; commit: string; branch: string }",
-						"required": true
+						"required": true,
+						"description": "Selects an entity at a source commit and supplies the branch label forwarded to its history projection. The entity must appear in the loaded catalog or the operation returns not-found.",
+						"examples": [
+							{
+								"entityId": "hub.service.hub-projection",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"branch": "main"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubProjectionService.entity",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the catalog entity detail for a unit or plan, with its contract, documentation, owned source paths, relationships, design versions, threads, and one-page history. Shared thread count is calculated from the collaboration API response for the same entity and commit.",
+						"examples": [
+							{
+								"id": "hub.service.hub-projection",
+								"category": "services",
+								"kind": "service",
+								"title": "HubProjectionService",
+								"summary": "Owns the HubProjectionService service workflow.",
+								"changed": false,
+								"planned": false,
+								"hasPlan": false,
+								"lifecycle": null,
+								"verification": "unknown",
+								"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+								"latestVersion": null,
+								"approvedVersion": null,
+								"threadCount": 0,
+								"thumbnail": null,
+								"contract": {
+									"inputs": [],
+									"outputs": [],
+									"errors": [],
+									"hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+								},
+								"relationships": [],
+								"versions": [],
+								"threads": [],
+								"historyCoverage": {
+									"complete": true,
+									"nextPage": null,
+									"loadedPages": 1
+								},
+								"history": [
+									{
+										"id": "0123456789abcdef0123456789abcdef01234567",
+										"at": "2026-11-15T12:00:00.000Z",
+										"kind": "commit",
+										"title": "Initial commit",
+										"detail": "Committed change. Measurements and verification are recorded separately.",
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"version": null
+									}
+								],
+								"sources": [
+									"packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+									"packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.types.ts",
+									"packages/hub/src/services/hub-projection-service/HubProjectionService.ts"
+								],
+								"size": {
+									"available": false,
+									"text": "Not measured: source size unavailable"
+								},
+								"performance": {
+									"available": false,
+									"text": "Not measured"
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubHistory throws an Error with code history-unavailable when the source adapter has no historyPage reader."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubProjectionService.history",
@@ -358,27 +1255,81 @@
 					{
 						"name": "HubProjectionService.history.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+						"examples": [
+							{
+								"id": "actor-17",
+								"email": "ari@example.com",
+								"name": "Ari Example",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "HubProjectionService.history.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+						"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 					},
 					{
 						"name": "HubProjectionService.history.query",
 						"type": "{ entityId: string; commit: string; page: number; branch: string }",
-						"required": true
+						"required": true,
+						"description": "Selects a unit or plan and a page of source history at a commit. The history adapter is asked for 20 entries per page, and an entity absent from both the unit and plan catalogs returns not-found.",
+						"examples": [
+							{
+								"entityId": "hub.service.hub-projection",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"page": 1,
+								"branch": "main"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubProjectionService.history",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to one page of commit history for the selected unit source paths and plan path, with completeness and next-page metadata. The history adapter supplies at most 20 commits per page.",
+						"examples": [
+							{
+								"entries": [
+									{
+										"id": "0123456789abcdef0123456789abcdef01234567",
+										"at": "2026-11-15T12:00:00.000Z",
+										"kind": "commit",
+										"title": "Initial commit",
+										"detail": "Committed change. Measurements and verification are recorded separately.",
+										"commit": "0123456789abcdef0123456789abcdef01234567",
+										"version": null
+									}
+								],
+								"complete": true,
+								"nextPage": null
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubHistory throws an Error with code history-unavailable when the source adapter has no historyPage reader."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubProjectionService.source",
@@ -386,27 +1337,69 @@
 					{
 						"name": "HubProjectionService.source.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+						"examples": [
+							{
+								"id": "actor-17",
+								"email": "ari@example.com",
+								"name": "Ari Example",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "HubProjectionService.source.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+						"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 					},
 					{
 						"name": "HubProjectionService.source.query",
 						"type": "{ entityId: string; commit: string; path: string }",
-						"required": true
+						"required": true,
+						"description": "Names a unit and source path to read at a commit. The path must be an owned source path of that unit and exist as a regular 100644 or 100755 blob.",
+						"examples": [
+							{
+								"entityId": "hub.service.hub-projection",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubProjectionService.source",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to the requested owned repository path and the UTF-8 text read from its committed blob. The path is accepted only when it belongs to the selected unit and names a regular blob.",
+						"examples": [
+							{
+								"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+								"text": "export class HubProjectionService {"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubFail throws an Error with code forbidden when the evidence project is missing or a source path is not owned, and the evidence reader also rejects if the authorized repository changes during the request."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubProjectionService.image",
@@ -414,27 +1407,59 @@
 					{
 						"name": "HubProjectionService.image.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+						"examples": [
+							{
+								"id": "actor-17",
+								"email": "ari@example.com",
+								"name": "Ari Example",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "HubProjectionService.image.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+						"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 					},
 					{
 						"name": "HubProjectionService.image.query",
 						"type": "{ entityId: string; commit: string; version: string; sha256: string; }",
-						"required": true
+						"required": true,
+						"description": "Selects a design image by unit, commit, version, and SHA-256 digest. The version must use v followed by at least three digits, the digest must be 64 lowercase hexadecimal characters, and a matching plan and image must exist.",
+						"examples": [
+							{
+								"entityId": "reports.component.evidence-grid",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"version": "v001",
+								"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubProjectionService.image",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Resolves to binary PNG bytes for the requested plan version and image digest after the stored byte length, PNG structure, and dimensions are checked. The decoded scanline limit is 32 MiB, and the binary bytes have no JSON example."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "HubProjectionService.messages",
@@ -442,27 +1467,70 @@
 					{
 						"name": "HubProjectionService.messages.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The authenticated collaboration actor for this operation. Its identity is used for project and thread API calls and, for evidence reads, as the principal in the cache identity.",
+						"examples": [
+							{
+								"id": "actor-17",
+								"email": "ari@example.com",
+								"name": "Ari Example",
+								"emailVerified": true
+							}
+						]
 					},
 					{
 						"name": "HubProjectionService.messages.projectId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The collaboration project identifier used to load the project and its source repository. It must identify a project accessible to the supplied actor.",
+						"examples": ["b5a2f04c-4d83-4b9b-8d6c-0a5e5128c9fa"]
 					},
 					{
 						"name": "HubProjectionService.messages.query",
 						"type": "{ entityId: string; commit: string; threadId: string }",
-						"required": true
+						"required": true,
+						"description": "Selects messages from a collaboration thread for one entity and source commit. The thread must be present in the collaboration API response for that project, entity, and commit.",
+						"examples": [
+							{
+								"entityId": "hub.service.hub-projection",
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"threadId": "550e8400-e29b-41d4-a716-446655440000"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubProjectionService.messages",
-						"type": "Promise<ThreadMessage[]>"
+						"type": "Promise<ThreadMessage[]>",
+						"description": "Resolves to the messages in the selected committed collaboration thread, mapped to ThreadMessage fields. It rejects when the thread ID is absent from the project, entity, and commit result.",
+						"examples": [
+							[
+								{
+									"id": "550e8400-e29b-41d4-a716-446655440000",
+									"at": "2026-11-15T12:00:00.000Z",
+									"author": "user",
+									"actorId": "actor-17",
+									"authorName": "Ari Example",
+									"text": "The source link opens the committed file.",
+									"mode": null,
+									"provider": null,
+									"model": null,
+									"version": null,
+									"imageSha256": null
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -472,17 +1540,19 @@
 					{
 						"name": "HubProjectionService.constructor.context",
 						"type": "Dependencies",
-						"required": true
+						"required": true,
+						"description": "The request-scoped collaboration API, source-history adapter, and cache used by the service. The constructor gives the same dependencies to the evidence reader and later methods use them to load projects, resolve source revisions, and cache projections."
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubProjectionService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructor returns a HubProjectionService instance that retains the supplied dependencies and creates its HubEvidenceService reader. This class instance is not JSON-serializable, so no JSON example is supplied."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
