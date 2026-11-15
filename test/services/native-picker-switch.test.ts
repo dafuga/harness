@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { NativePickerSwitchService } from '../../src/services/NativePickerSwitchService';
+import { NativePickerSwitchService } from '../../src/services/development-tooling/native-picker-bridge-service/NativePickerSwitchService';
 import { nativePickerProtocol } from '../../src/utils/nativePickerProtocol';
 
 function fixture(

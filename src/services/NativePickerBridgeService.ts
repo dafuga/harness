@@ -1,2 +1,0 @@
-// @harness-uid u_3cnh273kui
-export { NativePickerBridgeService } from './development-tooling/native-picker-bridge-service/NativePickerBridgeService';

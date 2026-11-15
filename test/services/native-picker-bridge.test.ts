@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { NativePickerBridgeService } from '../../src/services/NativePickerBridgeService';
+import { NativePickerBridgeService } from '../../src/services/development-tooling/native-picker-bridge-service/NativePickerBridgeService';
 
 test('native picker adds Opus without replacing native discovery or writing global defaults', async () => {
 	const rpc = vi.fn(async () => ({ data: [{ model: 'gpt-6.1-sol' }], nextCursor: null }));

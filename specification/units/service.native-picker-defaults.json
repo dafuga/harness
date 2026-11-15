@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/NativePickerDefaultsService.ts",
 			"src/services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService.ts",
 			"src/services/native-picker-bridge-service/NativePickerDefaultsService.ts"
 		],
 		"symbols": [
-			"NativePickerDefaultsService",
 			"NativePickerDefaultsService",
 			"NativePickerDefaultsService.constructor",
 			"NativePickerDefaultsService.write",

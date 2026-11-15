@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { NativePickerDefaultsService } from '../../src/services/NativePickerDefaultsService';
+import { NativePickerDefaultsService } from '../../src/services/development-tooling/native-picker-bridge-service/NativePickerDefaultsService';
 
 test('picker selection becomes visible to the copy without writing original defaults', async () => {
 	const rpc = vi.fn(async (method: string) =>
