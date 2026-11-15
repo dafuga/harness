@@ -31,59 +31,222 @@
 				"name": "coverageAffected.detail",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Revision with record-specific comparison and first-parent source impact."
+				"description": "Revision holding the impact data used to decide whether the unit changed relative to the record. A matching record comparison wins; first-parent source impact applies only when its base equals the record base, and missing unit lists yield null.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": {
+							"base": "89abcdef0123456789abcdef0123456789abcdef",
+							"expanded": true,
+							"units": {
+								"direct": ["reports.component.evidence-grid"],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"scenarios": [],
+							"uncertain": [],
+							"changed": [
+								{
+									"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerCoverage.ts",
+									"status": "modified"
+								}
+							]
+						},
+						"records": [
+							{
+								"id": "d16f4a7e9b2c5308a1f6d4c7e0b3952a6f8d1c4e7b0a9352d6f1c8e4a9b3d750",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"base": "89abcdef0123456789abcdef0123456789abcdef"
+								},
+								"profile": "macos-arm64",
+								"startedAt": "2026-11-15T09:00:00.000Z",
+								"finishedAt": "2026-11-15T09:02:00.000Z",
+								"failures": [],
+								"tests": [],
+								"scenarios": [],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							}
+						],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "coverageAffected.record",
 				"type": "HarnessRecord",
 				"required": true,
-				"description": "Record whose applicable impact should be inspected."
+				"description": "Record whose ID selects a matching comparison and whose source base selects first-parent source impact. The comparison takes precedence, and source impact is ignored when its base differs from the record base.",
+				"examples": [
+					{
+						"id": "d16f4a7e9b2c5308a1f6d4c7e0b3952a6f8d1c4e7b0a9352d6f1c8e4a9b3d750",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"base": "89abcdef0123456789abcdef0123456789abcdef"
+						},
+						"profile": "macos-arm64",
+						"startedAt": "2026-11-15T09:00:00.000Z",
+						"finishedAt": "2026-11-15T09:02:00.000Z",
+						"failures": [],
+						"tests": [],
+						"scenarios": [],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					}
+				]
 			},
 			{
 				"name": "coverageAffected.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit identifier to look for in direct, indirect or added impact."
+				"description": "Unit identifier searched in the selected impact’s direct, indirect, and added lists. A unit found only in removed is not counted, and no applicable unit lists yields null.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "explorerCoverage.detail",
 				"type": "HarnessRevision",
 				"required": true,
-				"description": "Revision supplying registry units and comparison evidence."
+				"description": "Revision supplying unit-to-state filtering and the impact history used for inherited-result lineage. An inherited result remains stale when no applicable impact provides unit lists, and a matching record comparison takes precedence over source impact.",
+				"examples": [
+					{
+						"commit": "0123456789abcdef0123456789abcdef01234567",
+						"registry": {
+							"available": true,
+							"units": [],
+							"scenarios": [],
+							"graph": {
+								"edges": []
+							}
+						},
+						"comparison": null,
+						"sourceImpact": {
+							"base": "89abcdef0123456789abcdef0123456789abcdef",
+							"expanded": true,
+							"units": {
+								"direct": ["reports.component.evidence-grid"],
+								"indirect": [],
+								"added": [],
+								"removed": []
+							},
+							"scenarios": [],
+							"uncertain": [],
+							"changed": [
+								{
+									"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerCoverage.ts",
+									"status": "modified"
+								}
+							]
+						},
+						"records": [
+							{
+								"id": "d16f4a7e9b2c5308a1f6d4c7e0b3952a6f8d1c4e7b0a9352d6f1c8e4a9b3d750",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"base": "89abcdef0123456789abcdef0123456789abcdef"
+								},
+								"profile": "macos-arm64",
+								"startedAt": "2026-11-15T09:00:00.000Z",
+								"finishedAt": "2026-11-15T09:02:00.000Z",
+								"failures": [],
+								"tests": [],
+								"scenarios": [],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							}
+						],
+						"explanations": []
+					}
+				]
 			},
 			{
 				"name": "explorerCoverage.record",
 				"type": "HarnessRecord | null",
 				"required": true,
-				"description": "Selected record, or null for absent evidence. Current tests and inherited origin-test summaries may include browser diagnostics."
+				"description": "Record providing the scenario result, source commit, recorded tests, state outcomes, and captures; inherited results may also use origin tests with browserErrors. Null supplies no recorded test outcomes and applies the absent standing to each state.",
+				"examples": [
+					null,
+					{
+						"id": "d16f4a7e9b2c5308a1f6d4c7e0b3952a6f8d1c4e7b0a9352d6f1c8e4a9b3d750",
+						"status": "passed",
+						"valid": true,
+						"problems": [],
+						"source": {
+							"commit": "0123456789abcdef0123456789abcdef01234567",
+							"base": "89abcdef0123456789abcdef0123456789abcdef"
+						},
+						"profile": "macos-arm64",
+						"startedAt": "2026-11-15T09:00:00.000Z",
+						"finishedAt": "2026-11-15T09:02:00.000Z",
+						"failures": [],
+						"tests": [],
+						"scenarios": [],
+						"measurements": [],
+						"budgets": {
+							"findings": []
+						}
+					}
+				]
 			},
 			{
 				"name": "explorerCoverage.unit",
 				"type": "string",
 				"required": true,
-				"description": "Unit whose applicable scenario states should be judged."
+				"description": "Unit identifier used to select the scenario states that apply to this unit and to check whether an inherited result is stale. States are filtered using the revision’s unit registry, and missing impact history cannot prove an inherited result unaffected.",
+				"examples": ["reports.component.evidence-grid"]
 			},
 			{
 				"name": "explorerCoverage.absent",
 				"type": "Told",
 				"required": false,
 				"default": ["missing", "No verification record is attached to this commit."],
-				"description": "Optional absent-record standing and reason, defaulting to missing with no verification record attached."
+				"description": "Standing and reason used when no record is supplied; its standing is applied to every state, while its reason is retained for the scenario. Defaults to the literal tuple shown in the default.",
+				"examples": [
+					["missing", "No verification record is attached to this commit."],
+					["incomplete", "Scenario declares no test."]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "coverageAffected",
 				"type": "boolean | null",
-				"description": "True when applicable impact includes the unit, false when that impact exists and excludes it, or null when no applicable impact is recorded. Prefers comparison for this record, otherwise source impact with the record’s base."
+				"description": "True when the applicable impact lists the unit, false when applicable unit lists omit it, or null when no applicable unit list exists. A record-specific comparison is preferred; source impact applies only when its base matches the record base.",
+				"examples": [true, false, null]
 			},
 			{
 				"name": "explorerCoverage",
 				"type": "unknown",
-				"description": "Returns a scenario-evaluation function. It narrows states to the unit, checks declarations, test outcomes, result lineage and required captures, then returns tests, state details, inheritance and worst standing. Inherited results require a bound origin and recorded proof that the unit was unaffected; missing origin test evidence stays incomplete. Each listed check retains optional diagnostics from the record where it ran: the current record for fresh results and the origin-test summary for inherited results. Diagnostics are carried for display; this helper judges check outcomes from their recorded status."
+				"description": "The returned callback accepts a declared scenario and returns its ExplorerScenarioCoverage for this unit, including applicable state and test findings. Its standing is the worst scenario and state finding, so missing, unrecorded, or unknown evidence cannot establish a pass."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "coverageAffected",
@@ -92,30 +255,109 @@
 						"name": "coverageAffected.detail",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Revision with record-specific comparison and first-parent source impact."
+						"description": "Revision holding the impact data used to decide whether the unit changed relative to the record. A matching record comparison wins; first-parent source impact applies only when its base equals the record base, and missing unit lists yield null.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": {
+									"base": "89abcdef0123456789abcdef0123456789abcdef",
+									"expanded": true,
+									"units": {
+										"direct": ["reports.component.evidence-grid"],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"scenarios": [],
+									"uncertain": [],
+									"changed": [
+										{
+											"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerCoverage.ts",
+											"status": "modified"
+										}
+									]
+								},
+								"records": [
+									{
+										"id": "d16f4a7e9b2c5308a1f6d4c7e0b3952a6f8d1c4e7b0a9352d6f1c8e4a9b3d750",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "0123456789abcdef0123456789abcdef01234567",
+											"base": "89abcdef0123456789abcdef0123456789abcdef"
+										},
+										"profile": "macos-arm64",
+										"startedAt": "2026-11-15T09:00:00.000Z",
+										"finishedAt": "2026-11-15T09:02:00.000Z",
+										"failures": [],
+										"tests": [],
+										"scenarios": [],
+										"measurements": [],
+										"budgets": {
+											"findings": []
+										}
+									}
+								],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "coverageAffected.record",
 						"type": "HarnessRecord",
 						"required": true,
-						"description": "Record whose applicable impact should be inspected."
+						"description": "Record whose ID selects a matching comparison and whose source base selects first-parent source impact. The comparison takes precedence, and source impact is ignored when its base differs from the record base.",
+						"examples": [
+							{
+								"id": "d16f4a7e9b2c5308a1f6d4c7e0b3952a6f8d1c4e7b0a9352d6f1c8e4a9b3d750",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"base": "89abcdef0123456789abcdef0123456789abcdef"
+								},
+								"profile": "macos-arm64",
+								"startedAt": "2026-11-15T09:00:00.000Z",
+								"finishedAt": "2026-11-15T09:02:00.000Z",
+								"failures": [],
+								"tests": [],
+								"scenarios": [],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							}
+						]
 					},
 					{
 						"name": "coverageAffected.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit identifier to look for in direct, indirect or added impact."
+						"description": "Unit identifier searched in the selected impact’s direct, indirect, and added lists. A unit found only in removed is not counted, and no applicable unit lists yields null.",
+						"examples": ["reports.component.evidence-grid"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "coverageAffected",
 						"type": "boolean | null",
-						"description": "True when applicable impact includes the unit, false when that impact exists and excludes it, or null when no applicable impact is recorded. Prefers comparison for this record, otherwise source impact with the record’s base."
+						"description": "True when the applicable impact lists the unit, false when applicable unit lists omit it, or null when no applicable unit list exists. A record-specific comparison is preferred; source impact applies only when its base matches the record base.",
+						"examples": [true, false, null]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "explorerCoverage",
@@ -124,37 +366,120 @@
 						"name": "explorerCoverage.detail",
 						"type": "HarnessRevision",
 						"required": true,
-						"description": "Revision supplying registry units and comparison evidence."
+						"description": "Revision supplying unit-to-state filtering and the impact history used for inherited-result lineage. An inherited result remains stale when no applicable impact provides unit lists, and a matching record comparison takes precedence over source impact.",
+						"examples": [
+							{
+								"commit": "0123456789abcdef0123456789abcdef01234567",
+								"registry": {
+									"available": true,
+									"units": [],
+									"scenarios": [],
+									"graph": {
+										"edges": []
+									}
+								},
+								"comparison": null,
+								"sourceImpact": {
+									"base": "89abcdef0123456789abcdef0123456789abcdef",
+									"expanded": true,
+									"units": {
+										"direct": ["reports.component.evidence-grid"],
+										"indirect": [],
+										"added": [],
+										"removed": []
+									},
+									"scenarios": [],
+									"uncertain": [],
+									"changed": [
+										{
+											"path": "packages/reports/src/utils/explorer-ui/explorer-verdict/explorerCoverage.ts",
+											"status": "modified"
+										}
+									]
+								},
+								"records": [
+									{
+										"id": "d16f4a7e9b2c5308a1f6d4c7e0b3952a6f8d1c4e7b0a9352d6f1c8e4a9b3d750",
+										"status": "passed",
+										"valid": true,
+										"problems": [],
+										"source": {
+											"commit": "0123456789abcdef0123456789abcdef01234567",
+											"base": "89abcdef0123456789abcdef0123456789abcdef"
+										},
+										"profile": "macos-arm64",
+										"startedAt": "2026-11-15T09:00:00.000Z",
+										"finishedAt": "2026-11-15T09:02:00.000Z",
+										"failures": [],
+										"tests": [],
+										"scenarios": [],
+										"measurements": [],
+										"budgets": {
+											"findings": []
+										}
+									}
+								],
+								"explanations": []
+							}
+						]
 					},
 					{
 						"name": "explorerCoverage.record",
 						"type": "HarnessRecord | null",
 						"required": true,
-						"description": "Selected record, or null for absent evidence. Current tests and inherited origin-test summaries may include browser diagnostics."
+						"description": "Record providing the scenario result, source commit, recorded tests, state outcomes, and captures; inherited results may also use origin tests with browserErrors. Null supplies no recorded test outcomes and applies the absent standing to each state.",
+						"examples": [
+							null,
+							{
+								"id": "d16f4a7e9b2c5308a1f6d4c7e0b3952a6f8d1c4e7b0a9352d6f1c8e4a9b3d750",
+								"status": "passed",
+								"valid": true,
+								"problems": [],
+								"source": {
+									"commit": "0123456789abcdef0123456789abcdef01234567",
+									"base": "89abcdef0123456789abcdef0123456789abcdef"
+								},
+								"profile": "macos-arm64",
+								"startedAt": "2026-11-15T09:00:00.000Z",
+								"finishedAt": "2026-11-15T09:02:00.000Z",
+								"failures": [],
+								"tests": [],
+								"scenarios": [],
+								"measurements": [],
+								"budgets": {
+									"findings": []
+								}
+							}
+						]
 					},
 					{
 						"name": "explorerCoverage.unit",
 						"type": "string",
 						"required": true,
-						"description": "Unit whose applicable scenario states should be judged."
+						"description": "Unit identifier used to select the scenario states that apply to this unit and to check whether an inherited result is stale. States are filtered using the revision’s unit registry, and missing impact history cannot prove an inherited result unaffected.",
+						"examples": ["reports.component.evidence-grid"]
 					},
 					{
 						"name": "explorerCoverage.absent",
 						"type": "Told",
 						"required": false,
 						"default": ["missing", "No verification record is attached to this commit."],
-						"description": "Optional absent-record standing and reason, defaulting to missing with no verification record attached."
+						"description": "Standing and reason used when no record is supplied; its standing is applied to every state, while its reason is retained for the scenario. Defaults to the literal tuple shown in the default.",
+						"examples": [
+							["missing", "No verification record is attached to this commit."],
+							["incomplete", "Scenario declares no test."]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "explorerCoverage",
 						"type": "unknown",
-						"description": "Returns a scenario-evaluation function. It narrows states to the unit, checks declarations, test outcomes, result lineage and required captures, then returns tests, state details, inheritance and worst standing. Inherited results require a bound origin and recorded proof that the unit was unaffected; missing origin test evidence stays incomplete. Each listed check retains optional diagnostics from the record where it ran: the current record for fresh results and the origin-test summary for inherited results. Diagnostics are carried for display; this helper judges check outcomes from their recorded status."
+						"description": "The returned callback accepts a declared scenario and returns its ExplorerScenarioCoverage for this unit, including applicable state and test findings. Its standing is the worst scenario and state finding, so missing, unrecorded, or unknown evidence cannot establish a pass."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
