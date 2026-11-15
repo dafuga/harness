@@ -28,17 +28,51 @@
 				"name": "revisionReasons.sources",
 				"type": "ReasonSources",
 				"required": true,
-				"description": "First parent, optional own required changes, noted explanations and intact-record explanations with each record’s comparison base."
+				"description": "The first parent, readable own changes (or undefined when unreadable), notes, and intact records with each record’s verification base. Records whose base equals the parent are exact; longer-range entries do not establish this commit’s own change, though notes not held by longer records are retained when own changes are unavailable.",
+				"examples": [
+					{
+						"parent": "0123456789abcdef0123456789abcdef01234567",
+						"own": [],
+						"noted": [],
+						"records": [
+							{
+								"base": "0123456789abcdef0123456789abcdef01234567",
+								"entries": []
+							},
+							{
+								"base": "89abcdef0123456789abcdef0123456789abcdef",
+								"entries": []
+							}
+						]
+					},
+					{
+						"parent": null,
+						"own": [],
+						"noted": [],
+						"records": []
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "revisionReasons",
 				"type": "RevisionReasons",
-				"description": "Unique explanations in stable canonical order plus a count of held reasons belonging only to other changes/ranges. Exact-base record reasons are retained; known own changes are matched by fingerprints, otherwise notes not held solely by longer records are kept."
+				"description": "Distinct explanations in stable canonical JSON order and the count of distinct held explanations not shown. Exact-base record entries are retained; when own changes are readable, other reasons must match a changed step, and otherwise notes duplicated by longer-range records are omitted.",
+				"examples": [
+					{
+						"explanations": [],
+						"range": 0
+					},
+					{
+						"explanations": [],
+						"range": 2
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "revisionReasons",
@@ -47,18 +81,51 @@
 						"name": "revisionReasons.sources",
 						"type": "ReasonSources",
 						"required": true,
-						"description": "First parent, optional own required changes, noted explanations and intact-record explanations with each record’s comparison base."
+						"description": "The first parent, readable own changes (or undefined when unreadable), notes, and intact records with each record’s verification base. Records whose base equals the parent are exact; longer-range entries do not establish this commit’s own change, though notes not held by longer records are retained when own changes are unavailable.",
+						"examples": [
+							{
+								"parent": "0123456789abcdef0123456789abcdef01234567",
+								"own": [],
+								"noted": [],
+								"records": [
+									{
+										"base": "0123456789abcdef0123456789abcdef01234567",
+										"entries": []
+									},
+									{
+										"base": "89abcdef0123456789abcdef0123456789abcdef",
+										"entries": []
+									}
+								]
+							},
+							{
+								"parent": null,
+								"own": [],
+								"noted": [],
+								"records": []
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "revisionReasons",
 						"type": "RevisionReasons",
-						"description": "Unique explanations in stable canonical order plus a count of held reasons belonging only to other changes/ranges. Exact-base record reasons are retained; known own changes are matched by fingerprints, otherwise notes not held solely by longer records are kept."
+						"description": "Distinct explanations in stable canonical JSON order and the count of distinct held explanations not shown. Exact-base record entries are retained; when own changes are readable, other reasons must match a changed step, and otherwise notes duplicated by longer-range records are omitted.",
+						"examples": [
+							{
+								"explanations": [],
+								"range": 0
+							},
+							{
+								"explanations": [],
+								"range": 2
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
