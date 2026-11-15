@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/shared-primitives/timeLabel.ts",
-			"packages/desktop/src/utils/timeLabel.ts"
-		],
-		"symbols": ["timeLabel", "timeLabel"]
+		"source": ["packages/desktop/src/utils/shared-primitives/timeLabel.ts"],
+		"symbols": ["timeLabel"]
 	},
 	"contract": {
 		"origin": "declared",

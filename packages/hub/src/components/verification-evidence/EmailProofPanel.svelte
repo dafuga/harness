@@ -2,7 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_ihu6stkgde -->
 <script lang="ts">
-	import { timeLabel } from '$desktop/utils/timeLabel';
+	import { timeLabel } from '$desktop/utils/shared-primitives/timeLabel';
 	import type { EmailProofStatus } from '../../models/accounts-access/HubAuth.types';
 	import { EMAIL_CODE_LENGTH } from '../../models/accounts-access/HubAuth.types';
 	import { browserContext } from '../../utils/development-tooling/browserContext';

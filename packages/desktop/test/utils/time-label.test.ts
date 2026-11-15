@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
-import { timeLabel } from '../../src/utils/timeLabel';
+import { timeLabel } from '../../src/utils/shared-primitives/timeLabel';
 
 test('a recorded instant is shown in the reader’s own time', async () =>
 	measureWorkload('desktop.function.time-label', 'time-label-normal-behavior', async () => {

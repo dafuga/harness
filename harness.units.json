@@ -111,8 +111,8 @@
 		},
 		{
 			"from": "packages/hub/src/components/verification-evidence/EmailProofPanel.svelte",
-			"specifier": "$desktop/utils/timeLabel",
-			"to": "packages/desktop/src/utils/timeLabel.ts",
+			"specifier": "$desktop/utils/shared-primitives/timeLabel",
+			"to": "packages/desktop/src/utils/shared-primitives/timeLabel.ts",
 			"reason": "The hub's build alias $desktop is packages/desktop/src: the proof panel imports timeLabel from this file."
 		},
 		{
