@@ -37,35 +37,83 @@
 				"name": "RuntimePane.item",
 				"type": "Evidence",
 				"required": true,
-				"description": "Evidence item with file, phase, missing flag/note and display facts. Missing items are not fetched. Before phase reads before; other phases read after."
+				"description": "The evidence record for one side: its file, phase and missing flag drive the read, its title and viewport form the image's alt text, its standing and status are printed under the image, and its note is printed instead of the image when missing is set. A missing record reads no file; any other record reads its file as side 'before' when phase is 'before' and as side 'after' otherwise, and reads again whenever file, phase or missing changes.",
+				"examples": [
+					{
+						"id": "after-9d2c7e4-runtime-evidence-ui-current-runtime-screens-desktop-desktop",
+						"title": "runtime-evidence-ui · current",
+						"category": "runtime-evidence-ui",
+						"file": "3b1f6c0e9d27a4f85c1e0b7a6d9f2e4c8a5b3d1f0e7c9a2b4d6f8e1c3a5b7d9f.png",
+						"status": "passed",
+						"source": "9d2c7e4b1a0f38c5d6e7a8b9c0d1e2f3a4b5c6d7",
+						"capturedAt": "2026-11-10T14:32:07.412Z",
+						"viewport": "desktop",
+						"phase": "after",
+						"comparison": "runtime-evidence-ui|current|runtime-screens-desktop|desktop",
+						"standing": "Fresh capture",
+						"missing": false,
+						"mediaType": "image",
+						"mimeType": "image/png"
+					},
+					{
+						"id": "after-9d2c7e4-runtime-evidence-ui-inherited-runtime-screens-desktop-desktop",
+						"title": "runtime-evidence-ui · inherited",
+						"category": "runtime-evidence-ui",
+						"file": "c7e2a9f40b8d13e6a5f2c9d07b4e8a1f3d6c2b9e5a0f7d4c8b1e6a3f9d2c5b07.png",
+						"status": "passed",
+						"source": "e2b8d41f7c0a965d3e1b8f2c4a7d0e9b6c3f5a18",
+						"capturedAt": "2026-11-03T09:16:44.087Z",
+						"viewport": "desktop",
+						"phase": "after",
+						"comparison": "runtime-evidence-ui|inherited|runtime-screens-desktop|desktop",
+						"standing": "Inherited capture",
+						"missing": false,
+						"mediaType": "image",
+						"mimeType": "image/png"
+					},
+					{
+						"id": "before-gap-runtime-evidence-ui-commit-desktop",
+						"title": "runtime-evidence-ui · commit",
+						"category": "runtime-evidence-ui",
+						"file": "",
+						"status": "not-proven",
+						"phase": "before",
+						"note": "No capture of commit at desktop is recorded for 5a1f0d8.",
+						"missing": true,
+						"mediaType": "image"
+					}
+				]
 			},
 			{
 				"name": "RuntimePane.title",
 				"type": "string",
 				"required": true,
-				"description": "Required figure heading and accessible name."
+				"description": "The figure's heading: it is the bold text in the figcaption and is also given to the figure as its aria-label, so it is the pane's accessible name. It is rendered exactly as given, with no fallback or trimming.",
+				"examples": ["Before · 5a1f0d8", "After · 9d2c7e4", "Current snapshot · 9d2c7e4"]
 			},
 			{
 				"name": "RuntimePane.role",
 				"type": "string",
 				"required": true,
-				"description": "Required descriptive badge such as Parent commit or Branch tip."
+				"description": "The text of the Pill chip (tone runtime-pane-chip) beside the title in the figcaption, rendered exactly as given, with no fallback.",
+				"examples": ["Parent commit", "Selected commit", "Branch tip"]
 			},
 			{
 				"name": "RuntimePane.evidence",
 				"type": "EntityEvidence",
 				"required": true,
-				"description": "URL-reading state. Failed promises become displayed problems; callbacks from superseded requests are ignored."
+				"description": "The entity-evidence store, of which the pane calls only url(side, file): side is 'before' for a before-phase item and 'after' otherwise, and file is the item's file, requested only when the item is not missing. A resolved object URL becomes the image source, a rejection shows its errorMessage text in a 'Not verified' notice, and callbacks from a superseded effect run are ignored."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RuntimePane",
 				"type": "markup",
-				"description": "Figure with screenshot after URL resolution, plus standing/status. Missing capture, failed verification and loading have separate messages. Non-Fresh capture standings receive stale styling."
+				"description": "The figure markup: a figure labelled by title, with a figcaption holding the title and the role chip, followed by one body: a notice whose status reason is 'No capture' and whose text is item.note when item.missing is set; a notice whose status reason is 'Not verified' and whose text is the errorMessage text when the URL read rejects; the image (alt: item.title at item.viewport) with a standing line of item.standing · item.status once the URL resolves; or the paragraph 'Reading the capture…' while the read is pending. The standing line gets the stale class whenever item.standing is not 'Fresh capture'."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
