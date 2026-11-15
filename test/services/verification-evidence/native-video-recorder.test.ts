@@ -5,6 +5,7 @@ import { chromium, type Browser, type Page } from '@playwright/test';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { NativeVideoRecorderService } from '../../../src/services/verification-evidence/NativeVideoRecorderService';
 import {
+	assertFlagReplacement,
 	assertRecordingCache,
 	assertRecordingFidelity,
 	assertRecordingTimeline
@@ -101,6 +102,7 @@ test('NativeVideoRecorderService record finalizes mapped native frames and reuse
 	const bytes = readFileSync(result.video.path);
 	expect(bytes.indexOf(Buffer.from('moov'))).toBeLessThan(bytes.indexOf(Buffer.from('mdat')));
 	await assertRecordingCache(service, result, options('success'));
+	await assertFlagReplacement(service, options('success'), result);
 	console.info(
 		JSON.stringify({
 			workload: 'native hover recording encode lookup receipt',

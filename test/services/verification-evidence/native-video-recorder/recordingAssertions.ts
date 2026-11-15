@@ -67,10 +67,11 @@ export async function assertRecordingCache(
 	result: NativeRecording,
 	options: NativeRecordingOptions
 ): Promise<void> {
-	const cached = await service.lookup('success', 'a'.repeat(64));
+	const cached = await service.lookup('success', 'a'.repeat(64), result.metadata.addressedFlags);
 	expect(cached?.metadata).toEqual(result.metadata);
 	const again = await service.record({
 		...options,
+		addressedFlags: result.metadata.addressedFlags,
 		prepare: async () => {
 			throw new Error('must not open cache');
 		}
@@ -91,4 +92,29 @@ export async function assertRecordingCache(
 		posterSha256: result.poster.sha256
 	});
 	expect(existsSync(join(result.directory, 'raw'))).toBe(false);
+}
+
+export async function assertFlagReplacement(
+	service: NativeVideoRecorderService,
+	options: NativeRecordingOptions,
+	previous: NativeRecording
+): Promise<void> {
+	const replacement = await service.record({ ...options, addressedFlags: ['flag-next', 'flag-a'] });
+	expect(replacement.metadata.addressedFlags).toEqual(['flag-a', 'flag-next']);
+	expect(replacement.directory).not.toBe(previous.directory);
+	expect(replacement.metadata.capturedAt).not.toBe(previous.metadata.capturedAt);
+	const warm = await service.record({
+		...options,
+		addressedFlags: ['flag-a', 'flag-next', 'flag-next'],
+		prepare: async () => {
+			throw new Error('same flag set must reuse');
+		}
+	});
+	expect(warm.metadata.capturedAt).toBe(replacement.metadata.capturedAt);
+	const original = await service.lookup(
+		options.slotKey,
+		options.inputHash,
+		previous.metadata.addressedFlags
+	);
+	expect(original?.metadata.capturedAt).toBe(previous.metadata.capturedAt);
 }
