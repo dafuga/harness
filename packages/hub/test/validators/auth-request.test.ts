@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { AuthFailure } from '../../src/utils/authFail';
+import { AuthFailure } from '../../src/utils/accounts-access/authFail';
 import { AuthRequestValidator } from '../../src/validators/accounts-access/AuthRequestValidator';
 
 const input = new AuthRequestValidator();

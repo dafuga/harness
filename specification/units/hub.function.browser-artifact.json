@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserArtifact.ts",
-			"packages/hub/src/utils/browser-bridge/browserArtifact.ts",
-			"packages/hub/src/utils/browserArtifact.ts"
+			"packages/hub/src/utils/browser-bridge/browserArtifact.ts"
 		],
-		"symbols": ["browserArtifact", "browserArtifact", "browserArtifact"]
+		"symbols": ["browserArtifact", "browserArtifact"]
 	},
 	"contract": {
 		"origin": "declared",

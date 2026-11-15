@@ -4,7 +4,7 @@ import type {
 	EmailProofMessage
 } from '../../src/models/accounts-access/HubAuth.types';
 import { GoogleIdentityService } from '../../src/services/GoogleIdentityService';
-import type { AuthConfig } from '../../src/utils/authConfig';
+import type { AuthConfig } from '../../src/utils/verification-evidence/authConfig';
 import { composeHubAuth } from '../../src/lib/verification-evidence/server/auth/composeHubAuth';
 import { ORIGIN, SECRET } from './authFixture';
 import { githubFake } from './githubFake';

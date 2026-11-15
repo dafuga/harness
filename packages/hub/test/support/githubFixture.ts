@@ -4,7 +4,7 @@ import { GithubGrantService } from '../../src/services/GithubGrantService';
 import { GithubOwnerService } from '../../src/lib/verification-evidence/server/auth/GithubOwnerService';
 import { InstallationTokenService } from '../../src/services/installation-token-service/InstallationTokenService';
 import type { CachedInstallationToken } from '../../src/services/installation-token-service/InstallationTokenService';
-import type { GithubAppConfig } from '../../src/utils/authConfig';
+import type { GithubAppConfig } from '../../src/utils/verification-evidence/authConfig';
 import { ORIGIN, authFixture, browserGrant } from './authFixture';
 import { githubFake } from './githubFake';
 import type { GithubFake } from './githubFake';

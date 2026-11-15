@@ -3,7 +3,7 @@ import {
 	CHALLENGE_TTL,
 	LoginChallengeService
 } from '../../src/services/accounts-access/LoginChallengeService';
-import { AuthFailure } from '../../src/utils/authFail';
+import { AuthFailure } from '../../src/utils/accounts-access/authFail';
 import { authFixture } from '../support/authFixture';
 
 function setup() {

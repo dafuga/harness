@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/utils/accounts-access/authFail.ts",
-			"packages/hub/src/utils/authFail.ts"
-		],
-		"symbols": ["AuthFailure", "AuthFailure.constructor", "authFail", "AuthFailure", "authFail"]
+		"source": ["packages/hub/src/utils/accounts-access/authFail.ts"],
+		"symbols": ["AuthFailure", "AuthFailure.constructor", "authFail"]
 	},
 	"contract": {
 		"origin": "declared",

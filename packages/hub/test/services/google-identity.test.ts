@@ -1,7 +1,7 @@
 import { SignJWT, base64url } from 'jose';
 import { beforeAll, expect, test } from 'vitest';
 import { GoogleIdentityService } from '../../src/services/GoogleIdentityService';
-import { AuthFailure } from '../../src/utils/authFail';
+import { AuthFailure } from '../../src/utils/accounts-access/authFail';
 import { CLIENT_ID, KEY_ID, START, googleFixture } from '../support/googleFixture';
 import type { GoogleFixture } from '../support/googleFixture';
 

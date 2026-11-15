@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { AuthFailure, authFail } from '../../src/utils/authFail';
+import { AuthFailure, authFail } from '../../src/utils/accounts-access/authFail';
 
 test('authFail throws a coded failure with a stable status', () => {
 	expect(() => authFail('session-required')).toThrow(AuthFailure);
