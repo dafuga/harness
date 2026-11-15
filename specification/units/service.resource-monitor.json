@@ -26,62 +26,91 @@
 				"name": "ResourceMonitorService.constructor.options",
 				"type": "MonitorOptions",
 				"required": true,
-				"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+				"description": "Requires the resource home path and queue repository; the adapter is optional. If adapter is omitted, the constructor uses `new HostResourcesAdapter()`."
 			},
 			{
 				"name": "ResourceMonitorService.heartbeat.id",
 				"type": "string",
 				"required": true,
-				"description": "Lease UUID whose job or heartbeat is read or updated."
+				"description": "UUID of the resource queue job to patch; the method refreshes `heartbeatAt` and stores its current pressure notice.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			},
 			{
 				"name": "ResourceMonitorService.wait.id",
 				"type": "string",
 				"required": true,
-				"description": "Lease UUID whose job or heartbeat is read or updated."
+				"description": "UUID of the queued resource job to schedule; the method returns only after the job is marked running.",
+				"examples": ["550e8400-e29b-41d4-a716-446655440001"]
 			},
 			{
 				"name": "ResourceMonitorService.wait.request",
 				"type": "ResourceRequest",
 				"required": true,
-				"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
+				"description": "Carries priority, CPU cores, memory in MiB and the public label used by scheduling. Requests that exceed usable capacity after reserves are rejected as impossible.",
+				"examples": [
+					{
+						"priority": "coding",
+						"cpus": 1.5,
+						"memoryMiB": 1536,
+						"label": "Build verification"
+					}
+				]
 			},
 			{
 				"name": "ResourceMonitorService.wait.options",
 				"type": "RunOptions",
 				"required": true,
-				"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+				"description": "Controls cancellation, the wait deadline and notification when a new queue notice appears. `waitTimeoutMs` defaults to `1800000` when omitted, and `env` is not read by this method.",
+				"examples": [
+					{
+						"waitTimeoutMs": 300000
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "ResourceMonitorService.snapshot",
 				"type": "Promise<ResourceSnapshot>",
-				"description": "Latest timestamped host observation, absent before the first sample."
+				"description": "Returns the cached queue snapshot while its age is nonnegative and below the configured poll interval; otherwise it samples the adapter and saves that snapshot.",
+				"examples": [
+					{
+						"status": "available",
+						"sampledAt": 1794700000000,
+						"logicalCores": 8,
+						"usableCores": 7.2,
+						"cpuUsedPercent": 25,
+						"cpuAvailableCores": 5.4,
+						"memoryTotalBytes": 17179869184,
+						"memoryAvailableBytes": 12884901888,
+						"memoryPressure": "normal"
+					}
+				]
 			},
 			{
 				"name": "ResourceMonitorService.heartbeat",
 				"type": "Promise<void>",
-				"description": "Refreshes the running lease and pressure notice without interrupting its work."
+				"description": "Updates the job heartbeat timestamp and its pressure notice. Snapshot failures are caught and recorded as a hold notice so the running work can continue."
 			},
 			{
 				"name": "ResourceMonitorService.sweep",
 				"type": "Promise<void>",
-				"description": "Removes only stale leases with owners and tracked workers proven absent."
+				"description": "Checks at most once every 5000 ms and scans only when a job heartbeat is older than 30000 ms. It removes only IDs returned by `abandonedResources` when `processTable()` has rows."
 			},
 			{
 				"name": "ResourceMonitorService.wait",
 				"type": "Promise<void>",
-				"description": "Resolves after admission; cancellation, expiry and invalid parent state reject."
+				"description": "Resolves when scheduling marks the target job running, polling and sweeping while it waits. Cancellation, timeout, impossible capacity, a missing job or an ended parent prevents admission."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Cancelled, expired, impossible, disappeared or orphaned queued reservations reject before executing work. Timeouts include the last available waiting reason and resource snapshot."
+				"description": "`wait` throws `Error` when its deadline passes, the request exceeds usable capacity after reserves, the queued job disappears, or its parent is no longer running. An aborted signal rejects with the signal’s abort reason."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ResourceMonitorService.snapshot",
@@ -90,11 +119,24 @@
 					{
 						"name": "ResourceMonitorService.snapshot",
 						"type": "Promise<ResourceSnapshot>",
-						"description": "Latest timestamped host observation, absent before the first sample."
+						"description": "Returns the cached queue snapshot while its age is nonnegative and below the configured poll interval; otherwise it samples the adapter and saves that snapshot.",
+						"examples": [
+							{
+								"status": "available",
+								"sampledAt": 1794700000000,
+								"logicalCores": 8,
+								"usableCores": 7.2,
+								"cpuUsedPercent": 25,
+								"cpuAvailableCores": 5.4,
+								"memoryTotalBytes": 17179869184,
+								"memoryAvailableBytes": 12884901888,
+								"memoryPressure": "normal"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceMonitorService.heartbeat",
@@ -103,18 +145,19 @@
 						"name": "ResourceMonitorService.heartbeat.id",
 						"type": "string",
 						"required": true,
-						"description": "Lease UUID whose job or heartbeat is read or updated."
+						"description": "UUID of the resource queue job to patch; the method refreshes `heartbeatAt` and stores its current pressure notice.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResourceMonitorService.heartbeat",
 						"type": "Promise<void>",
-						"description": "Refreshes the running lease and pressure notice without interrupting its work."
+						"description": "Updates the job heartbeat timestamp and its pressure notice. Snapshot failures are caught and recorded as a hold notice so the running work can continue."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceMonitorService.sweep",
@@ -123,11 +166,11 @@
 					{
 						"name": "ResourceMonitorService.sweep",
 						"type": "Promise<void>",
-						"description": "Removes only stale leases with owners and tracked workers proven absent."
+						"description": "Checks at most once every 5000 ms and scans only when a job heartbeat is older than 30000 ms. It removes only IDs returned by `abandonedResources` when `processTable()` has rows."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ResourceMonitorService.wait",
@@ -136,35 +179,50 @@
 						"name": "ResourceMonitorService.wait.id",
 						"type": "string",
 						"required": true,
-						"description": "Lease UUID whose job or heartbeat is read or updated."
+						"description": "UUID of the queued resource job to schedule; the method returns only after the job is marked running.",
+						"examples": ["550e8400-e29b-41d4-a716-446655440001"]
 					},
 					{
 						"name": "ResourceMonitorService.wait.request",
 						"type": "ResourceRequest",
 						"required": true,
-						"description": "Requested priority, CPU cores, memory in MiB and public label to validate against available capacity."
+						"description": "Carries priority, CPU cores, memory in MiB and the public label used by scheduling. Requests that exceed usable capacity after reserves are rejected as impossible.",
+						"examples": [
+							{
+								"priority": "coding",
+								"cpus": 1.5,
+								"memoryMiB": 1536,
+								"label": "Build verification"
+							}
+						]
 					},
 					{
 						"name": "ResourceMonitorService.wait.options",
 						"type": "RunOptions",
 						"required": true,
-						"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+						"description": "Controls cancellation, the wait deadline and notification when a new queue notice appears. `waitTimeoutMs` defaults to `1800000` when omitted, and `env` is not read by this method.",
+						"examples": [
+							{
+								"waitTimeoutMs": 300000
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResourceMonitorService.wait",
 						"type": "Promise<void>",
-						"description": "Resolves after admission; cancellation, expiry and invalid parent state reject."
+						"description": "Resolves when scheduling marks the target job running, polling and sweeping while it waits. Cancellation, timeout, impossible capacity, a missing job or an ended parent prevents admission."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "`wait` throws `Error` when its deadline passes, the request exceeds usable capacity after reserves, the queued job disappears, or its parent is no longer running. An aborted signal rejects with the signal’s abort reason."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -175,17 +233,18 @@
 						"name": "ResourceMonitorService.constructor.options",
 						"type": "MonitorOptions",
 						"required": true,
-						"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
+						"description": "Requires the resource home path and queue repository; the adapter is optional. If adapter is omitted, the constructor uses `new HostResourcesAdapter()`."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ResourceMonitorService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates and returns the ResourceMonitorService instance configured with the supplied options."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
