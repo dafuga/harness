@@ -2,6 +2,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import * as files from 'node:fs';
 import * as processes from 'node:child_process';
 import { VideoEvidenceService } from '../../../src/services/verification-evidence/VideoEvidenceService';
+import type { VideoObservation } from '../../../src/services/verification-evidence/VideoEvidenceService.types';
 import { mkdir, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { withTempDir } from '../../support/temporary';
@@ -168,51 +169,47 @@ test('graph coverage counts only asserted timestamped states and real edges', as
 			unit: 'component.first',
 			initial: 'ready',
 			terminals: ['done'],
-			states: [
-				{ id: 'ready', predicate: 'Start visible' },
-				{ id: 'done', predicate: 'Finish visible' }
-			],
+			states: ['ready', 'done'].map((id) => ({ id, predicate: `${id} visible` })),
 			edges: [{ id: 'finish', from: 'ready', to: 'done', action: 'Activate finish' }],
 			clips: ['first']
 		};
 		const declared = { ...manifest, graphs: [graph] };
 		const service = new VideoEvidenceService();
-		const visits = [
-			{
-				clipId: 'first',
-				viewport: 'desktop',
-				durationSeconds: 3,
-				states: [
-					{ id: 'ready', atSeconds: 0.3 },
-					{ id: 'done', atSeconds: 2 }
-				],
-				edges: [{ id: 'finish', atSeconds: 1 }]
-			},
-			{
-				clipId: 'first',
-				viewport: 'mobile',
-				durationSeconds: 3,
-				states: [
-					{ id: 'ready', atSeconds: 0.3 },
-					{ id: 'done', atSeconds: 2 }
-				],
-				edges: [{ id: 'finish', atSeconds: 1 }]
-			}
-		];
-		expect(service.coverage(declared, visits)[0]).toMatchObject({
+		const assess = (observations: VideoObservation[]) =>
+			service.coverage(declared, observations)[0];
+		const visits = ['desktop', 'mobile'].map((viewport) => ({
+			clipId: 'first',
+			viewport,
+			durationSeconds: 3,
+			fresh: true,
+			states: [
+				{ id: 'ready', atSeconds: 0.3 },
+				{ id: 'done', atSeconds: 2 }
+			],
+			edges: [{ id: 'finish', atSeconds: 1 }]
+		}));
+		expect(assess(visits)).toMatchObject({
 			complete: true,
 			states: 1,
 			edges: 1
 		});
-		expect(
-			service.coverage(
-				declared,
-				visits.map((visit) => ({ ...visit, edges: [] }))
-			)[0]
-		).toMatchObject({ complete: false, edges: 0 });
-		expect(
-			service.coverage(declared, [{ ...visits[0], states: [{ id: 'done', atSeconds: 9 }] }])[0]
-				.complete
-		).toBe(false);
+		expect(assess(visits.map((visit) => ({ ...visit, fresh: undefined }))).complete).toBe(false);
+		expect(assess(visits.map((visit) => ({ ...visit, edges: [] })))).toMatchObject({
+			complete: false,
+			edges: 0
+		});
+		expect(assess([{ ...visits[0], states: [{ id: 'done', atSeconds: 9 }] }]).complete).toBe(false);
+		const siblings = {
+			...declared,
+			clips: declared.clips.map((clip) => ({ ...clip, unit: graph.unit })),
+			graphs: [{ ...graph, clips: ['first', 'second'] }]
+		};
+		const partial = visits.map((visit) => ({ ...visit, states: [visit.states[0]], edges: [] }));
+		const combined = service.coverage(siblings, [
+			...partial,
+			...visits.map((visit) => ({ ...visit, clipId: 'second' }))
+		])[0];
+		expect(combined).toMatchObject({ complete: false, states: 1, edges: 1, clips: 0.5 });
+		expect(combined.missing).toEqual(['desktop/clip/first', 'mobile/clip/first']);
 	});
 });
