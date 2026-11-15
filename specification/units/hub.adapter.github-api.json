@@ -33,102 +33,250 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "GithubApiAdapter.constructor.options",
 				"type": "GithubApiOptions",
-				"required": true
+				"required": true,
+				"description": "The options the adapter was built with; it reads only `fetch` from them, and every GitHub request and the token exchange goes through that function. The adapter always passes `redirect: 'manual'`, so a redirect is never followed, and the redirect answer is thrown as an AuthFailure."
 			},
 			{
 				"name": "GithubApiAdapter.userToken.form",
 				"type": "Record<string, string>",
-				"required": true
+				"required": true,
+				"description": "The fields of the OAuth token request (the authorization code or refresh token, and any secrets), URL-encoded into the body of a form POST to the fixed github.com token endpoint. Secrets stay in that body, never in the URL or a header, and the adapter does not check the keys or values.",
+				"examples": [
+					{
+						"client_id": "Iv1.5c2e8a9b0d7f4e13",
+						"client_secret": "0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e",
+						"code": "3d8f1a9c2e7b5046"
+					},
+					{
+						"client_id": "Iv1.5c2e8a9b0d7f4e13",
+						"client_secret": "0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e",
+						"grant_type": "refresh_token",
+						"refresh_token": "ghr_Tn4Wq8Zk1Vx6Bc3Rm9Ly2Pj7Hd5Fs0Ge"
+					}
+				]
 			},
 			{
 				"name": "GithubApiAdapter.user.token",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The user access token that the adapter sends unchanged as the Bearer credential on GET /user. The adapter does not validate it, and an empty string means no Authorization header is sent.",
+				"examples": ["gho_Qx7Lm2Rt9Vb4Nc8Zp1Wk6Hs3Yj5Df0Ga", "gho_Ab3Cd9Ef1Gh7Ij5Kl2Mn8Op4Qr6St0Uv"]
 			},
 			{
 				"name": "GithubApiAdapter.installations.token",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The user access token that the adapter sends unchanged as the Bearer credential on GET /user/installations. The adapter does not validate it, and an empty string means no Authorization header is sent.",
+				"examples": ["gho_Mw5Kp9Xz2Qt7Lv4Hb1Cn8Rj3Fd6Sy0Ua", "gho_Ht6Yc1Nb8Vx3Mq5Lr2Zk9Wj4Pd7Fs0Ea"]
 			},
 			{
 				"name": "GithubApiAdapter.installations.appId",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The numeric id of this GitHub App; only installations whose app_id equals it are kept, so installations of other apps are dropped. The value is not validated, so an id that matches no installation gives an empty ids list.",
+				"examples": [512840, 1182734]
 			},
 			{
 				"name": "GithubApiAdapter.installationRepositories.token",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The user access token that the adapter sends unchanged as the Bearer credential on GET /user/installations/{installationId}/repositories. The adapter does not validate it, and an empty string means no Authorization header is sent.",
+				"examples": ["gho_Lr8Nd3Vq6Ws1Tk4Hc9Zf2Mb7Xj0Py5Ga", "gho_Dk2Hv7Qy4Rn9Ws3Tb6Lc1Mx8Fz5Pj0Ea"]
 			},
 			{
 				"name": "GithubApiAdapter.installationRepositories.installationId",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The numeric installation id, written unchecked into the request path /user/installations/{id}/repositories. The adapter does not check that it is a positive integer, so the value goes into the URL as given.",
+				"examples": [48213577, 61290114]
 			},
 			{
 				"name": "GithubApiAdapter.installationRepositories.page",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The page number, written unchecked into the query string as page= after the per_page=100 that the adapter always sends. The value is not checked, so zero or a negative number is sent as given.",
+				"examples": [1, 3]
 			},
 			{
 				"name": "GithubApiAdapter.repository.token",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The user access token that the adapter sends unchanged as the Bearer credential on GET /repos/{owner}/{name}. The adapter does not validate it, and an empty string means no Authorization header is sent.",
+				"examples": ["gho_Ps9Vn4Kd2Mt7Qb1Lz6Rx3Hj8Yc5Wf0Ea", "gho_Bq1Tw6Yx3Zr8Kn5Lc2Pm9Vd4Hs7Gj0Fa"]
 			},
 			{
 				"name": "GithubApiAdapter.repository.target",
 				"type": "{ owner: string; name: string }",
-				"required": true
+				"required": true,
+				"description": "The repository to read, given as an owner login and a repository name; both must match ^[A-Za-z0-9_.-]{1,100}$, or the method returns null without sending a request. That pattern also accepts a value made only of dots, which the adapter does not exclude.",
+				"examples": [
+					{
+						"owner": "acme-labs",
+						"name": "harness-hub"
+					},
+					{
+						"owner": "octo-org",
+						"name": "docs.site"
+					}
+				]
 			},
 			{
 				"name": "GithubApiAdapter.installationToken.jwt",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The short-lived RS256 JWT that authenticates the app, sent unchanged as the Bearer credential on POST /app/installations/{installationId}/access_tokens. The adapter neither creates nor checks it.",
+				"examples": [
+					"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3OTQ3NDY3MDAsImV4cCI6MTc5NDc0NzAwMCwiaXNzIjoiNTEyODQwIn0.c2lnbmF0dXJlLWV4YW1wbGUtb25seS1ub3QtdmFsaWQ"
+				]
 			},
 			{
 				"name": "GithubApiAdapter.installationToken.installationId",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The numeric id of the installation to create an access token for, written unchecked into the request path /app/installations/{id}/access_tokens. The adapter does not check that it is a positive integer.",
+				"examples": [52907341, 61290114]
 			},
 			{
 				"name": "GithubApiAdapter.installationToken.scope",
 				"type": "InstallationScope",
-				"required": true
+				"required": true,
+				"description": "The request body, sent as application/json and serialized unchanged with JSON.stringify, so repository_ids and permissions are the whole body. The adapter checks neither field.",
+				"examples": [
+					{
+						"repository_ids": [1029384756, 1029384801],
+						"permissions": {
+							"contents": "read",
+							"metadata": "read"
+						}
+					},
+					{
+						"repository_ids": [1029384756],
+						"permissions": {
+							"pull_requests": "write"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "GithubApiAdapter.userToken",
-				"type": "Promise<GithubUserToken | null>"
+				"type": "Promise<GithubUserToken | null>",
+				"description": "The token GitHub returns for the OAuth exchange: accessToken, plus expiresIn, refreshToken and refreshExpiresIn, each null when GitHub omits it or it fails its check. The result is null for a client error, for a body that is not an object, for an answer with an error member, for an access_token outside the token pattern, or for a token_type other than bearer, compared without case.",
+				"examples": [
+					{
+						"accessToken": "gho_Qx7Lm2Rt9Vb4Nc8Zp1Wk6Hs3Yj5Df0Ga",
+						"expiresIn": 28800,
+						"refreshToken": "ghr_Tn4Wq8Zk1Vx6Bc3Rm9Ly2Pj7Hd5Fs0Ge",
+						"refreshExpiresIn": 15897600
+					},
+					{
+						"accessToken": "gho_Ab3Cd9Ef1Gh7Ij5Kl2Mn8Op4Qr6St0Uv",
+						"expiresIn": null,
+						"refreshToken": null,
+						"refreshExpiresIn": null
+					},
+					null
+				]
 			},
 			{
 				"name": "GithubApiAdapter.user",
-				"type": "Promise<GithubUser | null>"
+				"type": "Promise<GithubUser | null>",
+				"description": "The GitHub account behind the token, with its numeric id and login. The result is null for a client error, for an id that is not a positive safe integer, or for a login that is not letters, digits, underscores or hyphens (up to 100 of them) with an optional [bot] suffix.",
+				"examples": [
+					{
+						"id": 7315042,
+						"login": "kestrel-dev"
+					},
+					null
+				]
 			},
 			{
 				"name": "GithubApiAdapter.installations",
-				"type": "Promise<InstallationList | null>"
+				"type": "Promise<InstallationList | null>",
+				"description": "The positive integer ids of this app's live (not suspended) installations in the answer, with total taken from GitHub's total_count when that is a positive integer and from the raw installations array length otherwise. The result is null for a client error or when the answer has no installations array.",
+				"examples": [
+					{
+						"ids": [48213577, 61290114],
+						"total": 2
+					},
+					null
+				]
 			},
 			{
 				"name": "GithubApiAdapter.installationRepositories",
-				"type": "Promise<RepositoryPage | null>"
+				"type": "Promise<RepositoryPage | null>",
+				"description": "One page of repositories for one installation, keeping only the entries that pass the repository check, with total taken from GitHub's total_count when that is a positive integer and from the raw repositories array length otherwise. The result is null for a client error or when the answer has no repositories array.",
+				"examples": [
+					{
+						"repositories": [
+							{
+								"id": 1029384756,
+								"owner": "acme-labs",
+								"name": "harness-hub",
+								"private": true,
+								"admin": false
+							}
+						],
+						"total": 1
+					},
+					null
+				]
 			},
 			{
 				"name": "GithubApiAdapter.repository",
-				"type": "Promise<GithubRepository | null>"
+				"type": "Promise<GithubRepository | null>",
+				"description": "The repository as the token's user sees it, with its id, owner, name, private flag and admin flag, where admin is true only when permissions.admin is exactly true. The result is null when the target fails its pattern check, when GitHub answers with a client error, or when the answer fails the repository check: a positive safe integer id, a boolean private flag, an owner of letters, digits and hyphens up to 100 characters, and a name of 1 to 100 letters, digits, underscores, dots and hyphens that is not only dots.",
+				"examples": [
+					{
+						"id": 1029384756,
+						"owner": "acme-labs",
+						"name": "harness-hub",
+						"private": true,
+						"admin": true
+					},
+					null
+				]
 			},
 			{
 				"name": "GithubApiAdapter.installationToken",
-				"type": "Promise<InstallationGrant | null>"
+				"type": "Promise<InstallationGrant | null>",
+				"description": "The access token that GitHub issues for one installation: token, expiresAt in milliseconds from Date.parse of expires_at, permissions, and the repositories it covers. The result is null for a client error, or when token is outside the token pattern, expires_at does not parse, permissions is not an object whose values are all strings, or repositories is not an array in which every entry passes the repository check, so one bad entry fails the whole grant.",
+				"examples": [
+					{
+						"token": "ghs_Lm4Qr8Tv2Xb6Zn1Wk9Hs5Yj3Df7Ga0Cp",
+						"expiresAt": 1794747600000,
+						"permissions": {
+							"contents": "read",
+							"metadata": "read"
+						},
+						"repositories": [
+							{
+								"id": 1029384756,
+								"owner": "acme-labs",
+								"name": "harness-hub",
+								"private": true,
+								"admin": false
+							}
+						]
+					},
+					null
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "An AuthFailure with the code 'github-unavailable' (its status is 502), thrown when fetch rejects, when GitHub answers with a 5xx, a 429, or a 403 that carries retry-after or x-ratelimit-remaining of 0, when it answers with a 3xx or status 0 redirect (a redirect is never followed), or when a successful answer is not valid JSON. Any other non-success status returns null instead of throwing."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "GithubApiAdapter.userToken",
@@ -136,17 +284,53 @@
 					{
 						"name": "GithubApiAdapter.userToken.form",
 						"type": "Record<string, string>",
-						"required": true
+						"required": true,
+						"description": "The fields of the OAuth token request (the authorization code or refresh token, and any secrets), URL-encoded into the body of a form POST to the fixed github.com token endpoint. Secrets stay in that body, never in the URL or a header, and the adapter does not check the keys or values.",
+						"examples": [
+							{
+								"client_id": "Iv1.5c2e8a9b0d7f4e13",
+								"client_secret": "0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e",
+								"code": "3d8f1a9c2e7b5046"
+							},
+							{
+								"client_id": "Iv1.5c2e8a9b0d7f4e13",
+								"client_secret": "0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e",
+								"grant_type": "refresh_token",
+								"refresh_token": "ghr_Tn4Wq8Zk1Vx6Bc3Rm9Ly2Pj7Hd5Fs0Ge"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubApiAdapter.userToken",
-						"type": "Promise<GithubUserToken | null>"
+						"type": "Promise<GithubUserToken | null>",
+						"description": "The token GitHub returns for the OAuth exchange: accessToken, plus expiresIn, refreshToken and refreshExpiresIn, each null when GitHub omits it or it fails its check. The result is null for a client error, for a body that is not an object, for an answer with an error member, for an access_token outside the token pattern, or for a token_type other than bearer, compared without case.",
+						"examples": [
+							{
+								"accessToken": "gho_Qx7Lm2Rt9Vb4Nc8Zp1Wk6Hs3Yj5Df0Ga",
+								"expiresIn": 28800,
+								"refreshToken": "ghr_Tn4Wq8Zk1Vx6Bc3Rm9Ly2Pj7Hd5Fs0Ge",
+								"refreshExpiresIn": 15897600
+							},
+							{
+								"accessToken": "gho_Ab3Cd9Ef1Gh7Ij5Kl2Mn8Op4Qr6St0Uv",
+								"expiresIn": null,
+								"refreshToken": null,
+								"refreshExpiresIn": null
+							},
+							null
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "An AuthFailure with the code 'github-unavailable' (its status is 502), thrown when fetch rejects, when GitHub answers with a 5xx, a 429, or a 403 that carries retry-after or x-ratelimit-remaining of 0, when it answers with a 3xx or status 0 redirect (a redirect is never followed), or when a successful answer is not valid JSON. Any other non-success status returns null instead of throwing."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubApiAdapter.user",
@@ -154,17 +338,36 @@
 					{
 						"name": "GithubApiAdapter.user.token",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The user access token that the adapter sends unchanged as the Bearer credential on GET /user. The adapter does not validate it, and an empty string means no Authorization header is sent.",
+						"examples": [
+							"gho_Qx7Lm2Rt9Vb4Nc8Zp1Wk6Hs3Yj5Df0Ga",
+							"gho_Ab3Cd9Ef1Gh7Ij5Kl2Mn8Op4Qr6St0Uv"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubApiAdapter.user",
-						"type": "Promise<GithubUser | null>"
+						"type": "Promise<GithubUser | null>",
+						"description": "The GitHub account behind the token, with its numeric id and login. The result is null for a client error, for an id that is not a positive safe integer, or for a login that is not letters, digits, underscores or hyphens (up to 100 of them) with an optional [bot] suffix.",
+						"examples": [
+							{
+								"id": 7315042,
+								"login": "kestrel-dev"
+							},
+							null
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "An AuthFailure with the code 'github-unavailable' (its status is 502), thrown when fetch rejects, when GitHub answers with a 5xx, a 429, or a 403 that carries retry-after or x-ratelimit-remaining of 0, when it answers with a 3xx or status 0 redirect (a redirect is never followed), or when a successful answer is not valid JSON. Any other non-success status returns null instead of throwing."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubApiAdapter.installations",
@@ -172,22 +375,43 @@
 					{
 						"name": "GithubApiAdapter.installations.token",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The user access token that the adapter sends unchanged as the Bearer credential on GET /user/installations. The adapter does not validate it, and an empty string means no Authorization header is sent.",
+						"examples": [
+							"gho_Mw5Kp9Xz2Qt7Lv4Hb1Cn8Rj3Fd6Sy0Ua",
+							"gho_Ht6Yc1Nb8Vx3Mq5Lr2Zk9Wj4Pd7Fs0Ea"
+						]
 					},
 					{
 						"name": "GithubApiAdapter.installations.appId",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The numeric id of this GitHub App; only installations whose app_id equals it are kept, so installations of other apps are dropped. The value is not validated, so an id that matches no installation gives an empty ids list.",
+						"examples": [512840, 1182734]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubApiAdapter.installations",
-						"type": "Promise<InstallationList | null>"
+						"type": "Promise<InstallationList | null>",
+						"description": "The positive integer ids of this app's live (not suspended) installations in the answer, with total taken from GitHub's total_count when that is a positive integer and from the raw installations array length otherwise. The result is null for a client error or when the answer has no installations array.",
+						"examples": [
+							{
+								"ids": [48213577, 61290114],
+								"total": 2
+							},
+							null
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "An AuthFailure with the code 'github-unavailable' (its status is 502), thrown when fetch rejects, when GitHub answers with a 5xx, a 429, or a 403 that carries retry-after or x-ratelimit-remaining of 0, when it answers with a 3xx or status 0 redirect (a redirect is never followed), or when a successful answer is not valid JSON. Any other non-success status returns null instead of throwing."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubApiAdapter.installationRepositories",
@@ -195,27 +419,58 @@
 					{
 						"name": "GithubApiAdapter.installationRepositories.token",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The user access token that the adapter sends unchanged as the Bearer credential on GET /user/installations/{installationId}/repositories. The adapter does not validate it, and an empty string means no Authorization header is sent.",
+						"examples": [
+							"gho_Lr8Nd3Vq6Ws1Tk4Hc9Zf2Mb7Xj0Py5Ga",
+							"gho_Dk2Hv7Qy4Rn9Ws3Tb6Lc1Mx8Fz5Pj0Ea"
+						]
 					},
 					{
 						"name": "GithubApiAdapter.installationRepositories.installationId",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The numeric installation id, written unchecked into the request path /user/installations/{id}/repositories. The adapter does not check that it is a positive integer, so the value goes into the URL as given.",
+						"examples": [48213577, 61290114]
 					},
 					{
 						"name": "GithubApiAdapter.installationRepositories.page",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The page number, written unchecked into the query string as page= after the per_page=100 that the adapter always sends. The value is not checked, so zero or a negative number is sent as given.",
+						"examples": [1, 3]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubApiAdapter.installationRepositories",
-						"type": "Promise<RepositoryPage | null>"
+						"type": "Promise<RepositoryPage | null>",
+						"description": "One page of repositories for one installation, keeping only the entries that pass the repository check, with total taken from GitHub's total_count when that is a positive integer and from the raw repositories array length otherwise. The result is null for a client error or when the answer has no repositories array.",
+						"examples": [
+							{
+								"repositories": [
+									{
+										"id": 1029384756,
+										"owner": "acme-labs",
+										"name": "harness-hub",
+										"private": true,
+										"admin": false
+									}
+								],
+								"total": 1
+							},
+							null
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "An AuthFailure with the code 'github-unavailable' (its status is 502), thrown when fetch rejects, when GitHub answers with a 5xx, a 429, or a 403 that carries retry-after or x-ratelimit-remaining of 0, when it answers with a 3xx or status 0 redirect (a redirect is never followed), or when a successful answer is not valid JSON. Any other non-success status returns null instead of throwing."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubApiAdapter.repository",
@@ -223,22 +478,55 @@
 					{
 						"name": "GithubApiAdapter.repository.token",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The user access token that the adapter sends unchanged as the Bearer credential on GET /repos/{owner}/{name}. The adapter does not validate it, and an empty string means no Authorization header is sent.",
+						"examples": [
+							"gho_Ps9Vn4Kd2Mt7Qb1Lz6Rx3Hj8Yc5Wf0Ea",
+							"gho_Bq1Tw6Yx3Zr8Kn5Lc2Pm9Vd4Hs7Gj0Fa"
+						]
 					},
 					{
 						"name": "GithubApiAdapter.repository.target",
 						"type": "{ owner: string; name: string }",
-						"required": true
+						"required": true,
+						"description": "The repository to read, given as an owner login and a repository name; both must match ^[A-Za-z0-9_.-]{1,100}$, or the method returns null without sending a request. That pattern also accepts a value made only of dots, which the adapter does not exclude.",
+						"examples": [
+							{
+								"owner": "acme-labs",
+								"name": "harness-hub"
+							},
+							{
+								"owner": "octo-org",
+								"name": "docs.site"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubApiAdapter.repository",
-						"type": "Promise<GithubRepository | null>"
+						"type": "Promise<GithubRepository | null>",
+						"description": "The repository as the token's user sees it, with its id, owner, name, private flag and admin flag, where admin is true only when permissions.admin is exactly true. The result is null when the target fails its pattern check, when GitHub answers with a client error, or when the answer fails the repository check: a positive safe integer id, a boolean private flag, an owner of letters, digits and hyphens up to 100 characters, and a name of 1 to 100 letters, digits, underscores, dots and hyphens that is not only dots.",
+						"examples": [
+							{
+								"id": 1029384756,
+								"owner": "acme-labs",
+								"name": "harness-hub",
+								"private": true,
+								"admin": true
+							},
+							null
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "An AuthFailure with the code 'github-unavailable' (its status is 502), thrown when fetch rejects, when GitHub answers with a 5xx, a 429, or a 403 that carries retry-after or x-ratelimit-remaining of 0, when it answers with a 3xx or status 0 redirect (a redirect is never followed), or when a successful answer is not valid JSON. Any other non-success status returns null instead of throwing."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "GithubApiAdapter.installationToken",
@@ -246,27 +534,76 @@
 					{
 						"name": "GithubApiAdapter.installationToken.jwt",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The short-lived RS256 JWT that authenticates the app, sent unchanged as the Bearer credential on POST /app/installations/{installationId}/access_tokens. The adapter neither creates nor checks it.",
+						"examples": [
+							"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3OTQ3NDY3MDAsImV4cCI6MTc5NDc0NzAwMCwiaXNzIjoiNTEyODQwIn0.c2lnbmF0dXJlLWV4YW1wbGUtb25seS1ub3QtdmFsaWQ"
+						]
 					},
 					{
 						"name": "GithubApiAdapter.installationToken.installationId",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The numeric id of the installation to create an access token for, written unchecked into the request path /app/installations/{id}/access_tokens. The adapter does not check that it is a positive integer.",
+						"examples": [52907341, 61290114]
 					},
 					{
 						"name": "GithubApiAdapter.installationToken.scope",
 						"type": "InstallationScope",
-						"required": true
+						"required": true,
+						"description": "The request body, sent as application/json and serialized unchanged with JSON.stringify, so repository_ids and permissions are the whole body. The adapter checks neither field.",
+						"examples": [
+							{
+								"repository_ids": [1029384756, 1029384801],
+								"permissions": {
+									"contents": "read",
+									"metadata": "read"
+								}
+							},
+							{
+								"repository_ids": [1029384756],
+								"permissions": {
+									"pull_requests": "write"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubApiAdapter.installationToken",
-						"type": "Promise<InstallationGrant | null>"
+						"type": "Promise<InstallationGrant | null>",
+						"description": "The access token that GitHub issues for one installation: token, expiresAt in milliseconds from Date.parse of expires_at, permissions, and the repositories it covers. The result is null for a client error, or when token is outside the token pattern, expires_at does not parse, permissions is not an object whose values are all strings, or repositories is not an array in which every entry passes the repository check, so one bad entry fails the whole grant.",
+						"examples": [
+							{
+								"token": "ghs_Lm4Qr8Tv2Xb6Zn1Wk9Hs5Yj3Df7Ga0Cp",
+								"expiresAt": 1794747600000,
+								"permissions": {
+									"contents": "read",
+									"metadata": "read"
+								},
+								"repositories": [
+									{
+										"id": 1029384756,
+										"owner": "acme-labs",
+										"name": "harness-hub",
+										"private": true,
+										"admin": false
+									}
+								]
+							},
+							null
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "AuthFailure",
+						"type": "thrown",
+						"description": "An AuthFailure with the code 'github-unavailable' (its status is 502), thrown when fetch rejects, when GitHub answers with a 5xx, a 429, or a 403 that carries retry-after or x-ratelimit-remaining of 0, when it answers with a 3xx or status 0 redirect (a redirect is never followed), or when a successful answer is not valid JSON. Any other non-success status returns null instead of throwing."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -276,17 +613,19 @@
 					{
 						"name": "GithubApiAdapter.constructor.options",
 						"type": "GithubApiOptions",
-						"required": true
+						"required": true,
+						"description": "The options the adapter was built with; it reads only `fetch` from them, and every GitHub request and the token exchange goes through that function. The adapter always passes `redirect: 'manual'`, so a redirect is never followed, and the redirect answer is thrown as an AuthFailure."
 					}
 				],
 				"outputs": [
 					{
 						"name": "GithubApiAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The GithubApiAdapter instance created by the constructor, holding the given options and a new GithubResponseValidator."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
