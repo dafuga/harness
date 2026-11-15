@@ -11,6 +11,7 @@ import { EvidenceAttachService } from '../../src/services/verification-evidence/
 import { VerificationCheckService } from '../../src/services/verification-evidence/VerificationCheckService';
 import { HistoryNoteRepository } from '../../src/repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { EvidenceBranchRepository } from '../../src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
+import { resolveAttachedVideoFlags } from '../../src/services/verification-evidence/evidence-attach-service/attachedVideoFlags';
 
 /** Real append-only media and notes; source-contract hashing is covered by the attach suite. */
 export async function assertAttachedFrameFlagResolution() {
@@ -61,6 +62,7 @@ async function assertAttachmentCase(
 		await attach.attach(f.reference.revision, { record, directory });
 		expect(await new EvidenceBranchRepository(root).tip()).toBe(tip);
 		if (standing === 'full') {
+			await assertReusedFlagResolution(root, record);
 			const late = await flags.flag({
 				clip: original,
 				frameNumber: 4,
@@ -76,6 +78,28 @@ async function assertAttachmentCase(
 	}
 	expect(await new HistoryNoteRepository(root).text(f.reference.revision)).toContain(record.id);
 	await assertFailedAttachmentStanding(flags, original.unit, rejected);
+}
+
+/** A new parent preserves old acknowledgements without pretending to resolve them again. */
+async function assertReusedFlagResolution(root: string, original: VerificationRecord) {
+	const reused = structuredClone(original);
+	reused.id = 'd'.repeat(64);
+	for (const capture of reused.scenarios.flatMap((scenario) =>
+		scenario.states.flatMap((state) => state.captures)
+	))
+		if (capture.kind === 'video')
+			capture.videoReference = {
+				batch: 'e'.repeat(64),
+				record: original.id,
+				revision: original.source.commit
+			};
+	const address = vi.spyOn(FrameFlagService.prototype, 'address');
+	try {
+		await expect(resolveAttachedVideoFlags(root, reused)).resolves.toBeUndefined();
+		expect(address).not.toHaveBeenCalled();
+	} finally {
+		address.mockRestore();
+	}
 }
 
 async function assertOldProof(root: string, record: VerificationRecord, pending: boolean) {
