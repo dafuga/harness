@@ -29,30 +29,95 @@
 				"name": "MessageList.messages",
 				"type": "ThreadEntry[]",
 				"required": true,
-				"description": "Required entries in display order. User names fall back to You; other authors display their provider followed by CLI, or Harness. Optional pending state, note, detail and version are displayed."
+				"description": "Thread entries shown in array order, each keyed by its id: a user entry is named by authorName, or You when that is empty, and any other author by its provider followed by CLI, or Harness when there is no provider. A true pending flag adds the pending class; note and detail show when set, version shows as 'Design · <version>', and text is shown as written except [[unit:<id>]] references, which become links only when the workspace resolves them.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "5f0c2a9e-7d1b-4c8e-9a36-2b4f1e8d7c60",
+							"at": "2026-11-12T14:03:27.415Z",
+							"author": "user",
+							"authorName": "Alex Morgan",
+							"text": "Put the timestamp on the same line as the name and make it smaller.",
+							"mode": "change",
+							"provider": null,
+							"model": null,
+							"version": null,
+							"imageSha256": null
+						},
+						{
+							"id": "b8e3d1f4-2c6a-4f9b-8d07-61a5c9e2f340",
+							"at": "2026-11-12T14:04:55.102Z",
+							"author": "agent",
+							"text": "The name and time now share one row, and the time uses the small label. See [[unit:desktop.component.message-list]].",
+							"mode": "change",
+							"provider": "claude",
+							"model": "claude-opus-5-5",
+							"version": "v002",
+							"imageSha256": "9c1f4e7a2b8d03f56a1c4e9d2b7f08a35c6d1e4b9f2a7c0d8e3b5f1a6c9d2e47"
+						}
+					],
+					[
+						{
+							"id": "0d6a7e52-93b1-4f2c-b8e4-5a1c3d9f7e28",
+							"at": "2026-11-14T09:18:40.227Z",
+							"author": "user",
+							"text": "Show the note above the message text, not below it.",
+							"mode": null,
+							"provider": null,
+							"model": null,
+							"version": "v001",
+							"imageSha256": "4d7a0c93e61f25b8a0d4c7e19f3b6a52c8e0d1f7a94b3c6e2d5f8a1b0c7e9d36",
+							"pending": true,
+							"note": "Pending on this device · not shared · Thread #2",
+							"detail": "Saved locally; not synced. Connect a verified shared project to publish."
+						}
+					]
+				]
 			},
 			{
 				"name": "MessageList.workspace",
 				"type": "Workspace",
 				"required": true,
-				"description": "Workspace for resolving references within the shown project and revision."
+				"description": "The WorkspaceState store in view: [[unit:<id>]] references in the text resolve against the entities of its loaded snapshot, and none resolve while it has no snapshot, is busy, or has changed its shown project, branch, commit or pinning."
 			},
 			{
 				"name": "MessageList.entity",
 				"type": "CatalogEntity | null",
 				"required": false,
 				"default": null,
-				"description": "Optional viewed entity for reference resolution before the catalog lists it; defaults to null."
+				"description": "Optional viewed entity that ReferenceText passes to unitLinks: when its id is also the id of the entity the workspace has loaded, a [[unit:<id>]] reference to that id resolves before the catalog lists it, and otherwise it has no effect. Defaults to null, so only catalog entries resolve.",
+				"examples": [
+					null,
+					{
+						"id": "desktop.component.message-list",
+						"category": "components",
+						"kind": "component",
+						"title": "Message list",
+						"summary": "Shows conversation entries with authors, timestamps, optional status details and entity-reference links.",
+						"changed": false,
+						"planned": false,
+						"hasPlan": false,
+						"lifecycle": null,
+						"verification": "unknown",
+						"verificationNote": "No complete verification for this entity at this commit has been loaded.",
+						"latestVersion": null,
+						"approvedVersion": null,
+						"threadCount": 0,
+						"thumbnail": null
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "MessageList",
 				"type": "markup",
-				"description": "Polite live list with author badges, formatted timestamps and reference-aware text. Shows pending styling and optional note/detail/design version. Empty lists prompt a conversation about the design."
+				"description": "Markup of an hx-div.messages live region (aria-live polite) with one hx-article per entry, each holding an avatar badge, the name, the time, an optional note, the text with its resolvable [[unit:<id>]] references linked, an optional detail, a 'Design · <version>' line when version is set, and the pending class when pending is true. With no entries it renders a muted hx-p reading 'Start a conversation about this design.'"
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
