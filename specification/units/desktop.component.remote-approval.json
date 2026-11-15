@@ -34,33 +34,55 @@
 				"name": "RemoteApproval.request",
 				"type": "RemotePairingRequest",
 				"required": true,
-				"description": "Required phone request supplying name, platform, device identity and pairing identity. Approval sends both displayed identities; denial sends the pairing identifier."
+				"description": "Carries the requesting phone's device name, platform, device ID, pairing ID, and request/expiry timestamps; the component displays the name, platform, and a label derived from the device ID, then passes both IDs to approval and the pairing ID to denial. The component does not read the timestamps; approval is disabled while busy or until at least one project is selected.",
+				"examples": [
+					{
+						"deviceName": "Field iPhone",
+						"platform": "iOS",
+						"deviceId": "device-phone-7f3a2c",
+						"pairingId": "pairing-94c1b2",
+						"requestedAt": "2026-11-15T10:00:00.000Z",
+						"expiresAt": "2026-11-15T10:05:00.000Z"
+					}
+				]
 			},
 			{
 				"name": "RemoteApproval.projects",
 				"type": "{ id: string; name: string }[]",
 				"required": true,
-				"description": "Required project choices; none are initially selected. An empty list explains that a local project is needed. Project identifiers must be distinct. The supplied host store catches operational failures and records its error state."
+				"description": "Provides the projects shown as checkboxes, using each id as both the keyed-list key and approval value and each name as its label. No project is selected initially, and an empty list leaves Approve disabled while showing the local-project note.",
+				"examples": [
+					[
+						{
+							"id": "proj-cedar-house",
+							"name": "Cedar House"
+						},
+						{
+							"id": "proj-maple-office",
+							"name": "Maple Office"
+						}
+					]
+				]
 			},
 			{
 				"name": "RemoteApproval.store",
 				"type": "RemoteHost",
 				"required": true,
-				"description": "Required host state providing busy and approve/deny operations. Approval receives selected project identifiers and explicit read/comment/write grants; failures are delegated to this store."
+				"description": "Provides busy state and the approve and deny calls used by the component. The component invokes those calls without awaiting or handling their results."
 			}
 		],
 		"outputs": [
 			{
 				"name": "RemoteApproval",
 				"type": "markup",
-				"description": "A device request with project checkboxes, initially unselected, and Device access initially Comment. Read grants browsing only; Comment also grants comments; Write also permits AI requests. Approve is disabled while busy or without projects selected; Deny is disabled while busy. Busy requests expose aria-busy and label the approval action Approving. Approval includes both displayed identities and the exact selected project IDs. Catalog states: default (a project chosen, Approve enabled), unselected (none chosen, Approve disabled), no-projects (the local-project note, Approve disabled), busy (Approving…, aria-busy, Deny disabled) and the read and write access presentations."
+				"description": "Renders request identity, project checkboxes, a device-access selector, and Approve and Deny buttons; selection starts empty and access starts at comment, with Approve disabled while busy or without a selected project and Deny disabled while busy. Approval sends both request IDs, selected project IDs, and flags where only write enables agents and every value except read enables comments."
 			}
 		],
 		"errors": [
 			{
 				"name": "Duplicate row key",
-				"type": "Svelte keyed-each error",
-				"description": "Duplicate project identifiers are rejected by Svelte keyed-list updates."
+				"type": "thrown",
+				"description": "The keyed project list uses each item.id as its key, so duplicate project IDs can throw Svelte's duplicate-key error."
 			}
 		],
 		"errorStatus": "declared",
