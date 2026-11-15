@@ -1,7 +1,8 @@
+import { existsSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import type { RemoteHostState } from '../../src/adapters/RemoteHostStoreAdapter';
 import type { RemoteHostRuntimeService } from '../../src/services/RemoteHostRuntimeService';
-import { remoteHostStatus } from '../../src/services/remote-host-service/remoteHostStatus';
+import { remoteHostStatus } from '../../src/services/networking-security/remote-host-service/remoteHostStatus';
 import type { RemoteHostStatusInput } from '../../src/utils/remoteHostStatus';
 
 const hostId = 'a'.repeat(40),
@@ -101,4 +102,10 @@ test('the state follows support, registration, enablement and the link, with wor
 	});
 	expect(remoteHostStatus(input({ runtime: runtime('offline') })).reason).toMatch(/offline/);
 	expect(remoteHostStatus(input({ reason: 'Explained' })).reason).toBe('Explained');
+});
+test('the services that moved to networking-security leave no stub at their old path', () => {
+	for (const name of ['RemotePairingControlService', 'pairingOffer', 'remoteHostStatus'])
+		expect(
+			existsSync(new URL(`../../src/services/remote-host-service/${name}.ts`, import.meta.url))
+		).toBe(false);
 });

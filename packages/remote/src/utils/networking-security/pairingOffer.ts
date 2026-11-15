@@ -46,7 +46,7 @@ export function written(offer: PairingOffer, environment: string): string {
 	return `${head};exp=${seconds};host=${hostId};pairing=${pairingId};code=${code};origin=${origin}`;
 }
 
-export { pairingOffer } from '../../../../desktop/src/services/remote-host-service/pairingOffer';
+export { pairingOffer } from '../../../../desktop/src/services/networking-security/remote-host-service/pairingOffer';
 export { readPairingOffer } from '../../services/networking-security/device-pairing-service/pairingOffer';
 
 export type {

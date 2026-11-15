@@ -2,7 +2,7 @@ import type { OfferVectors } from './pairing-offer.test.types';
 import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { offerRules } from '../../src/utils/pairingOffer';
-import { pairingOffer } from '../../../desktop/src/services/remote-host-service/pairingOffer';
+import { pairingOffer } from '../../../desktop/src/services/networking-security/remote-host-service/pairingOffer';
 import { readPairingOffer } from '../../src/services/device-pairing-service/pairingOffer';
 import type { OfferEnvironment } from '../../src/utils/pairingOffer';
 const file = new URL('../support/offer-vectors.json', import.meta.url);

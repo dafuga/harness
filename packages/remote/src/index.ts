@@ -50,7 +50,7 @@ export {
 	offerRules,
 	offerEnvironment
 } from './utils/networking-security/pairingOffer';
-export { pairingOffer } from '../../desktop/src/services/remote-host-service/pairingOffer';
+export { pairingOffer } from '../../desktop/src/services/networking-security/remote-host-service/pairingOffer';
 export { readPairingOffer } from './services/networking-security/device-pairing-service/pairingOffer';
 export * from './utils/networking-security/relayOrigin';
 export { type WireDispatchContext } from './utils/networking-security/wireDispatch';
