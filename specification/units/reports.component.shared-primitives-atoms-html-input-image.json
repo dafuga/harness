@@ -24,17 +24,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional child snippet accepted for native-element API compatibility; this void element renders no child content."
+				"description": "Optional Svelte snippet read from `children` when the component receives props. The component does not insert it into the `<input type=\"image\">` body, which remains a void element."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HtmlInputImage",
 				"type": "markup",
-				"description": "The actual native input element, with forwarded attributes and content and no additional wrapper."
+				"description": "The component renders a native `<input>` with type `image` and spreads every remaining prop onto it. It adds no wrapper or child content."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
