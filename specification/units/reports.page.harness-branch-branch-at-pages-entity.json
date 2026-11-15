@@ -24,41 +24,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The page with its verdict and its screenshots: one at a branch tip, before and after at a commit. Relationships and tests by tab."
+				"description": "The rendered page markup mounts HarnessScreen with the literal title Page and EntityVisualScreen as its content. It is the route's only markup; this file declares no inputs or additional page elements."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Page · Harness"
+				"description": "The literal string passed as the title prop to HarnessScreen. It identifies this screen and does not vary by branch, commit, or entity in this file.",
+				"examples": ["Page"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-at-revision",
-				"type": "notice",
-				"description": "A page the shown revision does not hold is said, with the way back to the collection."
-			},
-			{
-				"name": "other-category",
-				"type": "redirect",
-				"description": "A unit that is not a page at this revision is led to the address of its own category."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
