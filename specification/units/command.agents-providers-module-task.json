@@ -20,32 +20,36 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskCommand.constructor.service",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "The ModuleTaskService instance backing the registered feature, add, schema, list, show, prompt, review, retry and sync actions. When omitted, the constructor evaluates `new ModuleTaskService()`."
 			},
 			{
 				"name": "ModuleTaskCommand.register.task",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The Commander parent command that receives the feature, add, schema, list, show, prompt, review, retry, sync and worker subcommands. It must support the command-builder methods chained by this implementation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskCommand.register",
-				"type": "void"
+				"type": "void",
+				"description": "Synchronous completion after attaching the CLI subcommands and their actions to the supplied parent command; it returns no value."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The add action throws when the decoded task input text exceeds 1,000,000 characters, and the worker action throws when both `--once` and `--watch` are set. Registered actions can also reject when file reading, JSON parsing or a service call fails."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleTaskCommand.register",
@@ -53,17 +57,19 @@
 					{
 						"name": "ModuleTaskCommand.register.task",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The Commander parent command that receives the feature, add, schema, list, show, prompt, review, retry, sync and worker subcommands. It must support the command-builder methods chained by this implementation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskCommand.register",
-						"type": "void"
+						"type": "void",
+						"description": "Synchronous completion after attaching the CLI subcommands and their actions to the supplied parent command; it returns no value."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -73,17 +79,19 @@
 					{
 						"name": "ModuleTaskCommand.constructor.service",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "The ModuleTaskService instance backing the registered feature, add, schema, list, show, prompt, review, retry and sync actions. When omitted, the constructor evaluates `new ModuleTaskService()`."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskCommand.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed ModuleTaskCommand instance used to register CLI commands. It stores the provided service or the instance created by `new ModuleTaskService()`."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
