@@ -42,4 +42,8 @@ export async function assertVideoReviewControls(component: Locator) {
 	await component.getByRole('slider', { name: 'Frame timeline' }).press('End');
 	await expect(component.locator('output')).toContainText('Frame 9');
 	await expect(flag).toBeEnabled();
+	await expect.poll(() => player.evaluate((video: HTMLVideoElement) => video.paused)).toBe(true);
+	await expect
+		.poll(() => player.evaluate((video: HTMLVideoElement) => Math.floor(video.currentTime * 10)))
+		.toBe(9);
 }
