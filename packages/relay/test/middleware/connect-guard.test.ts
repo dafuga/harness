@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { ConnectGuardMiddleware } from '../../src/middleware/ConnectGuardMiddleware';
+import { ConnectGuardMiddleware } from '../../src/lib/networking-security/relay/ConnectGuardMiddleware';
 import { connectUrl, hostHeaders, registerHost, type TestHost } from '../support/relayActors';
 import { allowedOrigin, startRelay, type RelayFixture } from '../support/relayFixture';
 import { RelaySocket } from '../support/relaySocket';

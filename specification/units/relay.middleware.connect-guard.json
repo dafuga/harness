@@ -10,15 +10,13 @@
 	"owns": {
 		"source": [
 			"packages/relay/src/lib/networking-security/relay/ConnectGuardMiddleware.ts",
-			"packages/relay/src/lib/relay/ConnectGuardMiddleware.ts",
-			"packages/relay/src/middleware/ConnectGuardMiddleware.ts"
+			"packages/relay/src/lib/relay/ConnectGuardMiddleware.ts"
 		],
 		"symbols": [
 			"ConnectGuardMiddleware",
 			"ConnectGuardMiddleware.constructor",
 			"ConnectGuardMiddleware.transport",
 			"ConnectGuardMiddleware.handle",
-			"ConnectGuardMiddleware",
 			"ConnectGuardMiddleware"
 		]
 	},
