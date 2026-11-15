@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { assessResponse } from '../src/workflows/responseCheckEvaluate';
+import { assessResponse } from '../src/cli/program/responseCheckEvaluate';
 import { responseCheckExamples } from './support/responseCheckExamples';
 
 const enabled = process.env.HARNESS_JEV_RESPONSE_LIVE_TEST === 'true';

@@ -8,22 +8,13 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/cli/program/loopSearch.ts",
-			"src/cli/program/loopSearch.types.ts",
-			"src/workflows/loopSearch.ts"
-		],
+		"source": ["src/cli/program/loopSearch.ts", "src/cli/program/loopSearch.types.ts"],
 		"symbols": [
 			"searchLoops",
 			"renderLoopSearchResults",
 			"LoopSearchKind",
 			"LoopSearchResult",
 			"SearchLoopsInput",
-			"LoopSearchKind",
-			"LoopSearchResult",
-			"SearchLoopsInput",
-			"searchLoops",
-			"renderLoopSearchResults",
 			"LoopSearchKind",
 			"LoopSearchResult",
 			"SearchLoopsInput"

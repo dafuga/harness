@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/workflows/agents-providers/recordJevAnalytics.ts",
-			"src/workflows/recordJevAnalytics.ts"
-		],
-		"symbols": ["recordResponse", "recordCleanCode", "recordResponse", "recordCleanCode"]
+		"source": ["src/workflows/agents-providers/recordJevAnalytics.ts"],
+		"symbols": ["recordResponse", "recordCleanCode"]
 	},
 	"contract": {
 		"origin": "derived",
