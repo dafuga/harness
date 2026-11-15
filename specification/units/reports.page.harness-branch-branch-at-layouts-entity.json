@@ -24,41 +24,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The shell with its verdict and its screenshots: one at a branch tip, before and after at a commit. Relationships and tests by tab."
+				"description": "The page's markup is one HarnessScreen element with the title 'Layout' and EntityVisualScreen as its content. The file has no load function, error handling or other markup of its own."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Shell · Harness"
+				"description": "The string the page passes as the title prop of HarnessScreen, written as the literal 'Layout' in the file. It is fixed in the file, so it does not change with the branch, commit or entity in the route.",
+				"examples": ["Layout"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-at-revision",
-				"type": "notice",
-				"description": "A shell the shown revision does not hold is said, with the way back to the collection."
-			},
-			{
-				"name": "other-category",
-				"type": "redirect",
-				"description": "A unit that is not a shell at this revision is led to the address of its own category."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
