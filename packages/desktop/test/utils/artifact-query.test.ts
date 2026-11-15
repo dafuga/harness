@@ -2,7 +2,7 @@ import { record } from '../../../reports/test/entityFixture';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
 import { mediaFile } from '../../../reports/src/utils/harnessEvidence';
-import { artifactQuery } from '../../src/utils/artifactQuery';
+import { artifactQuery } from '../../src/utils/reports-media/artifactQuery';
 import { commits, data, ids, pinned, scopeOf } from '../evidence-fixture';
 
 const scope = scopeOf(ids.page, commits.tip);

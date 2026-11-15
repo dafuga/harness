@@ -10,7 +10,7 @@ import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
 } from '../src/models/verification-evidence/DesktopEvidence.types';
-import { binaryAnswer } from '../src/utils/binaryAnswer';
+import { binaryAnswer } from '../src/utils/reports-media/binaryAnswer';
 import { IpcRequestValidator } from '../src/validators/development-tooling/IpcRequestValidator';
 
 const commit = 'a'.repeat(40);

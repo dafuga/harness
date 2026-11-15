@@ -11,10 +11,9 @@
 		"source": [
 			"packages/desktop/scripts/mac-icon/brandIcon.ts",
 			"packages/desktop/scripts/mac-icon/brandIcon.types.ts",
-			"packages/desktop/src/utils/brandIcon.ts",
 			"packages/desktop/src/utils/reports-media/brandIcon.ts"
 		],
-		"symbols": ["brandIcon", "Canvas", "brandIcon", "BrandIconVariant", "brandIcon"]
+		"symbols": ["brandIcon", "Canvas", "BrandIconVariant", "brandIcon"]
 	},
 	"contract": {
 		"origin": "declared",

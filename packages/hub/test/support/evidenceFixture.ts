@@ -5,7 +5,10 @@ import type {
 	EntityEvidenceResult,
 	EvidenceArtifactQuery
 } from '../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
-import { artifactQuery, type EvidenceSide } from '../../../desktop/src/utils/artifactQuery';
+import {
+	artifactQuery,
+	type EvidenceSide
+} from '../../../desktop/src/utils/reports-media/artifactQuery';
 import { mediaFile } from '../../../reports/src/utils/harnessEvidence';
 import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
 import { HubProjectionService } from '../../src/routes/api/[...path]/hub-projection-service/HubProjectionService';

@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { binaryAnswer } from '../../src/utils/binaryAnswer';
-import { binaryArtifact } from '../../src/utils/binaryArtifact';
+import { binaryAnswer } from '../../src/utils/reports-media/binaryAnswer';
+import { binaryArtifact } from '../../src/utils/reports-media/binaryArtifact';
 import { damagedMedia, unreadableMedia } from '../../src/utils/remoteBinary';
 
 const bytes = new TextEncoder().encode('{"steps":["opened","saved"]}');
