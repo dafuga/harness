@@ -18,17 +18,24 @@
 				"name": "hubBodyBytes.request",
 				"type": "Request",
 				"required": true,
-				"description": "Request with a body stream."
+				"description": "The Fetch Request whose body stream the function consumes. A body is required; a missing body causes an invalid-input rejection."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubBodyBytes",
 				"type": "Promise<Uint8Array>",
-				"description": "Combined bytes; an empty supplied stream is accepted. Missing bodies or bodies over 20000 bytes reject with invalid-input, and oversized streams are cancelled."
+				"description": "A Uint8Array containing all body-stream chunks concatenated in order. The promise resolves empty for an empty stream; it accepts up to 20,000 bytes and, after reading a chunk that takes the total over that limit, cancels the reader and rejects with invalid-input."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "invalid-input",
+				"type": "thrown",
+				"description": "The function rejects when the request has no body reader or the accumulated chunk length exceeds 20,000 bytes. The oversized path cancels the reader before rejecting."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubBodyBytes",
@@ -37,18 +44,24 @@
 						"name": "hubBodyBytes.request",
 						"type": "Request",
 						"required": true,
-						"description": "Request with a body stream."
+						"description": "The Fetch Request whose body stream the function consumes. A body is required; a missing body causes an invalid-input rejection."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubBodyBytes",
 						"type": "Promise<Uint8Array>",
-						"description": "Combined bytes; an empty supplied stream is accepted. Missing bodies or bodies over 20000 bytes reject with invalid-input, and oversized streams are cancelled."
+						"description": "A Uint8Array containing all body-stream chunks concatenated in order. The promise resolves empty for an empty stream; it accepts up to 20,000 bytes and, after reading a chunk that takes the total over that limit, cancels the reader and rejects with invalid-input."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "invalid-input",
+						"type": "thrown",
+						"description": "The function rejects when the request has no body reader or the accumulated chunk length exceeds 20,000 bytes. The oversized path cancels the reader before rejecting."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
