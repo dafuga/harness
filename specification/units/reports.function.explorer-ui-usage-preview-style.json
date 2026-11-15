@@ -18,26 +18,41 @@
 				"name": "usagePreviewStyle.root",
 				"type": "HTMLElement",
 				"required": true,
-				"description": "The element holding the usage link."
+				"description": "The element containing the usage link. Its first descendant anchor is measured when present; otherwise the root itself is measured."
 			},
 			{
 				"name": "usagePreviewStyle.tip",
 				"type": "HTMLElement",
 				"required": true,
-				"description": "The preview element; its width is set while measuring."
+				"description": "The preview element whose width is set to the available horizontal space before its scroll height is measured. The function does not restore the previous width."
 			},
 			{
 				"name": "usagePreviewStyle.view",
 				"type": "{ width: number; height: number }",
 				"required": true,
-				"description": "The width and height of the screen."
+				"description": "The viewport width and height used for the off-screen check and placement. The function uses these values directly without validating them.",
+				"examples": [
+					{
+						"width": 1440,
+						"height": 900
+					},
+					{
+						"width": 375,
+						"height": 667
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "usagePreviewStyle",
 				"type": "string | null",
-				"description": "The inline left, top, width and optional max-height style; null when the link is off screen."
+				"description": "When the measured link is on screen, this returns inline CSS for left, top, width, and optional max-height; width is based on horizontal room bounded by 8px edges and capped at 280px, and left is clamped to that room. It returns null when the link bottom is below 0 or its top exceeds view.height.",
+				"examples": [
+					"left:16px;top:32px;width:280px",
+					"left:8px;top:64px;width:120px;max-height:96px",
+					null
+				]
 			}
 		],
 		"errors": [],
@@ -50,26 +65,41 @@
 						"name": "usagePreviewStyle.root",
 						"type": "HTMLElement",
 						"required": true,
-						"description": "The element holding the usage link."
+						"description": "The element containing the usage link. Its first descendant anchor is measured when present; otherwise the root itself is measured."
 					},
 					{
 						"name": "usagePreviewStyle.tip",
 						"type": "HTMLElement",
 						"required": true,
-						"description": "The preview element; its width is set while measuring."
+						"description": "The preview element whose width is set to the available horizontal space before its scroll height is measured. The function does not restore the previous width."
 					},
 					{
 						"name": "usagePreviewStyle.view",
 						"type": "{ width: number; height: number }",
 						"required": true,
-						"description": "The width and height of the screen."
+						"description": "The viewport width and height used for the off-screen check and placement. The function uses these values directly without validating them.",
+						"examples": [
+							{
+								"width": 1440,
+								"height": 900
+							},
+							{
+								"width": 375,
+								"height": 667
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "usagePreviewStyle",
 						"type": "string | null",
-						"description": "The inline left, top, width and optional max-height style; null when the link is off screen."
+						"description": "When the measured link is on screen, this returns inline CSS for left, top, width, and optional max-height; width is based on horizontal room bounded by 8px edges and capped at 280px, and left is clamped to that room. It returns null when the link bottom is below 0 or its top exceeds view.height.",
+						"examples": [
+							"left:16px;top:32px;width:280px",
+							"left:8px;top:64px;width:120px;max-height:96px",
+							null
+						]
 					}
 				],
 				"errors": [],
