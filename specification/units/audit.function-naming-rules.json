@@ -12,36 +12,84 @@
 		"symbols": ["auditFunctionNames", "hasNamedValueExport"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "auditFunctionNames.file",
 				"type": "AuditFile",
-				"required": true
+				"required": true,
+				"description": "The file's repository-relative path, extension, and structural source lines. The audit recognizes function declarations and const arrow-function declarations from line-start patterns, permits PascalCase in .jsx and .tsx files, and permits HTTP verbs only in +server.ts files.",
+				"examples": [
+					{
+						"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5/src/utils/format.ts",
+						"relativePath": "src/utils/format.ts",
+						"extension": ".ts",
+						"contents": "export function FormatDate(value) { return value; }\nconst formatDate = (value) => value;",
+						"lines": [
+							"export function FormatDate(value) { return value; }",
+							"const formatDate = (value) => value;"
+						],
+						"structuralLines": [
+							"export function FormatDate(value) { return value; }",
+							"const formatDate = (value) => value;"
+						],
+						"limits": {
+							"maxFileLines": 220,
+							"maxFunctionLines": 55,
+							"maxClassLines": 120,
+							"maxMethodLines": 35,
+							"maxNestingDepth": 4,
+							"maxParameters": 4,
+							"maxComplexity": 10,
+							"maxClassesPerFile": 1
+						},
+						"size": 88
+					}
+				]
 			},
 			{
 				"name": "hasNamedValueExport.lines",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Source lines to inspect for a named runtime value export. The check recognizes exported function declarations, exported const declarations, and forwarded value exports; it ignores type-only exports.",
+				"examples": [
+					["export async function buildReport() {}", "export const reportId = 'rpt_7f3a2d1c';"],
+					["export { normalizeName as toCamelCase };", "export type { NameOptions };"]
+				]
 			},
 			{
 				"name": "hasNamedValueExport.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The export name to search for in the supplied lines. It is matched as a declared function or const name, or as the final name of a forwarded value export.",
+				"examples": ["auditFunctionNames", "toCamelCase"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "auditFunctionNames",
-				"type": "AuditFinding[]"
+				"type": "AuditFinding[]",
+				"description": "Findings for recognized function declarations and const arrow-function declarations whose names do not meet the allowed patterns. Each finding contains the file's relative path, the function-name-pattern rule id, and a message that names the offending function.",
+				"examples": [
+					[],
+					[
+						{
+							"path": "src/utils/format.ts",
+							"rule": "function-name-pattern",
+							"message": "Function \"FormatDate\" should use camelCase."
+						}
+					]
+				]
 			},
 			{
 				"name": "hasNamedValueExport",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the supplied lines declare or forward the requested named runtime value export. Type-only exports do not count.",
+				"examples": [true, false]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "auditFunctionNames",
@@ -49,17 +97,50 @@
 					{
 						"name": "auditFunctionNames.file",
 						"type": "AuditFile",
-						"required": true
+						"required": true,
+						"description": "The file's repository-relative path, extension, and structural source lines. The audit recognizes function declarations and const arrow-function declarations from line-start patterns, permits PascalCase in .jsx and .tsx files, and permits HTTP verbs only in +server.ts files.",
+						"examples": [
+							{
+								"absolutePath": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-5/src/utils/format.ts",
+								"relativePath": "src/utils/format.ts",
+								"extension": ".ts",
+								"contents": "export function FormatDate(value) { return value; }",
+								"lines": ["export function FormatDate(value) { return value; }"],
+								"structuralLines": ["export function FormatDate(value) { return value; }"],
+								"limits": {
+									"maxFileLines": 220,
+									"maxFunctionLines": 55,
+									"maxClassLines": 120,
+									"maxMethodLines": 35,
+									"maxNestingDepth": 4,
+									"maxParameters": 4,
+									"maxComplexity": 10,
+									"maxClassesPerFile": 1
+								},
+								"size": 51
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "auditFunctionNames",
-						"type": "AuditFinding[]"
+						"type": "AuditFinding[]",
+						"description": "Findings for recognized function declarations and const arrow-function declarations whose names do not meet the allowed patterns. Each finding contains the file's relative path, the function-name-pattern rule id, and a message that names the offending function.",
+						"examples": [
+							[],
+							[
+								{
+									"path": "src/utils/format.ts",
+									"rule": "function-name-pattern",
+									"message": "Function \"FormatDate\" should use camelCase."
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hasNamedValueExport",
@@ -67,22 +148,31 @@
 					{
 						"name": "hasNamedValueExport.lines",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Source lines to inspect for a named runtime value export. The check recognizes exported function declarations, exported const declarations, and forwarded value exports; it ignores type-only exports.",
+						"examples": [
+							["export async function buildReport() {}", "export const reportId = 'rpt_7f3a2d1c';"],
+							["export { normalizeName as toCamelCase };", "export type { NameOptions };"]
+						]
 					},
 					{
 						"name": "hasNamedValueExport.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The export name to search for in the supplied lines. It is matched as a declared function or const name, or as the final name of a forwarded value export.",
+						"examples": ["auditFunctionNames", "toCamelCase"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hasNamedValueExport",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Whether the supplied lines declare or forward the requested named runtime value export. Type-only exports do not count.",
+						"examples": [true, false]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
