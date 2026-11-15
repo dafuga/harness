@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { lfsPointer, lfsStored } from '../../src/utils/lfsPointer';
+import { lfsPointer, lfsStored } from '../../src/utils/verification-evidence/lfsPointer';
 import { parseLfsPointer } from '../../src/services/verification-evidence/history-status-service/attached-record-service/lfsPointer';
 
 const oid = 'a'.repeat(64);

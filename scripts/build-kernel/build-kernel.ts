@@ -14,7 +14,7 @@ const reference = [
 	'src/utils/impact-kernel/impactKernel.ts',
 	'src/utils/execution-runtimes/impact-kernel/kernelClosure.ts',
 	'src/utils/execution-runtimes/impact-kernel/kernelRequest.ts',
-	'src/utils/kernelRequest.ts',
+	'src/utils/execution-runtimes/kernelRequest.ts',
 	'src/utils/development-tooling/portableJson.ts',
 	'src/cli/program/run-kernel/impactKernel.ts'
 ];

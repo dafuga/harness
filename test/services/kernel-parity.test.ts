@@ -11,7 +11,7 @@ import { UnitRuntimeService } from '../../src/services/execution-runtimes/UnitRu
 import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';
 import { kernelMutations } from '../../src/cli/program/run-kernel/kernelWorkload';
-import { kernelWorkload } from '../../src/utils/kernelWorkload';
+import { kernelWorkload } from '../../src/utils/execution-runtimes/kernelWorkload';
 import { recordCapture } from '../../src/utils/reports-media/record-capture/recordCapture';
 import { kernelVectors, vectorText } from '../support/kernelVectors';
 

@@ -9,7 +9,7 @@ import type {
 import type { EvidencePointer } from '../../../../src/core/historyTypes';
 import type { Capture, VerificationRecord } from '../../../../src/core/verificationTypes';
 import { evidenceManifest } from '../../../../src/services/verification-evidence/evidence-attach-service/evidenceManifest';
-import { lfsPointer, lfsStored } from '../../../../src/utils/lfsPointer';
+import { lfsPointer, lfsStored } from '../../../../src/utils/verification-evidence/lfsPointer';
 import { sealRecord } from '../../../../src/utils/sealRecord';
 import { json, sha256 } from './evidenceSource';
 

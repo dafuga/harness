@@ -3,7 +3,7 @@ import type { ImpactInput, ImpactOutput } from '../../src/core/execution-runtime
 import { impactKernel } from '../../src/utils/impact-kernel/impactKernel';
 import { impactKernelText } from '../../src/cli/program/run-kernel/impactKernel';
 import { kernelRequest } from '../../src/utils/execution-runtimes/impact-kernel/kernelRequest';
-import { kernelWorkload } from '../../src/utils/kernelWorkload';
+import { kernelWorkload } from '../../src/utils/execution-runtimes/kernelWorkload';
 import { portableJson } from '../../src/utils/development-tooling/portableJson';
 import { kernelVectors, vectorText } from '../support/kernelVectors';
 

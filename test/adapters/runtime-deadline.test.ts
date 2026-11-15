@@ -6,7 +6,7 @@ import { WasmRuntimeAdapter } from '../../src/adapters/execution-runtimes/wasm-r
 import type { RuntimeResponse } from '../../src/core/runtimeTypes';
 import { UnitRuntimeService } from '../../src/services/execution-runtimes/UnitRuntimeService';
 import { kernelArtifacts } from '../../src/utils/kernelArtifacts';
-import { kernelWorkload } from '../../src/utils/kernelWorkload';
+import { kernelWorkload } from '../../src/utils/execution-runtimes/kernelWorkload';
 
 const completed: RuntimeResponse = { ok: true, output: 'completed' };
 const timeout = (ms: number): RuntimeResponse => ({
