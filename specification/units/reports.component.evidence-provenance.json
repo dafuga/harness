@@ -30,18 +30,33 @@
 				"name": "EvidenceProvenance.item",
 				"type": "Evidence",
 				"required": true,
-				"description": "Required evidence record whose optional provenance list supplies labels and values; repeated labels are allowed."
+				"description": "Required evidence object read to obtain its provenance facts. A nonempty provenance list supplies the rendered rows; missing or empty provenance uses a translated fallback row.",
+				"examples": [
+					{
+						"id": "pw-1-0",
+						"title": "Evidence provenance - homepage.png",
+						"category": "Playwright",
+						"file": "packages/reports/test-results/evidence-provenance/homepage.png",
+						"status": "passed",
+						"provenance": [
+							{
+								"label": "Provenance",
+								"value": "actual capture of running software"
+							}
+						]
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EvidenceProvenance",
 				"type": "markup",
-				"description": "Semantic provenance term/value rows in recorded order, including repeated labels. Missing or empty provenance shows the translated no-provenance message. Revision hashes stay on one clipped line with their complete value available in native hover text."
+				"description": "Renders provenance labels and values as a DetailList, using a translated fallback row when provenance is missing or empty. Values matching 40 or 64 hexadecimal characters, case-insensitively, are rendered through CodeLine; other values render as text."
 			}
 		],
 		"errors": [],
-		"errorStatus": "declared",
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": [],
 		"snippets": [
