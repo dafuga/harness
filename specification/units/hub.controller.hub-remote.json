@@ -21,32 +21,72 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubRemoteController.constructor.remote",
 				"type": "HubRemoteRuntime | null",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "Optional HubRemoteRuntime providing the relay origin and management adapter for matched actions. Defaults to undefined; explicit null or omission disables a matched action by throwing an Error with code `remote-disabled`.",
+				"examples": [null]
 			},
 			{
 				"name": "HubRemoteController.handle.request",
 				"type": "Request",
-				"required": true
+				"required": true,
+				"description": "An incoming HTTP Request whose pathname and method select POST `/api/remote/hosts`, GET or DELETE `/api/remote/hosts/{hostId}`, or DELETE `/api/remote/hosts/{hostId}/devices/{deviceId}`. Paths are matched literally with no extra or empty segments; registration alone reads an `application/json` object body of at most 20,000 bytes."
 			},
 			{
 				"name": "HubRemoteController.handle.actor",
 				"type": "Actor",
-				"required": true
+				"required": true,
+				"description": "The verified session actor supplied after upstream authentication; its `id` is copied into the owner passed to the relay. No owner is taken from the request, and the controller reads no other actor property.",
+				"examples": [
+					{
+						"id": "7f1c2d18-0c18-4c5e-9e1b-2a7e6ac9d401",
+						"email": "alex.morgan@example.com",
+						"name": "Alex Morgan",
+						"emailVerified": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubRemoteController.handle",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "Resolves to the HTTP Response for the route result: unmatched paths return 404, recognized paths with unsupported methods return 405, and registration returns 201. Other successful relay results use the hub JSON response with status 200."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An Error with code `invalid-input` is thrown for a missing or non-JSON registration body, invalid or non-object JSON, a body over 20,000 bytes, registration fields or host/device identifiers that fail validation, or a relay 400 refusal carrying that code."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An Error with code `remote-disabled` is thrown when a matched action has no configured runtime because the constructor received null or undefined."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An Error with code `forbidden` is thrown when the relay refuses a management request with status 403 and error code `forbidden`."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An Error with code `not-found` is thrown when the relay refuses a management request with status 404 and error code `not-found`."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An Error with code `unavailable` is thrown when relay access fails, its JSON reply cannot be parsed, its refusal is not a defined status/code pair, or its successful reply fails shape validation."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "HubRemoteController.handle",
@@ -54,22 +94,59 @@
 					{
 						"name": "HubRemoteController.handle.request",
 						"type": "Request",
-						"required": true
+						"required": true,
+						"description": "An incoming HTTP Request whose pathname and method select POST `/api/remote/hosts`, GET or DELETE `/api/remote/hosts/{hostId}`, or DELETE `/api/remote/hosts/{hostId}/devices/{deviceId}`. Paths are matched literally with no extra or empty segments; registration alone reads an `application/json` object body of at most 20,000 bytes."
 					},
 					{
 						"name": "HubRemoteController.handle.actor",
 						"type": "Actor",
-						"required": true
+						"required": true,
+						"description": "The verified session actor supplied after upstream authentication; its `id` is copied into the owner passed to the relay. No owner is taken from the request, and the controller reads no other actor property.",
+						"examples": [
+							{
+								"id": "7f1c2d18-0c18-4c5e-9e1b-2a7e6ac9d401",
+								"email": "alex.morgan@example.com",
+								"name": "Alex Morgan",
+								"emailVerified": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubRemoteController.handle",
-						"type": "Promise<Response>"
+						"type": "Promise<Response>",
+						"description": "Resolves to the HTTP Response for the route result: unmatched paths return 404, recognized paths with unsupported methods return 405, and registration returns 201. Other successful relay results use the hub JSON response with status 200."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An Error with code `invalid-input` is thrown for a missing or non-JSON registration body, invalid or non-object JSON, a body over 20,000 bytes, registration fields or host/device identifiers that fail validation, or a relay 400 refusal carrying that code."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An Error with code `remote-disabled` is thrown when a matched action has no configured runtime because the constructor received null or undefined."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An Error with code `forbidden` is thrown when the relay refuses a management request with status 403 and error code `forbidden`."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An Error with code `not-found` is thrown when the relay refuses a management request with status 404 and error code `not-found`."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An Error with code `unavailable` is thrown when relay access fails, its JSON reply cannot be parsed, its refusal is not a defined status/code pair, or its successful reply fails shape validation."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -79,17 +156,21 @@
 					{
 						"name": "HubRemoteController.constructor.remote",
 						"type": "HubRemoteRuntime | null",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "Optional HubRemoteRuntime providing the relay origin and management adapter for matched actions. Defaults to undefined; explicit null or omission disables a matched action by throwing an Error with code `remote-disabled`.",
+						"examples": [null]
 					}
 				],
 				"outputs": [
 					{
 						"name": "HubRemoteController.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed HubRemoteController instance, which stores the optional runtime for later handle calls. The constructor performs no validation."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
