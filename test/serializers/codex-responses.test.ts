@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { CodexResponsesSerializer } from '../../src/serializers/CodexResponsesSerializer';
+import { CodexResponsesSerializer } from '../../src/serializers/agents-providers/CodexResponsesSerializer';
 
 test('Responses stream exposes incremental text and correlated function calls', () => {
 	const serializer = new CodexResponsesSerializer('claude-opus-5-5');

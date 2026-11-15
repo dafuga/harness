@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/serializers/CodexResponsesSerializer.ts",
-			"src/serializers/agents-providers/CodexResponsesSerializer.ts"
-		],
+		"source": ["src/serializers/agents-providers/CodexResponsesSerializer.ts"],
 		"symbols": [
-			"CodexResponsesSerializer",
 			"CodexResponsesSerializer",
 			"CodexResponsesSerializer.constructor",
 			"CodexResponsesSerializer.start",

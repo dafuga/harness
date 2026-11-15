@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { ClaudeToolsSerializer } from '../../src/serializers/ClaudeToolsSerializer';
+import { ClaudeToolsSerializer } from '../../src/serializers/agents-providers/claude-tools-serializer/ClaudeToolsSerializer';
 import { CodexSessionRepository } from '../../src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository';
 test('unsupported execution tools fail closed', () => {
 	const repository = new CodexSessionRepository();

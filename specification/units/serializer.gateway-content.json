@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/serializers/GatewayContentSerializer.ts",
-			"src/serializers/development-tooling/GatewayContentSerializer.ts"
-		],
+		"source": ["src/serializers/development-tooling/GatewayContentSerializer.ts"],
 		"symbols": [
-			"GatewayContentSerializer",
 			"GatewayContentSerializer",
 			"GatewayContentSerializer.history",
 			"GatewayContentSerializer.toolResult"
