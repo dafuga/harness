@@ -42,33 +42,243 @@
 				"name": "EntityAudio.evidence",
 				"type": "ExplorerEvidence",
 				"required": true,
-				"description": "Required explorer evidence from which audio gallery items are selected and grouped by comparison identity. Commit mode creates paired panes; after falls back to current."
+				"description": "The explorer evidence the component reads audio from: in commit mode its before side (the first parent, which is null for a root commit) and after side (the selected commit) both supply clips, and in current mode only the after side (the branch tip) does. Screenshots are ignored, in commit mode each comparison key (scenario, state, evidence and viewport, or kind when there is none) pairs the before and after clips, and a second clip with the same key and phase is not shown.",
+				"examples": [
+					{
+						"mode": "commit",
+						"scenarios": [
+							{
+								"id": "explorer-entity-audio",
+								"title": "Entity audio in the explorer",
+								"kind": "ui",
+								"units": ["reports.component.harness-entity-audio"],
+								"states": [
+									{
+										"id": "audio-current",
+										"title": "audio current",
+										"coverage": "required"
+									},
+									{
+										"id": "audio-commit",
+										"title": "audio commit",
+										"coverage": "required"
+									}
+								],
+								"viewports": [],
+								"tests": [],
+								"evidence": [
+									{
+										"id": "narration",
+										"kind": "audio",
+										"states": ["audio-commit", "audio-current"],
+										"viewports": []
+									}
+								]
+							}
+						],
+						"after": {
+							"commit": "4b8e1f0c93a27d65e0f4c2b7a91d3e58c6f20a4d",
+							"detail": null,
+							"record": null,
+							"captures": [
+								{
+									"scenario": "explorer-entity-audio",
+									"state": "audio-commit",
+									"capture": {
+										"evidence": "narration",
+										"kind": "audio",
+										"state": "audio-commit",
+										"status": "passed",
+										"path": "evidence/4b8e1f0c93a27d65e0f4c2b7a91d3e58c6f20a4d/explorer-entity-audio/entity-audio-playback/narration.wav",
+										"sha256": "5e1d0a7c94b2f83d61ce0a58f7b94d2e3c16a9f0b8d7e25413c6a0f9d28b7e41",
+										"mediaType": "audio/wav",
+										"capturedAt": "2026-11-12T16:24:09.512Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "0c7e5a91d3b8f2064ea71c9d58b3f2a6e0d4c17b9f8e2a53d06c4b7e1f9a8d26",
+											"revision": "4b8e1f0c93a27d65e0f4c2b7a91d3e58c6f20a4d"
+										},
+										"transcript": "This clip was recorded at the selected commit.",
+										"durationSeconds": 6.4,
+										"media": "media/5e1d0a7c94b2f83d61ce0a58f7b94d2e3c16a9f0b8d7e25413c6a0f9d28b7e41.wav"
+									},
+									"standing": "fresh",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							],
+							"coverage": [],
+							"gap": null
+						},
+						"before": {
+							"commit": "9d2c7a05e1b8f463c0a9d7e24b15f8c3a6e0d917",
+							"detail": null,
+							"record": null,
+							"captures": [
+								{
+									"scenario": "explorer-entity-audio",
+									"state": "audio-commit",
+									"capture": {
+										"evidence": "narration",
+										"kind": "audio",
+										"state": "audio-commit",
+										"status": "passed",
+										"path": "evidence/9d2c7a05e1b8f463c0a9d7e24b15f8c3a6e0d917/explorer-entity-audio/entity-audio-playback/narration.wav",
+										"sha256": "a04c6e2f19d8b35ae7c02f9d4b1a86e3c5f09d278e3b14a60d9c72f5b6e18a4c",
+										"mediaType": "audio/wav",
+										"capturedAt": "2026-11-12T15:58:31.087Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "7d3a1f0e9c52b84a6e17d0f3c9a25b8e4d61f7c0a93e2b58d4c1f76a0e9b3c25",
+											"revision": "9d2c7a05e1b8f463c0a9d7e24b15f8c3a6e0d917"
+										},
+										"transcript": "This clip was recorded at the parent commit.",
+										"durationSeconds": 6.1,
+										"media": "media/a04c6e2f19d8b35ae7c02f9d4b1a86e3c5f09d278e3b14a60d9c72f5b6e18a4c.wav"
+									},
+									"standing": "fresh",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							],
+							"coverage": [],
+							"gap": null
+						},
+						"initial": null,
+						"incomparable": []
+					},
+					{
+						"mode": "current",
+						"scenarios": [
+							{
+								"id": "explorer-entity-audio",
+								"title": "Entity audio in the explorer",
+								"kind": "ui",
+								"units": ["reports.component.harness-entity-audio"],
+								"states": [
+									{
+										"id": "audio-current",
+										"title": "audio current",
+										"coverage": "required"
+									},
+									{
+										"id": "audio-commit",
+										"title": "audio commit",
+										"coverage": "required"
+									}
+								],
+								"viewports": [],
+								"tests": [],
+								"evidence": [
+									{
+										"id": "narration",
+										"kind": "audio",
+										"states": ["audio-commit", "audio-current"],
+										"viewports": []
+									}
+								]
+							}
+						],
+						"after": {
+							"commit": "c7f31e8a5d24b09f6e3a1c8d7b52f04e9a6d13b8",
+							"detail": null,
+							"record": null,
+							"captures": [
+								{
+									"scenario": "explorer-entity-audio",
+									"state": "audio-current",
+									"capture": {
+										"evidence": "narration",
+										"kind": "audio",
+										"state": "audio-current",
+										"status": "passed",
+										"path": "evidence/c7f31e8a5d24b09f6e3a1c8d7b52f04e9a6d13b8/explorer-entity-audio/entity-audio-playback/narration.wav",
+										"sha256": "3f9a57d0c18e42b69a0d7f35e2c4b1886d07a9f35b2e0c41d8f6a7931e0b5c2d",
+										"mediaType": "audio/wav",
+										"capturedAt": "2026-11-14T09:02:55.240Z",
+										"provenance": "actual-capture",
+										"server": {
+											"buildId": "e41b9d07a3c6f25e80d14b7a9c2e6f31d08b5a4c7e9f2d60b13a8c5e7f94d2a1",
+											"revision": "c7f31e8a5d24b09f6e3a1c8d7b52f04e9a6d13b8"
+										},
+										"transcript": "This clip was recorded at the branch tip.",
+										"durationSeconds": 5.9,
+										"media": "media/3f9a57d0c18e42b69a0d7f35e2c4b1886d07a9f35b2e0c41d8f6a7931e0b5c2d.wav"
+									},
+									"standing": "fresh",
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							],
+							"coverage": [],
+							"gap": null
+						},
+						"before": null,
+						"initial": null,
+						"incomparable": []
+					}
+				]
 			},
 			{
 				"name": "EntityAudio.scope",
 				"type": "ExplorerScope",
 				"required": true,
-				"description": "Required selected commit and parent information used in pane labels."
+				"description": "The selected commit's scope, of which the component reads only commit and parent: commit labels the after pane, its gap text and the current-mode subtitle, and parent (the first parent, null for a root commit) labels the before pane. A null parent leaves the before pane's heading without a short commit.",
+				"examples": [
+					{
+						"location": {
+							"branch": "main",
+							"commit": "4b8e1f0c93a27d65e0f4c2b7a91d3e58c6f20a4d",
+							"category": "components",
+							"entity": "reports.component.harness-entity-audio",
+							"tab": "audio"
+						},
+						"mode": "commit",
+						"branch": "main",
+						"tip": "c7f31e8a5d24b09f6e3a1c8d7b52f04e9a6d13b8",
+						"commit": "4b8e1f0c93a27d65e0f4c2b7a91d3e58c6f20a4d",
+						"atTip": false,
+						"parent": "9d2c7a05e1b8f463c0a9d7e24b15f8c3a6e0d917",
+						"summary": {
+							"commit": "4b8e1f0c93a27d65e0f4c2b7a91d3e58c6f20a4d",
+							"parents": ["9d2c7a05e1b8f463c0a9d7e24b15f8c3a6e0d917"],
+							"subject": "Show audio clips before and after a commit",
+							"author": "Sam Rivera",
+							"committedAt": "2026-11-12T16:20:43+00:00",
+							"branches": ["main"],
+							"retained": true,
+							"coverage": "unverified",
+							"gaps": [],
+							"records": [],
+							"legacy": []
+						}
+					}
+				]
 			},
 			{
 				"name": "EntityAudio.mediaBase",
 				"type": "string",
 				"required": true,
-				"description": "Required asset prefix passed to each audio card."
+				"description": "The asset prefix that each audio card joins, unchanged, with a clip's file name (the capture's media name without its media/ folder) to form its playback and download URL. The prefix must end with a slash for that join to resolve, and the console passes its base followed by '/media/'.",
+				"examples": ["/media/", "/harness/media/"]
 			},
 			{
 				"name": "EntityAudio.empty",
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "Optional flag, false by default; when no clips exist, show an explicit empty state instead of rendering nothing."
+				"description": "Whether to show an empty state when there are no audio clips: when true, the component renders the 'Audio evidence' section stating that no audio evidence is recorded for this component at this revision, and when false it renders nothing in that case.",
+				"examples": [false, true]
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntityAudio",
 				"type": "markup",
-				"description": "Audio section that pairs before/after clips in commit mode and shows one current-side card otherwise. Missing sides within a pair are explicit gaps. Cards supply playback, transcript and provenance. No clips renders nothing unless empty is true, when it states that no audio was recorded at this revision. States: missing-before: The comparison retains the after clip and labels the absent before recording. missing-after: The comparison retains the before clip and labels the absent after recording. transcript-closed: The audio comparison is visible with transcript disclosures collapsed."
+				"description": "The audio section for the entity: with audio clips it renders a section headed 'Audio comparison' that pairs each comparison's before and after clips in commit mode (a side without a clip shows a 'No clip' gap), or a section headed 'Current audio' with one card per comparison otherwise. With no clips it renders nothing unless empty is true, in which case it renders an 'Audio evidence' section stating that no audio evidence is recorded for this component at this revision."
 			}
 		],
 		"errors": [],
