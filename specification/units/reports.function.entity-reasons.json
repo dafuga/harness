@@ -43,80 +43,570 @@
 				"name": "reasonsTried.reasons",
 				"type": "EntityReasons",
 				"required": true,
-				"description": "Prepared reasons whose attempts should be summarized for a history row."
+				"description": "The EntityReasons summary of one history row, as entityReasons returns it; only its attempted list is read, and each attempt counts under every kind that one of its uses names. Attempts are not checked against any limit here, because writingLimits.attempt applies to the joined text that reasonsTried returns.",
+				"examples": [
+					{
+						"behavior": {
+							"text": "Joins the notes once each and cuts the text at a whole word. Groups texts that are equal after whitespace is collapsed.",
+							"cut": false
+						},
+						"simplification": {
+							"text": "Replaced the nested loop with one pass over the notes.",
+							"cut": false,
+							"outcomes": ["improved"]
+						},
+						"performance": {
+							"text": "Nothing applies: the notes are a short list. Used a Map so each lookup is constant time.",
+							"cut": false,
+							"outcomes": ["not applicable", "improved"]
+						},
+						"notes": [
+							{
+								"behavior": "Joins the notes once each and cuts the text at a whole word.",
+								"subjects": ["bounded text"]
+							},
+							{
+								"behavior": "Groups texts that are equal after whitespace is collapsed.",
+								"subjects": ["alike"]
+							}
+						],
+						"attempted": [
+							{
+								"attempt": "Replaced the nested loop with one pass over the notes.",
+								"uses": [
+									{
+										"subject": "bounded text",
+										"kind": "simplification",
+										"outcome": "improved"
+									},
+									{
+										"subject": "alike",
+										"kind": "simplification",
+										"outcome": "improved"
+									}
+								]
+							},
+							{
+								"attempt": "Nothing applies: the notes are a short list.",
+								"uses": [
+									{
+										"subject": "bounded text",
+										"kind": "performance",
+										"outcome": "not applicable"
+									}
+								]
+							},
+							{
+								"attempt": "Used a Map so each lookup is constant time.",
+								"uses": [
+									{
+										"subject": "alike",
+										"kind": "performance",
+										"outcome": "improved"
+									}
+								]
+							}
+						],
+						"long": true
+					},
+					{
+						"behavior": {
+							"text": "Summarizes the recorded reasons of one entity for a history row.",
+							"cut": false
+						},
+						"simplification": {
+							"text": "Nothing to simplify: it is one new summary.",
+							"cut": false,
+							"outcomes": ["not applicable"]
+						},
+						"performance": {
+							"text": "Kept one pass over the reasons.",
+							"cut": false,
+							"outcomes": ["improved"]
+						},
+						"notes": [
+							{
+								"behavior": "Summarizes the recorded reasons of one entity for a history row.",
+								"subjects": ["the whole entity"]
+							}
+						],
+						"attempted": [
+							{
+								"attempt": "Nothing to simplify: it is one new summary.",
+								"uses": [
+									{
+										"subject": "the whole entity",
+										"kind": "simplification",
+										"outcome": "not applicable"
+									}
+								]
+							},
+							{
+								"attempt": "Kept one pass over the reasons.",
+								"uses": [
+									{
+										"subject": "the whole entity",
+										"kind": "performance",
+										"outcome": "improved"
+									}
+								]
+							}
+						],
+						"long": false
+					}
+				]
 			},
 			{
 				"name": "reasonUses.uses",
 				"type": "ReasonUse[]",
 				"required": true,
-				"description": "Subject/kind/outcome uses of an attempt to group."
+				"description": "The uses of one attempt, each a subject with its kind (simplification or performance) and its humanized outcome, as entityReasons records them in attempted. The subjects are grouped by kind and outcome in the order given, and nothing is deduplicated, so a subject listed twice appears twice in the output.",
+				"examples": [
+					[
+						{
+							"subject": "bounded text",
+							"kind": "simplification",
+							"outcome": "improved"
+						},
+						{
+							"subject": "alike",
+							"kind": "simplification",
+							"outcome": "improved"
+						}
+					],
+					[
+						{
+							"subject": "bounded text",
+							"kind": "performance",
+							"outcome": "not applicable"
+						},
+						{
+							"subject": "alike",
+							"kind": "simplification",
+							"outcome": "improved"
+						},
+						{
+							"subject": "the whole entity",
+							"kind": "performance",
+							"outcome": "not applicable"
+						}
+					]
+				]
 			},
 			{
 				"name": "boundedText.notes",
 				"type": "string[]",
 				"required": true,
-				"description": "Notes to normalize, deduplicate and join."
+				"description": "The notes to join: each is trimmed with its whitespace runs collapsed, empty ones are dropped, and a note that repeats an earlier one is kept once, in first-seen order. The joined text is then bounded by boundedText.limit, and no note is cut on its own.",
+				"examples": [
+					[
+						"Joins the notes once each and cuts the text at a whole word.",
+						"Groups texts that are equal after whitespace is collapsed."
+					],
+					[
+						"Keeps every  note  as written.",
+						"Keeps every note as written.",
+						"Joins the notes once each."
+					],
+					[
+						"Replaced the nested loop with one pass over the notes, then checked each subject once and kept every outcome in order of first appearance."
+					]
+				]
 			},
 			{
 				"name": "boundedText.limit",
 				"type": "WritingLimit",
 				"required": true,
-				"description": "Maximum character count and optional word limit for the combined text."
+				"description": "The most characters the combined text may have, counted as Unicode code points, and the most whitespace-separated words it may have, where words null sets no word limit. writingLimits.behavior ({ words: 30, characters: 200 }) bounds behavior notes and writingLimits.attempt ({ words: 20, characters: 140 }) bounds attempts.",
+				"examples": [
+					{
+						"words": 30,
+						"characters": 200
+					},
+					{
+						"words": 20,
+						"characters": 140
+					},
+					{
+						"words": null,
+						"characters": 72
+					}
+				]
 			},
 			{
 				"name": "alike.said",
 				"type": "Array<{ text: string; of: Item }>",
 				"required": true,
-				"description": "Reason text and its originating items to group by normalized wording."
+				"description": "Each reason text with the item it came from, such as a subject or a use. Entries whose text is empty once whitespace is collapsed are dropped, and texts that are equal after that collapse, compared case-sensitively, form one group that keeps the first text as written.",
+				"examples": [
+					[
+						{
+							"text": "simplification improved",
+							"of": {
+								"subject": "bounded text",
+								"kind": "simplification",
+								"outcome": "improved"
+							}
+						},
+						{
+							"text": "simplification improved",
+							"of": {
+								"subject": "alike",
+								"kind": "simplification",
+								"outcome": "improved"
+							}
+						},
+						{
+							"text": "performance not applicable",
+							"of": {
+								"subject": "bounded text",
+								"kind": "performance",
+								"outcome": "not applicable"
+							}
+						}
+					],
+					[
+						{
+							"text": "Groups texts that are equal after whitespace is collapsed.",
+							"of": "alike"
+						},
+						{
+							"text": "Joins the notes once each and cuts the text at a whole word.",
+							"of": "bounded text"
+						}
+					]
+				]
 			},
 			{
 				"name": "attempts.reasons",
 				"type": "HarnessExplanation[]",
 				"required": true,
-				"description": "Recorded explanations whose attempts and outcomes are summarized."
+				"description": "The recorded explanations whose attempts and outcomes are summarized: from each, only the attempt and the outcome of the selected kind are read, in the order given. An empty list gives an empty text and no outcomes.",
+				"examples": [
+					[
+						{
+							"unit": "reports.function.entity-reasons",
+							"symbol": "boundedText",
+							"file": "packages/reports/src/utils/explorer-ui/entityReasons.ts",
+							"change": "modified",
+							"behavior": "Joins the notes once each and cuts the text at a whole word.",
+							"simplification": {
+								"attempt": "Replaced the nested loop with one pass over the notes.",
+								"outcome": "improved"
+							},
+							"performance": {
+								"attempt": "Nothing applies: the notes are a short list.",
+								"outcome": "not-applicable"
+							}
+						},
+						{
+							"unit": "reports.function.entity-reasons",
+							"symbol": "alike",
+							"file": "packages/reports/src/utils/explorer-ui/entityReasons.ts",
+							"change": "added",
+							"behavior": "Groups texts that are equal after whitespace is collapsed.",
+							"simplification": {
+								"attempt": "Replaced the nested loop with one pass over the notes.",
+								"outcome": "improved"
+							},
+							"performance": {
+								"attempt": "Used a Map so each lookup is constant time.",
+								"outcome": "improved"
+							}
+						}
+					],
+					[
+						{
+							"unit": "reports.function.entity-reasons",
+							"symbol": "*",
+							"change": "modified",
+							"behavior": "Summarizes the recorded reasons of one entity for a history row.",
+							"simplification": {
+								"attempt": "Nothing to simplify: it is one new summary.",
+								"outcome": "not-applicable"
+							},
+							"performance": {
+								"attempt": "Kept one pass over the reasons.",
+								"outcome": "improved"
+							}
+						}
+					]
+				]
 			},
 			{
 				"name": "attempts.kind",
 				"type": "ReasonKind",
 				"required": true,
-				"description": "Explanation category selecting the simplification or performance attempt."
+				"description": "Which of each explanation's two attempts is summarized, simplification or performance: it only selects the field read, and the same limit, writingLimits.attempt, applies to both kinds.",
+				"examples": ["simplification", "performance"]
 			},
 			{
 				"name": "uses.reason",
 				"type": "HarnessExplanation",
 				"required": true,
-				"description": "One recorded explanation from which each attempt and its subject are projected."
+				"description": "One recorded explanation, from which uses reads its symbol (the humanized symbol, or 'the whole entity' for '*') and both of its attempts with their outcomes. Its unit, file, change and behavior are not read.",
+				"examples": [
+					{
+						"unit": "reports.function.entity-reasons",
+						"symbol": "boundedText",
+						"file": "packages/reports/src/utils/explorer-ui/entityReasons.ts",
+						"change": "modified",
+						"behavior": "Joins the notes once each and cuts the text at a whole word.",
+						"simplification": {
+							"attempt": "Replaced the nested loop with one pass over the notes.",
+							"outcome": "improved"
+						},
+						"performance": {
+							"attempt": "Nothing applies: the notes are a short list.",
+							"outcome": "not-applicable"
+						}
+					},
+					{
+						"unit": "reports.function.entity-reasons",
+						"symbol": "*",
+						"change": "modified",
+						"behavior": "Summarizes the recorded reasons of one entity for a history row.",
+						"simplification": {
+							"attempt": "Nothing to simplify: it is one new summary.",
+							"outcome": "not-applicable"
+						},
+						"performance": {
+							"attempt": "Kept one pass over the reasons.",
+							"outcome": "improved"
+						}
+					}
+				]
 			},
 			{
 				"name": "entityReasons.reasons",
 				"type": "HarnessExplanation[]",
 				"required": true,
-				"description": "Recorded explanations with behavior, simplification and performance attempts and outcomes."
+				"description": "The reasons one commit recorded for one entity, in the order given; each one's symbol, behavior, both attempts and both outcomes are read, while its unit, file and change are not. An empty list gives an empty summary.",
+				"examples": [
+					[
+						{
+							"unit": "reports.function.entity-reasons",
+							"symbol": "boundedText",
+							"file": "packages/reports/src/utils/explorer-ui/entityReasons.ts",
+							"change": "modified",
+							"behavior": "Joins the notes once each and cuts the text at a whole word.",
+							"simplification": {
+								"attempt": "Replaced the nested loop with one pass over the notes.",
+								"outcome": "improved"
+							},
+							"performance": {
+								"attempt": "Nothing applies: the notes are a short list.",
+								"outcome": "not-applicable"
+							}
+						},
+						{
+							"unit": "reports.function.entity-reasons",
+							"symbol": "alike",
+							"file": "packages/reports/src/utils/explorer-ui/entityReasons.ts",
+							"change": "added",
+							"behavior": "Groups texts that are equal after whitespace is collapsed.",
+							"simplification": {
+								"attempt": "Replaced the nested loop with one pass over the notes.",
+								"outcome": "improved"
+							},
+							"performance": {
+								"attempt": "Used a Map so each lookup is constant time.",
+								"outcome": "improved"
+							}
+						}
+					],
+					[
+						{
+							"unit": "reports.function.entity-reasons",
+							"symbol": "*",
+							"change": "modified",
+							"behavior": "Summarizes the recorded reasons of one entity for a history row.",
+							"simplification": {
+								"attempt": "Nothing to simplify: it is one new summary.",
+								"outcome": "not-applicable"
+							},
+							"performance": {
+								"attempt": "Kept one pass over the reasons.",
+								"outcome": "improved"
+							}
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "boundedText",
 				"type": "BoundedText",
-				"description": "Combined normalized text and whether it was cut. Truncation uses whole words and an ellipsis when possible; an overlong first word is cut by Unicode characters."
+				"description": "The notes joined with single spaces into one normalized text, and whether it was cut to fit the limit. A cut keeps the longest run of whole words that still fits with the ellipsis '…', which is added as its own word; when not even the first word fits that way, the first limit.characters minus one Unicode characters are kept and the ellipsis is added directly after them.",
+				"examples": [
+					{
+						"text": "Joins the notes once each and cuts the text at a whole word. Groups texts that are equal after whitespace is collapsed.",
+						"cut": false
+					},
+					{
+						"text": "Replaced the nested loop with one pass over the notes, then checked each subject once and kept every outcome …",
+						"cut": true
+					}
+				]
 			},
 			{
 				"name": "entityReasons",
 				"type": "EntityReasons",
-				"description": "Bounded behavior and attempt summaries, distinct outcomes and original full notes/attempts grouped by normalized text with subjects. long is true for multiple reasons or any truncation."
+				"description": "The summary of the reasons one commit recorded for one entity: behavior, simplification and performance texts, bounded by writingLimits.behavior and writingLimits.attempt, with each attempt kind's distinct outcomes. notes and attempted keep every behavior note and attempt as written, each once, with its subjects and the kind and outcome of each use; long is true for more than one reason or for any cut text.",
+				"examples": [
+					{
+						"behavior": {
+							"text": "Joins the notes once each and cuts the text at a whole word. Groups texts that are equal after whitespace is collapsed.",
+							"cut": false
+						},
+						"simplification": {
+							"text": "Replaced the nested loop with one pass over the notes.",
+							"cut": false,
+							"outcomes": ["improved"]
+						},
+						"performance": {
+							"text": "Nothing applies: the notes are a short list. Used a Map so each lookup is constant time.",
+							"cut": false,
+							"outcomes": ["not applicable", "improved"]
+						},
+						"notes": [
+							{
+								"behavior": "Joins the notes once each and cuts the text at a whole word.",
+								"subjects": ["bounded text"]
+							},
+							{
+								"behavior": "Groups texts that are equal after whitespace is collapsed.",
+								"subjects": ["alike"]
+							}
+						],
+						"attempted": [
+							{
+								"attempt": "Replaced the nested loop with one pass over the notes.",
+								"uses": [
+									{
+										"subject": "bounded text",
+										"kind": "simplification",
+										"outcome": "improved"
+									},
+									{
+										"subject": "alike",
+										"kind": "simplification",
+										"outcome": "improved"
+									}
+								]
+							},
+							{
+								"attempt": "Nothing applies: the notes are a short list.",
+								"uses": [
+									{
+										"subject": "bounded text",
+										"kind": "performance",
+										"outcome": "not applicable"
+									}
+								]
+							},
+							{
+								"attempt": "Used a Map so each lookup is constant time.",
+								"uses": [
+									{
+										"subject": "alike",
+										"kind": "performance",
+										"outcome": "improved"
+									}
+								]
+							}
+						],
+						"long": true
+					},
+					{
+						"behavior": {
+							"text": "Summarizes the recorded reasons of one entity for a history row.",
+							"cut": false
+						},
+						"simplification": {
+							"text": "Nothing to simplify: it is one new summary.",
+							"cut": false,
+							"outcomes": ["not applicable"]
+						},
+						"performance": {
+							"text": "Kept one pass over the reasons.",
+							"cut": false,
+							"outcomes": ["improved"]
+						},
+						"notes": [
+							{
+								"behavior": "Summarizes the recorded reasons of one entity for a history row.",
+								"subjects": ["the whole entity"]
+							}
+						],
+						"attempted": [
+							{
+								"attempt": "Nothing to simplify: it is one new summary.",
+								"uses": [
+									{
+										"subject": "the whole entity",
+										"kind": "simplification",
+										"outcome": "not applicable"
+									}
+								]
+							},
+							{
+								"attempt": "Kept one pass over the reasons.",
+								"uses": [
+									{
+										"subject": "the whole entity",
+										"kind": "performance",
+										"outcome": "improved"
+									}
+								]
+							}
+						],
+						"long": false
+					}
+				]
 			},
 			{
 				"name": "reasonsTried",
 				"type": "string[]",
-				"description": "Nonempty attempt summaries for simplification then performance, omitting exact duplicate attempts already represented by simplification."
+				"description": "Up to two texts: the simplification attempts, then the performance attempts that are not already a simplification attempt, each joined with spaces and bounded by writingLimits.attempt. An empty text is left out, so the list can be shorter than two.",
+				"examples": [
+					[
+						"Replaced the nested loop with one pass over the notes.",
+						"Nothing applies: the notes are a short list. Used a Map so each lookup is constant time."
+					],
+					["Nothing to simplify: it is one new summary.", "Kept one pass over the reasons."]
+				]
 			},
 			{
 				"name": "reasonUses",
 				"type": "Array<{ kind: ReasonKind; outcome: string; subjects: string[] }>",
-				"description": "Groups by reason kind and outcome, listing their subjects."
+				"description": "One entry for each kind and outcome among the uses, in the order each first appears, listing the subject of every use in that group in input order. Subjects are not deduplicated, so a subject that appears twice in the input is listed twice.",
+				"examples": [
+					[
+						{
+							"kind": "simplification",
+							"outcome": "improved",
+							"subjects": ["bounded text", "alike"]
+						}
+					],
+					[
+						{
+							"kind": "performance",
+							"outcome": "not applicable",
+							"subjects": ["bounded text", "the whole entity"]
+						},
+						{
+							"kind": "simplification",
+							"outcome": "improved",
+							"subjects": ["alike"]
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "reasonsTried",
@@ -125,18 +615,136 @@
 						"name": "reasonsTried.reasons",
 						"type": "EntityReasons",
 						"required": true,
-						"description": "Prepared reasons whose attempts should be summarized for a history row."
+						"description": "The EntityReasons summary of one history row, as entityReasons returns it; only its attempted list is read, and each attempt counts under every kind that one of its uses names. Attempts are not checked against any limit here, because writingLimits.attempt applies to the joined text that reasonsTried returns.",
+						"examples": [
+							{
+								"behavior": {
+									"text": "Joins the notes once each and cuts the text at a whole word. Groups texts that are equal after whitespace is collapsed.",
+									"cut": false
+								},
+								"simplification": {
+									"text": "Replaced the nested loop with one pass over the notes.",
+									"cut": false,
+									"outcomes": ["improved"]
+								},
+								"performance": {
+									"text": "Nothing applies: the notes are a short list. Used a Map so each lookup is constant time.",
+									"cut": false,
+									"outcomes": ["not applicable", "improved"]
+								},
+								"notes": [
+									{
+										"behavior": "Joins the notes once each and cuts the text at a whole word.",
+										"subjects": ["bounded text"]
+									},
+									{
+										"behavior": "Groups texts that are equal after whitespace is collapsed.",
+										"subjects": ["alike"]
+									}
+								],
+								"attempted": [
+									{
+										"attempt": "Replaced the nested loop with one pass over the notes.",
+										"uses": [
+											{
+												"subject": "bounded text",
+												"kind": "simplification",
+												"outcome": "improved"
+											},
+											{
+												"subject": "alike",
+												"kind": "simplification",
+												"outcome": "improved"
+											}
+										]
+									},
+									{
+										"attempt": "Nothing applies: the notes are a short list.",
+										"uses": [
+											{
+												"subject": "bounded text",
+												"kind": "performance",
+												"outcome": "not applicable"
+											}
+										]
+									},
+									{
+										"attempt": "Used a Map so each lookup is constant time.",
+										"uses": [
+											{
+												"subject": "alike",
+												"kind": "performance",
+												"outcome": "improved"
+											}
+										]
+									}
+								],
+								"long": true
+							},
+							{
+								"behavior": {
+									"text": "Summarizes the recorded reasons of one entity for a history row.",
+									"cut": false
+								},
+								"simplification": {
+									"text": "Nothing to simplify: it is one new summary.",
+									"cut": false,
+									"outcomes": ["not applicable"]
+								},
+								"performance": {
+									"text": "Kept one pass over the reasons.",
+									"cut": false,
+									"outcomes": ["improved"]
+								},
+								"notes": [
+									{
+										"behavior": "Summarizes the recorded reasons of one entity for a history row.",
+										"subjects": ["the whole entity"]
+									}
+								],
+								"attempted": [
+									{
+										"attempt": "Nothing to simplify: it is one new summary.",
+										"uses": [
+											{
+												"subject": "the whole entity",
+												"kind": "simplification",
+												"outcome": "not applicable"
+											}
+										]
+									},
+									{
+										"attempt": "Kept one pass over the reasons.",
+										"uses": [
+											{
+												"subject": "the whole entity",
+												"kind": "performance",
+												"outcome": "improved"
+											}
+										]
+									}
+								],
+								"long": false
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reasonsTried",
 						"type": "string[]",
-						"description": "Nonempty attempt summaries for simplification then performance, omitting exact duplicate attempts already represented by simplification."
+						"description": "Up to two texts: the simplification attempts, then the performance attempts that are not already a simplification attempt, each joined with spaces and bounded by writingLimits.attempt. An empty text is left out, so the list can be shorter than two.",
+						"examples": [
+							[
+								"Replaced the nested loop with one pass over the notes.",
+								"Nothing applies: the notes are a short list. Used a Map so each lookup is constant time."
+							],
+							["Nothing to simplify: it is one new summary.", "Kept one pass over the reasons."]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "reasonUses",
@@ -145,18 +753,70 @@
 						"name": "reasonUses.uses",
 						"type": "ReasonUse[]",
 						"required": true,
-						"description": "Subject/kind/outcome uses of an attempt to group."
+						"description": "The uses of one attempt, each a subject with its kind (simplification or performance) and its humanized outcome, as entityReasons records them in attempted. The subjects are grouped by kind and outcome in the order given, and nothing is deduplicated, so a subject listed twice appears twice in the output.",
+						"examples": [
+							[
+								{
+									"subject": "bounded text",
+									"kind": "simplification",
+									"outcome": "improved"
+								},
+								{
+									"subject": "alike",
+									"kind": "simplification",
+									"outcome": "improved"
+								}
+							],
+							[
+								{
+									"subject": "bounded text",
+									"kind": "performance",
+									"outcome": "not applicable"
+								},
+								{
+									"subject": "alike",
+									"kind": "simplification",
+									"outcome": "improved"
+								},
+								{
+									"subject": "the whole entity",
+									"kind": "performance",
+									"outcome": "not applicable"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reasonUses",
 						"type": "Array<{ kind: ReasonKind; outcome: string; subjects: string[] }>",
-						"description": "Groups by reason kind and outcome, listing their subjects."
+						"description": "One entry for each kind and outcome among the uses, in the order each first appears, listing the subject of every use in that group in input order. Subjects are not deduplicated, so a subject that appears twice in the input is listed twice.",
+						"examples": [
+							[
+								{
+									"kind": "simplification",
+									"outcome": "improved",
+									"subjects": ["bounded text", "alike"]
+								}
+							],
+							[
+								{
+									"kind": "performance",
+									"outcome": "not applicable",
+									"subjects": ["bounded text", "the whole entity"]
+								},
+								{
+									"kind": "simplification",
+									"outcome": "improved",
+									"subjects": ["alike"]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "boundedText",
@@ -165,24 +825,62 @@
 						"name": "boundedText.notes",
 						"type": "string[]",
 						"required": true,
-						"description": "Notes to normalize, deduplicate and join."
+						"description": "The notes to join: each is trimmed with its whitespace runs collapsed, empty ones are dropped, and a note that repeats an earlier one is kept once, in first-seen order. The joined text is then bounded by boundedText.limit, and no note is cut on its own.",
+						"examples": [
+							[
+								"Joins the notes once each and cuts the text at a whole word.",
+								"Groups texts that are equal after whitespace is collapsed."
+							],
+							[
+								"Keeps every  note  as written.",
+								"Keeps every note as written.",
+								"Joins the notes once each."
+							],
+							[
+								"Replaced the nested loop with one pass over the notes, then checked each subject once and kept every outcome in order of first appearance."
+							]
+						]
 					},
 					{
 						"name": "boundedText.limit",
 						"type": "WritingLimit",
 						"required": true,
-						"description": "Maximum character count and optional word limit for the combined text."
+						"description": "The most characters the combined text may have, counted as Unicode code points, and the most whitespace-separated words it may have, where words null sets no word limit. writingLimits.behavior ({ words: 30, characters: 200 }) bounds behavior notes and writingLimits.attempt ({ words: 20, characters: 140 }) bounds attempts.",
+						"examples": [
+							{
+								"words": 30,
+								"characters": 200
+							},
+							{
+								"words": 20,
+								"characters": 140
+							},
+							{
+								"words": null,
+								"characters": 72
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "boundedText",
 						"type": "BoundedText",
-						"description": "Combined normalized text and whether it was cut. Truncation uses whole words and an ellipsis when possible; an overlong first word is cut by Unicode characters."
+						"description": "The notes joined with single spaces into one normalized text, and whether it was cut to fit the limit. A cut keeps the longest run of whole words that still fits with the ellipsis '…', which is added as its own word; when not even the first word fits that way, the first limit.characters minus one Unicode characters are kept and the ellipsis is added directly after them.",
+						"examples": [
+							{
+								"text": "Joins the notes once each and cuts the text at a whole word. Groups texts that are equal after whitespace is collapsed.",
+								"cut": false
+							},
+							{
+								"text": "Replaced the nested loop with one pass over the notes, then checked each subject once and kept every outcome …",
+								"cut": true
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "alike",
@@ -191,17 +889,95 @@
 						"name": "alike.said",
 						"type": "Array<{ text: string; of: Item }>",
 						"required": true,
-						"description": "Reason text and its originating items to group by normalized wording."
+						"description": "Each reason text with the item it came from, such as a subject or a use. Entries whose text is empty once whitespace is collapsed are dropped, and texts that are equal after that collapse, compared case-sensitively, form one group that keeps the first text as written.",
+						"examples": [
+							[
+								{
+									"text": "simplification improved",
+									"of": {
+										"subject": "bounded text",
+										"kind": "simplification",
+										"outcome": "improved"
+									}
+								},
+								{
+									"text": "simplification improved",
+									"of": {
+										"subject": "alike",
+										"kind": "simplification",
+										"outcome": "improved"
+									}
+								},
+								{
+									"text": "performance not applicable",
+									"of": {
+										"subject": "bounded text",
+										"kind": "performance",
+										"outcome": "not applicable"
+									}
+								}
+							],
+							[
+								{
+									"text": "Groups texts that are equal after whitespace is collapsed.",
+									"of": "alike"
+								},
+								{
+									"text": "Joins the notes once each and cuts the text at a whole word.",
+									"of": "bounded text"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "alike",
-						"type": "Array<{ text: string; of: Item[] }>"
+						"type": "Array<{ text: string; of: Item[] }>",
+						"description": "One entry for each reason text distinct after whitespace is collapsed, in the order each first appears, listing the items that said it in input order; the text is kept as first written.",
+						"examples": [
+							[
+								{
+									"text": "simplification improved",
+									"of": [
+										{
+											"subject": "bounded text",
+											"kind": "simplification",
+											"outcome": "improved"
+										},
+										{
+											"subject": "alike",
+											"kind": "simplification",
+											"outcome": "improved"
+										}
+									]
+								},
+								{
+									"text": "performance not applicable",
+									"of": [
+										{
+											"subject": "bounded text",
+											"kind": "performance",
+											"outcome": "not applicable"
+										}
+									]
+								}
+							],
+							[
+								{
+									"text": "Groups texts that are equal after whitespace is collapsed.",
+									"of": ["alike"]
+								},
+								{
+									"text": "Joins the notes once each and cuts the text at a whole word.",
+									"of": ["bounded text"]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "attempts",
@@ -210,23 +986,92 @@
 						"name": "attempts.reasons",
 						"type": "HarnessExplanation[]",
 						"required": true,
-						"description": "Recorded explanations whose attempts and outcomes are summarized."
+						"description": "The recorded explanations whose attempts and outcomes are summarized: from each, only the attempt and the outcome of the selected kind are read, in the order given. An empty list gives an empty text and no outcomes.",
+						"examples": [
+							[
+								{
+									"unit": "reports.function.entity-reasons",
+									"symbol": "boundedText",
+									"file": "packages/reports/src/utils/explorer-ui/entityReasons.ts",
+									"change": "modified",
+									"behavior": "Joins the notes once each and cuts the text at a whole word.",
+									"simplification": {
+										"attempt": "Replaced the nested loop with one pass over the notes.",
+										"outcome": "improved"
+									},
+									"performance": {
+										"attempt": "Nothing applies: the notes are a short list.",
+										"outcome": "not-applicable"
+									}
+								},
+								{
+									"unit": "reports.function.entity-reasons",
+									"symbol": "alike",
+									"file": "packages/reports/src/utils/explorer-ui/entityReasons.ts",
+									"change": "added",
+									"behavior": "Groups texts that are equal after whitespace is collapsed.",
+									"simplification": {
+										"attempt": "Replaced the nested loop with one pass over the notes.",
+										"outcome": "improved"
+									},
+									"performance": {
+										"attempt": "Used a Map so each lookup is constant time.",
+										"outcome": "improved"
+									}
+								}
+							],
+							[
+								{
+									"unit": "reports.function.entity-reasons",
+									"symbol": "*",
+									"change": "modified",
+									"behavior": "Summarizes the recorded reasons of one entity for a history row.",
+									"simplification": {
+										"attempt": "Nothing to simplify: it is one new summary.",
+										"outcome": "not-applicable"
+									},
+									"performance": {
+										"attempt": "Kept one pass over the reasons.",
+										"outcome": "improved"
+									}
+								}
+							]
+						]
 					},
 					{
 						"name": "attempts.kind",
 						"type": "ReasonKind",
 						"required": true,
-						"description": "Explanation category selecting the simplification or performance attempt."
+						"description": "Which of each explanation's two attempts is summarized, simplification or performance: it only selects the field read, and the same limit, writingLimits.attempt, applies to both kinds.",
+						"examples": ["simplification", "performance"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "attempts",
-						"type": "ReasonAttempts"
+						"type": "ReasonAttempts",
+						"description": "The attempts of the selected kind, each distinct attempt once, joined with spaces into one text bounded by writingLimits.attempt, with cut true when it was shortened. outcomes lists each distinct humanized outcome of that kind once, in reason order, and is never bounded.",
+						"examples": [
+							{
+								"text": "Replaced the nested loop with one pass over the notes.",
+								"cut": false,
+								"outcomes": ["improved"]
+							},
+							{
+								"text": "Nothing applies: the notes are a short list. Used a Map so each lookup is constant time.",
+								"cut": false,
+								"outcomes": ["not applicable", "improved"]
+							},
+							{
+								"text": "Replaced the nested loop with one pass over the notes. Nothing to simplify: it is one new summary. Removed …",
+								"cut": true,
+								"outcomes": ["improved", "not applicable"]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "uses",
@@ -235,17 +1080,87 @@
 						"name": "uses.reason",
 						"type": "HarnessExplanation",
 						"required": true,
-						"description": "One recorded explanation from which each attempt and its subject are projected."
+						"description": "One recorded explanation, from which uses reads its symbol (the humanized symbol, or 'the whole entity' for '*') and both of its attempts with their outcomes. Its unit, file, change and behavior are not read.",
+						"examples": [
+							{
+								"unit": "reports.function.entity-reasons",
+								"symbol": "boundedText",
+								"file": "packages/reports/src/utils/explorer-ui/entityReasons.ts",
+								"change": "modified",
+								"behavior": "Joins the notes once each and cuts the text at a whole word.",
+								"simplification": {
+									"attempt": "Replaced the nested loop with one pass over the notes.",
+									"outcome": "improved"
+								},
+								"performance": {
+									"attempt": "Nothing applies: the notes are a short list.",
+									"outcome": "not-applicable"
+								}
+							},
+							{
+								"unit": "reports.function.entity-reasons",
+								"symbol": "*",
+								"change": "modified",
+								"behavior": "Summarizes the recorded reasons of one entity for a history row.",
+								"simplification": {
+									"attempt": "Nothing to simplify: it is one new summary.",
+									"outcome": "not-applicable"
+								},
+								"performance": {
+									"attempt": "Kept one pass over the reasons.",
+									"outcome": "improved"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "uses",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Two entries for one reason, simplification then performance: text is the attempt as written, and of holds its subject (the humanized symbol, or 'the whole entity' for '*'), its kind and its humanized outcome.",
+						"examples": [
+							[
+								{
+									"text": "Replaced the nested loop with one pass over the notes.",
+									"of": {
+										"subject": "bounded text",
+										"kind": "simplification",
+										"outcome": "improved"
+									}
+								},
+								{
+									"text": "Nothing applies: the notes are a short list.",
+									"of": {
+										"subject": "bounded text",
+										"kind": "performance",
+										"outcome": "not applicable"
+									}
+								}
+							],
+							[
+								{
+									"text": "Nothing to simplify: it is one new summary.",
+									"of": {
+										"subject": "the whole entity",
+										"kind": "simplification",
+										"outcome": "not applicable"
+									}
+								},
+								{
+									"text": "Kept one pass over the reasons.",
+									"of": {
+										"subject": "the whole entity",
+										"kind": "performance",
+										"outcome": "improved"
+									}
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "entityReasons",
@@ -254,18 +1169,179 @@
 						"name": "entityReasons.reasons",
 						"type": "HarnessExplanation[]",
 						"required": true,
-						"description": "Recorded explanations with behavior, simplification and performance attempts and outcomes."
+						"description": "The reasons one commit recorded for one entity, in the order given; each one's symbol, behavior, both attempts and both outcomes are read, while its unit, file and change are not. An empty list gives an empty summary.",
+						"examples": [
+							[
+								{
+									"unit": "reports.function.entity-reasons",
+									"symbol": "boundedText",
+									"file": "packages/reports/src/utils/explorer-ui/entityReasons.ts",
+									"change": "modified",
+									"behavior": "Joins the notes once each and cuts the text at a whole word.",
+									"simplification": {
+										"attempt": "Replaced the nested loop with one pass over the notes.",
+										"outcome": "improved"
+									},
+									"performance": {
+										"attempt": "Nothing applies: the notes are a short list.",
+										"outcome": "not-applicable"
+									}
+								},
+								{
+									"unit": "reports.function.entity-reasons",
+									"symbol": "alike",
+									"file": "packages/reports/src/utils/explorer-ui/entityReasons.ts",
+									"change": "added",
+									"behavior": "Groups texts that are equal after whitespace is collapsed.",
+									"simplification": {
+										"attempt": "Replaced the nested loop with one pass over the notes.",
+										"outcome": "improved"
+									},
+									"performance": {
+										"attempt": "Used a Map so each lookup is constant time.",
+										"outcome": "improved"
+									}
+								}
+							],
+							[
+								{
+									"unit": "reports.function.entity-reasons",
+									"symbol": "*",
+									"change": "modified",
+									"behavior": "Summarizes the recorded reasons of one entity for a history row.",
+									"simplification": {
+										"attempt": "Nothing to simplify: it is one new summary.",
+										"outcome": "not-applicable"
+									},
+									"performance": {
+										"attempt": "Kept one pass over the reasons.",
+										"outcome": "improved"
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "entityReasons",
 						"type": "EntityReasons",
-						"description": "Bounded behavior and attempt summaries, distinct outcomes and original full notes/attempts grouped by normalized text with subjects. long is true for multiple reasons or any truncation."
+						"description": "The summary of the reasons one commit recorded for one entity: behavior, simplification and performance texts, bounded by writingLimits.behavior and writingLimits.attempt, with each attempt kind's distinct outcomes. notes and attempted keep every behavior note and attempt as written, each once, with its subjects and the kind and outcome of each use; long is true for more than one reason or for any cut text.",
+						"examples": [
+							{
+								"behavior": {
+									"text": "Joins the notes once each and cuts the text at a whole word. Groups texts that are equal after whitespace is collapsed.",
+									"cut": false
+								},
+								"simplification": {
+									"text": "Replaced the nested loop with one pass over the notes.",
+									"cut": false,
+									"outcomes": ["improved"]
+								},
+								"performance": {
+									"text": "Nothing applies: the notes are a short list. Used a Map so each lookup is constant time.",
+									"cut": false,
+									"outcomes": ["not applicable", "improved"]
+								},
+								"notes": [
+									{
+										"behavior": "Joins the notes once each and cuts the text at a whole word.",
+										"subjects": ["bounded text"]
+									},
+									{
+										"behavior": "Groups texts that are equal after whitespace is collapsed.",
+										"subjects": ["alike"]
+									}
+								],
+								"attempted": [
+									{
+										"attempt": "Replaced the nested loop with one pass over the notes.",
+										"uses": [
+											{
+												"subject": "bounded text",
+												"kind": "simplification",
+												"outcome": "improved"
+											},
+											{
+												"subject": "alike",
+												"kind": "simplification",
+												"outcome": "improved"
+											}
+										]
+									},
+									{
+										"attempt": "Nothing applies: the notes are a short list.",
+										"uses": [
+											{
+												"subject": "bounded text",
+												"kind": "performance",
+												"outcome": "not applicable"
+											}
+										]
+									},
+									{
+										"attempt": "Used a Map so each lookup is constant time.",
+										"uses": [
+											{
+												"subject": "alike",
+												"kind": "performance",
+												"outcome": "improved"
+											}
+										]
+									}
+								],
+								"long": true
+							},
+							{
+								"behavior": {
+									"text": "Summarizes the recorded reasons of one entity for a history row.",
+									"cut": false
+								},
+								"simplification": {
+									"text": "Nothing to simplify: it is one new summary.",
+									"cut": false,
+									"outcomes": ["not applicable"]
+								},
+								"performance": {
+									"text": "Kept one pass over the reasons.",
+									"cut": false,
+									"outcomes": ["improved"]
+								},
+								"notes": [
+									{
+										"behavior": "Summarizes the recorded reasons of one entity for a history row.",
+										"subjects": ["the whole entity"]
+									}
+								],
+								"attempted": [
+									{
+										"attempt": "Nothing to simplify: it is one new summary.",
+										"uses": [
+											{
+												"subject": "the whole entity",
+												"kind": "simplification",
+												"outcome": "not applicable"
+											}
+										]
+									},
+									{
+										"attempt": "Kept one pass over the reasons.",
+										"uses": [
+											{
+												"subject": "the whole entity",
+												"kind": "performance",
+												"outcome": "improved"
+											}
+										]
+									}
+								],
+								"long": false
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
