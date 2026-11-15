@@ -53,74 +53,206 @@
 				"name": "createLoop.input",
 				"type": "CreateLoopInput",
 				"required": true,
-				"description": "Loop name and goal plus optional root, creation-time provider, source template, agent model, completion kind, and plan."
+				"description": "Names a loop and supplies its nonblank goal; the name is validated as a loop id. Optional root defaults to process.cwd(), omitted now uses new Date().toISOString(), agentModel falls back to process.env.HARNESS_AGENT_MODEL, from resolves a source template, and kind (coding or planning) enables completion metadata with its optional plan.",
+				"examples": [
+					{
+						"name": "release-readiness",
+						"goal": "Verify that the release checklist is complete."
+					}
+				]
 			},
 			{
 				"name": "addLoopStep.input",
 				"type": "AddLoopStepInput",
 				"required": true,
-				"description": "Loop id, new step id and title, with optional root and timestamp provider."
+				"description": "Identifies an existing open loop and a new step id and title; loop and step ids are validated, and the title must be nonblank. Optional root defaults to process.cwd() and omitted now uses new Date().toISOString().",
+				"examples": [
+					{
+						"loop": "release-readiness",
+						"step": "run-smoke-checks",
+						"title": "Run the smoke checks."
+					}
+				]
 			},
 			{
 				"name": "completeLoopStep.input",
 				"type": "CompleteLoopStepInput",
 				"required": true,
-				"description": "Loop id, pending step id, evidence text, and optional root/time provider."
+				"description": "Identifies an open loop step and supplies nonblank evidence text; completion can be blocked by step state, enforced ordering, regression proof, or a configured final-task audit. Optional root defaults to process.cwd() and omitted now uses new Date().toISOString().",
+				"examples": [
+					{
+						"loop": "release-readiness",
+						"step": "run-smoke-checks",
+						"evidence": "Smoke checks passed on the release candidate."
+					}
+				]
 			},
 			{
 				"name": "readLoopStatus.input",
 				"type": "ReadLoopInput",
 				"required": true,
-				"description": "Loop id and optional repository root."
+				"description": "Selects a loop by its validated name; missing files and schema-invalid state are reported as ExpectedCliError. Optional root defaults to process.cwd().",
+				"examples": [
+					{
+						"loop": "release-readiness"
+					}
+				]
 			},
 			{
 				"name": "renderLoopStatus.status",
 				"type": "LoopStatus",
 				"required": true,
-				"description": "Loop state and relative trace path to display."
+				"description": "Provides the loop state and relative trace path for display; the trace path is rendered verbatim and state fields drive the activity and step lines.",
+				"examples": [
+					{
+						"state": {
+							"name": "release-readiness",
+							"goal": "Verify the release checklist.",
+							"createdAt": "2026-11-14T09:00:00.000Z",
+							"updatedAt": "2026-11-15T09:00:00.000Z",
+							"steps": [
+								{
+									"id": "prepare-release",
+									"title": "Prepare release notes",
+									"status": "complete",
+									"completedAt": "2026-11-15T09:00:00.000Z",
+									"evidence": "Release notes reviewed."
+								},
+								{
+									"id": "run-smoke-checks",
+									"title": "Run smoke checks",
+									"status": "pending"
+								}
+							]
+						},
+						"tracePath": "specification/loops/release-readiness/trace.ndjson"
+					}
+				]
 			},
 			{
 				"name": "renderLoopStatus.now",
 				"type": "string",
 				"required": false,
-				"description": "Current timestamp for age display; defaults to the current ISO timestamp."
+				"description": "Provides the timestamp used to calculate activity age; an invalid timestamp produces an unknown age. Defaults to new Date().toISOString().",
+				"examples": ["2026-11-15T12:00:00.000Z"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "createLoop",
 				"type": "Promise<LoopStatus>",
-				"description": "New loop state and trace path after initializing template steps/evaluators and appending the creation event."
+				"description": "Resolves to the initialized loop state and repository-relative trace path after writing loop.json and appending a loop.created event. A supplied source template contributes pending steps and evaluators; without one, the new loop starts with no steps.",
+				"examples": [
+					{
+						"state": {
+							"name": "release-readiness",
+							"goal": "Verify that the release checklist is complete.",
+							"createdAt": "2026-11-15T09:00:00.000Z",
+							"updatedAt": "2026-11-15T09:00:00.000Z",
+							"steps": []
+						},
+						"tracePath": "specification/loops/release-readiness/trace.ndjson"
+					}
+				]
 			},
 			{
 				"name": "addLoopStep",
 				"type": "Promise<LoopStatus>",
-				"description": "Updated loop state and trace path after appending a pending step."
+				"description": "Resolves to the updated loop state and repository-relative trace path after appending a pending step and a step.added trace event.",
+				"examples": [
+					{
+						"state": {
+							"name": "release-readiness",
+							"goal": "Verify that the release checklist is complete.",
+							"createdAt": "2026-11-14T09:00:00.000Z",
+							"updatedAt": "2026-11-15T09:00:00.000Z",
+							"steps": [
+								{
+									"id": "run-smoke-checks",
+									"title": "Run the smoke checks.",
+									"status": "pending"
+								}
+							]
+						},
+						"tracePath": "specification/loops/release-readiness/trace.ndjson"
+					}
+				]
 			},
 			{
 				"name": "completeLoopStep",
 				"type": "Promise<LoopStatus>",
-				"description": "Updated loop state and trace path after recording completion time and evidence."
+				"description": "Resolves to the updated loop state and repository-relative trace path after marking the step complete with its timestamp and evidence and appending a step.completed event. Configured regression requirements and any final-task audit must pass before the state is written.",
+				"examples": [
+					{
+						"state": {
+							"name": "release-readiness",
+							"goal": "Verify that the release checklist is complete.",
+							"createdAt": "2026-11-14T09:00:00.000Z",
+							"updatedAt": "2026-11-15T09:00:00.000Z",
+							"steps": [
+								{
+									"id": "run-smoke-checks",
+									"title": "Run the smoke checks.",
+									"status": "complete",
+									"completedAt": "2026-11-15T09:00:00.000Z",
+									"evidence": "Smoke checks passed on the release candidate."
+								}
+							]
+						},
+						"tracePath": "specification/loops/release-readiness/trace.ndjson"
+					}
+				]
 			},
 			{
 				"name": "readLoopStatus",
 				"type": "Promise<LoopStatus>",
-				"description": "Current loop state and relative trace path."
+				"description": "Resolves to the schema-validated persisted loop state and repository-relative trace path. Missing state or schema mismatches fail rather than returning a partial status.",
+				"examples": [
+					{
+						"state": {
+							"name": "release-readiness",
+							"goal": "Verify the release checklist.",
+							"createdAt": "2026-11-14T09:00:00.000Z",
+							"updatedAt": "2026-11-15T09:00:00.000Z",
+							"steps": [
+								{
+									"id": "run-smoke-checks",
+									"title": "Run smoke checks",
+									"status": "pending"
+								}
+							]
+						},
+						"tracePath": "specification/loops/release-readiness/trace.ndjson"
+					}
+				]
 			},
 			{
 				"name": "renderLoopStatus",
 				"type": "string",
-				"description": "Human-readable loop identity, goal, trace path, activity, closure details, and step list."
+				"description": "Returns plain text with loop identity, goal, trace path, activity summary, and step lines. Nonempty evidence is printed as text, compact JSON for a record, or a semicolon-joined list.",
+				"examples": [
+					"Loop: release-readiness\nGoal: Verify the release checklist.\nTrace: specification/loops/release-readiness/trace.ndjson\nAge: 0 days since last activity (2026-11-15T09:00:00.000Z)\nOpen steps: 1 of 2\n\nSteps:\n  [complete] prepare-release - Prepare release notes\n    evidence: Release notes reviewed.\n  [pending] run-smoke-checks - Run smoke checks"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Invalid loop id or missing/invalid persisted state."
+				"description": "Thrown for invalid loop or step names and text, missing loops, schema-invalid state, duplicate loops or steps, closed loops, step-state or enforced-order violations, invalid templates or completion kinds, and missing regression proof."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "JSON.parse throws this when persisted loop state or a project loop-template file contains malformed JSON."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "TaskCompletionService.require throws this when a configured final-task audit does not pass during step completion."
 			}
 		],
-		"errorStatus": "found",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createLoop",
@@ -129,21 +261,44 @@
 						"name": "createLoop.input",
 						"type": "CreateLoopInput",
 						"required": true,
-						"description": "Loop name and goal plus optional root, creation-time provider, source template, agent model, completion kind, and plan."
+						"description": "Names a loop and supplies its nonblank goal; the name is validated as a loop id. Optional root defaults to process.cwd(), omitted now uses new Date().toISOString(), agentModel falls back to process.env.HARNESS_AGENT_MODEL, from resolves a source template, and kind (coding or planning) enables completion metadata with its optional plan.",
+						"examples": [
+							{
+								"name": "release-readiness",
+								"goal": "Verify that the release checklist is complete."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "createLoop",
 						"type": "Promise<LoopStatus>",
-						"description": "New loop state and trace path after initializing template steps/evaluators and appending the creation event."
+						"description": "Resolves to the initialized loop state and repository-relative trace path after writing loop.json and appending a loop.created event. A supplied source template contributes pending steps and evaluators; without one, the new loop starts with no steps.",
+						"examples": [
+							{
+								"state": {
+									"name": "release-readiness",
+									"goal": "Verify that the release checklist is complete.",
+									"createdAt": "2026-11-15T09:00:00.000Z",
+									"updatedAt": "2026-11-15T09:00:00.000Z",
+									"steps": []
+								},
+								"tracePath": "specification/loops/release-readiness/trace.ndjson"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid loop name/goal, existing loop directory, invalid template, or invalid completion kind."
+						"description": "Thrown for an invalid loop name or blank goal, an existing loop, an invalid template id or inheritance chain, or an unsupported completion kind."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse throws this when a project loop-template file contains malformed JSON."
 					}
 				],
 				"errorStatus": "declared"
@@ -155,21 +310,46 @@
 						"name": "addLoopStep.input",
 						"type": "AddLoopStepInput",
 						"required": true,
-						"description": "Loop id, new step id and title, with optional root and timestamp provider."
+						"description": "Identifies an existing open loop and a new step id and title; loop and step ids are validated, and the title must be nonblank. Optional root defaults to process.cwd() and omitted now uses new Date().toISOString().",
+						"examples": [
+							{
+								"loop": "release-readiness",
+								"step": "run-smoke-checks",
+								"title": "Run the smoke checks."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "addLoopStep",
 						"type": "Promise<LoopStatus>",
-						"description": "Updated loop state and trace path after appending a pending step."
+						"description": "Resolves to the updated loop state and repository-relative trace path after appending a pending step and a step.added trace event.",
+						"examples": [
+							{
+								"state": {
+									"name": "release-readiness",
+									"goal": "Verify that the release checklist is complete.",
+									"createdAt": "2026-11-14T09:00:00.000Z",
+									"updatedAt": "2026-11-15T09:00:00.000Z",
+									"steps": [
+										{
+											"id": "run-smoke-checks",
+											"title": "Run the smoke checks.",
+											"status": "pending"
+										}
+									]
+								},
+								"tracePath": "specification/loops/release-readiness/trace.ndjson"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid loop/step/title, missing or invalid state, or duplicate step id."
+						"description": "Thrown for invalid loop or step ids, a blank title, missing or schema-invalid loop state, a closed loop, or a duplicate step id."
 					}
 				],
 				"errorStatus": "declared"
@@ -181,21 +361,53 @@
 						"name": "completeLoopStep.input",
 						"type": "CompleteLoopStepInput",
 						"required": true,
-						"description": "Loop id, pending step id, evidence text, and optional root/time provider."
+						"description": "Identifies an open loop step and supplies nonblank evidence text; completion can be blocked by step state, enforced ordering, regression proof, or a configured final-task audit. Optional root defaults to process.cwd() and omitted now uses new Date().toISOString().",
+						"examples": [
+							{
+								"loop": "release-readiness",
+								"step": "run-smoke-checks",
+								"evidence": "Smoke checks passed on the release candidate."
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "completeLoopStep",
 						"type": "Promise<LoopStatus>",
-						"description": "Updated loop state and trace path after recording completion time and evidence."
+						"description": "Resolves to the updated loop state and repository-relative trace path after marking the step complete with its timestamp and evidence and appending a step.completed event. Configured regression requirements and any final-task audit must pass before the state is written.",
+						"examples": [
+							{
+								"state": {
+									"name": "release-readiness",
+									"goal": "Verify that the release checklist is complete.",
+									"createdAt": "2026-11-14T09:00:00.000Z",
+									"updatedAt": "2026-11-15T09:00:00.000Z",
+									"steps": [
+										{
+											"id": "run-smoke-checks",
+											"title": "Run the smoke checks.",
+											"status": "complete",
+											"completedAt": "2026-11-15T09:00:00.000Z",
+											"evidence": "Smoke checks passed on the release candidate."
+										}
+									]
+								},
+								"tracePath": "specification/loops/release-readiness/trace.ndjson"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid loop/step/evidence, missing or completed step, enforced-order violation, or failed regression/task-completion audit."
+						"description": "Thrown for invalid loop or step ids, blank evidence, missing or schema-invalid state, a closed loop, a missing or already-complete step, enforced-order violations, or missing regression proof."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "TaskCompletionService.require throws this when the configured final-task audit does not pass."
 					}
 				],
 				"errorStatus": "declared"
@@ -207,21 +419,49 @@
 						"name": "readLoopStatus.input",
 						"type": "ReadLoopInput",
 						"required": true,
-						"description": "Loop id and optional repository root."
+						"description": "Selects a loop by its validated name; missing files and schema-invalid state are reported as ExpectedCliError. Optional root defaults to process.cwd().",
+						"examples": [
+							{
+								"loop": "release-readiness"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "readLoopStatus",
 						"type": "Promise<LoopStatus>",
-						"description": "Current loop state and relative trace path."
+						"description": "Resolves to the schema-validated persisted loop state and repository-relative trace path. Missing state or schema mismatches fail rather than returning a partial status.",
+						"examples": [
+							{
+								"state": {
+									"name": "release-readiness",
+									"goal": "Verify the release checklist.",
+									"createdAt": "2026-11-14T09:00:00.000Z",
+									"updatedAt": "2026-11-15T09:00:00.000Z",
+									"steps": [
+										{
+											"id": "run-smoke-checks",
+											"title": "Run smoke checks",
+											"status": "pending"
+										}
+									]
+								},
+								"tracePath": "specification/loops/release-readiness/trace.ndjson"
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid loop id or missing/invalid persisted state."
+						"description": "Thrown for an invalid loop name, a missing loop file, or schema-invalid persisted state."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse throws this when the persisted loop-state file contains malformed JSON."
 					}
 				],
 				"errorStatus": "declared"
@@ -233,20 +473,49 @@
 						"name": "renderLoopStatus.status",
 						"type": "LoopStatus",
 						"required": true,
-						"description": "Loop state and relative trace path to display."
+						"description": "Provides the loop state and relative trace path for display; the trace path is rendered verbatim and state fields drive the activity and step lines.",
+						"examples": [
+							{
+								"state": {
+									"name": "release-readiness",
+									"goal": "Verify the release checklist.",
+									"createdAt": "2026-11-14T09:00:00.000Z",
+									"updatedAt": "2026-11-15T09:00:00.000Z",
+									"steps": [
+										{
+											"id": "prepare-release",
+											"title": "Prepare release notes",
+											"status": "complete",
+											"completedAt": "2026-11-15T09:00:00.000Z",
+											"evidence": "Release notes reviewed."
+										},
+										{
+											"id": "run-smoke-checks",
+											"title": "Run smoke checks",
+											"status": "pending"
+										}
+									]
+								},
+								"tracePath": "specification/loops/release-readiness/trace.ndjson"
+							}
+						]
 					},
 					{
 						"name": "renderLoopStatus.now",
 						"type": "string",
 						"required": false,
-						"description": "Current timestamp for age display; defaults to the current ISO timestamp."
+						"description": "Provides the timestamp used to calculate activity age; an invalid timestamp produces an unknown age. Defaults to new Date().toISOString().",
+						"examples": ["2026-11-15T12:00:00.000Z"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderLoopStatus",
 						"type": "string",
-						"description": "Human-readable loop identity, goal, trace path, activity, closure details, and step list."
+						"description": "Returns plain text with loop identity, goal, trace path, activity summary, and step lines. Nonempty evidence is printed as text, compact JSON for a record, or a semicolon-joined list.",
+						"examples": [
+							"Loop: release-readiness\nGoal: Verify the release checklist.\nTrace: specification/loops/release-readiness/trace.ndjson\nAge: 0 days since last activity (2026-11-15T09:00:00.000Z)\nOpen steps: 1 of 2\n\nSteps:\n  [complete] prepare-release - Prepare release notes\n    evidence: Release notes reviewed.\n  [pending] run-smoke-checks - Run smoke checks"
+						]
 					}
 				],
 				"errors": [],
