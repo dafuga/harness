@@ -33,71 +33,80 @@
 				"name": "HarnessGroup.title",
 				"type": "string",
 				"required": true,
-				"description": "Visible group heading, with count beside it."
+				"description": "The required text rendered inside the group heading. It is displayed alongside the count.",
+				"examples": ["Component catalog", "Related modules"]
 			},
 			{
 				"name": "HarnessGroup.count",
 				"type": "number",
 				"required": true,
-				"description": "Optional item count displayed beside the group title."
+				"description": "The required numeric value rendered beside the title. The component does not normalize or validate it.",
+				"examples": [0, 3, 12]
 			},
 			{
 				"name": "HarnessGroup.icon",
 				"type": "HarnessIconName",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional shared icon identifying the group."
+				"description": "An optional HarnessIconName rendered beside the title when truthy. If omitted, no group icon is rendered.",
+				"examples": ["chevron-down", "chevron-right"]
 			},
 			{
 				"name": "HarnessGroup.source",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional source attribution displayed with the group heading."
+				"description": "An optional string passed as the heading element's title attribute. If omitted, the component passes undefined.",
+				"examples": ["packages/reports/src/components/explorer-ui/HarnessGroup.svelte"]
 			},
 			{
 				"name": "HarnessGroup.description",
 				"type": "string",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional explanatory text beneath the group title."
+				"description": "An optional paragraph rendered above the children when truthy. An empty string or omitted value renders no paragraph.",
+				"examples": ["Reusable report components", "Modules related to this report"]
 			},
 			{
 				"name": "HarnessGroup.level",
 				"type": "2 | 3",
 				"required": false,
 				"default": 2,
-				"description": "Heading level for the group title; defaults to 2."
+				"description": "Selects the heading element: 2 renders h2 and 3 renders h3. Defaults to 2.",
+				"examples": [2, 3]
 			},
 			{
 				"name": "HarnessGroup.variant",
 				"type": "'catalog' | 'relation' | 'styles'",
 				"required": false,
 				"default": "catalog",
-				"description": "Visual context for the group, such as catalog or relationships; defaults to catalog."
+				"description": "The section class value, limited to catalog, relation, or styles. Defaults to catalog.",
+				"examples": ["catalog", "relation", "styles"]
 			},
 			{
 				"name": "HarnessGroup.resetKey",
 				"type": "string",
 				"required": false,
 				"default": "",
-				"description": "Revision or filter scope whose changes reveal the group."
+				"description": "A scope string whose changes reset the group to expanded; an unchanged value does not reset a user collapse. Defaults to the empty string.",
+				"examples": ["", "catalog:components", "filter:styles"]
 			},
 			{
 				"name": "HarnessGroup.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "Group contents retained while hidden."
+				"description": "The required Svelte snippet rendered inside the body. The body remains mounted while collapsed and is hidden with the hidden attribute."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HarnessGroup",
 				"type": "markup",
-				"description": "Heading button with expanded state and unique controlled content; keyboard and pointer toggle."
+				"description": "Renders a section with an h2 or h3 heading and a button that controls the body. The button exposes aria-expanded and aria-controls, and toggles the body's hidden state while children remain rendered."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
