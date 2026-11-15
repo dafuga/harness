@@ -4,7 +4,7 @@ import { afterEach, test, vi } from 'vitest';
 import { createWorkspaceStore } from '../src/lib/stores/workspace.svelte';
 import { categories, type ProjectSnapshot } from '../src/models/Desktop.types';
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
-import { categoryOf } from '../src/utils/categoryOf';
+import { categoryOf } from '../src/utils/shared-primitives/categoryOf';
 import { ipcPayload } from '../src/utils/ipc-payload/ipcPayload';
 import type { Preparation } from '../src/utils/prepareRun';
 import { imageModel } from '../src/utils/prepareRun';

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { changeEnvironment } from '../../src/utils/changeEnvironment';
+import { changeEnvironment } from '../../src/utils/projects-sessions/changeEnvironment';
 test.each([
 	['dev', ['dev']],
 	['stage', ['dev', 'stage']],

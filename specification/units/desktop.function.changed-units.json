@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/changedUnits.ts",
-			"packages/desktop/src/utils/git-source-history/changedUnits.ts"
-		],
-		"symbols": ["changedUnits", "changedUnits"]
+		"source": ["packages/desktop/src/utils/git-source-history/changedUnits.ts"],
+		"symbols": ["changedUnits"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -77,11 +74,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/changedUnits.ts",
+		"entry": "packages/desktop/src/utils/git-source-history/changedUnits.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/changedUnits.ts"
+				"entry": "packages/desktop/src/utils/git-source-history/changedUnits.ts"
 			}
 		]
 	},

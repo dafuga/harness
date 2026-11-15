@@ -1,7 +1,7 @@
 import { expect } from '../../../../test/verificationExpect';
 import { test } from 'vitest';
 import { unitOwners } from '../../../../src/utils/unitOwners';
-import { changedUnits } from '../../src/utils/changedUnits';
+import { changedUnits } from '../../src/utils/git-source-history/changedUnits';
 
 /**
  * A change names the units whose declared source owns its files, by the registry's own owner

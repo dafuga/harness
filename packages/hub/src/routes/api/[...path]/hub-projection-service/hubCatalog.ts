@@ -1,5 +1,5 @@
 // @harness-uid u_ibenikpzyj
-import { categoryOf } from '../../../../../../desktop/src/utils/categoryOf';
+import { categoryOf } from '../../../../../../desktop/src/utils/shared-primitives/categoryOf';
 import type { ComponentManifest } from '../../../../../../../src/core/unitTypes';
 import type {
 	CatalogEntity,
