@@ -1,5 +1,5 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
-import { evidence } from './entityScreenFixture';
+import { evidence, assertVideoProjection } from './entityScreenFixture';
 import { expect, test } from 'vitest';
 import {
 	catalogShot,
@@ -166,58 +166,7 @@ test('the gallery gets every screenshot of both sides, each side marked as what 
 	// A revision shown as the tip that is not the tip has nothing of its own to show as current.
 	expect(galleryItems(evidence(page, head))).toEqual([]);
 	expect(new Set(items.map((item) => item.id)).size).toBe(items.length);
-	const video = structuredClone(evidence(page, tip));
-	const original = video.after.captures[0];
-	video.after.captures.push({
-		...original,
-		recordId: 'f'.repeat(64),
-		capture: {
-			...original.capture,
-			evidence: 'motion',
-			kind: 'video',
-			mediaType: 'video/mp4',
-			media: 'media/clip.mp4',
-			video: { clipId: 'spinner', unit: ids.page, inputHash: 'd'.repeat(64) }
-		} as never
-	});
-	const clip = galleryItems(video).find((item) => item.mediaType === 'video');
-	expect(clip).toMatchObject({
-		file: 'clip.mp4',
-		mediaType: 'video',
-		video: {
-			reference: {
-				record: 'f'.repeat(64),
-				revision: commits.tip,
-				unit: ids.page,
-				clipId: 'spinner',
-				viewport: original.capture.viewport
-			},
-			sha256: original.capture.sha256,
-			inputHash: 'd'.repeat(64),
-			selectedRevision: commits.tip,
-			freshness: 'current'
-		}
-	});
-	expect(catalogShot(video)?.mimeType).not.toBe('video/mp4');
-	const inheritedVideo = structuredClone(video);
-	const inheritedClip = inheritedVideo.after.captures.at(-1)!;
-	inheritedClip.current = false;
-	inheritedClip.inheritedFrom = commits.first;
-	inheritedClip.capture.server!.revision = commits.first;
-	const source = inheritedVideo.after.record!;
-	source.id = 'f'.repeat(64);
-	const result = source.scenarios.find((item) => item.id === inheritedClip.scenario)!;
-	result.inherited = true;
-	result.status = 'referenced';
-	result.testedRevision = commits.first;
-	result.origin = { record: 'a'.repeat(64), commit: commits.first };
-	expect(galleryItems(inheritedVideo).find((item) => item.mediaType === 'video')).toMatchObject({
-		video: {
-			reference: { record: 'a'.repeat(64), revision: commits.first },
-			selectedRevision: commits.tip,
-			freshness: 'inherited'
-		}
-	});
+	assertVideoProjection(page, tip);
 });
 
 test('a declared catalog preview selects its exact state and viewport without a fallback', () => {
