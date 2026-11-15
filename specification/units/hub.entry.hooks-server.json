@@ -34,7 +34,7 @@
 		"outputs": [
 			{
 				"name": "handle",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "The Response that handle resolves to: the same object that resolve(event) returned, after HubResponsesMiddleware sets X-Frame-Options to DENY, Content-Security-Policy to frame-ancestors 'none', Referrer-Policy to no-referrer, X-Content-Type-Options to nosniff and Cache-Control to private, no-store. Each of these five headers replaces any existing value under its name, and the Response is modified in place rather than copied."
 			}
 		],
@@ -71,7 +71,7 @@
 				"outputs": [
 					{
 						"name": "handle",
-						"type": "unknown",
+						"type": "Promise<Response>",
 						"description": "The Response that handle resolves to: the same object that resolve(event) returned, after HubResponsesMiddleware sets X-Frame-Options to DENY, Content-Security-Policy to frame-ancestors 'none', Referrer-Policy to no-referrer, X-Content-Type-Options to nosniff and Cache-Control to private, no-store. Each of these five headers replaces any existing value under its name, and the Response is modified in place rather than copied."
 					}
 				],

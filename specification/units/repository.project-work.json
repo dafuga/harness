@@ -543,7 +543,7 @@
 				"outputs": [
 					{
 						"name": "ProjectWorkRepository.constructor",
-						"type": "unknown",
+						"type": "ProjectWorkRepository",
 						"description": "The new ProjectWorkRepository, which holds a GitAdapter for root and runs no command until one of its queries is called."
 					}
 				],

@@ -35,7 +35,7 @@
 		"outputs": [
 			{
 				"name": "scanFixtureProduct",
-				"type": "unknown",
+				"type": "string",
 				"description": "Absolute destination path for `App.app` under `desktopRoot/.cache/ios/scan-fixture`. It names the test-only product built with the synthetic scanner.",
 				"examples": ["/repo/.cache/ios/scan-fixture/App.app"]
 			},

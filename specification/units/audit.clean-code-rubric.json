@@ -30,7 +30,7 @@
 		"outputs": [
 			{
 				"name": "cleanCodeRubricVersion",
-				"type": "unknown",
+				"type": "\"clean-code-v1\"",
 				"description": "The version label of the clean-code rubric, the literal string 'clean-code-v1' that identifies this revision. It is not derived from the principles or questions, so it changes only when the source literal is edited.",
 				"examples": ["clean-code-v1"]
 			},

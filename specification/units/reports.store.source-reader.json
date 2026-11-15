@@ -304,7 +304,7 @@
 		"outputs": [
 			{
 				"name": "createSourceReaderStore",
-				"type": "unknown",
+				"type": "{ state: SourceState; select: (path: string) => Promise<void>; initialise: (files: SourceFiles, load: SourceRead) => Promise<void>; cancel: () => void; }",
 				"description": "Creates reactive state with {files: [], path: '', text: '', loading: true, error: ''} and returns it with initialise, select, and cancel; accepted selections and initialization replace the active generation. Paths outside state.files are ignored, failures are stored in state.error, and cancellation or later generations prevent pending replies from updating state without aborting them."
 			},
 			{
@@ -328,9 +328,7 @@
 				"name": "testFiles",
 				"type": "string[]",
 				"description": "Reads test snapshot paths by numeric index in their original order. It returns an empty array when testFiles is absent.",
-				"examples": [
-					["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]
-				]
+				"examples": [["packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.test.ts"]]
 			}
 		],
 		"errors": [
@@ -348,7 +346,7 @@
 				"outputs": [
 					{
 						"name": "createSourceReaderStore",
-						"type": "unknown",
+						"type": "{ state: SourceState; select: (path: string) => Promise<void>; initialise: (files: SourceFiles, load: SourceRead) => Promise<void>; cancel: () => void; }",
 						"description": "Creates reactive state with {files: [], path: '', text: '', loading: true, error: ''} and returns it with initialise, select, and cancel; accepted selections and initialization replace the active generation. Paths outside state.files are ignored, failures are stored in state.error, and cancellation or later generations prevent pending replies from updating state without aborting them."
 					}
 				],

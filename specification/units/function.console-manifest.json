@@ -127,7 +127,7 @@
 		"outputs": [
 			{
 				"name": "consoleManifestFile",
-				"type": "unknown",
+				"type": "\"harness.console.json\"",
 				"description": "Constant file name harness.console.json, joined to the host directory by both functions; it is exported rather than passed in, so every host uses the same name.",
 				"examples": ["harness.console.json"]
 			},

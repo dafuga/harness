@@ -24,13 +24,13 @@
 		"outputs": [
 			{
 				"name": "explorerBranch",
-				"type": "unknown",
+				"type": "\"explorer/tip\"",
 				"description": "The branch name 'explorer/tip', which the source comment describes as a branch whose tip is a verified commit. A caller that puts it into an address has to encode the slash, and seedExplorer never uses it.",
 				"examples": ["explorer/tip"]
 			},
 			{
 				"name": "explorerUnits",
-				"type": "unknown",
+				"type": "{ page: string; list: string; row: string; slugify: string; config: string; service: string; }",
 				"description": "The unit ids of the explorer fixture under the keys page, list, row, slugify, config and service. seedExplorer's scenarios use list and row (titles-list) and slugify (slugify-run), the seed uses config to locate the config unit spec, and nothing in this module reads page or service.",
 				"examples": [
 					{

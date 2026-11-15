@@ -69,11 +69,9 @@
 		"outputs": [
 			{
 				"name": "consoleViews",
-				"type": "unknown",
+				"type": "readonly [\"map\", \"compare\", \"history\", \"growth\", \"activity\"]",
 				"description": "The five console view names, in the order map, compare, history, growth and activity, declared with as const so that ConsoleView is their union. The array is typed readonly but is not frozen at runtime, and consoleRoute accepts only these names as the view segment.",
-				"examples": [
-					["map", "compare", "history", "growth", "activity"]
-				]
+				"examples": [["map", "compare", "history", "growth", "activity"]]
 			},
 			{
 				"name": "consoleRoute",

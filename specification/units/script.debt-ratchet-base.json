@@ -48,7 +48,7 @@
 		"outputs": [
 			{
 				"name": "ratchetBaseVariable",
-				"type": "unknown",
+				"type": "\"HARNESS_DEBT_RATCHET_BASE\"",
 				"description": "The exported constant is the environment variable name HARNESS_DEBT_RATCHET_BASE, which selectRatchetBase reads for a ref or commit that replaces the protected-branch lookup. It is a fixed string, and the messages from selectRatchetBase quote this same name.",
 				"examples": ["HARNESS_DEBT_RATCHET_BASE"]
 			},

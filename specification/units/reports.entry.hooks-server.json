@@ -34,7 +34,7 @@
 		"outputs": [
 			{
 				"name": "handle",
-				"type": "unknown",
+				"type": "Promise<Response>",
 				"description": "The Response for the request: the guard's 403 'Forbidden' response when the request is denied, otherwise the agent controller's response for /api/agent or resolve's response. A response with no cache-control header gets 'private, no-store' before it is returned."
 			}
 		],
@@ -71,7 +71,7 @@
 				"outputs": [
 					{
 						"name": "handle",
-						"type": "unknown",
+						"type": "Promise<Response>",
 						"description": "The Response for the request: the guard's 403 'Forbidden' response when the request is denied, otherwise the agent controller's response for /api/agent or resolve's response. A response with no cache-control header gets 'private, no-store' before it is returned."
 					}
 				],
