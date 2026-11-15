@@ -2,7 +2,7 @@
 import {
 	readNoteLines,
 	type ReadNote
-} from '../../../../../../../../src/utils/note-lines/noteCommit';
+} from '../../../../../../../../src/utils/git-source-history/note-lines/noteCommit';
 import type { HubSourceContext } from '../../../../../utils/development-tooling/hubSource';
 import { hubRaw } from '../../../../../utils/development-tooling/hubRaw';
 import { hubFail } from '../../../../../utils/development-tooling/hubJson';
