@@ -12,12 +12,43 @@
 		"symbols": ["historyGuides"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "historyGuides",
-				"type": "Guide[]"
+				"type": "Guide[]",
+				"description": "The exported array of the three static guides, in this order: 'history' covers Git-backed records, notes and the history index, 'hooks' covers the opt-in pre-push and commit-msg hooks, and 'ci' covers read-only CI verification and evidence publishing. Callers read this shared array when they need that guidance; it is an array literal evaluated once when the module loads and does not reflect the state of any repository.",
+				"examples": [
+					[
+						{
+							"topic": "ci",
+							"summary": "CI verifies code without write access and publishes evidence from trusted code.",
+							"steps": [
+								"harness-verify.yml runs the full check and verifies the exact commit, read-only.",
+								"It uploads the record and its evidence as an artifact, pass or fail.",
+								"harness-evidence.yml, on the default branch, validates that artifact and publishes it."
+							],
+							"rules": [
+								"The workflow that runs the code under test has contents: read and uses no secrets.",
+								"The publishing workflow never checks out, installs, builds or runs the verified commit. It validates the record as data: schema, seal, files, commit and tree.",
+								"External actions are pinned to full commit hashes; Bun and Rust are pinned versions.",
+								"Pushes to harness-evidence and to notes do not start a run.",
+								"Performance budgets are judged only against a baseline reviewed for that machine profile. A runner without one fails the budget gate. CI never establishes or approves a baseline.",
+								"Records of commits from other repositories are verified but not published."
+							],
+							"antiPatterns": [
+								"Do not use pull_request_target or give the verifying job a write token.",
+								"Do not let a workflow approve a budget."
+							],
+							"exampleCommands": [
+								"harness verify run --commit \"$COMMIT\"",
+								"harness history attach --commit \"$COMMIT\" --record <record.json> # trusted CI artifact import",
+								"harness history sync origin"
+							]
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
