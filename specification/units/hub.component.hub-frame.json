@@ -30,17 +30,18 @@
 				"name": "HubFrame.children",
 				"type": "Snippet",
 				"required": true,
-				"description": "Required page-content snippet rendered in the main area."
+				"description": "A required Svelte snippet supplies the page content. It is rendered once in the main area below the header."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubFrame",
 				"type": "markup",
-				"description": "Harness header linking to the project home through full document navigation, Shared projects label, account controls and supplied main content."
+				"description": "Renders the shared-project page frame when included around page content. It contains a root-resolved brand link with BrandMark and data-sveltekit-reload, a “Shared projects” label, AccountMenu, and a main area that renders children once."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
