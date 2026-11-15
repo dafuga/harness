@@ -12,27 +12,30 @@
 		"symbols": ["registerVerifyCommand", "Flags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerVerifyCommand.program",
 				"type": "Command",
-				"required": true
+				"required": true,
+				"description": "The Commander program that receives the verify command and its run, plan, check, identity, and stamp subcommands. It must be a Command instance."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerVerifyCommand",
-				"type": "void"
+				"type": "void",
+				"description": "No value is returned; calling the function registers the verify command and its subcommands on the supplied Commander program."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "For verify check, the handler calls fail with the newline-joined report problems when the report status is failed and --json is absent."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerVerifyCommand",
@@ -40,17 +43,19 @@
 					{
 						"name": "registerVerifyCommand.program",
 						"type": "Command",
-						"required": true
+						"required": true,
+						"description": "The Commander program that receives the verify command and its run, plan, check, identity, and stamp subcommands. It must be a Command instance."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registerVerifyCommand",
-						"type": "void"
+						"type": "void",
+						"description": "No value is returned; calling the function registers the verify command and its subcommands on the supplied Commander program."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
