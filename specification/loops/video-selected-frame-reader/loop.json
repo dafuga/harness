@@ -2,7 +2,7 @@
 	"name": "video-selected-frame-reader",
 	"goal": "Read verified selected archive clips without hydrating corrupt sibling media",
 	"createdAt": "2026-11-15T22:31:29.947Z",
-	"updatedAt": "2026-11-15T22:37:42.866Z",
+	"updatedAt": "2026-11-15T22:45:31.038Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-15T22:45:29.190Z",
+			"evidence": "Source 785f14eda8 keeps FrameFlagService/flagStore/flagSchema unchanged. flagMedia delegates metadata selection to owner-private readFrameCapture. Archived clips use exact original VideoReferenceService proof at pinned evidence+notes; legacy inline clips still require complete HistoryStatus integrity."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-15T22:45:31.038Z",
+			"evidence": "Unchanged FrameFlag suite passed all 8 existing cases at 785f14eda8; selected-parent integration passed 6/6. Retained red/green have identical frozen test inputs and environment profile. Healthy A flag/frame/feedback succeeds with only B missing; B and wrong/pinned refs reject; C whole status stays broken."
 		},
 		{
 			"id": "verify",
