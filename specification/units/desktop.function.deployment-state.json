@@ -18,51 +18,184 @@
 				"name": "deploymentState.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+				"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared common Git directory that holds the harness-deployments/receipts.json file. Every worktree of a repository resolves to the same receipts, and a directory outside any repository makes git fail, so the operation rejects.",
+				"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
 			},
 			{
 				"name": "saveDeployment.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+				"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared receipts directory before the stored receipts are read and replaced. A directory outside any repository makes git fail, so the save rejects and nothing is written.",
+				"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
 			},
 			{
 				"name": "saveDeployment.receipt",
 				"type": "DeploymentReceipt",
 				"required": true,
-				"description": "Verified destination identity and immutable source to persist after a successful deployment."
+				"description": "Receipt for one environment (dev, stage, preprod or prod) that replaces any stored receipt with the same environment and is appended after the others. It is written without schema validation, so an invalid receipt makes later reads of receipts.json reject with ZodError.",
+				"examples": [
+					{
+						"environment": "dev",
+						"commit": "3f9c1e7a0b2d4e6f8a1c3b5d7e9f0a2b4c6d8e1f",
+						"branch": "feature/deploy-receipts",
+						"updatedAt": "2026-11-14T09:30:00.000Z",
+						"adapter": "cloudflare",
+						"deploymentId": "8f1c2a7e-3b4d-4e9a-a1f6-5c2d9b7e0f31",
+						"url": "https://example-dev.workers.dev"
+					},
+					{
+						"environment": "prod",
+						"commit": "a41b7c09e2f35d8b6c1a0e9f7d4b2c8e5a3f6d10",
+						"branch": "main",
+						"updatedAt": "2026-11-12T16:05:42.318Z",
+						"adapter": "cloudflare",
+						"deploymentId": "c27e90fa-5d1b-4b6e-8a3c-9f0e1d2b3a48",
+						"url": "https://example-prod.workers.dev"
+					}
+				]
 			},
 			{
 				"name": "deploymentStatus.root",
 				"type": "string",
 				"required": true,
-				"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+				"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared receipts and also passed unchanged to plugin.discover. A directory outside any repository makes git fail, so the call rejects before discover is called.",
+				"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
 			},
 			{
 				"name": "deploymentStatus.plugin",
 				"type": "DeploymentPlugin",
 				"required": true,
-				"description": "Deployment adapter used to discover configured target identities."
+				"description": "Deployment adapter whose discover(root) supplies the configured target for each environment. Only discover is called, and if it rejects the error is caught, so every status is reported as unavailable with the reason 'Cloudflare configuration is unavailable or invalid.'"
 			}
 		],
 		"outputs": [
 			{
 				"name": "deploymentState",
 				"type": "Promise<DeploymentReceipt[]>",
-				"description": "Validated verified receipts, or an empty list before the first deployment."
+				"description": "Receipts read from the shared receipts.json, parsed and validated against the receipt schema, in stored order. It resolves to an empty list when that file does not exist, and also when the git executable is missing, because that ENOENT is caught as well.",
+				"examples": [
+					[],
+					[
+						{
+							"environment": "dev",
+							"commit": "3f9c1e7a0b2d4e6f8a1c3b5d7e9f0a2b4c6d8e1f",
+							"branch": "feature/deploy-receipts",
+							"updatedAt": "2026-11-14T09:30:00.000Z",
+							"adapter": "cloudflare",
+							"deploymentId": "8f1c2a7e-3b4d-4e9a-a1f6-5c2d9b7e0f31",
+							"url": "https://example-dev.workers.dev"
+						},
+						{
+							"environment": "prod",
+							"commit": "a41b7c09e2f35d8b6c1a0e9f7d4b2c8e5a3f6d10",
+							"branch": "main",
+							"updatedAt": "2026-11-12T16:05:42.318Z",
+							"adapter": "cloudflare",
+							"deploymentId": "c27e90fa-5d1b-4b6e-8a3c-9f0e1d2b3a48",
+							"url": "https://example-prod.workers.dev"
+						}
+					]
+				]
 			},
 			{
 				"name": "saveDeployment",
 				"type": "unknown",
-				"description": "Resolves after atomic receipt replacement; write or validation errors propagate."
+				"description": "Resolves with undefined once the updated receipt list has been written to a temporary file in the receipts directory and renamed over receipts.json. Saves to that directory are queued in this process so they run one at a time, and read, validation or write errors reject the promise."
 			},
 			{
 				"name": "deploymentStatus",
 				"type": "unknown",
-				"description": "Status of dev, stage, preprod and prod, including configuration availability and last receipt."
+				"description": "One entry per environment, in the order dev, stage, preprod and prod, with its stored receipt or null and available set to whether discover reports a target for that environment. The reason is 'Cloudflare target configured.' or 'Deployment target not configured.' for each entry, or 'Cloudflare configuration is unavailable or invalid.' for every entry when discover rejects.",
+				"examples": [
+					[
+						{
+							"environment": "dev",
+							"receipt": {
+								"environment": "dev",
+								"commit": "3f9c1e7a0b2d4e6f8a1c3b5d7e9f0a2b4c6d8e1f",
+								"branch": "feature/deploy-receipts",
+								"updatedAt": "2026-11-14T09:30:00.000Z",
+								"adapter": "cloudflare",
+								"deploymentId": "8f1c2a7e-3b4d-4e9a-a1f6-5c2d9b7e0f31",
+								"url": "https://example-dev.workers.dev"
+							},
+							"available": true,
+							"reason": "Cloudflare target configured."
+						},
+						{
+							"environment": "stage",
+							"receipt": null,
+							"available": true,
+							"reason": "Cloudflare target configured."
+						},
+						{
+							"environment": "preprod",
+							"receipt": null,
+							"available": false,
+							"reason": "Deployment target not configured."
+						},
+						{
+							"environment": "prod",
+							"receipt": {
+								"environment": "prod",
+								"commit": "a41b7c09e2f35d8b6c1a0e9f7d4b2c8e5a3f6d10",
+								"branch": "main",
+								"updatedAt": "2026-11-12T16:05:42.318Z",
+								"adapter": "cloudflare",
+								"deploymentId": "c27e90fa-5d1b-4b6e-8a3c-9f0e1d2b3a48",
+								"url": "https://example-prod.workers.dev"
+							},
+							"available": false,
+							"reason": "Deployment target not configured."
+						}
+					],
+					[
+						{
+							"environment": "dev",
+							"receipt": null,
+							"available": false,
+							"reason": "Cloudflare configuration is unavailable or invalid."
+						},
+						{
+							"environment": "stage",
+							"receipt": null,
+							"available": false,
+							"reason": "Cloudflare configuration is unavailable or invalid."
+						},
+						{
+							"environment": "preprod",
+							"receipt": null,
+							"available": false,
+							"reason": "Cloudflare configuration is unavailable or invalid."
+						},
+						{
+							"environment": "prod",
+							"receipt": null,
+							"available": false,
+							"reason": "Cloudflare configuration is unavailable or invalid."
+						}
+					]
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Thrown by JSON.parse when receipts.json exists but is not valid JSON; each operation rejects with it."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown by receipts.parse when receipts.json is valid JSON but its contents are not an array of valid receipts; each operation rejects with it."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Rejects with the git error when git rev-parse --git-common-dir fails, such as outside a repository, or with a file-system error from reading, creating, writing or renaming receipt files; a missing receipts.json reads as an empty list instead."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "deploymentState",
@@ -71,18 +204,58 @@
 						"name": "deploymentState.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+						"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared common Git directory that holds the harness-deployments/receipts.json file. Every worktree of a repository resolves to the same receipts, and a directory outside any repository makes git fail, so the operation rejects.",
+						"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "deploymentState",
 						"type": "Promise<DeploymentReceipt[]>",
-						"description": "Validated verified receipts, or an empty list before the first deployment."
+						"description": "Receipts read from the shared receipts.json, parsed and validated against the receipt schema, in stored order. It resolves to an empty list when that file does not exist, and also when the git executable is missing, because that ENOENT is caught as well.",
+						"examples": [
+							[],
+							[
+								{
+									"environment": "dev",
+									"commit": "3f9c1e7a0b2d4e6f8a1c3b5d7e9f0a2b4c6d8e1f",
+									"branch": "feature/deploy-receipts",
+									"updatedAt": "2026-11-14T09:30:00.000Z",
+									"adapter": "cloudflare",
+									"deploymentId": "8f1c2a7e-3b4d-4e9a-a1f6-5c2d9b7e0f31",
+									"url": "https://example-dev.workers.dev"
+								},
+								{
+									"environment": "prod",
+									"commit": "a41b7c09e2f35d8b6c1a0e9f7d4b2c8e5a3f6d10",
+									"branch": "main",
+									"updatedAt": "2026-11-12T16:05:42.318Z",
+									"adapter": "cloudflare",
+									"deploymentId": "c27e90fa-5d1b-4b6e-8a3c-9f0e1d2b3a48",
+									"url": "https://example-prod.workers.dev"
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when receipts.json exists but is not valid JSON; the promise rejects with it."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by receipts.parse when receipts.json is valid JSON but its contents are not an array of valid receipts; the promise rejects with it."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the git error when git rev-parse --git-common-dir fails, such as outside a repository, or with the file-system error when reading receipts.json fails for a reason other than a missing file."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "saveDeployment",
@@ -91,24 +264,61 @@
 						"name": "saveDeployment.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+						"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared receipts directory before the stored receipts are read and replaced. A directory outside any repository makes git fail, so the save rejects and nothing is written.",
+						"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
 					},
 					{
 						"name": "saveDeployment.receipt",
 						"type": "DeploymentReceipt",
 						"required": true,
-						"description": "Verified destination identity and immutable source to persist after a successful deployment."
+						"description": "Receipt for one environment (dev, stage, preprod or prod) that replaces any stored receipt with the same environment and is appended after the others. It is written without schema validation, so an invalid receipt makes later reads of receipts.json reject with ZodError.",
+						"examples": [
+							{
+								"environment": "dev",
+								"commit": "3f9c1e7a0b2d4e6f8a1c3b5d7e9f0a2b4c6d8e1f",
+								"branch": "feature/deploy-receipts",
+								"updatedAt": "2026-11-14T09:30:00.000Z",
+								"adapter": "cloudflare",
+								"deploymentId": "8f1c2a7e-3b4d-4e9a-a1f6-5c2d9b7e0f31",
+								"url": "https://example-dev.workers.dev"
+							},
+							{
+								"environment": "prod",
+								"commit": "a41b7c09e2f35d8b6c1a0e9f7d4b2c8e5a3f6d10",
+								"branch": "main",
+								"updatedAt": "2026-11-12T16:05:42.318Z",
+								"adapter": "cloudflare",
+								"deploymentId": "c27e90fa-5d1b-4b6e-8a3c-9f0e1d2b3a48",
+								"url": "https://example-prod.workers.dev"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "saveDeployment",
 						"type": "unknown",
-						"description": "Resolves after atomic receipt replacement; write or validation errors propagate."
+						"description": "Resolves with undefined once the updated receipt list has been written to a temporary file in the receipts directory and renamed over receipts.json. Saves to that directory are queued in this process so they run one at a time, and read, validation or write errors reject the promise."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse while the existing receipts.json is read before replacement; the promise rejects and receipts.json is left unchanged."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by receipts.parse while the existing receipts.json is validated before replacement; the promise rejects and receipts.json is left unchanged."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the git error when git rev-parse --git-common-dir fails, with the file-system error when reading receipts.json fails for a reason other than a missing file, or with the file-system error from creating the receipts directory, writing the temporary file or renaming it over receipts.json."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "deploymentStatus",
@@ -117,24 +327,111 @@
 						"name": "deploymentStatus.root",
 						"type": "string",
 						"required": true,
-						"description": "Absolute Git repository directory whose source and deployment receipts are inspected."
+						"description": "Directory inside a Git repository or one of its worktrees, passed to git -C to locate the shared receipts and also passed unchanged to plugin.discover. A directory outside any repository makes git fail, so the call rejects before discover is called.",
+						"examples": ["/Users/dev/code/example-repo", "/Users/dev/code/example-repo-deploy"]
 					},
 					{
 						"name": "deploymentStatus.plugin",
 						"type": "DeploymentPlugin",
 						"required": true,
-						"description": "Deployment adapter used to discover configured target identities."
+						"description": "Deployment adapter whose discover(root) supplies the configured target for each environment. Only discover is called, and if it rejects the error is caught, so every status is reported as unavailable with the reason 'Cloudflare configuration is unavailable or invalid.'"
 					}
 				],
 				"outputs": [
 					{
 						"name": "deploymentStatus",
 						"type": "unknown",
-						"description": "Status of dev, stage, preprod and prod, including configuration availability and last receipt."
+						"description": "One entry per environment, in the order dev, stage, preprod and prod, with its stored receipt or null and available set to whether discover reports a target for that environment. The reason is 'Cloudflare target configured.' or 'Deployment target not configured.' for each entry, or 'Cloudflare configuration is unavailable or invalid.' for every entry when discover rejects.",
+						"examples": [
+							[
+								{
+									"environment": "dev",
+									"receipt": {
+										"environment": "dev",
+										"commit": "3f9c1e7a0b2d4e6f8a1c3b5d7e9f0a2b4c6d8e1f",
+										"branch": "feature/deploy-receipts",
+										"updatedAt": "2026-11-14T09:30:00.000Z",
+										"adapter": "cloudflare",
+										"deploymentId": "8f1c2a7e-3b4d-4e9a-a1f6-5c2d9b7e0f31",
+										"url": "https://example-dev.workers.dev"
+									},
+									"available": true,
+									"reason": "Cloudflare target configured."
+								},
+								{
+									"environment": "stage",
+									"receipt": null,
+									"available": true,
+									"reason": "Cloudflare target configured."
+								},
+								{
+									"environment": "preprod",
+									"receipt": null,
+									"available": false,
+									"reason": "Deployment target not configured."
+								},
+								{
+									"environment": "prod",
+									"receipt": {
+										"environment": "prod",
+										"commit": "a41b7c09e2f35d8b6c1a0e9f7d4b2c8e5a3f6d10",
+										"branch": "main",
+										"updatedAt": "2026-11-12T16:05:42.318Z",
+										"adapter": "cloudflare",
+										"deploymentId": "c27e90fa-5d1b-4b6e-8a3c-9f0e1d2b3a48",
+										"url": "https://example-prod.workers.dev"
+									},
+									"available": false,
+									"reason": "Deployment target not configured."
+								}
+							],
+							[
+								{
+									"environment": "dev",
+									"receipt": null,
+									"available": false,
+									"reason": "Cloudflare configuration is unavailable or invalid."
+								},
+								{
+									"environment": "stage",
+									"receipt": null,
+									"available": false,
+									"reason": "Cloudflare configuration is unavailable or invalid."
+								},
+								{
+									"environment": "preprod",
+									"receipt": null,
+									"available": false,
+									"reason": "Cloudflare configuration is unavailable or invalid."
+								},
+								{
+									"environment": "prod",
+									"receipt": null,
+									"available": false,
+									"reason": "Cloudflare configuration is unavailable or invalid."
+								}
+							]
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Thrown by JSON.parse when receipts.json exists but is not valid JSON; the promise rejects before plugin.discover is called."
+					},
+					{
+						"name": "ZodError",
+						"type": "thrown",
+						"description": "Thrown by receipts.parse when receipts.json is valid JSON but its contents are not an array of valid receipts; the promise rejects before plugin.discover is called."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Rejects with the git error when git rev-parse --git-common-dir fails, such as outside a repository, or with the file-system error when reading receipts.json fails for a reason other than a missing file; the promise rejects before plugin.discover is called."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
