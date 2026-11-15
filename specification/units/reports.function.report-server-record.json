@@ -31,51 +31,91 @@
 				"name": "stopReportServer.root",
 				"type": "string",
 				"required": true,
-				"description": "Report store root whose recorded server should be stopped."
+				"description": "Store root used to locate `<root>/servers/<port>.json`; it determines which recorded server is considered for stopping. A file-read failure is treated as no record.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
+				]
 			},
 			{
 				"name": "stopReportServer.port",
 				"type": "number",
 				"required": true,
-				"description": "Port identifying the recorded server to stop."
+				"description": "Selects the `<port>.json` file under the store's `servers` directory and is copied to the result. The implementation stringifies it for the filename without checking network-port bounds.",
+				"examples": [4173]
 			},
 			{
 				"name": "processStarted.pid",
 				"type": "number",
 				"required": true,
-				"description": "Process identifier whose system start time is requested."
+				"description": "PID passed to `ps` to query the process start time; the result is used to protect against signaling a reused PID. A failed or empty `ps` result becomes `undefined` rather than a rejection.",
+				"examples": [28411]
 			},
 			{
 				"name": "reportServerRecord.root",
 				"type": "string",
 				"required": true,
-				"description": "Report store root used for server records."
+				"description": "Root directory prefixed to the `servers/<port>.json` record path; it determines where the handle reads, writes and removes this record. The directory is created recursively only by `write()`, not by constructing the handle.",
+				"examples": [
+					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
+				]
 			},
 			{
 				"name": "reportServerRecord.port",
 				"type": "number",
 				"required": true,
-				"description": "Port naming the server record."
+				"description": "The number is interpolated into `<root>/servers/<port>.json` to select the record file. It is not checked against network-port bounds.",
+				"examples": [4173]
 			}
 		],
 		"outputs": [
 			{
 				"name": "processStarted",
 				"type": "Promise<string | undefined>",
-				"description": "Trimmed system start-time text from ps for that PID, or undefined when the command fails or returns no value."
+				"description": "The resolved value is the trimmed `ps -o lstart= -p <pid>` output for that PID, or `undefined` if `ps` fails or yields no text. It does not reserve or recheck the PID.",
+				"examples": ["Mon Jun 15 09:23:48 2026"]
 			},
 			{
 				"name": "reportServerRecord",
 				"type": "unknown",
-				"description": "Record file path plus async read, write and remove methods. Reads suppress filesystem failures as absence, but malformed JSON rejects; writes create the server-record directory."
+				"description": "Returns a handle whose `file` is `<root>/servers/<port>.json` and whose methods read, write and remove that file. `read()` returns parsed JSON or `undefined` for read errors or empty content but rejects malformed JSON; `write()` creates parent directories and writes pretty JSON plus a newline, while `remove()` force-removes the file."
 			},
 			{
 				"name": "stopReportServer",
 				"type": "Promise<StoppedServer>",
-				"description": "Loads the record, compares PID and start time, sends SIGTERM only to a match, waits in roughly 100-millisecond intervals for up to five seconds, then sends SIGKILL if the same process remains. Removes the record and reports whether a matching process was initially found."
+				"description": "The resolved result reports the requested port, whether PID and start time matched before signaling, and the recorded PID or a reason when available; no record yields `stopped: false` and a reason. A matching process receives SIGTERM, is polled for up to five seconds, then receives SIGKILL if still matched, and the record is removed on the normal path.",
+				"examples": [
+					{
+						"port": 4173,
+						"stopped": false,
+						"reason": "This report store recorded no server on this port."
+					},
+					{
+						"port": 4173,
+						"stopped": true,
+						"pid": 28411
+					},
+					{
+						"port": 4173,
+						"stopped": false,
+						"pid": 28411,
+						"reason": "The recorded server had already ended."
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Reading a nonempty record parses its contents with `JSON.parse` and does not catch parse failures, so malformed JSON rejects `read()` and `stopReportServer`."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "OS signal errors from `process.kill` and filesystem errors from `mkdir`, `writeFile` or `rm` propagate as Node errors; `stopReportServer` does not catch failed signals or record removal. `readFile` errors are caught and returned as absence."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "stopReportServer",
@@ -84,24 +124,57 @@
 						"name": "stopReportServer.root",
 						"type": "string",
 						"required": true,
-						"description": "Report store root whose recorded server should be stopped."
+						"description": "Store root used to locate `<root>/servers/<port>.json`; it determines which recorded server is considered for stopping. A file-read failure is treated as no record.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
+						]
 					},
 					{
 						"name": "stopReportServer.port",
 						"type": "number",
 						"required": true,
-						"description": "Port identifying the recorded server to stop."
+						"description": "Selects the `<port>.json` file under the store's `servers` directory and is copied to the result. The implementation stringifies it for the filename without checking network-port bounds.",
+						"examples": [4173]
 					}
 				],
 				"outputs": [
 					{
 						"name": "stopReportServer",
 						"type": "Promise<StoppedServer>",
-						"description": "Loads the record, compares PID and start time, sends SIGTERM only to a match, waits in roughly 100-millisecond intervals for up to five seconds, then sends SIGKILL if the same process remains. Removes the record and reports whether a matching process was initially found."
+						"description": "The resolved result reports the requested port, whether PID and start time matched before signaling, and the recorded PID or a reason when available; no record yields `stopped: false` and a reason. A matching process receives SIGTERM, is polled for up to five seconds, then receives SIGKILL if still matched, and the record is removed on the normal path.",
+						"examples": [
+							{
+								"port": 4173,
+								"stopped": false,
+								"reason": "This report store recorded no server on this port."
+							},
+							{
+								"port": 4173,
+								"stopped": true,
+								"pid": 28411
+							},
+							{
+								"port": 4173,
+								"stopped": false,
+								"pid": 28411,
+								"reason": "The recorded server had already ended."
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Reading a nonempty record parses its contents with `JSON.parse` and does not catch parse failures, so malformed JSON rejects `read()` and `stopReportServer`."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "An OS error from process.kill or a filesystem error from rm propagates because this function does not catch it. The PID/start-time check cannot make a later signal atomic."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "processStarted",
@@ -110,18 +183,20 @@
 						"name": "processStarted.pid",
 						"type": "number",
 						"required": true,
-						"description": "Process identifier whose system start time is requested."
+						"description": "PID passed to `ps` to query the process start time; the result is used to protect against signaling a reused PID. A failed or empty `ps` result becomes `undefined` rather than a rejection.",
+						"examples": [28411]
 					}
 				],
 				"outputs": [
 					{
 						"name": "processStarted",
 						"type": "Promise<string | undefined>",
-						"description": "Trimmed system start-time text from ps for that PID, or undefined when the command fails or returns no value."
+						"description": "The resolved value is the trimmed `ps -o lstart= -p <pid>` output for that PID, or `undefined` if `ps` fails or yields no text. It does not reserve or recheck the PID.",
+						"examples": ["Mon Jun 15 09:23:48 2026"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "reportServerRecord",
@@ -130,24 +205,28 @@
 						"name": "reportServerRecord.root",
 						"type": "string",
 						"required": true,
-						"description": "Report store root used for server records."
+						"description": "Root directory prefixed to the `servers/<port>.json` record path; it determines where the handle reads, writes and removes this record. The directory is created recursively only by `write()`, not by constructing the handle.",
+						"examples": [
+							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-18/packages/reports"
+						]
 					},
 					{
 						"name": "reportServerRecord.port",
 						"type": "number",
 						"required": true,
-						"description": "Port naming the server record."
+						"description": "The number is interpolated into `<root>/servers/<port>.json` to select the record file. It is not checked against network-port bounds.",
+						"examples": [4173]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reportServerRecord",
 						"type": "unknown",
-						"description": "Record file path plus async read, write and remove methods. Reads suppress filesystem failures as absence, but malformed JSON rejects; writes create the server-record directory."
+						"description": "Returns a handle whose `file` is `<root>/servers/<port>.json` and whose methods read, write and remove that file. `read()` returns parsed JSON or `undefined` for read errors or empty content but rejects malformed JSON; `write()` creates parent directories and writes pretty JSON plus a newline, while `remove()` force-removes the file."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
