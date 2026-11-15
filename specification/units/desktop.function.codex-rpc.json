@@ -22,29 +22,75 @@
 					"command": "codex",
 					"args": ["app-server", "--stdio", "-c", "model_provider=\"openai\""]
 				},
-				"description": "The executable and arguments to start. By default starts Codex app-server over standard input and output with the OpenAI provider selected."
+				"description": "The executable and argument list spawned for the owned Codex process, with stdio piped; the default is codex with the arguments app-server, --stdio, -c and model_provider=\"openai\". It matters because the connection writes newline-delimited JSON to stdin and reads stdout line by line, so a replacement must start a process that speaks that protocol.",
+				"examples": [
+					{
+						"command": "codex",
+						"args": ["app-server", "--stdio", "-c", "model_provider=\"openai\""]
+					},
+					{
+						"command": "codex",
+						"args": ["app-server", "--stdio"]
+					},
+					{
+						"command": "/usr/local/bin/codex",
+						"args": ["app-server", "--stdio", "-c", "model_provider=\"openai\""]
+					}
+				]
 			},
 			{
 				"name": "codexRpc.resources",
 				"type": "ResourceContext",
 				"required": false,
-				"description": "Optional inherited resource reservation for the Codex app-server process."
+				"default": "undefined",
+				"description": "Optional resource context for the child process: its env (treated as {} when absent) passes through resourceEnvironment and is merged over cliEnvironment(), and its track function receives the child PID when spawn assigns one. Omitting it (undefined) merges resourceEnvironment({}) over cliEnvironment() and tracks no PID."
 			}
 		],
 		"outputs": [
 			{
 				"name": "codexRpc",
 				"type": "unknown",
-				"description": "A promise for an initialized connection with send, request, subscribe and dispose operations. Requests use incrementing IDs and a default thirty-second timeout; subscriptions return an unsubscribe function. Disposing terminates the owned process and rejects pending requests."
+				"description": "A promise that resolves to an initialized connection with send, request, subscribe and dispose, after the initialize request succeeds and the initialized notification is sent. request assigns incrementing numeric ids and has a 30000 ms default timeout, subscribe returns an unsubscribe function, and dispose kills the owned process, ends stdin and rejects pending requests."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Initialization failure rejects and disposes the connection. Process failure, closure or an oversized message rejects pending requests. Sending after closure fails. The message reader has a 96,000,000-byte limit."
+				"description": "send throws an Error with the message 'Codex connection closed.' once the connection is marked closed by a process error, process close, stdin error, oversized message or dispose."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Pending requests reject with an Error whose message is 'Codex connection closed.' when the child process closes, its stdin emits an error, or dispose runs."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Pending requests reject with the error the child process emits on its 'error' event, for example when the command cannot be started."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Pending requests reject with an Error whose message is 'Codex message too large.' when stdout overflows the 96000000-byte maxBytes limit of the line reader, and the owned process is killed first."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "codexRpc rejects with the same error after disposing the connection when the initialize request or the initialized notification fails."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Synchronous errors raised while creating the connection, such as from spawn or resources.track, reject codexRpc without calling dispose because connection() runs outside the initialization try block."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "send propagates the TypeError that JSON.stringify throws for a value it cannot serialize, such as a BigInt or a circular structure."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "codexRpc",
@@ -57,24 +103,75 @@
 							"command": "codex",
 							"args": ["app-server", "--stdio", "-c", "model_provider=\"openai\""]
 						},
-						"description": "The executable and arguments to start. By default starts Codex app-server over standard input and output with the OpenAI provider selected."
+						"description": "The executable and argument list spawned for the owned Codex process, with stdio piped; the default is codex with the arguments app-server, --stdio, -c and model_provider=\"openai\". It matters because the connection writes newline-delimited JSON to stdin and reads stdout line by line, so a replacement must start a process that speaks that protocol.",
+						"examples": [
+							{
+								"command": "codex",
+								"args": ["app-server", "--stdio", "-c", "model_provider=\"openai\""]
+							},
+							{
+								"command": "codex",
+								"args": ["app-server", "--stdio"]
+							},
+							{
+								"command": "/usr/local/bin/codex",
+								"args": ["app-server", "--stdio", "-c", "model_provider=\"openai\""]
+							}
+						]
 					},
 					{
 						"name": "codexRpc.resources",
 						"type": "ResourceContext",
 						"required": false,
-						"description": "Optional inherited resource reservation for the Codex app-server process."
+						"default": "undefined",
+						"description": "Optional resource context for the child process: its env (treated as {} when absent) passes through resourceEnvironment and is merged over cliEnvironment(), and its track function receives the child PID when spawn assigns one. Omitting it (undefined) merges resourceEnvironment({}) over cliEnvironment() and tracks no PID."
 					}
 				],
 				"outputs": [
 					{
 						"name": "codexRpc",
 						"type": "unknown",
-						"description": "A promise for an initialized connection with send, request, subscribe and dispose operations. Requests use incrementing IDs and a default thirty-second timeout; subscriptions return an unsubscribe function. Disposing terminates the owned process and rejects pending requests."
+						"description": "A promise that resolves to an initialized connection with send, request, subscribe and dispose, after the initialize request succeeds and the initialized notification is sent. request assigns incrementing numeric ids and has a 30000 ms default timeout, subscribe returns an unsubscribe function, and dispose kills the owned process, ends stdin and rejects pending requests."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "send throws an Error with the message 'Codex connection closed.' once the connection is marked closed by a process error, process close, stdin error, oversized message or dispose."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Pending requests reject with an Error whose message is 'Codex connection closed.' when the child process closes, its stdin emits an error, or dispose runs."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Pending requests reject with the error the child process emits on its 'error' event, for example when the command cannot be started."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Pending requests reject with an Error whose message is 'Codex message too large.' when stdout overflows the 96000000-byte maxBytes limit of the line reader, and the owned process is killed first."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "codexRpc rejects with the same error after disposing the connection when the initialize request or the initialized notification fails."
+					},
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Synchronous errors raised while creating the connection, such as from spawn or resources.track, reject codexRpc without calling dispose because connection() runs outside the initialization try block."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "send propagates the TypeError that JSON.stringify throws for a value it cannot serialize, such as a BigInt or a circular structure."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
