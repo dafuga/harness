@@ -125,7 +125,7 @@ test.skipIf(!mac)(
 test.skipIf(!mac)(
 	'a look that is late is ended itself: its tool is gone, not only its answer given up',
 	async () => {
-		const { processProbes } = await import('../src/utils/processProbes');
+		const { processProbes } = await import('../src/utils/development-tooling/processProbes');
 		const late = tool('late-tool');
 		const began = Date.now();
 		// Use the installed interpreter so fresh-script admission cannot consume the probe limit.
@@ -142,7 +142,7 @@ test.skipIf(!mac)(
 test.skipIf(!mac)(
 	'a look that is cancelled is ended itself: its tool was running and is gone',
 	async () => {
-		const { processProbes } = await import('../src/utils/processProbes');
+		const { processProbes } = await import('../src/utils/development-tooling/processProbes');
 		const cancelled = tool('cancelled-tool');
 		const control = new AbortController();
 		const running = processProbes({ signal: control.signal }).ran('/bin/sh', [cancelled.script]);

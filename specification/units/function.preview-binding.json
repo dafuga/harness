@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"src/utils/development-tooling/previewBinding.ts",
-			"src/utils/development-tooling/previewBinding.types.ts",
-			"src/utils/previewBinding.ts"
+			"src/utils/development-tooling/previewBinding.types.ts"
 		],
-		"symbols": ["previewBinding", "PreviewUnit", "previewBinding"]
+		"symbols": ["previewBinding", "PreviewUnit"]
 	},
 	"contract": {
 		"origin": "declared",

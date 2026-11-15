@@ -1,6 +1,6 @@
 import { realpathSync } from 'node:fs';
 import { expect, test } from 'vitest';
-import { processProbes } from '../../src/utils/processProbes';
+import { processProbes } from '../../src/utils/development-tooling/processProbes';
 
 const mac = process.platform === 'darwin';
 
