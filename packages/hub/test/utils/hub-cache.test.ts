@@ -56,7 +56,7 @@ import {
 	commit,
 	cacheEnvelope
 } from '../support/projectionFixture';
-import { hubSource, hubRead } from '../../src/utils/hubSource';
+import { hubSource, hubRead } from '../../src/utils/development-tooling/hubSource';
 import { hubBlobProfile } from '../../src/utils/development-tooling/hubRaw';
 import { hubHash } from '../../src/utils/development-tooling/hubJson';
 test('warm cache cannot hide mismatch between committed bytes and design hash', async () => {

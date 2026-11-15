@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { hubArtifactCommit } from '../../src/routes/api/[...path]/hub-projection-service/hubArtifactCommit';
-import { hubSource } from '../../src/utils/hubSource';
+import { hubSource } from '../../src/utils/development-tooling/hubSource';
 import { actor, project, commit, projectionFixture } from '../support/projectionFixture';
 
 test('multiple recorded writes to a design cannot attest an immutable introduction', async () => {

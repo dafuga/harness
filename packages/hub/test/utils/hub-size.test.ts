@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { hubSize } from '../../src/routes/api/[...path]/hub-projection-service/hubSize';
-import type { HubSourceContext } from '../../src/utils/hubSource';
+import type { HubSourceContext } from '../../src/utils/development-tooling/hubSource';
 
 test('missing source sizes stay explicitly unavailable rather than counting as zero', () => {
 	const context = {

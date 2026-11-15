@@ -1,6 +1,6 @@
 import { measureWorkload } from '../../../test/support/measureWorkload';
 import { hubPlans } from '../src/utils/networking-security/hubPlans';
-import { hubSource } from '../src/utils/hubSource';
+import { hubSource } from '../src/utils/development-tooling/hubSource';
 import { hubContractHash } from '../src/utils/development-tooling/hubJson';
 import { actor, project, commit, projectionFixture } from './support/projectionFixture';
 import { expect, test } from 'vitest';

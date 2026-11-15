@@ -10,10 +10,9 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/routes/api/[...path]/hub-projection-service/hubThreads.ts",
-			"packages/hub/src/utils/hubThreads.ts",
 			"packages/hub/src/utils/networking-security/hubThreads.ts"
 		],
-		"symbols": ["hubMessages", "hubMessages", "hubThreads", "hubThreads", "hubMessages"]
+		"symbols": ["hubMessages", "hubThreads", "hubMessages"]
 	},
 	"contract": {
 		"origin": "declared",

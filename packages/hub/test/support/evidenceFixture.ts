@@ -13,7 +13,7 @@ import { mediaFile } from '../../../reports/src/utils/harnessEvidence';
 import { HubApiController } from '../../src/controllers/hub-api-controller/HubApiController';
 import { HubProjectionService } from '../../src/routes/api/[...path]/hub-projection-service/HubProjectionService';
 import { hubCache } from '../../src/routes/api/[...path]/hubCache';
-import { hubSource } from '../../src/utils/hubSource';
+import { hubSource } from '../../src/utils/development-tooling/hubSource';
 import { fakeGit, gitSource } from './evidenceGit';
 import { evidenceHistory } from './evidenceHistory';
 import { page } from './evidenceRecords';

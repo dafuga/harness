@@ -2,7 +2,7 @@ import type { Pins } from './evidenceReaders.types';
 import { HubAttachedService } from '../../src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService';
 import { HubRecordStatusService } from '../../src/services/verification-evidence/hub-evidence-service/HubRecordStatusService';
 import { hubNotes } from '../../src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubNotes';
-import type { HubSourceContext } from '../../src/utils/hubSource';
+import type { HubSourceContext } from '../../src/utils/development-tooling/hubSource';
 import { reachesIn, type EvidenceFixture } from './evidenceFixture';
 
 /** The records of a fixture as the hub loads them at one pinned evidence commit. */
