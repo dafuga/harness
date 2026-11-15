@@ -21,29 +21,81 @@
 				"name": "hostedCapabilities.value",
 				"type": "unknown",
 				"required": true,
-				"description": "The hosted project response object, including its project identity and role."
+				"description": "The hosted project response record; a null, non-object or array value throws. Only id, role and executionAvailable are read: id must equal projectId, role (converted with String()) must be owner, writer, commenter or viewer, and executionAvailable must be exactly true for agents to be enabled on an owner or writer role.",
+				"examples": [
+					{
+						"id": "3f6d2a8e-5b1c-4e9a-8d7f-0c2b9e4a6d13",
+						"name": "Harbor Ops",
+						"role": "owner",
+						"executionAvailable": true
+					},
+					{
+						"id": "c0a8e5f1-7b2d-4e6a-b3c9-1d8f5a2e7b04",
+						"name": "Field Notes",
+						"role": "writer",
+						"executionAvailable": false
+					},
+					{
+						"id": "9b1e4c7a-2d3f-4a8b-9c5e-6f7a8b9c0d1e",
+						"name": "Survey Atlas",
+						"role": "viewer",
+						"executionAvailable": false
+					}
+				]
 			},
 			{
 				"name": "hostedCapabilities.projectId",
 				"type": "string",
 				"required": true,
-				"description": "The expected project identity; the response identity must match exactly."
+				"description": "The expected project id, compared with strict equality (!==) to the response's id field; a mismatch throws. The hub only accepts project ids of 36 lowercase hex or dash characters, but this function does not check the format itself.",
+				"examples": [
+					"3f6d2a8e-5b1c-4e9a-8d7f-0c2b9e4a6d13",
+					"c0a8e5f1-7b2d-4e6a-b3c9-1d8f5a2e7b04",
+					"9b1e4c7a-2d3f-4a8b-9c5e-6f7a8b9c0d1e"
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "hostedCapabilities",
 				"type": "ProjectCapabilities",
-				"description": "Shared-project capabilities with GitHub as source. Owners and commenters may comment; viewers may not. Agents, planning and approval are disabled, with an explanation that shared comments need server acknowledgment."
+				"description": "Capabilities for a hosted shared project, with source always 'github'; comments is false only for the viewer role, and agents, planning and approval are true only for an owner or writer role whose executionAvailable is exactly true. The reason is one of four fixed sentences chosen by role and agent access.",
+				"examples": [
+					{
+						"comments": true,
+						"agents": true,
+						"planning": true,
+						"approval": true,
+						"source": "github",
+						"reason": "Write access: comments and AI requests."
+					},
+					{
+						"comments": true,
+						"agents": false,
+						"planning": false,
+						"approval": false,
+						"source": "github",
+						"reason": "Write access. Connect a project executor to run AI."
+					},
+					{
+						"comments": false,
+						"agents": false,
+						"planning": false,
+						"approval": false,
+						"source": "github",
+						"reason": "Read access: browse only."
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws for an invalid response object, a different project identity or a role other than owner, commenter or viewer."
+				"description": "Thrown as Error('Invalid hosted response.') when the value is null, not an object or an array, and as Error('Unknown hosted project access.') when the response id differs from projectId or the role (converted with String()) is not owner, writer, commenter or viewer."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hostedCapabilities",
@@ -52,29 +104,81 @@
 						"name": "hostedCapabilities.value",
 						"type": "unknown",
 						"required": true,
-						"description": "The hosted project response object, including its project identity and role."
+						"description": "The hosted project response record; a null, non-object or array value throws. Only id, role and executionAvailable are read: id must equal projectId, role (converted with String()) must be owner, writer, commenter or viewer, and executionAvailable must be exactly true for agents to be enabled on an owner or writer role.",
+						"examples": [
+							{
+								"id": "3f6d2a8e-5b1c-4e9a-8d7f-0c2b9e4a6d13",
+								"name": "Harbor Ops",
+								"role": "owner",
+								"executionAvailable": true
+							},
+							{
+								"id": "c0a8e5f1-7b2d-4e6a-b3c9-1d8f5a2e7b04",
+								"name": "Field Notes",
+								"role": "writer",
+								"executionAvailable": false
+							},
+							{
+								"id": "9b1e4c7a-2d3f-4a8b-9c5e-6f7a8b9c0d1e",
+								"name": "Survey Atlas",
+								"role": "viewer",
+								"executionAvailable": false
+							}
+						]
 					},
 					{
 						"name": "hostedCapabilities.projectId",
 						"type": "string",
 						"required": true,
-						"description": "The expected project identity; the response identity must match exactly."
+						"description": "The expected project id, compared with strict equality (!==) to the response's id field; a mismatch throws. The hub only accepts project ids of 36 lowercase hex or dash characters, but this function does not check the format itself.",
+						"examples": [
+							"3f6d2a8e-5b1c-4e9a-8d7f-0c2b9e4a6d13",
+							"c0a8e5f1-7b2d-4e6a-b3c9-1d8f5a2e7b04",
+							"9b1e4c7a-2d3f-4a8b-9c5e-6f7a8b9c0d1e"
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "hostedCapabilities",
 						"type": "ProjectCapabilities",
-						"description": "Shared-project capabilities with GitHub as source. Owners and commenters may comment; viewers may not. Agents, planning and approval are disabled, with an explanation that shared comments need server acknowledgment."
+						"description": "Capabilities for a hosted shared project, with source always 'github'; comments is false only for the viewer role, and agents, planning and approval are true only for an owner or writer role whose executionAvailable is exactly true. The reason is one of four fixed sentences chosen by role and agent access.",
+						"examples": [
+							{
+								"comments": true,
+								"agents": true,
+								"planning": true,
+								"approval": true,
+								"source": "github",
+								"reason": "Write access: comments and AI requests."
+							},
+							{
+								"comments": true,
+								"agents": false,
+								"planning": false,
+								"approval": false,
+								"source": "github",
+								"reason": "Write access. Connect a project executor to run AI."
+							},
+							{
+								"comments": false,
+								"agents": false,
+								"planning": false,
+								"approval": false,
+								"source": "github",
+								"reason": "Read access: browse only."
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as Error('Invalid hosted response.') when the value is null, not an object or an array, and as Error('Unknown hosted project access.') when the response id differs from projectId or the role (converted with String()) is not owner, writer, commenter or viewer."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
