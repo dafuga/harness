@@ -20,35 +20,96 @@
 				"name": "validateGitHubAnchor.deps",
 				"type": "{ adapter: SourceAdapter; client: GitHubTransport }",
 				"required": true,
-				"description": "Source adapter and transport used to resolve and attest source and ancestry."
+				"description": "Object holding adapter, the SourceAdapter used for resolve, tree and read calls, and client, the GitHubTransport whose request method fetches the compare result that confirms ancestry. Once the input parses, the adapter is always used, while client.request runs only when the anchored commit differs from the branch tip; validateAnchor on the adapter is never called here."
 			},
 			{
 				"name": "validateGitHubAnchor.repository",
 				"type": "RepositoryIdentity",
 				"required": true,
-				"description": "Repository containing the anchored unit."
+				"description": "Repository identity (id, owner, name, private and installationId) passed unchanged to each adapter resolve, tree and read call; this function does not parse it, and the ancestry request through client does not use it.",
+				"examples": [
+					{
+						"id": 712045933,
+						"owner": "example-org",
+						"name": "design-system",
+						"private": true,
+						"installationId": 48215367
+					},
+					{
+						"id": 90817364,
+						"owner": "acme-labs",
+						"name": "web-app",
+						"private": false,
+						"installationId": 15309281
+					},
+					{
+						"id": 40577120,
+						"owner": "northwind",
+						"name": "product.docs_site",
+						"private": true,
+						"installationId": 9012376
+					}
+				]
 			},
 			{
 				"name": "validateGitHubAnchor.input",
 				"type": "Anchor",
 				"required": true,
-				"description": "Anchor naming branch, exact commit and unit, with optional design version and image metadata."
+				"description": "Anchor to verify, parsed with anchorSchema before any source call: branch must be a valid branch name, commit a 40-character lowercase hex SHA, and entityId must match unitIdPattern; state, viewport and region must be null unless imageSha256 is set, and a set imageSha256 requires version, state and viewport. Input that fails the schema rejects with invalid-input.",
+				"examples": [
+					{
+						"branch": "main",
+						"commit": "7d2e4f1a9c0b38e65d4a1f7c2b9e08d3a6f5c4b1",
+						"entityId": "collaboration.function.validate-git-hub-anchor",
+						"version": null,
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null
+					},
+					{
+						"branch": "feature/evidence-grid",
+						"commit": "b41c0e97d5a2f83c6e10947ad2c5b8e3f0a16d27",
+						"entityId": "reports.component.evidence-grid",
+						"version": "v002",
+						"imageSha256": null,
+						"state": null,
+						"viewport": null,
+						"region": null
+					},
+					{
+						"branch": "main",
+						"commit": "e90a3d6b1f47c28d05b9a6e3f1c7204d8b5e9a13",
+						"entityId": "reports.component.evidence-grid",
+						"version": "v004",
+						"imageSha256": "a7f3c09e2b8d15f46e0a9c3d7b2f81e5c4a6d0b9e3f7a2c18d5b6e04f9a3c7d2",
+						"state": "hover",
+						"viewport": "desktop",
+						"region": {
+							"x": 0.08,
+							"y": 0.2,
+							"width": 0.46,
+							"height": 0.31
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "validateGitHubAnchor",
 				"type": "Promise<void>",
-				"description": "Resolves without a value after validating branch ancestry, the unit or plan, and any requested design image hash."
+				"description": "Resolves with no value once the anchored commit is the branch tip or an ancestor of it and the unit or plan check passes, plus the design.json check when a version is set and the image hash check when imageSha256 is set. The harness.project.discussion entity skips the unit or plan check and must carry no version, imageSha256, state, viewport or region."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects invalid or unreachable anchors, invalid source JSON, inconsistent or ambiguous unit plans, invalid design versions or images and image-integrity failures."
+				"description": "fail() throws a plain Error, not an ExpectedCliError, with a code property (message 'Collaboration <code>') set to invalid-input, invalid-source, invalid-entity, invalid-version, invalid-path, invalid-image, image-integrity or unreachable-anchor. Adapter and transport rejections pass through unchanged, except that a failed read, invalid UTF-8 or invalid JSON in a source JSON file is reported as invalid-source."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "validateGitHubAnchor",
@@ -57,35 +118,96 @@
 						"name": "validateGitHubAnchor.deps",
 						"type": "{ adapter: SourceAdapter; client: GitHubTransport }",
 						"required": true,
-						"description": "Source adapter and transport used to resolve and attest source and ancestry."
+						"description": "Object holding adapter, the SourceAdapter used for resolve, tree and read calls, and client, the GitHubTransport whose request method fetches the compare result that confirms ancestry. Once the input parses, the adapter is always used, while client.request runs only when the anchored commit differs from the branch tip; validateAnchor on the adapter is never called here."
 					},
 					{
 						"name": "validateGitHubAnchor.repository",
 						"type": "RepositoryIdentity",
 						"required": true,
-						"description": "Repository containing the anchored unit."
+						"description": "Repository identity (id, owner, name, private and installationId) passed unchanged to each adapter resolve, tree and read call; this function does not parse it, and the ancestry request through client does not use it.",
+						"examples": [
+							{
+								"id": 712045933,
+								"owner": "example-org",
+								"name": "design-system",
+								"private": true,
+								"installationId": 48215367
+							},
+							{
+								"id": 90817364,
+								"owner": "acme-labs",
+								"name": "web-app",
+								"private": false,
+								"installationId": 15309281
+							},
+							{
+								"id": 40577120,
+								"owner": "northwind",
+								"name": "product.docs_site",
+								"private": true,
+								"installationId": 9012376
+							}
+						]
 					},
 					{
 						"name": "validateGitHubAnchor.input",
 						"type": "Anchor",
 						"required": true,
-						"description": "Anchor naming branch, exact commit and unit, with optional design version and image metadata."
+						"description": "Anchor to verify, parsed with anchorSchema before any source call: branch must be a valid branch name, commit a 40-character lowercase hex SHA, and entityId must match unitIdPattern; state, viewport and region must be null unless imageSha256 is set, and a set imageSha256 requires version, state and viewport. Input that fails the schema rejects with invalid-input.",
+						"examples": [
+							{
+								"branch": "main",
+								"commit": "7d2e4f1a9c0b38e65d4a1f7c2b9e08d3a6f5c4b1",
+								"entityId": "collaboration.function.validate-git-hub-anchor",
+								"version": null,
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null
+							},
+							{
+								"branch": "feature/evidence-grid",
+								"commit": "b41c0e97d5a2f83c6e10947ad2c5b8e3f0a16d27",
+								"entityId": "reports.component.evidence-grid",
+								"version": "v002",
+								"imageSha256": null,
+								"state": null,
+								"viewport": null,
+								"region": null
+							},
+							{
+								"branch": "main",
+								"commit": "e90a3d6b1f47c28d05b9a6e3f1c7204d8b5e9a13",
+								"entityId": "reports.component.evidence-grid",
+								"version": "v004",
+								"imageSha256": "a7f3c09e2b8d15f46e0a9c3d7b2f81e5c4a6d0b9e3f7a2c18d5b6e04f9a3c7d2",
+								"state": "hover",
+								"viewport": "desktop",
+								"region": {
+									"x": 0.08,
+									"y": 0.2,
+									"width": 0.46,
+									"height": 0.31
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "validateGitHubAnchor",
 						"type": "Promise<void>",
-						"description": "Resolves without a value after validating branch ancestry, the unit or plan, and any requested design image hash."
+						"description": "Resolves with no value once the anchored commit is the branch tip or an ancestor of it and the unit or plan check passes, plus the design.json check when a version is set and the image hash check when imageSha256 is set. The harness.project.discussion entity skips the unit or plan check and must carry no version, imageSha256, state, viewport or region."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "fail() throws a plain Error, not an ExpectedCliError, with a code property (message 'Collaboration <code>') set to invalid-input, invalid-source, invalid-entity, invalid-version, invalid-path, invalid-image, image-integrity or unreachable-anchor. Adapter and transport rejections pass through unchanged, except that a failed read, invalid UTF-8 or invalid JSON in a source JSON file is reported as invalid-source."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
