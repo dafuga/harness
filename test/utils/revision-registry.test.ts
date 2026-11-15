@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import { scenarioManifestSchema } from '../../src/core/unitTypes';
 import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { ScenarioManifestValidator } from '../../src/validators/ScenarioManifestValidator';
@@ -46,6 +46,31 @@ const enrolled = {
 	]
 };
 
+const brokenSources = [
+	[{ 'test/record.ts': 'export const record = 1;' }, /callable|export/i],
+	[{ 'test/record.ts': 'this is invalid code' }, /syntax/i],
+	[{ 'test/fixture.json': undefined }, /missing/i],
+	[
+		{
+			'specification/units/page.functions.json': JSON.stringify({
+				id: 'page.functions',
+				status: 'retired'
+			})
+		},
+		/active/i
+	],
+	[
+		{
+			'specification/units/page.functions.json': JSON.stringify({
+				id: 'page.functions',
+				status: 'active',
+				owns: { source: ['../escape.ts'] }
+			})
+		},
+		/unsafe/i
+	]
+] as const;
+
 test('a state may name the units it shows, and the stored registry keeps what it names', async () => {
 	const declared = scenario([
 		{ id: 'catalog', title: 'Catalog', coverage: 'required', units: ['page.functions'] },
@@ -63,13 +88,31 @@ test('a state may name the units it shows, and the stored registry keeps what it
 		video: enrolled.video,
 		states: [expect.objectContaining({ motion: 'required' })]
 	});
-	expect((await new ScenarioRepository('.').read(videoEnrollmentTree(enrolled))).errors).toEqual(
-		[]
+	const tree = videoEnrollmentTree(enrolled, {
+		'specification/scenarios/other.json': JSON.stringify({ ...enrolled, id: 'other' })
+	});
+	const reads: string[] = [],
+		list = vi.fn(tree.list);
+	const checked = await new ScenarioRepository('.').read({
+		...tree,
+		list,
+		read: async (path) => {
+			reads.push(path);
+			return tree.read(path);
+		}
+	});
+	expect(checked.errors).toEqual([]);
+	expect(list).toHaveBeenCalledTimes(1);
+	expect(reads.filter((path) => path === 'test/record.ts')).toHaveLength(1);
+	expect(reads.filter((path) => path === 'specification/units/page.functions.json')).toHaveLength(
+		1
 	);
-	const broken = videoEnrollmentTree(enrolled, { 'test/record.ts': 'export const record = 1;' });
-	expect((await new ScenarioRepository('.').read(broken)).errors.join(' ')).toMatch(
-		/callable|export/i
-	);
+	for (const [changes, error] of brokenSources)
+		expect(
+			(await new ScenarioRepository('.').read(videoEnrollmentTree(enrolled, changes))).errors.join(
+				' '
+			)
+		).toMatch(error);
 });
 
 test('a state that names no unit is stored as before, and a unit outside the scenario is refused', () => {

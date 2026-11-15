@@ -47,7 +47,7 @@ export function videoEnrollment(
 /** A source tree whose top-level script would throw if validation imported it. */
 export function videoEnrollmentTree(
 	scenario: ScenarioManifest,
-	changes: Record<string, string> = {}
+	changes: Record<string, string | undefined> = {}
 ): SourceTree {
 	const paths = new Map(
 		Object.entries({
@@ -62,14 +62,15 @@ export function videoEnrollmentTree(
 			'test/record.ts': "throw new Error('never import'); export async function record() {}",
 			'test/fixture.json': '{}',
 			...changes
-		})
+		}).filter(([, text]) => text !== undefined)
 	);
 	return {
 		revision: 'enrollment-fixture',
 		list: async () => [...paths.keys()].map((path) => ({ path, hash: path })),
 		read: async (path) => {
-			if (!paths.has(path)) throw new Error(`Missing ${path}`);
-			return paths.get(path)!;
+			const text = paths.get(path);
+			if (typeof text !== 'string') throw new Error(`Missing ${path}`);
+			return text;
 		}
 	};
 }
