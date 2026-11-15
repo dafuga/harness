@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/utils/revisionTime.ts",
-			"packages/desktop/src/utils/shared-primitives/revisionTime.ts"
-		],
-		"symbols": ["revisionTime", "revisionTime", "displayTime"]
+		"source": ["packages/desktop/src/utils/shared-primitives/revisionTime.ts"],
+		"symbols": ["revisionTime", "displayTime"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -114,11 +111,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/desktop/src/utils/revisionTime.ts",
+		"entry": "packages/desktop/src/utils/shared-primitives/revisionTime.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/desktop/src/utils/revisionTime.ts"
+				"entry": "packages/desktop/src/utils/shared-primitives/revisionTime.ts"
 			}
 		]
 	},

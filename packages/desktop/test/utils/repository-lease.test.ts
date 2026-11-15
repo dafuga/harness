@@ -6,7 +6,10 @@ import { createHash, randomUUID } from 'node:crypto';
 import { rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { repositoryLease, type RepositoryLease } from '../../src/utils/repositoryLease';
+import {
+	repositoryLease,
+	type RepositoryLease
+} from '../../src/utils/projects-sessions/repositoryLease';
 
 const spawned = vi.hoisted(() => [] as ChildProcess[]);
 vi.mock('node:child_process', async (original) => {

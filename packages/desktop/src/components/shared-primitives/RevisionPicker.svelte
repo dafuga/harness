@@ -6,7 +6,7 @@
 
 	import Select from '$shared/Select.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
-	import { displayTime, revisionTime } from '../../utils/revisionTime';
+	import { displayTime, revisionTime } from '../../utils/shared-primitives/revisionTime';
 	import ChoiceDialog from './ChoiceDialog.svelte';
 	import Icon from './Icon.svelte';
 	/** Readable revision and deployment context with explicit pinned navigation. */

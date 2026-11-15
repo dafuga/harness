@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { deploymentFixture } from '../deployment-fixture';
-import { reviewDeployment } from '../../src/utils/reviewDeployment';
+import { reviewDeployment } from '../../src/utils/projects-sessions/reviewDeployment';
 const nextCommit = (f: Awaited<ReturnType<typeof deploymentFixture>>) => {
 	f.git('commit', '--allow-empty', '-m', 'feat: next pipeline');
 	return f.git('rev-parse', 'HEAD');
