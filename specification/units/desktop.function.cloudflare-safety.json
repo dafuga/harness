@@ -18,29 +18,130 @@
 				"name": "cloudflareSafety.config",
 				"type": "Record<string, unknown>",
 				"required": true,
-				"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
+				"description": "The Wrangler configuration object, read but never modified: its top-level routes or route are always protected, and the env entries named prod or production, plus the entry named by the wranglerEnvironment of the first workers target with environment prod, add protected routes. An env entry that is missing or has neither routes nor route inherits the top-level routes, every route must be a string or an object whose pattern is a string, and only the URL hostname of each route is compared, so paths and ports are ignored.",
+				"examples": [
+					{
+						"name": "reports-worker",
+						"account_id": "3f9c2a7e1b8d4c60a5e9f1d2c3b4a596",
+						"routes": [
+							{
+								"pattern": "reports.example.com/*"
+							}
+						],
+						"env": {
+							"production": {
+								"name": "reports-worker",
+								"routes": [
+									{
+										"pattern": "reports.example.com/*"
+									}
+								]
+							},
+							"staging": {
+								"name": "reports-worker-staging",
+								"routes": [
+									{
+										"pattern": "staging.reports.example.com/*"
+									}
+								]
+							}
+						}
+					},
+					{
+						"name": "docs-worker",
+						"account_id": "9d1e4b7a2c5f48e0a3b6c9d2e5f81a74",
+						"env": {
+							"production": {
+								"name": "docs-worker",
+								"routes": ["docs.example.com/*"]
+							}
+						}
+					},
+					{
+						"name": "api-worker",
+						"account_id": "5b0f7c2e9a1d4e3b8c6f0a2d9e7b1c45",
+						"env": {
+							"production": {
+								"name": "api-worker",
+								"route": "api.example.com/*"
+							},
+							"staging": {
+								"name": "api-worker-staging",
+								"route": "api-staging.example.com/*"
+							}
+						}
+					}
+				]
 			},
 			{
 				"name": "cloudflareSafety.targets",
 				"type": "DeploymentConfig['targets']",
 				"required": true,
-				"description": "Explicit environment targets to compare against inherited and production Worker routes."
+				"description": "The deployment targets keyed by environment: only entries with kind workers are considered, the first workers entry with environment prod supplies the production wranglerEnvironment whose routes are protected, and every workers entry whose environment is not prod is a lower target. Only the kind, environment and wranglerEnvironment fields are read, so accountId, tokenEnv, healthUrl and the other target fields do not affect the result.",
+				"examples": [
+					{
+						"prod": {
+							"environment": "prod",
+							"kind": "workers",
+							"config": "wrangler.jsonc",
+							"name": "reports-worker",
+							"accountId": "3f9c2a7e1b8d4c60a5e9f1d2c3b4a596",
+							"tokenEnv": "HARNESS_REPORTS_WORKER_PROD_CLOUDFLARE_API_TOKEN",
+							"wranglerEnvironment": "production",
+							"branch": "",
+							"output": "",
+							"healthUrl": "https://reports.example.com/health"
+						},
+						"stage": {
+							"environment": "stage",
+							"kind": "workers",
+							"config": "wrangler.jsonc",
+							"name": "reports-worker-staging",
+							"accountId": "3f9c2a7e1b8d4c60a5e9f1d2c3b4a596",
+							"tokenEnv": "HARNESS_REPORTS_WORKER_STAGE_CLOUDFLARE_API_TOKEN",
+							"wranglerEnvironment": "staging",
+							"branch": "",
+							"output": "",
+							"healthUrl": "https://staging.reports.example.com/health"
+						}
+					},
+					{
+						"prod": {
+							"environment": "prod",
+							"kind": "workers",
+							"config": "wrangler.jsonc",
+							"name": "docs-worker",
+							"accountId": "9d1e4b7a2c5f48e0a3b6c9d2e5f81a74",
+							"tokenEnv": "HARNESS_DOCS_WORKER_PROD_CLOUDFLARE_API_TOKEN",
+							"wranglerEnvironment": "production",
+							"branch": "",
+							"output": "",
+							"healthUrl": "https://docs.example.com/healthz"
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "cloudflareSafety",
 				"type": "unknown",
-				"description": "Returns without a value only for distinct lower routes; throws for unsafe mappings."
+				"description": "The function returns no value, so its result is undefined: it returns normally only when no lower workers target has a route hostname containing an asterisk or equal to a protected hostname and no route it reads is ambiguous or fails to parse as a URL, and it throws otherwise."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Rejects unsafe source, target or promotion state; no successful deployment receipt is recorded."
+				"description": "Thrown with the message 'A lower Worker environment inherits or overlaps a production route' when a workers target whose environment is not prod has a route hostname that contains an asterisk or exactly equals a protected hostname. Thrown with the message 'Cloudflare route mapping is ambiguous' when a non-null route entry is not a string and its pattern is not a string."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown by the runtime rather than by explicit code, when new URL cannot parse a route pattern (https:// is prefixed unless the pattern already contains ://), or when a property is read from a null or undefined route entry or targets entry."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "cloudflareSafety",
@@ -49,29 +150,130 @@
 						"name": "cloudflareSafety.config",
 						"type": "Record<string, unknown>",
 						"required": true,
-						"description": "Validated environment mapping whose target identities and promotion boundaries must remain unchanged."
+						"description": "The Wrangler configuration object, read but never modified: its top-level routes or route are always protected, and the env entries named prod or production, plus the entry named by the wranglerEnvironment of the first workers target with environment prod, add protected routes. An env entry that is missing or has neither routes nor route inherits the top-level routes, every route must be a string or an object whose pattern is a string, and only the URL hostname of each route is compared, so paths and ports are ignored.",
+						"examples": [
+							{
+								"name": "reports-worker",
+								"account_id": "3f9c2a7e1b8d4c60a5e9f1d2c3b4a596",
+								"routes": [
+									{
+										"pattern": "reports.example.com/*"
+									}
+								],
+								"env": {
+									"production": {
+										"name": "reports-worker",
+										"routes": [
+											{
+												"pattern": "reports.example.com/*"
+											}
+										]
+									},
+									"staging": {
+										"name": "reports-worker-staging",
+										"routes": [
+											{
+												"pattern": "staging.reports.example.com/*"
+											}
+										]
+									}
+								}
+							},
+							{
+								"name": "docs-worker",
+								"account_id": "9d1e4b7a2c5f48e0a3b6c9d2e5f81a74",
+								"env": {
+									"production": {
+										"name": "docs-worker",
+										"routes": ["docs.example.com/*"]
+									}
+								}
+							},
+							{
+								"name": "api-worker",
+								"account_id": "5b0f7c2e9a1d4e3b8c6f0a2d9e7b1c45",
+								"env": {
+									"production": {
+										"name": "api-worker",
+										"route": "api.example.com/*"
+									},
+									"staging": {
+										"name": "api-worker-staging",
+										"route": "api-staging.example.com/*"
+									}
+								}
+							}
+						]
 					},
 					{
 						"name": "cloudflareSafety.targets",
 						"type": "DeploymentConfig['targets']",
 						"required": true,
-						"description": "Explicit environment targets to compare against inherited and production Worker routes."
+						"description": "The deployment targets keyed by environment: only entries with kind workers are considered, the first workers entry with environment prod supplies the production wranglerEnvironment whose routes are protected, and every workers entry whose environment is not prod is a lower target. Only the kind, environment and wranglerEnvironment fields are read, so accountId, tokenEnv, healthUrl and the other target fields do not affect the result.",
+						"examples": [
+							{
+								"prod": {
+									"environment": "prod",
+									"kind": "workers",
+									"config": "wrangler.jsonc",
+									"name": "reports-worker",
+									"accountId": "3f9c2a7e1b8d4c60a5e9f1d2c3b4a596",
+									"tokenEnv": "HARNESS_REPORTS_WORKER_PROD_CLOUDFLARE_API_TOKEN",
+									"wranglerEnvironment": "production",
+									"branch": "",
+									"output": "",
+									"healthUrl": "https://reports.example.com/health"
+								},
+								"stage": {
+									"environment": "stage",
+									"kind": "workers",
+									"config": "wrangler.jsonc",
+									"name": "reports-worker-staging",
+									"accountId": "3f9c2a7e1b8d4c60a5e9f1d2c3b4a596",
+									"tokenEnv": "HARNESS_REPORTS_WORKER_STAGE_CLOUDFLARE_API_TOKEN",
+									"wranglerEnvironment": "staging",
+									"branch": "",
+									"output": "",
+									"healthUrl": "https://staging.reports.example.com/health"
+								}
+							},
+							{
+								"prod": {
+									"environment": "prod",
+									"kind": "workers",
+									"config": "wrangler.jsonc",
+									"name": "docs-worker",
+									"accountId": "9d1e4b7a2c5f48e0a3b6c9d2e5f81a74",
+									"tokenEnv": "HARNESS_DOCS_WORKER_PROD_CLOUDFLARE_API_TOKEN",
+									"wranglerEnvironment": "production",
+									"branch": "",
+									"output": "",
+									"healthUrl": "https://docs.example.com/healthz"
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "cloudflareSafety",
 						"type": "unknown",
-						"description": "Returns without a value only for distinct lower routes; throws for unsafe mappings."
+						"description": "The function returns no value, so its result is undefined: it returns normally only when no lower workers target has a route hostname containing an asterisk or equal to a protected hostname and no route it reads is ambiguous or fails to parse as a URL, and it throws otherwise."
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown with the message 'A lower Worker environment inherits or overlaps a production route' when a workers target whose environment is not prod has a route hostname that contains an asterisk or exactly equals a protected hostname. Thrown with the message 'Cloudflare route mapping is ambiguous' when a non-null route entry is not a string and its pattern is not a string."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown by the runtime rather than by explicit code, when new URL cannot parse a route pattern (https:// is prefixed unless the pattern already contains ://), or when a property is read from a null or undefined route entry or targets entry."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
