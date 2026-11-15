@@ -24,51 +24,96 @@
 				"name": "ThreeSceneAdapter.constructor.canvas",
 				"type": "HTMLCanvasElement",
 				"required": true,
-				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+				"description": "Canvas used as the WebGL renderer target. Its width and height set the renderer size and initial camera aspect, and the constructor writes renderer metadata to dataset."
 			},
 			{
 				"name": "ThreeSceneAdapter.constructor.context",
 				"type": "WebGL2RenderingContext",
 				"required": true,
-				"description": "WebGL2 context already selected by the renderer factory."
+				"description": "Existing WebGL2 context passed to the Three.js renderer with antialiasing enabled. The constructor uses the supplied context; create3d performs context lookup and selects the software adapter when lookup returns null."
 			},
 			{
 				"name": "ThreeSceneAdapter.render.run",
 				"type": "GameRun",
 				"required": true,
-				"description": "Current deterministic game state, tick and checkpoint execution results."
+				"description": "Current game run passed into render. This adapter reads run.state: x and y are converted with Number, while hasKey, doorOpen, and strict-false visible:* values control the player, key, and door meshes.",
+				"examples": [
+					{
+						"tick": 8,
+						"seed": 123,
+						"state": {
+							"x": 2,
+							"y": 1,
+							"hasKey": false,
+							"doorOpen": false
+						},
+						"completed": [],
+						"events": [],
+						"trace": []
+					}
+				]
 			},
 			{
 				"name": "ThreeSceneAdapter.render.view",
 				"type": "GameView",
 				"required": true,
-				"description": "Active authored view, including dimension and checkpoint definitions."
+				"description": "Current view selects camera mode and whether an authored world layout is displayed. Only dimension '2d' selects the orthographic camera; a truthy world hides the legacy ground, door, and key and renders the authored layout.",
+				"examples": [
+					{
+						"id": "view-forest-room",
+						"title": "Forest Room",
+						"dimension": "2d",
+						"style": "adventure",
+						"checkpoints": [],
+						"world": {
+							"width": 8,
+							"depth": 6,
+							"spawn": {
+								"x": 1,
+								"z": 1
+							},
+							"objects": [
+								{
+									"id": "exit",
+									"kind": "goal",
+									"label": "Exit",
+									"x": 6,
+									"z": 4,
+									"width": 1,
+									"depth": 1,
+									"height": 1
+								}
+							]
+						}
+					}
+				]
 			},
 			{
 				"name": "create3d.canvas",
 				"type": "HTMLCanvasElement",
 				"required": true,
-				"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+				"description": "Canvas on which create3d requests a WebGL2 context with antialiasing enabled. The function returns Software3dAdapter when lookup returns null and ThreeSceneAdapter when it returns a context."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ThreeSceneAdapter.render",
 				"type": "void",
-				"description": "Paint the current game frame."
+				"description": "Synchronously updates mesh positions and visibility from run.state, renders the legacy scene or authored world with the selected camera, then sets the canvas dimension and readiness dataset values."
 			},
 			{
 				"name": "ThreeSceneAdapter.dispose",
 				"type": "void",
-				"description": "Release the renderer resources."
+				"description": "Disposes geometry and materials for every mesh in the scene, then disposes the Three.js renderer."
 			},
 			{
 				"name": "create3d",
 				"type": "FrameSource",
-				"description": "Canvas frame source with render and dispose operations."
+				"description": "A FrameSource exposing the canvas, render, and dispose operations. It is a ThreeSceneAdapter when the canvas returns a WebGL2 context and a Software3dAdapter when lookup returns null."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "ThreeSceneAdapter.render",
@@ -77,24 +122,68 @@
 						"name": "ThreeSceneAdapter.render.run",
 						"type": "GameRun",
 						"required": true,
-						"description": "Current deterministic game state, tick and checkpoint execution results."
+						"description": "Current game run passed into render. This adapter reads run.state: x and y are converted with Number, while hasKey, doorOpen, and strict-false visible:* values control the player, key, and door meshes.",
+						"examples": [
+							{
+								"tick": 8,
+								"seed": 123,
+								"state": {
+									"x": 2,
+									"y": 1,
+									"hasKey": false,
+									"doorOpen": false
+								},
+								"completed": [],
+								"events": [],
+								"trace": []
+							}
+						]
 					},
 					{
 						"name": "ThreeSceneAdapter.render.view",
 						"type": "GameView",
 						"required": true,
-						"description": "Active authored view, including dimension and checkpoint definitions."
+						"description": "Current view selects camera mode and whether an authored world layout is displayed. Only dimension '2d' selects the orthographic camera; a truthy world hides the legacy ground, door, and key and renders the authored layout.",
+						"examples": [
+							{
+								"id": "view-forest-room",
+								"title": "Forest Room",
+								"dimension": "2d",
+								"style": "adventure",
+								"checkpoints": [],
+								"world": {
+									"width": 8,
+									"depth": 6,
+									"spawn": {
+										"x": 1,
+										"z": 1
+									},
+									"objects": [
+										{
+											"id": "exit",
+											"kind": "goal",
+											"label": "Exit",
+											"x": 6,
+											"z": 4,
+											"width": 1,
+											"depth": 1,
+											"height": 1
+										}
+									]
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ThreeSceneAdapter.render",
 						"type": "void",
-						"description": "Paint the current game frame."
+						"description": "Synchronously updates mesh positions and visibility from run.state, renders the legacy scene or authored world with the selected camera, then sets the canvas dimension and readiness dataset values."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ThreeSceneAdapter.dispose",
@@ -103,11 +192,11 @@
 					{
 						"name": "ThreeSceneAdapter.dispose",
 						"type": "void",
-						"description": "Release the renderer resources."
+						"description": "Disposes geometry and materials for every mesh in the scene, then disposes the Three.js renderer."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "create3d",
@@ -116,18 +205,18 @@
 						"name": "create3d.canvas",
 						"type": "HTMLCanvasElement",
 						"required": true,
-						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+						"description": "Canvas on which create3d requests a WebGL2 context with antialiasing enabled. The function returns Software3dAdapter when lookup returns null and ThreeSceneAdapter when it returns a context."
 					}
 				],
 				"outputs": [
 					{
 						"name": "create3d",
 						"type": "FrameSource",
-						"description": "Canvas frame source with render and dispose operations."
+						"description": "A FrameSource exposing the canvas, render, and dispose operations. It is a ThreeSceneAdapter when the canvas returns a WebGL2 context and a Software3dAdapter when lookup returns null."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -138,23 +227,24 @@
 						"name": "ThreeSceneAdapter.constructor.canvas",
 						"type": "HTMLCanvasElement",
 						"required": true,
-						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
+						"description": "Canvas used as the WebGL renderer target. Its width and height set the renderer size and initial camera aspect, and the constructor writes renderer metadata to dataset."
 					},
 					{
 						"name": "ThreeSceneAdapter.constructor.context",
 						"type": "WebGL2RenderingContext",
 						"required": true,
-						"description": "WebGL2 context already selected by the renderer factory."
+						"description": "Existing WebGL2 context passed to the Three.js renderer with antialiasing enabled. The constructor uses the supplied context; create3d performs context lookup and selects the software adapter when lookup returns null."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ThreeSceneAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The constructed ThreeSceneAdapter instance, with its renderer, flat and perspective cameras, lights, legacy meshes, and world group initialized in the scene."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		]
 	},
