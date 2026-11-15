@@ -11,17 +11,15 @@ import { assertLinearContractMap } from '../../support/contractMapWork';
 vi.mock('node:fs/promises', { spy: true });
 
 let fixture: Awaited<ReturnType<typeof contractsProject>>;
-function contractCase(name: string, body: () => Promise<void>) {
-	test(name, () =>
-		withTempDir('harness-contracts-', async (root) => {
-			fixture = await contractsProject(root);
-			try {
-				await body();
-			} finally {
-				vi.restoreAllMocks();
-			}
-		})
-	);
+function withContractsFixture(body: () => Promise<void>) {
+	return withTempDir('harness-contracts-', async (root) => {
+		fixture = await contractsProject(root);
+		try {
+			await body();
+		} finally {
+			vi.restoreAllMocks();
+		}
+	});
 }
 
 async function run(...args: string[]) {
@@ -46,14 +44,14 @@ async function run(...args: string[]) {
 	}
 }
 
-contractCase('ContractsCommand runs', async () => {
-	const help = await run('--help');
-	for (const verb of ['show', 'list', 'search', 'map']) expect(help).toContain(verb);
-});
+test('ContractsCommand runs', () =>
+	withContractsFixture(async () => {
+		const help = await run('--help');
+		for (const verb of ['show', 'list', 'search', 'map']) expect(help).toContain(verb);
+	}));
 
-contractCase(
-	'ContractsCommand show resolves stored identity and owned paths without reading source',
-	async () => {
+test('ContractsCommand show resolves stored identity and owned paths without reading source', () =>
+	withContractsFixture(async () => {
 		const reads = vi.spyOn(fs, 'readFile');
 		const lists = vi.spyOn(fs, 'readdir');
 		reads.mockClear();
@@ -81,12 +79,10 @@ contractCase(
 		).toBe(true);
 		await expect(run('show', '../outside')).rejects.toThrow(/outside|within/i);
 		await expect(run('show', 'unknown.unit')).rejects.toThrow(/No contracts/i);
-	}
-);
+	}));
 
-contractCase(
-	'ContractsCommand list filters area folder kind and retirement with concise rows',
-	async () => {
+test('ContractsCommand list filters area folder kind and retirement with concise rows', () =>
+	withContractsFixture(async () => {
 		expect(
 			JSON.parse(await run('list', '--folder', 'src/services/billing', '--json')).map(
 				(row: { id: string }) => row.id
@@ -99,12 +95,10 @@ contractCase(
 		expect(await run('list', '--kind', 'service')).toContain('src/services/billing/Price.ts');
 		expect(JSON.parse(await run('list', '--include-retired', '--json'))).toHaveLength(5);
 		await expect(run('list', '--limit', '-1')).rejects.toThrow(/positive integer/i);
-	}
-);
+	}));
 
-contractCase(
-	'ContractsCommand search ranks contract fields and distinguishes literal regex and case',
-	async () => {
+test('ContractsCommand search ranks contract fields and distinguishes literal regex and case', () =>
+	withContractsFixture(async () => {
 		for (const query of [
 			'service.price',
 			'PriceService',
@@ -134,12 +128,10 @@ contractCase(
 		expect(JSON.parse(await run('search', 'service', '--limit', '1', '--json'))).toHaveLength(1);
 		await expect(run('search', '[', '--regex')).rejects.toThrow(/Invalid regular expression/i);
 		await expect(run('search', '')).rejects.toThrow(/empty/i);
-	}
-);
+	}));
 
-contractCase(
-	'ContractsCommand map separates dependencies and dependents at path boundaries',
-	async () => {
+test('ContractsCommand map separates dependencies and dependents at path boundaries', () =>
+	withContractsFixture(async () => {
 		await assertLinearContractMap();
 		const mapped = JSON.parse(await run('map', 'src/services/billing', '--json'));
 		expect(mapped.matches.map((row: { id: string }) => row.id)).toEqual([fixture.price.id]);
@@ -156,12 +148,10 @@ contractCase(
 		expect(JSON.parse(await run('map', fixture.price.id, '--json')).unresolved).toEqual([
 			'missing.unit'
 		]);
-	}
-);
+	}));
 
-contractCase(
-	'ContractsCommand reloads moved edited deleted and invalid stored manifests',
-	async () => {
+test('ContractsCommand reloads moved edited deleted and invalid stored manifests', () =>
+	withContractsFixture(async () => {
 		await run('list');
 		await rename(
 			join(fixture.root, 'specification/units/nested/price.json'),
@@ -179,5 +169,4 @@ contractCase(
 		expect(JSON.parse(await run('search', 'Fresh contract', '--json'))).toEqual([]);
 		await writeContract(fixture.root, 'broken.json', { id: 'broken' });
 		await expect(run('list')).rejects.toThrow(/broken.json/i);
-	}
-);
+	}));
