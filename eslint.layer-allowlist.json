@@ -92,21 +92,6 @@
 			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
 		},
 		{
-			"from": "src/services/history-index-service/budgetReviews.ts",
-			"to": "src/cli/program/history-index-service/budgetReviews",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/services/history-index-service/historySeries.ts",
-			"to": "src/cli/program/history-index-service/historySeries",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
-			"from": "src/services/history-index-service/revisionChanges.ts",
-			"to": "src/cli/program/history-index-service/revisionChanges",
-			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
-		},
-		{
 			"from": "src/services/hook-install-service/HookInstallService.ts",
 			"to": "src/cli/program/hook-install-service/HookInstallService",
 			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."

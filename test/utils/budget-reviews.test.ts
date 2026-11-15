@@ -2,9 +2,9 @@ import { expect, test } from 'vitest';
 import type { BudgetEvent } from '../../src/core/budgetTypes';
 import type { ComponentManifest } from '../../src/core/unitTypes';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
-import { budgetReviews } from '../../src/services/history-index-service/budgetReviews';
+import { budgetReviews } from '../../src/cli/program/history-index-service/budgetReviews';
 import { emittedLimits, frozenLimits } from '../../src/utils/revision-registry/frozenLimits';
-import { unitGrowth } from '../../src/services/history-index-service/historySeries';
+import { unitGrowth } from '../../src/cli/program/history-index-service/historySeries';
 
 const [first, second] = ['a', 'b'].map((letter) => letter.repeat(40));
 const signed = (commit: string, at: string) => ({
