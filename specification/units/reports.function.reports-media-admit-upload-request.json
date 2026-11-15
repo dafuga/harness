@@ -21,30 +21,32 @@
 				"name": "admitUploadRequest.request",
 				"type": "Request",
 				"required": true,
-				"description": "Required incoming HTTP request. Only Origin, Content-Type and Content-Length headers are inspected; the body is never read."
+				"description": "The incoming HTTP request whose Origin, Content-Type, and Content-Length headers control admission. Its body is not read; a missing or nonmatching Origin is rejected first."
 			},
 			{
 				"name": "admitUploadRequest.targetOrigin",
 				"type": "string",
 				"required": true,
-				"description": "Required target origin string, compared exactly with the Origin header."
+				"description": "The exact string required in the request's Origin header; comparison is strict and no parsing or normalization is applied. It is checked before content type and size, so a different or missing header is rejected.",
+				"examples": ["https://reports.example.com", "https://app.example.test"]
 			},
 			{
 				"name": "admitUploadRequest.limit",
 				"type": "number",
 				"required": true,
-				"description": "Required media-specific byte limit. Content-Length is converted with Number, preserving missing, invalid and negative-header behavior."
+				"description": "The caller-supplied numeric byte threshold checked after Origin and multipart content-type validation. No limit validation is applied; Content-Length is converted with Number(header || 0), and rejection occurs only when the result is greater, so a missing or empty header counts as zero and an invalid value does not compare greater.",
+				"examples": [10485760, 5242880]
 			}
 		],
 		"outputs": [
 			{
 				"name": "admitUploadRequest",
 				"type": "Response | null",
-				"description": "Null admits body parsing; otherwise a JSON error response: 403 for origin, 415 for multipart content type, then 413 for excessive Content-Length, in that order."
+				"description": "Returns null when all header checks pass; otherwise it returns a JSON Response without reading the body. Checks run in order: exact Origin match (else 403, Same-origin upload required), the case-sensitive multipart/form-data prefix (else 415, Multipart form required), then Number(Content-Length || 0) greater than limit (else 413, Upload exceeds size limit)."
 			}
 		],
 		"errors": [],
-		"errorStatus": "declared",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "admitUploadRequest",
@@ -53,26 +55,28 @@
 						"name": "admitUploadRequest.request",
 						"type": "Request",
 						"required": true,
-						"description": "Required incoming HTTP request. Only Origin, Content-Type and Content-Length headers are inspected; the body is never read."
+						"description": "The incoming HTTP request whose Origin, Content-Type, and Content-Length headers control admission. Its body is not read; a missing or nonmatching Origin is rejected first."
 					},
 					{
 						"name": "admitUploadRequest.targetOrigin",
 						"type": "string",
 						"required": true,
-						"description": "Required target origin string, compared exactly with the Origin header."
+						"description": "The exact string required in the request's Origin header; comparison is strict and no parsing or normalization is applied. It is checked before content type and size, so a different or missing header is rejected.",
+						"examples": ["https://reports.example.com", "https://app.example.test"]
 					},
 					{
 						"name": "admitUploadRequest.limit",
 						"type": "number",
 						"required": true,
-						"description": "Required media-specific byte limit. Content-Length is converted with Number, preserving missing, invalid and negative-header behavior."
+						"description": "The caller-supplied numeric byte threshold checked after Origin and multipart content-type validation. No limit validation is applied; Content-Length is converted with Number(header || 0), and rejection occurs only when the result is greater, so a missing or empty header counts as zero and an invalid value does not compare greater.",
+						"examples": [10485760, 5242880]
 					}
 				],
 				"outputs": [
 					{
 						"name": "admitUploadRequest",
 						"type": "Response | null",
-						"description": "Null admits body parsing; otherwise a JSON error response: 403 for origin, 415 for multipart content type, then 413 for excessive Content-Length, in that order."
+						"description": "Returns null when all header checks pass; otherwise it returns a JSON Response without reading the body. Checks run in order: exact Origin match (else 403, Same-origin upload required), the case-sensitive multipart/form-data prefix (else 415, Multipart form required), then Number(Content-Length || 0) greater than limit (else 413, Upload exceeds size limit)."
 					}
 				],
 				"errors": [],
