@@ -18,17 +18,30 @@
 				"name": "connectClaims.headers",
 				"type": "Headers",
 				"required": true,
-				"description": "Headers containing Bearer authorization and the protocol role/device headers. The Bearer scheme is case-insensitive; the credential must match the protocol pattern."
+				"description": "A Web Headers instance from which the function reads Authorization, role, and device headers; it checks the Bearer credential before the role. It never looks for a credential in a URL."
 			}
 		],
 		"outputs": [
 			{
 				"name": "connectClaims",
 				"type": "ConnectClaims | undefined",
-				"description": "Host claims with an empty device identifier, or device claims with a valid protocol device identifier. Returns undefined for missing/malformed credential, unknown role or invalid device identity."
+				"description": "The claims object returned when the Bearer credential matches the remote credential pattern and the headers identify a host or a valid device. Host claims have an empty deviceId; device claims retain the validated device ID, and all other cases return undefined.",
+				"examples": [
+					{
+						"role": "host",
+						"credential": "8f4a1d3c7b2e9a6054c1f8b3d6e0a927",
+						"deviceId": ""
+					},
+					{
+						"role": "device",
+						"credential": "2c7e5a91d4b8306f1a9c5e2d7b4f6083",
+						"deviceId": "d89b3421-12c9-4f69-9888-e7305e52c114"
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "connectClaims",
@@ -37,18 +50,30 @@
 						"name": "connectClaims.headers",
 						"type": "Headers",
 						"required": true,
-						"description": "Headers containing Bearer authorization and the protocol role/device headers. The Bearer scheme is case-insensitive; the credential must match the protocol pattern."
+						"description": "A Web Headers instance from which the function reads Authorization, role, and device headers; it checks the Bearer credential before the role. It never looks for a credential in a URL."
 					}
 				],
 				"outputs": [
 					{
 						"name": "connectClaims",
 						"type": "ConnectClaims | undefined",
-						"description": "Host claims with an empty device identifier, or device claims with a valid protocol device identifier. Returns undefined for missing/malformed credential, unknown role or invalid device identity."
+						"description": "The claims object returned when the Bearer credential matches the remote credential pattern and the headers identify a host or a valid device. Host claims have an empty deviceId; device claims retain the validated device ID, and all other cases return undefined.",
+						"examples": [
+							{
+								"role": "host",
+								"credential": "8f4a1d3c7b2e9a6054c1f8b3d6e0a927",
+								"deviceId": ""
+							},
+							{
+								"role": "device",
+								"credential": "2c7e5a91d4b8306f1a9c5e2d7b4f6083",
+								"deviceId": "d89b3421-12c9-4f69-9888-e7305e52c114"
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
