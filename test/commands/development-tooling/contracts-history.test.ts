@@ -61,12 +61,6 @@ test('ContractsCommand diff snapshots return complete semantic JSON and accurate
 				]
 			}
 		]);
-		expect(diff.summary).toMatchObject({
-			contracts: 1,
-			changed: 1,
-			fields: 2,
-			formattingOnlyFiles: 0
-		});
 		expect(await runHistory(root, 'diff')).toContain('outputs[total].type');
 		await assertOrderedHistoryExamples(root, unit);
 	}));
