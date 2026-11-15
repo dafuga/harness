@@ -21,23 +21,85 @@
 				"name": "treeChanges.base",
 				"type": "TreeEntry[]",
 				"required": true,
-				"description": "Earlier path/hash tree listing."
+				"description": "Earlier tree listing, the before side of the comparison, with one entry per file giving its repository path and git blob hash. Paths found only in this listing are reported as removed, a repeated path keeps only its last hash, and an empty array is valid and reports every head path as added.",
+				"examples": [
+					[
+						{
+							"path": "README.md",
+							"hash": "3f9c1a7e0b52d84c6e1f9a2b7d05c3e8a4b16f20"
+						},
+						{
+							"path": "src/legacy/oldReport.ts",
+							"hash": "9d2e47b1c0a85f36e2d19b7c4a0f58e3b6d21c94"
+						},
+						{
+							"path": "src/utils/treeChanges.ts",
+							"hash": "e51b08c4a7d69f23b0c8e14d5a7f9e26c3b80d1a"
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "treeChanges.head",
 				"type": "TreeEntry[]",
 				"required": true,
-				"description": "Later path/hash tree listing."
+				"description": "Later tree listing, the after side of the comparison, with one entry per file giving its repository path and git blob hash. Paths found only in this listing are reported as added, and paths whose hash differs from the base listing are reported as modified; a repeated path keeps only its last hash, and an empty array is valid and reports every base path as removed.",
+				"examples": [
+					[
+						{
+							"path": "README.md",
+							"hash": "3f9c1a7e0b52d84c6e1f9a2b7d05c3e8a4b16f20"
+						},
+						{
+							"path": "docs/impact.md",
+							"hash": "b7e3d1094fa26c8e5d07b3a9f1e46c2d8a95f0e3"
+						},
+						{
+							"path": "src/utils/treeChanges.ts",
+							"hash": "5c0a7f2e9b41d36a8e02c7f5b9d14a6e0c3f82b7"
+						}
+					],
+					[]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "treeChanges",
 				"type": "TreeChange[]",
-				"description": "Changes sorted by path. Equal hashes at equal paths are unchanged; renames appear as removal plus addition. Duplicate paths within a listing use the last hash."
+				"description": "Changes sorted by path using plain string comparison, with at most one change per path and status 'added', 'modified' or 'removed'. Paths present in both listings with equal hashes are omitted, a rename appears as a removal plus an addition, and an empty array means no differences.",
+				"examples": [
+					[
+						{
+							"path": "docs/impact.md",
+							"status": "added"
+						},
+						{
+							"path": "src/legacy/oldReport.ts",
+							"status": "removed"
+						},
+						{
+							"path": "src/utils/treeChanges.ts",
+							"status": "modified"
+						}
+					],
+					[
+						{
+							"path": "src/utils/newName.ts",
+							"status": "added"
+						},
+						{
+							"path": "src/utils/oldName.ts",
+							"status": "removed"
+						}
+					],
+					[]
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "treeChanges",
@@ -46,24 +108,85 @@
 						"name": "treeChanges.base",
 						"type": "TreeEntry[]",
 						"required": true,
-						"description": "Earlier path/hash tree listing."
+						"description": "Earlier tree listing, the before side of the comparison, with one entry per file giving its repository path and git blob hash. Paths found only in this listing are reported as removed, a repeated path keeps only its last hash, and an empty array is valid and reports every head path as added.",
+						"examples": [
+							[
+								{
+									"path": "README.md",
+									"hash": "3f9c1a7e0b52d84c6e1f9a2b7d05c3e8a4b16f20"
+								},
+								{
+									"path": "src/legacy/oldReport.ts",
+									"hash": "9d2e47b1c0a85f36e2d19b7c4a0f58e3b6d21c94"
+								},
+								{
+									"path": "src/utils/treeChanges.ts",
+									"hash": "e51b08c4a7d69f23b0c8e14d5a7f9e26c3b80d1a"
+								}
+							],
+							[]
+						]
 					},
 					{
 						"name": "treeChanges.head",
 						"type": "TreeEntry[]",
 						"required": true,
-						"description": "Later path/hash tree listing."
+						"description": "Later tree listing, the after side of the comparison, with one entry per file giving its repository path and git blob hash. Paths found only in this listing are reported as added, and paths whose hash differs from the base listing are reported as modified; a repeated path keeps only its last hash, and an empty array is valid and reports every base path as removed.",
+						"examples": [
+							[
+								{
+									"path": "README.md",
+									"hash": "3f9c1a7e0b52d84c6e1f9a2b7d05c3e8a4b16f20"
+								},
+								{
+									"path": "docs/impact.md",
+									"hash": "b7e3d1094fa26c8e5d07b3a9f1e46c2d8a95f0e3"
+								},
+								{
+									"path": "src/utils/treeChanges.ts",
+									"hash": "5c0a7f2e9b41d36a8e02c7f5b9d14a6e0c3f82b7"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "treeChanges",
 						"type": "TreeChange[]",
-						"description": "Changes sorted by path. Equal hashes at equal paths are unchanged; renames appear as removal plus addition. Duplicate paths within a listing use the last hash."
+						"description": "Changes sorted by path using plain string comparison, with at most one change per path and status 'added', 'modified' or 'removed'. Paths present in both listings with equal hashes are omitted, a rename appears as a removal plus an addition, and an empty array means no differences.",
+						"examples": [
+							[
+								{
+									"path": "docs/impact.md",
+									"status": "added"
+								},
+								{
+									"path": "src/legacy/oldReport.ts",
+									"status": "removed"
+								},
+								{
+									"path": "src/utils/treeChanges.ts",
+									"status": "modified"
+								}
+							],
+							[
+								{
+									"path": "src/utils/newName.ts",
+									"status": "added"
+								},
+								{
+									"path": "src/utils/oldName.ts",
+									"status": "removed"
+								}
+							],
+							[]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
