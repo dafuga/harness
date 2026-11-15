@@ -18,17 +18,38 @@
 				"name": "hubPng.bytes",
 				"type": "Uint8Array",
 				"required": true,
-				"description": "PNG bytes satisfying chunk validation, legal color/depth combinations and positive dimensions; both input and expected decompressed scanlines are capped at 32 MiB."
+				"description": "The PNG file bytes, 45 to 33554432 bytes (32 MiB) long, that start with the PNG signature and pass chunk validation, which includes at most 10000 chunks, a valid CRC on every chunk, IHDR first, an empty IEND as the last chunk, a legal color type and bit depth pair (color type 0 with depth 1, 2, 4, 8 or 16; color types 2, 4 and 6 with depth 8 or 16; color type 3 with depth 1, 2, 4 or 8), and positive width and height whose product is at most 32000000. The expected decompressed scanlines, filter bytes included, must total at most 33554432 bytes (32 MiB), otherwise the call rejects."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubPng",
 				"type": "Promise<{ width: number; height: number }>",
-				"description": "Image width and height after complete deflate data, scanline lengths and filter bytes are checked, including interlaced passes."
+				"description": "Image width and height read from the IHDR chunk, both positive with a product of at most 32000000. The returned promise resolves only after the chunk checks, the complete deflate stream, every scanline length and every filter byte (0 to 4) have passed, including all Adam7 passes for interlaced images.",
+				"examples": [
+					{
+						"width": 1920,
+						"height": 1080
+					},
+					{
+						"width": 640,
+						"height": 480
+					},
+					{
+						"width": 1,
+						"height": 1
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Every failed check and every exception raised during validation (for example from DecompressionStream) becomes an Error with the message 'Harness artifact unavailable' and the code 'artifact-corrupt', and the returned promise rejects with it."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubPng",
@@ -37,18 +58,38 @@
 						"name": "hubPng.bytes",
 						"type": "Uint8Array",
 						"required": true,
-						"description": "PNG bytes satisfying chunk validation, legal color/depth combinations and positive dimensions; both input and expected decompressed scanlines are capped at 32 MiB."
+						"description": "The PNG file bytes, 45 to 33554432 bytes (32 MiB) long, that start with the PNG signature and pass chunk validation, which includes at most 10000 chunks, a valid CRC on every chunk, IHDR first, an empty IEND as the last chunk, a legal color type and bit depth pair (color type 0 with depth 1, 2, 4, 8 or 16; color types 2, 4 and 6 with depth 8 or 16; color type 3 with depth 1, 2, 4 or 8), and positive width and height whose product is at most 32000000. The expected decompressed scanlines, filter bytes included, must total at most 33554432 bytes (32 MiB), otherwise the call rejects."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubPng",
 						"type": "Promise<{ width: number; height: number }>",
-						"description": "Image width and height after complete deflate data, scanline lengths and filter bytes are checked, including interlaced passes."
+						"description": "Image width and height read from the IHDR chunk, both positive with a product of at most 32000000. The returned promise resolves only after the chunk checks, the complete deflate stream, every scanline length and every filter byte (0 to 4) have passed, including all Adam7 passes for interlaced images.",
+						"examples": [
+							{
+								"width": 1920,
+								"height": 1080
+							},
+							{
+								"width": 640,
+								"height": 480
+							},
+							{
+								"width": 1,
+								"height": 1
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Every failed check and every exception raised during validation (for example from DecompressionStream) becomes an Error with the message 'Harness artifact unavailable' and the code 'artifact-corrupt', and the returned promise rejects with it."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
