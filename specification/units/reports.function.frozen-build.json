@@ -21,35 +21,56 @@
 				"name": "frozenBuild.source",
 				"type": "string",
 				"required": true,
-				"description": "Finished source build directory."
+				"description": "The finished build directory that is copied, identified before and after the copy; a directory that cannot be listed or holds no file is refused as holding no build. This function itself only reads it.",
+				"examples": [
+					"/work/checkout/packages/reports/build",
+					"/work/worktree-2/packages/reports/build"
+				]
 			},
 			{
 				"name": "frozenBuild.target",
 				"type": "string",
 				"required": true,
-				"description": "Destination directory, removed before copying."
+				"description": "The directory the copy is written to, which one run serves from; it is removed recursively before the copy, without error when it is missing, and removed again if the copy or the source, identified after the copy, does not report the buildId taken before it. A source that holds no build is refused before this removal, so the target is left as it was.",
+				"examples": [
+					"/work/checkout/.cache/reports-e2e/harness-reports-e2e-7Qm2Xa/build",
+					"/work/checkout/.cache/reports-e2e/harness-reports-e2e-Lp4Zt9/build"
+				]
 			},
 			{
 				"name": "frozenBuild.copied",
 				"type": "(from: string, to: string) => Promise<void>",
 				"required": false,
-				"description": "Optional async copy operation, defaulting to recursive filesystem copy."
+				"description": "Async copy from the source to the target, called once after the target is removed and before the identities are compared; a copy that does not leave the target with the source's buildId makes the frozenBuild promise reject. Defaults to (from, to) => cp(from, to, { recursive: true }), the recursive copy from node:fs/promises."
 			}
 		],
 		"outputs": [
 			{
 				"name": "frozenBuild",
 				"type": "Promise<FrozenBuild>",
-				"description": "Target directory, source build identifier and file count after matching the source-before, source-after and copied identities."
+				"description": "The target directory as build, with the buildId and file count of the source as taken before the copy; it resolves only when the copy and the source, identified again after the copy, both report that buildId. A mismatch removes the target and rejects the promise.",
+				"examples": [
+					{
+						"build": "/work/checkout/.cache/reports-e2e/harness-reports-e2e-7Qm2Xa/build",
+						"buildId": "9c41e7a0d3b58f2c6e17a94d0b3f8e25c6a1d7e90f4b2c83a5d6e1f07b9c4a32",
+						"files": 412
+					},
+					{
+						"build": "/work/checkout/.cache/reports-e2e/harness-reports-e2e-Lp4Zt9/build",
+						"buildId": "e18f5b02c7a963d4b0e2f71c58a6d3e9047b1c2fa85d6e30b9c7124f0a8d5e6b",
+						"files": 37
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Throws if the source has no build or identities differ; a mismatch removes the target. Identity, filesystem and copy failures can also reject."
+				"description": "Thrown as an Error that names the source when it holds no build, and leaves the target as it was; also thrown, after the target is removed, when the copy or the source, identified after the copy, does not report the buildId taken before the copy. Identity, filesystem and copy failures reject the promise with the error they raise and leave the target as the failed step left it."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "frozenBuild",
@@ -58,35 +79,56 @@
 						"name": "frozenBuild.source",
 						"type": "string",
 						"required": true,
-						"description": "Finished source build directory."
+						"description": "The finished build directory that is copied, identified before and after the copy; a directory that cannot be listed or holds no file is refused as holding no build. This function itself only reads it.",
+						"examples": [
+							"/work/checkout/packages/reports/build",
+							"/work/worktree-2/packages/reports/build"
+						]
 					},
 					{
 						"name": "frozenBuild.target",
 						"type": "string",
 						"required": true,
-						"description": "Destination directory, removed before copying."
+						"description": "The directory the copy is written to, which one run serves from; it is removed recursively before the copy, without error when it is missing, and removed again if the copy or the source, identified after the copy, does not report the buildId taken before it. A source that holds no build is refused before this removal, so the target is left as it was.",
+						"examples": [
+							"/work/checkout/.cache/reports-e2e/harness-reports-e2e-7Qm2Xa/build",
+							"/work/checkout/.cache/reports-e2e/harness-reports-e2e-Lp4Zt9/build"
+						]
 					},
 					{
 						"name": "frozenBuild.copied",
 						"type": "(from: string, to: string) => Promise<void>",
 						"required": false,
-						"description": "Optional async copy operation, defaulting to recursive filesystem copy."
+						"description": "Async copy from the source to the target, called once after the target is removed and before the identities are compared; a copy that does not leave the target with the source's buildId makes the frozenBuild promise reject. Defaults to (from, to) => cp(from, to, { recursive: true }), the recursive copy from node:fs/promises."
 					}
 				],
 				"outputs": [
 					{
 						"name": "frozenBuild",
 						"type": "Promise<FrozenBuild>",
-						"description": "Target directory, source build identifier and file count after matching the source-before, source-after and copied identities."
+						"description": "The target directory as build, with the buildId and file count of the source as taken before the copy; it resolves only when the copy and the source, identified again after the copy, both report that buildId. A mismatch removes the target and rejects the promise.",
+						"examples": [
+							{
+								"build": "/work/checkout/.cache/reports-e2e/harness-reports-e2e-7Qm2Xa/build",
+								"buildId": "9c41e7a0d3b58f2c6e17a94d0b3f8e25c6a1d7e90f4b2c83a5d6e1f07b9c4a32",
+								"files": 412
+							},
+							{
+								"build": "/work/checkout/.cache/reports-e2e/harness-reports-e2e-Lp4Zt9/build",
+								"buildId": "e18f5b02c7a963d4b0e2f71c58a6d3e9047b1c2fa85d6e30b9c7124f0a8d5e6b",
+								"files": 37
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown as an Error that names the source when it holds no build, and leaves the target as it was; also thrown, after the target is removed, when the copy or the source, identified after the copy, does not report the buildId taken before the copy. Identity, filesystem and copy failures reject the promise with the error they raise and leave the target as the failed step left it."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
