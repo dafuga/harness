@@ -22,45 +22,94 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "modelExportPlans.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The model name that modelExportPlans converts with toPascalCase to build the class name; it matters on every call because the class name appears in both plans' source paths and in their export and type names. The function does no validation, so any string is converted and used without a check.",
+				"examples": ["invoice", "customer", "payment"]
 			},
 			{
 				"name": "adapterExportPlan.adapter",
 				"type": "AdapterName",
-				"required": true
+				"required": true,
+				"description": "The adapter name that adapterExportPlan uses unchanged in the './models/adapters/<adapter>' source path and converts into the create<Name>Adapter export, so it matters on every call. Only 'd1' is special-cased to 'D1'; every other value is converted with toPascalCase, and the AdapterName type is not checked at runtime.",
+				"examples": ["d1"]
 			},
 			{
 				"name": "pieceExportPlans.kind",
 				"type": "PieceKind",
-				"required": true
+				"required": true,
+				"description": "The kind of piece that selects the export pattern on every call: class kinds such as service or controller export a PascalCase class from their folder, while util, helper, seeder, concern, initializer and config each have their own path, and any other kind returns an empty array. The PieceKind type is enforced only at compile time, and the kind is looked up in plain objects with no runtime check.",
+				"examples": ["service", "util", "seeder"]
 			},
 			{
 				"name": "pieceExportPlans.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The piece name that pieceExportPlans turns into the export name and file path, using PascalCase for class, concern and initializer kinds, camelCase for util, helper and config, and kebab-case for the seeder path with a PascalCase seed export. It only matters for kinds with an export pattern, since other kinds never read it, and the function does no validation.",
+				"examples": ["invoice", "slugify", "users"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "modelExportPlans",
-				"type": "ExportPlan[]"
+				"type": "ExportPlan[]",
+				"description": "The two export plans for a model: a named export of the PascalCase class from './models/<Class>', then a types export from './models/<Class>.types' that lists the Attributes, CreateInput and UpdateInput type names. The array always holds exactly these two entries in this order, whatever the name.",
+				"examples": [
+					[
+						{
+							"source": "./models/Invoice",
+							"named": ["Invoice"]
+						},
+						{
+							"source": "./models/Invoice.types",
+							"types": ["InvoiceAttributes", "InvoiceCreateInput", "InvoiceUpdateInput"]
+						}
+					]
+				]
 			},
 			{
 				"name": "adapterExportPlan",
-				"type": "ExportPlan"
+				"type": "ExportPlan",
+				"description": "The export plan for one adapter: its source is './models/adapters/<adapter>' and its single named export is 'create<Name>Adapter', where <Name> is 'D1' for 'd1' and the PascalCase form of any other adapter. It is always one object with a source and a one-item named list, never a types list.",
+				"examples": [
+					{
+						"source": "./models/adapters/d1",
+						"named": ["createD1Adapter"]
+					}
+				]
 			},
 			{
 				"name": "pieceExportPlans",
-				"type": "ExportPlan[]"
+				"type": "ExportPlan[]",
+				"description": "The export plans for one piece: a one-entry array holding the export for its kind (a class, util, helper, seeder, concern, initializer or config export), or an empty array when the kind has no export pattern. Each entry's source is a relative import path, and its named list holds the one exported identifier.",
+				"examples": [
+					[
+						{
+							"source": "./services/InvoiceService",
+							"named": ["InvoiceService"]
+						}
+					],
+					[
+						{
+							"source": "./utils/slugify",
+							"named": ["slugify"]
+						}
+					],
+					[
+						{
+							"source": "../db/seed-data/users",
+							"named": ["seedUsers"]
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "modelExportPlans",
@@ -68,17 +117,32 @@
 					{
 						"name": "modelExportPlans.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The model name that modelExportPlans converts with toPascalCase to build the class name; it matters on every call because the class name appears in both plans' source paths and in their export and type names. The function does no validation, so any string is converted and used without a check.",
+						"examples": ["invoice", "customer", "payment"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "modelExportPlans",
-						"type": "ExportPlan[]"
+						"type": "ExportPlan[]",
+						"description": "The two export plans for a model: a named export of the PascalCase class from './models/<Class>', then a types export from './models/<Class>.types' that lists the Attributes, CreateInput and UpdateInput type names. The array always holds exactly these two entries in this order, whatever the name.",
+						"examples": [
+							[
+								{
+									"source": "./models/Invoice",
+									"named": ["Invoice"]
+								},
+								{
+									"source": "./models/Invoice.types",
+									"types": ["InvoiceAttributes", "InvoiceCreateInput", "InvoiceUpdateInput"]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "adapterExportPlan",
@@ -86,17 +150,26 @@
 					{
 						"name": "adapterExportPlan.adapter",
 						"type": "AdapterName",
-						"required": true
+						"required": true,
+						"description": "The adapter name that adapterExportPlan uses unchanged in the './models/adapters/<adapter>' source path and converts into the create<Name>Adapter export, so it matters on every call. Only 'd1' is special-cased to 'D1'; every other value is converted with toPascalCase, and the AdapterName type is not checked at runtime.",
+						"examples": ["d1"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "adapterExportPlan",
-						"type": "ExportPlan"
+						"type": "ExportPlan",
+						"description": "The export plan for one adapter: its source is './models/adapters/<adapter>' and its single named export is 'create<Name>Adapter', where <Name> is 'D1' for 'd1' and the PascalCase form of any other adapter. It is always one object with a source and a one-item named list, never a types list.",
+						"examples": [
+							{
+								"source": "./models/adapters/d1",
+								"named": ["createD1Adapter"]
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "pieceExportPlans",
@@ -104,22 +177,47 @@
 					{
 						"name": "pieceExportPlans.kind",
 						"type": "PieceKind",
-						"required": true
+						"required": true,
+						"description": "The kind of piece that selects the export pattern on every call: class kinds such as service or controller export a PascalCase class from their folder, while util, helper, seeder, concern, initializer and config each have their own path, and any other kind returns an empty array. The PieceKind type is enforced only at compile time, and the kind is looked up in plain objects with no runtime check.",
+						"examples": ["service", "util", "seeder"]
 					},
 					{
 						"name": "pieceExportPlans.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The piece name that pieceExportPlans turns into the export name and file path, using PascalCase for class, concern and initializer kinds, camelCase for util, helper and config, and kebab-case for the seeder path with a PascalCase seed export. It only matters for kinds with an export pattern, since other kinds never read it, and the function does no validation.",
+						"examples": ["invoice", "slugify", "users"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "pieceExportPlans",
-						"type": "ExportPlan[]"
+						"type": "ExportPlan[]",
+						"description": "The export plans for one piece: a one-entry array holding the export for its kind (a class, util, helper, seeder, concern, initializer or config export), or an empty array when the kind has no export pattern. Each entry's source is a relative import path, and its named list holds the one exported identifier.",
+						"examples": [
+							[
+								{
+									"source": "./services/InvoiceService",
+									"named": ["InvoiceService"]
+								}
+							],
+							[
+								{
+									"source": "./utils/slugify",
+									"named": ["slugify"]
+								}
+							],
+							[
+								{
+									"source": "../db/seed-data/users",
+									"named": ["seedUsers"]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
