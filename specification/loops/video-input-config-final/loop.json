@@ -2,11 +2,9 @@
 	"name": "video-input-config-final",
 	"goal": "Close JSON config dependencies and reject unproven style reuse",
 	"createdAt": "2026-11-15T21:02:48.681Z",
-	"updatedAt": "2026-11-15T21:02:50.506Z",
+	"updatedAt": "2026-11-15T21:20:37.946Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-15T21:03:07.601Z",
+			"evidence": "The committed planning case omitted config/base.json from its dependency proof."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-15T21:20:33.845Z",
+			"evidence": "bac0739907 follows config chains, bounds canonical tracked reads and binds reviewed generated producers without reading outputs."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-15T21:20:37.946Z",
+			"evidence": "The same four unchanged cases pass at bac0739907; root/workspace config inheritance, preprocessor recording and private canonical-path checks retain the red assertion."
 		},
 		{
 			"id": "verify",
