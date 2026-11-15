@@ -28,40 +28,94 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeviceConnectionService.constructor.options",
 				"type": "DeviceConnectionOptions",
-				"required": true
+				"required": true,
+				"description": "Provides the paired-device credentials, wire client metadata, socket-opening callback, and optional wire client and handshake timeout used by connect. The timeout defaults to remoteLimits.handshakeDeadlineMs (10,000 ms); when wire is omitted, the service creates WireClientService({ client: options.client })."
 			},
 			{
 				"name": "DeviceConnectionService.onStatus.listener",
 				"type": "(state: DeviceStatus) => void",
-				"required": true
+				"required": true,
+				"description": "Receives the next reported DeviceStatus (online, offline, or revoked) and subsequent changes; unchanged statuses are suppressed."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeviceConnectionService.onStatus",
-				"type": "()"
+				"type": "()",
+				"description": "Returns a disposer function that removes this listener from the service; registration does not immediately report the current status."
 			},
 			{
 				"name": "DeviceConnectionService.connect",
-				"type": "Promise<RemoteAttachment>"
+				"type": "Promise<RemoteAttachment>",
+				"description": "Resolves to the RemoteAttachment returned by wire.bind after the socket opens, an accept packet arrives, and wire attachment succeeds; handshake waits default to remoteLimits.handshakeDeadlineMs (10,000 ms) unless handshakeMs is set. Error, SecureFailure, or RemoteFailure can reject setup, and a later host-online relay notice starts another handshake on the same socket.",
+				"examples": [
+					{
+						"protocol": 1,
+						"role": "device",
+						"epoch": "0123456789abcdef0123456789abcdef",
+						"sequence": 1,
+						"replay": "none",
+						"host": {
+							"id": "0123456789abcdef0123456789abcdef01234567",
+							"name": "Mac mini",
+							"platform": "darwin",
+							"locked": false
+						},
+						"device": {
+							"id": "89abcdef0123456789abcdef0123456789abcdef",
+							"name": "Daniel’s iPhone"
+						},
+						"grant": null,
+						"methods": ["session.attach", "listProjects"],
+						"limits": {
+							"frameBytes": 262144,
+							"chunkBytes": 131072,
+							"requestBytes": 65536,
+							"messageBytes": 16777216,
+							"pendingRequests": 32,
+							"ledgerEntries": 256,
+							"ledgerTtlMs": 900000,
+							"eventLog": 512,
+							"requestDeadlineMs": 30000,
+							"mutationDeadlineMs": 120000,
+							"handshakeDeadlineMs": 10000,
+							"pingMs": 25000,
+							"idleMs": 90000,
+							"pairingTtlMs": 300000,
+							"pairingAttempts": 5
+						}
+					}
+				]
 			},
 			{
 				"name": "DeviceConnectionService.close",
-				"type": "void"
+				"type": "void",
+				"description": "Returns no value; when a socket is active, it closes it with code 1000 and reports offline if the status changes. With no active socket it does nothing."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The service creates Error when a handshake times out or the host response is not an accept packet; setup errors from dependencies are rethrown unchanged."
+			},
+			{
+				"name": "SecureFailure",
+				"type": "thrown",
+				"description": "SecureChannelService rejects invalid handshake state, handshake packets, or key derivation with SecureFailure; DeviceConnectionService propagates it from handshake setup."
+			},
+			{
+				"name": "RemoteFailure",
+				"type": "thrown",
+				"description": "WireClientService.bind rejects RemoteFailure when attachment is offline, times out, or receives a host attach failure; DeviceConnectionService propagates that rejection."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "DeviceConnectionService.onStatus",
@@ -69,17 +123,19 @@
 					{
 						"name": "DeviceConnectionService.onStatus.listener",
 						"type": "(state: DeviceStatus) => void",
-						"required": true
+						"required": true,
+						"description": "Receives the next reported DeviceStatus (online, offline, or revoked) and subsequent changes; unchanged statuses are suppressed."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeviceConnectionService.onStatus",
-						"type": "()"
+						"type": "()",
+						"description": "Returns a disposer function that removes this listener from the service; registration does not immediately report the current status."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeviceConnectionService.connect",
@@ -87,11 +143,66 @@
 				"outputs": [
 					{
 						"name": "DeviceConnectionService.connect",
-						"type": "Promise<RemoteAttachment>"
+						"type": "Promise<RemoteAttachment>",
+						"description": "Resolves to the RemoteAttachment returned by wire.bind after the socket opens, an accept packet arrives, and wire attachment succeeds; handshake waits default to remoteLimits.handshakeDeadlineMs (10,000 ms) unless handshakeMs is set. Error, SecureFailure, or RemoteFailure can reject setup, and a later host-online relay notice starts another handshake on the same socket.",
+						"examples": [
+							{
+								"protocol": 1,
+								"role": "device",
+								"epoch": "0123456789abcdef0123456789abcdef",
+								"sequence": 1,
+								"replay": "none",
+								"host": {
+									"id": "0123456789abcdef0123456789abcdef01234567",
+									"name": "Mac mini",
+									"platform": "darwin",
+									"locked": false
+								},
+								"device": {
+									"id": "89abcdef0123456789abcdef0123456789abcdef",
+									"name": "Daniel’s iPhone"
+								},
+								"grant": null,
+								"methods": ["session.attach", "listProjects"],
+								"limits": {
+									"frameBytes": 262144,
+									"chunkBytes": 131072,
+									"requestBytes": 65536,
+									"messageBytes": 16777216,
+									"pendingRequests": 32,
+									"ledgerEntries": 256,
+									"ledgerTtlMs": 900000,
+									"eventLog": 512,
+									"requestDeadlineMs": 30000,
+									"mutationDeadlineMs": 120000,
+									"handshakeDeadlineMs": 10000,
+									"pingMs": 25000,
+									"idleMs": 90000,
+									"pairingTtlMs": 300000,
+									"pairingAttempts": 5
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "The service creates Error when a handshake times out or the host response is not an accept packet; setup errors from dependencies are rethrown unchanged."
+					},
+					{
+						"name": "SecureFailure",
+						"type": "thrown",
+						"description": "SecureChannelService rejects invalid handshake state, handshake packets, or key derivation with SecureFailure; DeviceConnectionService propagates it from handshake setup."
+					},
+					{
+						"name": "RemoteFailure",
+						"type": "thrown",
+						"description": "WireClientService.bind rejects RemoteFailure when attachment is offline, times out, or receives a host attach failure; DeviceConnectionService propagates that rejection."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "DeviceConnectionService.close",
@@ -99,11 +210,12 @@
 				"outputs": [
 					{
 						"name": "DeviceConnectionService.close",
-						"type": "void"
+						"type": "void",
+						"description": "Returns no value; when a socket is active, it closes it with code 1000 and reports offline if the status changes. With no active socket it does nothing."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -113,17 +225,19 @@
 					{
 						"name": "DeviceConnectionService.constructor.options",
 						"type": "DeviceConnectionOptions",
-						"required": true
+						"required": true,
+						"description": "Provides the paired-device credentials, wire client metadata, socket-opening callback, and optional wire client and handshake timeout used by connect. The timeout defaults to remoteLimits.handshakeDeadlineMs (10,000 ms); when wire is omitted, the service creates WireClientService({ client: options.client })."
 					}
 				],
 				"outputs": [
 					{
 						"name": "DeviceConnectionService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a DeviceConnectionService instance and exposes wire, using options.wire when supplied or a new WireClientService({ client: options.client }) otherwise."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
