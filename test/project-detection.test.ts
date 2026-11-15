@@ -5,8 +5,12 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { appendMissingExports, applyExports } from '../src/workflows/generate-code/exports';
-import { detectProjectKind } from '../src/workflows/generate-code/project';
+import {
+	appendMissingExports,
+	applyExports
+} from '../src/workflows/projects-sessions/generate-code/exports';
+import { detectProjectKind } from '../src/workflows/projects-sessions/generate-code/project';
+import { detectGameDimension } from '../src/workflows/projects-sessions/generate-code/project';
 
 test('detects explicit Harness project kinds', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-project-'));
@@ -32,6 +36,20 @@ test('detects app and lib projects from local files', async () => {
 
 	await rm(app, { recursive: true, force: true });
 	await rm(lib, { recursive: true, force: true });
+});
+
+test('reads the declared game kind and dimension', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-project-'));
+	await writeFile(
+		join(root, 'package.json'),
+		JSON.stringify({ harness: { kind: 'game', dimension: '2d' } })
+	);
+	expect(await detectProjectKind(root)).toBe('game');
+	expect(await detectGameDimension(root)).toBe('2d');
+
+	await writeFile(join(root, 'package.json'), JSON.stringify({ harness: { dimension: '4d' } }));
+	expect(await detectGameDimension(root)).toBeUndefined();
+	await rm(root, { recursive: true, force: true });
 });
 
 test('appends missing exports idempotently', async () => {

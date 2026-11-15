@@ -11,7 +11,6 @@
 		"source": [
 			"src/workflows/generate-code/generateCode.ts",
 			"src/workflows/generate-code/generationGroup.ts",
-			"src/workflows/generate-code/groupedFiles.ts",
 			"src/workflows/generate-code/groupedImports.ts",
 			"src/workflows/projects-sessions/generate-code/generateCode.ts",
 			"src/workflows/projects-sessions/generate-code/generateCode.types.ts",
@@ -27,8 +26,6 @@
 			"renderGenerateResult",
 			"generationGroup",
 			"saveGenerationGroup",
-			"groupedFiles",
-			"groupedExports",
 			"groupedImports",
 			"groupedSpecifier",
 			"scaffoldKinds",
