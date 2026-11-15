@@ -18,29 +18,51 @@
 				"name": "sourceAudit.root",
 				"type": "string",
 				"required": true,
-				"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+				"description": "Filesystem root passed to GitAdapter for the HEAD and status reads, and to CommitTreeAdapter.open and loopPaths when input.loop is set. sourceAudit performs no check on this value before those reads.",
+				"examples": ["/workspace/app", "/srv/ci/checkout/app"]
 			},
 			{
 				"name": "sourceAudit.input",
 				"type": "TaskAuditInput",
 				"required": true,
-				"description": "Declared task or observation metadata appropriate to the named operation."
+				"description": "Declared task checked by sourceAudit: kind must be 'coding' or 'planning', goal must not be blank after trimming, and loop, when set, must be lowercase letters and digits joined by single hyphens. When loop is set, the committed loop.json goal must equal the input goal, the current loop goal and completion must equal their committed values, and any committed completion must match the input kind and plan; units is never read.",
+				"examples": [
+					{
+						"kind": "coding",
+						"goal": "Add the evidence grid to the reports component"
+					},
+					{
+						"kind": "coding",
+						"goal": "Finish the evidence grid loop",
+						"loop": "evidence-grid"
+					},
+					{
+						"kind": "planning",
+						"goal": "Plan the completion audit for the reports component",
+						"loop": "reports-audit"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "sourceAudit",
 				"type": "Promise<string>",
-				"description": "Current committed source ID after rejecting unrelated writes or changes to the committed task contract."
+				"description": "Full HEAD commit SHA from git rev-parse --verify HEAD^{commit}, returned only after the task-contract and working-tree checks pass.",
+				"examples": [
+					"7c3e9a1f05d4b28e6a9c1d7f3e5b20a8d94c6f12",
+					"a91f0e6b3d2c7458e1f9b06a4c3d8e2f57b1a0c9"
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Invalid or uncommitted task source, dirty unrelated files or a changed declared contract rejects."
+				"description": "Thrown for a kind other than 'coding' or 'planning', a blank goal, an invalid loop name, any uncommitted change other than the loop's loop.json and trace.ndjson, an input goal that differs from the committed loop goal, a committed goal that differs from the current loop goal, a current completion that differs from the committed one, or a committed completion whose kind or plan differs from the input. Errors raised by GitAdapter, CommitTreeAdapter, loop-state reads or JSON.parse of the committed loop.json are not caught and reach the caller unchanged."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "sourceAudit",
@@ -49,29 +71,51 @@
 						"name": "sourceAudit.root",
 						"type": "string",
 						"required": true,
-						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
+						"description": "Filesystem root passed to GitAdapter for the HEAD and status reads, and to CommitTreeAdapter.open and loopPaths when input.loop is set. sourceAudit performs no check on this value before those reads.",
+						"examples": ["/workspace/app", "/srv/ci/checkout/app"]
 					},
 					{
 						"name": "sourceAudit.input",
 						"type": "TaskAuditInput",
 						"required": true,
-						"description": "Declared task or observation metadata appropriate to the named operation."
+						"description": "Declared task checked by sourceAudit: kind must be 'coding' or 'planning', goal must not be blank after trimming, and loop, when set, must be lowercase letters and digits joined by single hyphens. When loop is set, the committed loop.json goal must equal the input goal, the current loop goal and completion must equal their committed values, and any committed completion must match the input kind and plan; units is never read.",
+						"examples": [
+							{
+								"kind": "coding",
+								"goal": "Add the evidence grid to the reports component"
+							},
+							{
+								"kind": "coding",
+								"goal": "Finish the evidence grid loop",
+								"loop": "evidence-grid"
+							},
+							{
+								"kind": "planning",
+								"goal": "Plan the completion audit for the reports component",
+								"loop": "reports-audit"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceAudit",
 						"type": "Promise<string>",
-						"description": "Current committed source ID after rejecting unrelated writes or changes to the committed task contract."
+						"description": "Full HEAD commit SHA from git rev-parse --verify HEAD^{commit}, returned only after the task-contract and working-tree checks pass.",
+						"examples": [
+							"7c3e9a1f05d4b28e6a9c1d7f3e5b20a8d94c6f12",
+							"a91f0e6b3d2c7458e1f9b06a4c3d8e2f57b1a0c9"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "Error",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Thrown for a kind other than 'coding' or 'planning', a blank goal, an invalid loop name, any uncommitted change other than the loop's loop.json and trace.ndjson, an input goal that differs from the committed loop goal, a committed goal that differs from the current loop goal, a current completion that differs from the committed one, or a committed completion whose kind or plan differs from the input. Errors raised by GitAdapter, CommitTreeAdapter, loop-state reads or JSON.parse of the committed loop.json are not caught and reach the caller unchanged."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
