@@ -6,6 +6,7 @@ import { loadCliProgram } from '../../../src/cli/loadCliProgram';
 import { contractsProject, writeContract } from '../../support/contractsProject';
 import { measureWorkload } from '../../support/measureWorkload';
 import { withTempDir } from '../../support/temporary';
+import { assertLinearContractMap } from '../../support/contractMapWork';
 
 vi.mock('node:fs/promises', { spy: true });
 
@@ -139,6 +140,7 @@ contractCase(
 contractCase(
 	'ContractsCommand map separates dependencies and dependents at path boundaries',
 	async () => {
+		await assertLinearContractMap();
 		const mapped = JSON.parse(await run('map', 'src/services/billing', '--json'));
 		expect(mapped.matches.map((row: { id: string }) => row.id)).toEqual([fixture.price.id]);
 		expect(mapped.dependencies.map((row: { id: string }) => row.id)).toEqual([fixture.invoice.id]);
