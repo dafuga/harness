@@ -20,17 +20,46 @@
 				"name": "hubEvidenceRegistry.context",
 				"type": "HubSourceContext",
 				"required": true,
-				"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+				"description": "A revision-pinned HubSourceContext supplies the source adapter, repository, commit, tree entries, cache identity and cache used to read committed blobs. This function reads unit manifests, matching scenario-manifest paths, and the budget ledger only when that ledger is present; adapter and cache failures propagate."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubEvidenceRegistry",
 				"type": "unknown",
-				"description": "Revision registry built from unit/scenario records, blob identities and budget baselines. Scenario filenames must match their declared IDs."
+				"description": "The resolved value is a revision registry of sorted unit and scenario views plus dependency and coverage graph; available is false and gap is added when no unit manifests exist. Every matching scenario path is schema-checked and must match its declared id, and a present ledger must contain valid UTF-8 NDJSON budget events or the call rejects.",
+				"examples": [
+					{
+						"available": false,
+						"gap": "no unit registry is stored at this revision",
+						"units": [],
+						"scenarios": [],
+						"graph": {
+							"nodes": [],
+							"edges": []
+						}
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "hubFail raises an Error when a source blob is missing, an artifact is invalid, a manifest path does not match its id, duplicate unit ids occur, or a ledger event fails validation; invalid JSON or UTF-8 in a manifest is surfaced as an artifact-corrupt Error."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "JSON.parse rejects a non-empty budget-ledger line that is not valid JSON."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Fatal UTF-8 decoding rejects a present budget ledger whose bytes are not valid UTF-8."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "hubEvidenceRegistry",
@@ -39,18 +68,46 @@
 						"name": "hubEvidenceRegistry.context",
 						"type": "HubSourceContext",
 						"required": true,
-						"description": "Authorized source context with repository, pinned commit, tree entries, source adapter and cache identity."
+						"description": "A revision-pinned HubSourceContext supplies the source adapter, repository, commit, tree entries, cache identity and cache used to read committed blobs. This function reads unit manifests, matching scenario-manifest paths, and the budget ledger only when that ledger is present; adapter and cache failures propagate."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubEvidenceRegistry",
 						"type": "unknown",
-						"description": "Revision registry built from unit/scenario records, blob identities and budget baselines. Scenario filenames must match their declared IDs."
+						"description": "The resolved value is a revision registry of sorted unit and scenario views plus dependency and coverage graph; available is false and gap is added when no unit manifests exist. Every matching scenario path is schema-checked and must match its declared id, and a present ledger must contain valid UTF-8 NDJSON budget events or the call rejects.",
+						"examples": [
+							{
+								"available": false,
+								"gap": "no unit registry is stored at this revision",
+								"units": [],
+								"scenarios": [],
+								"graph": {
+									"nodes": [],
+									"edges": []
+								}
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "hubFail raises an Error when a source blob is missing, an artifact is invalid, a manifest path does not match its id, duplicate unit ids occur, or a ledger event fails validation; invalid JSON or UTF-8 in a manifest is surfaced as an artifact-corrupt Error."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "JSON.parse rejects a non-empty budget-ledger line that is not valid JSON."
+					},
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Fatal UTF-8 decoding rejects a present budget ledger whose bytes are not valid UTF-8."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
