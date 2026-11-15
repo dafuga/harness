@@ -12,32 +12,100 @@
 		"symbols": ["neededBuilds", "scopedSetup"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "neededBuilds.scenarios",
 				"type": "ScenarioManifest[]",
-				"required": true
+				"required": true,
+				"description": "Scenario manifests for this verification run. Declared builds take precedence; when builds is absent, evidence supplies build ids, and missing evidence or an evidence item without a build requires all builds.",
+				"examples": [
+					[
+						{
+							"schemaVersion": 1,
+							"id": "reports-preview",
+							"title": "Reports preview",
+							"kind": "ui",
+							"units": ["reports.page.explorer"],
+							"states": [
+								{
+									"id": "default",
+									"title": "Default",
+									"coverage": "required"
+								}
+							],
+							"viewports": [
+								{
+									"id": "desktop",
+									"width": 1280,
+									"height": 800
+								}
+							],
+							"tests": [
+								{
+									"id": "reports-preview-test",
+									"kind": "e2e",
+									"runner": "playwright",
+									"target": "test/reports-preview.spec.ts"
+								}
+							],
+							"builds": ["reports"],
+							"evidence": []
+						}
+					]
+				]
 			},
 			{
 				"name": "scopedSetup.setup",
 				"type": "VerifyConfig['setup']",
-				"required": true
+				"required": true,
+				"description": "Configured verification setup commands in their original order; each step's builds field determines whether it is needed for the selected build ids.",
+				"examples": [
+					[
+						{
+							"command": "bun install --frozen-lockfile --backend=copyfile"
+						},
+						{
+							"command": "bun run build",
+							"builds": ["reports"]
+						},
+						{
+							"command": "bun run build:desktop",
+							"builds": ["desktop-renderer"]
+						}
+					]
+				]
 			},
 			{
 				"name": "scopedSetup.needed",
 				"type": "ReadonlySet<string> | 'all'",
-				"required": true
+				"required": true,
+				"description": "Build ids required by this run, as returned by neededBuilds; 'all' keeps every setup step because the build requirement cannot be narrowed.",
+				"examples": ["all"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "neededBuilds",
-				"type": "Set<string> | 'all'"
+				"type": "Set<string> | 'all'",
+				"description": "Build ids required by the scenarios, collected from declared builds or evidence; 'all' signals incomplete evidence, while an explicit empty builds list yields an empty set.",
+				"examples": ["all"]
 			},
 			{
 				"name": "scopedSetup",
-				"type": "VerifyConfig['setup']"
+				"type": "VerifyConfig['setup']",
+				"description": "Setup steps to run in original order: all steps for 'all', otherwise steps without build ids and steps that name at least one needed build. The result is a new array.",
+				"examples": [
+					[
+						{
+							"command": "bun install --frozen-lockfile --backend=copyfile"
+						},
+						{
+							"command": "bun run build",
+							"builds": ["reports"]
+						}
+					]
+				]
 			}
 		],
 		"errors": [],
@@ -49,13 +117,51 @@
 					{
 						"name": "neededBuilds.scenarios",
 						"type": "ScenarioManifest[]",
-						"required": true
+						"required": true,
+						"description": "Scenario manifests for this verification run. Declared builds take precedence; when builds is absent, evidence supplies build ids, and missing evidence or an evidence item without a build requires all builds.",
+						"examples": [
+							[
+								{
+									"schemaVersion": 1,
+									"id": "reports-preview",
+									"title": "Reports preview",
+									"kind": "ui",
+									"units": ["reports.page.explorer"],
+									"states": [
+										{
+											"id": "default",
+											"title": "Default",
+											"coverage": "required"
+										}
+									],
+									"viewports": [
+										{
+											"id": "desktop",
+											"width": 1280,
+											"height": 800
+										}
+									],
+									"tests": [
+										{
+											"id": "reports-preview-test",
+											"kind": "e2e",
+											"runner": "playwright",
+											"target": "test/reports-preview.spec.ts"
+										}
+									],
+									"builds": ["reports"],
+									"evidence": []
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "neededBuilds",
-						"type": "Set<string> | 'all'"
+						"type": "Set<string> | 'all'",
+						"description": "Build ids required by the scenarios, collected from declared builds or evidence; 'all' signals incomplete evidence, while an explicit empty builds list yields an empty set.",
+						"examples": ["all"]
 					}
 				],
 				"errors": [],
@@ -67,18 +173,48 @@
 					{
 						"name": "scopedSetup.setup",
 						"type": "VerifyConfig['setup']",
-						"required": true
+						"required": true,
+						"description": "Configured verification setup commands in their original order; each step's builds field determines whether it is needed for the selected build ids.",
+						"examples": [
+							[
+								{
+									"command": "bun install --frozen-lockfile --backend=copyfile"
+								},
+								{
+									"command": "bun run build",
+									"builds": ["reports"]
+								},
+								{
+									"command": "bun run build:desktop",
+									"builds": ["desktop-renderer"]
+								}
+							]
+						]
 					},
 					{
 						"name": "scopedSetup.needed",
 						"type": "ReadonlySet<string> | 'all'",
-						"required": true
+						"required": true,
+						"description": "Build ids required by this run, as returned by neededBuilds; 'all' keeps every setup step because the build requirement cannot be narrowed.",
+						"examples": ["all"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "scopedSetup",
-						"type": "VerifyConfig['setup']"
+						"type": "VerifyConfig['setup']",
+						"description": "Setup steps to run in original order: all steps for 'all', otherwise steps without build ids and steps that name at least one needed build. The result is a new array.",
+						"examples": [
+							[
+								{
+									"command": "bun install --frozen-lockfile --backend=copyfile"
+								},
+								{
+									"command": "bun run build",
+									"builds": ["reports"]
+								}
+							]
+						]
 					}
 				],
 				"errors": [],

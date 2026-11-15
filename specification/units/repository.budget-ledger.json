@@ -22,32 +22,65 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "BudgetLedgerRepository.constructor.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Filesystem root retained by the repository; append() joins it with the configured ledger path before creating parent directories and appending events.",
+				"examples": ["."]
 			},
 			{
 				"name": "BudgetLedgerRepository.read.tree",
 				"type": "SourceTree | undefined",
-				"required": true
+				"required": true,
+				"description": "Revision-specific source tree searched for the budget ledger; undefined or a tree without that path produces an empty ledger."
 			},
 			{
 				"name": "BudgetLedgerRepository.append.events",
 				"type": "BudgetEvent[]",
-				"required": true
+				"required": true,
+				"description": "Reviewed baseline or approval events to serialize as one JSON line each in the append-only ledger.",
+				"examples": [
+					[
+						{
+							"type": "baseline",
+							"unit": "repository.budget-ledger",
+							"record": {
+								"id": "verify-budget-001",
+								"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"tree": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+							},
+							"reviewer": "Reviewer",
+							"reason": "Reviewed initial repository budget",
+							"at": "2026-11-15T12:00:00.000Z",
+							"metrics": {
+								"source-bytes": 4200
+							},
+							"performance": []
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "BudgetLedgerRepository.read",
-				"type": "Promise<LedgerRead>"
+				"type": "Promise<LedgerRead>",
+				"description": "Resolves with the source text, schema-valid events, and one error for each nonblank malformed line; an absent ledger resolves as empty.",
+				"examples": [
+					{
+						"text": "",
+						"events": [],
+						"errors": []
+					}
+				]
 			},
 			{
 				"name": "BudgetLedgerRepository.append",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Resolves after creating the ledger's parent directory and appending the events as JSON lines; filesystem failures reject the promise."
 			}
 		],
 		"errors": [],
@@ -59,13 +92,22 @@
 					{
 						"name": "BudgetLedgerRepository.read.tree",
 						"type": "SourceTree | undefined",
-						"required": true
+						"required": true,
+						"description": "Revision-specific source tree searched for the budget ledger; undefined or a tree without that path produces an empty ledger."
 					}
 				],
 				"outputs": [
 					{
 						"name": "BudgetLedgerRepository.read",
-						"type": "Promise<LedgerRead>"
+						"type": "Promise<LedgerRead>",
+						"description": "Resolves with the source text, schema-valid events, and one error for each nonblank malformed line; an absent ledger resolves as empty.",
+						"examples": [
+							{
+								"text": "",
+								"events": [],
+								"errors": []
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -77,13 +119,35 @@
 					{
 						"name": "BudgetLedgerRepository.append.events",
 						"type": "BudgetEvent[]",
-						"required": true
+						"required": true,
+						"description": "Reviewed baseline or approval events to serialize as one JSON line each in the append-only ledger.",
+						"examples": [
+							[
+								{
+									"type": "baseline",
+									"unit": "repository.budget-ledger",
+									"record": {
+										"id": "verify-budget-001",
+										"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+										"tree": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+									},
+									"reviewer": "Reviewer",
+									"reason": "Reviewed initial repository budget",
+									"at": "2026-11-15T12:00:00.000Z",
+									"metrics": {
+										"source-bytes": 4200
+									},
+									"performance": []
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BudgetLedgerRepository.append",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Resolves after creating the ledger's parent directory and appending the events as JSON lines; filesystem failures reject the promise."
 					}
 				],
 				"errors": [],
@@ -97,13 +161,16 @@
 					{
 						"name": "BudgetLedgerRepository.constructor.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Filesystem root retained by the repository; append() joins it with the configured ledger path before creating parent directories and appending events.",
+						"examples": ["."]
 					}
 				],
 				"outputs": [
 					{
 						"name": "BudgetLedgerRepository.constructor",
-						"type": "unknown"
+						"type": "BudgetLedgerRepository",
+						"description": "The repository instance retaining the supplied root for later append() calls."
 					}
 				],
 				"errors": [],
