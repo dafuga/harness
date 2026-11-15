@@ -18,10 +18,22 @@
 			{
 				"name": "reportRuntimeRoot",
 				"type": "unknown",
-				"description": "Environment override HARNESS_REPORTS_RUNTIME_ROOT when non-nullish, otherwise the resolved directory two levels above the current module URL."
+				"description": "A string: the HARNESS_REPORTS_RUNTIME_ROOT value whenever that variable is set (an empty string counts as set and is returned unchanged); otherwise the packages/reports directory three parent steps above the defining module's directory, as an absolute path. The override is returned as-is without path.resolve(), normalization or an existence check, and the fallback has no trailing slash because path.resolve() strips it.",
+				"examples": [
+					"/workspace/monorepo/packages/reports",
+					"/home/runner/work/monorepo/monorepo/packages/reports",
+					"/opt/harness/reports-runtime"
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown only when HARNESS_REPORTS_RUNTIME_ROOT is not set and either new URL cannot resolve '../../..' against import.meta.url or fileURLToPath rejects the result (for example when the module is loaded from an http: or data: URL). The function has no try/catch, so the TypeError reaches the caller unchanged."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "reportRuntimeRoot",
@@ -30,11 +42,22 @@
 					{
 						"name": "reportRuntimeRoot",
 						"type": "unknown",
-						"description": "Environment override HARNESS_REPORTS_RUNTIME_ROOT when non-nullish, otherwise the resolved directory two levels above the current module URL."
+						"description": "A string: the HARNESS_REPORTS_RUNTIME_ROOT value whenever that variable is set (an empty string counts as set and is returned unchanged); otherwise the packages/reports directory three parent steps above the defining module's directory, as an absolute path. The override is returned as-is without path.resolve(), normalization or an existence check, and the fallback has no trailing slash because path.resolve() strips it.",
+						"examples": [
+							"/workspace/monorepo/packages/reports",
+							"/home/runner/work/monorepo/monorepo/packages/reports",
+							"/opt/harness/reports-runtime"
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown only when HARNESS_REPORTS_RUNTIME_ROOT is not set and either new URL cannot resolve '../../..' against import.meta.url or fileURLToPath rejects the result (for example when the module is loaded from an http: or data: URL). The function has no try/catch, so the TypeError reaches the caller unchanged."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
