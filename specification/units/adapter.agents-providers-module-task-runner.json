@@ -24,55 +24,153 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskRunnerAdapter.constructor.execute",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "An optional executor callback that receives the generated command and task input and resolves to a process result. Defaults to taskProcess."
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.command.selection",
 				"type": "TaskSelection",
-				"required": true
+				"required": true,
+				"description": "Selects Claude Code or Codex and carries the model and intelligence strings used to build the CLI invocation. The type has exactly provider, model and intelligence fields.",
+				"examples": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-4-5-20251001",
+						"intelligence": "high"
+					},
+					{
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"intelligence": "high"
+					}
+				]
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.run.input",
 				"type": "TaskRunInput",
-				"required": true
+				"required": true,
+				"description": "Carries the task selection, working-directory path, prompt and AbortSignal; cwd sets the child working directory and prompt is sent to stdin. The signal is checked before spawn and aborts the child, while execution kills the process after 900,000 ms or when stdout exceeds 8,000,000 characters."
 			},
 			{
 				"name": "taskProcess.command",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "An ordered executable and argument list passed to child_process.spawn; element zero is the executable and the remaining strings are arguments.",
+				"examples": [
+					[
+						"claude",
+						"-p",
+						"--verbose",
+						"--output-format",
+						"stream-json",
+						"--model",
+						"claude-haiku-4-5-20251001",
+						"--effort",
+						"high",
+						"--permission-mode",
+						"acceptEdits",
+						"--tools",
+						"Read,Edit,Write,Glob,Grep,Bash",
+						"--allowedTools",
+						"Read,Edit,Write,Glob,Grep,Bash",
+						"--no-session-persistence"
+					]
+				]
 			},
 			{
 				"name": "taskProcess.input",
 				"type": "TaskRunInput",
-				"required": true
+				"required": true,
+				"description": "Carries the task selection, working-directory path, prompt and AbortSignal; cwd sets the child working directory and prompt is sent to stdin. The signal is checked before spawn and aborts the child, while execution kills the process after 900,000 ms or when stdout exceeds 8,000,000 characters."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskRunnerAdapter.command",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Returns the executable and arguments for the selected provider, using the supplied model and intelligence strings. Claude uses stream-json output with acceptEdits permission mode, while Codex uses JSON output, workspace-write sandboxing and the openai provider setting.",
+				"examples": [
+					[
+						"claude",
+						"-p",
+						"--verbose",
+						"--output-format",
+						"stream-json",
+						"--model",
+						"claude-haiku-4-5-20251001",
+						"--effort",
+						"high",
+						"--permission-mode",
+						"acceptEdits",
+						"--tools",
+						"Read,Edit,Write,Glob,Grep,Bash",
+						"--allowedTools",
+						"Read,Edit,Write,Glob,Grep,Bash",
+						"--no-session-persistence"
+					],
+					[
+						"codex",
+						"exec",
+						"--json",
+						"--ephemeral",
+						"--sandbox",
+						"workspace-write",
+						"-m",
+						"gpt-6-luna",
+						"-c",
+						"model_reasoning_effort=\"high\"",
+						"-c",
+						"model_provider=\"openai\"",
+						"-c",
+						"approval_policy=\"never\"",
+						"-"
+					]
+				]
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.run",
-				"type": "Promise<TaskRunResult>"
+				"type": "Promise<TaskRunResult>",
+				"description": "Returns the selected provider, model and intelligence with public task text, reported model and usage. Text is limited to the last 16,000 characters, and reportedModel is null when the CLI does not report one.",
+				"examples": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-4-5-20251001",
+						"intelligence": "high",
+						"text": "Completed the requested module task.",
+						"reportedModel": "claude-haiku-4-5-20251001"
+					}
+				]
 			},
 			{
 				"name": "taskProcess",
-				"type": "Promise<TaskProcessResult>"
+				"type": "Promise<TaskProcessResult>",
+				"description": "Resolves with the child exit code and captured stdout; a null exit code is converted to 1. It rejects if stdout exceeds 8,000,000 characters.",
+				"examples": [
+					{
+						"code": 0,
+						"stdout": "{\"type\":\"result\",\"result\":\"Completed.\"}\n"
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Failed CLI results, quota or permission rejection, model mismatch, child-process or output-limit failures, and executor failures can throw or reject with an Error. Aborts propagate the input signal's reason."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Malformed non-empty stdout lines fail JSON.parse before provider result handling."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ModuleTaskRunnerAdapter.command",
@@ -80,17 +178,68 @@
 					{
 						"name": "ModuleTaskRunnerAdapter.command.selection",
 						"type": "TaskSelection",
-						"required": true
+						"required": true,
+						"description": "Selects Claude Code or Codex and carries the model and intelligence strings used to build the CLI invocation. The type has exactly provider, model and intelligence fields.",
+						"examples": [
+							{
+								"provider": "claude",
+								"model": "claude-haiku-4-5-20251001",
+								"intelligence": "high"
+							},
+							{
+								"provider": "codex",
+								"model": "gpt-6-luna",
+								"intelligence": "high"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.command",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Returns the executable and arguments for the selected provider, using the supplied model and intelligence strings. Claude uses stream-json output with acceptEdits permission mode, while Codex uses JSON output, workspace-write sandboxing and the openai provider setting.",
+						"examples": [
+							[
+								"claude",
+								"-p",
+								"--verbose",
+								"--output-format",
+								"stream-json",
+								"--model",
+								"claude-haiku-4-5-20251001",
+								"--effort",
+								"high",
+								"--permission-mode",
+								"acceptEdits",
+								"--tools",
+								"Read,Edit,Write,Glob,Grep,Bash",
+								"--allowedTools",
+								"Read,Edit,Write,Glob,Grep,Bash",
+								"--no-session-persistence"
+							],
+							[
+								"codex",
+								"exec",
+								"--json",
+								"--ephemeral",
+								"--sandbox",
+								"workspace-write",
+								"-m",
+								"gpt-6-luna",
+								"-c",
+								"model_reasoning_effort=\"high\"",
+								"-c",
+								"model_provider=\"openai\"",
+								"-c",
+								"approval_policy=\"never\"",
+								"-"
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ModuleTaskRunnerAdapter.run",
@@ -98,17 +247,39 @@
 					{
 						"name": "ModuleTaskRunnerAdapter.run.input",
 						"type": "TaskRunInput",
-						"required": true
+						"required": true,
+						"description": "Carries the task selection, working-directory path, prompt and AbortSignal; cwd sets the child working directory and prompt is sent to stdin. The signal is checked before spawn and aborts the child, while execution kills the process after 900,000 ms or when stdout exceeds 8,000,000 characters."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.run",
-						"type": "Promise<TaskRunResult>"
+						"type": "Promise<TaskRunResult>",
+						"description": "Returns the selected provider, model and intelligence with public task text, reported model and usage. Text is limited to the last 16,000 characters, and reportedModel is null when the CLI does not report one.",
+						"examples": [
+							{
+								"provider": "claude",
+								"model": "claude-haiku-4-5-20251001",
+								"intelligence": "high",
+								"text": "Completed the requested module task.",
+								"reportedModel": "claude-haiku-4-5-20251001"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Failed CLI results, quota or permission rejection, model mismatch, and executor failures can throw or reject with an Error. Aborts propagate the input signal's reason."
+					},
+					{
+						"name": "SyntaxError",
+						"type": "thrown",
+						"description": "Malformed non-empty stdout lines fail JSON.parse before provider result handling."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "taskProcess",
@@ -116,22 +287,57 @@
 					{
 						"name": "taskProcess.command",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "An ordered executable and argument list passed to child_process.spawn; element zero is the executable and the remaining strings are arguments.",
+						"examples": [
+							[
+								"claude",
+								"-p",
+								"--verbose",
+								"--output-format",
+								"stream-json",
+								"--model",
+								"claude-haiku-4-5-20251001",
+								"--effort",
+								"high",
+								"--permission-mode",
+								"acceptEdits",
+								"--tools",
+								"Read,Edit,Write,Glob,Grep,Bash",
+								"--allowedTools",
+								"Read,Edit,Write,Glob,Grep,Bash",
+								"--no-session-persistence"
+							]
+						]
 					},
 					{
 						"name": "taskProcess.input",
 						"type": "TaskRunInput",
-						"required": true
+						"required": true,
+						"description": "Carries the task selection, working-directory path, prompt and AbortSignal; cwd sets the child working directory and prompt is sent to stdin. The signal is checked before spawn and aborts the child, while execution kills the process after 900,000 ms or when stdout exceeds 8,000,000 characters."
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskProcess",
-						"type": "Promise<TaskProcessResult>"
+						"type": "Promise<TaskProcessResult>",
+						"description": "Resolves with the child exit code and captured stdout; a null exit code is converted to 1. It rejects if stdout exceeds 8,000,000 characters.",
+						"examples": [
+							{
+								"code": 0,
+								"stdout": "{\"type\":\"result\",\"result\":\"Completed.\"}\n"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown",
+						"description": "Child-process errors and stdout overflow reject with an Error. An already-aborted signal throws its caller-provided reason."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -141,17 +347,19 @@
 					{
 						"name": "ModuleTaskRunnerAdapter.constructor.execute",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "An optional executor callback stored by the adapter and used by run. Defaults to taskProcess."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskRunnerAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Creates a ModuleTaskRunnerAdapter instance that stores the executor callback."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
