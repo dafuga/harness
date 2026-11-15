@@ -19,26 +19,50 @@
 				"type": "{ root?: string; force?: boolean }",
 				"required": false,
 				"default": {},
-				"description": "Optional root and force options; defaults to an empty object, root uses the current directory and omitted force preserves changed files."
+				"description": "Optional options object (defaults to {}): root is the project directory, falling back to process.cwd() only when it is undefined or null, and detectProjectKind(root) must return 'app' or 'game'. force is forwarded unchanged as the force option of writePlannedFiles, so an omitted value passes undefined and force has no effect when a shared library is configured.",
+				"examples": [
+					{},
+					{
+						"root": "/home/dev/code/storefront"
+					},
+					{
+						"root": "/home/dev/code/game-prototype",
+						"force": true
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "generateElements",
 				"type": "Promise<GenerateResult>",
-				"description": "Promise of native-atom file-write statuses, or an empty write list naming an existing configured shared library; does not update SDK exports."
+				"description": "Resolves to a GenerateResult with kind 'elements' and exportsUpdated always false. When atomLibrary(root) is not 'src/components/atoms', it resolves with name 'existing shared native atom library' and writes [] without writing files; otherwise it resolves with name 'HTML and SVG atoms' and writes set to the writePlannedFiles result.",
+				"examples": [
+					{
+						"kind": "elements",
+						"name": "HTML and SVG atoms",
+						"writes": [],
+						"exportsUpdated": false
+					},
+					{
+						"kind": "elements",
+						"name": "existing shared native atom library",
+						"writes": [],
+						"exportsUpdated": false
+					}
+				]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Rejects non-app/game projects, invalid library configuration and refused overwrites using the existing CLI errors."
+				"description": "Thrown by fail('Elements require a Harness app project.') when detectProjectKind(root) returns a kind other than 'app' or 'game', before any atom file is planned or written."
 			},
 			{
 				"name": "Element generation failure",
 				"type": "propagated",
-				"description": "Project detection, configured-library resolution and planned-file filesystem failures propagate without inventing successful writes."
+				"description": "Rejections from detectProjectKind, ensureParents and writePlannedFiles, and exceptions from atomLibrary(root), atomicComponentFiles() or process.cwd() (called only when root is undefined or null), propagate unchanged. The implementation has no try/catch, so no success result is returned when one of them fails."
 			}
 		],
 		"errorStatus": "declared",
@@ -51,26 +75,50 @@
 						"type": "{ root?: string; force?: boolean }",
 						"required": false,
 						"default": {},
-						"description": "Optional root and force options; defaults to an empty object, root uses the current directory and omitted force preserves changed files."
+						"description": "Optional options object (defaults to {}): root is the project directory, falling back to process.cwd() only when it is undefined or null, and detectProjectKind(root) must return 'app' or 'game'. force is forwarded unchanged as the force option of writePlannedFiles, so an omitted value passes undefined and force has no effect when a shared library is configured.",
+						"examples": [
+							{},
+							{
+								"root": "/home/dev/code/storefront"
+							},
+							{
+								"root": "/home/dev/code/game-prototype",
+								"force": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "generateElements",
 						"type": "Promise<GenerateResult>",
-						"description": "Promise of native-atom file-write statuses, or an empty write list naming an existing configured shared library; does not update SDK exports."
+						"description": "Resolves to a GenerateResult with kind 'elements' and exportsUpdated always false. When atomLibrary(root) is not 'src/components/atoms', it resolves with name 'existing shared native atom library' and writes [] without writing files; otherwise it resolves with name 'HTML and SVG atoms' and writes set to the writePlannedFiles result.",
+						"examples": [
+							{
+								"kind": "elements",
+								"name": "HTML and SVG atoms",
+								"writes": [],
+								"exportsUpdated": false
+							},
+							{
+								"kind": "elements",
+								"name": "existing shared native atom library",
+								"writes": [],
+								"exportsUpdated": false
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Rejects non-app/game projects, invalid library configuration and refused overwrites using the existing CLI errors."
+						"description": "Thrown by fail('Elements require a Harness app project.') when detectProjectKind(root) returns a kind other than 'app' or 'game', before any atom file is planned or written."
 					},
 					{
 						"name": "Element generation failure",
 						"type": "propagated",
-						"description": "Project detection, configured-library resolution and planned-file filesystem failures propagate without inventing successful writes."
+						"description": "Rejections from detectProjectKind, ensureParents and writePlannedFiles, and exceptions from atomLibrary(root), atomicComponentFiles() or process.cwd() (called only when root is undefined or null), propagate unchanged. The implementation has no try/catch, so no success result is returned when one of them fails."
 					}
 				],
 				"errorStatus": "declared"
