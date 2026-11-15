@@ -8,7 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/core/analyticsTypes.ts", "src/core/reports-media/analyticsTypes.ts"],
+		"source": ["src/core/reports-media/analyticsTypes.ts"],
 		"symbols": ["AnalyticsContext", "AnalyticsEvent", "AnalyticsFilter", "LoopMetric"]
 	},
 	"contract": {

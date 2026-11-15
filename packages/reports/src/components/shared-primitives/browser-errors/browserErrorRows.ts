@@ -1,7 +1,7 @@
 // @harness-uid u_j2ecxfaukv
 import type { Expected } from './browserErrorRows.types';
 import type { BrowserErrorRow, Observed } from '../../../utils/shared-primitives/browserErrorRows';
-import type { BrowserDiagnostic } from '../../../../../../src/core/browserDiagnostics';
+import type { BrowserDiagnostic } from '../../../../../../src/core/development-tooling/browserDiagnostics';
 
 /** An expectation accounts for one matching occurrence, including its optional exact source. */
 export function browserErrorRows(diagnostic: BrowserDiagnostic): BrowserErrorRow[] {

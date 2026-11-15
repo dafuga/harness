@@ -225,8 +225,8 @@
 		},
 		{
 			"from": "packages/desktop/src/utils/verification-evidence/hostedEvidenceRecord.ts",
-			"specifier": "../../../../src/core/browserDiagnostics",
-			"to": "src/core/browserDiagnostics.ts",
+			"specifier": "../../../../../src/core/development-tooling/browserDiagnostics",
+			"to": "src/core/development-tooling/browserDiagnostics.ts",
 			"reason": "Hosted evidence validates the same recorded browser diagnostic contract as the verification runner."
 		},
 		{

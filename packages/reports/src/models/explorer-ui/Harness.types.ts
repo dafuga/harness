@@ -2,7 +2,7 @@
 import type { HarnessReview, HarnessUnitLimits } from './HarnessBudget.types';
 import type { HarnessLegacyReport } from './HarnessLegacy.types';
 import type { Status } from '../reports-media/Report.types';
-import type { BrowserDiagnostic } from '../../../../../src/core/browserDiagnostics';
+import type { BrowserDiagnostic } from '../../../../../src/core/development-tooling/browserDiagnostics';
 import type { UnitMetadata } from '../../../../../src/utils/unitMetadata';
 export type * from './HarnessLegacy.types';
 export interface HarnessRecordSummary {

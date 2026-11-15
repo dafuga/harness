@@ -2,7 +2,7 @@
 <!-- @harness-atoms ../atoms -->
 <!-- @harness-uid u_mhwfmcdigo -->
 <script lang="ts">
-	import type { BrowserDiagnostic } from '../../../../../../src/core/browserDiagnostics';
+	import type { BrowserDiagnostic } from '../../../../../../src/core/development-tooling/browserDiagnostics';
 	import { browserErrorRows } from './browserErrorRows';
 	import { type BrowserErrorRow } from '../../../utils/shared-primitives/browserErrorRows';
 	let { diagnostics }: { diagnostics?: BrowserDiagnostic[] } = $props();

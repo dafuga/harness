@@ -1,5 +1,5 @@
 // @harness-uid u_ackrkfrpbm
-import type { AnalyticsEvent } from '../../core/analyticsTypes';
+import type { AnalyticsEvent } from '../../core/reports-media/analyticsTypes';
 export interface AnalyticsEventAttributes {
 	id: string;
 	timestamp: string;

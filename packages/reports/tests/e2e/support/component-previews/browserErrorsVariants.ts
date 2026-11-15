@@ -1,4 +1,4 @@
-import type { BrowserDiagnostic } from '../../../../../../src/core/browserDiagnostics';
+import type { BrowserDiagnostic } from '../../../../../../src/core/development-tooling/browserDiagnostics';
 import type { PreviewCases } from './shared';
 
 export const browserErrorsStates = [

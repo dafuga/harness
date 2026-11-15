@@ -1,6 +1,6 @@
 // @harness-uid u_aotujotljx
 import { z } from 'zod';
-import { browserDiagnosticSchema } from '../../../../../src/core/browserDiagnostics';
+import { browserDiagnosticSchema } from '../../../../../src/core/development-tooling/browserDiagnostics';
 import { hostedEvidenceFields } from './hostedEvidenceFields';
 const { s, name, sha, array, names, obj, bool, num, passed, capture } = hostedEvidenceFields;
 export const hostedEvidenceRecord = obj({

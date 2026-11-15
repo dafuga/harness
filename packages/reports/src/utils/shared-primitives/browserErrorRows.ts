@@ -1,5 +1,5 @@
 // @harness-uid u_j2ecxfaukv
-import type { BrowserDiagnostic } from '../../../../../src/core/browserDiagnostics';
+import type { BrowserDiagnostic } from '../../../../../src/core/development-tooling/browserDiagnostics';
 
 export type Observed = BrowserDiagnostic['errors'][number];
 
