@@ -81,7 +81,7 @@ test('capture orchestration observes configured boundary signatures and preserve
 	await withTempRepo(async (repo) => {
 		const f = await videoCaptureFixture(repo),
 			options = f.options();
-		const declaration = structuredClone(captureDeclaration);
+		const declaration = globalThis.structuredClone(captureDeclaration);
 		Object.assign(declaration.clips[0], {
 			checkpoints: [
 				{ viewport: 'desktop', entrySignature: 'a'.repeat(64), exitSignature: 'b'.repeat(64) }
