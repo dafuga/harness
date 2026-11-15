@@ -38,45 +38,69 @@
 				"name": "presentUnits.side",
 				"type": "ReasonSide",
 				"required": true,
-				"description": "Revision source index and unit manifests to filter for active units with present owned source."
+				"description": "Contains a revision's file index and manifests, plus an optional writing-limits version. These functions use the file map and manifests only; writing does not affect their results."
 			},
 			{
 				"name": "requiredReasons.base",
 				"type": "ReasonSide",
 				"required": true,
-				"description": "Earlier revision’s source blocks and manifests."
+				"description": "Contains the earlier revision's file index and manifests for comparison with the head revision. Its optional writing-limits value is ignored."
 			},
 			{
 				"name": "requiredReasons.head",
 				"type": "ReasonSide",
 				"required": true,
-				"description": "Later revision’s source blocks and manifests."
+				"description": "Contains the later revision's file index and manifests for comparison with the base revision. Its optional writing-limits value is ignored."
 			},
 			{
 				"name": "reasonDeclarationHash.unit",
 				"type": "ReasonManifest",
 				"required": true,
-				"description": "Full or compact manifest whose declared facts need a fingerprint."
+				"description": "A full component manifest or a compact manifest for one unit, used to fingerprint declared facts. Compact manifests return their stored declarationHash; full manifests are hashed from declared kind, responsibility, contract, dependencies, runtime, targets, scenarios, budgets, and lineage.",
+				"examples": [
+					{
+						"id": "function.required-reasons",
+						"status": "active",
+						"owns": {
+							"source": ["src/utils/development-tooling/required-reasons/requiredReasons.ts"]
+						},
+						"declarationHash": "a1b2c3d4e5f60718"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "presentUnits",
 				"type": "Map<string, ReasonManifest>",
-				"description": "Map of active manifests with at least one owned path present in the source index."
+				"description": "A Map keyed by unit ID containing manifests whose status is active and whose owns.source includes at least one path present in side.index.files."
 			},
 			{
 				"name": "requiredReasons",
 				"type": "RequiredReason[]",
-				"description": "Sorted required reasons with unit/symbol, change kind and before/after fingerprints. Identical named blocks can move files unchanged; whole-unit changes use *, and declared-manifest changes use <manifest> only when no symbol changes already require reasons."
+				"description": "An array sorted by unit ID and then symbol, containing reasons for added or removed units or changed source blocks (* marks whole-unit changes). Same-name blocks with identical hashes remain unchanged across file moves, and <manifest> is emitted only when declared manifest data changes without symbol changes.",
+				"examples": [
+					[],
+					[
+						{
+							"unit": "function.required-reasons",
+							"symbol": "*",
+							"change": "added",
+							"from": null,
+							"to": "459b83ccefb12785998601af694e246b7e49f3241ba0a5346542aa9d0caa6e49"
+						}
+					]
+				]
 			},
 			{
 				"name": "reasonDeclarationHash",
 				"type": "string",
-				"description": "Sixteen-character SHA-256 prefix for declared fields, or the stored fingerprint of a compact manifest."
+				"description": "Returns a compact manifest's stored declarationHash, or the first 16 hexadecimal characters of SHA-256 over the selected declared fields of a full manifest.",
+				"examples": ["a1b2c3d4e5f60718"]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "presentUnits",
@@ -85,18 +109,18 @@
 						"name": "presentUnits.side",
 						"type": "ReasonSide",
 						"required": true,
-						"description": "Revision source index and unit manifests to filter for active units with present owned source."
+						"description": "Contains a revision's file index and manifests, plus an optional writing-limits version. These functions use the file map and manifests only; writing does not affect their results."
 					}
 				],
 				"outputs": [
 					{
 						"name": "presentUnits",
 						"type": "Map<string, ReasonManifest>",
-						"description": "Map of active manifests with at least one owned path present in the source index."
+						"description": "A Map keyed by unit ID containing manifests whose status is active and whose owns.source includes at least one path present in side.index.files."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "requiredReasons",
@@ -105,24 +129,36 @@
 						"name": "requiredReasons.base",
 						"type": "ReasonSide",
 						"required": true,
-						"description": "Earlier revision’s source blocks and manifests."
+						"description": "Contains the earlier revision's file index and manifests for comparison with the head revision. Its optional writing-limits value is ignored."
 					},
 					{
 						"name": "requiredReasons.head",
 						"type": "ReasonSide",
 						"required": true,
-						"description": "Later revision’s source blocks and manifests."
+						"description": "Contains the later revision's file index and manifests for comparison with the base revision. Its optional writing-limits value is ignored."
 					}
 				],
 				"outputs": [
 					{
 						"name": "requiredReasons",
 						"type": "RequiredReason[]",
-						"description": "Sorted required reasons with unit/symbol, change kind and before/after fingerprints. Identical named blocks can move files unchanged; whole-unit changes use *, and declared-manifest changes use <manifest> only when no symbol changes already require reasons."
+						"description": "An array sorted by unit ID and then symbol, containing reasons for added or removed units or changed source blocks (* marks whole-unit changes). Same-name blocks with identical hashes remain unchanged across file moves, and <manifest> is emitted only when declared manifest data changes without symbol changes.",
+						"examples": [
+							[],
+							[
+								{
+									"unit": "function.required-reasons",
+									"symbol": "*",
+									"change": "added",
+									"from": null,
+									"to": "459b83ccefb12785998601af694e246b7e49f3241ba0a5346542aa9d0caa6e49"
+								}
+							]
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "reasonDeclarationHash",
@@ -131,18 +167,29 @@
 						"name": "reasonDeclarationHash.unit",
 						"type": "ReasonManifest",
 						"required": true,
-						"description": "Full or compact manifest whose declared facts need a fingerprint."
+						"description": "A full component manifest or a compact manifest for one unit, used to fingerprint declared facts. Compact manifests return their stored declarationHash; full manifests are hashed from declared kind, responsibility, contract, dependencies, runtime, targets, scenarios, budgets, and lineage.",
+						"examples": [
+							{
+								"id": "function.required-reasons",
+								"status": "active",
+								"owns": {
+									"source": ["src/utils/development-tooling/required-reasons/requiredReasons.ts"]
+								},
+								"declarationHash": "a1b2c3d4e5f60718"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "reasonDeclarationHash",
 						"type": "string",
-						"description": "Sixteen-character SHA-256 prefix for declared fields, or the stored fingerprint of a compact manifest."
+						"description": "Returns a compact manifest's stored declarationHash, or the first 16 hexadecimal characters of SHA-256 over the selected declared fields of a full manifest.",
+						"examples": ["a1b2c3d4e5f60718"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
