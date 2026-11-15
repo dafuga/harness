@@ -26,35 +26,98 @@
 				"name": "ThreadLinks.threads",
 				"type": "ThreadInfo[]",
 				"required": true,
-				"description": "Required thread records, kept in supplied order within each group. Empty groups are omitted."
+				"description": "Thread records to show, kept in their supplied order within the image-match and other groups. A match requires a truthy `imageSha256` equal to the target hash and an equal `version`; empty groups are omitted.",
+				"examples": [
+					[
+						{
+							"id": "7f8c4b11-9c6f-4b7e-8c2d-1a5e6f901234",
+							"pin": 1,
+							"version": "v001",
+							"imageSha256": "d4ab3d5e7c9f0123456789abcdef0123456789abcdef0123456789abcdef0123",
+							"state": "default",
+							"viewport": "desktop",
+							"region": {
+								"x": 0.125,
+								"y": 0.2,
+								"width": 0.25,
+								"height": 0.3
+							},
+							"messageCount": 3
+						},
+						{
+							"id": "2f1a8c7d-6b5e-4a39-9d0c-123456789abc",
+							"pin": 2,
+							"version": null,
+							"imageSha256": null,
+							"state": null,
+							"viewport": null,
+							"region": null,
+							"messageCount": 1
+						}
+					],
+					[]
+				]
 			},
 			{
 				"name": "ThreadLinks.thread",
 				"type": "ThreadInfo | null",
 				"required": true,
-				"description": "Required current thread or null. Its identifier marks the matching button active and pressed."
+				"description": "The selected thread, or `null` when none is selected. A link is active and `aria-pressed` only when its `id` equals this value's `id`.",
+				"examples": [
+					{
+						"id": "7f8c4b11-9c6f-4b7e-8c2d-1a5e6f901234",
+						"pin": 1,
+						"version": "v001",
+						"imageSha256": "d4ab3d5e7c9f0123456789abcdef0123456789abcdef0123456789abcdef0123",
+						"state": "default",
+						"viewport": "desktop",
+						"region": {
+							"x": 0.125,
+							"y": 0.2,
+							"width": 0.25,
+							"height": 0.3
+						},
+						"messageCount": 3
+					},
+					null
+				]
 			},
 			{
 				"name": "ThreadLinks.aim",
 				"type": "ThreadTarget",
 				"required": true,
-				"description": "Required image/conversation target used by the same-image helper to classify threads."
+				"description": "The image or entity target used to group each thread, compared through `sameImage`. Matching checks only a nonempty `imageSha256` and equal `version`; state, viewport, region, and option do not affect grouping.",
+				"examples": [
+					{
+						"version": "v001",
+						"imageSha256": "d4ab3d5e7c9f0123456789abcdef0123456789abcdef0123456789abcdef0123",
+						"state": "default",
+						"viewport": "desktop",
+						"region": {
+							"x": 0.125,
+							"y": 0.2,
+							"width": 0.25,
+							"height": 0.3
+						}
+					}
+				]
 			},
 			{
 				"name": "ThreadLinks.select",
 				"type": "(thread: ThreadInfo) => void",
 				"required": true,
-				"description": "Called with the clicked thread; this component does not update the current-thread prop itself."
+				"description": "Called with the clicked thread record when its button is activated. The component does not change `thread` itself."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ThreadLinks",
 				"type": "markup",
-				"description": "Threads on this image followed by Other threads. Buttons show the pin number and version, falling back to Initial plan. Empty input renders no groups."
+				"description": "Markup shows nonempty “Threads on this image” then “Other threads” groups, with a button for each record in supplied order. Buttons display the pin and `version || 'Initial plan'`, expose selection through active and `aria-pressed` state, and call `select(item)` when clicked."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
