@@ -32,39 +32,231 @@
 				"name": "mapColumns.count",
 				"type": "number",
 				"required": true,
-				"description": "Unit count used to choose a row width."
+				"description": "The number of units in the map: mapColumns takes the ceiling of the square root of count times 0.75 as the row width, and harnessLayout passes the length of its units array here when perRow is omitted. The result is clamped to between 6 and 24, so every count from 0 to 48 gives 6 and a negative count gives NaN.",
+				"examples": [36, 240, 412]
 			},
 			{
 				"name": "harnessLayout.units",
 				"type": "HarnessUnit[]",
 				"required": true,
-				"description": "Units and their declared dependencies to lay out."
+				"description": "The units to place, each with an id and a dependencies list of { unit, via } entries that name other units by id; an entry naming a unit missing from the array is ignored. Nothing validates the array, so a unit with no dependencies array fails at runtime, and in a dependency cycle the layers depend on the order of the units.",
+				"examples": [
+					[],
+					[
+						{
+							"id": "reports.function.harness-layout",
+							"kind": "function",
+							"status": "active",
+							"title": "Dependency map layout",
+							"responsibility": "Places units in dependency layers and builds deduplicated connecting edges.",
+							"dependencies": [
+								{
+									"unit": "reports.model.harness-types",
+									"via": "import"
+								}
+							],
+							"scenarios": [],
+							"owns": {
+								"source": [
+									"packages/reports/src/components/explorer-ui/harness-map/harnessLayout.ts",
+									"packages/reports/src/utils/explorer-ui/harnessLayout.ts",
+									"packages/reports/src/utils/explorer-ui/harnessLayout.types.ts",
+									"packages/reports/src/utils/harnessLayout.ts"
+								],
+								"symbols": [
+									"mapColumns",
+									"harnessLayout",
+									"nodeSize",
+									"PlacedUnit",
+									"HarnessLayout"
+								]
+							},
+							"contract": {
+								"inputs": [
+									{
+										"name": "mapColumns.count",
+										"type": "number",
+										"required": true
+									},
+									{
+										"name": "harnessLayout.units",
+										"type": "HarnessUnit[]",
+										"required": true
+									},
+									{
+										"name": "harnessLayout.perRow",
+										"type": "unknown",
+										"required": false
+									}
+								],
+								"outputs": [
+									{
+										"name": "nodeSize",
+										"type": "unknown"
+									},
+									{
+										"name": "mapColumns",
+										"type": "number"
+									},
+									{
+										"name": "harnessLayout",
+										"type": "HarnessLayout"
+									}
+								],
+								"errors": []
+							},
+							"runtime": {
+								"kind": "module",
+								"targets": [
+									{
+										"kind": "module",
+										"entry": "packages/reports/src/utils/explorer-ui/harnessLayout.ts"
+									}
+								]
+							},
+							"budgets": {
+								"size": "frozen",
+								"complexity": "frozen",
+								"performance": []
+							},
+							"version": "9c41e7a2b0d86f35"
+						}
+					]
+				]
 			},
 			{
 				"name": "harnessLayout.perRow",
 				"type": "unknown",
 				"required": false,
-				"description": "Optional units per row, defaulting to mapColumns for the supplied count."
+				"description": "Units per row, which wraps every layer into rows of that many units; when the argument is undefined it defaults to mapColumns(units.length), which is between 6 and 24. Nothing validates it, and 0 with at least one unit gives NaN or infinite positions and an infinite height.",
+				"examples": [6, 12, 24]
 			}
 		],
 		"outputs": [
 			{
 				"name": "nodeSize",
 				"type": "unknown",
-				"description": "Node dimensions of 176 by 34, with horizontal gap 16 and vertical gap 46."
+				"description": "The node box and spacing constant used for every unit: width 176, height 34, gapX 16 between columns and gapY 46 between rows. harnessLayout computes every node position and the map's width and height from these four values.",
+				"examples": [
+					{
+						"width": 176,
+						"height": 34,
+						"gapX": 16,
+						"gapY": 46
+					}
+				]
 			},
 			{
 				"name": "mapColumns",
 				"type": "number",
-				"description": "Ceiling of the square root of 0.75 times count, clamped between six and 24."
+				"description": "Units per row for a map of count units: the ceiling of the square root of 0.75 times count, clamped to between 6 and 24. harnessLayout uses it as the default perRow, and a negative count yields NaN.",
+				"examples": [6, 14, 18]
 			},
 			{
 				"name": "harnessLayout",
 				"type": "HarnessLayout",
-				"description": "Nodes grouped by dependency depth and sorted by identifier within layers, wrapped into rows, with dimensions and one edge per known dependency pair. Cycle traversal is bounded and missing dependency nodes are ignored."
+				"description": "The placed map: each node holds its unit and its x and y, layers run from the deepest (smallest y) to units with no known dependency (largest y), and each layer wraps after perRow units. Each distinct known dependency pair draws one edge from the bottom center of the dependent to the top center of its dependency, a dependency on a unit outside the array draws none, and width and height give the map's size.",
+				"examples": [
+					{
+						"nodes": [],
+						"edges": [],
+						"width": 176,
+						"height": 34
+					},
+					{
+						"nodes": [
+							{
+								"unit": {
+									"id": "reports.function.harness-layout",
+									"kind": "function",
+									"status": "active",
+									"title": "Dependency map layout",
+									"responsibility": "Places units in dependency layers and builds deduplicated connecting edges.",
+									"dependencies": [
+										{
+											"unit": "reports.model.harness-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/explorer-ui/harness-map/harnessLayout.ts",
+											"packages/reports/src/utils/explorer-ui/harnessLayout.ts",
+											"packages/reports/src/utils/explorer-ui/harnessLayout.types.ts",
+											"packages/reports/src/utils/harnessLayout.ts"
+										],
+										"symbols": [
+											"mapColumns",
+											"harnessLayout",
+											"nodeSize",
+											"PlacedUnit",
+											"HarnessLayout"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "mapColumns.count",
+												"type": "number",
+												"required": true
+											},
+											{
+												"name": "harnessLayout.units",
+												"type": "HarnessUnit[]",
+												"required": true
+											},
+											{
+												"name": "harnessLayout.perRow",
+												"type": "unknown",
+												"required": false
+											}
+										],
+										"outputs": [
+											{
+												"name": "nodeSize",
+												"type": "unknown"
+											},
+											{
+												"name": "mapColumns",
+												"type": "number"
+											},
+											{
+												"name": "harnessLayout",
+												"type": "HarnessLayout"
+											}
+										],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/harnessLayout.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "9c41e7a2b0d86f35"
+								},
+								"x": 0,
+								"y": 0
+							}
+						],
+						"edges": [],
+						"width": 176,
+						"height": 34
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "mapColumns",
@@ -73,18 +265,20 @@
 						"name": "mapColumns.count",
 						"type": "number",
 						"required": true,
-						"description": "Unit count used to choose a row width."
+						"description": "The number of units in the map: mapColumns takes the ceiling of the square root of count times 0.75 as the row width, and harnessLayout passes the length of its units array here when perRow is omitted. The result is clamped to between 6 and 24, so every count from 0 to 48 gives 6 and a negative count gives NaN.",
+						"examples": [36, 240, 412]
 					}
 				],
 				"outputs": [
 					{
 						"name": "mapColumns",
 						"type": "number",
-						"description": "Ceiling of the square root of 0.75 times count, clamped between six and 24."
+						"description": "Units per row for a map of count units: the ceiling of the square root of 0.75 times count, clamped to between 6 and 24. harnessLayout uses it as the default perRow, and a negative count yields NaN.",
+						"examples": [6, 14, 18]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "harnessLayout",
@@ -93,24 +287,205 @@
 						"name": "harnessLayout.units",
 						"type": "HarnessUnit[]",
 						"required": true,
-						"description": "Units and their declared dependencies to lay out."
+						"description": "The units to place, each with an id and a dependencies list of { unit, via } entries that name other units by id; an entry naming a unit missing from the array is ignored. Nothing validates the array, so a unit with no dependencies array fails at runtime, and in a dependency cycle the layers depend on the order of the units.",
+						"examples": [
+							[],
+							[
+								{
+									"id": "reports.function.harness-layout",
+									"kind": "function",
+									"status": "active",
+									"title": "Dependency map layout",
+									"responsibility": "Places units in dependency layers and builds deduplicated connecting edges.",
+									"dependencies": [
+										{
+											"unit": "reports.model.harness-types",
+											"via": "import"
+										}
+									],
+									"scenarios": [],
+									"owns": {
+										"source": [
+											"packages/reports/src/components/explorer-ui/harness-map/harnessLayout.ts",
+											"packages/reports/src/utils/explorer-ui/harnessLayout.ts",
+											"packages/reports/src/utils/explorer-ui/harnessLayout.types.ts",
+											"packages/reports/src/utils/harnessLayout.ts"
+										],
+										"symbols": [
+											"mapColumns",
+											"harnessLayout",
+											"nodeSize",
+											"PlacedUnit",
+											"HarnessLayout"
+										]
+									},
+									"contract": {
+										"inputs": [
+											{
+												"name": "mapColumns.count",
+												"type": "number",
+												"required": true
+											},
+											{
+												"name": "harnessLayout.units",
+												"type": "HarnessUnit[]",
+												"required": true
+											},
+											{
+												"name": "harnessLayout.perRow",
+												"type": "unknown",
+												"required": false
+											}
+										],
+										"outputs": [
+											{
+												"name": "nodeSize",
+												"type": "unknown"
+											},
+											{
+												"name": "mapColumns",
+												"type": "number"
+											},
+											{
+												"name": "harnessLayout",
+												"type": "HarnessLayout"
+											}
+										],
+										"errors": []
+									},
+									"runtime": {
+										"kind": "module",
+										"targets": [
+											{
+												"kind": "module",
+												"entry": "packages/reports/src/utils/explorer-ui/harnessLayout.ts"
+											}
+										]
+									},
+									"budgets": {
+										"size": "frozen",
+										"complexity": "frozen",
+										"performance": []
+									},
+									"version": "9c41e7a2b0d86f35"
+								}
+							]
+						]
 					},
 					{
 						"name": "harnessLayout.perRow",
 						"type": "unknown",
 						"required": false,
-						"description": "Optional units per row, defaulting to mapColumns for the supplied count."
+						"description": "Units per row, which wraps every layer into rows of that many units; when the argument is undefined it defaults to mapColumns(units.length), which is between 6 and 24. Nothing validates it, and 0 with at least one unit gives NaN or infinite positions and an infinite height.",
+						"examples": [6, 12, 24]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessLayout",
 						"type": "HarnessLayout",
-						"description": "Nodes grouped by dependency depth and sorted by identifier within layers, wrapped into rows, with dimensions and one edge per known dependency pair. Cycle traversal is bounded and missing dependency nodes are ignored."
+						"description": "The placed map: each node holds its unit and its x and y, layers run from the deepest (smallest y) to units with no known dependency (largest y), and each layer wraps after perRow units. Each distinct known dependency pair draws one edge from the bottom center of the dependent to the top center of its dependency, a dependency on a unit outside the array draws none, and width and height give the map's size.",
+						"examples": [
+							{
+								"nodes": [],
+								"edges": [],
+								"width": 176,
+								"height": 34
+							},
+							{
+								"nodes": [
+									{
+										"unit": {
+											"id": "reports.function.harness-layout",
+											"kind": "function",
+											"status": "active",
+											"title": "Dependency map layout",
+											"responsibility": "Places units in dependency layers and builds deduplicated connecting edges.",
+											"dependencies": [
+												{
+													"unit": "reports.model.harness-types",
+													"via": "import"
+												}
+											],
+											"scenarios": [],
+											"owns": {
+												"source": [
+													"packages/reports/src/components/explorer-ui/harness-map/harnessLayout.ts",
+													"packages/reports/src/utils/explorer-ui/harnessLayout.ts",
+													"packages/reports/src/utils/explorer-ui/harnessLayout.types.ts",
+													"packages/reports/src/utils/harnessLayout.ts"
+												],
+												"symbols": [
+													"mapColumns",
+													"harnessLayout",
+													"nodeSize",
+													"PlacedUnit",
+													"HarnessLayout"
+												]
+											},
+											"contract": {
+												"inputs": [
+													{
+														"name": "mapColumns.count",
+														"type": "number",
+														"required": true
+													},
+													{
+														"name": "harnessLayout.units",
+														"type": "HarnessUnit[]",
+														"required": true
+													},
+													{
+														"name": "harnessLayout.perRow",
+														"type": "unknown",
+														"required": false
+													}
+												],
+												"outputs": [
+													{
+														"name": "nodeSize",
+														"type": "unknown"
+													},
+													{
+														"name": "mapColumns",
+														"type": "number"
+													},
+													{
+														"name": "harnessLayout",
+														"type": "HarnessLayout"
+													}
+												],
+												"errors": []
+											},
+											"runtime": {
+												"kind": "module",
+												"targets": [
+													{
+														"kind": "module",
+														"entry": "packages/reports/src/utils/explorer-ui/harnessLayout.ts"
+													}
+												]
+											},
+											"budgets": {
+												"size": "frozen",
+												"complexity": "frozen",
+												"performance": []
+											},
+											"version": "9c41e7a2b0d86f35"
+										},
+										"x": 0,
+										"y": 0
+									}
+								],
+								"edges": [],
+								"width": 176,
+								"height": 34
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
