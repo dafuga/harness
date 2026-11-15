@@ -25,76 +25,436 @@
 				"name": "standingFailures.items",
 				"type": "DeploymentActivity[]",
 				"required": true,
-				"description": "The deployments of this device, newest first."
+				"description": "The deployments to count, newest first: the function does not sort them, so the first one listed for each projectId and environment is treated as the newest there. Only phase, projectId and environment are read, and a null projectId is compared as the text 'null'.",
+				"examples": [
+					[
+						{
+							"phase": "queued",
+							"detail": "Queued for dev",
+							"sourceEnvironment": null,
+							"id": "e3b71d05-c8f4-4a26-b09d-41f6e8c2a730",
+							"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+							"projectName": "storefront",
+							"environment": "dev",
+							"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+							"branch": "main",
+							"steps": [
+								{
+									"id": "preparing",
+									"title": "Prepare source"
+								},
+								{
+									"id": "checking",
+									"title": "Run checks"
+								},
+								{
+									"id": "building",
+									"title": "Build source"
+								},
+								{
+									"id": "uploading",
+									"title": "Deploy to Cloudflare"
+								},
+								{
+									"id": "verifying",
+									"title": "Verify health"
+								}
+							],
+							"step": null,
+							"error": null,
+							"receipt": null,
+							"createdAt": "2026-11-15T09:30:12.084Z",
+							"startedAt": null,
+							"updatedAt": "2026-11-15T09:30:12.084Z",
+							"finishedAt": null
+						},
+						{
+							"phase": "failed",
+							"detail": "Deployment failed",
+							"sourceEnvironment": "preprod",
+							"id": "4c1e8a27-9b3d-4f60-8e51-2a7c9d0b6f13",
+							"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+							"projectName": "storefront",
+							"environment": "prod",
+							"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+							"branch": "main",
+							"steps": [
+								{
+									"id": "preparing",
+									"title": "Prepare source"
+								},
+								{
+									"id": "checking",
+									"title": "Run checks"
+								},
+								{
+									"id": "building",
+									"title": "Build source"
+								},
+								{
+									"id": "uploading",
+									"title": "Deploy to Cloudflare"
+								},
+								{
+									"id": "verifying",
+									"title": "Verify health"
+								}
+							],
+							"step": "uploading",
+							"error": "Deploy to Cloudflare failed. Check the project configuration and retry.",
+							"receipt": null,
+							"createdAt": "2026-11-15T07:58:40.291Z",
+							"startedAt": "2026-11-15T07:58:42.017Z",
+							"updatedAt": "2026-11-15T08:03:19.764Z",
+							"finishedAt": "2026-11-15T08:03:19.764Z"
+						}
+					],
+					[
+						{
+							"phase": "complete",
+							"detail": "Deployed to prod",
+							"sourceEnvironment": "preprod",
+							"id": "b8d2f0e6-17a4-4c9b-a3e5-6f08d1c7b294",
+							"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+							"projectName": "storefront",
+							"environment": "prod",
+							"commit": "0c7a5e91d3b64f2a8e19c0d75a2f6b38e9d01c4a",
+							"branch": "main",
+							"steps": [
+								{
+									"id": "preparing",
+									"title": "Prepare source"
+								},
+								{
+									"id": "checking",
+									"title": "Run checks"
+								},
+								{
+									"id": "building",
+									"title": "Build source"
+								},
+								{
+									"id": "uploading",
+									"title": "Deploy to Cloudflare"
+								},
+								{
+									"id": "verifying",
+									"title": "Verify health"
+								}
+							],
+							"step": "verifying",
+							"error": null,
+							"receipt": {
+								"environment": "prod",
+								"commit": "0c7a5e91d3b64f2a8e19c0d75a2f6b38e9d01c4a",
+								"branch": "main",
+								"updatedAt": "2026-11-14T17:12:58.403Z",
+								"adapter": "cloudflare",
+								"deploymentId": "a1b2c3d4",
+								"url": "https://a1b2c3d4.storefront.pages.dev"
+							},
+							"createdAt": "2026-11-14T17:09:33.670Z",
+							"startedAt": "2026-11-14T17:09:35.122Z",
+							"updatedAt": "2026-11-14T17:13:01.218Z",
+							"finishedAt": "2026-11-14T17:13:01.218Z"
+						}
+					]
+				]
 			},
 			{
 				"name": "activitySummary.activeCount",
 				"type": "number",
 				"required": true,
-				"description": "How many deployments are queued or running."
+				"description": "The number of deployments under way, as the caller counts them; the function does not check their phases. A 0 is written as 'No', and only exactly 1 takes the singular 'deployment'.",
+				"examples": [0, 1, 2]
 			},
 			{
 				"name": "activitySummary.failed",
 				"type": "number",
 				"required": true,
-				"description": "How many failed deployments still stand."
+				"description": "The number of failed deployments that still stand, as the caller supplies it (standingFailures counts the same thing). Any truthy value appends ' · N failed' to the summary, so 0 leaves the failure part out.",
+				"examples": [0, 1]
 			},
 			{
 				"name": "activityLight.activeCount",
 				"type": "number",
 				"required": true,
-				"description": "How many deployments are queued or running."
+				"description": "The number of deployments under way, as the caller counts them; any non-zero value makes the light 'active', and the function does not check their phases.",
+				"examples": [0, 2]
 			},
 			{
 				"name": "activityLight.failed",
 				"type": "number",
 				"required": true,
-				"description": "How many failed deployments still stand."
+				"description": "The number of failed deployments that still stand, as the caller supplies it; it matters only when nothing is under way, because any non-zero value then makes the light 'failed'.",
+				"examples": [0, 1]
 			},
 			{
 				"name": "activityLight.total",
 				"type": "number",
 				"required": true,
-				"description": "How many deployments are listed in all."
+				"description": "The number of deployments listed in all, whatever their phase; it matters only when nothing is under way or failed, because any non-zero value then makes the light 'recent' and 0 makes it 'idle'.",
+				"examples": [0, 3, 5]
 			},
 			{
 				"name": "phaseLabel.item",
 				"type": "DeploymentActivity",
 				"required": true,
-				"description": "The deployment to describe, with its phase, current step and steps."
+				"description": "The deployment to describe: its phase, its step (matched by id against steps) and its steps list, which gives the title shown for that step. Only phase, step and steps are read.",
+				"examples": [
+					{
+						"phase": "building",
+						"detail": "Building source commit",
+						"sourceEnvironment": "preprod",
+						"id": "0a9f6c31-5e2b-4d78-9c14-b7e3f20a85d6",
+						"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+						"projectName": "storefront",
+						"environment": "prod",
+						"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": "building",
+						"error": null,
+						"receipt": null,
+						"createdAt": "2026-11-15T08:41:07.552Z",
+						"startedAt": "2026-11-15T08:41:09.113Z",
+						"updatedAt": "2026-11-15T08:44:26.830Z",
+						"finishedAt": null
+					},
+					{
+						"phase": "failed",
+						"detail": "Deployment failed",
+						"sourceEnvironment": "preprod",
+						"id": "4c1e8a27-9b3d-4f60-8e51-2a7c9d0b6f13",
+						"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+						"projectName": "storefront",
+						"environment": "prod",
+						"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": "uploading",
+						"error": "Deploy to Cloudflare failed. Check the project configuration and retry.",
+						"receipt": null,
+						"createdAt": "2026-11-15T07:58:40.291Z",
+						"startedAt": "2026-11-15T07:58:42.017Z",
+						"updatedAt": "2026-11-15T08:03:19.764Z",
+						"finishedAt": "2026-11-15T08:03:19.764Z"
+					}
+				]
 			},
 			{
 				"name": "itemLight.item",
 				"type": "DeploymentActivity",
 				"required": true,
-				"description": "The deployment whose list light is wanted."
+				"description": "The deployment whose list light is wanted; only its phase is read.",
+				"examples": [
+					{
+						"phase": "queued",
+						"detail": "Queued for dev",
+						"sourceEnvironment": null,
+						"id": "e3b71d05-c8f4-4a26-b09d-41f6e8c2a730",
+						"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+						"projectName": "storefront",
+						"environment": "dev",
+						"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": null,
+						"error": null,
+						"receipt": null,
+						"createdAt": "2026-11-15T09:30:12.084Z",
+						"startedAt": null,
+						"updatedAt": "2026-11-15T09:30:12.084Z",
+						"finishedAt": null
+					},
+					{
+						"phase": "building",
+						"detail": "Building source commit",
+						"sourceEnvironment": "preprod",
+						"id": "0a9f6c31-5e2b-4d78-9c14-b7e3f20a85d6",
+						"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+						"projectName": "storefront",
+						"environment": "prod",
+						"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": "building",
+						"error": null,
+						"receipt": null,
+						"createdAt": "2026-11-15T08:41:07.552Z",
+						"startedAt": "2026-11-15T08:41:09.113Z",
+						"updatedAt": "2026-11-15T08:44:26.830Z",
+						"finishedAt": null
+					},
+					{
+						"phase": "complete",
+						"detail": "Deployed to prod",
+						"sourceEnvironment": "preprod",
+						"id": "b8d2f0e6-17a4-4c9b-a3e5-6f08d1c7b294",
+						"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+						"projectName": "storefront",
+						"environment": "prod",
+						"commit": "0c7a5e91d3b64f2a8e19c0d75a2f6b38e9d01c4a",
+						"branch": "main",
+						"steps": [
+							{
+								"id": "preparing",
+								"title": "Prepare source"
+							},
+							{
+								"id": "checking",
+								"title": "Run checks"
+							},
+							{
+								"id": "building",
+								"title": "Build source"
+							},
+							{
+								"id": "uploading",
+								"title": "Deploy to Cloudflare"
+							},
+							{
+								"id": "verifying",
+								"title": "Verify health"
+							}
+						],
+						"step": "verifying",
+						"error": null,
+						"receipt": {
+							"environment": "prod",
+							"commit": "0c7a5e91d3b64f2a8e19c0d75a2f6b38e9d01c4a",
+							"branch": "main",
+							"updatedAt": "2026-11-14T17:12:58.403Z",
+							"adapter": "cloudflare",
+							"deploymentId": "a1b2c3d4",
+							"url": "https://a1b2c3d4.storefront.pages.dev"
+						},
+						"createdAt": "2026-11-14T17:09:33.670Z",
+						"startedAt": "2026-11-14T17:09:35.122Z",
+						"updatedAt": "2026-11-14T17:13:01.218Z",
+						"finishedAt": "2026-11-14T17:13:01.218Z"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "standingFailures",
 				"type": "number",
-				"description": "The number of failed deployments with no newer deployment to the same project and environment."
+				"description": "The number of failed deployments that stand: a failed deployment is not counted when an earlier-listed, newer deployment has the same projectId and environment, whatever that newer deployment's phase.",
+				"examples": [1, 0]
 			},
 			{
 				"name": "activitySummary",
 				"type": "string",
-				"description": "A sentence counting active deployments, followed by the failures that stand when there are any."
+				"description": "The summary label: 'No active deployments' when the active count is 0, '1 active deployment' for exactly 1 and 'N active deployments' otherwise. ' · N failed' is appended when the failed count is truthy.",
+				"examples": [
+					"No active deployments · 1 failed",
+					"1 active deployment",
+					"2 active deployments"
+				]
 			},
 			{
 				"name": "activityLight",
 				"type": "DeploymentLight",
-				"description": "active while any deployment is under way, else failed after a standing failure, else recent once any exists, else idle."
+				"description": "The light for the whole activity: 'active' while any deployment is under way, otherwise 'failed' while a failure stands, otherwise 'recent' once any deployment is listed and 'idle' when none is. It never returns 'queued'.",
+				"examples": ["active", "failed", "recent"]
 			},
 			{
 				"name": "phaseLabel",
 				"type": "string",
-				"description": "Queued, Deployed, Failed (at the failing step when known) or the title of the step under way; Starting when none is known."
+				"description": "The phase text: 'Queued' while queued and 'Deployed' once complete, whatever the step. For a failed deployment it is 'Failed at <step title>' when the step matches an entry in steps, and 'Failed' otherwise; for any other phase it is the title of the matching step, or 'Starting' when none matches.",
+				"examples": ["Build source", "Failed at Deploy to Cloudflare"]
 			},
 			{
 				"name": "itemLight",
 				"type": "DeploymentLight",
-				"description": "queued or failed for those phases, recent once complete, otherwise active."
+				"description": "The light for one deployment's list row: 'queued' for queued, 'failed' for failed, 'recent' for complete, and 'active' for every other phase.",
+				"examples": ["queued", "active", "recent"]
 			}
 		],
 		"errors": [],
@@ -107,14 +467,149 @@
 						"name": "standingFailures.items",
 						"type": "DeploymentActivity[]",
 						"required": true,
-						"description": "The deployments of this device, newest first."
+						"description": "The deployments to count, newest first: the function does not sort them, so the first one listed for each projectId and environment is treated as the newest there. Only phase, projectId and environment are read, and a null projectId is compared as the text 'null'.",
+						"examples": [
+							[
+								{
+									"phase": "queued",
+									"detail": "Queued for dev",
+									"sourceEnvironment": null,
+									"id": "e3b71d05-c8f4-4a26-b09d-41f6e8c2a730",
+									"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+									"projectName": "storefront",
+									"environment": "dev",
+									"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+									"branch": "main",
+									"steps": [
+										{
+											"id": "preparing",
+											"title": "Prepare source"
+										},
+										{
+											"id": "checking",
+											"title": "Run checks"
+										},
+										{
+											"id": "building",
+											"title": "Build source"
+										},
+										{
+											"id": "uploading",
+											"title": "Deploy to Cloudflare"
+										},
+										{
+											"id": "verifying",
+											"title": "Verify health"
+										}
+									],
+									"step": null,
+									"error": null,
+									"receipt": null,
+									"createdAt": "2026-11-15T09:30:12.084Z",
+									"startedAt": null,
+									"updatedAt": "2026-11-15T09:30:12.084Z",
+									"finishedAt": null
+								},
+								{
+									"phase": "failed",
+									"detail": "Deployment failed",
+									"sourceEnvironment": "preprod",
+									"id": "4c1e8a27-9b3d-4f60-8e51-2a7c9d0b6f13",
+									"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+									"projectName": "storefront",
+									"environment": "prod",
+									"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+									"branch": "main",
+									"steps": [
+										{
+											"id": "preparing",
+											"title": "Prepare source"
+										},
+										{
+											"id": "checking",
+											"title": "Run checks"
+										},
+										{
+											"id": "building",
+											"title": "Build source"
+										},
+										{
+											"id": "uploading",
+											"title": "Deploy to Cloudflare"
+										},
+										{
+											"id": "verifying",
+											"title": "Verify health"
+										}
+									],
+									"step": "uploading",
+									"error": "Deploy to Cloudflare failed. Check the project configuration and retry.",
+									"receipt": null,
+									"createdAt": "2026-11-15T07:58:40.291Z",
+									"startedAt": "2026-11-15T07:58:42.017Z",
+									"updatedAt": "2026-11-15T08:03:19.764Z",
+									"finishedAt": "2026-11-15T08:03:19.764Z"
+								}
+							],
+							[
+								{
+									"phase": "complete",
+									"detail": "Deployed to prod",
+									"sourceEnvironment": "preprod",
+									"id": "b8d2f0e6-17a4-4c9b-a3e5-6f08d1c7b294",
+									"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+									"projectName": "storefront",
+									"environment": "prod",
+									"commit": "0c7a5e91d3b64f2a8e19c0d75a2f6b38e9d01c4a",
+									"branch": "main",
+									"steps": [
+										{
+											"id": "preparing",
+											"title": "Prepare source"
+										},
+										{
+											"id": "checking",
+											"title": "Run checks"
+										},
+										{
+											"id": "building",
+											"title": "Build source"
+										},
+										{
+											"id": "uploading",
+											"title": "Deploy to Cloudflare"
+										},
+										{
+											"id": "verifying",
+											"title": "Verify health"
+										}
+									],
+									"step": "verifying",
+									"error": null,
+									"receipt": {
+										"environment": "prod",
+										"commit": "0c7a5e91d3b64f2a8e19c0d75a2f6b38e9d01c4a",
+										"branch": "main",
+										"updatedAt": "2026-11-14T17:12:58.403Z",
+										"adapter": "cloudflare",
+										"deploymentId": "a1b2c3d4",
+										"url": "https://a1b2c3d4.storefront.pages.dev"
+									},
+									"createdAt": "2026-11-14T17:09:33.670Z",
+									"startedAt": "2026-11-14T17:09:35.122Z",
+									"updatedAt": "2026-11-14T17:13:01.218Z",
+									"finishedAt": "2026-11-14T17:13:01.218Z"
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "standingFailures",
 						"type": "number",
-						"description": "The number of failed deployments with no newer deployment to the same project and environment."
+						"description": "The number of failed deployments that stand: a failed deployment is not counted when an earlier-listed, newer deployment has the same projectId and environment, whatever that newer deployment's phase.",
+						"examples": [1, 0]
 					}
 				],
 				"errors": [],
@@ -127,24 +622,31 @@
 						"name": "activitySummary.activeCount",
 						"type": "number",
 						"required": true,
-						"description": "How many deployments are queued or running."
+						"description": "The number of deployments under way, as the caller counts them; the function does not check their phases. A 0 is written as 'No', and only exactly 1 takes the singular 'deployment'.",
+						"examples": [0, 1, 2]
 					},
 					{
 						"name": "activitySummary.failed",
 						"type": "number",
 						"required": true,
-						"description": "How many failed deployments still stand."
+						"description": "The number of failed deployments that still stand, as the caller supplies it (standingFailures counts the same thing). Any truthy value appends ' · N failed' to the summary, so 0 leaves the failure part out.",
+						"examples": [0, 1]
 					}
 				],
 				"outputs": [
 					{
 						"name": "activitySummary",
 						"type": "string",
-						"description": "A sentence counting active deployments, followed by the failures that stand when there are any."
+						"description": "The summary label: 'No active deployments' when the active count is 0, '1 active deployment' for exactly 1 and 'N active deployments' otherwise. ' · N failed' is appended when the failed count is truthy.",
+						"examples": [
+							"No active deployments · 1 failed",
+							"1 active deployment",
+							"2 active deployments"
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "activityLight",
@@ -153,30 +655,34 @@
 						"name": "activityLight.activeCount",
 						"type": "number",
 						"required": true,
-						"description": "How many deployments are queued or running."
+						"description": "The number of deployments under way, as the caller counts them; any non-zero value makes the light 'active', and the function does not check their phases.",
+						"examples": [0, 2]
 					},
 					{
 						"name": "activityLight.failed",
 						"type": "number",
 						"required": true,
-						"description": "How many failed deployments still stand."
+						"description": "The number of failed deployments that still stand, as the caller supplies it; it matters only when nothing is under way, because any non-zero value then makes the light 'failed'.",
+						"examples": [0, 1]
 					},
 					{
 						"name": "activityLight.total",
 						"type": "number",
 						"required": true,
-						"description": "How many deployments are listed in all."
+						"description": "The number of deployments listed in all, whatever their phase; it matters only when nothing is under way or failed, because any non-zero value then makes the light 'recent' and 0 makes it 'idle'.",
+						"examples": [0, 3, 5]
 					}
 				],
 				"outputs": [
 					{
 						"name": "activityLight",
 						"type": "DeploymentLight",
-						"description": "active while any deployment is under way, else failed after a standing failure, else recent once any exists, else idle."
+						"description": "The light for the whole activity: 'active' while any deployment is under way, otherwise 'failed' while a failure stands, otherwise 'recent' once any deployment is listed and 'idle' when none is. It never returns 'queued'.",
+						"examples": ["active", "failed", "recent"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "phaseLabel",
@@ -185,14 +691,97 @@
 						"name": "phaseLabel.item",
 						"type": "DeploymentActivity",
 						"required": true,
-						"description": "The deployment to describe, with its phase, current step and steps."
+						"description": "The deployment to describe: its phase, its step (matched by id against steps) and its steps list, which gives the title shown for that step. Only phase, step and steps are read.",
+						"examples": [
+							{
+								"phase": "building",
+								"detail": "Building source commit",
+								"sourceEnvironment": "preprod",
+								"id": "0a9f6c31-5e2b-4d78-9c14-b7e3f20a85d6",
+								"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+								"projectName": "storefront",
+								"environment": "prod",
+								"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+								"branch": "main",
+								"steps": [
+									{
+										"id": "preparing",
+										"title": "Prepare source"
+									},
+									{
+										"id": "checking",
+										"title": "Run checks"
+									},
+									{
+										"id": "building",
+										"title": "Build source"
+									},
+									{
+										"id": "uploading",
+										"title": "Deploy to Cloudflare"
+									},
+									{
+										"id": "verifying",
+										"title": "Verify health"
+									}
+								],
+								"step": "building",
+								"error": null,
+								"receipt": null,
+								"createdAt": "2026-11-15T08:41:07.552Z",
+								"startedAt": "2026-11-15T08:41:09.113Z",
+								"updatedAt": "2026-11-15T08:44:26.830Z",
+								"finishedAt": null
+							},
+							{
+								"phase": "failed",
+								"detail": "Deployment failed",
+								"sourceEnvironment": "preprod",
+								"id": "4c1e8a27-9b3d-4f60-8e51-2a7c9d0b6f13",
+								"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+								"projectName": "storefront",
+								"environment": "prod",
+								"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+								"branch": "main",
+								"steps": [
+									{
+										"id": "preparing",
+										"title": "Prepare source"
+									},
+									{
+										"id": "checking",
+										"title": "Run checks"
+									},
+									{
+										"id": "building",
+										"title": "Build source"
+									},
+									{
+										"id": "uploading",
+										"title": "Deploy to Cloudflare"
+									},
+									{
+										"id": "verifying",
+										"title": "Verify health"
+									}
+								],
+								"step": "uploading",
+								"error": "Deploy to Cloudflare failed. Check the project configuration and retry.",
+								"receipt": null,
+								"createdAt": "2026-11-15T07:58:40.291Z",
+								"startedAt": "2026-11-15T07:58:42.017Z",
+								"updatedAt": "2026-11-15T08:03:19.764Z",
+								"finishedAt": "2026-11-15T08:03:19.764Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "phaseLabel",
 						"type": "string",
-						"description": "Queued, Deployed, Failed (at the failing step when known) or the title of the step under way; Starting when none is known."
+						"description": "The phase text: 'Queued' while queued and 'Deployed' once complete, whatever the step. For a failed deployment it is 'Failed at <step title>' when the step matches an entry in steps, and 'Failed' otherwise; for any other phase it is the title of the matching step, or 'Starting' when none matches.",
+						"examples": ["Build source", "Failed at Deploy to Cloudflare"]
 					}
 				],
 				"errors": [],
@@ -205,18 +794,149 @@
 						"name": "itemLight.item",
 						"type": "DeploymentActivity",
 						"required": true,
-						"description": "The deployment whose list light is wanted."
+						"description": "The deployment whose list light is wanted; only its phase is read.",
+						"examples": [
+							{
+								"phase": "queued",
+								"detail": "Queued for dev",
+								"sourceEnvironment": null,
+								"id": "e3b71d05-c8f4-4a26-b09d-41f6e8c2a730",
+								"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+								"projectName": "storefront",
+								"environment": "dev",
+								"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+								"branch": "main",
+								"steps": [
+									{
+										"id": "preparing",
+										"title": "Prepare source"
+									},
+									{
+										"id": "checking",
+										"title": "Run checks"
+									},
+									{
+										"id": "building",
+										"title": "Build source"
+									},
+									{
+										"id": "uploading",
+										"title": "Deploy to Cloudflare"
+									},
+									{
+										"id": "verifying",
+										"title": "Verify health"
+									}
+								],
+								"step": null,
+								"error": null,
+								"receipt": null,
+								"createdAt": "2026-11-15T09:30:12.084Z",
+								"startedAt": null,
+								"updatedAt": "2026-11-15T09:30:12.084Z",
+								"finishedAt": null
+							},
+							{
+								"phase": "building",
+								"detail": "Building source commit",
+								"sourceEnvironment": "preprod",
+								"id": "0a9f6c31-5e2b-4d78-9c14-b7e3f20a85d6",
+								"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+								"projectName": "storefront",
+								"environment": "prod",
+								"commit": "9d4e2b7f1a6c3e8d5b0f9a27c4e83d61f2a7b95e",
+								"branch": "main",
+								"steps": [
+									{
+										"id": "preparing",
+										"title": "Prepare source"
+									},
+									{
+										"id": "checking",
+										"title": "Run checks"
+									},
+									{
+										"id": "building",
+										"title": "Build source"
+									},
+									{
+										"id": "uploading",
+										"title": "Deploy to Cloudflare"
+									},
+									{
+										"id": "verifying",
+										"title": "Verify health"
+									}
+								],
+								"step": "building",
+								"error": null,
+								"receipt": null,
+								"createdAt": "2026-11-15T08:41:07.552Z",
+								"startedAt": "2026-11-15T08:41:09.113Z",
+								"updatedAt": "2026-11-15T08:44:26.830Z",
+								"finishedAt": null
+							},
+							{
+								"phase": "complete",
+								"detail": "Deployed to prod",
+								"sourceEnvironment": "preprod",
+								"id": "b8d2f0e6-17a4-4c9b-a3e5-6f08d1c7b294",
+								"projectId": "local-3f9a1c4e7b2d8f06a5c91e3d47b2f08a6c5e1d9b0e4a7c2f98d3b61ac0f5e27d",
+								"projectName": "storefront",
+								"environment": "prod",
+								"commit": "0c7a5e91d3b64f2a8e19c0d75a2f6b38e9d01c4a",
+								"branch": "main",
+								"steps": [
+									{
+										"id": "preparing",
+										"title": "Prepare source"
+									},
+									{
+										"id": "checking",
+										"title": "Run checks"
+									},
+									{
+										"id": "building",
+										"title": "Build source"
+									},
+									{
+										"id": "uploading",
+										"title": "Deploy to Cloudflare"
+									},
+									{
+										"id": "verifying",
+										"title": "Verify health"
+									}
+								],
+								"step": "verifying",
+								"error": null,
+								"receipt": {
+									"environment": "prod",
+									"commit": "0c7a5e91d3b64f2a8e19c0d75a2f6b38e9d01c4a",
+									"branch": "main",
+									"updatedAt": "2026-11-14T17:12:58.403Z",
+									"adapter": "cloudflare",
+									"deploymentId": "a1b2c3d4",
+									"url": "https://a1b2c3d4.storefront.pages.dev"
+								},
+								"createdAt": "2026-11-14T17:09:33.670Z",
+								"startedAt": "2026-11-14T17:09:35.122Z",
+								"updatedAt": "2026-11-14T17:13:01.218Z",
+								"finishedAt": "2026-11-14T17:13:01.218Z"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "itemLight",
 						"type": "DeploymentLight",
-						"description": "queued or failed for those phases, recent once complete, otherwise active."
+						"description": "The light for one deployment's list row: 'queued' for queued, 'failed' for failed, 'recent' for complete, and 'active' for every other phase.",
+						"examples": ["queued", "active", "recent"]
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
