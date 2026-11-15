@@ -7,6 +7,7 @@ import type {
 	ContractDiff,
 	ContractHistoryOptions,
 	ContractChangeSummary,
+	ContractFieldCounts,
 	StoredContract
 } from './contractHistory.types';
 
@@ -87,8 +88,15 @@ function contractChange(
 			? { previousContractPath: before.contractPath }
 			: {}),
 		sourcePaths: current.sourcePaths,
+		fieldCounts: fieldCounts(fields),
 		fields
 	};
+}
+
+function fieldCounts(fields: ContractChange['fields']): ContractFieldCounts {
+	const counts = { added: 0, removed: 0, changed: 0 };
+	for (const field of fields) counts[field.kind]++;
+	return counts;
 }
 
 function matchesHistoryContract(entry: StoredContract, options: ContractHistoryOptions): boolean {
@@ -182,6 +190,7 @@ function matchesHistoryField(path: string, field?: string): boolean {
 	return field.split(',').some((part) => {
 		if (part === 'type') return /(^|\.)type$/.test(path);
 		if (part === 'description') return /(^|\.)(description|responsibility)$/.test(path);
+		if (part === 'errors') return /(^|\.)(errors(?:\[|\.|$)|errorStatus$)/.test(path);
 		return new RegExp(`(^|\\.)${part}(\\[|\\.|$)`).test(path);
 	});
 }

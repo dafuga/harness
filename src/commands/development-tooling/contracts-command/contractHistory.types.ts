@@ -2,6 +2,15 @@
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import type { ContractOptions } from './contracts.types';
 
+export type ContractJsonValue =
+	| null
+	| boolean
+	| number
+	| string
+	| ContractJsonValue[]
+	| { [key: string]: ContractJsonValue };
+export type ContractJsonField = ContractJsonValue | undefined;
+
 export interface StoredContract {
 	id: string;
 	uid?: string;
@@ -9,7 +18,7 @@ export interface StoredContract {
 	contractPath: string;
 	sourcePaths: string[];
 	raw: string;
-	data: Record<string, unknown>;
+	data: Record<string, ContractJsonValue>;
 }
 
 export interface ContractHistoryOptions extends ContractOptions {
@@ -23,8 +32,8 @@ export interface ContractHistoryOptions extends ContractOptions {
 export interface ContractFieldChange {
 	path: string;
 	kind: 'added' | 'removed' | 'changed';
-	before?: unknown;
-	after?: unknown;
+	before?: ContractJsonValue;
+	after?: ContractJsonValue;
 }
 
 export interface ContractChange {
@@ -34,7 +43,14 @@ export interface ContractChange {
 	contractPath: string;
 	previousContractPath?: string;
 	sourcePaths: string[];
+	fieldCounts: ContractFieldCounts;
 	fields: ContractFieldChange[];
+}
+
+export interface ContractFieldCounts {
+	added: number;
+	removed: number;
+	changed: number;
 }
 
 export interface ContractChangeSummary {
@@ -79,8 +95,9 @@ export interface ContractSnapshotContext {
 	root: string;
 	git: GitAdapter;
 	blobs: Map<string, string>;
-	parsed: Map<string, Record<string, unknown>>;
+	parsed: Map<string, Record<string, ContractJsonValue>>;
 	snapshots: Map<string, StoredContract[]>;
+	loading?: Promise<void>;
 }
 
 export interface ContractHistoryReader {
@@ -101,6 +118,13 @@ export interface ContractLogContext {
 	reader: ContractHistoryReader;
 	result: ContractLog;
 	unit: string;
-	identity: string;
+	identity?: ContractHistoryIdentity;
 	options: ContractHistoryOptions;
+}
+
+export interface ContractHistoryIdentity {
+	uid?: string;
+	aliases: Set<string>;
+	legacy: Set<string>;
+	pending: boolean;
 }

@@ -7,6 +7,9 @@
 	"responsibility": "Resolves user revision selectors to commit ids and chooses default, staged, range, since or first-parent commit comparison snapshots without invoking a shell.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/commands/development-tooling/contracts-command/contractRevisions.ts"],
 		"symbols": ["resolveContractRevision", "contractComparison", "firstContractParent"]
@@ -81,9 +84,9 @@
 				"description": "Invalid, missing or incompatible revision selectors, including missing HEAD; malformed ranges and option-like refs are rejected."
 			},
 			{
-				"name": "Error",
+				"name": "Git command failure",
 				"type": "thrown",
-				"description": "Repository Git operations can fail; their stderr diagnostic propagates without invoking a shell."
+				"description": "GitAdapter raises Error with git arguments and stderr when a repository command exits unsuccessfully; no shell is invoked."
 			}
 		],
 		"errorStatus": "declared",
@@ -118,9 +121,9 @@
 						"description": "Invalid, missing or incompatible revision selectors, including missing HEAD; malformed ranges and option-like refs are rejected."
 					},
 					{
-						"name": "Error",
+						"name": "Git command failure",
 						"type": "thrown",
-						"description": "Repository Git operations can fail; their stderr diagnostic propagates without invoking a shell."
+						"description": "GitAdapter raises Error with git arguments and stderr when a repository command exits unsuccessfully; no shell is invoked."
 					}
 				],
 				"errorStatus": "declared"
@@ -161,9 +164,9 @@
 						"description": "Invalid, missing or incompatible revision selectors, including missing HEAD; malformed ranges and option-like refs are rejected."
 					},
 					{
-						"name": "Error",
+						"name": "Git command failure",
 						"type": "thrown",
-						"description": "Repository Git operations can fail; their stderr diagnostic propagates without invoking a shell."
+						"description": "GitAdapter raises Error with git arguments and stderr when a repository command exits unsuccessfully; no shell is invoked."
 					}
 				],
 				"errorStatus": "declared"
@@ -198,9 +201,9 @@
 						"description": "Invalid, missing or incompatible revision selectors, including missing HEAD; malformed ranges and option-like refs are rejected."
 					},
 					{
-						"name": "Error",
+						"name": "Git command failure",
 						"type": "thrown",
-						"description": "Repository Git operations can fail; their stderr diagnostic propagates without invoking a shell."
+						"description": "GitAdapter raises Error with git arguments and stderr when a repository command exits unsuccessfully; no shell is invoked."
 					}
 				],
 				"errorStatus": "declared"
@@ -240,8 +243,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

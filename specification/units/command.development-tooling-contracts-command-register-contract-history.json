@@ -7,6 +7,9 @@
 	"responsibility": "Registers contracts diff, log and last CLI arguments, snapshot selectors, filters, limits and JSON or terminal output actions.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/commands/development-tooling/contracts-command/registerContractHistory.ts"],
 		"symbols": ["registerContractHistory"]
@@ -108,8 +111,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

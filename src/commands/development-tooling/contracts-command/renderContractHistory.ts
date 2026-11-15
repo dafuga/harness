@@ -9,8 +9,8 @@ import type {
 
 export function renderContractDiff(diff: ContractDiff, summary = false): string {
 	return [
-		`Comparing ${diff.base} -> ${diff.head}`,
-		renderSummary(diff.summary),
+		...wrap(`Comparing ${diff.base} -> ${diff.head}`),
+		...wrap(renderSummary(diff.summary)),
 		...diff.changes.flatMap((change) => renderChange(change, summary)),
 		...(diff.truncated
 			? [`Showing ${diff.changes.length} of ${diff.total} contracts (--limit).`]
@@ -20,12 +20,13 @@ export function renderContractDiff(diff: ContractDiff, summary = false): string 
 
 export function renderContractLog(log: ContractLog, summary = false): string {
 	return [
-		log.identityScope,
+		...wrap(log.identityScope),
+		...(log.entries.length ? [] : ['No semantic contract changes match.']),
 		...log.entries.flatMap((entry) => [
 			'',
-			`${entry.commit}  ${entry.date}  ${entry.author.name} <${entry.author.email}>`,
-			entry.subject,
-			renderSummary(entry.summary),
+			...wrap(`${entry.commit}  ${entry.date}  ${entry.author.name} <${entry.author.email}>`),
+			...wrap(entry.subject),
+			...wrap(renderSummary(entry.summary)),
 			...entry.changes.flatMap((change) => renderChange(change, summary))
 		]),
 		...(log.truncated
@@ -43,14 +44,47 @@ function renderSummary(summary: ContractChangeSummary): string {
 function renderChange(change: ContractChange, summary: boolean): string[] {
 	const sign = changeSign(change.kind);
 	const previous = change.previousId ? `${change.previousId} -> ` : '';
+	const counts = change.fieldCounts;
 	return [
-		paint(`${sign} ${previous}${change.id} (${change.kind}, ${change.fields.length} fields)`, sign),
+		...wrap(
+			`${sign} ${previous}${change.id} (${change.kind}, ${change.fields.length} fields, +${counts.added}/-${counts.removed}/~${counts.changed})`
+		).map((line) => paint(line, sign)),
 		...wrap(
 			`  ${change.previousContractPath ? `${change.previousContractPath} -> ` : ''}${change.contractPath}`
 		),
 		...wrap(`  Source: ${change.sourcePaths.join(', ') || '(not recorded)'}`),
 		...(summary ? [] : change.fields.flatMap(renderField))
 	];
+}
+
+/** Summary JSON preserves per-contract counts and metadata while omitting field values. */
+export function renderContractHistoryJson(
+	result: ContractDiff | ContractLog,
+	summary = false
+): string {
+	if (!summary) return JSON.stringify(result, null, 2);
+	const compact = (change: ContractChange) => {
+		return {
+			id: change.id,
+			previousId: change.previousId,
+			kind: change.kind,
+			contractPath: change.contractPath,
+			previousContractPath: change.previousContractPath,
+			sourcePaths: change.sourcePaths,
+			fieldCounts: change.fieldCounts
+		};
+	};
+	const value =
+		'entries' in result
+			? {
+					...result,
+					entries: result.entries.map((entry) => ({
+						...entry,
+						changes: entry.changes.map(compact)
+					}))
+				}
+			: { ...result, changes: result.changes.map(compact) };
+	return JSON.stringify(value, null, 2);
 }
 
 function renderField(field: ContractFieldChange): string[] {

@@ -4,9 +4,12 @@
 	"uid": "u_hstreadabc",
 	"kind": "command",
 	"title": "readContractHistory",
-	"responsibility": "Reads contract-only snapshot differences and first-parent committed history with immutable blob reuse, stable identity following, commit attribution and material-change filtering.",
+	"responsibility": "Reads contract-only snapshot differences and reachable committed history, with true first-parent merge deltas, immutable blob reuse, stable identity following and commit attribution.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/commands/development-tooling/contracts-command/readContractHistory.ts"],
 		"symbols": ["readContractDiff", "readContractLog"]
@@ -55,7 +58,7 @@
 			{
 				"name": "readContractLog",
 				"type": "Promise<ContractLog>",
-				"description": "First-parent material contract changes with commit, author, date and subject. Uses stable uid or unchanged id, excludes formatting-only commits and reports unscanned candidates."
+				"description": "Reachable material contract changes with commit, author, date and subject. Merge commits use actual first-parent deltas; stable uid and observed pre-uid aliases select identity. Last returns one result without pagination."
 			}
 		],
 		"errors": [
@@ -65,9 +68,9 @@
 				"description": "Invalid roots, revisions, contracts, selectors or filters propagate; last also rejects a history with no matching material change."
 			},
 			{
-				"name": "Error",
+				"name": "Git command or filesystem read failure",
 				"type": "thrown",
-				"description": "Filesystem and Git read failures propagate their diagnostics; no registry or source writes are performed."
+				"description": "GitAdapter Error messages retain git arguments and stderr. Filesystem errors such as ENOENT or EACCES propagate their I/O diagnostic; no registry or source writes are performed."
 			}
 		],
 		"errorStatus": "declared",
@@ -102,9 +105,9 @@
 						"description": "Invalid roots, revisions, contracts, selectors or filters propagate; last also rejects a history with no matching material change."
 					},
 					{
-						"name": "Error",
+						"name": "Git command or filesystem read failure",
 						"type": "thrown",
-						"description": "Filesystem and Git read failures propagate their diagnostics; no registry or source writes are performed."
+						"description": "GitAdapter Error messages retain git arguments and stderr. Filesystem errors such as ENOENT or EACCES propagate their I/O diagnostic; no registry or source writes are performed."
 					}
 				],
 				"errorStatus": "declared"
@@ -136,7 +139,7 @@
 					{
 						"name": "readContractLog",
 						"type": "Promise<ContractLog>",
-						"description": "First-parent material contract changes with commit, author, date and subject. Uses stable uid or unchanged id, excludes formatting-only commits and reports unscanned candidates."
+						"description": "Reachable material contract changes with commit, author, date and subject. Merge commits use actual first-parent deltas; stable uid and observed pre-uid aliases select identity. Last returns one result without pagination."
 					}
 				],
 				"errors": [
@@ -146,9 +149,9 @@
 						"description": "Invalid roots, revisions, contracts, selectors or filters propagate; last also rejects a history with no matching material change."
 					},
 					{
-						"name": "Error",
+						"name": "Git command or filesystem read failure",
 						"type": "thrown",
-						"description": "Filesystem and Git read failures propagate their diagnostics; no registry or source writes are performed."
+						"description": "GitAdapter Error messages retain git arguments and stderr. Filesystem errors such as ENOENT or EACCES propagate their I/O diagnostic; no registry or source writes are performed."
 					}
 				],
 				"errorStatus": "declared"
@@ -157,6 +160,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-history-identity",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "command.development-tooling-contracts-command-contract-history-types",
 			"via": "import",
@@ -203,8 +211,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

@@ -7,6 +7,9 @@
 	"responsibility": "Reads raw unit contract JSON from worktree, index or Git trees, batches immutable blobs and rejects invalid or duplicate identities without inspecting source.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/commands/development-tooling/contracts-command/readContractSnapshot.ts"],
 		"symbols": ["createContractHistoryReader"]
@@ -35,9 +38,9 @@
 				"description": "Non-worktree roots, malformed JSON, missing ids, duplicate ids or uids, unresolved index stages and malformed blob responses are rejected."
 			},
 			{
-				"name": "Error",
+				"name": "Git command or filesystem read failure",
 				"type": "thrown",
-				"description": "Filesystem and Git read errors propagate; symlink contracts are excluded from worktree, index and tree snapshots."
+				"description": "GitAdapter Error messages retain git arguments and stderr. Filesystem errors such as ENOENT or EACCES propagate; symlink contracts are excluded and a symlink unit directory is rejected."
 			}
 		],
 		"errorStatus": "declared",
@@ -66,9 +69,9 @@
 						"description": "Non-worktree roots, malformed JSON, missing ids, duplicate ids or uids, unresolved index stages and malformed blob responses are rejected."
 					},
 					{
-						"name": "Error",
+						"name": "Git command or filesystem read failure",
 						"type": "thrown",
-						"description": "Filesystem and Git read errors propagate; symlink contracts are excluded from worktree, index and tree snapshots."
+						"description": "GitAdapter Error messages retain git arguments and stderr. Filesystem errors such as ENOENT or EACCES propagate; symlink contracts are excluded and a symlink unit directory is rejected."
 					}
 				],
 				"errorStatus": "declared"
@@ -123,8 +126,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

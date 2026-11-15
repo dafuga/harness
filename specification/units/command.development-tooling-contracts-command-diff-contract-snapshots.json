@@ -7,6 +7,9 @@
 	"responsibility": "Joins stored contracts by stable uid or fallback id, classifies moves and material changes, filters fields and counts ignored formatting or metadata ordering separately.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/commands/development-tooling/contracts-command/diffContractSnapshots.ts"],
 		"symbols": ["diffContractSnapshots", "validateHistoryFields"]
@@ -164,8 +167,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

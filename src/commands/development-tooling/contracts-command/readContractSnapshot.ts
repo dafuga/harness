@@ -1,5 +1,5 @@
 // @harness-uid u_hstsnapabc
-import { stat, readFile } from 'node:fs/promises';
+import { stat, lstat, readFile } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../../core/development-tooling/errors';
@@ -8,6 +8,7 @@ import { contractFiles } from './contractDocuments';
 import { isRecord } from './contractSemantics';
 import type {
 	ContractHistoryReader,
+	ContractJsonValue,
 	ContractSnapshotContext,
 	StoredContract
 } from './contractHistory.types';
@@ -39,10 +40,10 @@ async function readSnapshot(
 	const cached = context.snapshots.get(revision);
 	if (revision !== 'index' && cached) return cached;
 	const records = await snapshotBlobs(context.git, revision);
-	const missing = [...new Set(records.map(([, blob]) => blob))].filter(
-		(blob) => !context.blobs.has(blob)
+	await ensureContractBlobs(
+		context,
+		records.map(([, blob]) => blob)
 	);
-	await readBlobs(context, missing);
 	const contracts = records.map(([path, blob]) => {
 		const raw = context.blobs.get(blob)!;
 		const data = context.parsed.get(blob) ?? parseContract(raw, path);
@@ -56,6 +57,17 @@ async function readSnapshot(
 			context.snapshots.delete(context.snapshots.keys().next().value!);
 	}
 	return contracts;
+}
+
+async function ensureContractBlobs(context: ContractSnapshotContext, ids: string[]): Promise<void> {
+	const previous = context.loading ?? Promise.resolve();
+	context.loading = previous.then(() =>
+		readBlobs(
+			context,
+			[...new Set(ids)].filter((id) => !context.blobs.has(id))
+		)
+	);
+	await context.loading;
 }
 
 async function snapshotBlobs(git: GitAdapter, revision: string): Promise<string[][]> {
@@ -95,7 +107,10 @@ async function readBlobs(context: ContractSnapshotContext, ids: string[]): Promi
 }
 
 async function readWorkingContracts(root: string): Promise<StoredContract[]> {
-	const paths = await contractFiles(join(root, unitsDirectory));
+	const directory = join(root, unitsDirectory);
+	if ((await lstat(directory).catch(() => undefined))?.isSymbolicLink())
+		return fail('Contract history does not follow a symbolic-link unit directory.');
+	const paths = await contractFiles(directory);
 	const contracts: StoredContract[] = [];
 	for (let offset = 0; offset < paths.length; offset += 64)
 		contracts.push(
@@ -111,10 +126,10 @@ async function readWorkingContracts(root: string): Promise<StoredContract[]> {
 	return contracts;
 }
 
-function parseContract(raw: string, path: string): Record<string, unknown> {
-	let data: unknown;
+function parseContract(raw: string, path: string): Record<string, ContractJsonValue> {
+	let data: ContractJsonValue;
 	try {
-		data = JSON.parse(raw) as unknown;
+		data = JSON.parse(raw) as ContractJsonValue;
 	} catch {
 		return fail(`Cannot read JSON contract ${path}.`);
 	}
@@ -123,7 +138,11 @@ function parseContract(raw: string, path: string): Record<string, unknown> {
 	return data;
 }
 
-function storedContract(path: string, raw: string, data: Record<string, unknown>): StoredContract {
+function storedContract(
+	path: string,
+	raw: string,
+	data: Record<string, ContractJsonValue>
+): StoredContract {
 	const source = isRecord(data.owns) && Array.isArray(data.owns.source) ? data.owns.source : [];
 	return {
 		id: String(data.id),

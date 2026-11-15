@@ -7,9 +7,12 @@
 	"responsibility": "Formats semantic contract changes and attributed commit history as grouped, wrapped terminal text with optional color and summary-only field suppression.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/commands/development-tooling/contracts-command/renderContractHistory.ts"],
-		"symbols": ["renderContractDiff", "renderContractLog"]
+		"symbols": ["renderContractDiff", "renderContractLog", "renderContractHistoryJson"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -39,6 +42,19 @@
 				"required": false,
 				"default": false,
 				"description": "When true, prints per-contract and change-kind counts without field values; defaults to false."
+			},
+			{
+				"name": "renderContractHistoryJson.result",
+				"type": "ContractDiff | ContractLog",
+				"required": true,
+				"description": "Structured diff or committed log result to serialize; summary output omits field values while retaining contract metadata and field-kind counts."
+			},
+			{
+				"name": "renderContractHistoryJson.summary",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "When true, prints per-contract and change-kind counts without field values; defaults to false."
 			}
 		],
 		"outputs": [
@@ -51,6 +67,11 @@
 				"name": "renderContractLog",
 				"type": "string",
 				"description": "Attributed commit blocks with per-contract field changes or summaries, identity-following limits and a truncation notice where candidates remain unscanned."
+			},
+			{
+				"name": "renderContractHistoryJson",
+				"type": "string",
+				"description": "Structured JSON preserving full semantic field values by default, or per-contract metadata and field-kind counts without values when summary is true."
 			}
 		],
 		"errors": [],
@@ -109,6 +130,33 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "renderContractHistoryJson",
+				"inputs": [
+					{
+						"name": "renderContractHistoryJson.result",
+						"type": "ContractDiff | ContractLog",
+						"required": true,
+						"description": "Structured diff or committed log result to serialize; summary output omits field values while retaining contract metadata and field-kind counts."
+					},
+					{
+						"name": "renderContractHistoryJson.summary",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "When true, prints per-contract and change-kind counts without field values; defaults to false."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderContractHistoryJson",
+						"type": "string",
+						"description": "Structured JSON preserving full semantic field values by default, or per-contract metadata and field-kind counts without values when summary is true."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
@@ -135,8 +183,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

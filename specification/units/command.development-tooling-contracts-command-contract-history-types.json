@@ -4,16 +4,22 @@
 	"uid": "u_hsttypabcd",
 	"kind": "type",
 	"title": "contractHistory",
-	"responsibility": "Defines compile-time raw contract snapshots, semantic field changes, Git readers, query options and first-parent history results; exports no runtime values.",
+	"responsibility": "Defines compile-time raw JSON snapshots, semantic fields, Git readers, identity aliases, query options and reachable history results; exports no runtime values.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/commands/development-tooling/contracts-command/contractHistory.types.ts"],
 		"symbols": [
+			"ContractJsonValue",
+			"ContractJsonField",
 			"StoredContract",
 			"ContractHistoryOptions",
 			"ContractFieldChange",
 			"ContractChange",
+			"ContractFieldCounts",
 			"ContractChangeSummary",
 			"ContractDiff",
 			"ContractCommitChange",
@@ -21,7 +27,8 @@
 			"ContractSnapshotContext",
 			"ContractHistoryReader",
 			"ContractHistoryCommit",
-			"ContractLogContext"
+			"ContractLogContext",
+			"ContractHistoryIdentity"
 		]
 	},
 	"contract": {
@@ -60,8 +67,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

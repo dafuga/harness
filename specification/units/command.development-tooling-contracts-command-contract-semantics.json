@@ -7,6 +7,9 @@
 	"responsibility": "Compares raw JSON values field by field, matching named metadata and duplicate-preserving dependency collections while retaining meaningful example and ordinary array order.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/commands/development-tooling/contracts-command/contractSemantics.ts"],
 		"symbols": ["canonicalContract", "compareContractFields", "isRecord"]
@@ -16,7 +19,7 @@
 		"inputs": [
 			{
 				"name": "canonicalContract.data",
-				"type": "unknown",
+				"type": "ContractJsonField",
 				"required": true,
 				"description": "Stored JSON value to canonicalize or classify; historical unknown fields remain intact and JSON string contents retain whitespace."
 			},
@@ -36,13 +39,13 @@
 			},
 			{
 				"name": "compareContractFields.before",
-				"type": "unknown",
+				"type": "ContractJsonField",
 				"required": true,
 				"description": "Earlier stored JSON value or contract snapshot; undefined represents an absent field or contract."
 			},
 			{
 				"name": "compareContractFields.after",
-				"type": "unknown",
+				"type": "ContractJsonField",
 				"required": true,
 				"description": "Later stored JSON value or contract snapshot; undefined represents an absent field or contract."
 			},
@@ -55,7 +58,7 @@
 			},
 			{
 				"name": "isRecord.data",
-				"type": "unknown",
+				"type": "ContractJsonField",
 				"required": true,
 				"description": "Stored JSON value to canonicalize or classify; historical unknown fields remain intact and JSON string contents retain whitespace."
 			}
@@ -73,8 +76,8 @@
 			},
 			{
 				"name": "isRecord",
-				"type": "data is Record<string, unknown>",
-				"description": "Type predicate accepting non-null, non-array objects; it does not validate a contract schema."
+				"type": "data is Record<string, ContractJsonValue>",
+				"description": "Type predicate classifying an already admitted JSON value as a non-null, non-array object. Callers obtain JSON values from JSON.parse or other typed contract JSON values; it does not validate a unit schema."
 			}
 		],
 		"errors": [
@@ -91,7 +94,7 @@
 				"inputs": [
 					{
 						"name": "canonicalContract.data",
-						"type": "unknown",
+						"type": "ContractJsonField",
 						"required": true,
 						"description": "Stored JSON value to canonicalize or classify; historical unknown fields remain intact and JSON string contents retain whitespace."
 					},
@@ -131,13 +134,13 @@
 				"inputs": [
 					{
 						"name": "compareContractFields.before",
-						"type": "unknown",
+						"type": "ContractJsonField",
 						"required": true,
 						"description": "Earlier stored JSON value or contract snapshot; undefined represents an absent field or contract."
 					},
 					{
 						"name": "compareContractFields.after",
-						"type": "unknown",
+						"type": "ContractJsonField",
 						"required": true,
 						"description": "Later stored JSON value or contract snapshot; undefined represents an absent field or contract."
 					},
@@ -170,7 +173,7 @@
 				"inputs": [
 					{
 						"name": "isRecord.data",
-						"type": "unknown",
+						"type": "ContractJsonField",
 						"required": true,
 						"description": "Stored JSON value to canonicalize or classify; historical unknown fields remain intact and JSON string contents retain whitespace."
 					}
@@ -178,8 +181,8 @@
 				"outputs": [
 					{
 						"name": "isRecord",
-						"type": "data is Record<string, unknown>",
-						"description": "Type predicate accepting non-null, non-array objects; it does not validate a contract schema."
+						"type": "data is Record<string, ContractJsonValue>",
+						"description": "Type predicate classifying an already admitted JSON value as a non-null, non-array object. Callers obtain JSON values from JSON.parse or other typed contract JSON values; it does not validate a unit schema."
 					}
 				],
 				"errors": [
@@ -216,8 +219,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

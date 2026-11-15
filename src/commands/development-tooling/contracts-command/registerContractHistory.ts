@@ -1,7 +1,11 @@
 // @harness-uid u_hstregiabc
 import { InvalidArgumentError, type Command } from 'commander';
 import { readContractDiff, readContractLog } from './readContractHistory';
-import { renderContractDiff, renderContractLog } from './renderContractHistory';
+import {
+	renderContractDiff,
+	renderContractLog,
+	renderContractHistoryJson
+} from './renderContractHistory';
 import type { ContractHistoryOptions } from './contractHistory.types';
 
 /** Add snapshot/history queries beside existing stored-contract lookup operations. */
@@ -31,7 +35,9 @@ export function registerContractHistory(contracts: Command): void {
 				options
 			);
 			console.log(
-				options.json ? JSON.stringify(result, null, 2) : renderContractDiff(result, options.summary)
+				options.json
+					? renderContractHistoryJson(result, options.summary)
+					: renderContractDiff(result, options.summary)
 			);
 		}
 	);
@@ -41,7 +47,7 @@ export function registerContractHistory(contracts: Command): void {
 			.description(
 				verb.startsWith('last')
 					? 'Latest committed material contract change, with fields and commit identity.'
-					: 'First-parent commits with material contract changes; follows stable unit identity.'
+					: 'Reachable commits with per-contract change summaries; follows stable unit identity.'
 			);
 		historyOptions(command).option(
 			'--since <revision>',
@@ -51,7 +57,9 @@ export function registerContractHistory(contracts: Command): void {
 			const options = selected.optsWithGlobals<ContractHistoryOptions>();
 			const result = await readContractLog(unit ?? '', options, selected.name() === 'last');
 			console.log(
-				options.json ? JSON.stringify(result, null, 2) : renderContractLog(result, options.summary)
+				options.json
+					? renderContractHistoryJson(result, options.summary)
+					: renderContractLog(result, selected.name() === 'log' || options.summary)
 			);
 		});
 	}
@@ -66,7 +74,7 @@ function historyOptions(command: Command): Command {
 			'--field <fields>',
 			'Comma-separated type, description, examples, errors, dependencies.'
 		)
-		.option('--summary', 'Counts per contract and change kind; omit field values.')
+		.option('--summary', 'Per-contract field-kind counts; omit field values in text and JSON.')
 		.option(
 			'--limit <count>',
 			'Maximum displayed contracts (diff) or matching commits (log; default 20).',

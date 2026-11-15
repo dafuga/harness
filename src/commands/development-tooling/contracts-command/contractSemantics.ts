@@ -1,30 +1,51 @@
 // @harness-uid u_hstsemabcd
-import type { ContractFieldChange } from './contractHistory.types';
+import type {
+	ContractFieldChange,
+	ContractJsonField,
+	ContractJsonValue
+} from './contractHistory.types';
 
 const namedCollections = new Set([
-	'inputs',
-	'outputs',
-	'errors',
-	'operations',
-	'props',
-	'events',
-	'states',
+	'contract.inputs',
+	'contract.outputs',
+	'contract.errors',
+	'contract.operations',
+	'contract.initialization',
+	'contract.snippets',
+	'contract.storage',
+	'contract.props',
+	'contract.events',
+	'contract.states',
 	'helperContracts',
-	'initialization'
+	'helperContracts[].inputs',
+	'configControls',
+	'contract.storage[].fields',
+	...['operations', 'initialization', 'snippets'].flatMap((operation) =>
+		['inputs', 'outputs', 'errors'].map((field) => `contract.${operation}[].${field}`)
+	)
 ]);
-const setCollections = new Set(['owns.source', 'owns.symbols', 'scenarios', 'runtime.targets']);
+const setCollections = new Set([
+	'owns.source',
+	'owns.symbols',
+	'scenarios',
+	'runtime.targets',
+	'dependencies',
+	'contract.primitives',
+	'helperContracts[].consumers',
+	'contract.storage[].unresolved'
+]);
 
 /** Only declared metadata collections ignore order; examples and unknown JSON remain ordered. */
-function contractArrayMode(path: string, values: unknown[]): 'named' | 'set' | 'ordered' {
+function contractArrayMode(path: string, values: ContractJsonValue[]): 'named' | 'set' | 'ordered' {
 	if (/(^|\.)examples(?:\[|\.|$)/.test(path)) return 'ordered';
-	if (path === 'dependencies' || setCollections.has(path)) return 'set';
-	const key = path.split('.').at(-1) ?? '';
-	return namedCollections.has(key) && values.every((item) => itemKey(item) !== undefined)
+	const collection = path.replace(/\[[^\]]*\]/g, '[]');
+	if (setCollections.has(collection)) return 'set';
+	return namedCollections.has(collection) && values.every((item) => itemKey(item) !== undefined)
 		? 'named'
 		: 'ordered';
 }
 
-export function canonicalContract(data: unknown, path = '', ordered = false): string {
+export function canonicalContract(data: ContractJsonField, path = '', ordered = false): string {
 	if (Array.isArray(data)) {
 		const items = data.map((item, index) => canonicalContract(item, `${path}[${index}]`, ordered));
 		if (!ordered && contractArrayMode(path, data) !== 'ordered') items.sort();
@@ -42,8 +63,8 @@ export function canonicalContract(data: unknown, path = '', ordered = false): st
 }
 
 export function compareContractFields(
-	before: unknown,
-	after: unknown,
+	before: ContractJsonField,
+	after: ContractJsonField,
 	path = ''
 ): ContractFieldChange[] {
 	if (canonicalContract(before, path) === canonicalContract(after, path)) return [];
@@ -52,25 +73,39 @@ export function compareContractFields(
 	return atomicChange(before, after, path);
 }
 
-function compareRecords(before: unknown, after: unknown, path: string): ContractFieldChange[] {
+function compareRecords(
+	before: ContractJsonField,
+	after: ContractJsonField,
+	path: string
+): ContractFieldChange[] {
 	if ((before !== undefined && !isRecord(before)) || (after !== undefined && !isRecord(after)))
 		return atomicChange(before, after, path);
 	const left = before ?? {};
 	const right = after ?? {};
 	const keys = [...new Set([...Object.keys(left), ...Object.keys(right)])].sort();
 	return keys.length
-		? keys.flatMap((key) => compareContractFields(left[key], right[key], joinPath(path, key)))
+		? keys.flatMap((key) =>
+				compareContractFields(ownField(left, key), ownField(right, key), joinPath(path, key))
+			)
 		: atomicChange(before, after, path);
 }
 
-function compareArrays(before: unknown, after: unknown, path: string): ContractFieldChange[] {
+function ownField(data: Record<string, ContractJsonValue>, key: string): ContractJsonField {
+	return Object.hasOwn(data, key) ? data[key] : undefined;
+}
+
+function compareArrays(
+	before: ContractJsonField,
+	after: ContractJsonField,
+	path: string
+): ContractFieldChange[] {
 	if (
 		(before !== undefined && !Array.isArray(before)) ||
 		(after !== undefined && !Array.isArray(after))
 	)
 		return atomicChange(before, after, path);
-	const left = (before ?? []) as unknown[];
-	const right = (after ?? []) as unknown[];
+	const left = before ?? [];
+	const right = after ?? [];
 	if (!left.length && !right.length) return atomicChange(before, after, path);
 	const mode = contractArrayMode(path, [...left, ...right]);
 	if (mode === 'ordered')
@@ -80,9 +115,13 @@ function compareArrays(before: unknown, after: unknown, path: string): ContractF
 	return compareCollection(left, right, path);
 }
 
-function compareCollection(left: unknown[], right: unknown[], path: string): ContractFieldChange[] {
-	const grouped = (items: unknown[]) => {
-		const groups = new Map<string, unknown[]>();
+function compareCollection(
+	left: ContractJsonValue[],
+	right: ContractJsonValue[],
+	path: string
+): ContractFieldChange[] {
+	const grouped = (items: ContractJsonValue[]) => {
+		const groups = new Map<string, ContractJsonValue[]>();
 		for (const item of items) {
 			const key =
 				path === 'dependencies'
@@ -119,7 +158,11 @@ function compareCollection(left: unknown[], right: unknown[], path: string): Con
 	});
 }
 
-function atomicChange(before: unknown, after: unknown, path: string): ContractFieldChange[] {
+function atomicChange(
+	before: ContractJsonField,
+	after: ContractJsonField,
+	path: string
+): ContractFieldChange[] {
 	return [
 		{
 			path: displayPath(path),
@@ -130,23 +173,26 @@ function atomicChange(before: unknown, after: unknown, path: string): ContractFi
 	];
 }
 
-function fieldChangeKind(before: unknown, after: unknown): ContractFieldChange['kind'] {
+function fieldChangeKind(
+	before: ContractJsonField,
+	after: ContractJsonField
+): ContractFieldChange['kind'] {
 	if (before === undefined) return 'added';
 	return after === undefined ? 'removed' : 'changed';
 }
 
-function itemKey(item: unknown): string | undefined {
+function itemKey(item: ContractJsonValue): string | undefined {
 	if (!isRecord(item)) return undefined;
 	for (const key of ['name', 'uid', 'id']) if (typeof item[key] === 'string') return item[key];
 	return undefined;
 }
 
-function dependencyKey(item: unknown): string {
+function dependencyKey(item: ContractJsonValue): string {
 	if (!isRecord(item)) return canonicalContract(item);
 	return `${String(item.unit ?? '')};via=${String(item.via ?? '')};relation=${String(item.relation ?? item.type ?? '')}`;
 }
 
-export function isRecord(data: unknown): data is Record<string, unknown> {
+export function isRecord(data: ContractJsonField): data is Record<string, ContractJsonValue> {
 	return data !== null && typeof data === 'object' && !Array.isArray(data);
 }
 

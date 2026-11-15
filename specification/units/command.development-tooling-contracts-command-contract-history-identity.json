@@ -1,0 +1,173 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-contracts-command-contract-history-identity",
+	"uid": "u_hstidntabc",
+	"kind": "command",
+	"title": "contractHistoryIdentity",
+	"responsibility": "Tracks the selected stable uid and observed pre-uid id aliases while excluding different-uid id reuse during committed contract history traversal.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/development-tooling/contracts-command/contractHistoryIdentity.ts"],
+		"symbols": ["currentContractIdentity", "selectContractIdentity"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "currentContractIdentity.reader",
+				"type": "ContractHistoryReader",
+				"required": true,
+				"description": "Per-query Git-bound raw contract reader; immutable blobs are cached by Git-returned ids while worktree and index snapshots remain fresh."
+			},
+			{
+				"name": "currentContractIdentity.unit",
+				"type": "string",
+				"required": true,
+				"description": "Unit id or stable uid to follow through committed history; an empty string selects every contract permitted by the other filters."
+			},
+			{
+				"name": "selectContractIdentity.context",
+				"type": "ContractLogContext",
+				"required": true,
+				"description": "Per-query reader, options, result accumulator and selected identity. Identity aliases are updated only from observed contract transitions."
+			},
+			{
+				"name": "selectContractIdentity.before",
+				"type": "StoredContract[]",
+				"required": true,
+				"description": "Earlier stored JSON value or contract snapshot; undefined represents an absent field or contract."
+			},
+			{
+				"name": "selectContractIdentity.after",
+				"type": "StoredContract[]",
+				"required": true,
+				"description": "Later stored JSON value or contract snapshot; undefined represents an absent field or contract."
+			}
+		],
+		"outputs": [
+			{
+				"name": "currentContractIdentity",
+				"type": "Promise<ContractHistoryIdentity | undefined>",
+				"description": "Selected uid and id aliases seeded from committed HEAD, or a pending historical-id lookup; an empty unit query returns undefined to select all contracts."
+			},
+			{
+				"name": "selectContractIdentity",
+				"type": "StoredContract[][]",
+				"description": "Earlier and later snapshots filtered to the selected uid or observed pre-uid id aliases. Updates identity state at uid introductions, retained-id uid removals and uid-preserving renames."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError or Error",
+				"type": "thrown",
+				"description": "Committed HEAD or raw snapshot reads can fail while seeding identity; snapshot diagnostics propagate. Pure snapshot filtering performs no additional reads."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "currentContractIdentity",
+				"inputs": [
+					{
+						"name": "currentContractIdentity.reader",
+						"type": "ContractHistoryReader",
+						"required": true,
+						"description": "Per-query Git-bound raw contract reader; immutable blobs are cached by Git-returned ids while worktree and index snapshots remain fresh."
+					},
+					{
+						"name": "currentContractIdentity.unit",
+						"type": "string",
+						"required": true,
+						"description": "Unit id or stable uid to follow through committed history; an empty string selects every contract permitted by the other filters."
+					}
+				],
+				"outputs": [
+					{
+						"name": "currentContractIdentity",
+						"type": "Promise<ContractHistoryIdentity | undefined>",
+						"description": "Selected uid and id aliases seeded from committed HEAD, or a pending historical-id lookup; an empty unit query returns undefined to select all contracts."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError or Error",
+						"type": "thrown",
+						"description": "Committed HEAD or raw snapshot reads can fail while seeding identity; snapshot diagnostics propagate. Pure snapshot filtering performs no additional reads."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "selectContractIdentity",
+				"inputs": [
+					{
+						"name": "selectContractIdentity.context",
+						"type": "ContractLogContext",
+						"required": true,
+						"description": "Per-query reader, options, result accumulator and selected identity. Identity aliases are updated only from observed contract transitions."
+					},
+					{
+						"name": "selectContractIdentity.before",
+						"type": "StoredContract[]",
+						"required": true,
+						"description": "Earlier stored JSON value or contract snapshot; undefined represents an absent field or contract."
+					},
+					{
+						"name": "selectContractIdentity.after",
+						"type": "StoredContract[]",
+						"required": true,
+						"description": "Later stored JSON value or contract snapshot; undefined represents an absent field or contract."
+					}
+				],
+				"outputs": [
+					{
+						"name": "selectContractIdentity",
+						"type": "StoredContract[][]",
+						"description": "Earlier and later snapshots filtered to the selected uid or observed pre-uid id aliases. Updates identity state at uid introductions, retained-id uid removals and uid-preserving renames."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError or Error",
+						"type": "thrown",
+						"description": "Committed HEAD or raw snapshot reads can fail while seeding identity; snapshot diagnostics propagate. Pure snapshot filtering performs no additional reads."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.development-tooling-contracts-command-contract-history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-contracts-command-contract-revisions",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/contracts-command/contractHistoryIdentity.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/contracts-command/contractHistoryIdentity.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

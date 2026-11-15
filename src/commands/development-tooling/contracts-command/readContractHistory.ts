@@ -4,14 +4,14 @@ import { unitsDirectory } from '../../../core/development-tooling/unitsConfig';
 import { createContractHistoryReader } from './readContractSnapshot';
 import { contractComparison, resolveContractRevision } from './contractRevisions';
 import { diffContractSnapshots, validateHistoryFields } from './diffContractSnapshots';
+import { currentContractIdentity, selectContractIdentity } from './contractHistoryIdentity';
 import type {
 	ContractDiff,
 	ContractHistoryOptions,
 	ContractHistoryReader,
 	ContractHistoryCommit,
 	ContractLogContext,
-	ContractLog,
-	StoredContract
+	ContractLog
 } from './contractHistory.types';
 
 export async function readContractDiff(
@@ -24,7 +24,7 @@ export async function readContractDiff(
 	return { ...diffContractSnapshots(before, after, options), base, head };
 }
 
-/** Walk first-parent commits; immutable blobs and decoded JSON are reused across snapshots. */
+/** Walk reachable contract commits; merge results use their actual first-parent snapshot. */
 export async function readContractLog(
 	unit: string,
 	options: ContractHistoryOptions,
@@ -38,7 +38,9 @@ export async function readContractLog(
 		: undefined;
 	const output = await reader.git.run([
 		'log',
-		'--first-parent',
+		'--full-history',
+		'--parents',
+		'--topo-order',
 		'-z',
 		'--format=%H%x00%P%x00%aI%x00%an%x00%ae%x00%s',
 		since ? `${since}..${head}` : head,
@@ -49,7 +51,7 @@ export async function readContractLog(
 		head,
 		...(since ? { since } : {}),
 		identityScope:
-			'First-parent commits; stable uid, otherwise unchanged id. File moves require preserved identity.',
+			'All reachable contract commits; merge deltas use the first parent. Stable uid follows renames, with unchanged-id fallback before uid introduction; pre-uid identity across reused ids or unrelated branches can be ambiguous.',
 		scannedCommits: 0,
 		truncated: false,
 		entries: []
@@ -58,20 +60,25 @@ export async function readContractLog(
 		reader,
 		result,
 		unit,
-		identity: await currentIdentity(reader, unit),
+		identity: await currentContractIdentity(reader, unit),
 		options
 	};
 	const limit = last ? 1 : (options.limit ?? 20);
 	const commits = contractHistoryCommits(output);
+	await restoreContractParents(reader, commits);
 	for (const [index, commit] of commits.entries()) {
 		await appendContractCommit(context, commit);
 		if (result.entries.length >= limit) {
-			result.truncated = index + 1 < commits.length;
+			result.truncated = hasMoreContractHistory(last, index, commits.length);
 			break;
 		}
 	}
 	validateLastContractLog(result, unit, last);
 	return result;
+}
+
+function hasMoreContractHistory(last: boolean, index: number, count: number): boolean {
+	return !last && index + 1 < count;
 }
 
 function validateLastContractLog(result: ContractLog, unit: string, last: boolean): void {
@@ -92,15 +99,15 @@ async function appendContractCommit(
 	context: ContractLogContext,
 	commit: ContractHistoryCommit
 ): Promise<void> {
-	const { reader, result, unit, options } = context;
+	const { reader, result, options } = context;
 	const [before, after] = await Promise.all([
 		reader.read(commit.parent),
 		reader.read(commit.commit)
 	]);
-	context.identity = historicalIdentity(context.identity, unit, before, after);
-	const diff = diffContractSnapshots(before, after, {
+	const [selectedBefore, selectedAfter] = selectContractIdentity(context, before, after);
+	const diff = diffContractSnapshots(selectedBefore, selectedAfter, {
 		...options,
-		unit: context.identity || undefined,
+		unit: undefined,
 		limit: undefined
 	});
 	result.scannedCommits++;
@@ -115,22 +122,18 @@ async function appendContractCommit(
 		});
 }
 
-async function currentIdentity(reader: ContractHistoryReader, unit: string): Promise<string> {
-	if (!unit) return '';
-	const entry = (await reader.read(await resolveContractRevision(reader.git, 'HEAD'))).find(
-		(item) => item.id === unit || item.uid === unit
-	);
-	return entry?.uid ?? unit;
-}
-
-function historicalIdentity(
-	identity: string,
-	unit: string,
-	before: StoredContract[],
-	after: StoredContract[]
-): string {
-	if (!unit || identity !== unit) return identity;
-	return (
-		[...after, ...before].find((entry) => entry.id === unit || entry.uid === unit)?.uid ?? identity
-	);
+async function restoreContractParents(
+	reader: ContractHistoryReader,
+	commits: ContractHistoryCommit[]
+): Promise<void> {
+	const byCommit = new Map(commits.map((commit) => [commit.commit, commit]));
+	for (let offset = 0; offset < commits.length; offset += 256) {
+		const ids = commits.slice(offset, offset + 256).map((entry) => entry.commit);
+		const output = await reader.git.run(['rev-list', '--no-walk', '--parents', ...ids, '--']);
+		for (const line of output.split('\n')) {
+			const [id, parent] = line.split(' ');
+			const entry = byCommit.get(id);
+			if (entry) entry.parent = parent ?? 'empty';
+		}
+	}
 }
