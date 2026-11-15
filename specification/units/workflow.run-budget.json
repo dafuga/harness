@@ -111,13 +111,17 @@
 				"name": "budgetMeasure",
 				"type": "Promise<{ partial?: string | undefined; unavailable?: string | undefined; value: number | null; unitOfMeasure: string; target?: \"process\" | \"http\" | \"wasm\" | \"module\" | undefined; unit: string; metric: string; }[]>",
 				"description": "Returns measurement rows for active manifests, optionally restricted to one exact manifest id. Rows include unit, metric, value, and unitOfMeasure, with target, unavailable, and partial only when present.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "budgetHistory",
 				"type": "Promise<BudgetEvent[]>",
 				"description": "Resolves to ledger events for the working tree, optionally filtered by exact event.unit. With no unit filter, it returns all events.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "budgetStatus",
@@ -207,7 +211,9 @@
 						"name": "budgetMeasure",
 						"type": "Promise<{ partial?: string | undefined; unavailable?: string | undefined; value: number | null; unitOfMeasure: string; target?: \"process\" | \"http\" | \"wasm\" | \"module\" | undefined; unit: string; metric: string; }[]>",
 						"description": "Returns measurement rows for active manifests, optionally restricted to one exact manifest id. Rows include unit, metric, value, and unitOfMeasure, with target, unavailable, and partial only when present.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
@@ -237,7 +243,9 @@
 						"name": "budgetHistory",
 						"type": "Promise<BudgetEvent[]>",
 						"description": "Resolves to ledger events for the working tree, optionally filtered by exact event.unit. With no unit filter, it returns all events.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [

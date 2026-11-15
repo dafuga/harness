@@ -71,7 +71,9 @@
 				"name": "NativePickerSwitchService.apply",
 				"type": "Promise<PickerData>",
 				"description": "Resolves to the PickerData returned by thread/resume after the resumed thread matches the selected model, provider, and reasoning effort. The resolved record is returned without further normalization.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			}
 		],
 		"errors": [
@@ -119,7 +121,9 @@
 						"name": "NativePickerSwitchService.apply",
 						"type": "Promise<PickerData>",
 						"description": "Resolves to the PickerData returned by thread/resume after the resumed thread matches the selected model, provider, and reasoning effort. The resolved record is returned without further normalization.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [

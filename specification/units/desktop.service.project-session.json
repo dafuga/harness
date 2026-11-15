@@ -32,7 +32,9 @@
 				"required": false,
 				"default": {},
 				"description": "Optional collaborators for this session. A registry, outbox or arbiter that is left out gets a new default instance, a cache, remote or auth that is left out stays undefined, and every supplied value is stored as given when the session is constructed.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "ProjectSessionService.assertProject.projectId",
@@ -950,7 +952,9 @@
 						"required": false,
 						"default": {},
 						"description": "Optional collaborators for this session. A registry, outbox or arbiter that is left out gets a new default instance, a cache, remote or auth that is left out stays undefined, and every supplied value is stored as given when the session is constructed.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [

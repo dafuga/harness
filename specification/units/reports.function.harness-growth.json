@@ -92,19 +92,25 @@
 				"name": "growthMetrics",
 				"type": "readonly [\"source-bytes\", \"complexity\", \"dependencies\"]",
 				"description": "Ordered metric keys used to read measured values and calculate deltas. The keys are source-bytes, complexity, and dependencies.",
-				"examples": [["source-bytes", "complexity", "dependencies"]]
+				"examples": [
+					["source-bytes", "complexity", "dependencies"]
+				]
 			},
 			{
 				"name": "harnessGrowth",
 				"type": "GrowthRow[]",
 				"description": "Growth rows for the selected unit, ordered oldest first according to revision positions. Missing units produce an empty array; missing metric values or prior values remain undefined, and changed reflects whether any computed delta is truthy.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "unitTimings",
 				"type": "HarnessBenchmark[]",
 				"description": "Benchmark records whose unit exactly matches the requested unit, returned in their original order. Each matching record is returned unchanged, so distinct measurement conditions remain separate.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			},
 			{
 				"name": "signed",
@@ -150,7 +156,9 @@
 						"name": "harnessGrowth",
 						"type": "GrowthRow[]",
 						"description": "Growth rows for the selected unit, ordered oldest first according to revision positions. Missing units produce an empty array; missing metric values or prior values remain undefined, and changed reflects whether any computed delta is truthy.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],
@@ -190,7 +198,9 @@
 						"name": "unitTimings",
 						"type": "HarnessBenchmark[]",
 						"description": "Benchmark records whose unit exactly matches the requested unit, returned in their original order. Each matching record is returned unchanged, so distinct measurement conditions remain separate.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],

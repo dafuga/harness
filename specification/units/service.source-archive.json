@@ -129,7 +129,9 @@
 							["test:test/services/source-archive.test.ts", "test"],
 							["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
 						],
-						"edges": [[0, 1]],
+						"edges": [
+							[0, 1]
+						],
 						"uncertain": []
 					}
 				]
@@ -228,7 +230,9 @@
 							["test:test/services/source-archive.test.ts", "test"],
 							["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
 						],
-						"edges": [[0, 1]],
+						"edges": [
+							[0, 1]
+						],
 						"uncertain": []
 					}
 				]
@@ -279,7 +283,9 @@
 							["test:test/services/source-archive.test.ts", "test"],
 							["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
 						],
-						"edges": [[0, 1]],
+						"edges": [
+							[0, 1]
+						],
 						"uncertain": []
 					}
 				]
@@ -299,6 +305,7 @@
 				"description": "Rejects when the committed tree cannot be opened or listed, or when the media output directory cannot be created. Individual source-read and media-write failures are retained as unavailable source gaps instead."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "SourceArchiveService.archive",
@@ -396,7 +403,9 @@
 									["test:test/services/source-archive.test.ts", "test"],
 									["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
 								],
-								"edges": [[0, 1]],
+								"edges": [
+									[0, 1]
+								],
 								"uncertain": []
 							}
 						]
@@ -518,7 +527,9 @@
 									["test:test/services/source-archive.test.ts", "test"],
 									["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
 								],
-								"edges": [[0, 1]],
+								"edges": [
+									[0, 1]
+								],
 								"uncertain": []
 							}
 						]
@@ -535,7 +546,9 @@
 						"name": "associatedTests",
 						"type": "string[]",
 						"description": "Sorted unique repo-relative test paths that directly import an owned file or are declared by a selected-revision scenario covering the unit.",
-						"examples": [["test/services/source-archive.test.ts"]]
+						"examples": [
+							["test/services/source-archive.test.ts"]
+						]
 					}
 				],
 				"errors": [],
@@ -587,7 +600,9 @@
 									["test:test/services/source-archive.test.ts", "test"],
 									["file:src/cli/program/history-index-service/SourceArchiveService.ts", "source"]
 								],
-								"edges": [[0, 1]],
+								"edges": [
+									[0, 1]
+								],
 								"uncertain": []
 							}
 						]
@@ -633,8 +648,7 @@
 				"errors": [],
 				"errorStatus": "declared"
 			}
-		],
-		"errorStatus": "declared"
+		]
 	},
 	"dependencies": [
 		{

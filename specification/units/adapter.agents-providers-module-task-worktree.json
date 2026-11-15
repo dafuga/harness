@@ -28,7 +28,9 @@
 				"type": "string",
 				"required": true,
 				"description": "Owner repository checkout root used to compare its Git common directory with the task worktree; construction stores this path without checking it, and checkpoint performs the check.",
-				"examples": ["/workspace/repository"]
+				"examples": [
+					"/workspace/repository"
+				]
 			},
 			{
 				"name": "ModuleTaskWorktreeAdapter.checkpoint.input",
@@ -39,7 +41,10 @@
 					{
 						"cwd": "/workspace/task-worktree",
 						"source": "7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0",
-						"paths": ["src/feature.ts", "README.md"]
+						"paths": [
+							"src/feature.ts",
+							"README.md"
+						]
 					}
 				]
 			}
@@ -49,7 +54,9 @@
 				"name": "ModuleTaskWorktreeAdapter.checkpoint",
 				"type": "Promise<string>",
 				"description": "Resolves to the source commit when paths is empty, otherwise to a new commit whose tree adds only the requested paths using a temporary index; the task worktree HEAD and user index remain unchanged.",
-				"examples": ["1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0c1d2e3"]
+				"examples": [
+					"1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0c1d2e3"
+				]
 			}
 		],
 		"errors": [
@@ -73,7 +80,10 @@
 							{
 								"cwd": "/workspace/task-worktree",
 								"source": "7d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0",
-								"paths": ["src/feature.ts", "README.md"]
+								"paths": [
+									"src/feature.ts",
+									"README.md"
+								]
 							}
 						]
 					}
@@ -83,7 +93,9 @@
 						"name": "ModuleTaskWorktreeAdapter.checkpoint",
 						"type": "Promise<string>",
 						"description": "Resolves to the source commit when paths is empty, otherwise to a new commit whose tree adds only the requested paths using a temporary index; the task worktree HEAD and user index remain unchanged.",
-						"examples": ["1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0c1d2e3"]
+						"examples": [
+							"1a2b3c4d5e6f708192a3b4c5d6e7f8a9b0c1d2e3"
+						]
 					}
 				],
 				"errors": [
@@ -105,7 +117,9 @@
 						"type": "string",
 						"required": true,
 						"description": "Owner repository checkout root used to compare its Git common directory with the task worktree; construction stores this path without checking it, and checkpoint performs the check.",
-						"examples": ["/workspace/repository"]
+						"examples": [
+							"/workspace/repository"
+						]
 					}
 				],
 				"outputs": [
@@ -142,7 +156,9 @@
 			}
 		]
 	},
-	"scenarios": ["module-tasks"],
+	"scenarios": [
+		"module-tasks"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

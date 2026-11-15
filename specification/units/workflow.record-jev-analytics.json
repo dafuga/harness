@@ -46,7 +46,9 @@
 				"type": "AnalyticsContext",
 				"required": true,
 				"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "recordResponse.durationMs",
@@ -101,7 +103,9 @@
 				"type": "AnalyticsContext",
 				"required": true,
 				"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "recordCleanCode.timing",
@@ -166,7 +170,9 @@
 						"type": "AnalyticsContext",
 						"required": true,
 						"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					},
 					{
 						"name": "recordResponse.durationMs",
@@ -235,7 +241,9 @@
 						"type": "AnalyticsContext",
 						"required": true,
 						"description": "Optional loop, loop-run, step, task, agent-model, and report associations copied onto the event. This workflow passes the context through without resolving defaults or validating it.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					},
 					{
 						"name": "recordCleanCode.timing",

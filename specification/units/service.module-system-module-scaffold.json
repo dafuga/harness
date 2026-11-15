@@ -65,7 +65,9 @@
 				"name": "ModuleScaffoldService.generate",
 				"type": "Promise<string[]>",
 				"description": "Resolves to the path strings from the delegated workflow’s write results, in workflow order. The returned array includes skipped paths and omits write status, file contents, and export-update metadata.",
-				"examples": [["test/invoice.test.ts"]]
+				"examples": [
+					["test/invoice.test.ts"]
+				]
 			}
 		],
 		"errors": [
@@ -133,7 +135,9 @@
 						"name": "ModuleScaffoldService.generate",
 						"type": "Promise<string[]>",
 						"description": "Resolves to the path strings from the delegated workflow’s write results, in workflow order. The returned array includes skipped paths and omits write status, file contents, and export-update metadata.",
-						"examples": [["test/invoice.test.ts"]]
+						"examples": [
+							["test/invoice.test.ts"]
+						]
 					}
 				],
 				"errors": [

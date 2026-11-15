@@ -27,7 +27,9 @@
 				"required": false,
 				"default": {},
 				"description": "Runtime options forwarded to the superclass adapter. timeoutMs sets the runtime deadline; omitted or nullish values use defaultRuntimeTimeoutMs.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [],
@@ -57,7 +59,9 @@
 						"required": false,
 						"default": {},
 						"description": "Runtime options forwarded to the superclass adapter. timeoutMs sets the runtime deadline; omitted or nullish values use defaultRuntimeTimeoutMs.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [

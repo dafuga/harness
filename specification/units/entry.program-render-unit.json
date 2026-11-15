@@ -35,7 +35,9 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Source lines to prefix with the requested two-space indentation; an empty list produces no rows.",
-				"examples": [["Source", "Contract"]]
+				"examples": [
+					["Source", "Contract"]
+				]
 			},
 			{
 				"name": "indent.depth",
@@ -234,7 +236,9 @@
 				"type": "string[]",
 				"required": true,
 				"description": "Test file paths to group by containing directory; an empty list renders as none.",
-				"examples": [["test/example.test.ts", "tests/render-unit.test.ts"]]
+				"examples": [
+					["test/example.test.ts", "tests/render-unit.test.ts"]
+				]
 			},
 			{
 				"name": "renderUnit.detail",
@@ -320,7 +324,9 @@
 				"name": "indent",
 				"type": "string[]",
 				"description": "Lines prefixed with two spaces repeated for the requested depth, preserving their order.",
-				"examples": [["    Source", "    Contract"]]
+				"examples": [
+					["    Source", "    Contract"]
+				]
 			},
 			{
 				"name": "fields",
@@ -339,7 +345,9 @@
 				"name": "errorRows",
 				"type": "string[]",
 				"description": "Formatted error fields, or a status-specific none/unknown row when there are no errors.",
-				"examples": [["detail", "  The detail has an unsupported shape."]]
+				"examples": [
+					["detail", "  The detail has an unsupported shape."]
+				]
 			},
 			{
 				"name": "operationRows",
@@ -394,7 +402,9 @@
 				"name": "groupTests",
 				"type": "string[]",
 				"description": "File count and per-directory counts, or none when no tests are listed.",
-				"examples": [["2 files", "  test/   1", "  tests/  1"]]
+				"examples": [
+					["2 files", "  test/   1", "  tests/  1"]
+				]
 			},
 			{
 				"name": "renderUnit",
@@ -416,7 +426,9 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Source lines to prefix with the requested two-space indentation; an empty list produces no rows.",
-						"examples": [["Source", "Contract"]]
+						"examples": [
+							["Source", "Contract"]
+						]
 					},
 					{
 						"name": "indent.depth",
@@ -432,7 +444,9 @@
 						"name": "indent",
 						"type": "string[]",
 						"description": "Lines prefixed with two spaces repeated for the requested depth, preserving their order.",
-						"examples": [["    Source", "    Contract"]]
+						"examples": [
+							["    Source", "    Contract"]
+						]
 					}
 				],
 				"errors": [],
@@ -531,7 +545,9 @@
 						"name": "errorRows",
 						"type": "string[]",
 						"description": "Formatted error fields, or a status-specific none/unknown row when there are no errors.",
-						"examples": [["detail", "  The detail has an unsupported shape."]]
+						"examples": [
+							["detail", "  The detail has an unsupported shape."]
+						]
 					}
 				],
 				"errors": [],
@@ -743,7 +759,9 @@
 						"type": "string[]",
 						"required": true,
 						"description": "Test file paths to group by containing directory; an empty list renders as none.",
-						"examples": [["test/example.test.ts", "tests/render-unit.test.ts"]]
+						"examples": [
+							["test/example.test.ts", "tests/render-unit.test.ts"]
+						]
 					}
 				],
 				"outputs": [
@@ -751,7 +769,9 @@
 						"name": "groupTests",
 						"type": "string[]",
 						"description": "File count and per-directory counts, or none when no tests are listed.",
-						"examples": [["2 files", "  test/   1", "  tests/  1"]]
+						"examples": [
+							["2 files", "  test/   1", "  tests/  1"]
+						]
 					}
 				],
 				"errors": [],

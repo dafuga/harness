@@ -59,7 +59,81 @@
 				"name": "analyticsSnapshot",
 				"type": "ReturnType<typeof analyticsSnapshot>",
 				"description": "A snapshot record containing schemaVersion, generatedAt, filters, summary, loops, jev, models, tasks, benchmarks and events. JEV and task metric details come from imported implementations, so their nested schemas are not defined in this workflow.",
-				"examples": [{"schemaVersion": 1, "generatedAt": "2026-11-14T12:00:00.000Z", "filters": {}, "summary": {"events": 0, "projects": 0, "commands": {}, "loops": 0, "completedLoops": 0, "evaluatorOutcomes": {}, "templates": {}, "daily": {}}, "loops": [], "jev": {"response": {"checks": 0, "outcomes": {}, "excluded": 0, "firstTry": {"numerator": 0, "denominator": 0, "rate": null}, "tasks": []}, "cleanCode": {"checks": 0, "outcomes": {}, "excluded": 0, "firstTry": {"numerator": 0, "denominator": 0, "rate": null}, "tasks": []}}, "models": {"authors": {}, "loopAuthors": {}, "evaluators": {}, "inputTokens": 0, "outputTokens": 0, "firstTryByAuthor": {}, "taskWorkers": []}, "tasks": {"tasks": 0, "executions": 0, "submissions": 0, "accepted": 0, "bounces": 0, "reviewed": 0, "bounceRate": null, "executionFailures": 0, "inputTokens": null, "outputTokens": null, "cacheReadTokens": null, "cacheWriteTokens": null, "apiCostUsd": null, "apiCostRangeUsd": {"minimum": null, "maximum": null}, "unpricedExecutions": 0, "unreportedUsage": 0, "byModel": []}, "benchmarks": [], "events": []}]
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"generatedAt": "2026-11-14T12:00:00.000Z",
+						"filters": {},
+						"summary": {
+							"events": 0,
+							"projects": 0,
+							"commands": {},
+							"loops": 0,
+							"completedLoops": 0,
+							"evaluatorOutcomes": {},
+							"templates": {},
+							"daily": {}
+						},
+						"loops": [],
+						"jev": {
+							"response": {
+								"checks": 0,
+								"outcomes": {},
+								"excluded": 0,
+								"firstTry": {
+									"numerator": 0,
+									"denominator": 0,
+									"rate": null
+								},
+								"tasks": []
+							},
+							"cleanCode": {
+								"checks": 0,
+								"outcomes": {},
+								"excluded": 0,
+								"firstTry": {
+									"numerator": 0,
+									"denominator": 0,
+									"rate": null
+								},
+								"tasks": []
+							}
+						},
+						"models": {
+							"authors": {},
+							"loopAuthors": {},
+							"evaluators": {},
+							"inputTokens": 0,
+							"outputTokens": 0,
+							"firstTryByAuthor": {},
+							"taskWorkers": []
+						},
+						"tasks": {
+							"tasks": 0,
+							"executions": 0,
+							"submissions": 0,
+							"accepted": 0,
+							"bounces": 0,
+							"reviewed": 0,
+							"bounceRate": null,
+							"executionFailures": 0,
+							"inputTokens": null,
+							"outputTokens": null,
+							"cacheReadTokens": null,
+							"cacheWriteTokens": null,
+							"apiCostUsd": null,
+							"apiCostRangeUsd": {
+								"minimum": null,
+								"maximum": null
+							},
+							"unpricedExecutions": 0,
+							"unreportedUsage": 0,
+							"byModel": []
+						},
+						"benchmarks": [],
+						"events": []
+					}
+				]
 			},
 			{
 				"name": "counts",
@@ -108,7 +182,81 @@
 						"name": "analyticsSnapshot",
 						"type": "ReturnType<typeof analyticsSnapshot>",
 						"description": "A snapshot record containing schemaVersion, generatedAt, filters, summary, loops, jev, models, tasks, benchmarks and events. JEV and task metric details come from imported implementations, so their nested schemas are not defined in this workflow.",
-						"examples": [{"schemaVersion": 1, "generatedAt": "2026-11-14T12:00:00.000Z", "filters": {}, "summary": {"events": 0, "projects": 0, "commands": {}, "loops": 0, "completedLoops": 0, "evaluatorOutcomes": {}, "templates": {}, "daily": {}}, "loops": [], "jev": {"response": {"checks": 0, "outcomes": {}, "excluded": 0, "firstTry": {"numerator": 0, "denominator": 0, "rate": null}, "tasks": []}, "cleanCode": {"checks": 0, "outcomes": {}, "excluded": 0, "firstTry": {"numerator": 0, "denominator": 0, "rate": null}, "tasks": []}}, "models": {"authors": {}, "loopAuthors": {}, "evaluators": {}, "inputTokens": 0, "outputTokens": 0, "firstTryByAuthor": {}, "taskWorkers": []}, "tasks": {"tasks": 0, "executions": 0, "submissions": 0, "accepted": 0, "bounces": 0, "reviewed": 0, "bounceRate": null, "executionFailures": 0, "inputTokens": null, "outputTokens": null, "cacheReadTokens": null, "cacheWriteTokens": null, "apiCostUsd": null, "apiCostRangeUsd": {"minimum": null, "maximum": null}, "unpricedExecutions": 0, "unreportedUsage": 0, "byModel": []}, "benchmarks": [], "events": []}]
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"generatedAt": "2026-11-14T12:00:00.000Z",
+								"filters": {},
+								"summary": {
+									"events": 0,
+									"projects": 0,
+									"commands": {},
+									"loops": 0,
+									"completedLoops": 0,
+									"evaluatorOutcomes": {},
+									"templates": {},
+									"daily": {}
+								},
+								"loops": [],
+								"jev": {
+									"response": {
+										"checks": 0,
+										"outcomes": {},
+										"excluded": 0,
+										"firstTry": {
+											"numerator": 0,
+											"denominator": 0,
+											"rate": null
+										},
+										"tasks": []
+									},
+									"cleanCode": {
+										"checks": 0,
+										"outcomes": {},
+										"excluded": 0,
+										"firstTry": {
+											"numerator": 0,
+											"denominator": 0,
+											"rate": null
+										},
+										"tasks": []
+									}
+								},
+								"models": {
+									"authors": {},
+									"loopAuthors": {},
+									"evaluators": {},
+									"inputTokens": 0,
+									"outputTokens": 0,
+									"firstTryByAuthor": {},
+									"taskWorkers": []
+								},
+								"tasks": {
+									"tasks": 0,
+									"executions": 0,
+									"submissions": 0,
+									"accepted": 0,
+									"bounces": 0,
+									"reviewed": 0,
+									"bounceRate": null,
+									"executionFailures": 0,
+									"inputTokens": null,
+									"outputTokens": null,
+									"cacheReadTokens": null,
+									"cacheWriteTokens": null,
+									"apiCostUsd": null,
+									"apiCostRangeUsd": {
+										"minimum": null,
+										"maximum": null
+									},
+									"unpricedExecutions": 0,
+									"unreportedUsage": 0,
+									"byModel": []
+								},
+								"benchmarks": [],
+								"events": []
+							}
+						]
 					}
 				],
 				"errors": [],

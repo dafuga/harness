@@ -577,7 +577,9 @@
 				"name": "hubOwnedPaths",
 				"type": "string[]",
 				"description": "Repository-relative paths for blob entries equal to or nested beneath a declared source root, in source-tree order. Non-blob entries are omitted and duplicates are preserved.",
-				"examples": [["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]]
+				"examples": [
+					["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]
+				]
 			}
 		],
 		"errors": [
@@ -1177,7 +1179,9 @@
 						"name": "hubOwnedPaths",
 						"type": "string[]",
 						"description": "Repository-relative paths for blob entries equal to or nested beneath a declared source root, in source-tree order. Non-blob entries are omitted and duplicates are preserved.",
-						"examples": [["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]]
+						"examples": [
+							["packages/hub/src/utils/networking-security/hub-catalog/hubCatalog.ts"]
+						]
 					}
 				],
 				"errors": [],

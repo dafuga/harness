@@ -52,14 +52,18 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Optional RPC options passed through to config/batchWrite. If omitted, undefined is forwarded.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "NativePickerDefaultsService.read.params",
 				"type": "PickerData",
 				"required": true,
 				"description": "Parameters passed through to config/read. The returned config is cloned before saved copy-local edits are overlaid.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "NativePickerDefaultsService.read.options",
@@ -67,7 +71,9 @@
 				"required": false,
 				"default": "undefined",
 				"description": "Optional RPC options passed through to config/read. If omitted, undefined is forwarded.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
@@ -75,7 +81,9 @@
 				"name": "NativePickerDefaultsService.write",
 				"type": "Promise<PickerData>",
 				"description": "A promise resolving to the PickerData returned by config/batchWrite after non-model edits are submitted; intercepted model edits are saved locally after that RPC succeeds.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "NativePickerDefaultsService.read",
@@ -117,7 +125,9 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Optional RPC options passed through to config/batchWrite. If omitted, undefined is forwarded.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [
@@ -125,7 +135,9 @@
 						"name": "NativePickerDefaultsService.write",
 						"type": "Promise<PickerData>",
 						"description": "A promise resolving to the PickerData returned by config/batchWrite after non-model edits are submitted; intercepted model edits are saved locally after that RPC succeeds.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [
@@ -145,7 +157,9 @@
 						"type": "PickerData",
 						"required": true,
 						"description": "Parameters passed through to config/read. The returned config is cloned before saved copy-local edits are overlaid.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					},
 					{
 						"name": "NativePickerDefaultsService.read.options",
@@ -153,7 +167,9 @@
 						"required": false,
 						"default": "undefined",
 						"description": "Optional RPC options passed through to config/read. If omitted, undefined is forwarded.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [

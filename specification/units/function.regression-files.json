@@ -35,14 +35,22 @@
 				"type": "string",
 				"required": true,
 				"description": "A repository-relative path classified as a test when it contains a test, tests, e2e, fixtures, __tests__, or __snapshots__ segment followed by /, matches a .test. or .spec. filename pattern, or starts with specification/scenarios/. This is a pattern check and does not verify that the path exists.",
-				"examples": ["tests/utils/regressionFiles.test.ts", "specification/scenarios/regression-files.json", "src/utils/verification-evidence/regressionFiles.ts"]
+				"examples": [
+					"tests/utils/regressionFiles.test.ts",
+					"specification/scenarios/regression-files.json",
+					"src/utils/verification-evidence/regressionFiles.ts"
+				]
 			},
 			{
 				"name": "metadata.path",
 				"type": "string",
 				"required": true,
 				"description": "A repository-relative path classified as metadata when it begins with specification/loops/ or ends with .md. Other paths return false.",
-				"examples": ["specification/loops/regression-files.yaml", "docs/regression-files.md", "src/utils/verification-evidence/regressionFiles.ts"]
+				"examples": [
+					"specification/loops/regression-files.yaml",
+					"docs/regression-files.md",
+					"src/utils/verification-evidence/regressionFiles.ts"
+				]
 			},
 			{
 				"name": "regressionFiles.root",
@@ -63,7 +71,9 @@
 				"type": "string[]",
 				"required": true,
 				"description": "A nonempty list of repository-relative paths naming strengthened tests. Each path must be tracked in the selected commit, cannot start with / or contain a .. segment, and cannot name manifest-owned product source unless testPath matches it.",
-				"examples": [["tests/utils/regressionFiles.test.ts"]]
+				"examples": [
+					["tests/utils/regressionFiles.test.ts"]
+				]
 			},
 			{
 				"name": "regressionFixCommit.root",
@@ -137,10 +147,52 @@
 				"type": "string[]",
 				"required": true,
 				"description": "A list of repository-relative paths naming tests that the checkpoint must strengthen. At least one listed path must appear among the changed files; this operation does not validate the paths against the commit tree.",
-				"examples": [["tests/utils/regressionFiles.test.ts"]]
+				"examples": [
+					["tests/utils/regressionFiles.test.ts"]
+				]
 			}
 		],
-		"outputs": [{"name": "testPath", "type": "boolean", "description": "Returns true for paths matching the test, fixture, snapshot, test-filename, spec-filename, or scenario-prefix patterns; otherwise returns false.", "examples": [true, true, false]}, {"name": "metadata", "type": "boolean", "description": "Returns true for paths under specification/loops/ or paths ending in .md; otherwise returns false.", "examples": [true, true, false]}, {"name": "regressionFiles", "type": "Promise<{ path: string; hash: string; }[]>", "description": "Resolves to path-and-hash entries from the selected tracked evidence tree for the named tests, recognized test paths, and recognized runner configuration files. The entries are sorted by path.", "examples": [[{"path": "package.json", "hash": "89abcdef0123456789abcdef0123456789abcdef"}, {"path": "tests/utils/regressionFiles.test.ts", "hash": "abcdef0123456789abcdef0123456789abcdef01"}]]}, {"name": "regressionFixCommit", "type": "Promise<void>", "description": "Resolves with no value after validating that the fix commit differs from and descends from the red source commit, preserves the red inputs exactly, and changes at least one product-code path."}, {"name": "regressionTestCommit", "type": "Promise<void>", "description": "Resolves with no value when the commit changes only named tests, recognized test paths, or recognized metadata paths, and at least one named test changed."}],
+		"outputs": [
+			{
+				"name": "testPath",
+				"type": "boolean",
+				"description": "Returns true for paths matching the test, fixture, snapshot, test-filename, spec-filename, or scenario-prefix patterns; otherwise returns false.",
+				"examples": [true, true, false]
+			},
+			{
+				"name": "metadata",
+				"type": "boolean",
+				"description": "Returns true for paths under specification/loops/ or paths ending in .md; otherwise returns false.",
+				"examples": [true, true, false]
+			},
+			{
+				"name": "regressionFiles",
+				"type": "Promise<{ path: string; hash: string; }[]>",
+				"description": "Resolves to path-and-hash entries from the selected tracked evidence tree for the named tests, recognized test paths, and recognized runner configuration files. The entries are sorted by path.",
+				"examples": [
+					[
+						{
+							"path": "package.json",
+							"hash": "89abcdef0123456789abcdef0123456789abcdef"
+						},
+						{
+							"path": "tests/utils/regressionFiles.test.ts",
+							"hash": "abcdef0123456789abcdef0123456789abcdef01"
+						}
+					]
+				]
+			},
+			{
+				"name": "regressionFixCommit",
+				"type": "Promise<void>",
+				"description": "Resolves with no value after validating that the fix commit differs from and descends from the red source commit, preserves the red inputs exactly, and changes at least one product-code path."
+			},
+			{
+				"name": "regressionTestCommit",
+				"type": "Promise<void>",
+				"description": "Resolves with no value when the commit changes only named tests, recognized test paths, or recognized metadata paths, and at least one named test changed."
+			}
+		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
@@ -158,7 +210,11 @@
 						"type": "string",
 						"required": true,
 						"description": "A repository-relative path classified as a test when it contains a test, tests, e2e, fixtures, __tests__, or __snapshots__ segment followed by /, matches a .test. or .spec. filename pattern, or starts with specification/scenarios/. This is a pattern check and does not verify that the path exists.",
-						"examples": ["tests/utils/regressionFiles.test.ts", "specification/scenarios/regression-files.json", "src/utils/verification-evidence/regressionFiles.ts"]
+						"examples": [
+							"tests/utils/regressionFiles.test.ts",
+							"specification/scenarios/regression-files.json",
+							"src/utils/verification-evidence/regressionFiles.ts"
+						]
 					}
 				],
 				"outputs": [
@@ -180,7 +236,11 @@
 						"type": "string",
 						"required": true,
 						"description": "A repository-relative path classified as metadata when it begins with specification/loops/ or ends with .md. Other paths return false.",
-						"examples": ["specification/loops/regression-files.yaml", "docs/regression-files.md", "src/utils/verification-evidence/regressionFiles.ts"]
+						"examples": [
+							"specification/loops/regression-files.yaml",
+							"docs/regression-files.md",
+							"src/utils/verification-evidence/regressionFiles.ts"
+						]
 					}
 				],
 				"outputs": [
@@ -216,7 +276,9 @@
 						"type": "string[]",
 						"required": true,
 						"description": "A nonempty list of repository-relative paths naming strengthened tests. Each path must be tracked in the selected commit, cannot start with / or contain a .. segment, and cannot name manifest-owned product source unless testPath matches it.",
-						"examples": [["tests/utils/regressionFiles.test.ts"]]
+						"examples": [
+							["tests/utils/regressionFiles.test.ts"]
+						]
 					}
 				],
 				"outputs": [
@@ -342,7 +404,9 @@
 						"type": "string[]",
 						"required": true,
 						"description": "A list of repository-relative paths naming tests that the checkpoint must strengthen. At least one listed path must appear among the changed files; this operation does not validate the paths against the commit tree.",
-						"examples": [["tests/utils/regressionFiles.test.ts"]]
+						"examples": [
+							["tests/utils/regressionFiles.test.ts"]
+						]
 					}
 				],
 				"outputs": [

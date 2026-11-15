@@ -36,7 +36,9 @@
 				"type": "ImpactReport['runtime']",
 				"required": true,
 				"description": "Execution runtime recorded in the scoped impact report. It must be one of the declared runtime kinds: module, wasm, process, or http.",
-				"examples": ["module"]
+				"examples": [
+					"module"
+				]
 			},
 			{
 				"name": "scopedVerify.options",
@@ -72,8 +74,12 @@
 						"status": "attached",
 						"entity": "reports.component.evidence-grid",
 						"record": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-						"states": ["reports.state.initial"],
-						"viewports": ["desktop"]
+						"states": [
+							"reports.state.initial"
+						],
+						"viewports": [
+							"desktop"
+						]
 					},
 					{
 						"status": "skipped",
@@ -95,21 +101,27 @@
 				"type": "string",
 				"required": true,
 				"description": "Revision string copied into the scoped impact report head field. This helper does not resolve or validate the revision.",
-				"examples": ["0123456789abcdef0123456789abcdef01234567"]
+				"examples": [
+					"0123456789abcdef0123456789abcdef01234567"
+				]
 			},
 			{
 				"name": "scopedImpact.runtime",
 				"type": "ImpactReport['runtime']",
 				"required": true,
 				"description": "Execution runtime copied into the scoped impact report. It must be one of the declared runtime kinds: module, wasm, process, or http.",
-				"examples": ["module"]
+				"examples": [
+					"module"
+				]
 			},
 			{
 				"name": "timer.entity",
 				"type": "string | undefined",
 				"required": true,
 				"description": "Optional entity identifier used to prefix timing messages. A falsy value suppresses writes, and the identifier is not validated here.",
-				"examples": ["reports.component.evidence-grid"]
+				"examples": [
+					"reports.component.evidence-grid"
+				]
 			},
 			{
 				"name": "verifyEnv.options",
@@ -232,8 +244,12 @@
 							"status": "attached",
 							"entity": "reports.component.evidence-grid",
 							"record": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-							"states": ["reports.state.initial"],
-							"viewports": ["desktop"]
+							"states": [
+								"reports.state.initial"
+							],
+							"viewports": [
+								"desktop"
+							]
 						}
 					}
 				]
@@ -332,7 +348,9 @@
 						"type": "ImpactReport['runtime']",
 						"required": true,
 						"description": "Execution runtime recorded in the scoped impact report. It must be one of the declared runtime kinds: module, wasm, process, or http.",
-						"examples": ["module"]
+						"examples": [
+							"module"
+						]
 					},
 					{
 						"name": "scopedVerify.options",
@@ -467,8 +485,12 @@
 									"status": "attached",
 									"entity": "reports.component.evidence-grid",
 									"record": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-									"states": ["reports.state.initial"],
-									"viewports": ["desktop"]
+									"states": [
+										"reports.state.initial"
+									],
+									"viewports": [
+										"desktop"
+									]
 								}
 							}
 						]
@@ -496,8 +518,12 @@
 								"status": "attached",
 								"entity": "reports.component.evidence-grid",
 								"record": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-								"states": ["reports.state.initial"],
-								"viewports": ["desktop"]
+								"states": [
+									"reports.state.initial"
+								],
+								"viewports": [
+									"desktop"
+								]
 							},
 							{
 								"status": "skipped",
@@ -556,14 +582,18 @@
 						"type": "string",
 						"required": true,
 						"description": "Revision string copied into the scoped impact report head field. This helper does not resolve or validate the revision.",
-						"examples": ["0123456789abcdef0123456789abcdef01234567"]
+						"examples": [
+							"0123456789abcdef0123456789abcdef01234567"
+						]
 					},
 					{
 						"name": "scopedImpact.runtime",
 						"type": "ImpactReport['runtime']",
 						"required": true,
 						"description": "Execution runtime copied into the scoped impact report. It must be one of the declared runtime kinds: module, wasm, process, or http.",
-						"examples": ["module"]
+						"examples": [
+							"module"
+						]
 					}
 				],
 				"outputs": [
@@ -609,7 +639,9 @@
 						"type": "string | undefined",
 						"required": true,
 						"description": "Optional entity identifier used to prefix timing messages. A falsy value suppresses writes, and the identifier is not validated here.",
-						"examples": ["reports.component.evidence-grid"]
+						"examples": [
+							"reports.component.evidence-grid"
+						]
 					}
 				],
 				"outputs": [

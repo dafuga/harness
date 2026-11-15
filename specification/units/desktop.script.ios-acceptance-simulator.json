@@ -58,7 +58,9 @@
 				"required": false,
 				"default": [],
 				"description": "Arguments passed through to the app at launch after the existing process is terminated.",
-				"examples": [["--acceptance", "camera-permission"]]
+				"examples": [
+					["--acceptance", "camera-permission"]
+				]
 			},
 			{
 				"name": "cameraAccess.udid",
@@ -177,7 +179,10 @@
 				"name": "keychainGroups",
 				"type": "string[]",
 				"description": "Distinct Keychain access-group names containing the app bundle identifier; item contents are never read.",
-				"examples": [["com.dafuga.harness"], []]
+				"examples": [
+					["com.dafuga.harness"],
+					[]
+				]
 			},
 			{
 				"name": "shutdown",
@@ -279,7 +284,9 @@
 						"required": false,
 						"default": [],
 						"description": "Arguments passed through to the app at launch after the existing process is terminated.",
-						"examples": [["--acceptance", "camera-permission"]]
+						"examples": [
+							["--acceptance", "camera-permission"]
+						]
 					}
 				],
 				"outputs": [
@@ -438,7 +445,10 @@
 						"name": "keychainGroups",
 						"type": "string[]",
 						"description": "Distinct Keychain access-group names containing the app bundle identifier; item contents are never read.",
-						"examples": [["com.dafuga.harness"], []]
+						"examples": [
+							["com.dafuga.harness"],
+							[]
+						]
 					}
 				],
 				"errors": [

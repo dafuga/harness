@@ -205,7 +205,10 @@
 				"required": false,
 				"default": [],
 				"description": "Values bound positionally to the query SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
-				"examples": [[17], []]
+				"examples": [
+					[17],
+					[]
+				]
 			},
 			{
 				"name": "SqliteAdapter.execute.sql",
@@ -224,7 +227,11 @@
 				"required": false,
 				"default": [],
 				"description": "Values bound positionally to the execute SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
-				"examples": [[0, 17], [17], []]
+				"examples": [
+					[0, 17],
+					[17],
+					[]
+				]
 			},
 			{
 				"name": "SqliteAdapter.transaction.write",
@@ -585,7 +592,10 @@
 						"required": false,
 						"default": [],
 						"description": "Values bound positionally to the query SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
-						"examples": [[17], []]
+						"examples": [
+							[17],
+							[]
+						]
 					}
 				],
 				"outputs": [
@@ -627,7 +637,11 @@
 						"required": false,
 						"default": [],
 						"description": "Values bound positionally to the execute SQL placeholders. SqliteValue supports strings, numbers, bigints, Uint8Array values, and null; omitted bindings use an empty array.",
-						"examples": [[0, 17], [17], []]
+						"examples": [
+							[0, 17],
+							[17],
+							[]
+						]
 					}
 				],
 				"outputs": [

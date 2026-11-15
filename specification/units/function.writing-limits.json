@@ -172,7 +172,9 @@
 				"name": "writingVersions",
 				"type": "readonly [1, 2]",
 				"description": "The supported writing versions, 1 and 2, which a repository can declare as `writing` in harness.verify.json. writingHeld searches this list from the newest version down, so a declaration is held to the highest version in it that is not above the declared number.",
-				"examples": [[1, 2]]
+				"examples": [
+					[1, 2]
+				]
 			},
 			{
 				"name": "writingVersion",

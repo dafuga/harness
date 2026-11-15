@@ -12,7 +12,13 @@
 			"packages/remote/src/services/networking-security/secure-channel-service/sealPacket.ts",
 			"packages/remote/src/utils/networking-security/sealPacket.ts"
 		],
-		"symbols": ["sealPacket", "openPacket", "SealContext", "sealPacket", "openPacket"]
+		"symbols": [
+			"sealPacket",
+			"openPacket",
+			"SealContext",
+			"sealPacket",
+			"openPacket"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -145,7 +151,9 @@
 			}
 		]
 	},
-	"scenarios": ["remote-desktop-boundaries"],
+	"scenarios": [
+		"remote-desktop-boundaries"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

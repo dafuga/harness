@@ -91,7 +91,9 @@
 				"name": "splitTopLevel",
 				"type": "number[]",
 				"description": "Indexes of separator characters outside tracked brackets/generics; text itself is not split or changed.",
-				"examples": [[8]]
+				"examples": [
+					[8]
+				]
 			},
 			{
 				"name": "parseParameters",
@@ -202,7 +204,9 @@
 						"name": "splitTopLevel",
 						"type": "number[]",
 						"description": "Indexes of separator characters outside tracked brackets/generics; text itself is not split or changed.",
-						"examples": [[8]]
+						"examples": [
+							[8]
+						]
 					}
 				],
 				"errors": [],

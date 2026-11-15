@@ -65,7 +65,9 @@
 						"name": "load",
 						"type": "Promise<Record<string, never>>",
 						"description": "The value that load resolves to, which is the empty object {} on every path that does not throw: an exact explorer address, and any address with no redirect target. It has no fields, so the page data gets nothing from this file.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"errors": [

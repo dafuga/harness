@@ -1304,7 +1304,10 @@
 						"name": "headlessStateNames",
 						"type": "string[]",
 						"description": "Unique normalized names of required states from viewport-free headless scenarios, excluding names already declared by UI scenarios or registry rows for this unit.",
-						"examples": [["ready"], []]
+						"examples": [
+							["ready"],
+							[]
+						]
 					}
 				],
 				"errors": [],

@@ -71,7 +71,9 @@
 								"responsibilityOrigin": "declared",
 								"status": "active",
 								"owns": {
-									"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+									"source": [
+										"src/services/verification-evidence/EvidenceLedger.ts"
+									],
 									"symbols": [
 										"EvidenceLedger",
 										"EvidenceLedger.append",
@@ -99,7 +101,9 @@
 										}
 									]
 								},
-								"scenarios": ["module-tasks"],
+								"scenarios": [
+									"module-tasks"
+								],
 								"budgets": {
 									"size": "frozen",
 									"complexity": "frozen",
@@ -166,7 +170,9 @@
 						"responsibilityOrigin": "declared",
 						"status": "active",
 						"owns": {
-							"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+							"source": [
+								"src/services/verification-evidence/EvidenceLedger.ts"
+							],
 							"symbols": [
 								"EvidenceLedger",
 								"EvidenceLedger.append",
@@ -194,7 +200,9 @@
 								}
 							]
 						},
-						"scenarios": ["module-tasks"],
+						"scenarios": [
+							"module-tasks"
+						],
 						"budgets": {
 							"size": "frozen",
 							"complexity": "frozen",
@@ -225,7 +233,9 @@
 						"responsibilityOrigin": "declared",
 						"status": "active",
 						"owns": {
-							"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+							"source": [
+								"src/services/verification-evidence/EvidenceLedger.ts"
+							],
 							"symbols": [
 								"EvidenceLedger",
 								"EvidenceLedger.append",
@@ -253,7 +263,9 @@
 								}
 							]
 						},
-						"scenarios": ["module-tasks"],
+						"scenarios": [
+							"module-tasks"
+						],
 						"budgets": {
 							"size": "frozen",
 							"complexity": "frozen",
@@ -267,7 +279,10 @@
 				"type": "string",
 				"required": true,
 				"description": "Generated identifier base that names the Begin and Finish observer locals; instrumentSource derives it from the first 12 hex digits of the source path's SHA-256 digest and appends underscores until the source text does not contain it.",
-				"examples": ["__harnessWatch_9c41e0a7f5d2", "__harnessWatch_9c41e0a7f5d2_"]
+				"examples": [
+					"__harnessWatch_9c41e0a7f5d2",
+					"__harnessWatch_9c41e0a7f5d2_"
+				]
 			},
 			{
 				"name": "beginSourceScope.boundary",
@@ -303,7 +318,10 @@
 				"type": "string",
 				"required": true,
 				"description": "Method property name selected on the supplied owner; names that are absent, accessors or not own function-valued data properties are skipped without replacement.",
-				"examples": ["append", "count"]
+				"examples": [
+					"append",
+					"count"
+				]
 			},
 			{
 				"name": "watchMethod.boundary",
@@ -328,7 +346,10 @@
 				"type": "string",
 				"required": true,
 				"description": "Project root whose realpath, specification/units registry and specification/scenarios manifest decide whether source profiling is selected; the plugin reads it only in Vite test mode.",
-				"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+				"examples": [
+					"/workspace/harness-app",
+					"/srv/ci/harness-app"
+				]
 			},
 			{
 				"name": "runnerConfiguration.environment",
@@ -349,21 +370,29 @@
 				"type": "unknown",
 				"required": true,
 				"description": "Project root path passed as the Vite config root and as profileRoot for the test runner configuration; the loader uses it without validating it first.",
-				"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+				"examples": [
+					"/workspace/harness-app",
+					"/srv/ci/harness-app"
+				]
 			},
 			{
 				"name": "profileSelection.root",
 				"type": "string",
 				"required": true,
 				"description": "Project root whose specification/units registry must exist and whose realpath becomes the selected root. A missing registry, no profile or evidence directory, or an explicit benchmark boundary yields null instead of an error.",
-				"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+				"examples": [
+					"/workspace/harness-app",
+					"/srv/ci/harness-app"
+				]
 			},
 			{
 				"name": "profileEnvironment.root",
 				"type": "string",
 				"required": true,
 				"description": "Canonical selected project root that is written to HARNESS_RUNTIME_PROFILE_ROOT for the runner and its native children.",
-				"examples": ["/workspace/harness-app"]
+				"examples": [
+					"/workspace/harness-app"
+				]
 			},
 			{
 				"name": "profileEnvironment.directory",
@@ -473,7 +502,9 @@
 								"responsibilityOrigin": "declared",
 								"status": "active",
 								"owns": {
-									"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+									"source": [
+										"src/services/verification-evidence/EvidenceLedger.ts"
+									],
 									"symbols": [
 										"EvidenceLedger",
 										"EvidenceLedger.append",
@@ -501,7 +532,9 @@
 										}
 									]
 								},
-								"scenarios": ["module-tasks"],
+								"scenarios": [
+									"module-tasks"
+								],
 								"budgets": {
 									"size": "frozen",
 									"complexity": "frozen",
@@ -628,7 +661,9 @@
 								"responsibilityOrigin": "declared",
 								"status": "active",
 								"owns": {
-									"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+									"source": [
+										"src/services/verification-evidence/EvidenceLedger.ts"
+									],
 									"symbols": [
 										"EvidenceLedger",
 										"EvidenceLedger.append",
@@ -656,7 +691,9 @@
 										}
 									]
 								},
-								"scenarios": ["module-tasks"],
+								"scenarios": [
+									"module-tasks"
+								],
 								"budgets": {
 									"size": "frozen",
 									"complexity": "frozen",
@@ -705,7 +742,9 @@
 								"responsibilityOrigin": "declared",
 								"status": "active",
 								"owns": {
-									"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+									"source": [
+										"src/services/verification-evidence/EvidenceLedger.ts"
+									],
 									"symbols": [
 										"EvidenceLedger",
 										"EvidenceLedger.append",
@@ -733,7 +772,9 @@
 										}
 									]
 								},
-								"scenarios": ["module-tasks"],
+								"scenarios": [
+									"module-tasks"
+								],
 								"budgets": {
 									"size": "frozen",
 									"complexity": "frozen",
@@ -747,7 +788,10 @@
 						"type": "string",
 						"required": true,
 						"description": "Generated identifier base that names the Begin and Finish observer locals; instrumentSource derives it from the first 12 hex digits of the source path's SHA-256 digest and appends underscores until the source text does not contain it.",
-						"examples": ["__harnessWatch_9c41e0a7f5d2", "__harnessWatch_9c41e0a7f5d2_"]
+						"examples": [
+							"__harnessWatch_9c41e0a7f5d2",
+							"__harnessWatch_9c41e0a7f5d2_"
+						]
 					}
 				],
 				"outputs": [
@@ -852,7 +896,10 @@
 						"type": "string",
 						"required": true,
 						"description": "Method property name selected on the supplied owner; names that are absent, accessors or not own function-valued data properties are skipped without replacement.",
-						"examples": ["append", "count"]
+						"examples": [
+							"append",
+							"count"
+						]
 					},
 					{
 						"name": "watchMethod.boundary",
@@ -916,7 +963,10 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root whose realpath, specification/units registry and specification/scenarios manifest decide whether source profiling is selected; the plugin reads it only in Vite test mode.",
-						"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+						"examples": [
+							"/workspace/harness-app",
+							"/srv/ci/harness-app"
+						]
 					}
 				],
 				"outputs": [
@@ -965,7 +1015,10 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Project root path passed as the Vite config root and as profileRoot for the test runner configuration; the loader uses it without validating it first.",
-						"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+						"examples": [
+							"/workspace/harness-app",
+							"/srv/ci/harness-app"
+						]
 					}
 				],
 				"outputs": [
@@ -995,7 +1048,10 @@
 						"type": "string",
 						"required": true,
 						"description": "Project root whose specification/units registry must exist and whose realpath becomes the selected root. A missing registry, no profile or evidence directory, or an explicit benchmark boundary yields null instead of an error.",
-						"examples": ["/workspace/harness-app", "/srv/ci/harness-app"]
+						"examples": [
+							"/workspace/harness-app",
+							"/srv/ci/harness-app"
+						]
 					}
 				],
 				"outputs": [
@@ -1019,7 +1075,9 @@
 										"responsibilityOrigin": "declared",
 										"status": "active",
 										"owns": {
-											"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+											"source": [
+												"src/services/verification-evidence/EvidenceLedger.ts"
+											],
 											"symbols": [
 												"EvidenceLedger",
 												"EvidenceLedger.append",
@@ -1047,7 +1105,9 @@
 												}
 											]
 										},
-										"scenarios": ["module-tasks"],
+										"scenarios": [
+											"module-tasks"
+										],
 										"budgets": {
 											"size": "frozen",
 											"complexity": "frozen",
@@ -1081,7 +1141,9 @@
 						"type": "string",
 						"required": true,
 						"description": "Canonical selected project root that is written to HARNESS_RUNTIME_PROFILE_ROOT for the runner and its native children.",
-						"examples": ["/workspace/harness-app"]
+						"examples": [
+							"/workspace/harness-app"
+						]
 					},
 					{
 						"name": "profileEnvironment.directory",
@@ -1142,7 +1204,9 @@
 										"responsibilityOrigin": "declared",
 										"status": "active",
 										"owns": {
-											"source": ["src/services/verification-evidence/EvidenceLedger.ts"],
+											"source": [
+												"src/services/verification-evidence/EvidenceLedger.ts"
+											],
 											"symbols": [
 												"EvidenceLedger",
 												"EvidenceLedger.append",
@@ -1170,7 +1234,9 @@
 												}
 											]
 										},
-										"scenarios": ["module-tasks"],
+										"scenarios": [
+											"module-tasks"
+										],
 										"budgets": {
 											"size": "frozen",
 											"complexity": "frozen",
@@ -1222,7 +1288,9 @@
 			}
 		]
 	},
-	"scenarios": ["module-tasks"],
+	"scenarios": [
+		"module-tasks"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

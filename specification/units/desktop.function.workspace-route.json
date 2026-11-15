@@ -132,6 +132,7 @@
 				"description": "Thrown when decoding malformed percent escapes in route names or encoding an unpaired surrogate in generated route values."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "isWorkspacePath",
@@ -281,8 +282,7 @@
 				"errorStatus": "declared"
 			}
 		],
-		"initialization": [],
-		"errorStatus": "declared"
+		"initialization": []
 	},
 	"dependencies": [
 		{

@@ -37,7 +37,9 @@
 				"name": "LegacyHistoryService.entries",
 				"type": "Promise<LegacyEntry[]>",
 				"description": "The latest schema-valid report for each record id from the current evidence tip, sorted by startedAt and then id. Each entry includes linked commit information when its revision resolves to a commit, a gap when it does not, and resolved media. The result is empty when there is no tip, and malformed reports are skipped.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"errors": [],
@@ -58,7 +60,9 @@
 						"name": "LegacyHistoryService.entries",
 						"type": "Promise<LegacyEntry[]>",
 						"description": "The latest schema-valid report for each record id from the current evidence tip, sorted by startedAt and then id. Each entry includes linked commit information when its revision resolves to a commit, a gap when it does not, and resolved media. The result is empty when there is no tip, and malformed reports are skipped.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"errors": [],

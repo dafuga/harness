@@ -22,7 +22,9 @@
 				"type": "Pick<DesktopBridge, 'artifact'>",
 				"required": true,
 				"description": "The connection the capture is read through; only its optional `artifact` reader is used, and it is called with the query as its only argument. A connection without `artifact` is refused before anything is read, with the `unreadArtifact` message.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			},
 			{
 				"name": "artifactBytes.query",
@@ -99,7 +101,9 @@
 						"type": "Pick<DesktopBridge, 'artifact'>",
 						"required": true,
 						"description": "The connection the capture is read through; only its optional `artifact` reader is used, and it is called with the query as its only argument. A connection without `artifact` is refused before anything is read, with the `unreadArtifact` message.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					},
 					{
 						"name": "artifactBytes.query",

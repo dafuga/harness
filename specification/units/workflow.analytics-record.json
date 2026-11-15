@@ -100,7 +100,9 @@
 				"type": "AnalyticsContext",
 				"required": true,
 				"description": "Analytics context whose report, when present, must contain only letters, digits, or hyphens and identify a readable manifest under PROJECT_REPORTS_HOME or $HOME/.codex/project-reports.",
-				"examples": [{}]
+				"examples": [
+					{}
+				]
 			}
 		],
 		"outputs": [
@@ -328,7 +330,9 @@
 						"type": "AnalyticsContext",
 						"required": true,
 						"description": "Analytics context whose report, when present, must contain only letters, digits, or hyphens and identify a readable manifest under PROJECT_REPORTS_HOME or $HOME/.codex/project-reports.",
-						"examples": [{}]
+						"examples": [
+							{}
+						]
 					}
 				],
 				"outputs": [

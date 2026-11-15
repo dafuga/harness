@@ -189,7 +189,9 @@
 				"type": "CatalogSnapshot[]",
 				"required": true,
 				"description": "The array is forwarded unchanged to CatalogRepository.replace on the temporary database, alongside index. write does not check its length or read its elements, so an empty array is passed through as-is.",
-				"examples": [[]]
+				"examples": [
+					[]
+				]
 			}
 		],
 		"outputs": [
@@ -415,7 +417,9 @@
 						"type": "CatalogSnapshot[]",
 						"required": true,
 						"description": "The array is forwarded unchanged to CatalogRepository.replace on the temporary database, alongside index. write does not check its length or read its elements, so an empty array is passed through as-is.",
-						"examples": [[]]
+						"examples": [
+							[]
+						]
 					}
 				],
 				"outputs": [

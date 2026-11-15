@@ -29,7 +29,11 @@
 				"type": "string[]",
 				"required": true,
 				"description": "The command-line options of the simulator build, one exact option per array entry: --sync, --fixture, --scan-fixture or --release, in any order and repeated freely. Any other entry makes iosBuildPlan return an error object, and an empty array is a valid Debug build with fixture, scanFixture and sync all false.",
-				"examples": [["--sync", "--fixture"], ["--sync", "--release"], []]
+				"examples": [
+					["--sync", "--fixture"],
+					["--sync", "--release"],
+					[]
+				]
 			}
 		],
 		"outputs": [
@@ -98,7 +102,11 @@
 						"type": "string[]",
 						"required": true,
 						"description": "The command-line options of the simulator build, one exact option per array entry: --sync, --fixture, --scan-fixture or --release, in any order and repeated freely. Any other entry makes iosBuildPlan return an error object, and an empty array is a valid Debug build with fixture, scanFixture and sync all false.",
-						"examples": [["--sync", "--fixture"], ["--sync", "--release"], []]
+						"examples": [
+							["--sync", "--fixture"],
+							["--sync", "--release"],
+							[]
+						]
 					}
 				],
 				"outputs": [

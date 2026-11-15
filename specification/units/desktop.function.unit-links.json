@@ -13,7 +13,12 @@
 			"packages/desktop/src/components/explorer-ui/reference-text/unitLinks.types.ts",
 			"packages/desktop/src/utils/explorer-ui/unitLinks.ts"
 		],
-		"symbols": ["unitLinks", "View", "UnitLink", "unitLinks"]
+		"symbols": [
+			"unitLinks",
+			"View",
+			"UnitLink",
+			"unitLinks"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -30,7 +35,9 @@
 				"required": false,
 				"default": null,
 				"description": "Defaults to null. The entity is used only when it matches the workspace selected entity, and only as a fallback when the requested ID is not in the snapshot catalog.",
-				"examples": [null]
+				"examples": [
+					null
+				]
 			},
 			{
 				"name": "unitLinks.options",
@@ -71,7 +78,9 @@
 						"required": false,
 						"default": null,
 						"description": "Defaults to null. The entity is used only when it matches the workspace selected entity, and only as a fallback when the requested ID is not in the snapshot catalog.",
-						"examples": [null]
+						"examples": [
+							null
+						]
 					},
 					{
 						"name": "unitLinks.options",
@@ -137,7 +146,9 @@
 			}
 		]
 	},
-	"scenarios": ["agent-references"],
+	"scenarios": [
+		"agent-references"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

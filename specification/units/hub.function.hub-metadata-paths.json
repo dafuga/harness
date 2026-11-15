@@ -43,7 +43,10 @@
 				"type": "string[]",
 				"description": "Returns the repository paths from qualifying entries, preserving input order. Paths are limited to root-level unit JSON files under `specification/units/` and `plan.json` or JSON/Markdown files under `designs/` within one directory below `src/{pages,shells,layouts,components,functions,configs,services}/`; the result contains paths, not file contents.",
 				"examples": [
-					["specification/units/hub.function.hub-metadata-paths.json", "src/functions/hub-metadata-paths/designs/overview.md"],
+					[
+						"specification/units/hub.function.hub-metadata-paths.json",
+						"src/functions/hub-metadata-paths/designs/overview.md"
+					],
 					[
 						"src/functions/hub-metadata-paths/plan.json",
 						"src/functions/hub-metadata-paths/designs/overview.md"
@@ -86,7 +89,10 @@
 						"type": "string[]",
 						"description": "Returns the repository paths from qualifying entries, preserving input order. Paths are limited to root-level unit JSON files under `specification/units/` and `plan.json` or JSON/Markdown files under `designs/` within one directory below `src/{pages,shells,layouts,components,functions,configs,services}/`; the result contains paths, not file contents.",
 						"examples": [
-							["specification/units/hub.function.hub-metadata-paths.json", "src/functions/hub-metadata-paths/designs/overview.md"],
+							[
+								"specification/units/hub.function.hub-metadata-paths.json",
+								"src/functions/hub-metadata-paths/designs/overview.md"
+							],
 							[
 								"src/functions/hub-metadata-paths/plan.json",
 								"src/functions/hub-metadata-paths/designs/overview.md"
