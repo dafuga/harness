@@ -18,23 +18,55 @@
 				"name": "gamePayload.channel",
 				"type": "string",
 				"required": true,
-				"description": "Recognized game IPC operation selecting the allowed request fields and validation rules."
+				"description": "String selecting one of the six explicitly handled channels (game:create, game:read, game:image-read, game:level-generate, game:image-generate, or game:save); any other string selects render-session validation.",
+				"examples": ["game:create", "game:image-read", "game:render"]
 			},
 			{
 				"name": "gamePayload.input",
 				"type": "unknown",
 				"required": true,
-				"description": "Untrusted game operation payload to validate before passing to the host service."
+				"description": "Untrusted value passed to ipcFields; the selected channel determines which fields are read. Depending on that branch, the code applies field limits and patterns, enum checks, document validation, or render-session validation.",
+				"examples": [
+					{
+						"name": "coastal-run",
+						"kind": "game",
+						"dimension": "2d"
+					},
+					{
+						"projectId": "local-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"path": "static/game/checkpoints/abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789.png",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "gamePayload",
 				"type": "unknown",
-				"description": "Sanitized operation-specific request; invalid fields and unsupported values throw before service execution."
+				"description": "Sanitized request object constructed for the selected channel; the six explicit game channels return their branch-specific fields, and any other channel returns a request after validateSession. Field limits, patterns, enum values, document validity, and session validity are enforced by the invoked helpers.",
+				"examples": [
+					{
+						"name": "coastal-run",
+						"kind": "game",
+						"dimension": "2d"
+					},
+					{
+						"projectId": "local-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+						"path": "static/game/checkpoints/abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789.png",
+						"commit": "0123456789abcdef0123456789abcdef01234567"
+					}
+				]
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "unspecified",
+				"type": "thrown",
+				"description": "May be thrown when ipcFields, textField, enumField, assertDocument, or validateSession fails while parsing or validating the payload. This file does not specify the thrown error's name or message."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "gamePayload",
@@ -43,24 +75,55 @@
 						"name": "gamePayload.channel",
 						"type": "string",
 						"required": true,
-						"description": "Recognized game IPC operation selecting the allowed request fields and validation rules."
+						"description": "String selecting one of the six explicitly handled channels (game:create, game:read, game:image-read, game:level-generate, game:image-generate, or game:save); any other string selects render-session validation.",
+						"examples": ["game:create", "game:image-read", "game:render"]
 					},
 					{
 						"name": "gamePayload.input",
 						"type": "unknown",
 						"required": true,
-						"description": "Untrusted game operation payload to validate before passing to the host service."
+						"description": "Untrusted value passed to ipcFields; the selected channel determines which fields are read. Depending on that branch, the code applies field limits and patterns, enum checks, document validation, or render-session validation.",
+						"examples": [
+							{
+								"name": "coastal-run",
+								"kind": "game",
+								"dimension": "2d"
+							},
+							{
+								"projectId": "local-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"path": "static/game/checkpoints/abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789.png",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "gamePayload",
 						"type": "unknown",
-						"description": "Sanitized operation-specific request; invalid fields and unsupported values throw before service execution."
+						"description": "Sanitized request object constructed for the selected channel; the six explicit game channels return their branch-specific fields, and any other channel returns a request after validateSession. Field limits, patterns, enum values, document validity, and session validity are enforced by the invoked helpers.",
+						"examples": [
+							{
+								"name": "coastal-run",
+								"kind": "game",
+								"dimension": "2d"
+							},
+							{
+								"projectId": "local-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+								"path": "static/game/checkpoints/abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789.png",
+								"commit": "0123456789abcdef0123456789abcdef01234567"
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "unspecified",
+						"type": "thrown",
+						"description": "May be thrown when ipcFields, textField, enumField, assertDocument, or validateSession fails while parsing or validating the payload. This file does not specify the thrown error's name or message."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
