@@ -18,18 +18,394 @@
 				"name": "taskMetrics.events",
 				"type": "AnalyticsEvent[]",
 				"required": true,
-				"description": "Recorded analytics events; only task events with moduleTask details contribute, duplicate event IDs collapse to their last value."
+				"description": "Recorded analytics events from which every total is computed; only events with kind 'task' and a moduleTask value contribute, and events that share an id collapse to the last contributing event with that id. An empty array gives zero counts, a null bounceRate, null token and cost totals and an empty byModel list.",
+				"examples": [
+					[
+						{
+							"id": "9a3e7c51d04b8f266e1a93c7b5d20f48a71c6e093f8d52b1c40e97a65d2b18f3",
+							"timestamp": "2026-11-14T10:02:31.415Z",
+							"project": "/workspaces/harness-app",
+							"kind": "task",
+							"task": "module-task-analytics.review-totals",
+							"action": "executed",
+							"status": "succeeded",
+							"requestedModel": "auto",
+							"agentModel": "claude-sonnet-5-5",
+							"moduleTask": {
+								"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+								"feature": "module-task-analytics",
+								"module": "agents-providers.task-metrics",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5",
+								"usage": {
+									"inputTokens": 20000,
+									"outputTokens": 4000,
+									"cacheReadTokens": 6000,
+									"cacheWriteTokens": 3000,
+									"reportedCostUsd": 0.0688
+								},
+								"apiCost": {
+									"usd": 0.0688,
+									"minimumUsd": 0.0688,
+									"maximumUsd": 0.0688,
+									"basis": "cli-reported",
+									"rateCard": "standard-global-2026-10-25",
+									"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+									"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+								}
+							}
+						},
+						{
+							"id": "e6f0a2d917b4c83ea95d0f624c7e1b8ad2093f5c8b6a4e71f0c3d59b26e8a17d",
+							"timestamp": "2026-11-14T10:02:31.415Z",
+							"project": "/workspaces/harness-app",
+							"kind": "task",
+							"task": "module-task-analytics.review-totals",
+							"action": "submitted",
+							"requestedModel": "auto",
+							"agentModel": "claude-sonnet-5-5",
+							"moduleTask": {
+								"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+								"feature": "module-task-analytics",
+								"module": "agents-providers.task-metrics",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5"
+							}
+						},
+						{
+							"id": "0b5f9e3ac81d7a462e90b5f17a3c6d8e5f1b0a92d6e47c039b2a8f5de13c7b64",
+							"timestamp": "2026-11-14T10:20:05.112Z",
+							"project": "/workspaces/harness-app",
+							"kind": "task",
+							"task": "module-task-analytics.review-totals",
+							"action": "accepted",
+							"requestedModel": "auto",
+							"agentModel": "claude-sonnet-5-5",
+							"moduleTask": {
+								"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+								"feature": "module-task-analytics",
+								"module": "agents-providers.task-metrics",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5"
+							}
+						},
+						{
+							"id": "4d8a1f63b0e27c95f3a60d1e82c5b7f01e9d4a36c7b20e8fa5d13c746f0e9b2d",
+							"timestamp": "2026-11-15T08:41:12.907Z",
+							"project": "/workspaces/harness-app",
+							"kind": "task",
+							"task": "module-task-analytics.retry-after-failure",
+							"action": "executed",
+							"status": "failed",
+							"requestedModel": "auto",
+							"moduleTask": {
+								"attempt": "b7e21d4c-03f5-4a18-8e6d-72c9b0a4f513",
+								"feature": "module-task-analytics",
+								"module": "agents-providers.task-metrics",
+								"provider": "codex",
+								"model": "gpt-6.1-sol",
+								"intelligence": "xhigh",
+								"reportedModel": null,
+								"apiCost": {
+									"usd": null,
+									"minimumUsd": null,
+									"maximumUsd": null,
+									"basis": "unavailable",
+									"rateCard": "standard-global-2026-10-25",
+									"source": "https://developers.openai.com/api/docs/pricing",
+									"note": "CLI token usage is incomplete."
+								}
+							}
+						},
+						{
+							"id": "7c2e5b90d4a18f360e7b9c2da63f5108b9d2e7c415f08a3be8c6d9f24a7b0e51",
+							"timestamp": "2026-11-15T09:17:48.230Z",
+							"project": "/workspaces/harness-app",
+							"kind": "task",
+							"task": "module-task-analytics.retry-after-failure",
+							"action": "executed",
+							"status": "succeeded",
+							"requestedModel": "auto",
+							"moduleTask": {
+								"attempt": "d0c4a96e-5b1f-4f2e-a7d3-98e1c6b5a402",
+								"feature": "module-task-analytics",
+								"module": "agents-providers.task-metrics",
+								"provider": "codex",
+								"model": "gpt-6.1-sol",
+								"intelligence": "xhigh",
+								"reportedModel": null,
+								"usage": {
+									"inputTokens": 9000,
+									"outputTokens": 1500,
+									"cacheReadTokens": 1200,
+									"cacheWriteTokens": 2000,
+									"reportedCostUsd": null
+								},
+								"apiCost": {
+									"usd": null,
+									"minimumUsd": 0.03172,
+									"maximumUsd": 0.03672,
+									"basis": "standard-api-estimate",
+									"rateCard": "standard-global-2026-10-25",
+									"source": "https://developers.openai.com/api/docs/pricing",
+									"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+								}
+							}
+						},
+						{
+							"id": "3e0d8a57f92b6c147d1a4e0bc5f38d6208b9e1a7de4c2f936a0715cbb2e9d48f",
+							"timestamp": "2026-11-15T09:17:48.230Z",
+							"project": "/workspaces/harness-app",
+							"kind": "task",
+							"task": "module-task-analytics.retry-after-failure",
+							"action": "submitted",
+							"requestedModel": "auto",
+							"moduleTask": {
+								"attempt": "d0c4a96e-5b1f-4f2e-a7d3-98e1c6b5a402",
+								"feature": "module-task-analytics",
+								"module": "agents-providers.task-metrics",
+								"provider": "codex",
+								"model": "gpt-6.1-sol",
+								"intelligence": "xhigh",
+								"reportedModel": null
+							}
+						},
+						{
+							"id": "5b1e7d04a8c93f6e2d50b7a1e46f9c3891a0d5e27f3c8b460d6e2a9fc8b41e75",
+							"timestamp": "2026-11-15T09:44:20.661Z",
+							"project": "/workspaces/harness-app",
+							"kind": "task",
+							"task": "module-task-analytics.retry-after-failure",
+							"action": "incomplete",
+							"requestedModel": "auto",
+							"moduleTask": {
+								"attempt": "d0c4a96e-5b1f-4f2e-a7d3-98e1c6b5a402",
+								"feature": "module-task-analytics",
+								"module": "agents-providers.task-metrics",
+								"provider": "codex",
+								"model": "gpt-6.1-sol",
+								"intelligence": "xhigh",
+								"reportedModel": null
+							}
+						}
+					],
+					[
+						{
+							"id": "9a3e7c51d04b8f266e1a93c7b5d20f48a71c6e093f8d52b1c40e97a65d2b18f3",
+							"timestamp": "2026-11-14T10:02:31.415Z",
+							"project": "/workspaces/harness-app",
+							"kind": "task",
+							"task": "module-task-analytics.review-totals",
+							"action": "executed",
+							"status": "succeeded",
+							"requestedModel": "auto",
+							"agentModel": "claude-sonnet-5-5",
+							"moduleTask": {
+								"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+								"feature": "module-task-analytics",
+								"module": "agents-providers.task-metrics",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5",
+								"usage": {
+									"inputTokens": 20000,
+									"outputTokens": 4000,
+									"cacheReadTokens": 6000,
+									"cacheWriteTokens": 3000,
+									"reportedCostUsd": 0.0688
+								},
+								"apiCost": {
+									"usd": 0.0688,
+									"minimumUsd": 0.0688,
+									"maximumUsd": 0.0688,
+									"basis": "cli-reported",
+									"rateCard": "standard-global-2026-10-25",
+									"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+									"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+								}
+							}
+						},
+						{
+							"id": "e6f0a2d917b4c83ea95d0f624c7e1b8ad2093f5c8b6a4e71f0c3d59b26e8a17d",
+							"timestamp": "2026-11-14T10:02:31.415Z",
+							"project": "/workspaces/harness-app",
+							"kind": "task",
+							"task": "module-task-analytics.review-totals",
+							"action": "submitted",
+							"requestedModel": "auto",
+							"agentModel": "claude-sonnet-5-5",
+							"moduleTask": {
+								"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+								"feature": "module-task-analytics",
+								"module": "agents-providers.task-metrics",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5"
+							}
+						},
+						{
+							"id": "0b5f9e3ac81d7a462e90b5f17a3c6d8e5f1b0a92d6e47c039b2a8f5de13c7b64",
+							"timestamp": "2026-11-14T10:20:05.112Z",
+							"project": "/workspaces/harness-app",
+							"kind": "task",
+							"task": "module-task-analytics.review-totals",
+							"action": "accepted",
+							"requestedModel": "auto",
+							"agentModel": "claude-sonnet-5-5",
+							"moduleTask": {
+								"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+								"feature": "module-task-analytics",
+								"module": "agents-providers.task-metrics",
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"reportedModel": "claude-sonnet-5-5"
+							}
+						}
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "taskMetrics",
 				"type": "{ tasks: number; executions: number; submissions: number; accepted: number; bounces: number; reviewed: number; bounceRate: number | null; executionFailures: number; inputTokens: number | null; outputTokens: number | null; cacheReadTokens: number | null; cacheWriteTokens: number | null; apiCostUsd: number | null; apiCostRangeUsd: { minimum: number | null; maximum: number | null }; unpricedExecutions: number; unreportedUsage: number; byModel: Array<{ provider: string; model: string; intelligence: string; modelSource: string; tasks: number; executions: number; submissions: number; accepted: number; bounces: number; reviewed: number; bounceRate: number | null; executionFailures: number; inputTokens: number | null; outputTokens: number | null; cacheReadTokens: number | null; cacheWriteTokens: number | null; apiCostUsd: number | null; apiCostRangeUsd: { minimum: number | null; maximum: number | null }; unpricedExecutions: number; unreportedUsage: number }> }",
-				"description": "Overall and per-model task totals; bounce rate uses accepted plus incomplete reviews, execution failures stay separate, and missing usage or cost inputs produce null totals."
+				"description": "Overall and per-model task totals; byModel groups rows by provider, intelligence and model name (the reported name when present, otherwise the requested one), keeps reported and requested rows apart, and sorts them by model then intelligence. bounceRate is bounces over accepted plus incomplete reviews (null with no reviews), executionFailures counts executions with status 'failed' and is kept apart from bounces, token and cost totals are null when there are no executions or any execution lacks that value, and unpricedExecutions and unreportedUsage count executions without a minimum or maximum cost or without input or output tokens.",
+				"examples": [
+					{
+						"tasks": 2,
+						"executions": 3,
+						"submissions": 2,
+						"accepted": 1,
+						"bounces": 1,
+						"reviewed": 2,
+						"bounceRate": 0.5,
+						"executionFailures": 1,
+						"inputTokens": null,
+						"outputTokens": null,
+						"cacheReadTokens": null,
+						"cacheWriteTokens": null,
+						"apiCostUsd": null,
+						"apiCostRangeUsd": {
+							"minimum": null,
+							"maximum": null
+						},
+						"unpricedExecutions": 1,
+						"unreportedUsage": 1,
+						"byModel": [
+							{
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"modelSource": "reported",
+								"tasks": 1,
+								"executions": 1,
+								"submissions": 1,
+								"accepted": 1,
+								"bounces": 0,
+								"reviewed": 1,
+								"bounceRate": 0,
+								"executionFailures": 0,
+								"inputTokens": 20000,
+								"outputTokens": 4000,
+								"cacheReadTokens": 6000,
+								"cacheWriteTokens": 3000,
+								"apiCostUsd": 0.0688,
+								"apiCostRangeUsd": {
+									"minimum": 0.0688,
+									"maximum": 0.0688
+								},
+								"unpricedExecutions": 0,
+								"unreportedUsage": 0
+							},
+							{
+								"provider": "codex",
+								"model": "gpt-6.1-sol",
+								"intelligence": "xhigh",
+								"modelSource": "requested",
+								"tasks": 1,
+								"executions": 2,
+								"submissions": 1,
+								"accepted": 0,
+								"bounces": 1,
+								"reviewed": 1,
+								"bounceRate": 1,
+								"executionFailures": 1,
+								"inputTokens": null,
+								"outputTokens": null,
+								"cacheReadTokens": null,
+								"cacheWriteTokens": null,
+								"apiCostUsd": null,
+								"apiCostRangeUsd": {
+									"minimum": null,
+									"maximum": null
+								},
+								"unpricedExecutions": 1,
+								"unreportedUsage": 1
+							}
+						]
+					},
+					{
+						"tasks": 1,
+						"executions": 1,
+						"submissions": 1,
+						"accepted": 1,
+						"bounces": 0,
+						"reviewed": 1,
+						"bounceRate": 0,
+						"executionFailures": 0,
+						"inputTokens": 20000,
+						"outputTokens": 4000,
+						"cacheReadTokens": 6000,
+						"cacheWriteTokens": 3000,
+						"apiCostUsd": 0.0688,
+						"apiCostRangeUsd": {
+							"minimum": 0.0688,
+							"maximum": 0.0688
+						},
+						"unpricedExecutions": 0,
+						"unreportedUsage": 0,
+						"byModel": [
+							{
+								"provider": "claude",
+								"model": "claude-sonnet-5-5",
+								"intelligence": "high",
+								"modelSource": "reported",
+								"tasks": 1,
+								"executions": 1,
+								"submissions": 1,
+								"accepted": 1,
+								"bounces": 0,
+								"reviewed": 1,
+								"bounceRate": 0,
+								"executionFailures": 0,
+								"inputTokens": 20000,
+								"outputTokens": 4000,
+								"cacheReadTokens": 6000,
+								"cacheWriteTokens": 3000,
+								"apiCostUsd": 0.0688,
+								"apiCostRangeUsd": {
+									"minimum": 0.0688,
+									"maximum": 0.0688
+								},
+								"unpricedExecutions": 0,
+								"unreportedUsage": 0
+							}
+						]
+					}
+				]
 			}
 		],
 		"errors": [],
-		"errorStatus": "declared",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "taskMetrics",
@@ -38,14 +414,390 @@
 						"name": "taskMetrics.events",
 						"type": "AnalyticsEvent[]",
 						"required": true,
-						"description": "Recorded analytics events; only task events with moduleTask details contribute, duplicate event IDs collapse to their last value."
+						"description": "Recorded analytics events from which every total is computed; only events with kind 'task' and a moduleTask value contribute, and events that share an id collapse to the last contributing event with that id. An empty array gives zero counts, a null bounceRate, null token and cost totals and an empty byModel list.",
+						"examples": [
+							[
+								{
+									"id": "9a3e7c51d04b8f266e1a93c7b5d20f48a71c6e093f8d52b1c40e97a65d2b18f3",
+									"timestamp": "2026-11-14T10:02:31.415Z",
+									"project": "/workspaces/harness-app",
+									"kind": "task",
+									"task": "module-task-analytics.review-totals",
+									"action": "executed",
+									"status": "succeeded",
+									"requestedModel": "auto",
+									"agentModel": "claude-sonnet-5-5",
+									"moduleTask": {
+										"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+										"feature": "module-task-analytics",
+										"module": "agents-providers.task-metrics",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5",
+										"usage": {
+											"inputTokens": 20000,
+											"outputTokens": 4000,
+											"cacheReadTokens": 6000,
+											"cacheWriteTokens": 3000,
+											"reportedCostUsd": 0.0688
+										},
+										"apiCost": {
+											"usd": 0.0688,
+											"minimumUsd": 0.0688,
+											"maximumUsd": 0.0688,
+											"basis": "cli-reported",
+											"rateCard": "standard-global-2026-10-25",
+											"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+											"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+										}
+									}
+								},
+								{
+									"id": "e6f0a2d917b4c83ea95d0f624c7e1b8ad2093f5c8b6a4e71f0c3d59b26e8a17d",
+									"timestamp": "2026-11-14T10:02:31.415Z",
+									"project": "/workspaces/harness-app",
+									"kind": "task",
+									"task": "module-task-analytics.review-totals",
+									"action": "submitted",
+									"requestedModel": "auto",
+									"agentModel": "claude-sonnet-5-5",
+									"moduleTask": {
+										"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+										"feature": "module-task-analytics",
+										"module": "agents-providers.task-metrics",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5"
+									}
+								},
+								{
+									"id": "0b5f9e3ac81d7a462e90b5f17a3c6d8e5f1b0a92d6e47c039b2a8f5de13c7b64",
+									"timestamp": "2026-11-14T10:20:05.112Z",
+									"project": "/workspaces/harness-app",
+									"kind": "task",
+									"task": "module-task-analytics.review-totals",
+									"action": "accepted",
+									"requestedModel": "auto",
+									"agentModel": "claude-sonnet-5-5",
+									"moduleTask": {
+										"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+										"feature": "module-task-analytics",
+										"module": "agents-providers.task-metrics",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5"
+									}
+								},
+								{
+									"id": "4d8a1f63b0e27c95f3a60d1e82c5b7f01e9d4a36c7b20e8fa5d13c746f0e9b2d",
+									"timestamp": "2026-11-15T08:41:12.907Z",
+									"project": "/workspaces/harness-app",
+									"kind": "task",
+									"task": "module-task-analytics.retry-after-failure",
+									"action": "executed",
+									"status": "failed",
+									"requestedModel": "auto",
+									"moduleTask": {
+										"attempt": "b7e21d4c-03f5-4a18-8e6d-72c9b0a4f513",
+										"feature": "module-task-analytics",
+										"module": "agents-providers.task-metrics",
+										"provider": "codex",
+										"model": "gpt-6.1-sol",
+										"intelligence": "xhigh",
+										"reportedModel": null,
+										"apiCost": {
+											"usd": null,
+											"minimumUsd": null,
+											"maximumUsd": null,
+											"basis": "unavailable",
+											"rateCard": "standard-global-2026-10-25",
+											"source": "https://developers.openai.com/api/docs/pricing",
+											"note": "CLI token usage is incomplete."
+										}
+									}
+								},
+								{
+									"id": "7c2e5b90d4a18f360e7b9c2da63f5108b9d2e7c415f08a3be8c6d9f24a7b0e51",
+									"timestamp": "2026-11-15T09:17:48.230Z",
+									"project": "/workspaces/harness-app",
+									"kind": "task",
+									"task": "module-task-analytics.retry-after-failure",
+									"action": "executed",
+									"status": "succeeded",
+									"requestedModel": "auto",
+									"moduleTask": {
+										"attempt": "d0c4a96e-5b1f-4f2e-a7d3-98e1c6b5a402",
+										"feature": "module-task-analytics",
+										"module": "agents-providers.task-metrics",
+										"provider": "codex",
+										"model": "gpt-6.1-sol",
+										"intelligence": "xhigh",
+										"reportedModel": null,
+										"usage": {
+											"inputTokens": 9000,
+											"outputTokens": 1500,
+											"cacheReadTokens": 1200,
+											"cacheWriteTokens": 2000,
+											"reportedCostUsd": null
+										},
+										"apiCost": {
+											"usd": null,
+											"minimumUsd": 0.03172,
+											"maximumUsd": 0.03672,
+											"basis": "standard-api-estimate",
+											"rateCard": "standard-global-2026-10-25",
+											"source": "https://developers.openai.com/api/docs/pricing",
+											"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+										}
+									}
+								},
+								{
+									"id": "3e0d8a57f92b6c147d1a4e0bc5f38d6208b9e1a7de4c2f936a0715cbb2e9d48f",
+									"timestamp": "2026-11-15T09:17:48.230Z",
+									"project": "/workspaces/harness-app",
+									"kind": "task",
+									"task": "module-task-analytics.retry-after-failure",
+									"action": "submitted",
+									"requestedModel": "auto",
+									"moduleTask": {
+										"attempt": "d0c4a96e-5b1f-4f2e-a7d3-98e1c6b5a402",
+										"feature": "module-task-analytics",
+										"module": "agents-providers.task-metrics",
+										"provider": "codex",
+										"model": "gpt-6.1-sol",
+										"intelligence": "xhigh",
+										"reportedModel": null
+									}
+								},
+								{
+									"id": "5b1e7d04a8c93f6e2d50b7a1e46f9c3891a0d5e27f3c8b460d6e2a9fc8b41e75",
+									"timestamp": "2026-11-15T09:44:20.661Z",
+									"project": "/workspaces/harness-app",
+									"kind": "task",
+									"task": "module-task-analytics.retry-after-failure",
+									"action": "incomplete",
+									"requestedModel": "auto",
+									"moduleTask": {
+										"attempt": "d0c4a96e-5b1f-4f2e-a7d3-98e1c6b5a402",
+										"feature": "module-task-analytics",
+										"module": "agents-providers.task-metrics",
+										"provider": "codex",
+										"model": "gpt-6.1-sol",
+										"intelligence": "xhigh",
+										"reportedModel": null
+									}
+								}
+							],
+							[
+								{
+									"id": "9a3e7c51d04b8f266e1a93c7b5d20f48a71c6e093f8d52b1c40e97a65d2b18f3",
+									"timestamp": "2026-11-14T10:02:31.415Z",
+									"project": "/workspaces/harness-app",
+									"kind": "task",
+									"task": "module-task-analytics.review-totals",
+									"action": "executed",
+									"status": "succeeded",
+									"requestedModel": "auto",
+									"agentModel": "claude-sonnet-5-5",
+									"moduleTask": {
+										"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+										"feature": "module-task-analytics",
+										"module": "agents-providers.task-metrics",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5",
+										"usage": {
+											"inputTokens": 20000,
+											"outputTokens": 4000,
+											"cacheReadTokens": 6000,
+											"cacheWriteTokens": 3000,
+											"reportedCostUsd": 0.0688
+										},
+										"apiCost": {
+											"usd": 0.0688,
+											"minimumUsd": 0.0688,
+											"maximumUsd": 0.0688,
+											"basis": "cli-reported",
+											"rateCard": "standard-global-2026-10-25",
+											"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+											"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+										}
+									}
+								},
+								{
+									"id": "e6f0a2d917b4c83ea95d0f624c7e1b8ad2093f5c8b6a4e71f0c3d59b26e8a17d",
+									"timestamp": "2026-11-14T10:02:31.415Z",
+									"project": "/workspaces/harness-app",
+									"kind": "task",
+									"task": "module-task-analytics.review-totals",
+									"action": "submitted",
+									"requestedModel": "auto",
+									"agentModel": "claude-sonnet-5-5",
+									"moduleTask": {
+										"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+										"feature": "module-task-analytics",
+										"module": "agents-providers.task-metrics",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5"
+									}
+								},
+								{
+									"id": "0b5f9e3ac81d7a462e90b5f17a3c6d8e5f1b0a92d6e47c039b2a8f5de13c7b64",
+									"timestamp": "2026-11-14T10:20:05.112Z",
+									"project": "/workspaces/harness-app",
+									"kind": "task",
+									"task": "module-task-analytics.review-totals",
+									"action": "accepted",
+									"requestedModel": "auto",
+									"agentModel": "claude-sonnet-5-5",
+									"moduleTask": {
+										"attempt": "3f9a6c1e-8d2b-4e7a-9c5f-1a2b3c4d5e6f",
+										"feature": "module-task-analytics",
+										"module": "agents-providers.task-metrics",
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"reportedModel": "claude-sonnet-5-5"
+									}
+								}
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskMetrics",
 						"type": "{ tasks: number; executions: number; submissions: number; accepted: number; bounces: number; reviewed: number; bounceRate: number | null; executionFailures: number; inputTokens: number | null; outputTokens: number | null; cacheReadTokens: number | null; cacheWriteTokens: number | null; apiCostUsd: number | null; apiCostRangeUsd: { minimum: number | null; maximum: number | null }; unpricedExecutions: number; unreportedUsage: number; byModel: Array<{ provider: string; model: string; intelligence: string; modelSource: string; tasks: number; executions: number; submissions: number; accepted: number; bounces: number; reviewed: number; bounceRate: number | null; executionFailures: number; inputTokens: number | null; outputTokens: number | null; cacheReadTokens: number | null; cacheWriteTokens: number | null; apiCostUsd: number | null; apiCostRangeUsd: { minimum: number | null; maximum: number | null }; unpricedExecutions: number; unreportedUsage: number }> }",
-						"description": "Overall and per-model task totals; bounce rate uses accepted plus incomplete reviews, execution failures stay separate, and missing usage or cost inputs produce null totals."
+						"description": "Overall and per-model task totals; byModel groups rows by provider, intelligence and model name (the reported name when present, otherwise the requested one), keeps reported and requested rows apart, and sorts them by model then intelligence. bounceRate is bounces over accepted plus incomplete reviews (null with no reviews), executionFailures counts executions with status 'failed' and is kept apart from bounces, token and cost totals are null when there are no executions or any execution lacks that value, and unpricedExecutions and unreportedUsage count executions without a minimum or maximum cost or without input or output tokens.",
+						"examples": [
+							{
+								"tasks": 2,
+								"executions": 3,
+								"submissions": 2,
+								"accepted": 1,
+								"bounces": 1,
+								"reviewed": 2,
+								"bounceRate": 0.5,
+								"executionFailures": 1,
+								"inputTokens": null,
+								"outputTokens": null,
+								"cacheReadTokens": null,
+								"cacheWriteTokens": null,
+								"apiCostUsd": null,
+								"apiCostRangeUsd": {
+									"minimum": null,
+									"maximum": null
+								},
+								"unpricedExecutions": 1,
+								"unreportedUsage": 1,
+								"byModel": [
+									{
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"modelSource": "reported",
+										"tasks": 1,
+										"executions": 1,
+										"submissions": 1,
+										"accepted": 1,
+										"bounces": 0,
+										"reviewed": 1,
+										"bounceRate": 0,
+										"executionFailures": 0,
+										"inputTokens": 20000,
+										"outputTokens": 4000,
+										"cacheReadTokens": 6000,
+										"cacheWriteTokens": 3000,
+										"apiCostUsd": 0.0688,
+										"apiCostRangeUsd": {
+											"minimum": 0.0688,
+											"maximum": 0.0688
+										},
+										"unpricedExecutions": 0,
+										"unreportedUsage": 0
+									},
+									{
+										"provider": "codex",
+										"model": "gpt-6.1-sol",
+										"intelligence": "xhigh",
+										"modelSource": "requested",
+										"tasks": 1,
+										"executions": 2,
+										"submissions": 1,
+										"accepted": 0,
+										"bounces": 1,
+										"reviewed": 1,
+										"bounceRate": 1,
+										"executionFailures": 1,
+										"inputTokens": null,
+										"outputTokens": null,
+										"cacheReadTokens": null,
+										"cacheWriteTokens": null,
+										"apiCostUsd": null,
+										"apiCostRangeUsd": {
+											"minimum": null,
+											"maximum": null
+										},
+										"unpricedExecutions": 1,
+										"unreportedUsage": 1
+									}
+								]
+							},
+							{
+								"tasks": 1,
+								"executions": 1,
+								"submissions": 1,
+								"accepted": 1,
+								"bounces": 0,
+								"reviewed": 1,
+								"bounceRate": 0,
+								"executionFailures": 0,
+								"inputTokens": 20000,
+								"outputTokens": 4000,
+								"cacheReadTokens": 6000,
+								"cacheWriteTokens": 3000,
+								"apiCostUsd": 0.0688,
+								"apiCostRangeUsd": {
+									"minimum": 0.0688,
+									"maximum": 0.0688
+								},
+								"unpricedExecutions": 0,
+								"unreportedUsage": 0,
+								"byModel": [
+									{
+										"provider": "claude",
+										"model": "claude-sonnet-5-5",
+										"intelligence": "high",
+										"modelSource": "reported",
+										"tasks": 1,
+										"executions": 1,
+										"submissions": 1,
+										"accepted": 1,
+										"bounces": 0,
+										"reviewed": 1,
+										"bounceRate": 0,
+										"executionFailures": 0,
+										"inputTokens": 20000,
+										"outputTokens": 4000,
+										"cacheReadTokens": 6000,
+										"cacheWriteTokens": 3000,
+										"apiCostUsd": 0.0688,
+										"apiCostRangeUsd": {
+											"minimum": 0.0688,
+											"maximum": 0.0688
+										},
+										"unpricedExecutions": 0,
+										"unreportedUsage": 0
+									}
+								]
+							}
+						]
 					}
 				],
 				"errors": [],
