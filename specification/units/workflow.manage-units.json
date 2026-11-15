@@ -32,96 +32,239 @@
 				"type": "UnitsOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional options, default {}: root defaults to the discovered project; write defaults false and controls manifest writes. json and now do not affect indexing."
+				"description": "Selects the source root and whether the fresh manifests are written; omitted options default to {}, and write defaults to false. loadUnits uses process.cwd() when root is omitted, while json and now are not read here.",
+				"examples": [
+					{},
+					{
+						"write": true
+					}
+				]
 			},
 			{
 				"name": "checkUnits.options",
 				"type": "UnitsOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional options, default {}: root selects the project; other fields do not affect checking."
+				"description": "Selects the source root; omitted options default to {}, and loadUnits uses process.cwd() when root is omitted. json, write, and now are not read by this operation.",
+				"examples": [
+					{},
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+					}
+				]
 			},
 			{
 				"name": "registryErrors.loaded",
 				"type": "LoadedUnits",
 				"required": true,
-				"description": "Loaded stored and freshly indexed manifests, source facts, scenarios, parse errors, formatting gaps and repository context."
+				"description": "Loaded context contains stored and freshly indexed manifests, a source index, scenarios, loading errors, formatting gaps, and the registry repository. registryErrors combines those facts with contract, preview, UID, scenario-reference, ownership, and staleness checks."
 			},
 			{
 				"name": "retireUnit.id",
 				"type": "string",
 				"required": true,
-				"description": "Required registered identity to retire; its owned source must already be absent."
+				"description": "ID of a stored unit manifest to retire; an unknown ID throws ExpectedCliError. Retirement is allowed only when no path in that manifest's owns.source remains in the loaded source index.",
+				"examples": ["workflow.manage-units"]
 			},
 			{
 				"name": "retireUnit.reason",
 				"type": "string",
 				"required": true,
-				"description": "Required nonblank retirement explanation, preserved in the tombstone."
+				"description": "Nonblank text saved as retired.reason; an empty or whitespace-only string throws ExpectedCliError. The original string, including surrounding whitespace, is stored unchanged.",
+				"examples": ["Superseded after its source was removed."]
 			},
 			{
 				"name": "retireUnit.options",
 				"type": "UnitsOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional options, default {}: root selects the project and now defaults to the current ISO timestamp; json and write do not affect retirement."
+				"description": "Selects the root passed to loadUnits and may provide now, a callback whose returned string is stored as the retirement time; omitted options default to {}. Without now, the current time is stored with toISOString(); json and write are not read.",
+				"examples": [
+					{},
+					{
+						"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+					}
+				]
 			},
 			{
 				"name": "renderIndex.report",
 				"type": "IndexReport",
 				"required": true,
-				"description": "Required index changes, active count, written paths and uncertain-reference count."
+				"description": "Contains added, updated, moved, revived and orphaned unit IDs, active-unit count, written paths and uncertain-reference count. renderIndex uses those lists to format change lines and may add a write instruction.",
+				"examples": [
+					{
+						"added": ["workflow.manage-units"],
+						"updated": [],
+						"moved": [],
+						"revived": [],
+						"orphaned": [],
+						"units": 1,
+						"written": [],
+						"uncertain": 0
+					}
+				]
 			},
 			{
 				"name": "renderIndex.wrote",
 				"type": "boolean",
 				"required": true,
-				"description": "Required flag indicating whether manifest writes were requested; controls the follow-up instruction."
+				"description": "Indicates whether the caller reports that writing was performed; when false, the rendered output includes a write instruction only if there are additions, updates or moves. It does not affect the report contents.",
+				"examples": [false, true]
 			},
 			{
 				"name": "renderCheck.report",
 				"type": "CheckReport",
 				"required": true,
-				"description": "Required active-unit and uncertain-reference counts from the check result."
+				"description": "Contains active-unit and uncertain-reference counts plus optional warnings, contract-failure summaries and registry errors. The renderer uses the counts in its summary and appends each warning as a separate line.",
+				"examples": [
+					{
+						"warnings": [],
+						"units": 1,
+						"uncertain": 0,
+						"errors": [],
+						"contractFailures": {
+							"entities": 0,
+							"issues": 0,
+							"unknownTypes": 0,
+							"emptyProps": 0,
+							"missingRequired": 0,
+							"bareErrors": 0
+						},
+						"storedContractFailures": {
+							"entities": 0,
+							"issues": 0,
+							"unknownTypes": 0,
+							"emptyProps": 0,
+							"missingRequired": 0,
+							"bareErrors": 0
+						}
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "indexUnits",
 				"type": "Promise<IndexReport>",
-				"description": "Index changes, active-unit and uncertain-reference counts, plus manifest paths actually written."
+				"description": "Returns change lists from fresh indexing, the count of active fresh manifests, paths actually written, and uncertain-reference count. It writes manifests only when options.write is truthy; otherwise written is empty.",
+				"examples": [
+					{
+						"added": ["workflow.manage-units"],
+						"updated": [],
+						"moved": [],
+						"revived": [],
+						"orphaned": [],
+						"units": 1,
+						"written": [],
+						"uncertain": 0
+					}
+				]
 			},
 			{
 				"name": "checkUnits",
 				"type": "Promise<CheckReport>",
-				"description": "Active-unit and uncertain-reference counts, fresh/stored contract failure summaries and registry diagnostics."
+				"description": "Returns the stored active-manifest count, uncertain graph-reference count, fresh and stored contract-failure summaries, storage warnings, and registry error strings. These diagnostics are returned in the report; awaited dependencies may still reject.",
+				"examples": [
+					{
+						"warnings": [],
+						"units": 1,
+						"uncertain": 0,
+						"errors": [],
+						"contractFailures": {
+							"entities": 0,
+							"issues": 0,
+							"unknownTypes": 0,
+							"emptyProps": 0,
+							"missingRequired": 0,
+							"bareErrors": 0
+						},
+						"storedContractFailures": {
+							"entities": 0,
+							"issues": 0,
+							"unknownTypes": 0,
+							"emptyProps": 0,
+							"missingRequired": 0,
+							"bareErrors": 0
+						}
+					}
+				]
 			},
 			{
 				"name": "registryErrors",
 				"type": "string[]",
-				"description": "All loading, contract, preview, scenario, staleness and ownership diagnostics; includes duplicate IDs and reviewed canonical forwarding backedges."
+				"description": "Returns strings for load errors, stored and fresh contract findings, active-unit preview bindings, registry and UID validation, unknown scenario or unit references, and stale-index changes.",
+				"examples": [
+					[],
+					["Registry is stale; run harness units index --write (1: add workflow.manage-units)"]
+				]
 			},
 			{
 				"name": "retireUnit",
 				"type": "Promise<ComponentManifest>",
-				"description": "Persisted retired manifest with its stable identity, reason and timestamp."
+				"description": "Returns the retired manifest after writing it, preserving its existing fields while changing status and adding the supplied reason and retirement time. It can proceed only for a known unit with a nonblank reason and no still-owned source path.",
+				"examples": [
+					{
+						"schemaVersion": 1,
+						"id": "workflow.manage-units",
+						"kind": "workflow",
+						"title": "manageUnits",
+						"responsibility": "Indexes and checks registered units, reports relationship and canonical ownership diagnostics, and retires source-free identities.",
+						"responsibilityOrigin": "declared",
+						"status": "retired",
+						"retired": {
+							"reason": "Superseded after its source was removed.",
+							"at": "2026-11-15T12:00:00.000Z"
+						},
+						"owns": {
+							"source": ["src/cli/program/manageUnits.ts"],
+							"symbols": ["retireUnit"]
+						},
+						"contract": {
+							"origin": "declared",
+							"inputs": [],
+							"outputs": [],
+							"errors": []
+						},
+						"dependencies": [],
+						"runtime": {
+							"kind": "module",
+							"entry": "src/cli/program/manageUnits.ts",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/cli/program/manageUnits.ts"
+								}
+							]
+						},
+						"scenarios": [],
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						}
+					}
+				]
 			},
 			{
 				"name": "renderIndex",
 				"type": "string",
-				"description": "Human-readable indexing summary, move/orphan details and a write instruction when needed."
+				"description": "Returns the formatted index summary, move and orphan lines, uncertainty count, and, when wrote is false and additions, updates or moves exist, a write instruction. It does not display full manifest data or written paths.",
+				"examples": [
+					"Indexed 1 units: 1 added, 0 updated, 0 moved, 0 revived.\n0 uncertain references.\nRun again with --write to update specification/units."
+				]
 			},
 			{
 				"name": "renderCheck",
 				"type": "string",
-				"description": "Human-readable valid-registry summary with active-unit and uncertain-reference counts."
+				"description": "Returns the valid-registry summary with active-unit and uncertain-reference counts, followed by one Warning: line per warning when present. The message does not include report.errors or contract-failure counts.",
+				"examples": ["Units registry is valid: 1 units, 0 uncertain references."]
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Retirement rejects an unknown ID, a blank reason or remaining owned source. Loading and filesystem failures propagate from dependencies."
+				"description": "Thrown by fail when the ID is unknown, the reason is empty after trimming, or any owned source path still exists in the source index. Rejections from loadUnits or repository.write also propagate, but are not constructed as ExpectedCliError here."
 			}
 		],
 		"errorStatus": "declared",
@@ -134,14 +277,32 @@
 						"type": "UnitsOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional options, default {}: root defaults to the discovered project; write defaults false and controls manifest writes. json and now do not affect indexing."
+						"description": "Selects the source root and whether the fresh manifests are written; omitted options default to {}, and write defaults to false. loadUnits uses process.cwd() when root is omitted, while json and now are not read here.",
+						"examples": [
+							{},
+							{
+								"write": true
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "indexUnits",
 						"type": "Promise<IndexReport>",
-						"description": "Index changes, active-unit and uncertain-reference counts, plus manifest paths actually written."
+						"description": "Returns change lists from fresh indexing, the count of active fresh manifests, paths actually written, and uncertain-reference count. It writes manifests only when options.write is truthy; otherwise written is empty.",
+						"examples": [
+							{
+								"added": ["workflow.manage-units"],
+								"updated": [],
+								"moved": [],
+								"revived": [],
+								"orphaned": [],
+								"units": 1,
+								"written": [],
+								"uncertain": 0
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -155,14 +316,44 @@
 						"type": "UnitsOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional options, default {}: root selects the project; other fields do not affect checking."
+						"description": "Selects the source root; omitted options default to {}, and loadUnits uses process.cwd() when root is omitted. json, write, and now are not read by this operation.",
+						"examples": [
+							{},
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "checkUnits",
 						"type": "Promise<CheckReport>",
-						"description": "Active-unit and uncertain-reference counts, fresh/stored contract failure summaries and registry diagnostics."
+						"description": "Returns the stored active-manifest count, uncertain graph-reference count, fresh and stored contract-failure summaries, storage warnings, and registry error strings. These diagnostics are returned in the report; awaited dependencies may still reject.",
+						"examples": [
+							{
+								"warnings": [],
+								"units": 1,
+								"uncertain": 0,
+								"errors": [],
+								"contractFailures": {
+									"entities": 0,
+									"issues": 0,
+									"unknownTypes": 0,
+									"emptyProps": 0,
+									"missingRequired": 0,
+									"bareErrors": 0
+								},
+								"storedContractFailures": {
+									"entities": 0,
+									"issues": 0,
+									"unknownTypes": 0,
+									"emptyProps": 0,
+									"missingRequired": 0,
+									"bareErrors": 0
+								}
+							}
+						]
 					}
 				],
 				"errors": [],
@@ -175,14 +366,18 @@
 						"name": "registryErrors.loaded",
 						"type": "LoadedUnits",
 						"required": true,
-						"description": "Loaded stored and freshly indexed manifests, source facts, scenarios, parse errors, formatting gaps and repository context."
+						"description": "Loaded context contains stored and freshly indexed manifests, a source index, scenarios, loading errors, formatting gaps, and the registry repository. registryErrors combines those facts with contract, preview, UID, scenario-reference, ownership, and staleness checks."
 					}
 				],
 				"outputs": [
 					{
 						"name": "registryErrors",
 						"type": "string[]",
-						"description": "All loading, contract, preview, scenario, staleness and ownership diagnostics; includes duplicate IDs and reviewed canonical forwarding backedges."
+						"description": "Returns strings for load errors, stored and fresh contract findings, active-unit preview bindings, registry and UID validation, unknown scenario or unit references, and stale-index changes.",
+						"examples": [
+							[],
+							["Registry is stale; run harness units index --write (1: add workflow.manage-units)"]
+						]
 					}
 				],
 				"errors": [],
@@ -195,34 +390,84 @@
 						"name": "retireUnit.id",
 						"type": "string",
 						"required": true,
-						"description": "Required registered identity to retire; its owned source must already be absent."
+						"description": "ID of a stored unit manifest to retire; an unknown ID throws ExpectedCliError. Retirement is allowed only when no path in that manifest's owns.source remains in the loaded source index.",
+						"examples": ["workflow.manage-units"]
 					},
 					{
 						"name": "retireUnit.reason",
 						"type": "string",
 						"required": true,
-						"description": "Required nonblank retirement explanation, preserved in the tombstone."
+						"description": "Nonblank text saved as retired.reason; an empty or whitespace-only string throws ExpectedCliError. The original string, including surrounding whitespace, is stored unchanged.",
+						"examples": ["Superseded after its source was removed."]
 					},
 					{
 						"name": "retireUnit.options",
 						"type": "UnitsOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional options, default {}: root selects the project and now defaults to the current ISO timestamp; json and write do not affect retirement."
+						"description": "Selects the root passed to loadUnits and may provide now, a callback whose returned string is stored as the retirement time; omitted options default to {}. Without now, the current time is stored with toISOString(); json and write are not read.",
+						"examples": [
+							{},
+							{
+								"root": "/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-14"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "retireUnit",
 						"type": "Promise<ComponentManifest>",
-						"description": "Persisted retired manifest with its stable identity, reason and timestamp."
+						"description": "Returns the retired manifest after writing it, preserving its existing fields while changing status and adding the supplied reason and retirement time. It can proceed only for a known unit with a nonblank reason and no still-owned source path.",
+						"examples": [
+							{
+								"schemaVersion": 1,
+								"id": "workflow.manage-units",
+								"kind": "workflow",
+								"title": "manageUnits",
+								"responsibility": "Indexes and checks registered units, reports relationship and canonical ownership diagnostics, and retires source-free identities.",
+								"responsibilityOrigin": "declared",
+								"status": "retired",
+								"retired": {
+									"reason": "Superseded after its source was removed.",
+									"at": "2026-11-15T12:00:00.000Z"
+								},
+								"owns": {
+									"source": ["src/cli/program/manageUnits.ts"],
+									"symbols": ["retireUnit"]
+								},
+								"contract": {
+									"origin": "declared",
+									"inputs": [],
+									"outputs": [],
+									"errors": []
+								},
+								"dependencies": [],
+								"runtime": {
+									"kind": "module",
+									"entry": "src/cli/program/manageUnits.ts",
+									"targets": [
+										{
+											"kind": "module",
+											"entry": "src/cli/program/manageUnits.ts"
+										}
+									]
+								},
+								"scenarios": [],
+								"budgets": {
+									"size": "frozen",
+									"complexity": "frozen",
+									"performance": []
+								}
+							}
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Retirement rejects an unknown ID, a blank reason or remaining owned source. Loading and filesystem failures propagate from dependencies."
+						"description": "Thrown by fail when the ID is unknown, the reason is empty after trimming, or any owned source path still exists in the source index. Rejections from loadUnits or repository.write also propagate, but are not constructed as ExpectedCliError here."
 					}
 				],
 				"errorStatus": "declared"
@@ -234,20 +479,36 @@
 						"name": "renderIndex.report",
 						"type": "IndexReport",
 						"required": true,
-						"description": "Required index changes, active count, written paths and uncertain-reference count."
+						"description": "Contains added, updated, moved, revived and orphaned unit IDs, active-unit count, written paths and uncertain-reference count. renderIndex uses those lists to format change lines and may add a write instruction.",
+						"examples": [
+							{
+								"added": ["workflow.manage-units"],
+								"updated": [],
+								"moved": [],
+								"revived": [],
+								"orphaned": [],
+								"units": 1,
+								"written": [],
+								"uncertain": 0
+							}
+						]
 					},
 					{
 						"name": "renderIndex.wrote",
 						"type": "boolean",
 						"required": true,
-						"description": "Required flag indicating whether manifest writes were requested; controls the follow-up instruction."
+						"description": "Indicates whether the caller reports that writing was performed; when false, the rendered output includes a write instruction only if there are additions, updates or moves. It does not affect the report contents.",
+						"examples": [false, true]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderIndex",
 						"type": "string",
-						"description": "Human-readable indexing summary, move/orphan details and a write instruction when needed."
+						"description": "Returns the formatted index summary, move and orphan lines, uncertainty count, and, when wrote is false and additions, updates or moves exist, a write instruction. It does not display full manifest data or written paths.",
+						"examples": [
+							"Indexed 1 units: 1 added, 0 updated, 0 moved, 0 revived.\n0 uncertain references.\nRun again with --write to update specification/units."
+						]
 					}
 				],
 				"errors": [],
@@ -260,14 +521,39 @@
 						"name": "renderCheck.report",
 						"type": "CheckReport",
 						"required": true,
-						"description": "Required active-unit and uncertain-reference counts from the check result."
+						"description": "Contains active-unit and uncertain-reference counts plus optional warnings, contract-failure summaries and registry errors. The renderer uses the counts in its summary and appends each warning as a separate line.",
+						"examples": [
+							{
+								"warnings": [],
+								"units": 1,
+								"uncertain": 0,
+								"errors": [],
+								"contractFailures": {
+									"entities": 0,
+									"issues": 0,
+									"unknownTypes": 0,
+									"emptyProps": 0,
+									"missingRequired": 0,
+									"bareErrors": 0
+								},
+								"storedContractFailures": {
+									"entities": 0,
+									"issues": 0,
+									"unknownTypes": 0,
+									"emptyProps": 0,
+									"missingRequired": 0,
+									"bareErrors": 0
+								}
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderCheck",
 						"type": "string",
-						"description": "Human-readable valid-registry summary with active-unit and uncertain-reference counts."
+						"description": "Returns the valid-registry summary with active-unit and uncertain-reference counts, followed by one Warning: line per warning when present. The message does not include report.errors or contract-failure counts.",
+						"examples": ["Units registry is valid: 1 units, 0 uncertain references."]
 					}
 				],
 				"errors": [],
