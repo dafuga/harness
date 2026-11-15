@@ -27,17 +27,18 @@
 				"type": "Snippet",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Optional content within the native feOffset element; native HTML content rules still apply."
+				"description": "An optional Svelte snippet supplied as the element's children; when present, the component invokes it and renders its output inside the native feOffset element. If omitted, no child content is rendered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SvgFeOffset",
 				"type": "markup",
-				"description": "The actual native feOffset element, with forwarded attributes and content and no additional wrapper."
+				"description": "The native feOffset markup element with all component properties other than children spread as attributes. Supplied children are rendered inside it, and the component adds no wrapper element."
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
