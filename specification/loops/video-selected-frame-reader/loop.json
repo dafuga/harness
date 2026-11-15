@@ -1,0 +1,56 @@
+{
+	"name": "video-selected-frame-reader",
+	"goal": "Read verified selected archive clips without hydrating corrupt sibling media",
+	"createdAt": "2026-11-15T22:31:29.947Z",
+	"updatedAt": "2026-11-15T22:33:45.534Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-15T22:33:42.896Z",
+			"evidence": "Task video-selected-frame-reader-20261115 requires healthy archived clip A frame flag/read/feedback despite missing sibling B; C whole-record integrity remains broken. Preserve strict legacy inline reads and pinned note/evidence ancestry."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-15T22:33:45.534Z",
+			"evidence": "Existing default-reader case has only inline single-clip fixtures across full/scoped/failed standings. Add the registered shared archive C:A+B fixture, delete B only, and assert A flag/frame/feedback, B rejection, and broken C history without changing the 8 case names/count."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
