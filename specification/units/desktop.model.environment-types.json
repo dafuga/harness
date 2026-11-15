@@ -9,12 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/models/Environment.types.ts",
 			"packages/desktop/src/models/development-tooling/Environment.types.ts",
 			"packages/desktop/src/models/development-tooling/EnvironmentValues.ts"
 		],
 		"symbols": [
-			"remoteContext",
 			"EnvironmentKind",
 			"RemotePorts",
 			"Environment",

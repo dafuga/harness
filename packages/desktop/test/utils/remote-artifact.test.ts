@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
-import type { RemoteBinary } from '../../src/models/Environment.types';
+import type { RemoteBinary } from '../../src/models/development-tooling/Environment.types';
 import {
 	artifactLimit,
 	artifactMediaTypes,

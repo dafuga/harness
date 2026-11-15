@@ -1,6 +1,9 @@
 import { expect, test, vi } from 'vitest';
 import { CapacitorBridgeAdapter } from '../src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter';
-import type { RemoteNativePlugin, RemoteNativeStatus } from '../src/models/Environment.types';
+import type {
+	RemoteNativePlugin,
+	RemoteNativeStatus
+} from '../src/models/development-tooling/Environment.types';
 
 const online: RemoteNativeStatus = {
 	state: 'online',

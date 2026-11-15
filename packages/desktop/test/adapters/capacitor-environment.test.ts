@@ -1,7 +1,10 @@
 import type { Listener } from './capacitor-environment.test.types';
 import { expect, test, vi } from 'vitest';
 import { CapacitorEnvironmentAdapter } from '../../src/adapters/CapacitorEnvironmentAdapter';
-import type { RemoteNativePlugin, RemoteNativeStatus } from '../../src/models/Environment.types';
+import type {
+	RemoteNativePlugin,
+	RemoteNativeStatus
+} from '../../src/models/development-tooling/Environment.types';
 const unpaired: RemoteNativeStatus = {
 	state: 'unpaired',
 	origin: null,

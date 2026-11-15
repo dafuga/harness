@@ -4,7 +4,10 @@ import { createRemoteHostStore } from '../src/lib/stores/networking-security/rem
 import { createWorkspaceStore } from '../src/lib/stores/projects-sessions/workspace.svelte';
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import type { DesktopProject } from '../src/models/ProjectContext.types';
-import type { RemoteHostStatus, RemoteMobileStatus } from '../src/models/Environment.types';
+import type {
+	RemoteHostStatus,
+	RemoteMobileStatus
+} from '../src/models/development-tooling/Environment.types';
 
 const project = { id: 'local-' + '1'.repeat(64), name: 'Private project', kind: 'local' } as const;
 const online: RemoteMobileStatus = {

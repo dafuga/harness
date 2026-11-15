@@ -2,7 +2,7 @@
 	import { setContext, onDestroy, untrack } from 'svelte';
 	import { Controls, SvelteFlow, type Edge, type Node } from '@xyflow/svelte';
 	import { key } from '../../../../../hub/src/utils/browserContext';
-	import { remoteContext } from '../../../../../desktop/src/models/Environment.types';
+	import { remoteContext } from '../../../../../desktop/src/models/development-tooling/Environment.types';
 	import { exampleDocument } from '../../../../../game/src/index';
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';

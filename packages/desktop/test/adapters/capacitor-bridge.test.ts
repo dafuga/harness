@@ -6,7 +6,7 @@ import type {
 	RemoteNativeEvent,
 	RemoteNativePlugin,
 	RemoteNativeStatus
-} from '../../src/models/Environment.types';
+} from '../../src/models/development-tooling/Environment.types';
 const tip = 'a'.repeat(40);
 const revision = { branch: 'main', commit: tip };
 const shown = { ...revision, tip, atTip: true };

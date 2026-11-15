@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
-import type { RemoteHostStatus, RemoteMobileStatus } from '../../src/models/Environment.types';
+import type {
+	RemoteHostStatus,
+	RemoteMobileStatus
+} from '../../src/models/development-tooling/Environment.types';
 import { awakeNote, identityLabel, keyLabel } from '../../src/utils/remoteLabels';
 import {
 	grantSummary,

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { RemoteNativeStatus } from '../src/models/Environment.types';
+import type { RemoteNativeStatus } from '../src/models/development-tooling/Environment.types';
 import { awakeNote } from '../src/utils/remoteLabels';
 import { remoteLabels } from '../src/components/networking-security/remote-phone-panel/remoteLabels';
 

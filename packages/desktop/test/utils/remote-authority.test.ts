@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import type { RemoteMobileStatus } from '../../src/models/Environment.types';
+import type { RemoteMobileStatus } from '../../src/models/development-tooling/Environment.types';
 import {
 	authorityChange,
 	excludes,

@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import type { DesktopBridge } from '../../src/models/DesktopBridge.types';
-import type { RemoteDesktopControl } from '../../src/models/Environment.types';
+import type { RemoteDesktopControl } from '../../src/models/development-tooling/Environment.types';
 import { selectEnvironment } from '../../src/lib/verification-evidence/select-environment/selectEnvironment';
 
 const harness = { snapshot: vi.fn() } as unknown as DesktopBridge;

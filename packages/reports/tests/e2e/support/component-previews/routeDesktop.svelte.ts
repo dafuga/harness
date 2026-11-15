@@ -1,7 +1,7 @@
 import { exampleDocument } from '../../../../../game/src/index';
 import type { DesktopBridge } from '../../../../../desktop/src/models/DesktopBridge.types';
 import type { ProjectSnapshot } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
-import type { EnvironmentHost } from '../../../../../desktop/src/models/Environment.types';
+import type { EnvironmentHost } from '../../../../../desktop/src/models/development-tooling/Environment.types';
 import type { DesktopData } from './desktopData.svelte';
 import { desktopData } from './sealedData';
 import { openRoute, page } from './router.svelte';
