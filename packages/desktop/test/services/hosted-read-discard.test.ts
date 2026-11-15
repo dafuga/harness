@@ -6,7 +6,7 @@ import type { CacheIdentity } from '../../../collaboration/src/models/planning-c
 import type { CacheStatus } from '../../src/models/projects-sessions/ProjectContext.types';
 import { HostedReadService } from '../../src/services/development-tooling/HostedReadService';
 import { ProjectionCacheService } from '../../src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
-import { HostedFailureValidator } from '../../src/validators/HostedFailureValidator';
+import { HostedFailureValidator } from '../../src/validators/development-tooling/HostedFailureValidator';
 
 const origin = 'https://hub.example.invalid';
 const identity: CacheIdentity = {

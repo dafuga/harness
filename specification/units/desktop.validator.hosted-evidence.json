@@ -8,15 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/validators/HostedEvidenceValidator.ts",
-			"packages/desktop/src/validators/verification-evidence/HostedEvidenceValidator.ts"
-		],
-		"symbols": [
-			"HostedEvidenceValidator",
-			"HostedEvidenceValidator",
-			"HostedEvidenceValidator.evidence"
-		]
+		"source": ["packages/desktop/src/validators/verification-evidence/HostedEvidenceValidator.ts"],
+		"symbols": ["HostedEvidenceValidator", "HostedEvidenceValidator.evidence"]
 	},
 	"contract": {
 		"origin": "derived",

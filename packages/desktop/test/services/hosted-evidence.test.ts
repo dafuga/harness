@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { HostedEvidenceService } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService';
 import { ProjectionCacheService } from '../../src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
-import { HostedFailureValidator } from '../../src/validators/HostedFailureValidator';
+import { HostedFailureValidator } from '../../src/validators/development-tooling/HostedFailureValidator';
 import { asked, captureOf, hubAnswer, png } from '../hosted-evidence-fixture';
 
 const origin = 'https://hub.example.invalid';

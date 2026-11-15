@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { expect, test } from 'vitest';
 import { artifactLimit } from '../../src/utils/reports-media/artifactMedia';
-import { HostedArtifactValidator } from '../../src/validators/HostedArtifactValidator';
+import { HostedArtifactValidator } from '../../src/validators/development-tooling/HostedArtifactValidator';
 
 const validator = new HostedArtifactValidator();
 const sha256 = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');

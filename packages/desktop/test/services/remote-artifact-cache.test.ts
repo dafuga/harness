@@ -8,7 +8,7 @@ import type { EvidenceArtifactQuery } from '../../src/models/verification-eviden
 import { HostedReadService } from '../../src/services/development-tooling/HostedReadService';
 import { ProjectionCacheService } from '../../src/lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
 import { RemoteArtifactCacheService } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService';
-import { HostedFailureValidator } from '../../src/validators/HostedFailureValidator';
+import { HostedFailureValidator } from '../../src/validators/development-tooling/HostedFailureValidator';
 
 const origin = 'https://hub.example.invalid';
 const [commit, notes, evidence] = ['a', 'c', 'd'].map((letter) => letter.repeat(40));

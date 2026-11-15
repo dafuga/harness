@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
-import { HostedEvidenceValidator } from '../../src/validators/HostedEvidenceValidator';
+import { HostedEvidenceValidator } from '../../src/validators/verification-evidence/HostedEvidenceValidator';
 import { asked, hubAnswer, type AnswerAt } from '../hosted-evidence-fixture';
 
 const validator = new HostedEvidenceValidator();

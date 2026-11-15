@@ -8,11 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/validators/ImageBytesValidator.ts",
-			"packages/desktop/src/validators/development-tooling/ImageBytesValidator.ts"
-		],
-		"symbols": ["ImageBytesValidator", "ImageBytesValidator", "ImageBytesValidator.validate"]
+		"source": ["packages/desktop/src/validators/development-tooling/ImageBytesValidator.ts"],
+		"symbols": ["ImageBytesValidator", "ImageBytesValidator.validate"]
 	},
 	"contract": {
 		"origin": "derived",

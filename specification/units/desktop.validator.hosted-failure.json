@@ -8,12 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/validators/HostedFailureValidator.ts",
-			"packages/desktop/src/validators/development-tooling/HostedFailureValidator.ts"
-		],
+		"source": ["packages/desktop/src/validators/development-tooling/HostedFailureValidator.ts"],
 		"symbols": [
-			"HostedFailureValidator",
 			"HostedFailureValidator",
 			"HostedFailureValidator.constructor",
 			"HostedFailureValidator.classify"

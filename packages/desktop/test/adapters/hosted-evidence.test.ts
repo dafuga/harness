@@ -2,7 +2,7 @@ import type { Answer } from './hosted-evidence.test.types';
 import { expect, test, vi } from 'vitest';
 import { HostedEvidenceAdapter } from '../../src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter';
 import { artifactLimit } from '../../src/utils/reports-media/artifactMedia';
-import { HostedFailureValidator } from '../../src/validators/HostedFailureValidator';
+import { HostedFailureValidator } from '../../src/validators/development-tooling/HostedFailureValidator';
 
 const origin = 'https://hub.example.invalid';
 const token = 'fixture-private-token';

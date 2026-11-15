@@ -8,15 +8,8 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/desktop/src/validators/HostedArtifactValidator.ts",
-			"packages/desktop/src/validators/development-tooling/HostedArtifactValidator.ts"
-		],
-		"symbols": [
-			"HostedArtifactValidator",
-			"HostedArtifactValidator",
-			"HostedArtifactValidator.artifact"
-		]
+		"source": ["packages/desktop/src/validators/development-tooling/HostedArtifactValidator.ts"],
+		"symbols": ["HostedArtifactValidator", "HostedArtifactValidator.artifact"]
 	},
 	"contract": {
 		"origin": "derived",

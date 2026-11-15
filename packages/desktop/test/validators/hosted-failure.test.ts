@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest';
-import { HostedFailureValidator } from '../../src/validators/HostedFailureValidator';
+import { HostedFailureValidator } from '../../src/validators/development-tooling/HostedFailureValidator';
 test('only connection failures permit offline fallback; redirects and HTTP failures never do', () => {
 	const classify = HostedFailureValidator.classify;
 	expect(
