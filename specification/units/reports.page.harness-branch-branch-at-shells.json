@@ -25,31 +25,17 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The shells of the shown revision in a table, each with its verdict and what the commit changed, to search, order and open."
+				"description": "The route's rendered Svelte markup is composed with HarnessScreen using the fixed title Shells and ExplorerCatalogScreen as its content. This file declares no route inputs, so its markup is not selected from branch or commit data here."
 			},
 			{
 				"name": "title",
 				"type": "string",
-				"description": "Shells · Harness"
+				"description": "The fixed title string passed to HarnessScreen for this page. This file does not derive the title from route data.",
+				"examples": ["Shells"]
 			}
 		],
-		"errors": [
-			{
-				"name": "not-in-history",
-				"type": "notice",
-				"description": "A branch or commit the history does not hold, or a commit the branch does not contain, is said. No other revision is shown."
-			},
-			{
-				"name": "no-registry",
-				"type": "notice",
-				"description": "A revision that stores no unit registry says so. The registry of another revision is not shown."
-			},
-			{
-				"name": "not-admitted",
-				"type": "403",
-				"description": "A request the owner policy does not admit is refused before any history is read."
-			}
-		],
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
