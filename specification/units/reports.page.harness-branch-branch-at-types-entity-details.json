@@ -18,12 +18,13 @@
 		"symbols": ["+page"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "+page",
-				"type": "markup"
+				"type": "markup",
+				"description": "The markup this route renders for every matching URL: one HarnessScreen element with the title 'Type details' and EntityDetailsScreen passed as its content. The page declares no props and its template has no expression other than that component reference, so the markup does not change with the [branch], [...at] or [entity] route segments."
 			}
 		],
 		"errors": [],
