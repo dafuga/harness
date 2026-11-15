@@ -42,105 +42,176 @@
 				"name": "version.value",
 				"type": "string",
 				"required": true,
-				"description": "Design version string beginning with v followed by at least three digits."
+				"description": "A design version must match /^v\\d{3,}$/: a lowercase v followed by at least three digits. This validator imposes no additional length limit.",
+				"examples": ["v001", "v2026"]
 			},
 			{
 				"name": "text.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Nonblank string of at most one million characters."
+				"description": "Accepts only a string whose trimmed form is nonempty and whose JavaScript length is at most 1,000,000. Validation does not trim or replace the original value.",
+				"examples": ["Plan design", "Plan validation notes"]
 			},
 			{
 				"name": "slug.value",
 				"type": "unknown",
 				"required": true,
-				"description": "Lowercase kebab-case name starting with a letter, at most 64 characters."
+				"description": "Accepts a lowercase slug starting with a letter, followed by lowercase letters or digits and optionally hyphen-separated nonempty lowercase alphanumeric groups. It must be at most 64 characters.",
+				"examples": ["planning", "plan-validate", "rev2"]
 			},
 			{
 				"name": "planValidate.unitId",
 				"type": "string",
 				"required": true,
-				"description": "Supported category and slug joined by a dot."
+				"description": "A unit identifier must contain exactly one dot, with a supported category (page, shell, layout, component, function, config, or service) followed by a valid slug. The category maps to its plural folder below src and the slug becomes the folder name.",
+				"examples": ["function.plan-validate", "component.evidence-grid", "page.home"]
 			},
 			{
 				"name": "contractHash.contract",
 				"type": "PlanContract",
 				"required": true,
-				"description": "Contract with nonblank responsibility, named/typed input and output arrays, unique nonblank error/state/viewport lists and supported viewport names."
+				"description": "A PlanContract has a nonempty responsibility, inputs and outputs with nonempty name/type fields, and errors/states/viewports arrays of unique nonempty strings; viewports are limited to desktop, tablet, mobile, or diagram. It matters when hashing a plan contract, whose complete canonical JSON is hashed.",
+				"examples": [
+					{
+						"responsibility": "Validate a plan",
+						"inputs": [
+							{
+								"name": "unitId",
+								"type": "string"
+							}
+						],
+						"outputs": [
+							{
+								"name": "path",
+								"type": "string"
+							}
+						],
+						"errors": ["invalid-input"],
+						"states": ["draft"],
+						"viewports": ["diagram"]
+					}
+				]
 			},
 			{
 				"name": "author.value",
 				"type": "PlanAuthor",
 				"required": true,
-				"description": "Person or agent author with a nonblank name."
+				"description": "A PlanAuthor must have kind person or agent and a name passing text validation. The validator checks this before accepting the author metadata.",
+				"examples": [
+					{
+						"kind": "person",
+						"name": "Ada Lovelace"
+					},
+					{
+						"kind": "agent",
+						"name": "Codex"
+					}
+				]
 			},
 			{
 				"name": "region.value",
 				"type": "NormalizedRegion | null",
 				"required": true,
-				"description": "Null or a finite positive rectangle contained within normalized image coordinates from zero to one."
+				"description": "A region is null or a rectangle with finite x/y/width/height values, x/y at least 0, positive width/height, and right/bottom edges no greater than 1. Coordinates are measured in normalized image fractions, and valid non-null regions are rounded to six decimal places on return.",
+				"examples": [
+					{
+						"x": 0.125,
+						"y": 0.25,
+						"width": 0.375,
+						"height": 0.5
+					},
+					null
+				]
 			},
 			{
 				"name": "filename.value",
 				"type": "string",
 				"required": true,
-				"description": "Lowercase artifact filename using letters, digits, dots and hyphens, beginning with a letter/digit and containing no double dot."
+				"description": "A safe artifact filename begins with a lowercase letter or digit and then uses only lowercase letters, digits, dots, or hyphens; it cannot contain '..'. This validator applies the rule to a filename string without directory components.",
+				"examples": ["plan-v001.json", "design-image.png"]
 			}
 		],
 		"outputs": [
 			{
 				"name": "categories",
 				"type": "unknown",
-				"description": "Mapping from supported singular categories to folder names."
+				"description": "The exported constant maps page, shell, layout, component, function, config, and service to pages, shells, layouts, components, functions, configs, and services. planValidate uses the mapping to form a relative plan folder.",
+				"examples": [
+					{
+						"page": "pages",
+						"shell": "shells",
+						"layout": "layouts",
+						"component": "components",
+						"function": "functions",
+						"config": "configs",
+						"service": "services"
+					}
+				]
 			},
 			{
 				"name": "text",
 				"type": "asserts value is string",
-				"description": "Returns nothing after validating text; does not trim the value."
+				"description": "On success the assertion narrows the supplied value to string; it returns undefined and leaves the original value unchanged."
 			},
 			{
 				"name": "slug",
 				"type": "asserts value is string",
-				"description": "Returns nothing after validating the slug."
+				"description": "On success the assertion narrows the supplied value to string; it returns undefined without altering the slug."
 			},
 			{
 				"name": "planValidate",
 				"type": "string",
-				"description": "Category-specific relative plan folder."
+				"description": "Returns src/<plural-category>/<slug> after validating the unit identifier. The result is a relative repository path.",
+				"examples": [
+					"src/functions/plan-validate",
+					"src/components/evidence-grid",
+					"src/pages/home"
+				]
 			},
 			{
 				"name": "contractHash",
 				"type": "string",
-				"description": "SHA-256 of the validated, consistently serialized contract."
+				"description": "Returns the lowercase 64-character SHA-256 hexadecimal digest of the canonical JSON for the validated contract. Runtime properties on the contract object are included in that canonical serialization.",
+				"examples": ["af5c207d27c3ca5f889c6a1f73b9f81d758ed11247cd07cafa200736eac92b01"]
 			},
 			{
 				"name": "author",
 				"type": "void",
-				"description": "Returns nothing after validating author kind and name."
+				"description": "Returns undefined when kind is person or agent and name passes text validation."
 			},
 			{
 				"name": "region",
 				"type": "NormalizedRegion | null",
-				"description": "Null or rectangle coordinates rounded to six decimal places."
+				"description": "Returns null unchanged for null input, or a four-field rectangle with each coordinate rounded to six decimal places. A non-null result comes from valid input within normalized image bounds.",
+				"examples": [
+					{
+						"x": 0.123457,
+						"y": 0.25,
+						"width": 0.375,
+						"height": 0.5
+					},
+					null
+				]
 			},
 			{
 				"name": "filename",
 				"type": "void",
-				"description": "Returns nothing after validating the filename."
+				"description": "Returns undefined after the filename passes the allowed-character and no-'..' checks."
 			},
 			{
 				"name": "version",
 				"type": "void",
-				"description": "Returns nothing after validating the version syntax."
+				"description": "Returns undefined when the value matches v followed by at least three digits."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "invalid-input for rejected values, unsafe-path for a filename, or invalid-region for an invalid rectangle."
+				"description": "The fail helper throws a JavaScript Error (name: Error) with a code property and path: null. This unit uses invalid-input (Invalid design version, Expected non-empty text, Invalid slug, Invalid unit identity, Invalid contract fields, Invalid contract list, Invalid viewport, Invalid author), invalid-region (Invalid rectangle, Rectangle is outside image), and unsafe-path (Invalid artifact filename)."
 			}
 		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "version",
@@ -149,23 +220,25 @@
 						"name": "version.value",
 						"type": "string",
 						"required": true,
-						"description": "Design version string beginning with v followed by at least three digits."
+						"description": "A design version must match /^v\\d{3,}$/: a lowercase v followed by at least three digits. This validator imposes no additional length limit.",
+						"examples": ["v001", "v2026"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "version",
 						"type": "void",
-						"description": "Returns nothing after validating the version syntax."
+						"description": "Returns undefined when the value matches v followed by at least three digits."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws a JavaScript Error (name: Error) with code: invalid-input, path: null, and message 'Invalid design version' when the value does not match /^v\\d{3,}$/."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "text",
@@ -174,23 +247,25 @@
 						"name": "text.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Nonblank string of at most one million characters."
+						"description": "Accepts only a string whose trimmed form is nonempty and whose JavaScript length is at most 1,000,000. Validation does not trim or replace the original value.",
+						"examples": ["Plan design", "Plan validation notes"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "text",
 						"type": "asserts value is string",
-						"description": "Returns nothing after validating text; does not trim the value."
+						"description": "On success the assertion narrows the supplied value to string; it returns undefined and leaves the original value unchanged."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws a JavaScript Error (name: Error) with code: invalid-input, path: null, and message 'Expected non-empty text' for a non-string, blank-after-trimming, or over-1,000,000-character value."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "slug",
@@ -199,23 +274,25 @@
 						"name": "slug.value",
 						"type": "unknown",
 						"required": true,
-						"description": "Lowercase kebab-case name starting with a letter, at most 64 characters."
+						"description": "Accepts a lowercase slug starting with a letter, followed by lowercase letters or digits and optionally hyphen-separated nonempty lowercase alphanumeric groups. It must be at most 64 characters.",
+						"examples": ["planning", "plan-validate", "rev2"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "slug",
 						"type": "asserts value is string",
-						"description": "Returns nothing after validating the slug."
+						"description": "On success the assertion narrows the supplied value to string; it returns undefined without altering the slug."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws a JavaScript Error (name: Error) with code: invalid-input, path: null, and message 'Invalid slug' when the lowercase slug pattern fails or the value exceeds 64 characters."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "planValidate",
@@ -224,23 +301,30 @@
 						"name": "planValidate.unitId",
 						"type": "string",
 						"required": true,
-						"description": "Supported category and slug joined by a dot."
+						"description": "A unit identifier must contain exactly one dot, with a supported category (page, shell, layout, component, function, config, or service) followed by a valid slug. The category maps to its plural folder below src and the slug becomes the folder name.",
+						"examples": ["function.plan-validate", "component.evidence-grid", "page.home"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "planValidate",
 						"type": "string",
-						"description": "Category-specific relative plan folder."
+						"description": "Returns src/<plural-category>/<slug> after validating the unit identifier. The result is a relative repository path.",
+						"examples": [
+							"src/functions/plan-validate",
+							"src/components/evidence-grid",
+							"src/pages/home"
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws a JavaScript Error with code: invalid-input and path: null: 'Expected non-empty text' for invalid text, 'Invalid slug' for an invalid name, or 'Invalid unit identity' for an unsupported category or extra dot-separated part."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "contractHash",
@@ -249,23 +333,45 @@
 						"name": "contractHash.contract",
 						"type": "PlanContract",
 						"required": true,
-						"description": "Contract with nonblank responsibility, named/typed input and output arrays, unique nonblank error/state/viewport lists and supported viewport names."
+						"description": "A PlanContract has a nonempty responsibility, inputs and outputs with nonempty name/type fields, and errors/states/viewports arrays of unique nonempty strings; viewports are limited to desktop, tablet, mobile, or diagram. It matters when hashing a plan contract, whose complete canonical JSON is hashed.",
+						"examples": [
+							{
+								"responsibility": "Validate a plan",
+								"inputs": [
+									{
+										"name": "unitId",
+										"type": "string"
+									}
+								],
+								"outputs": [
+									{
+										"name": "path",
+										"type": "string"
+									}
+								],
+								"errors": ["invalid-input"],
+								"states": ["draft"],
+								"viewports": ["diagram"]
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "contractHash",
 						"type": "string",
-						"description": "SHA-256 of the validated, consistently serialized contract."
+						"description": "Returns the lowercase 64-character SHA-256 hexadecimal digest of the canonical JSON for the validated contract. Runtime properties on the contract object are included in that canonical serialization.",
+						"examples": ["af5c207d27c3ca5f889c6a1f73b9f81d758ed11247cd07cafa200736eac92b01"]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws a JavaScript Error with code: invalid-input and path: null. Messages are 'Expected non-empty text', 'Invalid contract fields', 'Invalid contract list', or 'Invalid viewport' when the corresponding responsibility/list text, inputs/outputs array, unique-list, or viewport validation fails."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "author",
@@ -274,23 +380,34 @@
 						"name": "author.value",
 						"type": "PlanAuthor",
 						"required": true,
-						"description": "Person or agent author with a nonblank name."
+						"description": "A PlanAuthor must have kind person or agent and a name passing text validation. The validator checks this before accepting the author metadata.",
+						"examples": [
+							{
+								"kind": "person",
+								"name": "Ada Lovelace"
+							},
+							{
+								"kind": "agent",
+								"name": "Codex"
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "author",
 						"type": "void",
-						"description": "Returns nothing after validating author kind and name."
+						"description": "Returns undefined when kind is person or agent and name passes text validation."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws a JavaScript Error with code: invalid-input and path: null: 'Invalid author' for a falsy value or unsupported kind, or 'Expected non-empty text' when the name fails text validation."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "region",
@@ -299,23 +416,42 @@
 						"name": "region.value",
 						"type": "NormalizedRegion | null",
 						"required": true,
-						"description": "Null or a finite positive rectangle contained within normalized image coordinates from zero to one."
+						"description": "A region is null or a rectangle with finite x/y/width/height values, x/y at least 0, positive width/height, and right/bottom edges no greater than 1. Coordinates are measured in normalized image fractions, and valid non-null regions are rounded to six decimal places on return.",
+						"examples": [
+							{
+								"x": 0.125,
+								"y": 0.25,
+								"width": 0.375,
+								"height": 0.5
+							},
+							null
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "region",
 						"type": "NormalizedRegion | null",
-						"description": "Null or rectangle coordinates rounded to six decimal places."
+						"description": "Returns null unchanged for null input, or a four-field rectangle with each coordinate rounded to six decimal places. A non-null result comes from valid input within normalized image bounds.",
+						"examples": [
+							{
+								"x": 0.123457,
+								"y": 0.25,
+								"width": 0.375,
+								"height": 0.5
+							},
+							null
+						]
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws a JavaScript Error with path: null and code: invalid-region: 'Invalid rectangle' for non-finite coordinates, or 'Rectangle is outside image' for negative origins, nonpositive dimensions, or bounds extending past 1."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "filename",
@@ -324,23 +460,25 @@
 						"name": "filename.value",
 						"type": "string",
 						"required": true,
-						"description": "Lowercase artifact filename using letters, digits, dots and hyphens, beginning with a letter/digit and containing no double dot."
+						"description": "A safe artifact filename begins with a lowercase letter or digit and then uses only lowercase letters, digits, dots, or hyphens; it cannot contain '..'. This validator applies the rule to a filename string without directory components.",
+						"examples": ["plan-v001.json", "design-image.png"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "filename",
 						"type": "void",
-						"description": "Returns nothing after validating the filename."
+						"description": "Returns undefined after the filename passes the allowed-character and no-'..' checks."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Throws a JavaScript Error with code: unsafe-path, path: null, and message 'Invalid artifact filename' when the filename pattern fails or it contains '..'."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
