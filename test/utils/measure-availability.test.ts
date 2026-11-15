@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import type { BudgetEvent } from '../../src/core/budgetTypes';
-import type { SourceTree } from '../../src/core/sourceTypes';
+import type { SourceTree } from '../../src/core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../src/core/unitTypes';
 import { defaultUnitsConfig } from '../../src/core/unitsConfig';
 import { BudgetService } from '../../src/services/budget-service/BudgetService';

@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { posix, resolve } from 'node:path';
 import ts from 'typescript';
 import { createHash } from 'node:crypto';
-import type { SourceTree } from '../../src/core/sourceTypes';
+import type { SourceTree } from '../../src/core/development-tooling/sourceTypes';
 import type { ComponentManifest } from '../../src/core/unitTypes';
 import { defaultUnitsConfig } from '../../src/core/unitsConfig';
 import { SourceIndexService } from '../../src/services/source-index-service/SourceIndexService';

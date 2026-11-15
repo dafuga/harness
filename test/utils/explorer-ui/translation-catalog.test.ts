@@ -7,7 +7,7 @@ import {
 	flattenMessages,
 	translationMessages
 } from '../../../src/services/explorer-ui/revision-detail-service/translationMessages';
-import type { SourceTree } from '../../../src/core/sourceTypes';
+import type { SourceTree } from '../../../src/core/development-tooling/sourceTypes';
 
 const snapshot = (files: Record<string, string>): SourceTree => ({
 	revision: 'fixture',

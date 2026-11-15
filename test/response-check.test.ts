@@ -6,7 +6,7 @@ import {
 	responseCheckQuestions
 } from '../src/workflows/responseCheckRubric';
 import { responseCheckExitCode } from '../src/workflows/runResponseCheck';
-import type { ResponseCheckReport } from '../src/core/responseCheckTypes';
+import type { ResponseCheckReport } from '../src/core/verification-evidence/responseCheckTypes';
 
 const input = {
 	request: 'List two colors as JSON.',

@@ -1,6 +1,6 @@
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
-import type { SourceTree, TreeEntry } from '../../../src/core/sourceTypes';
+import type { SourceTree, TreeEntry } from '../../../src/core/development-tooling/sourceTypes';
 import { defaultUnitsConfig } from '../../../src/core/unitsConfig';
 import { SourceIndexService } from '../../../src/services/source-index-service/SourceIndexService';
 import { measureWorkload } from '../../support/measureWorkload';

@@ -8,10 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/core/responseCheckTypes.ts",
-			"src/core/verification-evidence/responseCheckTypes.ts"
-		],
+		"source": ["src/core/verification-evidence/responseCheckTypes.ts"],
 		"symbols": [
 			"ResponseCriterion",
 			"ResponseCheckOptions",
