@@ -21,17 +21,24 @@
 				"name": "composeHubAuth.parts",
 				"type": "HubAuthParts",
 				"required": true,
-				"description": "Validated configuration, auth storage, trusted Google identity service, fetch, clock, token cache and optional email delivery adapter."
+				"description": "Dependencies used to wire hub authentication: config supplies the origin, environment, secret, client ID, and optional GitHub app; store backs sessions, exchanges, and challenges; google, fetch, now, and tokenCache provide identity, HTTP, time, and installation-token caching. delivery may be null; in that case, Google accounts outside Gmail and Workspace cannot finish signing in."
 			}
 		],
 		"outputs": [
 			{
 				"name": "composeHubAuth",
 				"type": "HubAuth",
-				"description": "Detached-call-safe authentication interface for actor resolution, route handling, repository authorization and scoped token acquisition. Missing GitHub configuration makes the last two reject with github-disabled."
+				"description": "A HubAuth object with actor, handle, authorizeRepository, and token functions. actor resolves the request's session actor or null, handle delegates to the auth controller, and the GitHub functions use configured GitHub services; when config.github is absent, authorizeRepository and token reject with AuthFailure('github-disabled'). Every returned function is safe to call detached."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "AuthFailure",
+				"type": "thrown",
+				"description": "When config.github is absent, the returned authorizeRepository and token functions reject with AuthFailure('github-disabled')."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "composeHubAuth",
@@ -40,18 +47,18 @@
 						"name": "composeHubAuth.parts",
 						"type": "HubAuthParts",
 						"required": true,
-						"description": "Validated configuration, auth storage, trusted Google identity service, fetch, clock, token cache and optional email delivery adapter."
+						"description": "Dependencies used to wire hub authentication: config supplies the origin, environment, secret, client ID, and optional GitHub app; store backs sessions, exchanges, and challenges; google, fetch, now, and tokenCache provide identity, HTTP, time, and installation-token caching. delivery may be null; in that case, Google accounts outside Gmail and Workspace cannot finish signing in."
 					}
 				],
 				"outputs": [
 					{
 						"name": "composeHubAuth",
 						"type": "HubAuth",
-						"description": "Detached-call-safe authentication interface for actor resolution, route handling, repository authorization and scoped token acquisition. Missing GitHub configuration makes the last two reject with github-disabled."
+						"description": "A HubAuth object with actor, handle, authorizeRepository, and token functions. actor resolves the request's session actor or null, handle delegates to the auth controller, and the GitHub functions use configured GitHub services; when config.github is absent, authorizeRepository and token reject with AuthFailure('github-disabled'). Every returned function is safe to call detached."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
