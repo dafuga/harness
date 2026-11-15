@@ -1,5 +1,6 @@
 // @harness-uid u_vwqx4shw5t
 import type { TaskCheckpointInput } from './ModuleTaskWorktreeAdapter.types';
+import { TaskWorktreeChangedError } from './ModuleTaskWorktreeAdapter.types';
 import { mkdtemp, realpath, rm } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -18,7 +19,7 @@ export class ModuleTaskWorktreeAdapter {
 			resolve(this.root, await owner.run(['rev-parse', '--git-common-dir']))
 		);
 		if (common !== expected || (await git.run(['rev-parse', 'HEAD'])) !== input.source)
-			throw new Error('Task worktree source or repository changed.');
+			throw new TaskWorktreeChangedError('Task worktree source or repository changed.');
 		if (!input.paths.length) return input.source;
 		const scratch = await mkdtemp(join(tmpdir(), 'harness-task-index-'));
 		const env = { GIT_INDEX_FILE: join(scratch, 'index') };

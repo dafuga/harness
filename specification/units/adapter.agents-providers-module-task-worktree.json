@@ -16,51 +16,37 @@
 			"ModuleTaskWorktreeAdapter",
 			"ModuleTaskWorktreeAdapter.constructor",
 			"ModuleTaskWorktreeAdapter.checkpoint",
-			"TaskCheckpointInput"
+			"TaskCheckpointInput",
+			"TaskWorktreeChangedError"
 		]
 	},
 	"contract": {
-		"origin": "declared",
+		"origin": "derived",
 		"inputs": [
 			{
 				"name": "ModuleTaskWorktreeAdapter.constructor.root",
 				"type": "string",
-				"required": true,
-				"description": "Filesystem path used to resolve the owning repository's Git common directory for comparison with each task worktree. It must identify a Git checkout in the same repository as the worktree.",
-				"examples": [
-					"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-				]
+				"required": true
 			},
 			{
 				"name": "ModuleTaskWorktreeAdapter.checkpoint.input",
 				"type": "TaskCheckpointInput",
-				"required": true,
-				"description": "Identifies the task worktree, its expected source commit, and the paths to include in a checkpoint. The worktree must share the configured root's Git common directory and its current HEAD must equal source; an empty paths array returns source without creating a commit.",
-				"examples": [
-					{
-						"cwd": "/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/adapter.agents-providers-module-task-worktree",
-						"source": "a41c7e9b2d6038f5c4a17b9e6d3028fa1c7e5b4d",
-						"paths": ["src/adapters/agents-providers/ModuleTaskWorktreeAdapter.ts"]
-					}
-				]
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskWorktreeAdapter.checkpoint",
-				"type": "Promise<string>",
-				"description": "Resolves to the source commit unchanged when paths is empty, or to a new commit ID that records the selected paths with source as its parent. The commit is written with a temporary Git index, leaving the worktree's HEAD and user index unchanged.",
-				"examples": ["a41c7e9b2d6038f5c4a17b9e6d3028fa1c7e5b4d"]
+				"type": "Promise<string>"
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown",
-				"description": "Thrown if the worktree's Git common directory differs from the configured root's, or if its current HEAD differs from input.source. Filesystem, Git-command, and commit-identity failures during checkpointing also reject the promise."
+				"name": "TaskWorktreeChangedError",
+				"type": "thrown"
 			}
 		],
-		"errorStatus": "declared",
+		"errorStatus": "unknown",
 		"operations": [
 			{
 				"name": "ModuleTaskWorktreeAdapter.checkpoint",
@@ -68,33 +54,22 @@
 					{
 						"name": "ModuleTaskWorktreeAdapter.checkpoint.input",
 						"type": "TaskCheckpointInput",
-						"required": true,
-						"description": "Identifies the task worktree, its expected source commit, and the paths to include in a checkpoint. The worktree must share the configured root's Git common directory and its current HEAD must equal source; an empty paths array returns source without creating a commit.",
-						"examples": [
-							{
-								"cwd": "/Users/danielfugere/projects/harness-shots/component-pyramid/luna-pyramid-20261110/drafts-p1-contracts-a/luna/adapter.agents-providers-module-task-worktree",
-								"source": "a41c7e9b2d6038f5c4a17b9e6d3028fa1c7e5b4d",
-								"paths": ["src/adapters/agents-providers/ModuleTaskWorktreeAdapter.ts"]
-							}
-						]
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskWorktreeAdapter.checkpoint",
-						"type": "Promise<string>",
-						"description": "Resolves to the source commit unchanged when paths is empty, or to a new commit ID that records the selected paths with source as its parent. The commit is written with a temporary Git index, leaving the worktree's HEAD and user index unchanged.",
-						"examples": ["a41c7e9b2d6038f5c4a17b9e6d3028fa1c7e5b4d"]
+						"type": "Promise<string>"
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown if the worktree's Git common directory differs from the configured root's, or if its current HEAD differs from input.source. Filesystem, Git-command, and commit-identity failures during checkpointing also reject the promise."
+						"name": "TaskWorktreeChangedError",
+						"type": "thrown"
 					}
 				],
-				"errorStatus": "declared"
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -104,22 +79,17 @@
 					{
 						"name": "ModuleTaskWorktreeAdapter.constructor.root",
 						"type": "string",
-						"required": true,
-						"description": "Filesystem path used to resolve the owning repository's Git common directory for comparison with each task worktree. It must identify a Git checkout in the same repository as the worktree.",
-						"examples": [
-							"/Users/danielfugere/projects/harness-shots/luna-pyramid-p1-contracts-a-luna/slot-10"
-						]
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "ModuleTaskWorktreeAdapter.constructor",
-						"type": "unknown",
-						"description": "Creates a ModuleTaskWorktreeAdapter instance bound to the supplied repository root. The instance uses that root for Git common-directory comparisons in later checkpoint calls."
+						"type": "unknown"
 					}
 				],
 				"errors": [],
-				"errorStatus": "declared"
+				"errorStatus": "none-found"
 			}
 		]
 	},

@@ -1,6 +1,7 @@
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskWorktreeAdapter } from '../../../src/adapters/agents-providers/ModuleTaskWorktreeAdapter';
+import { TaskWorktreeChangedError } from '../../../src/adapters/agents-providers/ModuleTaskWorktreeAdapter.types';
 import { GitAdapter } from '../../../src/adapters/git-source-history/GitAdapter';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { writeFile } from 'node:fs/promises';
@@ -31,6 +32,25 @@ test('submission checkpoint preserves source HEAD and both staged and unstaged w
 		expect(await git.run(['show', ':src/orders.ts'])).toContain('orders = 2');
 		expect(await git.run(['rev-parse', 'HEAD'])).toBe(f.source);
 		expect(await f.git.run(['rev-parse', 'HEAD'])).toBe(f.source);
+	} finally {
+		await f.dispose();
+	}
+});
+test('a task worktree whose HEAD moved is refused with its named error', async () => {
+	const f = await moduleTaskFixture();
+	try {
+		const cwd = join(f.root, 'review');
+		await f.git.run(['worktree', 'add', '--detach', cwd, f.source]);
+		const git = new GitAdapter(cwd);
+		await git.run(['commit', '--allow-empty', '-qm', 'chore: move task source']);
+		const failure = new ModuleTaskWorktreeAdapter(f.root).checkpoint({
+			cwd,
+			source: f.source,
+			paths: []
+		});
+		await expect(failure).rejects.toBeInstanceOf(TaskWorktreeChangedError);
+		await expect(failure).rejects.toMatchObject({ name: 'TaskWorktreeChangedError' });
+		await expect(failure).rejects.toThrow('Task worktree source or repository changed.');
 	} finally {
 		await f.dispose();
 	}
