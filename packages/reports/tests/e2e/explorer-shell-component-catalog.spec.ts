@@ -1,3 +1,4 @@
+import { assertVideoReviewControls } from './support/component-previews/videoReviewControls';
 import { expect, test } from '../../../../test/support/browserTest';
 import { buildShellFixture, removeShellFixture, captureShell } from './support/shellFixture';
 import { pictured } from './support/sharedSelect';
@@ -14,6 +15,10 @@ import { assertCatalogPresentation } from './support/component-previews/catalogP
 import { assertCatalogControls } from './support/component-previews/catalogControlsChecks';
 import { catalogExpectedErrors } from './support/component-previews/catalogExpectedErrors';
 import { captureCatalogBeforeActions } from './support/component-previews/catalogCaptureTiming';
+// This task's explicitly authorized recording run retains its focused browser video.
+test.use({
+	video: process.env.HARNESS_VIDEO_RECORD_TASK === 'video-build-20261115' ? 'on' : 'off'
+});
 let home = '';
 test.beforeAll(async () => {
 	test.setTimeout(180_000);
@@ -98,6 +103,8 @@ for (const viewport of catalogViewports) {
 			await assertCatalogAfterCapture({ ...context, capture });
 			await assertCatalogPresentation(context);
 			await assertCatalogControls(context);
+			if (unit.id === 'reports.component.verification-evidence-video-evidence' && !variant)
+				await assertVideoReviewControls(component);
 			await expect
 				.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
 				.toBeLessThanOrEqual(viewport.width);
