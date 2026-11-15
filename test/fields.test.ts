@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { parseFields } from '../src/core/fields/fields';
+import { parseFields } from '../src/core/development-tooling/fields/fields';
 import { assertColdEntries } from './support/coldEntries';
 import { measureWorkload } from './support/measureWorkload';
 
