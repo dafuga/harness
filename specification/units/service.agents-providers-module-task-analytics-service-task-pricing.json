@@ -12,27 +12,93 @@
 		"symbols": ["taskApiCost"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "taskApiCost.model",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The model id matched exactly and case-sensitively against the built-in rate table (claude-haiku-5-5, claude-opus-5-5, claude-sonnet-5-5, gpt-6-luna, gpt-6.1-sol, gpt-6-astra), which supplies the token rates and the source URL. Any other string has no rate, so source is null, and without a valid reportedCostUsd the basis is 'unavailable'.",
+				"examples": ["claude-sonnet-5-5", "gpt-6.1-sol", "claude-haiku-5-5"]
 			},
 			{
 				"name": "taskApiCost.usage",
 				"type": "TaskUsage",
-				"required": false
+				"required": false,
+				"default": "undefined",
+				"description": "CLI token counters for one task (inputTokens, outputTokens, cacheReadTokens, cacheWriteTokens, cacheWriteLongTokens); a finite reportedCostUsd of zero or more is returned unchanged as usd, minimumUsd and maximumUsd with basis 'cli-reported'. Without a valid reportedCostUsd, omitted usage (default undefined), a null inputTokens or outputTokens, or contradictory cache counters (cacheReadTokens, or cacheReadTokens plus cacheWriteTokens, above inputTokens; cacheWriteLongTokens above a non-null cacheWriteTokens) give basis 'unavailable' with null amounts.",
+				"examples": [
+					{
+						"inputTokens": 52340,
+						"outputTokens": 1870,
+						"cacheReadTokens": 40000,
+						"cacheWriteTokens": null,
+						"cacheWriteLongTokens": 0,
+						"reportedCostUsd": 0.0412
+					},
+					{
+						"inputTokens": 9200,
+						"outputTokens": 640,
+						"cacheReadTokens": 0,
+						"cacheWriteTokens": 0,
+						"cacheWriteLongTokens": 0,
+						"reportedCostUsd": 0.0051
+					},
+					{
+						"inputTokens": 310000,
+						"outputTokens": 12500,
+						"cacheReadTokens": 250000,
+						"cacheWriteTokens": 40000,
+						"cacheWriteLongTokens": 15000,
+						"reportedCostUsd": 1.8734
+					}
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "taskApiCost",
-				"type": "TaskApiCost"
+				"type": "TaskApiCost",
+				"description": "The synchronous API-equivalent cost of one task at standard global rates, never a subscription invoice, with rateCard always 'standard-global-2026-10-25' and source set to the model's pricing page URL or null when the model has no rate. usd is set for a CLI-reported cost or when minimumUsd and maximumUsd agree within 1e-12, otherwise usd is null and the two bounds give the range; basis is 'cli-reported', 'standard-api-estimate' or 'unavailable', and every amount is null when unavailable.",
+				"examples": [
+					{
+						"rateCard": "standard-global-2026-10-25",
+						"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+						"usd": 0.0412,
+						"minimumUsd": 0.0412,
+						"maximumUsd": 0.0412,
+						"basis": "cli-reported",
+						"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+					},
+					{
+						"rateCard": "standard-global-2026-10-25",
+						"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+						"usd": null,
+						"minimumUsd": 0.04738,
+						"maximumUsd": 0.07206,
+						"basis": "standard-api-estimate",
+						"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+					},
+					{
+						"rateCard": "standard-global-2026-10-25",
+						"source": null,
+						"usd": null,
+						"minimumUsd": null,
+						"maximumUsd": null,
+						"basis": "unavailable",
+						"note": "No verified rates for this exact model."
+					}
+				]
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown as a TypeError when model is an inherited Object.prototype name such as 'constructor', 'toString' or '__proto__' (the rates lookup has no own-property check), usage has non-null inputTokens and outputTokens, there is no valid reportedCostUsd, and the cache counters pass the consistency checks."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "taskApiCost",
@@ -40,22 +106,88 @@
 					{
 						"name": "taskApiCost.model",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The model id matched exactly and case-sensitively against the built-in rate table (claude-haiku-5-5, claude-opus-5-5, claude-sonnet-5-5, gpt-6-luna, gpt-6.1-sol, gpt-6-astra), which supplies the token rates and the source URL. Any other string has no rate, so source is null, and without a valid reportedCostUsd the basis is 'unavailable'.",
+						"examples": ["claude-sonnet-5-5", "gpt-6.1-sol", "claude-haiku-5-5"]
 					},
 					{
 						"name": "taskApiCost.usage",
 						"type": "TaskUsage",
-						"required": false
+						"required": false,
+						"default": "undefined",
+						"description": "CLI token counters for one task (inputTokens, outputTokens, cacheReadTokens, cacheWriteTokens, cacheWriteLongTokens); a finite reportedCostUsd of zero or more is returned unchanged as usd, minimumUsd and maximumUsd with basis 'cli-reported'. Without a valid reportedCostUsd, omitted usage (default undefined), a null inputTokens or outputTokens, or contradictory cache counters (cacheReadTokens, or cacheReadTokens plus cacheWriteTokens, above inputTokens; cacheWriteLongTokens above a non-null cacheWriteTokens) give basis 'unavailable' with null amounts.",
+						"examples": [
+							{
+								"inputTokens": 52340,
+								"outputTokens": 1870,
+								"cacheReadTokens": 40000,
+								"cacheWriteTokens": null,
+								"cacheWriteLongTokens": 0,
+								"reportedCostUsd": 0.0412
+							},
+							{
+								"inputTokens": 9200,
+								"outputTokens": 640,
+								"cacheReadTokens": 0,
+								"cacheWriteTokens": 0,
+								"cacheWriteLongTokens": 0,
+								"reportedCostUsd": 0.0051
+							},
+							{
+								"inputTokens": 310000,
+								"outputTokens": 12500,
+								"cacheReadTokens": 250000,
+								"cacheWriteTokens": 40000,
+								"cacheWriteLongTokens": 15000,
+								"reportedCostUsd": 1.8734
+							}
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskApiCost",
-						"type": "TaskApiCost"
+						"type": "TaskApiCost",
+						"description": "The synchronous API-equivalent cost of one task at standard global rates, never a subscription invoice, with rateCard always 'standard-global-2026-10-25' and source set to the model's pricing page URL or null when the model has no rate. usd is set for a CLI-reported cost or when minimumUsd and maximumUsd agree within 1e-12, otherwise usd is null and the two bounds give the range; basis is 'cli-reported', 'standard-api-estimate' or 'unavailable', and every amount is null when unavailable.",
+						"examples": [
+							{
+								"rateCard": "standard-global-2026-10-25",
+								"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+								"usd": 0.0412,
+								"minimumUsd": 0.0412,
+								"maximumUsd": 0.0412,
+								"basis": "cli-reported",
+								"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+							},
+							{
+								"rateCard": "standard-global-2026-10-25",
+								"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+								"usd": null,
+								"minimumUsd": 0.04738,
+								"maximumUsd": 0.07206,
+								"basis": "standard-api-estimate",
+								"note": "Standard global token rates, excluding tools, regional and fast-tier surcharges. Ranges preserve missing cache-write duration and per-request context tiers."
+							},
+							{
+								"rateCard": "standard-global-2026-10-25",
+								"source": null,
+								"usd": null,
+								"minimumUsd": null,
+								"maximumUsd": null,
+								"basis": "unavailable",
+								"note": "No verified rates for this exact model."
+							}
+						]
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "Thrown as a TypeError when model is an inherited Object.prototype name such as 'constructor', 'toString' or '__proto__' (the rates lookup has no own-property check), usage has non-null inputTokens and outputTokens, there is no valid reportedCostUsd, and the cache counters pass the consistency checks."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
