@@ -19,51 +19,60 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SocketFrameService.constructor.sockets",
 				"type": "HostSocketsAdapter",
-				"required": true
+				"required": true,
+				"description": "The adapter supplies each socket's attachment and sends the host-offline notice when a device packet cannot reach the host. It is used while processing incoming frames."
 			},
 			{
 				"name": "SocketFrameService.constructor.link",
 				"type": "HostLinkService",
-				"required": true
+				"required": true,
+				"description": "The link service drops sockets with close codes and attempts to deliver parsed device packets to the host. A failed delivery causes the socket adapter to send a host-offline notice."
 			},
 			{
 				"name": "SocketFrameService.constructor.commands",
 				"type": "HostCommandService",
-				"required": true
+				"required": true,
+				"description": "The command service handles text frames for sockets attached with the host role. It is called only after the frame passes the size and text checks."
 			},
 			{
 				"name": "SocketFrameService.message.socket",
 				"type": "WebSocket",
-				"required": true
+				"required": true,
+				"description": "The WebSocket carrying the incoming frame and the key used to look up its attachment. A missing or closed attachment ends processing early, while device sockets also use it for per-socket rate counting."
 			},
 			{
 				"name": "SocketFrameService.message.message",
 				"type": "string | ArrayBuffer",
-				"required": true
+				"required": true,
+				"description": "Incoming WebSocket frame data. Frames over the size limit and non-text frames are dropped; host text is delegated to command handling, while device text must parse as a hello or sealed packet and pass the device rate limit.",
+				"examples": ["ping"]
 			},
 			{
 				"name": "SocketFrameService.closed.socket",
 				"type": "WebSocket",
-				"required": true
+				"required": true,
+				"description": "The WebSocket reported as closed or failed. This operation asks the link service to drop it with close code 1000."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SocketFrameService.message",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Returns a Promise<void> for processing the frame and produces no value on completion. It may return early for a missing or closed attachment, delegate a host text frame, drop invalid input, forward a validated device packet, or send a host-offline notice."
 			},
 			{
 				"name": "SocketFrameService.closed",
-				"type": "void"
+				"type": "void",
+				"description": "Returns no value after asking the link service to drop the socket with close code 1000. It does not inspect or report the reason for closure."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "SocketFrameService.message",
@@ -71,22 +80,26 @@
 					{
 						"name": "SocketFrameService.message.socket",
 						"type": "WebSocket",
-						"required": true
+						"required": true,
+						"description": "The WebSocket carrying the incoming frame and the key used to look up its attachment. A missing or closed attachment ends processing early, while device sockets also use it for per-socket rate counting."
 					},
 					{
 						"name": "SocketFrameService.message.message",
 						"type": "string | ArrayBuffer",
-						"required": true
+						"required": true,
+						"description": "Incoming WebSocket frame data. Frames over the size limit and non-text frames are dropped; host text is delegated to command handling, while device text must parse as a hello or sealed packet and pass the device rate limit.",
+						"examples": ["ping"]
 					}
 				],
 				"outputs": [
 					{
 						"name": "SocketFrameService.message",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Returns a Promise<void> for processing the frame and produces no value on completion. It may return early for a missing or closed attachment, delegate a host text frame, drop invalid input, forward a validated device packet, or send a host-offline notice."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SocketFrameService.closed",
@@ -94,17 +107,19 @@
 					{
 						"name": "SocketFrameService.closed.socket",
 						"type": "WebSocket",
-						"required": true
+						"required": true,
+						"description": "The WebSocket reported as closed or failed. This operation asks the link service to drop it with close code 1000."
 					}
 				],
 				"outputs": [
 					{
 						"name": "SocketFrameService.closed",
-						"type": "void"
+						"type": "void",
+						"description": "Returns no value after asking the link service to drop the socket with close code 1000. It does not inspect or report the reason for closure."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -114,27 +129,31 @@
 					{
 						"name": "SocketFrameService.constructor.sockets",
 						"type": "HostSocketsAdapter",
-						"required": true
+						"required": true,
+						"description": "The adapter supplies each socket's attachment and sends the host-offline notice when a device packet cannot reach the host. It is used while processing incoming frames."
 					},
 					{
 						"name": "SocketFrameService.constructor.link",
 						"type": "HostLinkService",
-						"required": true
+						"required": true,
+						"description": "The link service drops sockets with close codes and attempts to deliver parsed device packets to the host. A failed delivery causes the socket adapter to send a host-offline notice."
 					},
 					{
 						"name": "SocketFrameService.constructor.commands",
 						"type": "HostCommandService",
-						"required": true
+						"required": true,
+						"description": "The command service handles text frames for sockets attached with the host role. It is called only after the frame passes the size and text checks."
 					}
 				],
 				"outputs": [
 					{
 						"name": "SocketFrameService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Constructs and returns SocketFrameService, initializing a SecurePacketValidator and an empty per-socket rate-window map while retaining the supplied services. It does not process a frame until an operation is called."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},
