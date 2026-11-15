@@ -14,31 +14,15 @@ import type {
 	VerificationRecord
 } from '../../src/core/verification-evidence/verificationTypes';
 
-interface AttachedFrameOptions {
-	root: string;
-	git: (...args: string[]) => string;
-	reference: FrameClipReference;
-	video: Buffer;
-	standing: 'full' | 'scoped' | 'wrong-owner' | 'failed';
-}
+import type { AttachedFrameOptions } from './attachedFrameFixture.types';
 
 /** Real sealed evidence, LFS objects and source note; no injected clip-reader shortcut. */
 export async function attachedFrameFixture(
 	options: AttachedFrameOptions
 ): Promise<FrameClipReference> {
-	const { root, reference, video } = options;
-	const poster = fixturePoster(video),
-		log = Buffer.from('passed');
-	const record = fixtureRecord(options, poster, log);
-	const pointer = await persistFrameRecord(
-		root,
-		record,
-		new Map([
-			['clip.mp4', video],
-			['poster.png', poster],
-			['test.log', log]
-		])
-	);
+	const { root, reference } = options;
+	const { record, files } = frameRecordFixture(options);
+	const pointer = await persistFrameRecord(root, record, files);
 	await new HistoryNoteRepository(root).append(reference.revision, [
 		{
 			schemaVersion: 1,
@@ -52,6 +36,19 @@ export async function attachedFrameFixture(
 		}
 	]);
 	return { ...reference, record: record.id };
+}
+
+export function frameRecordFixture(options: AttachedFrameOptions) {
+	const poster = fixturePoster(options.video),
+		log = Buffer.from('passed');
+	return {
+		record: fixtureRecord(options, poster, log),
+		files: new Map([
+			['clip.mp4', options.video],
+			['poster.png', poster],
+			['test.log', log]
+		])
+	};
 }
 
 function fixturePoster(video: Buffer): Buffer {
@@ -124,7 +121,10 @@ function fixtureRecord(
 	});
 }
 
-function fixtureCapture({ reference, video }: AttachedFrameOptions, poster: Buffer): Capture {
+function fixtureCapture(
+	{ reference, video, addressedFlags = [], capturedAt }: AttachedFrameOptions,
+	poster: Buffer
+): Capture {
 	return {
 		evidence: 'motion',
 		kind: 'video',
@@ -135,7 +135,7 @@ function fixtureCapture({ reference, video }: AttachedFrameOptions, poster: Buff
 		sha256: hash(video),
 		bytes: video.length,
 		mediaType: 'video/mp4',
-		capturedAt: verificationSample().startedAt,
+		capturedAt: capturedAt ?? verificationSample().startedAt,
 		durationSeconds: 1,
 		server: { revision: reference.revision, buildId: 'd'.repeat(64) },
 		video: {
@@ -153,6 +153,7 @@ function fixtureCapture({ reference, video }: AttachedFrameOptions, poster: Buff
 			frameRate: 10,
 			sourceFrameRate: 10,
 			frameCount: 10,
+			addressedFlags,
 			poster: { file: 'poster.png', sha256: hash(poster), bytes: poster.length, timeSeconds: 0 }
 		}
 	};

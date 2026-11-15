@@ -1,3 +1,10 @@
+import { mkdir, readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { withTempRepo } from '../support/temporary';
+import { frameFlagFixture, seedTaskFrameFlag } from '../support/frameFlagFixture';
+import { video, videoLibraryFixture } from '../support/videoCoverageFixture';
+import { scenarioManifestSchema } from '../../src/core/unitTypes';
+import { VideoEvidenceService } from '../../src/services/verification-evidence/VideoEvidenceService';
 import { afterEach, expect, test, vi } from 'vitest';
 import { SnapshotAdapter } from '../../src/adapters/verification-evidence/snapshot-adapter/SnapshotAdapter';
 import {
@@ -79,3 +86,72 @@ test.each([undefined, 'all'] as const)(
 		expect(executed).not.toHaveProperty('skippedBuilds');
 	}
 );
+
+test('enrolled snapshots expose only pending owning slots from original repository evidence', async () => {
+	await withTempRepo(async ({ root, git }) => {
+		const f = await frameFlagFixture(root, git);
+		const flag = await seedTaskFrameFlag(root, f.reference.revision, video.unit);
+		await seedTaskFrameFlag(root, f.reference.revision, 'component.other');
+		vi.spyOn(VideoEvidenceService.prototype, 'plan').mockReturnValue({
+			record: [
+				{ unit: video.unit, clipId: 'play', viewport: 'desktop', inputHash: video.inputHash }
+			],
+			reuse: []
+		});
+		const scenario = pendingMotionScenario();
+		const directory = join(root, '.cache/run');
+		await mkdir(directory, { recursive: true });
+		const context = {
+			directory,
+			commit: f.reference.revision,
+			tree: git('rev-parse', 'HEAD^{tree}'),
+			profile: 'test',
+			env: { ...process.env }
+		};
+		const run = new SnapshotRunService({
+			root,
+			config: { ...defaultVerifyConfig, link: [], setup: [], tools: [], builds: [] },
+			context,
+			videos: [scenario]
+		});
+		const command = `node -e 'console.log(process.env.HARNESS_PENDING_VIDEO_FLAGS || "missing")'`;
+		const result = await run.execute([
+			{
+				id: 'pending-env',
+				name: 'pending-env',
+				kind: 'unit',
+				runner: 'command',
+				target: 'pending-env',
+				cwd: '.',
+				command,
+				timeoutMs: 5000
+			}
+		]);
+		expect(result.setupFailures).toEqual([]);
+		expect(result.outcomes[0].passed).toBe(true);
+		const printed = await readFile(join(directory, 'logs/pending-env.log'), 'utf8');
+		expect(printed).toContain(flag.id);
+		expect(printed).toContain('Inspect this edge');
+		expect(printed).not.toContain('component.other');
+		expect(result).toHaveProperty('pendingVideoFlags.pending-motion.pending');
+	});
+});
+
+function pendingMotionScenario() {
+	const declaration = videoLibraryFixture();
+	declaration.clips[0].id = 'play';
+	declaration.graphs[0].clips = ['play'];
+	declaration.playlists[0].clips = ['play'];
+	return scenarioManifestSchema.parse({
+		schemaVersion: 1,
+		id: 'pending-motion',
+		title: 'Pending motion',
+		kind: 'ui',
+		units: [video.unit],
+		states: [{ id: 'pages', title: 'Pages', coverage: 'required' }],
+		viewports: declaration.viewports,
+		tests: [{ id: 'pending', kind: 'unit', runner: 'command', target: 'pending' }],
+		evidence: [],
+		video: declaration
+	});
+}

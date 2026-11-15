@@ -1,3 +1,4 @@
+import { assertPendingVideoFlagCoverage } from './pendingVideoFlagCoverage';
 import { expect } from 'vitest';
 import { scenarioManifestSchema, type ScenarioManifest } from '../../src/core/unitTypes';
 import type { Gathered } from '../../src/utils/verification-evidence/gatherCaptures';
@@ -136,6 +137,7 @@ function assertVideoGraphGate(scenario: ScenarioManifest, item: Gathered) {
 		return scenarioCoverage(input).failures;
 	};
 	expect(judge(item)).toEqual([]);
+	assertPendingVideoFlagCoverage(enrolled, item);
 	expect(judge(item, '9'.repeat(64)).join(' '), 'stale video slot must block verification').toMatch(
 		/stale|hash|current/i
 	);

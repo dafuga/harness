@@ -1,3 +1,4 @@
+import { assertAttachedFrameFlagResolution } from '../../support/attachedFrameFlagResolution';
 import { expect, test } from 'vitest';
 import { FrameFlagService } from '../../../src/services/verification-evidence/FrameFlagService';
 import { withTempRepo } from '../../support/temporary';
@@ -163,7 +164,8 @@ test('replacement recordings must address pending flags and resolve them append-
 			flags: []
 		});
 	});
-});
+	await assertAttachedFrameFlagResolution();
+}, 30_000);
 
 test('the default reader refuses clip references without attached verified evidence', async () => {
 	await withTempRepo(async ({ root, git }) => {
