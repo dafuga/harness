@@ -21,17 +21,84 @@
 				"name": "harnessFailures.failures",
 				"type": "string[]",
 				"required": true,
-				"description": "Recorded failure strings. Subject-prefixed messages with shared text can become one cause."
+				"description": "The failure strings recorded for one record, in the order they were recorded. A string that starts with a subject (a run of non-space characters) followed by ': ' is grouped with the other such strings that have the same text after that prefix, and the recorded order sets the order of causes and which subjects are listed first; any other string is a cause of its own, and every string counts toward total.",
+				"examples": [
+					[
+						"reports.component.evidence-grid: no baseline recorded",
+						"reports.component.run-timeline: no baseline recorded",
+						"reports.component.coverage-badge: output differs from baseline"
+					],
+					[
+						"reports.component.evidence-grid: output differs from baseline",
+						"reports.component.run-timeline: output differs at line 9",
+						"reports.component.coverage-badge: no baseline recorded",
+						"reports.component.release-notes: theme token is undefined",
+						"reports.component.shell-header: fixture file not found",
+						"reports.function.harness-failures: export is missing"
+					]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "harnessFailures",
 				"type": "FailureSummary",
-				"description": "Total failures, whether at most five allow plain display, ordered causes and omitted-cause count. Shared causes list up to three subjects; longer summaries show at most five causes."
+				"description": "The summary of the failures: total is the number of strings given; plain is true when there are at most five strings, meaning they can be read as they are; and causes holds the shown causes in the order they first occur, each with its count and, for a cause that two or more strings share, up to the first three subjects. When plain is false, only the first five causes are shown and more counts the causes not shown; separately, a string whose whole text equals another cause's text replaces that cause instead of adding to it, so counts can add up to less than total.",
+				"examples": [
+					{
+						"total": 3,
+						"plain": true,
+						"causes": [
+							{
+								"text": "no baseline recorded",
+								"count": 2,
+								"subjects": ["reports.component.evidence-grid", "reports.component.run-timeline"]
+							},
+							{
+								"text": "reports.component.coverage-badge: output differs from baseline",
+								"count": 1,
+								"subjects": []
+							}
+						],
+						"more": 0
+					},
+					{
+						"total": 6,
+						"plain": false,
+						"causes": [
+							{
+								"text": "reports.component.evidence-grid: output differs from baseline",
+								"count": 1,
+								"subjects": []
+							},
+							{
+								"text": "reports.component.run-timeline: output differs at line 9",
+								"count": 1,
+								"subjects": []
+							},
+							{
+								"text": "reports.component.coverage-badge: no baseline recorded",
+								"count": 1,
+								"subjects": []
+							},
+							{
+								"text": "reports.component.release-notes: theme token is undefined",
+								"count": 1,
+								"subjects": []
+							},
+							{
+								"text": "reports.component.shell-header: fixture file not found",
+								"count": 1,
+								"subjects": []
+							}
+						],
+						"more": 1
+					}
+				]
 			}
 		],
 		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "harnessFailures",
@@ -40,18 +107,87 @@
 						"name": "harnessFailures.failures",
 						"type": "string[]",
 						"required": true,
-						"description": "Recorded failure strings. Subject-prefixed messages with shared text can become one cause."
+						"description": "The failure strings recorded for one record, in the order they were recorded. A string that starts with a subject (a run of non-space characters) followed by ': ' is grouped with the other such strings that have the same text after that prefix, and the recorded order sets the order of causes and which subjects are listed first; any other string is a cause of its own, and every string counts toward total.",
+						"examples": [
+							[
+								"reports.component.evidence-grid: no baseline recorded",
+								"reports.component.run-timeline: no baseline recorded",
+								"reports.component.coverage-badge: output differs from baseline"
+							],
+							[
+								"reports.component.evidence-grid: output differs from baseline",
+								"reports.component.run-timeline: output differs at line 9",
+								"reports.component.coverage-badge: no baseline recorded",
+								"reports.component.release-notes: theme token is undefined",
+								"reports.component.shell-header: fixture file not found",
+								"reports.function.harness-failures: export is missing"
+							]
+						]
 					}
 				],
 				"outputs": [
 					{
 						"name": "harnessFailures",
 						"type": "FailureSummary",
-						"description": "Total failures, whether at most five allow plain display, ordered causes and omitted-cause count. Shared causes list up to three subjects; longer summaries show at most five causes."
+						"description": "The summary of the failures: total is the number of strings given; plain is true when there are at most five strings, meaning they can be read as they are; and causes holds the shown causes in the order they first occur, each with its count and, for a cause that two or more strings share, up to the first three subjects. When plain is false, only the first five causes are shown and more counts the causes not shown; separately, a string whose whole text equals another cause's text replaces that cause instead of adding to it, so counts can add up to less than total.",
+						"examples": [
+							{
+								"total": 3,
+								"plain": true,
+								"causes": [
+									{
+										"text": "no baseline recorded",
+										"count": 2,
+										"subjects": [
+											"reports.component.evidence-grid",
+											"reports.component.run-timeline"
+										]
+									},
+									{
+										"text": "reports.component.coverage-badge: output differs from baseline",
+										"count": 1,
+										"subjects": []
+									}
+								],
+								"more": 0
+							},
+							{
+								"total": 6,
+								"plain": false,
+								"causes": [
+									{
+										"text": "reports.component.evidence-grid: output differs from baseline",
+										"count": 1,
+										"subjects": []
+									},
+									{
+										"text": "reports.component.run-timeline: output differs at line 9",
+										"count": 1,
+										"subjects": []
+									},
+									{
+										"text": "reports.component.coverage-badge: no baseline recorded",
+										"count": 1,
+										"subjects": []
+									},
+									{
+										"text": "reports.component.release-notes: theme token is undefined",
+										"count": 1,
+										"subjects": []
+									},
+									{
+										"text": "reports.component.shell-header: fixture file not found",
+										"count": 1,
+										"subjects": []
+									}
+								],
+								"more": 1
+							}
+						]
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
